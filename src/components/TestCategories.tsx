@@ -6,7 +6,13 @@ import {
   Droplets, 
   Dna, 
   Apple,
-  ArrowRight
+  ArrowRight,
+  TestTube,
+  User,
+  UserCheck,
+  Flask,
+  Weight,
+  Syringe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -60,6 +66,27 @@ const TestCategories = () => {
       link: "/tests/heart"
     },
     {
+      title: "Hormone Health",
+      description: "Thyroid function, cortisol, and reproductive hormone assessments.",
+      icon: <Flask className="h-6 w-6 text-white" />,
+      color: "bg-purple-600",
+      link: "/tests/hormones"
+    },
+    {
+      title: "Men's Health",
+      description: "Testosterone, prostate health, and male-specific wellness checks.",
+      icon: <User className="h-6 w-6 text-white" />,
+      color: "bg-blue-600",
+      link: "/tests/mens-health"
+    },
+    {
+      title: "Women's Health & Fertility",
+      description: "Reproductive hormones, fertility assessments, and gynecological health.",
+      icon: <Heart className="h-6 w-6 text-white" />,
+      color: "bg-pink-500",
+      link: "/tests/womens-health"
+    },
+    {
       title: "Diabetes",
       description: "HbA1c and glucose testing to monitor or detect diabetes early.",
       icon: <Activity className="h-6 w-6 text-white" />,
@@ -79,6 +106,34 @@ const TestCategories = () => {
       icon: <Apple className="h-6 w-6 text-white" />,
       color: "bg-wellness-600",
       link: "/tests/vitamins"
+    },
+    {
+      title: "Rapid Test Kits",
+      description: "Quick at-home tests for infections, allergies, and immediate health concerns.",
+      icon: <TestTube className="h-6 w-6 text-white" />,
+      color: "bg-teal-500",
+      link: "/tests/rapid-kits"
+    },
+    {
+      title: "Weight Loss Solutions",
+      description: "Weight management programs including advanced weight loss injections.",
+      icon: <Weight className="h-6 w-6 text-white" />,
+      color: "bg-emerald-500",
+      link: "/tests/weight-loss"
+    },
+    {
+      title: "Longevity Therapies",
+      description: "Innovative treatments focused on healthy aging and lifespan extension.",
+      icon: <Flask className="h-6 w-6 text-white" />,
+      color: "bg-indigo-600",
+      link: "/tests/longevity"
+    },
+    {
+      title: "Travel Vaccinations",
+      description: "Pre-travel immunizations and health consultations for international trips.",
+      icon: <Syringe className="h-6 w-6 text-white" />,
+      color: "bg-cyan-500",
+      link: "/tests/travel-vaccines"
     }
   ];
 
@@ -88,11 +143,11 @@ const TestCategories = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Health Tests</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Comprehensive testing across five key areas for a complete picture of your health.
+            Comprehensive testing across multiple providers, helping you take control of your health.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {categories.map((category, index) => (
             <CategoryCard key={index} {...category} />
           ))}
