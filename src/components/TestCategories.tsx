@@ -10,7 +10,7 @@ import {
   TestTube,
   User,
   UserCheck,
-  Flask,
+  FlaskConical,
   Weight,
   Syringe
 } from "lucide-react";
@@ -68,7 +68,7 @@ const TestCategories = () => {
     {
       title: "Hormone Health",
       description: "Thyroid function, cortisol, and reproductive hormone assessments.",
-      icon: <Flask className="h-6 w-6 text-white" />,
+      icon: <FlaskConical className="h-6 w-6 text-white" />,
       color: "bg-purple-600",
       link: "/tests/hormones"
     },
@@ -124,7 +124,7 @@ const TestCategories = () => {
     {
       title: "Longevity Therapies",
       description: "Innovative treatments focused on healthy aging and lifespan extension.",
-      icon: <Flask className="h-6 w-6 text-white" />,
+      icon: <FlaskConical className="h-6 w-6 text-white" />,
       color: "bg-indigo-600",
       link: "/tests/longevity"
     },
