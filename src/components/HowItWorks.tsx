@@ -2,7 +2,7 @@
 import {
   MousePointerClick,
   PackageOpen,
-  Flask,
+  FlaskConical,
   FileText,
 } from "lucide-react";
 
@@ -21,7 +21,7 @@ const HowItWorks = () => {
         "Take your test at home with our easy-to-use kits or visit a local partner pharmacy.",
     },
     {
-      icon: <Flask className="h-8 w-8 text-health-600" />,
+      icon: <FlaskConical className="h-8 w-8 text-health-600" />,
       title: "Lab Analysis",
       description:
         "Your sample is processed in our UKAS-accredited laboratories with results in 48 hours.",
