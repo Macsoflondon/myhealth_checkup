@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface OrderActionProps {
   item: {
@@ -14,8 +13,6 @@ interface OrderActionProps {
 }
 
 const OrderAction = ({ item, onPlaceOrder }: OrderActionProps) => {
-  const isMobile = useIsMobile();
-  
   return (
     <TableCell key={`${item.id}-order`} className="text-center">
       <Button 
@@ -24,7 +21,7 @@ const OrderAction = ({ item, onPlaceOrder }: OrderActionProps) => {
         disabled={item.available === false}
         onClick={() => onPlaceOrder(item.id, item.provider)}
       >
-        {isMobile ? "Order" : "Order Now"}
+        Order Now
       </Button>
     </TableCell>
   );
