@@ -1,7 +1,7 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, Heart, ShoppingBag } from "lucide-react";
 import {
   DropdownMenu,
@@ -12,15 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/components/ui/sonner";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-  const isMobile = useIsMobile();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,35 +27,11 @@ const Header = () => {
     toast.success("You have been signed out");
     navigate("/");
   };
-  
-  useEffect(() => {
-    // Close mobile menu when route changes
-    setIsMenuOpen(false);
-  }, [location.pathname]);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
-  // Navigation items for better maintainability
-  const navigationItems = [
-    { name: "Compare Tests", path: "/compare" },
-    { name: "Subscriptions", path: "/subscriptions" },
-    { name: "How It Works", path: "/how-it-works" },
-    { name: "About Us", path: "/about" }
-  ];
 
   return (
-    <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${
-      isScrolled ? 'shadow-md' : 'shadow-sm'
-    }`}>
+    <header className="sticky top-0 z-50 bg-white shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2" aria-label="My Health Hub Home">
+        <Link to="/" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
             <span className="text-white font-bold text-lg">H</span>
           </div>
@@ -73,23 +45,24 @@ const Header = () => {
           className="lg:hidden"
           onClick={toggleMenu}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isMenuOpen}
-          aria-controls="mobile-menu"
         >
           {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
 
         {/* Desktop navigation */}
-        <nav className="hidden lg:flex items-center gap-6" aria-label="Main Navigation">
-          {navigationItems.map((item) => (
-            <Link 
-              key={item.path}
-              to={item.path} 
-              className="text-gray-600 hover:text-health-600 transition-colors font-medium"
-            >
-              {item.name}
-            </Link>
-          ))}
+        <nav className="hidden lg:flex items-center gap-6">
+          <Link to="/compare" className="text-gray-600 hover:text-health-600 transition-colors font-medium">
+            Compare Tests
+          </Link>
+          <Link to="/subscriptions" className="text-gray-600 hover:text-health-600 transition-colors font-medium">
+            Subscriptions
+          </Link>
+          <Link to="/how-it-works" className="text-gray-600 hover:text-health-600 transition-colors font-medium">
+            How It Works
+          </Link>
+          <Link to="/about" className="text-gray-600 hover:text-health-600 transition-colors font-medium">
+            About Us
+          </Link>
           
           {user ? (
             <DropdownMenu>
@@ -132,75 +105,91 @@ const Header = () => {
       </div>
 
       {/* Mobile navigation */}
-      <div 
-        id="mobile-menu"
-        className={`lg:hidden bg-white border-t py-4 px-4 shadow-md ${isMenuOpen ? 'block' : 'hidden'}`}
-        aria-hidden={!isMenuOpen}
-      >
-        <nav className="flex flex-col space-y-4" aria-label="Mobile Navigation">
-          {navigationItems.map((item) => (
+      {isMenuOpen && (
+        <div className="lg:hidden bg-white border-t py-4 px-4 shadow-md">
+          <nav className="flex flex-col space-y-4">
             <Link 
-              key={item.path}
-              to={item.path} 
+              to="/compare" 
               className="text-gray-600 hover:text-health-600 transition-colors py-2 font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
-              {item.name}
+              Compare Tests
             </Link>
-          ))}
-          
-          {user ? (
-            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-100 mt-2">
-              <Link 
-                to="/dashboard?tab=favorites"
-                className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Heart className="h-4 w-4" /> My Favorites
-              </Link>
-              <Link 
-                to="/dashboard?tab=orders"
-                className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <ShoppingBag className="h-4 w-4" /> My Orders
-              </Link>
-              <Button 
-                variant="outline" 
-                className="w-full border-red-500 text-red-600 hover:bg-red-50 mt-2"
-                onClick={() => {
-                  handleSignOut();
-                  setIsMenuOpen(false);
-                }}
-              >
-                <LogOut className="h-4 w-4 mr-2" /> Sign Out
-              </Button>
-            </div>
-          ) : (
-            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-100 mt-2">
-              <Button 
-                variant="outline" 
-                className="w-full border-health-500 text-health-600 hover:bg-health-50"
-                onClick={() => {
-                  navigate("/auth");
-                  setIsMenuOpen(false);
-                }}
-              >
-                Sign In
-              </Button>
-              <Button 
-                className="w-full bg-health-600 hover:bg-health-700"
-                onClick={() => {
-                  navigate("/auth");
-                  setIsMenuOpen(false);
-                }}
-              >
-                Get Started
-              </Button>
-            </div>
-          )}
-        </nav>
-      </div>
+            <Link 
+              to="/subscriptions" 
+              className="text-gray-600 hover:text-health-600 transition-colors py-2 font-medium"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Subscriptions
+            </Link>
+            <Link 
+              to="/how-it-works" 
+              className="text-gray-600 hover:text-health-600 transition-colors py-2 font-medium"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              How It Works
+            </Link>
+            <Link 
+              to="/about" 
+              className="text-gray-600 hover:text-health-600 transition-colors py-2 font-medium"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About Us
+            </Link>
+            
+            {user ? (
+              <div className="flex flex-col space-y-2 pt-2">
+                <Link 
+                  to="/dashboard?tab=favorites"
+                  className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Heart className="h-4 w-4" /> My Favorites
+                </Link>
+                <Link 
+                  to="/dashboard?tab=orders"
+                  className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <ShoppingBag className="h-4 w-4" /> My Orders
+                </Link>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-red-500 text-red-600 hover:bg-red-50 mt-2"
+                  onClick={() => {
+                    handleSignOut();
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <LogOut className="h-4 w-4 mr-2" /> Sign Out
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-2 pt-2">
+                <Button 
+                  variant="outline" 
+                  className="w-full border-health-500 text-health-600 hover:bg-health-50"
+                  onClick={() => {
+                    navigate("/auth");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  className="w-full bg-health-600 hover:bg-health-700"
+                  onClick={() => {
+                    navigate("/auth");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  Get Started
+                </Button>
+              </div>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
   );
 };

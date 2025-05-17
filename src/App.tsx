@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
-import { Helmet } from "react-helmet";
 import Index from "./pages/Index";
 import CompareTests from "./pages/CompareTests";
 import Auth from "./pages/Auth";
@@ -18,10 +17,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
-        <Helmet>
-          <html lang="en" />
-          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        </Helmet>
         <Toaster />
         <Sonner />
         <BrowserRouter>
