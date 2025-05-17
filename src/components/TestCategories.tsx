@@ -15,6 +15,7 @@ import {
   Syringe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface CategoryCardProps {
   title: string;
@@ -142,9 +143,15 @@ const TestCategories = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Health Tests</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Comprehensive testing across multiple providers, helping you take control of your health.
           </p>
+          <Link to="/compare">
+            <Button size="lg" className="bg-health-600 hover:bg-health-700">
+              Compare Providers
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
