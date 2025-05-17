@@ -3,6 +3,7 @@ import React from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface RealtimeToggleProps {
   isRealtime: boolean;
@@ -10,6 +11,8 @@ interface RealtimeToggleProps {
 }
 
 const RealtimeToggle = ({ isRealtime, toggleRealtime }: RealtimeToggleProps) => {
+  const isMobile = useIsMobile();
+  
   return (
     <Button
       variant="outline" 
@@ -18,7 +21,7 @@ const RealtimeToggle = ({ isRealtime, toggleRealtime }: RealtimeToggleProps) => 
       onClick={toggleRealtime}
     >
       <RefreshCw className={cn("h-4 w-4", isRealtime && "animate-spin")} />
-      {isRealtime ? "Live Updates On" : "Live Updates Off"}
+      {isMobile ? (isRealtime ? "Live" : "Off") : (isRealtime ? "Live Updates On" : "Live Updates Off")}
     </Button>
   );
 };
