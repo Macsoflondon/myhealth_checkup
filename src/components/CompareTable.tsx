@@ -30,6 +30,20 @@ interface PriceUpdate {
   available: boolean;
 }
 
+// Extend the compare data type to include availability
+interface CompareDataWithAvailability {
+  id: string;
+  category: string;
+  name: string;
+  provider: string;
+  providerLogo: string;
+  price: number;
+  features: {
+    [key: string]: string | boolean;
+  };
+  available?: boolean;
+}
+
 const CompareTable = ({ category, providers }: CompareTableProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -45,7 +59,7 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
   });
 
   // Apply real-time price updates if available
-  const dataWithUpdates = filteredData.map(item => {
+  const dataWithUpdates: CompareDataWithAvailability[] = filteredData.map(item => {
     const update = priceUpdates.find(
       u => u.test_id === item.id && u.provider === item.provider
     );
@@ -54,10 +68,13 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
       return {
         ...item,
         price: update.price,
-        isAvailable: update.available
+        available: update.available
       };
     }
-    return item;
+    return {
+      ...item,
+      available: true // Default to available if no update
+    };
   });
 
   // Get unique features across all items for the selected category
@@ -114,7 +131,7 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
         if (error) throw error;
         
         if (data && data.length > 0) {
-          setPriceUpdates(data);
+          setPriceUpdates(data as PriceUpdate[]);
         }
       } catch (error) {
         console.error("Error fetching price updates:", error);
@@ -142,8 +159,13 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
               const filtered = prev.filter(
                 p => !(p.test_id === payload.new.test_id && p.provider === payload.new.provider)
               );
-              // Add the new update
-              return [...filtered, payload.new];
+              // Add the new update and ensure it conforms to PriceUpdate type
+              return [...filtered, {
+                test_id: payload.new.test_id,
+                provider: payload.new.provider,
+                price: payload.new.price,
+                available: payload.new.available
+              }];
             });
           }
         }
@@ -265,7 +287,7 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
                   <span className="font-semibold">{item.name}</span>
                   <span className="text-health-600 font-bold">£{item.price.toFixed(2)}</span>
                   {/* Availability indicator */}
-                  {item.isAvailable === false && (
+                  {item.available === false && (
                     <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
                       Out of stock
                     </span>
@@ -332,7 +354,7 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
                 <Button 
                   size="sm" 
                   className="w-full"
-                  disabled={item.isAvailable === false}
+                  disabled={item.available === false}
                   onClick={() => placeOrder(item.id, item.provider)}
                 >
                   Order Now
