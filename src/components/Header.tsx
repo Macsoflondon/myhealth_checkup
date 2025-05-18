@@ -60,13 +60,12 @@ const Header = () => {
     }`}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2" aria-label="My SalusHub Home">
-          <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/e753d923-ba88-49b9-a8db-af71babcd66d.png" 
-              alt="My SalusHub Logo" 
-              className="h-10 w-auto"
-            />
+          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
+            <span className="text-white font-bold text-lg">S</span>
           </div>
+          <span className="font-bold text-xl text-health-700">
+            My <span className="text-wellness-600">SalusHub</span>
+          </span>
         </Link>
 
         {/* Mobile menu button */}
