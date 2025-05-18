@@ -63,6 +63,36 @@ export const compareData = [
       "Detailed report": true
     }
   },
+  {
+    id: "blood-test-4",
+    category: "blood-tests",
+    name: "Full Blood Count",
+    provider: "LondonLab",
+    providerLogo: "/placeholder.svg",
+    price: 55.00,
+    features: {
+      bioMarkers: "48+ markers",
+      turnaround: "2-3 days",
+      collection: "Home kit or clinic",
+      doctorReview: true,
+      "Detailed report": true
+    }
+  },
+  {
+    id: "blood-test-5",
+    category: "blood-tests",
+    name: "Full Blood Count",
+    provider: "Goodbody",
+    providerLogo: "/placeholder.svg",
+    price: 52.00,
+    features: {
+      bioMarkers: "42+ markers",
+      turnaround: "3-4 days",
+      collection: "Home kit",
+      doctorReview: true,
+      "Detailed report": true
+    }
+  },
   
   // Weight Loss Services
   {
@@ -91,6 +121,22 @@ export const compareData = [
     features: {
       bioMarkers: "Basic metabolic panel",
       turnaround: "Doctor call within 48h",
+      collection: "Medication delivered",
+      doctorReview: true,
+      "Regular check-ins": true,
+      "App support": true
+    }
+  },
+  {
+    id: "weight-loss-3",
+    category: "weight-loss",
+    name: "GLP-1 Treatment",
+    provider: "Medicheck",
+    providerLogo: "/placeholder.svg",
+    price: 165.00,
+    features: {
+      bioMarkers: "Comprehensive metabolic panel",
+      turnaround: "Doctor call within 36h",
       collection: "Medication delivered",
       doctorReview: true,
       "Regular check-ins": true,
@@ -131,6 +177,22 @@ export const compareData = [
       "Personalized protocol": true
     }
   },
+  {
+    id: "longevity-3",
+    category: "longevity",
+    name: "NAD+ Therapy",
+    provider: "Randox",
+    providerLogo: "/placeholder.svg",
+    price: 325.00,
+    features: {
+      bioMarkers: "Advanced aging biomarkers",
+      turnaround: "Book within 2 days",
+      collection: "Clinic only",
+      doctorReview: true,
+      "Follow-up tests": true,
+      "Personalized protocol": true
+    }
+  },
   
   // Hormone Tests
   {
@@ -159,6 +221,21 @@ export const compareData = [
       bioMarkers: "Complete thyroid panel",
       turnaround: "2-3 days",
       collection: "Clinic only",
+      doctorReview: true,
+      "Detailed analysis": true
+    }
+  },
+  {
+    id: "hormone-3",
+    category: "hormones",
+    name: "Thyroid Function",
+    provider: "Tuli",
+    providerLogo: "/placeholder.svg",
+    price: 75.00,
+    features: {
+      bioMarkers: "Extended thyroid function panel",
+      turnaround: "2-4 days",
+      collection: "Home kit or clinic",
       doctorReview: true,
       "Detailed analysis": true
     }
@@ -195,6 +272,21 @@ export const compareData = [
       "Supplement advice": true
     }
   },
+  {
+    id: "vitamin-3",
+    category: "vitamins",
+    name: "Vitamin D & B12",
+    provider: "Medicheck",
+    providerLogo: "/placeholder.svg",
+    price: 45.00,
+    features: {
+      bioMarkers: "Vit D, B12, Folate, Iron",
+      turnaround: "3-4 days",
+      collection: "Home kit",
+      doctorReview: true,
+      "Supplement advice": true
+    }
+  },
   
   // Travel Vaccinations
   {
@@ -222,6 +314,21 @@ export const compareData = [
     features: {
       bioMarkers: "Region-specific immunity panel",
       turnaround: "Next day service",
+      collection: "Clinic only",
+      doctorReview: true,
+      "Vaccination certificate": true
+    }
+  },
+  {
+    id: "travel-3",
+    category: "travel",
+    name: "Travel Health Pack",
+    provider: "Goodbody",
+    providerLogo: "/placeholder.svg",
+    price: 90.00,
+    features: {
+      bioMarkers: "Basic immunity status",
+      turnaround: "1-2 days service",
       collection: "Clinic only",
       doctorReview: true,
       "Vaccination certificate": true
