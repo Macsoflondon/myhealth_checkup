@@ -18,9 +18,9 @@ const TestFeatureRow = ({ feature, items }: TestFeatureRowProps) => {
   // Format feature name for display
   const getFeatureDisplayName = (feature: string) => {
     switch (feature) {
+      case "bioMarkers": return "Bio Markers";
       case "turnaround": return "Turnaround Time";
       case "doctorReview": return "Doctor Review";
-      case "price": return "Price";
       case "collection": return "Sample Collection";
       default: return feature;
     }
@@ -41,8 +41,6 @@ const TestFeatureRow = ({ feature, items }: TestFeatureRowProps) => {
               ) : (
                 <X className="h-5 w-5 text-red-500 mx-auto" />
               )
-            ) : feature === "price" ? (
-              <span className="font-bold">£{item.price?.toFixed(2)}</span>
             ) : (
               value || "-"
             )}

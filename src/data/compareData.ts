@@ -26,12 +26,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 49.00,
     features: {
+      bioMarkers: "45+ markers",
       turnaround: "2-3 days",
       collection: "Home kit or clinic",
       doctorReview: true,
-      "GP follow-up": true,
-      "Detailed report": true,
-      "Nutritional advice": false
+      "Detailed report": true
     }
   },
   {
@@ -42,12 +41,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 59.00,
     features: {
+      bioMarkers: "40+ markers",
       turnaround: "3-5 days",
       collection: "Home kit",
       doctorReview: true,
-      "GP follow-up": false,
-      "Detailed report": true,
-      "Nutritional advice": true
+      "Detailed report": true
     }
   },
   {
@@ -58,12 +56,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 45.00,
     features: {
+      bioMarkers: "50+ markers",
       turnaround: "1-2 days",
       collection: "Clinic only",
       doctorReview: true,
-      "GP follow-up": true,
-      "Detailed report": true,
-      "Nutritional advice": false
+      "Detailed report": true
     }
   },
   
@@ -76,11 +73,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 149.00,
     features: {
+      bioMarkers: "Metabolic profile",
       turnaround: "Doctor call within 24h",
       collection: "Medication delivered",
       doctorReview: true,
       "Regular check-ins": true,
-      "Nutritional support": true,
       "App support": true
     }
   },
@@ -92,11 +89,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 179.00,
     features: {
+      bioMarkers: "Basic metabolic panel",
       turnaround: "Doctor call within 48h",
       collection: "Medication delivered",
       doctorReview: true,
       "Regular check-ins": true,
-      "Nutritional support": true,
       "App support": true
     }
   },
@@ -110,6 +107,7 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 299.00,
     features: {
+      bioMarkers: "Aging biomarkers",
       turnaround: "Same-day appointments",
       collection: "Clinic only",
       doctorReview: true,
@@ -125,6 +123,7 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 349.00,
     features: {
+      bioMarkers: "Comprehensive aging panel",
       turnaround: "Book within 3 days",
       collection: "Clinic only",
       doctorReview: true,
@@ -142,11 +141,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 79.00,
     features: {
+      bioMarkers: "TSH, T3, T4, antibodies",
       turnaround: "3-5 days",
       collection: "Home kit",
       doctorReview: true,
-      "Detailed analysis": true,
-      "Treatment options": false
+      "Detailed analysis": true
     }
   },
   {
@@ -157,11 +156,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 69.00,
     features: {
+      bioMarkers: "Complete thyroid panel",
       turnaround: "2-3 days",
       collection: "Clinic only",
       doctorReview: true,
-      "Detailed analysis": true,
-      "Treatment options": true
+      "Detailed analysis": true
     }
   },
   
@@ -174,6 +173,7 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 49.00,
     features: {
+      bioMarkers: "Vit D, B12, Folate",
       turnaround: "2-4 days",
       collection: "Home kit",
       doctorReview: true,
@@ -188,6 +188,7 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 59.00,
     features: {
+      bioMarkers: "Full vitamin profile",
       turnaround: "1-2 days",
       collection: "Clinic only",
       doctorReview: true,
@@ -204,11 +205,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 85.00,
     features: {
+      bioMarkers: "Immunity status check",
       turnaround: "Same day service",
       collection: "Clinic only",
       doctorReview: true,
-      "Vaccination certificate": true,
-      "Follow-up care": true
+      "Vaccination certificate": true
     }
   },
   {
@@ -219,11 +220,11 @@ export const compareData = [
     providerLogo: "/placeholder.svg", // Replace with actual logo
     price: 95.00,
     features: {
+      bioMarkers: "Region-specific immunity panel",
       turnaround: "Next day service",
       collection: "Clinic only",
       doctorReview: true,
-      "Vaccination certificate": true,
-      "Follow-up care": false
+      "Vaccination certificate": true
     }
   }
 ];

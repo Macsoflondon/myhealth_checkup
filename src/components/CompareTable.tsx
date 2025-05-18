@@ -81,13 +81,18 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
     return acc;
   }, [] as string[]);
 
-  // Sort features so important ones appear first
+  // Filter out the features we want to remove
+  const filteredFeatures = allFeatures.filter(f => 
+    !["price", "GP follow-up", "Nutritional advice"].includes(f)
+  );
+
+  // Sort features so Bio Markers appears first, followed by other important ones
   const sortedFeatures = [
+    "bioMarkers",
     "turnaround",
     "collection",
     "doctorReview",
-    "price",
-    ...allFeatures.filter(f => !["turnaround", "collection", "doctorReview", "price"].includes(f))
+    ...filteredFeatures.filter(f => !["bioMarkers", "turnaround", "collection", "doctorReview"].includes(f))
   ];
 
   return (
