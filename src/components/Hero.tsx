@@ -34,7 +34,7 @@ const Hero = () => {
           
           <div className="mt-12 pt-6 border-t border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <p className="text-2xl md:text-3xl font-bold text-health-700">48hr</p>
+              <p className="text-2xl md:text-3xl font-bold text-health-700">3-5 days</p>
               <p className="text-gray-500">Fast Results</p>
             </div>
             <div>
