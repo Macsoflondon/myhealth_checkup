@@ -17,6 +17,7 @@ const Index = () => {
     "name": "My SalusHub",
     "description": "Hospital-grade health tests with high-street convenience for preventive health screening",
     "url": "https://mysalushub.com",
+    "logo": "https://mysalushub.com/logo.png",
     "sameAs": [
       "https://www.facebook.com/mysalushub",
       "https://www.twitter.com/mysalushub",

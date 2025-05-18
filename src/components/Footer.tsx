@@ -31,10 +31,10 @@ const Footer = () => {
   ];
   
   const socialLinks = [
-    { icon: <Facebook size={20} />, name: "Facebook", url: "https://facebook.com/myhealthhub" },
-    { icon: <Twitter size={20} />, name: "Twitter", url: "https://twitter.com/myhealthhub" },
-    { icon: <Instagram size={20} />, name: "Instagram", url: "https://instagram.com/myhealthhub" },
-    { icon: <Youtube size={20} />, name: "YouTube", url: "https://youtube.com/myhealthhub" }
+    { icon: <Facebook size={20} />, name: "Facebook", url: "https://facebook.com/mysalushub" },
+    { icon: <Twitter size={20} />, name: "Twitter", url: "https://twitter.com/mysalushub" },
+    { icon: <Instagram size={20} />, name: "Instagram", url: "https://instagram.com/mysalushub" },
+    { icon: <Youtube size={20} />, name: "YouTube", url: "https://youtube.com/mysalushub" }
   ];
 
   return (
@@ -43,12 +43,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">S</span>
-              </div>
-              <span className="font-bold text-xl">
-                My <span className="text-wellness-600">SalusHub</span>
-              </span>
+              <img 
+                src="/lovable-uploads/e753d923-ba88-49b9-a8db-af71babcd66d.png" 
+                alt="My SalusHub Logo" 
+                className="h-10 w-auto"
+              />
             </Link>
             <p className="text-gray-600 mb-4">
               Your personal health hub – hospital-grade tests, high-street convenience.
@@ -71,7 +70,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4" id="footer-services">Our Services</h3>
+            <h3 className="font-semibold text-lg mb-4 text-health-700" id="footer-services">Our Services</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
               {serviceSections.map((service, index) => (
                 <li key={index}>
@@ -87,7 +86,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4" id="footer-info">Information</h3>
+            <h3 className="font-semibold text-lg mb-4 text-health-700" id="footer-info">Information</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
               {informationSections.map((info, index) => (
                 <li key={index}>
@@ -103,7 +102,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4" id="footer-company">Company</h3>
+            <h3 className="font-semibold text-lg mb-4 text-health-700" id="footer-company">Company</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
               {companySections.map((company, index) => (
                 <li key={index}>
