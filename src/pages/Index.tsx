@@ -14,13 +14,13 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
-    "name": "My Health Hub",
+    "name": "My SalusHub",
     "description": "Hospital-grade health tests with high-street convenience for preventive health screening",
-    "url": "https://myhealthhub.com",
+    "url": "https://mysalushub.com",
     "sameAs": [
-      "https://www.facebook.com/myhealthhub",
-      "https://www.twitter.com/myhealthhub",
-      "https://www.instagram.com/myhealthhub"
+      "https://www.facebook.com/mysalushub",
+      "https://www.twitter.com/mysalushub",
+      "https://www.instagram.com/mysalushub"
     ],
     "address": {
       "@type": "PostalAddress",
@@ -39,21 +39,21 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>My Health Hub - Preventive Health Testing Service</title>
-        <meta name="description" content="My Health Hub offers hospital-grade health tests with high-street convenience for preventive health screening and early detection." />
+        <title>My SalusHub - Preventive Health Testing Service</title>
+        <meta name="description" content="My SalusHub offers hospital-grade health tests with high-street convenience for preventive health screening and early detection." />
         <meta name="keywords" content="health tests, preventive health, medical testing, blood tests, health screening, wellness tests" />
-        <link rel="canonical" href="https://myhealthhub.com/" />
+        <link rel="canonical" href="https://mysalushub.com/" />
         
         {/* Open Graph / Social Media */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="My Health Hub - Preventive Health Testing" />
+        <meta property="og:title" content="My SalusHub - Preventive Health Testing" />
         <meta property="og:description" content="Hospital-grade tests with high-street convenience for early detection and prevention." />
         <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-        <meta property="og:url" content="https://myhealthhub.com/" />
+        <meta property="og:url" content="https://mysalushub.com/" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="My Health Hub - Preventive Health Testing" />
+        <meta name="twitter:title" content="My SalusHub - Preventive Health Testing" />
         <meta name="twitter:description" content="Hospital-grade tests with high-street convenience." />
         <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
         

@@ -59,12 +59,12 @@ const Header = () => {
       isScrolled ? 'shadow-md' : 'shadow-sm'
     }`}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2" aria-label="My Health Hub Home">
+        <Link to="/" className="flex items-center gap-2" aria-label="My SalusHub Home">
           <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
-            <span className="text-white font-bold text-lg">H</span>
+            <span className="text-white font-bold text-lg">S</span>
           </div>
           <span className="font-bold text-xl text-health-700">
-            My Health<span className="text-wellness-600">Hub</span>
+            My <span className="text-wellness-600">SalusHub</span>
           </span>
         </Link>
 

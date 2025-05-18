@@ -44,10 +44,10 @@ const Footer = () => {
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">H</span>
+                <span className="text-white font-bold text-lg">S</span>
               </div>
               <span className="font-bold text-xl">
-                My Health<span className="text-wellness-600">Hub</span>
+                My <span className="text-wellness-600">SalusHub</span>
               </span>
             </Link>
             <p className="text-gray-600 mb-4">
@@ -122,7 +122,7 @@ const Footer = () => {
         <div className="border-t border-gray-200 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-gray-500">
             <p>
-              &copy; {currentYear} My Health Hub. All rights reserved.
+              &copy; {currentYear} My SalusHub. All rights reserved.
             </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link to="/accessibility" className="hover:text-health-600 transition-colors">Accessibility</Link>
