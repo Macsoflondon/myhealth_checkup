@@ -66,6 +66,20 @@ const Index = () => {
       <main className="flex-grow">
         <Hero />
         <TestCategories />
+        
+        {/* New image divider */}
+        <div className="bg-white py-10 mb-6">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-center">
+              <img 
+                src="/lovable-uploads/0f893895-7295-432a-ba20-d09d4a8c4f14.png" 
+                alt="Blood test collection kits from Pavilion Pharmacy" 
+                className="max-w-full md:max-w-2xl h-auto rounded-lg shadow-md" 
+              />
+            </div>
+          </div>
+        </div>
+        
         <HowItWorks />
         <FeaturedTests />
         <Subscriptions />
