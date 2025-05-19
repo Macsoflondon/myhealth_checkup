@@ -1,9 +1,14 @@
 
 export const providers = [
-  { id: "Tuli", name: "Tuli Health" },
-  { id: "Goodbody", name: "Goodbody" },
-  { id: "Medicheck", name: "Medicheck" },
-  { id: "Randox", name: "Randox Laboratory" },
+  { id: "Medichecks", name: "Medichecks" },
+  { id: "Thriva", name: "Thriva" },
+  { id: "Randox", name: "Randox Health" },
+  { id: "BlueHorizon", name: "Blue Horizon" },
+  { id: "Spire", name: "Private Blood Tests (Spire)" },
+  { id: "Superdrug", name: "Superdrug Health Clinics" },
+  { id: "LondonBT", name: "London Blood Tests" },
+  { id: "YouthRevisited", name: "Youth Revisited" },
+  { id: "Goodbody", name: "Goodbody Clinic" },
   { id: "LondonLab", name: "London Laboratory" }
 ];
 
@@ -22,8 +27,8 @@ export const compareData = [
     id: "blood-test-1",
     category: "blood-tests",
     name: "Full Blood Count",
-    provider: "Tuli",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    provider: "Medichecks",
+    providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200", 
     price: 49.00,
     features: {
       bioMarkers: "45+ markers",
@@ -37,8 +42,8 @@ export const compareData = [
     id: "blood-test-2",
     category: "blood-tests",
     name: "Full Blood Count",
-    provider: "Medicheck",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    provider: "Thriva",
+    providerLogo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 59.00,
     features: {
       bioMarkers: "40+ markers",
@@ -53,7 +58,7 @@ export const compareData = [
     category: "blood-tests",
     name: "Full Blood Count",
     provider: "Randox",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 45.00,
     features: {
       bioMarkers: "50+ markers",
@@ -67,8 +72,8 @@ export const compareData = [
     id: "blood-test-4",
     category: "blood-tests",
     name: "Full Blood Count",
-    provider: "LondonLab",
-    providerLogo: "/placeholder.svg",
+    provider: "BlueHorizon",
+    providerLogo: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 55.00,
     features: {
       bioMarkers: "48+ markers",
@@ -82,13 +87,13 @@ export const compareData = [
     id: "blood-test-5",
     category: "blood-tests",
     name: "Full Blood Count",
-    provider: "Goodbody",
-    providerLogo: "/placeholder.svg",
+    provider: "Spire",
+    providerLogo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 52.00,
     features: {
       bioMarkers: "42+ markers",
       turnaround: "3-4 days",
-      collection: "Home kit",
+      collection: "Clinic only",
       doctorReview: true,
       "Detailed report": true
     }
@@ -99,8 +104,8 @@ export const compareData = [
     id: "weight-loss-1",
     category: "weight-loss",
     name: "GLP-1 Treatment",
-    provider: "Tuli",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    provider: "Medichecks",
+    providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 149.00,
     features: {
       bioMarkers: "Metabolic profile",
@@ -116,7 +121,7 @@ export const compareData = [
     category: "weight-loss",
     name: "GLP-1 Treatment",
     provider: "Goodbody",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 179.00,
     features: {
       bioMarkers: "Basic metabolic panel",
@@ -131,8 +136,8 @@ export const compareData = [
     id: "weight-loss-3",
     category: "weight-loss",
     name: "GLP-1 Treatment",
-    provider: "Medicheck",
-    providerLogo: "/placeholder.svg",
+    provider: "Superdrug",
+    providerLogo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 165.00,
     features: {
       bioMarkers: "Comprehensive metabolic panel",
@@ -149,8 +154,8 @@ export const compareData = [
     id: "longevity-1",
     category: "longevity",
     name: "NAD+ Therapy",
-    provider: "Tuli",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    provider: "YouthRevisited",
+    providerLogo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 299.00,
     features: {
       bioMarkers: "Aging biomarkers",
@@ -166,7 +171,7 @@ export const compareData = [
     category: "longevity",
     name: "NAD+ Therapy",
     provider: "LondonLab",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 349.00,
     features: {
       bioMarkers: "Comprehensive aging panel",
@@ -181,8 +186,8 @@ export const compareData = [
     id: "longevity-3",
     category: "longevity",
     name: "NAD+ Therapy",
-    provider: "Randox",
-    providerLogo: "/placeholder.svg",
+    provider: "BlueHorizon",
+    providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 325.00,
     features: {
       bioMarkers: "Advanced aging biomarkers",
@@ -199,8 +204,8 @@ export const compareData = [
     id: "hormone-1",
     category: "hormones",
     name: "Thyroid Function",
-    provider: "Medicheck",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    provider: "Thriva",
+    providerLogo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 79.00,
     features: {
       bioMarkers: "TSH, T3, T4, antibodies",
@@ -215,7 +220,7 @@ export const compareData = [
     category: "hormones",
     name: "Thyroid Function",
     provider: "Randox",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 69.00,
     features: {
       bioMarkers: "Complete thyroid panel",
@@ -229,8 +234,8 @@ export const compareData = [
     id: "hormone-3",
     category: "hormones",
     name: "Thyroid Function",
-    provider: "Tuli",
-    providerLogo: "/placeholder.svg",
+    provider: "LondonBT",
+    providerLogo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 75.00,
     features: {
       bioMarkers: "Extended thyroid function panel",
@@ -247,7 +252,7 @@ export const compareData = [
     category: "vitamins",
     name: "Vitamin D & B12",
     provider: "Goodbody",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 49.00,
     features: {
       bioMarkers: "Vit D, B12, Folate",
@@ -262,7 +267,7 @@ export const compareData = [
     category: "vitamins",
     name: "Vitamin D & B12",
     provider: "LondonLab",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 59.00,
     features: {
       bioMarkers: "Full vitamin profile",
@@ -276,8 +281,8 @@ export const compareData = [
     id: "vitamin-3",
     category: "vitamins",
     name: "Vitamin D & B12",
-    provider: "Medicheck",
-    providerLogo: "/placeholder.svg",
+    provider: "Spire",
+    providerLogo: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 45.00,
     features: {
       bioMarkers: "Vit D, B12, Folate, Iron",
@@ -293,8 +298,8 @@ export const compareData = [
     id: "travel-1",
     category: "travel",
     name: "Travel Health Pack",
-    provider: "Tuli",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    provider: "Superdrug",
+    providerLogo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 85.00,
     features: {
       bioMarkers: "Immunity status check",
@@ -309,7 +314,7 @@ export const compareData = [
     category: "travel",
     name: "Travel Health Pack",
     provider: "Randox",
-    providerLogo: "/placeholder.svg", // Replace with actual logo
+    providerLogo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 95.00,
     features: {
       bioMarkers: "Region-specific immunity panel",
@@ -323,8 +328,8 @@ export const compareData = [
     id: "travel-3",
     category: "travel",
     name: "Travel Health Pack",
-    provider: "Goodbody",
-    providerLogo: "/placeholder.svg",
+    provider: "Medichecks",
+    providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
     price: 90.00,
     features: {
       bioMarkers: "Basic immunity status",
