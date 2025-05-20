@@ -5,7 +5,12 @@ export const Logo = () => {
   return (
     <Link to="/" className="flex items-center gap-2" aria-label="My Health & Wellness Hub Home">
       <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
-        <span className="text-white font-bold text-lg">H</span>
+        <img 
+          src="/lovable-uploads/c1559947-c6f7-4119-80fc-7a9d4759a7d6.png" 
+          alt="Health Plus Symbol" 
+          className="h-5 w-5 brightness-0 invert" 
+          aria-hidden="true"
+        />
       </div>
       <span className="font-bold text-xl text-health-700">
         My <span className="text-wellness-600">Health & Wellness Hub</span>
