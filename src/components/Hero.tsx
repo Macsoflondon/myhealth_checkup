@@ -10,15 +10,15 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-20 sm:py-24 lg:py-32 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
-            Your Personal Health Hub for{" "}
+            🌿 Your Bespoke Pathway to{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600">
-              Preventive Testing
+              Health, Wellness, Prevention & Longevity Services
             </span>
           </h1>
           
           <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed animate-slideUp">
-            Hospital-grade health tests with high-street convenience.
-            Early detection and prevention for a healthier tomorrow.
+            Welcome to the future of proactive wellbeing, grounded in medical precision, guided by your lifestyle.
+            We offer hospital-grade diagnostics, expert-led prevention strategies, and comprehensive comparisons across trusted providers, empowering you to make informed choices and take control of your long-term health.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
