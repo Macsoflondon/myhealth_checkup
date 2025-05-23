@@ -21,7 +21,11 @@ const TestFeatureRow = ({ feature, items }: TestFeatureRowProps) => {
       case "bioMarkers": return "Bio Markers";
       case "turnaround": return "Turnaround Time";
       case "doctorReview": return "Doctor Review";
-      case "collection": return "Sample Collection";
+      case "collection": return "Service Location";
+      case "Video otoscopy": return "Video Otoscopy";
+      case "Both ears": return "Both Ears Included";
+      case "Audiologist performed": return "Audiologist Performed";
+      case "Free follow-up": return "Free Follow-up";
       default: return feature;
     }
   };

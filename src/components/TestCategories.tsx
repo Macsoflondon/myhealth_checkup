@@ -12,7 +12,8 @@ import {
   UserCheck,
   FlaskConical,
   Weight,
-  Syringe
+  Syringe,
+  Ear
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -100,6 +101,13 @@ const TestCategories = () => {
       icon: <Droplets className="h-6 w-6 text-white" />,
       color: "bg-amber-500",
       link: "/tests/gut"
+    },
+    {
+      title: "Ear Wax Removal",
+      description: "Professional microsuction services for safe and effective ear wax removal.",
+      icon: <Ear className="h-6 w-6 text-white" />,
+      color: "bg-blue-400",
+      link: "/compare?category=ear-wax"
     },
     {
       title: "Vitamin Deficiency",
