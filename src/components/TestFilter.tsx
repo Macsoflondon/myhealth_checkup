@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { compareCategories, providers } from "@/data/compareData";
+import { compareCategories, providers } from "@/data/compare";
 
 interface TestFilterProps {
   selectedCategory: string;

@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CompareTable from "@/components/CompareTable";
 import TestFilter from "@/components/TestFilter";
-import { compareCategories } from "@/data/compareData";
+import { compareCategories } from "@/data/compare/categories";
 
 const CompareTests = () => {
   const location = useLocation();
