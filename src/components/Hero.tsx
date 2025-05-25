@@ -10,9 +10,9 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-20 sm:py-24 lg:py-32 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
-            🌿 Your Bespoke Pathway to{" "}
+            🧬 Your Pathway to{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600">
-              Health, Wellness, Prevention & Longevity Services
+              Health, Wellness & Longevity
             </span>
           </h1>
           
