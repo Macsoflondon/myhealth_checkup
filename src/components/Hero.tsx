@@ -11,6 +11,7 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
             🧬 Start Your Journey Towards{" "}
+            <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600">
               Health, Wellness & Longevity
             </span>{" "}
