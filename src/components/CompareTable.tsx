@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, Table } from "@/components/ui/table";
 import { compareData } from "@/data/compareData";
 import { useAuth } from "@/context/AuthContext";
-import { cn } from "@/lib/utils";
 
 // Import our new components
 import TestFeatureRow from "./compare/TestFeatureRow";
@@ -17,9 +16,13 @@ import { useRealtimePriceUpdates } from "@/hooks/useRealtimePriceUpdates";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useOrders } from "@/hooks/useOrders";
 
+import { filterAndSortCompareData, SortOrder } from "@/lib/compareFilter";
+
 interface CompareTableProps {
   category: string;
   providers: string[];
+  searchTerm?: string;
+  sortOrder?: SortOrder;
 }
 
 // Extend the compare data type to include availability
@@ -36,9 +39,8 @@ interface CompareDataWithAvailability {
   available?: boolean;
 }
 
-const CompareTable = ({ category, providers }: CompareTableProps) => {
+const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' }: CompareTableProps) => {
   const { user } = useAuth();
-  const isAllProviders = providers.includes("all");
   const [isRealtime, setIsRealtime] = useState(true);
   
   // Use our custom hooks
@@ -46,10 +48,12 @@ const CompareTable = ({ category, providers }: CompareTableProps) => {
   const { favorites, toggleFavorite } = useFavorites(user, category);
   const { placeOrder } = useOrders(user);
   
-  // Filter data based on category and selected providers
-  const filteredData = compareData.filter((item) => {
-    if (item.category !== category) return false;
-    return isAllProviders || providers.includes(item.provider.toLowerCase());
+  // Filter data based on category, providers and search term
+  const filteredData = filterAndSortCompareData(compareData, {
+    category,
+    providers,
+    searchTerm,
+    sortOrder
   });
 
   // Apply real-time price updates if available

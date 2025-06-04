@@ -11,6 +11,8 @@ const CompareTests = () => {
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("blood-tests");
   const [selectedProviders, setSelectedProviders] = useState<string[]>(["all"]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   
   // Parse query parameters from URL
   useEffect(() => {
@@ -43,17 +45,37 @@ const CompareTests = () => {
               </p>
             </div>
             
-            <TestFilter 
+            <TestFilter
               selectedCategory={selectedCategory}
               selectedProviders={selectedProviders}
               onCategoryChange={handleCategoryChange}
               onProviderChange={handleProviderChange}
             />
+
+            <div className="flex flex-wrap gap-4 mt-6">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search tests"
+                className="border rounded px-3 py-2 w-full md:w-1/3"
+              />
+              <select
+                value={sortOrder}
+                onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+                className="border rounded px-3 py-2 w-full md:w-1/3"
+              >
+                <option value="asc">Price: Low to High</option>
+                <option value="desc">Price: High to Low</option>
+              </select>
+            </div>
             
             <div className="mt-8">
-              <CompareTable 
+              <CompareTable
                 category={selectedCategory}
                 providers={selectedProviders}
+                searchTerm={searchTerm}
+                sortOrder={sortOrder}
               />
             </div>
           </div>
