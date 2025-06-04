@@ -1,16 +1,11 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { getRandomPrice } from "./getRandomPrice.ts";
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
 const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-const getRandomPrice = (basePrice: number) => {
-  // Simulate price fluctuation between -5% and +5% of the base price
-  const fluctuation = (Math.random() * 0.1) - 0.05;
-  return Math.round((basePrice * (1 + fluctuation)) * 100) / 100;
-};
 
 // This edge function simulates real-time price updates for test providers
 serve(async (req) => {
