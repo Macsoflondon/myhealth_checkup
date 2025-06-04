@@ -5,20 +5,14 @@ import { providers } from './providers';
 import { bloodTests } from './bloodTests';
 import { weightLoss } from './weightLoss';
 import { longevity } from './longevity';
-import { hormones } from './hormones';
-import { vitamins } from './vitamins';
-import { travel } from './travel';
-import { earWax } from './earWax';
+import { vaccinations } from './vaccinations';
 
 // Combine all test data into the compareData array
 export const compareData = [
   ...bloodTests,
   ...weightLoss,
-  ...longevity,
-  ...hormones,
-  ...vitamins,
-  ...travel,
-  ...earWax
+  ...vaccinations,
+  ...longevity
 ];
 
 // Re-export categories and providers

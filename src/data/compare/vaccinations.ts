@@ -1,8 +1,8 @@
 
-export const travel = [
+export const vaccinations = [
   {
-    id: "travel-1",
-    category: "travel",
+    id: "vaccination-1",
+    category: "vaccinations",
     name: "Travel Health Pack",
     provider: "Superdrug",
     providerLogo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
@@ -16,8 +16,8 @@ export const travel = [
     }
   },
   {
-    id: "travel-2",
-    category: "travel",
+    id: "vaccination-2",
+    category: "vaccinations",
     name: "Travel Health Pack",
     provider: "Randox",
     providerLogo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
@@ -31,8 +31,8 @@ export const travel = [
     }
   },
   {
-    id: "travel-3",
-    category: "travel",
+    id: "vaccination-3",
+    category: "vaccinations",
     name: "Travel Health Pack",
     provider: "Medichecks",
     providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
