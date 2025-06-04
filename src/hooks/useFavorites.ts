@@ -16,6 +16,7 @@ export function useFavorites(user: User | null, category: string) {
         const { data, error } = await supabase
           .from("favorites")
           .select("test_id")
+          .eq("user_id", user.id)
           .eq("category", category);
           
         if (error) throw error;

@@ -59,6 +59,7 @@ const Dashboard = () => {
       const { data, error } = await supabase
         .from("favorites")
         .select("*")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -90,6 +91,7 @@ const Dashboard = () => {
       const { data, error } = await supabase
         .from("orders")
         .select("*")
+        .eq("user_id", user.id)
         .order("order_date", { ascending: false });
 
       if (error) throw error;
