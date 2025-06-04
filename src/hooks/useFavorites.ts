@@ -8,7 +8,7 @@ export function useFavorites(user: User | null, category: string) {
   const [favorites, setFavorites] = useState<string[]>([]);
   
   useEffect(() => {
-    // Fetch user favorites
+    // Fetch favorites for the currently logged-in user
     const fetchFavorites = async () => {
       if (!user) return;
       
@@ -16,7 +16,9 @@ export function useFavorites(user: User | null, category: string) {
         const { data, error } = await supabase
           .from("favorites")
           .select("test_id")
-          .eq("category", category);
+          .eq("category", category)
+          // Only fetch favorites belonging to the current user
+          .eq("user_id", user.id);
           
         if (error) throw error;
         setFavorites(data.map(f => f.test_id));
