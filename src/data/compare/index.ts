@@ -4,21 +4,15 @@ import { compareCategories } from './categories';
 import { providers } from './providers';
 import { bloodTests } from './bloodTests';
 import { weightLoss } from './weightLoss';
-import { longevity } from './longevity';
 import { hormones } from './hormones';
 import { vitamins } from './vitamins';
-import { travel } from './travel';
-import { earWax } from './earWax';
 
-// Combine all test data into the compareData array
+// Combine all test data into the compareData array (excluding removed categories)
 export const compareData = [
   ...bloodTests,
   ...weightLoss,
-  ...longevity,
   ...hormones,
-  ...vitamins,
-  ...travel,
-  ...earWax
+  ...vitamins
 ];
 
 // Re-export categories and providers
