@@ -11,6 +11,11 @@ import CompareTests from "./pages/CompareTests";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import IntelligentSearchPage from "./pages/IntelligentSearchPage";
+import RecommendationEngine from "./components/ai/RecommendationEngine";
+import ReviewSystem from "./components/reviews/ReviewSystem";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +34,11 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/compare" element={<CompareTests />} />
+              <Route path="/search" element={<IntelligentSearchPage />} />
+              <Route path="/product/:id" element={<ProductDetailPage />} />
+              <Route path="/recommendations" element={<RecommendationEngine />} />
+              <Route path="/reviews" element={<ReviewSystem />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

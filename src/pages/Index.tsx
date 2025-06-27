@@ -12,14 +12,15 @@ import HowItWorks from "@/components/HowItWorks";
 import Subscriptions from "@/components/Subscriptions";
 import Testimonials from "@/components/Testimonials";
 import CallToAction from "@/components/CallToAction";
+import CookieConsent from "@/components/compliance/CookieConsent";
 
 const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
-    "name": "My Health & Wellness Hub",
-    "description": "Hospital-grade health tests with high-street convenience for preventive health screening targeting health-conscious adults aged 30-60",
-    "url": "https://myhealthwellnesshub.com",
+    "name": "My Health Hub - UK's Leading Health Test Comparison Platform",
+    "description": "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
+    "url": "https://myhealthhub.co.uk",
     "sameAs": [
       "https://www.facebook.com/myhealthhub",
       "https://www.twitter.com/myhealthhub",
@@ -34,6 +35,13 @@ const Index = () => {
       "audienceType": "Health-conscious adults aged 30-60",
       "geographicArea": "United Kingdom"
     },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "GBP",
+      "lowPrice": "29",
+      "highPrice": "299",
+      "offerCount": "100+"
+    },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -47,29 +55,38 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Health & Wellness Hub - Proactive Health Testing for Adults 30-60 | UK</title>
-        <meta name="description" content="Transform your health with hospital-grade testing designed for health-conscious UK adults. Early detection, longevity benefits, and family protection. Compare top providers and add healthy years to your life." />
-        <meta name="keywords" content="private health tests UK, preventive health screening, adults 30-60, cancer screening, hormone tests, longevity, family health, early detection, proactive healthcare" />
-        <link rel="canonical" href="https://myhealthwellnesshub.com/" />
+        <title>My Health Hub - Compare Private Blood Tests & Health Screenings UK 2024</title>
+        <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
+        <meta name="keywords" content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024" />
+        <link rel="canonical" href="https://myhealthhub.co.uk/" />
         
-        {/* Open Graph / Social Media */}
+        {/* Enhanced Open Graph / Social Media */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Health & Wellness Hub - Add Healthy Years to Your Life" />
-        <meta property="og:description" content="Hospital-grade health testing for proactive adults. Early detection saves lives and adds healthy years. Compare providers and protect your family's future." />
+        <meta property="og:site_name" content="My Health Hub" />
+        <meta property="og:title" content="My Health Hub - Compare Private Blood Tests & Health Screenings UK" />
+        <meta property="og:description" content="Compare private health tests from 10+ UK providers. Real-time prices, expert reviews, and AI recommendations. Hospital-grade testing made simple." />
         <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-        <meta property="og:url" content="https://myh ealthwellnesshub.com/" />
+        <meta property="og:url" content="https://myhealthhub.co.uk/" />
+        <meta property="og:locale" content="en_GB" />
         
-        {/* Twitter */}
+        {/* Enhanced Twitter Meta */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Add 12+ Healthy Years to Your Life - Health & Wellness Hub" />
-        <meta name="twitter:description" content="Proactive health testing for UK adults 30-60. Early detection, expert guidance, provider comparisons." />
+        <meta name="twitter:site" content="@myhealthhub" />
+        <meta name="twitter:title" content="My Health Hub - UK's Leading Health Test Comparison Platform" />
+        <meta name="twitter:description" content="Compare private blood tests, health screenings & wellness services. Real-time prices from 10+ providers. AI-powered recommendations." />
         <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="google-site-verification" content="your-google-verification-code" />
+        <meta name="msvalidate.01" content="your-bing-verification-code" />
         
         {/* Structured data JSON-LD */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
+      
       <Header />
       <main className="flex-grow">
         <EnhancedHero />
@@ -82,8 +99,9 @@ const Index = () => {
             <div className="flex justify-center">
               <img 
                 src="/lovable-uploads/0f893895-7295-432a-ba20-d09d4a8c4f14.png" 
-                alt="Professional health testing kits for proactive health monitoring" 
+                alt="Professional health testing kits for proactive health monitoring and early disease detection" 
                 className="max-w-full md:max-w-2xl h-auto rounded-lg shadow-md" 
+                loading="lazy"
               />
             </div>
           </div>
@@ -98,6 +116,7 @@ const Index = () => {
         <CallToAction />
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };
