@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Clock, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+
 const EnhancedHero = () => {
   return <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50">
       <div className="absolute inset-0 z-0 wave-pattern opacity-10"></div>
@@ -23,9 +24,7 @@ const EnhancedHero = () => {
             </h1>
             
             <p className="text-xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed animate-slideUp">
-              Join thousands of proactive adults who've added <strong>healthy years to their lives</strong> through 
-              early detection and prevention. Our hospital-grade tests, expert guidance, and comprehensive 
-              provider comparisons make staying ahead of your health simple and affordable.
+              <strong>Your Blood Holds the Clues. We Help You Decode Them.</strong> Discover the real story behind your health—before symptoms appear. Our advanced blood tests reveal hidden risks including hormone imbalances, cancer markers, cardiovascular strain, inflammation, and metabolic dysfunction. Compare trusted UK providers. Access UKAS-accredited diagnostics with no GP referral, no delays—just clinical-grade insight and expert guidance. Take control of your energy, your wellbeing, and your future—because longevity starts with knowledge. <strong>Health · Wellness · Longevity — Start Now.</strong>
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -111,4 +110,5 @@ const EnhancedHero = () => {
       <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-50 to-transparent"></div>
     </div>;
 };
+
 export default EnhancedHero;
