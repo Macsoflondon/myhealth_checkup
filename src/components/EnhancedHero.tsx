@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Clock, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,12 +17,11 @@ const EnhancedHero = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
-              🧬 Take Control of Your Health{" "}
+              Your Health Is Your Greatest Asset{" "}
               <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600">
-                Before Problems Start
-              </span>{" "}
-              🧬
+                Don't Wait For Symptoms To Appear Before You Take Action
+              </span>
             </h1>
             
             <p className="text-xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed animate-slideUp">
