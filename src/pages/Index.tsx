@@ -3,14 +3,19 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EnhancedHero from "@/components/EnhancedHero";
+import EnhancedSearchHero from "@/components/EnhancedSearchHero";
 import TestCategories from "@/components/TestCategories";
 import FeaturedTests from "@/components/FeaturedTests";
 import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
 import AgeSpecificRecommendations from "@/components/AgeSpecificRecommendations";
 import ProactiveHealthJourney from "@/components/ProactiveHealthJourney";
+import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
+import FounderStory from "@/components/FounderStory";
+import PartnerShowcase from "@/components/PartnerShowcase";
 import HowItWorks from "@/components/HowItWorks";
 import Subscriptions from "@/components/Subscriptions";
 import Testimonials from "@/components/Testimonials";
+import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
 import CookieConsent from "@/components/compliance/CookieConsent";
 
@@ -90,7 +95,9 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <EnhancedHero />
+        <EnhancedSearchHero />
         <HealthBenefitsInfographic />
+        <Enhanced3StepProcess />
         <TestCategories />
         
         {/* Professional image divider */}
@@ -108,11 +115,14 @@ const Index = () => {
         </div>
         
         <AgeSpecificRecommendations />
+        <FounderStory />
+        <PartnerShowcase />
         <ProactiveHealthJourney />
         <HowItWorks />
         <FeaturedTests />
         <Subscriptions />
         <Testimonials />
+        <HealthResources />
         <CallToAction />
       </main>
       <Footer />

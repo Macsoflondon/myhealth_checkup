@@ -29,20 +29,5 @@ export const travel = [
       doctorReview: true,
       "Vaccination certificate": true
     }
-  },
-  {
-    id: "travel-3",
-    category: "travel",
-    name: "Travel Health Pack",
-    provider: "Medichecks",
-    providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
-    price: 90.00,
-    features: {
-      bioMarkers: "Basic immunity status",
-      turnaround: "1-2 days service",
-      collection: "Clinic only",
-      doctorReview: true,
-      "Vaccination certificate": true
-    }
   }
 ];
