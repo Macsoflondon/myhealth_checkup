@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Clock, Award, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
 const EnhancedHero = () => {
-  return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50">
+  return <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50">
       <div className="absolute inset-0 z-0 wave-pattern opacity-10"></div>
       
       <div className="container mx-auto px-4 py-20 sm:py-24 lg:py-32 relative z-10">
@@ -16,10 +14,10 @@ const EnhancedHero = () => {
               Trusted by 50,000+ Health-Conscious Adults Across the UK
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
+            <h1 className="text-4xl md:text-5xl mb-6 animate-fadeIn text-[#3a5f85] font-bold lg:text-6xl">
               Your Health Is Your Greatest Asset{" "}
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600 text-3xl">
                 Don't Wait For Symptoms To Appear Before You Take Action
               </span>
             </h1>
@@ -111,8 +109,6 @@ const EnhancedHero = () => {
       </div>
       
       <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-50 to-transparent"></div>
-    </div>
-  );
+    </div>;
 };
-
 export default EnhancedHero;
