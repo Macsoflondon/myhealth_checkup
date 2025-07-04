@@ -14,6 +14,9 @@ import NotFound from "./pages/NotFound";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import IntelligentSearchPage from "./pages/IntelligentSearchPage";
+import HowItWorksPage from "./pages/HowItWorksPage";
+import AboutUsPage from "./pages/AboutUsPage";
+import SubscriptionsPage from "./pages/SubscriptionsPage";
 import RecommendationEngine from "./components/ai/RecommendationEngine";
 import ReviewSystem from "./components/reviews/ReviewSystem";
 
@@ -39,6 +42,9 @@ const App = () => (
               <Route path="/recommendations" element={<RecommendationEngine />} />
               <Route path="/reviews" element={<ReviewSystem />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/how-it-works" element={<HowItWorksPage />} />
+              <Route path="/about" element={<AboutUsPage />} />
+              <Route path="/subscriptions" element={<SubscriptionsPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
