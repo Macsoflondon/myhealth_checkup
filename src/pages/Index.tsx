@@ -17,6 +17,9 @@ import Subscriptions from "@/components/Subscriptions";
 import Testimonials from "@/components/Testimonials";
 import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
+import { BookingProcess } from "@/components/BookingProcess";
+import { VisualTestingProcess } from "@/components/VisualTestingProcess";
+import { BookingOptions } from "@/components/BookingOptions";
 import CookieConsent from "@/components/compliance/CookieConsent";
 
 const Index = () => {
@@ -98,6 +101,9 @@ const Index = () => {
         <EnhancedSearchHero />
         <HealthBenefitsInfographic />
         <Enhanced3StepProcess />
+        <VisualTestingProcess />
+        <BookingOptions />
+        <BookingProcess />
         <TestCategories />
         
         {/* Professional image divider */}
