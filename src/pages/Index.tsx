@@ -1,4 +1,3 @@
-
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,11 +16,7 @@ import Subscriptions from "@/components/Subscriptions";
 import Testimonials from "@/components/Testimonials";
 import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
-import { BookingProcess } from "@/components/BookingProcess";
-import { VisualTestingProcess } from "@/components/VisualTestingProcess";
-import { BookingOptions } from "@/components/BookingOptions";
 import CookieConsent from "@/components/compliance/CookieConsent";
-
 const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
@@ -29,11 +24,7 @@ const Index = () => {
     "name": "My Health Hub - UK's Leading Health Test Comparison Platform",
     "description": "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
     "url": "https://myhealthhub.co.uk",
-    "sameAs": [
-      "https://www.facebook.com/myhealthhub",
-      "https://www.twitter.com/myhealthhub",
-      "https://www.instagram.com/myhealthhub"
-    ],
+    "sameAs": ["https://www.facebook.com/myhealthhub", "https://www.twitter.com/myhealthhub", "https://www.instagram.com/myhealthhub"],
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "United Kingdom"
@@ -52,16 +43,12 @@ const Index = () => {
     },
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-      ],
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
       "opens": "00:00",
       "closes": "23:59"
     }
   };
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>My Health Hub - Compare Private Blood Tests & Health Screenings UK 2024</title>
         <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
@@ -101,22 +88,12 @@ const Index = () => {
         <EnhancedSearchHero />
         <HealthBenefitsInfographic />
         <Enhanced3StepProcess />
-        <VisualTestingProcess />
-        <BookingOptions />
-        <BookingProcess />
         <TestCategories />
         
         {/* Professional image divider */}
         <div className="bg-white py-10 mb-6">
           <div className="container mx-auto px-4">
-            <div className="flex justify-center">
-              <img 
-                src="/lovable-uploads/0f893895-7295-432a-ba20-d09d4a8c4f14.png" 
-                alt="Professional health testing kits for proactive health monitoring and early disease detection" 
-                className="max-w-full md:max-w-2xl h-auto rounded-lg shadow-md" 
-                loading="lazy"
-              />
-            </div>
+            
           </div>
         </div>
         
@@ -133,8 +110,6 @@ const Index = () => {
       </main>
       <Footer />
       <CookieConsent />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
