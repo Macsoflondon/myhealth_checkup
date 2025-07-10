@@ -1,127 +1,56 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Clock, Award, Users } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 
 const EnhancedHero = () => {
-  return <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50">
-      <div className="absolute inset-0 z-0 wave-pattern opacity-10"></div>
-      
-      <div className="container mx-auto px-4 py-20 sm:py-24 lg:py-32 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          {/* Main Hero Content */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center bg-health-100 text-health-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+  return (
+    <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+      <div className="container mx-auto px-4 py-16 sm:py-20 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Compare Private Health Tests
+          </h1>
+          
+          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            Find the best blood tests, health checks, and diagnostic services across the UK. Compare prices, reviews, and book instantly.
+          </p>
+          
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <input 
+                type="text" 
+                placeholder="Search for blood tests, providers, or conditions..."
+                className="w-full px-6 py-4 rounded-lg text-lg border-0 shadow-lg focus:ring-2 focus:ring-blue-300 pr-16"
+              />
+              <Button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-red-500 hover:bg-red-600 text-white px-6">
+                Search Tests
+              </Button>
+            </div>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-blue-100">
+            <div className="flex items-center">
               <Shield className="w-4 h-4 mr-2" />
-              Trusted by 50,000+ Health-Conscious Adults Across the UK
+              NHS Approved Labs
             </div>
-            
-            <h1 className="text-4xl md:text-5xl mb-6 animate-fadeIn text-[#3a5f85] font-bold lg:text-6xl">
-              Your Health Is Your Greatest Asset{" "}
-              <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-health-600 to-wellness-600 text-3xl">
-                Don't Wait For Symptoms To Appear Before You Take Action
-              </span>
-            </h1>
-            
-            <p className="text-xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed animate-slideUp">
-              <strong>Your Blood Tells the Truth. Are You Ready to Listen?</strong>
-              <br /><br />
-              Most health problems start quietly — long before symptoms show up. Low energy. Mood swings. Gut issues. Something feels off, but you're told everything's "normal."
-              <br /><br />
-              We help you find the real answers. Our advanced blood tests detect early signs of inflammation, hormonal imbalance, cardiovascular strain, nutrient deficiencies, cancer risk and more — so you can take control before it spirals.
-              <br /><br />
-              ✅ No GP referral needed<br />
-              ✅ UKAS-accredited labs<br />
-              ✅ In-clinic or home test kits<br />
-              ✅ Fast, expert-reviewed results
-              <br /><br />
-              Compare the UK's most trusted providers — all in one place. Because the sooner you know, the sooner you feel better.
-              <br /><br />
-              <strong>Longevity starts with clarity. Health · Wellness · Prevention. Start now.</strong>
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button className="text-lg px-8 py-6 bg-health-600 hover:bg-health-700 shadow-lg shadow-health-200/50">
-                Find Your Perfect Test
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              
-              <Button variant="outline" className="text-lg px-8 py-6 border-health-300 text-health-700 hover:bg-health-50">
-                Compare Providers
-              </Button>
+            <div className="flex items-center">
+              <Award className="w-4 h-4 mr-2" />
+              UKAS Accredited
             </div>
-
-            {/* Trust Indicators for Target Demographic */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 mb-12">
-              <div className="flex items-center">
-                <Award className="w-4 h-4 mr-2 text-health-600" />
-                UKAS Accredited Labs
-              </div>
-              <div className="flex items-center">
-                <Clock className="w-4 h-4 mr-2 text-health-600" />
-                Results in 24-48hrs
-              </div>
-              <div className="flex items-center">
-                <Shield className="w-4 h-4 mr-2 text-health-600" />
-                Doctor Reviewed
-              </div>
-              <div className="flex items-center">
-                <Users className="w-4 h-4 mr-2 text-health-600" />
-                Family Health Planning
-              </div>
+            <div className="flex items-center">
+              <Users className="w-4 h-4 mr-2" />
+              50,000+ Tests Booked
             </div>
-          </div>
-
-          {/* Interactive Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-health-700 mb-2">85%</div>
-                <p className="text-gray-600 text-sm">Health Issues Prevented Through Early Detection</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-wellness-700 mb-2">+12</div>
-                <p className="text-gray-600 text-sm">Healthy Years Added on Average</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-purple-700 mb-2">£2,400</div>
-                <p className="text-gray-600 text-sm">Average Annual NHS Savings</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="text-center hover:shadow-lg transition-shadow cursor-pointer">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-amber-700 mb-2">96%</div>
-                <p className="text-gray-600 text-sm">Customer Satisfaction Rate</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Age-Specific Call-to-Action */}
-          <div className="bg-gradient-to-r from-health-600 to-wellness-600 rounded-2xl p-8 text-white text-center">
-            <h3 className="text-2xl font-bold mb-4">
-              Perfect for Adults 30-60 Who Value Their Health & Family's Future
-            </h3>
-            <p className="text-lg opacity-90 mb-6 max-w-3xl mx-auto">
-              Whether you're planning for your family's future, managing career stress, or simply want to 
-              stay ahead of age-related health changes, we have the right tests and guidance for your life stage.
-            </p>
-            <Button size="lg" variant="secondary" className="bg-white text-health-700 hover:bg-gray-100">
-              Discover Tests for Your Age Group
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="flex items-center">
+              <Clock className="w-4 h-4 mr-2" />
+              Free GP Consultation
+            </div>
           </div>
         </div>
       </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-50 to-transparent"></div>
-    </div>;
+    </div>
+  );
 };
 
 export default EnhancedHero;
