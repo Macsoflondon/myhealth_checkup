@@ -24,7 +24,20 @@ const EnhancedHero = () => {
             </h1>
             
             <p className="text-xl text-gray-600 mb-10 max-w-4xl mx-auto leading-relaxed animate-slideUp">
-              <strong>Your Blood Holds the Clues. We Help You Decode Them.</strong> Discover the real story behind your health—before symptoms appear. Our advanced blood tests reveal hidden risks including hormone imbalances, cancer markers, cardiovascular strain, inflammation, and metabolic dysfunction. Compare trusted UK providers. Access UKAS-accredited diagnostics with no GP referral, no delays—just clinical-grade insight and expert guidance. Take control of your energy, your wellbeing, and your future—because longevity starts with knowledge. <strong>Health · Wellness · Longevity — Start Now.</strong>
+              <strong>Your Blood Tells the Truth. Are You Ready to Listen?</strong>
+              <br /><br />
+              Most health problems start quietly — long before symptoms show up. Low energy. Mood swings. Gut issues. Something feels off, but you're told everything's "normal."
+              <br /><br />
+              We help you find the real answers. Our advanced blood tests detect early signs of inflammation, hormonal imbalance, cardiovascular strain, nutrient deficiencies, cancer risk and more — so you can take control before it spirals.
+              <br /><br />
+              ✅ No GP referral needed<br />
+              ✅ UKAS-accredited labs<br />
+              ✅ In-clinic or home test kits<br />
+              ✅ Fast, expert-reviewed results
+              <br /><br />
+              Compare the UK's most trusted providers — all in one place. Because the sooner you know, the sooner you feel better.
+              <br /><br />
+              <strong>Longevity starts with clarity. Health · Wellness · Prevention. Start now.</strong>
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
