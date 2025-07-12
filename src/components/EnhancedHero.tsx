@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Clock, Award, Users } from "lucide-react";
 const EnhancedHero = () => {
-  return <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
-      <div className="container mx-auto px-4 py-16 sm:py-20 relative z-10 rounded-xl bg-[#081129]">
+  return <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-none px-[10px] py-[10px] mx-[100px]">
+      <div className="container mx-auto px-4 py-16 sm:py-20 relative z-10 rounded-xl bg-[#081129] text-center my-[100px] font-semibold text-3xl text-white">
         <div className="max-w-4xl mx-auto text-center bg-[0#] bg-[#081129] rounded-xl">
           <h1 className="text-3xl md:text-5xl mb-6 lg:text-5xl text-[#081129] text-center font-bold">MyHealth Checkup</h1>
           
