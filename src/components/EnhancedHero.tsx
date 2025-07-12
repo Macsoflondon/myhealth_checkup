@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Clock, Award, Users } from "lucide-react";
+
 const EnhancedHero = () => {
-  return <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+  return (
+    <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
       <div className="container mx-auto px-4 py-16 sm:py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl md:text-5xl mb-6 lg:text-5xl text-[#081129] text-center font-bold">Your Health is Your Greatest Asset</h1>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Compare Private Health Tests
+          </h1>
           
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
             Find the best blood tests, health checks, and diagnostic services across the UK. Compare prices, reviews, and book instantly.
@@ -13,7 +17,11 @@ const EnhancedHero = () => {
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto mb-8">
             <div className="relative">
-              <input type="text" placeholder="Search for blood tests, providers, or conditions..." className="w-full px-6 py-4 rounded-lg text-lg border-0 shadow-lg focus:ring-2 focus:ring-blue-300 pr-16" />
+              <input 
+                type="text" 
+                placeholder="Search for blood tests, providers, or conditions..."
+                className="w-full px-6 py-4 rounded-lg text-lg border-0 shadow-lg focus:ring-2 focus:ring-blue-300 pr-16"
+              />
               <Button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-red-500 hover:bg-red-600 text-white px-6">
                 Search Tests
               </Button>
@@ -41,6 +49,8 @@ const EnhancedHero = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default EnhancedHero;

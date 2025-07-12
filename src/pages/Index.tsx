@@ -83,7 +83,31 @@ const Index = () => {
       </Helmet>
       
       <Header />
-      
+      <main className="flex-grow">
+        <EnhancedHero />
+        <EnhancedSearchHero />
+        <HealthBenefitsInfographic />
+        <Enhanced3StepProcess />
+        <TestCategories />
+        
+        {/* Professional image divider */}
+        <div className="bg-white py-10 mb-6">
+          <div className="container mx-auto px-4">
+            
+          </div>
+        </div>
+        
+        <AgeSpecificRecommendations />
+        <FounderStory />
+        <PartnerShowcase />
+        <ProactiveHealthJourney />
+        <HowItWorks />
+        <FeaturedTests />
+        <Subscriptions />
+        <Testimonials />
+        <HealthResources />
+        <CallToAction />
+      </main>
       <Footer />
       <CookieConsent />
     </div>;
