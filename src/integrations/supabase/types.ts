@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      favorites: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          name: string | null
+          price: number | null
+          provider: string
+          test_id: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          price?: number | null
+          provider: string
+          test_id: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          price?: number | null
+          provider?: string
+          test_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          id: string
+          name: string | null
+          order_date: string
+          price: number | null
+          provider: string
+          result_date: string | null
+          result_url: string | null
+          status: string
+          test_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          name?: string | null
+          order_date?: string
+          price?: number | null
+          provider: string
+          result_date?: string | null
+          result_url?: string | null
+          status?: string
+          test_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          name?: string | null
+          order_date?: string
+          price?: number | null
+          provider?: string
+          result_date?: string | null
+          result_url?: string | null
+          status?: string
+          test_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      price_updates: {
+        Row: {
+          available: boolean
+          id: string
+          price: number
+          provider: string
+          test_id: string
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          id?: string
+          price: number
+          provider: string
+          test_id: string
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          id?: string
+          price?: number
+          provider?: string
+          test_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
