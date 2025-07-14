@@ -16,7 +16,19 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import IntelligentSearchPage from "./pages/IntelligentSearchPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import AboutUsPage from "./pages/AboutUsPage";
-import SubscriptionsPage from "./pages/SubscriptionsPage";
+import CancerScreeningPage from "./pages/CancerScreeningPage";
+import DiabetesTestingPage from "./pages/DiabetesTestingPage";
+import HeartHealthPage from "./pages/HeartHealthPage";
+import VitaminDeficiencyPage from "./pages/VitaminDeficiencyPage";
+import GutHealthPage from "./pages/GutHealthPage";
+import AccessibilityPage from "./pages/AccessibilityPage";
+import SitemapPage from "./pages/SitemapPage";
+import CookiePolicyPage from "./pages/CookiePolicyPage";
+import TermsConditionsPage from "./pages/TermsConditionsPage";
+import FAQsPage from "./pages/FAQsPage";
+import ContactPage from "./pages/ContactPage";
+import PartnersPage from "./pages/PartnersPage";
+import HealthBlogPage from "./pages/HealthBlogPage";
 import RecommendationEngine from "./components/ai/RecommendationEngine";
 import ReviewSystem from "./components/reviews/ReviewSystem";
 
@@ -44,7 +56,19 @@ const App = () => (
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/how-it-works" element={<HowItWorksPage />} />
               <Route path="/about" element={<AboutUsPage />} />
-              <Route path="/subscriptions" element={<SubscriptionsPage />} />
+              <Route path="/tests/cancer" element={<CancerScreeningPage />} />
+              <Route path="/tests/diabetes" element={<DiabetesTestingPage />} />
+              <Route path="/tests/heart" element={<HeartHealthPage />} />
+              <Route path="/tests/vitamins" element={<VitaminDeficiencyPage />} />
+              <Route path="/tests/gut" element={<GutHealthPage />} />
+              <Route path="/accessibility" element={<AccessibilityPage />} />
+              <Route path="/sitemap" element={<SitemapPage />} />
+              <Route path="/cookies" element={<CookiePolicyPage />} />
+              <Route path="/terms" element={<TermsConditionsPage />} />
+              <Route path="/faqs" element={<FAQsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/partners" element={<PartnersPage />} />
+              <Route path="/blog" element={<HealthBlogPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

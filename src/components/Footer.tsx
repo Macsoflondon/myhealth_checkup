@@ -15,7 +15,6 @@ const Footer = () => {
   
   const informationSections = [
     { name: "How It Works", link: "/how-it-works" },
-    { name: "Our Subscriptions", link: "/subscriptions" },
     { name: "FAQs", link: "/faqs" },
     { name: "Health Blog", link: "/blog" },
     { name: "Contact Us", link: "/contact" }
@@ -23,8 +22,7 @@ const Footer = () => {
   
   const companySections = [
     { name: "About Us", link: "/about" },
-    { name: "Careers", link: "/careers" },
-    { name: "Privacy Policy", link: "/privacy" },
+    { name: "Privacy Policy", link: "/privacy-policy" },
     { name: "Terms & Conditions", link: "/terms" },
     { name: "Partners", link: "/partners" }
   ];
