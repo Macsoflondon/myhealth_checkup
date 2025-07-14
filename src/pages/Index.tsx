@@ -1,8 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import EnhancedHero from "@/components/EnhancedHero";
-import EnhancedSearchHero from "@/components/EnhancedSearchHero";
+import NewHero from "@/components/NewHero";
+import FeaturedProviders from "@/components/FeaturedProviders";
+import CategoryFilters from "@/components/CategoryFilters";
 import TestCategories from "@/components/TestCategories";
 import FeaturedTests from "@/components/FeaturedTests";
 import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
@@ -84,8 +85,9 @@ const Index = () => {
       
       <Header />
       <main className="flex-grow">
-        <EnhancedHero />
-        <EnhancedSearchHero />
+        <NewHero />
+        <FeaturedProviders />
+        <CategoryFilters />
         <HealthBenefitsInfographic />
         <Enhanced3StepProcess />
         <TestCategories />

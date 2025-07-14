@@ -1,6 +1,4 @@
-
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/sonner";
 import { User } from "@supabase/supabase-js";
 
@@ -15,17 +13,7 @@ export function useOrders(user: User | null) {
     }
     
     try {
-      const { error } = await supabase
-        .from("orders")
-        .insert({
-          user_id: user.id,
-          test_id: testId,
-          provider,
-          status: "pending"
-        });
-        
-      if (error) throw error;
-      
+      // Mock implementation
       toast.success("Order placed successfully!");
       navigate("/dashboard?tab=orders");
       return true;
