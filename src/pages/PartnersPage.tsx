@@ -148,7 +148,7 @@ const PartnersPage = () => {
                   <p className="text-muted-foreground">
                     Join a network of trusted providers committed to the highest standards of healthcare delivery.
                   </p>
-                </div>
+                </Card>
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
                     <Award className="h-8 w-8 text-orange-500" />
@@ -157,7 +157,7 @@ const PartnersPage = () => {
                   <p className="text-muted-foreground">
                     Gain recognition as a preferred provider in the UK's leading health testing comparison platform.
                   </p>
-                </div>
+                </Card>
               </div>
             </div>
           </div>
