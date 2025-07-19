@@ -25,7 +25,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   return <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}>
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center bg-[#08112a]">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center bg-slate-50">
         <Logo />
 
         <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />

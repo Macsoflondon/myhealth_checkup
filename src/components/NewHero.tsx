@@ -2,41 +2,32 @@ import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const NewHero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
   const handleSearch = () => {
     if (searchTerm.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
   };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
   };
-
-  const popularSearches = [
-    "Thyroid Function", "Hormone Health", "Vitamin D", "Full Blood Count", 
-    "Cholesterol", "Diabetes Check", "Iron Levels", "B12 & Folate"
-  ];
-
-  return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
+  const popularSearches = ["Thyroid Function", "Hormone Health", "Vitamin D", "Full Blood Count", "Cholesterol", "Diabetes Check", "Iron Levels", "B12 & Folate"];
+  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-pattern h-full w-full"></div>
       </div>
       
-      <div className="container mx-auto px-4 py-20 relative z-10">
+      <div className="container mx-auto px-4 py-20 relative z-10 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center">
           {/* Main Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
             Your Health is Your 
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4]">
               Greatest Asset
             </span>
           </h1>
@@ -71,20 +62,9 @@ const NewHero = () => {
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 relative">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search for blood tests, conditions, or health concerns..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500"
-                  />
+                  <input type="text" placeholder="Search for blood tests, conditions, or health concerns..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
-                <Button 
-                  onClick={handleSearch}
-                  size="lg"
-                  className="px-8 py-4 text-lg bg-health-accent hover:bg-health-accent/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
-                >
+                <Button onClick={handleSearch} size="lg" className="px-8 py-4 text-lg bg-health-accent hover:bg-health-accent/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105">
                   Find Tests
                 </Button>
               </div>
@@ -93,15 +73,9 @@ const NewHero = () => {
               <div className="mt-6">
                 <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
                 <div className="flex flex-wrap gap-2">
-                  {popularSearches.map((search, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSearchTerm(search)}
-                      className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700"
-                    >
+                  {popularSearches.map((search, index) => <button key={index} onClick={() => setSearchTerm(search)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700">
                       {search}
-                    </button>
-                  ))}
+                    </button>)}
                 </div>
               </div>
             </div>
@@ -128,8 +102,6 @@ const NewHero = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default NewHero;
