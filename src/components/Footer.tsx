@@ -1,41 +1,69 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
-  // Categories for improved site structure and internal linking
-  const serviceSections = [
-    { name: "Cancer Screening", link: "/tests/cancer" },
-    { name: "Diabetes Testing", link: "/tests/diabetes" },
-    { name: "Heart Health", link: "/tests/heart" },
-    { name: "Vitamin Deficiency", link: "/tests/vitamins" },
-    { name: "Gut Health", link: "/tests/gut" }
-  ];
-  
-  const informationSections = [
-    { name: "How It Works", link: "/how-it-works" },
-    { name: "FAQs", link: "/faqs" },
-    { name: "Health Blog", link: "/blog" },
-    { name: "Contact Us", link: "/contact" }
-  ];
-  
-  const companySections = [
-    { name: "About Us", link: "/about" },
-    { name: "Privacy Policy", link: "/privacy-policy" },
-    { name: "Terms & Conditions", link: "/terms" },
-    { name: "Partners", link: "/partners" }
-  ];
-  
-  const socialLinks = [
-    { icon: <Facebook size={20} />, name: "Facebook", url: "https://facebook.com/myhealthhub" },
-    { icon: <Twitter size={20} />, name: "Twitter", url: "https://twitter.com/myhealthhub" },
-    { icon: <Instagram size={20} />, name: "Instagram", url: "https://instagram.com/myhealthhub" },
-    { icon: <Youtube size={20} />, name: "YouTube", url: "https://youtube.com/myhealthhub" }
-  ];
 
-  return (
-    <footer className="bg-gray-50 pt-16 pb-8 border-t">
+  // Categories for improved site structure and internal linking
+  const serviceSections = [{
+    name: "Cancer Screening",
+    link: "/tests/cancer"
+  }, {
+    name: "Diabetes Testing",
+    link: "/tests/diabetes"
+  }, {
+    name: "Heart Health",
+    link: "/tests/heart"
+  }, {
+    name: "Vitamin Deficiency",
+    link: "/tests/vitamins"
+  }, {
+    name: "Gut Health",
+    link: "/tests/gut"
+  }];
+  const informationSections = [{
+    name: "How It Works",
+    link: "/how-it-works"
+  }, {
+    name: "FAQs",
+    link: "/faqs"
+  }, {
+    name: "Health Blog",
+    link: "/blog"
+  }, {
+    name: "Contact Us",
+    link: "/contact"
+  }];
+  const companySections = [{
+    name: "About Us",
+    link: "/about"
+  }, {
+    name: "Privacy Policy",
+    link: "/privacy-policy"
+  }, {
+    name: "Terms & Conditions",
+    link: "/terms"
+  }, {
+    name: "Partners",
+    link: "/partners"
+  }];
+  const socialLinks = [{
+    icon: <Facebook size={20} />,
+    name: "Facebook",
+    url: "https://facebook.com/myhealthhub"
+  }, {
+    icon: <Twitter size={20} />,
+    name: "Twitter",
+    url: "https://twitter.com/myhealthhub"
+  }, {
+    icon: <Instagram size={20} />,
+    name: "Instagram",
+    url: "https://instagram.com/myhealthhub"
+  }, {
+    icon: <Youtube size={20} />,
+    name: "YouTube",
+    url: "https://youtube.com/myhealthhub"
+  }];
+  return <footer className="bg-gray-50 pt-16 pb-8 border-t">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
@@ -43,75 +71,51 @@ const Footer = () => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
                 <span className="text-white font-bold text-lg">H</span>
               </div>
-              <span className="font-bold text-xl">
-                My <span className="text-wellness-600">Health & Wellness Hub</span>
+              <span className="text-lg text-slate-950 font-bold">
+                My <span className="text-wellness-600">myhealth 
+checkup
+              </span>
               </span>
             </Link>
-            <p className="text-gray-600 mb-4">
-              Your personal health hub – hospital-grade tests, high-street convenience.
-            </p>
+            <p className="mb-4 text-xs font-light text-left text-blue-950">The UK's only health service comparison platform for leading CQC‑regulated and UKAS‑accredited providers based on complete transparency. MYHEALTHCHECKUP LTD Company Number 16589056</p>
             <div className="flex space-x-4">
-              {socialLinks.map((social, index) => (
-                <a 
-                  key={index}
-                  href={social.url} 
-                  className="text-gray-400 hover:text-health-600 transition-colors"
-                  aria-label={`Follow us on ${social.name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-gray-400 hover:text-health-600 transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
           <div>
             <h3 className="font-semibold text-lg mb-4" id="footer-services">Our Services</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
-              {serviceSections.map((service, index) => (
-                <li key={index}>
-                  <Link 
-                    to={service.link} 
-                    className="text-gray-600 hover:text-health-600 transition-colors"
-                  >
+              {serviceSections.map((service, index) => <li key={index}>
+                  <Link to={service.link} className="text-gray-600 hover:text-health-600 transition-colors">
                     {service.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-lg mb-4" id="footer-info">Information</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
-              {informationSections.map((info, index) => (
-                <li key={index}>
-                  <Link 
-                    to={info.link} 
-                    className="text-gray-600 hover:text-health-600 transition-colors"
-                  >
+              {informationSections.map((info, index) => <li key={index}>
+                  <Link to={info.link} className="text-gray-600 hover:text-health-600 transition-colors">
                     {info.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-lg mb-4" id="footer-company">Company</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
-              {companySections.map((company, index) => (
-                <li key={index}>
-                  <Link 
-                    to={company.link} 
-                    className="text-gray-600 hover:text-health-600 transition-colors"
-                  >
+              {companySections.map((company, index) => <li key={index}>
+                  <Link to={company.link} className="text-gray-600 hover:text-health-600 transition-colors">
                     {company.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
         </div>
@@ -129,8 +133,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
