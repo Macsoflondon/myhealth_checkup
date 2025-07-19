@@ -63,6 +63,80 @@ const TestCard = ({
     </Card>;
 };
 const FeaturedTests = () => {
-  return;
+  const featuredTests = [
+    {
+      title: "Complete Health Check",
+      description: "Comprehensive blood panel covering all major health markers",
+      price: "149",
+      features: [
+        "Full blood count & chemistry",
+        "Liver & kidney function",
+        "Cholesterol & diabetes screening",
+        "Vitamin & mineral levels",
+        "Thyroid function test"
+      ],
+      popular: true,
+      homeKit: true,
+      clinicOption: true,
+      turnaround: "24-48 hours"
+    },
+    {
+      title: "Heart Health Panel",
+      description: "Focused testing for cardiovascular risk assessment",
+      price: "89",
+      features: [
+        "Advanced lipid profile",
+        "High-sensitivity CRP",
+        "Troponin levels",
+        "Blood pressure analysis",
+        "ECG interpretation"
+      ],
+      homeKit: true,
+      clinicOption: false,
+      turnaround: "Same day"
+    },
+    {
+      title: "Cancer Screening Plus",
+      description: "Early detection screening for multiple cancer types",
+      price: "299",
+      features: [
+        "Tumor marker panel",
+        "PSA (men) / CA125 (women)",
+        "CEA & AFP testing",
+        "Full blood analysis",
+        "Genetic risk assessment"
+      ],
+      homeKit: false,
+      clinicOption: true,
+      turnaround: "3-5 days"
+    }
+  ];
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Featured Health Tests
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Our most popular comprehensive health screenings, trusted by thousands of customers
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredTests.map((test, index) => (
+            <TestCard key={index} {...test} />
+          ))}
+        </div>
+        
+        <div className="mt-12 text-center">
+          <Button variant="outline" size="lg">
+            View All Tests
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
 };
 export default FeaturedTests;
