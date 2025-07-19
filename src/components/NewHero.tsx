@@ -84,15 +84,15 @@ const NewHero = () => {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-white mb-2">10+</div>
+              <div className="text-3xl font-bold text-white mb-2"> 5+</div>
               <div className="text-white/80">Trusted Providers</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-white mb-2">300+</div>
+              <div className="text-3xl font-bold text-white mb-2">30+</div>
               <div className="text-white/80">Available Tests</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-white mb-2">24-48hrs</div>
+              <div className="text-3xl font-bold text-white mb-2">48-72hrs</div>
               <div className="text-white/80">Fast Results</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">

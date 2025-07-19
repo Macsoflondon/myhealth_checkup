@@ -93,11 +93,7 @@ const Index = () => {
         <TestCategories />
         
         {/* Professional image divider */}
-        <div className="bg-white py-10 mb-6">
-          <div className="container mx-auto px-4">
-            
-          </div>
-        </div>
+        
         
         <AgeSpecificRecommendations />
         <FounderStory />
