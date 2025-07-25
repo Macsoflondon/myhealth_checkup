@@ -123,7 +123,7 @@ checkup
         <div className="border-t border-gray-200 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-gray-500">
             <p>
-              &copy; {currentYear} My Health & Wellness Hub. All rights reserved.
+              ©️2025 my health checkup, Empowering informed health decisions across the UK. All rights reserved.
             </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link to="/accessibility" className="hover:text-health-600 transition-colors">Accessibility</Link>

@@ -73,7 +73,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button 
               className="w-full bg-health-600 hover:bg-health-700"
               onClick={() => {
-                navigate("/auth");
+                navigate("/find-test");
                 if (onItemClick) onItemClick();
               }}
             >
@@ -116,7 +116,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       </Button>
       <Button 
         className="bg-health-600 hover:bg-health-700"
-        onClick={() => navigate("/auth")}
+        onClick={() => navigate("/find-test")}
       >
         Get Started
       </Button>

@@ -29,6 +29,7 @@ import FAQsPage from "./pages/FAQsPage";
 import ContactPage from "./pages/ContactPage";
 import PartnersPage from "./pages/PartnersPage";
 import HealthBlogPage from "./pages/HealthBlogPage";
+import AssistedTestFinderPage from "./pages/AssistedTestFinderPage";
 import RecommendationEngine from "./components/ai/RecommendationEngine";
 import ReviewSystem from "./components/reviews/ReviewSystem";
 
@@ -69,6 +70,7 @@ const App = () => (
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/partners" element={<PartnersPage />} />
               <Route path="/blog" element={<HealthBlogPage />} />
+              <Route path="/find-test" element={<AssistedTestFinderPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

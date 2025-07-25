@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 // Navigation items for better maintainability
 export const navigationItems = [
+  { name: "Find Test", path: "/find-test" },
   { name: "Compare Tests", path: "/compare" },
   { name: "Subscriptions", path: "/subscriptions" },
   { name: "How It Works", path: "/how-it-works" },
