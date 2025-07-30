@@ -24,8 +24,8 @@ const AboutUsPage = () => {
   }];
   return <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>About Us - My Health Hub</title>
-        <meta name="description" content="Learn about My Health Hub's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
+        <title>About Us - myhealth checkup</title>
+        <meta name="description" content="Learn about myhealth checkup's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
       </Helmet>
       
       <Header />
@@ -34,7 +34,7 @@ const AboutUsPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-health-700">
-                About My Health Hub
+                About myhealth checkup
               </h1>
               
             </div>
@@ -44,13 +44,25 @@ const AboutUsPage = () => {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold mb-8 text-center">Our Mission</h2>
+              <h2 className="text-3xl font-bold mb-8 text-center">Your Health Is Your Greatest Asset</h2>
               <div className="text-lg text-gray-600 space-y-6">
                 <p>
-                  At My Health Hub, we believe that proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We're changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
+                  Your Health Is Your Greatest Asset and it deserves the best care.
+                  At myhealth checkup, we rigorously screen every provider we feature, ensuring you only see the UK's most reputable health and wellness testing options. From routine blood tests to advanced wellness panels, our partners meet the highest standards of quality, working with UKAS-accredited laboratories, CQC-regulated clinics, and ISO 15189-certified facilities.
                 </p>
                 
+                <h3 className="text-2xl font-bold mt-8 mb-4">Our Mission</h3>
+                <p>
+                  At myhealth checkup, we believe proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We are changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
+                </p>
                 
+                <p>
+                  Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals, just straightforward, clinical-grade testing with expert guidance.
+                </p>
+                
+                <p>
+                  We have partnered with leading providers to bring you the most comprehensive range of tests at competitive prices, maintaining the highest standards of accuracy and confidentiality.
+                </p>
               </div>
             </div>
           </div>

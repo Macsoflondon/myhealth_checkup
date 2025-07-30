@@ -72,9 +72,7 @@ const Footer = () => {
                 <span className="text-white font-bold text-lg">H</span>
               </div>
               <span className="text-lg text-slate-950 font-bold">
-                My <span className="text-wellness-600">myhealth 
-checkup
-              </span>
+                myhealth <span className="text-wellness-600">checkup</span>
               </span>
             </Link>
             <p className="mb-4 text-xs font-light text-left text-blue-950">The UK's only health service comparison platform for leading CQC‑regulated and UKAS‑accredited providers based on complete transparency. MYHEALTHCHECKUP LTD Company Number 16589056</p>

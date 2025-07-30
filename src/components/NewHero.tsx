@@ -24,6 +24,14 @@ const NewHero = () => {
       
       <div className="container mx-auto px-4 py-20 relative z-10 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center">
+          {/* Full Logo */}
+          <div className="mb-8">
+            <img 
+              src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" 
+              alt="myhealth checkup - Your health is your greatest asset" 
+              className="mx-auto max-w-2xl w-full h-auto"
+            />
+          </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
             Your Health is Your 

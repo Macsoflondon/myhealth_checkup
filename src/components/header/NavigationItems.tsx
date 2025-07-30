@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 export const navigationItems = [
   { name: "Find Test", path: "/find-test" },
   { name: "Compare Tests", path: "/compare" },
-  { name: "Subscriptions", path: "/subscriptions" },
   { name: "How It Works", path: "/how-it-works" },
   { name: "About Us", path: "/about" }
 ];

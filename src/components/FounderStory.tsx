@@ -9,7 +9,7 @@ const FounderStory = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Story</h2>
               <p className="text-lg text-gray-600 leading-relaxed">
                 Founded with a mission to make healthcare accessible and transparent, 
-                My Health Hub was created to empower individuals to take control of their health journey.
+                myhealth checkup was created to empower individuals to take control of their health journey.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8 items-center">
