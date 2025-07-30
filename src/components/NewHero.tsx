@@ -25,9 +25,13 @@ const NewHero = () => {
       <div className="container mx-auto px-4 py-20 relative z-10 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center">
           {/* Main Headline */}
-          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
-            Your Health is Your 
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4]">
+          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl relative">
+            <div 
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 rounded-2xl"
+              style={{ backgroundImage: 'url(/lovable-uploads/dde2666f-1a42-4c27-b299-58eed9b3b7db.png)' }}
+            ></div>
+            <span className="relative z-10">Your Health is Your</span>
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4] relative z-10">
               Greatest Asset
             </span>
           </h1>
