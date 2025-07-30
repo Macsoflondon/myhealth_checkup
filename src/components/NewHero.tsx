@@ -34,9 +34,8 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
-            Your Health is Your 
             <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4]">
-              Greatest Asset
+              Compare the UK's most trusted providers
             </span>
           </h1>
           
