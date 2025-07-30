@@ -78,8 +78,6 @@ const HealthBenefitsInfographic = () => {
     color: "border-amber-500",
     detail: "Customer satisfaction rate with improved quality of life after health optimization"
   }];
-  return <section className="py-16 bg-gray-50">
-      
-    </section>;
+  return;
 };
 export default HealthBenefitsInfographic;

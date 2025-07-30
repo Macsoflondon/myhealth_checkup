@@ -53,8 +53,6 @@ const AgeSpecificRecommendations = () => {
     priority: "Disease Management & Quality of Life",
     color: "bg-purple-100 border-purple-500 text-purple-700"
   }];
-  return <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
-      
-    </section>;
+  return;
 };
 export default AgeSpecificRecommendations;
