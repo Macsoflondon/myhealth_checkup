@@ -26,22 +26,14 @@ const NewHero = () => {
         <div className="max-w-6xl mx-auto text-center">
           {/* Full Logo */}
           <div className="mb-8">
-            <img 
-              src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" 
-              alt="myhealth checkup - Your health is your greatest asset" 
-              className="mx-auto max-w-2xl w-full h-auto"
-            />
+            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto max-w-2xl w-full h-auto" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4]">
-              Compare the UK's most trusted providers
-            </span>
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-white text-center font-light">Compare the UK’s most trusted health and wellness tests providers - all in one place</span>
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
-            Compare the UK's most trusted providers, all in one place
-          </p>
+          
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">

@@ -17,13 +17,11 @@ const HowItWorks = () => {
     title: "Review Results",
     description: "Access clear results with doctor-reviewed guidance and actionable health insights."
   }];
-  return <section className="py-16 bg-white">
+  return <section className="py-16 bg-[#e3edf7]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Simple, convenient testing in four easy steps
-          </p>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">Fast, simple, stress-free health testing.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -33,14 +31,14 @@ const HowItWorks = () => {
                   {step.icon}
                 </div>
                 {index < steps.length - 1 && <div className="hidden lg:block absolute top-10 left-[60%] right-0 h-0.5 w-full bg-[#081129]" />}
-                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[t#] bg-[#22c0d4]">
-                  <span className="w-8 h-8 rounded-full bg-health-600 flex items-center justify-center text-lg font-bold my-[20px] py-[10px] mx-[10px] px-[10px] text-white">
+                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[t#] rounded-none bg-[#0084c7]">
+                  <span className="w-8 h-8 rounded-full bg-health-600 flex items-center justify-center font-bold mx-0 my-0 py-0 px-0 text-2xl text-slate-50">
                     {index + 1}
                   </span>
                 </div>
               </div>
-              <h3 className="text-xl mb-2 text-center text-[#081129] font-light">{step.title}</h3>
-              <p className="text-gray-600 text-center font-normal">{step.description}</p>
+              <h3 className="text-xl mb-2 text-center text-[#081129] font-extrabold">{step.title}</h3>
+              <p className="text-[#081129] text-center font-semibold">{step.description}</p>
             </div>)}
         </div>
       </div>
