@@ -36,6 +36,14 @@ const NewHero = () => {
             </span>
           </h1>
           
+          <div className="mb-8 flex justify-center">
+            <img 
+              src="/lovable-uploads/6a223915-da58-4092-a491-71f637d0646b.png" 
+              alt="MyHealth Checkup Logo" 
+              className="max-w-md w-full h-auto"
+            />
+          </div>
+          
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
             Compare the UK's most trusted providers, all in one place
           </p>
