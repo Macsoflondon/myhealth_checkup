@@ -12,7 +12,7 @@ const HowItWorks = () => {
       icon: <MousePointerClick className="h-8 w-8 text-health-600" />,
       title: "Choose Your Test",
       description:
-        "Select from individual tests or comprehensive health panels based on your needs.",
+        "Compare health tests from leading UK providers and choose the best option for your needs.",
     },
     {
       icon: <PackageOpen className="h-8 w-8 text-health-600" />,
