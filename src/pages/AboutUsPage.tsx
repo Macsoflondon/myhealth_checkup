@@ -1,37 +1,28 @@
-
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import { Shield, Users, Award, Heart } from "lucide-react";
-
 const AboutUsPage = () => {
-  const values = [
-    {
-      icon: <Shield className="h-8 w-8 text-health-600" />,
-      title: "Trust & Transparency",
-      description: "We believe in complete transparency about our testing processes, pricing, and partnerships."
-    },
-    {
-      icon: <Users className="h-8 w-8 text-health-600" />,
-      title: "Accessibility for All",
-      description: "Making high-quality health testing accessible to everyone, regardless of location or circumstance."
-    },
-    {
-      icon: <Award className="h-8 w-8 text-health-600" />,
-      title: "Quality Excellence",
-      description: "Partnering only with UKAS-accredited laboratories to ensure the highest standards of accuracy."
-    },
-    {
-      icon: <Heart className="h-8 w-8 text-health-600" />,
-      title: "Health Empowerment",
-      description: "Empowering individuals to take control of their health through knowledge and early detection."
-    }
-  ];
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const values = [{
+    icon: <Shield className="h-8 w-8 text-health-600" />,
+    title: "Trust & Transparency",
+    description: "We believe in complete transparency about our testing processes, pricing, and partnerships."
+  }, {
+    icon: <Users className="h-8 w-8 text-health-600" />,
+    title: "Accessibility for All",
+    description: "Making high-quality health testing accessible to everyone, regardless of location or circumstance."
+  }, {
+    icon: <Award className="h-8 w-8 text-health-600" />,
+    title: "Quality Excellence",
+    description: "Partnering only with UKAS-accredited laboratories to ensure the highest standards of accuracy."
+  }, {
+    icon: <Heart className="h-8 w-8 text-health-600" />,
+    title: "Health Empowerment",
+    description: "Empowering individuals to take control of their health through knowledge and early detection."
+  }];
+  return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>About Us - My Health Hub</title>
         <meta name="description" content="Learn about My Health Hub's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
@@ -39,15 +30,13 @@ const AboutUsPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-16">
+        <div className="bg-gradient-to-br from-health-50 to-wellness-50 my-[5px] py-px">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-health-700">
                 About My Health Hub
               </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                We're on a mission to make high-quality health testing accessible, affordable, and convenient for everyone in the UK.
-              </p>
+              
             </div>
           </div>
         </div>
@@ -60,12 +49,8 @@ const AboutUsPage = () => {
                 <p>
                   At My Health Hub, we believe that proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We're changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
                 </p>
-                <p>
-                  Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referral processes – just straightforward, clinical-grade testing with expert guidance.
-                </p>
-                <p>
-                  We've partnered with leading providers to offer you the most comprehensive range of tests at competitive prices, all while maintaining the highest standards of accuracy and confidentiality.
-                </p>
+                
+                
               </div>
             </div>
           </div>
@@ -81,15 +66,13 @@ const AboutUsPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {values.map((value, index) => (
-                <div key={index} className="bg-white p-8 rounded-lg shadow-md">
+              {values.map((value, index) => <div key={index} className="bg-white p-8 rounded-lg shadow-md">
                   <div className="flex items-center mb-4">
                     {value.icon}
                     <h3 className="text-xl font-semibold ml-3">{value.title}</h3>
                   </div>
                   <p className="text-gray-600">{value.description}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </section>
@@ -123,8 +106,6 @@ const AboutUsPage = () => {
         </section>
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default AboutUsPage;
