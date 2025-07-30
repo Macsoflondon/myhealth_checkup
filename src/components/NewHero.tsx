@@ -18,31 +18,17 @@ const NewHero = () => {
   const popularSearches = ["Thyroid Function", "Hormone Health", "Vitamin D", "Full Blood Count", "Cholesterol", "Diabetes Check", "Iron Levels", "B12 & Folate"];
   return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="wave-pattern h-full w-full"></div>
-      </div>
       
-      <div className="container mx-auto px-4 py-20 relative z-10 bg-[#081129]">
+      
+      <div className="container mx-auto relative z-10 bg-[#081129] px-px py-0">
         <div className="max-w-6xl mx-auto text-center">
           {/* Main Headline */}
-          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl relative">
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 rounded-2xl"
-              style={{ backgroundImage: 'url(/lovable-uploads/dde2666f-1a42-4c27-b299-58eed9b3b7db.png)' }}
-            ></div>
-            <span className="relative z-10">Your Health is Your</span>
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4] relative z-10">
+          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
+            Your Health is Your 
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4]">
               Greatest Asset
             </span>
           </h1>
-          
-          <div className="mb-8 flex justify-center">
-            <img 
-              src="/lovable-uploads/6a223915-da58-4092-a491-71f637d0646b.png" 
-              alt="MyHealth Checkup Logo" 
-              className="max-w-7xl w-full h-auto"
-            />
-          </div>
           
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
             Compare the UK's most trusted providers, all in one place
@@ -56,7 +42,7 @@ const NewHero = () => {
             </div>
             <div className="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur rounded-lg py-3 px-4">
               <Shield className="w-5 h-5 text-health-success" />
-              <span className="text-sm font-medium">UKAS-accredited labs</span>
+              <span className="text-sm font-medium">Bringing together only the UK’s most trusted health and wellness testing providers.</span>
             </div>
             <div className="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur rounded-lg py-3 px-4">
               <MapPin className="w-5 h-5 text-health-success" />
