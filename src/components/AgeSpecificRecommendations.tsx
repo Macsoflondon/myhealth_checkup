@@ -53,6 +53,76 @@ const AgeSpecificRecommendations = () => {
     priority: "Disease Management & Quality of Life",
     color: "bg-purple-100 border-purple-500 text-purple-700"
   }];
-  return;
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Health Testing by Life Stage
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Tailored recommendations based on your age and life circumstances
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {ageGroups.map((group, index) => (
+            <Card 
+              key={index}
+              className={`cursor-pointer transition-all duration-300 ${
+                selectedAge === index 
+                  ? 'ring-2 ring-blue-500 shadow-lg' 
+                  : 'hover:shadow-md'
+              }`}
+              onClick={() => setSelectedAge(index)}
+            >
+              <CardHeader className="text-center pb-3">
+                <div className={`w-12 h-12 mx-auto rounded-full flex items-center justify-center ${group.color}`}>
+                  {group.icon}
+                </div>
+                <CardTitle className="text-lg">{group.range}</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <h4 className="font-semibold mb-2">{group.title}</h4>
+                <p className="text-sm text-gray-600">{group.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        
+        {selectedAge !== null && (
+          <Card className="shadow-lg">
+            <CardContent className="p-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-bold mb-4">
+                    Recommended Tests for Ages {ageGroups[selectedAge].range}
+                  </h3>
+                  <ul className="space-y-2">
+                    {ageGroups[selectedAge].keyTests.map((test, index) => (
+                      <li key={index} className="flex items-center text-sm">
+                        <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                        {test}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <Badge className="mb-2">{ageGroups[selectedAge].priority}</Badge>
+                    <h4 className="font-semibold">Testing Frequency</h4>
+                    <p className="text-gray-600">{ageGroups[selectedAge].frequency}</p>
+                  </div>
+                  <Button className="w-full">
+                    Find Tests for Age {ageGroups[selectedAge].range}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </section>
+  );
 };
 export default AgeSpecificRecommendations;
