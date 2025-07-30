@@ -24,7 +24,7 @@ const AboutUsPage = () => {
   }];
   return <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>About Us - My Health Hub</title>
+        <title className="my-[30px]">About myhealth checkup</title>
         <meta name="description" content="Learn about My Health Hub's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
       </Helmet>
       
@@ -32,7 +32,7 @@ const AboutUsPage = () => {
       <main className="flex-grow">
         <div className="bg-gradient-to-br from-health-50 to-wellness-50 my-[5px] py-px">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 rounded-none">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-health-700">
                 About My Health Hub
               </h1>
@@ -65,15 +65,7 @@ const AboutUsPage = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {values.map((value, index) => <div key={index} className="bg-white p-8 rounded-lg shadow-md">
-                  <div className="flex items-center mb-4">
-                    {value.icon}
-                    <h3 className="text-xl font-semibold ml-3">{value.title}</h3>
-                  </div>
-                  <p className="text-gray-600">{value.description}</p>
-                </div>)}
-            </div>
+            
           </div>
         </section>
 
