@@ -1,48 +1,57 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Shield, Clock, CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Star, MapPin, ExternalLink, User } from "lucide-react";
 
 const FeaturedProviders = () => {
   const providers = [
     {
-      name: "Medichecks",
-      logo: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=50&fit=crop",
-      rating: 4.8,
-      reviews: 12000,
-      turnaround: "24-48 hrs",
-      payLater: ["Clearpay", "Klarna"],
-      badges: ["UKAS", "CQC"],
-      mostPopular: true
-    },
-    {
-      name: "Thriva",
-      logo: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&h=50&fit=crop",
-      rating: 4.7,
-      reviews: 8500,
-      turnaround: "2-3 days",
-      payLater: ["Payl8r"],
-      badges: ["UKAS", "MHRA"],
-      mostPopular: false
-    },
-    {
-      name: "Randox",
-      logo: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=100&h=50&fit=crop",
-      rating: 4.6,
-      reviews: 6200,
-      turnaround: "1-2 days",
-      payLater: ["Clearpay"],
-      badges: ["UKAS", "Lab Accredited"],
-      mostPopular: false
-    },
-    {
-      name: "Everlywell",
-      logo: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=100&h=50&fit=crop",
+      name: "Tuli Health",
       rating: 4.5,
-      reviews: 4100,
-      turnaround: "3-5 days",
-      payLater: ["Klarna"],
-      badges: ["FDA Approved", "CLIA"],
-      mostPopular: false
+      reviews: "100+",
+      description: "Offers seamless booking via pharmacy network for in-person blood draws or sample kit collection. Designed for...",
+      location: "Nationwide UK via high-street pharmacies (partner labs accredited UKAS)",
+      tags: ["Wellness Testing", "Health Monitoring", "Budget Options", "+1 more"]
+    },
+    {
+      name: "Essential Blood Tests",
+      rating: 4.5,
+      reviews: "1876",
+      description: "Affordable and accessible blood testing across the UK with focus on common health conditions and wellness monitoring.",
+      location: "UK Wide",
+      tags: ["Wellness Testing", "Health Monitoring", "Budget Options", "+1 more"]
+    },
+    {
+      name: "NHS Private Health",
+      rating: 4.6,
+      reviews: "2156",
+      description: "Private health testing through NHS facilities offering the reliability of NHS standards with private service...",
+      location: "Multiple NHS Sites",
+      tags: ["NHS Quality", "Multiple Locations", "GP Integration", "+1 more"]
+    },
+    {
+      name: "Medichecks",
+      rating: 4.7,
+      reviews: "3521",
+      description: "Award-winning health screening service offering comprehensive health MOTs and specialized testing with doctor...",
+      location: "UK Wide",
+      tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "+1 more"]
+    },
+    {
+      name: "Blue Horizon Blood Tests",
+      rating: 4.8,
+      reviews: "2847",
+      description: "Leading UK provider of private blood tests with over 30 years of experience. Offers comprehensive testing with home visit...",
+      location: "London & Nationwide",
+      tags: ["Home Visits", "Clinic Tests", "At-Home Kits", "+1 more"]
+    },
+    {
+      name: "Harley Street Health Centre",
+      rating: 4.9,
+      reviews: "892",
+      description: "Prestigious Harley Street clinic offering comprehensive health assessments and specialized testing with consultant...",
+      location: "Harley Street, London",
+      tags: ["Executive Health", "Consultant Reviews", "Comprehensive Screening", "+1 more"]
     }
   ];
 
@@ -51,71 +60,56 @@ const FeaturedProviders = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Featured Providers
+            Trusted UK Providers
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Compare trusted, accredited providers offering comprehensive health testing
+            Accredited health testing providers with proven track records
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {providers.map((provider, index) => (
-            <Card key={index} className={`relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${provider.mostPopular ? 'ring-2 ring-health-accent border-health-accent' : ''}`}>
-              {provider.mostPopular && (
-                <div className="absolute top-0 right-0 bg-health-accent text-white px-3 py-1 text-sm font-medium rounded-bl-lg">
-                  Most Popular
-                </div>
-              )}
-              
+            <Card key={index} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <img 
-                    src={provider.logo} 
-                    alt={`${provider.name} logo`}
-                    className="h-8 w-16 object-contain"
-                  />
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="font-medium text-gray-900">{provider.rating}</span>
-                    <span className="text-sm text-gray-500">({provider.reviews.toLocaleString()})</span>
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <User className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{provider.name}</h3>
+                    <div className="flex items-center space-x-1 mb-2">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span className="font-medium text-gray-900">{provider.rating}</span>
+                      <span className="text-sm text-gray-500">({provider.reviews}) reviews</span>
+                    </div>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{provider.name}</h3>
+                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                  {provider.description}
+                </p>
 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">Results in</span>
-                    </div>
-                    <span className="text-sm font-medium text-gray-900">{provider.turnaround}</span>
-                  </div>
+                <div className="flex items-center text-sm text-gray-500 mb-4">
+                  <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                  <span className="line-clamp-1">{provider.location}</span>
+                </div>
 
-                  <div className="flex flex-wrap gap-1">
-                    {provider.badges.map((badge, badgeIndex) => (
-                      <Badge key={badgeIndex} variant="secondary" className="text-xs">
-                        <Shield className="w-3 h-3 mr-1" />
-                        {badge}
-                      </Badge>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-1 mb-6">
+                  {provider.tags.map((tag, tagIndex) => (
+                    <Badge key={tagIndex} variant="secondary" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
 
-                  {provider.payLater.length > 0 && (
-                    <div className="pt-2 border-t border-gray-100">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <CreditCard className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">Pay Later Available:</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {provider.payLater.map((service, serviceIndex) => (
-                          <Badge key={serviceIndex} variant="outline" className="text-xs">
-                            {service}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="flex-1">
+                    View Profile
+                  </Button>
+                  <Button variant="ghost" size="sm" className="flex-shrink-0">
+                    Visit Website
+                    <ExternalLink className="w-3 h-3 ml-1" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>
