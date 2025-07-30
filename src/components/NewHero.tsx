@@ -40,7 +40,7 @@ const NewHero = () => {
             <img 
               src="/lovable-uploads/6a223915-da58-4092-a491-71f637d0646b.png" 
               alt="MyHealth Checkup Logo" 
-              className="max-w-md w-full h-auto"
+              className="max-w-7xl w-full h-auto"
             />
           </div>
           
