@@ -25,24 +25,12 @@ const NewHero = () => {
       <div className="container mx-auto px-4 py-20 relative z-10 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center">
           {/* Main Headline */}
-          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl relative">
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 rounded-2xl"
-              style={{ backgroundImage: 'url(/lovable-uploads/dde2666f-1a42-4c27-b299-58eed9b3b7db.png)' }}
-            ></div>
-            <span className="relative z-10">Your Health is Your</span>
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4] relative z-10">
+          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
+            Your Health is Your 
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-[#22c0d4]">
               Greatest Asset
             </span>
           </h1>
-          
-          <div className="mb-8 flex justify-center">
-            <img 
-              src="/lovable-uploads/6a223915-da58-4092-a491-71f637d0646b.png" 
-              alt="MyHealth Checkup Logo" 
-              className="max-w-7xl w-full h-auto"
-            />
-          </div>
           
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
             Compare the UK's most trusted providers, all in one place

@@ -68,8 +68,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 flex items-center justify-center">
-                <img src="/lovable-uploads/cf27880d-e5ac-446c-b06e-05e37748f644.png" alt="MyHealthCheckup Logo" className="h-8 w-8 rounded-lg" />
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
+                <span className="text-white font-bold text-lg">H</span>
               </div>
               <span className="text-lg text-slate-950 font-bold">
                 My <span className="text-wellness-600">myhealth 
@@ -122,7 +122,9 @@ checkup
 
         <div className="border-t border-gray-200 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-gray-500">
-            <p>©️2025 myhealth checkup, Empowering informed health decisions across the UK. All rights reserved.</p>
+            <p>
+              ©️2025 my health checkup, Empowering informed health decisions across the UK. All rights reserved.
+            </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               <Link to="/accessibility" className="hover:text-health-600 transition-colors">Accessibility</Link>
               <Link to="/sitemap" className="hover:text-health-600 transition-colors">Sitemap</Link>
