@@ -47,47 +47,6 @@ const SubscriptionPlan = ({
     </Card>;
 };
 const Subscriptions = () => {
-  return (
-    <section className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Health Monitoring Subscriptions
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Regular health monitoring made simple with our subscription plans
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <SubscriptionPlan
-            title="Health Essentials"
-            price="29"
-            period="month"
-            description="Perfect for maintaining basic health awareness with regular monitoring"
-            features={planFeatures.essentials}
-          />
-          
-          <SubscriptionPlan
-            title="Advanced Care"
-            price="59"
-            period="month"
-            description="Comprehensive health optimization with professional guidance"
-            features={planFeatures.advanced}
-            popular={true}
-          />
-        </div>
-        
-        <div className="mt-12 text-center">
-          <p className="text-sm text-gray-500 mb-4">
-            All plans include free shipping and 24/7 customer support
-          </p>
-          <Button variant="outline">
-            Compare All Plans
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
+  return;
 };
 export default Subscriptions;
