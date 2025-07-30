@@ -120,6 +120,33 @@ const TestCategories = () => {
     testCount: 7,
     providerCount: 4
   }];
-  return;
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-health-700">Health Test Categories</h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Explore our comprehensive range of health tests, carefully curated from the UK's most trusted providers.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          {categories.map((category, index) => (
+            <CategoryCard key={index} {...category} />
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Button variant="outline" size="lg" asChild>
+            <Link to="/compare">
+              View All Tests
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
 };
 export default TestCategories;
