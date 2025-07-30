@@ -19,14 +19,14 @@ const NewHero = () => {
   return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="wave-pattern h-full w-full"></div>
+        <div className="wave-pattern h-full w-full mx-[100px]"></div>
       </div>
       
-      <div className="container mx-auto px-4 py-20 relative z-10 bg-[#081129]">
+      <div className="container mx-auto relative z-10 bg-[#081129] px-0 py-[30px]">
         <div className="max-w-6xl mx-auto text-center">
           {/* Full Logo */}
           <div className="mb-8">
-            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto max-w-2xl w-full h-auto" />
+            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto max-w-screen-2xl w-full h-auto" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
