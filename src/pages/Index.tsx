@@ -86,6 +86,7 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <NewHero />
+        <HowItWorks />
         <FeaturedProviders />
         <CategoryFilters />
         <HealthBenefitsInfographic />
@@ -99,7 +100,6 @@ const Index = () => {
         <FounderStory />
         <PartnerShowcase />
         <ProactiveHealthJourney />
-        <HowItWorks />
         <FeaturedTests />
         <Subscriptions />
         <Testimonials />
