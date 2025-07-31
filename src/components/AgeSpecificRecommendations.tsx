@@ -13,7 +13,7 @@ interface AgeGroupData {
   priority: string;
   color: string;
 }
-const AgeSpecificRecommendations = () => {
+const AgeSpecificRecommendations = (): JSX.Element => {
   const [selectedAge, setSelectedAge] = useState(1); // Default to 30-45
 
   const ageGroups: AgeGroupData[] = [{

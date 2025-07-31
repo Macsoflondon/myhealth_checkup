@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-const FounderStory = () => {
+const FounderStory = (): JSX.Element => {
   return (
     <section className="py-16 bg-gradient-to-br from-wellness-50 to-health-50">
       <div className="container mx-auto px-4">

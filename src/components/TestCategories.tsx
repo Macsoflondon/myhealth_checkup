@@ -38,7 +38,7 @@ const CategoryCard = ({
       </div>
     </Link>;
 };
-const TestCategories = () => {
+const TestCategories = (): JSX.Element => {
   const categories = [{
     title: "Cancer Screening",
     description: "Comprehensive early detection tests for prostate, bowel, breast, cervical, and other common cancers across multiple providers.",
