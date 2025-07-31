@@ -16,13 +16,13 @@ const NewHero = () => {
     }
   };
   const popularSearches = ["Thyroid Function", "Hormone Health", "Vitamin D", "Full Blood Count", "Cholesterol", "Diabetes Check", "Iron Levels", "B12 & Folate"];
-  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
+  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-pattern h-full w-full mx-[100px]"></div>
       </div>
       
-      <div className="container relative z-10 bg-[#081129] mx-0 px-0 py-[64px]">
+      <div className="container relative z-10 bg-[#081129] mx-0 px-0 py-[64px] w-full">
         <div className="max-w-6xl mx-auto text-center">
           {/* Full Logo */}
           <div className="mb-8">
