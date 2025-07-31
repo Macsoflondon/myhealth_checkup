@@ -22,7 +22,7 @@ const NewHero = () => {
         <div className="wave-pattern h-full w-full mx-[100px]"></div>
       </div>
       
-      <div className="container relative z-10 bg-[#081129] mx-0 px-0 py-[64px] w-full">
+      <div className="container relative z-10 bg-[#081129] mx-0 px-[100] py-[64px] w-full">
         <div className="max-w-6xl mx-auto text-center">
           {/* Full Logo */}
           <div className="mb-8">
