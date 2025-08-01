@@ -5,16 +5,12 @@ import NewHero from "@/components/NewHero";
 import FeaturedProviders from "@/components/FeaturedProviders";
 import CategoryFilters from "@/components/CategoryFilters";
 import TestCategories from "@/components/TestCategories";
-import FeaturedTests from "@/components/FeaturedTests";
+
 import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
-import AgeSpecificRecommendations from "@/components/AgeSpecificRecommendations";
-import ProactiveHealthJourney from "@/components/ProactiveHealthJourney";
 import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import HowItWorks from "@/components/HowItWorks";
-import Subscriptions from "@/components/Subscriptions";
-import Testimonials from "@/components/Testimonials";
 import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
 import CookieConsent from "@/components/compliance/CookieConsent";
@@ -87,22 +83,13 @@ const Index = () => {
       <main className="flex-grow">
         <NewHero />
         <HowItWorks />
+        <TestCategories />
         <FeaturedProviders />
         <CategoryFilters />
         <HealthBenefitsInfographic />
         <Enhanced3StepProcess />
-        <TestCategories />
-        
-        {/* Professional image divider */}
-        
-        
-        <AgeSpecificRecommendations />
         <FounderStory />
         <PartnerShowcase />
-        <ProactiveHealthJourney />
-        <FeaturedTests />
-        <Subscriptions />
-        <Testimonials />
         <HealthResources />
         <CallToAction />
       </main>
