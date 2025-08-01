@@ -1,50 +1,42 @@
-import { Card, CardContent } from "@/components/ui/card";
-const PartnerShowcase = () => {
-  const partners = [{
-    name: "Check My Body Health",
-    logo: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
-  }, {
-    name: "Goodbody",
-    logo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
-  }, {
-    name: "LetsGetChecked",
-    logo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
-  }, {
-    name: "Thriva",
-    logo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
-  }, {
-    name: "Vitall",
-    logo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
-  }];
-  const mediaLogos = ["Bloomberg", "The Guardian", "Cosmopolitan", "TechCrunch"];
-  return <section className="bg-white py-[10px] font-semibold text-[#22c0d4] text-5xl">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          
-          
-          <div className="text-center mb-12">
-            
-            
-            
-          </div>
+const logos: Record<string, string> = {
+  "The Times": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/ab0f0258d_Screenshot2025-07-14at104930.png",
+  "The Guardian": "https://assets.guim.co.uk/images/favicons/fee5e2d6353282167b575c2763531636/152x152.png",
+  "Forbes": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Forbes_logo.svg/2560px-Forbes_logo.svg.png",
+  "BBC": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/BBC_Logo_2021.svg/200px-BBC_Logo_2021.svg.png",
+  "Women's Health": "https://assets.hearstapps.com/sites/womenshealth/assets/images/favicon.ico?v=2",
+  "The Telegraph": "https://www.telegraph.co.uk/etc/designs/telegraph/core/images/icons/apple-touch-icon-152x152.png",
+};
 
-          {/* Partner logos */}
-          
+interface Provider {
+  featured_in?: string[];
+}
 
-          {/* Media mentions */}
-          <div className="text-center">
-            <p className="mb-4 text-center text-[#7429c1] text-4xl font-normal">Partners featured in</p>
-            <div className="flex flex-wrap justify-center gap-8 opacity-60">
-              {mediaLogos.map((media, index) => <span key={index} className="text-lg font-semibold text-[#081129]">
-                  {media}
-                </span>)}
-            </div>
-          </div>
+interface AsFeaturedInProps {
+  providers?: Provider[];
+}
 
-          {/* Health category cards */}
-          
+export default function AsFeaturedIn({ providers = [] }: AsFeaturedInProps) {
+  const allFeaturedIn = [...new Set(providers.flatMap(p => p.featured_in || []))];
+  
+  if (allFeaturedIn.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="py-12 bg-[#F5F7FA]">
+      <div className="max-w-7xl mx-auto px-4">
+        <h3 className="text-center text-lg text-gray-500 font-semibold mb-6">AS FEATURED IN</h3>
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
+          {allFeaturedIn.map((name: string) => (
+            <img 
+              key={name}
+              src={logos[name]} 
+              alt={`${name} logo`} 
+              className="h-8 grayscale opacity-70"
+            />
+          ))}
         </div>
       </div>
-    </section>;
-};
-export default PartnerShowcase;
+    </section>
+  );
+}
