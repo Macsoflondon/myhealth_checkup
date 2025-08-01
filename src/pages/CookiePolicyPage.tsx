@@ -13,18 +13,21 @@ const CookiePolicyPage = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <Badge className="mb-4">GDPR Compliant</Badge>
+              <Badge className="mb-4">PECR Compliant</Badge>
               <h1 className="text-4xl font-bold mb-6">Cookie Policy</h1>
               <p className="text-xl text-muted-foreground">
-                Understanding how we use cookies to improve your experience
+                This Cookie Policy explains how myhealthcheckup Ltd uses cookies and similar technologies
               </p>
               <p className="text-sm text-muted-foreground mt-2">
-                Last updated: {new Date().toLocaleDateString('en-GB', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}
+                Effective Date: 01/08/2025
               </p>
+              <div className="bg-blue-50 p-4 rounded-lg mt-4 text-left">
+                <p className="text-sm text-gray-700">
+                  <strong>Company:</strong> myhealthcheckup Ltd (trading as myhealth checkup)<br/>
+                  <strong>Company Registration Number:</strong> 16589056<br/>
+                  <strong>Website:</strong> myhealthcheckup.co.uk
+                </p>
+              </div>
             </div>
 
             <Card className="mb-8">
@@ -33,9 +36,10 @@ const CookiePolicyPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  Cookies are small text files that are placed on your device when you visit our website. 
-                  They help us provide you with a better experience by remembering your preferences and 
-                  understanding how you use our site.
+                  Cookies are small text files stored on your device when you visit a website. They allow us to recognise your device and improve your experience.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  By using the Website, you agree to the use of cookies as described in this Policy.
                 </p>
               </CardContent>
             </Card>
@@ -46,22 +50,22 @@ const CookiePolicyPage = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="border-l-4 border-green-500 pl-4">
-                  <h3 className="font-semibold text-green-800 mb-2">Essential Cookies (Always Active)</h3>
+                  <h3 className="font-semibold text-green-800 mb-2">Strictly Necessary Cookies</h3>
                   <p className="text-sm text-muted-foreground mb-2">
-                    These cookies are necessary for the website to function properly.
+                    Required for Website functionality (e.g., login, security).
                   </p>
                   <ul className="text-sm space-y-1">
                     <li>• Authentication and security</li>
-                    <li>• Shopping cart functionality</li>
+                    <li>• Website functionality</li>
                     <li>• Form submissions</li>
                     <li>• Load balancing</li>
                   </ul>
                 </div>
 
                 <div className="border-l-4 border-blue-500 pl-4">
-                  <h3 className="font-semibold text-blue-800 mb-2">Analytics Cookies (Optional)</h3>
+                  <h3 className="font-semibold text-blue-800 mb-2">Performance & Analytics Cookies</h3>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Help us understand how visitors interact with our website.
+                    Help us understand how visitors use our Website.
                   </p>
                   <ul className="text-sm space-y-1">
                     <li>• Google Analytics</li>
@@ -72,22 +76,22 @@ const CookiePolicyPage = () => {
                 </div>
 
                 <div className="border-l-4 border-purple-500 pl-4">
-                  <h3 className="font-semibold text-purple-800 mb-2">Functional Cookies (Optional)</h3>
+                  <h3 className="font-semibold text-purple-800 mb-2">Functional Cookies</h3>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Enable enhanced functionality and personalization.
+                    Remember preferences (e.g., saved tests).
                   </p>
                   <ul className="text-sm space-y-1">
                     <li>• Language preferences</li>
                     <li>• Theme settings</li>
+                    <li>• Saved test preferences</li>
                     <li>• Accessibility options</li>
-                    <li>• Chat widget functionality</li>
                   </ul>
                 </div>
 
                 <div className="border-l-4 border-orange-500 pl-4">
-                  <h3 className="font-semibold text-orange-800 mb-2">Marketing Cookies (Optional)</h3>
+                  <h3 className="font-semibold text-orange-800 mb-2">Marketing Cookies</h3>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Used to track visitors across websites for advertising purposes.
+                    Used for personalised advertising (only with your consent).
                   </p>
                   <ul className="text-sm space-y-1">
                     <li>• Social media integration</li>
@@ -172,9 +176,7 @@ const CookiePolicyPage = () => {
                   If you have questions about our cookie policy, please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> privacy@myhealthhub.co.uk</p>
-                  <p><strong>Phone:</strong> 0800 123 4567</p>
-                  <p><strong>Address:</strong> My Health Hub, 123 Health Street, London, SW1A 1AA</p>
+                  <p><strong>Email:</strong> privacy@myhealthcheckup.co.uk</p>
                 </div>
               </CardContent>
             </Card>
