@@ -2,21 +2,27 @@ import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const NewHero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+
   const handleSearch = () => {
     if (searchTerm.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
   };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
   };
+
   const popularSearches = ["Thyroid Function", "Hormone Health", "Vitamin D", "Full Blood Count", "Cholesterol", "Diabetes Check", "Iron Levels", "B12 & Folate"];
-  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center">
+
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0"></div>
@@ -30,8 +36,7 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-center text-[#22c0d4] py-[20px] font-semibold text-3xl">Compare the UK’s most trusted health and wellness tests providers
-      - all in one place</span>
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-center text-[#22c0d4] py-[20px] font-semibold text-3xl">Compare the UK's most trusted health and wellness test providers - all in one place</span>
           </h1>
           
           
@@ -63,9 +68,20 @@ In-Clinic Blood Draw</span>
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 relative">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input type="text" placeholder="Search for blood tests, conditions, or health concerns..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
+                  <input
+                    type="text"
+                    placeholder="Search for blood tests, conditions, or health concerns..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500"
+                  />
                 </div>
-                <Button onClick={handleSearch} size="lg" className="px-8 py-4 text-lg bg-health-accent hover:bg-health-accent/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105">
+                <Button
+                  onClick={handleSearch}
+                  size="lg"
+                  className="px-8 py-4 text-lg bg-health-accent hover:bg-health-accent/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
+                >
                   Find Tests
                 </Button>
               </div>
@@ -74,9 +90,15 @@ In-Clinic Blood Draw</span>
               <div className="mt-6">
                 <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
                 <div className="flex flex-wrap gap-2">
-                  {popularSearches.map((search, index) => <button key={index} onClick={() => setSearchTerm(search)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700">
+                  {popularSearches.map((search, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSearchTerm(search)}
+                      className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700"
+                    >
                       {search}
-                    </button>)}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -85,7 +107,7 @@ In-Clinic Blood Draw</span>
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-white mb-2"> 5+</div>
+              <div className="text-3xl font-bold text-white mb-2"> 5+</div>
               <div className="text-white/80">Trusted Providers</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
@@ -103,6 +125,8 @@ In-Clinic Blood Draw</span>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default NewHero;

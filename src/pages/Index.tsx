@@ -7,7 +7,7 @@ import CategoryFilters from "@/components/CategoryFilters";
 import TestCategories from "@/components/TestCategories";
 
 import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
-import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
+
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import HowItWorks from "@/components/HowItWorks";
@@ -87,7 +87,6 @@ const Index = () => {
         <FeaturedProviders />
         <CategoryFilters />
         <HealthBenefitsInfographic />
-        <Enhanced3StepProcess />
         <FounderStory />
         <PartnerShowcase />
         <HealthResources />
