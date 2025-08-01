@@ -36,10 +36,10 @@ const NewHero = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
+          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold md:text-5xl">
             <span className="block text-center py-[20px] font-semibold text-3xl">
-              <span className="text-[#ffffff]">Compare the UK's leading private health test providers</span>
-              <span className="text-[#22c0d4]"> - all in one place!</span>
+              <span style={{color: '#ffffff'}}>Compare the UK's leading private health test providers</span>
+              <span style={{color: '#22c0d4'}}> - all in one place!</span>
             </span>
           </h1>
           
