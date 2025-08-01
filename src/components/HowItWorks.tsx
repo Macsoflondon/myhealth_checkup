@@ -30,7 +30,7 @@ const HowItWorks = () => {
             {
               step: "3",
               title: "Book Appointment",
-              description: "Secure your appointment with instant confirmation",
+              description: "Securely Book and Attend your appointment with instant confirmation",
               icon: CheckCircle
             },
             {
