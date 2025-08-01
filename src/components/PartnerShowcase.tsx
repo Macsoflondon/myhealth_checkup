@@ -1,63 +1,50 @@
-import { useEffect, useState } from "react";
-
+import { Card, CardContent } from "@/components/ui/card";
 const PartnerShowcase = () => {
-  const mediaLogos = ["Bloomberg", "The Guardian", "Cosmopolitan", "TechCrunch", "Health & Fitness", "BBC Health"];
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % mediaLogos.length);
-    }, 3000); // Change every 3 seconds
-
-    return () => clearInterval(interval);
-  }, [mediaLogos.length]);
-
-  return (
-    <section className="bg-white py-8 overflow-hidden">
+  const partners = [{
+    name: "Check My Body Health",
+    logo: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
+  }, {
+    name: "Goodbody",
+    logo: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
+  }, {
+    name: "LetsGetChecked",
+    logo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
+  }, {
+    name: "Thriva",
+    logo: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
+  }, {
+    name: "Vitall",
+    logo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
+  }];
+  const mediaLogos = ["Bloomberg", "The Guardian", "Cosmopolitan", "TechCrunch"];
+  return <section className="bg-white py-[10px] font-semibold text-[#22c0d4] text-5xl">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center">
-            <p className="mb-6 text-center text-primary text-3xl font-normal">Partners featured in</p>
+          
+          
+          <div className="text-center mb-12">
             
-            {/* Floating carousel */}
-            <div className="relative h-16 flex items-center justify-center">
-              <div 
-                className="flex gap-12 items-center transition-transform duration-1000 ease-in-out"
-                style={{
-                  transform: `translateX(-${currentIndex * 200}px)`,
-                  width: `${mediaLogos.length * 200}px`
-                }}
-              >
-                {mediaLogos.concat(mediaLogos).map((media, index) => (
-                  <div
-                    key={index}
-                    className={`text-lg font-semibold text-foreground/60 whitespace-nowrap transition-opacity duration-500 ${
-                      Math.abs((index % mediaLogos.length) - currentIndex) <= 1 ? 'opacity-100' : 'opacity-30'
-                    }`}
-                    style={{ minWidth: '180px', textAlign: 'center' }}
-                  >
-                    {media}
-                  </div>
-                ))}
-              </div>
-            </div>
+            
+            
+          </div>
 
-            {/* Carousel indicators */}
-            <div className="flex justify-center gap-2 mt-6">
-              {mediaLogos.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                    index === currentIndex ? 'bg-primary' : 'bg-muted'
-                  }`}
-                  onClick={() => setCurrentIndex(index)}
-                />
-              ))}
+          {/* Partner logos */}
+          
+
+          {/* Media mentions */}
+          <div className="text-center">
+            <p className="mb-4 text-center text-[#7429c1] text-4xl font-normal">Partners featured in</p>
+            <div className="flex flex-wrap justify-center gap-8 opacity-60">
+              {mediaLogos.map((media, index) => <span key={index} className="text-lg font-semibold text-[#081129]">
+                  {media}
+                </span>)}
             </div>
           </div>
+
+          {/* Health category cards */}
+          
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
 export default PartnerShowcase;
