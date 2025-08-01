@@ -71,8 +71,7 @@ export class LiveProviderService {
       'gut-health': this.generateGutHealthTests(),
       'hormones': this.generateHormoneTests(),
       'vitamins': this.generateVitaminTests(),
-      'blood-tests': this.generateBloodTests(),
-      'weight-loss': this.generateWeightLossTests()
+      'blood-tests': this.generateBloodTests()
     };
 
     const tests = testsByCategory[category as keyof typeof testsByCategory] || [];
@@ -367,34 +366,6 @@ export class LiveProviderService {
     );
   }
 
-  private static generateWeightLossTests(): ProviderTestData[] {
-    const tests = [
-      'Metabolic Health Assessment',
-      'Weight Management Program',
-      'GLP-1 Treatment Consultation',
-      'Body Composition Analysis'
-    ];
-
-    return tests.flatMap(test => 
-      this.PROVIDERS.slice(0, Math.floor(Math.random() * 3) + 2).map(provider => ({
-        id: `${test.toLowerCase().replace(/\s+/g, '-')}-${provider.toLowerCase().replace(/\s+/g, '-')}`,
-        name: test,
-        provider,
-        price: Math.floor(Math.random() * 300) + 100,
-        description: `Advanced ${test.toLowerCase()} for effective weight management`,
-        biomarkers: this.generateBiomarkers(test),
-        turnaround: `${Math.floor(Math.random() * 2) + 1}-${Math.floor(Math.random() * 2) + 2} days`,
-        collection: 'Clinic consultation',
-        features: {
-          doctorReview: true,
-          personalizedPlan: true,
-          ongoingSupport: Math.random() > 0.3
-        },
-        availability: Math.random() > 0.1,
-        lastUpdated: new Date()
-      }))
-    );
-  }
 
   private static generateBiomarkers(testName: string): string[] {
     const biomarkersByTest: Record<string, string[]> = {
@@ -424,8 +395,7 @@ export class LiveProviderService {
       this.fetchCategoryData('gut-health'),
       this.fetchCategoryData('hormones'),
       this.fetchCategoryData('vitamins'),
-      this.fetchCategoryData('blood-tests'),
-      this.fetchCategoryData('weight-loss')
+      this.fetchCategoryData('blood-tests')
     ]);
 
     const allTests = allCategories.flatMap(category => category.tests);

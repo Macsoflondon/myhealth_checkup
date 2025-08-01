@@ -111,14 +111,6 @@ const TestCategories = (): JSX.Element => {
     link: "/compare?category=blood-tests",
     testCount: 16,
     providerCount: 10
-  }, {
-    title: "Weight Management Solutions",
-    description: "Advanced weight management programs including metabolic testing, GLP-1 treatments, and personalized weight loss plans.",
-    icon: <Weight className="h-6 w-6 text-white" />,
-    color: "bg-emerald-500",
-    link: "/compare?category=weight-loss",
-    testCount: 7,
-    providerCount: 4
   }];
 
   return (

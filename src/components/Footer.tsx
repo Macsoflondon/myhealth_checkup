@@ -5,20 +5,32 @@ const Footer = () => {
 
   // Categories for improved site structure and internal linking
   const serviceSections = [{
-    name: "Cancer Screening",
-    link: "/tests/cancer"
+    name: "Blood Tests",
+    link: "/compare?category=blood-tests"
   }, {
-    name: "Diabetes Testing",
-    link: "/tests/diabetes"
+    name: "Hormone Tests",
+    link: "/compare?category=hormones"
+  }, {
+    name: "Vitamin Assessments",
+    link: "/compare?category=vitamins"
+  }, {
+    name: "Cancer Screening",
+    link: "/compare?category=cancer-screening"
   }, {
     name: "Heart Health",
     link: "/tests/heart"
   }, {
-    name: "Vitamin Deficiency",
-    link: "/tests/vitamins"
+    name: "Men's Health",
+    link: "/tests/mens-health"
+  }, {
+    name: "Women's Health",
+    link: "/tests/womens-health"
+  }, {
+    name: "Diabetes Testing",
+    link: "/compare?category=diabetes"
   }, {
     name: "Gut Health",
-    link: "/tests/gut"
+    link: "/compare?category=gut-health"
   }];
   const informationSections = [{
     name: "How It Works",
@@ -27,7 +39,7 @@ const Footer = () => {
     name: "FAQs",
     link: "/faqs"
   }, {
-    name: "Health Blog",
+    name: "Health Resources",
     link: "/blog"
   }, {
     name: "Contact Us",
@@ -68,8 +80,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-health-500 to-wellness-500 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">H</span>
+              <div className="h-8 w-8 flex items-center justify-center">
+                <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
               </div>
               <span className="text-lg text-slate-950 font-bold">
                 myhealth <span className="text-wellness-600">checkup</span>

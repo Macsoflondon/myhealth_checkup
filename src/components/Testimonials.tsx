@@ -43,6 +43,71 @@ const Testimonials = () => {
   const nextTestimonial = () => {
     setCurrentIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
   };
-  return;
+  return (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Real stories from people who've taken control of their health with our testing services.
+          </p>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <div className="relative">
+            <Card className="p-8">
+              <CardContent className="text-center">
+                <div className="flex justify-center mb-4">
+                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-lg text-gray-700 mb-6 italic">
+                  "{testimonials[currentIndex].content}"
+                </p>
+                <div className="mb-4">
+                  <h4 className="font-semibold text-lg">{testimonials[currentIndex].name}</h4>
+                  <p className="text-gray-600">{testimonials[currentIndex].role}</p>
+                </div>
+                <Badge variant="secondary">{testimonials[currentIndex].testType}</Badge>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-center items-center mt-6 gap-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={previousTestimonial}
+                className="rounded-full"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex gap-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === currentIndex ? 'bg-health-600' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={nextTestimonial}
+                className="rounded-full"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 export default Testimonials;

@@ -47,6 +47,36 @@ const SubscriptionPlan = ({
     </Card>;
 };
 const Subscriptions = () => {
-  return;
+  return (
+    <section className="py-16 bg-gradient-to-br from-health-50 to-health-100">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">Health Monitoring Subscriptions</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Stay on top of your health with our convenient subscription plans. Regular monitoring helps catch potential issues early.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <SubscriptionPlan
+            title="Health Hub Essentials"
+            price="39"
+            period="month"
+            description="Perfect for maintaining basic health awareness"
+            features={planFeatures.essentials}
+          />
+          
+          <SubscriptionPlan
+            title="Health Hub Advanced"
+            price="79"
+            period="month"
+            description="Comprehensive health monitoring for proactive wellness"
+            features={planFeatures.advanced}
+            popular
+          />
+        </div>
+      </div>
+    </section>
+  );
 };
 export default Subscriptions;

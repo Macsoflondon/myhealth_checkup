@@ -6,7 +6,7 @@ export const Logo = () => {
         <img src={logo} alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
       </div>
       <div className="flex flex-col text-white">
-        <span className="font-semibold text-montserrat text-lg leading-tight text-left text-black">myhealth</span>
+        <span className="font-semibold text-montserrat text-lg leading-tight text-left text-white">myhealth</span>
         <span className="font-semibold text-montserrat text-lg leading-tight text-[#22c0d4]">checkup</span>
       </div>
     </Link>;

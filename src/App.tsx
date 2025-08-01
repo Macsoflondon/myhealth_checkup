@@ -30,6 +30,8 @@ import ContactPage from "./pages/ContactPage";
 import PartnersPage from "./pages/PartnersPage";
 import HealthBlogPage from "./pages/HealthBlogPage";
 import AssistedTestFinderPage from "./pages/AssistedTestFinderPage";
+import MensHealthPage from "./pages/MensHealthPage";
+import WomensHealthPage from "./pages/WomensHealthPage";
 import RecommendationEngine from "./components/ai/RecommendationEngine";
 import ReviewSystem from "./components/reviews/ReviewSystem";
 
@@ -62,6 +64,8 @@ const App = () => (
               <Route path="/tests/heart" element={<HeartHealthPage />} />
               <Route path="/tests/vitamins" element={<VitaminDeficiencyPage />} />
               <Route path="/tests/gut" element={<GutHealthPage />} />
+              <Route path="/tests/mens-health" element={<MensHealthPage />} />
+              <Route path="/tests/womens-health" element={<WomensHealthPage />} />
               <Route path="/accessibility" element={<AccessibilityPage />} />
               <Route path="/sitemap" element={<SitemapPage />} />
               <Route path="/cookies" element={<CookiePolicyPage />} />

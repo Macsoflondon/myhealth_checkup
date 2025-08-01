@@ -23,14 +23,16 @@ const SitemapPage = () => {
         { name: "Diabetes Testing", path: "/tests/diabetes" },
         { name: "Heart Health", path: "/tests/heart" },
         { name: "Vitamin Deficiency", path: "/tests/vitamins" },
-        { name: "Gut Health", path: "/tests/gut" }
+        { name: "Gut Health", path: "/tests/gut" },
+        { name: "Men's Health", path: "/tests/mens-health" },
+        { name: "Women's Health", path: "/tests/womens-health" }
       ]
     },
     {
       title: "Information & Support",
       links: [
         { name: "FAQs", path: "/faqs" },
-        { name: "Health Blog", path: "/blog" },
+        { name: "Health Resources", path: "/blog" },
         { name: "Contact Us", path: "/contact" },
         { name: "Partners", path: "/partners" }
       ]
