@@ -19,10 +19,10 @@ const NewHero = () => {
   return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="wave-pattern h-full w-full mx-[100px]"></div>
+        <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0"></div>
       </div>
       
-      <div className="container relative z-10 bg-0 mx-0 px-0 py-[64px] w-full">
+      <div className="container relative z-10 px-0 w-full py-0 mx-0 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center">
           {/* Full Logo */}
           <div className="mb-8">
@@ -30,28 +30,29 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-white text-center font-light">Compare the UK’s most trusted health and wellness tests providers - all in one place</span>
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-center text-[#22c0d4] py-[20px] font-semibold text-5xl">Compare the UK’s most trusted health and wellness tests providers - all in one place</span>
           </h1>
           
           
 
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
-            <div className="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur rounded-lg py-3 px-4">
-              <CheckCircle2 className="w-5 h-5 text-health-success" />
-              <span className="text-sm font-medium">No GP referral needed</span>
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
+              <CheckCircle2 className="w-5 h-5 text-health-success px-0 mx-[10px]" />
+              <span className="text-sm font-medium mx-[10px]">No GP eferral needed</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur rounded-lg py-3 px-4">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <Shield className="w-5 h-5 text-health-success" />
-              <span className="text-sm font-medium">UKAS-accredited labs</span>
+              <span className="text-sm font-medium">Only UKAS-Accredited laboratories</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur rounded-lg py-3 px-4">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <MapPin className="w-5 h-5 text-health-success" />
-              <span className="text-sm font-medium">In-clinic or home kits</span>
+              <span className="text-sm font-medium">At-Home Test Kit or
+In-Clinic Blood Draw</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur rounded-lg py-3 px-4">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <Clock className="w-5 h-5 text-health-success" />
-              <span className="text-sm font-medium">Fast, expert-reviewed results</span>
+              <span className="text-sm font-medium">Fast, accurate results you can trust</span>
             </div>
           </div>
 
