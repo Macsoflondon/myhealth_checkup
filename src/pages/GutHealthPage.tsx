@@ -30,7 +30,7 @@ const GutHealthPage = () => {
       name: "Advanced Gut Microbiome",
       description: "DNA sequencing of gut bacteria",
       price: "From £299",
-      markers: ["Bacterial diversity", "Beneficial bacteria", "Pathogenic bacteria", "Personalized recommendations"]
+      markers: ["Bacterial diversity", "Beneficial bacteria", "Pathogenic bacteria", "Personalised recommendations"]
     }
   ];
 

@@ -94,7 +94,7 @@ const CategoryFilters = () => {
             Find Tests by Category
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse our comprehensive range of health tests organized by specialty
+            Browse our comprehensive range of health tests organised by speciality
           </p>
         </div>
 

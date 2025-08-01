@@ -76,7 +76,7 @@ const HealthBenefitsInfographic = (): JSX.Element => {
     description: "Proactive health management leads to better energy levels, improved mood, and enhanced productivity in both personal and professional life.",
     statistic: "95%",
     color: "border-amber-500",
-    detail: "Customer satisfaction rate with improved quality of life after health optimization"
+    detail: "Customer satisfaction rate with improved quality of life after health optimisation"
   }];
 
   return (

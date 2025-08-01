@@ -8,7 +8,7 @@ const AssistedTestFinderPage = () => {
       <Helmet>
         <title>Find Your Perfect Health Test | My Health Checkup</title>
         <meta name="description" content="Let us help you find the perfect health test for your needs with our guided questionnaire." />
-        <meta name="keywords" content="health test finder, personalized health tests, health screening questionnaire" />
+        <meta name="keywords" content="health test finder, personalised health tests, health screening questionnaire" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test" />
         
         <meta property="og:title" content="Find Your Perfect Health Test | My Health Checkup" />

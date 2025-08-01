@@ -49,7 +49,7 @@ const HowItWorksPage = () => {
                 
                 <div className="border-l-4 border-health-500 pl-6">
                   <h3 className="text-xl font-semibold mb-2">How long do results take?</h3>
-                  <p className="text-gray-600">Most results are available within 24-48 hours, with some specialized tests taking up to 5 working days.</p>
+                  <p className="text-gray-600">Most results are available within 24-48 hours, with some specialised tests taking up to 5 working days.</p>
                 </div>
                 
                 <div className="border-l-4 border-health-500 pl-6">

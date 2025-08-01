@@ -18,14 +18,14 @@ const ProactiveHealthJourney = () => {
     title: "Baseline Assessment",
     description: "Establish your current health status with comprehensive testing",
     timeframe: "Month 1",
-    benefits: ["Identify hidden health risks", "Establish personal baselines", "Get professional health assessment", "Create personalized health plan"],
+    benefits: ["Identify hidden health risks", "Establish personal baselines", "Get professional health assessment", "Create personalised health plan"],
     icon: <CheckCircle className="w-8 h-8 text-health-600" />
   }, {
     step: 2,
     title: "Targeted Intervention",
     description: "Address identified issues with lifestyle changes and treatments",
     timeframe: "Months 2-6",
-    benefits: ["Optimize vitamin levels", "Improve cardiovascular markers", "Balance hormones naturally", "Enhance metabolic function"],
+    benefits: ["Optimise vitamin levels", "Improve cardiovascular markers", "Balance hormones naturally", "Enhance metabolic function"],
     icon: <TrendingUp className="w-8 h-8 text-wellness-600" />
   }, {
     step: 3,

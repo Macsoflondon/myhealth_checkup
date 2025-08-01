@@ -38,7 +38,7 @@ const AgeSpecificRecommendations = (): JSX.Element => {
     range: "45-60",
     icon: <Heart className="w-6 h-6" />,
     title: "Active Monitoring",
-    description: "Increased screening frequency as health risks rise. Focus on early detection and optimization.",
+    description: "Increased screening frequency as health risks rise. Focus on early detection and optimisation.",
     keyTests: ["Advanced Cancer Screening", "Comprehensive Heart Panel", "Diabetes Monitoring", "Bone Health", "Cognitive Function"],
     frequency: "Every 3-6 months",
     priority: "Early Detection & Risk Management",

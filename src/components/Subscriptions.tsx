@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 const planFeatures = {
   essentials: ["Quarterly finger-prick test kit", "Diabetes (HbA1c) monitoring", "Full lipid profile", "Liver & kidney function", "Iron/ferritin levels", "Vitamin D & B12 testing", "Online results dashboard", "Email results notifications"],
-  advanced: ["Biannual comprehensive screening", "Everything in Essentials", "PSA (men) or Female hormones", "High-sensitivity CRP", "Thyroid panel (TSH, T4)", "One genetic test annually", "15-min healthcare professional consultation", "Personalized health action plan", "Priority processing"]
+  advanced: ["Biannual comprehensive screening", "Everything in Essentials", "PSA (men) or Female hormones", "High-sensitivity CRP", "Thyroid panel (TSH, T4)", "One genetic test annually", "15-min healthcare professional consultation", "Personalised health action plan", "Priority processing"]
 };
 const SubscriptionPlan = ({
   title,

@@ -11,7 +11,7 @@ const SubscriptionsPage = () => {
     "Regular health monitoring without the hassle",
     "Significant savings compared to individual tests",
     "Priority booking and faster results",
-    "Personalized health insights and recommendations",
+    "Personalised health insights and recommendations",
     "Family health planning support",
     "Cancel or modify anytime"
   ];

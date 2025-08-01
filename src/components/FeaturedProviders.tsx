@@ -33,7 +33,7 @@ const FeaturedProviders = () => {
       name: "Medichecks",
       rating: 4.7,
       reviews: "3521",
-      description: "Award-winning health screening service offering comprehensive health MOTs and specialized testing with doctor...",
+      description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor...",
       location: "UK Wide",
       tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "+1 more"]
     },
@@ -49,7 +49,7 @@ const FeaturedProviders = () => {
       name: "Harley Street Health Centre",
       rating: 4.9,
       reviews: "892",
-      description: "Prestigious Harley Street clinic offering comprehensive health assessments and specialized testing with consultant...",
+      description: "Prestigious Harley Street clinic offering comprehensive health assessments and specialised testing with consultant...",
       location: "Harley Street, London",
       tags: ["Executive Health", "Consultant Reviews", "Comprehensive Screening", "+1 more"]
     }

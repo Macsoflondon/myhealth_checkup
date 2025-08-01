@@ -65,7 +65,7 @@ const TestCategories = (): JSX.Element => {
     providerCount: 6
   }, {
     title: "Men's Health",
-    description: "Specialized testing for men including testosterone levels, prostate health, fertility assessments, and male-specific wellness checks.",
+    description: "Specialised testing for men including testosterone levels, prostate health, fertility assessments, and male-specific wellness checks.",
     icon: <User className="h-6 w-6 text-white" />,
     color: "bg-blue-600",
     link: "/tests/mens-health",
