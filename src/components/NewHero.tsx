@@ -30,7 +30,8 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl">
-            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-center text-[#22c0d4] py-[20px] font-semibold text-5xl">Compare the UK’s most trusted health and wellness tests providers - all in one place</span>
+            <span className="block bg-gradient-to-r from-white to-health-accent bg-clip-text text-center text-[#22c0d4] py-[20px] font-semibold text-3xl">Compare the UK’s most trusted health and wellness tests providers
+      - all in one place</span>
           </h1>
           
           
@@ -43,7 +44,7 @@ const NewHero = () => {
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <Shield className="w-5 h-5 text-health-success" />
-              <span className="text-sm font-medium">Only UKAS-Accredited laboratories</span>
+              <span className="text-sm font-medium">Only UKAS-Accredited Laboratories</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <MapPin className="w-5 h-5 text-health-success" />
