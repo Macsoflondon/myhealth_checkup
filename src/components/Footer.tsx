@@ -63,7 +63,7 @@ const Footer = () => {
     name: "YouTube",
     url: "https://youtube.com/myhealthhub"
   }];
-  return <footer className="bg-gray-50 pt-16 pb-8 border-t">
+  return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
@@ -75,8 +75,8 @@ const Footer = () => {
                 myhealth <span className="text-wellness-600">checkup</span>
               </span>
             </Link>
-            <p className="mb-4 text-xs font-light text-left text-blue-950">The UK's only health service comparison platform for leading CQC‑regulated and UKAS‑accredited providers based on complete transparency. MYHEALTHCHECKUP LTD Company Number 16589056</p>
-            <div className="flex space-x-4">
+            <p className="mb-4 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK’s only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers. Company No. 16589056</p>
+            <div className="flex space-x-4 rounded decoration-white ">
               {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-gray-400 hover:text-health-600 transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
@@ -88,7 +88,7 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4" id="footer-services">Our Services</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
               {serviceSections.map((service, index) => <li key={index}>
-                  <Link to={service.link} className="text-gray-600 hover:text-health-600 transition-colors">
+                  <Link to={service.link} className="text-white hover:text-white transition-colors">
                     {service.name}
                   </Link>
                 </li>)}
@@ -99,7 +99,7 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4" id="footer-info">Information</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
               {informationSections.map((info, index) => <li key={index}>
-                  <Link to={info.link} className="text-gray-600 hover:text-health-600 transition-colors">
+                  <Link to={info.link} className="text-white hover:text-white transition-colors">
                     {info.name}
                   </Link>
                 </li>)}
@@ -110,7 +110,7 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4" id="footer-company">Company</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
               {companySections.map((company, index) => <li key={index}>
-                  <Link to={company.link} className="text-gray-600 hover:text-health-600 transition-colors">
+                  <Link to={company.link} className="text-white hover:text-white transition-colors">
                     {company.name}
                   </Link>
                 </li>)}
@@ -119,12 +119,12 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-200 pt-8 mt-8">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-gray-500">
-            <p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white ">
+            <p className="text-white font-normal">
               ©️2025 my health checkup, Empowering informed health decisions across the UK. All rights reserved.
             </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <Link to="/accessibility" className="hover:text-health-600 transition-colors">Accessibility</Link>
+              <Link to="/accessibility" className="hover:text-white ">Accessibility</Link>
               <Link to="/sitemap" className="hover:text-health-600 transition-colors">Sitemap</Link>
               <Link to="/cookies" className="hover:text-health-600 transition-colors">Cookie Policy</Link>
             </nav>
