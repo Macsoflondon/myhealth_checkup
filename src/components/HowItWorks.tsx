@@ -36,7 +36,7 @@ const HowItWorks = () => {
             {
               step: "4",
               title: "Get Results",
-              description: "Receive your results and recommendations securely online within 3-5 days",
+              description: "Arrange your test and send your sample",
               icon: Award
             }
           ].map((item, index) => (
