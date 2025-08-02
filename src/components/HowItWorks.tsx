@@ -18,7 +18,7 @@ const HowItWorks = () => {
             {
               step: "1",
               title: "Search & Compare",
-              description: "Browse services, compare prices, and read verified reviews",
+              description: "Explore tests, review biomarkers, compare pricing",
               icon: Search
             },
             {
