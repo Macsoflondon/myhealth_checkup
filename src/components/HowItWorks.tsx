@@ -24,7 +24,7 @@ const HowItWorks = () => {
             {
               step: "2",
               title: "Choose Provider",
-              description: "Select the best provider based on your needs and budget",
+              description: "Choose a trusted provider that fits your needs and budget",
               icon: Shield
             },
             {
