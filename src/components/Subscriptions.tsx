@@ -59,7 +59,7 @@ const Subscriptions = () => {
         
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <SubscriptionPlan
-            title="Health Hub Essentials"
+            title="myhealth checkup Essentials"
             price="39"
             period="month"
             description="Perfect for maintaining basic health awareness"
@@ -67,7 +67,7 @@ const Subscriptions = () => {
           />
           
           <SubscriptionPlan
-            title="Health Hub Advanced"
+            title="myhealth checkup Advanced"
             price="79"
             period="month"
             description="Comprehensive health monitoring for proactive wellness"

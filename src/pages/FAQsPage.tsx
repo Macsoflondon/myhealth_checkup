@@ -11,8 +11,8 @@ const FAQsPage = () => {
       title: "Getting Started",
       faqs: [
         {
-          q: "What is My Health Hub?",
-          a: "My Health Hub is the UK's leading comparison platform for private health tests. We help you compare prices, providers, and test options to make informed healthcare decisions."
+          q: "What is myhealth checkup?",
+          a: "myhealth checkup is the UK's leading comparison platform for private health tests. We help you compare prices, providers, and test options to make informed healthcare decisions."
         },
         {
           q: "Do I need a GP referral for these tests?",

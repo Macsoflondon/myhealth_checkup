@@ -127,7 +127,7 @@ const ContactPage = () => {
                   </CardHeader>
                   <CardContent>
                     <address className="not-italic">
-                      <p className="font-medium">My Health Hub Ltd</p>
+                      <p className="font-medium">myhealth checkup Ltd</p>
                       <p>123 Health Street</p>
                       <p>London, SW1A 1AA</p>
                       <p>United Kingdom</p>

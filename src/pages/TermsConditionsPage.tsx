@@ -32,7 +32,7 @@ const TermsConditionsPage = () => {
               </CardHeader>
               <CardContent>
                 <p>
-                  By accessing and using My Health Hub's website and services, you accept and agree to be bound by 
+                  By accessing and using myhealth checkup's website and services, you accept and agree to be bound by 
                   these Terms and Conditions. If you do not agree to these terms, please do not use our services.
                 </p>
               </CardContent>
@@ -44,7 +44,7 @@ const TermsConditionsPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  My Health Hub provides a comparison platform for private health testing services in the UK. 
+                  myhealth checkup provides a comparison platform for private health testing services in the UK. 
                   Our services include:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
@@ -133,7 +133,7 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <p className="mb-4">
                   All content on our platform, including but not limited to text, graphics, logos, images, 
-                  software, and data compilations, is owned by My Health Hub or our licensors and is protected 
+                  software, and data compilations, is owned by myhealth checkup or our licensors and is protected 
                   by UK and international copyright laws.
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -164,7 +164,7 @@ const TermsConditionsPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  To the fullest extent permitted by law, My Health Hub shall not be liable for any indirect, 
+                  To the fullest extent permitted by law, myhealth checkup shall not be liable for any indirect, 
                   incidental, special, consequential, or punitive damages arising from your use of our services.
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -198,7 +198,7 @@ const TermsConditionsPage = () => {
                 <div className="bg-muted p-4 rounded-lg">
                   <p><strong>Email:</strong> legal@myhealthhub.co.uk</p>
                   <p><strong>Phone:</strong> 0800 123 4567</p>
-                  <p><strong>Address:</strong> My Health Hub, 123 Health Street, London, SW1A 1AA</p>
+                  <p><strong>Address:</strong> myhealth checkup, 123 Health Street, London, SW1A 1AA</p>
                   <p><strong>Company Registration:</strong> 12345678 (England & Wales)</p>
                 </div>
               </CardContent>

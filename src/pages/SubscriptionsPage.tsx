@@ -19,7 +19,7 @@ const SubscriptionsPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Health Subscription Plans - My Health Hub</title>
+        <title>Health Subscription Plans - myhealth checkup</title>
         <meta name="description" content="Choose from our flexible health subscription plans. Regular testing and monitoring for ongoing health insights with significant savings." />
       </Helmet>
       
@@ -74,7 +74,7 @@ const SubscriptionsPage = () => {
                     <blockquote className="text-gray-600 italic mb-4">
                       "The subscription has been fantastic. I caught my vitamin D deficiency early and my energy levels have completely transformed. The quarterly testing gives me such peace of mind."
                     </blockquote>
-                    <cite className="text-sm font-medium">Sarah M., Health Hub Member since 2023</cite>
+                    <cite className="text-sm font-medium">Sarah M., myhealth checkup Member since 2023</cite>
                   </CardContent>
                 </Card>
               </div>

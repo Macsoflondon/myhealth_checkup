@@ -14,19 +14,19 @@ const Testimonials = () => {
   const testimonials: Testimonial[] = [{
     name: "Sarah M.",
     role: "Healthcare Professional",
-    content: "My Health Hub's vitamin panel revealed my vitamin D was critically low despite no obvious symptoms. Their doctor explained everything clearly and helped me get back on track. Within 3 months, my levels were optimal and I felt much more energetic.",
+    content: "myhealth checkup's vitamin panel revealed my vitamin D was critically low despite no obvious symptoms. Their doctor explained everything clearly and helped me get back on track. Within 3 months, my levels were optimal and I felt much more energetic.",
     rating: 5,
     testType: "Vitamin Panel"
   }, {
     name: "David L.",
     role: "Finance Manager, 52",
-    content: "After my father was diagnosed with prostate cancer, I wanted to be proactive. The PSA test from My Health Hub was simple to use at home, and the results came back quickly with clear guidance. It gave me peace of mind, and I've recommended it to all my friends.",
+    content: "After my father was diagnosed with prostate cancer, I wanted to be proactive. The PSA test from myhealth checkup was simple to use at home, and the results came back quickly with clear guidance. It gave me peace of mind, and I've recommended it to all my friends.",
     rating: 5,
     testType: "PSA Test"
   }, {
     name: "Emma T.",
     role: "Teacher & Mother of 2",
-    content: "I've been struggling with fatigue and digestive issues for years. My Health Hub's Gut Health package identified both a H. pylori infection and gluten sensitivity. After following their recommendations, I'm feeling better than I have in years!",
+    content: "I've been struggling with fatigue and digestive issues for years. myhealth checkup's Gut Health package identified both a H. pylori infection and gluten sensitivity. After following their recommendations, I'm feeling better than I have in years!",
     rating: 5,
     testType: "Gut Health Panel"
   }, {
@@ -34,7 +34,7 @@ const Testimonials = () => {
     role: "IT Consultant, 45",
     content: "I chose the subscription plan for regular health monitoring. When my HbA1c showed pre-diabetic levels, I was able to make lifestyle changes immediately. Six months later, my levels were back to normal. This service may have saved me from developing type 2 diabetes.",
     rating: 5,
-    testType: "Health Hub Essentials"
+    testType: "myhealth checkup Essentials"
   }];
   const [currentIndex, setCurrentIndex] = useState(0);
   const previousTestimonial = () => {
