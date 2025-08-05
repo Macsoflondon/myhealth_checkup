@@ -36,7 +36,7 @@ interface CompareDataWithAvailability {
   features: {
     [key: string]: string | boolean;
   };
-  available?: boolean;
+  available: boolean;
 }
 
 const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' }: CompareTableProps) => {
