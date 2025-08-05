@@ -26,15 +26,13 @@ const NewHero = () => {
         <div className="max-w-6xl mx-auto text-center">
           {/* Full Logo */}
           <div className="mb-8">
-            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto scale-200" />
+            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto scale-400" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
             <span className="block py-[20px] font-semibold text-3xl">
-              <span className="text-white text-left text-3xl font-normal">Compare the UK's leading private health test providers</span>
-              <span className="text-[#22c0d4] text-4xl font-medium text-center">
-
-All in one place!</span>
+              <span className="text-white">Compare the UK's leading private health test providers</span>
+              <span className="text-[#22c0d4]"> - all in one place!</span>
             </span>
           </h1>
           
@@ -47,16 +45,16 @@ All in one place!</span>
               <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Shield className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <Shield className="w-5 h-5 text-health-success" />
               <span className="text-sm font-medium">Only UKAS-Accredited Laboratories</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <MapPin className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <MapPin className="w-5 h-5 text-health-success" />
               <span className="text-sm font-medium">At-Home Test Kit or
 In-Clinic Blood Draw</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Clock className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <Clock className="w-5 h-5 text-health-success" />
               <span className="text-sm font-medium">Fast, accurate results you can trust</span>
             </div>
           </div>
