@@ -31,8 +31,10 @@ const NewHero = () => {
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
             <span className="block py-[20px] font-semibold text-3xl">
-              <span className="text-white">Compare the UK's leading private health test providers</span>
-              <span className="text-[#22c0d4]"> - all in one place!</span>
+              <span className="text-white text-left text-3xl font-normal">Compare the UK's leading private health test providers</span>
+              <span className="text-[#22c0d4] text-4xl font-medium text-center">
+
+All in one place!</span>
             </span>
           </h1>
           
@@ -45,16 +47,16 @@ const NewHero = () => {
               <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Shield className="w-5 h-5 text-health-success" />
+              <Shield className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
               <span className="text-sm font-medium">Only UKAS-Accredited Laboratories</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <MapPin className="w-5 h-5 text-health-success" />
+              <MapPin className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
               <span className="text-sm font-medium">At-Home Test Kit or
 In-Clinic Blood Draw</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Clock className="w-5 h-5 text-health-success" />
+              <Clock className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
               <span className="text-sm font-medium">Fast, accurate results you can trust</span>
             </div>
           </div>
