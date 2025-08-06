@@ -7,10 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
-
 const ContactPage = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-muted/30">
         <div className="container mx-auto px-4 py-12">
@@ -55,10 +53,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Message</label>
-                      <Textarea 
-                        placeholder="Tell us how we can help you..."
-                        className="min-h-[120px]"
-                      />
+                      <Textarea placeholder="Tell us how we can help you..." className="min-h-[120px]" />
                     </div>
                     <Button className="w-full">Send Message</Button>
                   </form>
@@ -100,17 +95,14 @@ const ContactPage = () => {
                   <CardContent>
                     <div className="space-y-3">
                       <div>
-                        <p className="font-medium">General Enquiries</p>
-                        <p className="text-sm text-primary">support@myhealthhub.co.uk</p>
+                        <p className="font-medium">All Enquiries</p>
+                        <p className="text-sm text-primary">support@myhealthcheckup.co.uk</p>
                       </div>
                       <div>
-                        <p className="font-medium">Technical Support</p>
-                        <p className="text-sm text-primary">tech@myhealthhub.co.uk</p>
+                        
+                        
                       </div>
-                      <div>
-                        <p className="font-medium">Privacy & Data</p>
-                        <p className="text-sm text-primary">privacy@myhealthhub.co.uk</p>
-                      </div>
+                      
                     </div>
                     <p className="text-sm text-muted-foreground mt-4">
                       Response time: Within 24 hours
@@ -119,7 +111,7 @@ const ContactPage = () => {
                 </Card>
 
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="bg-[#008811] bg-[Transparen]">
                     <CardTitle className="flex items-center gap-2">
                       <MapPin className="h-5 w-5" />
                       Office Address
@@ -128,13 +120,11 @@ const ContactPage = () => {
                   <CardContent>
                     <address className="not-italic">
                       <p className="font-medium">myhealth checkup Ltd</p>
-                      <p>123 Health Street</p>
-                      <p>London, SW1A 1AA</p>
+                      <p>2/369 Clapham Road</p>
+                      <p>London, SW9 9BT</p>
                       <p>United Kingdom</p>
                     </address>
-                    <p className="text-sm text-muted-foreground mt-4">
-                      Company Registration: 12345678 (England & Wales)
-                    </p>
+                    <p className="text-sm mt-4 text-[#081129]">Company Registration: 16589056 (England & Wales)</p>
                   </CardContent>
                 </Card>
 
@@ -158,8 +148,6 @@ const ContactPage = () => {
         </div>
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default ContactPage;
