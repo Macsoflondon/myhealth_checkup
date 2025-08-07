@@ -5,6 +5,7 @@ import NewHero from "@/components/NewHero";
 import FeaturedProviders from "@/components/FeaturedProviders";
 import CategoryFilters from "@/components/CategoryFilters";
 import TestCategories from "@/components/TestCategories";
+import MediaSpotlight from "@/components/MediaSpotlight";
 
 import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
 
@@ -83,6 +84,7 @@ const Index = () => {
       <main className="flex-grow">
         <NewHero />
         <HowItWorks />
+        <MediaSpotlight />
         <TestCategories />
         <FeaturedProviders />
         <CategoryFilters />
