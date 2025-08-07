@@ -14,7 +14,7 @@ const ContactPage = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <Badge className="mb-4">Get In Touch</Badge>
+              <Badge className="mb-4 text-[#081129]">Get In Touch</Badge>
               <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
               <p className="text-xl text-muted-foreground">
                 We're here to help with any questions about health testing or our platform
@@ -53,7 +53,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Message</label>
-                      <Textarea placeholder="Tell us how we can help you..." className="min-h-[120px]" />
+                      <Textarea placeholder="Tell us how we can help you..." className="min-h-[120px] bg-[#081129] text-base" />
                     </div>
                     <Button className="w-full">Send Message</Button>
                   </form>
@@ -80,7 +80,7 @@ const ContactPage = () => {
                     </div>
                     <div className="flex items-center gap-2 text-sm mt-1">
                       <Clock className="h-4 w-4 opacity-0" />
-                      <span>Saturday: 10:00 AM - 4:00 PM</span>
+                      <span className="rounded-xl">Saturday: 10:00 AM - 4:00 PM</span>
                     </div>
                   </CardContent>
                 </Card>

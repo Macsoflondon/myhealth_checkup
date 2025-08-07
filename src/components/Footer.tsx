@@ -108,7 +108,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4" id="footer-info">Information</h3>
+            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">Information</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
               {informationSections.map((info, index) => <li key={index}>
                   <Link to={info.link} className="text-white hover:text-white transition-colors">
@@ -119,7 +119,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4" id="footer-company">Company</h3>
+            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">Company</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
               {companySections.map((company, index) => <li key={index}>
                   <Link to={company.link} className="text-white hover:text-white transition-colors">
