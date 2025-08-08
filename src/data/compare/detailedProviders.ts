@@ -90,6 +90,19 @@ export const detailedProviders = [
     description: "Global diagnostics company offering comprehensive health checks"
   },
   {
+    id: "LondonMedicalLab",
+    name: "London Medical Laboratory",
+    website: "londonmedicallaboratory.com",
+    accreditation: "UKAS accredited laboratory (ISO 15189)",
+    description: "Professional medical laboratory services with comprehensive testing capabilities"
+  },
+  {
+    id: "Lola",
+    name: "Lola Health", 
+    website: "lolahealth.com",
+    description: "Modern health testing platform focused on women's health and wellness"
+  },
+  {
     id: "Forth",
     name: "Forth (with Life)",
     website: "forthwithlife.co.uk",
