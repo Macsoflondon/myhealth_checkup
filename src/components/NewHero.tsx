@@ -44,18 +44,18 @@ const NewHero = () => {
               <CheckCircle2 className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
               <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
               <Shield className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">Only UKAS-Accredited Laboratories</span>
+              <span className="text-center font-medium text-sm mx-[10px]">Only UKAS-Accredited Laboratories</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
               <MapPin className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">At-Home Test Kit or
+              <span className="text-center font-medium text-sm mx-[10px]">At-Home Test Kit or
 In-Clinic Blood Draw</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
               <Clock className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">Fast, accurate results you can trust</span>
+              <span className="text-center font-medium text-sm mx-[10px]">Fast, accurate results you can trust</span>
             </div>
           </div>
 
@@ -85,24 +85,24 @@ In-Clinic Blood Draw</span>
           </div>
 
           {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
-  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>5+</div>
-    <div style={{ color: "#081129" }}>Trusted Providers</div>
-  </div>
-  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>30+</div>
-    <div style={{ color: "#081129" }}>Available Tests</div>
-  </div>
-  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>48-72hrs</div>
-    <div style={{ color: "#081129" }}>Fast Results</div>
-  </div>
-  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>50,000+</div>
-    <div style={{ color: "#081129" }}>Tests Completed</div>
-  </div>
-</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+              <div className="text-3xl font-bold text-white mb-2"> 5+</div>
+              <div className="text-white/80">Trusted Providers</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+              <div className="text-3xl font-bold text-white mb-2">30+</div>
+              <div className="text-white/80">Available Tests</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+              <div className="text-3xl font-bold text-white mb-2">48-72hrs</div>
+              <div className="text-white/80">Fast Results</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+              <div className="text-3xl font-bold text-white mb-2">50,000+</div>
+              <div className="text-white/80">Tests Completed</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>;
