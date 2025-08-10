@@ -22,17 +22,17 @@ const NewHero = () => {
         <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0"></div>
       </div>
       
-      <div className="container relative z-10 px-0 w-full py-0 mx-0 bg-[#081129]">
-        <div className="max-w-6xl mx-auto text-center py-[20px] my-[30px]">
+      <div className="relative z-10 w-full py-0 bg-[#081129]">
+        <div className="max-w-6xl mx-auto text-center py-[20px]">
           {/* Full Logo */}
           <div className="mb-8">
-            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto scale-300" />
+            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto transform scale-125" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
-            <span className="block py-[20px] font-semibold text-3xl my-[70px]">
-              <span className="text-white text-center text-5xl my-[20px]">Compare the UK's leading private health test providers</span>
-              <span className="text-[#22c0d4] text-5xl font-bold my-[10px]">All in one place!</span>
+            <span className="block py-[20px] font-semibold text-6xl relative z-20">
+              <span className="block text-white whitespace-nowrap">Compare the UK's leading private health test providers</span>
+              <span className="block text-[#22c0d4] mt-2">- all in one place!</span>
             </span>
           </h1>
           
@@ -41,21 +41,20 @@ const NewHero = () => {
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
-              <CheckCircle2 className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Shield className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">Only UKAS-Accredited Laboratories</span>
+              <Shield className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium">UKAS-Accredited Laboratories</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <MapPin className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">At-Home Test Kit or
-In-Clinic Blood Draw</span>
+              <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium">At-Home Test or In-Clinic Blood Draw</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Clock className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">Fast, accurate results you can trust</span>
+              <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium">Fast & accurate results you can trust</span>
             </div>
           </div>
 
