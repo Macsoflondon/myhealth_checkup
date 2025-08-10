@@ -41,19 +41,19 @@ const NewHero = () => {
           {/* Trust Indicators */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
-              <CheckCircle2 className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Shield className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <Shield className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="text-sm font-medium">UKAS-Accredited Laboratories</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <MapPin className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="text-sm font-medium">At-Home Test or In-Clinic Blood Draw</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Clock className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
+              <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="text-sm font-medium">Fast & accurate results you can trust</span>
             </div>
           </div>
