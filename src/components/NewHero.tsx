@@ -87,20 +87,20 @@ In-Clinic Blood Draw</span>
           {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
   <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style="color:#081129;">5+</div>
-    <div style="color:#081129;">Trusted Providers</div>
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>5+</div>
+    <div style={{ color: "#081129" }}>Trusted Providers</div>
   </div>
   <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style="color:#081129;">30+</div>
-    <div style="color:#081129;">Available Tests</div>
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>30+</div>
+    <div style={{ color: "#081129" }}>Available Tests</div>
   </div>
   <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style="color:#081129;">48-72hrs</div>
-    <div style="color:#081129;">Fast Results</div>
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>48-72hrs</div>
+    <div style={{ color: "#081129" }}>Fast Results</div>
   </div>
   <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-    <div className="text-3xl font-bold mb-2" style="color:#081129;">50,000+</div>
-    <div style="color:#081129;">Tests Completed</div>
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>50,000+</div>
+    <div style={{ color: "#081129" }}>Tests Completed</div>
   </div>
 </div>
         </div>
