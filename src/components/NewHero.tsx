@@ -19,14 +19,14 @@ const NewHero = () => {
   return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0 px-0"></div>
+        <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0"></div>
       </div>
       
-      <div className="container relative z-10 w-full py-0 bg-[#081129] px-0 mx-[10px]">
-        <div className="max-w-6xl mx-auto text-center py-[40px]">
+      <div className="container relative z-10 px-0 w-full py-0 mx-0 bg-[#081129]">
+        <div className="max-w-6xl mx-auto text-center py-[20px]">
           {/* Full Logo */}
           <div className="mb-8">
-            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-full " />
+            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto scale-300" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
@@ -39,18 +39,19 @@ const NewHero = () => {
           
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl px-[100px] mx-[110px]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
               <CheckCircle2 className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
               <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Shield className="w-5 h-5 text-health-success mx-0 text-5xl font-light text-left px-0" />
+              <Shield className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
               <span className="text-sm font-medium">Only UKAS-Accredited Laboratories</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <MapPin className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
-              <span className="text-sm font-medium">At-Home Test Kit or In-Clinic Draw</span>
+              <span className="text-sm font-medium">At-Home Test Kit or
+In-Clinic Blood Draw</span>
             </div>
             <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
               <Clock className="w-5 h-5 text-health-success px-0 mx-0 text-5xl font-light text-left" />
@@ -84,24 +85,24 @@ const NewHero = () => {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
-            <div className="backdrop-blur rounded-lg p-6 bg-[#22c0d4]">
-              <div className="text-3xl font-bold text-white mb-2">6</div>
-              <div className="text-#081129/80 bg-[#] -bottom-0 ">Trusted Providers</div>
-            </div>
-            <div className="backdrop-blur rounded-lg p-6 bg-[#22c0d4]">
-              <div className="text-3xl font-bold text-white mb-2">200+</div>
-              <div className="text-white/80">Available Tests</div>
-            </div>
-            <div className="backdrop-blur rounded-lg p-6 bg-[#22c0d4]">
-              <div className="text-3xl font-bold text-white mb-2">3-5 Days</div>
-              <div className="text-white/80">Fast Results</div>
-            </div>
-            <div className="backdrop-blur rounded-lg p-6 bg-[#22c0d4]">
-              <div className="text-3xl font-bold text-white mb-2">50,000+</div>
-              <div className="text-white/80">Tests Completed</div>
-            </div>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
+  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>5+</div>
+    <div style={{ color: "#081129" }}>Trusted Providers</div>
+  </div>
+  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>30+</div>
+    <div style={{ color: "#081129" }}>Available Tests</div>
+  </div>
+  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>48-72hrs</div>
+    <div style={{ color: "#081129" }}>Fast Results</div>
+  </div>
+  <div className="bg-white/10 backdrop-blur rounded-lg p-6">
+    <div className="text-3xl font-bold mb-2" style={{ color: "#081129" }}>50,000+</div>
+    <div style={{ color: "#081129" }}>Tests Completed</div>
+  </div>
+</div>
         </div>
       </div>
     </section>;
