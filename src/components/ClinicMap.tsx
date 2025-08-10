@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
 
 // Merge default icon options once
 L.Icon.Default.mergeOptions({
@@ -71,15 +72,39 @@ const ClinicMap: React.FC = () => {
 
   const center = useMemo(() => userCenter || [DEFAULT_LAT, DEFAULT_LON] as [number, number], [userCenter]);
 
-  // Load local clinics on mount
+  // Load clinics (try Supabase first, fallback to local JSON)
   useEffect(() => {
-    const loadLocal = async () => {
+    const loadDefault = async () => {
       try {
         setError(null);
+        const { data, error } = await supabase
+          .from("clinics")
+          .select("name, full_address, postal_code, latitude, longitude, access_note")
+          .order("name", { ascending: true });
+
+        if (error) throw error;
+        if (data && data.length) {
+          const normalized = data.map((x) => ({
+            name: x.name || "Clinic",
+            full_address: x.full_address || "",
+            postal_code: x.postal_code || "",
+            latitude: typeof x.latitude === "number" ? x.latitude : (x.latitude ? Number(x.latitude) : undefined),
+            longitude: typeof x.longitude === "number" ? x.longitude : (x.longitude ? Number(x.longitude) : undefined),
+            access_note: x.access_note || "",
+          }));
+          setMode("alpha");
+          setItems(normalized);
+          return;
+        }
+      } catch (e: any) {
+        // fall through to local JSON
+      }
+
+      // Fallback to bundled local JSON
+      try {
         const res = await fetch("/clinics_master.json", { cache: "no-store" });
-        if (!res.ok) throw new Error(`Local JSON not found`);
+        if (!res.ok) throw new Error("Local JSON not found");
         const data: ClinicItem[] = await res.json();
-        // normalize
         const normalized = (Array.isArray(data) ? data : []).map((x) => ({
           name: x.name || x.address || "Clinic",
           full_address: x.full_address || x.address || "",
@@ -91,10 +116,10 @@ const ClinicMap: React.FC = () => {
         setMode("alpha");
         setItems(normalized);
       } catch (e: any) {
-        setError(e?.message || "Could not load local clinics");
+        setError(e?.message || "Could not load clinics");
       }
     };
-    loadLocal();
+    loadDefault();
   }, []);
 
   async function geocodePostcode(pc: string): Promise<{ lat: number; lon: number }> {
