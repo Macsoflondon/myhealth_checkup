@@ -67,9 +67,6 @@ const ClinicMap: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"alpha" | "distance">("alpha");
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem("LML_TOKEN"));
-  const [showAdvanced, setShowAdvanced] = useState(false);
-
   const center = useMemo(() => userCenter || [DEFAULT_LAT, DEFAULT_LON] as [number, number], [userCenter]);
 
   // Load clinics (try Supabase first, fallback to local JSON)
@@ -77,7 +74,7 @@ const ClinicMap: React.FC = () => {
     const loadDefault = async () => {
       try {
         setError(null);
-        const { data, error } = await supabase
+        const { data, error } = await (supabase as any)
           .from("clinics")
           .select("name, full_address, postal_code, latitude, longitude, access_note")
           .order("name", { ascending: true });
@@ -129,45 +126,13 @@ const ClinicMap: React.FC = () => {
     return { lat: j.result.latitude, lon: j.result.longitude };
   }
 
-  async function fetchNearest(lat: number, lon: number, page = 1) {
-    const LML_ENDPOINT = "https://api.londonmedicallaboratory.com/api/test_location/nearest";
-    if (!token) return { items: [] as ClinicItem[] };
-    const url = `${LML_ENDPOINT}/${lat}/${lon}?page=${page}`;
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "text/plain",
-      },
+  async function fetchNearestViaProxy(lat: number, lon: number, maxPages = 3): Promise<ClinicItem[]> {
+    const { data, error } = await supabase.functions.invoke("lml-nearest", {
+      body: { lat, lon, maxPages },
     });
-    if (!res.ok) throw new Error(`LML API error: ${res.status}`);
-    return res.json();
-  }
-
-  async function fetchAllPages(lat: number, lon: number, maxPages = 3) {
-    if (!token) return [] as ClinicItem[];
-    let all: ClinicItem[] = [];
-    for (let p = 1; p <= maxPages; p++) {
-      try {
-        const data = await fetchNearest(lat, lon, p);
-        const arr = Array.isArray(data.items) ? data.items : [];
-        all = all.concat(arr);
-        if (arr.length < 20) break;
-      } catch (e) {
-        if (p === 1) throw e;
-        break;
-      }
-    }
-    // dedupe
-    const seen = new Set<string>();
-    const dedup: ClinicItem[] = [];
-    for (const it of all) {
-      const key = (it as any).id || `${(it.name || "").toLowerCase()}|${(it.postal_code || "").toLowerCase()}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        dedup.push(it);
-      }
-    }
-    return dedup;
+    if (error) throw new Error(error.message || "Failed to fetch clinics");
+    const items = Array.isArray((data as any)?.items) ? (data as any).items : [];
+    return items as ClinicItem[];
   }
 
   const handleFind = async () => {
@@ -178,24 +143,19 @@ const ClinicMap: React.FC = () => {
       const user = await geocodePostcode(postcode.trim());
       setUserCenter([user.lat, user.lon]);
 
-      if (token) {
-        const nearby = await fetchAllPages(user.lat, user.lon, 3);
-        // normalize
-        const normalized = nearby.map((x) => ({
-          name: (x as any).name || "Clinic",
-          full_address: (x as any).full_address || (x as any).address || "",
-          postal_code: (x as any).postal_code || (x as any).postcode || "",
-          latitude: typeof (x as any).latitude === "number" ? (x as any).latitude : (typeof (x as any).lat === "number" ? (x as any).lat : undefined),
-          longitude: typeof (x as any).longitude === "number" ? (x as any).longitude : (typeof (x as any).lng === "number" ? (x as any).lng : (typeof (x as any).lon === "number" ? (x as any).lon : undefined)),
-          access_note: (x as any).access_note || "",
-          distance: (x as any).distance,
-        }));
-        setMode("distance");
-        setItems(normalized);
-      } else {
-        // If no token, keep existing local items but re-center map
-        setMode("alpha");
-      }
+      const nearby = await fetchNearestViaProxy(user.lat, user.lon, 3);
+      const normalized = nearby.map((x) => ({
+        name: (x as any).name || "Clinic",
+        full_address: (x as any).full_address || (x as any).address || "",
+        postal_code: (x as any).postal_code || (x as any).postcode || "",
+        latitude: typeof (x as any).latitude === "number" ? (x as any).latitude : (typeof (x as any).lat === "number" ? (x as any).lat : undefined),
+        longitude: typeof (x as any).longitude === "number" ? (x as any).longitude : (typeof (x as any).lng === "number" ? (x as any).lng : (typeof (x as any).lon === "number" ? (x as any).lon : undefined)),
+        access_note: (x as any).access_note || "",
+        distance: (x as any).distance,
+      }));
+      setMode("distance");
+      setItems(normalized);
+
     } catch (e: any) {
       setError(e?.message || "Something went wrong. Please try again.");
     } finally {
@@ -234,43 +194,6 @@ const ClinicMap: React.FC = () => {
             {loading ? "Finding…" : "Find clinics"}
           </Button>
         </div>
-
-        <div className="mb-2 text-right">
-          <button
-            type="button"
-            className="text-sm text-muted-foreground hover:text-foreground underline"
-            onClick={() => setShowAdvanced((s) => !s)}
-          >
-            {showAdvanced ? "Hide" : "Show"} advanced (LML API token)
-          </button>
-        </div>
-
-        {showAdvanced && (
-          <Card className="mb-6">
-            <CardContent className="p-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-              <div className="text-sm text-muted-foreground">
-                To fetch nearest London Medical Laboratory locations by postcode, add your Bearer token here. It will be saved in your browser only.
-              </div>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <Input
-                  value={token ?? ""}
-                  onChange={(e) => setToken(e.target.value)}
-                  placeholder="LML Bearer token"
-                  className="w-full sm:w-80"
-                />
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    if (token && token.trim()) localStorage.setItem("LML_TOKEN", token.trim());
-                    else localStorage.removeItem("LML_TOKEN");
-                  }}
-                >
-                  Save
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {error && (
           <div className="text-sm text-destructive mb-4">{error}</div>
