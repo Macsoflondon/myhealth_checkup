@@ -14,6 +14,7 @@ import PartnerShowcase from "@/components/PartnerShowcase";
 import HowItWorks from "@/components/HowItWorks";
 import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
+import ClinicMap from "@/components/ClinicMap";
 import CookieConsent from "@/components/compliance/CookieConsent";
 const Index = () => {
   const structuredData = {
@@ -87,6 +88,7 @@ const Index = () => {
         <MediaSpotlight />
         <TestCategories />
         <FeaturedProviders />
+        <ClinicMap />
         <CategoryFilters />
         <HealthBenefitsInfographic />
         <FounderStory />

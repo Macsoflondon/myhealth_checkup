@@ -1,0 +1,23 @@
+[
+  {
+    "name": "London Medical Laboratory - Battersea",
+    "full_address": "62-64 Falcon Rd, Battersea, London",
+    "postal_code": "SW11 2LR",
+    "latitude": 51.469,
+    "longitude": -0.167
+  },
+  {
+    "name": "London Medical Laboratory - Putney",
+    "full_address": "262 Upper Richmond Rd, London",
+    "postal_code": "SW15 6TQ",
+    "latitude": 51.460,
+    "longitude": -0.214
+  },
+  {
+    "name": "London Medical Laboratory - Marylebone",
+    "full_address": "1 Harley St, London",
+    "postal_code": "W1G 9QD",
+    "latitude": 51.516,
+    "longitude": -0.146
+  }
+]
