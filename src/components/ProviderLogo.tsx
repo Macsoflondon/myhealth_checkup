@@ -5,7 +5,7 @@ interface ProviderLogoProps {
   className?: string;
 }
 
-export const ProviderLogo = ({ provider, className = "h-8 w-auto" }: ProviderLogoProps) => {
+export const ProviderLogo = ({ provider, className = "h-16 w-auto" }: ProviderLogoProps) => {
   const getProviderLogo = (providerName: string) => {
     const normalizedName = providerName.toLowerCase();
     
