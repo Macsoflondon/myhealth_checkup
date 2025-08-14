@@ -12,7 +12,7 @@ const MediaSpotlight = () => {
     <>
       <style>{`
         :root {
-          --accent-color: #ffffff;
+          --accent-color: #22c0d4;
           --slide-gap: 2.5rem;
           --slide-height: 70px;
           --slide-height-accent: 80px;
