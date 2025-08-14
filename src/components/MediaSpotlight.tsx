@@ -16,12 +16,12 @@ const MediaSpotlight = () => {
           --slide-gap: 2.5rem;
           --slide-height: 70px;
           --slide-height-accent: 80px;
-          --slide-bg-color: #22c0d4;
+          --slide-bg-color: #081129;
         }
 
         .media-spotlight {
           padding: 1.0rem 0;
-          background-color: #081129;
+          background-color: #22c0d4;
         }
         @media (min-width: 768px) {
           .media-spotlight {
@@ -74,7 +74,7 @@ const MediaSpotlight = () => {
       `}</style>
       
       <section className="media-spotlight" aria-labelledby="press-mentions-title">
-        <h2 id="press-mentions-title" className="media-spotlight__title">FEATURED IN</h2>
+        <h2 id="press-mentions-title" className="media-spotlight__title">Media Spotlight</h2>
         <div className="marquee" role="region" aria-label="Press mentions carousel">
           <div className="marquee__track">
             {/* Interleaved Medicheck & Goodbody logos */}
