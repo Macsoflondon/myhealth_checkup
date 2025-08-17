@@ -35,6 +35,7 @@ import WomensHealthPage from "./pages/WomensHealthPage";
 import RecommendationEngine from "./components/ai/RecommendationEngine";
 import ReviewSystem from "./components/reviews/ReviewSystem";
 import FindClinicPage from "./pages/FindClinicPage";
+import ProviderProfilePage from "./pages/ProviderProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const App = () => (
               <Route path="/blog" element={<HealthBlogPage />} />
               <Route path="/find-test" element={<AssistedTestFinderPage />} />
               <Route path="/find-a-clinic" element={<FindClinicPage />} />
+              <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
