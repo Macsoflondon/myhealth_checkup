@@ -6,9 +6,7 @@ const HowItWorks = () => {
           <h2 className="text-4xl font-bold mb-4 heading text-[#9a23af]">
             How It Works
           </h2>
-          <p className="text-lg max-w-2xl mx-auto text-[#9a23af] text-center font-bold">
-            Simple, transparent, and secure - book your health services in just a few clicks
-          </p>
+          <p className="text-lg max-w-2xl mx-auto text-[#9a23af] text-center font-bold">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
         </div>
 
         <div className="grid md:grid-cols-4 gap-8">
