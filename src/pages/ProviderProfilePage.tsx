@@ -47,10 +47,10 @@ const ProviderProfilePage = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-4 md:py-8">
         {/* Back Button */}
-        <div className="mb-6">
-          <Button variant="outline" asChild className="gap-2">
+        <div className="mb-4 md:mb-6">
+          <Button variant="outline" asChild className="gap-2 min-h-[44px] touch-manipulation">
             <Link to="/#providers">
               <ArrowLeft className="w-4 h-4" />
               Back to All Providers
@@ -58,40 +58,40 @@ const ProviderProfilePage = () => {
           </Button>
         </div>
         {/* Hero Section */}
-        <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
-          <div className="flex flex-col md:flex-row items-start gap-6">
-            <div className="w-24 h-24 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <ProviderLogo provider={provider.name} className="w-16 h-16" />
+        <div className="bg-white rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8">
+          <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
+            <div className="w-20 h-20 md:w-24 md:h-24 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <ProviderLogo provider={provider.name} className="w-14 h-14 md:w-16 md:h-16" />
             </div>
             
-            <div className="flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{provider.name}</h1>
+            <div className="flex-1 w-full">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{provider.name}</h1>
               
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
                 <div className="flex items-center space-x-1">
-                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                  <span className="font-semibold text-gray-900">{ratingData.rating}</span>
-                  <span className="text-gray-500">({ratingData.reviews} reviews)</span>
+                  <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
+                  <span className="font-semibold text-gray-900 text-sm md:text-base">{ratingData.rating}</span>
+                  <span className="text-gray-500 text-sm md:text-base">({ratingData.reviews} reviews)</span>
                 </div>
                 
                 {provider.accreditation && (
-                  <Badge variant="secondary" className="gap-1">
+                  <Badge variant="secondary" className="gap-1 text-xs">
                     <Shield className="w-3 h-3" />
                     Accredited
                   </Badge>
                 )}
               </div>
               
-              <p className="text-gray-600 text-lg mb-6">{provider.description}</p>
+              <p className="text-gray-600 text-base md:text-lg mb-6">{provider.description}</p>
               
-              <div className="flex flex-wrap gap-3">
-                <Button size="lg" asChild>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button size="lg" asChild className="min-h-[48px] w-full sm:w-auto">
                   <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
                     Visit Website
                     <ExternalLink className="w-4 h-4 ml-2" />
                   </a>
                 </Button>
-                <Button variant="outline" size="lg" asChild>
+                <Button variant="outline" size="lg" asChild className="min-h-[48px] w-full sm:w-auto">
                   <Link to={`/provider/${providerId}/tests`}>
                     Browse Available Tests
                   </Link>
@@ -101,25 +101,25 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
           {/* Contact Information */}
-          <div className="md:col-span-1">
+          <div className="lg:col-span-1">
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg">
                   <Phone className="w-5 h-5" />
                   Contact Information
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {provider.website && (
-                  <div>
-                    <p className="font-medium text-gray-900">Website</p>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Website</p>
                     <a 
                       href={`https://${provider.website}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline"
+                      className="text-blue-600 hover:underline text-sm md:text-base break-all touch-manipulation"
                     >
                       {provider.website}
                     </a>
@@ -127,30 +127,30 @@ const ProviderProfilePage = () => {
                 )}
                 
                 {provider.phone && (
-                  <div>
-                    <p className="font-medium text-gray-900">Phone</p>
-                    <p className="text-gray-600">{provider.phone}</p>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Phone</p>
+                    <a href={`tel:${provider.phone}`} className="text-gray-600 text-sm md:text-base hover:underline touch-manipulation">{provider.phone}</a>
                   </div>
                 )}
                 
                 {provider.email && (
-                  <div>
-                    <p className="font-medium text-gray-900">Email</p>
-                    <p className="text-gray-600">{provider.email}</p>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Email</p>
+                    <a href={`mailto:${provider.email}`} className="text-gray-600 text-sm md:text-base break-all hover:underline touch-manipulation">{provider.email}</a>
                   </div>
                 )}
                 
                 {provider.clinics && (
-                  <div>
-                    <p className="font-medium text-gray-900">Locations</p>
-                    <p className="text-gray-600">{provider.clinics}</p>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Locations</p>
+                    <p className="text-gray-600 text-sm md:text-base">{provider.clinics}</p>
                   </div>
                 )}
                 
                 {provider.locations && (
-                  <div>
-                    <p className="font-medium text-gray-900">Locations</p>
-                    <p className="text-gray-600">{provider.locations}</p>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Locations</p>
+                    <p className="text-gray-600 text-sm md:text-base">{provider.locations}</p>
                   </div>
                 )}
               </CardContent>
@@ -158,7 +158,7 @@ const ProviderProfilePage = () => {
           </div>
 
           {/* Main Content */}
-          <div className="md:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-4 md:space-y-8">
             {/* Accreditations */}
             <Card>
               <CardHeader>

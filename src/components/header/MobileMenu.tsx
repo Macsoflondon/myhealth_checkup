@@ -13,7 +13,7 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
     <>
       {/* Mobile menu button */}
       <button 
-        className="lg:hidden"
+        className="lg:hidden p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
         onClick={toggleMenu}
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         aria-expanded={isMenuOpen}
@@ -25,14 +25,18 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
       {/* Mobile navigation */}
       <div 
         id="mobile-menu"
-        className={`lg:hidden bg-white border-t py-4 px-4 shadow-md ${isMenuOpen ? 'block' : 'hidden'}`}
+        className={`fixed inset-x-0 top-[calc(100%)] lg:hidden bg-white border-t shadow-lg z-40 transition-transform duration-200 ${
+          isMenuOpen ? 'translate-y-0' : '-translate-y-full'
+        }`}
         aria-hidden={!isMenuOpen}
       >
-        <NavigationItems 
-          onItemClick={toggleMenu} 
-          className="flex flex-col space-y-4"
-        />
-        <UserMenu isMobile onItemClick={toggleMenu} />
+        <div className="py-4 px-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+          <NavigationItems 
+            onItemClick={toggleMenu} 
+            className="flex flex-col space-y-1 mb-4"
+          />
+          <UserMenu isMobile onItemClick={toggleMenu} />
+        </div>
       </div>
     </>
   );

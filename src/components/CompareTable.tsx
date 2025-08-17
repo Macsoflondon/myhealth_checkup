@@ -100,8 +100,8 @@ const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' 
   ];
 
   return (
-    <div className="w-full overflow-auto pb-4">
-      <div className="flex justify-between items-center mb-4">
+    <div className="w-full pb-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
         <h2 className="font-semibold text-lg">
           {filteredData.length} results found
         </h2>
@@ -112,18 +112,20 @@ const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' 
         />
       </div>
       
-      <Table>
-        <TableCaption>
-          Compare health services across leading providers
-        </TableCaption>
-        <TableHeader className="bg-gray-50 sticky top-0 z-10">
-          <TableRow>
-            <TableHead className="w-[180px] min-w-[180px]">Test / Service</TableHead>
-            {dataWithUpdates.map((item) => (
-              <ProviderHeader key={item.id} item={item} />
-            ))}
-          </TableRow>
-        </TableHeader>
+      <div className="overflow-x-auto -mx-4 px-4">
+      
+        <Table className="min-w-[800px]">
+          <TableCaption className="text-xs md:text-sm">
+            Compare health services across leading providers
+          </TableCaption>
+          <TableHeader className="bg-gray-50 sticky top-0 z-10">
+            <TableRow>
+              <TableHead className="w-[120px] md:w-[180px] min-w-[120px] md:min-w-[180px] text-xs md:text-sm">Test / Service</TableHead>
+              {dataWithUpdates.map((item) => (
+                <ProviderHeader key={item.id} item={item} />
+              ))}
+            </TableRow>
+          </TableHeader>
         <TableBody>
           {sortedFeatures.map((feature) => (
             <TestFeatureRow 
@@ -134,7 +136,7 @@ const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' 
           ))}
           {/* Favorite row */}
           <TableRow>
-            <TableCell className="bg-gray-50 sticky left-0">Save</TableCell>
+            <TableCell className="bg-gray-50 sticky left-0 text-xs md:text-sm">Save</TableCell>
             {dataWithUpdates.map((item) => (
               <FavoriteAction 
                 key={`${item.id}-favorite`}
@@ -146,7 +148,7 @@ const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' 
           </TableRow>
           {/* Order row */}
           <TableRow>
-            <TableCell className="bg-gray-50 sticky left-0">Order</TableCell>
+            <TableCell className="bg-gray-50 sticky left-0 text-xs md:text-sm">Order</TableCell>
             {dataWithUpdates.map((item) => (
               <OrderAction
                 key={`${item.id}-order`}
@@ -156,7 +158,8 @@ const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' 
             ))}
           </TableRow>
         </TableBody>
-      </Table>
+        </Table>
+      </div>
     </div>
   );
 };

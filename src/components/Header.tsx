@@ -24,8 +24,9 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  return <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}>
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center bg-white">
+  return (
+    <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}>
+      <div className="container mx-auto px-4 py-3 lg:py-4 flex justify-between items-center bg-white">
         <Logo />
 
         <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -36,6 +37,7 @@ const Header = () => {
           <UserMenu />
         </div>
       </div>
-    </header>;
+    </header>
+  );
 };
 export default Header;

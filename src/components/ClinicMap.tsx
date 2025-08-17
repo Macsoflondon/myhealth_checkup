@@ -206,7 +206,8 @@ const ClinicMap: React.FC = () => {
                 center={center}
                 zoom={DEFAULT_ZOOM}
                 scrollWheelZoom={false}
-                className="h-[520px] w-full"
+                touchZoom={true}
+                className="h-[300px] md:h-[400px] lg:h-[520px] w-full"
               >
                 <RTileLayer
                   attribution="&copy; OpenStreetMap contributors"
@@ -247,11 +248,11 @@ const ClinicMap: React.FC = () => {
                 <Badge variant="secondary">{mode === "alpha" ? "A–Z" : "Nearest"}</Badge>
               </div>
               <Separator className="my-2" />
-              <div className="max-h-[520px] overflow-auto pr-1">
+              <div className="max-h-[300px] md:max-h-[400px] lg:max-h-[520px] overflow-auto pr-1">
                 {sortedItems.map((it, i) => (
-                  <div key={i} className="p-3 rounded-lg border mb-2 hover:shadow-sm transition-shadow">
-                    <div className="font-medium">{it.name || "Clinic"}</div>
-                    <div className="text-sm text-muted-foreground">{it.full_address || it.address || ""}</div>
+                  <div key={i} className="p-3 rounded-lg border mb-2 hover:shadow-sm transition-shadow touch-manipulation">
+                    <div className="font-medium text-sm md:text-base">{it.name || "Clinic"}</div>
+                    <div className="text-xs md:text-sm text-muted-foreground break-words">{it.full_address || it.address || ""}</div>
                     <div className="text-xs text-muted-foreground">{it.postal_code || it.postcode || ""}</div>
                     {typeof it.distance === "number" && (
                       <div className="mt-1 inline-block text-xs text-foreground bg-muted px-2 py-0.5 rounded">

@@ -90,31 +90,31 @@ const FeaturedProviders = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {featuredProviderData.map((provider) => (
             <Card key={provider.id} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4 mb-4 my-0">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    <ProviderLogo provider={provider.name} className="w-8 h-8" />
+              <CardContent className="p-4 md:p-6">
+                <div className="flex items-start gap-3 md:gap-4 mb-4 my-0">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <ProviderLogo provider={provider.name} className="w-8 h-8 md:w-10 md:h-10" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{provider.name}</h3>
+                    <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1 truncate">{provider.name}</h3>
                     <div className="flex items-center space-x-1 mb-2">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                      <span className="font-medium text-gray-900">{provider.rating}</span>
-                      <span className="text-sm text-gray-500">({provider.reviews}) reviews</span>
+                      <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
+                      <span className="font-medium text-gray-900 text-sm md:text-base">{provider.rating}</span>
+                      <span className="text-xs md:text-sm text-gray-500 truncate">({provider.reviews}) reviews</span>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="text-xs md:text-sm text-gray-600 mb-4 line-clamp-3">
                   {provider.description}
                 </p>
 
-                <div className="flex items-center text-sm text-gray-500 mb-4">
-                  <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-                  <span className="line-clamp-1">{provider.location}</span>
+                <div className="flex items-start text-xs md:text-sm text-gray-500 mb-4">
+                  <MapPin className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
+                  <span className="line-clamp-2 break-words">{provider.location}</span>
                 </div>
 
                 <div className="flex flex-wrap gap-1 mb-6">
@@ -125,13 +125,13 @@ const FeaturedProviders = () => {
                   ))}
                 </div>
 
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1" asChild>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button variant="outline" size="sm" className="flex-1 min-h-[40px]" asChild>
                     <Link to={`/provider/${provider.id.toLowerCase()}`}>
                       View Profile
                     </Link>
                   </Button>
-                  <Button variant="ghost" size="sm" className="flex-shrink-0" asChild>
+                  <Button variant="ghost" size="sm" className="flex-shrink-0 min-h-[40px]" asChild>
                     <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
                       Visit Website
                       <ExternalLink className="w-3 h-3 ml-1" />
