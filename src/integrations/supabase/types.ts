@@ -146,6 +146,111 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_tests: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          price: number | null
+          provider_id: string
+          provider_test_id: string | null
+          scraped_at: string
+          test_name: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          price?: number | null
+          provider_id: string
+          provider_test_id?: string | null
+          scraped_at?: string
+          test_name: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          price?: number | null
+          provider_id?: string
+          provider_test_id?: string | null
+          scraped_at?: string
+          test_name?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      scraping_jobs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          last_scraped: string | null
+          next_scrape: string | null
+          provider_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          last_scraped?: string | null
+          next_scrape?: string | null
+          provider_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          last_scraped?: string | null
+          next_scrape?: string | null
+          provider_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      test_categories: {
+        Row: {
+          created_at: string
+          display_order: number | null
+          id: string
+          name: string
+          provider_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          name: string
+          provider_id: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          name?: string
+          provider_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
