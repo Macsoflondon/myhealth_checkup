@@ -35,12 +35,12 @@ const CompareTests = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50">
+      <main className="flex-grow bg-background">
         <section className="py-10 md:py-16 px-4">
           <div className="container mx-auto">
             <div className="text-center mb-12">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">Compare Health Services</h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Compare Health Services</h1>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 Compare prices and features across multiple providers to find the best option for your health needs.
               </p>
             </div>
@@ -52,22 +52,26 @@ const CompareTests = () => {
               onProviderChange={handleProviderChange}
             />
 
-            <div className="flex flex-wrap gap-4 mt-6">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                placeholder="Search tests"
-                className="border rounded px-3 py-2 w-full md:w-1/3"
-              />
-              <select
-                value={sortOrder}
-                onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
-                className="border rounded px-3 py-2 w-full md:w-1/3"
-              >
-                <option value="asc">Price: Low to High</option>
-                <option value="desc">Price: High to Low</option>
-              </select>
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  placeholder="Search tests..."
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                />
+              </div>
+              <div className="sm:w-64">
+                <select
+                  value={sortOrder}
+                  onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+                  className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                >
+                  <option value="asc">Price: Low to High</option>
+                  <option value="desc">Price: High to Low</option>
+                </select>
+              </div>
             </div>
             
             <div className="mt-8">
