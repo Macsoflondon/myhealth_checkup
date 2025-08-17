@@ -5,48 +5,54 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Sun, Zap, Shield, Leaf } from 'lucide-react';
-
 const VitaminDeficiencyPage = () => {
-  const vitaminTests = [
-    {
-      name: "Vitamin D Test",
-      description: "Essential for bone health & immunity",
-      price: "From £39",
-      deficiency: "Very common in UK",
-      symptoms: ["Fatigue", "Bone pain", "Muscle weakness", "Mood changes"]
-    },
-    {
-      name: "B12 & Folate Panel",
-      description: "Energy and nervous system support",
-      price: "From £69",
-      deficiency: "Common in vegetarians",
-      symptoms: ["Tiredness", "Memory issues", "Mood disorders", "Tingling"]
-    },
-    {
-      name: "Iron Studies",
-      description: "Complete iron deficiency screening",
-      price: "From £89",
-      deficiency: "Affects 25% of women",
-      symptoms: ["Fatigue", "Pale skin", "Cold hands", "Brittle nails"]
-    },
-    {
-      name: "Complete Vitamin Panel",
-      description: "Comprehensive vitamin & mineral analysis",
-      price: "From £199",
-      deficiency: "Multiple deficiencies",
-      symptoms: ["Multiple symptoms", "Poor immunity", "Low energy", "Poor healing"]
-    }
-  ];
-
-  const commonDeficiencies = [
-    { vitamin: "Vitamin D", percentage: "40%", icon: Sun, color: "text-yellow-600" },
-    { vitamin: "Iron", percentage: "25%", icon: Zap, color: "text-red-600" },
-    { vitamin: "B12", percentage: "15%", icon: Shield, color: "text-blue-600" },
-    { vitamin: "Folate", percentage: "10%", icon: Leaf, color: "text-green-600" }
-  ];
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const vitaminTests = [{
+    name: "Vitamin D Test",
+    description: "Essential for bone health & immunity",
+    price: "From £39",
+    deficiency: "Very common in UK",
+    symptoms: ["Fatigue", "Bone pain", "Muscle weakness", "Mood changes"]
+  }, {
+    name: "B12 & Folate Panel",
+    description: "Energy and nervous system support",
+    price: "From £69",
+    deficiency: "Common in vegetarians",
+    symptoms: ["Tiredness", "Memory issues", "Mood disorders", "Tingling"]
+  }, {
+    name: "Iron Studies",
+    description: "Complete iron deficiency screening",
+    price: "From £89",
+    deficiency: "Affects 25% of women",
+    symptoms: ["Fatigue", "Pale skin", "Cold hands", "Brittle nails"]
+  }, {
+    name: "Complete Vitamin Panel",
+    description: "Comprehensive vitamin & mineral analysis",
+    price: "From £199",
+    deficiency: "Multiple deficiencies",
+    symptoms: ["Multiple symptoms", "Poor immunity", "Low energy", "Poor healing"]
+  }];
+  const commonDeficiencies = [{
+    vitamin: "Vitamin D",
+    percentage: "40%",
+    icon: Sun,
+    color: "text-yellow-600"
+  }, {
+    vitamin: "Iron",
+    percentage: "25%",
+    icon: Zap,
+    color: "text-red-600"
+  }, {
+    vitamin: "B12",
+    percentage: "15%",
+    icon: Shield,
+    color: "text-blue-600"
+  }, {
+    vitamin: "Folate",
+    percentage: "10%",
+    icon: Leaf,
+    color: "text-green-600"
+  }];
+  return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
@@ -75,24 +81,7 @@ const VitaminDeficiencyPage = () => {
         </section>
 
         {/* Common Deficiencies */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Most Common UK Deficiencies</h2>
-              <p className="text-xl text-muted-foreground">Percentage of UK adults affected</p>
-            </div>
-            <div className="grid md:grid-cols-4 gap-6">
-              {commonDeficiencies.map((deficiency, index) => (
-                <Card key={index} className="text-center p-6">
-                  <deficiency.icon className={`h-12 w-12 ${deficiency.color} mx-auto mb-4`} />
-                  <h3 className="font-semibold text-lg mb-2">{deficiency.vitamin}</h3>
-                  <div className="text-3xl font-bold text-primary mb-2">{deficiency.percentage}</div>
-                  <p className="text-sm text-muted-foreground">of UK adults deficient</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+        
 
         {/* Available Tests */}
         <section className="py-16 bg-muted/30">
@@ -102,8 +91,7 @@ const VitaminDeficiencyPage = () => {
               <p className="text-xl text-muted-foreground">Identify and address nutritional gaps</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
-              {vitaminTests.map((test, index) => (
-                <Card key={index} className="relative">
+              {vitaminTests.map((test, index) => <Card key={index} className="relative">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-xl">{test.name}</CardTitle>
@@ -119,18 +107,15 @@ const VitaminDeficiencyPage = () => {
                       <div>
                         <h4 className="font-medium mb-2">Common Symptoms:</h4>
                         <div className="flex flex-wrap gap-1">
-                          {test.symptoms.map((symptom, i) => (
-                            <Badge key={i} variant="outline" className="text-xs">
+                          {test.symptoms.map((symptom, i) => <Badge key={i} variant="outline" className="text-xs">
                               {symptom}
-                            </Badge>
-                          ))}
+                            </Badge>)}
                         </div>
                       </div>
                       <Button className="w-full">Compare Providers</Button>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
@@ -187,8 +172,6 @@ const VitaminDeficiencyPage = () => {
         </section>
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default VitaminDeficiencyPage;
