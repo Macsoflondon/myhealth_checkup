@@ -5,37 +5,29 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Activity, Zap, Shield, Heart } from 'lucide-react';
-
 const GutHealthPage = () => {
-  const gutTests = [
-    {
-      name: "Basic Gut Health",
-      description: "Essential digestive markers",
-      price: "From £89",
-      markers: ["Calprotectin", "Gut inflammation", "Basic microbiome"]
-    },
-    {
-      name: "Comprehensive Stool Analysis",
-      description: "Complete digestive function assessment",
-      price: "From £179",
-      markers: ["Microbiome diversity", "Parasites", "Yeast", "Inflammation", "Digestion"]
-    },
-    {
-      name: "Food Intolerance Panel",
-      description: "IgG antibody testing for 200+ foods",
-      price: "From £149",
-      markers: ["Food sensitivities", "IgG antibodies", "Elimination guide"]
-    },
-    {
-      name: "Advanced Gut Microbiome",
-      description: "DNA sequencing of gut bacteria",
-      price: "From £299",
-      markers: ["Bacterial diversity", "Beneficial bacteria", "Pathogenic bacteria", "Personalised recommendations"]
-    }
-  ];
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const gutTests = [{
+    name: "Basic Gut Health",
+    description: "Essential digestive markers",
+    price: "From £89",
+    markers: ["Calprotectin", "Gut inflammation", "Basic microbiome"]
+  }, {
+    name: "Comprehensive Stool Analysis",
+    description: "Complete digestive function assessment",
+    price: "From £179",
+    markers: ["Microbiome diversity", "Parasites", "Yeast", "Inflammation", "Digestion"]
+  }, {
+    name: "Food Intolerance Panel",
+    description: "IgG antibody testing for 200+ foods",
+    price: "From £149",
+    markers: ["Food sensitivities", "IgG antibodies", "Elimination guide"]
+  }, {
+    name: "Advanced Gut Microbiome",
+    description: "DNA sequencing of gut bacteria",
+    price: "From £299",
+    markers: ["Bacterial diversity", "Beneficial bacteria", "Pathogenic bacteria", "Personalised recommendations"]
+  }];
+  return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
@@ -111,8 +103,7 @@ const GutHealthPage = () => {
               <p className="text-xl text-muted-foreground">From basic screening to comprehensive analysis</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
-              {gutTests.map((test, index) => (
-                <Card key={index} className="relative">
+              {gutTests.map((test, index) => <Card key={index} className="relative">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-xl">{test.name}</CardTitle>
@@ -125,72 +116,23 @@ const GutHealthPage = () => {
                       <div>
                         <h4 className="font-medium mb-2">What's Analyzed:</h4>
                         <div className="flex flex-wrap gap-1">
-                          {test.markers.map((marker, i) => (
-                            <Badge key={i} variant="outline" className="text-xs">
+                          {test.markers.map((marker, i) => <Badge key={i} variant="outline" className="text-xs">
                               {marker}
-                            </Badge>
-                          ))}
+                            </Badge>)}
                         </div>
                       </div>
                       <Button className="w-full">Compare Providers</Button>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
 
         {/* Common Gut Issues */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Common Gut Health Issues</h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">IBS Symptoms</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Bloating and gas</li>
-                    <li>• Abdominal pain</li>
-                    <li>• Irregular bowel movements</li>
-                    <li>• Food sensitivities</li>
-                  </ul>
-                </Card>
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">Microbiome Imbalance</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Frequent infections</li>
-                    <li>• Mood disorders</li>
-                    <li>• Skin problems</li>
-                    <li>• Weight management issues</li>
-                  </ul>
-                </Card>
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">Food Intolerances</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Digestive discomfort after eating</li>
-                    <li>• Headaches or migraines</li>
-                    <li>• Joint pain</li>
-                    <li>• Fatigue after meals</li>
-                  </ul>
-                </Card>
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">Leaky Gut Syndrome</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Chronic inflammation</li>
-                    <li>• Autoimmune reactions</li>
-                    <li>• Nutrient deficiencies</li>
-                    <li>• Mental fog</li>
-                  </ul>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
+        
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default GutHealthPage;
