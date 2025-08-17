@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users } from "lucide-react";
+import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, ArrowLeft } from "lucide-react";
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 
@@ -48,6 +48,15 @@ const ProviderProfilePage = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button variant="outline" asChild className="gap-2">
+            <Link to="/#providers">
+              <ArrowLeft className="w-4 h-4" />
+              Back to All Providers
+            </Link>
+          </Button>
+        </div>
         {/* Hero Section */}
         <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
           <div className="flex flex-col md:flex-row items-start gap-6">

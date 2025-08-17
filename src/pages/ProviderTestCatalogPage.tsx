@@ -126,11 +126,18 @@ const ProviderTestCatalogPage = () => {
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6">
           <Link 
+            to="/#providers"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            All Providers
+          </Link>
+          <span className="text-muted-foreground">/</span>
+          <Link 
             to={`/provider/${providerId}`}
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to {provider.name}
+            {provider.name}
           </Link>
         </nav>
 

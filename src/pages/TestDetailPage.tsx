@@ -116,6 +116,13 @@ const TestDetailPage = () => {
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-sm">
           <Link 
+            to="/#providers"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            All Providers
+          </Link>
+          <span className="text-muted-foreground">/</span>
+          <Link 
             to={`/provider/${providerId}`}
             className="text-muted-foreground hover:text-foreground"
           >
