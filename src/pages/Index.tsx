@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -16,7 +17,11 @@ import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
 import ClinicMap from "@/components/ClinicMap";
 import CookieConsent from "@/components/compliance/CookieConsent";
+import { VideoUpload } from "@/components/VideoUpload";
+import { VideoPlayer } from "@/components/VideoPlayer";
 const Index = () => {
+  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -93,6 +98,41 @@ const Index = () => {
         <HealthBenefitsInfographic />
         <FounderStory />
         <PartnerShowcase />
+        
+        {/* Video Section */}
+        <section className="py-12 bg-muted/50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-foreground mb-4">
+                  Featured Health Video
+                </h2>
+                <p className="text-muted-foreground">
+                  Upload and share health-related videos with our community
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">Upload Video</h3>
+                  <VideoUpload onVideoUploaded={setUploadedVideoUrl} />
+                </div>
+                
+                {uploadedVideoUrl && (
+                  <div>
+                    <h3 className="text-xl font-semibold mb-4">Your Video</h3>
+                    <VideoPlayer 
+                      src={uploadedVideoUrl} 
+                      title="Uploaded Health Video"
+                      controls={true}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+        
         <HealthResources />
         <CallToAction />
       </main>
