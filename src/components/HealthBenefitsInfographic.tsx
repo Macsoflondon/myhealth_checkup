@@ -78,45 +78,6 @@ const HealthBenefitsInfographic = (): JSX.Element => {
     color: "border-amber-500",
     detail: "Customer satisfaction rate with improved quality of life after health optimisation"
   }];
-
-  return (
-    <section className="py-16 bg-gradient-to-br from-health-50 to-wellness-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-health-700">The Power of Proactive Health</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover how regular health testing can transform your wellbeing and add years to your life.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
-          {benefits.map((benefit, index) => (
-            <BenefitCard
-              key={index}
-              {...benefit}
-              isActive={activeCard === index}
-              onClick={() => setActiveCard(index)}
-            />
-          ))}
-        </div>
-
-        <div className="max-w-4xl mx-auto">
-          <Card className="border-2 border-health-200">
-            <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-bold mb-4 text-health-700">
-                {benefits[activeCard].title} Spotlight
-              </h3>
-              <p className="text-lg text-gray-600 mb-6">
-                {benefits[activeCard].detail}
-              </p>
-              <Button size="lg" className="bg-health-600 hover:bg-health-700">
-                Start Your Health Journey
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </section>
-  );
+  return;
 };
 export default HealthBenefitsInfographic;

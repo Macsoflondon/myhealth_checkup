@@ -112,21 +112,17 @@ const TestCategories = (): JSX.Element => {
     testCount: 16,
     providerCount: 10
   }];
-
-  return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-health-700">Health Test Categories</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+  return <section className="bg-[#081129] py-[14px]">
+      <div className="container mx-auto px-4 bg-[#081129]">
+        <div className="text-center mb-12 bg-[#081129]">
+          <h2 className="text-3xl font-bold mb-4 text-[#dc27a0]">Test Categories</h2>
+          <p className="text-xl max-w-3xl mx-auto text-white">
             Explore our comprehensive range of health tests, carefully curated from the UK's most trusted providers.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {categories.map((category, index) => (
-            <CategoryCard key={index} {...category} />
-          ))}
+          {categories.map((category, index) => <CategoryCard key={index} {...category} />)}
         </div>
 
         <div className="text-center mt-12">
@@ -138,7 +134,6 @@ const TestCategories = (): JSX.Element => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
 export default TestCategories;

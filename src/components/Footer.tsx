@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -33,7 +32,6 @@ const Footer = () => {
     name: "Gut Health",
     link: "/compare?category=gut-health"
   }];
-  
   const informationSections = [{
     name: "How It Works",
     link: "/how-it-works"
@@ -47,7 +45,6 @@ const Footer = () => {
     name: "Contact Us",
     link: "/contact"
   }];
-  
   const companySections = [{
     name: "About Us",
     link: "/about"
@@ -61,150 +58,91 @@ const Footer = () => {
     name: "Partners",
     link: "/partners"
   }];
-  
   const socialLinks = [{
-    icon: <Facebook size={24} />,
+    icon: <Facebook size={20} />,
     name: "Facebook",
     url: "https://facebook.com/myhealthhub"
   }, {
-    icon: <Twitter size={24} />,
+    icon: <Twitter size={20} />,
     name: "Twitter",
     url: "https://twitter.com/myhealthhub"
   }, {
-    icon: <Instagram size={24} />,
+    icon: <Instagram size={20} />,
     name: "Instagram",
     url: "https://instagram.com/myhealthhub"
   }, {
-    icon: <Youtube size={24} />,
+    icon: <Youtube size={20} />,
     name: "YouTube",
     url: "https://youtube.com/myhealthhub"
   }];
-
-  return (
-    <footer className="bg-background border-t border-border py-12 lg:py-16">
-      <div className="container mx-auto px-4 lg:px-6">
-        {/* Main footer content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
-          {/* Company section */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link to="/" className="inline-flex items-center gap-3 mb-6">
-              <div className="h-10 w-10 flex items-center justify-center">
-                <img 
-                  src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" 
-                  alt="myhealth checkup Logo" 
-                  className="h-10 w-10 rounded-lg" 
-                />
+  return <footer className="pt-16 pb-8 border-t bg-[#081129]">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div>
+            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+              <div className="h-8 w-8 flex items-center justify-center">
+                <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
               </div>
-              <span className="text-xl font-bold">
-                <span className="text-primary">myhealth</span> <span className="text-accent">checkup</span>
+              <span className="text-lg font-bold">
+                <span className="text-[#22c0d4]">myhealth</span> <span className="text-wellness-600">checkup</span>
               </span>
             </Link>
-            
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-sm">
-              MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers. Company No. 16589056
-            </p>
-            
-            <div className="flex space-x-4">
-              {socialLinks.map((social, index) => (
-                <a 
-                  key={index} 
-                  href={social.url} 
-                  className="text-muted-foreground hover:text-primary transition-colors p-2 hover:bg-accent rounded-lg"
-                  aria-label={`Follow us on ${social.name}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
+            <p className="mb-4 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK’s only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers. Company No. 16589056</p>
+            <div className="flex space-x-4 rounded decoration-white ">
+              {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-gray-400 hover:text-health-600 transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
-          {/* Services section */}
-          <div>
-            <h3 className="font-semibold text-lg mb-6 text-foreground">Our Services</h3>
-            <ul className="space-y-3">
-              {serviceSections.map((service, index) => (
-                <li key={index}>
-                  <Link 
-                    to={service.link} 
-                    className="text-muted-foreground hover:text-primary transition-colors text-sm hover:underline"
-                  >
+          <div className="text-[t] text-[#dc27a0] font-medium">
+            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">Our Services</h3>
+            <ul className="space-y-2" aria-labelledby="footer-services">
+              {serviceSections.map((service, index) => <li key={index}>
+                  <Link to={service.link} className="text-white hover:text-white transition-colors">
                     {service.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
-          {/* Information section */}
           <div>
-            <h3 className="font-semibold text-lg mb-6 text-foreground">Information</h3>
-            <ul className="space-y-3">
-              {informationSections.map((info, index) => (
-                <li key={index}>
-                  <Link 
-                    to={info.link} 
-                    className="text-muted-foreground hover:text-primary transition-colors text-sm hover:underline"
-                  >
+            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">Information</h3>
+            <ul className="space-y-2" aria-labelledby="footer-info">
+              {informationSections.map((info, index) => <li key={index}>
+                  <Link to={info.link} className="text-white hover:text-white transition-colors">
                     {info.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
-          {/* Company section */}
           <div>
-            <h3 className="font-semibold text-lg mb-6 text-foreground">Company</h3>
-            <ul className="space-y-3">
-              {companySections.map((company, index) => (
-                <li key={index}>
-                  <Link 
-                    to={company.link} 
-                    className="text-muted-foreground hover:text-primary transition-colors text-sm hover:underline"
-                  >
+            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">Company</h3>
+            <ul className="space-y-2" aria-labelledby="footer-company">
+              {companySections.map((company, index) => <li key={index}>
+                  <Link to={company.link} className="text-white hover:text-white transition-colors">
                     {company.name}
                   </Link>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
         </div>
 
-        {/* Bottom section */}
-        <div className="border-t border-border pt-8">
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-            <p className="text-muted-foreground text-sm text-center lg:text-left">
-              © {currentYear} my health checkup. Empowering informed health decisions across the UK. All rights reserved.
+        <div className="border-t border-gray-200 pt-8 mt-8">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white ">
+            <p className="text-white font-normal">
+              ©️2025 my health checkup, Empowering informed health decisions across the UK. All rights reserved.
             </p>
-            
-            <nav className="flex flex-wrap justify-center lg:justify-end gap-x-6 gap-y-2">
-              <Link 
-                to="/accessibility" 
-                className="text-muted-foreground hover:text-primary transition-colors text-sm hover:underline"
-              >
-                Accessibility
-              </Link>
-              <Link 
-                to="/sitemap" 
-                className="text-muted-foreground hover:text-primary transition-colors text-sm hover:underline"
-              >
-                Sitemap
-              </Link>
-              <Link 
-                to="/cookies" 
-                className="text-muted-foreground hover:text-primary transition-colors text-sm hover:underline"
-              >
-                Cookie Policy
-              </Link>
+            <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+              <Link to="/accessibility" className="hover:text-white ">Accessibility</Link>
+              <Link to="/sitemap" className="hover:text-health-600 transition-colors">Sitemap</Link>
+              <Link to="/cookies" className="hover:text-health-600 transition-colors">Cookie Policy</Link>
             </nav>
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
