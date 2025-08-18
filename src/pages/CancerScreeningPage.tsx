@@ -1,10 +1,11 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Clock, Users, CheckCircle } from 'lucide-react';
+import { Shield, Clock, Users, CheckCircle, Dna, ArrowRight } from 'lucide-react';
 
 const CancerScreeningPage = () => {
   const screeningTypes = [
@@ -40,27 +41,34 @@ const CancerScreeningPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Cancer Screening Tests | Early Detection & Prevention | Compare UK Providers</title>
+        <meta name="description" content="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection from top clinics." />
+      </Helmet>
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+        <section className="bg-gradient-to-br from-red-50 to-pink-50 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">Early Detection Saves Lives</Badge>
+              <div className="bg-red-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <Dna className="h-8 w-8 text-white" />
+              </div>
+              <Badge className="mb-4 bg-red-100 text-red-800">Early Detection</Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Cancer Screening Tests
+                Cancer Screening & Early Detection
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Advanced screening tests for early cancer detection. UKAS-accredited labs, 
-                expert-reviewed results, and comprehensive support for UK adults aged 30-60.
+                Comprehensive cancer screening tests for early detection and peace of mind. 
+                Regular screening saves lives - start your prevention journey today.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2 bg-red-500 hover:bg-red-600">
                   <Shield className="h-5 w-5" />
                   Compare Tests
                 </Button>
-                <Button variant="outline" size="lg">
-                  Speak to Expert
+                <Button variant="outline" size="lg" className="border-red-500 text-red-700 hover:bg-red-50">
+                  Learn More
                 </Button>
               </div>
             </div>
@@ -132,47 +140,17 @@ const CancerScreeningPage = () => {
           </div>
         </section>
 
-        {/* Who Should Get Screened */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">Who Should Consider Cancer Screening?</h2>
-              <div className="space-y-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold mb-2">Adults 30-60 Years</h3>
-                        <p className="text-muted-foreground">Health-conscious individuals looking for preventive care and early detection</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold mb-2">Family History</h3>
-                        <p className="text-muted-foreground">Those with family history of cancer or genetic predisposition</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold mb-2">Lifestyle Risk Factors</h3>
-                        <p className="text-muted-foreground">Smokers, heavy drinkers, or those with other risk factors</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+        {/* Call to Action */}
+        <section className="py-16 bg-red-50">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold mb-4">Start Your Cancer Prevention Journey</h2>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Early detection saves lives. Compare cancer screening tests from trusted UK providers and take control of your health.
+            </p>
+            <Button size="lg" className="gap-2 bg-red-500 hover:bg-red-600">
+              <ArrowRight className="h-5 w-5" />
+              Compare All Cancer Tests
+            </Button>
           </div>
         </section>
       </main>

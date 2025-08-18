@@ -1,10 +1,11 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Activity, Zap, Shield, Heart } from 'lucide-react';
+import { Activity, Zap, Shield, Heart, Droplets, ArrowRight } from 'lucide-react';
 const GutHealthPage = () => {
   const gutTests = [{
     name: "Basic Gut Health",
@@ -27,14 +28,23 @@ const GutHealthPage = () => {
     price: "From £299",
     markers: ["Bacterial diversity", "Beneficial bacteria", "Pathogenic bacteria", "Personalised recommendations"]
   }];
-  return <div className="min-h-screen flex flex-col">
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Gut Health & Microbiome Testing | Compare UK Providers | MyHealthHub</title>
+        <meta name="description" content="Compare gut health tests from top UK providers. Microbiome analysis, food intolerance testing, and digestive health screening from £89." />
+      </Helmet>
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-purple-50 to-indigo-50 py-16">
+        <section className="bg-gradient-to-br from-amber-50 to-orange-50 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-purple-100 text-purple-800">Digestive Health</Badge>
+              <div className="bg-amber-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <Droplets className="h-8 w-8 text-white" />
+              </div>
+              <Badge className="mb-4 bg-amber-100 text-amber-800">Digestive Health</Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Gut Health & Microbiome Testing
               </h1>
@@ -43,12 +53,12 @@ const GutHealthPage = () => {
                 food intolerances, and gut-brain connection for UK adults aged 30-60.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
                   <Activity className="h-5 w-5" />
-                  Test My Gut
+                  Compare Tests
                 </Button>
-                <Button variant="outline" size="lg">
-                  Symptoms Guide
+                <Button variant="outline" size="lg" className="border-amber-500 text-amber-700 hover:bg-amber-50">
+                  Learn More
                 </Button>
               </div>
             </div>
@@ -129,10 +139,22 @@ const GutHealthPage = () => {
           </div>
         </section>
 
-        {/* Common Gut Issues */}
-        
+        {/* Call to Action */}
+        <section className="py-16 bg-amber-50">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold mb-4">Ready to Test Your Gut Health?</h2>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
+            </p>
+            <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
+              <ArrowRight className="h-5 w-5" />
+              Compare All Gut Tests
+            </Button>
+          </div>
+        </section>
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
 export default GutHealthPage;
