@@ -48,7 +48,16 @@ const NewHero = () => {
       handleSearch();
     }
   };
-  const popularSearches = ["Thyroid Function", "Hormone Health", "Vitamin D", "Full Blood Count", "Cholesterol", "Diabetes Check", "Iron Levels", "B12 & Folate"];
+  const popularSearches = [
+    { name: "Thyroid Function", category: "hormones" },
+    { name: "Hormone Health", category: "hormones" },
+    { name: "Vitamin D", category: "vitamins" },
+    { name: "Full Blood Count", category: "blood-tests" },
+    { name: "Cholesterol", category: "heart-health" },
+    { name: "Diabetes Check", category: "diabetes" },
+    { name: "Iron Levels", category: "blood-tests" },
+    { name: "B12 & Folate", category: "vitamins" }
+  ];
   return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -182,10 +191,10 @@ const NewHero = () => {
                   {popularSearches.map((search, index) => (
                     <button 
                       key={index} 
-                      onClick={() => setSearchTerm(search)} 
+                      onClick={() => navigate(`/tests/${search.category}`)} 
                       className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700"
                     >
-                      {search}
+                      {search.name}
                     </button>
                   ))}
                 </div>
