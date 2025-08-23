@@ -4,7 +4,12 @@ const MediaSpotlight = () => {
   useEffect(() => {
     const track = document.querySelector('.marquee__track');
     if (track) {
-      track.innerHTML += track.innerHTML;
+      // Safely duplicate slides using cloneNode instead of innerHTML
+      const slides = Array.from(track.children);
+      slides.forEach(slide => {
+        const clone = slide.cloneNode(true);
+        track.appendChild(clone);
+      });
     }
   }, []);
 
