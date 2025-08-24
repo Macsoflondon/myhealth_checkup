@@ -2,24 +2,11 @@
 // Re-export all data from the individual files
 import { compareCategories } from './categories';
 import { providers } from './providers';
-import { bloodTests } from './bloodTests';
-
-import { hormones } from './hormones';
-import { vitamins } from './vitamins';
-import { cancerScreening } from './cancerScreening';
-import { diabetes } from './diabetes';
-import { gutHealth } from './gutHealth';
+import { mappedTestData } from './mappedTestData';
 import { detailedProviders } from './detailedProviders';
 
-// Combine all test data into the compareData array
-export const compareData = [
-  ...bloodTests,
-  ...hormones,
-  ...vitamins,
-  ...cancerScreening,
-  ...diabetes,
-  ...gutHealth
-];
+// Use the real mapped test data
+export const compareData = mappedTestData;
 
 // Re-export categories, providers, and detailed provider info
 export { compareCategories, providers, detailedProviders };
