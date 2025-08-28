@@ -83,9 +83,14 @@ const NewHero = () => {
       
       <div className="relative z-10 w-full py-0 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center py-[20px] my-[20px]">
-          {/* Full Logo */}
+          {/* Header Video */}
           <div className="mb-8">
-            <img src="/lovable-uploads/fb38b3cb-2951-43b1-b026-3fc3b7493fc6.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto transform scale-125" />
+            <div style={{position: "relative", width: "100%", height: "0", paddingTop: "56.2500%", paddingBottom: "0", boxShadow: "0 2px 8px 0 rgba(63,69,81,0.16)", marginTop: "1.6em", marginBottom: "0.9em", overflow: "hidden", borderRadius: "8px", willChange: "transform"}}>
+              <iframe loading="lazy" style={{position: "absolute", width: "100%", height: "100%", top: "0", left: "0", border: "none", padding: "0", margin: "0"}}
+                src="https://www.canva.com/design/DAGxWtgm7YE/uCSebdMGdcct_CQdC407Tw/watch?embed" allowFullScreen allow="fullscreen">
+              </iframe>
+            </div>
+            <a href="https://www.canva.com/design/DAGxWtgm7YE/uCSebdMGdcct_CQdC407Tw/watch?utm_content=DAGxWtgm7YE&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">Colorful Art & Design Gallery Intro Video</a>
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
