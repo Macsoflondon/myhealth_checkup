@@ -11,74 +11,67 @@ import {
   Stethoscope 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getCategoryCSSClasses } from "@/data/categoryColors";
 
 const CategoryFilters = () => {
   const navigate = useNavigate();
 
   const categories = [
     {
-      id: "general",
+      id: "general-health",
       name: "General Health",
       icon: Stethoscope,
       description: "Comprehensive health checks and blood panels",
-      tests: 45,
-      color: "text-blue-600 bg-blue-100"
+      tests: 45
     },
     {
       id: "mens-health",
       name: "Men's Health",
       icon: User,
       description: "Testosterone, prostate, and male-specific tests",
-      tests: 28,
-      color: "text-indigo-600 bg-indigo-100"
+      tests: 28
     },
     {
       id: "womens-health",
       name: "Women's Health & Fertility",
       icon: Users,
       description: "Hormones, fertility, and reproductive health",
-      tests: 32,
-      color: "text-pink-600 bg-pink-100"
+      tests: 32
     },
     {
       id: "heart-health",
       name: "Heart Health",
       icon: Heart,
       description: "Cholesterol, lipids, and cardiovascular markers",
-      tests: 18,
-      color: "text-red-600 bg-red-100"
+      tests: 18
     },
     {
       id: "cancer-screening",
       name: "Cancer Screening",
       icon: Shield,
       description: "Early detection and tumor marker tests",
-      tests: 22,
-      color: "text-purple-600 bg-purple-100"
+      tests: 22
     },
     {
-      id: "hormone-health",
+      id: "hormones",
       name: "Hormone Health",
       icon: Zap,
       description: "Thyroid, cortisol, and endocrine function",
-      tests: 35,
-      color: "text-yellow-600 bg-yellow-100"
+      tests: 35
     },
     {
       id: "sexual-health",
       name: "Sexual Health",
       icon: Baby,
       description: "STI screening and sexual wellness tests",
-      tests: 15,
-      color: "text-green-600 bg-green-100"
+      tests: 15
     },
     {
-      id: "nutrition",
+      id: "vitamins",
       name: "Vitamin & Nutrition Testing",
       icon: Activity,
       description: "Vitamins, minerals, and nutritional deficiencies",
-      tests: 25,
-      color: "text-orange-600 bg-orange-100"
+      tests: 25
     }
   ];
 
@@ -101,6 +94,7 @@ const CategoryFilters = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category) => {
             const IconComponent = category.icon;
+            const colors = getCategoryCSSClasses(category.id);
             return (
               <Card 
                 key={category.id} 
@@ -108,8 +102,8 @@ const CategoryFilters = () => {
                 onClick={() => handleCategoryClick(category.id)}
               >
                 <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 rounded-full ${category.color} mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="w-8 h-8" />
+                  <div className={`w-16 h-16 rounded-full ${colors.primary} mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                    <IconComponent className={`w-8 h-8 ${colors.icon}`} />
                   </div>
                   
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">

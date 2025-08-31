@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Heart, Activity, Droplets, Dna, Apple, ArrowRight, TestTube, User, UserCheck, FlaskConical, Weight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { getCategoryCSSClasses } from "@/data/categoryColors";
 interface CategoryCardProps {
   title: string;
   description: string;
@@ -40,74 +41,74 @@ const CategoryCard = ({
 };
 const TestCategories = (): JSX.Element => {
   const categories = [{
+    categoryId: "cancer-screening",
     title: "Cancer Screening",
     description: "Comprehensive early detection tests for prostate, bowel, breast, cervical, and other common cancers across multiple providers.",
     icon: <Dna className="h-6 w-6 text-white" />,
-    color: "bg-red-500",
     link: "/tests/cancer",
     testCount: 15,
     providerCount: 8
   }, {
+    categoryId: "heart-health",
     title: "Heart Health",
     description: "Complete cardiovascular assessments including cholesterol profiles, cardiac risk assessments, and heart health monitoring.",
     icon: <Heart className="h-6 w-6 text-white" />,
-    color: "bg-health-600",
     link: "/tests/heart",
     testCount: 12,
     providerCount: 7
   }, {
+    categoryId: "hormones",
     title: "Hormone Health",
     description: "Comprehensive hormone testing including thyroid function, cortisol, reproductive hormones, and hormone optimization.",
     icon: <FlaskConical className="h-6 w-6 text-white" />,
-    color: "bg-purple-600",
     link: "/compare?category=hormones",
     testCount: 18,
     providerCount: 6
   }, {
+    categoryId: "mens-health",
     title: "Men's Health",
     description: "Specialised testing for men including testosterone levels, prostate health, fertility assessments, and male-specific wellness checks.",
     icon: <User className="h-6 w-6 text-white" />,
-    color: "bg-blue-600",
     link: "/tests/mens-health",
     testCount: 14,
     providerCount: 9
   }, {
+    categoryId: "womens-health",
     title: "Women's Health & Fertility",
     description: "Comprehensive women's health testing including reproductive hormones, fertility assessments, PCOS screening, and gynecological health.",
     icon: <UserCheck className="h-6 w-6 text-white" />,
-    color: "bg-pink-500",
     link: "/tests/womens-health",
     testCount: 20,
     providerCount: 8
   }, {
+    categoryId: "diabetes",
     title: "Diabetes & Blood Sugar",
     description: "Complete diabetes screening and monitoring including HbA1c, glucose tolerance tests, and insulin resistance assessments.",
     icon: <Activity className="h-6 w-6 text-white" />,
-    color: "bg-purple-500",
     link: "/tests/diabetes",
     testCount: 8,
     providerCount: 6
   }, {
+    categoryId: "general-health",
     title: "Gut Health & Digestion",
     description: "Comprehensive digestive health testing including food intolerances, gut microbiome analysis, and inflammatory markers.",
     icon: <Droplets className="h-6 w-6 text-white" />,
-    color: "bg-amber-500",
     link: "/tests/gut",
     testCount: 11,
     providerCount: 5
   }, {
+    categoryId: "vitamins",
     title: "Vitamin & Nutrient Testing",
     description: "Complete nutritional assessments including Vitamin D, B12, Iron, Folate, and comprehensive micronutrient panels.",
     icon: <Apple className="h-6 w-6 text-white" />,
-    color: "bg-wellness-600",
     link: "/compare?category=vitamins",
     testCount: 13,
     providerCount: 7
   }, {
+    categoryId: "blood-tests",
     title: "Comprehensive Blood Panels",
     description: "Full blood count and biochemistry panels providing complete health overviews with detailed biomarker analysis.",
     icon: <TestTube className="h-6 w-6 text-white" />,
-    color: "bg-teal-500",
     link: "/compare?category=blood-tests",
     testCount: 16,
     providerCount: 10
@@ -122,7 +123,16 @@ const TestCategories = (): JSX.Element => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {categories.map((category, index) => <CategoryCard key={index} {...category} />)}
+          {categories.map((category, index) => {
+            const colors = getCategoryCSSClasses(category.categoryId);
+            return (
+              <CategoryCard 
+                key={index} 
+                {...category} 
+                color={colors.primary}
+              />
+            );
+          })}
         </div>
 
         <div className="text-center mt-12">
