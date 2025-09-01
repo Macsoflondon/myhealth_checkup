@@ -1,7 +1,8 @@
 
-import { Link } from "react-router-dom";
+import { MegaMenu } from "./MegaMenu";
+import { MobileMegaMenu } from "./MobileMegaMenu";
 
-// Navigation items matching Medichecks layout
+// Keep the simple array export for backwards compatibility
 export const navigationItems = [
   { name: "Find your test", path: "/assisted-test-finder" },
   { name: "Most popular tests", path: "/most-popular-tests" },
@@ -19,21 +20,13 @@ export const navigationItems = [
 interface NavigationItemsProps {
   onItemClick?: () => void;
   className?: string;
+  isMobile?: boolean;
 }
 
-export const NavigationItems = ({ onItemClick, className = "" }: NavigationItemsProps) => {
-  return (
-    <nav className={className} aria-label="Main Navigation">
-      {navigationItems.map((item) => (
-        <Link 
-          key={item.path}
-          to={item.path} 
-          className="text-gray-700 hover:text-primary transition-colors font-medium text-sm"
-          onClick={onItemClick}
-        >
-          {item.name}
-        </Link>
-      ))}
-    </nav>
-  );
+export const NavigationItems = ({ onItemClick, className = "", isMobile = false }: NavigationItemsProps) => {
+  if (isMobile) {
+    return <MobileMegaMenu onItemClick={onItemClick} className={className} />;
+  }
+  
+  return <MegaMenu onItemClick={onItemClick} className={className} />;
 };

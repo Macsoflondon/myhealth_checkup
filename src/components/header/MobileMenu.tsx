@@ -33,6 +33,7 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
             <NavigationItems 
               onItemClick={toggleMenu} 
               className="flex flex-col space-y-1 mb-4"
+              isMobile={true}
             />
             <UserMenu isMobile onItemClick={toggleMenu} />
           </div>

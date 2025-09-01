@@ -43,6 +43,8 @@ import FertilityTestsPageWrapper from "./pages/FertilityTestsPage";
 import AtHomeTestsPage from "./pages/AtHomeTestsPage";
 import WellnessPage from "./pages/WellnessPage";
 import ConditionsPage from "./pages/ConditionsPage";
+import SportsPerformancePage from "./pages/SportsPerformancePage";
+import ThyroidPage from "./pages/ThyroidPage";
 
 const queryClient = new QueryClient();
 
@@ -95,11 +97,12 @@ const App = () => (
               <Route path="/at-home-tests" element={<AtHomeTestsPage />} />
               <Route path="/wellness" element={<WellnessPage />} />
               <Route path="/conditions" element={<ConditionsPage />} />
+              <Route path="/sports-performance" element={<SportsPerformancePage />} />
+              <Route path="/thyroid" element={<ThyroidPage />} />
               <Route path="/mens-health" element={<MensHealthPage />} />
               <Route path="/womens-health" element={<WomensHealthPage />} />
-              <Route path="/thyroid" element={<HeartHealthPage />} />
-              <Route path="/sports-performance" element={<HeartHealthPage />} />
               <Route path="/health-blog" element={<HealthBlogPage />} />
+              <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

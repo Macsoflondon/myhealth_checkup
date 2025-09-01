@@ -35,14 +35,14 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <>
             <Link 
               to="/dashboard?tab=favorites"
-              className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
+              className="flex items-center gap-2 text-gray-600 hover:text-primary py-2"
               onClick={onItemClick}
             >
               <Heart className="h-4 w-4" /> My Favorites
             </Link>
             <Link 
               to="/dashboard?tab=orders"
-              className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
+              className="flex items-center gap-2 text-gray-600 hover:text-primary py-2"
               onClick={onItemClick}
             >
               <ShoppingBag className="h-4 w-4" /> My Orders
@@ -62,7 +62,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <>
             <Button 
               variant="outline" 
-              className="w-full border-health-500 text-health-600 hover:bg-health-50"
+              className="w-full border-primary text-primary hover:bg-primary/5"
               onClick={() => {
                 navigate("/auth");
                 if (onItemClick) onItemClick();
@@ -71,9 +71,9 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
               Sign In
             </Button>
             <Button 
-              className="w-full bg-health-600 hover:bg-health-700"
+              className="w-full bg-primary hover:bg-primary/90"
               onClick={() => {
-                navigate("/find-test");
+                navigate("/assisted-test-finder");
                 if (onItemClick) onItemClick();
               }}
             >
@@ -88,7 +88,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
   return user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="border-health-500 text-health-600 hover:bg-health-50">
+        <Button variant="outline" className="border-primary text-primary hover:bg-primary/5">
           <User className="h-4 w-4 mr-2" /> Account
         </Button>
       </DropdownMenuTrigger>
@@ -109,14 +109,14 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
     <>
       <Button 
         variant="outline" 
-        className="border-health-500 text-health-600 hover:bg-health-50"
+        className="border-primary text-primary hover:bg-primary/5"
         onClick={() => navigate("/auth")}
       >
         Sign In
       </Button>
       <Button 
-        className="bg-health-600 hover:bg-health-700"
-        onClick={() => navigate("/find-test")}
+        className="bg-primary hover:bg-primary/90"
+        onClick={() => navigate("/assisted-test-finder")}
       >
         Get Started
       </Button>
