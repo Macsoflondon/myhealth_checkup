@@ -1,9 +1,9 @@
 
 import { Link } from "react-router-dom";
 
-// Navigation items for better maintainability
+// Navigation items matching Medichecks layout
 export const navigationItems = [
-  { name: "Find your test", path: "/find-test" },
+  { name: "Find your test", path: "/assisted-test-finder" },
   { name: "Most popular tests", path: "/most-popular-tests" },
   { name: "At-home tests", path: "/at-home-tests" },
   { name: "Women's", path: "/womens-health" },
@@ -28,7 +28,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         <Link 
           key={item.path}
           to={item.path} 
-          className="text-gray-600 hover:text-health-600 transition-colors font-medium"
+          className="text-gray-700 hover:text-primary transition-colors font-medium text-sm"
           onClick={onItemClick}
         >
           {item.name}

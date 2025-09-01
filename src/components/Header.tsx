@@ -5,9 +5,6 @@ import { Logo } from "./header/Logo";
 import { NavigationItems } from "./header/NavigationItems";
 import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
-import PromoBanner from "./PromoBanner";
-import CategoryFilters from "./CategoryFilters";
-import TrustSignals from "./TrustSignals";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +26,6 @@ const Header = () => {
   }, []);
   return (
     <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${isScrolled ? 'shadow-md' : 'shadow-sm'}`}>
-      <PromoBanner />
       <div className="container mx-auto px-4 py-3 lg:py-4 flex justify-between items-center bg-white">
         <Logo />
 
@@ -41,8 +37,6 @@ const Header = () => {
           <UserMenu />
         </div>
       </div>
-      <CategoryFilters />
-      <TrustSignals />
     </header>
   );
 };
