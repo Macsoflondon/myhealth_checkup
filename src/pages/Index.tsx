@@ -19,6 +19,8 @@ import ClinicMap from "@/components/ClinicMap";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { VideoUpload } from "@/components/VideoUpload";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import MostPopularTests from "@/components/MostPopularTests";
+import UKASBanner from "@/components/UKASBanner";
 const Index = () => {
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
   
@@ -86,11 +88,13 @@ const Index = () => {
         </script>
       </Helmet>
       
+      <UKASBanner />
       <Header />
       <main className="flex-grow">
         <NewHero />
         <HowItWorks />
         <MediaSpotlight />
+        <MostPopularTests />
         <TestCategories />
         <FeaturedProviders />
         <ClinicMap />

@@ -38,6 +38,8 @@ import FindClinicPage from "./pages/FindClinicPage";
 import ProviderProfilePage from "./pages/ProviderProfilePage";
 import ProviderTestCatalogPage from "./pages/ProviderTestCatalogPage";
 import TestDetailPage from "./pages/TestDetailPage";
+import MostPopularTestsPage from "./pages/MostPopularTestsPage";
+import FertilityTestsPageWrapper from "./pages/FertilityTestsPage";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +85,8 @@ const App = () => (
               <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
               <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
               <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
+              <Route path="/tests/fertility" element={<FertilityTestsPageWrapper />} />
+              <Route path="/popular-tests" element={<MostPopularTestsPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

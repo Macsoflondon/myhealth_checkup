@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import UKASBanner from '@/components/UKASBanner';
 
 type Step = 'welcome' | 'gender' | 'concerns' | 'results';
 
@@ -195,7 +196,10 @@ export const AssistedTestFinder = () => {
   if (currentStep === 'welcome') {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Header />
+        <div className="bg-gradient-to-b from-pink-100 to-white">
+          <UKASBanner />
+          <Header />
+        </div>
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
             <h1 className="text-5xl font-bold text-gray-900 mb-8">
@@ -217,6 +221,7 @@ export const AssistedTestFinder = () => {
   if (currentStep === 'gender') {
     return (
       <div className="min-h-screen bg-gradient-to-b from-pink-100 to-white">
+        <UKASBanner />
         <Header />
         
         {/* Navigation Controls */}
