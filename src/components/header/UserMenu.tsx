@@ -1,16 +1,8 @@
 
-import { useNavigate } from "react-router-dom";
-import { Heart, LogOut, ShoppingBag, User } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { User, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
-import { toast } from "@/components/ui/sonner";
 
 interface UserMenuProps {
   isMobile?: boolean;
@@ -18,111 +10,48 @@ interface UserMenuProps {
 }
 
 export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    await signOut();
-    toast.success("You have been signed out");
-    navigate("/");
-    if (onItemClick) onItemClick();
-  };
 
   if (isMobile) {
     return (
-      <div className="flex flex-col space-y-2 pt-2 border-t border-gray-100 mt-2">
-        {user ? (
-          <>
-            <Link 
-              to="/dashboard?tab=favorites"
-              className="flex items-center gap-2 text-gray-600 hover:text-primary py-2"
-              onClick={onItemClick}
-            >
-              <Heart className="h-4 w-4" /> My Favorites
-            </Link>
-            <Link 
-              to="/dashboard?tab=orders"
-              className="flex items-center gap-2 text-gray-600 hover:text-primary py-2"
-              onClick={onItemClick}
-            >
-              <ShoppingBag className="h-4 w-4" /> My Orders
-            </Link>
-            <Button 
-              variant="outline" 
-              className="w-full border-red-500 text-red-600 hover:bg-red-50 mt-2"
-              onClick={() => {
-                handleSignOut();
-                if (onItemClick) onItemClick();
-              }}
-            >
-              <LogOut className="h-4 w-4 mr-2" /> Sign Out
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button 
-              variant="outline" 
-              className="w-full border-primary text-primary hover:bg-primary/5"
-              onClick={() => {
-                navigate("/auth");
-                if (onItemClick) onItemClick();
-              }}
-            >
-              Sign In
-            </Button>
-            <Button 
-              className="w-full bg-primary hover:bg-primary/90"
-              onClick={() => {
-                navigate("/assisted-test-finder");
-                if (onItemClick) onItemClick();
-              }}
-            >
-              Get Started
-            </Button>
-          </>
-        )}
+      <div className="pt-4 border-t border-gray-200 space-y-3">
+        <Link
+          to="/auth"
+          className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={onItemClick}
+        >
+          <User className="h-5 w-5" />
+          <span>Sign In</span>
+        </Link>
+        <Link
+          to="/dashboard"
+          className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={onItemClick}
+        >
+          <ShoppingCart className="h-5 w-5" />
+          <span>My Orders</span>
+        </Link>
       </div>
     );
   }
 
-  return user ? (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="border-primary text-primary hover:bg-primary/5">
-          <User className="h-4 w-4 mr-2" /> Account
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => navigate("/dashboard?tab=favorites")}>
-          <Heart className="h-4 w-4 mr-2" /> My Favorites
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/dashboard?tab=orders")}>
-          <ShoppingBag className="h-4 w-4 mr-2" /> My Orders
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="h-4 w-4 mr-2" /> Sign Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  ) : (
-    <>
-      <Button 
-        variant="outline" 
-        className="border-primary text-primary hover:bg-primary/5"
-        onClick={() => navigate("/auth")}
-      >
-        Sign In
+  return (
+    <div className="flex items-center gap-3">
+      <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
+        <Link to="/auth" className="flex items-center gap-2">
+          <User className="h-5 w-5" />
+        </Link>
       </Button>
-      <Button 
-        className="bg-primary hover:bg-primary/90"
-        onClick={() => navigate("/assisted-test-finder")}
-      >
-        Get Started
+      
+      <Button variant="ghost" size="sm" className="h-10 px-3 relative" asChild>
+        <Link to="/dashboard" className="flex items-center gap-2">
+          <ShoppingCart className="h-5 w-5" />
+          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px]">
+            0
+          </span>
+        </Link>
       </Button>
-    </>
+    </div>
   );
 };
-
-// Fix missing Link import
-import { Link } from "react-router-dom";

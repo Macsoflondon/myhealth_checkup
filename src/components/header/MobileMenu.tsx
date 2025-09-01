@@ -22,7 +22,7 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
         {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
-      {/* Mobile navigation */}
+{/* Mobile navigation */}
       {isMenuOpen && (
         <div 
           id="mobile-menu"
@@ -33,7 +33,6 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
             <NavigationItems 
               onItemClick={toggleMenu} 
               className="flex flex-col space-y-1 mb-4"
-              isMobile={true}
             />
             <UserMenu isMobile onItemClick={toggleMenu} />
           </div>
