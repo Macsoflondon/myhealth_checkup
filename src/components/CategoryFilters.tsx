@@ -1,143 +1,54 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { 
-  Heart, 
-  User, 
-  Users, 
-  Activity, 
-  Shield, 
-  Zap, 
-  Baby, 
-  Stethoscope 
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { getCategoryCSSClasses } from "@/data/categoryColors";
+import React from 'react';
+import { Badge } from '@/components/ui/badge';
 
-const CategoryFilters = () => {
-  const navigate = useNavigate();
+interface CategoryItem {
+  id: string;
+  name: string;
+  color: string;
+  path?: string;
+}
 
-  const categories = [
-    {
-      id: "general-health",
-      name: "General Health",
-      icon: Stethoscope,
-      description: "Comprehensive health checks and blood panels",
-      tests: 45
-    },
-    {
-      id: "mens-health",
-      name: "Men's Health",
-      icon: User,
-      description: "Testosterone, prostate, and male-specific tests",
-      tests: 28
-    },
-    {
-      id: "womens-health",
-      name: "Women's Health & Fertility",
-      icon: Users,
-      description: "Hormones, fertility, and reproductive health",
-      tests: 32
-    },
-    {
-      id: "heart-health",
-      name: "Heart Health",
-      icon: Heart,
-      description: "Cholesterol, lipids, and cardiovascular markers",
-      tests: 18
-    },
-    {
-      id: "cancer-screening",
-      name: "Cancer Screening",
-      icon: Shield,
-      description: "Early detection and tumor marker tests",
-      tests: 22
-    },
-    {
-      id: "hormones",
-      name: "Hormone Health",
-      icon: Zap,
-      description: "Thyroid, cortisol, and endocrine function",
-      tests: 35
-    },
-    {
-      id: "sexual-health",
-      name: "Sexual Health",
-      icon: Baby,
-      description: "STI screening and sexual wellness tests",
-      tests: 15
-    },
-    {
-      id: "vitamins",
-      name: "Vitamin & Nutrition Testing",
-      icon: Activity,
-      description: "Vitamins, minerals, and nutritional deficiencies",
-      tests: 25
-    }
-  ];
+const categoryItems: CategoryItem[] = [
+  { id: 'annual-health', name: 'Annual health report', color: 'bg-red-500', path: '/annual-health' },
+  { id: 'biomarkers', name: 'Biomarkers', color: 'bg-teal-500', path: '/biomarkers' },
+  { id: 'blood-testing', name: 'Blood testing', color: 'bg-pink-500', path: '/blood-testing' },
+  { id: 'fertility', name: 'Fertility', color: 'bg-orange-500', path: '/fertility-tests' },
+  { id: 'general-health', name: 'General health', color: 'bg-red-600', path: '/general-health' },
+  { id: 'hormone-health', name: 'Hormone health', color: 'bg-red-500', path: '/hormone-health' },
+  { id: 'longevity', name: 'Longevity', color: 'bg-emerald-500', path: '/longevity' },
+  { id: 'menopause', name: 'Menopause', color: 'bg-purple-500', path: '/menopause' },
+  { id: 'mens-health', name: "Men's health", color: 'bg-sky-400', path: '/mens-health' },
+  { id: 'mental-health', name: 'Mental health', color: 'bg-red-500', path: '/mental-health' },
+  { id: 'nutrition', name: 'Nutrition', color: 'bg-lime-500', path: '/nutrition' },
+  { id: 'pcos', name: 'PCOS', color: 'bg-purple-500', path: '/pcos' },
+  { id: 'skin-health', name: 'Skin health', color: 'bg-orange-300', path: '/skin-health' },
+  { id: 'sports-performance', name: 'Sports performance', color: 'bg-blue-500', path: '/sports-performance' },
+  { id: 'testosterone', name: 'Testosterone', color: 'bg-sky-400', path: '/testosterone' },
+  { id: 'thyroid', name: 'Thyroid', color: 'bg-emerald-500', path: '/thyroid' },
+  { id: 'vitamin-d', name: 'Vitamin D', color: 'bg-lime-400', path: '/vitamin-d' },
+  { id: 'vitamin-index', name: 'Vitamin index', color: 'bg-lime-400', path: '/vitamin-index' },
+  { id: 'womens-health', name: "Women's health", color: 'bg-pink-500', path: '/womens-health' },
+  { id: 'all-health', name: 'All health articles', color: 'bg-pink-500', path: '/health-blog' }
+];
 
-  const handleCategoryClick = (categoryId: string) => {
-    navigate(`/compare?category=${categoryId}`);
-  };
-
+const CategoryFilters: React.FC = () => {
   return (
-    <section className="py-16 bg-white">
+    <div className="bg-gray-50 py-4 border-b">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Find Tests by Category
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse our comprehensive range of health tests organised by speciality
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category) => {
-            const IconComponent = category.icon;
-            const colors = getCategoryCSSClasses(category.id);
-            return (
-              <Card 
-                key={category.id} 
-                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 border-transparent hover:border-health-primary/20"
-                onClick={() => handleCategoryClick(category.id)}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 rounded-full ${colors.primary} mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className={`w-8 h-8 ${colors.icon}`} />
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {category.name}
-                  </h3>
-                  
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                    {category.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-medium text-health-primary">
-                      {category.tests} tests available
-                    </span>
-                  </div>
-                  
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="w-full group-hover:bg-health-primary group-hover:text-white group-hover:border-health-primary transition-all duration-300"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCategoryClick(category.id);
-                    }}
-                  >
-                    View Tests
-                  </Button>
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="flex flex-wrap gap-2 justify-center">
+          {categoryItems.map((category) => (
+            <Badge
+              key={category.id}
+              variant="secondary"
+              className={`${category.color} text-white hover:opacity-80 transition-opacity cursor-pointer px-3 py-1 text-sm font-medium`}
+            >
+              <span className={`w-2 h-2 rounded-full ${category.color} mr-2 inline-block`}></span>
+              {category.name}
+            </Badge>
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

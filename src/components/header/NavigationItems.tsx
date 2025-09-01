@@ -3,11 +3,17 @@ import { Link } from "react-router-dom";
 
 // Navigation items for better maintainability
 export const navigationItems = [
-  { name: "Find Test", path: "/find-test" },
-  { name: "Find a Clinic", path: "/find-a-clinic" },
-  { name: "Compare Tests", path: "/compare" },
-  { name: "How It Works", path: "/how-it-works" },
-  { name: "About Us", path: "/about" }
+  { name: "Find your test", path: "/find-test" },
+  { name: "Most popular tests", path: "/most-popular-tests" },
+  { name: "At-home tests", path: "/at-home-tests" },
+  { name: "Women's", path: "/womens-health" },
+  { name: "Men's", path: "/mens-health" },
+  { name: "Thyroid", path: "/thyroid" },
+  { name: "Sports Performance", path: "/sports-performance" },
+  { name: "Wellness", path: "/wellness" },
+  { name: "Conditions", path: "/conditions" },
+  { name: "Health Hub", path: "/health-blog" },
+  { name: "My results", path: "/dashboard" }
 ];
 
 interface NavigationItemsProps {

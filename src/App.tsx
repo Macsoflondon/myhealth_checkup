@@ -40,6 +40,9 @@ import ProviderTestCatalogPage from "./pages/ProviderTestCatalogPage";
 import TestDetailPage from "./pages/TestDetailPage";
 import MostPopularTestsPage from "./pages/MostPopularTestsPage";
 import FertilityTestsPageWrapper from "./pages/FertilityTestsPage";
+import AtHomeTestsPage from "./pages/AtHomeTestsPage";
+import WellnessPage from "./pages/WellnessPage";
+import ConditionsPage from "./pages/ConditionsPage";
 
 const queryClient = new QueryClient();
 
@@ -86,7 +89,17 @@ const App = () => (
               <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
               <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
               <Route path="/tests/fertility" element={<FertilityTestsPageWrapper />} />
+              <Route path="/fertility-tests" element={<FertilityTestsPageWrapper />} />
               <Route path="/popular-tests" element={<MostPopularTestsPage />} />
+              <Route path="/most-popular-tests" element={<MostPopularTestsPage />} />
+              <Route path="/at-home-tests" element={<AtHomeTestsPage />} />
+              <Route path="/wellness" element={<WellnessPage />} />
+              <Route path="/conditions" element={<ConditionsPage />} />
+              <Route path="/mens-health" element={<MensHealthPage />} />
+              <Route path="/womens-health" element={<WomensHealthPage />} />
+              <Route path="/thyroid" element={<HeartHealthPage />} />
+              <Route path="/sports-performance" element={<HeartHealthPage />} />
+              <Route path="/health-blog" element={<HealthBlogPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
