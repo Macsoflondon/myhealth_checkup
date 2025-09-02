@@ -38,10 +38,10 @@ export const HeroToolbar = () => {
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img src={logo} alt="myhealth checkup Logo" className="h-10 w-10 rounded-lg" />
             <div className="flex flex-col">
-              <span className="font-bold text-lg leading-tight text-gray-900">myhealth</span>
-              <span className="font-bold text-lg leading-tight text-health-primary">checkup</span>
+              <span className="font-bold text-lg leading-tight text-black">myhealth</span>
+              <span className="font-bold text-lg leading-tight text-cyan-500">checkup</span>
             </div>
-            <div className="hidden md:block ml-4 text-sm text-gray-600 italic">
+            <div className="hidden md:block ml-4 text-sm text-cyan-500 font-medium">
               Your health is your greatest asset!
             </div>
           </Link>
@@ -61,10 +61,10 @@ export const HeroToolbar = () => {
               </div>
               <Button 
                 type="submit" 
-                className="bg-health-accent hover:bg-health-accent/90 text-white px-6 py-3 rounded-l-none border-l-0"
+                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-l-none border-l-0 h-full"
                 size="default"
               >
-                Search
+                <Search className="h-4 w-4" />
               </Button>
             </div>
           </form>
@@ -73,16 +73,14 @@ export const HeroToolbar = () => {
           <div className="flex items-center gap-3 flex-shrink-0">
             <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
               <Link to="/auth" className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                <span className="hidden sm:inline">Account</span>
+                <User className="h-5 w-5 text-gray-600" />
               </Link>
             </Button>
             
             <Button variant="ghost" size="sm" className="h-10 px-3 relative" asChild>
               <Link to="/dashboard" className="flex items-center gap-2">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="hidden sm:inline">Cart</span>
-                <span className="absolute -top-1 -right-1 bg-health-accent text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px]">
+                <ShoppingCart className="h-5 w-5 text-gray-600" />
+                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold">
                   0
                 </span>
               </Link>
@@ -95,15 +93,15 @@ export const HeroToolbar = () => {
       <div className="bg-gray-50 border-t border-gray-200">
         <div className="px-4 py-2">
           <div className="max-w-7xl mx-auto">
-            <nav className="flex items-center justify-center gap-1 flex-wrap">
+            <nav className="flex items-center justify-center gap-6 flex-wrap">
               {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-xs font-medium transition-colors px-3 py-2 rounded-md whitespace-nowrap ${
+                  className={`text-sm font-semibold transition-colors px-2 py-1 whitespace-nowrap hover:opacity-80 ${
                     item.highlighted 
-                      ? "text-health-accent hover:text-health-accent/80 hover:bg-health-accent/5 font-semibold" 
-                      : "text-gray-700 hover:text-health-primary hover:bg-white"
+                      ? "text-pink-500" 
+                      : "text-gray-800"
                   }`}
                 >
                   {item.name}
