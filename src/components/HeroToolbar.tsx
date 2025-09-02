@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
 
 const navigationItems = [
-  { name: "FIND YOUR TEST", path: "/assisted-test-finder" },
-  { name: "MOST POPULAR TESTS", path: "/most-popular-tests" },
+  { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true },
+  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true },
   { name: "WOMEN'S HEALTH", path: "/womens-health" },
   { name: "MEN'S HEALTH", path: "/mens-health" },
   { name: "GENERAL WELLNESS", path: "/wellness" },
@@ -48,15 +48,24 @@ export const HeroToolbar = () => {
 
           {/* Search bar */}
           <form onSubmit={handleSearch} className="flex-1 max-w-lg mx-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search from over 300 tests"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-health-primary focus:ring-1 focus:ring-health-primary"
-              />
+            <div className="relative flex">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search from over 300 tests"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-health-primary focus:ring-1 focus:ring-health-primary rounded-r-none"
+                />
+              </div>
+              <Button 
+                type="submit" 
+                className="bg-health-accent hover:bg-health-accent/90 text-white px-6 py-3 rounded-l-none border-l-0"
+                size="default"
+              >
+                Search
+              </Button>
             </div>
           </form>
 
@@ -91,7 +100,11 @@ export const HeroToolbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="text-xs font-medium text-gray-700 hover:text-health-primary hover:bg-white transition-colors px-3 py-2 rounded-md whitespace-nowrap"
+                  className={`text-xs font-medium transition-colors px-3 py-2 rounded-md whitespace-nowrap ${
+                    item.highlighted 
+                      ? "text-health-accent hover:text-health-accent/80 hover:bg-health-accent/5 font-semibold" 
+                      : "text-gray-700 hover:text-health-primary hover:bg-white"
+                  }`}
                 >
                   {item.name}
                 </Link>
