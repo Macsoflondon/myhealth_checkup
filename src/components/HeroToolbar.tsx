@@ -90,18 +90,18 @@ export const HeroToolbar = () => {
       </div>
 
       {/* Navigation menu */}
-      <div className="bg-gray-50 border-t border-gray-200">
+      <div className="bg-white border-t border-gray-200">
         <div className="px-4 py-2">
           <div className="max-w-7xl mx-auto">
-            <nav className="flex items-center justify-center gap-6 flex-wrap">
+            <nav className="flex items-center justify-center gap-4 flex-wrap">
               {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`text-sm font-semibold transition-colors px-2 py-1 whitespace-nowrap hover:opacity-80 ${
+                  className={`text-xs font-bold transition-colors px-2 py-1 whitespace-nowrap hover:opacity-80 uppercase ${
                     item.highlighted 
                       ? "text-pink-500" 
-                      : "text-gray-800"
+                      : "text-gray-700"
                   }`}
                 >
                   {item.name}
