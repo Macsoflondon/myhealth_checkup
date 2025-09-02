@@ -75,7 +75,7 @@ const NewHero = () => {
     name: "B12 & Folate",
     category: "vitamins"
   }];
-  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center" style={{
+  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center mt-4" style={{
       backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
@@ -94,8 +94,8 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
-            <span className="block py-[20px] font-semibold text-6xl relative z-20">
-              <span className="block text-white text-2xl lg:text-5xl my-[10px] leading-tight text-center font-medium md:text-4xl">Compare the UK's leading private health test providers</span>
+            <span className="block py-[20px] font-semibold text-6xl relative z-20 mt-8 bg-white rounded-xl px-6 py-8 mx-auto max-w-4xl">
+              <span className="block text-gray-800 text-2xl lg:text-5xl my-[10px] leading-tight text-center font-medium md:text-4xl">Compare the UK's leading private health test providers</span>
               <span className="block text-[#22c0d4] mt-2 my-0 font-semibold text-2xl md:text-4xl lg:text-5xl leading-tight">All in one place!</span>
             </span>
           </h1>
