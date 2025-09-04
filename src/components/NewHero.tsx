@@ -75,7 +75,7 @@ const NewHero = () => {
     name: "B12 & Folate",
     category: "vitamins"
   }];
-  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center mt-4" style={{
+  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center -mt-[72px] pt-[72px]" style={{
       backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
