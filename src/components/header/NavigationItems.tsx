@@ -27,7 +27,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         <Link
           key={item.path}
           to={item.path}
-          className={`text-xs font-bold transition-colors px-2 py-1 whitespace-nowrap hover:opacity-80 uppercase ${
+          className={`text-[10px] font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase ${
             (item as any).highlighted 
               ? "text-pink-500" 
               : "text-gray-700"

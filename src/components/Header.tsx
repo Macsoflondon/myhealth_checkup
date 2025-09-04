@@ -57,7 +57,7 @@ const Header = () => {
       {/* Navigation bar */}
       <div className="bg-white border-t border-gray-200">
         <div className="px-4 py-2 max-w-7xl mx-auto">
-          <NavigationItems className="flex items-center justify-center gap-4 flex-wrap" />
+          <NavigationItems className="flex items-center justify-center gap-2 overflow-x-auto" />
         </div>
       </div>
     </header>
