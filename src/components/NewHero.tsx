@@ -76,11 +76,11 @@ const NewHero = () => {
     category: "vitamins"
   }];
   return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center -mt-[72px] pt-[72px]" style={{
-      backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }}>
+    backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0"></div>
@@ -94,9 +94,9 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
-            <span className="block font-semibold text-6xl relative z-20 mt-8 bg-white py-8 w-screen ml-[calc(-50vw+50%)] mr-[calc(-50vw+50%)]">
-              <span className="block text-gray-800 text-2xl lg:text-5xl my-[10px] leading-tight text-center font-medium md:text-4xl">Compare the UK's leading private health test providers</span>
-              <span className="block text-[#22c0d4] mt-2 my-0 font-semibold text-2xl md:text-4xl lg:text-5xl leading-tight">All in one place!</span>
+            <span className="block font-semibold relative z-20 mt-8 bg-white w-screen ml-[calc(-50vw+50%)] mr-[calc(-50vw+50%)] text-5xl text-center py-[12px]">
+              <span className="block text-2xl my-[10px] leading-tight text-center md:text-4xl text-[#cd27a0] font-semibold lg:text-4xl">Compare the UK's leading private health test providers - All in one place!</span>
+              
             </span>
           </h1>
           
