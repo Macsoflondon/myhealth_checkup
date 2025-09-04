@@ -1,18 +1,18 @@
 
 import { Link } from "react-router-dom";
 
-// Simple navigation items for the horizontal layout
+// Navigation items matching the uploaded design
 export const navigationItems = [
-  { name: "Find your test", path: "/assisted-test-finder" },
-  { name: "Most popular tests", path: "/most-popular-tests" },
-  { name: "Women's", path: "/womens-health" },
-  { name: "Men's", path: "/mens-health" },
-  { name: "Thyroid", path: "/thyroid" },
-  { name: "Sports Performance", path: "/sports-performance" },
-  { name: "Wellness", path: "/wellness" },
-  { name: "Conditions", path: "/conditions" },
-  { name: "Health Hub", path: "/health-blog" },
-  { name: "At-home tests", path: "/at-home-tests" }
+  { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true },
+  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true },
+  { name: "WOMEN'S HEALTH", path: "/womens-health" },
+  { name: "MEN'S HEALTH", path: "/mens-health" },
+  { name: "GENERAL WELLNESS", path: "/wellness" },
+  { name: "THYROID HEALTH", path: "/thyroid" },
+  { name: "SPORTS PERFORMANCE", path: "/sports-performance" },
+  { name: "PRENATAL BLOOD", path: "/fertility-tests" },
+  { name: "HEALTH HUB", path: "/health-blog" },
+  { name: "AT-HOME TESTS", path: "/at-home-tests" }
 ];
 
 interface NavigationItemsProps {
@@ -27,7 +27,11 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         <Link
           key={item.path}
           to={item.path}
-          className="text-sm font-medium text-gray-700 hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-gray-100"
+          className={`text-xs font-bold transition-colors px-2 py-1 whitespace-nowrap hover:opacity-80 uppercase ${
+            (item as any).highlighted 
+              ? "text-pink-500" 
+              : "text-gray-700"
+          }`}
           onClick={onItemClick}
         >
           {item.name}

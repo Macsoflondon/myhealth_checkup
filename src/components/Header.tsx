@@ -35,15 +35,15 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       {/* Main header bar */}
-      <div className="px-6 py-4">
-        <div className="flex items-center gap-8 max-w-7xl mx-auto">
-          {/* Logo */}
-          <div className="flex-shrink-0">
+      <div className="px-4 py-3">
+        <div className="flex items-center justify-between gap-6 max-w-7xl mx-auto">
+          {/* Logo and tagline */}
+          <div className="flex items-center gap-3 flex-shrink-0">
             <Logo />
           </div>
           
           {/* Search Bar */}
-          <div className="flex-1 max-w-lg mx-8">
+          <div className="flex-1 max-w-lg mx-6">
             <SearchBar />
           </div>
           
@@ -55,12 +55,13 @@ const Header = () => {
       </div>
 
       {/* Navigation bar */}
-      <div className="bg-gray-50 border-t border-gray-200">
-        <div className="px-6 py-2 max-w-7xl mx-auto">
-          <NavigationItems className="flex items-center justify-center gap-8" />
+      <div className="bg-white border-t border-gray-200">
+        <div className="px-4 py-2 max-w-7xl mx-auto">
+          <NavigationItems className="flex items-center justify-center gap-4 flex-wrap" />
         </div>
       </div>
     </header>
   );
 };
+
 export default Header;

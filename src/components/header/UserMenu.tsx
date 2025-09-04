@@ -40,14 +40,14 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
     <div className="flex items-center gap-3">
       <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
         <Link to="/auth" className="flex items-center gap-2">
-          <User className="h-5 w-5" />
+          <User className="h-5 w-5 text-gray-600" />
         </Link>
       </Button>
       
       <Button variant="ghost" size="sm" className="h-10 px-3 relative" asChild>
         <Link to="/dashboard" className="flex items-center gap-2">
-          <ShoppingCart className="h-5 w-5" />
-          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px]">
+          <ShoppingCart className="h-5 w-5 text-gray-600" />
+          <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold">
             0
           </span>
         </Link>
