@@ -94,7 +94,7 @@ const NewHero = () => {
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
-            <span className="block py-[20px] font-semibold text-6xl relative z-20 mt-8 bg-white rounded-xl px-6 py-8 w-full">
+            <span className="block font-semibold text-6xl relative z-20 mt-8 bg-white py-8 w-full">
               <span className="block text-gray-800 text-2xl lg:text-5xl my-[10px] leading-tight text-center font-medium md:text-4xl">Compare the UK's leading private health test providers</span>
               <span className="block text-[#22c0d4] mt-2 my-0 font-semibold text-2xl md:text-4xl lg:text-5xl leading-tight">All in one place!</span>
             </span>
