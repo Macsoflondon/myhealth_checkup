@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 const MediaSpotlight = () => {
   useEffect(() => {
     const track = document.querySelector('.marquee__track');
@@ -12,9 +11,7 @@ const MediaSpotlight = () => {
       });
     }
   }, []);
-
-  return (
-    <>
+  return <>
       <style>{`
         :root {
           --accent-color: #22c0d4;
@@ -78,8 +75,8 @@ const MediaSpotlight = () => {
         }
       `}</style>
       
-      <section className="media-spotlight" aria-labelledby="press-mentions-title">
-        <h2 id="press-mentions-title" className="media-spotlight__title">Media Spotlight</h2>
+      <section aria-labelledby="press-mentions-title" className="media-spotlight bg-[f#ffffff] bg-[#22c0d4]">
+        <h2 id="press-mentions-title" className="media-spotlight__title text-white">Media Spotlight</h2>
         <div className="marquee" role="region" aria-label="Press mentions carousel">
           <div className="marquee__track">
             {/* Interleaved Medicheck & Goodbody logos */}
@@ -132,8 +129,6 @@ const MediaSpotlight = () => {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 };
-
 export default MediaSpotlight;

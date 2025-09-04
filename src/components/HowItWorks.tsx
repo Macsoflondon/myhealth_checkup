@@ -1,9 +1,9 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
 const HowItWorks = () => {
-  return <section className="pt-0 pb-20 luxury-gradient">
+  return <section className="py-20 luxury-gradient">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 heading text-[#9a23af]">
+          <h2 className="text-4xl font-bold mb-4 heading text-[#9a23af] py-[40px]">
             How It Works
           </h2>
           <p className="text-lg max-w-2xl mx-auto text-[#9a23af] text-center font-bold">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>

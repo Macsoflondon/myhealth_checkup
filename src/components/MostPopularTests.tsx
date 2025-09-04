@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
-
 interface TestCardProps {
   id: string;
   category: string;
@@ -16,16 +15,23 @@ interface TestCardProps {
   reviews: number;
   collection: string;
 }
-
-const TestCard = ({ id, category, name, description, price, turnaround, biomarkers, rating, reviews, collection }: TestCardProps) => {
+const TestCard = ({
+  id,
+  category,
+  name,
+  description,
+  price,
+  turnaround,
+  biomarkers,
+  rating,
+  reviews,
+  collection
+}: TestCardProps) => {
   const navigate = useNavigate();
-  
   const handleSelectTest = () => {
     navigate(`/compare?test=${id}`);
   };
-
-  return (
-    <Card className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 h-full flex flex-col">
+  return <Card className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 h-full flex flex-col">
       <div className="bg-[#1a365d] text-white p-4 text-center">
         <h3 className="text-sm font-medium">{category}</h3>
       </div>
@@ -40,9 +46,7 @@ const TestCard = ({ id, category, name, description, price, turnaround, biomarke
           
           {/* Star Rating */}
           <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className={`w-4 h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
-            ))}
+            {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />)}
             <span className="text-sm text-gray-600 ml-1">({reviews})</span>
           </div>
         </div>
@@ -50,68 +54,55 @@ const TestCard = ({ id, category, name, description, price, turnaround, biomarke
         <div className="text-2xl font-bold text-gray-900 mb-2">{price}</div>
         <p className="text-sm text-gray-500 mb-4">{collection}</p>
         
-        <Button
-          onClick={handleSelectTest}
-          variant="outline"
-          className="w-full py-3 text-gray-700 border-gray-300 hover:bg-gray-50 mt-auto"
-        >
+        <Button onClick={handleSelectTest} variant="outline" className="w-full py-3 text-gray-700 border-gray-300 hover:bg-gray-50 mt-auto">
           Select test
         </Button>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 const MostPopularTests = () => {
   const navigate = useNavigate();
-
-  const popularTests = [
-    {
-      id: 'optimal-health',
-      category: 'Longevity called. It wants your blood',
-      name: 'Optimal Health Blood Test',
-      description: 'Unlock a deeper understanding of your health with our most comprehensive panel covering 59 biomarkers',
-      price: '£249.00',
-      turnaround: 'Results estimated in 4 working days',
-      biomarkers: '59 biomarkers',
-      rating: 4.9,
-      reviews: 1542,
-      collection: 'Venous collection'
-    },
-    {
-      id: 'ultimate-performance',
-      category: 'Unlock your peak performance',
-      name: 'Ultimate Performance Blood Test',
-      description: 'Are you looking to transform your body composition and physical performance? This test analyzes key markers',
-      price: '£199.00',
-      turnaround: 'Results estimated in 3 working days',
-      biomarkers: '57 biomarkers',
-      rating: 4.8,
-      reviews: 892,
-      collection: 'Finger-prick or Venous collection'
-    },
-    {
-      id: 'advanced-well-woman',
-      category: 'Get the answers you\'ve been looking for',
-      name: 'Advanced Well Woman Blood Test',
-      description: 'Take control of your health with our best-selling women\'s health test covering hormones, nutrition and more',
-      price: '£159.00',
-      turnaround: 'Results estimated in 3 working days',
-      biomarkers: '47 biomarkers',
-      rating: 4.7,
-      reviews: 1234,
-      collection: 'Finger-prick or Venous collection'
-    }
-  ];
-
-  return (
-    <section className="py-12 bg-white">
+  const popularTests = [{
+    id: 'optimal-health',
+    category: 'Longevity called. It wants your blood',
+    name: 'Optimal Health Blood Test',
+    description: 'Unlock a deeper understanding of your health with our most comprehensive panel covering 59 biomarkers',
+    price: '£249.00',
+    turnaround: 'Results estimated in 4 working days',
+    biomarkers: '59 biomarkers',
+    rating: 4.9,
+    reviews: 1542,
+    collection: 'Venous collection'
+  }, {
+    id: 'ultimate-performance',
+    category: 'Unlock your peak performance',
+    name: 'Ultimate Performance Blood Test',
+    description: 'Are you looking to transform your body composition and physical performance? This test analyzes key markers',
+    price: '£199.00',
+    turnaround: 'Results estimated in 3 working days',
+    biomarkers: '57 biomarkers',
+    rating: 4.8,
+    reviews: 892,
+    collection: 'Finger-prick or Venous collection'
+  }, {
+    id: 'advanced-well-woman',
+    category: 'Get the answers you\'ve been looking for',
+    name: 'Advanced Well Woman Blood Test',
+    description: 'Take control of your health with our best-selling women\'s health test covering hormones, nutrition and more',
+    price: '£159.00',
+    turnaround: 'Results estimated in 3 working days',
+    biomarkers: '47 biomarkers',
+    rating: 4.7,
+    reviews: 1234,
+    collection: 'Finger-prick or Venous collection'
+  }];
+  return <section className="py-12 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-4">
-            <span className="cursor-pointer hover:text-[#E91E63]" onClick={() => navigate('/')}>Home</span> 
-            <span className="mx-2">/</span> 
-            <span>Our Most Popular Tests</span>
+             
+             
+            
           </nav>
           
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Our most popular tests</h1>
@@ -128,22 +119,15 @@ const MostPopularTests = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {popularTests.map((test) => (
-            <TestCard key={test.id} {...test} />
-          ))}
+          {popularTests.map(test => <TestCard key={test.id} {...test} />)}
         </div>
 
         <div className="text-center mt-8">
-          <Button
-            onClick={() => navigate('/compare')}
-            className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-3 text-lg font-medium rounded-full"
-          >
+          <Button onClick={() => navigate('/compare')} className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-3 text-lg font-medium rounded-full">
             View all tests
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default MostPopularTests;
