@@ -3,48 +3,37 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { compareCategories } from "@/data/compare/categories";
 
-interface CategoryItem {
-  id: string;
-  name: string;
-  color: string;
-  path?: string;
-}
+// Category colors following design system (using semantic color tokens)
+const categoryColorMap: Record<string, string> = {
+  'blood-tests': 'bg-red-500 text-white',
+  'hormones': 'bg-pink-500 text-white', 
+  'thyroid': 'bg-emerald-500 text-white',
+  'vitamins': 'bg-lime-500 text-white',
+  'diabetes': 'bg-orange-500 text-white',
+  'heart-health': 'bg-red-600 text-white',
+  'liver-health': 'bg-yellow-500 text-white',
+  'kidney-health': 'bg-blue-500 text-white',
+  'fertility': 'bg-purple-500 text-white',
+  'general-health': 'bg-teal-500 text-white',
+  'allergy-testing': 'bg-indigo-500 text-white',
+  'cancer-screening': 'bg-gray-700 text-white'
+};
 
-const categoryItems: CategoryItem[] = [
-  { id: 'annual-health', name: 'Annual health report', color: 'bg-red-500', path: '/annual-health' },
-  { id: 'biomarkers', name: 'Biomarkers', color: 'bg-teal-500', path: '/biomarkers' },
-  { id: 'blood-testing', name: 'Blood testing', color: 'bg-pink-500', path: '/blood-testing' },
-  { id: 'fertility', name: 'Fertility', color: 'bg-orange-500', path: '/fertility-tests' },
-  { id: 'general-health', name: 'General health', color: 'bg-red-600', path: '/general-health' },
-  { id: 'hormone-health', name: 'Hormone health', color: 'bg-red-500', path: '/hormone-health' },
-  { id: 'longevity', name: 'Longevity', color: 'bg-emerald-500', path: '/longevity' },
-  { id: 'menopause', name: 'Menopause', color: 'bg-purple-500', path: '/menopause' },
-  { id: 'mens-health', name: "Men's health", color: 'bg-sky-400', path: '/mens-health' },
-  { id: 'mental-health', name: 'Mental health', color: 'bg-red-500', path: '/mental-health' },
-  { id: 'nutrition', name: 'Nutrition', color: 'bg-lime-500', path: '/nutrition' },
-  { id: 'pcos', name: 'PCOS', color: 'bg-purple-500', path: '/pcos' },
-  { id: 'skin-health', name: 'Skin health', color: 'bg-orange-300', path: '/skin-health' },
-  { id: 'sports-performance', name: 'Sports performance', color: 'bg-blue-500', path: '/sports-performance' },
-  { id: 'testosterone', name: 'Testosterone', color: 'bg-sky-400', path: '/testosterone' },
-  { id: 'thyroid', name: 'Thyroid', color: 'bg-emerald-500', path: '/thyroid' },
-  { id: 'vitamin-d', name: 'Vitamin D', color: 'bg-lime-400', path: '/vitamin-d' },
-  { id: 'vitamin-index', name: 'Vitamin index', color: 'bg-lime-400', path: '/vitamin-index' },
-  { id: 'womens-health', name: "Women's health", color: 'bg-pink-500', path: '/womens-health' }
-];
-
-// Navigation items with dropdown configuration
+// Main navigation structure mirroring Medichecks approach
 export const navigationItems = [
-  { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true, hasDropdown: true },
-  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true, hasDropdown: true },
-  { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true },
-  { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true },
-  { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true },
-  { name: "THYROID HEALTH", path: "/thyroid", hasDropdown: true },
-  { name: "SPORTS PERFORMANCE", path: "/sports-performance", hasDropdown: true },
-  { name: "PRENATAL BLOOD", path: "/fertility-tests", hasDropdown: true },
-  { name: "HEALTH HUB", path: "/health-blog" },
-  { name: "AT-HOME TESTS", path: "/at-home-tests" }
+  { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true, hasDropdown: true, megaMenu: true },
+  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
+  { name: "AT-HOME TESTS", path: "/at-home-tests", hasDropdown: false },
+  { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
+  { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
+  { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
+  { name: "SPORTS PERFORMANCE", path: "/sports-performance", hasDropdown: true, megaMenu: true },
+  { name: "WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
+  { name: "CONDITIONS", path: "/conditions", hasDropdown: true, megaMenu: true },
+  { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false },
+  { name: "MY RESULTS", path: "/dashboard", hasDropdown: false }
 ];
 
 interface NavigationItemsProps {
@@ -67,25 +56,35 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
   };
 
   const getFilteredCategories = (itemName: string) => {
-    // Filter categories based on navigation item
+    // Filter categories based on navigation item using the universal taxonomy
     switch (itemName) {
       case "WOMEN'S HEALTH":
-        return categoryItems.filter(cat => 
-          cat.id.includes('womens') || cat.id.includes('fertility') || cat.id.includes('menopause') || cat.id.includes('pcos')
+        return compareCategories.filter(cat => 
+          ['fertility', 'hormones'].includes(cat.id)
         );
       case "MEN'S HEALTH":
-        return categoryItems.filter(cat => 
-          cat.id.includes('mens') || cat.id.includes('testosterone') || cat.id.includes('sports')
+        return compareCategories.filter(cat => 
+          ['hormones', 'heart-health', 'general-health'].includes(cat.id)
         );
-      case "THYROID HEALTH":
-        return categoryItems.filter(cat => cat.id.includes('thyroid') || cat.id.includes('hormone'));
+      case "THYROID":
+        return compareCategories.filter(cat => 
+          ['thyroid', 'hormones'].includes(cat.id)
+        );
       case "SPORTS PERFORMANCE":
-        return categoryItems.filter(cat => 
-          cat.id.includes('sports') || cat.id.includes('testosterone') || cat.id.includes('nutrition')
+        return compareCategories.filter(cat => 
+          ['vitamins', 'hormones', 'general-health'].includes(cat.id)
+        );
+      case "WELLNESS":
+        return compareCategories.filter(cat => 
+          ['vitamins', 'general-health', 'heart-health', 'liver-health'].includes(cat.id)
+        );
+      case "CONDITIONS":
+        return compareCategories.filter(cat => 
+          ['diabetes', 'allergy-testing', 'cancer-screening', 'kidney-health'].includes(cat.id)
         );
       default:
         // Show all categories for FIND YOUR TEST and MOST POPULAR TESTS
-        return categoryItems;
+        return compareCategories.slice(0, 8); // Limit to prevent overflow
     }
   };
 
@@ -113,26 +112,44 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
             )}
           </Link>
           
-          {/* Dropdown Content */}
+          {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-50 min-w-[400px]">
-              <div className="grid grid-cols-2 gap-2">
-                {getFilteredCategories(item.name).map((category) => (
+            <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 min-w-[500px] max-w-[600px]">
+              <div className="p-6">
+                <div className="grid grid-cols-2 gap-4">
+                  {getFilteredCategories(item.name).map((category) => (
+                    <Link
+                      key={category.id}
+                      to={`/compare?category=${category.id}`}
+                      className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                      onClick={onItemClick}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-3 h-3 rounded-full flex-shrink-0 ${categoryColorMap[category.id] || 'bg-gray-400'}`}></div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
+                            {category.name}
+                          </h3>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
+                            {category.description}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                
+                {/* View All Link */}
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <Link
-                    key={category.id}
-                    to={category.path || '/'}
-                    className="block"
+                    to={item.path}
+                    className="inline-flex items-center text-sm text-primary hover:text-primary/80 font-medium transition-colors"
                     onClick={onItemClick}
                   >
-                    <Badge
-                      variant="secondary"
-                      className={`${category.color} text-white hover:opacity-80 transition-opacity cursor-pointer px-3 py-1 text-xs font-medium w-full justify-start`}
-                    >
-                      <span className={`w-2 h-2 rounded-full ${category.color} mr-2 inline-block`}></span>
-                      {category.name}
-                    </Badge>
+                    View all {item.name.toLowerCase()}
+                    <ChevronDown className="w-4 h-4 ml-1 rotate-[-90deg]" />
                   </Link>
-                ))}
+                </div>
               </div>
             </div>
           )}
