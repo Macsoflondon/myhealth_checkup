@@ -31,7 +31,7 @@
     --health-accent: 340 100% 60%;
     --health-success: 150 100% 45%;
     --health-warning: 45 100% 60%;
-    --health-highlight: 320 71% 51%;
+    --health-highlight: 330 91% 48%;
     
     --gradient-health: linear-gradient(135deg, hsl(220 100% 50%), hsl(280 100% 70%));
     --gradient-accent: linear-gradient(135deg, hsl(340 100% 60%), hsl(280 100% 70%));
@@ -82,7 +82,7 @@
     --health-accent: 340 100% 65%;
     --health-success: 150 100% 50%;
     --health-warning: 45 100% 65%;
-    --health-highlight: 320 71% 61%;
+    --health-highlight: 330 91% 55%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;

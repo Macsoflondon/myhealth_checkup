@@ -96,7 +96,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="text-[t] text-[#dc27a0] font-medium">
+          <div className="text-[t] text-[#e70d69] font-medium">
             <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">Our Services</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
               {serviceSections.map((service, index) => <li key={index}>
