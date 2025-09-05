@@ -1,9 +1,7 @@
 import React from 'react';
 import { Award } from 'lucide-react';
-
 const UKASBanner = () => {
-  return (
-    <div className="bg-gradient-to-r from-purple-600 to-#22c0d4 py-3">
+  return <div className="">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center">
           <Award className="w-5 h-5 text-white mr-2" />
@@ -12,8 +10,6 @@ const UKASBanner = () => {
           </span>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default UKASBanner;
