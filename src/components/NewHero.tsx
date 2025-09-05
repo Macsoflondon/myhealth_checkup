@@ -90,7 +90,7 @@ const NewHero = () => {
         <div className="max-w-6xl mx-auto text-center py-[20px] my-[20px]">
           {/* Full Logo */}
           <div className="mb-8">
-            <img src="/lovable-uploads/0d82ec65-a172-4f2b-8021-7b93fc01ef30.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto transform scale-125" />
+            <img src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="mx-auto w-full h-auto transform scale-125" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
