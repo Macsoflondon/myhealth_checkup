@@ -186,7 +186,7 @@ const ClinicMap: React.FC = () => {
   return <section aria-label="Find a clinic" className="py-16 bg-[#1a1b34] -mt-[2cm]">
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#22c0d4]">Find Your Nearest Test Location</h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#22c0d4] mb-[0.5cm]">Find Your Nearest Test Location</h2>
           <p className="text-[#e70d69] max-w-2xl mx-auto mt-2 font-semibold text-lg">
             Default view shows locations from our local directory (A–Z). Enter a postcode to see nearest London Medical Laboratory clinics.
           </p>
