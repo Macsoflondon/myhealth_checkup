@@ -29,43 +29,6 @@
     
     <!-- Preconnect to origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Hero LCP Image Preloading -->
-    <link rel="preload" as="image" href="/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png" 
-          fetchpriority="high" media="(min-width: 768px)">
-    <link rel="preload" as="image" href="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" 
-          fetchpriority="high">
-    
-    <!-- Safe Font Loading -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" 
-          as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
-    
-    <!-- Font Display Optimization -->
-    <style>
-      /* Critical CSS for font loading */
-      body { 
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-        font-display: swap;
-      }
-      
-      /* LCP optimization - prevent layout shift */
-      .hero-bg { 
-        background-size: cover; 
-        background-position: center; 
-        min-height: 100vh;
-        width: 100%;
-        contain: layout style paint;
-      }
-      
-      .hero-logo {
-        width: 100%;
-        height: auto;
-        max-width: 800px;
-        aspect-ratio: 16/9;
-      }
-    </style>
   </head>
 
   <body>
