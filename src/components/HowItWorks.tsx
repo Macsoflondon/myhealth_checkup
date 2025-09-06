@@ -1,12 +1,12 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
 const HowItWorks = () => {
   return <section className="luxury-gradient py-[10px]">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 bg-white py-[20px]">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 heading py-0 text-[#22c0d4]">
+          <h2 className="text-4xl font-bold mb-4 heading text-[#9a23af] py-[40px]">
             How It Works
           </h2>
-          <p className="max-w-2xl mx-auto text-[#9a23af] font-medium text-center text-base">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
+          <p className="text-lg max-w-2xl mx-auto text-[#9a23af] text-center font-bold">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
         </div>
 
         <div className="grid md:grid-cols-4 gap-8">
@@ -39,7 +39,7 @@ const HowItWorks = () => {
                   <span className="text-white font-bold text-sm">{item.step}</span>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2 heading text-[#22c0d4]">{item.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 heading text-[#9a23af]">{item.title}</h3>
               <p className="text-[#9a23af]">{item.description}</p>
             </div>)}
         </div>
