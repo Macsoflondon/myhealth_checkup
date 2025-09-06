@@ -109,6 +109,10 @@ const Index = () => {
           </Suspense>
           
           <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
+            <MediaSpotlight />
+          </Suspense>
+          
+          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
             <HowItWorks />
           </Suspense>
           
@@ -126,10 +130,6 @@ const Index = () => {
           
           <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
             <MostPopularTests />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <MediaSpotlight />
           </Suspense>
           
           <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
