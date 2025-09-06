@@ -194,7 +194,7 @@ const ClinicMap: React.FC = () => {
 
         <div className="mb-4 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 items-center bg-[#1a1b34]">
           <Input value={postcode} onChange={e => setPostcode(e.target.value)} placeholder="Enter your postcode (e.g., SW11 6QZ)" aria-label="Postcode" />
-          <Button onClick={handleFind} disabled={loading}>
+          <Button onClick={handleFind} disabled={loading} className="bg-[#e70d69] hover:bg-[#e70d69]/90">
             {loading ? "Finding…" : "Find clinics"}
           </Button>
         </div>
