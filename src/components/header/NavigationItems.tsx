@@ -32,8 +32,7 @@ export const navigationItems = [
   { name: "SPORTS PERFORMANCE", path: "/sports-performance", hasDropdown: true, megaMenu: true },
   { name: "WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "CONDITIONS", path: "/conditions", hasDropdown: true, megaMenu: true },
-  { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false },
-  { name: "MY RESULTS", path: "/dashboard", hasDropdown: false }
+  { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false }
 ];
 
 interface NavigationItemsProps {

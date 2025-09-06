@@ -88,6 +88,21 @@ const Index = () => {
       <UKASBanner />
       <Header />
       
+      <main className="flex-1">
+        <NewHero />
+        <FeaturedProviders />
+        <MostPopularTests />
+        <TestCategories />
+        <HowItWorks />
+        <MediaSpotlight />
+        <HealthBenefitsInfographic />
+        <FounderStory />
+        <PartnerShowcase />
+        <HealthResources />
+        <CallToAction />
+        <ClinicMap />
+      </main>
+      
       <Footer />
       <CookieConsent />
     </div>;
