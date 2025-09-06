@@ -55,78 +55,21 @@ const Dashboard = () => {
   }, [user]);
 
   const fetchFavorites = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("favorites")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      
-      // Fetch test details for each favorite from compareData
-      // In a real app, we would fetch this from the database or API
-      import("@/data/compareData").then(({ compareData }) => {
-        const favoritesWithDetails = data.map((fav) => {
-          const testDetails = compareData.find(
-            (item) => item.id === fav.test_id
-          );
-          return {
-            ...fav,
-            name: testDetails?.name || "Unknown Test",
-            price: testDetails?.price || 0,
-          };
-        });
-        setFavorites(favoritesWithDetails);
-        setLoadingData(false);
-      });
-    } catch (error: any) {
-      toast.error("Error fetching favorites: " + error.message);
-      setLoadingData(false);
-    }
+    // Mock implementation - return empty array until database is set up
+    setFavorites([]);
+    setLoadingData(false);
   };
 
   const fetchOrders = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("orders")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("order_date", { ascending: false });
-
-      if (error) throw error;
-
-      // Fetch test details for each order
-      import("@/data/compareData").then(({ compareData }) => {
-        const ordersWithDetails = data.map((order) => {
-          const testDetails = compareData.find(
-            (item) => item.id === order.test_id
-          );
-          return {
-            ...order,
-            name: testDetails?.name || "Unknown Test",
-            price: testDetails?.price || 0,
-          };
-        });
-        setOrders(ordersWithDetails);
-        setLoadingData(false);
-      });
-    } catch (error: any) {
-      toast.error("Error fetching orders: " + error.message);
-      setLoadingData(false);
-    }
+    // Mock implementation - return empty array until database is set up
+    setOrders([]);
+    setLoadingData(false);
   };
 
   const removeFavorite = async (id: string) => {
-    try {
-      const { error } = await supabase.from("favorites").delete().eq("id", id);
-      if (error) throw error;
-      
-      setFavorites((prev) => prev.filter((fav) => fav.id !== id));
-      toast.success("Removed from favorites");
-    } catch (error: any) {
-      toast.error("Error removing favorite: " + error.message);
-    }
+    // Mock implementation
+    setFavorites((prev) => prev.filter((fav) => fav.id !== id));
+    toast.success("Removed from favorites");
   };
 
   return (

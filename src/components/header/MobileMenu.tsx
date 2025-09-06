@@ -13,7 +13,7 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
     <>
       {/* Mobile menu button */}
       <button 
-        className="lg:hidden"
+        className="lg:hidden p-2 -mr-2 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
         onClick={toggleMenu}
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         aria-expanded={isMenuOpen}
@@ -22,18 +22,22 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
         {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
-      {/* Mobile navigation */}
-      <div 
-        id="mobile-menu"
-        className={`lg:hidden bg-white border-t py-4 px-4 shadow-md ${isMenuOpen ? 'block' : 'hidden'}`}
-        aria-hidden={!isMenuOpen}
-      >
-        <NavigationItems 
-          onItemClick={toggleMenu} 
-          className="flex flex-col space-y-4"
-        />
-        <UserMenu isMobile onItemClick={toggleMenu} />
-      </div>
+{/* Mobile navigation */}
+      {isMenuOpen && (
+        <div 
+          id="mobile-menu"
+          className="fixed inset-x-0 top-[72px] lg:hidden bg-white border-t shadow-lg z-40 animate-in slide-in-from-top-2 duration-200"
+          aria-hidden={false}
+        >
+          <div className="py-4 px-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <NavigationItems 
+              onItemClick={toggleMenu} 
+              className="flex flex-col space-y-1 mb-4"
+            />
+            <UserMenu isMobile onItemClick={toggleMenu} />
+          </div>
+        </div>
+      )}
     </>
   );
 };

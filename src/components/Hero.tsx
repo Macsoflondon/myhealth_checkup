@@ -1,13 +1,15 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { HeroToolbar } from "./HeroToolbar";
 
 const Hero = () => {
   return (
     <div className="relative overflow-hidden bg-white">
+      <HeroToolbar />
       <div className="absolute inset-0 z-0 wave-pattern opacity-10"></div>
       
-      <div className="container mx-auto px-4 py-20 sm:py-24 lg:py-32 relative z-10">
+      <div className="container mx-auto px-4 py-16 sm:py-20 lg:py-24 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fadeIn">
             🧬 Start Your Journey Towards{" "}

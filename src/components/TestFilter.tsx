@@ -41,17 +41,17 @@ const TestFilter = ({
     <div className="flex flex-col space-y-6">
       {/* Category Filter */}
       <div>
-        <h2 className="font-semibold mb-3 text-lg">Select Category</h2>
-        <div className="flex flex-wrap gap-2">
+        <h2 className="font-semibold mb-4 text-lg">Select Category</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {compareCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
               className={cn(
-                "px-4 py-2 rounded-lg border transition-colors",
+                "px-4 py-3 rounded-lg border transition-colors text-sm font-medium min-h-[48px] touch-manipulation",
                 selectedCategory === category.id
-                  ? "bg-health-600 text-white border-health-600"
-                  : "bg-white border-gray-200 hover:border-health-600"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background border-border hover:border-primary hover:bg-accent"
               )}
             >
               {category.name}
@@ -62,15 +62,15 @@ const TestFilter = ({
 
       {/* Provider Filter */}
       <div>
-        <h2 className="font-semibold mb-3 text-lg">Filter by Provider</h2>
-        <div className="flex flex-wrap gap-2">
+        <h2 className="font-semibold mb-4 text-lg">Filter by Provider</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           <button
             onClick={() => onProviderChange(["all"])}
             className={cn(
-              "px-4 py-2 rounded-lg border transition-colors flex items-center gap-2",
+              "px-4 py-3 rounded-lg border transition-colors flex items-center justify-center gap-2 text-sm font-medium min-h-[48px] touch-manipulation",
               isAllProvidersSelected
-                ? "bg-health-600 text-white border-health-600"
-                : "bg-white border-gray-200 hover:border-health-600"
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background border-border hover:border-primary hover:bg-accent"
             )}
           >
             {isAllProvidersSelected && <Check className="h-4 w-4" />}
@@ -82,17 +82,17 @@ const TestFilter = ({
               key={provider.id}
               onClick={() => handleProviderToggle(provider.id.toLowerCase())}
               className={cn(
-                "px-4 py-2 rounded-lg border transition-colors flex items-center gap-2",
+                "px-4 py-3 rounded-lg border transition-colors flex items-center justify-center gap-2 text-sm font-medium min-h-[48px] touch-manipulation",
                 selectedProviders.includes(provider.id.toLowerCase()) && !isAllProvidersSelected
-                  ? "bg-health-600 text-white border-health-600"
-                  : "bg-white border-gray-200 hover:border-health-600"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background border-border hover:border-primary hover:bg-accent"
               )}
               disabled={isAllProvidersSelected}
             >
               {selectedProviders.includes(provider.id.toLowerCase()) && !isAllProvidersSelected && (
                 <Check className="h-4 w-4" />
               )}
-              {provider.name}
+              <span className="truncate">{provider.name}</span>
             </button>
           ))}
         </div>

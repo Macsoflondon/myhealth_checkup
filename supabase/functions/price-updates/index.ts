@@ -35,7 +35,7 @@ serve(async (req) => {
           available: true
         },
         {
-          provider: "Medicheck",
+          provider: "Medichecks",
           test_id: "blood-test-2",
           price: 59.00,
           available: true

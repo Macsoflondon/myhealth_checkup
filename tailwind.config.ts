@@ -63,6 +63,12 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				'health-primary': 'hsl(var(--health-primary))',
+				'health-secondary': 'hsl(var(--health-secondary))',
+				'health-accent': 'hsl(var(--health-accent))',
+				'health-success': 'hsl(var(--health-success))',
+				'health-warning': 'hsl(var(--health-warning))',
+				'health-highlight': 'hsl(var(--health-highlight))',
 				health: {
 					50: '#f0f9ff',
 					100: '#e0f2fe',
