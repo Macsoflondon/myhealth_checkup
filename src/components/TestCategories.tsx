@@ -47,7 +47,7 @@ const TestCategories = (): JSX.Element => {
     icon: <Dna className="h-6 w-6 text-white" />,
     link: "/tests/cancer",
     testCount: 15,
-    providerCount: 8
+    providerCount: 7
   }, {
     categoryId: "heart-health",
     title: "Heart Health",
@@ -63,7 +63,7 @@ const TestCategories = (): JSX.Element => {
     icon: <FlaskConical className="h-6 w-6 text-white" />,
     link: "/compare?category=hormones",
     testCount: 18,
-    providerCount: 6
+    providerCount: 7
   }, {
     categoryId: "mens-health",
     title: "Men's Health",
@@ -71,7 +71,7 @@ const TestCategories = (): JSX.Element => {
     icon: <User className="h-6 w-6 text-white" />,
     link: "/tests/mens-health",
     testCount: 14,
-    providerCount: 9
+    providerCount: 7
   }, {
     categoryId: "womens-health",
     title: "Women's Health & Fertility",
@@ -79,7 +79,7 @@ const TestCategories = (): JSX.Element => {
     icon: <UserCheck className="h-6 w-6 text-white" />,
     link: "/tests/womens-health",
     testCount: 20,
-    providerCount: 8
+    providerCount: 7
   }, {
     categoryId: "diabetes",
     title: "Diabetes & Blood Sugar",
@@ -87,7 +87,7 @@ const TestCategories = (): JSX.Element => {
     icon: <Activity className="h-6 w-6 text-white" />,
     link: "/tests/diabetes",
     testCount: 8,
-    providerCount: 6
+    providerCount: 7
   }, {
     categoryId: "general-health",
     title: "Gut Health & Digestion",
@@ -95,7 +95,7 @@ const TestCategories = (): JSX.Element => {
     icon: <Droplets className="h-6 w-6 text-white" />,
     link: "/tests/gut",
     testCount: 11,
-    providerCount: 5
+    providerCount: 7
   }, {
     categoryId: "vitamins",
     title: "Vitamin & Nutrient Testing",
@@ -111,7 +111,7 @@ const TestCategories = (): JSX.Element => {
     icon: <TestTube className="h-6 w-6 text-white" />,
     link: "/compare?category=blood-tests",
     testCount: 16,
-    providerCount: 10
+    providerCount: 7
   }];
   return <section className="bg-[#081129] py-[14px]">
       <div className="container mx-auto px-4 bg-[#081129]">
