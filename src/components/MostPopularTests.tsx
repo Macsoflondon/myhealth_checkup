@@ -105,8 +105,8 @@ const MostPopularTests = () => {
             
           </nav>
           
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Our most popular tests</h1>
-          <p className="text-lg text-white">Check out our best selling tests, used by thousands of people</p>
+          <h1 className="text-4xl font-bold mb-4 text-[#22c0d4] text-center">Most Popular Tests</h1>
+          <p className="text-lg text-white text-center">Check out our best selling tests, used by thousands of people</p>
         </div>
 
         <div className="flex justify-end mb-6">
