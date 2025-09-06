@@ -108,6 +108,19 @@ const categoryItems: CategoryItem[] = [{
   path: '/health-blog'
 }];
 const CategoryFilters: React.FC = () => {
-  return;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {categoryItems.map((category) => (
+        <Badge
+          key={category.id}
+          variant="secondary"
+          className="cursor-pointer hover:opacity-80 transition-opacity"
+          style={{ backgroundColor: category.color }}
+        >
+          {category.name}
+        </Badge>
+      ))}
+    </div>
+  );
 };
 export default CategoryFilters;
