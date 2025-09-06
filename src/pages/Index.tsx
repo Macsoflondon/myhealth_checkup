@@ -94,9 +94,9 @@ const Index = () => {
         <NewHero />
         <HowItWorks />
         <MediaSpotlight />
-        <MostPopularTests />
         <TestCategories />
         <FeaturedProviders />
+        <MostPopularTests />
         <ClinicMap />
         <CategoryFilters />
         <HealthBenefitsInfographic />
