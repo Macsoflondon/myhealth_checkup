@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 const CallToAction = () => {
-  return <section className="bg-gradient-to-r from-health-600 to-wellness-600 bg-[#1a1b34] text-center font-bold text-[#22c0d4] text-4xl py-0">
+  return <section className="bg-[hsl(var(--section-dark))] text-center font-bold text-[#22c0d4] text-4xl py-0">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl mb-6 text-center font-semibold text-[#e70d69] md:text-lg">
