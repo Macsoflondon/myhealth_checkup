@@ -140,7 +140,7 @@ const NewHero = () => {
                       Analyzing...
                     </> : <>
                       <Bot className="w-5 h-5 mr-2" />
-                      AI Analysis
+                      Get Started
                     </>}
                 </Button>
               </div>
