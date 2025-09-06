@@ -75,11 +75,12 @@ const NewHero = () => {
     name: "B12 & Folate",
     category: "vitamins"
   }];
-  return <section className="relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center -mt-[72px] pt-[72px]" style={{
+  return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center -mt-[72px] pt-[72px]" style={{
     backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
+    backgroundRepeat: 'no-repeat',
+    willChange: 'transform'
   }}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -89,17 +90,8 @@ const NewHero = () => {
       <div className="relative z-10 w-full py-0 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center py-[20px] my-[20px]">
           {/* Full Logo */}
-          <div className="mb-8 bg-white rounded-lg p-6">
-            <img 
-              src="/lovable-uploads/79d8140c-476d-4f5d-8b5a-9bfdc0f8b729.png" 
-              alt="myhealth checkup - Your health is your greatest asset"
-              className="mx-auto w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl h-auto object-contain"
-              width="1600"
-              height="600"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
+          <div className="mb-80 ">
+            <img src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto transform scale-125" width="800" height="450" fetchPriority="high" loading="eager" decoding="sync" />
           </div>
           {/* Main Headline */}
           <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
