@@ -89,13 +89,13 @@ const NewHero = () => {
       <div className="relative z-10 w-full py-0 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center py-[20px] my-[20px]">
           {/* Full Logo */}
-          <div className="mb-8 bg-white rounded-lg p-4">
+          <div className="mb-8 bg-white rounded-lg p-6">
             <img 
               src="/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png" 
               alt="myhealth checkup - Your health is your greatest asset" 
-              className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl h-auto object-contain"
-              width="800"
-              height="300"
+              className="mx-auto w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl h-auto object-contain"
+              width="1600"
+              height="600"
               loading="eager"
               fetchPriority="high"
               decoding="async"
