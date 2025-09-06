@@ -1,16 +1,27 @@
 // Unified color system for test categories across all providers
 // This ensures consistent colors for each category across the entire platform
 
-export const HormonesCategoryColor: CategoryColor = {
-id: ‘hormones’
-name: ‘Hormones’
-primary: ‘#FFFFFF’          // Card background
-light: ‘#F8FAFC’            // Hover or subtle highlight background
-text: ‘#111827’             // Main text on light backgrounds
-icon: ‘#1A1B34’             // Icons, CTA outline, header stripe
-border: ‘#E5E7EB’           // Card border and dividers
-pinColor: ‘#1A1B34’         // Map pin
+export interface CategoryColor {
+  id: string;
+  name: string;
+  primary: string;
+  light: string;
+  text: string;
+  icon: string;
+  border: string;
+  pinColor: string;
 }
+
+export const HormonesCategoryColor: CategoryColor = {
+  id: 'hormones',
+  name: 'Hormones',
+  primary: '#FFFFFF',          // Card background
+  light: '#F8FAFC',            // Hover or subtle highlight background
+  text: '#111827',             // Main text on light backgrounds
+  icon: '#1A1B34',             // Icons, CTA outline, header stripe
+  border: '#E5E7EB',           // Card border and dividers
+  pinColor: '#1A1B34'         // Map pin
+};
 
 export const categoryColors: CategoryColor[] = [
   {
