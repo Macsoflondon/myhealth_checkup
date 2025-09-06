@@ -47,7 +47,7 @@ const TestCategories = (): JSX.Element => {
     icon: <Dna className="h-6 w-6 text-white" />,
     link: "/tests/cancer",
     testCount: 15,
-    providerCount: 7
+    providerCount: 8
   }, {
     categoryId: "heart-health",
     title: "Heart Health",
@@ -63,7 +63,7 @@ const TestCategories = (): JSX.Element => {
     icon: <FlaskConical className="h-6 w-6 text-white" />,
     link: "/compare?category=hormones",
     testCount: 18,
-    providerCount: 7
+    providerCount: 6
   }, {
     categoryId: "mens-health",
     title: "Men's Health",
@@ -71,7 +71,7 @@ const TestCategories = (): JSX.Element => {
     icon: <User className="h-6 w-6 text-white" />,
     link: "/tests/mens-health",
     testCount: 14,
-    providerCount: 7
+    providerCount: 9
   }, {
     categoryId: "womens-health",
     title: "Women's Health & Fertility",
@@ -79,7 +79,7 @@ const TestCategories = (): JSX.Element => {
     icon: <UserCheck className="h-6 w-6 text-white" />,
     link: "/tests/womens-health",
     testCount: 20,
-    providerCount: 7
+    providerCount: 8
   }, {
     categoryId: "diabetes",
     title: "Diabetes & Blood Sugar",
@@ -87,7 +87,7 @@ const TestCategories = (): JSX.Element => {
     icon: <Activity className="h-6 w-6 text-white" />,
     link: "/tests/diabetes",
     testCount: 8,
-    providerCount: 7
+    providerCount: 6
   }, {
     categoryId: "general-health",
     title: "Gut Health & Digestion",
@@ -95,7 +95,7 @@ const TestCategories = (): JSX.Element => {
     icon: <Droplets className="h-6 w-6 text-white" />,
     link: "/tests/gut",
     testCount: 11,
-    providerCount: 7
+    providerCount: 5
   }, {
     categoryId: "vitamins",
     title: "Vitamin & Nutrient Testing",
@@ -111,11 +111,11 @@ const TestCategories = (): JSX.Element => {
     icon: <TestTube className="h-6 w-6 text-white" />,
     link: "/compare?category=blood-tests",
     testCount: 16,
-    providerCount: 7
+    providerCount: 10
   }];
   return <section className="bg-[#081129] py-[14px]">
       <div className="container mx-auto px-4 bg-[#081129]">
-        <div className="text-center mb-12 bg-[#081129]">
+        <div className="text-center mb-12 bg-[#081129] my-[20px]">
           <h2 className="text-3xl font-bold mb-4 text-[#e70d69]">Test Categories</h2>
           <p className="text-xl max-w-3xl mx-auto text-white">
             Explore our comprehensive range of health tests, carefully curated from the UK's most trusted providers.
@@ -124,15 +124,9 @@ const TestCategories = (): JSX.Element => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {categories.map((category, index) => {
-            const colors = getCategoryCSSClasses(category.categoryId);
-            return (
-              <CategoryCard 
-                key={index} 
-                {...category} 
-                color={colors.primary}
-              />
-            );
-          })}
+          const colors = getCategoryCSSClasses(category.categoryId);
+          return <CategoryCard key={index} {...category} color={colors.primary} />;
+        })}
         </div>
 
         <div className="text-center mt-12">

@@ -5,94 +5,84 @@ import { Star, MapPin, ExternalLink } from "lucide-react";
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { Link } from "react-router-dom";
 import { detailedProviders } from "@/data/compare/detailedProviders";
-
 const FeaturedProviders = () => {
-  const featuredProviderData = [
-    {
-      id: "Medichecks",
-      name: "Medichecks",
-      rating: 4.7,
-      reviews: "3,521",
-      description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
-      location: "UK Wide",
-      tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "UKAS Accredited"],
-      website: "medichecks.com"
-    },
-    {
-      id: "Goodbody",
-      name: "Goodbody Clinic",
-      rating: 4.6,
-      reviews: "1,240",
-      description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
-      location: "140+ clinics nationwide",
-      tags: ["GP Follow-ups", "Wellness Profiles", "CQC Registered", "Nationwide"],
-      website: "health.goodbodyclinic.com"
-    },
-    {
-      id: "Thriva",
-      name: "Thriva",
-      rating: 4.5,
-      reviews: "2,156",
-      description: "Subscription-based home testing with digital dashboard and GP advice for ongoing health monitoring",
-      location: "Home Testing UK Wide",
-      tags: ["Home Testing", "Digital Dashboard", "GP Advice", "Subscription"],
-      website: "thriva.co"
-    },
-    {
-      id: "Randox",
-      name: "Randox Health",
-      rating: 4.8,
-      reviews: "1,847",
-      description: "Global diagnostics company offering comprehensive health checks with UKAS accredited and FDA approved testing",
-      location: "London, Liverpool, Belfast",
-      tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
-      website: "randoxhealth.com"
-    },
-    {
-      id: "LondonMedicalLab",
-      name: "London Medical Laboratory",
-      rating: 4.4,
-      reviews: "892",
-      description: "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation",
-      location: "London & Partners",
-      tags: ["UKAS Accredited", "Professional Lab", "Comprehensive Testing", "ISO 15189"],
-      website: "londonmedicallaboratory.com"
-    },
-    {
-      id: "Lola",
-      name: "Lola Health",
-      rating: 4.3,
-      reviews: "567",
-      description: "Modern health testing platform focused on women's health and wellness with innovative approaches",
-      location: "UK Wide",
-      tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
-      website: "lolahealth.com"
-    },
-    {
-      id: "Tuli",
-      name: "Tuli Health",
-      rating: 4.5,
-      reviews: "1,123",
-      description: "Phlebotomy network enabling blood collection at 300+ local pharmacies with CQC registered service",
-      location: "300+ local pharmacies",
-      tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
-      website: "tuli.health"
-    }
-  ];
+  const featuredProviderData = [{
+    id: "Medichecks",
+    name: "Medichecks",
+    rating: 4.7,
+    reviews: "3,521",
+    description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
+    location: "UK Wide",
+    tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "UKAS Accredited"],
+    website: "medichecks.com"
+  }, {
+    id: "Goodbody",
+    name: "Goodbody Clinic",
+    rating: 4.6,
+    reviews: "1,240",
+    description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
+    location: "140+ clinics nationwide",
+    tags: ["GP Follow-ups", "Wellness Profiles", "CQC Registered", "Nationwide"],
+    website: "health.goodbodyclinic.com"
+  }, {
+    id: "Thriva",
+    name: "Thriva",
+    rating: 4.5,
+    reviews: "2,156",
+    description: "Subscription-based home testing with digital dashboard and GP advice for ongoing health monitoring",
+    location: "Home Testing UK Wide",
+    tags: ["Home Testing", "Digital Dashboard", "GP Advice", "Subscription"],
+    website: "thriva.co"
+  }, {
+    id: "Randox",
+    name: "Randox Health",
+    rating: 4.8,
+    reviews: "1,847",
+    description: "Global diagnostics company offering comprehensive health checks with UKAS accredited and FDA approved testing",
+    location: "London, Liverpool, Belfast",
+    tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
+    website: "randoxhealth.com"
+  }, {
+    id: "LondonMedicalLab",
+    name: "London Medical Laboratory",
+    rating: 4.4,
+    reviews: "892",
+    description: "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation",
+    location: "London & Partners",
+    tags: ["UKAS Accredited", "Professional Lab", "Comprehensive Testing", "ISO 15189"],
+    website: "londonmedicallaboratory.com"
+  }, {
+    id: "Lola",
+    name: "Lola Health",
+    rating: 4.3,
+    reviews: "567",
+    description: "Modern health testing platform focused on women's health and wellness with innovative approaches",
+    location: "UK Wide",
+    tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
+    website: "lolahealth.com"
+  }, {
+    id: "Tuli",
+    name: "Tuli Health",
+    rating: 4.5,
+    reviews: "1,123",
+    description: "Phlebotomy network enabling blood collection at 300+ local pharmacies with CQC registered service",
+    location: "300+ local pharmacies",
+    tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
+    website: "tuli.health"
+  }];
   return <section className="py-16 bg-gradient-to-b from-white to-gray-50" id="providers">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#22c0d4] text-center">
             Trusted UK Providers
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl max-w-3xl mx-auto text-[#e70d69] font-normal text-center">
             Accredited health testing providers with proven track records
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {featuredProviderData.map((provider) => (
-            <Card key={provider.id} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          {featuredProviderData.map(provider => <Card key={provider.id} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-start gap-3 md:gap-4 mb-4 my-0">
                   <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -118,11 +108,9 @@ const FeaturedProviders = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-1 mb-6">
-                  {provider.tags.map((tag, tagIndex) => (
-                    <Badge key={tagIndex} variant="secondary" className="text-xs">
+                  {provider.tags.map((tag, tagIndex) => <Badge key={tagIndex} variant="secondary" className="text-xs">
                       {tag}
-                    </Badge>
-                  ))}
+                    </Badge>)}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -139,8 +127,7 @@ const FeaturedProviders = () => {
                   </Button>
                 </div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
       </div>
     </section>;

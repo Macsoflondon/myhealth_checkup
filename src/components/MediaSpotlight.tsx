@@ -77,7 +77,7 @@ const MediaSpotlight = () => {
       
       <section aria-labelledby="press-mentions-title" className="media-spotlight bg-[f#ffffff] bg-[#22c0d4]">
         <h2 id="press-mentions-title" className="media-spotlight__title text-white">Media Spotlight</h2>
-        <div className="marquee" role="region" aria-label="Press mentions carousel">
+        <div role="region" aria-label="Press mentions carousel" className="marquee bg-[#22c0d4]">
           <div className="marquee__track">
             {/* Interleaved Medicheck & Goodbody logos */}
             <div className="marquee__slide accent">
