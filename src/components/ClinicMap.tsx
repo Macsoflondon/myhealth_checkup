@@ -183,7 +183,7 @@ const ClinicMap: React.FC = () => {
     }
     return arr;
   }, [items, mode]);
-  return <section aria-label="Find a clinic" className="py-16 bg-gradient-to-b from-white to-muted bg-[#1a1b34]">
+  return <section aria-label="Find a clinic" className="py-16 bg-[#1a1b34]">
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#22c0d4]">Find Your Nearest Test Location</h2>
