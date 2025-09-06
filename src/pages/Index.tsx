@@ -90,11 +90,11 @@ const Index = () => {
       
       <main className="flex-1">
         <NewHero />
+        <HowItWorks />
+        <MediaSpotlight />
         <TestCategories />
         <FeaturedProviders />
         <MostPopularTests />
-        <HowItWorks />
-        <MediaSpotlight />
         <HealthBenefitsInfographic />
         <FounderStory />
         <PartnerShowcase />
