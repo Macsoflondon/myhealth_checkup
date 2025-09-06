@@ -41,7 +41,7 @@ const HealthResources = () => {
                     {resource.readTime}
                   </div>
                   
-                  <Button variant="outline" className="w-full border-health-300 hover:bg-health-50 text-[#e70d69]">
+                  <Button variant="outline" className="w-full border-health-300 text-white bg-[#e70d69] rounded">
                     Read More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
