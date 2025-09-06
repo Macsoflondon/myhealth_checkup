@@ -100,12 +100,12 @@ const Index = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <main className="flex-grow">
-          <Suspense fallback={<div className="h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full"></div></div>}>
-            <NewHero />
-          </Suspense>
-          
           <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
             <UKASBanner />
+          </Suspense>
+          
+          <Suspense fallback={<div className="h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full"></div></div>}>
+            <NewHero />
           </Suspense>
           
           <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
