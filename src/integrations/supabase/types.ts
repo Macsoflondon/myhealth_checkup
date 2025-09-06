@@ -24,6 +24,7 @@ export type Database = {
           longitude: number | null
           name: string
           postal_code: string | null
+          provider_id: string | null
         }
         Insert: {
           access_note?: string | null
@@ -34,6 +35,7 @@ export type Database = {
           longitude?: number | null
           name: string
           postal_code?: string | null
+          provider_id?: string | null
         }
         Update: {
           access_note?: string | null
@@ -44,6 +46,7 @@ export type Database = {
           longitude?: number | null
           name?: string
           postal_code?: string | null
+          provider_id?: string | null
         }
         Relationships: []
       }
