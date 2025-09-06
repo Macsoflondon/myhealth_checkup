@@ -1,16 +1,14 @@
 import { Link } from "react-router-dom";
 const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
 export const Logo = () => {
-  return (
-    <Link to="/" className="flex items-center gap-3" aria-label="Health & Wellness Hub Home">
+  return <Link to="/" className="flex items-center gap-3" aria-label="Health & Wellness Hub Home">
       <img src={logo} alt="myhealth checkup Logo" className="h-10 w-10 rounded-lg" />
       <div className="flex flex-col">
-        <span className="font-bold text-lg leading-tight text-black">myhealth</span>
-        <span className="font-bold text-lg leading-tight text-cyan-500">checkup</span>
+        <span className="font-bold text-lg leading-tight text-[#1a1b34]">myhealth</span>
+        <span className="text-lg leading-tight text-cyan-500 font-normal">checkup</span>
       </div>
       <div className="hidden md:block ml-4 text-sm text-cyan-500 font-medium">
         Your health is your greatest asset!
       </div>
-    </Link>
-  );
+    </Link>;
 };
