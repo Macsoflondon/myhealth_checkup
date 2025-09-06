@@ -7,9 +7,7 @@ import FeaturedProviders from "@/components/FeaturedProviders";
 import CategoryFilters from "@/components/CategoryFilters";
 import TestCategories from "@/components/TestCategories";
 import MediaSpotlight from "@/components/MediaSpotlight";
-
 import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
-
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import HowItWorks from "@/components/HowItWorks";
@@ -23,7 +21,6 @@ import MostPopularTests from "@/components/MostPopularTests";
 import UKASBanner from "@/components/UKASBanner";
 const Index = () => {
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
-  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -90,56 +87,7 @@ const Index = () => {
       
       <UKASBanner />
       <Header />
-      <main className="flex-grow">
-        <NewHero />
-        <HowItWorks />
-        <MediaSpotlight />
-        <TestCategories />
-        <FeaturedProviders />
-        <MostPopularTests />
-        <ClinicMap />
-        <CategoryFilters />
-        <HealthBenefitsInfographic />
-        <FounderStory />
-        <PartnerShowcase />
-        
-        {/* Video Section */}
-        <section className="py-12 bg-muted/50">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Featured Health Video
-                </h2>
-                <p className="text-muted-foreground">
-                  Upload and share health-related videos with our community
-                </p>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4">Upload Video</h3>
-                  <VideoUpload onVideoUploaded={setUploadedVideoUrl} />
-                </div>
-                
-                {uploadedVideoUrl && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">Your Video</h3>
-                    <VideoPlayer 
-                      src={uploadedVideoUrl} 
-                      title="Uploaded Health Video"
-                      controls={true}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        <HealthResources />
-        <CallToAction />
-      </main>
+      
       <Footer />
       <CookieConsent />
     </div>;
