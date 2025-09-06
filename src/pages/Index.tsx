@@ -21,6 +21,7 @@ const VideoUpload = lazy(() => import("@/components/VideoUpload").then(m => ({ d
 const VideoPlayer = lazy(() => import("@/components/VideoPlayer").then(m => ({ default: m.VideoPlayer })));
 const MostPopularTests = lazy(() => import("@/components/MostPopularTests"));
 const UKASBanner = lazy(() => import("@/components/UKASBanner"));
+const BackToTop = lazy(() => import("@/components/BackToTop"));
 
 const Index = () => {
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
@@ -167,6 +168,9 @@ const Index = () => {
         </main>
         <Footer />
         <CookieConsent />
+        <Suspense fallback={<div />}>
+          <BackToTop />
+        </Suspense>
       </div>
     </>
   );
