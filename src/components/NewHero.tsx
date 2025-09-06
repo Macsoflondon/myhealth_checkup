@@ -91,8 +91,8 @@ const NewHero = () => {
           {/* Full Logo */}
           <div className="mb-8 bg-white rounded-lg p-6">
             <img 
-              src="/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png" 
-              alt="myhealth checkup - Your health is your greatest asset" 
+              src="/lovable-uploads/79d8140c-476d-4f5d-8b5a-9bfdc0f8b729.png" 
+              alt="myhealth checkup - Your health is your greatest asset"
               className="mx-auto w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl h-auto object-contain"
               width="1600"
               height="600"
