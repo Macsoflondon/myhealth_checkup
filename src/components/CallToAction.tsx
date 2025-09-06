@@ -10,7 +10,7 @@ const CallToAction = () => {
             Join thousands of customers who've discovered health insights that made a difference.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-health-700 hover:bg-gray-100">
+            <Button size="lg" className="bg-[#e70d69] text-white hover:bg-[#e70d69]/90">
               Explore Tests
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
