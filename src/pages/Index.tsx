@@ -144,16 +144,16 @@ const Index = () => {
             <PartnerShowcase />
           </Suspense>
           
+          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
+            <CallToAction />
+          </Suspense>
+          
           <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
             <HealthResources />
           </Suspense>
           
           <Suspense fallback={<div className="h-[600px] bg-muted animate-pulse"></div>}>
             <EnhancedClinicMap />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-            <CallToAction />
           </Suspense>
           
           {uploadedVideoUrl && (
