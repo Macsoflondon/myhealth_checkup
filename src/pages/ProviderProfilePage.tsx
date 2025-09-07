@@ -50,7 +50,7 @@ const ProviderProfilePage = () => {
       <main className="container mx-auto px-4 py-4 md:py-8">
         {/* Back Button */}
         <div className="mb-4 md:mb-6">
-          <Button variant="outline" asChild className="gap-2 min-h-[44px] touch-manipulation">
+          <Button variant="outline" asChild className="gap-2 min-h-[44px] touch-manipulation border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4] hover:text-white">
             <Link to="/#providers">
               <ArrowLeft className="w-4 h-4" />
               Back to All Providers
@@ -85,13 +85,13 @@ const ProviderProfilePage = () => {
               <p className="text-gray-600 text-base md:text-lg mb-6">{provider.description}</p>
               
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button size="lg" asChild className="min-h-[48px] w-full sm:w-auto">
+                <Button size="lg" asChild className="min-h-[48px] w-full sm:w-auto bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white">
                   <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
                     Visit Website
                     <ExternalLink className="w-4 h-4 ml-2" />
                   </a>
                 </Button>
-                <Button variant="outline" size="lg" asChild className="min-h-[48px] w-full sm:w-auto">
+                <Button variant="outline" size="lg" asChild className="min-h-[48px] w-full sm:w-auto border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4] hover:text-white">
                   <Link to={`/provider/${providerId}/tests`}>
                     Browse Available Tests
                   </Link>
