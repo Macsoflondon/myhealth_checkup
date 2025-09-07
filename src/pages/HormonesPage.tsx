@@ -233,7 +233,7 @@ const HormonesPage = () => {
                             ))}
                           </ul>
                         </div>
-                        <Button className="w-full" variant="outline">
+                        <Button className="w-full bg-primary hover:bg-primary/90">
                           Compare Providers
                         </Button>
                       </CardContent>

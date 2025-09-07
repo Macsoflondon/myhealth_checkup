@@ -185,7 +185,7 @@ const WellnessPage = () => {
                         <CardDescription className="text-sm text-muted-foreground mb-4 line-clamp-3">
                           {test.description}
                         </CardDescription>
-                        <Button className="w-full" variant="outline">
+                        <Button className="w-full bg-primary hover:bg-primary/90">
                           Compare Providers
                         </Button>
                       </CardContent>
