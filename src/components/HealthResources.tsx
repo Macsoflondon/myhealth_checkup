@@ -50,7 +50,7 @@ const HealthResources = () => {
           </div>
           
           <div className="text-center mt-12 bg-[#1a1b34]">
-            <Button size="lg" className="bg-health-600 hover:bg-health-700">
+            <Button className="bg-health-600 hover:bg-health-700">
               View All Resources
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
