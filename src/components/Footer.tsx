@@ -74,11 +74,34 @@ const Footer = () => {
             </Link>
             <p className="mb-2 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
             <p className="mb-4 text-xs font-light text-left text-white">Company No. 16589056</p>
-            <div className="flex space-x-6 rounded decoration-white ">
+            <div className="flex space-x-6 rounded decoration-white mb-6">
               {socialLinks.map((social, index) => <a key={index} href={social.url} className="hover:opacity-75 transition-opacity" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
                 </a>)}
+            </div>
+            
+            <div className="flex flex-col space-y-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">Q</span>
+                </div>
+                <span className="text-white text-sm">Care Quality Commission</span>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                  <span className="text-purple-600 text-xs">★</span>
+                </div>
+                <span className="text-white text-sm">EU GDPR Compliant</span>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-sm">i</span>
+                </div>
+                <span className="text-white text-sm">ICO Registered</span>
+              </div>
             </div>
           </div>
 
