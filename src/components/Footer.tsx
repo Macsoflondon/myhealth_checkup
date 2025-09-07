@@ -59,12 +59,12 @@ const Footer = () => {
     link: "/partners"
   }];
   const socialLinks = [{
-    icon: <Facebook size={20} />,
+    icon: <Facebook size={40} style={{ color: '#1877F2' }} />,
     name: "Facebook",
     url: "https://facebook.com/myhealthhub"
   }, {
-    icon: <Instagram size={20} />,
-    name: "Instagram",
+    icon: <Instagram size={40} style={{ color: '#E4405F' }} />,
+    name: "Instagram",  
     url: "https://instagram.com/myhealthhub"
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
@@ -81,8 +81,8 @@ const Footer = () => {
             </Link>
             <p className="mb-2 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
             <p className="mb-4 text-xs font-light text-left text-white">Company No. 16589056</p>
-            <div className="flex space-x-4 rounded decoration-white ">
-              {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-gray-400 hover:text-health-600 transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
+            <div className="flex space-x-6 rounded decoration-white ">
+              {socialLinks.map((social, index) => <a key={index} href={social.url} className="hover:opacity-75 transition-opacity" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
                 </a>)}
