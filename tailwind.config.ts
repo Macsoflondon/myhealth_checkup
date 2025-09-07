@@ -72,6 +72,7 @@ export default {
 				'health-success': 'hsl(var(--health-success))',
 				'health-warning': 'hsl(var(--health-warning))',
 				'health-highlight': 'hsl(var(--health-highlight))',
+				'health-heading': 'hsl(var(--health-heading))',
 				health: {
 					50: '#f0f9ff',
 					100: '#e0f2fe',

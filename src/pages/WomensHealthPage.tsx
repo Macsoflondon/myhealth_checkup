@@ -142,7 +142,7 @@ const WomensHealthPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-4">Women's Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
                 Women's Health Blood Tests
               </h1>
               <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
