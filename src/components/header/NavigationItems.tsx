@@ -31,6 +31,7 @@ export const navigationItems = [
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
   { name: "HORMONES", path: "/hormones", hasDropdown: true, megaMenu: true },
   { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
+  { name: "CANCER SCREENING", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
   { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "HEALTH RESOURCES HUB", path: "/health-blog", hasDropdown: false }
 ];
@@ -60,8 +61,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
       return null; // Will use categories
     }
     
-    // For specific health sections, show actual Goodbody tests
-    return getTestsForNavigation(itemName);
+  // For specific health sections, show actual Goodbody tests
+  return getTestsForNavigation(itemName);
   };
 
   const getFilteredCategories = (itemName: string) => {
@@ -82,6 +83,10 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
       case "THYROID":
         return compareCategories.filter(cat => 
           ['thyroid', 'hormones'].includes(cat.id)
+        );
+      case "CANCER SCREENING":
+        return compareCategories.filter(cat => 
+          ['cancer-screening', 'general-health'].includes(cat.id)
         );
       case "GENERAL WELLNESS":
         return compareCategories.filter(cat => 

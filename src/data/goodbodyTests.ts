@@ -269,6 +269,48 @@ export const goodbodyTests: GoodbodyTest[] = [
     turnaround: '3-5 days',
     categories: ['general-wellness'],
     url: '/book/helicobacter-pylori'
+  },
+
+  // Cancer Screening Tests
+  {
+    id: 'bowel-cancer-screening',
+    name: 'Bowel Cancer Screening',
+    price: 89,
+    description: 'Advanced FIT test for early detection',
+    biomarkers: 2,
+    turnaround: '5-7 days',
+    categories: ['cancer-screening'],
+    url: '/book/bowel-cancer-screening'
+  },
+  {
+    id: 'prostate-cancer-panel',
+    name: 'Prostate Cancer Panel',
+    price: 125,
+    description: 'Comprehensive PSA testing for men 40+',
+    biomarkers: 3,
+    turnaround: '3-5 days',
+    categories: ['cancer-screening', 'mens-health'],
+    url: '/book/prostate-cancer-panel'
+  },
+  {
+    id: 'cervical-cancer-screening',
+    name: 'Cervical Cancer Screening',
+    price: 149,
+    description: 'HPV testing and cytology',
+    biomarkers: 3,
+    turnaround: '7-10 days',
+    categories: ['cancer-screening', 'womens-health'],
+    url: '/book/cervical-cancer-screening'
+  },
+  {
+    id: 'multi-cancer-detection',
+    name: 'Multi-Cancer Detection',
+    price: 399,
+    description: 'Blood-based early detection panel',
+    biomarkers: 50,
+    turnaround: '10-14 days',
+    categories: ['cancer-screening'],
+    url: '/book/multi-cancer-detection'
   }
 ];
 
@@ -284,6 +326,7 @@ export const getTestsForNavigation = (navItem: string): GoodbodyTest[] => {
     'MEN\'S HEALTH': ['mens-health'],
     'HORMONES': ['hormones'],
     'THYROID': ['thyroid'],
+    'CANCER SCREENING': ['cancer-screening'],
     'GENERAL WELLNESS': ['general-wellness']
   };
 
