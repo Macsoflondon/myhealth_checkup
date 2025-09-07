@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import cqcLogo from "../assets/compliance/cqc-logo.png";
+import icoLogo from "../assets/compliance/ico-logo.png";
+import gdprLogo from "../assets/compliance/gdpr-logo.png";
 const Footer = () => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
@@ -83,22 +86,22 @@ const Footer = () => {
             
             <div className="flex flex-col space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-purple-600 font-bold text-sm">Q</span>
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1">
+                  <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-sm">Care Quality Commission</span>
               </div>
               
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                  <span className="text-purple-600 text-xs">★</span>
+                <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+                  <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-sm">EU GDPR Compliant</span>
               </div>
               
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                  <span className="text-purple-600 font-bold text-sm">i</span>
+                <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+                  <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-sm">ICO Registered</span>
               </div>
