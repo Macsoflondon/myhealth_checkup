@@ -45,6 +45,7 @@ import WellnessPage from "./pages/WellnessPage";
 import ConditionsPage from "./pages/ConditionsPage";
 import SportsPerformancePage from "./pages/SportsPerformancePage";
 import ThyroidPage from "./pages/ThyroidPage";
+import HormonesPage from "./pages/HormonesPage";
 
 const queryClient = new QueryClient();
 
@@ -99,6 +100,7 @@ const App = () => (
               <Route path="/conditions" element={<ConditionsPage />} />
               <Route path="/sports-performance" element={<SportsPerformancePage />} />
               <Route path="/thyroid" element={<ThyroidPage />} />
+              <Route path="/hormones" element={<HormonesPage />} />
               <Route path="/mens-health" element={<MensHealthPage />} />
               <Route path="/womens-health" element={<WomensHealthPage />} />
               <Route path="/health-blog" element={<HealthBlogPage />} />

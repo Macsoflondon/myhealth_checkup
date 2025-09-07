@@ -28,6 +28,7 @@ export const navigationItems = [
   { name: "AT-HOME TESTS", path: "/at-home-tests", hasDropdown: false },
   { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
+  { name: "HORMONES", path: "/hormones", hasDropdown: true, megaMenu: true },
   { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
   { name: "WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false }
@@ -62,6 +63,10 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
       case "MEN'S HEALTH":
         return compareCategories.filter(cat => 
           ['hormones', 'heart-health', 'general-health'].includes(cat.id)
+        );
+      case "HORMONES":
+        return compareCategories.filter(cat => 
+          ['hormones', 'thyroid', 'fertility'].includes(cat.id)
         );
       case "THYROID":
         return compareCategories.filter(cat => 
