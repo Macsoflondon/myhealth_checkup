@@ -130,7 +130,7 @@ const TestCategories = (): JSX.Element => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" asChild>
+          <Button variant="outline" size="lg" asChild style={{ backgroundColor: '#e70d69', color: 'white', borderColor: '#e70d69' }}>
             <Link to="/compare">
               View All Tests
               <ArrowRight className="ml-2 h-4 w-4" />
