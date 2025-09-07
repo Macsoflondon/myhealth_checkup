@@ -6,6 +6,7 @@ import { SearchBar } from "./header/SearchBar";
 import { NavigationItems } from "./header/NavigationItems";
 import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
+import { LanguageSwitcher } from "./header/LanguageSwitcher";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,8 +48,9 @@ const Header = () => {
             <SearchBar />
           </div>
           
-          {/* User Menu */}
-          <div className="flex-shrink-0">
+          {/* User Menu and Language Switcher */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <LanguageSwitcher />
             <UserMenu />
           </div>
         </div>

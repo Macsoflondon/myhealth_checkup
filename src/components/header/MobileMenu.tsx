@@ -2,6 +2,7 @@
 import { Menu, X } from "lucide-react";
 import { NavigationItems } from "./NavigationItems";
 import { UserMenu } from "./UserMenu";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -34,7 +35,10 @@ export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
               onItemClick={toggleMenu} 
               className="flex flex-col space-y-1 mb-4"
             />
-            <UserMenu isMobile onItemClick={toggleMenu} />
+            <div className="border-t border-gray-200 pt-4 flex items-center justify-between">
+              <LanguageSwitcher />
+              <UserMenu isMobile onItemClick={toggleMenu} />
+            </div>
           </div>
         </div>
       )}

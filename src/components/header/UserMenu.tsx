@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface UserMenuProps {
   isMobile?: boolean;
@@ -11,6 +12,7 @@ interface UserMenuProps {
 
 export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   if (isMobile) {
@@ -22,7 +24,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           onClick={onItemClick}
         >
           <User className="h-5 w-5" />
-          <span>Sign In</span>
+          <span>{t('common.signIn')}</span>
         </Link>
       </div>
     );

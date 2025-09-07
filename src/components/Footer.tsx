@@ -1,61 +1,54 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram } from "lucide-react";
+import { useTranslation } from "react-i18next";
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   // Categories for improved site structure and internal linking
   const serviceSections = [{
-    name: "Blood Tests",
-    link: "/compare?category=blood-tests"
-  }, {
-    name: "Hormone Tests",
-    link: "/compare?category=hormones"
-  }, {
-    name: "Vitamin Assessments",
-    link: "/compare?category=vitamins"
-  }, {
-    name: "Cancer Screening",
-    link: "/compare?category=cancer-screening"
-  }, {
-    name: "Heart Health",
-    link: "/tests/heart"
-  }, {
-    name: "Men's Health",
+    name: t('footer.links.mensHealth'),
     link: "/tests/mens-health"
   }, {
-    name: "Women's Health",
+    name: t('footer.links.womensHealth'),
     link: "/tests/womens-health"
   }, {
-    name: "Diabetes Testing",
+    name: t('footer.links.heartHealth'),
+    link: "/tests/heart"
+  }, {
+    name: t('footer.links.diabetes'),
     link: "/compare?category=diabetes"
   }, {
-    name: "Gut Health",
-    link: "/compare?category=gut-health"
+    name: t('footer.links.thyroid'),
+    link: "/compare?category=thyroid"
+  }, {
+    name: t('footer.links.fertility'),
+    link: "/compare?category=fertility"
   }];
   const informationSections = [{
-    name: "How It Works",
+    name: t('footer.links.howItWorks'),
     link: "/how-it-works"
   }, {
-    name: "FAQs",
+    name: t('footer.links.faqs'),
     link: "/faqs"
   }, {
-    name: "Health Resources",
+    name: t('footer.links.blog'),
     link: "/blog"
   }, {
-    name: "Contact Us",
+    name: t('footer.links.contact'),
     link: "/contact"
   }];
   const companySections = [{
-    name: "About Us",
+    name: t('footer.links.aboutUs'),
     link: "/about"
   }, {
-    name: "Privacy Policy",
+    name: t('footer.links.privacyPolicy'),
     link: "/privacy-policy"
   }, {
-    name: "Terms & Conditions",
+    name: t('footer.links.termsConditions'),
     link: "/terms"
   }, {
-    name: "Partners",
+    name: t('footer.links.partners'),
     link: "/partners"
   }];
   const socialLinks = [{
@@ -90,7 +83,7 @@ const Footer = () => {
           </div>
 
           <div className="text-[t] text-[#e70d69] font-medium">
-            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">Our Services</h3>
+            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">{t('footer.categories')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
               {serviceSections.map((service, index) => <li key={index}>
                   <Link to={service.link} className="text-white hover:text-white transition-colors">
@@ -101,7 +94,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">Information</h3>
+            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
               {informationSections.map((info, index) => <li key={index}>
                   <Link to={info.link} className="text-white hover:text-white transition-colors">
@@ -112,7 +105,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">Company</h3>
+            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
               {companySections.map((company, index) => <li key={index}>
                   <Link to={company.link} className="text-white hover:text-white transition-colors">
@@ -126,12 +119,12 @@ const Footer = () => {
         <div className="border-t border-gray-200 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white ">
             <p className="font-normal text-[#e70d69]">
-              ©️2025 my health checkup, Empowering informed health decisions across the UK. All rights reserved.
+              {t('footer.copyright')}
             </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <Link to="/accessibility" className="hover:text-white ">Accessibility</Link>
-              <Link to="/sitemap" className="hover:text-health-600 transition-colors">Sitemap</Link>
-              <Link to="/cookies" className="hover:text-health-600 transition-colors">Cookie Policy</Link>
+              <Link to="/accessibility" className="hover:text-white ">{t('footer.links.accessibility')}</Link>
+              <Link to="/sitemap" className="hover:text-health-600 transition-colors">{t('footer.links.sitemap')}</Link>
+              <Link to="/cookies" className="hover:text-health-600 transition-colors">{t('footer.links.cookiePolicy')}</Link>
             </nav>
           </div>
         </div>

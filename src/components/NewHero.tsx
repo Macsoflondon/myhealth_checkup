@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from "react-i18next";
 const NewHero = () => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResults, setAiResults] = useState<any>(null);
@@ -126,7 +128,7 @@ const NewHero = () => {
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 relative">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input type="text" placeholder="Describe your health concerns or symptoms for AI-powered test recommendations..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
+                  <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
                 <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-8 py-4 text-lg bg-health-accent hover:bg-health-accent/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50">
                   {isAnalyzing ? <>
