@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -142,8 +143,8 @@ const MensHealthPage = () => {
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
                   Browse All Tests
                 </Button>
-                <Button size="lg" variant="outline">
-                  Find a Clinic
+                <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+                  <Link to="/find-a-clinic">Find a Clinic</Link>
                 </Button>
               </div>
             </div>
