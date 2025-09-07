@@ -158,7 +158,7 @@ const ThyroidPage = () => {
                             ))}
                           </ul>
                         </div>
-                        <Button className="w-full bg-primary hover:bg-primary/90">
+                        <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
                           Compare Providers
                         </Button>
                       </CardContent>
