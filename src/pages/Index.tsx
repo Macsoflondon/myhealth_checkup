@@ -98,9 +98,9 @@ const Index = () => {
         <HealthBenefitsInfographic />
         <FounderStory />
         <PartnerShowcase />
+        <ClinicMap />
         <HealthResources />
         <CallToAction />
-        <ClinicMap />
       </main>
       
       <Footer />
