@@ -40,7 +40,7 @@ const CancerScreeningPage = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-red-50 to-pink-50 py-16 bg-[#1a1b34]">
+        <section className="bg-background py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center bg-[#1a1b34]">
               <div className="bg-red-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
