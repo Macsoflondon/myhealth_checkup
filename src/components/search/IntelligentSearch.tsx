@@ -158,12 +158,12 @@ const IntelligentSearch = () => {
           />
           {searchTerm && (
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={clearSearch}
               className="absolute right-12 top-1/2 transform -translate-y-1/2"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           )}
           <Button
