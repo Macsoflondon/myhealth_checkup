@@ -92,7 +92,7 @@ const CompareTests = () => {
         <link rel="canonical" href="https://myhealthhub.co.uk/compare" />
       </Helmet>
       
-      <Header />
+      <Header className="text-[#e70d69]" />
       <main className="flex-grow bg-gradient-to-b from-background to-muted/20">
         <section className="py-8 md:py-12 px-4">
           <div className="container mx-auto max-w-7xl text-white">
