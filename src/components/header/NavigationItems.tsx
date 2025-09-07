@@ -29,9 +29,7 @@ export const navigationItems = [
   { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
   { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
-  { name: "SPORTS PERFORMANCE", path: "/sports-performance", hasDropdown: true, megaMenu: true },
   { name: "WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
-  { name: "CONDITIONS", path: "/conditions", hasDropdown: true, megaMenu: true },
   { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false }
 ];
 
@@ -69,17 +67,9 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         return compareCategories.filter(cat => 
           ['thyroid', 'hormones'].includes(cat.id)
         );
-      case "SPORTS PERFORMANCE":
-        return compareCategories.filter(cat => 
-          ['vitamins', 'hormones', 'general-health'].includes(cat.id)
-        );
       case "WELLNESS":
         return compareCategories.filter(cat => 
           ['vitamins', 'general-health', 'heart-health', 'liver-health'].includes(cat.id)
-        );
-      case "CONDITIONS":
-        return compareCategories.filter(cat => 
-          ['diabetes', 'allergy-testing', 'cancer-screening', 'kidney-health'].includes(cat.id)
         );
       default:
         // Show all categories for FIND YOUR TEST and MOST POPULAR TESTS
