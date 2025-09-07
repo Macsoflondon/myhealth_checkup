@@ -194,7 +194,7 @@ const WomensHealthPage = () => {
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-2">{test.name}</CardTitle>
+                        <CardTitle className="text-lg leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
                         <CardDescription className="text-sm text-muted-foreground">
                           {test.description}
                         </CardDescription>
