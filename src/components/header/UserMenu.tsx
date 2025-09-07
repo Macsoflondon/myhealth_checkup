@@ -1,7 +1,8 @@
 
 import { useNavigate, Link } from "react-router-dom";
-import { User } from "lucide-react";
+import { User, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
 
@@ -11,22 +12,72 @@ interface UserMenuProps {
 }
 
 export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    onItemClick?.();
+  };
 
   if (isMobile) {
     return (
       <div className="pt-4 border-t border-gray-200 space-y-3">
-        <Link
-          to="/auth"
-          className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-          onClick={onItemClick}
-        >
-          <User className="h-5 w-5" />
-          <span>{t('common.signIn')}</span>
-        </Link>
+        {user ? (
+          <>
+            <Link
+              to="/dashboard"
+              className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              onClick={onItemClick}
+            >
+              <LayoutDashboard className="h-5 w-5" />
+              <span>Dashboard</span>
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors w-full text-left"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>Sign Out</span>
+            </button>
+          </>
+        ) : (
+          <Link
+            to="/auth"
+            className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+            onClick={onItemClick}
+          >
+            <User className="h-5 w-5" />
+            <span>{t('common.signIn')}</span>
+          </Link>
+        )}
       </div>
+    );
+  }
+
+  if (user) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="h-10 px-3">
+            <User className="h-5 w-5 text-gray-600" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link to="/dashboard" className="flex items-center gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleSignOut}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
 

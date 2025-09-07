@@ -55,21 +55,59 @@ const Dashboard = () => {
   }, [user]);
 
   const fetchFavorites = async () => {
-    // Mock implementation - return empty array until database is set up
-    setFavorites([]);
-    setLoadingData(false);
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('*')
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      setFavorites(data || []);
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+      toast.error('Failed to load favorites');
+    } finally {
+      setLoadingData(false);
+    }
   };
 
   const fetchOrders = async () => {
-    // Mock implementation - return empty array until database is set up
-    setOrders([]);
-    setLoadingData(false);
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setOrders(data || []);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      toast.error('Failed to load orders');
+    } finally {
+      setLoadingData(false);
+    }
   };
 
   const removeFavorite = async (id: string) => {
-    // Mock implementation
-    setFavorites((prev) => prev.filter((fav) => fav.id !== id));
-    toast.success("Removed from favorites");
+    try {
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      setFavorites((prev) => prev.filter((fav) => fav.id !== id));
+      toast.success("Removed from favorites");
+    } catch (error) {
+      console.error('Error removing favorite:', error);
+      toast.error('Failed to remove favorite');
+    }
   };
 
   return (
