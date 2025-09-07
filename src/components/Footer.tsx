@@ -84,7 +84,7 @@ const Footer = () => {
                 <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
               </div>
               <span className="text-lg font-bold">
-                <span className="text-[#e70d69]">myhealth</span> <span className="text-wellness-600">checkup</span>
+                <span className="text-white">myhealth</span> <span className="text-wellness-600">checkup</span>
               </span>
             </Link>
             <p className="mb-4 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK’s only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers. Company No. 16589056</p>

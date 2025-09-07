@@ -88,26 +88,26 @@ const CompareTests = () => {
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Compare Health Tests - myhealth checkup | Live Prices from UK Providers</title>
-        <meta name="description" content="Compare health tests from Medichecks, Thriva, Randox, and more UK providers. Live pricing, real reviews, and instant comparison across 300+ tests." />
+        <meta name="description" content="Compare health tests from Medichecks, Thriva, Randox, and more UK providers. Live pricing, real reviews, and instant comparison across 300+ tests." className="bg-[#1a1b34]" />
         <link rel="canonical" href="https://myhealthhub.co.uk/compare" />
       </Helmet>
       
       <Header />
       <main className="flex-grow bg-gradient-to-b from-background to-muted/20">
         <section className="py-8 md:py-12 px-4">
-          <div className="container mx-auto max-w-7xl">
+          <div className="container mx-auto max-w-7xl text-white">
             {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-health-primary to-health-secondary bg-clip-text text-[#22c0d4]">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-health-primary to-health-secondary bg-clip-text text-transparent">
                 Compare Health Tests
               </h1>
-              <p className="text-lg max-w-2xl mx-auto font-bold text-center text-[#1a1b34]">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Compare live prices and features from {providers.length} trusted UK providers. {tests.length} results found.
               </p>
             </div>
 
             {/* Category Pills */}
-            <div className="flex flex-wrap gap-2 justify-center mb-8 rounded-lg">
+            <div className="flex flex-wrap gap-2 justify-center mb-8">
               <Button variant={selectedCategory === "all" ? "default" : "outline"} size="sm" onClick={() => handleCategoryChange("all")} className={cn("rounded-full", selectedCategory === "all" && "bg-health-primary text-white")}>
                 All Tests
               </Button>
