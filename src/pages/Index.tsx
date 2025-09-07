@@ -1,26 +1,31 @@
-import { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NewHero from "@/components/NewHero";
-import FeaturedProviders from "@/components/FeaturedProviders";
-import CategoryFilters from "@/components/CategoryFilters";
-import TestCategories from "@/components/TestCategories";
-import MediaSpotlight from "@/components/MediaSpotlight";
-import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
-import FounderStory from "@/components/FounderStory";
-import PartnerShowcase from "@/components/PartnerShowcase";
-import HowItWorks from "@/components/HowItWorks";
-import HealthResources from "@/components/HealthResources";
 import CallToAction from "@/components/CallToAction";
-import ClinicMap from "@/components/ClinicMap";
-import CookieConsent from "@/components/compliance/CookieConsent";
-import { VideoUpload } from "@/components/VideoUpload";
-import { VideoPlayer } from "@/components/VideoPlayer";
-import MostPopularTests from "@/components/MostPopularTests";
 import UKASBanner from "@/components/UKASBanner";
+import CookieConsent from "@/components/compliance/CookieConsent";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { PWAFeatures } from "@/components/PWAFeatures";
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+import { useMobileOptimization } from "@/hooks/useMobileOptimization";
+import {
+  TestCategories,
+  FeaturedProviders,
+  MostPopularTests,
+  HealthBenefitsInfographic,
+  FounderStory,
+  PartnerShowcase,
+  ClinicMap,
+  HealthResources,
+  HowItWorks,
+  MediaSpotlight
+} from "@/components/LazyLoadedComponents";
 const Index = () => {
-  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
+  usePerformanceOptimization();
+  useMobileOptimization();
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -51,7 +56,9 @@ const Index = () => {
       "closes": "23:59"
     }
   };
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <ErrorBoundary>
+      <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>myhealth checkup - Compare Private Blood Tests & Health Screenings UK 2024</title>
         <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
@@ -79,12 +86,20 @@ const Index = () => {
         <meta name="google-site-verification" content="your-google-verification-code" />
         <meta name="msvalidate.01" content="your-bing-verification-code" />
         
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#22c0d4" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
+        
         {/* Structured data JSON-LD */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
       
+      <PWAFeatures />
       <UKASBanner />
       <Header />
       
@@ -101,10 +116,12 @@ const Index = () => {
         <ClinicMap />
         <HealthResources />
         <CallToAction />
-      </main>
-      
-      <Footer />
-      <CookieConsent />
-    </div>;
+        </main>
+        
+        <Footer />
+        <CookieConsent />
+      </div>
+    </ErrorBoundary>
+  );
 };
 export default Index;

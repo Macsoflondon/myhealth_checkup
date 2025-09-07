@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ModernCompareTable } from "@/components/compare/ModernCompareTable";
 import { CompareFilters } from "@/components/compare/CompareFilters";
-import { LiveCompareService } from "@/services/LiveCompareService";
+import { OptimizedLiveCompareService } from "@/services/OptimizedLiveCompareService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Sparkles, TrendingUp, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { providers } from "@/data/compare/providers";
-import type { CompareTestData } from "@/services/LiveCompareService";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import type { CompareTestData } from "@/services/OptimizedLiveCompareService";
 const CompareTests = () => {
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -26,11 +27,16 @@ const CompareTests = () => {
   }>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch categories on mount
+  // Fetch categories on mount with error handling
   useEffect(() => {
     const fetchCategories = async () => {
-      const categoriesData = await LiveCompareService.getCategories();
-      setCategories(categoriesData);
+      try {
+        const categoriesData = await OptimizedLiveCompareService.getCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setCategories([]);
+      }
     };
     fetchCategories();
   }, []);
@@ -44,47 +50,61 @@ const CompareTests = () => {
     }
   }, [location.search, categories]);
 
-  // Fetch tests when filters change
-  useEffect(() => {
-    const fetchTests = async () => {
-      setIsLoading(true);
-      try {
-        let results: CompareTestData[] = [];
-        if (searchTerm.trim()) {
-          results = await LiveCompareService.searchTests(searchTerm, selectedProviders);
-        } else {
-          const categoryName = categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
-          results = await LiveCompareService.getTestsByCategory(categoryName, selectedProviders);
-        }
-
-        // Sort results
-        if (sortOrder === 'desc') {
-          results.sort((a, b) => b.price - a.price);
-        } else {
-          results.sort((a, b) => a.price - b.price);
-        }
-        setTests(results);
-      } catch (error) {
-        console.error('Error fetching tests:', error);
-        setTests([]);
-      } finally {
-        setIsLoading(false);
+  // Fetch tests when filters change with debouncing
+  const fetchTests = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      let results: CompareTestData[] = [];
+      if (searchTerm.trim()) {
+        results = await OptimizedLiveCompareService.searchTests(searchTerm, selectedProviders);
+      } else {
+        const categoryName = categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
+        results = await OptimizedLiveCompareService.getTestsByCategory(categoryName, selectedProviders);
       }
-    };
-    fetchTests();
-  }, [selectedCategory, selectedProviders, searchTerm, sortOrder, categories]);
-  const handleCategoryChange = (category: string) => {
+
+      // Sort results
+      if (sortOrder === 'desc') {
+        results.sort((a, b) => b.price - a.price);
+      } else {
+        results.sort((a, b) => a.price - b.price);
+      }
+      setTests(results);
+    } catch (error) {
+      console.error('Error fetching tests:', error);
+      setTests([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchTerm, selectedProviders, selectedCategory, categories, sortOrder]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchTests();
+    }, 300); // Debounce for 300ms
+
+    return () => clearTimeout(timeoutId);
+  }, [fetchTests]);
+
+  const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(category);
-  };
-  const handleProviderChange = (providerId: string) => {
+  }, []);
+
+  const handleProviderChange = useCallback((providerId: string) => {
     if (providerId === "all") {
       setSelectedProviders(["all"]);
     } else {
       setSelectedProviders([providerId]);
     }
-  };
+  }, []);
+
+  const memoizedStats = useMemo(() => ({
+    testCount: tests.length,
+    providerCount: providers.length
+  }), [tests.length]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-[hsl(var(--section-dark))]">
+    <ErrorBoundary>
+      <div className="min-h-screen flex flex-col bg-[hsl(var(--section-dark))]">
       <Helmet>
         <title>Compare Health Tests - myhealth checkup | Live Prices from UK Providers</title>
         <meta name="description" content="Compare health tests from Medichecks, Thriva, Randox, and more UK providers. Live pricing, real reviews, and instant comparison across 300+ tests." />
@@ -105,16 +125,16 @@ const CompareTests = () => {
             <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
               Compare Health Tests
             </h1>
-            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-6">
-              Find the perfect health test from {providers.length} trusted UK providers. 
-              Real-time prices, expert reviews, and AI-powered recommendations.
-            </p>
+              <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-6">
+                Find the perfect health test from {memoizedStats.providerCount} trusted UK providers. 
+                Real-time prices, expert reviews, and AI-powered recommendations.
+              </p>
             
             {/* Quick Stats */}
             <div className="flex flex-wrap justify-center gap-6 mt-8">
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <TrendingUp className="h-4 w-4 text-white" />
-                <span className="text-white text-sm font-medium">{tests.length}+ Tests Available</span>
+                <span className="text-white text-sm font-medium">{memoizedStats.testCount}+ Tests Available</span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <Clock className="h-4 w-4 text-white" />
@@ -153,9 +173,10 @@ const CompareTests = () => {
             )}
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </ErrorBoundary>
   );
 };
 export default CompareTests;
