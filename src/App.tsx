@@ -32,7 +32,7 @@ import HealthBlogPage from "./pages/HealthBlogPage";
 import AssistedTestFinderPage from "./pages/AssistedTestFinderPage";
 import MensHealthPage from "./pages/MensHealthPage";
 import WomensHealthPage from "./pages/WomensHealthPage";
-import RecommendationEngine from "./components/ai/RecommendationEngine";
+import RecommendationsPage from "./pages/RecommendationsPage";
 import ReviewSystem from "./components/reviews/ReviewSystem";
 import FindClinicPage from "./pages/FindClinicPage";
 import ProviderProfilePage from "./pages/ProviderProfilePage";
@@ -65,7 +65,7 @@ const App = () => (
               <Route path="/compare" element={<CompareTests />} />
               <Route path="/search" element={<IntelligentSearchPage />} />
               
-              <Route path="/recommendations" element={<RecommendationEngine />} />
+              <Route path="/recommendations" element={<RecommendationsPage />} />
               <Route path="/reviews" element={<ReviewSystem />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/how-it-works" element={<HowItWorksPage />} />
