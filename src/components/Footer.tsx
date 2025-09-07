@@ -61,11 +61,11 @@ const Footer = () => {
   const socialLinks = [{
     icon: <Facebook size={40} style={{ color: '#1877F2' }} />,
     name: "Facebook",
-    url: "https://facebook.com/myhealthhub"
+    url: "https://www.facebook.com/myhealthcheckupuk"
   }, {
     icon: <Instagram size={40} style={{ color: '#E4405F' }} />,
     name: "Instagram",  
-    url: "https://instagram.com/myhealthhub"
+    url: "https://www.Instagram.com/myhealthcheckup_uk"
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
