@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -63,17 +63,9 @@ const Footer = () => {
     name: "Facebook",
     url: "https://facebook.com/myhealthhub"
   }, {
-    icon: <Twitter size={20} />,
-    name: "Twitter",
-    url: "https://twitter.com/myhealthhub"
-  }, {
     icon: <Instagram size={20} />,
     name: "Instagram",
     url: "https://instagram.com/myhealthhub"
-  }, {
-    icon: <Youtube size={20} />,
-    name: "YouTube",
-    url: "https://youtube.com/myhealthhub"
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
@@ -87,7 +79,8 @@ const Footer = () => {
                 <span className="text-white">myhealth</span> <span className="text-wellness-600">checkup</span>
               </span>
             </Link>
-            <p className="mb-4 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK’s only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers. Company No. 16589056</p>
+            <p className="mb-2 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
+            <p className="mb-4 text-xs font-light text-left text-white">Company No. 16589056</p>
             <div className="flex space-x-4 rounded decoration-white ">
               {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-gray-400 hover:text-health-600 transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
