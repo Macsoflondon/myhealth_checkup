@@ -109,12 +109,12 @@ const categoryItems: CategoryItem[] = [{
 }];
 const CategoryFilters: React.FC = () => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-6">
       {categoryItems.map((category) => (
         <Badge 
           key={category.id}
           variant="secondary"
-          className={`${category.color} text-white hover:opacity-80 transition-opacity cursor-pointer`}
+          className={`${category.color} text-white hover:opacity-80 transition-opacity cursor-pointer text-center py-2 px-3`}
         >
           {category.name}
         </Badge>

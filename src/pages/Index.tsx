@@ -1,41 +1,32 @@
-import { useState, Suspense, lazy } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NewHero from "@/components/NewHero";
+import FeaturedProviders from "@/components/FeaturedProviders";
+import CategoryFilters from "@/components/CategoryFilters";
+import TestCategories from "@/components/TestCategories";
+import MediaSpotlight from "@/components/MediaSpotlight";
+import HealthBenefitsInfographic from "@/components/HealthBenefitsInfographic";
+import FounderStory from "@/components/FounderStory";
+import PartnerShowcase from "@/components/PartnerShowcase";
+import HowItWorks from "@/components/HowItWorks";
+import HealthResources from "@/components/HealthResources";
+import CallToAction from "@/components/CallToAction";
+import ClinicMap from "@/components/ClinicMap";
 import CookieConsent from "@/components/compliance/CookieConsent";
-
-// Lazy load heavy components for better performance
-const NewHero = lazy(() => import("@/components/NewHero"));
-const FeaturedProviders = lazy(() => import("@/components/FeaturedProviders"));
-const CategoryFilters = lazy(() => import("@/components/CategoryFilters"));
-const TestCategories = lazy(() => import("@/components/TestCategories"));
-const MediaSpotlight = lazy(() => import("@/components/MediaSpotlight"));
-const HealthBenefitsInfographic = lazy(() => import("@/components/HealthBenefitsInfographic"));
-const FounderStory = lazy(() => import("@/components/FounderStory"));
-const PartnerShowcase = lazy(() => import("@/components/PartnerShowcase"));
-const HowItWorks = lazy(() => import("@/components/HowItWorks"));
-const HealthResources = lazy(() => import("@/components/HealthResources"));
-const CallToAction = lazy(() => import("@/components/CallToAction"));
-const EnhancedClinicMap = lazy(() => import("@/components/map/EnhancedClinicMap").then(m => ({ default: m.EnhancedClinicMap })));
-const VideoUpload = lazy(() => import("@/components/VideoUpload").then(m => ({ default: m.VideoUpload })));
-const VideoPlayer = lazy(() => import("@/components/VideoPlayer").then(m => ({ default: m.VideoPlayer })));
-const MostPopularTests = lazy(() => import("@/components/MostPopularTests"));
-const UKASBanner = lazy(() => import("@/components/UKASBanner"));
-const BackToTop = lazy(() => import("@/components/BackToTop"));
-
+import { VideoUpload } from "@/components/VideoUpload";
+import { VideoPlayer } from "@/components/VideoPlayer";
+import MostPopularTests from "@/components/MostPopularTests";
+import UKASBanner from "@/components/UKASBanner";
 const Index = () => {
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
-  
-  const title = "UK's Leading Health Test Comparison Platform | myhealth checkup";
-  const description = "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.";
-  const canonical = "https://myhealthhub.co.uk";
-  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
-    "name": title,
-    "description": description,
-    "url": canonical,
+    "name": "myhealth checkup - UK's Leading Health Test Comparison Platform",
+    "description": "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
+    "url": "https://myhealthhub.co.uk",
     "sameAs": ["https://www.facebook.com/myhealthhub", "https://www.twitter.com/myhealthhub", "https://www.instagram.com/myhealthhub"],
     "address": {
       "@type": "PostalAddress",
@@ -60,120 +51,60 @@ const Index = () => {
       "closes": "23:59"
     }
   };
-
-  return (
-    <>
+  return <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content="private health tests, blood tests, health screening, UK health providers, medical testing, wellness checks, private healthcare" />
-        <meta name="robots" content="index, follow, max-image-preview:large" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <link rel="canonical" href={canonical} />
+        <title>myhealth checkup - Compare Private Blood Tests & Health Screenings UK 2024</title>
+        <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
+        <meta name="keywords" content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024" />
+        <link rel="canonical" href="https://myhealthhub.co.uk/" />
         
-        {/* Open Graph */}
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        {/* Enhanced Open Graph / Social Media */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonical} />
         <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content="myhealth checkup - Compare Private Blood Tests & Health Screenings UK" />
+        <meta property="og:description" content="Compare private health tests from 10+ UK providers. Real-time prices, expert reviews, and AI recommendations. Hospital-grade testing made simple." />
+        <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+        <meta property="og:url" content="https://myhealthhub.co.uk/" />
         <meta property="og:locale" content="en_GB" />
         
-        {/* Twitter */}
+        {/* Enhanced Twitter Meta */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
         <meta name="twitter:site" content="@myhealthhub" />
+        <meta name="twitter:title" content="myhealth checkup - UK's Leading Health Test Comparison Platform" />
+        <meta name="twitter:description" content="Compare private blood tests, health screenings & wellness services. Real-time prices from 10+ providers. AI-powered recommendations." />
+        <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
         
-        {/* Performance hints */}
-        <link rel="dns-prefetch" href="//api.postcodes.io" />
-        <link rel="dns-prefetch" href="//tile.openstreetmap.org" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta name="google-site-verification" content="your-google-verification-code" />
+        <meta name="msvalidate.01" content="your-bing-verification-code" />
         
-        {/* Structured Data */}
+        {/* Structured data JSON-LD */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
-
-      <div className="min-h-screen flex flex-col bg-background">
-        <Header />
-        <main className="flex-grow">
-          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-            <UKASBanner />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full"></div></div>}>
-            <NewHero />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <MediaSpotlight />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <HowItWorks />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <TestCategories />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <FeaturedProviders />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-            <CategoryFilters />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-            <MostPopularTests />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-            <HealthBenefitsInfographic />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <FounderStory />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-32 bg-muted animate-pulse"></div>}>
-            <PartnerShowcase />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-            <CallToAction />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-96 bg-muted animate-pulse"></div>}>
-            <HealthResources />
-          </Suspense>
-          
-          <Suspense fallback={<div className="h-[600px] bg-muted animate-pulse"></div>}>
-            <EnhancedClinicMap />
-          </Suspense>
-          
-          {uploadedVideoUrl && (
-            <Suspense fallback={<div className="h-64 bg-muted animate-pulse"></div>}>
-              <VideoPlayer src={uploadedVideoUrl} />
-            </Suspense>
-          )}
-          
-          <Suspense fallback={<div className="h-32 bg-muted animate-pulse"></div>}>
-            <VideoUpload onVideoUploaded={setUploadedVideoUrl} />
-          </Suspense>
-        </main>
-        <Footer />
-        <CookieConsent />
-        <Suspense fallback={<div />}>
-          <BackToTop />
-        </Suspense>
-      </div>
-    </>
-  );
+      
+      <UKASBanner />
+      <Header />
+      
+      <main className="flex-1">
+        <NewHero />
+        <HowItWorks />
+        <MediaSpotlight />
+        <TestCategories />
+        <FeaturedProviders />
+        <MostPopularTests />
+        <HealthBenefitsInfographic />
+        <FounderStory />
+        <PartnerShowcase />
+        <HealthResources />
+        <CallToAction />
+        <ClinicMap />
+      </main>
+      
+      <Footer />
+      <CookieConsent />
+    </div>;
 };
-
 export default Index;

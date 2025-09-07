@@ -70,7 +70,7 @@ const FeaturedProviders = () => {
     tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
     website: "tuli.health"
   }];
-  return <section className="py-16 bg-[hsl(223,68%,10%)]" id="providers">
+  return <section className="py-16 bg-[hsl(var(--section-dark))]" id="providers">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#22c0d4] text-center">
