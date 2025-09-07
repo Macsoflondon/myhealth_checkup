@@ -10,7 +10,7 @@ const CallToAction = () => {
             Join thousands of customers who've discovered health insights that made a difference.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white hover:bg-gray-100 text-[#e70d69] text-center font-normal rounded-md">Find Your Test With Ease </Button>
+            <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-[#ffffff] text-center font-normal rounded-md">Find Your Test With Ease </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
               Learn About Subscriptions
             </Button>
