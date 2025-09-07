@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -140,8 +141,8 @@ const CancerScreeningPage = () => {
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
                   Browse Screening Tests
                 </Button>
-                <Button size="lg" variant="outline">
-                  Find a Clinic
+                <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+                  <Link to="/find-a-clinic">Find a Clinic</Link>
                 </Button>
               </div>
             </div>
