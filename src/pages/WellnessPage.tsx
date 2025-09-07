@@ -176,7 +176,7 @@ const WellnessPage = () => {
                             </div>
                           </div>
                           <div className="text-right">
-                            <span className="text-2xl font-bold text-primary">{test.price}</span>
+                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                           </div>
                         </div>
                         <CardTitle className="text-lg leading-tight">{test.name}</CardTitle>

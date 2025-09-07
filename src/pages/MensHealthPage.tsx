@@ -180,7 +180,7 @@ const MensHealthPage = () => {
                             </Badge>
                           </div>
                           <div className="text-right">
-                            <span className="text-2xl font-bold text-primary">{test.price}</span>
+                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                           </div>
                         </div>
