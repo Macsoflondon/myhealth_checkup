@@ -130,7 +130,8 @@ const NewHero = () => {
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
-                <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-8 py-4 text-lg bg-health-accent hover:bg-health-accent/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50">
+                <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-8 py-4 text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
+                style={{ backgroundColor: '#22c0d4', color: 'white' }}>
                   {isAnalyzing ? <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Analyzing...
