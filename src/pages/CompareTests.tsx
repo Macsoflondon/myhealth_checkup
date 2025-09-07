@@ -3,14 +3,12 @@ import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import LiveCompareTable from "@/components/LiveCompareTable";
+import { ModernCompareTable } from "@/components/compare/ModernCompareTable";
+import { CompareFilters } from "@/components/compare/CompareFilters";
 import { LiveCompareService } from "@/services/LiveCompareService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Search, Filter, Loader2 } from "lucide-react";
+import { Loader2, Sparkles, TrendingUp, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { providers } from "@/data/compare/providers";
 import type { CompareTestData } from "@/services/LiveCompareService";
@@ -85,87 +83,79 @@ const CompareTests = () => {
       setSelectedProviders([providerId]);
     }
   };
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <div className="min-h-screen flex flex-col bg-[hsl(var(--section-dark))]">
       <Helmet>
         <title>Compare Health Tests - myhealth checkup | Live Prices from UK Providers</title>
-        <meta name="description" content="Compare health tests from Medichecks, Thriva, Randox, and more UK providers. Live pricing, real reviews, and instant comparison across 300+ tests." className="bg-[#1a1b34]" />
+        <meta name="description" content="Compare health tests from Medichecks, Thriva, Randox, and more UK providers. Live pricing, real reviews, and instant comparison across 300+ tests." />
         <link rel="canonical" href="https://myhealthhub.co.uk/compare" />
       </Helmet>
       
-      <Header className="text-[#e70d69]" />
-      <main className="flex-grow bg-gradient-to-b from-background to-muted/20">
-        <section className="py-8 md:py-12 px-4">
-          <div className="container mx-auto max-w-7xl text-white">
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-health-primary to-health-secondary bg-clip-text text-transparent">
-                Compare Health Tests
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Compare live prices and features from {providers.length} trusted UK providers. {tests.length} results found.
-              </p>
+      <Header />
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-r from-health-primary to-health-secondary py-12 md:py-16">
+          <div className="container mx-auto max-w-7xl px-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Sparkles className="h-6 w-6 text-white" />
+              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                Live Pricing
+              </Badge>
             </div>
-
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-2 justify-center mb-8">
-              <Button variant={selectedCategory === "all" ? "default" : "outline"} size="sm" onClick={() => handleCategoryChange("all")} className={cn("rounded-full", selectedCategory === "all" && "bg-health-primary text-white")}>
-                All Tests
-              </Button>
-              {categories.slice(0, 8).map(category => <Button key={category.id} variant={selectedCategory === category.id ? "default" : "outline"} size="sm" onClick={() => handleCategoryChange(category.id)} className={cn("rounded-full", selectedCategory === category.id && "bg-health-primary text-white")}>
-                  {category.name} 
-                  <Badge variant="secondary" className="ml-1 h-4 px-1 text-xs">
-                    {category.count}
-                  </Badge>
-                </Button>)}
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+              Compare Health Tests
+            </h1>
+            <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-6">
+              Find the perfect health test from {providers.length} trusted UK providers. 
+              Real-time prices, expert reviews, and AI-powered recommendations.
+            </p>
+            
+            {/* Quick Stats */}
+            <div className="flex flex-wrap justify-center gap-6 mt-8">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+                <TrendingUp className="h-4 w-4 text-white" />
+                <span className="text-white text-sm font-medium">{tests.length}+ Tests Available</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+                <Clock className="h-4 w-4 text-white" />
+                <span className="text-white text-sm font-medium">Real-time Pricing</span>
+              </div>
             </div>
+          </div>
+        </section>
 
-            {/* Search and Filter Row */}
-            <Card className="mb-6">
-              <CardContent className="p-4">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                    <Input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder="Search for tests, conditions, or biomarkers..." className="pl-10" />
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <Select value={selectedProviders[0]} onValueChange={handleProviderChange}>
-                      <SelectTrigger className="w-48">
-                        <SelectValue placeholder="All Providers" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Providers</SelectItem>
-                        {providers.map(provider => <SelectItem key={provider.id} value={provider.id}>
-                            {provider.name}
-                          </SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                    
-                    <Select value={sortOrder} onValueChange={value => setSortOrder(value as 'asc' | 'desc')}>
-                      <SelectTrigger className="w-48">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="asc">Price: Low to High</SelectItem>
-                        <SelectItem value="desc">Price: High to Low</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+        {/* Filters and Results */}
+        <section className="py-8 px-4">
+          <div className="container mx-auto max-w-7xl">
+            <CompareFilters 
+              categories={categories}
+              selectedCategory={selectedCategory}
+              selectedProviders={selectedProviders}
+              searchTerm={searchTerm}
+              sortOrder={sortOrder}
+              onCategoryChange={handleCategoryChange}
+              onProviderChange={handleProviderChange}
+              onSearchChange={setSearchTerm}
+              onSortChange={setSortOrder}
+              testCount={tests.length}
+              isLoading={isLoading}
+            />
+
+            {isLoading ? (
+              <div className="flex items-center justify-center py-16">
+                <div className="text-center">
+                  <Loader2 className="h-12 w-12 animate-spin text-health-primary mx-auto mb-4" />
+                  <p className="text-muted-foreground text-lg">Finding the best tests for you...</p>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Results */}
-            {isLoading && <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-health-primary" />
-                <span className="ml-2 text-muted-foreground">Loading tests...</span>
-              </div>}
-
-            <LiveCompareTable tests={tests} isLoading={isLoading} selectedCategory={selectedCategory} />
+              </div>
+            ) : (
+              <ModernCompareTable tests={tests} selectedCategory={selectedCategory} />
+            )}
           </div>
         </section>
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
 export default CompareTests;
