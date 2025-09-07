@@ -30,8 +30,8 @@ const AboutUsPage = () => {
       
       <Header />
       <main className="flex-grow bg-[#1a1b34]">
-        <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-[4px] bg-[#1a1b34]">
-          <div className="container mx-auto px-4">
+        <div className="bg-gradient-to-br from-health-50 to-wellness-50 bg-[#1a1b34] py-0">
+          <div className="container mx-auto px-4 bg-[#1a1b34]">
             <div className="text-center mb-12">
               <h1 className="text-4xl mb-6 my-[30px] text-[#22c0d4] text-center md:text-4xl font-semibold">
                 About myhealth checkup
@@ -40,11 +40,11 @@ const AboutUsPage = () => {
           </div>
         </div>
 
-        <section className="bg-white py-[4px] my-[10px]">
+        <section className="bg-white my-0 py-0">
           <div className="container mx-auto px-4 my-0 py-[10px] bg-[#1a1b34]">
             <div className="max-w-4xl mx-auto">
               <div className="text-lg text-gray-600 space-y-6">
-                <p className="text-white my-0 py-[20px]">
+                <p className="text-white my-0 py-0">
                   <strong>Your Health Is Your Greatest Asset</strong> and it deserves the best care.
                   At myhealth checkup, we rigorously screen every provider we feature, ensuring you only see the UK's most reputable health and wellness testing options. From routine blood tests to advanced wellness panels, our partners meet the highest standards of quality, working with UKAS-accredited laboratories, CQC-regulated clinics, and ISO 15189-certified facilities.
                 </p>
@@ -79,7 +79,7 @@ const AboutUsPage = () => {
           <div className="container mx-auto px-4 bg-[#1a1b34]">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#22c0d4]">Our Values</h2>
-              <p className="text-xl max-w-3xl mx-auto text-white">
+              <p className="max-w-3xl mx-auto text-lg text-[#e70d69]">
                 These core values guide everything we do and shape how we serve our community.
               </p>
             </div>
@@ -102,8 +102,8 @@ const AboutUsPage = () => {
         <section className="py-16 bg-[#1a1b34] my-0">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#22c0d4]">Join Our Community</h2>
-              <p className="text-lg mb-8 text-white">
+              <h2 className="text-3xl font-bold mb-8 text-[#22c0d4]">Join The Community</h2>
+              <p className="text-lg mb-8 text-[#e70d69]">
                 Become part of a growing community of health-conscious individuals who are taking charge of their wellbeing through knowledge and early detection.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
