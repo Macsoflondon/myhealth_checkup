@@ -114,7 +114,7 @@ const FeaturedProviders = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <Button variant="outline" size="sm" className="flex-1 min-h-[40px]" asChild>
+                  <Button variant="outline" size="sm" className="flex-1 min-h-[40px]" style={{ backgroundColor: '#e70d69', borderColor: '#e70d69', color: 'white' }} asChild>
                     <Link to={`/provider/${provider.id.toLowerCase()}`}>
                       View Profile
                     </Link>
