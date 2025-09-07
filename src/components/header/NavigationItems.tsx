@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { compareCategories } from "@/data/compare/categories";
+import { getTestsForNavigation } from "@/data/goodbodyTests";
 
 // Category colors following design system (using semantic color tokens)
 const categoryColorMap: Record<string, string> = {
@@ -30,7 +31,7 @@ export const navigationItems = [
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
   { name: "HORMONES", path: "/hormones", hasDropdown: true, megaMenu: true },
   { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
-  { name: "WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
+  { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false }
 ];
 
@@ -53,6 +54,16 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
     setActiveDropdown(null);
   };
 
+  const getGoodbodyTestsForDropdown = (itemName: string) => {
+    // For FIND YOUR TEST and MOST POPULAR TESTS, show categories
+    if (itemName === "FIND YOUR TEST" || itemName === "MOST POPULAR TESTS") {
+      return null; // Will use categories
+    }
+    
+    // For specific health sections, show actual Goodbody tests
+    return getTestsForNavigation(itemName);
+  };
+
   const getFilteredCategories = (itemName: string) => {
     // Filter categories based on navigation item using the universal taxonomy
     switch (itemName) {
@@ -72,7 +83,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         return compareCategories.filter(cat => 
           ['thyroid', 'hormones'].includes(cat.id)
         );
-      case "WELLNESS":
+      case "GENERAL WELLNESS":
         return compareCategories.filter(cat => 
           ['vitamins', 'general-health', 'heart-health', 'liver-health'].includes(cat.id)
         );
@@ -110,28 +121,66 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           {item.hasDropdown && activeDropdown === item.name && (
             <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 min-w-[500px] max-w-[600px]">
               <div className="p-6">
-                <div className="grid grid-cols-2 gap-4">
-                  {getFilteredCategories(item.name).map((category) => (
-                    <Link
-                      key={category.id}
-                      to={`/compare?category=${category.id}`}
-                      className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                      onClick={onItemClick}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-full flex-shrink-0 ${categoryColorMap[category.id] || 'bg-gray-400'}`}></div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
-                            {category.name}
-                          </h3>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
-                            {category.description}
-                          </p>
+                {getGoodbodyTestsForDropdown(item.name) ? (
+                  // Show Goodbody tests for health-specific sections
+                  <>
+                    <div className="grid grid-cols-1 gap-2">
+                      {getGoodbodyTestsForDropdown(item.name)!.map((test) => (
+                        <Link
+                          key={test.id}
+                          to={test.url || `/book/${test.id}`}
+                          className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                          onClick={onItemClick}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
+                                {test.name}
+                              </h3>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">
+                                {test.description}
+                              </p>
+                              {test.biomarkers && (
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {test.biomarkers} biomarkers • {test.turnaround}
+                                </p>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              <span className="text-sm font-semibold text-primary">
+                                £{test.price}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  // Show categories for FIND YOUR TEST and MOST POPULAR TESTS
+                  <div className="grid grid-cols-2 gap-4">
+                    {getFilteredCategories(item.name).map((category) => (
+                      <Link
+                        key={category.id}
+                        to={`/compare?category=${category.id}`}
+                        className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        onClick={onItemClick}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-3 h-3 rounded-full flex-shrink-0 ${categoryColorMap[category.id] || 'bg-gray-400'}`}></div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
+                              {category.name}
+                            </h3>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
+                              {category.description}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
                 
                 {/* View All Link */}
                 <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
