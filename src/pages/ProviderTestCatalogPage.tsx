@@ -170,7 +170,7 @@ const ProviderTestCatalogPage = () => {
             >
               {categories.map(category => (
                 <option key={category} value={category}>
-                  {category === "all" ? "All Categories" : category}
+                  {category === "all" ? "Select Your Category" : category}
                 </option>
               ))}
             </select>
