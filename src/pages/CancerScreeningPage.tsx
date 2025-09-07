@@ -32,7 +32,7 @@ const CancerScreeningPage = () => {
     turnaround: "10-14 days",
     biomarkers: ["Circulating tumor DNA", "Protein biomarkers", "50+ cancer types"]
   }];
-  return <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col bg-[#1a1b34]">
       <Helmet>
         <title>Cancer Screening Tests | Early Detection & Prevention | Compare UK Providers</title>
         <meta name="description" content="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection from top clinics." />
@@ -40,7 +40,7 @@ const CancerScreeningPage = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-background py-16">
+        <section className="bg-gradient-to-br from-red-50 to-pink-50 py-16 bg-[#1a1b34]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center bg-[#1a1b34]">
               <div className="bg-red-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
