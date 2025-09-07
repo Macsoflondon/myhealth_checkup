@@ -170,7 +170,7 @@ const CancerScreeningPage = () => {
                       <CardHeader className="pb-4">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-lg bg-health-icon/10 text-health-icon group-hover:bg-health-icon group-hover:text-white transition-colors">
+                            <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-5 w-5" />
                             </div>
                             <Badge variant="secondary" className="text-xs">
