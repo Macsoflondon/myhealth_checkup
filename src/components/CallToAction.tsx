@@ -12,6 +12,7 @@ const CallToAction = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-[#ffffff] text-center font-normal rounded-md">Find Your Test With Ease </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              With Over 300 Tests To Choose From
             </Button>
           </div>
         </div>
