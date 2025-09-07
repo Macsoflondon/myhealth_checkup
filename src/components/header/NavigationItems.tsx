@@ -32,7 +32,7 @@ export const navigationItems = [
   { name: "HORMONES", path: "/hormones", hasDropdown: true, megaMenu: true },
   { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
   { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
-  { name: "HEALTH HUB", path: "/health-blog", hasDropdown: false }
+  { name: "HEALTH RESOURCES HUB", path: "/health-blog", hasDropdown: false }
 ];
 
 interface NavigationItemsProps {
