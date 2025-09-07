@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 import { Logo } from "./header/Logo";
 import { SearchBar } from "./header/SearchBar";
 import { NavigationItems } from "./header/NavigationItems";
@@ -8,7 +9,11 @@ import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
 
-const Header = () => {
+interface HeaderProps {
+  className?: string;
+}
+
+const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -24,7 +29,7 @@ const Header = () => {
 
   if (isMobile) {
     return (
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+      <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         <div className="px-4 py-3 flex justify-between items-center">
           <Logo />
           <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -34,7 +39,7 @@ const Header = () => {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
       {/* Main header bar */}
       <div className="px-4 py-3">
         <div className="flex items-center justify-between gap-6 max-w-7xl mx-auto">
