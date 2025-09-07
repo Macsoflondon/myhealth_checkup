@@ -174,7 +174,7 @@ const ProviderTestCatalogPage = () => {
                       </p>}
                     
                     <div className="flex justify-between items-center">
-                      <div className="text-2xl font-bold text-primary">
+                      <div className="text-2xl font-bold" style={{ color: '#22c0d4' }}>
                         £{test.price?.toFixed(2) || 'Price on request'}
                       </div>
                       
