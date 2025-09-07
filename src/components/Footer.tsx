@@ -84,23 +84,23 @@ const Footer = () => {
                 <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
               </div>
               <span className="text-lg font-bold">
-                <span className="text-white">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
+                <span className="text-white">myhealth</span> <span className="text-wellness-600">checkup</span>
               </span>
             </Link>
             <p className="mb-4 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK’s only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers. Company No. 16589056</p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-white/60 hover:text-[#22c0d4] transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
+            <div className="flex space-x-4 rounded decoration-white ">
+              {socialLinks.map((social, index) => <a key={index} href={social.url} className="text-gray-400 hover:text-health-600 transition-colors" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
                 </a>)}
             </div>
           </div>
 
-          <div>
-            <h3 id="footer-services" className="font-semibold text-lg mb-4 text-white">Our Services</h3>
+          <div className="text-[t] text-[#e70d69] font-medium">
+            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">Our Services</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
               {serviceSections.map((service, index) => <li key={index}>
-                  <Link to={service.link} className="text-white/80 hover:text-[#22c0d4] transition-colors text-sm">
+                  <Link to={service.link} className="text-white hover:text-white transition-colors">
                     {service.name}
                   </Link>
                 </li>)}
@@ -111,7 +111,7 @@ const Footer = () => {
             <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">Information</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
               {informationSections.map((info, index) => <li key={index}>
-                  <Link to={info.link} className="text-white/80 hover:text-[#22c0d4] transition-colors text-sm">
+                  <Link to={info.link} className="text-white hover:text-white transition-colors">
                     {info.name}
                   </Link>
                 </li>)}
@@ -122,7 +122,7 @@ const Footer = () => {
             <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">Company</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
               {companySections.map((company, index) => <li key={index}>
-                  <Link to={company.link} className="text-white/80 hover:text-[#22c0d4] transition-colors text-sm">
+                  <Link to={company.link} className="text-white hover:text-white transition-colors">
                     {company.name}
                   </Link>
                 </li>)}
@@ -130,15 +130,15 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/20 pt-8 mt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p className="text-white/80">
-              © 2025 my health checkup. Empowering informed health decisions across the UK. All rights reserved.
+        <div className="border-t border-gray-200 pt-8 mt-8">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white ">
+            <p className="font-normal text-[#e70d69]">
+              ©️2025 my health checkup, Empowering informed health decisions across the UK. All rights reserved.
             </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <Link to="/accessibility" className="text-white/80 hover:text-[#22c0d4] transition-colors">Accessibility</Link>
-              <Link to="/sitemap" className="text-white/80 hover:text-[#22c0d4] transition-colors">Sitemap</Link>
-              <Link to="/cookies" className="text-white/80 hover:text-[#22c0d4] transition-colors">Cookie Policy</Link>
+              <Link to="/accessibility" className="hover:text-white ">Accessibility</Link>
+              <Link to="/sitemap" className="hover:text-health-600 transition-colors">Sitemap</Link>
+              <Link to="/cookies" className="hover:text-health-600 transition-colors">Cookie Policy</Link>
             </nav>
           </div>
         </div>
