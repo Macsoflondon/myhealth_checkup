@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 const CallToAction = () => {
-  return <section className="bg-gradient-to-r from-health-600 to-wellness-600 bg-[#1a1b34] text-center font-bold py-0 my-0 text-3xl text-[#22c0d4]">
+  return <section className="py-16 bg-[#1a1b34]">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-[#e70d69]">
