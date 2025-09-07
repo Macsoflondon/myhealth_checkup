@@ -53,22 +53,22 @@ const NewHero = () => {
     }
   };
   const popularSearches = [{
-    name: "Thyroid Function",
+    name: "Thyroid Function Tests",
     category: "hormones"
   }, {
-    name: "Hormone Health",
+    name: "Hormone Health Screen",
     category: "hormones"
   }, {
-    name: "Vitamin D",
+    name: "Vitamin D Blood Test",
     category: "vitamins"
   }, {
-    name: "Full Blood Count",
+    name: "Full Blood Count (FBC)",
     category: "blood-tests"
   }, {
-    name: "Cholesterol",
+    name: "Cholesterol Profile",
     category: "heart-health"
   }, {
-    name: "Diabetes Check",
+    name: "Diabetes Screening",
     category: "diabetes"
   }];
   return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center -mt-[72px] pt-[72px]" style={{
@@ -182,7 +182,7 @@ const NewHero = () => {
               <div className="mt-6">
                 <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
                 <div className="flex flex-wrap gap-2">
-                  {popularSearches.map((search, index) => <button key={index} onClick={() => navigate(`/tests/${search.category}`)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700">
+                  {popularSearches.map((search, index) => <button key={index} onClick={() => navigate(`/tests/${search.category}`)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
                       {search.name}
                     </button>)}
                 </div>
