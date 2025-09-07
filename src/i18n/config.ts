@@ -7,6 +7,13 @@ import enTranslations from '../locales/en.json';
 import frTranslations from '../locales/fr.json';
 import esTranslations from '../locales/es.json';
 import deTranslations from '../locales/de.json';
+import itTranslations from '../locales/it.json';
+import ptTranslations from '../locales/pt.json';
+import nlTranslations from '../locales/nl.json';
+import plTranslations from '../locales/pl.json';
+import arTranslations from '../locales/ar.json';
+import zhTranslations from '../locales/zh.json';
+import jaTranslations from '../locales/ja.json';
 
 const resources = {
   en: {
@@ -20,6 +27,27 @@ const resources = {
   },
   de: {
     translation: deTranslations,
+  },
+  it: {
+    translation: itTranslations,
+  },
+  pt: {
+    translation: ptTranslations,
+  },
+  nl: {
+    translation: nlTranslations,
+  },
+  pl: {
+    translation: plTranslations,
+  },
+  ar: {
+    translation: arTranslations,
+  },
+  zh: {
+    translation: zhTranslations,
+  },
+  ja: {
+    translation: jaTranslations,
   },
 };
 

@@ -1,0 +1,69 @@
+{
+  "common": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "search": "搜索",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "save": "保存",
+    "close": "关闭",
+    "next": "下一步",
+    "previous": "上一步",
+    "learnMore": "了解更多",
+    "getStarted": "开始",
+    "compareTests": "比较测试",
+    "bookNow": "立即预订",
+    "viewDetails": "查看详情"
+  },
+  "navigation": {
+    "home": "首页",
+    "compareTests": "比较测试",
+    "categories": "分类",
+    "howItWorks": "工作原理",
+    "about": "关于我们",
+    "contact": "联系我们",
+    "blog": "博客",
+    "faqs": "常见问题",
+    "findClinic": "查找诊所"
+  },
+  "hero": {
+    "title": "您的健康是您最大的财富！",
+    "subtitle": "比较英国顶级供应商的健康检测，预订最适合您的检测项目",
+    "searchPlaceholder": "搜索健康检测...",
+    "popularSearches": "热门搜索：",
+    "bloodTest": "血液检测",
+    "cholesterol": "胆固醇",
+    "diabetes": "糖尿病",
+    "thyroid": "甲状腺"
+  },
+  "footer": {
+    "tagline": "您的健康是我们的目标",
+    "quickLinks": "快速链接",
+    "categories": "分类",
+    "support": "支持",
+    "legal": "法律",
+    "newsletter": {
+      "title": "保持更新",
+      "description": "订阅我们的通讯，获取健康建议和独家优惠。",
+      "placeholder": "输入您的邮箱",
+      "subscribe": "订阅"
+    },
+    "copyright": "© 2024 HealthCompare. 保留所有权利。"
+  },
+  "language": {
+    "selectLanguage": "选择语言",
+    "english": "英语（英国）",
+    "french": "法语",
+    "spanish": "西班牙语",
+    "german": "德语",
+    "italian": "意大利语",
+    "portuguese": "葡萄牙语",
+    "dutch": "荷兰语",
+    "polish": "波兰语",
+    "arabic": "阿拉伯语",
+    "chinese": "中文",
+    "japanese": "日语"
+  }
+}
