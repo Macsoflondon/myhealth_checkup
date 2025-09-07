@@ -33,6 +33,7 @@
     --health-warning: 45 100% 60%;
     --health-highlight: 330 91% 48%;
     --health-heading: 186 71% 48%;
+    --health-icon: 222 40% 11%;
     --section-dark: 237 33% 15%;
     
     --gradient-health: linear-gradient(135deg, hsl(220 100% 50%), hsl(280 100% 70%));
@@ -86,6 +87,7 @@
     --health-warning: 45 100% 65%;
     --health-highlight: 330 91% 55%;
     --health-heading: 186 71% 48%;
+    --health-icon: 222 40% 11%;
     --section-dark: 237 33% 15%;
 
     --destructive: 0 62.8% 30.6%;
