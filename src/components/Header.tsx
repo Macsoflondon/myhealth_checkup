@@ -34,7 +34,13 @@ const Header = ({ className }: HeaderProps) => {
         <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
           <div className="px-4 py-3 flex justify-between items-center">
             <Logo />
-            <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+            
+            {/* Right side controls */}
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <UserMenu isMobile />
+              <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+            </div>
           </div>
         </header>
       </ErrorBoundary>
