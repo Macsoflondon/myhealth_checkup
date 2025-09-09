@@ -11,306 +11,379 @@ export interface GoodbodyTest {
 }
 
 export const goodbodyTests: GoodbodyTest[] = [
-  // Women's Health Tests
+  // Advanced Health Tests
   {
-    id: 'advanced-well-woman',
-    name: 'Advanced Well Woman Test',
-    price: 149,
-    description: 'Comprehensive health check for women including hormones',
-    biomarkers: 45,
-    turnaround: '2-3 days',
-    categories: ['womens-health', 'general-wellness'],
-    url: '/book/advanced-well-woman'
-  },
-  {
-    id: 'female-hormones',
-    name: 'Female Hormones Test',
-    price: 99,
-    description: 'Complete female hormone panel including FSH, LH, oestrogen',
-    biomarkers: 8,
-    turnaround: '2-3 days',
-    categories: ['womens-health', 'hormones'],
-    url: '/book/female-hormones'
-  },
-  {
-    id: 'menopause-test',
-    name: 'Menopause Test',
-    price: 89,
-    description: 'Check hormone levels related to menopause',
-    biomarkers: 6,
-    turnaround: '2-3 days',
-    categories: ['womens-health', 'hormones'],
-    url: '/book/menopause-test'
-  },
-  {
-    id: 'amh-fertility',
-    name: 'AMH Fertility Test',
-    price: 69,
-    description: 'Anti-Müllerian Hormone test for fertility assessment',
-    biomarkers: 1,
-    turnaround: '3-5 days',
-    categories: ['womens-health', 'hormones'],
-    url: '/book/amh-fertility'
-  },
-  {
-    id: 'pcos-test',
-    name: 'PCOS Test',
-    price: 85,
-    description: 'Comprehensive screening for polycystic ovary syndrome',
+    id: 'Goodbody061',
+    name: 'Advanced Vitamins',
+    price: 649,
+    description: 'Comprehensive vitamin and mineral analysis',
     biomarkers: 10,
     turnaround: '2-3 days',
-    categories: ['womens-health', 'hormones'],
-    url: '/book/pcos-test'
+    categories: ['general-wellness', 'vitamins'],
+    url: 'https://health.goodbodyclinic.com/product/advanced-vitamins-blood-test/'
   },
-
-  // Men's Health Tests
   {
-    id: 'advanced-well-man',
-    name: 'Advanced Well Man Test',
-    price: 149,
+    id: 'Goodbody008',
+    name: 'Advanced Well Man',
+    price: 175,
     description: 'Comprehensive health check for men including hormones',
-    biomarkers: 42,
+    biomarkers: 49,
     turnaround: '2-3 days',
     categories: ['mens-health', 'general-wellness'],
-    url: '/book/advanced-well-man'
+    url: 'https://health.goodbodyclinic.com/product/advanced-well-man-test/'
   },
   {
-    id: 'male-hormones',
-    name: 'Male Hormones Test',
-    price: 89,
-    description: 'Complete male hormone panel including testosterone',
-    biomarkers: 6,
+    id: 'Goodbody009',
+    name: 'Advanced Well Woman',
+    price: 175,
+    description: 'Comprehensive health check for women including hormones',
+    biomarkers: 52,
     turnaround: '2-3 days',
-    categories: ['mens-health', 'hormones'],
-    url: '/book/male-hormones'
+    categories: ['womens-health', 'general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/advanced-well-woman-blood-test/'
   },
   {
-    id: 'testosterone-test',
-    name: 'Testosterone Test',
-    price: 45,
-    description: 'Total and free testosterone levels',
-    biomarkers: 2,
+    id: 'Goodbody120',
+    name: 'Enhanced Well Woman (Rachel\'s Test)',
+    price: 175,
+    description: 'Enhanced comprehensive health check for women',
+    biomarkers: 52,
     turnaround: '2-3 days',
-    categories: ['mens-health', 'hormones'],
-    url: '/book/testosterone-test'
+    categories: ['womens-health', 'general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/advanced-well-woman-blood-test/'
   },
   {
-    id: 'erectile-dysfunction',
-    name: 'Erectile Dysfunction Test',
-    price: 125,
-    description: 'Comprehensive ED screening including hormones and circulation',
-    biomarkers: 12,
+    id: 'Goodbody124',
+    name: 'Complete Wellness',
+    price: 249,
+    description: 'Premium comprehensive health screening',
+    biomarkers: 62,
     turnaround: '2-3 days',
-    categories: ['mens-health'],
-    url: '/book/erectile-dysfunction'
-  },
-  {
-    id: 'prostate-test',
-    name: 'Prostate Test',
-    price: 65,
-    description: 'PSA screening for prostate health',
-    biomarkers: 2,
-    turnaround: '2-3 days',
-    categories: ['mens-health'],
-    url: '/book/prostate-test'
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/premium-complete-wellness-blood-test/'
   },
 
-  // Hormone Tests
+  // Blood & General Health
   {
-    id: 'fertility-hormone-panel',
-    name: 'Fertility Hormone Panel',
-    price: 125,
-    description: 'Comprehensive fertility assessment for both men and women',
-    biomarkers: 12,
-    turnaround: '3-5 days',
-    categories: ['hormones', 'womens-health', 'mens-health'],
-    url: '/book/fertility-hormone-panel'
-  },
-  {
-    id: 'cortisol-stress',
-    name: 'Cortisol Stress Test',
-    price: 65,
-    description: 'Measure stress hormone levels throughout the day',
-    biomarkers: 4,
-    turnaround: '2-3 days',
-    categories: ['hormones', 'general-wellness'],
-    url: '/book/cortisol-stress'
-  },
-
-  // Thyroid Tests
-  {
-    id: 'thyroid-function',
-    name: 'Thyroid Function Test',
-    price: 69,
-    description: 'TSH, T3, T4 thyroid hormone levels',
-    biomarkers: 3,
-    turnaround: '2-3 days',
-    categories: ['thyroid', 'hormones'],
-    url: '/book/thyroid-function'
-  },
-  {
-    id: 'thyroid-antibodies',
-    name: 'Thyroid Function with Antibodies',
-    price: 125,
-    description: 'Complete thyroid assessment including antibodies',
-    biomarkers: 6,
-    turnaround: '3-5 days',
-    categories: ['thyroid', 'hormones'],
-    url: '/book/thyroid-antibodies'
-  },
-
-  // General Wellness Tests
-  {
-    id: 'premium-complete',
-    name: 'Premium Complete Blood Test',
-    price: 199,
-    description: 'Most comprehensive health check available',
-    biomarkers: 65,
-    turnaround: '2-3 days',
-    categories: ['general-wellness', 'womens-health', 'mens-health'],
-    url: '/book/premium-complete'
-  },
-  {
-    id: 'hepatitis-screening',
-    name: 'Hepatitis Screening',
-    price: 89,
-    description: 'Screen for Hepatitis B and C infections',
-    biomarkers: 6,
-    turnaround: '3-5 days',
-    categories: ['general-wellness'],
-    url: '/book/hepatitis-screening'
-  },
-  {
-    id: 'liver-function',
-    name: 'Liver Function Test',
-    price: 65,
-    description: 'Comprehensive liver health assessment',
-    biomarkers: 8,
-    turnaround: '2-3 days',
-    categories: ['general-wellness'],
-    url: '/book/liver-function'
-  },
-  {
-    id: 'kidney-function',
-    name: 'Kidney Function Test',
-    price: 55,
-    description: 'Check kidney health and function',
-    biomarkers: 6,
-    turnaround: '2-3 days',
-    categories: ['general-wellness'],
-    url: '/book/kidney-function'
-  },
-  {
-    id: 'cardiac-risk',
-    name: 'Cardiac Risk Test',
-    price: 75,
-    description: 'Assess heart disease risk factors',
-    biomarkers: 8,
-    turnaround: '2-3 days',
-    categories: ['general-wellness'],
-    url: '/book/cardiac-risk'
-  },
-  {
-    id: 'sports-fitness',
-    name: 'Sports & Fitness Test',
-    price: 125,
-    description: 'Optimize performance and recovery',
-    biomarkers: 15,
-    turnaround: '2-3 days',
-    categories: ['general-wellness'],
-    url: '/book/sports-fitness'
-  },
-  {
-    id: 'tiredness-test',
-    name: 'Tiredness Test',
-    price: 95,
-    description: 'Find the cause of chronic fatigue',
-    biomarkers: 12,
-    turnaround: '2-3 days',
-    categories: ['general-wellness'],
-    url: '/book/tiredness-test'
-  },
-  {
-    id: 'anaemia-test',
-    name: 'Anaemia Test',
-    price: 45,
-    description: 'Check for iron deficiency and anaemia',
-    biomarkers: 6,
-    turnaround: '2-3 days',
-    categories: ['general-wellness'],
-    url: '/book/anaemia-test'
-  },
-  {
-    id: 'full-blood-count',
+    id: 'Goodbody001',
     name: 'Full Blood Count',
-    price: 35,
+    price: 69,
     description: 'Complete blood cell analysis',
     biomarkers: 15,
     turnaround: '1-2 days',
     categories: ['general-wellness'],
-    url: '/book/full-blood-count'
+    url: 'https://health.goodbodyclinic.com/product/full-blood-count-blood-test/'
   },
   {
-    id: 'blood-group',
-    name: 'Blood Group Test',
-    price: 25,
+    id: 'Goodbody105',
+    name: 'Blood Group',
+    price: 109,
     description: 'Determine your ABO and Rhesus blood group',
-    biomarkers: 2,
+    biomarkers: 1,
     turnaround: '1-2 days',
     categories: ['general-wellness'],
-    url: '/book/blood-group'
+    url: 'https://health.goodbodyclinic.com/all-products/?rc_page=6'
   },
   {
-    id: 'helicobacter-pylori',
-    name: 'Helicobacter Pylori Test',
+    id: 'Goodbody076',
+    name: 'Anaemia',
+    price: 79,
+    description: 'Check for iron deficiency and anaemia',
+    biomarkers: 4,
+    turnaround: '2-3 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+  },
+
+  // Cardiovascular Health
+  {
+    id: 'Goodbody006',
+    name: 'Cardiac Risk',
+    price: 99,
+    description: 'Assess heart disease risk factors',
+    biomarkers: 8,
+    turnaround: '2-3 days',
+    categories: ['general-wellness', 'heart-health'],
+    url: 'https://health.goodbodyclinic.com/product/cardiac-risk-blood-test/'
+  },
+  {
+    id: 'Goodbody004',
+    name: 'Cholesterol',
+    price: 69,
+    description: 'Complete cholesterol and lipid profile',
+    biomarkers: 6,
+    turnaround: '2-3 days',
+    categories: ['general-wellness', 'heart-health'],
+    url: 'https://health.goodbodyclinic.com/product/cholesterol-blood-test/'
+  },
+
+  // Organ Function Tests
+  {
+    id: 'Goodbody002',
+    name: 'Kidney',
+    price: 69,
+    description: 'Check kidney health and function',
+    biomarkers: 3,
+    turnaround: '2-3 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/kidney-blood-test/'
+  },
+  {
+    id: 'Goodbody003',
+    name: 'Liver',
+    price: 69,
+    description: 'Comprehensive liver health assessment',
+    biomarkers: 6,
+    turnaround: '2-3 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/liver-blood-test/'
+  },
+
+  // Diabetes & Metabolic Health
+  {
+    id: 'Goodbody035',
+    name: 'Diabetes',
+    price: 69,
+    description: 'HbA1c test for diabetes screening',
+    biomarkers: 1,
+    turnaround: '2-3 days',
+    categories: ['general-wellness', 'diabetes'],
+    url: 'https://health.goodbodyclinic.com/product/diabetes-hba1c-blood-test/'
+  },
+
+  // Thyroid Tests
+  {
+    id: 'Goodbody016',
+    name: 'Thyroid Function',
+    price: 49,
+    description: 'TSH and T4 thyroid hormone levels',
+    biomarkers: 2,
+    turnaround: '2-3 days',
+    categories: ['thyroid', 'hormones'],
+    url: 'https://health.goodbodyclinic.com/all-products/?rc_page=6'
+  },
+  {
+    id: 'Goodbody064',
+    name: 'Thyroid With Antibodies',
+    price: 109,
+    description: 'Complete thyroid assessment including antibodies',
+    biomarkers: 5,
+    turnaround: '3-5 days',
+    categories: ['thyroid', 'hormones'],
+    url: 'https://health.goodbodyclinic.com/product/thyroid-function-with-antibodies-blood-test/'
+  },
+
+  // Hormone Tests
+  {
+    id: 'Goodbody047',
+    name: 'Testosterone',
+    price: 49,
+    description: 'Testosterone level assessment',
+    biomarkers: 1,
+    turnaround: '2-3 days',
+    categories: ['mens-health', 'hormones'],
+    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+  },
+  {
+    id: 'Goodbody123',
+    name: 'Cortisol',
     price: 45,
-    description: 'Screen for H. pylori stomach bacteria',
+    description: 'Stress hormone level assessment',
+    biomarkers: 1,
+    turnaround: '2-3 days',
+    categories: ['hormones', 'general-wellness'],
+    url: 'https://health.goodbodyclinic.com/all-products/'
+  },
+
+  // Women's Health & Fertility
+  {
+    id: 'Goodbody020',
+    name: 'Female Hormone & Fertility',
+    price: 79,
+    description: 'Complete female hormone panel for fertility assessment',
+    biomarkers: 7,
+    turnaround: '2-3 days',
+    categories: ['womens-health', 'hormones', 'fertility'],
+    url: 'https://health.goodbodyclinic.com/fertility-blood-tests/'
+  },
+  {
+    id: 'Goodbody039',
+    name: 'Anti-Mullerian',
+    price: 109,
+    description: 'AMH test for ovarian reserve and fertility',
+    biomarkers: 1,
+    turnaround: '3-5 days',
+    categories: ['womens-health', 'hormones', 'fertility'],
+    url: 'https://health.goodbodyclinic.com/product/anti-mullerian-hormone-blood-test/'
+  },
+  {
+    id: 'Goodbody014',
+    name: 'Polycystic Ovary Syndrome',
+    price: 89,
+    description: 'Comprehensive PCOS screening',
+    biomarkers: 12,
+    turnaround: '2-3 days',
+    categories: ['womens-health', 'hormones'],
+    url: 'https://health.goodbodyclinic.com/product/polycystic-ovary-syndrome-blood-test/'
+  },
+  {
+    id: 'Goodbody021',
+    name: 'Menopause',
+    price: 79,
+    description: 'Hormone levels related to menopause',
+    biomarkers: 5,
+    turnaround: '2-3 days',
+    categories: ['womens-health', 'hormones'],
+    url: 'https://health.goodbodyclinic.com/product/menopause-blood-test/'
+  },
+  {
+    id: 'Goodbody040',
+    name: 'Pregnancy',
+    price: 79,
+    description: 'Pregnancy hormone testing',
+    biomarkers: 1,
+    turnaround: '2-3 days',
+    categories: ['womens-health'],
+    url: 'https://health.goodbodyclinic.com/locations/kingsbury-clinic-british-chemist/'
+  },
+
+  // Men's Health
+  {
+    id: 'Goodbody019',
+    name: 'Male Hormone & Fertility',
+    price: 79,
+    description: 'Complete male hormone panel for fertility assessment',
+    biomarkers: 6,
+    turnaround: '2-3 days',
+    categories: ['mens-health', 'hormones', 'fertility'],
+    url: 'https://health.goodbodyclinic.com/product/male-hormone-and-fertility-blood-test/'
+  },
+  {
+    id: 'Goodbody067',
+    name: 'Erectile Dysfunction',
+    price: 79,
+    description: 'Comprehensive ED screening including hormones',
+    biomarkers: 11,
+    turnaround: '2-3 days',
+    categories: ['mens-health'],
+    url: 'https://health.goodbodyclinic.com/product/erectile-dysfunction-blood-test/'
+  },
+  {
+    id: 'Goodbody072',
+    name: 'Prostate PSA',
+    price: 69,
+    description: 'PSA screening for prostate health',
+    biomarkers: 1,
+    turnaround: '2-3 days',
+    categories: ['mens-health'],
+    url: 'https://health.goodbodyclinic.com/product/prostate-psa-blood-test/'
+  },
+
+  // Vitamins & Minerals
+  {
+    id: 'Goodbody066',
+    name: 'Vitamins',
+    price: 69,
+    description: 'Essential vitamin levels assessment',
+    biomarkers: 3,
+    turnaround: '2-3 days',
+    categories: ['general-wellness', 'vitamins'],
+    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+  },
+  {
+    id: 'Goodbody013',
+    name: 'Iron',
+    price: 89,
+    description: 'Iron levels and storage assessment',
+    biomarkers: 5,
+    turnaround: '2-3 days',
+    categories: ['general-wellness', 'vitamins'],
+    url: 'https://health.goodbodyclinic.com/product/iron-blood-test/'
+  },
+  {
+    id: 'Goodbody059',
+    name: 'Trace Metal',
+    price: 449,
+    description: 'Heavy metals and trace elements analysis',
+    biomarkers: 6,
+    turnaround: '5-7 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+  },
+
+  // Specialist Screening
+  {
+    id: 'Goodbody051',
+    name: 'Hepatitis Screening',
+    price: 129,
+    description: 'Screen for Hepatitis B and C infections',
+    biomarkers: 3,
+    turnaround: '3-5 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/hepatitis-screening-blood-test/'
+  },
+  {
+    id: 'Goodbody055',
+    name: 'Coeliac Disease',
+    price: 179,
+    description: 'Screen for coeliac disease',
+    biomarkers: 2,
+    turnaround: '3-5 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/coeliac-screen-blood-test/'
+  },
+  {
+    id: 'Goodbody054',
+    name: 'Autoimmune Disease',
+    price: 379,
+    description: 'Comprehensive autoimmune screening',
+    biomarkers: 6,
+    turnaround: '5-7 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+  },
+  {
+    id: 'Goodbody119',
+    name: 'Pylori',
+    price: 105,
+    description: 'H. pylori bacteria screening',
     biomarkers: 1,
     turnaround: '3-5 days',
     categories: ['general-wellness'],
-    url: '/book/helicobacter-pylori'
+    url: 'https://health.goodbodyclinic.com/product/helicobacter-pylori-blood-test/'
   },
 
-  // Cancer Screening Tests
+  // Allergy & Fatigue
   {
-    id: 'bowel-cancer-screening',
-    name: 'Bowel Cancer Screening',
-    price: 89,
-    description: 'Advanced FIT test for early detection',
-    biomarkers: 2,
-    turnaround: '5-7 days',
-    categories: ['cancer-screening'],
-    url: '/book/bowel-cancer-screening'
-  },
-  {
-    id: 'prostate-cancer-panel',
-    name: 'Prostate Cancer Panel',
-    price: 125,
-    description: 'Comprehensive PSA testing for men 40+',
-    biomarkers: 3,
-    turnaround: '3-5 days',
-    categories: ['cancer-screening', 'mens-health'],
-    url: '/book/prostate-cancer-panel'
-  },
-  {
-    id: 'cervical-cancer-screening',
-    name: 'Cervical Cancer Screening',
-    price: 149,
-    description: 'HPV testing and cytology',
-    biomarkers: 3,
-    turnaround: '7-10 days',
-    categories: ['cancer-screening', 'womens-health'],
-    url: '/book/cervical-cancer-screening'
-  },
-  {
-    id: 'multi-cancer-detection',
-    name: 'Multi-Cancer Detection',
+    id: 'Goodbody063',
+    name: 'Complete Allergy',
     price: 399,
-    description: 'Blood-based early detection panel',
-    biomarkers: 50,
-    turnaround: '10-14 days',
-    categories: ['cancer-screening'],
-    url: '/book/multi-cancer-detection'
+    description: 'Comprehensive allergy panel testing',
+    biomarkers: 300,
+    turnaround: '5-7 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/complete-allergy-blood-test/'
+  },
+  {
+    id: 'Goodbody065',
+    name: 'Tiredness & Fatigue',
+    price: 139,
+    description: 'Find the cause of chronic fatigue',
+    turnaround: '2-3 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/tiredness-and-fatigue-blood-test/'
+  },
+
+  // Sports & Fitness
+  {
+    id: 'Goodbody073',
+    name: 'Sports & Fitness',
+    price: 139,
+    description: 'Optimize athletic performance and recovery',
+    biomarkers: 18,
+    turnaround: '2-3 days',
+    categories: ['general-wellness'],
+    url: 'https://health.goodbodyclinic.com/product/sports-and-fitness-blood-test/'
   }
 ];
 
