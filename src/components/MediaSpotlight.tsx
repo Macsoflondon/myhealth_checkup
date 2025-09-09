@@ -80,7 +80,7 @@ const MediaSpotlight = () => {
         <div role="region" aria-label="Press mentions carousel" className="marquee bg-[#081129]">
           <div className="marquee__track bg-[#081129]">
             {/* Interleaved Medicheck & Goodbody logos */}
-            <div className="marquee__slide accent">
+            <div className="marquee__slide accent bg-[#cbbb99]">
               <img src="https://www.medichecks.com/cdn/shop/files/Homepage-WH_768x768.png?v=1741598202" alt="Woman & Home logo" />
             </div>
             <div className="marquee__slide bg-[#22c0d4]">
