@@ -74,7 +74,7 @@ const NewHero = () => {
     name: "Diabetes Screening",
     category: "diabetes"
   }], []);
-  return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white min-h-screen flex items-center -mt-[72px] pt-[72px]" style={{
+  return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white flex items-center" style={{
     backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -83,64 +83,62 @@ const NewHero = () => {
   }}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="wave-pattern h-full w-full bg-[t] rounded bg-[#f6f7f9] mx-0"></div>
+        <div className="wave-pattern h-full w-full"></div>
       </div>
       
-      <div className="relative z-10 w-full py-0 bg-[#081129]">
-        <div className="max-w-6xl mx-auto text-center py-[20px] my-[20px]">
+      <div className="relative z-10 w-full py-16 bg-[#081129]">
+        <div className="max-w-6xl mx-auto text-center px-4">
           {/* Full Logo */}
-          <div className="mb-6">
+          <div className="mb-8">
             <LazyImage 
               src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" 
               alt="myhealth checkup - Your health is your greatest asset" 
-              className="hero-logo mx-auto transform scale-125" 
+              className="hero-logo mx-auto w-full max-w-lg md:max-w-2xl" 
               width={800} 
               height={450} 
               priority={true}
             />
           </div>
+          
           {/* Main Headline */}
-          <h1 className="text-4xl lg:text-6xl mb-6 leading-tight text-center font-semibold text-zinc-50 md:text-5xl my-[10px]">
-            <span className="block font-semibold relative z-20 -mt-32 bg-white w-screen ml-[calc(-50vw+50%)] mr-[calc(-50vw+50%)] text-5xl text-center py-[12px]">
-              <span className="block text-xl my-[10px] leading-tight text-center md:text-3xl font-semibold text-[#22c0d4] lg:text-4xl whitespace-nowrap">
-                Compare the UK's leading private health test providers
-                <span className="block text-health-highlight text-[t] text-[#fc0173]">All in one place!</span>
-              </span>
-              
-            </span>
-          </h1>
+          <div className="mb-8 bg-white rounded-2xl p-6 mx-4 md:mx-0">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#22c0d4] leading-tight">
+              Compare the UK's leading private health test providers
+              <span className="block text-[#fc0173] mt-2">All in one place!</span>
+            </h1>
+          </div>
           
           
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129] text-4xl">
-              <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-center font-medium text-sm mx-[10px]">No GP Referral Needed</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
+              <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-center font-medium text-xs sm:text-sm">No GP Referral Needed</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Shield className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-sm font-medium">UKAS-Accredited Laboratories</span>
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-center">UKAS-Accredited Laboratories</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-sm font-medium">At-Home Test or In-Clinic Blood Draw</span>
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
+              <MapPin className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-center">At-Home Test or In-Clinic Blood Draw</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-4 bg-[#081129]">
-              <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-sm font-medium">Fast & accurate results you can trust</span>
+            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
+              <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-center">Fast & accurate results you can trust</span>
             </div>
           </div>
 
           {/* Search Section */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="bg-white rounded-2xl p-6 shadow-2xl">
-              <div className="flex flex-col lg:flex-row gap-4">
+          <div className="max-w-4xl mx-auto mb-12 px-4">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1 relative">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
+                  <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
-                <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-8 py-4 text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
+                <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]"
                 style={{ backgroundColor: '#22c0d4', color: 'white' }}>
                   {isAnalyzing ? <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />

@@ -1,7 +1,7 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
 const HowItWorks = () => {
-  return <section className="luxury-gradient py-0">
-      <div className="max-w-7xl mx-auto px-4 bg-white py-0">
+  return <section className="bg-white">
+      <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 heading text-[#9a23af] my-0 py-[10px]">
             How It Works

@@ -7,8 +7,9 @@ export const Logo = () => {
         <span className="font-bold text-lg leading-tight text-[#1a1b34]">myhealth</span>
         <span className="text-lg leading-tight text-cyan-500 font-normal">checkup</span>
       </div>
-      <div className="hidden md:block ml-4 text-sm text-cyan-500 font-medium">
-        Your health is your greatest asset!
+      <div className="hidden sm:block ml-2 md:ml-4 text-xs sm:text-sm md:text-sm text-cyan-500 font-medium">
+        <span className="hidden md:inline">Your health is your greatest asset!</span>
+        <span className="md:hidden">Your health matters!</span>
       </div>
     </Link>;
 };
