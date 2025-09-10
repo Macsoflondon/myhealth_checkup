@@ -98,8 +98,8 @@ const MediaSpotlight = () => {
             <div className="marquee__slide bg-[#081129]">
               <img src="https://cdn.goodbodyclinic.co.uk/wp-content/uploads/2023/01/2-2.png" alt="Goodbody Clinic logo 3" />
             </div>
-            <div className="marquee__slide bg-[#cbbb99]">
-              <img src="https://www.medichecks.com/cdn/shop/files/Inews-2025_768x768.png?v=1741001682" alt="iNews logo" />
+            <div className="marquee__slide bg-[#cbbb99] independent-logo">
+              <img src="https://www.medichecks.com/cdn/shop/files/Inews-2025_768x768.png?v=1741001682" alt="The Independent logo" style={{height: 'calc(var(--slide-height) * 1.5)'}} />
             </div>
             <div className="marquee__slide bg-[#081129]">
               <img src="https://cdn.goodbodyclinic.co.uk/wp-content/uploads/2023/01/4-2.png" alt="Goodbody Clinic logo 4" />
