@@ -76,7 +76,7 @@ const MediaSpotlight = () => {
       `}</style>
       
       <section aria-labelledby="press-mentions-title" className="media-spotlight bg-[f#ffffff] bg-[#22c0d4]">
-        <h2 id="press-mentions-title" className="media-spotlight__title py-[10px] text-[#e70d69] font-semibold text-center">Media Spotlight</h2>
+        <h2 id="press-mentions-title" className="media-spotlight__title py-[10px] font-semibold text-center text-[#22c0d4] my-[10px]">Media Spotlight</h2>
         <div role="region" aria-label="Press mentions carousel" className="marquee bg-[#081129]">
           <div className="marquee__track bg-[#081129]">
             {/* Interleaved Medicheck & Goodbody logos */}
