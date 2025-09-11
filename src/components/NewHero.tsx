@@ -93,7 +93,7 @@ const NewHero = () => {
             <LazyImage 
               src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" 
               alt="myhealth checkup - Your health is your greatest asset" 
-              className="hero-logo mx-auto w-full max-w-2xl md:max-w-4xl transform scale-150" 
+              className="hero-logo mx-auto w-full max-w-xl md:max-w-2xl transform scale-75" 
               width={1200} 
               height={675} 
               priority={true}
@@ -135,7 +135,7 @@ const NewHero = () => {
             <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#22c0d4] w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-health-success w-5 h-5" />
                   <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
                 <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]"
@@ -199,22 +199,22 @@ const NewHero = () => {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
+           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-#22C0D4 mb-2">7</div>
-              <div className="text-#22C0D4/80">Trusted Providers</div>
+              <div className="text-3xl font-bold text-health-success mb-2">7</div>
+              <div className="text-health-success/80">Trusted Providers</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-#22C0D4 mb-2">300+</div>
-              <div className="text-#22C0D4/80">Available Tests</div>
+              <div className="text-3xl font-bold text-health-success mb-2">300+</div>
+              <div className="text-health-success/80">Available Tests</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-#22C0D4 mb-2">3-5 Days</div>
-              <div className="text-#22C0D4/80">Fast Results</div>
+              <div className="text-3xl font-bold text-health-success mb-2">3-5 Days</div>
+              <div className="text-health-success/80">Fast Results</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-#22C0D4 mb-2">50,000+</div>
-              <div className="text-#22C0D4/80">Tests Completed</div>
+              <div className="text-3xl font-bold text-health-success mb-2">50,000+</div>
+              <div className="text-health-success/80">Tests Completed</div>
             </div>
           </div>
         </div>

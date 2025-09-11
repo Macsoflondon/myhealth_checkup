@@ -25,7 +25,7 @@ const FavoriteAction = ({ item, isFavorite, onToggleFavorite }: FavoriteActionPr
           isFavorite ? "text-pink-500" : "text-gray-400"
         )}
       >
-        <Heart className="h-5 w-5 text-[#22c0d4]" fill={isFavorite ? "currentColor" : "none"} />
+        <Heart className="h-5 w-5 text-health-success" fill={isFavorite ? "currentColor" : "none"} />
       </Button>
     </TableCell>
   );

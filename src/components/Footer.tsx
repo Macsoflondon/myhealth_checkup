@@ -84,26 +84,27 @@ const Footer = () => {
                 </a>)}
             </div>
             
-            <div className="flex flex-col space-y-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1">
+            {/* Regulatory Body Logos - Evenly Spaced */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-md">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-md">
                   <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-white text-sm">Care Quality Commission</span>
+                <span className="text-white text-xs font-medium">Care Quality Commission</span>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-md">
                   <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-white text-sm">EU GDPR Compliant</span>
+                <span className="text-white text-xs font-medium">EU GDPR Compliant</span>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+              <div className="flex flex-col items-center text-center space-y-2">
+                <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-md">
                   <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-white text-sm">ICO Registered</span>
+                <span className="text-white text-xs font-medium">ICO Registered</span>
               </div>
             </div>
           </div>
