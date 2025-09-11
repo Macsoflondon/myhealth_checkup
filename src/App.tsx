@@ -47,6 +47,14 @@ import SportsPerformancePage from "./pages/SportsPerformancePage";
 import ThyroidPage from "./pages/ThyroidPage";
 import HormonesPage from "./pages/HormonesPage";
 
+// Test detail pages
+import GeneralHealthTestPage from "./pages/GeneralHealthTestPage";
+import MaleHormoneTestPage from "./pages/MaleHormoneTestPage";
+import VitaminDTestPage from "./pages/VitaminDTestPage";
+import IronProfileTestPage from "./pages/IronProfileTestPage";
+import LipidProfileTestPage from "./pages/LipidProfileTestPage";
+import WellWomanTestPage from "./pages/WellWomanTestPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -105,6 +113,15 @@ const App = () => (
               <Route path="/womens-health" element={<WomensHealthPage />} />
               <Route path="/health-blog" element={<HealthBlogPage />} />
               <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
+              
+              {/* Test detail pages */}
+              <Route path="/test/general-health" element={<GeneralHealthTestPage />} />
+              <Route path="/test/male-hormones" element={<MaleHormoneTestPage />} />
+              <Route path="/test/vitamin-d" element={<VitaminDTestPage />} />
+              <Route path="/test/iron-profile" element={<IronProfileTestPage />} />
+              <Route path="/test/lipid-profile" element={<LipidProfileTestPage />} />
+              <Route path="/test/well-woman" element={<WellWomanTestPage />} />
+              
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

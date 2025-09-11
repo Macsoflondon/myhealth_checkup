@@ -57,22 +57,22 @@ const NewHero = () => {
   }, [handleSearch]);
   const popularSearches = useMemo(() => [{
     name: "General Health Test",
-    category: "general-health"
+    route: "/test/general-health"
   }, {
     name: "Male Hormone Test",
-    category: "hormones"
+    route: "/test/male-hormones"
   }, {
     name: "Vitamin D Blood Test",
-    category: "vitamins"
+    route: "/test/vitamin-d"
   }, {
     name: "Iron Profile Test",
-    category: "blood-tests"
+    route: "/test/iron-profile"
   }, {
     name: "Lipid Profile",
-    category: "heart-health"
+    route: "/test/lipid-profile"
   }, {
     name: "Well Woman Blood Test",
-    category: "womens-health"
+    route: "/test/well-woman"
   }], []);
   return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white flex items-center" style={{
     backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
@@ -187,7 +187,7 @@ You Can Trust</span>
               <div className="mt-6">
                 <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
                 <div className="flex flex-wrap gap-2">
-                  {popularSearches.map((search, index) => <button key={index} onClick={() => navigate(`/tests/${search.category}`)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
+                  {popularSearches.map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
                       {search.name}
                     </button>)}
                 </div>
