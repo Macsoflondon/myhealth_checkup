@@ -56,7 +56,7 @@ const MaleHormoneTestPage = () => {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-3xl font-bold">Male Hormone Test</h1>
+                <h1 className="text-3xl font-bold" style={{ color: '#081129' }}>Male Hormone Test</h1>
                 <Badge variant="secondary" className="text-sm">
                   Hormones
                 </Badge>
