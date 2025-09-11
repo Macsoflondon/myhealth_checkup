@@ -59,19 +59,16 @@ const NewHero = () => {
     name: "General Health Test",
     route: "/test/general-health"
   }, {
-    name: "Male Hormone Test",
+    name: "Male Hormone Test", 
     route: "/test/male-hormones"
   }, {
-    name: "Vitamin D Blood Test",
+    name: "Vitamin D Test",
     route: "/test/vitamin-d"
   }, {
-    name: "Iron Profile Test",
+    name: "Iron Profile",
     route: "/test/iron-profile"
   }, {
-    name: "Lipid Profile",
-    route: "/test/lipid-profile"
-  }, {
-    name: "Well Woman Blood Test",
+    name: "Well Woman Test",
     route: "/test/well-woman"
   }], []);
   return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white flex items-center" style={{
@@ -186,10 +183,19 @@ You Can Trust</span>
               {/* Popular Searches */}
               <div className="mt-6">
                 <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
-                <div className="flex flex-wrap gap-2">
-                  {popularSearches.map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
-                      {search.name}
-                    </button>)}
+                <div className="space-y-2">
+                  {/* Top row - 3 tests */}
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
+                        {search.name}
+                      </button>)}
+                  </div>
+                  {/* Bottom row - 2 tests evenly spaced */}
+                  <div className="flex gap-2 justify-center">
+                    {popularSearches.slice(3, 5).map((search, index) => <button key={index + 3} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
+                        {search.name}
+                      </button>)}
+                  </div>
                 </div>
               </div>
             </div>
