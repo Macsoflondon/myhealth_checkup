@@ -112,7 +112,7 @@ const NewHero = () => {
                   key={imageSrc}
                   src={imageSrc} 
                   alt="myhealth checkup - Your health is your greatest asset" 
-                  className={`hero-logo mx-auto w-full h-full object-contain absolute inset-0 transition-opacity duration-2000 ease-in-out ${
+                  className={`hero-logo mx-auto w-full h-full object-cover absolute inset-0 transition-opacity duration-2000 ease-in-out ${
                     index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                   }`}
                   style={{ 
