@@ -5,7 +5,7 @@ import scene2Cafe from "@/assets/video-scenes/scene-2-cafe.jpg";
 import scene3Reception from "@/assets/video-scenes/scene-3-reception.jpg";
 import scene4Consultation from "@/assets/video-scenes/scene-4-consultation.jpg";
 import scene5Exit from "@/assets/video-scenes/scene-5-exit.jpg";
-import logo from "@/assets/full-logo.png";
+const logo = "/lovable-uploads/6dff96c5-7337-4091-b3a3-de1f0a2911b3.png";
 
 const HeroVideoPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
