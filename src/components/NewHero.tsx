@@ -98,13 +98,6 @@ const NewHero = () => {
             </h1>
           </div>
           
-          {/* Text Banner */}
-          <div className="mb-8 bg-[#081129] rounded-2xl p-6 mx-4 md:mx-0 border border-white/20">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white text-center leading-tight">
-              Your <span className="text-[#22c0d4]">health</span>. Your <span className="text-[#fc0173]">choice</span>. One trusted platform.
-            </h2>
-          </div>
-          
 
           {/* Trust Indicators */}
           <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
@@ -230,6 +223,15 @@ Fast Results</span>
 Nationwide Clinics</span>
             </div>
           </div>
+        </div>
+      </div>
+      
+      {/* Text Banner */}
+      <div className="relative z-10 w-full py-8 bg-[#081129]">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white text-center leading-tight">
+            Your <span className="text-[#22c0d4]">health</span>. Your <span className="text-[#fc0173]">choice</span>. One trusted platform.
+          </h2>
         </div>
       </div>
     </section>;
