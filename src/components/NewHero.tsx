@@ -107,12 +107,21 @@ const NewHero = () => {
           <div className="w-full text-center px-4">
             {/* Full Logo with alternating images */}
             <div className="mb-8 relative">
+              {/* Main Headline - positioned behind images */}
+              <div className="absolute inset-0 z-0 bg-white rounded-2xl p-6 mx-4 md:mx-0 top-1/2 transform -translate-y-1/2">
+                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#22c0d4] leading-tight drop-shadow-lg shadow-lg">
+                  Compare the UK's leading private health test providers
+                  <span className="block text-[#fc0173] mt-2 my-[18px] py-[10px]">All in one place!</span>
+                </h1>
+              </div>
+              
+              {/* Hero images on top */}
               {heroImages.map((imageSrc, index) => (
                 <LazyImage 
                   key={imageSrc}
                   src={imageSrc} 
                   alt="myhealth checkup - Your health is your greatest asset" 
-                  className={`hero-logo mx-auto w-full h-full object-cover absolute inset-0 transition-opacity duration-2000 ease-in-out ${
+                  className={`hero-logo mx-auto w-full h-full object-cover absolute inset-0 z-10 transition-opacity duration-2000 ease-in-out ${
                     index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                   }`}
                   style={{ 
@@ -127,14 +136,6 @@ const NewHero = () => {
               ))}
               {/* Placeholder div to maintain height */}
               <div className="w-full" style={{ aspectRatio: '1200/675' }}></div>
-            </div>
-            
-            {/* Main Headline */}
-            <div className="mb-8 bg-white rounded-2xl p-6 mx-4 md:mx-0">
-              <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#22c0d4] leading-tight drop-shadow-lg shadow-lg">
-                Compare the UK's leading private health test providers
-                <span className="block text-[#fc0173] mt-2 my-[18px] py-[10px]">All in one place!</span>
-              </h1>
             </div>
             
 
