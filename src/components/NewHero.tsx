@@ -195,21 +195,21 @@ const NewHero = () => {
 
           {/* Stats Grid */}
           <div className="flex flex-wrap justify-center gap-4 mx-4 md:mx-0 shadow-2xl">
-            <div className="bg-[#081129] backdrop-blur rounded-lg py-3 px-3 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] text-center">
-              <div className="text-2xl font-bold text-[#ffffff] mb-1">7</div>
-              <div className="text-[#ffffff] text-sm">Trusted Providers</div>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="text-2xl font-bold text-[#ffffff] shrink-0">7</div>
+              <span className="text-center font-medium text-sm text-[#ffffff]">Trusted Providers</span>
             </div>
-            <div className="bg-[#081129] backdrop-blur rounded-lg py-3 px-3 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] text-center">
-              <div className="text-2xl font-bold text-[#ffffff] mb-1">300+</div>
-              <div className="text-[#ffffff] text-sm">Available Tests</div>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="text-2xl font-bold text-[#ffffff] shrink-0">300+</div>
+              <span className="text-sm font-medium text-center text-[#ffffff]">Available Tests</span>
             </div>
-            <div className="bg-[#081129] backdrop-blur rounded-lg py-3 px-3 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] text-center">
-              <div className="text-2xl font-bold text-[#ffffff] mb-1">3-5 Days</div>
-              <div className="text-[#ffffff] text-sm">Fast Results</div>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="text-2xl font-bold text-[#ffffff] shrink-0">3-5 Days</div>
+              <span className="text-sm font-medium text-center text-[#ffffff]">Fast Results</span>
             </div>
-            <div className="bg-[#081129] backdrop-blur rounded-lg py-3 px-3 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] text-center">
-              <div className="text-2xl font-bold text-[#ffffff] mb-1">50,000+</div>
-              <div className="text-[#ffffff] text-sm">Tests Completed</div>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="text-2xl font-bold text-[#ffffff] shrink-0">50,000+</div>
+              <span className="text-sm font-medium text-center text-[#ffffff]">Tests Completed</span>
             </div>
           </div>
         </div>
