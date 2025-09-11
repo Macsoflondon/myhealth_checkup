@@ -195,21 +195,21 @@ const NewHero = () => {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto shadow-2xl">
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#ffffff] mb-2">7</div>
-              <div className="text-[#ffffff]">Trusted Providers</div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-[#081129] mb-2">7</div>
+              <div className="text-[#081129]">Trusted Providers</div>
             </div>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#ffffff] mb-2">300+</div>
-              <div className="text-[#ffffff]">Available Tests</div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-[#081129] mb-2">300+</div>
+              <div className="text-[#081129]">Available Tests</div>
             </div>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#ffffff] mb-2">3-5 Days</div>
-              <div className="text-[#ffffff]">Fast Results</div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-[#081129] mb-2">3-5 Days</div>
+              <div className="text-[#081129]">Fast Results</div>
             </div>
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-[#ffffff] mb-2">50,000+</div>
-              <div className="text-[#ffffff]">Tests Completed</div>
+            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-3xl font-bold text-[#081129] mb-2">50,000+</div>
+              <div className="text-[#081129]">Tests Completed</div>
             </div>
           </div>
         </div>
