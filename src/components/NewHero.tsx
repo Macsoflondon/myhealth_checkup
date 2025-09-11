@@ -97,29 +97,32 @@ const NewHero = () => {
           <div className="mb-8 bg-white rounded-2xl p-6 mx-4 md:mx-0">
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#22c0d4] leading-tight drop-shadow-lg shadow-lg">
               Compare the UK's leading private health test providers
-              <span className="block text-[#fc0173] mt-2">All in one place!</span>
+              <span className="block text-[#fc0173] mt-2 my-[18px] py-[10px]">All in one place!</span>
             </h1>
           </div>
           
           
 
           {/* Trust Indicators */}
-          <div className="flex justify-center gap-4 mb-12 max-w-6xl mx-auto px-4">
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
+          <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-center font-medium text-sm text-gray-800">No GP Referral Needed</span>
+              <span className="text-center font-medium text-white text-base">No GP Referral Needed</span>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
+            <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <Shield className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-sm font-medium text-center text-gray-800">UKAS-Accredited Laboratories</span>
+              <span className="font-medium text-center text-white text-base">UKAS-Accredited Laboratories</span>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
+            <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-sm font-medium text-center text-gray-800">At-Home Test or In-Clinic Blood Draw</span>
+              <span className="font-medium text-center text-white text-base">At-Home Test 
+or In-Clinic 
+Blood Draw</span>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
+            <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-sm font-medium text-center text-gray-800">Fast & accurate results you can trust</span>
+              <span className="font-medium text-center text-white text-base">Fast & Accurate Test Results 
+You Can Trust</span>
             </div>
           </div>
 
@@ -194,18 +197,26 @@ const NewHero = () => {
           </div>
 
           {/* Stats Grid */}
-          <div className="flex flex-wrap justify-center gap-6 mb-12 max-w-4xl mx-auto px-4">
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
-              <span className="text-center font-medium text-gray-800 text-base">7<br />Trusted Providers</span>
+          <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
+              
+              <span className="text-center font-medium text-[#ffffff] text-base">7
+Trusted Providers</span>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
-              <span className="font-medium text-center text-gray-800 text-base">300+<br />Available Tests</span>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              
+              <span className="font-medium text-center text-[#ffffff] text-base">300+
+Available Tests</span>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
-              <span className="font-medium text-center text-gray-800 text-base">3-5 Days<br />Fast Results</span>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              
+              <span className="font-medium text-center text-[#ffffff] text-base">3-5 Days
+Fast Results</span>
             </div>
-            <div className="bg-white rounded-lg p-6 shadow-xl drop-shadow-2xl hover:shadow-2xl hover:drop-shadow-3xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 border border-gray-100">
-              <span className="text-gray-800 text-base font-medium text-center">150+<br />Nationwide Clinics</span>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              
+              <span className="text-[#ffffff] text-base font-medium text-center">150 +
+Nationwide Clinics</span>
             </div>
           </div>
         </div>
