@@ -7,7 +7,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import { LazyImage } from "@/components/LazyImage";
 const NewHero = () => {
-  const { t } = useTranslation();
+  const {
+    t
+  } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResults, setAiResults] = useState<any>(null);
@@ -48,13 +50,11 @@ const NewHero = () => {
       setIsAnalyzing(false);
     }
   }, [searchTerm, navigate, toast]);
-
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
   }, [handleSearch]);
-
   const popularSearches = useMemo(() => [{
     name: "Thyroid Function Tests",
     category: "hormones"
@@ -86,18 +86,11 @@ const NewHero = () => {
         <div className="wave-pattern h-full w-full"></div>
       </div>
       
-      <div className="relative z-10 w-full py-16 bg-[#081129]">
+      <div className="relative z-10 w-full py-16 bg-slate-50">
         <div className="max-w-6xl mx-auto text-center px-4">
           {/* Full Logo */}
           <div className="mb-8">
-            <LazyImage 
-              src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" 
-              alt="myhealth checkup - Your health is your greatest asset" 
-              className="hero-logo mx-auto w-full max-w-xl md:max-w-2xl transform scale-75" 
-              width={1200} 
-              height={675} 
-              priority={true}
-            />
+            <LazyImage src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto w-full max-w-xl md:max-w-2xl transform scale-75" width={1200} height={675} priority={true} />
           </div>
           
           {/* Main Headline */}
@@ -138,8 +131,10 @@ const NewHero = () => {
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-health-success w-5 h-5" />
                   <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
-                <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]"
-                style={{ backgroundColor: '#22c0d4', color: 'white' }}>
+                <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]" style={{
+                backgroundColor: '#22c0d4',
+                color: 'white'
+              }}>
                   {isAnalyzing ? <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Analyzing...
