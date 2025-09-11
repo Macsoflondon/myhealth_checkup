@@ -194,7 +194,7 @@ const NewHero = () => {
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto shadow-2xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mx-4 md:mx-0 shadow-2xl">
             <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="text-3xl font-bold text-[#ffffff] mb-2">7</div>
               <div className="text-[#ffffff]">Trusted Providers</div>
