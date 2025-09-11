@@ -86,10 +86,10 @@ const NewHero = () => {
         </div>
         
         <div className="relative z-10 w-full py-16 bg-slate-50">
-          <div className="max-w-6xl mx-auto text-center px-4">
+          <div className="w-full text-center px-4">
             {/* Full Logo */}
             <div className="mb-8">
-              <LazyImage src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto w-full max-w-full object-contain" width={1200} height={675} priority={true} />
+              <LazyImage src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto w-full object-contain" width={1200} height={675} priority={true} />
             </div>
             
             {/* Main Headline */}
@@ -231,7 +231,7 @@ Nationwide Clinics</span>
       
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-8 bg-[#081129]">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="w-full px-4">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white text-center leading-tight">
             Your <span className="text-[#22c0d4]">health</span>. Your <span className="text-[#fc0173]">choice</span>. One trusted platform.
           </h2>

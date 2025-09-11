@@ -33,7 +33,7 @@ export const HeroToolbar = () => {
     <div className="bg-white border-b border-gray-200">
       {/* Top bar with logo, search, and user actions */}
       <div className="px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
+        <div className="w-full flex items-center justify-between gap-6">
           {/* Logo and tagline */}
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img src={logo} alt="myhealth checkup Logo" className="h-10 w-10 rounded-lg" />
@@ -92,7 +92,7 @@ export const HeroToolbar = () => {
       {/* Navigation menu */}
       <div className="bg-white border-t border-gray-200">
         <div className="px-4 py-2">
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full">
             <nav className="flex items-center justify-center gap-4 flex-wrap">
               {navigationItems.map((item) => (
                 <Link

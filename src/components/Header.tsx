@@ -52,7 +52,7 @@ const Header = ({ className }: HeaderProps) => {
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar */}
         <div className="px-4 py-3">
-          <div className="flex items-center justify-between gap-6 max-w-7xl mx-auto">
+          <div className="flex items-center justify-between gap-6 w-full">
             {/* Logo and tagline */}
             <div className="flex items-center gap-3 flex-shrink-0">
               <Logo />
@@ -73,7 +73,7 @@ const Header = ({ className }: HeaderProps) => {
 
         {/* Navigation bar */}
         <div className="bg-white border-t border-gray-200 overflow-hidden">
-          <div className="px-2 sm:px-4 py-2 max-w-7xl mx-auto">
+          <div className="px-2 sm:px-4 py-2 w-full">
             <NavigationItems className="flex items-center justify-start sm:justify-center gap-1 sm:gap-2 overflow-x-auto scrollbar-hide pb-1" />
           </div>
         </div>
