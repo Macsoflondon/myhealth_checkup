@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
-import HeroVideoPlayer from "./HeroVideoPlayer";
 import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -89,9 +88,16 @@ const NewHero = () => {
       
       <div className="relative z-10 w-full py-16 bg-[#081129]">
         <div className="max-w-6xl mx-auto text-center px-4">
-          {/* Hero Video */}
+          {/* Full Logo */}
           <div className="mb-8">
-            <HeroVideoPlayer />
+            <LazyImage 
+              src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" 
+              alt="myhealth checkup - Your health is your greatest asset" 
+              className="hero-logo mx-auto w-full max-w-lg md:max-w-2xl" 
+              width={800} 
+              height={450} 
+              priority={true}
+            />
           </div>
           
           {/* Main Headline */}

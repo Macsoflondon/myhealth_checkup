@@ -61,7 +61,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="h-10 px-3">
-            <User className="h-5 w-5 text-health-success" />
+            <User className="h-5 w-5 text-gray-600" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -85,7 +85,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
     <div className="flex items-center gap-3">
       <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
         <Link to="/auth" className="flex items-center gap-2">
-          <User className="h-5 w-5 text-health-success" />
+          <User className="h-5 w-5 text-gray-600" />
         </Link>
       </Button>
     </div>

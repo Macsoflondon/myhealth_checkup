@@ -76,7 +76,7 @@ const MediaSpotlight = () => {
       `}</style>
       
       <section aria-labelledby="press-mentions-title" className="media-spotlight bg-[f#ffffff] bg-[#22c0d4]">
-        <h2 id="press-mentions-title" className="media-spotlight__title py-[10px] font-semibold text-center text-[#22c0d4] my-[10px]">Media Spotlight</h2>
+        <h2 id="press-mentions-title" className="media-spotlight__title py-[10px] text-[#e70d69] font-semibold text-center">Media Spotlight</h2>
         <div role="region" aria-label="Press mentions carousel" className="marquee bg-[#081129]">
           <div className="marquee__track bg-[#081129]">
             {/* Interleaved Medicheck & Goodbody logos */}
@@ -98,8 +98,8 @@ const MediaSpotlight = () => {
             <div className="marquee__slide bg-[#081129]">
               <img src="https://cdn.goodbodyclinic.co.uk/wp-content/uploads/2023/01/2-2.png" alt="Goodbody Clinic logo 3" />
             </div>
-            <div className="marquee__slide bg-[#cbbb99] independent-logo">
-              <img src="https://www.medichecks.com/cdn/shop/files/Inews-2025_768x768.png?v=1741001682" alt="The Independent logo" style={{height: 'calc(var(--slide-height) * 1.5)'}} />
+            <div className="marquee__slide bg-[#cbbb99]">
+              <img src="https://www.medichecks.com/cdn/shop/files/Inews-2025_768x768.png?v=1741001682" alt="iNews logo" />
             </div>
             <div className="marquee__slide bg-[#081129]">
               <img src="https://cdn.goodbodyclinic.co.uk/wp-content/uploads/2023/01/4-2.png" alt="Goodbody Clinic logo 4" />

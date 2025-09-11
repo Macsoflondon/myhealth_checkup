@@ -116,7 +116,7 @@ const TestCategories = (): JSX.Element => {
   return <section className="bg-[#081129] py-[20px] my-0">
       <div className="container mx-auto px-4 bg-[#081129]">
         <div className="text-center mb-12 bg-[#081129]">
-          <h2 className="font-semibold mb-4 text-4xl text-[#22c0d4] py-0 my-[30px]">Test Categories</h2>
+          <h2 className="font-bold mb-4 text-4xl my-[20px] text-[#22c0d4]">Test Categories</h2>
           <p className="text-xl max-w-3xl mx-auto text-[#e70d69] font-normal">
             Explore our comprehensive range of health tests, carefully curated from the UK's most trusted providers.
           </p>
@@ -130,11 +130,7 @@ const TestCategories = (): JSX.Element => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" asChild style={{
-          backgroundColor: '#e70d69',
-          color: 'white',
-          borderColor: '#e70d69'
-        }}>
+          <Button variant="outline" size="lg" asChild style={{ backgroundColor: '#e70d69', color: 'white', borderColor: '#e70d69' }}>
             <Link to="/compare">
               View All Tests
               <ArrowRight className="ml-2 h-4 w-4" />

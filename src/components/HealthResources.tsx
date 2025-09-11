@@ -21,7 +21,7 @@ const HealthResources = () => {
   return <section className="py-16 bg-[#1a1b34]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-[#e70d69] text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-[#e70d69] text-center">
             Health Resources Hub
           </h2>
           

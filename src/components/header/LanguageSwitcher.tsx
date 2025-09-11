@@ -43,7 +43,7 @@ export const LanguageSwitcher = () => {
           className="h-10 px-3 gap-2"
           aria-label={t('language.selectLanguage')}
         >
-          <Globe className="h-4 w-4 text-health-success" />
+          <Globe className="h-4 w-4" />
           <span className="hidden sm:inline text-sm">{currentLanguage.flag}</span>
           <ChevronDown className="h-4 w-4" />
         </Button>

@@ -37,12 +37,8 @@ const Header = ({ className }: HeaderProps) => {
             
             {/* Right side controls */}
             <div className="flex items-center gap-2">
-              <div className="bg-button-highlight rounded-md">
-                <LanguageSwitcher />
-              </div>
-              <div className="bg-button-highlight rounded-md">
-                <UserMenu isMobile />
-              </div>
+              <LanguageSwitcher />
+              <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             </div>
           </div>
@@ -69,12 +65,8 @@ const Header = ({ className }: HeaderProps) => {
             
             {/* User Menu and Language Switcher */}
             <div className="flex items-center gap-2 flex-shrink-0">
-              <div className="bg-button-highlight rounded-md">
-                <LanguageSwitcher />
-              </div>
-              <div className="bg-button-highlight rounded-md">
-                <UserMenu />
-              </div>
+              <LanguageSwitcher />
+              <UserMenu />
             </div>
           </div>
         </div>

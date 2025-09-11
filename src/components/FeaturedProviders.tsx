@@ -73,7 +73,7 @@ const FeaturedProviders = () => {
   return <section className="py-16 bg-[hsl(var(--section-dark))]" id="providers">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-[#22c0d4] text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#22c0d4] text-center">
             Trusted UK Providers
           </h2>
           <p className="text-xl max-w-3xl mx-auto text-[#e70d69] font-normal text-center">
