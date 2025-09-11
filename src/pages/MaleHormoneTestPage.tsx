@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, Heart, Clock, Shield, CheckCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 const MaleHormoneTestPage = () => {
+  const navigate = useNavigate();
   const providers = [
     {
       name: "Randox Health",
@@ -50,6 +51,16 @@ const MaleHormoneTestPage = () => {
           <span className="text-muted-foreground">/</span>
           <span className="text-foreground">Male Hormone Test</span>
         </nav>
+
+        {/* Back Button */}
+        <Button 
+          variant="ghost" 
+          onClick={() => navigate(-1)} 
+          className="mb-6 -ml-4"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back
+        </Button>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
