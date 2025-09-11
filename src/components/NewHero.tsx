@@ -56,23 +56,23 @@ const NewHero = () => {
     }
   }, [handleSearch]);
   const popularSearches = useMemo(() => [{
-    name: "Thyroid Function Tests",
-    category: "hormones"
+    name: "General Health Test",
+    category: "general-health"
   }, {
-    name: "Hormone Health Screen",
+    name: "Male Hormone Test",
     category: "hormones"
   }, {
     name: "Vitamin D Blood Test",
     category: "vitamins"
   }, {
-    name: "Full Blood Count (FBC)",
+    name: "Iron Profile Test",
     category: "blood-tests"
   }, {
-    name: "Cholesterol Profile",
+    name: "Lipid Profile",
     category: "heart-health"
   }, {
-    name: "Diabetes Screening",
-    category: "diabetes"
+    name: "Well Woman Blood Test",
+    category: "womens-health"
   }], []);
   return <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white flex items-center" style={{
     backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
