@@ -3,10 +3,10 @@ const HowItWorks = () => {
   return <section className="bg-white">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-semibold mb-4 heading text-[#9a23af] my-0 py-[10px]">
+          <h2 className="text-4xl font-semibold mb-4 heading my-0 py-[10px] text-[#22c0d4]">
             How It Works
           </h2>
-          <p className="max-w-2xl mx-auto text-[#9a23af] text-center font-bold text-base">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
+          <p className="max-w-2xl mx-auto text-center font-bold text-[s] text-[#e70d69]">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
         </div>
 
         <div className="grid md:grid-cols-4 gap-8">
@@ -39,8 +39,8 @@ const HowItWorks = () => {
                   <span className="text-white font-bold text-sm">{item.step}</span>
                 </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2 heading text-[#9a23af]">{item.title}</h3>
-              <p className="text-[#9a23af]">{item.description}</p>
+              <h3 className="text-xl font-semibold mb-2 heading text-[#22c0d4]">{item.title}</h3>
+              <p className="text-[#e70d69] font-medium">{item.description}</p>
             </div>)}
         </div>
       </div>
