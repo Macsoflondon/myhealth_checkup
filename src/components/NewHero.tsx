@@ -104,7 +104,7 @@ const NewHero = () => {
           
 
           {/* Trust Indicators */}
-          <div className="flex justify-center gap-4 mb-12 max-w-6xl mx-auto px-4">
+          <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
             <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="text-center font-medium text-white text-base">No GP Referral Needed</span>
@@ -116,8 +116,7 @@ const NewHero = () => {
             <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
               <span className="font-medium text-center text-white text-base">At-Home Test 
-or In-Clinic 
-Blood Draw</span>
+ or In-Clinic Blood Draw</span>
             </div>
             <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
               <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
