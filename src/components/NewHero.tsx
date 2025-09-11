@@ -199,22 +199,22 @@ const NewHero = () => {
           </div>
 
           {/* Stats Grid */}
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-health-success mb-2">7</div>
-              <div className="text-health-success/80">Trusted Providers</div>
+              <div className="text-3xl font-bold text-[#ffffff] mb-2">7</div>
+              <div className="text-[#ffffff]">Trusted Providers</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-health-success mb-2">300+</div>
-              <div className="text-health-success/80">Available Tests</div>
+              <div className="text-3xl font-bold text-[#ffffff] mb-2">300+</div>
+              <div className="text-[#ffffff]">Available Tests</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-health-success mb-2">3-5 Days</div>
-              <div className="text-health-success/80">Fast Results</div>
+              <div className="text-3xl font-bold text-[#ffffff] mb-2">3-5 Days</div>
+              <div className="text-[#ffffff]">Fast Results</div>
             </div>
             <div className="bg-white/10 backdrop-blur rounded-lg p-6">
-              <div className="text-3xl font-bold text-health-success mb-2">50,000+</div>
-              <div className="text-health-success/80">Tests Completed</div>
+              <div className="text-3xl font-bold text-[#ffffff] mb-2">50,000+</div>
+              <div className="text-[#ffffff]">Tests Completed</div>
             </div>
           </div>
         </div>
