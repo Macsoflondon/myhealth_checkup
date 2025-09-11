@@ -90,7 +90,7 @@ const NewHero = () => {
         <div className="max-w-6xl mx-auto text-center px-4">
           {/* Full Logo */}
           <div className="mb-8">
-            <LazyImage src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto w-full" width={1200} height={675} priority={true} />
+            <LazyImage src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto w-full max-w-full object-contain" width={1200} height={675} priority={true} />
           </div>
           
           {/* Main Headline */}
