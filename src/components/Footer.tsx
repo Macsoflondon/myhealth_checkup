@@ -3,7 +3,7 @@ import { Facebook, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import cqcLogo from "../assets/compliance/cqc-logo.png";
 import icoLogo from "../assets/compliance/ico-logo.png";
-const gdprLogo = "/lovable-uploads/31256e34-4019-41ea-9ab6-a4d329e229b1.png";
+const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 const Footer = () => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
