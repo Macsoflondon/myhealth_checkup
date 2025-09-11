@@ -60,8 +60,8 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-10 px-3 text-health-success hover:bg-health-success/10 border border-health-success/20">
-            <User className="h-5 w-5 text-health-success" />
+          <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20">
+            <User className="h-5 w-5 text-[#dc27a0] hover:text-[#22c0d4]" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -83,9 +83,9 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
 
   return (
     <div className="flex items-center gap-3">
-      <Button variant="ghost" size="sm" className="h-10 px-3 text-health-success hover:bg-health-success/10 border border-health-success/20" asChild>
+      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20" asChild>
         <Link to="/auth" className="flex items-center gap-2">
-          <User className="h-5 w-5 text-health-success" />
+          <User className="h-5 w-5 text-[#dc27a0] hover:text-[#22c0d4]" />
         </Link>
       </Button>
     </div>
