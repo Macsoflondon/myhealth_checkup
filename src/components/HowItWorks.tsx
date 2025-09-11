@@ -3,7 +3,7 @@ const HowItWorks = () => {
   return <section className="bg-white">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 heading text-[#9a23af] my-0 py-[10px]">
+          <h2 className="text-4xl font-semibold mb-4 heading text-[#9a23af] my-0 py-[10px]">
             How It Works
           </h2>
           <p className="max-w-2xl mx-auto text-[#9a23af] text-center font-bold text-base">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>

@@ -98,7 +98,7 @@ const MediaSpotlight = () => {
             <div className="marquee__slide bg-[#081129]">
               <img src="https://cdn.goodbodyclinic.co.uk/wp-content/uploads/2023/01/2-2.png" alt="Goodbody Clinic logo 3" />
             </div>
-            <div className="marquee__slide bg-[#cbbb99]">
+            <div className="marquee__slide accent bg-[#cbbb99]" style={{ transform: 'scale(1.5)' }}>
               <img src="https://www.medichecks.com/cdn/shop/files/Inews-2025_768x768.png?v=1741001682" alt="iNews logo" />
             </div>
             <div className="marquee__slide bg-[#081129]">

@@ -40,10 +40,10 @@ export const LanguageSwitcher = () => {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="h-10 px-3 gap-2"
+          className="h-10 px-3 gap-2 text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#22c0d4]/20"
           aria-label={t('language.selectLanguage')}
         >
-          <Globe className="h-4 w-4" />
+          <Globe className="h-4 w-4 text-[#22c0d4]" />
           <span className="hidden sm:inline text-sm">{currentLanguage.flag}</span>
           <ChevronDown className="h-4 w-4" />
         </Button>

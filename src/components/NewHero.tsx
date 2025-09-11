@@ -93,9 +93,9 @@ const NewHero = () => {
             <LazyImage 
               src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" 
               alt="myhealth checkup - Your health is your greatest asset" 
-              className="hero-logo mx-auto w-full max-w-lg md:max-w-2xl" 
-              width={800} 
-              height={450} 
+              className="hero-logo mx-auto w-full max-w-2xl md:max-w-4xl transform scale-150" 
+              width={1200} 
+              height={675} 
               priority={true}
             />
           </div>
@@ -135,7 +135,7 @@ const NewHero = () => {
             <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#22c0d4] w-5 h-5" />
                   <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
                 </div>
                 <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]"

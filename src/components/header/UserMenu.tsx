@@ -60,8 +60,8 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-10 px-3">
-            <User className="h-5 w-5 text-gray-600" />
+          <Button variant="ghost" size="sm" className="h-10 px-3 text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#22c0d4]/20">
+            <User className="h-5 w-5 text-[#22c0d4]" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -83,9 +83,9 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
 
   return (
     <div className="flex items-center gap-3">
-      <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
+      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#22c0d4]/20" asChild>
         <Link to="/auth" className="flex items-center gap-2">
-          <User className="h-5 w-5 text-gray-600" />
+          <User className="h-5 w-5 text-[#22c0d4]" />
         </Link>
       </Button>
     </div>
