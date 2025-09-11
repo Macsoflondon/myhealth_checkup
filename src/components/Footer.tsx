@@ -5,7 +5,9 @@ import cqcLogo from "../assets/compliance/cqc-logo.png";
 import icoLogo from "../assets/compliance/ico-logo.png";
 const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 const Footer = () => {
-  const { t } = useTranslation();
+  const {
+    t
+  } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   // Categories for improved site structure and internal linking
@@ -55,12 +57,16 @@ const Footer = () => {
     link: "/partners"
   }];
   const socialLinks = [{
-    icon: <Facebook size={40} style={{ color: '#1877F2' }} />,
+    icon: <Facebook size={40} style={{
+      color: '#1877F2'
+    }} />,
     name: "Facebook",
     url: "https://www.facebook.com/myhealthcheckupuk"
   }, {
-    icon: <Instagram size={40} style={{ color: '#E4405F' }} />,
-    name: "Instagram",  
+    icon: <Instagram size={40} style={{
+      color: '#E4405F'
+    }} />,
+    name: "Instagram",
     url: "https://www.Instagram.com/myhealthcheckup_uk"
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
@@ -101,7 +107,7 @@ const Footer = () => {
               </div>
               
               <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center p-1 shadow-md">
+                <div className="w-20 h-20 rounded-lg flex items-center justify-center p-1 shadow-md bg-[#081129]">
                   <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-xs font-medium">ICO Registered</span>
