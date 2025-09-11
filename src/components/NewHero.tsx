@@ -104,22 +104,22 @@ const NewHero = () => {
           
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto px-4">
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
-              <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-center font-medium text-xs sm:text-sm">No GP Referral Needed</span>
+          <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-center font-medium text-sm text-[#ffffff]">No GP Referral Needed</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
-              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-xs sm:text-sm font-medium text-center">UKAS-Accredited Laboratories</span>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <Shield className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium text-center text-[#ffffff]">UKAS-Accredited Laboratories</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
-              <MapPin className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-xs sm:text-sm font-medium text-center">At-Home Test or In-Clinic Blood Draw</span>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium text-center text-[#ffffff]">At-Home Test or In-Clinic Blood Draw</span>
             </div>
-            <div className="flex items-center justify-center space-x-2 backdrop-blur rounded-lg py-3 px-3 bg-[#081129]">
-              <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-              <span className="text-xs sm:text-sm font-medium text-center">Fast & accurate results you can trust</span>
+            <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium text-center text-[#ffffff]">Fast & accurate results you can trust</span>
             </div>
           </div>
 
