@@ -5,11 +5,13 @@ import scene2Cafe from "@/assets/video-scenes/scene-2-cafe.jpg";
 import scene3Reception from "@/assets/video-scenes/scene-3-reception.jpg";
 import scene4Consultation from "@/assets/video-scenes/scene-4-consultation.jpg";
 import scene5Exit from "@/assets/video-scenes/scene-5-exit.jpg";
+import logo from "@/assets/full-logo.png";
 
 const HeroVideoPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const [sceneProgress, setSceneProgress] = useState(0);
+  const [showLogo, setShowLogo] = useState(false);
 
   const scenes = [
     {
@@ -39,7 +41,8 @@ const HeroVideoPlayer = () => {
     }
   ];
 
-  const SCENE_DURATION = 4000; // 4 seconds per scene
+  const SCENE_DURATION = 6000; // 6 seconds per scene
+  const LOGO_DURATION = 1500; // 1.5 seconds for logo display
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -47,7 +50,14 @@ const HeroVideoPlayer = () => {
     const progressInterval = setInterval(() => {
       setSceneProgress(prev => {
         if (prev >= 100) {
-          setCurrentSceneIndex(current => (current + 1) % scenes.length);
+          // Show logo before next scene
+          setShowLogo(true);
+          
+          setTimeout(() => {
+            setShowLogo(false);
+            setCurrentSceneIndex(current => (current + 1) % scenes.length);
+          }, LOGO_DURATION);
+          
           return 0;
         }
         return prev + (100 / (SCENE_DURATION / 100));
@@ -59,9 +69,6 @@ const HeroVideoPlayer = () => {
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
-    if (!isPlaying && sceneProgress === 0) {
-      setSceneProgress(0);
-    }
   };
 
   const currentScene = scenes[currentSceneIndex];
@@ -69,6 +76,17 @@ const HeroVideoPlayer = () => {
   return (
     <div className="relative w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl">
       <div className="relative aspect-video bg-gradient-to-br from-health-primary/20 to-health-secondary/20">
+        {/* Logo Overlay */}
+        {showLogo && (
+          <div className="absolute inset-0 bg-white/95 flex items-center justify-center z-20">
+            <img
+              src={logo}
+              alt="Company Logo"
+              className="max-w-xs max-h-32 object-contain animate-fade-in"
+            />
+          </div>
+        )}
+
         <img
           src={currentScene.image}
           alt={currentScene.title}
@@ -90,7 +108,7 @@ const HeroVideoPlayer = () => {
         </div>
 
         {/* Progress Bar */}
-        {isPlaying && (
+        {isPlaying && !showLogo && (
           <div className="absolute top-4 left-4 right-4">
             <div className="w-full bg-white/20 rounded-full h-1">
               <div 
@@ -102,26 +120,30 @@ const HeroVideoPlayer = () => {
         )}
 
         {/* Scene Indicators */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {scenes.map((_, index) => (
-            <div
-              key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSceneIndex ? 'bg-white' : 'bg-white/40'
-              }`}
-            />
-          ))}
-        </div>
+        {!showLogo && (
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {scenes.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentSceneIndex ? 'bg-white' : 'bg-white/40'
+                }`}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Video Text Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-          <h3 className="text-white text-lg font-semibold mb-2 transition-all duration-500">
-            {currentScene.title}
-          </h3>
-          <p className="text-white/90 text-sm transition-all duration-500">
-            {currentScene.subtitle}
-          </p>
-        </div>
+        {!showLogo && (
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+            <h3 className="text-white text-lg font-semibold mb-2 transition-all duration-500">
+              {currentScene.title}
+            </h3>
+            <p className="text-white/90 text-sm transition-all duration-500">
+              {currentScene.subtitle}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
