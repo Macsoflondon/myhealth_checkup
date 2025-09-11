@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,10 +13,28 @@ const NewHero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResults, setAiResults] = useState<any>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
   const {
     toast
   } = useToast();
+
+  // Hero images that will alternate
+  const heroImages = [
+    "/lovable-uploads/1560870d-7c59-44c9-8b9b-f8af89bd98fe.png",
+    "/lovable-uploads/9e47d9a4-3009-4b8b-9a1a-189a28a330f1.png"
+  ];
+
+  // Alternate images every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
   const handleSearch = useCallback(async () => {
     if (!searchTerm.trim()) return;
     setIsAnalyzing(true);
@@ -87,9 +105,23 @@ const NewHero = () => {
         
         <div className="relative z-10 w-full py-16 bg-slate-50">
           <div className="w-full text-center px-4">
-            {/* Full Logo */}
-            <div className="mb-8">
-              <LazyImage src="/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png" alt="myhealth checkup - Your health is your greatest asset" className="hero-logo mx-auto w-full object-contain" width={1200} height={675} priority={true} />
+            {/* Full Logo with alternating images */}
+            <div className="mb-8 relative">
+              {heroImages.map((imageSrc, index) => (
+                <LazyImage 
+                  key={imageSrc}
+                  src={imageSrc} 
+                  alt="myhealth checkup - Your health is your greatest asset" 
+                  className={`hero-logo mx-auto w-full object-contain absolute inset-0 transition-opacity duration-1000 ${
+                    index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  width={1200} 
+                  height={675} 
+                  priority={index === 0} 
+                />
+              ))}
+              {/* Placeholder div to maintain height */}
+              <div className="w-full" style={{ aspectRatio: '1200/675' }}></div>
             </div>
             
             {/* Main Headline */}
