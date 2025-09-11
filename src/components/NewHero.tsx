@@ -21,8 +21,8 @@ const NewHero = () => {
 
   // Hero images that will alternate
   const heroImages = [
-    "/lovable-uploads/1560870d-7c59-44c9-8b9b-f8af89bd98fe.png",
-    "/lovable-uploads/e6cdf593-d229-438f-a4d8-827c86d26ea6.png"
+    "/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png",
+    "/lovable-uploads/a4949588-cff7-48ae-ba93-d0040f1dd838.png"
   ];
 
   // Alternate images every 10 seconds
