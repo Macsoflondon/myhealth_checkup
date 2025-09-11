@@ -18,7 +18,7 @@ export const SearchBar = () => {
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-health-success" />
         <Input type="text" placeholder={t('common.searchPlaceholder')} value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-primary focus:ring-1 focus:ring-primary rounded-r-none" />
       </div>
-      <Button type="submit" size="default" className="text-white px-6 py-3 rounded-l-none border-l-0 h-full bg-[#dc27a0] hover:bg-[#22c0d4]">
+      <Button type="submit" size="default" className="text-white px-6 py-3 rounded-l-none border-l-0 h-full bg-[#e70d69] hover:bg-[#22c0d4]">
         <Search className="h-4 w-4 text-white" />
       </Button>
     </form>;
