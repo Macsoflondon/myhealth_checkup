@@ -76,7 +76,6 @@ const CompareTests = () => {
       setIsLoading(false);
     }
   }, [searchTerm, selectedProviders, selectedCategory, categories, sortOrder]);
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchTests();
@@ -84,11 +83,9 @@ const CompareTests = () => {
 
     return () => clearTimeout(timeoutId);
   }, [fetchTests]);
-
   const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(category);
   }, []);
-
   const handleProviderChange = useCallback((providerId: string) => {
     if (providerId === "all") {
       setSelectedProviders(["all"]);
@@ -96,14 +93,11 @@ const CompareTests = () => {
       setSelectedProviders([providerId]);
     }
   }, []);
-
   const memoizedStats = useMemo(() => ({
     testCount: tests.length,
     providerCount: providers.length
   }), [tests.length]);
-
-  return (
-    <ErrorBoundary>
+  return <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-[hsl(var(--section-dark))]">
       <Helmet>
         <title>Compare Health Tests - myhealth checkup | Live Prices from UK Providers</title>
@@ -114,7 +108,7 @@ const CompareTests = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-health-primary to-health-secondary py-12 md:py-16">
+        <section className="bg-gradient-to-r from-health-primary to-health-secondary py-12 md:py-16 bg-white">
           <div className="container mx-auto max-w-7xl px-4 text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Sparkles className="h-6 w-6 text-white" />
@@ -147,36 +141,19 @@ const CompareTests = () => {
         {/* Filters and Results */}
         <section className="py-8 px-4">
           <div className="container mx-auto max-w-7xl">
-            <CompareFilters 
-              categories={categories}
-              selectedCategory={selectedCategory}
-              selectedProviders={selectedProviders}
-              searchTerm={searchTerm}
-              sortOrder={sortOrder}
-              onCategoryChange={handleCategoryChange}
-              onProviderChange={handleProviderChange}
-              onSearchChange={setSearchTerm}
-              onSortChange={setSortOrder}
-              testCount={tests.length}
-              isLoading={isLoading}
-            />
+            <CompareFilters categories={categories} selectedCategory={selectedCategory} selectedProviders={selectedProviders} searchTerm={searchTerm} sortOrder={sortOrder} onCategoryChange={handleCategoryChange} onProviderChange={handleProviderChange} onSearchChange={setSearchTerm} onSortChange={setSortOrder} testCount={tests.length} isLoading={isLoading} />
 
-            {isLoading ? (
-              <div className="flex items-center justify-center py-16">
+            {isLoading ? <div className="flex items-center justify-center py-16">
                 <div className="text-center">
                   <Loader2 className="h-12 w-12 animate-spin text-health-primary mx-auto mb-4" />
                   <p className="text-muted-foreground text-lg">Finding the best tests for you...</p>
                 </div>
-              </div>
-            ) : (
-              <ModernCompareTable tests={tests} selectedCategory={selectedCategory} />
-            )}
+              </div> : <ModernCompareTable tests={tests} selectedCategory={selectedCategory} />}
           </div>
         </section>
         </main>
         <Footer />
       </div>
-    </ErrorBoundary>
-  );
+    </ErrorBoundary>;
 };
 export default CompareTests;
