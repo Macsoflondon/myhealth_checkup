@@ -202,9 +202,9 @@ const WomensHealthPage = () => {
                               {test.category}
                             </Badge>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
+                          <div className="text-right">
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
+                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                           </div>
                         </div>
                         <CardTitle className="text-lg leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
