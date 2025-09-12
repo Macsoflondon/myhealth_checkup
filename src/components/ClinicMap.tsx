@@ -454,7 +454,7 @@ const ClinicMap: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               {/* UK Map Silhouette */}
               <div className="flex justify-center">
-                <div className="w-48 h-64">
+                <div className="w-72 h-96">
                   <img 
                     src="/lovable-uploads/63f819d4-330d-4332-8896-77c1717548f6.png"
                     alt="UK Map showing nationwide coverage"
