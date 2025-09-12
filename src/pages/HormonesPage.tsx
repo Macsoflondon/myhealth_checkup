@@ -16,7 +16,7 @@ const hormoneTests = [
     price: "£99",
     biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
     suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "male-hormones",
@@ -27,7 +27,7 @@ const hormoneTests = [
     price: "£89",
     biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG", "LH", "FSH", "Prolactin"],
     suitableFor: ["Low energy/libido", "Muscle building", "Weight management", "Fertility concerns"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "testosterone-test",
@@ -38,7 +38,7 @@ const hormoneTests = [
     price: "£45",
     biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG"],
     suitableFor: ["Low energy", "Decreased libido", "Muscle loss", "Mood changes"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "thyroid-hormones",
@@ -49,7 +49,7 @@ const hormoneTests = [
     price: "£69",
     biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO"],
     suitableFor: ["Fatigue", "Weight changes", "Temperature sensitivity", "Hair loss"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "menopause-hormones",
@@ -60,7 +60,7 @@ const hormoneTests = [
     price: "£89",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "fertility-hormones",
@@ -71,7 +71,7 @@ const hormoneTests = [
     price: "£125",
     biomarkers: ["AMH", "FSH", "LH", "Oestradiol", "Testosterone", "Prolactin"],
     suitableFor: ["Family planning", "Fertility assessment", "IVF preparation", "PCOS screening"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "cortisol-stress",
@@ -82,7 +82,7 @@ const hormoneTests = [
     price: "£65",
     biomarkers: ["Morning Cortisol", "DHEA-S", "Cortisol/DHEA Ratio"],
     suitableFor: ["Chronic stress", "Fatigue", "Sleep issues", "Mood disorders"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "insulin-diabetes",
@@ -93,7 +93,7 @@ const hormoneTests = [
     price: "£85",
     biomarkers: ["Fasting Insulin", "HbA1c", "Glucose", "C-Peptide"],
     suitableFor: ["Weight management", "PCOS", "Diabetes risk", "Metabolic syndrome"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   }
 ];
 
