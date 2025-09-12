@@ -446,7 +446,68 @@ const ClinicMap: React.FC = () => {
             Select your chosen clinic when you checkout. Once we've processed your order, 
             we'll let you know how to book your visit.
           </p>
-          
+        </div>
+
+        {/* Nationwide Testing Services Section */}
+        <Card className="max-w-4xl mx-auto mb-8 shadow-lg">
+          <CardContent className="p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              {/* UK Map Silhouette */}
+              <div className="flex justify-center">
+                <div className="w-48 h-64">
+                  <svg 
+                    viewBox="0 0 200 260" 
+                    className="w-full h-full text-health-primary fill-current"
+                  >
+                    {/* UK Map Silhouette */}
+                    <path d="M75 15 Q80 10 85 15 Q90 20 95 15 Q100 10 110 20 Q120 25 125 30 Q130 35 135 40 Q140 45 135 50 Q130 55 125 60 Q120 65 115 70 Q110 75 105 80 Q100 85 95 90 Q90 95 85 100 Q80 105 75 110 Q70 115 65 120 Q60 125 55 130 Q50 135 45 140 Q40 145 35 150 Q30 155 25 160 Q20 165 15 170 Q10 175 15 180 Q20 185 25 190 Q30 195 35 200 Q40 205 45 210 Q50 215 55 220 Q60 225 65 230 Q70 235 75 240 Q80 245 85 240 Q90 235 95 230 Q100 225 105 220 Q110 215 115 210 Q120 205 125 200 Q130 195 135 190 Q140 185 145 180 Q150 175 155 170 Q160 165 165 160 Q170 155 175 150 Q180 145 175 140 Q170 135 165 130 Q160 125 155 120 Q150 115 145 110 Q140 105 135 100 Q130 95 125 90 Q120 85 115 80 Q110 75 105 70 Q100 65 95 60 Q90 55 85 50 Q80 45 75 40 Q70 35 65 30 Q60 25 55 20 Q50 15 55 10 Q60 5 65 10 Q70 15 75 15 Z M40 60 Q45 55 50 60 Q55 65 50 70 Q45 75 40 70 Q35 65 40 60 Z M160 80 Q165 75 170 80 Q175 85 170 90 Q165 95 160 90 Q155 85 160 80 Z" 
+                      fill="currentColor" 
+                      opacity="0.8"
+                    />
+                    {/* Add some location dots */}
+                    <circle cx="100" cy="120" r="2" fill="currentColor" />
+                    <circle cx="80" cy="140" r="2" fill="currentColor" />
+                    <circle cx="120" cy="160" r="2" fill="currentColor" />
+                    <circle cx="90" cy="180" r="2" fill="currentColor" />
+                    <circle cx="110" cy="200" r="2" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div>
+                <h3 className="text-2xl font-bold text-health-primary mb-4 uppercase tracking-wide">
+                  Nationwide Testing Services
+                </h3>
+                <p className="text-muted-foreground mb-4 leading-relaxed">
+                  We have a network of healthcare companies that are local to you to provide you with the right test. 
+                  We are confident you will find our service will suit your needs.
+                </p>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  If you have any questions feel free to drop us an email and we'll see how we can help.
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button 
+                    variant="outline" 
+                    className="border-health-primary text-health-primary hover:bg-health-primary hover:text-white"
+                  >
+                    Contact Us
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Interactive Clinic Finder */}
+        <div className="text-center mb-8">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8">
