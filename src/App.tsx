@@ -46,6 +46,7 @@ import ConditionsPage from "./pages/ConditionsPage";
 import SportsPerformancePage from "./pages/SportsPerformancePage";
 import ThyroidPage from "./pages/ThyroidPage";
 import HormonesPage from "./pages/HormonesPage";
+import TrustedProvidersPage from "./pages/TrustedProvidersPage";
 
 // Test detail pages
 import GeneralHealthTestPage from "./pages/GeneralHealthTestPage";
@@ -112,6 +113,7 @@ const App = () => (
               <Route path="/mens-health" element={<MensHealthPage />} />
               <Route path="/womens-health" element={<WomensHealthPage />} />
               <Route path="/health-blog" element={<HealthBlogPage />} />
+              <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
               <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
               
               {/* Test detail pages */}

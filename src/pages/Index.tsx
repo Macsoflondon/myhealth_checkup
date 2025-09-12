@@ -12,13 +12,11 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import {
   TestCategories,
-  FeaturedProviders,
   MostPopularTests,
   HealthBenefitsInfographic,
   FounderStory,
   PartnerShowcase,
   ClinicMap,
-  HealthResources,
   HowItWorks,
   MediaSpotlight
 } from "@/components/LazyLoadedComponents";
@@ -108,13 +106,11 @@ const Index = () => {
         <HowItWorks />
         <MediaSpotlight />
         <TestCategories />
-        <FeaturedProviders />
         <MostPopularTests />
         <HealthBenefitsInfographic />
         <FounderStory />
         <PartnerShowcase />
         <ClinicMap />
-        <HealthResources />
         <CallToAction />
         </main>
         

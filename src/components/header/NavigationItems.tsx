@@ -33,9 +33,10 @@ export const primaryNavigationItems = [
 
 // Additional pages for the MORE dropdown
 export const moreNavigationItems = [
+  { name: "Trusted UK Providers", path: "/trusted-providers" },
+  { name: "Health Resources Hub", path: "/health-blog" },
   { name: "Cancer Screening", path: "/tests/cancer" },
   { name: "General Wellness", path: "/wellness" },
-  { name: "Health Resources Hub", path: "/health-blog" },
   { name: "Find a Clinic", path: "/find-clinic" },
   { name: "How It Works", path: "/how-it-works" },
   { name: "About Us", path: "/about" },
