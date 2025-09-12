@@ -366,25 +366,25 @@ const WomensHealthPage = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {healthConcerns.map((concern, index) => <Card key={index} className="border-gray-600 bg-white/10 backdrop-blur-sm shadow-lg shadow-white/20">
+                {healthConcerns.map((concern, index) => <Card key={index} className="border-border bg-white shadow-lg">
                     <CardHeader>
-                      <CardTitle className="text-lg text-white">{concern.name}</CardTitle>
-                      <CardDescription className="text-sm text-gray-300">
+                      <CardTitle className="text-lg text-foreground">{concern.name}</CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground">
                         {concern.description}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h4 className="font-medium text-sm mb-2 text-white">{t('womensHealth.commonSymptoms')}</h4>
+                        <h4 className="font-medium text-sm mb-2 text-foreground">{t('womensHealth.commonSymptoms')}</h4>
                         <div className="flex flex-wrap gap-1">
-                          {concern.symptoms.map((symptom, idx) => <Badge key={idx} variant="outline" className="text-xs bg-white/20 text-white border-white/30">
+                          {concern.symptoms.map((symptom, idx) => <Badge key={idx} variant="outline" className="text-xs">
                               {symptom}
                             </Badge>)}
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-medium text-sm mb-2 text-white">{t('womensHealth.recommendedTest')}</h4>
-                        <p className="text-sm text-pink-300 font-medium">{concern.recommendedTest}</p>
+                        <h4 className="font-medium text-sm mb-2 text-foreground">{t('womensHealth.recommendedTest')}</h4>
+                        <p className="text-sm text-[#e70d69] font-medium">{concern.recommendedTest}</p>
                       </div>
                     </CardContent>
                   </Card>)}
