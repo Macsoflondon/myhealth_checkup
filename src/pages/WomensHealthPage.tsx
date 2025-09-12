@@ -6,159 +6,100 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Shield, Activity, Users, Baby, Flower2, Stethoscope, Target, Moon } from 'lucide-react';
-
-const womensHealthTests = [
-  {
-    id: "premium-complete-blood-women",
-    name: "Premium Complete Blood Test",
-    description: "Comprehensive health analysis including full blood count, organ function, vitamins, and cardiovascular markers",
-    icon: Stethoscope,
-    category: "vitamins",
-    price: "£199",
-    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "Diabetes Markers", "Vitamins", "Iron Studies"],
-    suitableFor: ["Complete health overview", "Annual health check", "Health optimization", "Preventive screening"],
-    turnaround: "2-3 days"
-  },
-  {
-    id: "advanced-well-woman",
-    name: "Advanced Well Woman Test",
-    description: "Comprehensive women's health screening including hormones, reproductive health, and cardiovascular markers",
-    icon: Shield,
-    category: "Women's Wellness",
-    price: "£149",
-    biomarkers: ["Female Hormones", "Thyroid Function", "Cholesterol Panel", "Blood Sugar", "Liver Function", "Iron Studies"],
-    suitableFor: ["Women 30+", "Routine health screening", "Hormone assessment", "Reproductive health"],
-    turnaround: "48-72 hours"
-  },
-  {
-    id: "menopause-blood-test",
-    name: "Menopause Blood Test",
-    description: "Specialized testing to assess menopausal status and hormone levels during perimenopause and menopause",
-    icon: Moon,
-    category: "Menopause Health",
-    price: "£89",
-    biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG", "Thyroid Function"],
-    suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes", "Women 45+"],
-    turnaround: "48 hours"
-  },
-  {
-    id: "female-hormones",
-    name: "Female Hormones Blood Test",
-    description: "Comprehensive hormone panel including reproductive hormones and cycle regulation markers",
-    icon: Flower2,
-    category: "Hormone Health",
-    price: "£99",
-    biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
-    suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
-    turnaround: "24-48 hours"
-  },
-  {
-    id: "amh-fertility",
-    name: "AMH Fertility Blood Test", 
-    description: "Anti-Müllerian Hormone testing to assess ovarian reserve and fertility potential",
-    icon: Baby,
-    category: "Fertility Health",
-    price: "£69",
-    biomarkers: ["AMH", "FSH", "LH", "Oestradiol"],
-    suitableFor: ["Family planning", "Fertility assessment", "IVF preparation", "Egg freezing consideration"],
-    turnaround: "3-5 days"
-  },
-  {
-    id: "pregnancy-blood-test",
-    name: "Pregnancy Blood Test",
-    description: "Accurate pregnancy testing and early pregnancy health monitoring including key nutrients",
-    icon: Heart,
-    category: "Pregnancy Health",
-    price: "£55",
-    biomarkers: ["hCG", "Progesterone", "Thyroid Function", "Iron Studies", "Vitamin D", "Folate"],
-    suitableFor: ["Pregnancy confirmation", "Early pregnancy monitoring", "Nutritional assessment", "Prenatal health"],
-    turnaround: "24 hours"
-  },
-  {
-    id: "pcos-blood-test",
-    name: "PCOS Blood Test",
-    description: "Specialized testing for Polycystic Ovary Syndrome including hormones and metabolic markers",
-    icon: Target,
-    category: "PCOS Health",
-    price: "£125",
-    biomarkers: ["Testosterone", "SHBG", "LH", "FSH", "Insulin", "HbA1c", "Lipid Profile"],
-    suitableFor: ["Irregular periods", "Weight gain", "Acne", "Hair loss", "Fertility issues"],
-    turnaround: "48 hours"
-  }
-];
-
-const healthConcerns = [
-  {
-    name: "Irregular Periods",
-    description: "Menstrual cycle irregularities and hormonal imbalances",
-    symptoms: ["Missed periods", "Heavy bleeding", "Painful periods", "Unpredictable cycles"],
-    recommendedTest: "Female Hormones Blood Test"
-  },
-  {
-    name: "Menopause Symptoms",
-    description: "Perimenopause and menopause transition symptoms",
-    symptoms: ["Hot flashes", "Night sweats", "Mood changes", "Sleep disturbances"],
-    recommendedTest: "Menopause Blood Test"
-  },
-  {
-    name: "PCOS Symptoms",
-    description: "Polycystic Ovary Syndrome related concerns",
-    symptoms: ["Weight gain", "Acne", "Hair loss", "Irregular periods"],
-    recommendedTest: "PCOS Blood Test"
-  },
-  {
-    name: "Fertility Planning",
-    description: "Family planning and reproductive health assessment",
-    symptoms: ["Planning pregnancy", "Fertility concerns", "Egg freezing", "IVF preparation"],
-    recommendedTest: "AMH Fertility Blood Test"
-  }
-];
-
-const getCategoryColor = (category: string) => {
-  const colorMap: { [key: string]: string } = {
-    "Complete Health": "bg-red-500 text-white", // Red like Blood Tests
-    "Women's Wellness": "bg-pink-500 text-white", // Pink like Hormone Tests  
-    "Menopause Health": "bg-purple-600 text-white", // Purple for menopause
-    "Hormone Health": "bg-pink-600 text-white", // Magenta like Hormone Tests
-    "Fertility Health": "bg-green-500 text-white", // Green like Thyroid Tests
-    "Pregnancy Health": "bg-rose-400 text-white", // Light pink for pregnancy
-    "PCOS Health": "bg-orange-500 text-white", // Orange like Diabetes Testing
-    "vitamins": "bg-green-500 text-white" // Same green as Fertility Health
-  };
-  return colorMap[category] || "bg-gray-500 text-white";
-};
-
-const getCategoryBorderColor = (category: string) => {
-  const borderColorMap: { [key: string]: string } = {
-    "Complete Health": "border-red-500", // Red like Blood Tests
-    "Women's Wellness": "border-pink-500", // Pink like Hormone Tests  
-    "Menopause Health": "border-purple-600", // Purple for menopause
-    "Hormone Health": "border-pink-600", // Magenta like Hormone Tests
-    "Fertility Health": "border-green-500", // Green like Thyroid Tests
-    "Pregnancy Health": "border-rose-400", // Light pink for pregnancy
-    "PCOS Health": "border-orange-500", // Orange like Diabetes Testing
-    "vitamins": "border-green-500" // Same green as Fertility Health
-  };
-  return borderColorMap[category] || "border-gray-500";
-};
-
-const getCategoryButtonColor = (category: string) => {
-  const buttonColorMap: { [key: string]: string } = {
-    "Complete Health": "bg-red-500 hover:bg-red-600", // Red like Blood Tests
-    "Women's Wellness": "bg-pink-500 hover:bg-pink-600", // Pink like Hormone Tests  
-    "Menopause Health": "bg-purple-600 hover:bg-purple-700", // Purple for menopause
-    "Hormone Health": "bg-pink-600 hover:bg-pink-700", // Magenta like Hormone Tests
-    "Fertility Health": "bg-green-500 hover:bg-green-600", // Green like Thyroid Tests
-    "Pregnancy Health": "bg-rose-400 hover:bg-rose-500", // Light pink for pregnancy
-    "PCOS Health": "bg-orange-500 hover:bg-orange-600", // Orange like Diabetes Testing
-    "vitamins": "bg-green-500 hover:bg-green-600" // Same green as Fertility Health
-  };
-  return buttonColorMap[category] || "bg-gray-500 hover:bg-gray-600";
-};
-
+const womensHealthTests = [{
+  id: "premium-complete-blood-women",
+  name: "Premium Complete Blood Test",
+  description: "Comprehensive health analysis including full blood count, organ function, vitamins, and cardiovascular markers",
+  icon: Stethoscope,
+  category: "Complete Health",
+  price: "£199",
+  biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "Diabetes Markers", "Vitamins", "Iron Studies"],
+  suitableFor: ["Complete health overview", "Annual health check", "Health optimization", "Preventive screening"],
+  turnaround: "24-48 hours"
+}, {
+  id: "advanced-well-woman",
+  name: "Advanced Well Woman Test",
+  description: "Comprehensive women's health screening including hormones, reproductive health, and cardiovascular markers",
+  icon: Shield,
+  category: "Women's Wellness",
+  price: "£149",
+  biomarkers: ["Female Hormones", "Thyroid Function", "Cholesterol Panel", "Blood Sugar", "Liver Function", "Iron Studies"],
+  suitableFor: ["Women 30+", "Routine health screening", "Hormone assessment", "Reproductive health"],
+  turnaround: "24-48 hours"
+}, {
+  id: "menopause-blood-test",
+  name: "Menopause Blood Test",
+  description: "Specialized testing to assess menopausal status and hormone levels during perimenopause and menopause",
+  icon: Moon,
+  category: "Menopause Health",
+  price: "£89",
+  biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG", "Thyroid Function"],
+  suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes", "Women 45+"],
+  turnaround: "24-48 hours"
+}, {
+  id: "female-hormones",
+  name: "Female Hormones Blood Test",
+  description: "Comprehensive hormone panel including reproductive hormones and cycle regulation markers",
+  icon: Flower2,
+  category: "Hormone Health",
+  price: "£99",
+  biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
+  suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
+  turnaround: "24-48 hours"
+}, {
+  id: "amh-fertility",
+  name: "AMH Fertility Blood Test",
+  description: "Anti-Müllerian Hormone testing to assess ovarian reserve and fertility potential",
+  icon: Baby,
+  category: "Fertility Health",
+  price: "£69",
+  biomarkers: ["AMH", "FSH", "LH", "Oestradiol"],
+  suitableFor: ["Family planning", "Fertility assessment", "IVF preparation", "Egg freezing consideration"],
+  turnaround: "24-48 hours"
+}, {
+  id: "pregnancy-blood-test",
+  name: "Pregnancy Blood Test",
+  description: "Accurate pregnancy testing and early pregnancy health monitoring including key nutrients",
+  icon: Heart,
+  category: "Pregnancy Health",
+  price: "£55",
+  biomarkers: ["hCG", "Progesterone", "Thyroid Function", "Iron Studies", "Vitamin D", "Folate"],
+  suitableFor: ["Pregnancy confirmation", "Early pregnancy monitoring", "Nutritional assessment", "Prenatal health"],
+  turnaround: "24-48 hours"
+}, {
+  id: "pcos-blood-test",
+  name: "PCOS Blood Test",
+  description: "Specialized testing for Polycystic Ovary Syndrome including hormones and metabolic markers",
+  icon: Target,
+  category: "PCOS Health",
+  price: "£125",
+  biomarkers: ["Testosterone", "SHBG", "LH", "FSH", "Insulin", "HbA1c", "Lipid Profile"],
+  suitableFor: ["Irregular periods", "Weight gain", "Acne", "Hair loss", "Fertility issues"],
+  turnaround: "24-48 hours"
+}];
+const healthConcerns = [{
+  name: "Irregular Periods",
+  description: "Menstrual cycle irregularities and hormonal imbalances",
+  symptoms: ["Missed periods", "Heavy bleeding", "Painful periods", "Unpredictable cycles"],
+  recommendedTest: "Female Hormones Blood Test"
+}, {
+  name: "Menopause Symptoms",
+  description: "Perimenopause and menopause transition symptoms",
+  symptoms: ["Hot flashes", "Night sweats", "Mood changes", "Sleep disturbances"],
+  recommendedTest: "Menopause Blood Test"
+}, {
+  name: "PCOS Symptoms",
+  description: "Polycystic Ovary Syndrome related concerns",
+  symptoms: ["Weight gain", "Acne", "Hair loss", "Irregular periods"],
+  recommendedTest: "PCOS Blood Test"
+}, {
+  name: "Fertility Planning",
+  description: "Family planning and reproductive health assessment",
+  symptoms: ["Planning pregnancy", "Fertility concerns", "Egg freezing", "IVF preparation"],
+  recommendedTest: "AMH Fertility Blood Test"
+}];
 const WomensHealthPage = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Women's Health Blood Tests | Female Hormone & Fertility Testing | My Health Checkup</title>
         <meta name="description" content="Comprehensive women's health testing including female hormones, menopause, PCOS, fertility AMH, and pregnancy testing from £55." />
@@ -217,69 +158,55 @@ const WomensHealthPage = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {womensHealthTests.map((test) => {
-                  const IconComponent = test.icon;
-                  return (
-                    <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
+                {womensHealthTests.map(test => {
+                const IconComponent = test.icon;
+                return <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
                       <CardHeader className="pb-4">
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-start justify-between mb-4 bg-white">
                           <div className="flex items-center gap-3">
                             <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-5 w-5" />
                             </div>
-                            <Badge className={`text-xs whitespace-nowrap ${getCategoryColor(test.category)}`}>
+                            <Badge variant="secondary" className="text-xs">
                               {test.category}
                             </Badge>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                             <span className="text-2xl font-bold text-health-heading">{test.price}</span>
+                            <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-3 h-12 flex items-start" style={{ color: '#081129' }}>{test.name}</CardTitle>
-                        <CardDescription className="text-sm text-muted-foreground h-16 leading-relaxed">
+                        <CardTitle className="text-lg leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
+                        <CardDescription className="text-sm text-white bg-[#22c0d4]">
                           {test.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0 flex-1 flex flex-col space-y-4">
-                        <div className="flex-1 space-y-4">
-                          <div>
-                            <h4 className="font-medium text-sm mb-2">
-                              Biomarkers Tested: {test.biomarkers.length}
-                              <br />
-                              Key Biomarkers:
-                            </h4>
-                            <div className="flex flex-wrap gap-1 min-h-[2.5rem]">
-                              {test.biomarkers.slice(0, 3).map((biomarker) => (
-                                <Badge key={biomarker} variant="outline" className="text-xs">
-                                  {biomarker}
-                                </Badge>
-                              ))}
-                              {test.biomarkers.length > 3 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{test.biomarkers.length - 3} more
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
-                            <ul className="text-xs text-muted-foreground space-y-1 min-h-[2.5rem]">
-                              {test.suitableFor.slice(0, 2).map((item, index) => (
-                                <li key={index}>• {item}</li>
-                              ))}
-                            </ul>
+                      <CardContent className="pt-0 space-y-4">
+                        <div>
+                          <h4 className="font-medium text-sm mb-2">Key Biomarkers:</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {test.biomarkers.slice(0, 3).map(biomarker => <Badge key={biomarker} variant="outline" className="text-xs">
+                                {biomarker}
+                              </Badge>)}
+                            {test.biomarkers.length > 3 && <Badge variant="outline" className="text-xs">
+                                +{test.biomarkers.length - 3} more
+                              </Badge>}
                           </div>
                         </div>
-                        <div className="mt-auto pt-4">
-                          <Button className={`w-full text-white ${getCategoryButtonColor(test.category)}`}>
-                            Compare Providers
-                          </Button>
+                        <div>
+                          <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
+                          <ul className="text-xs text-muted-foreground space-y-1">
+                            {test.suitableFor.slice(0, 2).map((item, index) => <li key={index}>• {item}</li>)}
+                          </ul>
                         </div>
+                        <Button className="w-full" style={{
+                      backgroundColor: '#22c0d4'
+                    }}>
+                          Compare Providers
+                        </Button>
                       </CardContent>
-                    </Card>
-                  );
-                })}
+                    </Card>;
+              })}
               </div>
             </div>
           </div>
@@ -299,8 +226,7 @@ const WomensHealthPage = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {healthConcerns.map((concern, index) => (
-                  <Card key={index} className="border-border/50">
+                {healthConcerns.map((concern, index) => <Card key={index} className="border-border/50">
                     <CardHeader>
                       <CardTitle className="text-lg">{concern.name}</CardTitle>
                       <CardDescription className="text-sm">
@@ -311,11 +237,9 @@ const WomensHealthPage = () => {
                       <div>
                         <h4 className="font-medium text-sm mb-2">Common Symptoms:</h4>
                         <div className="flex flex-wrap gap-1">
-                          {concern.symptoms.map((symptom, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
+                          {concern.symptoms.map((symptom, idx) => <Badge key={idx} variant="outline" className="text-xs">
                               {symptom}
-                            </Badge>
-                          ))}
+                            </Badge>)}
                         </div>
                       </div>
                       <div>
@@ -323,8 +247,7 @@ const WomensHealthPage = () => {
                         <p className="text-sm text-primary font-medium">{concern.recommendedTest}</p>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
           </div>
@@ -371,8 +294,6 @@ const WomensHealthPage = () => {
         </section>
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default WomensHealthPage;
