@@ -16,7 +16,7 @@ const thyroidTests = [
     price: "£69",
     biomarkers: ["TSH", "Free T3", "Free T4"],
     suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "thyroid-function-antibodies",
@@ -27,7 +27,7 @@ const thyroidTests = [
     price: "£125",
     biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO", "Anti-Thyroglobulin"],
     suitableFor: ["Family history of thyroid disease", "Suspected autoimmune conditions", "Comprehensive screening", "Previous abnormal results"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   }
 ];
 
