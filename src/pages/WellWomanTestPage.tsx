@@ -57,7 +57,7 @@ const WellWomanTestPage = () => {
         <Button 
           variant="ghost" 
           onClick={() => navigate(-1)}
-          className="mb-6 -ml-4"
+          className="mb-6 -ml-4 text-primary hover:text-foreground hover:bg-accent"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
