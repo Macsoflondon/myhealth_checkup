@@ -207,7 +207,7 @@ const WomensHealthPage = () => {
                             <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
+                        <CardTitle className="text-lg leading-tight mb-2" style={{ color: '#081129' }}>{test.name}</CardTitle>
                         <CardDescription className="text-sm text-muted-foreground">
                           {test.description}
                         </CardDescription>
