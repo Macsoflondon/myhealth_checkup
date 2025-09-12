@@ -13,7 +13,7 @@ const womensHealthTests = [
     name: "Premium Complete Blood Test",
     description: "Comprehensive health analysis including full blood count, organ function, vitamins, and cardiovascular markers",
     icon: Stethoscope,
-    category: "Complete Health",
+    category: "vitamins",
     price: "£199",
     biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "Diabetes Markers", "Vitamins", "Iron Studies"],
     suitableFor: ["Complete health overview", "Annual health check", "Health optimization", "Preventive screening"],
