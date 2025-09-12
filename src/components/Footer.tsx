@@ -72,6 +72,39 @@ const Footer = () => {
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+          <div className="text-[t] text-[#e70d69] font-medium">
+            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">{t('footer.categories')}</h3>
+            <ul className="space-y-2" aria-labelledby="footer-services">
+              {serviceSections.map((service, index) => <li key={index}>
+                  <Link to={service.link} className="text-white hover:text-white transition-colors">
+                    {service.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
+
+          <div>
+            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
+            <ul className="space-y-2" aria-labelledby="footer-info">
+              {informationSections.map((info, index) => <li key={index}>
+                  <Link to={info.link} className="text-white hover:text-white transition-colors">
+                    {info.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
+
+          <div>
+            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
+            <ul className="space-y-2" aria-labelledby="footer-company">
+              {companySections.map((company, index) => <li key={index}>
+                  <Link to={company.link} className="text-white hover:text-white transition-colors">
+                    {company.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
+
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <div className="h-8 w-8 flex items-center justify-center">
@@ -113,39 +146,6 @@ const Footer = () => {
                 <span className="text-white text-xs font-medium">ICO Registered</span>
               </div>
             </div>
-          </div>
-
-          <div className="text-[t] text-[#e70d69] font-medium">
-            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">{t('footer.categories')}</h3>
-            <ul className="space-y-2" aria-labelledby="footer-services">
-              {serviceSections.map((service, index) => <li key={index}>
-                  <Link to={service.link} className="text-white hover:text-white transition-colors">
-                    {service.name}
-                  </Link>
-                </li>)}
-            </ul>
-          </div>
-
-          <div>
-            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
-            <ul className="space-y-2" aria-labelledby="footer-info">
-              {informationSections.map((info, index) => <li key={index}>
-                  <Link to={info.link} className="text-white hover:text-white transition-colors">
-                    {info.name}
-                  </Link>
-                </li>)}
-            </ul>
-          </div>
-
-          <div>
-            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
-            <ul className="space-y-2" aria-labelledby="footer-company">
-              {companySections.map((company, index) => <li key={index}>
-                  <Link to={company.link} className="text-white hover:text-white transition-colors">
-                    {company.name}
-                  </Link>
-                </li>)}
-            </ul>
           </div>
         </div>
 
