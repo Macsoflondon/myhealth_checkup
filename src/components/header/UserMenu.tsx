@@ -37,7 +37,6 @@ export const UserMenu = ({
             </button>
           </> : <Link to="/auth" className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors" onClick={onItemClick}>
             <User className="h-5 w-5 rounded" />
-            <span className="text-center text-[#22c0d4] text-base font-bold">{t('common.signIn')}</span>
           </Link>}
       </div>;
   }

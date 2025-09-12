@@ -43,9 +43,7 @@ export const LanguageSwitcher = () => {
           className="h-10 px-3 gap-2 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20"
           aria-label={t('language.selectLanguage')}
         >
-          <Globe className="h-4 w-4 text-[#dc27a0] hover:text-[#22c0d4]" />
-          <span className="hidden sm:inline text-sm">{currentLanguage.flag}</span>
-          <ChevronDown className="h-4 w-4 text-[#dc27a0] hover:text-[#22c0d4]" />
+          <span className="text-lg">🇬🇧</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
