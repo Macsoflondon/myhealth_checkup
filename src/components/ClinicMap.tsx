@@ -452,53 +452,22 @@ const ClinicMap: React.FC = () => {
         <Card className="max-w-4xl mx-auto mb-8 shadow-lg">
           <CardContent className="p-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              {/* UK Map Silhouette */}
+              {/* Map Screenshot */}
               <div className="flex justify-center">
-                <div className="w-72 h-96">
-                  <img 
-                    src="/lovable-uploads/63f819d4-330d-4332-8896-77c1717548f6.png"
-                    alt="UK Map showing nationwide coverage"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-              
-              {/* Nationwide Testing Services Content */}
-              <div className="flex justify-center mt-4">
                 <img 
-                  src="/lovable-uploads/9067fcd0-9a2e-4dc0-bdca-837d9c58d60f.png"
-                  alt="Nationwide Testing Services Information"
-                  className="max-w-full h-auto"
+                  src="/lovable-uploads/678425d7-25f4-4068-a228-185f0f95a85e.png"
+                  alt="Interactive clinic finder map"
+                  className="w-full h-auto rounded-lg border shadow-sm"
                 />
               </div>
 
-              {/* Content */}
-              <div>
-                <h3 className="text-2xl font-bold text-health-primary mb-4 uppercase tracking-wide">
-                  Nationwide Testing Services
-                </h3>
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  We have a network of healthcare companies that are local to you to provide you with the right test. 
-                  We are confident you will find our service will suit your needs.
-                </p>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  If you have any questions feel free to drop us an email and we'll see how we can help.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    variant="outline" 
-                    className="border-health-primary text-health-primary hover:bg-health-primary hover:text-white"
-                  >
-                    Contact Us
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    Learn More
-                  </Button>
-                </div>
+              {/* Nationwide Testing Services */}
+              <div className="flex justify-center">
+                <img 
+                  src="/lovable-uploads/d5c33689-e77e-48df-b215-3c4ea590cab9.png"
+                  alt="Nationwide Testing Services Information"
+                  className="w-full h-auto"
+                />
               </div>
             </div>
           </CardContent>
