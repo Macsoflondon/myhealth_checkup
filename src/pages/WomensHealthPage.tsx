@@ -215,7 +215,9 @@ const WomensHealthPage = () => {
                       <CardContent className="pt-0 space-y-4">
                         <div>
                           <h4 className="font-medium text-sm mb-2">
-                            Biomarkers Tested: {test.biomarkers.length} Key Biomarkers:
+                            Biomarkers Tested: {test.biomarkers.length}
+                            <br />
+                            Key Biomarkers:
                           </h4>
                           <div className="flex flex-wrap gap-1">
                             {test.biomarkers.slice(0, 3).map((biomarker) => (
