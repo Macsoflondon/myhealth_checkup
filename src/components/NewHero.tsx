@@ -89,25 +89,22 @@ const NewHero = () => {
         <div className="w-full py-0">
           <div className="w-full text-center px-2">
             {/* Hero Images Container */}
-            <div className="mb-8 relative w-full mx-auto">
+            <div className="relative w-full mx-auto">
               <div style={{
               aspectRatio: '16/9'
             }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
                 {/* Hero images */}
                 {heroImages.map((imageSrc, index) => <LazyImage key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-2000 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} width={1200} height={675} priority={index === 0} />)}
               </div>
+              {/* Headline Banner at base of image */}
+              <div className="w-full px-4 bg-[#081129] -mt-2">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#22c0d4] text-center leading-tight font-medium my-0 py-[10px] xl:text-4xl">
+                  Compare the UK's leading private health test providers
+                  <span className="block text-[#fc0173] mt-2">All in one place!</span>
+                </h1>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      
-      {/* Full-width Headline Banner */}
-      <section className="w-full py-8 bg-white">
-        <div className="w-full px-4 bg-[#081129]">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#22c0d4] text-center leading-tight font-medium my-0 py-[10px] xl:text-4xl">
-            Compare the UK's leading private health test providers
-            <span className="block text-[#fc0173] mt-2">All in one place!</span>
-          </h1>
         </div>
       </section>
       
