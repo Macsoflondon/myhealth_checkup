@@ -187,7 +187,7 @@ const WomensHealthPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
                 Women's Health Blood Tests
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{ color: '#081129' }}>
                 Comprehensive female health screening including hormones, fertility, menopause, PCOS, 
                 and complete wellness testing designed for women's unique health needs.
               </p>
