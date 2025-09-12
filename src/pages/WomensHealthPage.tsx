@@ -366,7 +366,7 @@ const WomensHealthPage = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {healthConcerns.map((concern, index) => <Card key={index} className="border-border bg-white shadow-lg">
+                {healthConcerns.map((concern, index) => <Card key={index} className="border-border bg-white shadow-md">
                     <CardHeader>
                       <CardTitle className="text-lg text-foreground">{concern.name}</CardTitle>
                       <CardDescription className="text-sm text-muted-foreground">
