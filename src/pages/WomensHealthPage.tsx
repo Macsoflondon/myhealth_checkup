@@ -192,7 +192,7 @@ const WomensHealthPage = () => {
                 {womensHealthTests.map((test) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20 h-full flex flex-col">
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -208,42 +208,46 @@ const WomensHealthPage = () => {
                             <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-2" style={{ color: '#081129' }}>{test.name}</CardTitle>
-                        <CardDescription className="text-sm text-muted-foreground">
+                        <CardTitle className="text-lg leading-tight mb-3 h-12 flex items-start" style={{ color: '#081129' }}>{test.name}</CardTitle>
+                        <CardDescription className="text-sm text-muted-foreground h-16 leading-relaxed">
                           {test.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0 space-y-4">
-                        <div>
-                          <h4 className="font-medium text-sm mb-2">
-                            Biomarkers Tested: {test.biomarkers.length}
-                            <br />
-                            Key Biomarkers:
-                          </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {test.biomarkers.slice(0, 3).map((biomarker) => (
-                              <Badge key={biomarker} variant="outline" className="text-xs">
-                                {biomarker}
-                              </Badge>
-                            ))}
-                            {test.biomarkers.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{test.biomarkers.length - 3} more
-                              </Badge>
-                            )}
+                      <CardContent className="pt-0 flex-1 flex flex-col space-y-4">
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">
+                              Biomarkers Tested: {test.biomarkers.length}
+                              <br />
+                              Key Biomarkers:
+                            </h4>
+                            <div className="flex flex-wrap gap-1 min-h-[2.5rem]">
+                              {test.biomarkers.slice(0, 3).map((biomarker) => (
+                                <Badge key={biomarker} variant="outline" className="text-xs">
+                                  {biomarker}
+                                </Badge>
+                              ))}
+                              {test.biomarkers.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{test.biomarkers.length - 3} more
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
+                            <ul className="text-xs text-muted-foreground space-y-1 min-h-[2.5rem]">
+                              {test.suitableFor.slice(0, 2).map((item, index) => (
+                                <li key={index}>• {item}</li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
-                        <div>
-                          <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
-                          <ul className="text-xs text-muted-foreground space-y-1">
-                            {test.suitableFor.slice(0, 2).map((item, index) => (
-                              <li key={index}>• {item}</li>
-                            ))}
-                          </ul>
+                        <div className="mt-auto pt-4">
+                          <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
+                            Compare Providers
+                          </Button>
                         </div>
-                        <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
-                          Compare Providers
-                        </Button>
                       </CardContent>
                     </Card>
                   );
