@@ -175,7 +175,7 @@ const HormonesPage = () => {
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">Hormone Health</Badge>
+              
               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
                 Hormone Blood Tests
               </h1>
