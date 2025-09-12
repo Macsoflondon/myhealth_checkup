@@ -22,18 +22,37 @@ const categoryColorMap: Record<string, string> = {
   'cancer-screening': 'bg-gray-700 text-white'
 };
 
-// Main navigation structure mirroring Medichecks approach
-export const navigationItems = [
+// Main navigation structure - primary items shown in toolbar
+export const primaryNavigationItems = [
   { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
   { name: "AT-HOME TESTS", path: "/at-home-tests", hasDropdown: false },
   { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
   { name: "HORMONES", path: "/hormones", hasDropdown: true, megaMenu: true },
-  { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true },
-  { name: "CANCER SCREENING", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
-  { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true },
-  { name: "HEALTH RESOURCES HUB", path: "/health-blog", hasDropdown: false }
+  { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true }
 ];
+
+// Additional pages for the MORE dropdown
+export const moreNavigationItems = [
+  { name: "Cancer Screening", path: "/tests/cancer" },
+  { name: "General Wellness", path: "/wellness" },
+  { name: "Health Resources Hub", path: "/health-blog" },
+  { name: "Find a Clinic", path: "/find-clinic" },
+  { name: "How It Works", path: "/how-it-works" },
+  { name: "About Us", path: "/about" },
+  { name: "Contact Us", path: "/contact" },
+  { name: "Partners", path: "/partners" },
+  { name: "Subscriptions", path: "/subscriptions" },
+  { name: "FAQs", path: "/faqs" },
+  { name: "Compare Tests", path: "/compare" },
+  { name: "Assisted Test Finder", path: "/assisted-test-finder" },
+  { name: "Gut Health", path: "/gut-health" },
+  { name: "Heart Health", path: "/heart-health" },
+  { name: "Sports Performance", path: "/sports-performance" },
+  { name: "Vitamin Deficiency", path: "/vitamin-deficiency" }
+];
+
+export const navigationItems = primaryNavigationItems;
 
 interface NavigationItemsProps {
   onItemClick?: () => void;
@@ -99,7 +118,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
 
   return (
     <nav className={`relative ${className}`} aria-label="Main Navigation">
-      {navigationItems.map((item) => (
+      {primaryNavigationItems.map((item) => (
         <div 
           key={item.path}
           className="relative"
@@ -202,6 +221,41 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           )}
         </div>
       ))}
+      
+      {/* MORE Dropdown */}
+      <div 
+        className="relative"
+        onMouseEnter={() => setActiveDropdown("MORE")}
+        onMouseLeave={handleMouseLeave}
+      >
+        <button
+          className="text-sm font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 text-gray-700"
+        >
+          MORE
+          <ChevronDown className="w-3 h-3" />
+        </button>
+        
+        {activeDropdown === "MORE" && (
+          <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50 min-w-[280px]">
+            <div className="p-4">
+              <div className="grid grid-cols-1 gap-1">
+                {moreNavigationItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className="block p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    onClick={onItemClick}
+                  >
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-primary transition-colors">
+                      {item.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </nav>
   );
 };
