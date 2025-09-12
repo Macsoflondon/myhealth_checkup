@@ -6,33 +6,25 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, Heart, Clock, Shield, CheckCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-
 const WellWomanTestPage = () => {
   const navigate = useNavigate();
-  
-  const providers = [
-    {
-      name: "Medichecks",
-      price: 159,
-      url: "https://medichecks.com/products/well-woman-advanced-blood-test",
-      features: ["47 biomarkers", "3-4 day results", "Hormone analysis"]
-    },
-    {
-      name: "Thriva", 
-      price: 149,
-      url: "https://thriva.co/products/womens-health-test",
-      features: ["Female health focus", "App tracking", "Doctor review"]
-    },
-    {
-      name: "London Medical Laboratory",
-      price: 169,
-      url: "https://londonmedicallaboratory.com/product-category/female-health",
-      features: ["Comprehensive panel", "Same day results", "Hormone insights"]
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const providers = [{
+    name: "Medichecks",
+    price: 159,
+    url: "https://medichecks.com/products/well-woman-advanced-blood-test",
+    features: ["47 biomarkers", "3-4 day results", "Hormone analysis"]
+  }, {
+    name: "Thriva",
+    price: 149,
+    url: "https://thriva.co/products/womens-health-test",
+    features: ["Female health focus", "App tracking", "Doctor review"]
+  }, {
+    name: "London Medical Laboratory",
+    price: 169,
+    url: "https://londonmedicallaboratory.com/product-category/female-health",
+    features: ["Comprehensive panel", "Same day results", "Hormone insights"]
+  }];
+  return <div className="min-h-screen bg-background">
       <Helmet>
         <title>Well Woman Blood Test - Compare UK Providers | MyHealth Checkup</title>
         <meta name="description" content="Compare Well Woman Tests from top UK providers. Comprehensive female health screening including hormones, fertility, and general health markers." />
@@ -43,10 +35,7 @@ const WellWomanTestPage = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 mb-6 text-sm">
-          <Link 
-            to="/"
-            className="text-muted-foreground hover:text-foreground"
-          >
+          <Link to="/" className="text-muted-foreground hover:text-foreground">
             Home
           </Link>
           <span className="text-muted-foreground">/</span>
@@ -54,11 +43,7 @@ const WellWomanTestPage = () => {
         </nav>
 
         {/* Back Button */}
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate(-1)}
-          className="mb-6 -ml-4 text-primary hover:text-foreground hover:bg-accent"
-        >
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6 -ml-4 bg-[#22c0d4] text-white">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
@@ -68,7 +53,9 @@ const WellWomanTestPage = () => {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-3xl font-bold" style={{ color: '#081129' }}>Well Woman Blood Test</h1>
+                <h1 className="text-3xl font-bold" style={{
+                color: '#081129'
+              }}>Well Woman Blood Test</h1>
                 <Badge variant="secondary" className="text-sm">
                   Women's Health
                 </Badge>
@@ -168,8 +155,7 @@ const WellWomanTestPage = () => {
                 <CardTitle className="text-center">Compare Providers</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {providers.map((provider, index) => (
-                  <div key={index} className="border rounded-lg p-4 space-y-3">
+                {providers.map((provider, index) => <div key={index} className="border rounded-lg p-4 space-y-3">
                     <div className="flex justify-between items-start">
                       <h4 className="font-semibold">{provider.name}</h4>
                       <div className="text-right">
@@ -178,26 +164,19 @@ const WellWomanTestPage = () => {
                     </div>
                     
                     <div className="space-y-1">
-                      {provider.features.map((feature, fIndex) => (
-                        <div key={fIndex} className="flex items-center gap-2 text-sm">
+                      {provider.features.map((feature, fIndex) => <div key={fIndex} className="flex items-center gap-2 text-sm">
                           <CheckCircle className="w-4 h-4 text-green-600" />
                           <span>{feature}</span>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                     
                     <Button size="sm" className="w-full" asChild>
-                      <a 
-                        href={provider.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
+                      <a href={provider.url} target="_blank" rel="noopener noreferrer">
                         Book with {provider.name}
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
-                  </div>
-                ))}
+                  </div>)}
                 
                 <div className="pt-4 border-t">
                   <Button variant="outline" size="lg" className="w-full" asChild>
@@ -213,8 +192,6 @@ const WellWomanTestPage = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default WellWomanTestPage;
