@@ -35,7 +35,7 @@ export const UserMenu = ({
               <LogOut className="h-5 w-5" />
               <span>Sign Out</span>
             </button>
-          </> : <Link to="/auth" className="flex items-center gap-3 p-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20 rounded-lg transition-colors" onClick={onItemClick}>
+          </> : <Link to="/auth" className="h-10 px-3 flex items-center gap-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20 rounded-md transition-colors" onClick={onItemClick}>
             <User className="h-5 w-5 rounded" />
           </Link>}
       </div>;
