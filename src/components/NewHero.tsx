@@ -99,11 +99,9 @@ const NewHero = () => {
             </div>
           </div>
         </div>
-      </section>
-      
-      {/* Full-width Headline Banner */}
-      <section className="w-full py-8 bg-white">
-        <div className="w-full px-4 bg-[#081129]">
+        
+        {/* Full-width Headline Banner */}
+        <div className="w-full bg-[#081129]">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#22c0d4] text-center leading-tight font-medium my-0 py-[10px] xl:text-4xl">
             Compare the UK's leading private health test providers
             <span className="block text-[#fc0173] mt-2">All in one place!</span>
