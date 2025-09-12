@@ -238,26 +238,26 @@ export class OptimizedLiveCompareService {
 
   private static estimateTurnaround(providerId: string): string {
     const turnarounds: Record<string, string> = {
-      'medichecks': '2-3 days',
-      'thriva': '2-5 days',
-      'randox': '3-5 days',
-      'london-medical-laboratory': '1-3 days',
-      'lola-health': '2-4 days',
-      'goodbody-clinic': '2-3 days',
-      'tuli-health': '3-5 days'
+      'medichecks': '2 working days',
+      'thriva': '2 days (48 hours)',
+      'randox': '2-5 working days',
+      'london-medical-laboratory': '1-3 working days',
+      'lola-health': '2-4 working days',
+      'goodbody-clinic': '2-3 working days',
+      'tuli-health': '3-5 working days'
     };
-    return turnarounds[providerId] || '3-5 days';
+    return turnarounds[providerId] || '3-5 working days';
   }
 
   private static getCollectionMethod(providerId: string): string {
     const methods: Record<string, string> = {
-      'medichecks': 'Home kit or clinic',
-      'thriva': 'Home kit',
-      'randox': 'Clinic visit',
-      'london-medical-laboratory': 'Clinic visit',
-      'lola-health': 'Home kit or clinic',
-      'goodbody-clinic': 'Clinic visit',
-      'tuli-health': 'Home kit'
+      'medichecks': 'Home finger-prick or clinic venous',
+      'thriva': 'Home kit only',
+      'randox': 'Clinic visit only',
+      'london-medical-laboratory': 'Clinic visit only',
+      'lola-health': 'Home kit only',
+      'goodbody-clinic': 'Home kit or pharmacy clinic',
+      'tuli-health': 'Home kit only'
     };
     return methods[providerId] || 'Home kit or clinic';
   }

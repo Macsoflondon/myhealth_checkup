@@ -9,8 +9,8 @@ export const detailedProviders = [
     partnerLabs: "TDL, Eurofins",
     coreServices: "300+ tests: general health, hormones, vitamins, thyroid, longevity",
     tests: "300+ tests available",
-    sampleCollection: "Home kits, clinic visits",
-    turnaroundTime: "2-4 days",
+    sampleCollection: "Home finger-prick kits, clinic venous draw, home nurse visits",
+    turnaroundTime: "2 working days",
     customerReviews: "4.7/5 (Feefo)",
     keyDifferentiators: "Extensive test range, user-friendly platform, GP-reviewed results",
     description: "Offers hundreds of tests/panels with at-home kits or clinic phlebotomy options"
@@ -25,7 +25,7 @@ export const detailedProviders = [
     coreServices: "Health tracking, lifestyle tests, heart, liver, diabetes",
     tests: "Health tracking and lifestyle tests",
     sampleCollection: "Home kits",
-    turnaroundTime: "2-3 days",
+    turnaroundTime: "2 days (48 hours)",
     customerReviews: "4.5/5 (Trustpilot)",
     keyDifferentiators: "Subscription model, personalized health insights, app integration",
     description: "Subscription-based home testing with digital dashboard and GP advice"
@@ -40,8 +40,8 @@ export const detailedProviders = [
     clinics: "CQC-registered clinics",
     coreServices: "Full-body health checks, cancer risk, genetic testing",
     tests: "Full-body health checks and genetic testing",
-    sampleCollection: "Clinics, home kits",
-    turnaroundTime: "2-5 days",
+    sampleCollection: "Clinic visits only",
+    turnaroundTime: "2-5 working days",
     customerReviews: "4.2/5 (Trustpilot)",
     keyDifferentiators: "Comprehensive health packages, global laboratory network",
     description: "Global diagnostics company offering comprehensive health checks"

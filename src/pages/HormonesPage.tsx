@@ -13,10 +13,10 @@ const hormoneTests = [
     description: "Comprehensive female hormone panel including reproductive hormones and cycle regulation markers",
     icon: Flower2,
     category: "Female Hormones",
-    price: "£99",
+    price: "£79",
     biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
     suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   },
   {
     id: "male-hormones",
@@ -24,10 +24,10 @@ const hormoneTests = [
     description: "Comprehensive hormone panel including testosterone, SHBG, and reproductive health markers",
     icon: Zap,
     category: "Male Hormones",
-    price: "£89",
+    price: "£43",
     biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG", "LH", "FSH", "Prolactin"],
     suitableFor: ["Low energy/libido", "Muscle building", "Weight management", "Fertility concerns"],
-    turnaround: "1-2 days"
+    turnaround: "2-5 working days"
   },
   {
     id: "testosterone-test",
@@ -35,21 +35,21 @@ const hormoneTests = [
     description: "Essential testosterone testing to assess male hormone levels and hormonal health",
     icon: Target,
     category: "Male Hormones",
-    price: "£45",
-    biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG"],
+    price: "£29",
+    biomarkers: ["Total Testosterone"],
     suitableFor: ["Low energy", "Decreased libido", "Muscle loss", "Mood changes"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   },
   {
     id: "thyroid-hormones",
-    name: "Thyroid Function Test",
+    name: "Advanced Thyroid Function Test",
     description: "Complete thyroid hormone assessment including TSH, T3, T4, and thyroid antibodies",
     icon: Shield,
     category: "Thyroid Hormones",
-    price: "£69",
+    price: "£89",
     biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO"],
     suitableFor: ["Fatigue", "Weight changes", "Temperature sensitivity", "Hair loss"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   },
   {
     id: "menopause-hormones",
@@ -57,10 +57,10 @@ const hormoneTests = [
     description: "Specialized testing to assess menopausal status and hormone levels during transition",
     icon: Moon,
     category: "Female Hormones",
-    price: "£89",
+    price: "£69",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   },
   {
     id: "fertility-hormones",
@@ -68,10 +68,10 @@ const hormoneTests = [
     description: "Comprehensive fertility assessment including AMH and reproductive hormones",
     icon: Baby,
     category: "Fertility",
-    price: "£125",
+    price: "£79",
     biomarkers: ["AMH", "FSH", "LH", "Oestradiol", "Testosterone", "Prolactin"],
     suitableFor: ["Family planning", "Fertility assessment", "IVF preparation", "PCOS screening"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   },
   {
     id: "cortisol-stress",
@@ -79,10 +79,10 @@ const hormoneTests = [
     description: "Measure stress hormone levels to assess adrenal function and stress impact",
     icon: Activity,
     category: "Stress Hormones",
-    price: "£65",
-    biomarkers: ["Morning Cortisol", "DHEA-S", "Cortisol/DHEA Ratio"],
+    price: "£45",
+    biomarkers: ["Morning Cortisol"],
     suitableFor: ["Chronic stress", "Fatigue", "Sleep issues", "Mood disorders"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   },
   {
     id: "insulin-diabetes",
@@ -90,10 +90,10 @@ const hormoneTests = [
     description: "Comprehensive diabetes and metabolic hormone testing including insulin resistance",
     icon: Heart,
     category: "Metabolic Hormones",
-    price: "£85",
+    price: "£79",
     biomarkers: ["Fasting Insulin", "HbA1c", "Glucose", "C-Peptide"],
     suitableFor: ["Weight management", "PCOS", "Diabetes risk", "Metabolic syndrome"],
-    turnaround: "1-2 days"
+    turnaround: "2 working days"
   }
 ];
 
