@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Activity, Heart, Shield, Zap, Moon, Baby, Target, Flower2 } from "lucide-react";
+import { getCategoryCSSClasses } from "@/data/categoryColors";
 
 const hormoneTests = [
   {
@@ -125,6 +126,23 @@ const hormoneCategories = [
 ];
 
 const HormonesPage = () => {
+  // Helper function to get hormone category colors
+  const getHormoneCategoryColor = (category: string) => {
+    // Map categories to their respective color schemes from categoryColors.ts
+    const categoryMap: { [key: string]: string } = {
+      "Female Hormones": "hormones",
+      "Male Hormones": "hormones", 
+      "Thyroid Hormones": "thyroid",
+      "Menopause": "hormones",
+      "Fertility": "fertility",
+      "Stress Hormones": "hormones",
+      "Metabolic Hormones": "diabetes"
+    };
+    
+    const categoryId = categoryMap[category] || "hormones";
+    const colors = getCategoryCSSClasses(categoryId);
+    return `${colors.primary} ${colors.icon}`;
+  };
   return (
     <>
       <Helmet>
@@ -195,7 +213,7 @@ const HormonesPage = () => {
                             <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-5 w-5" />
                             </div>
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge className={`text-xs ${getHormoneCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>
