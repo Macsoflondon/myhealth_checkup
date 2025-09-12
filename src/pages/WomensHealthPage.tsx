@@ -300,7 +300,7 @@ const WomensHealthPage = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {healthConcerns.map((concern, index) => (
-                  <Card key={index} className="border-gray-600 bg-white/10 backdrop-blur-sm">
+                  <Card key={index} className="border-gray-600 bg-white/10 backdrop-blur-sm shadow-lg shadow-white/20">
                     <CardHeader>
                       <CardTitle className="text-lg text-white">{concern.name}</CardTitle>
                       <CardDescription className="text-sm text-gray-300">
@@ -339,7 +339,7 @@ const WomensHealthPage = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-white/20">
                     <Heart className="h-8 w-8 text-pink-300" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.hormoneBenefitTitle')}</h3>
@@ -348,7 +348,7 @@ const WomensHealthPage = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-white/20">
                     <Baby className="h-8 w-8 text-pink-300" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.fertilityBenefitTitle')}</h3>
@@ -357,7 +357,7 @@ const WomensHealthPage = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-white/20">
                     <Shield className="h-8 w-8 text-pink-300" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.preventiveBenefitTitle')}</h3>
