@@ -24,7 +24,6 @@ const categoryColorMap: Record<string, string> = {
 
 // Main navigation structure mirroring Medichecks approach
 export const navigationItems = [
-  { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true, hasDropdown: true, megaMenu: true },
   { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
   { name: "AT-HOME TESTS", path: "/at-home-tests", hasDropdown: false },
   { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
@@ -56,8 +55,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
   };
 
   const getGoodbodyTestsForDropdown = (itemName: string) => {
-    // For FIND YOUR TEST and MOST POPULAR TESTS, show categories
-    if (itemName === "FIND YOUR TEST" || itemName === "MOST POPULAR TESTS") {
+    // For MOST POPULAR TESTS, show categories
+    if (itemName === "MOST POPULAR TESTS") {
       return null; // Will use categories
     }
     
@@ -93,7 +92,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           ['vitamins', 'general-health', 'heart-health', 'liver-health'].includes(cat.id)
         );
       default:
-        // Show all categories for FIND YOUR TEST and MOST POPULAR TESTS
+        // Show all categories for MOST POPULAR TESTS
         return compareCategories.slice(0, 8); // Limit to prevent overflow
     }
   };
