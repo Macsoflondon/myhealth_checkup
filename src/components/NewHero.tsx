@@ -89,8 +89,8 @@ const NewHero = () => {
         <div className="w-full py-0">
           <div className="w-full text-center px-4">
             {/* Hero Images Container */}
-            <div className="mb-8 relative max-w-none mx-auto px-4">
-              <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-2xl" style={{
+            <div className="mb-8 relative max-w-[1920px] mx-auto px-2">
+              <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-2xl min-h-[600px] lg:min-h-[720px]" style={{
               aspectRatio: '16/9'
             }}>
                 {/* Hero images */}
