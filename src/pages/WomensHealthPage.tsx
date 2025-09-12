@@ -220,6 +220,105 @@ const WomensHealthPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge className="mb-4">{t('womensHealth.badge')}</Badge>
+              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
+                {t('womensHealth.title')}
+              </h1>
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{
+              color: '#081129'
+            }}>
+                {t('womensHealth.subtitle')}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
+                  {t('womensHealth.browseAllTests')}
+                </Button>
+                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                  {t('womensHealth.findClinic')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Available Tests */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-foreground mb-4">
+                  {t('womensHealth.availableTestsTitle')}
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  {t('womensHealth.availableTestsSubtitle')}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {womensHealthTests.map(test => {
+                const IconComponent = test.icon;
+                return <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            
+                            <Badge className={`text-xs whitespace-nowrap ${getCategoryColor(test.category)}`}>
+                              {test.category}
+                            </Badge>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-muted-foreground">{t('womensHealth.resultsIn')} {test.turnaround}</p>
+                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
+                          </div>
+                        </div>
+                        <CardTitle className="text-lg leading-tight mb-3 h-12 flex items-start" style={{
+                      color: '#081129'
+                    }}>{test.name}</CardTitle>
+                        <CardDescription className="text-sm text-muted-foreground h-16 leading-relaxed">
+                          {test.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-0 flex-1 flex flex-col space-y-4">
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">
+                              {t('womensHealth.biomarkersTested')} {test.biomarkers.length}
+                              <br />
+                              {t('womensHealth.keyBiomarkers')}
+                            </h4>
+                            <div className="flex flex-wrap gap-1 min-h-[2.5rem]">
+                              {test.biomarkers.slice(0, 3).map(biomarker => <Badge key={biomarker} variant="outline" className="text-xs">
+                                  {biomarker}
+                                </Badge>)}
+                              {test.biomarkers.length > 3 && <Badge variant="outline" className="text-xs">
+                                  +{test.biomarkers.length - 3} {t('womensHealth.more')}
+                                </Badge>}
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">{t('womensHealth.suitableFor')}</h4>
+                            <ul className="text-xs text-muted-foreground space-y-1 min-h-[2.5rem]">
+                              {test.suitableFor.slice(0, 2).map((item, index) => <li key={index}>• {item}</li>)}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="mt-auto pt-4">
+                          <Button className={`w-full text-white ${getCategoryButtonColor(test.category)}`}>
+                            {t('womensHealth.compareProviders')}
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>;
+              })}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Health Concerns */}
         <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
