@@ -123,8 +123,8 @@ const Footer = () => {
                 </a>)}
             </div>
             
-            {/* Regulatory Body Logos - Evenly Spaced */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-md">
+            {/* Regulatory Body Logos - 2x2 Mobile Layout */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-md">
               <div className="flex flex-col items-center text-center space-y-2">
                 <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-0.5 shadow-md">
                   <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain rounded-lg" />
