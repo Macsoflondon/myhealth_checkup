@@ -195,7 +195,7 @@ const WomensHealthPage = () => {
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   {t('womensHealth.browseAllTests')}
                 </Button>
-                <Button size="lg" className="bg-health-primary text-white transition-colors" style={{ '--hover-bg': '#e70d69' } as React.CSSProperties} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e70d69'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = ''}>
+                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
                   {t('womensHealth.findClinic')}
                 </Button>
               </div>
