@@ -114,6 +114,19 @@ const healthConcerns = [
   }
 ];
 
+const getCategoryColor = (category: string) => {
+  const colorMap: { [key: string]: string } = {
+    "Complete Health": "bg-red-500 text-white", // Red like Blood Tests
+    "Women's Wellness": "bg-pink-500 text-white", // Pink like Hormone Tests  
+    "Menopause Health": "bg-purple-600 text-white", // Purple for menopause
+    "Hormone Health": "bg-pink-600 text-white", // Magenta like Hormone Tests
+    "Fertility Health": "bg-green-500 text-white", // Green like Thyroid Tests
+    "Pregnancy Health": "bg-rose-400 text-white", // Light pink for pregnancy
+    "PCOS Health": "bg-orange-500 text-white" // Orange like Diabetes Testing
+  };
+  return colorMap[category] || "bg-gray-500 text-white";
+};
+
 const WomensHealthPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -185,7 +198,7 @@ const WomensHealthPage = () => {
                             <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-5 w-5" />
                             </div>
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge className={`text-xs ${getCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>
