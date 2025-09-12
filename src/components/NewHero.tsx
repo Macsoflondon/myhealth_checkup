@@ -89,19 +89,21 @@ const NewHero = () => {
         <div className="w-full py-0">
           <div className="w-full text-center px-4">
             {/* Hero Images Container */}
-            <div className="mb-8 relative w-full mx-auto px-1">
-              <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-2xl min-h-[800px] lg:min-h-[1000px] xl:min-h-[1200px]" style={{
+            <div className="mb-8 relative max-w-7xl mx-auto">
+              <div style={{
               aspectRatio: '16/9'
-            }}>
+            }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
                 {/* Hero images */}
                 {heroImages.map((imageSrc, index) => <LazyImage key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-2000 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} width={1200} height={675} priority={index === 0} />)}
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Full-width Headline Banner */}
-        <div className="w-full bg-[#081129]">
+      </section>
+      
+      {/* Full-width Headline Banner */}
+      <section className="w-full py-8 bg-white">
+        <div className="w-full px-4 bg-[#081129]">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#22c0d4] text-center leading-tight font-medium my-0 py-[10px] xl:text-4xl">
             Compare the UK's leading private health test providers
             <span className="block text-[#fc0173] mt-2">All in one place!</span>
