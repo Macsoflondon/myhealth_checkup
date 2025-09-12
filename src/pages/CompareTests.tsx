@@ -58,7 +58,9 @@ const CompareTests = () => {
       if (searchTerm.trim()) {
         results = await OptimizedLiveCompareService.searchTests(searchTerm, selectedProviders);
       } else {
-        const categoryName = categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
+        // Use category name for better matching
+        const categoryName = selectedCategory === "all" ? "all" : 
+          categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
         results = await OptimizedLiveCompareService.getTestsByCategory(categoryName, selectedProviders);
       }
 

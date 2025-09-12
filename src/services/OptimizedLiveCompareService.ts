@@ -83,10 +83,19 @@ export class OptimizedLiveCompareService {
         .select('id, test_name, provider_id, category, price, description, is_active, image_url, url, created_at, updated_at')
         .eq('is_active', true)
         .order('price', { ascending: true })
-        .limit(50); // Limit results for better performance
+        .limit(50);
 
       if (category !== 'all') {
-        query = query.ilike('category', `%${category}%`);
+        // Enhanced category matching with search terms
+        const categorySearchTerms = this.getCategorySearchTerms(category);
+        const orConditions = [
+          `category.ilike.%${category}%`,
+          `test_name.ilike.%${category}%`,
+          ...categorySearchTerms.map(term => `test_name.ilike.%${term}%`),
+          ...categorySearchTerms.map(term => `description.ilike.%${term}%`)
+        ].join(',');
+        
+        query = query.or(orConditions);
       }
 
       if (!providers.includes('all')) {
@@ -109,6 +118,25 @@ export class OptimizedLiveCompareService {
       console.error('Error in getTestsByCategory:', error);
       return [];
     }
+  }
+
+  private static getCategorySearchTerms(category: string): string[] {
+    const categoryMap: Record<string, string[]> = {
+      'Blood Tests': ['blood', 'full blood count', 'fbc', 'biochemistry', 'blood panel'],
+      'Hormone Tests': ['hormone', 'hormonal', 'testosterone', 'estrogen', 'progesterone', 'cortisol'],
+      'Thyroid Tests': ['thyroid', 'tsh', 't3', 't4', 'thyroglobulin', 'thyroid antibodies'],
+      'Vitamin & Mineral Tests': ['vitamin', 'mineral', 'b12', 'd3', 'folate', 'iron', 'zinc', 'magnesium', 'nutrient'],
+      'Diabetes Testing': ['diabetes', 'diabetic', 'glucose', 'hba1c', 'insulin', 'blood sugar'],
+      'Heart Health': ['heart', 'cardiac', 'cardiovascular', 'cholesterol', 'lipid', 'triglycerides', 'hdl', 'ldl'],
+      'Liver Health': ['liver', 'hepatic', 'alt', 'ast', 'bilirubin', 'liver function'],
+      'Kidney Health': ['kidney', 'renal', 'creatinine', 'urea', 'kidney function', 'egfr'],
+      'Fertility Testing': ['fertility', 'reproductive', 'sperm', 'ovarian', 'amh', 'fsh', 'lh'],
+      'General Health': ['general', 'comprehensive', 'health check', 'wellness', 'screening'],
+      'Allergy Testing': ['allergy', 'allergic', 'intolerance', 'food sensitivity', 'ige'],
+      'Cancer Screening': ['cancer', 'screening', 'tumour', 'psa', 'cea', 'ca125', 'oncology']
+    };
+    
+    return categoryMap[category] || [category.toLowerCase()];
   }
 
   static async searchTests(searchTerm: string, providers: string[] = ['all']): Promise<CompareTestData[]> {
