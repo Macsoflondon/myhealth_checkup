@@ -74,7 +74,7 @@ export const ModernCompareTable = ({
             </CardContent>
           </Card>
           
-          <Card className="border-health-secondary/50 bg-health-secondary/5">
+          <Card className="border-health-secondary/50 bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-health-secondary" />
