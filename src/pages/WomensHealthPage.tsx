@@ -354,7 +354,7 @@ const WomensHealthPage = () => {
 
         {/* Health Concerns */}
         <section className="py-16 bg-[#081129]">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 shadow-2xl shadow-white/20">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-white mb-4">
