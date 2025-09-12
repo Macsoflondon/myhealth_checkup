@@ -87,9 +87,9 @@ const NewHero = () => {
       {/* Hero Image Section */}
       <section className="relative overflow-hidden bg-slate-50">
         <div className="w-full py-0">
-          <div className="w-full text-center px-4">
+          <div className="w-full text-center px-2">
             {/* Hero Images Container */}
-            <div className="mb-8 relative max-w-7xl mx-auto">
+            <div className="mb-8 relative w-full mx-auto">
               <div style={{
               aspectRatio: '16/9'
             }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
