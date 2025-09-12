@@ -9,38 +9,40 @@ import { useAuth } from "@/context/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/LiveCompareService";
-
 interface ModernCompareTableProps {
   tests: CompareTestData[];
   selectedCategory?: string;
 }
-
-export const ModernCompareTable = ({ tests, selectedCategory }: ModernCompareTableProps) => {
-  const { user } = useAuth();
-  const { favorites, toggleFavorite } = useFavorites(user, selectedCategory || 'general');
-  const { placeOrder } = useOrders(user);
-
+export const ModernCompareTable = ({
+  tests,
+  selectedCategory
+}: ModernCompareTableProps) => {
+  const {
+    user
+  } = useAuth();
+  const {
+    favorites,
+    toggleFavorite
+  } = useFavorites(user, selectedCategory || 'general');
+  const {
+    placeOrder
+  } = useOrders(user);
   const handleToggleFavorite = async (testId: string) => {
     if (!user) return;
-    
     const test = tests.find(t => t.id === testId);
     if (test) {
       await toggleFavorite(testId, test);
     }
   };
-
   const handlePlaceOrder = (testId: string, provider: string) => {
     if (!user) return;
-    
     const test = tests.find(t => t.id === testId);
     if (test) {
       placeOrder(test.id, provider, test.name, test.price);
     }
   };
-
   if (tests.length === 0) {
-    return (
-      <div className="text-center py-16">
+    return <div className="text-center py-16">
         <div className="max-w-md mx-auto">
           <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
             <TrendingUp className="h-8 w-8 text-muted-foreground" />
@@ -53,15 +55,11 @@ export const ModernCompareTable = ({ tests, selectedCategory }: ModernCompareTab
             Reset Filters
           </Button>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="space-y-4">
+  return <div className="space-y-4">
       {/* Featured/Best Value Cards */}
-      {tests.length > 0 && (
-        <div className="grid gap-4 md:grid-cols-3 mb-8">
+      {tests.length > 0 && <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card className="border-health-primary/50 bg-health-primary/5">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
@@ -103,24 +101,15 @@ export const ModernCompareTable = ({ tests, selectedCategory }: ModernCompareTab
               </p>
             </CardContent>
           </Card>
-        </div>
-      )}
+        </div>}
 
       {/* Test Cards Grid - Responsive */}
       <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {tests.map((test) => {
-          const isFavorite = favorites.includes(test.id);
-          const isOutOfStock = test.available === false;
-          
-          return (
-            <Card 
-              key={test.id} 
-              className={cn(
-                "group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm",
-                isOutOfStock && "opacity-60"
-              )}
-            >
-              <CardContent className="p-4 sm:p-6">
+        {tests.map(test => {
+        const isFavorite = favorites.includes(test.id);
+        const isOutOfStock = test.available === false;
+        return <Card key={test.id} className={cn("group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm", isOutOfStock && "opacity-60")}>
+              <CardContent className="p-4 sm:p-6 bg-white">
                 {/* Provider Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -137,16 +126,7 @@ export const ModernCompareTable = ({ tests, selectedCategory }: ModernCompareTab
                     </div>
                   </div>
                   
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleToggleFavorite(test.id)}
-                    className={cn(
-                      "hover:bg-pink-50 dark:hover:bg-pink-950 h-8 w-8 p-0",
-                      isFavorite ? "text-pink-500" : "text-muted-foreground"
-                    )}
-                    disabled={!user}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => handleToggleFavorite(test.id)} className={cn("hover:bg-pink-50 dark:hover:bg-pink-950 h-8 w-8 p-0", isFavorite ? "text-pink-500" : "text-muted-foreground")} disabled={!user}>
                     <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
                   </Button>
                 </div>
@@ -186,19 +166,12 @@ export const ModernCompareTable = ({ tests, selectedCategory }: ModernCompareTab
                       <p className="text-xl sm:text-2xl font-bold text-health-primary">
                         £{test.price.toFixed(2)}
                       </p>
-                      {isOutOfStock && (
-                        <Badge variant="destructive" className="text-xs mt-1">
+                      {isOutOfStock && <Badge variant="destructive" className="text-xs mt-1">
                           Out of Stock
-                        </Badge>
-                      )}
+                        </Badge>}
                     </div>
                     
-                    <Button
-                      onClick={() => handlePlaceOrder(test.id, test.provider)}
-                      disabled={isOutOfStock || !user}
-                      className="bg-health-primary hover:bg-health-primary/90 text-sm sm:text-base px-3 sm:px-4"
-                      size="sm"
-                    >
+                    <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} className="bg-health-primary hover:bg-health-primary/90 text-sm sm:text-base px-3 sm:px-4" size="sm">
                       <ShoppingCart className="h-4 w-4 mr-1 sm:mr-2" />
                       <span className="hidden sm:inline">Select Test</span>
                       <span className="sm:hidden">Select</span>
@@ -213,10 +186,8 @@ export const ModernCompareTable = ({ tests, selectedCategory }: ModernCompareTab
                   </div>
                 </div>
               </CardContent>
-            </Card>
-          );
-        })}
+            </Card>;
+      })}
       </div>
-    </div>
-  );
+    </div>;
 };

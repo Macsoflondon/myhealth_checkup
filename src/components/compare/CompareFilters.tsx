@@ -37,7 +37,7 @@ export const CompareFilters = ({
   testCount,
   isLoading
 }: CompareFiltersProps) => {
-  return <div className="space-y-6 mb-8">
+  return <div className="space-y-6 mb-8 bg-white">
       {/* Category Selection */}
       <Card className="bg-card/50 backdrop-blur-sm border-border/50">
         <CardContent className="p-6">
