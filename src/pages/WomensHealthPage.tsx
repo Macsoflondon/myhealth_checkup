@@ -17,7 +17,7 @@ const womensHealthTests = [
     price: "£199",
     biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "Diabetes Markers", "Vitamins", "Iron Studies"],
     suitableFor: ["Complete health overview", "Annual health check", "Health optimization", "Preventive screening"],
-    turnaround: "24-48 hours"
+    turnaround: "2-3 days"
   },
   {
     id: "advanced-well-woman",
@@ -28,7 +28,7 @@ const womensHealthTests = [
     price: "£149",
     biomarkers: ["Female Hormones", "Thyroid Function", "Cholesterol Panel", "Blood Sugar", "Liver Function", "Iron Studies"],
     suitableFor: ["Women 30+", "Routine health screening", "Hormone assessment", "Reproductive health"],
-    turnaround: "24-48 hours"
+    turnaround: "48-72 hours"
   },
   {
     id: "menopause-blood-test",
@@ -39,7 +39,7 @@ const womensHealthTests = [
     price: "£89",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG", "Thyroid Function"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes", "Women 45+"],
-    turnaround: "24-48 hours"
+    turnaround: "48 hours"
   },
   {
     id: "female-hormones",
@@ -61,7 +61,7 @@ const womensHealthTests = [
     price: "£69",
     biomarkers: ["AMH", "FSH", "LH", "Oestradiol"],
     suitableFor: ["Family planning", "Fertility assessment", "IVF preparation", "Egg freezing consideration"],
-    turnaround: "24-48 hours"
+    turnaround: "3-5 days"
   },
   {
     id: "pregnancy-blood-test",
@@ -72,7 +72,7 @@ const womensHealthTests = [
     price: "£55",
     biomarkers: ["hCG", "Progesterone", "Thyroid Function", "Iron Studies", "Vitamin D", "Folate"],
     suitableFor: ["Pregnancy confirmation", "Early pregnancy monitoring", "Nutritional assessment", "Prenatal health"],
-    turnaround: "24-48 hours"
+    turnaround: "24 hours"
   },
   {
     id: "pcos-blood-test",
@@ -83,7 +83,7 @@ const womensHealthTests = [
     price: "£125",
     biomarkers: ["Testosterone", "SHBG", "LH", "FSH", "Insulin", "HbA1c", "Lipid Profile"],
     suitableFor: ["Irregular periods", "Weight gain", "Acne", "Hair loss", "Fertility issues"],
-    turnaround: "24-48 hours"
+    turnaround: "48 hours"
   }
 ];
 
