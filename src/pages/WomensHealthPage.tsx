@@ -277,7 +277,7 @@ const WomensHealthPage = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.wellnessBenefitTitle')}</h3>
                   <p className="text-muted-foreground">
-                    {t('womensHealth.wellnessBenefitDescription')}
+                    Monitor and optimise hormone levels throughout life stages
                   </p>
                 </div>
               </div>
