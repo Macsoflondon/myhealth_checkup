@@ -128,20 +128,10 @@ const hormoneCategories = [
 const HormonesPage = () => {
   // Helper function to get hormone category colors
   const getHormoneCategoryColor = (category: string) => {
-    // Map categories to their respective color schemes from categoryColors.ts
-    const categoryMap: { [key: string]: string } = {
-      "Female Hormones": "hormones",
-      "Male Hormones": "hormones", 
-      "Thyroid Hormones": "thyroid",
-      "Menopause": "hormones",
-      "Fertility": "fertility",
-      "Stress Hormones": "hormones",
-      "Metabolic Hormones": "diabetes"
-    };
-    
-    const categoryId = categoryMap[category] || "hormones";
-    const colors = getCategoryCSSClasses(categoryId);
-    return `${colors.primary} ${colors.icon}`;
+    // Map all hormone categories to use consistent "hormones" color scheme (indigo)
+    // This ensures uniformity like thyroid categories use consistent cyan
+    const hormoneColors = getCategoryCSSClasses("hormones");
+    return `${hormoneColors.primary} ${hormoneColors.icon}`;
   };
   return (
     <>
