@@ -43,7 +43,7 @@ const WellWomanTestPage = () => {
         </nav>
 
         {/* Back Button */}
-        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6 -ml-4 bg-[#22c0d4] text-white">
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6 -ml-4 bg-primary text-primary-foreground hover:bg-primary/90">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back
         </Button>
