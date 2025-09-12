@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Activity, Heart, Shield, Zap, Moon, Baby, Target, Flower2 } from "lucide-react";
-import { getCategoryCSSClasses } from "@/data/categoryColors";
 
 const hormoneTests = [
   {
@@ -98,43 +97,62 @@ const hormoneTests = [
   }
 ];
 
-const hormoneCategories = [
+const healthConcerns = [
   {
-    name: "Reproductive Hormones",
-    description: "Hormones that control fertility and sexual health",
-    tests: ["Female Hormones", "Male Hormones", "Fertility Panel"],
-    icon: Baby
+    name: "Low Energy & Fatigue",
+    description: "Persistent tiredness and lack of energy",
+    symptoms: ["Chronic fatigue", "Low motivation", "Sleep issues", "Brain fog"],
+    recommendedTest: "Thyroid Function Test"
   },
   {
-    name: "Thyroid Hormones",
-    description: "Hormones that regulate metabolism and energy",
-    tests: ["TSH", "T3", "T4", "Thyroid Antibodies"],
-    icon: Shield
+    name: "Weight Changes",
+    description: "Unexplained weight gain or difficulty losing weight",
+    symptoms: ["Slow metabolism", "Weight gain", "Belly fat", "Food cravings"],
+    recommendedTest: "Insulin & Diabetes Hormones"
   },
   {
-    name: "Stress Hormones",
-    description: "Hormones that respond to stress and regulate mood",
-    tests: ["Cortisol", "DHEA-S", "Adrenaline"],
-    icon: Activity
+    name: "Mood & Mental Health",
+    description: "Hormonal impact on mood and mental wellbeing",
+    symptoms: ["Depression", "Anxiety", "Mood swings", "Irritability"],
+    recommendedTest: "Cortisol Stress Test"
   },
   {
-    name: "Metabolic Hormones",
-    description: "Hormones that control blood sugar and metabolism",
-    tests: ["Insulin", "Growth Hormone", "Leptin"],
-    icon: Heart
+    name: "Reproductive Health",
+    description: "Fertility and reproductive hormone concerns",
+    symptoms: ["Irregular cycles", "Low libido", "Fertility issues", "PMS"],
+    recommendedTest: "Female Hormones Blood Test"
   }
 ];
 
-const HormonesPage = () => {
-  // Helper function to get hormone category colors
-  const getHormoneCategoryColor = (category: string) => {
-    // Map all hormone categories to use consistent "hormones" color scheme (indigo)
-    // This ensures uniformity like thyroid categories use consistent cyan
-    const hormoneColors = getCategoryCSSClasses("hormones");
-    return `${hormoneColors.primary} ${hormoneColors.icon}`;
+const getCategoryColor = (category: string) => {
+  const colorMap: { [key: string]: string } = {
+    "Female Hormones": "bg-pink-500 text-white",
+    "Male Hormones": "bg-blue-500 text-white",
+    "Thyroid Hormones": "bg-green-500 text-white",
+    "Menopause": "bg-purple-500 text-white",
+    "Fertility": "bg-rose-500 text-white",
+    "Stress Hormones": "bg-orange-500 text-white",
+    "Metabolic Hormones": "bg-red-500 text-white"
   };
+  return colorMap[category] || "bg-gray-500 text-white";
+};
+
+const getCategoryButtonColor = (category: string) => {
+  const buttonColorMap: { [key: string]: string } = {
+    "Female Hormones": "bg-pink-500 hover:bg-pink-600",
+    "Male Hormones": "bg-blue-500 hover:bg-blue-600",
+    "Thyroid Hormones": "bg-green-500 hover:bg-green-600",
+    "Menopause": "bg-purple-500 hover:bg-purple-600",
+    "Fertility": "bg-rose-500 hover:bg-rose-600",
+    "Stress Hormones": "bg-orange-500 hover:bg-orange-600",
+    "Metabolic Hormones": "bg-red-500 hover:bg-red-600"
+  };
+  return buttonColorMap[category] || "bg-gray-500 hover:bg-gray-600";
+};
+
+const HormonesPage = () => {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Hormone Blood Tests | Comprehensive Hormone Testing | My Health Checkup</title>
         <meta name="description" content="Complete hormone testing including thyroid, reproductive, stress, and metabolic hormones. Professional hormone analysis from £45." />
@@ -154,30 +172,66 @@ const HormonesPage = () => {
       </Helmet>
       
       <Header />
-      
-      <main className="min-h-screen bg-background">
+      <main className="flex-grow bg-background">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
+              <Badge className="mb-4">Hormone Health</Badge>
               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
                 Hormone Blood Tests
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{color: '#081129'}}>
                 Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. 
                 Optimize your health with professional hormone analysis and personalized insights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   Browse Hormone Tests
                 </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-[#e70d69] hover:border-[#e70d69] hover:text-white transition-colors"
-                >
+                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
                   Find a Clinic
                 </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
+                Why Test Your Hormones?
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Activity className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Optimize Energy</h3>
+                  <p className="text-muted-foreground">
+                    Balance hormones to boost energy levels and reduce fatigue
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Heart className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Improve Mood</h3>
+                  <p className="text-muted-foreground">
+                    Stabilize mood and reduce anxiety through hormone optimization
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Shield className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Prevent Disease</h3>
+                  <p className="text-muted-foreground">
+                    Early detection of hormonal imbalances prevents health issues
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -187,71 +241,63 @@ const HormonesPage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Available Hormone Tests
-                </h2>
-                <p className="text-lg text-muted-foreground">
-                  Comprehensive hormone testing for every health need
-                </p>
-              </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {hormoneTests.map((test) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 bg-white shadow-md border-2 hover:border-opacity-80 h-full flex flex-col">
                       <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
-                              <IconComponent className="h-5 w-5" />
-                            </div>
-                            <Badge className={`text-xs whitespace-nowrap ${getHormoneCategoryColor(test.category)}`}>
+                            <Badge className={`text-xs whitespace-nowrap ${getCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>
                           <div className="text-right">
-                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
+                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-2" style={{ color: '#081129' }}>{test.name}</CardTitle>
-                        <CardDescription className="text-sm text-muted-foreground">
+                        <CardTitle className="text-lg leading-tight mb-3 h-12 flex items-start" style={{color: '#081129'}}>{test.name}</CardTitle>
+                        <CardDescription className="text-sm text-muted-foreground h-16 leading-relaxed">
                           {test.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0 space-y-4">
-                        <div>
-                          <h4 className="font-medium text-sm mb-2">
-                            Biomarkers Tested: {test.biomarkers.length}
-                            <br />
-                            Key Biomarkers:
-                          </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {test.biomarkers.slice(0, 3).map((biomarker) => (
-                              <Badge key={biomarker} variant="outline" className="text-xs">
-                                {biomarker}
-                              </Badge>
-                            ))}
-                            {test.biomarkers.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{test.biomarkers.length - 3} more
-                              </Badge>
-                            )}
+                      <CardContent className="pt-0 flex-1 flex flex-col space-y-4">
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">
+                              Biomarkers Tested: {test.biomarkers.length}
+                              <br />
+                              Key Biomarkers:
+                            </h4>
+                            <div className="flex flex-wrap gap-1 min-h-[2.5rem]">
+                              {test.biomarkers.slice(0, 3).map((biomarker) => (
+                                <Badge key={biomarker} variant="outline" className="text-xs">
+                                  {biomarker}
+                                </Badge>
+                              ))}
+                              {test.biomarkers.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{test.biomarkers.length - 3} more
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
+                            <ul className="text-xs text-muted-foreground space-y-1 min-h-[2.5rem]">
+                              {test.suitableFor.slice(0, 2).map((item, index) => (
+                                <li key={index}>• {item}</li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
-                        <div>
-                          <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
-                          <ul className="text-xs text-muted-foreground space-y-1">
-                            {test.suitableFor.slice(0, 2).map((item, index) => (
-                              <li key={index}>• {item}</li>
-                            ))}
-                          </ul>
+                        <div className="mt-auto pt-4">
+                          <Button className={`w-full text-white ${getCategoryButtonColor(test.category)}`}>
+                            Compare Providers
+                          </Button>
                         </div>
-                        <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
-                          Compare Providers
-                        </Button>
                       </CardContent>
                     </Card>
                   );
@@ -261,96 +307,53 @@ const HormonesPage = () => {
           </div>
         </section>
 
-        {/* Hormone Categories */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
+        {/* Health Concerns */}
+        <section className="py-16 bg-[#081129]">
+          <div className="container mx-auto px-4 shadow-2xl shadow-white/20">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Types of Hormones We Test
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Common Hormone Health Concerns
                 </h2>
-                <p className="text-lg text-muted-foreground">
-                  Understanding the different hormone systems in your body
+                <p className="text-lg text-gray-300">
+                  Find the right hormone test for your specific health concerns
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {hormoneCategories.map((category, index) => {
-                  const IconComponent = category.icon;
-                  return (
-                    <Card key={index} className="border-border/50">
-                      <CardHeader>
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                            <IconComponent className="h-5 w-5" />
-                          </div>
-                          <CardTitle className="text-lg">{category.name}</CardTitle>
-                        </div>
-                        <CardDescription className="text-sm">
-                          {category.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <h4 className="font-medium text-sm mb-2">Common Tests Include:</h4>
+                {healthConcerns.map((concern, index) => (
+                  <Card key={index} className="border-border bg-white shadow-md">
+                    <CardHeader>
+                      <CardTitle className="text-lg text-foreground">{concern.name}</CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground">
+                        {concern.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <h4 className="font-medium text-sm mb-2 text-foreground">Common Symptoms:</h4>
                         <div className="flex flex-wrap gap-1">
-                          {category.tests.map((test, idx) => (
+                          {concern.symptoms.map((symptom, idx) => (
                             <Badge key={idx} variant="outline" className="text-xs">
-                              {test}
+                              {symptom}
                             </Badge>
                           ))}
                         </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
-                Why Test Your Hormones?
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Activity className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Optimize Energy</h3>
-                  <p className="text-muted-foreground">
-                    Balance hormones to boost energy levels and reduce fatigue
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Improve Mood</h3>
-                  <p className="text-muted-foreground">
-                    Stabilize mood and reduce anxiety through hormone optimization
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Prevent Disease</h3>
-                  <p className="text-muted-foreground">
-                    Early detection of hormonal imbalances prevents health issues
-                  </p>
-                </div>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-sm mb-2 text-foreground">Recommended Test:</h4>
+                        <p className="text-sm text-[#e70d69] font-medium">{concern.recommendedTest}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
         </section>
       </main>
-      
       <Footer />
-    </>
+    </div>
   );
 };
 

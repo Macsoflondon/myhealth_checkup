@@ -4,58 +4,79 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield, Zap, TestTube2, Users, ArrowLeft } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
-import { getCategoryCSSClasses } from "@/data/categoryColors";
-const thyroidTests = [{
-  id: "thyroid-blood-test",
-  name: "Thyroid Blood Test",
-  description: "Essential thyroid function screening including TSH, T3, and T4 to assess thyroid hormone levels and overall thyroid health",
-  icon: Heart,
-  category: "Basic Thyroid",
-  price: "£69",
-  biomarkers: ["TSH", "Free T3", "Free T4"],
-  suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
-  turnaround: "24-48 hours"
-}, {
-  id: "thyroid-function-antibodies",
-  name: "Thyroid Function with Antibodies Test",
-  description: "Comprehensive thyroid assessment including hormone levels plus antibody testing for autoimmune thyroid conditions",
-  icon: Shield,
-  category: "Advanced Thyroid",
-  price: "£125",
-  biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO", "Anti-Thyroglobulin"],
-  suitableFor: ["Family history of thyroid disease", "Suspected autoimmune conditions", "Comprehensive screening", "Previous abnormal results"],
-  turnaround: "24-48 hours"
-}];
-const thyroidConditions = [{
-  name: "Hyperthyroidism",
-  description: "Overactive thyroid producing too much hormone",
-  symptoms: ["Weight loss", "Rapid heartbeat", "Anxiety", "Heat intolerance"]
-}, {
-  name: "Hypothyroidism",
-  description: "Underactive thyroid producing too little hormone",
-  symptoms: ["Weight gain", "Fatigue", "Cold intolerance", "Hair loss"]
-}, {
-  name: "Hashimoto's Disease",
-  description: "Autoimmune condition causing thyroid inflammation",
-  symptoms: ["Gradual thyroid failure", "Fatigue", "Depression", "Memory problems"]
-}, {
-  name: "Graves' Disease",
-  description: "Autoimmune condition causing thyroid overactivity",
-  symptoms: ["Bulging eyes", "Weight loss", "Tremors", "Anxiety"]
-}];
-const ThyroidPage = () => {
-  const navigate = useNavigate();
-  
-  // Helper function to get thyroid category colors
-  const getThyroidCategoryColor = (category: string) => {
-    // Map all thyroid categories to the "thyroid" color scheme from categoryColors.ts
-    const thyroidColors = getCategoryCSSClasses("thyroid");
-    return `${thyroidColors.primary} ${thyroidColors.icon}`;
+import { Heart, Activity, Shield, TestTube2, Users } from "lucide-react";
+
+const thyroidTests = [
+  {
+    id: "thyroid-blood-test",
+    name: "Thyroid Blood Test",
+    description: "Essential thyroid function screening including TSH, T3, and T4 to assess thyroid hormone levels and overall thyroid health",
+    icon: Heart,
+    category: "Basic Thyroid",
+    price: "£69",
+    biomarkers: ["TSH", "Free T3", "Free T4"],
+    suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
+    turnaround: "24-48 hours"
+  },
+  {
+    id: "thyroid-function-antibodies",
+    name: "Thyroid Function with Antibodies Test",
+    description: "Comprehensive thyroid assessment including hormone levels plus antibody testing for autoimmune thyroid conditions",
+    icon: Shield,
+    category: "Advanced Thyroid",
+    price: "£125",
+    biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO", "Anti-Thyroglobulin"],
+    suitableFor: ["Family history of thyroid disease", "Suspected autoimmune conditions", "Comprehensive screening", "Previous abnormal results"],
+    turnaround: "24-48 hours"
+  }
+];
+
+const healthConcerns = [
+  {
+    name: "Unexplained Fatigue",
+    description: "Persistent tiredness despite adequate rest",
+    symptoms: ["Chronic tiredness", "Low energy", "Difficulty concentrating", "Sleep issues"],
+    recommendedTest: "Thyroid Blood Test"
+  },
+  {
+    name: "Weight Changes",
+    description: "Unexplained weight gain or difficulty losing weight",
+    symptoms: ["Weight gain", "Slow metabolism", "Difficulty losing weight", "Increased appetite"],
+    recommendedTest: "Thyroid Function with Antibodies Test"
+  },
+  {
+    name: "Temperature Sensitivity",
+    description: "Feeling too hot or too cold",
+    symptoms: ["Cold intolerance", "Heat sensitivity", "Sweating changes", "Temperature regulation issues"],
+    recommendedTest: "Thyroid Blood Test"
+  },
+  {
+    name: "Autoimmune Symptoms",
+    description: "Signs of possible autoimmune thyroid conditions",
+    symptoms: ["Family history", "Joint pain", "Hair loss", "Skin changes"],
+    recommendedTest: "Thyroid Function with Antibodies Test"
+  }
+];
+
+const getCategoryColor = (category: string) => {
+  const colorMap: { [key: string]: string } = {
+    "Basic Thyroid": "bg-cyan-500 text-white",
+    "Advanced Thyroid": "bg-teal-500 text-white"
   };
-  
-  return <>
+  return colorMap[category] || "bg-gray-500 text-white";
+};
+
+const getCategoryButtonColor = (category: string) => {
+  const buttonColorMap: { [key: string]: string } = {
+    "Basic Thyroid": "bg-cyan-500 hover:bg-cyan-600",
+    "Advanced Thyroid": "bg-teal-500 hover:bg-teal-600"
+  };
+  return buttonColorMap[category] || "bg-gray-500 hover:bg-gray-600";
+};
+
+const ThyroidPage = () => {
+  return (
+    <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Thyroid Blood Tests | TSH, T3, T4 & Antibody Testing | My Health Checkup</title>
         <meta name="description" content="Comprehensive thyroid function tests including TSH, T3, T4, and thyroid antibodies. Professional thyroid screening from £69 with fast results." />
@@ -75,49 +96,66 @@ const ThyroidPage = () => {
       </Helmet>
       
       <Header />
-      
-      <main className="min-h-screen bg-background">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 mb-6 text-sm container mx-auto px-4 pt-8">
-          <Link 
-            to="/"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Home
-          </Link>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-foreground">Thyroid Function Tests</span>
-        </nav>
-
-        {/* Back Button */}
-        <div className="container mx-auto px-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="mb-6 -ml-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
-        </div>
+      <main className="flex-grow bg-background">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
+              <Badge className="mb-4">Thyroid Health</Badge>
               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
                 Thyroid Function Tests
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{color: '#081129'}}>
                 Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. 
                 Essential for detecting thyroid disorders and optimizing treatment.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   Compare Thyroid Tests
                 </Button>
-                <Button size="lg" variant="outline" className="bg-[\u20ACtransparent] bg-[#22c0d4]">
+                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
                   Find a Clinic
                 </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Benefits Section */}
+        <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
+                Why Test Your Thyroid?
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Activity className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Energy & Metabolism</h3>
+                  <p className="text-muted-foreground">
+                    Thyroid hormones regulate metabolism, energy levels, and weight
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <TestTube2 className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Early Detection</h3>
+                  <p className="text-muted-foreground">
+                    Identify thyroid disorders before symptoms become severe
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Users className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Treatment Monitoring</h3>
+                  <p className="text-muted-foreground">
+                    Track treatment effectiveness and optimize thyroid medication
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -127,146 +165,115 @@ const ThyroidPage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Available Thyroid Tests
-                </h2>
-                <p className="text-lg text-muted-foreground">
-                  Choose the right thyroid test for your needs
-                </p>
-              </div>
-              
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {thyroidTests.map(test => {
-                const IconComponent = test.icon;
-                return <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+                {thyroidTests.map((test) => {
+                  const IconComponent = test.icon;
+                  return (
+                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 bg-white shadow-md border-2 hover:border-opacity-80 h-full flex flex-col">
                       <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3 text-[#081129]">
-                            <div className="p-3 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
-                              <IconComponent className="h-6 w-6" />
-                            </div>
-                            <Badge className={`text-xs whitespace-nowrap ${getThyroidCategoryColor(test.category)}`}>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <Badge className={`text-xs whitespace-nowrap ${getCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>
                           <div className="text-right">
-                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
+                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                           </div>
                         </div>
-                        <CardTitle className="text-xl leading-tight mb-2" style={{ color: '#081129' }}>{test.name}</CardTitle>
-                        <CardDescription className="text-sm text-muted-foreground">
+                        <CardTitle className="text-xl leading-tight mb-3 h-12 flex items-start" style={{color: '#081129'}}>{test.name}</CardTitle>
+                        <CardDescription className="text-sm text-muted-foreground h-16 leading-relaxed">
                           {test.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0 space-y-4">
-                        <div>
-                          <h4 className="font-medium text-sm mb-2">
-                            Biomarkers Tested: {test.biomarkers.length}
-                            <br />
-                            Key Biomarkers:
-                          </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {test.biomarkers.map(biomarker => <Badge key={biomarker} variant="outline" className="text-xs">
-                                {biomarker}
-                              </Badge>)}
+                      <CardContent className="pt-0 flex-1 flex flex-col space-y-4">
+                        <div className="flex-1 space-y-4">
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">
+                              Biomarkers Tested: {test.biomarkers.length}
+                              <br />
+                              Key Biomarkers:
+                            </h4>
+                            <div className="flex flex-wrap gap-1 min-h-[2.5rem]">
+                              {test.biomarkers.map((biomarker) => (
+                                <Badge key={biomarker} variant="outline" className="text-xs">
+                                  {biomarker}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
+                            <ul className="text-xs text-muted-foreground space-y-1 min-h-[2.5rem]">
+                              {test.suitableFor.map((item, index) => (
+                                <li key={index}>• {item}</li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
-                        <div>
-                          <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
-                          <ul className="text-xs text-muted-foreground space-y-1">
-                            {test.suitableFor.map((item, index) => <li key={index}>• {item}</li>)}
-                          </ul>
+                        <div className="mt-auto pt-4">
+                          <Button className={`w-full text-white ${getCategoryButtonColor(test.category)}`}>
+                            Compare Providers
+                          </Button>
                         </div>
-                        <Button className="w-full" style={{
-                      backgroundColor: '#22c0d4'
-                    }}>
-                          Compare Providers
-                        </Button>
                       </CardContent>
-                    </Card>;
-              })}
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Thyroid Conditions */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
+        {/* Health Concerns */}
+        <section className="py-16 bg-[#081129]">
+          <div className="container mx-auto px-4 shadow-2xl shadow-white/20">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Common Thyroid Conditions
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Common Thyroid Health Concerns
                 </h2>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-gray-300">
                   Understanding what thyroid tests can detect
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {thyroidConditions.map((condition, index) => <Card key={index} className="border-border/50">
+                {healthConcerns.map((concern, index) => (
+                  <Card key={index} className="border-border bg-white shadow-md">
                     <CardHeader>
-                      <CardTitle className="text-lg">{condition.name}</CardTitle>
-                      <CardDescription className="text-sm">
-                        {condition.description}
+                      <CardTitle className="text-lg text-foreground">{concern.name}</CardTitle>
+                      <CardDescription className="text-sm text-muted-foreground">
+                        {concern.description}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <h4 className="font-medium text-sm mb-2">Common Symptoms:</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        {condition.symptoms.map((symptom, idx) => <li key={idx}>• {symptom}</li>)}
-                      </ul>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <h4 className="font-medium text-sm mb-2 text-foreground">Common Symptoms:</h4>
+                        <div className="flex flex-wrap gap-1">
+                          {concern.symptoms.map((symptom, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {symptom}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-sm mb-2 text-foreground">Recommended Test:</h4>
+                        <p className="text-sm text-[#e70d69] font-medium">{concern.recommendedTest}</p>
+                      </div>
                     </CardContent>
-                  </Card>)}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Test Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
-                Why Test Your Thyroid?
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Activity className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Energy & Metabolism</h3>
-                  <p className="text-muted-foreground">
-                    Thyroid hormones regulate metabolism, energy levels, and weight
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <TestTube2 className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Early Detection</h3>
-                  <p className="text-muted-foreground">
-                    Identify thyroid disorders before symptoms become severe
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Treatment Monitoring</h3>
-                  <p className="text-muted-foreground">
-                    Track treatment effectiveness and optimize thyroid medication
-                  </p>
-                </div>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
         </section>
       </main>
-      
       <Footer />
-    </>;
+    </div>
+  );
 };
+
 export default ThyroidPage;
