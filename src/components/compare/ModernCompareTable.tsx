@@ -60,7 +60,7 @@ export const ModernCompareTable = ({
   return <div className="space-y-4">
       {/* Featured/Best Value Cards */}
       {tests.length > 0 && <div className="grid gap-4 md:grid-cols-3 mb-8 bg-[#081129]">
-          <Card className="border-health-primary/50 bg-health-primary/5">
+          <Card className="border-health-primary/50 bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2 text-[#e70d69]">
                 <Award className="h-4 w-4 text-health-primary" />
