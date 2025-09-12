@@ -142,6 +142,20 @@ const getCategoryBorderColor = (category: string) => {
   return borderColorMap[category] || "border-gray-500";
 };
 
+const getCategoryButtonColor = (category: string) => {
+  const buttonColorMap: { [key: string]: string } = {
+    "Complete Health": "bg-red-500 hover:bg-red-600", // Red like Blood Tests
+    "Women's Wellness": "bg-pink-500 hover:bg-pink-600", // Pink like Hormone Tests  
+    "Menopause Health": "bg-purple-600 hover:bg-purple-700", // Purple for menopause
+    "Hormone Health": "bg-pink-600 hover:bg-pink-700", // Magenta like Hormone Tests
+    "Fertility Health": "bg-green-500 hover:bg-green-600", // Green like Thyroid Tests
+    "Pregnancy Health": "bg-rose-400 hover:bg-rose-500", // Light pink for pregnancy
+    "PCOS Health": "bg-orange-500 hover:bg-orange-600", // Orange like Diabetes Testing
+    "vitamins": "bg-green-500 hover:bg-green-600" // Same green as Fertility Health
+  };
+  return buttonColorMap[category] || "bg-gray-500 hover:bg-gray-600";
+};
+
 const WomensHealthPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -258,7 +272,7 @@ const WomensHealthPage = () => {
                           </div>
                         </div>
                         <div className="mt-auto pt-4">
-                          <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
+                          <Button className={`w-full text-white ${getCategoryButtonColor(test.category)}`}>
                             Compare Providers
                           </Button>
                         </div>
