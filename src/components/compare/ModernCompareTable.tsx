@@ -68,7 +68,7 @@ export const ModernCompareTable = ({
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-center">
                 Most comprehensive test for the price
               </p>
             </CardContent>
