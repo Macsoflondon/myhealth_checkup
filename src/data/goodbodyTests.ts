@@ -395,15 +395,17 @@ export const getTestsByCategory = (category: string): GoodbodyTest[] => {
 // Helper function to get tests for navigation dropdowns
 export const getTestsForNavigation = (navItem: string): GoodbodyTest[] => {
   const categoryMap: Record<string, string[]> = {
-    'WOMEN\'S HEALTH': ['womens-health'],
-    'MEN\'S HEALTH': ['mens-health'],
-    'HORMONES': ['hormones'],
-    'THYROID': ['thyroid'],
-    'CANCER SCREENING': ['cancer-screening'],
-    'GENERAL WELLNESS': ['general-wellness']
+    'WOMEN\'S HEALTH': ['womens-health', 'fertility', 'hormones'],
+    'MEN\'S HEALTH': ['mens-health', 'hormones'],
+    'HORMONES': ['hormones', 'thyroid', 'fertility'],
+    'THYROID': ['thyroid', 'hormones'],
+    'MOST POPULAR TESTS': ['general-wellness', 'vitamins', 'thyroid', 'hormones'],
+    'AT-HOME TESTS': ['general-wellness', 'vitamins', 'thyroid', 'hormones'],
+    'CANCER SCREENING': ['cancer-screening', 'general-wellness'],
+    'GENERAL WELLNESS': ['general-wellness', 'vitamins', 'heart-health']
   };
 
-  const categories = categoryMap[navItem] || [];
+  const categories = categoryMap[navItem] || ['general-wellness'];
   const tests = categories.flatMap(category => getTestsByCategory(category));
   
   // Remove duplicates based on test ID
