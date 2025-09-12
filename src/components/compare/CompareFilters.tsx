@@ -43,7 +43,7 @@ export const CompareFilters = ({
     <div className="space-y-6 mb-8">
       {/* Category Selection */}
       <Card className="bg-card/50 backdrop-blur-sm border-border/50">
-        <CardContent className="p-6">
+        <CardContent className="p-6 bg-white">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="h-4 w-4 text-health-primary" />
             <h3 className="font-semibold text-foreground">Test Categories</h3>
