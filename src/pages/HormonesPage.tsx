@@ -181,7 +181,11 @@ const HormonesPage = () => {
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
                   Browse Hormone Tests
                 </Button>
-                <Button size="lg" variant="outline">
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-[#e70d69] hover:border-[#e70d69] hover:text-white transition-colors"
+                >
                   Find a Clinic
                 </Button>
               </div>
