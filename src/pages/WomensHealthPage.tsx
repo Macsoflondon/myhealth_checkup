@@ -128,6 +128,20 @@ const getCategoryColor = (category: string) => {
   return colorMap[category] || "bg-gray-500 text-white";
 };
 
+const getCategoryBorderColor = (category: string) => {
+  const borderColorMap: { [key: string]: string } = {
+    "Complete Health": "border-red-500", // Red like Blood Tests
+    "Women's Wellness": "border-pink-500", // Pink like Hormone Tests  
+    "Menopause Health": "border-purple-600", // Purple for menopause
+    "Hormone Health": "border-pink-600", // Magenta like Hormone Tests
+    "Fertility Health": "border-green-500", // Green like Thyroid Tests
+    "Pregnancy Health": "border-rose-400", // Light pink for pregnancy
+    "PCOS Health": "border-orange-500", // Orange like Diabetes Testing
+    "vitamins": "border-green-500" // Same green as Fertility Health
+  };
+  return borderColorMap[category] || "border-gray-500";
+};
+
 const WomensHealthPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -192,7 +206,7 @@ const WomensHealthPage = () => {
                 {womensHealthTests.map((test) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20 h-full flex flex-col">
+                    <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
