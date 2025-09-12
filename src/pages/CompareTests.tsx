@@ -108,31 +108,31 @@ const CompareTests = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-health-primary to-health-secondary py-12 md:py-16 bg-white">
+        <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-4 text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="h-6 w-6 text-white" />
-              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+              <Sparkles className="h-6 w-6 text-primary" />
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                 Live Pricing
               </Badge>
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
               Compare Health Tests
             </h1>
-              <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-6">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
                 Find the perfect health test from {memoizedStats.providerCount} trusted UK providers. 
                 Real-time prices, expert reviews, and AI-powered recommendations.
               </p>
             
             {/* Quick Stats */}
             <div className="flex flex-wrap justify-center gap-6 mt-8">
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                <TrendingUp className="h-4 w-4 text-white" />
-                <span className="text-white text-sm font-medium">{memoizedStats.testCount}+ Tests Available</span>
+              <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-2">
+                <TrendingUp className="h-4 w-4 text-primary" />
+                <span className="text-foreground text-sm font-medium">{memoizedStats.testCount}+ Tests Available</span>
               </div>
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
-                <Clock className="h-4 w-4 text-white" />
-                <span className="text-white text-sm font-medium">Real-time Pricing</span>
+              <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-2">
+                <Clock className="h-4 w-4 text-primary" />
+                <span className="text-foreground text-sm font-medium">Real-time Pricing</span>
               </div>
             </div>
           </div>
