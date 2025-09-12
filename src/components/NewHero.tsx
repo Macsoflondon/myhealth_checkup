@@ -94,7 +94,7 @@ const NewHero = () => {
               aspectRatio: '16/9'
             }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
                 {/* Hero images */}
-                {heroImages.map((imageSrc, index) => <LazyImage key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-2000 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} width={1200} height={675} priority={index === 0} />)}
+                {heroImages.map((imageSrc, index) => <LazyImage key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} width={1200} height={675} priority={index === 0} />)}
               </div>
             </div>
           </div>

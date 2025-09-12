@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PWAFeatures } from "@/components/PWAFeatures";
-import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+import { useAdvancedPerformance } from "@/hooks/useAdvancedPerformance";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import { Loader2 } from "lucide-react";
 
@@ -9,11 +9,11 @@ import { Loader2 } from "lucide-react";
 const OptimizedLoadingSpinner = ({ message = "Loading..." }: { message?: string }) => (
   <div className="flex items-center justify-center min-h-screen bg-slate-50">
     <div className="text-center">
-      <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-health-primary" />
-      <p className="text-muted-foreground text-lg font-medium">{message}</p>
+      <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-health-primary" />
+      <p className="text-muted-foreground text-base font-medium">{message}</p>
       <div className="mt-4 space-y-2">
-        <div className="h-4 bg-gray-200 rounded animate-pulse w-48 mx-auto"></div>
-        <div className="h-4 bg-gray-200 rounded animate-pulse w-32 mx-auto"></div>
+        <div className="h-3 bg-gray-200 rounded animate-pulse w-32 mx-auto"></div>
+        <div className="h-3 bg-gray-200 rounded animate-pulse w-24 mx-auto"></div>
       </div>
     </div>
   </div>
@@ -23,8 +23,8 @@ const OptimizedLoadingSpinner = ({ message = "Loading..." }: { message?: string 
 const LazyApp = lazy(() => import("@/App"));
 
 export default function OptimizedApp() {
-  // Apply performance and mobile optimizations
-  usePerformanceOptimization();
+  // Apply advanced performance and mobile optimizations
+  const { getPerformanceMetrics } = useAdvancedPerformance();
   useMobileOptimization();
   
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function OptimizedApp() {
       if (!themeColorMeta) {
         themeColorMeta = document.createElement('meta');
         themeColorMeta.setAttribute('name', 'theme-color');
-        themeColorMeta.setAttribute('content', '#081129');
+        themeColorMeta.setAttribute('content', '#e70d69');
         document.head.appendChild(themeColorMeta);
       }
 
@@ -68,25 +68,42 @@ export default function OptimizedApp() {
 
     addCriticalMetas();
 
-    // Preload critical routes
+    // Preload critical routes with throttling
     const preloadRoutes = () => {
-      const criticalRoutes = ['/compare', '/search', '/tests'];
-      criticalRoutes.forEach(route => {
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = route;
-        document.head.appendChild(link);
+      // Only preload if not on slow connection
+      const connection = (navigator as any)?.connection;
+      if (connection && ['slow-2g', '2g'].includes(connection.effectiveType)) {
+        return;
+      }
+
+      const criticalRoutes = ['/compare', '/search', '/mens-health', '/womens-health'];
+      criticalRoutes.forEach((route, index) => {
+        setTimeout(() => {
+          const link = document.createElement('link');
+          link.rel = 'prefetch';
+          link.href = route;
+          document.head.appendChild(link);
+        }, index * 500);
       });
     };
 
-    // Delay non-critical preloads
-    setTimeout(preloadRoutes, 2000);
-  }, []);
+    // Delay non-critical preloads based on page load
+    const timeout = window.innerWidth <= 768 ? 3000 : 2000;
+    setTimeout(preloadRoutes, timeout);
+
+    // Log performance metrics after app loads
+    setTimeout(() => {
+      const metrics = getPerformanceMetrics();
+      if (Object.keys(metrics).length > 0) {
+        console.log('Performance Metrics:', metrics);
+      }
+    }, 5000);
+  }, [getPerformanceMetrics]);
 
   return (
     <ErrorBoundary>
       <PWAFeatures />
-      <Suspense fallback={<OptimizedLoadingSpinner message="Loading myhealthcheckup..." />}>
+      <Suspense fallback={<OptimizedLoadingSpinner message="Loading My Health Checkup..." />}>
         <LazyApp />
       </Suspense>
     </ErrorBoundary>

@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { cn } from "@/lib/utils";
-import { useOptimizedImage } from "@/hooks/useOptimizedImage";
+import { useFastImageOptimization } from "@/hooks/useFastImageOptimization";
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -13,30 +13,40 @@ interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 export const LazyImage = memo(({ 
   src, 
   alt, 
-  placeholder = "/placeholder.svg", 
+  placeholder, 
   className, 
   priority = false,
   ...props 
 }: LazyImageProps) => {
-  const { imageSrc, isLoading, hasError } = useOptimizedImage({ src, placeholder });
+  const { 
+    src: currentSrc, 
+    isLoading, 
+    hasError, 
+    setRef 
+  } = useFastImageOptimization({ 
+    src, 
+    placeholder, 
+    priority 
+  });
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
       <img
-        src={imageSrc}
+        ref={setRef}
+        src={currentSrc}
         alt={alt}
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
         fetchPriority={priority ? "high" : "auto"}
         className={cn(
-          "transition-opacity duration-300",
-          isLoading ? "opacity-0" : "opacity-100",
+          "w-full h-auto transition-opacity duration-300 gpu-acceleration",
+          !isLoading && !hasError ? "opacity-100" : "opacity-90",
           hasError ? "opacity-50" : "",
           className
         )}
         {...props}
       />
-      {isLoading && (
+      {isLoading && !priority && (
         <div className="absolute inset-0 bg-muted animate-pulse rounded" />
       )}
     </div>
