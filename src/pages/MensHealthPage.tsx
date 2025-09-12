@@ -108,18 +108,29 @@ const getCategoryColor = (category: string) => {
   const colorMap: { [key: string]: string } = {
     "Complete Health": "bg-red-500 text-white",
     "Men's Wellness": "bg-blue-500 text-white",
-    "Hormone Health": "bg-pink-500 text-white",
+    "Hormone Health": "bg-pink-600 text-white",
     "Sexual Health": "bg-purple-500 text-white",
     "Prostate Health": "bg-blue-500 text-white"
   };
   return colorMap[category] || "bg-gray-500 text-white";
 };
 
+const getCategoryBorderColor = (category: string) => {
+  const borderColorMap: { [key: string]: string } = {
+    "Complete Health": "border-red-500",
+    "Men's Wellness": "border-blue-500",
+    "Hormone Health": "border-pink-600",
+    "Sexual Health": "border-purple-500",
+    "Prostate Health": "border-blue-500"
+  };
+  return borderColorMap[category] || "border-gray-500";
+};
+
 const getCategoryButtonColor = (category: string) => {
   const buttonColorMap: { [key: string]: string } = {
     "Complete Health": "bg-red-500 hover:bg-red-600",
     "Men's Wellness": "bg-blue-500 hover:bg-blue-600",
-    "Hormone Health": "bg-pink-500 hover:bg-pink-600",
+    "Hormone Health": "bg-pink-600 hover:bg-pink-700",
     "Sexual Health": "bg-purple-500 hover:bg-purple-600",
     "Prostate Health": "bg-blue-500 hover:bg-blue-600"
   };
@@ -221,7 +232,7 @@ const MensHealthPage = () => {
                 {mensHealthTests.map((test) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 bg-white shadow-md border-2 hover:border-opacity-80 h-full flex flex-col">
+                    <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">

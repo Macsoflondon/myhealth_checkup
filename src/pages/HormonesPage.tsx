@@ -12,7 +12,7 @@ const hormoneTests = [
     name: "Female Hormones Blood Test",
     description: "Comprehensive female hormone panel including reproductive hormones and cycle regulation markers",
     icon: Flower2,
-    category: "Female Hormones",
+    category: "Women's Wellness",
     price: "£79",
     biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
     suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
@@ -56,7 +56,7 @@ const hormoneTests = [
     name: "Menopause Hormone Test",
     description: "Specialized testing to assess menopausal status and hormone levels during transition",
     icon: Moon,
-    category: "Female Hormones",
+    category: "Women's Wellness",
     price: "£69",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes"],
@@ -126,7 +126,7 @@ const healthConcerns = [
 
 const getCategoryColor = (category: string) => {
   const colorMap: { [key: string]: string } = {
-    "Female Hormones": "bg-pink-500 text-white",
+    "Women's Wellness": "bg-pink-500 text-white",
     "Male Hormones": "bg-blue-500 text-white",
     "Thyroid Hormones": "bg-green-500 text-white",
     "Fertility": "bg-rose-500 text-white",
@@ -136,9 +136,21 @@ const getCategoryColor = (category: string) => {
   return colorMap[category] || "bg-gray-500 text-white";
 };
 
+const getCategoryBorderColor = (category: string) => {
+  const borderColorMap: { [key: string]: string } = {
+    "Women's Wellness": "border-pink-500",
+    "Male Hormones": "border-blue-500",
+    "Thyroid Hormones": "border-green-500",
+    "Fertility": "border-rose-500",
+    "Stress Hormones": "border-orange-500",
+    "Metabolic Hormones": "border-red-500"
+  };
+  return borderColorMap[category] || "border-gray-500";
+};
+
 const getCategoryButtonColor = (category: string) => {
   const buttonColorMap: { [key: string]: string } = {
-    "Female Hormones": "bg-pink-500 hover:bg-pink-600",
+    "Women's Wellness": "bg-pink-500 hover:bg-pink-600",
     "Male Hormones": "bg-blue-500 hover:bg-blue-600",
     "Thyroid Hormones": "bg-green-500 hover:bg-green-600",
     "Fertility": "bg-rose-500 hover:bg-rose-600",
@@ -243,7 +255,7 @@ const HormonesPage = () => {
                 {hormoneTests.map((test) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 bg-white shadow-md border-2 hover:border-opacity-80 h-full flex flex-col">
+                    <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
