@@ -146,7 +146,7 @@ const ThyroidPage = () => {
                             <div className="p-3 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-6 w-6" />
                             </div>
-                            <Badge className={`text-xs ${getThyroidCategoryColor(test.category)}`}>
+                            <Badge className={`text-xs whitespace-nowrap ${getThyroidCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>

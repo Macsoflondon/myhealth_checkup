@@ -207,7 +207,7 @@ const HormonesPage = () => {
                             <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-5 w-5" />
                             </div>
-                            <Badge className={`text-xs ${getHormoneCategoryColor(test.category)}`}>
+                            <Badge className={`text-xs whitespace-nowrap ${getHormoneCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>
