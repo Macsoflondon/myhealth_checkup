@@ -286,41 +286,41 @@ const WomensHealthPage = () => {
         </section>
 
         {/* Health Concerns */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
+                <h2 className="text-3xl font-bold text-white mb-4">
                   {t('womensHealth.healthConcernsTitle')}
                 </h2>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-gray-300">
                   {t('womensHealth.healthConcernsSubtitle')}
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {healthConcerns.map((concern, index) => (
-                  <Card key={index} className="border-border/50">
+                  <Card key={index} className="border-gray-600 bg-white/10 backdrop-blur-sm">
                     <CardHeader>
-                      <CardTitle className="text-lg">{concern.name}</CardTitle>
-                      <CardDescription className="text-sm">
+                      <CardTitle className="text-lg text-white">{concern.name}</CardTitle>
+                      <CardDescription className="text-sm text-gray-300">
                         {concern.description}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h4 className="font-medium text-sm mb-2">{t('womensHealth.commonSymptoms')}</h4>
+                        <h4 className="font-medium text-sm mb-2 text-white">{t('womensHealth.commonSymptoms')}</h4>
                         <div className="flex flex-wrap gap-1">
                           {concern.symptoms.map((symptom, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
+                            <Badge key={idx} variant="outline" className="text-xs bg-white/20 text-white border-white/30">
                               {symptom}
                             </Badge>
                           ))}
                         </div>
                       </div>
                       <div>
-                        <h4 className="font-medium text-sm mb-2">{t('womensHealth.recommendedTest')}</h4>
-                        <p className="text-sm text-primary font-medium">{concern.recommendedTest}</p>
+                        <h4 className="font-medium text-sm mb-2 text-white">{t('womensHealth.recommendedTest')}</h4>
+                        <p className="text-sm text-pink-300 font-medium">{concern.recommendedTest}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -331,37 +331,37 @@ const WomensHealthPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16">
+        <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
+              <h2 className="text-3xl font-bold text-white mb-12">
                 {t('womensHealth.benefitsTitle')}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-pink-300" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{t('womensHealth.hormoneBenefitTitle')}</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.hormoneBenefitTitle')}</h3>
+                  <p className="text-gray-300">
                     {t('womensHealth.hormoneBenefitDescription')}
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Baby className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Baby className="h-8 w-8 text-pink-300" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{t('womensHealth.fertilityBenefitTitle')}</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.fertilityBenefitTitle')}</h3>
+                  <p className="text-gray-300">
                     {t('womensHealth.fertilityBenefitDescription')}
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-pink-300" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{t('womensHealth.preventiveBenefitTitle')}</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.preventiveBenefitTitle')}</h3>
+                  <p className="text-gray-300">
                     {t('womensHealth.preventiveBenefitDescription')}
                   </p>
                 </div>
