@@ -25,10 +25,10 @@ export const compareCategories = [
     searchTerms: ["vitamin", "mineral", "b12", "d3", "folate", "iron", "zinc", "magnesium", "nutrient"]
   },
   {
-    id: "diabetes",
-    name: "Diabetes Testing",
-    description: "Blood sugar, HbA1c, and diabetes monitoring",
-    searchTerms: ["diabetes", "diabetic", "glucose", "hba1c", "insulin", "blood sugar"]
+    id: "cancer-screening",
+    name: "Cancer Screening",
+    description: "Early detection and preventive screening",
+    searchTerms: ["cancer", "screening", "tumour", "psa", "cea", "ca125", "oncology"]
   },
   {
     id: "heart-health",
@@ -37,16 +37,16 @@ export const compareCategories = [
     searchTerms: ["heart", "cardiac", "cardiovascular", "cholesterol", "lipid", "triglycerides", "hdl", "ldl"]
   },
   {
-    id: "liver-health", 
-    name: "Liver Health",
-    description: "Liver function and health monitoring",
-    searchTerms: ["liver", "hepatic", "alt", "ast", "bilirubin", "liver function"]
+    id: "mens-health",
+    name: "Men's Health", 
+    description: "Comprehensive men's health screening and monitoring",
+    searchTerms: ["mens", "male", "prostate", "testosterone", "mens health", "male health"]
   },
   {
-    id: "kidney-health",
-    name: "Kidney Health", 
-    description: "Kidney function and health testing",
-    searchTerms: ["kidney", "renal", "creatinine", "urea", "kidney function", "egfr"]
+    id: "womens-health",
+    name: "Women's Health", 
+    description: "Comprehensive women's health screening and monitoring",
+    searchTerms: ["womens", "female", "ovarian", "cervical", "womens health", "female health", "well woman"]
   },
   {
     id: "fertility",

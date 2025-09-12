@@ -12,14 +12,13 @@ const categoryColorMap: Record<string, string> = {
   'hormones': 'bg-pink-500 text-white', 
   'thyroid': 'bg-emerald-500 text-white',
   'vitamins': 'bg-lime-500 text-white',
-  'diabetes': 'bg-orange-500 text-white',
+  'cancer-screening': 'bg-purple-600 text-white',
   'heart-health': 'bg-red-600 text-white',
-  'liver-health': 'bg-yellow-500 text-white',
-  'kidney-health': 'bg-blue-500 text-white',
+  'mens-health': 'bg-blue-500 text-white',
+  'womens-health': 'bg-pink-600 text-white',
   'fertility': 'bg-purple-500 text-white',
   'general-health': 'bg-teal-500 text-white',
-  'allergy-testing': 'bg-indigo-500 text-white',
-  'cancer-screening': 'bg-gray-700 text-white'
+  'allergy-testing': 'bg-indigo-500 text-white'
 };
 
 export const SearchBar = () => {
