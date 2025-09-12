@@ -25,20 +25,38 @@ export const UserMenu = ({
     onItemClick?.();
   };
   if (isMobile) {
-    return <div className="pt-4 border-t border-gray-200 space-y-3">
-        {user ? <>
-            <Link to="/dashboard" className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors" onClick={onItemClick}>
-              <LayoutDashboard className="h-5 w-5" />
-              <span>Dashboard</span>
-            </Link>
-            <button onClick={handleSignOut} className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors w-full text-left">
-              <LogOut className="h-5 w-5" />
-              <span>Sign Out</span>
-            </button>
-          </> : <Link to="/auth" className="h-10 px-3 flex items-center gap-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20 rounded-md transition-colors" onClick={onItemClick}>
-            <User className="h-5 w-5 rounded" />
-          </Link>}
-      </div>;
+    if (user) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20">
+              <User className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link to="/dashboard" className="flex items-center gap-2" onClick={onItemClick}>
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleSignOut}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+    
+    return (
+      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20" asChild>
+        <Link to="/auth" className="flex items-center gap-2" onClick={onItemClick}>
+          <User className="h-5 w-5" />
+        </Link>
+      </Button>
+    );
   }
   if (user) {
     return <DropdownMenu>
