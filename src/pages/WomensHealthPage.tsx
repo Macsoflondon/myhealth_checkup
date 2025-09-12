@@ -28,7 +28,7 @@ const womensHealthTests = [
     price: "£149",
     biomarkers: ["Female Hormones", "Thyroid Function", "Cholesterol Panel", "Blood Sugar", "Liver Function", "Iron Studies"],
     suitableFor: ["Women 30+", "Routine health screening", "Hormone assessment", "Reproductive health"],
-    turnaround: "48-72 hours"
+    turnaround: "2-3 days"
   },
   {
     id: "menopause-blood-test",
@@ -39,7 +39,7 @@ const womensHealthTests = [
     price: "£89",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG", "Thyroid Function"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes", "Women 45+"],
-    turnaround: "48 hours"
+    turnaround: "2 days"
   },
   {
     id: "female-hormones",
@@ -50,7 +50,7 @@ const womensHealthTests = [
     price: "£99",
     biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
     suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
-    turnaround: "24-48 hours"
+    turnaround: "1-2 days"
   },
   {
     id: "amh-fertility",
@@ -72,7 +72,7 @@ const womensHealthTests = [
     price: "£55",
     biomarkers: ["hCG", "Progesterone", "Thyroid Function", "Iron Studies", "Vitamin D", "Folate"],
     suitableFor: ["Pregnancy confirmation", "Early pregnancy monitoring", "Nutritional assessment", "Prenatal health"],
-    turnaround: "24 hours"
+    turnaround: "1 day"
   },
   {
     id: "pcos-blood-test",
@@ -83,7 +83,7 @@ const womensHealthTests = [
     price: "£125",
     biomarkers: ["Testosterone", "SHBG", "LH", "FSH", "Insulin", "HbA1c", "Lipid Profile"],
     suitableFor: ["Irregular periods", "Weight gain", "Acne", "Hair loss", "Fertility issues"],
-    turnaround: "48 hours"
+    turnaround: "2 days"
   }
 ];
 
