@@ -63,18 +63,12 @@ const Header = ({ className }: HeaderProps) => {
               <SearchBar />
             </div>
             
-            {/* User Menu and Language Switcher */}
+            {/* Navigation Items and User Controls */}
             <div className="flex items-center gap-2 flex-shrink-0">
+              <NavigationItems className="hidden lg:flex items-center gap-2" />
               <LanguageSwitcher />
               <UserMenu />
             </div>
-          </div>
-        </div>
-
-        {/* Navigation bar */}
-        <div className="bg-white border-t border-gray-200 overflow-hidden">
-          <div className="px-2 sm:px-4 py-2 w-full">
-            <NavigationItems className="flex items-center justify-start sm:justify-center gap-1 sm:gap-2 overflow-x-auto scrollbar-hide pb-1" />
           </div>
         </div>
       </header>
