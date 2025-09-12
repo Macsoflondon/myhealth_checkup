@@ -71,7 +71,7 @@ const Footer = () => {
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div>
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <div className="h-8 w-8 flex items-center justify-center">
