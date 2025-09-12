@@ -275,7 +275,7 @@ const WomensHealthPage = () => {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
                     <Users className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.wellnessBenefitTitle')}</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Lifelong Hormone Health</h3>
                   <p className="text-muted-foreground">
                     Monitor and optimise hormone levels throughout life stages
                   </p>
