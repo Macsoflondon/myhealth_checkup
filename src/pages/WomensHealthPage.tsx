@@ -193,7 +193,7 @@ const WomensHealthPage = () => {
                   return (
                     <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
                       <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
                             <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-5 w-5" />
@@ -202,7 +202,7 @@ const WomensHealthPage = () => {
                               {test.category}
                             </Badge>
                           </div>
-                          <div className="text-right">
+                          <div className="flex items-center gap-2">
                             <span className="text-2xl font-bold text-health-heading">{test.price}</span>
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                           </div>
