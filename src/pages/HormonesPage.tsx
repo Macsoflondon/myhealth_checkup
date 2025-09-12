@@ -56,7 +56,7 @@ const hormoneTests = [
     name: "Menopause Hormone Test",
     description: "Specialized testing to assess menopausal status and hormone levels during transition",
     icon: Moon,
-    category: "Menopause",
+    category: "Female Hormones",
     price: "£89",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes"],
@@ -129,7 +129,6 @@ const getCategoryColor = (category: string) => {
     "Female Hormones": "bg-pink-500 text-white",
     "Male Hormones": "bg-blue-500 text-white",
     "Thyroid Hormones": "bg-green-500 text-white",
-    "Menopause": "bg-purple-500 text-white",
     "Fertility": "bg-rose-500 text-white",
     "Stress Hormones": "bg-orange-500 text-white",
     "Metabolic Hormones": "bg-red-500 text-white"
@@ -142,7 +141,6 @@ const getCategoryButtonColor = (category: string) => {
     "Female Hormones": "bg-pink-500 hover:bg-pink-600",
     "Male Hormones": "bg-blue-500 hover:bg-blue-600",
     "Thyroid Hormones": "bg-green-500 hover:bg-green-600",
-    "Menopause": "bg-purple-500 hover:bg-purple-600",
     "Fertility": "bg-rose-500 hover:bg-rose-600",
     "Stress Hormones": "bg-orange-500 hover:bg-orange-600",
     "Metabolic Hormones": "bg-red-500 hover:bg-red-600"

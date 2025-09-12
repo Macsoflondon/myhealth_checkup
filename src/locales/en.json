@@ -143,7 +143,7 @@
       "menopause": {
         "name": "Menopause Blood Test",
         "description": "Specialised testing to assess menopausal status and hormone levels during perimenopause and menopause",
-        "category": "Menopause Health",
+        "category": "Female Hormones",
         "price": "£89",
         "turnaround": "2 days",
         "biomarkers": ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG", "Thyroid Function"],
