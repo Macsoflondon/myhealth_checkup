@@ -155,7 +155,7 @@ const ThyroidPage = () => {
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                           </div>
                         </div>
-                        <CardTitle className="text-xl leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
+                        <CardTitle className="text-xl leading-tight mb-2" style={{ color: '#081129' }}>{test.name}</CardTitle>
                         <CardDescription className="text-sm text-muted-foreground">
                           {test.description}
                         </CardDescription>
@@ -233,7 +233,7 @@ const ThyroidPage = () => {
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Activity className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Energy & Metabolism</h3>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Energy & Metabolism</h3>
                   <p className="text-muted-foreground">
                     Thyroid hormones regulate metabolism, energy levels, and weight
                   </p>
@@ -242,7 +242,7 @@ const ThyroidPage = () => {
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <TestTube2 className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Early Detection</h3>
                   <p className="text-muted-foreground">
                     Identify thyroid disorders before symptoms become severe
                   </p>
@@ -251,7 +251,7 @@ const ThyroidPage = () => {
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Users className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Treatment Monitoring</h3>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Treatment Monitoring</h3>
                   <p className="text-muted-foreground">
                     Track treatment effectiveness and optimize thyroid medication
                   </p>
