@@ -462,6 +462,15 @@ const ClinicMap: React.FC = () => {
                   />
                 </div>
               </div>
+              
+              {/* Nationwide Testing Services Content */}
+              <div className="flex justify-center mt-4">
+                <img 
+                  src="/lovable-uploads/9067fcd0-9a2e-4dc0-bdca-837d9c58d60f.png"
+                  alt="Nationwide Testing Services Information"
+                  className="max-w-full h-auto"
+                />
+              </div>
 
               {/* Content */}
               <div>
