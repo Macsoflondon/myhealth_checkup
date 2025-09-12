@@ -88,7 +88,7 @@ export const ModernCompareTable = ({
             </CardContent>
           </Card>
           
-          <Card className="border-health-accent/50 bg-health-accent/5">
+          <Card className="border-health-accent/50 bg-white">
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 text-health-accent" />
