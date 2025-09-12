@@ -124,7 +124,7 @@ const NewHero = () => {
         <div className="relative z-10 w-full py-16 bg-slate-50">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-12 max-w-4xl mx-auto px-4">
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center font-medium text-white text-base">No GP Referral Needed</span>
