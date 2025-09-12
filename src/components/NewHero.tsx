@@ -122,18 +122,23 @@ const NewHero = () => {
                     priority={index === 0}
                   />
                 ))}
-                
-                {/* Overlay headline */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40 flex items-center justify-center p-4">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-6 md:p-8 text-center max-w-4xl mx-auto shadow-xl">
-                    <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-[#22c0d4] leading-tight">
-                      Compare the UK's leading private health test providers
-                      <span className="block text-[#fc0173] mt-2">All in one place!</span>
-                    </h1>
-                  </div>
-                </div>
               </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Full-width Headline Banner */}
+        <div className="w-full bg-white py-8">
+          <div className="w-full px-4">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold text-[#22c0d4] text-center leading-tight">
+              Compare the UK's leading private health test providers
+              <span className="block text-[#fc0173] mt-2">All in one place!</span>
+            </h1>
+          </div>
+        </div>
+        
+        <div className="relative z-10 w-full bg-slate-50">
+          <div className="w-full text-center px-4">
             
 
             {/* Trust Indicators */}
