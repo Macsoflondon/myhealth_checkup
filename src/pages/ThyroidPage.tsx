@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield, Zap, TestTube2, Users } from "lucide-react";
+import { Heart, Activity, Shield, Zap, TestTube2, Users, ArrowLeft } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
 const thyroidTests = [{
   id: "thyroid-blood-test",
   name: "Thyroid Blood Test",
@@ -44,6 +45,8 @@ const thyroidConditions = [{
   symptoms: ["Bulging eyes", "Weight loss", "Tremors", "Anxiety"]
 }];
 const ThyroidPage = () => {
+  const navigate = useNavigate();
+  
   return <>
       <Helmet>
         <title>Thyroid Blood Tests | TSH, T3, T4 & Antibody Testing | My Health Checkup</title>
@@ -66,6 +69,29 @@ const ThyroidPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 mb-6 text-sm container mx-auto px-4 pt-8">
+          <Link 
+            to="/"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Home
+          </Link>
+          <span className="text-muted-foreground">/</span>
+          <span className="text-foreground">Thyroid Function Tests</span>
+        </nav>
+
+        {/* Back Button */}
+        <div className="container mx-auto px-4">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate(-1)}
+            className="mb-6 -ml-4"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back
+          </Button>
+        </div>
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
           <div className="container mx-auto px-4">
