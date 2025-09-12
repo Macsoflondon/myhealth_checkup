@@ -99,25 +99,24 @@ const CookieConsent = () => {
               </div>
               <div className="flex gap-2 flex-wrap">
                 <Button
-                  variant="outline"
                   size="sm"
                   onClick={() => setShowSettings(true)}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 bg-[#22c0d4] text-white hover:bg-[#fc0173] transition-all duration-200"
                 >
                   <Settings className="h-4 w-4" />
                   Manage Preferences
                 </Button>
                 <Button
-                  variant="outline"
                   size="sm"
                   onClick={handleRejectAll}
+                  className="bg-[#22c0d4] text-white hover:bg-[#fc0173] transition-all duration-200"
                 >
                   Reject All
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleAcceptAll}
-                  className="bg-health-600 hover:bg-health-700"
+                  className="bg-[#22c0d4] text-white hover:bg-[#fc0173] transition-all duration-200"
                 >
                   Accept All
                 </Button>
@@ -221,15 +220,14 @@ const CookieConsent = () => {
 
               <div className="flex gap-2 mt-6 pt-6 border-t">
                 <Button
-                  variant="outline"
                   onClick={handleRejectAll}
-                  className="flex-1"
+                  className="flex-1 bg-[#22c0d4] text-white hover:bg-[#fc0173] transition-all duration-200"
                 >
                   Reject All
                 </Button>
                 <Button
                   onClick={handleSavePreferences}
-                  className="flex-1 bg-health-600 hover:bg-health-700"
+                  className="flex-1 bg-[#22c0d4] text-white hover:bg-[#fc0173] transition-all duration-200"
                 >
                   Save Preferences
                 </Button>
