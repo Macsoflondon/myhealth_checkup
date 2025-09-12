@@ -192,7 +192,7 @@ const WomensHealthPage = () => {
                 and complete wellness testing designed for women's unique health needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-primary">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   Browse All Tests
                 </Button>
                 <Button size="lg" className="bg-health-primary text-white hover:bg-primary">
