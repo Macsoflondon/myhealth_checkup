@@ -82,7 +82,7 @@ export const ModernCompareTable = ({
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-center">
                 Get your results in 24-48 hours
               </p>
             </CardContent>
