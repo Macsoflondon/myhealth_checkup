@@ -107,20 +107,19 @@ const NewHero = () => {
           <div className="w-full text-center px-4">
             {/* Hero Images Container */}
             <div className="mb-8 relative max-w-7xl mx-auto">
-              <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-2xl min-h-[400px] md:min-h-[500px]">
+              <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-2xl" style={{ aspectRatio: '16/9' }}>
                 {/* Hero images */}
                 {heroImages.map((imageSrc, index) => (
                   <LazyImage 
                     key={imageSrc}
                     src={imageSrc} 
                     alt="myhealth checkup - Your health is your greatest asset" 
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-2000 ease-in-out ${
+                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-2000 ease-in-out ${
                       index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                     }`}
                     width={1200} 
                     height={675} 
-                    priority={index === 0} 
-                    style={{ objectPosition: 'center center' }}
+                    priority={index === 0}
                   />
                 ))}
                 
