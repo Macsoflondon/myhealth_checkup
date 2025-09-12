@@ -216,7 +216,7 @@ const HormonesPage = () => {
                             <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
+                        <CardTitle className="text-lg leading-tight mb-2" style={{ color: '#081129' }}>{test.name}</CardTitle>
                         <CardDescription className="text-sm text-muted-foreground">
                           {test.description}
                         </CardDescription>
@@ -316,7 +316,7 @@ const HormonesPage = () => {
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Activity className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Optimize Energy</h3>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Optimize Energy</h3>
                   <p className="text-muted-foreground">
                     Balance hormones to boost energy levels and reduce fatigue
                   </p>
@@ -325,7 +325,7 @@ const HormonesPage = () => {
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Heart className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Improve Mood</h3>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Improve Mood</h3>
                   <p className="text-muted-foreground">
                     Stabilize mood and reduce anxiety through hormone optimization
                   </p>
@@ -334,7 +334,7 @@ const HormonesPage = () => {
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Shield className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Prevent Disease</h3>
+                  <h3 className="text-xl font-semibold mb-2" style={{ color: '#081129' }}>Prevent Disease</h3>
                   <p className="text-muted-foreground">
                     Early detection of hormonal imbalances prevents health issues
                   </p>
