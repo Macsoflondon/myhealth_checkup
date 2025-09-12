@@ -223,9 +223,8 @@ const WomensHealthPage = () => {
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">{t('womensHealth.badge')}</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
+              <div className="max-w-4xl mx-auto text-center">
+               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
                 {t('womensHealth.title')}
               </h1>
               <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{
