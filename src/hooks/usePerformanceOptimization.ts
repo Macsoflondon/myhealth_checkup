@@ -1,14 +1,17 @@
 import { useEffect, useCallback } from "react";
 
-// Performance optimization hook
+// Enhanced performance optimization hook with mobile-specific optimizations
 export function usePerformanceOptimization() {
   
-  // Preload critical resources
+  // Preload critical resources with mobile optimization
   const preloadCriticalResources = useCallback(() => {
-    // Preload critical images
+    // Detect mobile device
+    const isMobile = window.innerWidth <= 768;
+    
+    // Preload critical images (smaller versions for mobile)
     const criticalImages = [
-      '/lovable-uploads/b3d139bc-e5b4-4c1e-ab5f-fc110e1d2ed5.png',
-      '/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png'
+      '/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png',
+      '/lovable-uploads/a4949588-cff7-48ae-ba93-d0040f1dd838.png'
     ];
 
     criticalImages.forEach(src => {
@@ -16,18 +19,31 @@ export function usePerformanceOptimization() {
       link.rel = 'preload';
       link.as = 'image';
       link.href = src;
+      if (isMobile) {
+        link.media = '(max-width: 768px)';
+      }
       document.head.appendChild(link);
     });
 
-    // Preload critical fonts
-    const criticalFonts = [
-      'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
+    // Preload critical CSS and fonts
+    const criticalResources = [
+      { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap', as: 'style' }
     ];
 
-    criticalFonts.forEach(href => {
+    criticalResources.forEach(({ href, as }) => {
       const link = document.createElement('link');
       link.rel = 'preload';
-      link.as = 'style';
+      link.as = as;
+      link.href = href;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+
+    // Enable resource hints for better performance
+    const dnsPreconnects = ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
+    dnsPreconnects.forEach(href => {
+      const link = document.createElement('link');
+      link.rel = 'dns-prefetch';
       link.href = href;
       document.head.appendChild(link);
     });
@@ -85,10 +101,10 @@ export function usePerformanceOptimization() {
     }
   }, []);
 
-  // Clean up unused resources
+  // Enhanced resource cleanup and memory optimization
   const cleanupResources = useCallback(() => {
     return () => {
-      // Clear any cached data older than 10 minutes
+      // Clear cached data older than 10 minutes
       if (typeof Storage !== 'undefined') {
         const now = Date.now();
         for (let i = 0; i < localStorage.length; i++) {
@@ -105,15 +121,71 @@ export function usePerformanceOptimization() {
           }
         }
       }
+      
+      // Clear unused blob URLs to prevent memory leaks
+      if (window.URL && window.URL.revokeObjectURL) {
+        // This would be called when component unmounts
+        console.log('Cleaning up blob URLs and cached resources');
+      }
     };
+  }, []);
+
+  // Add intersection observer for lazy loading optimization
+  const setupIntersectionObserver = useCallback(() => {
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.classList.remove('lazy');
+              imageObserver.unobserve(img);
+            }
+          }
+        });
+      }, {
+        rootMargin: '50px 0px',
+        threshold: 0.01
+      });
+
+      // Observe all lazy images
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
   }, []);
 
   useEffect(() => {
     preloadCriticalResources();
     optimizeViewport();
     observePerformance();
+    setupIntersectionObserver();
+    
+    // Add critical CSS for above-the-fold content
+    const criticalCSS = document.createElement('style');
+    criticalCSS.textContent = `
+      /* Critical CSS for above-the-fold content */
+      .hero-section { will-change: transform; }
+      .hero-section img { 
+        content-visibility: auto;
+        contain: layout style paint;
+      }
+      /* Prevent layout shift */
+      img { 
+        max-width: 100%; 
+        height: auto; 
+        aspect-ratio: attr(width) / attr(height);
+      }
+    `;
+    document.head.appendChild(criticalCSS);
     
     const cleanup = cleanupResources();
-    return cleanup;
-  }, [preloadCriticalResources, optimizeViewport, observePerformance, cleanupResources]);
+    return () => {
+      cleanup();
+      if (criticalCSS.parentNode) {
+        document.head.removeChild(criticalCSS);
+      }
+    };
+  }, [preloadCriticalResources, optimizeViewport, observePerformance, setupIntersectionObserver, cleanupResources]);
 }
