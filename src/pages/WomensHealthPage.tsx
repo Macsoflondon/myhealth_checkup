@@ -122,7 +122,8 @@ const getCategoryColor = (category: string) => {
     "Hormone Health": "bg-pink-600 text-white", // Magenta like Hormone Tests
     "Fertility Health": "bg-green-500 text-white", // Green like Thyroid Tests
     "Pregnancy Health": "bg-rose-400 text-white", // Light pink for pregnancy
-    "PCOS Health": "bg-orange-500 text-white" // Orange like Diabetes Testing
+    "PCOS Health": "bg-orange-500 text-white", // Orange like Diabetes Testing
+    "vitamins": "bg-green-500 text-white" // Same green as Fertility Health
   };
   return colorMap[category] || "bg-gray-500 text-white";
 };
