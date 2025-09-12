@@ -245,6 +245,46 @@ const WomensHealthPage = () => {
           </div>
         </section>
 
+        {/* Benefits Section */}
+        <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
+                {t('womensHealth.benefitsTitle')}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Heart className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.hormoneBenefitTitle')}</h3>
+                  <p className="text-muted-foreground">
+                    {t('womensHealth.hormoneBenefitDescription')}
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Baby className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.fertilityBenefitTitle')}</h3>
+                  <p className="text-muted-foreground">
+                    {t('womensHealth.fertilityBenefitDescription')}
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Users className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.wellnessBenefitTitle')}</h3>
+                  <p className="text-muted-foreground">
+                    {t('womensHealth.wellnessBenefitDescription')}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Available Tests */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -348,46 +388,6 @@ const WomensHealthPage = () => {
                       </div>
                     </CardContent>
                   </Card>)}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-12 text-[#e70d69]">
-                {t('womensHealth.benefitsTitle')}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-white/20 bg-[#e70d69]">
-                    <Heart className="h-8 w-8 text-pink-300" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.hormoneBenefitTitle')}</h3>
-                  <p className="text-[#e70d69] font-medium">
-                    {t('womensHealth.hormoneBenefitDescription')}
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-white/20 bg-[#e70d69]">
-                    <Baby className="h-8 w-8 text-pink-300" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.fertilityBenefitTitle')}</h3>
-                  <p className="text-[#e70d69] font-medium">
-                    {t('womensHealth.fertilityBenefitDescription')}
-                  </p>
-                </div>
-                <div className="text-center rounded-md">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-white/20 bg-[#e70d69]">
-                    <Shield className="h-8 w-8 text-pink-300" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-white">{t('womensHealth.preventiveBenefitTitle')}</h3>
-                  <p className="text-[#e70d69] font-medium">
-                    {t('womensHealth.preventiveBenefitDescription')}
-                  </p>
-                </div>
               </div>
             </div>
           </div>
