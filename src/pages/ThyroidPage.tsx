@@ -5,58 +5,46 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield, Zap, TestTube2, Users } from "lucide-react";
-
-const thyroidTests = [
-  {
-    id: "thyroid-blood-test",
-    name: "Thyroid Blood Test",
-    description: "Essential thyroid function screening including TSH, T3, and T4 to assess thyroid hormone levels and overall thyroid health",
-    icon: Heart,
-    category: "Basic Thyroid",
-    price: "£69",
-    biomarkers: ["TSH", "Free T3", "Free T4"],
-    suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
-    turnaround: "24-48 hours"
-  },
-  {
-    id: "thyroid-function-antibodies",
-    name: "Thyroid Function with Antibodies Test",
-    description: "Comprehensive thyroid assessment including hormone levels plus antibody testing for autoimmune thyroid conditions",
-    icon: Shield,
-    category: "Advanced Thyroid",
-    price: "£125", 
-    biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO", "Anti-Thyroglobulin"],
-    suitableFor: ["Family history of thyroid disease", "Suspected autoimmune conditions", "Comprehensive screening", "Previous abnormal results"],
-    turnaround: "24-48 hours"
-  }
-];
-
-const thyroidConditions = [
-  {
-    name: "Hyperthyroidism",
-    description: "Overactive thyroid producing too much hormone",
-    symptoms: ["Weight loss", "Rapid heartbeat", "Anxiety", "Heat intolerance"]
-  },
-  {
-    name: "Hypothyroidism", 
-    description: "Underactive thyroid producing too little hormone",
-    symptoms: ["Weight gain", "Fatigue", "Cold intolerance", "Hair loss"]
-  },
-  {
-    name: "Hashimoto's Disease",
-    description: "Autoimmune condition causing thyroid inflammation",
-    symptoms: ["Gradual thyroid failure", "Fatigue", "Depression", "Memory problems"]
-  },
-  {
-    name: "Graves' Disease",
-    description: "Autoimmune condition causing thyroid overactivity", 
-    symptoms: ["Bulging eyes", "Weight loss", "Tremors", "Anxiety"]
-  }
-];
-
+const thyroidTests = [{
+  id: "thyroid-blood-test",
+  name: "Thyroid Blood Test",
+  description: "Essential thyroid function screening including TSH, T3, and T4 to assess thyroid hormone levels and overall thyroid health",
+  icon: Heart,
+  category: "Basic Thyroid",
+  price: "£69",
+  biomarkers: ["TSH", "Free T3", "Free T4"],
+  suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
+  turnaround: "24-48 hours"
+}, {
+  id: "thyroid-function-antibodies",
+  name: "Thyroid Function with Antibodies Test",
+  description: "Comprehensive thyroid assessment including hormone levels plus antibody testing for autoimmune thyroid conditions",
+  icon: Shield,
+  category: "Advanced Thyroid",
+  price: "£125",
+  biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO", "Anti-Thyroglobulin"],
+  suitableFor: ["Family history of thyroid disease", "Suspected autoimmune conditions", "Comprehensive screening", "Previous abnormal results"],
+  turnaround: "24-48 hours"
+}];
+const thyroidConditions = [{
+  name: "Hyperthyroidism",
+  description: "Overactive thyroid producing too much hormone",
+  symptoms: ["Weight loss", "Rapid heartbeat", "Anxiety", "Heat intolerance"]
+}, {
+  name: "Hypothyroidism",
+  description: "Underactive thyroid producing too little hormone",
+  symptoms: ["Weight gain", "Fatigue", "Cold intolerance", "Hair loss"]
+}, {
+  name: "Hashimoto's Disease",
+  description: "Autoimmune condition causing thyroid inflammation",
+  symptoms: ["Gradual thyroid failure", "Fatigue", "Depression", "Memory problems"]
+}, {
+  name: "Graves' Disease",
+  description: "Autoimmune condition causing thyroid overactivity",
+  symptoms: ["Bulging eyes", "Weight loss", "Tremors", "Anxiety"]
+}];
 const ThyroidPage = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Thyroid Blood Tests | TSH, T3, T4 & Antibody Testing | My Health Checkup</title>
         <meta name="description" content="Comprehensive thyroid function tests including TSH, T3, T4, and thyroid antibodies. Professional thyroid screening from £69 with fast results." />
@@ -93,7 +81,7 @@ const ThyroidPage = () => {
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
                   Compare Thyroid Tests
                 </Button>
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="bg-[\u20ACtransparent] bg-[#22c0d4]">
                   Find a Clinic
                 </Button>
               </div>
@@ -115,10 +103,9 @@ const ThyroidPage = () => {
               </div>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {thyroidTests.map((test) => {
-                  const IconComponent = test.icon;
-                  return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+                {thyroidTests.map(test => {
+                const IconComponent = test.icon;
+                return <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
                       <CardHeader className="pb-4">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -143,28 +130,25 @@ const ThyroidPage = () => {
                         <div>
                           <h4 className="font-medium text-sm mb-2">Biomarkers Tested:</h4>
                           <div className="flex flex-wrap gap-1">
-                            {test.biomarkers.map((biomarker) => (
-                              <Badge key={biomarker} variant="outline" className="text-xs">
+                            {test.biomarkers.map(biomarker => <Badge key={biomarker} variant="outline" className="text-xs">
                                 {biomarker}
-                              </Badge>
-                            ))}
+                              </Badge>)}
                           </div>
                         </div>
                         <div>
                           <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
                           <ul className="text-xs text-muted-foreground space-y-1">
-                            {test.suitableFor.map((item, index) => (
-                              <li key={index}>• {item}</li>
-                            ))}
+                            {test.suitableFor.map((item, index) => <li key={index}>• {item}</li>)}
                           </ul>
                         </div>
-                        <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
+                        <Button className="w-full" style={{
+                      backgroundColor: '#22c0d4'
+                    }}>
                           Compare Providers
                         </Button>
                       </CardContent>
-                    </Card>
-                  );
-                })}
+                    </Card>;
+              })}
               </div>
             </div>
           </div>
@@ -184,8 +168,7 @@ const ThyroidPage = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {thyroidConditions.map((condition, index) => (
-                  <Card key={index} className="border-border/50">
+                {thyroidConditions.map((condition, index) => <Card key={index} className="border-border/50">
                     <CardHeader>
                       <CardTitle className="text-lg">{condition.name}</CardTitle>
                       <CardDescription className="text-sm">
@@ -195,13 +178,10 @@ const ThyroidPage = () => {
                     <CardContent>
                       <h4 className="font-medium text-sm mb-2">Common Symptoms:</h4>
                       <ul className="text-sm text-muted-foreground space-y-1">
-                        {condition.symptoms.map((symptom, idx) => (
-                          <li key={idx}>• {symptom}</li>
-                        ))}
+                        {condition.symptoms.map((symptom, idx) => <li key={idx}>• {symptom}</li>)}
                       </ul>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
           </div>
@@ -249,8 +229,6 @@ const ThyroidPage = () => {
       </main>
       
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default ThyroidPage;
