@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield, Zap, TestTube2, Users, ArrowLeft } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import { getCategoryCSSClasses } from "@/data/categoryColors";
 const thyroidTests = [{
   id: "thyroid-blood-test",
   name: "Thyroid Blood Test",
@@ -46,6 +47,13 @@ const thyroidConditions = [{
 }];
 const ThyroidPage = () => {
   const navigate = useNavigate();
+  
+  // Helper function to get thyroid category colors
+  const getThyroidCategoryColor = (category: string) => {
+    // Map all thyroid categories to the "thyroid" color scheme from categoryColors.ts
+    const thyroidColors = getCategoryCSSClasses("thyroid");
+    return `${thyroidColors.primary} ${thyroidColors.icon}`;
+  };
   
   return <>
       <Helmet>
@@ -138,7 +146,7 @@ const ThyroidPage = () => {
                             <div className="p-3 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
                               <IconComponent className="h-6 w-6" />
                             </div>
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge className={`text-xs ${getThyroidCategoryColor(test.category)}`}>
                               {test.category}
                             </Badge>
                           </div>
