@@ -88,5 +88,129 @@
     "arabic": "العربية",
     "chinese": "中文",
     "japanese": "日本語"
+  },
+  "womensHealth": {
+    "pageTitle": "Women's Health Blood Tests | Female Hormone & Fertility Testing | My Health Checkup",
+    "metaDescription": "Comprehensive women's health testing including female hormones, menopause, PCOS, fertility AMH, and pregnancy testing from £55.",
+    "metaKeywords": "women's health tests, female hormones, menopause test, PCOS test, AMH fertility test, pregnancy test, well woman test",
+    "ogTitle": "Women's Health Blood Tests | My Health Checkup",
+    "ogDescription": "Professional women's health testing including hormones, fertility, and wellness screening",
+    "twitterTitle": "Women's Health Blood Tests | My Health Checkup",
+    "twitterDescription": "Comprehensive women's health testing with fast results",
+    "badge": "Women's Health",
+    "title": "Women's Health Blood Tests",
+    "subtitle": "Comprehensive female health screening including hormones, fertility, menopause, PCOS, and complete wellness testing designed for women's unique health needs.",
+    "browseAllTests": "Browse All Tests",
+    "findClinic": "Find a Clinic",
+    "availableTestsTitle": "Available Women's Health Tests",
+    "availableTestsSubtitle": "Comprehensive testing options for female health and wellness",
+    "resultsIn": "Results in",
+    "biomarkersTested": "Biomarkers Tested:",
+    "keyBiomarkers": "Key Biomarkers:",
+    "more": "more",
+    "suitableFor": "Suitable For:",
+    "compareProviders": "Compare Providers",
+    "healthConcernsTitle": "Common Women's Health Concerns",
+    "healthConcernsSubtitle": "Find the right test for your specific health concerns",
+    "commonSymptoms": "Common Symptoms:",
+    "recommendedTest": "Recommended Test:",
+    "benefitsTitle": "Why Women's Health Testing Matters",
+    "hormoneBenefitTitle": "Hormone Balance",
+    "hormoneBenefitDescription": "Monitor and optimise hormone levels throughout life stages",
+    "fertilityBenefitTitle": "Fertility & Family Planning",
+    "fertilityBenefitDescription": "Assess fertility potential and optimise reproductive health",
+    "preventiveBenefitTitle": "Preventive Care",
+    "preventiveBenefitDescription": "Early detection and prevention of women's health conditions",
+    "tests": {
+      "premiumComplete": {
+        "name": "Premium Complete Blood Test",
+        "description": "Comprehensive health analysis including full blood count, organ function, vitamins, and cardiovascular markers",
+        "category": "Complete Health",
+        "price": "£199",
+        "turnaround": "2-3 days",
+        "biomarkers": ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "Diabetes Markers", "Vitamins", "Iron Studies"],
+        "suitableFor": ["Complete health overview", "Annual health check", "Health optimisation", "Preventive screening"]
+      },
+      "advancedWellWoman": {
+        "name": "Advanced Well Woman Test",
+        "description": "Comprehensive women's health screening including hormones, reproductive health, and cardiovascular markers",
+        "category": "Women's Wellness",
+        "price": "£149",
+        "turnaround": "2-3 days",
+        "biomarkers": ["Female Hormones", "Thyroid Function", "Cholesterol Panel", "Blood Sugar", "Liver Function", "Iron Studies"],
+        "suitableFor": ["Women 30+", "Routine health screening", "Hormone assessment", "Reproductive health"]
+      },
+      "menopause": {
+        "name": "Menopause Blood Test",
+        "description": "Specialised testing to assess menopausal status and hormone levels during perimenopause and menopause",
+        "category": "Menopause Health",
+        "price": "£89",
+        "turnaround": "2 days",
+        "biomarkers": ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG", "Thyroid Function"],
+        "suitableFor": ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes", "Women 45+"]
+      },
+      "femaleHormones": {
+        "name": "Female Hormones Blood Test",
+        "description": "Comprehensive hormone panel including reproductive hormones and cycle regulation markers",
+        "category": "Hormone Health",
+        "price": "£99",
+        "turnaround": "1-2 days",
+        "biomarkers": ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
+        "suitableFor": ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"]
+      },
+      "amhFertility": {
+        "name": "AMH Fertility Blood Test",
+        "description": "Anti-Müllerian Hormone testing to assess ovarian reserve and fertility potential",
+        "category": "Fertility Health",
+        "price": "£69",
+        "turnaround": "3-5 days",
+        "biomarkers": ["AMH", "FSH", "LH", "Oestradiol"],
+        "suitableFor": ["Family planning", "Fertility assessment", "IVF preparation", "Egg freezing consideration"]
+      },
+      "pregnancy": {
+        "name": "Pregnancy Blood Test",
+        "description": "Accurate pregnancy testing and early pregnancy health monitoring including key nutrients",
+        "category": "Pregnancy Health",
+        "price": "£55",
+        "turnaround": "1 day",
+        "biomarkers": ["hCG", "Progesterone", "Thyroid Function", "Iron Studies", "Vitamin D", "Folate"],
+        "suitableFor": ["Pregnancy confirmation", "Early pregnancy monitoring", "Nutritional assessment", "Prenatal health"]
+      },
+      "pcos": {
+        "name": "PCOS Blood Test",
+        "description": "Specialised testing for Polycystic Ovary Syndrome including hormones and metabolic markers",
+        "category": "PCOS Health",
+        "price": "£125",
+        "turnaround": "2 days",
+        "biomarkers": ["Testosterone", "SHBG", "LH", "FSH", "Insulin", "HbA1c", "Lipid Profile"],
+        "suitableFor": ["Irregular periods", "Weight gain", "Acne", "Hair loss", "Fertility issues"]
+      }
+    },
+    "healthConcerns": {
+      "irregularPeriods": {
+        "name": "Irregular Periods",
+        "description": "Menstrual cycle irregularities and hormonal imbalances",
+        "symptoms": ["Missed periods", "Heavy bleeding", "Painful periods", "Unpredictable cycles"],
+        "recommendedTest": "Female Hormones Blood Test"
+      },
+      "menopauseSymptoms": {
+        "name": "Menopause Symptoms",
+        "description": "Perimenopause and menopause transition symptoms",
+        "symptoms": ["Hot flashes", "Night sweats", "Mood changes", "Sleep disturbances"],
+        "recommendedTest": "Menopause Blood Test"
+      },
+      "pcosSymptoms": {
+        "name": "PCOS Symptoms",
+        "description": "Polycystic Ovary Syndrome related concerns",
+        "symptoms": ["Weight gain", "Acne", "Hair loss", "Irregular periods"],
+        "recommendedTest": "PCOS Blood Test"
+      },
+      "fertilityPlanning": {
+        "name": "Fertility Planning",
+        "description": "Family planning and reproductive health assessment",
+        "symptoms": ["Planning pregnancy", "Fertility concerns", "Egg freezing", "IVF preparation"],
+        "recommendedTest": "AMH Fertility Blood Test"
+      }
+    }
   }
 }
