@@ -162,7 +162,11 @@ const ThyroidPage = () => {
                       </CardHeader>
                       <CardContent className="pt-0 space-y-4">
                         <div>
-                          <h4 className="font-medium text-sm mb-2">Biomarkers Tested:</h4>
+                          <h4 className="font-medium text-sm mb-2">
+                            Biomarkers Tested: {test.biomarkers.length}
+                            <br />
+                            Key Biomarkers:
+                          </h4>
                           <div className="flex flex-wrap gap-1">
                             {test.biomarkers.map(biomarker => <Badge key={biomarker} variant="outline" className="text-xs">
                                 {biomarker}
