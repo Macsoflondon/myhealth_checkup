@@ -245,6 +245,9 @@ const NewHero = () => {
         </div>
       </section>
       
+      {/* Accreditation Logos */}
+      <AccreditationLogos />
+      
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-8 bg-[#081129]">
         <div className="w-full px-4">
@@ -253,9 +256,6 @@ const NewHero = () => {
           </h2>
         </div>
       </section>
-      
-      {/* Accreditation Logos */}
-      <AccreditationLogos />
     </>;
 };
 export default NewHero;
