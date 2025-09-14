@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import { LazyImage } from "@/components/LazyImage";
+import AccreditationLogos from "@/components/AccreditationLogos";
 const NewHero = () => {
   const {
     t
@@ -252,6 +253,9 @@ const NewHero = () => {
           </h2>
         </div>
       </section>
+      
+      {/* Accreditation Logos */}
+      <AccreditationLogos />
     </>;
 };
 export default NewHero;
