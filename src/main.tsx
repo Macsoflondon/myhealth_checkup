@@ -39,7 +39,5 @@ if ('PerformanceObserver' in window) {
 }
 
 root.render(
-  <StrictMode>
-    <OptimizedApp />
-  </StrictMode>
+  <OptimizedApp />
 );
