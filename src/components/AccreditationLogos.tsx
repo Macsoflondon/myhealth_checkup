@@ -10,7 +10,9 @@ const AccreditationLogos = () => {
           
           {/* Logos Container */}
           <div className="flex justify-center items-center gap-8">
-            <img src="/accreditation-logos.png" alt="UK Accreditation Logos" className="h-16 w-auto object-contain" />
+            <img src="/cqc-logo.png" alt="CQC - Care Quality Commission" className="h-32 w-auto object-contain" />
+            <img src="/ukas-logo.png" alt="UKAS - United Kingdom Accreditation Service" className="h-32 w-auto object-contain" />
+            <img src="/iso-logo.png" alt="ISO - International Organization for Standardization" className="h-32 w-auto object-contain" />
           </div>
         </div>
       </div>
