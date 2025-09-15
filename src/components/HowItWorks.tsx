@@ -3,8 +3,8 @@ import { Search, Shield, CheckCircle, Award } from "lucide-react";
 const HowItWorks = () => {
   return (
     <section 
-      className="bg-navy !bg-[#081129] min-h-[400px] w-full" 
-      style={{ backgroundColor: '#081129' }}
+      className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-[400px] w-full border-8 border-yellow-400" 
+      style={{ backgroundColor: '#3B82F6' }}
     >
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="bg-white !bg-white rounded-2xl shadow-lg p-8 mb-12" style={{ backgroundColor: '#ffffff' }}>
