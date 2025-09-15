@@ -7,7 +7,7 @@ import CallToAction from "@/components/CallToAction";
 import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { PWAFeatures } from "@/components/PWAFeatures";
+
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import {
@@ -97,7 +97,6 @@ const Index = () => {
         </script>
       </Helmet>
       
-      <PWAFeatures />
       <UKASBanner />
       <Header />
       
