@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
@@ -23,8 +24,22 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex min-h-screen flex-col items-center justify-center space-y-4">
           <h1 className="text-xl font-semibold">Something went wrong.</h1>
+          <div className="flex gap-4">
+            <button
+              onClick={() => this.setState({ hasError: false })}
+              className="rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+            >
+              Try again
+            </button>
+            <Link
+              to="/"
+              className="rounded border border-input bg-background px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+            >
+              Go home
+            </Link>
+          </div>
         </div>
       );
     }
