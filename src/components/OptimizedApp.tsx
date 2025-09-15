@@ -1,6 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { PWAFeatures } from "@/components/PWAFeatures";
 import { useAdvancedPerformance } from "@/hooks/useAdvancedPerformance";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import { Loader2 } from "lucide-react";
@@ -102,7 +101,6 @@ export default function OptimizedApp() {
 
   return (
     <ErrorBoundary>
-      <PWAFeatures />
       <Suspense fallback={<OptimizedLoadingSpinner message="Loading My Health Checkup..." />}>
         <LazyApp />
       </Suspense>
