@@ -6,10 +6,8 @@ import './index.css';
 // Ensure React is available globally to prevent multiple instances
 if (typeof window !== 'undefined') {
   (window as any).__REACT__ = React;
+  (window as any).__REACT_DOM__ = { createRoot };
 }
-
-// Clear any cached module references
-delete require.cache[require.resolve('./App')];
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error('Root element not found');

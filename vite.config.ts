@@ -10,17 +10,28 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
-    react(),
+    react({
+      // Ensure React Refresh uses consistent React instance
+      jsxImportSource: 'react',
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // Force all React imports to use the same instance
+      "react": path.resolve(__dirname, "./node_modules/react"),
+      "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
     },
-    dedupe: ['react', 'react-dom']
+    dedupe: ['react', 'react-dom', '@radix-ui/react-tooltip']
   },
   optimizeDeps: {
-    include: ['react', 'react-dom']
+    include: ['react', 'react-dom'],
+    force: mode === 'development'
+  },
+  define: {
+    // Ensure consistent React environment
+    __DEV__: mode === 'development',
   },
 }));
