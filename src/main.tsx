@@ -1,9 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import { StrictMode } from 'react';
-import App from './App.tsx';
+import App from './App';
 import './index.css';
 
-createRoot(document.getElementById("root")!).render(
+// Force clean rebuild by clearing any cached references
+const root = createRoot(document.getElementById("root")!);
+
+root.render(
   <StrictMode>
     <App />
   </StrictMode>
