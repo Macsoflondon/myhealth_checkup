@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { useReactFix } from "@/hooks/useReactFix";
 import Index from "./pages/Index";
 import CompareTests from "./pages/CompareTests";
 import Auth from "./pages/Auth";
@@ -16,6 +17,9 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
+  // Initialize React fix to prevent dispatcher errors
+  useReactFix();
+  
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>

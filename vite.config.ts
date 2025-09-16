@@ -20,15 +20,23 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Force all React imports to use the same instance
+      // CRITICAL: Force ALL React imports to use the exact same instance
       "react": path.resolve(__dirname, "./node_modules/react"),
       "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
+      "react/jsx-runtime": path.resolve(__dirname, "./node_modules/react/jsx-runtime"),
+      "react/jsx-dev-runtime": path.resolve(__dirname, "./node_modules/react/jsx-dev-runtime"),
     },
-    dedupe: ['react', 'react-dom', '@radix-ui/react-tooltip']
+    dedupe: ['react', 'react-dom', '@radix-ui/react-tooltip', '@tanstack/react-query']
   },
   optimizeDeps: {
-    include: ['react', 'react-dom'],
-    force: mode === 'development'
+    include: ['react', 'react-dom', 'react/jsx-runtime'],
+    force: mode === 'development',
+    // Ensure React dependencies are bundled correctly
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+    },
   },
   define: {
     // Ensure consistent React environment
