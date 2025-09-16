@@ -1,34 +1,45 @@
-import { createRoot } from 'react-dom/client';
-import React from 'react';
-import App from './App';
-import './index.css';
+import { StrictMode } from "react";
+import { createRoot } from 'react-dom/client'
+import OptimizedApp from './components/OptimizedApp.tsx'
+import './index.css'
+import './i18n/config'
 
-// CRITICAL: Force single React instance globally
-if (typeof window !== 'undefined') {
-  (window as any).React = React;
-  (window as any).__REACT__ = React;
-  (window as any).__REACT_DOM__ = { createRoot };
-  
-  // Force all React internals to use the same instance
-  const originalCreateElement = React.createElement;
-  React.createElement = originalCreateElement;
-  
-  // Override any potential React imports
-  if (!(window as any).__REACT_SINGLETON__) {
-    (window as any).__REACT_SINGLETON__ = true;
-    
-    // Store the dispatcher
-    const ReactInternals = (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-    if (ReactInternals) {
-      (window as any).__REACT_INTERNALS__ = ReactInternals;
-    }
-  }
-}
+// Performance measurement
+const startTime = performance.now();
+
+// Optimize font loading
+const preloadFonts = () => {
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'preconnect';
+  fontLink.href = 'https://fonts.googleapis.com';
+  fontLink.crossOrigin = 'anonymous';
+  document.head.appendChild(fontLink);
+
+  const fontLink2 = document.createElement('link');
+  fontLink2.rel = 'preconnect';
+  fontLink2.href = 'https://fonts.gstatic.com';
+  fontLink2.crossOrigin = 'anonymous';
+  document.head.appendChild(fontLink2);
+};
+
+preloadFonts();
 
 const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error('Root element not found');
+if (!rootElement) throw new Error("Root element not found");
 
 const root = createRoot(rootElement);
 
-// Temporarily remove StrictMode as it can cause issues with multiple React instances
-root.render(<App />);
+// Add performance observer for app loading
+if ('PerformanceObserver' in window) {
+  const observer = new PerformanceObserver((list) => {
+    const endTime = performance.now();
+    console.log(`App initialized in ${endTime - startTime}ms`);
+  });
+  observer.observe({ entryTypes: ['navigation'] });
+}
+
+root.render(
+  <StrictMode>
+    <OptimizedApp />
+  </StrictMode>
+);

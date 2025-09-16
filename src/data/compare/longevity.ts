@@ -31,21 +31,5 @@ export const longevity = [
       "Follow-up tests": true,
       "Personalized protocol": true
     }
-  },
-  {
-    id: "longevity-3",
-    category: "longevity",
-    name: "NAD+ Therapy",
-    provider: "BlueHorizon",
-    providerLogo: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
-    price: 325.00,
-    features: {
-      bioMarkers: "Advanced aging biomarkers",
-      turnaround: "Book within 2 days",
-      collection: "Clinic only",
-      doctorReview: true,
-      "Follow-up tests": true,
-      "Personalized protocol": true
-    }
   }
 ];

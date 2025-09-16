@@ -1,0 +1,191 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+const supabase = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+);
+
+serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { query } = await req.json();
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+
+    if (!openAIApiKey) {
+      throw new Error('OpenAI API key not configured');
+    }
+
+    // Get all available tests from our trusted providers
+    const { data: availableTests, error: testsError } = await supabase
+      .from('provider_tests')
+      .select(`
+        test_name,
+        provider_id,
+        price,
+        category,
+        description,
+        is_active
+      `)
+      .eq('is_active', true)
+      .in('provider_id', ['medichecks', 'lola-health', 'goodbody-clinic']);
+
+    if (testsError) {
+      console.error('Error fetching tests:', testsError);
+      throw new Error('Unable to fetch available tests');
+    }
+
+    // Group tests by provider for the AI prompt
+    const testsByProvider = availableTests?.reduce((acc, test) => {
+      if (!acc[test.provider_id]) {
+        acc[test.provider_id] = [];
+      }
+      acc[test.provider_id].push({
+        name: test.test_name,
+        price: test.price,
+        category: test.category
+      });
+      return acc;
+    }, {}) || {};
+
+    const providersInfo = {
+      'medichecks': 'Medichecks',
+      'lola-health': 'Lola Health', 
+      'goodbody-clinic': 'GoodBody Clinic'
+    };
+
+    const testListForAI = Object.entries(testsByProvider)
+      .map(([providerId, tests]) => 
+        `${providersInfo[providerId]}: ${tests.map(t => `${t.name} (${t.category})`).join(', ')}`
+      ).join('\n');
+
+    const prompt = `You are a wellness information assistant for a UK private health testing company. 
+
+CRITICAL MEDICAL DISCLAIMERS:
+- You provide general wellness information only, NOT medical advice
+- Users must consult healthcare professionals for medical concerns
+- Never diagnose or suggest medical treatments
+- Focus on preventive wellness and general health screening
+
+Our trusted providers and available tests:
+${testListForAI}
+
+User query: "${query}"
+
+Provide general wellness guidance and suggest relevant preventive health tests from our trusted providers ONLY. 
+
+Respond in this JSON format:
+
+{
+  "medicalDisclaimer": "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
+  "analysis": "General wellness guidance related to their query",
+  "recommendedTests": [
+    {
+      "testName": "Exact test name from our available tests",
+      "provider": "Provider name (Medichecks, Lola Health, or GoodBody Clinic)",
+      "providerId": "Provider ID from our system", 
+      "reason": "General wellness reason for this test",
+      "category": "Test category",
+      "urgency": "low/medium/high",
+      "confidence": 70-95
+    }
+  ],
+  "generalGuidance": "General lifestyle and wellness advice",
+  "whenToSeeDoctor": "Clear guidance on when to seek professional medical attention",
+  "hasRecommendations": true/false
+}
+
+Guidelines:
+- Only recommend tests we actually offer from our 3 trusted providers
+- Keep urgency mostly "low" or "medium" for wellness screening
+- Include confidence scores based on relevance
+- Always emphasize consulting healthcare professionals
+- Focus on preventive wellness, not diagnostic advice`;
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: prompt },
+          { role: 'user', content: query }
+        ],
+        max_tokens: 1000,
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI API error:', errorText);
+      throw new Error(`OpenAI API error: ${response.status}`);
+    }
+
+    const aiResponse = await response.json();
+    const content = aiResponse.choices[0].message.content;
+
+    let analysisResult;
+    try {
+      analysisResult = JSON.parse(content);
+      
+      // Enhance recommendations with actual database pricing
+      if (analysisResult.recommendedTests) {
+        analysisResult.recommendedTests = analysisResult.recommendedTests.map(rec => {
+          const dbTest = availableTests?.find(t => 
+            t.test_name.toLowerCase().includes(rec.testName.toLowerCase()) &&
+            t.provider_id === rec.providerId
+          );
+          
+          return {
+            ...rec,
+            price: dbTest?.price || null,
+            actualTestId: dbTest?.id || null
+          };
+        });
+      }
+    } catch (parseError) {
+      console.error('Failed to parse AI response:', content);
+      analysisResult = {
+        medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
+        analysis: "I can help you find relevant wellness tests based on your query.",
+        recommendedTests: [],
+        generalGuidance: "Maintain a balanced diet, regular exercise, and adequate sleep for optimal wellness.",
+        whenToSeeDoctor: "Consult your GP if you have persistent symptoms or health concerns.",
+        hasRecommendations: false
+      };
+    }
+
+    return new Response(JSON.stringify(analysisResult), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    console.error('Error in health-ai-analysis function:', error);
+    return new Response(JSON.stringify({ 
+      error: error.message,
+      medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
+      analysis: "Sorry, I'm unable to analyze your query at the moment. Please try again.",
+      recommendedTests: [],
+      generalGuidance: "Please consult your healthcare professional for personalized health advice.",
+      whenToSeeDoctor: "Seek immediate medical attention for urgent symptoms or persistent health concerns.",
+      hasRecommendations: false
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+});

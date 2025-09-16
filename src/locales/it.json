@@ -1,0 +1,69 @@
+{
+  "common": {
+    "signIn": "Accedi",
+    "signUp": "Registrati",
+    "search": "Cerca",
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "close": "Chiudi",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "learnMore": "Scopri di più",
+    "getStarted": "Inizia",
+    "compareTests": "Confronta test",
+    "bookNow": "Prenota ora",
+    "viewDetails": "Vedi dettagli"
+  },
+  "navigation": {
+    "home": "Home",
+    "compareTests": "Confronta test",
+    "categories": "Categorie",
+    "howItWorks": "Come funziona",
+    "about": "Chi siamo",
+    "contact": "Contatti",
+    "blog": "Blog",
+    "faqs": "FAQ",
+    "findClinic": "Trova clinica"
+  },
+  "hero": {
+    "title": "La tua salute è il tuo più grande tesoro!",
+    "subtitle": "Confronta i test sanitari dei principali fornitori del Regno Unito e prenota quello perfetto per te",
+    "searchPlaceholder": "Cerca test sanitari...",
+    "popularSearches": "Ricerche popolari:",
+    "bloodTest": "Test del sangue",
+    "cholesterol": "Colesterolo",
+    "diabetes": "Diabete",
+    "thyroid": "Tiroide"
+  },
+  "footer": {
+    "tagline": "La tua salute è il nostro obiettivo",
+    "quickLinks": "Link rapidi",
+    "categories": "Categorie",
+    "support": "Supporto",
+    "legal": "Legale",
+    "newsletter": {
+      "title": "Rimani aggiornato",
+      "description": "Iscriviti alla nostra newsletter per consigli sulla salute e offerte esclusive.",
+      "placeholder": "Inserisci la tua email",
+      "subscribe": "Iscriviti"
+    },
+    "copyright": "© 2024 HealthCompare. Tutti i diritti riservati."
+  },
+  "language": {
+    "selectLanguage": "Seleziona lingua",
+    "english": "Inglese (Regno Unito)",
+    "french": "Francese",
+    "spanish": "Spagnolo", 
+    "german": "Tedesco",
+    "italian": "Italiano",
+    "portuguese": "Portoghese",
+    "dutch": "Olandese",
+    "polish": "Polacco",
+    "arabic": "Arabo",
+    "chinese": "Cinese",
+    "japanese": "Giapponese"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "common": {
+    "signIn": "Inloggen",
+    "signUp": "Registreren",
+    "search": "Zoeken",
+    "loading": "Laden...",
+    "error": "Fout",
+    "success": "Succes",
+    "cancel": "Annuleren",
+    "save": "Opslaan",
+    "close": "Sluiten",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "learnMore": "Meer informatie",
+    "getStarted": "Beginnen",
+    "compareTests": "Tests vergelijken",
+    "bookNow": "Nu boeken",
+    "viewDetails": "Details bekijken"
+  },
+  "navigation": {
+    "home": "Home",
+    "compareTests": "Tests vergelijken",
+    "categories": "Categorieën",
+    "howItWorks": "Hoe het werkt",
+    "about": "Over ons",
+    "contact": "Contact",
+    "blog": "Blog",
+    "faqs": "Veelgestelde vragen",
+    "findClinic": "Kliniek zoeken"
+  },
+  "hero": {
+    "title": "Uw gezondheid is uw grootste schat!",
+    "subtitle": "Vergelijk gezondheidstests van de top aanbieders in het VK en boek de perfecte voor u",
+    "searchPlaceholder": "Zoek gezondheidstests...",
+    "popularSearches": "Populaire zoekopdrachten:",
+    "bloodTest": "Bloedtest",
+    "cholesterol": "Cholesterol",
+    "diabetes": "Diabetes",
+    "thyroid": "Schildklier"
+  },
+  "footer": {
+    "tagline": "Uw gezondheid is ons doel",
+    "quickLinks": "Snelle links",
+    "categories": "Categorieën",
+    "support": "Ondersteuning",
+    "legal": "Juridisch",
+    "newsletter": {
+      "title": "Blijf op de hoogte",
+      "description": "Abonneer u op onze nieuwsbrief voor gezondheidstips en exclusieve aanbiedingen.",
+      "placeholder": "Voer uw e-mail in",
+      "subscribe": "Abonneren"
+    },
+    "copyright": "© 2024 HealthCompare. Alle rechten voorbehouden."
+  },
+  "language": {
+    "selectLanguage": "Taal selecteren",
+    "english": "Engels (VK)",
+    "french": "Frans",
+    "spanish": "Spaans",
+    "german": "Duits",
+    "italian": "Italiaans",
+    "portuguese": "Portugees",
+    "dutch": "Nederlands",
+    "polish": "Pools",
+    "arabic": "Arabisch",
+    "chinese": "Chinees",
+    "japanese": "Japans"
+  }
+}

@@ -60,6 +60,17 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Environment variables
+
+Create a `.env` file in the project root with the following keys:
+
+```bash
+VITE_SUPABASE_URL=<your-supabase-url>
+VITE_SUPABASE_KEY=<your-supabase-key>
+```
+
+These variables are used by the Supabase client in `src/integrations/supabase/client.ts`.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/37e227e1-0d67-4515-b064-99c243036534) and click on Share -> Publish.

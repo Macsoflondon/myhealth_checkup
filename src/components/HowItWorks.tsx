@@ -1,73 +1,80 @@
-
-import {
-  MousePointerClick,
-  PackageOpen,
-  FlaskConical,
-  FileText,
-} from "lucide-react";
+import { Search, Shield, CheckCircle, Award } from "lucide-react";
 
 const HowItWorks = () => {
-  const steps = [
-    {
-      icon: <MousePointerClick className="h-8 w-8 text-health-600" />,
-      title: "Choose Your Test",
-      description:
-        "Select from individual tests or comprehensive health panels based on your needs.",
-    },
-    {
-      icon: <PackageOpen className="h-8 w-8 text-health-600" />,
-      title: "Collect Your Sample",
-      description:
-        "Take your test at home with our easy-to-use kits or visit a local partner pharmacy.",
-    },
-    {
-      icon: <FlaskConical className="h-8 w-8 text-health-600" />,
-      title: "Lab Analysis",
-      description:
-        "Your sample is processed in our UKAS-accredited laboratories with results in 48 hours.",
-    },
-    {
-      icon: <FileText className="h-8 w-8 text-health-600" />,
-      title: "Review Results",
-      description:
-        "Access clear results with doctor-reviewed guidance and actionable health insights.",
-    },
-  ];
-
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Simple, convenient testing in four easy steps
-          </p>
-        </div>
+    <section 
+      className="bg-gradient-to-br from-blue-600 to-purple-700 min-h-[400px] w-full border-8 border-yellow-400" 
+      style={{ backgroundColor: '#3B82F6' }}
+    >
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="bg-navy !bg-[#081129] rounded-2xl shadow-lg p-8 mb-12" style={{ backgroundColor: '#081129' }}>
+          <div className="text-center mb-16">
+            <h2 
+              className="text-4xl font-semibold mb-4 heading my-0 py-[10px] text-teal !text-[#22c0d4]"
+              style={{ color: '#22c0d4' }}
+            >
+              How It Works
+            </h2>
+            <p 
+              className="max-w-2xl mx-auto text-center font-bold text-white !text-white"
+              style={{ color: '#ffffff' }}
+            >
+              Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
-            <div key={index} className="text-center">
-              <div className="relative mb-6">
-                <div className="w-20 h-20 mx-auto rounded-full bg-health-50 flex items-center justify-center">
-                  {step.icon}
+          <div className="grid md:grid-cols-4 gap-8">
+            {[{
+              step: "1",
+              title: "Search & Compare",
+              description: "Explore tests, review biomarkers, compare pricing",
+              icon: Search
+            }, {
+              step: "2",
+              title: "Choose Provider",
+              description: "Choose a trusted provider that fits your needs and budget",
+              icon: Shield
+            }, {
+              step: "3",
+              title: "Book Appointment",
+              description: "Securely Book and Attend your appointment with instant confirmation",
+              icon: CheckCircle
+            }, {
+              step: "4",
+              title: "Get Results",
+              description: "Receive your results and recommendations securely online within 3-5 days",
+              icon: Award
+            }].map((item, index) => (
+              <div key={index} className="text-center">
+                <div className="relative mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-[#FA6980] to-[#4A6FA5] rounded-full flex items-center justify-center mx-auto">
+                    <item.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <div 
+                    className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center bg-teal !bg-[#22c0d4]"
+                    style={{ backgroundColor: '#22c0d4' }}
+                  >
+                    <span className="text-white font-bold text-sm">{item.step}</span>
+                  </div>
                 </div>
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-10 left-[60%] right-0 h-0.5 bg-gray-200 w-full" />
-                )}
-                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                  <span className="w-8 h-8 rounded-full bg-health-600 text-white flex items-center justify-center text-lg font-bold">
-                    {index + 1}
-                  </span>
-                </div>
+                <h3 
+                  className="text-xl font-semibold mb-2 heading text-teal !text-[#22c0d4]"
+                  style={{ color: '#22c0d4' }}
+                >
+                  {item.title}
+                </h3>
+                <p 
+                  className="text-white font-medium !text-white"
+                  style={{ color: '#ffffff' }}
+                >
+                  {item.description}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-              <p className="text-gray-600">{step.description}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 };
-
 export default HowItWorks;
