@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { logError } from "../services/errorLogger";
 
 interface Props {
@@ -24,7 +25,14 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex min-h-screen items-center justify-center">
-          <h1 className="text-xl font-semibold">Something went wrong.</h1>
+          <div className="text-center">
+            <h1 className="text-xl font-semibold">Something went wrong.</h1>
+            <p className="mt-4">
+              <Link to="/" className="text-blue-600 hover:underline">
+                Go back home
+              </Link>
+            </p>
+          </div>
         </div>
       );
     }
