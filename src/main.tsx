@@ -1,11 +1,20 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { StrictMode } from 'react';
+import React, { StrictMode } from 'react';
 import App from './App';
 import './index.css';
 
-// Force clean rebuild by clearing any cached references
-const root = createRoot(document.getElementById("root")!);
+// Ensure React is available globally to prevent multiple instances
+if (typeof window !== 'undefined') {
+  (window as any).__REACT__ = React;
+}
+
+// Clear any cached module references
+delete require.cache[require.resolve('./App')];
+
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error('Root element not found');
+
+const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
