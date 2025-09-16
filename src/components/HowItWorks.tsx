@@ -7,7 +7,7 @@ const HowItWorks = () => {
       style={{ backgroundColor: '#3B82F6' }}
     >
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="bg-white !bg-white rounded-2xl shadow-lg p-8 mb-12" style={{ backgroundColor: '#ffffff' }}>
+        <div className="bg-navy !bg-[#081129] rounded-2xl shadow-lg p-8 mb-12" style={{ backgroundColor: '#081129' }}>
           <div className="text-center mb-16">
             <h2 
               className="text-4xl font-semibold mb-4 heading my-0 py-[10px] text-teal !text-[#22c0d4]"
@@ -16,8 +16,8 @@ const HowItWorks = () => {
               How It Works
             </h2>
             <p 
-              className="max-w-2xl mx-auto text-center font-bold text-navy !text-[#081129]"
-              style={{ color: '#081129' }}
+              className="max-w-2xl mx-auto text-center font-bold text-white !text-white"
+              style={{ color: '#ffffff' }}
             >
               Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
             </p>
@@ -64,8 +64,8 @@ const HowItWorks = () => {
                   {item.title}
                 </h3>
                 <p 
-                  className="text-navy font-medium !text-[#081129]"
-                  style={{ color: '#081129' }}
+                  className="text-white font-medium !text-white"
+                  style={{ color: '#ffffff' }}
                 >
                   {item.description}
                 </p>
