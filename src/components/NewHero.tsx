@@ -136,7 +136,7 @@ const NewHero = () => {
           <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full py-16 bg-slate-50">
+        <div className="relative z-10 w-full py-16 bg-white">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
@@ -164,7 +164,7 @@ const NewHero = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-health-success w-5 h-5" />
-                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-gray-800 placeholder-gray-500" />
+                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-[#081129] placeholder-[#081129]/60" />
                   </div>
                   <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]" style={{
                   backgroundColor: '#22c0d4',
@@ -187,7 +187,7 @@ const NewHero = () => {
                       <h3 className="font-semibold text-blue-800">AI Analysis Results</h3>
                     </div>
                     
-                    <p className="text-gray-700 mb-4">{aiResults.analysis}</p>
+                    <p className="text-[#081129] mb-4">{aiResults.analysis}</p>
                     
                     {aiResults.recommendedTests?.length > 0 && <div className="mb-4">
                         <h4 className="font-medium text-green-800 mb-2">✅ Tests We Offer:</h4>
@@ -218,17 +218,17 @@ const NewHero = () => {
                 
                 {/* Popular Searches */}
                 <div className="mt-6">
-                  <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
+                  <p className="text-sm text-[#081129] mb-3">Popular searches:</p>
                   <div className="space-y-2">
                     {/* Top row - 3 tests */}
                     <div className="flex flex-wrap gap-2 justify-center">
-                      {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
+                      {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] font-sans">
                           {search.name}
                         </button>)}
                     </div>
                     {/* Bottom row - 2 tests evenly spaced */}
                     <div className="flex gap-2 justify-center">
-                      {popularSearches.slice(3, 5).map((search, index) => <button key={index + 3} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-gray-700 font-sans">
+                      {popularSearches.slice(3, 5).map((search, index) => <button key={index + 3} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] font-sans">
                           {search.name}
                         </button>)}
                     </div>
