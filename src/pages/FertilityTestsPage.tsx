@@ -21,7 +21,7 @@ const FertilityTestsPageWrapper = () => {
         <meta name="twitter:title" content="Male Fertility Blood Tests | My Health Checkup" />
         <meta name="twitter:description" content="Male fertility tests created by award winning fertility experts." />
       </Helmet>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[#081129]">
         <UKASBanner />
         <FertilityTestsPage />
       </div>

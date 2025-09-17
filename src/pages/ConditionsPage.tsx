@@ -10,11 +10,11 @@ const ConditionsPage = () => {
         <link rel="canonical" href="https://myhealthcheckup.co.uk/conditions" />
       </Helmet>
       
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[#081129]">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold mb-6">Health Conditions Testing</h1>
-            <p className="text-lg text-gray-600 mb-8">
+            <h1 className="text-4xl font-bold mb-6 text-white">Health Conditions Testing</h1>
+            <p className="text-lg text-gray-300 mb-8">
               Specialized testing for specific health conditions and symptoms to help you get answers.
             </p>
             

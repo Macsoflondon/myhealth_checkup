@@ -12,11 +12,11 @@ const SportsPerformancePage = () => {
       
       <Header />
       
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-[#081129]">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">Sports Performance Tests</h1>
-            <p className="text-lg text-gray-600 mb-8">
+            <h1 className="text-3xl font-bold text-white mb-6">Sports Performance Tests</h1>
+            <p className="text-lg text-gray-300 mb-8">
               Discover specialized tests to enhance your athletic performance, from nutrition assessments to fitness biomarkers.
             </p>
             

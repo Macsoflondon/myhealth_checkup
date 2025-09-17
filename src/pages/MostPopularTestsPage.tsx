@@ -23,7 +23,7 @@ const MostPopularTestsPage = () => {
         <meta name="twitter:title" content="Most Popular Health Tests | My Health Checkup" />
         <meta name="twitter:description" content="Discover our most popular health tests, trusted by thousands of customers." />
       </Helmet>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[#081129]">
         <UKASBanner />
         <Header />
         <MostPopularTests />
