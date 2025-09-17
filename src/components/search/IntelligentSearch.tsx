@@ -308,9 +308,9 @@ const IntelligentSearch = () => {
             {popularSearches.slice(0, 4).map((search, index) => (
               <Button
                 key={index}
-                variant="default"
+                variant="ghost"
                 size="sm"
-                className="bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white"
+                className="bg-[#22c0d4] hover:!bg-[#22c0d4]/90 text-white border-0"
                 onClick={() => {
                   setSearchTerm(search);
                   handleSearch(search);
