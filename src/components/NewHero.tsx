@@ -21,7 +21,10 @@ const NewHero = () => {
   } = useToast();
 
   // Hero images that will alternate
-  const heroImages = ["/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png", "/lovable-uploads/hero-screenshot-new.png"];
+  const heroImages = [
+    "/lovable-uploads/hero-image-1.png",
+    "/lovable-uploads/hero-image-2.png"
+  ];
 
   // Alternate images every 10 seconds
   useEffect(() => {
