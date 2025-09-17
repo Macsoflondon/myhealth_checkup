@@ -138,7 +138,7 @@ const IntelligentSearch = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-4">Find Your Perfect Health Test</h1>
+        <h1 className="text-3xl font-bold mb-4 text-navy">Find Your Perfect Health Test</h1>
         <p className="text-gray-600">
           Search by test name, symptoms, or health goals. Our AI will help you find the most relevant options.
         </p>
