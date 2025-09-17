@@ -299,7 +299,7 @@ const IntelligentSearch = () => {
         <div className="text-center py-8">
           <div className="mb-4">
             <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No exact matches found</h3>
+            <h3 className="text-lg font-semibold mb-2 text-navy">No exact matches found</h3>
             <p className="text-gray-600">
               Try searching for related terms or browse our popular categories
             </p>
