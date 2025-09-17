@@ -60,12 +60,12 @@ const TestDetailPage = () => {
 
   if (!provider) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#081129]">
         <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Provider Not Found</h1>
-            <p className="text-muted-foreground">The provider you're looking for doesn't exist.</p>
+            <h1 className="text-3xl font-bold mb-4 text-white">Provider Not Found</h1>
+            <p className="text-gray-300">The provider you're looking for doesn't exist.</p>
           </div>
         </main>
         <Footer />
@@ -75,12 +75,12 @@ const TestDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#081129]">
         <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading test details...</p>
+            <p className="text-gray-300">Loading test details...</p>
           </div>
         </main>
         <Footer />
@@ -90,12 +90,12 @@ const TestDetailPage = () => {
 
   if (error || !test) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#081129]">
         <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Test Not Found</h1>
-            <p className="text-muted-foreground mb-4">
+            <h1 className="text-3xl font-bold mb-4 text-white">Test Not Found</h1>
+            <p className="text-gray-300 mb-4">
               {error || "The test you're looking for doesn't exist."}
             </p>
             <Button asChild>
@@ -109,7 +109,7 @@ const TestDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#081129]">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
@@ -117,26 +117,26 @@ const TestDetailPage = () => {
         <nav className="flex items-center gap-2 mb-6 text-sm">
           <Link 
             to="/#providers"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-300 hover:text-white"
           >
             All Providers
           </Link>
-          <span className="text-muted-foreground">/</span>
+          <span className="text-gray-300">/</span>
           <Link 
             to={`/provider/${providerId}`}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-300 hover:text-white"
           >
             {provider.name}
           </Link>
-          <span className="text-muted-foreground">/</span>
+          <span className="text-gray-300">/</span>
           <Link 
             to={`/provider/${providerId}/tests`}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-300 hover:text-white"
           >
             Available Tests
           </Link>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-foreground">{test.test_name}</span>
+          <span className="text-gray-300">/</span>
+          <span className="text-white">{test.test_name}</span>
         </nav>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -144,13 +144,13 @@ const TestDetailPage = () => {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-3xl font-bold">{test.test_name}</h1>
+                <h1 className="text-3xl font-bold text-white">{test.test_name}</h1>
                 <Badge variant="secondary" className="text-sm">
                   {test.category}
                 </Badge>
               </div>
               
-              <p className="text-xl text-muted-foreground mb-6">
+              <p className="text-xl text-gray-300 mb-6">
                 {test.description}
               </p>
             </div>
@@ -161,7 +161,7 @@ const TestDetailPage = () => {
                 <CardTitle>What's Included</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-gray-600 mb-4">
                   This comprehensive {test.test_name.toLowerCase()} includes detailed analysis 
                   and professional interpretation of your results.
                 </p>
@@ -191,7 +191,7 @@ const TestDetailPage = () => {
                 <CardTitle>Why Choose This Test?</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-muted-foreground">
+                <ul className="space-y-2 text-gray-600">
                   <li>• Accurate and reliable results from {provider.name}</li>
                   <li>• Professional medical interpretation included</li>
                   <li>• Convenient sample collection options</li>
@@ -213,7 +213,7 @@ const TestDetailPage = () => {
                   <div className="text-3xl font-bold text-primary mb-2">
                     £{test.price?.toFixed(2) || 'Price on request'}
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     Includes all fees and analysis
                   </p>
                 </div>
