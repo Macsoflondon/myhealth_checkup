@@ -50,25 +50,20 @@ const Header = ({ className }: HeaderProps) => {
   return (
     <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
-        {/* Top row - Logo and User Controls */}
-        <div className="px-4 py-3 border-b border-gray-100">
-          <div className="flex items-center justify-between w-full">
+        {/* Main header bar - Logo, Search, and User Controls */}
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between gap-6 w-full">
             <div className="flex items-center gap-3 flex-shrink-0">
               <Logo />
+            </div>
+            
+            <div className="flex-1 max-w-2xl mx-6">
+              <SearchBar />
             </div>
             
             <div className="flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu />
-            </div>
-          </div>
-        </div>
-        
-        {/* Middle row - Centered Search Bar */}
-        <div className="px-4 py-4">
-          <div className="flex justify-center">
-            <div className="w-full max-w-2xl">
-              <SearchBar />
             </div>
           </div>
         </div>
