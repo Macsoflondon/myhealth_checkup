@@ -154,7 +154,7 @@ const IntelligentSearch = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            className="pl-10 pr-20 py-6 text-lg"
+            className="pl-10 pr-20 py-6 text-lg text-gray-900 bg-white placeholder:text-gray-500"
           />
           {searchTerm && (
             <Button
@@ -177,12 +177,12 @@ const IntelligentSearch = () => {
 
         {/* Search Suggestions */}
         {showSuggestions && suggestions.length > 0 && (
-          <Card className="absolute top-full left-0 right-0 mt-2 z-10 p-2">
+          <Card className="absolute top-full left-0 right-0 mt-2 z-10 p-2 bg-white border border-gray-200 shadow-lg">
             {suggestions.map((suggestion) => (
               <div
                 key={suggestion.id}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className="flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer rounded"
+                className="flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer rounded text-gray-900"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
@@ -259,11 +259,11 @@ const IntelligentSearch = () => {
 
           <div className="space-y-4">
             {results.map((result) => (
-              <Card key={result.id} className="p-4 hover:shadow-md transition-shadow">
+              <Card key={result.id} className="p-4 hover:shadow-md transition-shadow bg-white border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-lg">{result.name}</h3>
+                      <h3 className="font-semibold text-lg text-gray-900">{result.name}</h3>
                       {result.isAiRecommended && (
                         <Badge className="bg-purple-100 text-purple-800 flex items-center gap-1">
                           <Brain className="h-3 w-3" />
