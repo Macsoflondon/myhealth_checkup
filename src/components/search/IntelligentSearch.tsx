@@ -298,9 +298,9 @@ const IntelligentSearch = () => {
       {results.length === 0 && searchTerm && !isLoading && (
         <div className="text-center py-8">
           <div className="mb-4">
-            <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <Search className="h-12 w-12 text-navy mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2 text-navy">No exact matches found</h3>
-            <p className="text-gray-600">
+            <p className="text-navy">
               Try searching for related terms or browse our popular categories
             </p>
           </div>
