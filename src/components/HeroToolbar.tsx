@@ -31,9 +31,9 @@ export const HeroToolbar = () => {
 
   return (
     <div className="bg-white border-b border-gray-200">
-      {/* Top bar with logo, search, and user actions */}
+      {/* Top bar with logo and user actions */}
       <div className="px-4 py-3">
-        <div className="w-full flex items-center justify-between gap-6">
+        <div className="w-full flex items-center justify-between">
           {/* Logo and tagline */}
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img src={logo} alt="myhealth checkup Logo" className="h-10 w-10 rounded-lg" />
@@ -46,8 +46,30 @@ export const HeroToolbar = () => {
             </div>
           </Link>
 
-          {/* Search bar */}
-          <form onSubmit={handleSearch} className="flex-1 max-w-lg mx-6">
+          {/* User actions */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
+              <Link to="/auth" className="flex items-center gap-2">
+                <User className="h-5 w-5 text-gray-600" />
+              </Link>
+            </Button>
+            
+            <Button variant="ghost" size="sm" className="h-10 px-3 relative" asChild>
+              <Link to="/dashboard" className="flex items-center gap-2">
+                <ShoppingCart className="h-5 w-5 text-gray-600" />
+                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold">
+                  0
+                </span>
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Centered search bar */}
+      <div className="px-4 py-3 border-t border-gray-100">
+        <div className="flex justify-center">
+          <form onSubmit={handleSearch} className="w-full max-w-2xl">
             <div className="relative flex">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -68,24 +90,6 @@ export const HeroToolbar = () => {
               </Button>
             </div>
           </form>
-
-          {/* User actions */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
-              <Link to="/auth" className="flex items-center gap-2">
-                <User className="h-5 w-5 text-gray-600" />
-              </Link>
-            </Button>
-            
-            <Button variant="ghost" size="sm" className="h-10 px-3 relative" asChild>
-              <Link to="/dashboard" className="flex items-center gap-2">
-                <ShoppingCart className="h-5 w-5 text-gray-600" />
-                <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold">
-                  0
-                </span>
-              </Link>
-            </Button>
-          </div>
         </div>
       </div>
 
