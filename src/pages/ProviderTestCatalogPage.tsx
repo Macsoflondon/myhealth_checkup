@@ -161,15 +161,15 @@ const ProviderTestCatalogPage = () => {
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTests.map(test => <Card key={test.id} className="hover:shadow-lg transition-shadow">
+              {filteredTests.map(test => <Card key={test.id} className="hover:shadow-lg transition-shadow bg-gray-800 border-gray-700">
                   <CardHeader>
                     <div className="flex justify-between items-start gap-2">
-                      <CardTitle className="text-lg leading-tight text-[#1a1b34] font-medium">{test.test_name}</CardTitle>
-                      <Badge variant="secondary">{test.category}</Badge>
+                      <CardTitle className="text-lg leading-tight text-white font-medium">{test.test_name}</CardTitle>
+                      <Badge variant="secondary" className="bg-gray-700 text-gray-200">{test.category}</Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    {test.description && <p className="mb-4 line-clamp-3 text-[#1a1b34] font-normal text-base">
+                    {test.description && <p className="mb-4 line-clamp-3 text-gray-300 font-normal text-base">
                         {test.description}
                       </p>}
                     
