@@ -89,7 +89,7 @@ const NewHero = () => {
   }], []);
   return <>
       {/* Hero Image Section */}
-      <section className="relative overflow-hidden bg-slate-50">
+      <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full py-0">
           <div className="w-full text-center px-4">
             {/* Hero Images Container */}
