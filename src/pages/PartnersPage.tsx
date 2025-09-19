@@ -84,17 +84,17 @@ const PartnersPage = () => {
         </section>
 
         {/* Partner Standards */}
-        <section className="py-16 bg-white">
+        <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-900">Our Partnership Standards</h2>
-              <p className="text-xl text-gray-600">Every partner meets our strict quality criteria</p>
+              <h2 className="text-3xl font-bold mb-4">Our Partnership Standards</h2>
+              <p className="text-xl text-white">Every partner meets our strict quality criteria</p>
             </div>
-            <div className="grid md:grid-cols-4 gap-6">
-              {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-4 bg-navy shadow-lg">
-                  <accreditation.icon className="h-9 w-9 text-white mx-auto mb-3" />
-                  <h3 className="font-semibold text-base mb-2 text-white">{accreditation.name}</h3>
-                  <p className="text-sm text-white/80">{accreditation.description}</p>
+            <div className="grid md:grid-cols-4 gap-8">
+              {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-6">
+                  <accreditation.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">{accreditation.name}</h3>
+                  <p className="text-sm text-muted-foreground">{accreditation.description}</p>
                 </Card>)}
             </div>
           </div>
@@ -111,7 +111,7 @@ const PartnersPage = () => {
               {partnerTiers.map((tier, tierIndex) => <div key={tierIndex}>
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                    <p className="text-muted-foreground">{tier.description}</p>
+                    <p className="text-[#1a1b34] font-medium">{tier.description}</p>
                   </div>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {tier.partners.map((partner, partnerIndex) => <Card key={partnerIndex} className="relative">
@@ -123,7 +123,7 @@ const PartnersPage = () => {
                             </Badge>
                           </div>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="bg-white">
                           <p className="text-sm text-muted-foreground mb-4">{partner.specialty}</p>
                           <Button variant="outline" size="sm" className="w-full">
                             View Tests
