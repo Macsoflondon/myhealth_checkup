@@ -402,7 +402,7 @@ export const getTestsForNavigation = (navItem: string): GoodbodyTest[] => {
     'MOST POPULAR TESTS': ['general-wellness', 'vitamins', 'thyroid', 'hormones'],
     'AT-HOME TESTS': ['general-wellness', 'vitamins', 'thyroid', 'hormones'],
     'CANCER SCREENING': ['cancer-screening', 'general-wellness'],
-    'GENERAL WELLNESS': ['general-wellness', 'vitamins', 'heart-health']
+    'GENERAL WELLNESS': ['general-wellness', 'vitamins', 'heart-health', 'hormones', 'thyroid']
   };
 
   const categories = categoryMap[navItem] || ['general-wellness'];

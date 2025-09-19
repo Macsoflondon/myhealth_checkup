@@ -31,25 +31,25 @@ export const primaryNavigationItems = [
   { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true }
 ];
 
-// Additional pages for the MORE dropdown
+// Additional pages for the MORE dropdown - organized by user needs
 export const moreNavigationItems = [
-  { name: "Trusted UK Providers", path: "/trusted-providers" },
-  { name: "Health Resources Hub", path: "/health-blog" },
-  { name: "Hormones", path: "/hormones" },
-  { name: "Thyroid", path: "/thyroid" },
-  { name: "Find a Clinic", path: "/find-clinic" },
+  // Information Pages
   { name: "How It Works", path: "/how-it-works" },
   { name: "About Us", path: "/about" },
-  { name: "Contact Us", path: "/contact" },
-  { name: "Partners", path: "/partners" },
-  { name: "Subscriptions", path: "/subscriptions" },
   { name: "FAQs", path: "/faqs" },
-  { name: "Compare Tests", path: "/compare" },
+  
+  // Services
+  { name: "Trusted UK Providers", path: "/trusted-providers" },
+  { name: "Find a Clinic", path: "/find-clinic" },
   { name: "Assisted Test Finder", path: "/assisted-test-finder" },
-  { name: "Gut Health", path: "/gut-health" },
-  { name: "Heart Health", path: "/heart-health" },
-  { name: "Sports Performance", path: "/sports-performance" },
-  { name: "Vitamin Deficiency", path: "/vitamin-deficiency" }
+  
+  // Resources
+  { name: "Health Resources Hub", path: "/health-blog" },
+  { name: "Compare Tests", path: "/compare" },
+  
+  // Business
+  { name: "Partners", path: "/partners" },
+  { name: "Contact Us", path: "/contact" }
 ];
 
 export const navigationItems = primaryNavigationItems;
@@ -108,7 +108,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         );
       case "GENERAL WELLNESS":
         return compareCategories.filter(cat => 
-          ['vitamins', 'general-health', 'heart-health', 'liver-health'].includes(cat.id)
+          ['vitamins', 'general-health', 'heart-health', 'liver-health', 'hormones', 'thyroid'].includes(cat.id)
         );
       default:
         // Show all categories for MOST POPULAR TESTS
