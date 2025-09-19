@@ -204,7 +204,7 @@ const PartnersPage = () => {
                 </Card>
                 <Card className="p-6">
                   <h3 className="font-semibold mb-2">What We Offer</h3>
-                  <ul className="text-sm text-muted-foreground space-y-1">
+                  <ul className="text-sm text-muted-foreground space-y-1 bg-[#081129]">
                     <li>• Marketing support</li>
                     <li>• Technology integration</li>
                     <li>• Customer insights</li>
