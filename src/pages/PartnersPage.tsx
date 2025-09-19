@@ -93,7 +93,7 @@ const PartnersPage = () => {
             <div className="grid md:grid-cols-4 gap-8">
               {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-6">
                   <accreditation.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2 bg-white">{accreditation.name}</h3>
+                  <h3 className="font-semibold text-lg mb-2 bg-white rounded-none">{accreditation.name}</h3>
                   <p className="text-sm text-muted-foreground">{accreditation.description}</p>
                 </Card>)}
             </div>
@@ -111,7 +111,7 @@ const PartnersPage = () => {
               {partnerTiers.map((tier, tierIndex) => <div key={tierIndex}>
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                    <p className="text-[#1a1b34] font-medium">{tier.description}</p>
+                    <p className="font-medium text-white">{tier.description}</p>
                   </div>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {tier.partners.map((partner, partnerIndex) => <Card key={partnerIndex} className="relative">
@@ -208,7 +208,7 @@ const PartnersPage = () => {
                     <li>• Marketing support</li>
                     <li>• Technology integration</li>
                     <li>• Customer insights</li>
-                    <li>• Performance analytics</li>
+                    <li className="text-[t#ransparent] text-white">• Performance analytics</li>
                   </ul>
                 </Card>
               </div>
