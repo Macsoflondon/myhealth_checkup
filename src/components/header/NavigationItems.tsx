@@ -25,18 +25,18 @@ const categoryColorMap: Record<string, string> = {
 // Main navigation structure - primary items shown in toolbar
 export const primaryNavigationItems = [
   { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
+  { name: "CANCER SCREENING", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
   { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
-  { name: "HORMONES", path: "/hormones", hasDropdown: true, megaMenu: true },
-  { name: "THYROID", path: "/thyroid", hasDropdown: true, megaMenu: true }
+  { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true }
 ];
 
 // Additional pages for the MORE dropdown
 export const moreNavigationItems = [
   { name: "Trusted UK Providers", path: "/trusted-providers" },
   { name: "Health Resources Hub", path: "/health-blog" },
-  { name: "Cancer Screening", path: "/tests/cancer" },
-  { name: "General Wellness", path: "/wellness" },
+  { name: "Hormones", path: "/hormones" },
+  { name: "Thyroid", path: "/thyroid" },
   { name: "Find a Clinic", path: "/find-clinic" },
   { name: "How It Works", path: "/how-it-works" },
   { name: "About Us", path: "/about" },
