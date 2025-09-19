@@ -93,7 +93,7 @@ const PartnersPage = () => {
             <div className="grid md:grid-cols-4 gap-8">
               {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-6">
                   <accreditation.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">{accreditation.name}</h3>
+                  <h3 className="font-semibold text-lg mb-2 bg-white">{accreditation.name}</h3>
                   <p className="text-sm text-muted-foreground">{accreditation.description}</p>
                 </Card>)}
             </div>
