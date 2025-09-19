@@ -5,51 +5,77 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Shield, Award, Users, TrendingUp } from 'lucide-react';
-
 const PartnersPage = () => {
-  const partnerTiers = [
-    {
-      name: "Premium Partners",
-      description: "Leading healthcare providers with comprehensive test portfolios",
-      partners: [
-        { name: "Medichecks", specialty: "Comprehensive health testing", accreditation: "UKAS" },
-        { name: "Thriva", specialty: "Subscription health monitoring", accreditation: "MHRA" },
-        { name: "Everlywell", specialty: "At-home testing solutions", accreditation: "CLIA" },
-        { name: "Forth", specialty: "Hormone and fertility testing", accreditation: "UKAS" }
-      ]
-    },
-    {
-      name: "Specialist Partners",
-      description: "Expert providers focusing on specific health areas",
-      partners: [
-        { name: "Randox Health", specialty: "Advanced diagnostics", accreditation: "ISO 15189" },
-        { name: "Blue Horizon", specialty: "Thyroid and nutrition", accreditation: "UKAS" },
-        { name: "London Medical Laboratory", specialty: "Executive health screening", accreditation: "CQC" },
-        { name: "Better2Know", specialty: "Sexual health testing", accreditation: "UKAS" }
-      ]
-    }
-  ];
-
-  const accreditations = [
-    { name: "UKAS", description: "United Kingdom Accreditation Service", icon: Shield },
-    { name: "CQC", description: "Care Quality Commission", icon: Award },
-    { name: "MHRA", description: "Medicines and Healthcare Regulatory Agency", icon: Shield },
-    { name: "ISO 15189", description: "Medical Laboratory Standard", icon: Award }
-  ];
-
-  return (
-    <div className="min-h-screen flex flex-col">
+  const partnerTiers = [{
+    name: "Premium Partners",
+    description: "Leading healthcare providers with comprehensive test portfolios",
+    partners: [{
+      name: "Medichecks",
+      specialty: "Comprehensive health testing",
+      accreditation: "UKAS"
+    }, {
+      name: "Thriva",
+      specialty: "Subscription health monitoring",
+      accreditation: "MHRA"
+    }, {
+      name: "Everlywell",
+      specialty: "At-home testing solutions",
+      accreditation: "CLIA"
+    }, {
+      name: "Forth",
+      specialty: "Hormone and fertility testing",
+      accreditation: "UKAS"
+    }]
+  }, {
+    name: "Specialist Partners",
+    description: "Expert providers focusing on specific health areas",
+    partners: [{
+      name: "Randox Health",
+      specialty: "Advanced diagnostics",
+      accreditation: "ISO 15189"
+    }, {
+      name: "Blue Horizon",
+      specialty: "Thyroid and nutrition",
+      accreditation: "UKAS"
+    }, {
+      name: "London Medical Laboratory",
+      specialty: "Executive health screening",
+      accreditation: "CQC"
+    }, {
+      name: "Better2Know",
+      specialty: "Sexual health testing",
+      accreditation: "UKAS"
+    }]
+  }];
+  const accreditations = [{
+    name: "UKAS",
+    description: "United Kingdom Accreditation Service",
+    icon: Shield
+  }, {
+    name: "CQC",
+    description: "Care Quality Commission",
+    icon: Award
+  }, {
+    name: "MHRA",
+    description: "Medicines and Healthcare Regulatory Agency",
+    icon: Shield
+  }, {
+    name: "ISO 15189",
+    description: "Medical Laboratory Standard",
+    icon: Award
+  }];
+  return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-[54px]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-4">Trusted Network</Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Our Healthcare Partners
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl mb-8 text-white">
                 We partner with the UK's most trusted and accredited healthcare providers 
                 to bring you reliable, high-quality health testing services.
               </p>
@@ -62,16 +88,14 @@ const PartnersPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Our Partnership Standards</h2>
-              <p className="text-xl text-muted-foreground">Every partner meets our strict quality criteria</p>
+              <p className="text-xl text-white">Every partner meets our strict quality criteria</p>
             </div>
             <div className="grid md:grid-cols-4 gap-8">
-              {accreditations.map((accreditation, index) => (
-                <Card key={index} className="text-center p-6">
+              {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-6">
                   <accreditation.icon className="h-12 w-12 text-primary mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">{accreditation.name}</h3>
                   <p className="text-sm text-muted-foreground">{accreditation.description}</p>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
@@ -84,15 +108,13 @@ const PartnersPage = () => {
               <p className="text-xl text-muted-foreground">Curated providers across all health testing categories</p>
             </div>
             <div className="space-y-12">
-              {partnerTiers.map((tier, tierIndex) => (
-                <div key={tierIndex}>
+              {partnerTiers.map((tier, tierIndex) => <div key={tierIndex}>
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
                     <p className="text-muted-foreground">{tier.description}</p>
                   </div>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {tier.partners.map((partner, partnerIndex) => (
-                      <Card key={partnerIndex} className="relative">
+                    {tier.partners.map((partner, partnerIndex) => <Card key={partnerIndex} className="relative">
                         <CardHeader>
                           <div className="flex justify-between items-start">
                             <CardTitle className="text-lg">{partner.name}</CardTitle>
@@ -107,11 +129,9 @@ const PartnersPage = () => {
                             View Tests
                           </Button>
                         </CardContent>
-                      </Card>
-                    ))}
+                      </Card>)}
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </section>
@@ -198,8 +218,6 @@ const PartnersPage = () => {
         </section>
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default PartnersPage;
