@@ -46,7 +46,7 @@ const DiabetesTestingPage = () => {
         <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-blue-100 text-blue-800">Early Detection</Badge>
+              <Badge className="mb-4 bg-[#081129] text-white">Early Detection</Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 Diabetes Testing & Monitoring
               </h1>

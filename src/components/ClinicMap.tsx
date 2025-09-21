@@ -222,7 +222,7 @@ const ClinicMap: React.FC = () => {
             <Button 
               onClick={handleFind} 
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 h-12 text-base font-medium"
+              className="bg-[#081129] hover:bg-[#081129]/90 text-white px-8 h-12 text-base font-medium"
             >
               {loading ? "Searching..." : "Find clinics"}
             </Button>
@@ -271,7 +271,7 @@ const ClinicMap: React.FC = () => {
                   <Marker key={idx} position={[lat, lon]}>
                     <Popup>
                       <div className="min-w-[200px]">
-                        <div className="font-semibold text-blue-600 mb-1">
+                        <div className="font-semibold text-[#081129] mb-1">
                           {clinic.name || "Clinic"}
                         </div>
                         <div className="text-sm text-gray-600 mb-2">
@@ -318,7 +318,7 @@ const ClinicMap: React.FC = () => {
                 <div key={i} className="p-4 border-b hover:bg-gray-50 transition-colors">
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 mt-1">
-                      <MapPin className="h-4 w-4 text-blue-600" />
+                      <MapPin className="h-4 w-4 text-[#081129]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="font-semibold text-gray-900 mb-1">

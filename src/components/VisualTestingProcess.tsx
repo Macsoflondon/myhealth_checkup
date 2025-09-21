@@ -15,7 +15,7 @@ export const VisualTestingProcess = () => {
       title: "Send Your Sample",
       description: "Once complete, your sample will be collected by our courier and sent to the lab.",
       icon: Send,
-      color: "bg-blue-500"
+      color: "bg-[#081129]"
     },
     {
       number: "03",

@@ -107,10 +107,10 @@ const healthConcerns = [
 const getCategoryColor = (category: string) => {
   const colorMap: { [key: string]: string } = {
     "Complete Health": "bg-red-500 text-white",
-    "Men's Wellness": "bg-blue-500 text-white",
+    "Men's Wellness": "bg-[#081129] text-white",
     "Hormone Health": "bg-pink-600 text-white",
     "Sexual Health": "bg-purple-500 text-white",
-    "Prostate Health": "bg-blue-500 text-white"
+    "Prostate Health": "bg-[#081129] text-white"
   };
   return colorMap[category] || "bg-gray-500 text-white";
 };
@@ -129,10 +129,10 @@ const getCategoryBorderColor = (category: string) => {
 const getCategoryButtonColor = (category: string) => {
   const buttonColorMap: { [key: string]: string } = {
     "Complete Health": "bg-red-500 hover:bg-red-600",
-    "Men's Wellness": "bg-blue-500 hover:bg-blue-600",
+    "Men's Wellness": "bg-[#081129] hover:bg-[#081129]/90",
     "Hormone Health": "bg-pink-600 hover:bg-pink-700",
     "Sexual Health": "bg-purple-500 hover:bg-purple-600",
-    "Prostate Health": "bg-blue-500 hover:bg-blue-600"
+    "Prostate Health": "bg-[#081129] hover:bg-[#081129]/90"
   };
   return buttonColorMap[category] || "bg-gray-500 hover:bg-gray-600";
 };

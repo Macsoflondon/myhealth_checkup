@@ -220,7 +220,7 @@ const Dashboard = () => {
                               order.status === 'completed' ? 'bg-green-100 text-green-800' :
                               order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                               order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                              'bg-blue-100 text-blue-800'
+                              'bg-[#081129] text-white'
                             }`}>
                               {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                             </span>

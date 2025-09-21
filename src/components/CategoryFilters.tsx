@@ -74,7 +74,7 @@ const categoryItems: CategoryItem[] = [{
 }, {
   id: 'sports-performance',
   name: 'Sports performance',
-  color: 'bg-blue-500',
+  color: 'bg-[#081129]',
   path: '/sports-performance'
 }, {
   id: 'testosterone',

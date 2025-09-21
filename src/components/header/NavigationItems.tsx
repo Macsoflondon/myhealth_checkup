@@ -15,7 +15,7 @@ const categoryColorMap: Record<string, string> = {
   'diabetes': 'bg-orange-500 text-white',
   'heart-health': 'bg-red-600 text-white',
   'liver-health': 'bg-yellow-500 text-white',
-  'kidney-health': 'bg-blue-500 text-white',
+  'kidney-health': 'bg-[#081129] text-white',
   'fertility': 'bg-purple-500 text-white',
   'general-health': 'bg-teal-500 text-white',
   'allergy-testing': 'bg-indigo-500 text-white',

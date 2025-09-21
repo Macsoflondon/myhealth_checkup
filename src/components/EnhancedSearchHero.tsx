@@ -28,7 +28,7 @@ const EnhancedSearchHero = () => {
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
             Find the best blood tests, health checks, and diagnostic services across the UK. 
             <br />
-            <span className="text-blue-200">Compare prices, reviews, and book instantly.</span>
+            <span className="text-white/70">Compare prices, reviews, and book instantly.</span>
           </h1>
           
           <div className="max-w-4xl mx-auto mt-12">
@@ -58,20 +58,20 @@ const EnhancedSearchHero = () => {
 
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <p className="text-3xl font-bold text-blue-100">10+</p>
-              <p className="text-blue-200">Leading Providers</p>
+              <p className="text-3xl font-bold text-white">10+</p>
+              <p className="text-white/70">Leading Providers</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-blue-100">300+</p>
-              <p className="text-blue-200">Available Tests</p>
+              <p className="text-3xl font-bold text-white">300+</p>
+              <p className="text-white/70">Available Tests</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-blue-100">24-48hrs</p>
-              <p className="text-blue-200">Fast Results</p>
+              <p className="text-3xl font-bold text-white">24-48hrs</p>
+              <p className="text-white/70">Fast Results</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-blue-100">96%</p>
-              <p className="text-blue-200">Satisfied Customers</p>
+              <p className="text-3xl font-bold text-white">96%</p>
+              <p className="text-white/70">Satisfied Customers</p>
             </div>
           </div>
         </div>

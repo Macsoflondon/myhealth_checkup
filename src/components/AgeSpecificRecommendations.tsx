@@ -33,7 +33,7 @@ const AgeSpecificRecommendations = (): JSX.Element => {
     keyTests: ["Complete Health Check", "Cancer Screening", "Heart Health Panel", "Hormone Balance", "Stress Markers"],
     frequency: "Every 6-12 months",
     priority: "Cancer Prevention & Cardiovascular Health",
-    color: "bg-blue-100 border-blue-500 text-blue-700"
+    color: "bg-gray-100 border-gray-300 text-[#081129]"
   }, {
     range: "45-60",
     icon: <Heart className="w-6 h-6" />,

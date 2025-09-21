@@ -6,7 +6,7 @@ const EnhancedHero = () => {
         <div className="max-w-4xl mx-auto text-center bg-[0#] bg-[#081129] rounded-xl">
           <h1 className="text-3xl md:text-5xl mb-6 lg:text-5xl text-[#081129] text-center font-bold">MyHealth Checkup</h1>
           
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
             Find the best blood tests, health checks, and diagnostic services across the UK. Compare prices, reviews, and book instantly.
           </p>
           
@@ -21,7 +21,7 @@ const EnhancedHero = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-blue-100">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/70">
             <div className="flex items-center">
               <Shield className="w-4 h-4 mr-2" />
               NHS Approved Labs

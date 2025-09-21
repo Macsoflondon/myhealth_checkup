@@ -127,7 +127,7 @@ const healthConcerns = [
 const getCategoryColor = (category: string) => {
   const colorMap: { [key: string]: string } = {
     "Women's Wellness": "bg-pink-500 text-white",
-    "Male Hormones": "bg-blue-500 text-white",
+    "Male Hormones": "bg-[#081129] text-white",
     "Thyroid Hormones": "bg-green-500 text-white",
     "Fertility": "bg-rose-500 text-white",
     "Stress Hormones": "bg-orange-500 text-white",
@@ -151,7 +151,7 @@ const getCategoryBorderColor = (category: string) => {
 const getCategoryButtonColor = (category: string) => {
   const buttonColorMap: { [key: string]: string } = {
     "Women's Wellness": "bg-pink-500 hover:bg-pink-600",
-    "Male Hormones": "bg-blue-500 hover:bg-blue-600",
+    "Male Hormones": "bg-[#081129] hover:bg-[#081129]/90",
     "Thyroid Hormones": "bg-green-500 hover:bg-green-600",
     "Fertility": "bg-rose-500 hover:bg-rose-600",
     "Stress Hormones": "bg-orange-500 hover:bg-orange-600",

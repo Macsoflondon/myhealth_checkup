@@ -14,7 +14,7 @@ const categoryColorMap: Record<string, string> = {
   'vitamins': 'bg-lime-500 text-white',
   'cancer-screening': 'bg-purple-600 text-white',
   'heart-health': 'bg-red-600 text-white',
-  'mens-health': 'bg-blue-500 text-white',
+  'mens-health': 'bg-[#081129] text-white',
   'womens-health': 'bg-pink-600 text-white',
   'fertility': 'bg-purple-500 text-white',
   'general-health': 'bg-teal-500 text-white',

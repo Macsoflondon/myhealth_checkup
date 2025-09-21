@@ -71,11 +71,10 @@ const PartnersPage = () => {
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-[54px]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">Trusted Network</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#081129]">
                 Our Healthcare Partners
               </h1>
-              <p className="text-xl mb-8 text-white">
+              <p className="text-xl mb-8 text-[#081129]">
                 We partner with the UK's most trusted and accredited healthcare providers 
                 to bring you reliable, high-quality health testing services.
               </p>
@@ -84,17 +83,17 @@ const PartnersPage = () => {
         </section>
 
         {/* Partner Standards */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Our Partnership Standards</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129]">Our Partnership Standards</h2>
               <p className="text-xl text-white">Every partner meets our strict quality criteria</p>
             </div>
-            <div className="grid md:grid-cols-4 gap-8">
-              {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-6">
-                  <accreditation.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2 bg-white rounded-none">{accreditation.name}</h3>
-                  <p className="text-sm text-muted-foreground">{accreditation.description}</p>
+            <div className="grid md:grid-cols-4 gap-4">
+              {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-3 bg-[#081129] shadow-white shadow-lg">
+                  <accreditation.icon className="h-8 w-8 text-white mx-auto mb-2" />
+                  <h3 className="font-semibold text-sm mb-1 text-white">{accreditation.name}</h3>
+                  <p className="text-xs text-white/80">{accreditation.description}</p>
                 </Card>)}
             </div>
           </div>
@@ -104,14 +103,14 @@ const PartnersPage = () => {
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Partner Network</h2>
-              <p className="text-xl text-muted-foreground">Curated providers across all health testing categories</p>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129]">Partner Network</h2>
+              <p className="text-xl text-[#081129]">Curated providers across all health testing categories</p>
             </div>
             <div className="space-y-12">
               {partnerTiers.map((tier, tierIndex) => <div key={tierIndex}>
                   <div className="text-center mb-8">
-                    <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                    <p className="font-medium text-white">{tier.description}</p>
+                    <h3 className="text-2xl font-bold mb-2 text-[#081129]">{tier.name}</h3>
+                    <p className="font-medium text-[#081129]">{tier.description}</p>
                   </div>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {tier.partners.map((partner, partnerIndex) => <Card key={partnerIndex} className="relative">
@@ -140,11 +139,11 @@ const PartnersPage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Why Providers Partner With Us</h2>
+              <h2 className="text-3xl font-bold text-center mb-12 text-[#081129]">Why Providers Partner With Us</h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <Users className="h-8 w-8 text-blue-500" />
+                    <Users className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">Reach More Customers</h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -153,7 +152,7 @@ const PartnersPage = () => {
                 </Card>
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <TrendingUp className="h-8 w-8 text-green-500" />
+                    <TrendingUp className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">Increase Visibility</h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -162,7 +161,7 @@ const PartnersPage = () => {
                 </Card>
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <Shield className="h-8 w-8 text-purple-500" />
+                    <Shield className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">Quality Assurance</h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -171,7 +170,7 @@ const PartnersPage = () => {
                 </Card>
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
-                    <Award className="h-8 w-8 text-orange-500" />
+                    <Award className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">Industry Recognition</h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -187,8 +186,8 @@ const PartnersPage = () => {
         <section className="py-16 bg-primary/5">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-6">Become a Partner</h2>
-              <p className="text-xl text-muted-foreground mb-8">
+              <h2 className="text-3xl font-bold mb-6 text-[#081129]">Become a Partner</h2>
+              <p className="text-xl text-[#081129] mb-8">
                 Are you a healthcare provider interested in joining our network? 
                 We'd love to hear from you.
               </p>
