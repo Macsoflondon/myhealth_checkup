@@ -101,8 +101,8 @@ const WellWomanTestPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-pink-50 dark:bg-pink-900/20 p-4 rounded-lg mb-4">
-                  <h4 className="font-semibold text-pink-800 dark:text-pink-200 mb-2">Key Areas Covered</h4>
+                <div className="p-4 rounded-lg mb-4 bg-[#081129]">
+                  <h4 className="font-semibold mb-2 text-white">Key Areas Covered</h4>
                   <ul className="text-sm text-pink-700 dark:text-pink-300 space-y-1">
                     <li>• Menstrual cycle health and regularity</li>
                     <li>• Fertility and reproductive health</li>
@@ -113,9 +113,9 @@ const WellWomanTestPage = () => {
                 </div>
                 
                 <div className="grid md:grid-cols-3 gap-4">
-                  <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#081129]">
                     <Shield className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-medium">UKAS Accredited</span>
+                    <span className="text-sm font-medium text-white">UKAS Accredited</span>
                   </div>
                   
                   <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg">
