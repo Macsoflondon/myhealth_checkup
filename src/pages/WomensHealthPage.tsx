@@ -221,15 +221,15 @@ const WomensHealthPage = () => {
       <Header />
       <main className="flex-grow bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
-               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
+               <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6 text-[#e70d69]">
                 {t('womensHealth.title')}
               </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{
+              <p style={{
               color: '#081129'
-            }}>
+            }} className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
                 {t('womensHealth.subtitle')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -245,10 +245,10 @@ const WomensHealthPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <section className="bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
+              <h2 className="text-3xl font-bold mb-8 text-[#081129]">
                 {t('womensHealth.benefitsTitle')}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -257,7 +257,7 @@ const WomensHealthPage = () => {
                     <Heart className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.hormoneBenefitTitle')}</h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-[#081129]">
                     Early detection and prevention of women's health conditions
                   </p>
                 </div>
@@ -266,7 +266,7 @@ const WomensHealthPage = () => {
                     <Baby className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">{t('womensHealth.fertilityBenefitTitle')}</h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-[#081129]">
                     {t('womensHealth.fertilityBenefitDescription')}
                   </p>
                 </div>
@@ -275,7 +275,7 @@ const WomensHealthPage = () => {
                     <Users className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">Lifelong Hormone Health</h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-[#081129]">
                     Monitor and optimise hormone levels throughout life stages
                   </p>
                 </div>
@@ -285,7 +285,7 @@ const WomensHealthPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               
