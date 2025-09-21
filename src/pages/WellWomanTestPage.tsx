@@ -56,12 +56,12 @@ const WellWomanTestPage = () => {
                 <h1 className="text-3xl font-bold" style={{
                 color: '#081129'
               }}>Well Woman Blood Test</h1>
-                <Badge variant="secondary" className="text-sm">
+                <Badge variant="secondary" className="text-sm bg-[#e70d69]">
                   Women's Health
                 </Badge>
               </div>
               
-              <p className="text-xl text-muted-foreground mb-6">
+              <p className="text-xl mb-6 text-[#081129]">
                 Comprehensive female health screening including hormone analysis, fertility markers, 
                 general health indicators and nutritional status tailored specifically for women.
               </p>
@@ -73,14 +73,14 @@ const WellWomanTestPage = () => {
                 <CardTitle>What's Included</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
+                <p className="mb-4 text-[#081129]">
                   This comprehensive well woman test analyzes key health markers that are 
                   particularly important for women's health and wellbeing at every life stage.
                 </p>
                 
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   <div className="space-y-2">
-                    <h4 className="font-semibold">Female Hormones</h4>
+                    <h4 className="font-semibold text-[#081129]">Female Hormones</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Oestradiol (Estrogen)</li>
                       <li>• Progesterone</li>
@@ -90,7 +90,7 @@ const WellWomanTestPage = () => {
                     </ul>
                   </div>
                   <div className="space-y-2">
-                    <h4 className="font-semibold">General Health</h4>
+                    <h4 className="font-semibold text-[#081129]">General Health</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Full Blood Count</li>
                       <li>• Iron Status & Ferritin</li>
@@ -118,14 +118,14 @@ const WellWomanTestPage = () => {
                     <span className="text-sm font-medium text-white">UKAS Accredited</span>
                   </div>
                   
-                  <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#081129]">
                     <Clock className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-medium">Fast Results</span>
+                    <span className="font-medium text-[t#ransparent] text-white">Fast Results</span>
                   </div>
                   
-                  <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#081129]">
                     <Heart className="w-5 h-5 text-primary" />
-                    <span className="text-sm font-medium">Female Focus</span>
+                    <span className="text-sm font-medium text-white">Female Focus</span>
                   </div>
                 </div>
               </CardContent>
