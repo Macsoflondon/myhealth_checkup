@@ -20,11 +20,10 @@ const Auth = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
-
   const passwordStrength = validatePassword(password);
   const validateForm = (): boolean => {
     let isValid = true;
-    
+
     // Reset errors
     setEmailError("");
     setPasswordError("");
@@ -55,21 +54,19 @@ const Auth = () => {
       toast.error("Full name is required");
       isValid = false;
     }
-
     return isValid;
   };
-
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) {
       return;
     }
-
     setLoading(true);
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const {
+          error
+        } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -79,7 +76,6 @@ const Auth = () => {
             emailRedirectTo: `${window.location.origin}/`
           }
         });
-        
         if (error) {
           // Handle specific auth errors
           if (error.message.includes('User already registered')) {
@@ -93,14 +89,14 @@ const Auth = () => {
           }
           return;
         }
-        
         toast.success("Sign up successful! Please check your email for verification.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const {
+          error
+        } = await supabase.auth.signInWithPassword({
           email,
           password
         });
-        
         if (error) {
           // Handle specific auth errors
           if (error.message.includes('Invalid login credentials')) {
@@ -112,7 +108,6 @@ const Auth = () => {
           }
           return;
         }
-        
         toast.success("Logged in successfully!");
         navigate("/compare");
       }
@@ -137,63 +132,35 @@ const Auth = () => {
             
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                value={email} 
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setEmailError("");
-                }}
-                placeholder="Enter your email" 
-                required 
-                disabled={loading}
-                className={emailError ? "border-destructive" : ""}
-              />
-              {emailError && (
-                <Alert variant="destructive" className="py-2">
+              <Input id="email" type="email" value={email} onChange={e => {
+              setEmail(e.target.value);
+              setEmailError("");
+            }} placeholder="Enter your email" required disabled={loading} className={emailError ? "border-destructive" : ""} />
+              {emailError && <Alert variant="destructive" className="py-2">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-sm">{emailError}</AlertDescription>
-                </Alert>
-              )}
+                </Alert>}
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="password">Password {isSignUp && <span className="text-xs text-muted-foreground">(minimum 8 characters)</span>}</Label>
-              <Input 
-                id="password" 
-                type="password" 
-                value={password} 
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setPasswordError("");
-                }}
-                placeholder={isSignUp ? "Create a strong password" : "Enter your password"}
-                required 
-                disabled={loading}
-                className={passwordError ? "border-destructive" : ""}
-                minLength={isSignUp ? 8 : 6}
-              />
-              {isSignUp && password && (
-                <PasswordStrengthIndicator 
-                  strength={passwordStrength} 
-                  password={password}
-                />
-              )}
-              {passwordError && (
-                <Alert variant="destructive" className="py-2">
+              <Input id="password" type="password" value={password} onChange={e => {
+              setPassword(e.target.value);
+              setPasswordError("");
+            }} placeholder={isSignUp ? "Create a strong password" : "Enter your password"} required disabled={loading} className={passwordError ? "border-destructive" : ""} minLength={isSignUp ? 8 : 6} />
+              {isSignUp && password && <PasswordStrengthIndicator strength={passwordStrength} password={password} />}
+              {passwordError && <Alert variant="destructive" className="py-2">
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription className="text-sm">{passwordError}</AlertDescription>
-                </Alert>
-              )}
+                </Alert>}
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" disabled={loading} className="w-full text-white text-xl bg-[#081129]">
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
             <div className="text-center mt-4">
-              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center font-normal text-base text-[#22c0d4]">
+              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base font-semibold text-[#081129]">
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
             </div>
