@@ -70,13 +70,11 @@ const FeaturedProviders = () => {
     tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
     website: "tuli.health"
   }];
-  return <section className="py-16 bg-[hsl(var(--section-dark))]" id="providers">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-[#22c0d4] text-center">
-            Trusted UK Providers
-          </h2>
-          <p className="text-xl max-w-3xl mx-auto text-[#e70d69] font-normal text-center">
+  return <section id="providers" className="bg-[hsl(var(--section-dark))] py-0">
+      <div className="container mx-auto px-4 bg-white">
+        <div className="text-center mb-12 bg-[#081129] my-[50px] py-[30px]">
+          <h2 className="text-3xl mb-4 text-center text-white my-0 font-semibold md:text-5xl">Trusted Providers</h2>
+          <p className="text-xl max-w-3xl mx-auto text-[#e70d69] text-center py-0 my-[20px] font-semibold">
             Accredited health testing providers with proven track records
           </p>
         </div>
@@ -114,7 +112,11 @@ const FeaturedProviders = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <Button variant="outline" size="sm" className="flex-1 min-h-[40px]" style={{ backgroundColor: '#e70d69', borderColor: '#e70d69', color: 'white' }} asChild>
+                  <Button variant="outline" size="sm" className="flex-1 min-h-[40px]" style={{
+                backgroundColor: '#e70d69',
+                borderColor: '#e70d69',
+                color: 'white'
+              }} asChild>
                     <Link to={`/provider/${provider.id.toLowerCase()}`}>
                       View Profile
                     </Link>
