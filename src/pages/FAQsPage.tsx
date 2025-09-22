@@ -68,7 +68,7 @@ const FAQsPage = () => {
       <main className="flex-grow bg-muted/30">
         <div className="container mx-auto px-4 py-12 bg-white">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12 bg-[#081129]">
+            <div className="text-center mb-12 bg-[#081129] my-0 py-[40px]">
               
               <h1 className="text-4xl font-bold mb-6 text-white">Frequently Asked Questions</h1>
               <p className="text-white font-medium text-lg">
@@ -105,15 +105,15 @@ const FAQsPage = () => {
                   Can't find what you're looking for? Our support team is here to help.
                 </p>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="bg-primary/5 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Email Support</h4>
-                    <p className="text-sm text-muted-foreground mb-2">support@myhealthhub.co.uk</p>
-                    <p className="text-xs text-muted-foreground">Response within 24 hours</p>
+                  <div className="p-4 rounded-lg bg-[#081129]">
+                    <h4 className="font-semibold mb-2 text-white text-left">Email Support</h4>
+                    <p className="text-sm mb-2 text-white text-left">support@myhealthhub.co.uk</p>
+                    <p className="text-xs text-white text-left">Response within 24 hours</p>
                   </div>
-                  <div className="bg-primary/5 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Phone Support</h4>
-                    <p className="text-sm text-muted-foreground mb-2">0800 123 4567</p>
-                    <p className="text-xs text-muted-foreground">Mon-Fri 9am-6pm</p>
+                  <div className="p-4 rounded-lg bg-[#081129]">
+                    <h4 className="font-semibold mb-2 text-white text-left">Phone Support</h4>
+                    <p className="text-sm mb-2 text-white">0800 123 4567</p>
+                    <p className="text-xs text-white">Mon-Fri 9am-6pm</p>
                   </div>
                 </div>
               </CardContent>
