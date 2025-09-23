@@ -68,13 +68,13 @@ const PartnersPage = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-[54px]">
+        <section className="from-primary/5 to-secondary/5 py-[54px] bg-[t] bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#081129]">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Our Healthcare Partners
               </h1>
-              <p className="text-xl mb-8 text-[#081129]">
+              <p className="text-xl mb-8 text-white">
                 We partner with the UK's most trusted and accredited healthcare providers 
                 to bring you reliable, high-quality health testing services.
               </p>
@@ -87,20 +87,20 @@ const PartnersPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#081129]">Our Partnership Standards</h2>
-              <p className="text-xl text-white">Every partner meets our strict quality criteria</p>
+              <p className="text-[#081129] font-medium text-base">Every partner meets our strict quality criteria</p>
             </div>
             <div className="grid md:grid-cols-4 gap-4">
               {accreditations.map((accreditation, index) => <Card key={index} className="text-center p-3 bg-[#081129] shadow-white shadow-lg">
                   <accreditation.icon className="h-8 w-8 text-white mx-auto mb-2" />
-                  <h3 className="font-semibold text-sm mb-1 text-white">{accreditation.name}</h3>
-                  <p className="text-xs text-white/80">{accreditation.description}</p>
+                  <h3 className="mb-1 text-[#22c0d4] text-base font-bold">{accreditation.name}</h3>
+                  <p className="text-xs text-[#22c0d4] font-semibold">{accreditation.description}</p>
                 </Card>)}
             </div>
           </div>
         </section>
 
         {/* Partner Categories */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#081129]">Partner Network</h2>
@@ -109,11 +109,11 @@ const PartnersPage = () => {
             <div className="space-y-12">
               {partnerTiers.map((tier, tierIndex) => <div key={tierIndex}>
                   <div className="text-center mb-8">
-                    <h3 className="text-2xl font-bold mb-2 text-[#081129]">{tier.name}</h3>
+                    <h3 className="font-bold mb-2 text-2xl text-[#081129]">{tier.name}</h3>
                     <p className="font-medium text-[#081129]">{tier.description}</p>
                   </div>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {tier.partners.map((partner, partnerIndex) => <Card key={partnerIndex} className="relative">
+                    {tier.partners.map((partner, partnerIndex) => <Card key={partnerIndex} className="relative rounded-3xl">
                         <CardHeader>
                           <div className="flex justify-between items-start">
                             <CardTitle className="text-lg">{partner.name}</CardTitle>
@@ -123,7 +123,7 @@ const PartnersPage = () => {
                           </div>
                         </CardHeader>
                         <CardContent className="bg-white">
-                          <p className="text-sm text-muted-foreground mb-4">{partner.specialty}</p>
+                          <p className="mb-4 text-[#081129] text-sm font-semibold">{partner.specialty}</p>
                           <Button variant="outline" size="sm" className="w-full">
                             View Tests
                           </Button>
