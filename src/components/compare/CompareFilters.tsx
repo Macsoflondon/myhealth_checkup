@@ -112,7 +112,7 @@ export const CompareFilters = ({
           {/* Results Summary */}
           <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/50">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>{isLoading ? "Loading..." : `${testCount} results found`}</span>
+              <span className="px-[10px]">{isLoading ? "Loading..." : `${testCount} results found`}</span>
               {selectedProviders[0] !== "all" && <>
                   <span>•</span>
                   <span>Filtered by {providers.find(p => p.id === selectedProviders[0])?.name}</span>
