@@ -141,7 +141,7 @@ const NewHero = () => {
                 <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="font-medium text-center text-white text-base">At-Home Test or In-Clinic Blood Draw</span>
               </div>
-              <div className="shadow-2xl p-6 border border-[#22c0d4] hover:shadow-2xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129] rounded-xl py-0 px-0 ">
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <Clock aria-hidden="true" className="w-8 h-8 text-health-success shrink-0 mx-[10px]" />
                 <span className="font-medium text-center text-white text-base my-0 px-0 mx-[10px]">Fast & Accurate Test Results You Can Trust</span>
               </div>
