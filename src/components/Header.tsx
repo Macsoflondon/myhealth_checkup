@@ -44,8 +44,8 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="px-4 py-[30px]">
-          <div className="flex items-center justify-between gap-6 w-full">
+        <div className="px-4 bg-[#081129] py-0">
+          <div className="flex items-center justify-between gap-4 w-full">
             <div className="flex items-center gap-3 flex-shrink-0">
               <Logo />
             </div>
@@ -54,7 +54,7 @@ const Header = ({
               <SearchBar />
             </div>
             
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0 rounded-md">
               <LanguageSwitcher />
               <UserMenu />
             </div>
@@ -62,7 +62,7 @@ const Header = ({
         </div>
         
         {/* Bottom row - Navigation Menu */}
-        <div className="py-2 border border-[#081129] bg-white my-0 mx-0 px-[16px] rounded-none">
+        <div className="py-2 border border-[#081129] bg-white my-0 mx-0 rounded-none px-0">
           <NavigationItems className="flex justify-center items-center gap-8" />
         </div>
       </header>
