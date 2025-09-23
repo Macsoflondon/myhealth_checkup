@@ -3,7 +3,7 @@ const HowItWorks = () => {
   return <section style={{
     backgroundColor: '#3B82F6'
   }} className="bg-white ">
-      <div className="max-w-7xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 py-16 bg-[#081129]">
         <div className="bg-navy !bg-[#081129] rounded-2xl shadow-lg p-8 mb-12" style={{
         backgroundColor: '#081129'
       }}>

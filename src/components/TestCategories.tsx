@@ -25,7 +25,7 @@ const CategoryCard = ({
       <div className={cn("w-14 h-14 rounded-lg mb-4 flex items-center justify-center", color)}>
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <h3 className="text-xl font-semibold mb-2 text-[#081129]">{title}</h3>
       <p className="text-gray-600 mb-4 text-sm leading-relaxed">{description}</p>
       
       {/* Provider and test count indicators */}
@@ -113,8 +113,8 @@ const TestCategories = (): JSX.Element => {
     testCount: 16,
     providerCount: 10
   }];
-  return <section className="bg-[#081129] py-[20px] my-0">
-      <div className="container mx-auto px-4 bg-[#081129]">
+  return <section className="py-[20px] my-0 bg-white">
+      <div className="container mx-auto px-4 bg-white">
         <div className="text-center mb-12 bg-[#081129]">
           <h2 className="font-semibold mb-4 text-4xl my-[20px] text-[#22c0d4]">Test Categories</h2>
           <p className="text-xl max-w-3xl mx-auto text-[#e70d69] font-normal">
@@ -130,7 +130,11 @@ const TestCategories = (): JSX.Element => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" asChild style={{ backgroundColor: '#e70d69', color: 'white', borderColor: '#e70d69' }}>
+          <Button variant="outline" size="lg" asChild style={{
+          backgroundColor: '#e70d69',
+          color: 'white',
+          borderColor: '#e70d69'
+        }}>
             <Link to="/compare">
               View All Tests
               <ArrowRight className="ml-2 h-4 w-4" />
