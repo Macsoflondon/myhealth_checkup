@@ -21,7 +21,10 @@ const NewHero = () => {
   } = useToast();
 
   // Hero images that will alternate
-  const heroImages = ["/lovable-uploads/hero-image-1.png", "/lovable-uploads/hero-image-2.png"];
+  const heroImages = [
+    "/lovable-uploads/hero-image-1.png",
+    "/lovable-uploads/hero-image-2.png"
+  ];
 
   // Alternate images every 10 seconds
   useEffect(() => {
@@ -95,7 +98,15 @@ const NewHero = () => {
               aspectRatio: '16/9'
             }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
                 {/* Hero images */}
-                {heroImages.map((imageSrc, index) => <img key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} />)}
+                {heroImages.map((imageSrc, index) => (
+                  <img 
+                    key={imageSrc} 
+                    src={imageSrc} 
+                    alt="myhealth checkup - Your health is your greatest asset" 
+                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} 
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -103,11 +114,11 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-white py-0">
-        <div className="w-full px-4 bg-white">
-          <h1 className="text-2xl sm:text-3xl text-[#22c0d4] text-center leading-tight my-0 py-[10px] xl:text-4xl lg:text-4xl font-semibold md:text-4xl">
+      <section className="w-full py-8 bg-white">
+        <div className="w-full px-4 bg-[#081129]">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#22c0d4] text-center leading-tight font-medium my-0 py-[10px] xl:text-4xl">
             Compare the UK's leading private health test providers
-            <span className="block text-[#fc0173] mt-2 font-semibold text-4xl">All in one place!</span>
+            <span className="block text-[#fc0173] mt-2">All in one place!</span>
           </h1>
         </div>
       </section>
@@ -125,7 +136,7 @@ const NewHero = () => {
           <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full bg-white py-[4px]">
+        <div className="relative z-10 w-full py-16 bg-white">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
@@ -141,19 +152,19 @@ const NewHero = () => {
                 <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="font-medium text-center text-white text-base">At-Home Test or In-Clinic Blood Draw</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-5 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[200px] flex items-center justify-center space-x-3 bg-[#081129] py-0">
-                <Clock aria-hidden="true" className="w-8 h-8 text-health-success shrink-0 mx-[10px]" />
-                <span className="font-medium text-center text-white text-base my-0 px-0 mx-0">Fast & Accurate Test Results You Can Trust</span>
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
+                <Clock className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="font-medium text-center text-white text-base">Fast & Accurate Test Results You Can Trust</span>
               </div>
             </div>
 
             {/* Search Section */}
-            <div className="max-w-4xl mx-auto mb-12 px-4 shadow-lg hover:drop-shadow-2xl ">
-              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl ">
+            <div className="max-w-4xl mx-auto mb-12 px-4">
+              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-health-success w-5 h-5" />
-                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-[#081129] w-full " />
+                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-[#081129] placeholder-[#081129]/60" />
                   </div>
                   <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]" style={{
                   backgroundColor: '#22c0d4',
@@ -228,16 +239,16 @@ const NewHero = () => {
 
             {/* Stats Grid */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur bg-[#081129]">
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <span className="text-center font-medium text-[#ffffff] text-base">7 Trusted Providers</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
+              <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
                 <span className="font-medium text-center text-[#ffffff] text-base">300+ Available Tests</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
+              <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
                 <span className="font-medium text-center text-[#ffffff] text-base">3-5 Days Fast Results</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
+              <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
                 <span className="text-[#ffffff] text-base font-medium text-center">150 + Nationwide Clinics</span>
               </div>
             </div>

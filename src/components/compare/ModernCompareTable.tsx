@@ -64,11 +64,11 @@ export const ModernCompareTable = ({
             <CardHeader className="pb-3">
               <div className="flex items-center justify-center gap-2 text-[#e70d69] text-lg font-bold">
                 <Award className="h-4 w-4 text-health-primary" />
-                <span className="text-health-primary font-semibold text-base">Best Value</span>
+                <span className="text-sm font-medium text-health-primary">Best Value</span>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-center text-[#081129] font-medium text-sm">
+              <p className="text-sm text-muted-foreground text-center">
                 Most comprehensive test for the price
               </p>
             </CardContent>
@@ -78,11 +78,11 @@ export const ModernCompareTable = ({
             <CardHeader className="pb-3">
               <div className="flex items-center justify-center gap-2 text-lg font-bold">
                 <Clock className="h-4 w-4 text-health-secondary" />
-                <span className="text-health-secondary font-semibold text-base">Fastest Results</span>
+                <span className="text-sm font-medium text-health-secondary">Fastest Results</span>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-center text-[#081129] font-medium">
+              <p className="text-sm text-muted-foreground text-center">
                 Get your results in 24-48 hours
               </p>
             </CardContent>
@@ -92,11 +92,11 @@ export const ModernCompareTable = ({
             <CardHeader className="pb-3">
               <div className="flex items-center justify-center gap-2 text-lg font-bold">
                 <Star className="h-4 w-4 text-health-accent" />
-                <span className="text-health-accent text-base font-semibold">Most Popular</span>
+                <span className="text-sm font-medium text-health-accent">Most Popular</span>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-center font-medium text-[#081129]">
+              <p className="text-sm text-muted-foreground text-center">
                 Chosen by thousands of customers
               </p>
             </CardContent>
@@ -109,19 +109,19 @@ export const ModernCompareTable = ({
         const isFavorite = favorites.includes(test.id);
         const isOutOfStock = test.available === false;
         return <Card key={test.id} className={cn("group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/80 backdrop-blur-sm", isOutOfStock && "opacity-60")}>
-              <CardContent className="p-4 sm:p-6 bg-[#081129]">
+              <CardContent className="p-4 sm:p-6 bg-white">
                 {/* Provider Header */}
-                <div className="flex items-center justify-between mb-4 bg-[#081129]">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                       <AvatarImage src={test.providerLogo} alt={test.provider} />
                       <AvatarFallback className="text-xs">{test.provider.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-xs text-white font-bold sm:text-base">{test.provider}</p>
+                      <p className="font-medium text-xs sm:text-sm text-foreground">{test.provider}</p>
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold text-base text-white">4.8</span>
+                        <span>4.8</span>
                       </div>
                     </div>
                   </div>
@@ -133,28 +133,28 @@ export const ModernCompareTable = ({
 
                 {/* Test Info */}
                 <div className="mb-4">
-                  <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 group-hover:text-health-primary transition-colors text-white">
+                  <h3 className="font-semibold text-sm sm:text-base text-foreground mb-2 line-clamp-2 group-hover:text-health-primary transition-colors">
                     {test.name}
                   </h3>
-                  <p className="text-xs sm:text-sm line-clamp-2 mb-3 text-white">
+                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-3">
                     {test.description || "Comprehensive health screening"}
                   </p>
                   
                   {/* Test Features - Responsive */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-white">Biomarkers:</span>
-                      <span className="font-medium text-xs text-white">{test.features?.bioMarkers || 'Multiple'}</span>
+                      <span className="text-muted-foreground">Biomarkers:</span>
+                      <span className="font-medium text-foreground text-xs">{test.features?.bioMarkers || 'Multiple'}</span>
                     </div>
                     <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-white">Turnaround:</span>
-                      <Badge variant="secondary" className="text-xs h-5 bg-[#081129]">
+                      <span className="text-muted-foreground">Turnaround:</span>
+                      <Badge variant="secondary" className="text-xs h-5">
                         {test.features?.turnaround || '1-2 days'}
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-white">Collection:</span>
-                      <span className="font-medium text-xs text-white">{test.features?.collection || 'At home'}</span>
+                      <span className="text-muted-foreground">Collection:</span>
+                      <span className="font-medium text-foreground text-xs">{test.features?.collection || 'At home'}</span>
                     </div>
                   </div>
                 </div>
@@ -163,7 +163,7 @@ export const ModernCompareTable = ({
                 <div className="border-t border-border pt-4">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-xl sm:text-2xl font-bold text-health-primary text-white">
+                      <p className="text-xl sm:text-2xl font-bold text-health-primary">
                         £{test.price.toFixed(2)}
                       </p>
                       {isOutOfStock && <Badge variant="destructive" className="text-xs mt-1">
@@ -171,18 +171,18 @@ export const ModernCompareTable = ({
                         </Badge>}
                     </div>
                     
-                    <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} size="sm" className="bg-health-primary hover:bg-health-primary/90 text-sm sm:text-base px-3 sm:px-4 text-white rounded-none font-normal bg-[#22c0d4]">
+                    <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} className="bg-health-primary hover:bg-health-primary/90 text-sm sm:text-base px-3 sm:px-4" size="sm">
                       <ShoppingCart className="h-4 w-4 mr-1 sm:mr-2" />
                       <span className="hidden sm:inline">Select Test</span>
                       <span className="sm:hidden">Select</span>
                     </Button>
                   </div>
                   
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground px-[10px] bg-[#081129]">
-                    <Clock className="h-3 w-3 px-0 bg-white" />
-                    <span className="text-white font-medium">Results in {test.features?.turnaround || '1-2 days'}</span>
-                    <span className="text-white font-medium text-lg">•</span>
-                    <span className="font-medium text-white">Free shipping</span>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3" />
+                    <span>Results in {test.features?.turnaround || '1-2 days'}</span>
+                    <span>•</span>
+                    <span>Free shipping</span>
                   </div>
                 </div>
               </CardContent>

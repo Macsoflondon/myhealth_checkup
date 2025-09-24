@@ -9,24 +9,28 @@ import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
 import { ErrorBoundary } from "./ErrorBoundary";
+
 interface HeaderProps {
   className?: string;
 }
-const Header = ({
-  className
-}: HeaderProps) => {
+
+const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
+
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
+
   useEffect(() => {
     // Close mobile menu when route changes
     setIsMenuOpen(false);
   }, [location.pathname]);
+
   if (isMobile) {
-    return <ErrorBoundary>
+    return (
+      <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
           <div className="px-4 py-3 flex justify-between items-center">
             <Logo />
@@ -39,13 +43,16 @@ const Header = ({
             </div>
           </div>
         </header>
-      </ErrorBoundary>;
+      </ErrorBoundary>
+    );
   }
-  return <ErrorBoundary>
+
+  return (
+    <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="px-4 bg-[#081129] py-0">
-          <div className="flex items-center justify-between gap-4 w-full">
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between gap-6 w-full">
             <div className="flex items-center gap-3 flex-shrink-0">
               <Logo />
             </div>
@@ -54,7 +61,7 @@ const Header = ({
               <SearchBar />
             </div>
             
-            <div className="flex items-center gap-2 flex-shrink-0 rounded-md">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu />
             </div>
@@ -62,10 +69,12 @@ const Header = ({
         </div>
         
         {/* Bottom row - Navigation Menu */}
-        <div className="py-2 border border-[#081129] bg-white my-0 mx-0 rounded-none px-0">
+        <div className="px-4 py-2 border-t border-gray-100">
           <NavigationItems className="flex justify-center items-center gap-8" />
         </div>
       </header>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
+
 export default Header;

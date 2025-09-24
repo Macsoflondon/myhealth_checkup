@@ -59,7 +59,8 @@ const CompareTests = () => {
         results = await OptimizedLiveCompareService.searchTests(searchTerm, selectedProviders);
       } else {
         // Use category name for better matching
-        const categoryName = selectedCategory === "all" ? "all" : categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
+        const categoryName = selectedCategory === "all" ? "all" : 
+          categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
         results = await OptimizedLiveCompareService.getTestsByCategory(categoryName, selectedProviders);
       }
 
@@ -109,18 +110,18 @@ const CompareTests = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="py-12 md:py-16 bg-[#081129]">
+        <section className="bg-white py-12 md:py-16">
           <div className="container mx-auto max-w-7xl px-4 text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Sparkles className="h-6 w-6 text-primary" />
-              <Badge variant="secondary" className="text-primary border-primary/20 bg-white">
+              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                 Live Pricing
               </Badge>
             </div>
-            <h1 className="text-3xl font-bold mb-4 text-white md:text-4xl">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
               Compare Health Tests
             </h1>
-              <p className="text-lg md:text-xl max-w-3xl mx-auto mb-6 text-white">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
                 Find the perfect health test from {memoizedStats.providerCount} trusted UK providers. 
                 Real-time prices, expert reviews, and AI-powered recommendations.
               </p>
@@ -129,18 +130,18 @@ const CompareTests = () => {
             <div className="flex flex-wrap justify-center gap-6 mt-8">
               <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <TrendingUp className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-white">{memoizedStats.testCount}+ Tests Available</span>
+                <span className="text-foreground text-sm font-medium">{memoizedStats.testCount}+ Tests Available</span>
               </div>
               <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <Clock className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-white">Real-time Pricing</span>
+                <span className="text-foreground text-sm font-medium">Real-time Pricing</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Filters and Results */}
-        <section className="py-8 px-4 bg-white">
+        <section className="py-8 px-4">
           <div className="container mx-auto max-w-7xl">
             <CompareFilters categories={categories} selectedCategory={selectedCategory} selectedProviders={selectedProviders} searchTerm={searchTerm} sortOrder={sortOrder} onCategoryChange={handleCategoryChange} onProviderChange={handleProviderChange} onSearchChange={setSearchTerm} onSortChange={setSortOrder} testCount={tests.length} isLoading={isLoading} />
 

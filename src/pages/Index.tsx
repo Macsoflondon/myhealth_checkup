@@ -7,12 +7,23 @@ import CallToAction from "@/components/CallToAction";
 import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
-import { TestCategories, MostPopularTests, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, HowItWorks, MediaSpotlight } from "@/components/LazyLoadedComponents";
+import {
+  TestCategories,
+  MostPopularTests,
+  HealthBenefitsInfographic,
+  FounderStory,
+  PartnerShowcase,
+  ClinicMap,
+  HowItWorks,
+  MediaSpotlight
+} from "@/components/LazyLoadedComponents";
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -43,8 +54,9 @@ const Index = () => {
       "closes": "23:59"
     }
   };
-  return <ErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-[#081129]">
+  return (
+    <ErrorBoundary>
+      <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>myhealth checkup - Compare Private Blood Tests & Health Screenings UK 2024</title>
         <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
@@ -104,6 +116,7 @@ const Index = () => {
         <Footer />
         <CookieConsent />
       </div>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
 export default Index;
