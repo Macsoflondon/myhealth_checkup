@@ -9,28 +9,24 @@ import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
 import { ErrorBoundary } from "./ErrorBoundary";
-
 interface HeaderProps {
   className?: string;
 }
-
-const Header = ({ className }: HeaderProps) => {
+const Header = ({
+  className
+}: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
-
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
-
   useEffect(() => {
     // Close mobile menu when route changes
     setIsMenuOpen(false);
   }, [location.pathname]);
-
   if (isMobile) {
-    return (
-      <ErrorBoundary>
+    return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
           <div className="px-4 py-3 flex justify-between items-center">
             <Logo />
@@ -43,15 +39,12 @@ const Header = ({ className }: HeaderProps) => {
             </div>
           </div>
         </header>
-      </ErrorBoundary>
-    );
+      </ErrorBoundary>;
   }
-
-  return (
-    <ErrorBoundary>
+  return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="px-4 py-4">
+        <div className="px-4 py-[30px]">
           <div className="flex items-center justify-between gap-6 w-full">
             <div className="flex items-center gap-3 flex-shrink-0">
               <Logo />
@@ -69,12 +62,10 @@ const Header = ({ className }: HeaderProps) => {
         </div>
         
         {/* Bottom row - Navigation Menu */}
-        <div className="px-4 py-2 border-t border-gray-100">
+        <div className="py-2 border border-[#081129] bg-white my-0 mx-0 px-[16px] rounded-none">
           <NavigationItems className="flex justify-center items-center gap-8" />
         </div>
       </header>
-    </ErrorBoundary>
-  );
+    </ErrorBoundary>;
 };
-
 export default Header;
