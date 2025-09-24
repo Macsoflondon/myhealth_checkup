@@ -103,11 +103,11 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full py-8 bg-white">
+      <section className="w-full bg-white py-0">
         <div className="w-full px-4 bg-white">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl text-[#22c0d4] text-center leading-tight my-0 py-[10px] xl:text-4xl font-bold lg:text-4xl">
+          <h1 className="text-2xl sm:text-3xl text-[#22c0d4] text-center leading-tight my-0 py-[10px] xl:text-4xl lg:text-4xl font-semibold md:text-4xl">
             Compare the UK's leading private health test providers
-            <span className="block text-[#fc0173] mt-2 font-bold text-4xl">All in one place!</span>
+            <span className="block text-[#fc0173] mt-2 font-semibold text-4xl">All in one place!</span>
           </h1>
         </div>
       </section>
@@ -125,10 +125,10 @@ const NewHero = () => {
           <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full py-16 bg-white">
+        <div className="relative z-10 w-full bg-white py-[4px]">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="flex-wrap justify-center gap-1.5 max-w-4xl mx-auto px-2.5 ">
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center font-medium text-white text-base">No GP Referral Needed</span>
@@ -141,9 +141,9 @@ const NewHero = () => {
                 <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="font-medium text-center text-white text-base">At-Home Test or In-Clinic Blood Draw</span>
               </div>
-              <div className="shadow-2xl p-6 border border-[#22c0d4] hover:shadow-2xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129] rounded-xl py-0 px-0 ">
-                <Clock aria-hidden="true" className="w-8 h-8 text-health-success shrink-0 mx-[10px]" />
-                <span className="font-medium text-center text-white text-base my-0 px-0 mx-[10px]">Fast & Accurate Test Results You Can Trust</span>
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur px-0">
+                <Clock aria-hidden="true" className="w-8 h-8 text-health-success shrink-0 px-0 mx-[20px]" />
+                <span className="text-white px-0 text-center font-normal text-base mx-[15px]">Fast & Accurate Test Results You Can Trust</span>
               </div>
             </div>
 
@@ -228,16 +228,16 @@ const NewHero = () => {
 
             {/* Stats Grid */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur ">
                 <span className="text-center font-medium text-[#ffffff] text-base">7 Trusted Providers</span>
               </div>
-              <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <span className="font-medium text-center text-[#ffffff] text-base">300+ Available Tests</span>
               </div>
-              <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <span className="font-medium text-center text-[#ffffff] text-base">3-5 Days Fast Results</span>
               </div>
-              <div className="bg-[#081129] backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3">
+              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <span className="text-[#ffffff] text-base font-medium text-center">150 + Nationwide Clinics</span>
               </div>
             </div>
