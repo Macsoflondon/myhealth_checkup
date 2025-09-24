@@ -4,8 +4,8 @@ export const Logo = () => {
   return <Link to="/" aria-label="Health & Wellness Hub Home" className="flex items-center gap-3 mx-0 py-0">
       <img src={logo} alt="myhealth checkup Logo" className="min-h-20 w-20 rounded-lg" />
       <div className="flex flex-col">
-        <span className="leading-tight text-3xl text-center font-semibold text-[#081129]">myhealth</span>
-        <span className="leading-tight text-3xl py-0 text-[#e70d69] font-semibold text-left my-0">checkup</span>
+        <span className="leading-tight text-3xl text-center font-semibold text-white">myhealth</span>
+        <span className="leading-tight text-3xl my-0 text-[#22c0d4] font-normal text-center py-[5px]">checkup</span>
       </div>
       <div className="hidden sm:block ml-2 md:ml-4 text-xs sm:text-sm md:text-sm text-cyan-500 font-medium">
         
