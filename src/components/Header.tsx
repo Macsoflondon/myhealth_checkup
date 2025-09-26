@@ -62,7 +62,7 @@ const Header = ({
         </div>
         
         {/* Bottom row - Navigation Menu */}
-        <div className="py-2.5 border border-[#081129] bg-white my-0 mx-0 px-0 rounded-none">
+        <div className="py-2 border border-[#081129] bg-white my-0 mx-0 rounded-none px-0">
           <NavigationItems className="flex justify-center items-center gap-8" />
         </div>
       </header>

@@ -56,7 +56,7 @@ const Index = () => {
         <meta property="og:site_name" content="myhealth checkup" />
         <meta property="og:title" content="myhealth checkup - Compare Private Blood Tests & Health Screenings UK" />
         <meta property="og:description" content="Compare private health tests from 10+ UK providers. Real-time prices, expert reviews, and AI recommendations. Hospital-grade testing made simple." />
-        <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" className="bg-[t#ransparent] bg-[#081129]" />
+        <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
         <meta property="og:url" content="https://myhealthhub.co.uk/" />
         <meta property="og:locale" content="en_GB" />
         

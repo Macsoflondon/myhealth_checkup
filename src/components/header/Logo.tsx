@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
 export const Logo = () => {
   return <Link to="/" aria-label="Health & Wellness Hub Home" className="flex items-center gap-3 mx-0 py-0">
-      <img src={logo} alt="myhealth checkup Logo" className="min-h-20 w-20 rounded-lg" />
+      <img src={logo} alt="myhealth checkup Logo" className="h-20 w-20 rounded-lg" />
       <div className="flex flex-col">
         <span className="leading-tight text-3xl text-center font-semibold text-white">myhealth</span>
-        <span className="leading-tight text-3xl my-0 text-[#22c0d4] font-normal text-center py-[5px]">checkup</span>
+        <span className="leading-tight font-medium text-3xl text-[#fc0173] py-0 my-[8px]">checkup</span>
       </div>
       <div className="hidden sm:block ml-2 md:ml-4 text-xs sm:text-sm md:text-sm text-cyan-500 font-medium">
         
