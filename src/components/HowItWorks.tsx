@@ -2,20 +2,20 @@ import { Search, Shield, CheckCircle, Award } from "lucide-react";
 const HowItWorks = () => {
   return <section style={{
     backgroundColor: '#3B82F6'
-  }} className="bg-white ">
-      <div className="max-w-7xl mx-auto px-4 py-16 bg-[#081129]">
+  }} className="bg-[#081129]">
+      <div className="max-w-7xl mx-auto px-4 bg-[#081129] py-[4px]">
         <div className="bg-navy !bg-[#081129] rounded-2xl shadow-lg p-8 mb-12" style={{
         backgroundColor: '#081129'
       }}>
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-semibold mb-4 heading my-0 py-[10px] text-teal !text-[#22c0d4]" style={{
+            <h2 style={{
             color: '#22c0d4'
-          }}>
+          }} className="mb-4 heading my-0 py-[10px] text-white text-center text-4xl font-medium">
               How It Works
             </h2>
-            <p className="max-w-2xl mx-auto text-center font-bold text-white !text-white" style={{
+            <p style={{
             color: '#ffffff'
-          }}>
+          }} className="max-w-2xl mx-auto text-center text-white !text-white text-base font-medium">
               Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
             </p>
           </div>

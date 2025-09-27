@@ -104,10 +104,10 @@ const NewHero = () => {
       
       {/* Full-width Headline Banner */}
       <section className="w-full bg-white py-0">
-        <div className="w-full px-4 bg-white">
-          <h1 className="text-2xl sm:text-3xl text-[#22c0d4] text-center leading-tight my-0 py-[10px] xl:text-4xl lg:text-4xl font-semibold md:text-4xl">
+        <div className="w-full px-4 my-0 bg-[#081129] py-[10px]">
+          <h1 className="text-2xl sm:text-3xl text-[#22c0d4] text-center leading-tight my-0 xl:text-4xl font-semibold md:text-5xl">
             Compare the UK's leading private health test providers
-            <span className="block text-[#fc0173] mt-2 font-semibold text-4xl">All in one place!</span>
+            <span className="block text-[#fc0173] mt-2 font-semibold text-5xl my-[28px]">All in one place!</span>
           </h1>
         </div>
       </section>
@@ -125,7 +125,7 @@ const NewHero = () => {
           <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full bg-white py-[4px]">
+        <div className="relative z-10 w-full bg-white my-0 py-[20px]">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
@@ -143,22 +143,23 @@ const NewHero = () => {
               </div>
               <div className="backdrop-blur rounded-lg p-5 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[200px] flex items-center justify-center space-x-3 bg-[#081129] py-0">
                 <Clock aria-hidden="true" className="w-8 h-8 text-health-success shrink-0 mx-[10px]" />
-                <span className="font-medium text-center text-white text-base my-0 px-0 mx-0">Fast & Accurate Test Results You Can Trust</span>
+                <span className="font-medium text-center text-white text-base my-0 px-0 mx-0">Test Results In
+3-5 Days *</span>
               </div>
             </div>
 
             {/* Search Section */}
-            <div className="max-w-4xl mx-auto mb-12 px-4 shadow-lg hover:drop-shadow-2xl ">
-              <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl ">
+            <div className="max-w-4xl mx-auto mb-12 px-2 shadow-lime-400 rounded">
+              <div className="rounded-2xl p-4 sm:p-6 shadow-2xl py-[14px] bg-white">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-health-success w-5 h-5" />
                     <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-[#081129] w-full " />
                   </div>
-                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 min-h-[44px]" style={{
+                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" style={{
                   backgroundColor: '#22c0d4',
                   color: 'white'
-                }}>
+                }} className="px-6 sm:px-8 py-3 text-base text-white rounded-xl transition-all duration-300 transform hover:scale-105 min-h-[44px] bg-[#22c0d4] sm:py-[16px] font-medium sm:text-sm text-center my-[10px]">
                     {isAnalyzing ? <>
                         <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                         Analyzing...
@@ -234,9 +235,7 @@ const NewHero = () => {
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <span className="font-medium text-center text-[#ffffff] text-base">300+ Available Tests</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
-                <span className="font-medium text-center text-[#ffffff] text-base">3-5 Days Fast Results</span>
-              </div>
+              
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-[#081129]">
                 <span className="text-[#ffffff] text-base font-medium text-center">150 + Nationwide Clinics</span>
               </div>
@@ -249,9 +248,9 @@ const NewHero = () => {
       <AccreditationLogos />
       
       {/* Full-width Text Banner Divider */}
-      <section className="w-full py-8 bg-[#081129]">
+      <section className="w-full py-8 bg-white">
         <div className="w-full px-4">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white text-center leading-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-center leading-tight text-[#081129] lg:text-4xl">
             Your <span className="text-[#22c0d4]">health</span>. Your <span className="text-[#fc0173]">choice</span>. One trusted platform.
           </h2>
         </div>
