@@ -113,11 +113,11 @@ const TestCategories = (): JSX.Element => {
     testCount: 16,
     providerCount: 10
   }];
-  return <section className="py-[20px] my-0 bg-white">
-      <div className="container mx-auto px-4 bg-white">
+  return <section className="my-0 bg-[#081129] py-0">
+      <div className="container mx-auto px-4 bg-[9#081129] bg-[#081129]">
         <div className="text-center mb-12 bg-[#081129]">
-          <h2 className="font-semibold mb-4 text-4xl my-[20px] text-[#22c0d4]">Test Categories</h2>
-          <p className="text-xl max-w-3xl mx-auto text-[#e70d69] font-normal">
+          <h2 className="font-semibold mb-4 text-4xl my-0 py-[20px] text-white">Test Categories</h2>
+          <p className="max-w-3xl mx-auto text-[#e70d69] text-xl font-normal">
             Explore our comprehensive range of health tests, carefully curated from the UK's most trusted providers.
           </p>
         </div>

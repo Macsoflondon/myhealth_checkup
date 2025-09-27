@@ -10,12 +10,12 @@ const HowItWorks = () => {
           <div className="text-center mb-16">
             <h2 style={{
             color: '#22c0d4'
-          }} className="mb-4 heading my-0 py-[10px] text-white text-center text-4xl font-medium">
+          }} className="mb-4 heading my-0 py-[10px] text-center text-4xl font-medium text-white">
               How It Works
             </h2>
             <p style={{
             color: '#ffffff'
-          }} className="max-w-2xl mx-auto text-center text-white !text-white text-base font-medium">
+          }} className="max-w-2xl mx-auto text-center font-normal text-base text-[#22c0d4]">
               Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
             </p>
           </div>
