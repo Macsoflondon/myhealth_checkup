@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -24,6 +24,7 @@ export type Database = {
           longitude: number | null
           name: string
           postal_code: string | null
+          provider_id: string | null
         }
         Insert: {
           access_note?: string | null
@@ -34,6 +35,7 @@ export type Database = {
           longitude?: number | null
           name: string
           postal_code?: string | null
+          provider_id?: string | null
         }
         Update: {
           access_note?: string | null
@@ -44,6 +46,7 @@ export type Database = {
           longitude?: number | null
           name?: string
           postal_code?: string | null
+          provider_id?: string | null
         }
         Relationships: []
       }
@@ -76,6 +79,39 @@ export type Database = {
           price?: number | null
           provider?: string
           test_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      health_queries: {
+        Row: {
+          age: number | null
+          ai_response: Json | null
+          created_at: string
+          gender: string | null
+          id: string
+          query_text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          ai_response?: Json | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          query_text: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          ai_response?: Json | null
+          created_at?: string
+          gender?: string | null
+          id?: string
+          query_text?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []

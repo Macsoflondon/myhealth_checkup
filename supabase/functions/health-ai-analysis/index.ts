@@ -19,7 +19,7 @@ serve(async (req) => {
   }
 
   try {
-    const { query } = await req.json();
+    const { query, age, gender, userId } = await req.json();
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
     if (!openAIApiKey) {
@@ -167,6 +167,28 @@ Guidelines:
         whenToSeeDoctor: "Consult your GP if you have persistent symptoms or health concerns.",
         hasRecommendations: false
       };
+    }
+
+    // Store query in database if user is authenticated (GDPR compliant)
+    if (userId) {
+      try {
+        const { error: dbError } = await supabase
+          .from('health_queries')
+          .insert({
+            user_id: userId,
+            query_text: query,
+            age: age || null,
+            gender: gender || null,
+            ai_response: analysisResult
+          });
+        
+        if (dbError) {
+          console.error('Error storing health query:', dbError);
+          // Don't fail the request if storage fails
+        }
+      } catch (storageError) {
+        console.error('Failed to store health query:', storageError);
+      }
     }
 
     return new Response(JSON.stringify(analysisResult), {

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Brain, Sparkles, Target, Clock, TrendingUp, AlertTriangle, Stethoscope } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Brain, Sparkles, Target, Clock, TrendingUp, AlertTriangle, Stethoscope, History, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+
 interface RecommendationProps {
   testName: string;
   provider: string;
@@ -27,21 +29,71 @@ interface AIAnalysisResult {
   whenToSeeDoctor: string;
   hasRecommendations: boolean;
 }
+
 const RecommendationEngine = () => {
   const [symptoms, setSymptoms] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [showHistory, setShowHistory] = useState(false);
+  const [queryHistory, setQueryHistory] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+      if (user) {
+        loadQueryHistory(user.id);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        loadQueryHistory(session.user.id);
+      } else {
+        setQueryHistory([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const loadQueryHistory = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('health_queries')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setQueryHistory(data || []);
+    } catch (error) {
+      console.error('Error loading query history:', error);
+    }
+  };
+
   const generateRecommendations = async () => {
+    if (!symptoms.trim()) {
+      toast.error('Please enter your symptoms or health goals');
+      return;
+    }
+
     setIsLoading(true);
     setAnalysisResult(null);
 
     try {
-      const query = `${symptoms}${age ? ` Age: ${age}` : ''}${gender ? ` Gender: ${gender}` : ''}`;
-      
       const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
-        body: { query }
+        body: { 
+          query: symptoms,
+          age: age ? parseInt(age) : null,
+          gender: gender || null,
+          userId: user?.id || null
+        }
       });
 
       if (error) {
@@ -49,8 +101,13 @@ const RecommendationEngine = () => {
       }
 
       setAnalysisResult(data);
+      if (user) {
+        toast.success('Recommendation saved to your account');
+        loadQueryHistory(user.id);
+      }
     } catch (error) {
       console.error('Error getting AI recommendations:', error);
+      toast.error('Unable to generate recommendations. Please try again.');
       setAnalysisResult({
         medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
         analysis: "Sorry, we couldn't analyze your request at the moment. Please try again or consult your healthcare professional.",
@@ -63,6 +120,16 @@ const RecommendationEngine = () => {
       setIsLoading(false);
     }
   };
+
+  const loadPreviousQuery = (query: any) => {
+    setSymptoms(query.query_text);
+    setAge(query.age?.toString() || '');
+    setGender(query.gender || '');
+    setAnalysisResult(query.ai_response);
+    setShowHistory(false);
+    toast.success('Previous query loaded');
+  };
+
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
       case 'high':
@@ -75,7 +142,9 @@ const RecommendationEngine = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
-  return <div className="max-w-4xl mx-auto p-6">
+
+  return (
+    <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
@@ -86,6 +155,17 @@ const RecommendationEngine = () => {
         </p>
       </div>
 
+      {/* GDPR Notice for authenticated users */}
+      {user && (
+        <Alert className="mb-6 border-primary/20 bg-primary/5">
+          <Shield className="h-4 w-4 text-primary" />
+          <AlertDescription>
+            <strong>Your data is protected:</strong> All health queries are securely stored and encrypted. 
+            Only you can access your data. You can delete your queries anytime.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Medical Disclaimer */}
       <Alert className="mb-6 border-amber-200 bg-amber-50">
         <AlertTriangle className="h-4 w-4 text-amber-600" />
@@ -94,6 +174,57 @@ const RecommendationEngine = () => {
           Always consult your GP or healthcare professional regarding any health concerns or symptoms.
         </AlertDescription>
       </Alert>
+
+      {/* Sign-in prompt for guests */}
+      {!user && (
+        <Alert className="mb-6 border-primary/20 bg-primary/5">
+          <Shield className="h-4 w-4 text-primary" />
+          <AlertDescription>
+            <strong>Sign in to save your recommendations:</strong> Create an account to securely store 
+            your health queries and access them anytime. <a href="/auth" className="underline font-medium">Sign in now</a>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Query History */}
+      {user && queryHistory.length > 0 && (
+        <Card className="p-4 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold flex items-center gap-2">
+              <History className="h-5 w-5 text-primary" />
+              Your Recent Queries
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              {showHistory ? 'Hide' : 'Show'}
+            </Button>
+          </div>
+          {showHistory && (
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {queryHistory.map((query) => (
+                <Button
+                  key={query.id}
+                  variant="outline"
+                  className="w-full justify-start text-left h-auto py-3"
+                  onClick={() => loadPreviousQuery(query)}
+                >
+                  <div className="space-y-1 w-full">
+                    <p className="text-sm font-medium line-clamp-1">{query.query_text}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(query.created_at).toLocaleDateString()} • 
+                      {query.age && ` Age: ${query.age}`}
+                      {query.gender && ` • ${query.gender}`}
+                    </p>
+                  </div>
+                </Button>
+              ))}
+            </div>
+          )}
+        </Card>
+      )}
 
       <Card className="p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -142,17 +273,22 @@ const RecommendationEngine = () => {
         </div>
 
         <Button onClick={generateRecommendations} disabled={isLoading || !symptoms.trim()} className="w-full">
-          {isLoading ? <>
+          {isLoading ? (
+            <>
               <Sparkles className="h-4 w-4 mr-2 animate-spin" />
               Analyzing your wellness needs...
-            </> : <>
+            </>
+          ) : (
+            <>
               <Brain className="h-4 w-4 mr-2" />
               Get Wellness Recommendations
-            </>}
+            </>
+          )}
         </Button>
       </Card>
 
-      {analysisResult && <div className="space-y-6">
+      {analysisResult && (
+        <div className="space-y-6">
           {/* AI Analysis */}
           <Card className="p-6 bg-blue-50 border-blue-200">
             <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
@@ -250,7 +386,10 @@ const RecommendationEngine = () => {
               {analysisResult.medicalDisclaimer}
             </AlertDescription>
           </Alert>
-        </div>}
-    </div>;
+        </div>
+      )}
+    </div>
+  );
 };
+
 export default RecommendationEngine;
