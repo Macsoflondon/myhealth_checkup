@@ -1,5 +1,5 @@
 import React from 'react';
 const AccreditationLogos = () => {
-  return;
+  return null;
 };
 export default AccreditationLogos;
