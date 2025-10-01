@@ -21,7 +21,11 @@ const NewHero = () => {
   } = useToast();
 
   // Hero images that will alternate
-  const heroImages = ["/lovable-uploads/hero-image-1.png", "/lovable-uploads/hero-image-2.png"];
+  const heroImages = [
+    "/lovable-uploads/hero-image-1.png", 
+    "/lovable-uploads/hero-image-2.png",
+    "/lovable-uploads/hero-image-3.png"
+  ];
 
   // Alternate images every 10 seconds
   useEffect(() => {
@@ -89,8 +93,8 @@ const NewHero = () => {
       <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full py-0">
           <div className="w-full text-center px-4">
-            {/* Hero Images Container */}
-            <div className="-mt-[38px] mb-[6px] relative max-w-7xl mx-auto">
+            {/* Hero Images Container - Increased by 25% */}
+            <div className="-mt-[38px] mb-[6px] relative mx-auto" style={{ maxWidth: '1600px' }}>
               <div style={{
               aspectRatio: '16/9'
             }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
