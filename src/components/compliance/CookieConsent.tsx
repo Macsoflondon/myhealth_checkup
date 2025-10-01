@@ -87,10 +87,10 @@ const CookieConsent = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <Shield className="h-5 w-5 text-health-600" />
-                  <h3 className="font-semibold">Your Privacy Matters</h3>
+                  <h3 className="font-semibold text-navy">Your Privacy Matters</h3>
                 </div>
-                <p className="text-sm text-gray-600">
-                  We use cookies to enhance your experience, provide personalised content, and analyse our traffic. 
+                <p className="text-sm text-navy">
+                  We use cookies to enhance your experience, provide personalised content, and analyse our traffic.
                   By clicking "Accept All", you consent to our use of cookies. 
                   <a href="/privacy-policy" className="text-health-600 underline ml-1">
                     Read our Privacy Policy
@@ -132,7 +132,7 @@ const CookieConsent = () => {
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">Cookie Preferences</h2>
+                <h2 className="text-xl font-semibold text-navy">Cookie Preferences</h2>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -148,14 +148,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Shield className="h-5 w-5 text-green-600" />
-                      <h3 className="font-medium">Necessary Cookies</h3>
+                      <h3 className="font-medium text-navy">Necessary Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.necessary}
                       disabled={true}
                     />
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-navy">
                     Essential for the website to function properly. These cannot be disabled.
                   </p>
                 </div>
@@ -167,14 +167,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5 text-blue-600" />
-                      <h3 className="font-medium">Analytics Cookies</h3>
+                      <h3 className="font-medium text-navy">Analytics Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.analytics}
                       onCheckedChange={(checked) => updatePreference('analytics', checked)}
                     />
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-navy">
                     Help us understand how visitors interact with our website by collecting and reporting information anonymously.
                   </p>
                 </div>
@@ -186,14 +186,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Eye className="h-5 w-5 text-purple-600" />
-                      <h3 className="font-medium">Marketing Cookies</h3>
+                      <h3 className="font-medium text-navy">Marketing Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.marketing}
                       onCheckedChange={(checked) => updatePreference('marketing', checked)}
                     />
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-navy">
                     Used to track visitors across websites to display relevant advertisements.
                   </p>
                 </div>
@@ -205,14 +205,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Settings className="h-5 w-5 text-orange-600" />
-                      <h3 className="font-medium">Functional Cookies</h3>
+                      <h3 className="font-medium text-navy">Functional Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.functional}
                       onCheckedChange={(checked) => updatePreference('functional', checked)}
                     />
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-navy">
                     Enable enhanced functionality and personalisation, such as remembering your preferences.
                   </p>
                 </div>
