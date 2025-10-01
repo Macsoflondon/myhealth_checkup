@@ -55,6 +55,7 @@ import VitaminDTestPage from "./pages/VitaminDTestPage";
 import IronProfileTestPage from "./pages/IronProfileTestPage";
 import LipidProfileTestPage from "./pages/LipidProfileTestPage";
 import WellWomanTestPage from "./pages/WellWomanTestPage";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/compare" element={<CompareTests />} />
