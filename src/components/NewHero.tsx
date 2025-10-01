@@ -24,7 +24,8 @@ const NewHero = () => {
   const heroImages = [
     "/lovable-uploads/hero-image-1.png", 
     "/lovable-uploads/hero-image-2.png",
-    "/lovable-uploads/hero-image-3.png"
+    "/lovable-uploads/hero-image-3.png",
+    "/lovable-uploads/hero-image-4.png"
   ];
 
   // Alternate images every 10 seconds
@@ -99,7 +100,7 @@ const NewHero = () => {
               aspectRatio: '16/9'
             }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
                 {/* Hero images */}
-                {heroImages.map((imageSrc, index) => <img key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} />)}
+                {heroImages.map((imageSrc, index) => <img key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} />)}
               </div>
             </div>
           </div>
