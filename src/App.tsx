@@ -56,6 +56,9 @@ import IronProfileTestPage from "./pages/IronProfileTestPage";
 import LipidProfileTestPage from "./pages/LipidProfileTestPage";
 import WellWomanTestPage from "./pages/WellWomanTestPage";
 import { ScrollToTop } from "./components/ScrollToTop";
+import ClientPortal from "./pages/ClientPortal";
+import ModernSlaveryPage from "./pages/ModernSlaveryPage";
+import AffiliateDisclosurePage from "./pages/AffiliateDisclosurePage";
 
 const queryClient = new QueryClient();
 
@@ -128,6 +131,9 @@ const App = () => (
               
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/portal" element={<ClientPortal />} />
+              <Route path="/modern-slavery" element={<ModernSlaveryPage />} />
+              <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
