@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
+import logo from "@/assets/myhealth-logo.png";
+
 export const Logo = () => {
-  return <Link to="/" aria-label="Health & Wellness Hub Home" className="flex items-center gap-3 mx-0 py-0">
-      <img src={logo} alt="myhealth checkup Logo" className="h-20 w-20 rounded-lg" />
-      <div className="flex flex-col">
-        <span className="leading-tight text-3xl text-center font-semibold text-white">myhealth</span>
-        <span className="leading-tight font-medium text-3xl text-[#fc0173] py-0 my-[8px]">checkup</span>
-      </div>
-      <div className="hidden sm:block ml-2 md:ml-4 text-xs sm:text-sm md:text-sm text-cyan-500 font-medium">
-        
-        <span className="md:hidden">Your health matters!</span>
-      </div>
-    </Link>;
+  return (
+    <Link to="/" aria-label="myhealth checkup Home" className="flex items-center">
+      <img 
+        src={logo} 
+        alt="myhealth checkup Logo" 
+        className="h-12 md:h-16 w-auto" 
+      />
+    </Link>
+  );
 };

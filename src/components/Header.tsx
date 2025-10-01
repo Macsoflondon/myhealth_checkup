@@ -28,11 +28,13 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
-          <div className="px-4 py-3 flex justify-between items-center">
-            <Logo />
+          <div className="px-3 py-2 flex justify-between items-center gap-3">
+            <div className="flex-shrink-0">
+              <Logo />
+            </div>
             
             {/* Right side controls */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -44,17 +46,17 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="bg-[#081129] py-0 px-[66px]">
-          <div className="flex items-center justify-between gap-4 w-full my-0 py-[10px]">
-            <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="bg-[#081129] py-3 px-6 lg:px-16">
+          <div className="flex items-center justify-between gap-6 w-full">
+            <div className="flex items-center flex-shrink-0">
               <Logo />
             </div>
             
-            <div className="flex-1 max-w-2xl mx-6">
+            <div className="flex-1 max-w-2xl mx-4">
               <SearchBar />
             </div>
             
-            <div className="flex items-center gap-2 flex-shrink-0 rounded-md mx-[10px]">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu />
             </div>
