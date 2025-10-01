@@ -1,8 +1,17 @@
-import { useEffect } from "react";
-import { useIsMobile } from "./use-mobile";
+import { useEffect, useState } from "react";
 
 export function useMobileOptimization() {
-  const isMobile = useIsMobile();
+  // Direct check instead of using hook to avoid initialization issues
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== 'undefined' && window.innerWidth <= 768
+  );
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (isMobile) {

@@ -1,5 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
-import { useIsMobile } from "./use-mobile";
+import { useEffect, useCallback, useRef, useState } from "react";
 
 interface PerformanceMetrics {
   fcp?: number;
@@ -10,9 +9,19 @@ interface PerformanceMetrics {
 }
 
 export function useAdvancedPerformance() {
-  const isMobile = useIsMobile();
+  // Direct mobile check to avoid hook dependency issues
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== 'undefined' && window.innerWidth <= 768
+  );
   const metricsRef = useRef<PerformanceMetrics>({});
   const observersRef = useRef<PerformanceObserver[]>([]);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Enhanced resource preloading with mobile optimization
   const preloadCriticalResources = useCallback(() => {
