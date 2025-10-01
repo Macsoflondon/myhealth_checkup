@@ -14,6 +14,171 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          appointment_date: string | null
+          appointment_type: string | null
+          booking_reference: string | null
+          clinic_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          payment_status: string | null
+          price_paid: number | null
+          provider_id: string
+          results_available_at: string | null
+          results_expected_at: string | null
+          sample_collected_at: string | null
+          status: string
+          test_master_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_date?: string | null
+          appointment_type?: string | null
+          booking_reference?: string | null
+          clinic_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_status?: string | null
+          price_paid?: number | null
+          provider_id: string
+          results_available_at?: string | null
+          results_expected_at?: string | null
+          sample_collected_at?: string | null
+          status?: string
+          test_master_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_date?: string | null
+          appointment_type?: string | null
+          booking_reference?: string | null
+          clinic_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_status?: string | null
+          price_paid?: number | null
+          provider_id?: string
+          results_available_at?: string | null
+          results_expected_at?: string | null
+          sample_collected_at?: string | null
+          status?: string
+          test_master_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_clinic_id_fkey"
+            columns: ["clinic_id"]
+            isOneToOne: false
+            referencedRelation: "clinics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_test_master_id_fkey"
+            columns: ["test_master_id"]
+            isOneToOne: false
+            referencedRelation: "tests_master"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          new_data: Json | null
+          old_data: Json | null
+          record_id: string | null
+          table_name: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string | null
+          table_name: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string | null
+          table_name?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      biomarkers_library: {
+        Row: {
+          biomarker_code: string
+          biomarker_name: string
+          category: string
+          clinical_significance: string | null
+          created_at: string
+          description: string
+          id: string
+          interpretation_guide: Json | null
+          lifestyle_factors: string[] | null
+          normal_range_female: string | null
+          normal_range_male: string | null
+          related_conditions: string[] | null
+          unit_of_measurement: string | null
+          updated_at: string
+        }
+        Insert: {
+          biomarker_code: string
+          biomarker_name: string
+          category: string
+          clinical_significance?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          interpretation_guide?: Json | null
+          lifestyle_factors?: string[] | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          related_conditions?: string[] | null
+          unit_of_measurement?: string | null
+          updated_at?: string
+        }
+        Update: {
+          biomarker_code?: string
+          biomarker_name?: string
+          category?: string
+          clinical_significance?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          interpretation_guide?: Json | null
+          lifestyle_factors?: string[] | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          related_conditions?: string[] | null
+          unit_of_measurement?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       clinics: {
         Row: {
           access_note: string | null
@@ -50,6 +215,39 @@ export type Database = {
         }
         Relationships: []
       }
+      data_access_requests: {
+        Row: {
+          completed_at: string | null
+          data_package_url: string | null
+          id: string
+          notes: string | null
+          request_type: string
+          requested_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          data_package_url?: string | null
+          id?: string
+          notes?: string | null
+          request_type: string
+          requested_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          data_package_url?: string | null
+          id?: string
+          notes?: string | null
+          request_type?: string
+          requested_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           category: string
@@ -79,6 +277,51 @@ export type Database = {
           price?: number | null
           provider?: string
           test_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      health_insights: {
+        Row: {
+          action_items: string[] | null
+          created_at: string
+          description: string
+          expires_at: string | null
+          id: string
+          insight_type: string
+          is_read: boolean | null
+          priority: string | null
+          related_biomarkers: string[] | null
+          related_test_results: string[] | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_items?: string[] | null
+          created_at?: string
+          description: string
+          expires_at?: string | null
+          id?: string
+          insight_type: string
+          is_read?: boolean | null
+          priority?: string | null
+          related_biomarkers?: string[] | null
+          related_test_results?: string[] | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_items?: string[] | null
+          created_at?: string
+          description?: string
+          expires_at?: string | null
+          id?: string
+          insight_type?: string
+          is_read?: boolean | null
+          priority?: string | null
+          related_biomarkers?: string[] | null
+          related_test_results?: string[] | null
+          title?: string
           user_id?: string
         }
         Relationships: []
@@ -182,6 +425,71 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_test_mapping: {
+        Row: {
+          accreditations: string[] | null
+          availability_status: string | null
+          created_at: string
+          current_price: number | null
+          discount_percentage: number | null
+          id: string
+          last_scraped_at: string | null
+          original_price: number | null
+          provider_id: string
+          provider_test_id: string
+          provider_test_name: string
+          provider_url: string | null
+          sample_collection_method: string | null
+          test_master_id: string
+          turnaround_time_days: number | null
+          updated_at: string
+        }
+        Insert: {
+          accreditations?: string[] | null
+          availability_status?: string | null
+          created_at?: string
+          current_price?: number | null
+          discount_percentage?: number | null
+          id?: string
+          last_scraped_at?: string | null
+          original_price?: number | null
+          provider_id: string
+          provider_test_id: string
+          provider_test_name: string
+          provider_url?: string | null
+          sample_collection_method?: string | null
+          test_master_id: string
+          turnaround_time_days?: number | null
+          updated_at?: string
+        }
+        Update: {
+          accreditations?: string[] | null
+          availability_status?: string | null
+          created_at?: string
+          current_price?: number | null
+          discount_percentage?: number | null
+          id?: string
+          last_scraped_at?: string | null
+          original_price?: number | null
+          provider_id?: string
+          provider_test_id?: string
+          provider_test_name?: string
+          provider_url?: string | null
+          sample_collection_method?: string | null
+          test_master_id?: string
+          turnaround_time_days?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_test_mapping_test_master_id_fkey"
+            columns: ["test_master_id"]
+            isOneToOne: false
+            referencedRelation: "tests_master"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       provider_tests: {
         Row: {
           category: string | null
@@ -284,6 +592,297 @@ export type Database = {
           id?: string
           name?: string
           provider_id?: string
+        }
+        Relationships: []
+      }
+      test_results: {
+        Row: {
+          appointment_id: string | null
+          biomarker_results: Json
+          created_at: string
+          flagged_markers: string[] | null
+          id: string
+          interpretation: string | null
+          pdf_url: string | null
+          professional_notes: string | null
+          provider_id: string | null
+          result_date: string
+          reviewed_by_professional: boolean | null
+          test_master_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          biomarker_results: Json
+          created_at?: string
+          flagged_markers?: string[] | null
+          id?: string
+          interpretation?: string | null
+          pdf_url?: string | null
+          professional_notes?: string | null
+          provider_id?: string | null
+          result_date: string
+          reviewed_by_professional?: boolean | null
+          test_master_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_id?: string | null
+          biomarker_results?: Json
+          created_at?: string
+          flagged_markers?: string[] | null
+          id?: string
+          interpretation?: string | null
+          pdf_url?: string | null
+          professional_notes?: string | null
+          provider_id?: string | null
+          result_date?: string
+          reviewed_by_professional?: boolean | null
+          test_master_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_results_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "test_results_test_master_id_fkey"
+            columns: ["test_master_id"]
+            isOneToOne: false
+            referencedRelation: "tests_master"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tests_master: {
+        Row: {
+          biomarkers: Json
+          category: string
+          clinical_significance: string | null
+          created_at: string
+          description: string
+          detailed_description: string | null
+          fasting_required: boolean | null
+          id: string
+          is_active: boolean | null
+          popularity_score: number | null
+          preparation_instructions: string | null
+          sample_type: string | null
+          subcategory: string | null
+          test_code: string | null
+          test_name: string
+          typical_turnaround_days: number | null
+          updated_at: string
+          who_should_take: string | null
+        }
+        Insert: {
+          biomarkers: Json
+          category: string
+          clinical_significance?: string | null
+          created_at?: string
+          description: string
+          detailed_description?: string | null
+          fasting_required?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          popularity_score?: number | null
+          preparation_instructions?: string | null
+          sample_type?: string | null
+          subcategory?: string | null
+          test_code?: string | null
+          test_name: string
+          typical_turnaround_days?: number | null
+          updated_at?: string
+          who_should_take?: string | null
+        }
+        Update: {
+          biomarkers?: Json
+          category?: string
+          clinical_significance?: string | null
+          created_at?: string
+          description?: string
+          detailed_description?: string | null
+          fasting_required?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          popularity_score?: number | null
+          preparation_instructions?: string | null
+          sample_type?: string | null
+          subcategory?: string | null
+          test_code?: string | null
+          test_name?: string
+          typical_turnaround_days?: number | null
+          updated_at?: string
+          who_should_take?: string | null
+        }
+        Relationships: []
+      }
+      user_consents: {
+        Row: {
+          consent_date: string
+          consent_given: boolean
+          consent_type: string
+          consent_withdrawn_date: string | null
+          created_at: string
+          id: string
+          ip_address: unknown | null
+          user_agent: string | null
+          user_id: string
+          version: string
+        }
+        Insert: {
+          consent_date?: string
+          consent_given?: boolean
+          consent_type: string
+          consent_withdrawn_date?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id: string
+          version: string
+        }
+        Update: {
+          consent_date?: string
+          consent_given?: boolean
+          consent_type?: string
+          consent_withdrawn_date?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          dashboard_layout: Json | null
+          id: string
+          notification_email: boolean | null
+          notification_push: boolean | null
+          notification_sms: boolean | null
+          preferred_language: string | null
+          preferred_units: string | null
+          saved_filters: Json | null
+          theme: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dashboard_layout?: Json | null
+          id?: string
+          notification_email?: boolean | null
+          notification_push?: boolean | null
+          notification_sms?: boolean | null
+          preferred_language?: string | null
+          preferred_units?: string | null
+          saved_filters?: Json | null
+          theme?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dashboard_layout?: Json | null
+          id?: string
+          notification_email?: boolean | null
+          notification_push?: boolean | null
+          notification_sms?: boolean | null
+          preferred_language?: string | null
+          preferred_units?: string | null
+          saved_filters?: Json | null
+          theme?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          account_status: string | null
+          address_line1: string | null
+          address_line2: string | null
+          allergies: string[] | null
+          city: string | null
+          country: string | null
+          created_at: string
+          date_of_birth: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          first_name: string | null
+          gender: string | null
+          health_conditions: string[] | null
+          id: string
+          last_login: string | null
+          last_name: string | null
+          lifestyle_factors: Json | null
+          medications: string[] | null
+          nhs_number: string | null
+          phone_number: string | null
+          postal_code: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_status?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          allergies?: string[] | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          first_name?: string | null
+          gender?: string | null
+          health_conditions?: string[] | null
+          id?: string
+          last_login?: string | null
+          last_name?: string | null
+          lifestyle_factors?: Json | null
+          medications?: string[] | null
+          nhs_number?: string | null
+          phone_number?: string | null
+          postal_code?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_status?: string | null
+          address_line1?: string | null
+          address_line2?: string | null
+          allergies?: string[] | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          first_name?: string | null
+          gender?: string | null
+          health_conditions?: string[] | null
+          id?: string
+          last_login?: string | null
+          last_name?: string | null
+          lifestyle_factors?: Json | null
+          medications?: string[] | null
+          nhs_number?: string | null
+          phone_number?: string | null
+          postal_code?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
