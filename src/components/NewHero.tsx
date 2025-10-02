@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
-import { LazyImage } from "@/components/LazyImage";
 import AccreditationLogos from "@/components/AccreditationLogos";
 const NewHero = () => {
   const {
@@ -14,27 +13,11 @@ const NewHero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResults, setAiResults] = useState<any>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const navigate = useNavigate();
   const {
     toast
   } = useToast();
 
-  // Hero images that will alternate
-  const heroImages = [
-    "/lovable-uploads/hero-image-1.png", 
-    "/lovable-uploads/hero-image-2.png",
-    "/lovable-uploads/hero-image-3.png",
-    "/lovable-uploads/hero-image-4.png"
-  ];
-
-  // Alternate images every 10 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex(prevIndex => prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [heroImages.length]);
   const handleSearch = useCallback(async () => {
     if (!searchTerm.trim()) return;
     setIsAnalyzing(true);
@@ -90,17 +73,24 @@ const NewHero = () => {
     route: "/test/well-woman"
   }], []);
   return <>
-      {/* Hero Image Section */}
+      {/* Hero Video Section */}
       <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full py-0">
-          <div className="w-full text-center px-4">
-            {/* Hero Images Container - Increased by 25% */}
-            <div className="-mt-[38px] mb-[6px] relative mx-auto" style={{ maxWidth: '1600px' }}>
-              <div style={{
-              aspectRatio: '16/9'
-            }} className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-[#081129]">
-                {/* Hero images */}
-                {heroImages.map((imageSrc, index) => <img key={imageSrc} src={imageSrc} alt="myhealth checkup - Your health is your greatest asset" className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ease-in-out ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`} loading={index === 0 ? "eager" : "lazy"} />)}
+          <div className="w-full text-center px-0">
+            {/* Hero Video Container - Fullscreen */}
+            <div className="relative mx-auto w-full">
+              <div className="relative w-full h-screen overflow-hidden">
+                <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src="/hero-video.mp4"
+                  aria-label="myhealth checkup - Your health is your greatest asset"
+                >
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
           </div>
