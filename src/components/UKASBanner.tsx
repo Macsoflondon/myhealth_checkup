@@ -1,6 +1,6 @@
 import React from 'react';
 import { Award } from 'lucide-react';
 const UKASBanner = () => {
-  return;
+  return null;
 };
 export default UKASBanner;

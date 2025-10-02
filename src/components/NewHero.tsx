@@ -86,7 +86,8 @@ const NewHero = () => {
                   loop 
                   muted 
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute left-0 right-0 bottom-0 w-full object-cover"
+                  style={{ top: '-1cm', height: 'calc(100% + 1cm)' }}
                   src="/hero-video.mp4"
                   aria-label="myhealth checkup - Your health is your greatest asset"
                 >
