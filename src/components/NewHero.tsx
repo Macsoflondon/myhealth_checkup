@@ -1,3 +1,4 @@
+// Hero component with fullscreen video - v2.0
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
 import { useState, useCallback, useMemo } from "react";

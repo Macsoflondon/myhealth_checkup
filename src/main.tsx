@@ -1,3 +1,4 @@
+// App entry point - v2.0 with video hero
 import { StrictMode } from "react";
 import { createRoot } from 'react-dom/client'
 import OptimizedApp from './components/OptimizedApp.tsx'
