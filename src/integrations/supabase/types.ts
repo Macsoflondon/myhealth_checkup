@@ -398,6 +398,39 @@ export type Database = {
         }
         Relationships: []
       }
+      price_history: {
+        Row: {
+          availability_changed: boolean | null
+          change_percentage: number | null
+          changed_at: string | null
+          id: string
+          new_price: number
+          old_price: number | null
+          provider: string
+          test_id: string
+        }
+        Insert: {
+          availability_changed?: boolean | null
+          change_percentage?: number | null
+          changed_at?: string | null
+          id?: string
+          new_price: number
+          old_price?: number | null
+          provider: string
+          test_id: string
+        }
+        Update: {
+          availability_changed?: boolean | null
+          change_percentage?: number | null
+          changed_at?: string | null
+          id?: string
+          new_price?: number
+          old_price?: number | null
+          provider?: string
+          test_id?: string
+        }
+        Relationships: []
+      }
       price_updates: {
         Row: {
           available: boolean
@@ -576,22 +609,31 @@ export type Database = {
           created_at: string
           display_order: number | null
           id: string
+          last_price_update: string | null
           name: string
+          price_check_frequency_hours: number | null
           provider_id: string
+          realtime_enabled: boolean | null
         }
         Insert: {
           created_at?: string
           display_order?: number | null
           id?: string
+          last_price_update?: string | null
           name: string
+          price_check_frequency_hours?: number | null
           provider_id: string
+          realtime_enabled?: boolean | null
         }
         Update: {
           created_at?: string
           display_order?: number | null
           id?: string
+          last_price_update?: string | null
           name?: string
+          price_check_frequency_hours?: number | null
           provider_id?: string
+          realtime_enabled?: boolean | null
         }
         Relationships: []
       }
