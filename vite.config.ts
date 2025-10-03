@@ -13,38 +13,14 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      mode === 'development' && componentTagger(),
+      mode === 'development' &&
+      componentTagger(),
     ].filter(Boolean),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
       dedupe: ["react", "react-dom"],
-    },
-    build: {
-      target: 'es2015',
-      minify: 'esbuild',
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-popover'],
-            'chart-vendor': ['recharts'],
-            'map-vendor': ['leaflet', 'react-leaflet'],
-          },
-          chunkFileNames: 'assets/[name]-[hash].js',
-          entryFileNames: 'assets/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash].[ext]',
-        },
-      },
-      chunkSizeWarningLimit: 1000,
-      cssCodeSplit: true,
-      sourcemap: false,
-      reportCompressedSize: false,
-    },
-    optimizeDeps: {
-      include: ['react', 'react-dom', 'react-router-dom'],
-      exclude: ['@supabase/supabase-js'],
     },
     define: {
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL),
