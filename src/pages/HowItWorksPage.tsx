@@ -11,7 +11,7 @@ const HowItWorksPage = () => {
       </Helmet>
       
       <Header />
-      <main className="flex-grow">
+      <main className="flex-grow bg-[#081129]">
         
         
         <HowItWorks />
@@ -24,12 +24,12 @@ const HowItWorksPage = () => {
               
               <div className="space-y-6">
                 <div className="border-l-4 border-health-500 pl-6 bg-[#081129]">
-                  <h3 className="text-xl font-semibold mb-2 text-white">How accurate are the tests?</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-[#22c0d4]">How accurate are the tests?</h3>
                   <p className="text-white">All our partner labs are UKAS-accredited and use the same equipment and standards as NHS laboratories, ensuring hospital-grade accuracy.</p>
                 </div>
                 
                 <div className="border-l-4 border-health-500 pl-6">
-                  <h3 className="text-xl font-semibold mb-2">Do I need a doctor's referral?</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-[#22c0d4]">Do I need a doctor's referral?</h3>
                   <p className="text-white">No referral needed! You can book any test directly through our platform and get tested at your convenience.</p>
                 </div>
                 
