@@ -1,8 +1,10 @@
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HowItWorks from "@/components/HowItWorks";
 import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
+import fullLogo from "@/assets/myhealth-full-logo.png";
 const HowItWorksPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Helmet>
@@ -11,7 +13,18 @@ const HowItWorksPage = () => {
       </Helmet>
       
       <Header />
-      <main className="flex-grow">
+      <main className="flex-grow relative">
+        <Link 
+          to="/" 
+          className="absolute top-4 right-4 md:top-8 md:right-8 z-10 transition-opacity hover:opacity-80"
+          aria-label="Return to myhealth checkup homepage"
+        >
+          <img 
+            src={fullLogo} 
+            alt="myhealth checkup logo" 
+            className="w-32 md:w-48 lg:w-56 h-auto"
+          />
+        </Link>
         
         
         <HowItWorks />
