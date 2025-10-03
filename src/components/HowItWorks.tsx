@@ -10,7 +10,7 @@ const HowItWorks = () => {
           <div className="text-center mb-16">
             <h2 style={{
             color: '#22c0d4'
-          }} className="mb-4 heading my-0 py-[10px] text-center text-4xl font-medium text-white">
+          }} className="mb-4 heading my-0 text-center text-white py-0 font-medium text-4xl">
               How It Works
             </h2>
             <p style={{
