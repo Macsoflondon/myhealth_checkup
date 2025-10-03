@@ -46,7 +46,7 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="bg-[#081129] px-6 lg:px-16 py-[30px]">
+        <div className="bg-[#081129] px-6 lg:px-16 py-[45px]">
           <div className="flex items-center justify-between gap-6 w-full">
             <div className="flex items-center flex-shrink-0">
               <Logo />
