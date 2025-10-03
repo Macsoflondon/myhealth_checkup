@@ -39,7 +39,21 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => {})}
+          }].map((item, index) => {
+            const Icon = item.icon;
+            return <div key={index} className="bg-white/5 p-6 rounded-lg border border-[#22c0d4]/20">
+                <div className="flex items-start gap-4">
+                  <div className="bg-[#22c0d4]/10 p-3 rounded-lg flex-shrink-0">
+                    <Icon className="w-6 h-6 text-[#22c0d4]" />
+                  </div>
+                  <div>
+                    <div className="text-[#e70d69] font-bold text-sm mb-1">STEP {item.step}</div>
+                    <h3 className="text-white font-semibold text-lg mb-2">{item.title}</h3>
+                    <p className="text-gray-400 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              </div>;
+          })}
           </div>
         </div>
       </div>
