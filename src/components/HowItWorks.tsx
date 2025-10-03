@@ -10,12 +10,12 @@ const HowItWorks = () => {
           <div className="text-center mb-16">
             <h2 style={{
             color: '#22c0d4'
-          }} className="mb-4 heading my-0 text-center text-white font-medium text-4xl py-[20px]">
+          }} className="mb-4 heading my-0 text-center font-medium text-4xl py-[20px] text-white">
               How It Works
             </h2>
             <p style={{
             color: '#ffffff'
-          }} className="max-w-2xl mx-auto text-center text-[#22c0d4] text-base font-semibold">Three Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
+          }} className="max-w-2xl mx-auto text-center text-base font-normal text-white">Four Simple Steps - Booking your test in just a few clicks couldn't be easier!</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -39,22 +39,7 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => (
-            <div key={index} className="relative">
-              <div className="flex items-start space-x-4 p-6 bg-[#0a1530] rounded-lg">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-[#22c0d4]/10 flex items-center justify-center">
-                    <item.icon className="w-6 h-6 text-[#22c0d4]" />
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[#e70d69] font-bold text-sm mb-1">STEP {item.step}</div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-gray-300">{item.description}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+          }].map((item, index) => {})}
           </div>
         </div>
       </div>
