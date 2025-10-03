@@ -28,7 +28,7 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
-          <div className="px-3 py-6 flex justify-between items-center gap-3">
+          <div className="px-3 py-4 flex justify-between items-center gap-3">
             <div className="flex-shrink-0">
               <Logo />
             </div>
@@ -46,8 +46,8 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="bg-[#081129] px-6 lg:px-16 py-6">
-          <div className="flex items-center justify-between gap-6 w-full px-[10px] -mt-3">
+        <div className="bg-[#081129] px-6 lg:px-16 py-[18px]">
+          <div className="flex items-center justify-between gap-6 w-full px-[10px] -mt-2">
             <div className="flex items-center flex-shrink-0">
               <Logo />
             </div>
@@ -64,7 +64,7 @@ const Header = ({
         </div>
         
         {/* Bottom row - Navigation Menu */}
-        <div className="bg-white my-0 mx-0 px-0 py-[10px]">
+        <div className="bg-white my-0 mx-0 px-0 py-[8px]">
           <NavigationItems className="flex justify-center items-center gap-8" />
         </div>
       </header>
