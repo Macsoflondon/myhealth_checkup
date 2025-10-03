@@ -29,7 +29,7 @@ export const UserMenu = ({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20">
+            <Button variant="ghost" size="sm" className="h-10 px-4 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#dc27a0]/70 hover:border-[#22c0d4]/70 bg-white/10">
               <User className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
@@ -51,7 +51,7 @@ export const UserMenu = ({
     }
     
     return (
-      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20" asChild>
+      <Button variant="ghost" size="sm" className="h-10 px-4 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#dc27a0]/70 hover:border-[#22c0d4]/70 bg-white/10" asChild>
         <Link to="/auth" className="flex items-center gap-2" onClick={onItemClick}>
           <User className="h-5 w-5" />
         </Link>
@@ -61,7 +61,7 @@ export const UserMenu = ({
   if (user) {
     return <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20">
+          <Button variant="ghost" size="sm" className="h-10 px-4 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#dc27a0]/70 hover:border-[#22c0d4]/70 bg-white/10">
             <User className="h-5 w-5 text-[#dc27a0] hover:text-[#22c0d4]" />
           </Button>
         </DropdownMenuTrigger>
@@ -81,7 +81,7 @@ export const UserMenu = ({
       </DropdownMenu>;
   }
   return <div className="flex items-center gap-3">
-      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20" asChild>
+      <Button variant="ghost" size="sm" className="h-10 px-4 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#dc27a0]/70 hover:border-[#22c0d4]/70 bg-white/10" asChild>
         <Link to="/auth" className="flex items-center gap-2">
           <User className="h-5 w-5 text-[#dc27a0] hover:text-[#22c0d4]" />
         </Link>

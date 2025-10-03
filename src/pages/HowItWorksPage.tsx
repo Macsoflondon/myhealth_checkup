@@ -16,7 +16,7 @@ const HowItWorksPage = () => {
       <main className="flex-grow relative">
         <Link 
           to="/" 
-          className="absolute top-4 right-4 md:top-8 md:right-8 z-10 transition-opacity hover:opacity-80"
+          className="absolute top-4 left-4 md:top-8 md:left-8 z-10 transition-opacity hover:opacity-80"
           aria-label="Return to myhealth checkup homepage"
         >
           <img 

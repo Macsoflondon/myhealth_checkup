@@ -52,8 +52,10 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="flex-1 max-w-2xl mx-4">
-              <SearchBar />
+            <div className="flex-1 flex justify-center mx-4">
+              <div className="max-w-2xl w-full">
+                <SearchBar />
+              </div>
             </div>
             
             <div className="flex items-center gap-2 flex-shrink-0">
