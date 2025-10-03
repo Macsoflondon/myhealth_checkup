@@ -44,7 +44,7 @@ const CompareTable = ({ category, providers, searchTerm = '', sortOrder = 'asc' 
   const [isRealtime, setIsRealtime] = useState(true);
   
   // Use our custom hooks
-  const priceUpdates = useRealtimePriceUpdates(isRealtime);
+  const { priceUpdates, lastUpdate } = useRealtimePriceUpdates(isRealtime);
   const { favorites, toggleFavorite } = useFavorites(user, category);
   const { placeOrder } = useOrders(user);
   
