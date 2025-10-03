@@ -48,7 +48,7 @@ const HowItWorks = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="text-[#FA6980] font-bold text-sm mb-1">STEP {item.step}</div>
+                  <div className="text-[#e70d69] font-bold text-sm mb-1">STEP {item.step}</div>
                   <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
                   <p className="text-gray-300">{item.description}</p>
                 </div>
