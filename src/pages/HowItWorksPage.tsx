@@ -24,7 +24,7 @@ const HowItWorksPage = () => {
               
               <div className="space-y-6">
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-[#22c0d4] mb-4">Step 1: Choosing Your Test</h3>
+                  <h3 className="text-2xl font-bold text-[#FA6980] mb-4">Step 1: Choosing Your Test</h3>
                   
                   <div className="space-y-6">
                     <div className="border-l-4 border-health-500 pl-6">
@@ -50,7 +50,7 @@ const HowItWorksPage = () => {
                 </div>
 
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-[#22c0d4] mb-4">Step 2: Booking Your Test</h3>
+                  <h3 className="text-2xl font-bold text-[#FA6980] mb-4">Step 2: Booking Your Test</h3>
                   
                   <div className="space-y-6">
                     <div className="border-l-4 border-health-500 pl-6">
@@ -76,7 +76,7 @@ const HowItWorksPage = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-2xl font-bold text-[#22c0d4] mb-4">Step 3: Getting Results & Aftercare</h3>
+                  <h3 className="text-2xl font-bold text-[#FA6980] mb-4">Step 3: Getting Results & Aftercare</h3>
                   
                   <div className="space-y-6">
                     <div className="border-l-4 border-health-500 pl-6">
