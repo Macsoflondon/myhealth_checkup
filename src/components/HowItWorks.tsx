@@ -39,7 +39,22 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => {})}
+          }].map((item, index) => (
+            <div key={index} className="relative group">
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full border-2 border-transparent hover:border-health-primary">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-health-primary/10 flex items-center justify-center">
+                    <item.icon className="w-6 h-6 text-health-primary" />
+                  </div>
+                  <div className="flex-shrink-0 text-4xl font-bold text-health-primary/20">
+                    {item.step}
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold text-navy mb-3">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.description}</p>
+              </div>
+            </div>
+          ))}
           </div>
         </div>
       </div>

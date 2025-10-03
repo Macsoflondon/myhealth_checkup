@@ -86,10 +86,14 @@ const NewHero = () => {
                   loop 
                   muted 
                   playsInline
+                  preload="metadata"
+                  poster="/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png"
                   className="absolute left-0 right-0 bottom-0 w-full object-cover"
                   style={{ top: '-2cm', height: 'calc(100% + 2cm)' }}
                   src="/hero-video.mp4"
                   aria-label="myhealth checkup - Your health is your greatest asset"
+                  width="1920"
+                  height="1080"
                 >
                   Your browser does not support the video tag.
                 </video>

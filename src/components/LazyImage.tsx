@@ -8,6 +8,9 @@ interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   placeholder?: string;
   className?: string;
   priority?: boolean;
+  width?: number;
+  height?: number;
+  sizes?: string;
 }
 
 export const LazyImage = memo(({ 
@@ -16,6 +19,9 @@ export const LazyImage = memo(({
   placeholder, 
   className, 
   priority = false,
+  width,
+  height,
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   ...props 
 }: LazyImageProps) => {
   const { 
@@ -35,6 +41,9 @@ export const LazyImage = memo(({
         ref={setRef}
         src={currentSrc}
         alt={alt}
+        width={width}
+        height={height}
+        sizes={sizes}
         loading={priority ? "eager" : "lazy"}
         decoding={priority ? "sync" : "async"}
         fetchPriority={priority ? "high" : "auto"}
@@ -44,6 +53,7 @@ export const LazyImage = memo(({
           hasError ? "opacity-50" : "",
           className
         )}
+        style={{ aspectRatio: width && height ? `${width}/${height}` : undefined }}
         {...props}
       />
       {isLoading && !priority && (
