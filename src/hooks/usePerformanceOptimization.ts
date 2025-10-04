@@ -8,36 +8,15 @@ export function usePerformanceOptimization() {
     // Detect mobile device
     const isMobile = window.innerWidth <= 768;
     
-    // Preload critical images (smaller versions for mobile)
-    const criticalImages = [
-      '/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png',
-      '/lovable-uploads/a4949588-cff7-48ae-ba93-d0040f1dd838.png'
-    ];
-
-    criticalImages.forEach(src => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = src;
-      if (isMobile) {
-        link.media = '(max-width: 768px)';
-      }
-      document.head.appendChild(link);
-    });
-
-    // Preload critical CSS and fonts
-    const criticalResources = [
-      { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap', as: 'style' }
-    ];
-
-    criticalResources.forEach(({ href, as }) => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = as;
-      link.href = href;
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
-    });
+    // Only preload hero poster image on mobile, skip on desktop (video handles it)
+    if (isMobile) {
+      const heroLink = document.createElement('link');
+      heroLink.rel = 'preload';
+      heroLink.as = 'image';
+      heroLink.href = '/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png';
+      heroLink.fetchPriority = 'high';
+      document.head.appendChild(heroLink);
+    }
 
     // Enable resource hints for better performance
     const dnsPreconnects = ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'];

@@ -1,4 +1,5 @@
 
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,76 +7,93 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Loader2 } from "lucide-react";
+import { ScrollToTop } from "./components/ScrollToTop";
+import { useMobileOptimization } from "./hooks/useMobileOptimization";
+import { usePerformanceOptimization } from "./hooks/usePerformanceOptimization";
+
+// Eager load critical pages
 import Index from "./pages/Index";
-import CompareTests from "./pages/CompareTests";
-import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import IntelligentSearchPage from "./pages/IntelligentSearchPage";
-import HowItWorksPage from "./pages/HowItWorksPage";
-import AboutUsPage from "./pages/AboutUsPage";
-import CancerScreeningPage from "./pages/CancerScreeningPage";
-import DiabetesTestingPage from "./pages/DiabetesTestingPage";
-import HeartHealthPage from "./pages/HeartHealthPage";
-import VitaminDeficiencyPage from "./pages/VitaminDeficiencyPage";
-import GutHealthPage from "./pages/GutHealthPage";
-import AccessibilityPage from "./pages/AccessibilityPage";
-import SitemapPage from "./pages/SitemapPage";
-import CookiePolicyPage from "./pages/CookiePolicyPage";
-import TermsConditionsPage from "./pages/TermsConditionsPage";
-import FAQsPage from "./pages/FAQsPage";
-import ContactPage from "./pages/ContactPage";
-import PartnersPage from "./pages/PartnersPage";
-import HealthBlogPage from "./pages/HealthBlogPage";
-import AssistedTestFinderPage from "./pages/AssistedTestFinderPage";
-import MensHealthPage from "./pages/MensHealthPage";
-import WomensHealthPage from "./pages/WomensHealthPage";
-import RecommendationsPage from "./pages/RecommendationsPage";
-import ReviewSystem from "./components/reviews/ReviewSystem";
-import FindClinicPage from "./pages/FindClinicPage";
-import ProviderProfilePage from "./pages/ProviderProfilePage";
-import ProviderTestCatalogPage from "./pages/ProviderTestCatalogPage";
-import TestDetailPage from "./pages/TestDetailPage";
-import MostPopularTestsPage from "./pages/MostPopularTestsPage";
-import FertilityTestsPageWrapper from "./pages/FertilityTestsPage";
-import AtHomeTestsPage from "./pages/AtHomeTestsPage";
-import WellnessPage from "./pages/WellnessPage";
-import ConditionsPage from "./pages/ConditionsPage";
-import SportsPerformancePage from "./pages/SportsPerformancePage";
-import ThyroidPage from "./pages/ThyroidPage";
-import HormonesPage from "./pages/HormonesPage";
-import TrustedProvidersPage from "./pages/TrustedProvidersPage";
-
-// Test detail pages
-import GeneralHealthTestPage from "./pages/GeneralHealthTestPage";
-import MaleHormoneTestPage from "./pages/MaleHormoneTestPage";
-import VitaminDTestPage from "./pages/VitaminDTestPage";
-import IronProfileTestPage from "./pages/IronProfileTestPage";
-import LipidProfileTestPage from "./pages/LipidProfileTestPage";
-import WellWomanTestPage from "./pages/WellWomanTestPage";
-import { ScrollToTop } from "./components/ScrollToTop";
-import ClientPortal from "./pages/ClientPortal";
-import ModernSlaveryPage from "./pages/ModernSlaveryPage";
-import AffiliateDisclosurePage from "./pages/AffiliateDisclosurePage";
+// Lazy load all other pages for better performance
+const CompareTests = lazy(() => import("./pages/CompareTests"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const IntelligentSearchPage = lazy(() => import("./pages/IntelligentSearchPage"));
+const HowItWorksPage = lazy(() => import("./pages/HowItWorksPage"));
+const AboutUsPage = lazy(() => import("./pages/AboutUsPage"));
+const CancerScreeningPage = lazy(() => import("./pages/CancerScreeningPage"));
+const DiabetesTestingPage = lazy(() => import("./pages/DiabetesTestingPage"));
+const HeartHealthPage = lazy(() => import("./pages/HeartHealthPage"));
+const VitaminDeficiencyPage = lazy(() => import("./pages/VitaminDeficiencyPage"));
+const GutHealthPage = lazy(() => import("./pages/GutHealthPage"));
+const AccessibilityPage = lazy(() => import("./pages/AccessibilityPage"));
+const SitemapPage = lazy(() => import("./pages/SitemapPage"));
+const CookiePolicyPage = lazy(() => import("./pages/CookiePolicyPage"));
+const TermsConditionsPage = lazy(() => import("./pages/TermsConditionsPage"));
+const FAQsPage = lazy(() => import("./pages/FAQsPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const PartnersPage = lazy(() => import("./pages/PartnersPage"));
+const HealthBlogPage = lazy(() => import("./pages/HealthBlogPage"));
+const AssistedTestFinderPage = lazy(() => import("./pages/AssistedTestFinderPage"));
+const MensHealthPage = lazy(() => import("./pages/MensHealthPage"));
+const WomensHealthPage = lazy(() => import("./pages/WomensHealthPage"));
+const RecommendationsPage = lazy(() => import("./pages/RecommendationsPage"));
+const ReviewSystem = lazy(() => import("./components/reviews/ReviewSystem"));
+const FindClinicPage = lazy(() => import("./pages/FindClinicPage"));
+const ProviderProfilePage = lazy(() => import("./pages/ProviderProfilePage"));
+const ProviderTestCatalogPage = lazy(() => import("./pages/ProviderTestCatalogPage"));
+const TestDetailPage = lazy(() => import("./pages/TestDetailPage"));
+const MostPopularTestsPage = lazy(() => import("./pages/MostPopularTestsPage"));
+const FertilityTestsPageWrapper = lazy(() => import("./pages/FertilityTestsPage"));
+const AtHomeTestsPage = lazy(() => import("./pages/AtHomeTestsPage"));
+const WellnessPage = lazy(() => import("./pages/WellnessPage"));
+const ConditionsPage = lazy(() => import("./pages/ConditionsPage"));
+const SportsPerformancePage = lazy(() => import("./pages/SportsPerformancePage"));
+const ThyroidPage = lazy(() => import("./pages/ThyroidPage"));
+const HormonesPage = lazy(() => import("./pages/HormonesPage"));
+const TrustedProvidersPage = lazy(() => import("./pages/TrustedProvidersPage"));
+const GeneralHealthTestPage = lazy(() => import("./pages/GeneralHealthTestPage"));
+const MaleHormoneTestPage = lazy(() => import("./pages/MaleHormoneTestPage"));
+const VitaminDTestPage = lazy(() => import("./pages/VitaminDTestPage"));
+const IronProfileTestPage = lazy(() => import("./pages/IronProfileTestPage"));
+const LipidProfileTestPage = lazy(() => import("./pages/LipidProfileTestPage"));
+const WellWomanTestPage = lazy(() => import("./pages/WellWomanTestPage"));
+const ClientPortal = lazy(() => import("./pages/ClientPortal"));
+const ModernSlaveryPage = lazy(() => import("./pages/ModernSlaveryPage"));
+const AffiliateDisclosurePage = lazy(() => import("./pages/AffiliateDisclosurePage"));
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <HelmetProvider>
-        <TooltipProvider>
-          <Helmet>
-            <html lang="en" />
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-          </Helmet>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
+// Loading fallback component
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <Loader2 className="h-8 w-8 animate-spin text-[#FA6980]" />
+  </div>
+);
+
+const App = () => {
+  // Apply mobile and performance optimizations
+  useMobileOptimization();
+  usePerformanceOptimization();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <HelmetProvider>
+          <TooltipProvider>
+            <Helmet>
+              <html lang="en" />
+              <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+            </Helmet>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/compare" element={<CompareTests />} />
               <Route path="/search" element={<IntelligentSearchPage />} />
@@ -134,14 +152,16 @@ const App = () => (
               <Route path="/portal" element={<ClientPortal />} />
               <Route path="/modern-slavery" element={<ModernSlaveryPage />} />
               <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </HelmetProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </TooltipProvider>
+        </HelmetProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

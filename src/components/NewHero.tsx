@@ -81,6 +81,7 @@ const NewHero = () => {
             {/* Hero Video Container - Fullscreen */}
             <div className="relative mx-auto w-full">
               <div className="relative w-full h-screen overflow-hidden">
+                {/* Show video only on desktop/tablet, poster on mobile for performance */}
                 <video 
                   autoPlay 
                   loop 
@@ -89,9 +90,9 @@ const NewHero = () => {
                   webkit-playsinline="true"
                   x5-video-player-type="h5"
                   x5-playsinline="true"
-                  preload="metadata"
+                  preload="none"
                   poster="/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png"
-                  className="absolute left-0 right-0 bottom-0 w-full object-cover"
+                  className="absolute left-0 right-0 bottom-0 w-full object-cover hidden md:block"
                   style={{ top: '-2cm', height: 'calc(100% + 2cm)' }}
                   src="/hero-video.mp4"
                   aria-label="myhealth checkup - Your health is your greatest asset"
@@ -102,8 +103,20 @@ const NewHero = () => {
                     video.play().catch(() => {});
                   }}
                 >
+                  <source src="/hero-video.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
+                {/* Mobile: show only poster image for better performance */}
+                <div 
+                  className="absolute inset-0 md:hidden bg-cover bg-center"
+                  style={{ 
+                    backgroundImage: 'url(/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png)',
+                    backgroundPosition: 'center',
+                    top: '-2cm',
+                    height: 'calc(100% + 2cm)'
+                  }}
+                  aria-label="myhealth checkup - Your health is your greatest asset"
+                />
               </div>
             </div>
           </div>
