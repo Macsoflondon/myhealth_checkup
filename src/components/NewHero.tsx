@@ -86,6 +86,9 @@ const NewHero = () => {
                   loop 
                   muted 
                   playsInline
+                  webkit-playsinline="true"
+                  x5-video-player-type="h5"
+                  x5-playsinline="true"
                   preload="metadata"
                   poster="/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png"
                   className="absolute left-0 right-0 bottom-0 w-full object-cover"
@@ -94,6 +97,10 @@ const NewHero = () => {
                   aria-label="myhealth checkup - Your health is your greatest asset"
                   width="1920"
                   height="1080"
+                  onLoadedMetadata={(e) => {
+                    const video = e.currentTarget;
+                    video.play().catch(() => {});
+                  }}
                 >
                   Your browser does not support the video tag.
                 </video>
