@@ -59,7 +59,7 @@ const HowItWorks = () => {
                 </h3>
                 <p style={{
               color: '#ffffff'
-            }} className="font-medium text-[#081129] text-lg text-center">
+            }} className="font-medium text-lg text-center text-[#081129]">
                   {item.description}
                 </p>
               </div>)}
