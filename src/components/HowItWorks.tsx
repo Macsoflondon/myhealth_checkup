@@ -41,7 +41,7 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => <div key={index} className="text-center">
+          }].map((item, index) => <div key={index} className="text-center bg-white">
                 <div className="relative mb-6">
                   <div className="w-16 h-16 bg-gradient-to-r from-[#FA6980] to-[#4A6FA5] rounded-full flex items-center justify-center mx-auto">
                     <item.icon className="w-8 h-8 text-white" />
@@ -57,9 +57,9 @@ const HowItWorks = () => {
             }}>
                   {item.title}
                 </h3>
-                <p className="text-white font-medium !text-white" style={{
+                <p style={{
               color: '#ffffff'
-            }}>
+            }} className="font-medium text-[#081129] text-lg text-center">
                   {item.description}
                 </p>
               </div>)}
