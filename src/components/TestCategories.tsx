@@ -21,15 +21,15 @@ const CategoryCard = ({
   testCount,
   providerCount
 }: CategoryCardProps) => {
-  return <Link to={link} className={cn("block p-6 rounded-xl transition-all duration-300", "bg-white shadow-lg shadow-gray-100/40 hover:shadow-xl hover:scale-105", "border border-gray-100 hover:border-gray-200")}>
+  return <Link to={link} className={cn("block p-6 rounded-xl transition-all duration-300", "bg-[#2a3f55] shadow-lg shadow-gray-100/40 hover:shadow-xl hover:scale-105", "border border-gray-100 hover:border-[#3A5F85]")}>
       <div className={cn("w-14 h-14 rounded-lg mb-4 flex items-center justify-center", color)}>
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-2 text-[#081129]">{title}</h3>
-      <p className="text-gray-600 mb-4 text-sm leading-relaxed">{description}</p>
+      <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
+      <p className="text-gray-300 mb-4 text-sm leading-relaxed">{description}</p>
       
       {/* Provider and test count indicators */}
-      <div className="flex justify-between items-center mb-4 text-xs text-gray-500">
+      <div className="flex justify-between items-center mb-4 text-xs text-gray-400">
         {testCount && <span>{testCount} tests available</span>}
         {providerCount && <span>{providerCount} providers</span>}
       </div>
