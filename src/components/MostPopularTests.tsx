@@ -96,7 +96,7 @@ const MostPopularTests = () => {
     reviews: 1234,
     collection: 'Finger-prick or Venous collection'
   }];
-  return <section className="py-12 bg-[#1a1b34]">
+  return <section className="py-12 bg-[#081129]">
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-4">
