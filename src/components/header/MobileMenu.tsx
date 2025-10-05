@@ -1,39 +1,20 @@
-
 import { Menu, X } from "lucide-react";
-import { NavigationItems } from "./NavigationItems";
-import { UserMenu } from "./UserMenu";
-
+import { MobileDropdownMenu } from "./MobileDropdownMenu";
 interface MobileMenuProps {
   isMenuOpen: boolean;
   toggleMenu: () => void;
 }
-
-export const MobileMenu = ({ isMenuOpen, toggleMenu }: MobileMenuProps) => {
-  return (
-    <>
+export const MobileMenu = ({
+  isMenuOpen,
+  toggleMenu
+}: MobileMenuProps) => {
+  return <>
       {/* Mobile menu button */}
-      <button 
-        className="lg:hidden"
-        onClick={toggleMenu}
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={isMenuOpen}
-        aria-controls="mobile-menu"
-      >
+      <button onClick={toggleMenu} aria-label={isMenuOpen ? "Close menu" : "Open menu"} aria-expanded={isMenuOpen} aria-controls="mobile-menu" className="lg:hidden h-10 px-3 flex items-center justify-center touch-manipulation text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20 rounded-md transition-colors">
         {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
-      {/* Mobile navigation */}
-      <div 
-        id="mobile-menu"
-        className={`lg:hidden bg-white border-t py-4 px-4 shadow-md ${isMenuOpen ? 'block' : 'hidden'}`}
-        aria-hidden={!isMenuOpen}
-      >
-        <NavigationItems 
-          onItemClick={toggleMenu} 
-          className="flex flex-col space-y-4"
-        />
-        <UserMenu isMobile onItemClick={toggleMenu} />
-      </div>
-    </>
-  );
+      {/* Mobile dropdown navigation */}
+      <MobileDropdownMenu isOpen={isMenuOpen} onItemClick={toggleMenu} />
+    </>;
 };

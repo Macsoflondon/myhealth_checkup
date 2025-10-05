@@ -1,1 +1,4 @@
-project_id = "jfmxxgonjnkpfjijtjom"
+project_id = "clvuioagsgfadynuvodj"
+
+[functions.lml-nearest]
+verify_jwt = false

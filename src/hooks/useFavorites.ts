@@ -1,32 +1,35 @@
-
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/sonner";
 import { User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 
 export function useFavorites(user: User | null, category: string) {
   const [favorites, setFavorites] = useState<string[]>([]);
   
   useEffect(() => {
-    // Fetch user favorites
-    const fetchFavorites = async () => {
-      if (!user) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from("favorites")
-          .select("test_id")
-          .eq("category", category);
-          
-        if (error) throw error;
-        setFavorites(data.map(f => f.test_id));
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
-      }
-    };
-    
-    fetchFavorites();
+    if (user && category) {
+      fetchFavorites();
+    } else {
+      setFavorites([]);
+    }
   }, [user, category]);
+  
+  const fetchFavorites = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('test_id')
+        .eq('user_id', user.id)
+        .eq('category', category);
+      
+      if (error) throw error;
+      setFavorites(data?.map(f => f.test_id) || []);
+    } catch (error: any) {
+      console.error('Error fetching favorites:', error);
+    }
+  };
   
   const toggleFavorite = async (testId: string, item: any) => {
     if (!user) {
@@ -38,30 +41,29 @@ export function useFavorites(user: User | null, category: string) {
     
     try {
       if (isFavorite) {
-        // Remove from favorites
         const { error } = await supabase
-          .from("favorites")
+          .from('favorites')
           .delete()
-          .eq("test_id", testId)
-          .eq("user_id", user.id);
-          
-        if (error) throw error;
+          .eq('user_id', user.id)
+          .eq('test_id', testId)
+          .eq('category', category);
         
+        if (error) throw error;
         setFavorites(prev => prev.filter(id => id !== testId));
         toast.success("Removed from favorites");
       } else {
-        // Add to favorites
         const { error } = await supabase
-          .from("favorites")
+          .from('favorites')
           .insert({
             user_id: user.id,
             test_id: testId,
-            category: item.category,
-            provider: item.provider
+            category: category,
+            provider: item.provider,
+            name: item.name,
+            price: item.price,
           });
-          
-        if (error) throw error;
         
+        if (error) throw error;
         setFavorites(prev => [...prev, testId]);
         toast.success("Added to favorites");
       }

@@ -1,0 +1,93 @@
+[
+  {
+    "name": "London Medical Laboratory - Battersea",
+    "full_address": "62-64 Falcon Rd, Battersea, London",
+    "postal_code": "SW11 2LR",
+    "latitude": 51.469,
+    "longitude": -0.167
+  },
+  {
+    "name": "London Medical Laboratory - Putney",
+    "full_address": "262 Upper Richmond Rd, London",
+    "postal_code": "SW15 6TQ",
+    "latitude": 51.460,
+    "longitude": -0.214
+  },
+  {
+    "name": "London Medical Laboratory - Marylebone",
+    "full_address": "1 Harley St, London",
+    "postal_code": "W1G 9QD",
+    "latitude": 51.516,
+    "longitude": -0.146
+  },
+  {
+    "name": "Tuli Health",
+    "full_address": "Tuli Health, London",
+    "postal_code": "SE8 5EN",
+    "latitude": 51.4792,
+    "longitude": -0.0302
+  },
+  {
+    "name": "Britannia Pharmacy",
+    "full_address": "Britannia Pharmacy, London",
+    "postal_code": "E14 3BT",
+    "latitude": 51.4951,
+    "longitude": -0.0180
+  },
+  {
+    "name": "Tower Bridge Wellness Pharmacy",
+    "full_address": "Tower Bridge Wellness Pharmacy, London",
+    "postal_code": "SE1 2NJ",
+    "latitude": 51.5045,
+    "longitude": -0.0759
+  },
+  {
+    "name": "Green Light Pharmacy - Stepney",
+    "full_address": "Green Light Pharmacy - Stepney, London",
+    "postal_code": "E1 4FG",
+    "latitude": 51.5186,
+    "longitude": -0.0478
+  },
+  {
+    "name": "Sheel Pharmacy",
+    "full_address": "Sheel Pharmacy, London",
+    "postal_code": "SE13 7PA",
+    "latitude": 51.4628,
+    "longitude": 0.0043
+  },
+  {
+    "name": "LetterBoxPharmacy",
+    "full_address": "LetterBoxPharmacy, London",
+    "postal_code": "E1 5LQ",
+    "latitude": 51.5144,
+    "longitude": -0.0406
+  },
+  {
+    "name": "GOODWILL PHARMACY",
+    "full_address": "GOODWILL PHARMACY, London",
+    "postal_code": "SE10 0BH",
+    "latitude": 51.4825,
+    "longitude": 0.0051
+  },
+  {
+    "name": "Green Light Pharmacy - Bromley by Bow",
+    "full_address": "Green Light Pharmacy - Bromley by Bow, London",
+    "postal_code": "E3 3FF",
+    "latitude": 51.5253,
+    "longitude": -0.0109
+  },
+  {
+    "name": "My Private Chemist",
+    "full_address": "My Private Chemist, London",
+    "postal_code": "EC2M 4NS",
+    "latitude": 51.5177,
+    "longitude": -0.0839
+  },
+  {
+    "name": "Haggerston Pharmacy",
+    "full_address": "Haggerston Pharmacy, London",
+    "postal_code": "E8 4HU",
+    "latitude": 51.5394,
+    "longitude": -0.0726
+  }
+]

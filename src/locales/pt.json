@@ -1,0 +1,69 @@
+{
+  "common": {
+    "signIn": "Entrar",
+    "signUp": "Registar",
+    "search": "Pesquisar",
+    "loading": "A carregar...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "close": "Fechar",
+    "next": "Seguinte",
+    "previous": "Anterior",
+    "learnMore": "Saber mais",
+    "getStarted": "Começar",
+    "compareTests": "Comparar testes",
+    "bookNow": "Reservar agora",
+    "viewDetails": "Ver detalhes"
+  },
+  "navigation": {
+    "home": "Início",
+    "compareTests": "Comparar testes",
+    "categories": "Categorias",
+    "howItWorks": "Como funciona",
+    "about": "Sobre nós",
+    "contact": "Contacto",
+    "blog": "Blogue",
+    "faqs": "Perguntas frequentes",
+    "findClinic": "Encontrar clínica"
+  },
+  "hero": {
+    "title": "A sua saúde é o seu maior tesouro!",
+    "subtitle": "Compare testes de saúde dos principais fornecedores do Reino Unido e reserve o perfeito para si",
+    "searchPlaceholder": "Pesquisar testes de saúde...",
+    "popularSearches": "Pesquisas populares:",
+    "bloodTest": "Teste de sangue",
+    "cholesterol": "Colesterol",
+    "diabetes": "Diabetes",
+    "thyroid": "Tiroide"
+  },
+  "footer": {
+    "tagline": "A sua saúde é o nosso objectivo",
+    "quickLinks": "Links rápidos",
+    "categories": "Categorias",
+    "support": "Suporte",
+    "legal": "Legal",
+    "newsletter": {
+      "title": "Mantenha-se atualizado",
+      "description": "Subscreva a nossa newsletter para dicas de saúde e ofertas exclusivas.",
+      "placeholder": "Introduza o seu email",
+      "subscribe": "Subscrever"
+    },
+    "copyright": "© 2024 HealthCompare. Todos os direitos reservados."
+  },
+  "language": {
+    "selectLanguage": "Selecionar idioma",
+    "english": "Inglês (Reino Unido)",
+    "french": "Francês",
+    "spanish": "Espanhol",
+    "german": "Alemão",
+    "italian": "Italiano",
+    "portuguese": "Português",
+    "dutch": "Holandês",
+    "polish": "Polaco",
+    "arabic": "Árabe",
+    "chinese": "Chinês",
+    "japanese": "Japonês"
+  }
+}

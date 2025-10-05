@@ -55,75 +55,58 @@ const Dashboard = () => {
   }, [user]);
 
   const fetchFavorites = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
-        .from("favorites")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
+        .from('favorites')
+        .select('*')
+        .eq('user_id', user.id);
       
-      // Fetch test details for each favorite from compareData
-      // In a real app, we would fetch this from the database or API
-      import("@/data/compareData").then(({ compareData }) => {
-        const favoritesWithDetails = data.map((fav) => {
-          const testDetails = compareData.find(
-            (item) => item.id === fav.test_id
-          );
-          return {
-            ...fav,
-            name: testDetails?.name || "Unknown Test",
-            price: testDetails?.price || 0,
-          };
-        });
-        setFavorites(favoritesWithDetails);
-        setLoadingData(false);
-      });
-    } catch (error: any) {
-      toast.error("Error fetching favorites: " + error.message);
+      if (error) throw error;
+      setFavorites(data || []);
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+      toast.error('Failed to load favorites');
+    } finally {
       setLoadingData(false);
     }
   };
 
   const fetchOrders = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
-        .from("orders")
-        .select("*")
-        .order("order_date", { ascending: false });
-
+        .from('orders')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      
       if (error) throw error;
-
-      // Fetch test details for each order
-      import("@/data/compareData").then(({ compareData }) => {
-        const ordersWithDetails = data.map((order) => {
-          const testDetails = compareData.find(
-            (item) => item.id === order.test_id
-          );
-          return {
-            ...order,
-            name: testDetails?.name || "Unknown Test",
-            price: testDetails?.price || 0,
-          };
-        });
-        setOrders(ordersWithDetails);
-        setLoadingData(false);
-      });
-    } catch (error: any) {
-      toast.error("Error fetching orders: " + error.message);
+      setOrders(data || []);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      toast.error('Failed to load orders');
+    } finally {
       setLoadingData(false);
     }
   };
 
   const removeFavorite = async (id: string) => {
     try {
-      const { error } = await supabase.from("favorites").delete().eq("id", id);
+      const { error } = await supabase
+        .from('favorites')
+        .delete()
+        .eq('id', id);
+      
       if (error) throw error;
       
       setFavorites((prev) => prev.filter((fav) => fav.id !== id));
       toast.success("Removed from favorites");
-    } catch (error: any) {
-      toast.error("Error removing favorite: " + error.message);
+    } catch (error) {
+      console.error('Error removing favorite:', error);
+      toast.error('Failed to remove favorite');
     }
   };
 
@@ -237,7 +220,7 @@ const Dashboard = () => {
                               order.status === 'completed' ? 'bg-green-100 text-green-800' :
                               order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                               order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                              'bg-blue-100 text-blue-800'
+                              'bg-[#081129] text-white'
                             }`}>
                               {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                             </span>

@@ -1,8 +1,8 @@
-
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-
 interface Testimonial {
   name: string;
   role: string;
@@ -10,147 +10,104 @@ interface Testimonial {
   rating: number;
   testType: string;
 }
-
 const Testimonials = () => {
-  const testimonials: Testimonial[] = [
-    {
-      name: "Sarah M.",
-      role: "Healthcare Professional",
-      content: "My Health Hub's vitamin panel revealed my vitamin D was critically low despite no obvious symptoms. Their doctor explained everything clearly and helped me get back on track. Within 3 months, my levels were optimal and I felt much more energetic.",
-      rating: 5,
-      testType: "Vitamin Panel"
-    },
-    {
-      name: "David L.",
-      role: "Finance Manager, 52",
-      content: "After my father was diagnosed with prostate cancer, I wanted to be proactive. The PSA test from My Health Hub was simple to use at home, and the results came back quickly with clear guidance. It gave me peace of mind, and I've recommended it to all my friends.",
-      rating: 5,
-      testType: "PSA Test"
-    },
-    {
-      name: "Emma T.",
-      role: "Teacher & Mother of 2",
-      content: "I've been struggling with fatigue and digestive issues for years. My Health Hub's Gut Health package identified both a H. pylori infection and gluten sensitivity. After following their recommendations, I'm feeling better than I have in years!",
-      rating: 5,
-      testType: "Gut Health Panel"
-    },
-    {
-      name: "James W.",
-      role: "IT Consultant, 45",
-      content: "I chose the subscription plan for regular health monitoring. When my HbA1c showed pre-diabetic levels, I was able to make lifestyle changes immediately. Six months later, my levels were back to normal. This service may have saved me from developing type 2 diabetes.",
-      rating: 5,
-      testType: "Health Hub Essentials"
-    },
-  ];
-
+  const testimonials: Testimonial[] = [{
+    name: "Sarah M.",
+    role: "Healthcare Professional",
+    content: "myhealth checkup's vitamin panel revealed my vitamin D was critically low despite no obvious symptoms. Their doctor explained everything clearly and helped me get back on track. Within 3 months, my levels were optimal and I felt much more energetic.",
+    rating: 5,
+    testType: "Vitamin Panel"
+  }, {
+    name: "David L.",
+    role: "Finance Manager, 52",
+    content: "After my father was diagnosed with prostate cancer, I wanted to be proactive. The PSA test from myhealth checkup was simple to use at home, and the results came back quickly with clear guidance. It gave me peace of mind, and I've recommended it to all my friends.",
+    rating: 5,
+    testType: "PSA Test"
+  }, {
+    name: "Emma T.",
+    role: "Teacher & Mother of 2",
+    content: "I've been struggling with fatigue and digestive issues for years. myhealth checkup's Gut Health package identified both a H. pylori infection and gluten sensitivity. After following their recommendations, I'm feeling better than I have in years!",
+    rating: 5,
+    testType: "Gut Health Panel"
+  }, {
+    name: "James W.",
+    role: "IT Consultant, 45",
+    content: "I chose the subscription plan for regular health monitoring. When my HbA1c showed pre-diabetic levels, I was able to make lifestyle changes immediately. Six months later, my levels were back to normal. This service may have saved me from developing type 2 diabetes.",
+    rating: 5,
+    testType: "myhealth checkup Essentials"
+  }];
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const previousTestimonial = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
   };
-
   const nextTestimonial = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex(prevIndex => prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1);
   };
-
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Customer Stories</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            See how our tests have helped people take control of their health
+          <h2 className="text-3xl font-semibold mb-4">What Our Customers Say</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Real stories from people who've taken control of their health with our testing services.
           </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto">
-          <button 
-            onClick={previousTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 bg-white rounded-full p-2 shadow-md z-10 hidden md:block"
-            aria-label="Previous testimonial"
-          >
-            <ChevronLeft className="h-6 w-6 text-gray-600" />
-          </button>
+        <div className="max-w-4xl mx-auto">
+          <div className="relative">
+            <Card className="p-8">
+              <CardContent className="text-center">
+                <div className="flex justify-center mb-4">
+                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-lg text-gray-700 mb-6 italic">
+                  "{testimonials[currentIndex].content}"
+                </p>
+                <div className="mb-4">
+                  <h4 className="font-semibold text-lg">{testimonials[currentIndex].name}</h4>
+                  <p className="text-gray-600">{testimonials[currentIndex].role}</p>
+                </div>
+                <Badge variant="secondary">{testimonials[currentIndex].testType}</Badge>
+              </CardContent>
+            </Card>
 
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="flex-shrink-0 w-full p-8 border border-gray-100">
-                  <div className="mb-4">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`h-5 w-5 ${i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} 
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm text-gray-500 mt-1 block">
-                      Used: {testimonial.testType}
-                    </span>
-                  </div>
-                  
-                  <blockquote className="text-gray-700 mb-6 italic">
-                    "{testimonial.content}"
-                  </blockquote>
-                  
-                  <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
-                  </div>
-                </Card>
-              ))}
+            <div className="flex justify-center items-center mt-6 gap-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={previousTestimonial}
+                className="rounded-full"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex gap-2">
+                {testimonials.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === currentIndex ? 'bg-health-600' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={nextTestimonial}
+                className="rounded-full"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
-
-          <button 
-            onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 bg-white rounded-full p-2 shadow-md z-10 hidden md:block"
-            aria-label="Next testimonial"
-          >
-            <ChevronRight className="h-6 w-6 text-gray-600" />
-          </button>
-          
-          <div className="flex justify-center mt-6 gap-2">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full ${
-                  currentIndex === index ? "bg-health-600" : "bg-gray-300"
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-        
-        <div className="md:hidden mt-6 flex justify-center gap-4">
-          <button 
-            onClick={previousTestimonial}
-            className="bg-white rounded-full p-2 shadow-md"
-            aria-label="Previous testimonial"
-          >
-            <ChevronLeft className="h-5 w-5 text-gray-600" />
-          </button>
-          <button 
-            onClick={nextTestimonial}
-            className="bg-white rounded-full p-2 shadow-md"
-            aria-label="Next testimonial"
-          >
-            <ChevronRight className="h-5 w-5 text-gray-600" />
-          </button>
         </div>
       </div>
     </section>
   );
 };
-
 export default Testimonials;

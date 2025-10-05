@@ -1,128 +1,90 @@
-
-import { useNavigate } from "react-router-dom";
-import { Heart, LogOut, ShoppingBag, User } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { User, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
-import { toast } from "@/components/ui/sonner";
-
+import { useTranslation } from "react-i18next";
 interface UserMenuProps {
   isMobile?: boolean;
   onItemClick?: () => void;
 }
-
-export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
-  const { user, signOut } = useAuth();
+export const UserMenu = ({
+  isMobile = false,
+  onItemClick
+}: UserMenuProps) => {
+  const {
+    user,
+    signOut
+  } = useAuth();
+  const {
+    t
+  } = useTranslation();
   const navigate = useNavigate();
-
   const handleSignOut = async () => {
     await signOut();
-    toast.success("You have been signed out");
-    navigate("/");
-    if (onItemClick) onItemClick();
+    onItemClick?.();
   };
-
   if (isMobile) {
+    if (user) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20">
+              <User className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link to="/dashboard" className="flex items-center gap-2" onClick={onItemClick}>
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleSignOut}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+    
     return (
-      <div className="flex flex-col space-y-2 pt-2 border-t border-gray-100 mt-2">
-        {user ? (
-          <>
-            <Link 
-              to="/dashboard?tab=favorites"
-              className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
-              onClick={onItemClick}
-            >
-              <Heart className="h-4 w-4" /> My Favorites
-            </Link>
-            <Link 
-              to="/dashboard?tab=orders"
-              className="flex items-center gap-2 text-gray-600 hover:text-health-600 py-2"
-              onClick={onItemClick}
-            >
-              <ShoppingBag className="h-4 w-4" /> My Orders
-            </Link>
-            <Button 
-              variant="outline" 
-              className="w-full border-red-500 text-red-600 hover:bg-red-50 mt-2"
-              onClick={() => {
-                handleSignOut();
-                if (onItemClick) onItemClick();
-              }}
-            >
-              <LogOut className="h-4 w-4 mr-2" /> Sign Out
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button 
-              variant="outline" 
-              className="w-full border-health-500 text-health-600 hover:bg-health-50"
-              onClick={() => {
-                navigate("/auth");
-                if (onItemClick) onItemClick();
-              }}
-            >
-              Sign In
-            </Button>
-            <Button 
-              className="w-full bg-health-600 hover:bg-health-700"
-              onClick={() => {
-                navigate("/auth");
-                if (onItemClick) onItemClick();
-              }}
-            >
-              Get Started
-            </Button>
-          </>
-        )}
-      </div>
+      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20" asChild>
+        <Link to="/auth" className="flex items-center gap-2" onClick={onItemClick}>
+          <User className="h-5 w-5" />
+        </Link>
+      </Button>
     );
   }
-
-  return user ? (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="border-health-500 text-health-600 hover:bg-health-50">
-          <User className="h-4 w-4 mr-2" /> Account
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => navigate("/dashboard?tab=favorites")}>
-          <Heart className="h-4 w-4 mr-2" /> My Favorites
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/dashboard?tab=orders")}>
-          <ShoppingBag className="h-4 w-4 mr-2" /> My Orders
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="h-4 w-4 mr-2" /> Sign Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  ) : (
-    <>
-      <Button 
-        variant="outline" 
-        className="border-health-500 text-health-600 hover:bg-health-50"
-        onClick={() => navigate("/auth")}
-      >
-        Sign In
+  if (user) {
+    return <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20">
+            <User className="h-5 w-5 text-[#dc27a0] hover:text-[#22c0d4]" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link to="/dashboard" className="flex items-center gap-2">
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleSignOut}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>;
+  }
+  return <div className="flex items-center gap-3">
+      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border border-[#dc27a0]/20 hover:border-[#22c0d4]/20" asChild>
+        <Link to="/auth" className="flex items-center gap-2">
+          <User className="h-5 w-5 text-[#dc27a0] hover:text-[#22c0d4]" />
+        </Link>
       </Button>
-      <Button 
-        className="bg-health-600 hover:bg-health-700"
-        onClick={() => navigate("/auth")}
-      >
-        Get Started
-      </Button>
-    </>
-  );
+    </div>;
 };
-
-// Fix missing Link import
-import { Link } from "react-router-dom";

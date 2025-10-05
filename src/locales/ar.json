@@ -1,0 +1,69 @@
+{
+  "common": {
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "search": "البحث",
+    "loading": "جار التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "close": "إغلاق",
+    "next": "التالي",
+    "previous": "السابق",
+    "learnMore": "تعرف على المزيد",
+    "getStarted": "ابدأ",
+    "compareTests": "مقارنة الاختبارات",
+    "bookNow": "احجز الآن",
+    "viewDetails": "عرض التفاصيل"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "compareTests": "مقارنة الاختبارات",
+    "categories": "الفئات",
+    "howItWorks": "كيف يعمل",
+    "about": "معلومات عنا",
+    "contact": "اتصل بنا",
+    "blog": "المدونة",
+    "faqs": "الأسئلة الشائعة",
+    "findClinic": "العثور على عيادة"
+  },
+  "hero": {
+    "title": "صحتك هي أعظم كنوزك!",
+    "subtitle": "قارن اختبارات الصحة من أفضل مقدمي الخدمات في المملكة المتحدة واحجز المثالي لك",
+    "searchPlaceholder": "البحث عن اختبارات صحية...",
+    "popularSearches": "عمليات البحث الشائعة:",
+    "bloodTest": "فحص الدم",
+    "cholesterol": "الكولسترول",
+    "diabetes": "السكري",
+    "thyroid": "الغدة الدرقية"
+  },
+  "footer": {
+    "tagline": "صحتك هي هدفنا",
+    "quickLinks": "روابط سريعة",
+    "categories": "الفئات",
+    "support": "الدعم",
+    "legal": "قانوني",
+    "newsletter": {
+      "title": "ابق محدثاً",
+      "description": "اشترك في نشرتنا الإخبارية للحصول على نصائح صحية وعروض حصرية.",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "subscribe": "اشتراك"
+    },
+    "copyright": "© 2024 HealthCompare. جميع الحقوق محفوظة."
+  },
+  "language": {
+    "selectLanguage": "اختر اللغة",
+    "english": "الإنجليزية (المملكة المتحدة)",
+    "french": "الفرنسية",
+    "spanish": "الإسبانية",
+    "german": "الألمانية",
+    "italian": "الإيطالية",
+    "portuguese": "البرتغالية",
+    "dutch": "الهولندية",
+    "polish": "البولندية",
+    "arabic": "العربية",
+    "chinese": "الصينية",
+    "japanese": "اليابانية"
+  }
+}
