@@ -22,7 +22,7 @@ const CategoryCard = ({
   providerCount
 }: CategoryCardProps) => {
   return <Link to={link} className={cn("block p-6 rounded-xl transition-all duration-300", "bg-[#2a3f55] shadow-lg shadow-gray-100/40 hover:shadow-xl hover:scale-105", "border border-gray-100 hover:border-[#3A5F85]")}>
-      <div className={cn("w-14 h-14 rounded-lg mb-4 flex items-center justify-center", color)}>
+      <div className={cn("w-14 h-14 rounded-lg mb-4 flex items-center justify-center", "bg-yellow-500")}>
         {icon}
       </div>
       <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
