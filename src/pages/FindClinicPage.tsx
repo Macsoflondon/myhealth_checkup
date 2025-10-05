@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ClinicMap from "@/components/ClinicMap";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { Helmet } from "react-helmet-async";
+
+const ClinicMap = lazy(() => import("@/components/ClinicMap"));
 
 const FindClinicPage: React.FC = () => {
   const title = "Find a Clinic | myhealth checkup";
@@ -37,7 +38,9 @@ const FindClinicPage: React.FC = () => {
         <Header />
         <main className="flex-grow">
           <h1 className="sr-only">Find a Clinic</h1>
-          <ClinicMap />
+          <Suspense fallback={<div className="container mx-auto px-4 py-16 text-center text-muted-foreground">Loading clinic map…</div>}>
+            <ClinicMap />
+          </Suspense>
         </main>
         <Footer />
         <CookieConsent />
