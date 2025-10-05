@@ -97,7 +97,7 @@ export const categoryColors: CategoryColor[] = [
   {
     id: "blood-tests", 
     name: "Comprehensive Blood Panels",
-    primary: "bg-teal-600",
+    primary: "bg-yellow-500",
     light: "bg-teal-100",
     text: "text-teal-600",
     icon: "text-white",
