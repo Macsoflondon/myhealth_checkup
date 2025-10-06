@@ -45,8 +45,8 @@
 
 /* Header Image */
 .headerImage {
-  max-height: 224px;
-  max-width: clamp(96px, 40vw, 480px);
+  max-height: 112px;
+  max-width: clamp(48px, 20vw, 240px);
   height: auto;
   width: auto;
   object-fit: contain;
@@ -56,8 +56,8 @@
 
 @media (max-width: 767px) {
   .headerImage {
-    max-height: 160px;
-    max-width: clamp(80px, 32vw, 320px);
+    max-height: 80px;
+    max-width: clamp(40px, 16vw, 160px);
   }
 }
 

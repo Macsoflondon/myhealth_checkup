@@ -74,7 +74,7 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="flex-1 max-w-2xl mx-4">
+            <div className="flex-1 max-w-2xl mx-auto px-4">
               <SearchBar />
             </div>
             
