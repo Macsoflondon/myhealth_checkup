@@ -9,6 +9,8 @@ import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
+import styles from "./Header.module.css";
 interface HeaderProps {
   className?: string;
 }
@@ -18,6 +20,7 @@ const Header = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { scrollDirection, isAtTop } = useScrollDirection();
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
@@ -43,10 +46,23 @@ const Header = ({
         </header>
       </ErrorBoundary>;
   }
+  // Determine header and toolbar state based on scroll
+  const headerBarClasses = cn(
+    "bg-[#081129] px-6 lg:px-16 py-[30px]",
+    styles.header,
+    scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible
+  );
+
+  const toolbarClasses = cn(
+    "bg-white my-0 mx-0 px-0 py-[10px]",
+    styles.toolbar,
+    scrollDirection === 'down' && !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky
+  );
+
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
-        {/* Main header bar - Logo, Search, and User Controls */}
-        <div className="bg-[#081129] px-6 lg:px-16 py-[30px]">
+        {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
+        <div className={headerBarClasses}>
           <div className="flex items-center justify-between gap-6 w-full">
             <div className="flex items-center flex-shrink-0">
               <Logo />
@@ -57,14 +73,20 @@ const Header = ({
             </div>
             
             <div className="flex items-center gap-2 flex-shrink-0">
+              <img 
+                src="/lovable-uploads/hero-image-3.png" 
+                alt="" 
+                aria-hidden="true"
+                className={styles.headerImage}
+              />
               <LanguageSwitcher />
               <UserMenu />
             </div>
           </div>
         </div>
         
-        {/* Bottom row - Navigation Menu */}
-        <div className="bg-white my-0 mx-0 px-0 py-[10px]">
+        {/* Bottom row - Navigation Menu (Toolbar) */}
+        <div className={toolbarClasses}>
           <NavigationItems className="flex justify-center items-center gap-8" />
         </div>
       </header>

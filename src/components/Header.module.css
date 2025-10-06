@@ -1,0 +1,74 @@
+/* CSS Variables */
+:root {
+  --header-height: 94px;
+  --toolbar-height: 50px;
+  --transition-duration: 200ms;
+  --z-header: 50;
+  --z-toolbar: 51;
+}
+
+/* Header States */
+.header {
+  transition: transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1),
+              opacity var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.headerHidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.headerVisible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Toolbar States */
+.toolbar {
+  transition: all var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+}
+
+.toolbarSticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-toolbar);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toolbarUnsticky {
+  position: relative;
+}
+
+/* Header Image */
+.headerImage {
+  max-height: 56px;
+  max-width: clamp(24px, 10vw, 120px);
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  object-position: right center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .headerImage {
+    max-height: 40px;
+    max-width: clamp(20px, 8vw, 80px);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .toolbar {
+    transition: none;
+  }
+  
+  .header {
+    will-change: auto;
+  }
+}
