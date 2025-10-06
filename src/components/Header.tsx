@@ -64,7 +64,13 @@ const Header = ({
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
           <div className="flex items-center justify-between gap-6 w-full">
-            <div className="flex items-center flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <img 
+                src="/lovable-uploads/hero-image-3.png" 
+                alt="" 
+                aria-hidden="true"
+                className={styles.headerImage}
+              />
               <Logo />
             </div>
             
@@ -73,12 +79,6 @@ const Header = ({
             </div>
             
             <div className="flex items-center gap-2 flex-shrink-0">
-              <img 
-                src="/lovable-uploads/hero-image-3.png" 
-                alt="" 
-                aria-hidden="true"
-                className={styles.headerImage}
-              />
               <LanguageSwitcher />
               <UserMenu />
             </div>

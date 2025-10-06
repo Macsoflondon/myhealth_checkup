@@ -45,19 +45,19 @@
 
 /* Header Image */
 .headerImage {
-  max-height: 56px;
-  max-width: clamp(24px, 10vw, 120px);
+  max-height: 112px;
+  max-width: clamp(48px, 20vw, 240px);
   height: auto;
   width: auto;
   object-fit: contain;
-  object-position: right center;
+  object-position: left center;
   flex-shrink: 0;
 }
 
 @media (max-width: 767px) {
   .headerImage {
-    max-height: 40px;
-    max-width: clamp(20px, 8vw, 80px);
+    max-height: 80px;
+    max-width: clamp(40px, 16vw, 160px);
   }
 }
 
