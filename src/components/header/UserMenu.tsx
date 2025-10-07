@@ -30,7 +30,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]"
+              className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#e70d69]/20 hover:border-[#22c0d4]"
             >
               <User className="h-5 w-5" />
             </Button>
