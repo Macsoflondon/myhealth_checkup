@@ -33,7 +33,7 @@ const AboutUsPage = () => {
         <div className="bg-gradient-to-br from-health-50 to-wellness-50 bg-[#1a1b34] py-0">
           <div className="container mx-auto px-4 bg-[#1a1b34]">
             <div className="text-center mb-12">
-              <h1 className="text-4xl mb-6 my-[30px] text-[#22c0d4] text-center md:text-4xl font-semibold">
+              <h1 className="text-4xl mb-6 text-[#22c0d4] text-center md:text-4xl font-semibold my-0 py-[30px]">
                 About myhealth checkup
               </h1>
             </div>
@@ -44,7 +44,7 @@ const AboutUsPage = () => {
           <div className="container mx-auto px-4 my-0 py-[10px] bg-[#1a1b34]">
             <div className="max-w-4xl mx-auto">
               <div className="text-lg text-gray-600 space-y-6">
-                <p className="text-white my-0 py-0">
+                <p className="text-white my-0 py-0 text-left font-light text-base">
                   <strong>Your Health Is Your Greatest Asset</strong> and it deserves the best care.
                   At myhealth checkup, we rigorously screen every provider we feature, ensuring you only see the UK's most reputable health and wellness testing options. From routine blood tests to advanced wellness panels, our partners meet the highest standards of quality, working with UKAS-accredited laboratories, CQC-regulated clinics, and ISO 15189-certified facilities.
                 </p>
@@ -57,17 +57,17 @@ const AboutUsPage = () => {
         <section className="bg-[#1a1b34] py-0">
           <div className="container mx-auto px-4 my-[10px]">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-[#22c0d4] my-[20px]">Our Mission</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#22c0d4] my-0 py-[10px]">Our Mission</h2>
               <div className="text-lg text-gray-600 space-y-6 max-w-4xl mx-auto">
-                <p className="text-white">
+                <p className="text-white font-light text-left">
                   At myhealth checkup, we believe proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We are changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
                 </p>
                 
-                <p className="text-white">
+                <p className="text-white text-left font-light">
                   Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals, just straightforward, clinical-grade testing with expert guidance.
                 </p>
                 
-                <p className="text-[t] text-white">
+                <p className="text-white font-light text-base text-left">
                   We have partnered with leading providers to bring you the most comprehensive range of tests at competitive prices, maintaining the highest standards of accuracy and confidentiality.
                 </p>
               </div>
