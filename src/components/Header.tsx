@@ -63,7 +63,7 @@ const Header = ({
       <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
-          <div className="flex items-center justify-between gap-6 w-full">
+          <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-6 w-full">
             <div className="flex items-center gap-2 flex-shrink-0">
               <img 
                 src="/lovable-uploads/hero-image-3.png" 
@@ -74,11 +74,11 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="flex-1 max-w-2xl mx-auto px-4">
+            <div className="max-w-2xl w-full px-4">
               <SearchBar />
             </div>
             
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0 justify-end">
               <LanguageSwitcher />
               <UserMenu />
             </div>
