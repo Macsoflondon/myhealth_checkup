@@ -13,7 +13,7 @@ const HowItWorks = () => {
             </h2>
             <p style={{
             color: '#ffffff'
-          }} className="max-w-2xl mx-auto text-center font-normal text-base text-[#22c0d4]">
+          }} className="max-w-2xl mx-auto text-center text-[#22c0d4] font-medium text-lg">
               Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
             </p>
           </div>
