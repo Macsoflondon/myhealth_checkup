@@ -118,7 +118,7 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold mb-6">My Dashboard</h1>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mb-6">
+            <TabsList className="sticky top-0 z-10 bg-background mb-6 shadow-sm">
               <TabsTrigger value="favorites" className="flex items-center gap-2">
                 <Heart className="h-4 w-4" /> Favorites
               </TabsTrigger>
@@ -166,17 +166,14 @@ const Dashboard = () => {
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex justify-between items-center">
-                          <p className="font-bold text-health-600">
-                            £{favorite.price?.toFixed(2)}
-                          </p>
-                          <Button 
-                            size="sm"
-                            onClick={() => navigate(`/compare?category=${favorite.category}`)}
-                          >
-                            View Details
-                          </Button>
-                        </div>
+                      <div className="flex justify-end items-center">
+                        <Button 
+                          size="sm"
+                          onClick={() => navigate(`/compare?category=${favorite.category}`)}
+                        >
+                          View Details
+                        </Button>
+                      </div>
                       </CardContent>
                     </Card>
                   ))}
@@ -231,18 +228,17 @@ const Dashboard = () => {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex justify-between items-center">
-                          <p className="font-bold">£{order.price?.toFixed(2)}</p>
-                          {order.result_url && (
-                            <Button 
-                              className="flex items-center gap-2"
-                              onClick={() => window.open(order.result_url || '#')}
-                            >
-                              <FileText className="h-4 w-4" />
-                              View Results
-                            </Button>
-                          )}
-                        </div>
+                      <div className="flex justify-end items-center">
+                        {order.result_url && (
+                          <Button 
+                            className="flex items-center gap-2"
+                            onClick={() => window.open(order.result_url || '#')}
+                          >
+                            <FileText className="h-4 w-4" />
+                            View Results
+                          </Button>
+                        )}
+                      </div>
                       </CardContent>
                     </Card>
                   ))}
