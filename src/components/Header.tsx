@@ -65,12 +65,14 @@ const Header = ({
         <div className={headerBarClasses}>
           <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-6 w-full">
             <div className="flex items-center gap-2 flex-shrink-0">
+            <Link to="/" aria-label="Return to homepage">
               <img 
                 src="/lovable-uploads/hero-image-3.png" 
                 alt="" 
                 aria-hidden="true"
                 className={styles.headerImage}
               />
+            </Link>
               <Logo />
             </div>
             
