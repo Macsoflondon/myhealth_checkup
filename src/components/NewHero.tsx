@@ -18,7 +18,6 @@ const NewHero = () => {
   const {
     toast
   } = useToast();
-
   const handleSearch = useCallback(async () => {
     if (!searchTerm.trim()) return;
     setIsAnalyzing(true);
@@ -81,16 +80,10 @@ const NewHero = () => {
             {/* Hero Video Container - Fullscreen */}
             <div className="relative mx-auto w-full">
               <div className="relative w-full h-screen overflow-hidden">
-                <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline
-                  className="absolute left-0 right-0 bottom-0 w-full object-cover"
-                  style={{ top: '-180px', height: 'calc(100% + 180px)' }}
-                  src="/hero-video-new.mp4"
-                  aria-label="myhealth checkup - Your health is your greatest asset"
-                >
+                <video autoPlay loop muted playsInline className="absolute left-0 right-0 bottom-0 w-full object-cover" style={{
+                top: '-180px',
+                height: 'calc(100% + 180px)'
+              }} src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -247,8 +240,8 @@ const NewHero = () => {
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-8 bg-[#081129]">
         <div className="w-full px-4">
-          <h2 className="text-xl sm:text-2xl md:text-3xl text-center leading-tight text-white font-medium lg:text-4xl">
-            Your health is your greatest asset!
+          <h2 className="text-xl sm:text-2xl text-center leading-tight font-medium lg:text-4xl md:text-4xl text-white">
+            Your <span className="text-[#22c0d4]">health</span>. Your <span className="text-[#fc0173]">choice</span>. One trusted platform.
           </h2>
         </div>
       </section>
