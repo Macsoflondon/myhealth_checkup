@@ -1,24 +1,22 @@
 import { useNavigate, Link } from "react-router-dom";
 import { User, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
 interface UserMenuProps {
   isMobile?: boolean;
   onItemClick?: () => void;
 }
-export const UserMenu = ({
-  isMobile = false,
-  onItemClick
-}: UserMenuProps) => {
-  const {
-    user,
-    signOut
-  } = useAuth();
-  const {
-    t
-  } = useTranslation();
+export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
+  const { user, signOut } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleSignOut = async () => {
     await signOut();
@@ -29,7 +27,11 @@ export const UserMenu = ({
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]"
+            >
               <User className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
@@ -49,9 +51,14 @@ export const UserMenu = ({
         </DropdownMenu>
       );
     }
-    
+
     return (
-      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]" asChild>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]"
+        asChild
+      >
         <Link to="/auth" className="flex items-center gap-2" onClick={onItemClick}>
           <User className="h-5 w-5" />
         </Link>
@@ -59,9 +66,14 @@ export const UserMenu = ({
     );
   }
   if (user) {
-    return <DropdownMenu>
+    return (
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]"
+          >
             <User className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>
@@ -78,13 +90,21 @@ export const UserMenu = ({
             Sign Out
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu>;
+      </DropdownMenu>
+    );
   }
-  return <div className="flex items-center gap-3">
-      <Button variant="ghost" size="sm" className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#dc27a0]/20 hover:border-[#22c0d4]" asChild>
+  return (
+    <div className="flex items-center gap-3">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-10 px-3 text-[#dc27a0] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-[3px] border-[#e70d69]/20 hover:border-[#22c0d4]"
+        asChild
+      >
         <Link to="/auth" className="flex items-center gap-2">
           <User className="h-5 w-5" />
         </Link>
       </Button>
-    </div>;
+    </div>
+  );
 };
