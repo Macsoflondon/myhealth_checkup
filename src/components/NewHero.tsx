@@ -241,7 +241,7 @@ const NewHero = () => {
       <section className="w-full py-8 bg-[#081129]">
         <div className="w-full px-4">
           <h2 className="text-xl sm:text-2xl text-center leading-tight font-medium lg:text-4xl md:text-4xl text-white">
-            Your <span className="text-[#22c0d4]">health</span>. Your <span className="text-[#fc0173]">choice</span>. One trusted platform.
+            Your <span className="text-[#22c0d4]">health</span> is your greatest <span className="text-[#e70d69]">asset!</span>
           </h2>
         </div>
       </section>
