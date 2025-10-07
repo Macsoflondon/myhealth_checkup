@@ -102,6 +102,7 @@ const App = () => (
               <Route path="/blog" element={<HealthBlogPage />} />
               <Route path="/find-test" element={<AssistedTestFinderPage />} />
               <Route path="/find-a-clinic" element={<FindClinicPage />} />
+              <Route path="/find-clinic" element={<FindClinicPage />} />
               <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
               <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
               <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
