@@ -142,7 +142,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           
           {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
-            <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[60] min-w-[500px] max-w-[600px]">
+            <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] min-w-[500px] max-w-[600px]">
               <div className="p-6">
                 {getGoodbodyTestsForDropdown(item.name) ? (
                   // Show Goodbody tests for health-specific sections
@@ -236,7 +236,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         </button>
         
         {activeDropdown === "MORE" && (
-          <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[60] min-w-[280px]">
+          <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] min-w-[280px]">
             <div className="p-4">
               <div className="grid grid-cols-1 gap-1">
                 {moreNavigationItems.map((item) => (

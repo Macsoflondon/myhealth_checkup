@@ -56,11 +56,11 @@ const Header = ({
   const toolbarClasses = cn(
     "bg-white my-0 mx-0 px-0 py-[10px]",
     styles.toolbar,
-    scrollDirection === 'down' && !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky
+    !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky
   );
 
   return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
+      <header className={cn("relative bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
           <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-6 w-full">
