@@ -33,11 +33,11 @@ export const SearchBar = () => {
     }
   };
 
-  return <div className="relative w-full">
+  return <div className="relative w-full max-w-3xl">
       <form onSubmit={handleSearch} className="flex w-full">
         <div className="relative flex-1 flex justify-center items-center ">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-health-success" />
-          <Input type="text" placeholder="Search from over 300 tests" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-4 py-0 max-w-full ring-purple-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-r-none px-[50px] rounded-sm" />
+          <Input type="text" placeholder="Search from over 300 tests" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-4 py-0 w-full ring-purple-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-r-none px-[50px] rounded-sm" />
         </div>
         <Button type="submit" size="default" className="text-white px-6 py-3 rounded-l-none border-l-0 h-full bg-[#e70d69] hover:bg-[#22c0d4]">
           <Search className="h-4 w-4 text-white" />
