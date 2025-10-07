@@ -13,7 +13,7 @@ const HowItWorks = () => {
             </h2>
             <p style={{
             color: '#ffffff'
-          }} className="max-w-2xl mx-auto text-center text-[#22c0d4] font-medium text-lg">
+          }} className="max-w-2xl mx-auto text-center font-medium text-base text-white">
               Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
             </p>
           </div>
@@ -57,7 +57,7 @@ const HowItWorks = () => {
                 </h3>
                 <p style={{
               color: '#ffffff'
-            }} className="text-lg text-center text-white py-[10px] font-normal">
+            }} className="text-center text-white py-[10px] font-light text-lg">
                   {item.description}
                 </p>
               </div>)}
