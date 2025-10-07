@@ -308,7 +308,7 @@ const FAQsPage = () => {
             {/* Popular Questions */}
             {searchQuery === '' && <Card className="mb-12 border-primary/20">
                 <CardHeader className="bg-[#081129]">
-                  <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-white">
                     <TrendingUp className="h-5 w-5 text-primary" />
                     Popular Questions
                   </CardTitle>
