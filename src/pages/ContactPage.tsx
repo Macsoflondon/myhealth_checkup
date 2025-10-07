@@ -11,12 +11,12 @@ const ContactPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-muted/30">
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-12 bg-[#081129]">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <Badge className="mb-4 text-[#081129]">Get In Touch</Badge>
+              
               <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-xl text-white">
                 We're here to help with any questions about health testing or our platform
               </p>
             </div>
@@ -53,7 +53,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">Message</label>
-                      <Textarea placeholder="Tell us how we can help you..." className="min-h-[120px] bg-[#081129] text-base" />
+                      <Textarea placeholder="Tell us how we can help you..." className="min-h-[120px] text-base bg-white" />
                     </div>
                     <Button className="w-full">Send Message</Button>
                   </form>
@@ -133,9 +133,9 @@ const ContactPage = () => {
                     <CardTitle>Emergency Medical Situations</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <p className="text-red-800 font-medium mb-2">Important Notice</p>
-                      <p className="text-red-700 text-sm">
+                    <div className="border border-red-200 rounded-lg p-4 bg-[#f04646]">
+                      <p className="font-medium mb-2 text-white">Important Notice</p>
+                      <p className="text-sm text-white">
                         If you have a medical emergency, please call 999 or visit your nearest A&E department immediately. 
                         Our service is not suitable for urgent medical situations.
                       </p>
