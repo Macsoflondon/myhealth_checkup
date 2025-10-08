@@ -44,7 +44,7 @@ const Index = () => {
     }
   };
   return <ErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-[#081129]">
+      <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
         <title>myhealth checkup - Compare Private Blood Tests & Health Screenings UK 2024</title>
         <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />

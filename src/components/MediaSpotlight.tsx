@@ -18,12 +18,12 @@ const MediaSpotlight = () => {
           --slide-gap: 2.5rem;
           --slide-height: 70px;
           --slide-height-accent: 80px;
-          --slide-bg-color: #081129;
+          --slide-bg-color: #ffffff;
         }
 
         .media-spotlight {
           padding: 1.0rem 0;
-          background-color: #081129;
+          background-color: #ffffff;
         }
         @media (min-width: 768px) {
           .media-spotlight {

@@ -96,7 +96,7 @@ const MostPopularTests = () => {
     reviews: 1234,
     collection: 'Finger-prick or Venous collection'
   }];
-  return <section className="bg-[#081129] py-0">
+  return <section className="bg-gray-50 py-16">
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-8">
           <nav className="text-sm text-gray-500 mb-4">
@@ -105,8 +105,10 @@ const MostPopularTests = () => {
             
           </nav>
           
-          <h1 className="text-4xl font-bold mb-4 text-center text-white">The Most Popular Tests Amongst Our Providers</h1>
-          <p className="text-lg font-medium text-center text-white">Check out our best selling tests, used by thousands of people</p>
+          <h1 className="text-4xl font-bold mb-4 text-center text-[#22c0d4]" style={{
+          color: '#22c0d4'
+        }}>The Most Popular Tests Amongst Our Providers</h1>
+          <p className="text-lg font-medium text-center text-[#081129]">Check out our best selling tests, used by thousands of people</p>
         </div>
 
         <div className="flex justify-end mb-6">

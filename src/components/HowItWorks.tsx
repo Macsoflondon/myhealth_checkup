@@ -1,19 +1,17 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
 const HowItWorks = () => {
-  return <section className="bg-[#081129]">
-      <div className="max-w-7xl mx-auto px-4 bg-[#081129] py-[4px]">
-        <div className="bg-navy !bg-[#081129] rounded-2xl shadow-lg p-8 mb-12" style={{
-        backgroundColor: '#081129'
-      }}>
+  return <section className="bg-white py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-12">
           <div className="text-center mb-16">
             <h2 style={{
             color: '#22c0d4'
-          }} className="mb-4 heading my-0 py-[10px] text-center text-4xl font-medium text-white">
+          }} className="mb-4 heading my-0 py-[10px] text-center text-4xl font-medium text-[#22c0d4]">
               How It Works
             </h2>
             <p style={{
-            color: '#ffffff'
-          }} className="max-w-2xl mx-auto text-center font-medium text-base text-white">
+            color: '#081129'
+          }} className="max-w-2xl mx-auto text-center font-medium text-base text-[#081129]">
               Four Simple Steps - Booking your test in just a few clicks couldn't be easier!
             </p>
           </div>
@@ -39,7 +37,7 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => <div key={index} className="text-center bg-[#0a1a3a] px-4 border border-white/30 rounded-md">
+          }].map((item, index) => <div key={index} className="text-center bg-gray-50 px-4 border border-gray-200 rounded-md">
                 <div className="relative mb-6 py-[10px]">
                   <div className="w-16 h-16 bg-gradient-to-r from-[#FA6980] to-[#4A6FA5] rounded-full flex items-center justify-center mx-auto">
                     <item.icon className="w-8 h-8 text-white" />
@@ -56,8 +54,8 @@ const HowItWorks = () => {
                   {item.title}
                 </h3>
                 <p style={{
-              color: '#ffffff'
-            }} className="text-center text-white py-[10px] font-light text-lg">
+              color: '#081129'
+            }} className="text-center text-[#081129] py-[10px] font-light text-lg">
                   {item.description}
                 </p>
               </div>)}
