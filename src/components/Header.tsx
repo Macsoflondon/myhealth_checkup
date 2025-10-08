@@ -48,7 +48,7 @@ const Header = ({
   }
   // Determine header and toolbar state based on scroll
   const headerBarClasses = cn(
-    "bg-[#081129] px-6 lg:px-16 py-[30px]",
+    "bg-[#081129] px-3 sm:px-6 lg:px-16 py-4 lg:py-[30px]",
     styles.header,
     scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible
   );
@@ -63,8 +63,8 @@ const Header = ({
       <header className={cn("relative bg-white border-b border-gray-200", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
-          <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-6 w-full">
-            <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr,auto,1fr] items-center gap-4 lg:gap-6 w-full">
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
             <Link to="/" aria-label="Return to homepage">
               <img 
                 src="/lovable-uploads/hero-image-3.png" 
@@ -76,7 +76,7 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="max-w-2xl w-full px-4">
+            <div className="w-full lg:max-w-2xl px-2 lg:px-4">
               <SearchBar />
             </div>
             
