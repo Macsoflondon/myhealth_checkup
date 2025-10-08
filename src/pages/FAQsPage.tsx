@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,9 +8,48 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Mail, Phone, ThumbsUp, ThumbsDown, TrendingUp, Shield, FileCheck } from 'lucide-react';
+import { 
+  Search, 
+  Mail, 
+  Phone, 
+  TrendingUp, 
+  Shield, 
+  FileCheck, 
+  ChevronRight, 
+  ArrowUp,
+  AlertCircle 
+} from 'lucide-react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+
 const FAQsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  
+  // Debounce search input for performance
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+  
+  // Show/hide back to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
   const faqCategories = [{
     title: "Getting Started",
     icon: <TrendingUp className="h-5 w-5" />,
@@ -272,192 +312,356 @@ const FAQsPage = () => {
   }];
 
   // Popular questions from all categories
-  const popularQuestions = faqCategories.flatMap(cat => cat.faqs.filter(faq => faq.popular).map(faq => ({
-    ...faq,
-    category: cat.title
-  })));
+  const popularQuestions = faqCategories.flatMap(cat => 
+    cat.faqs.filter(faq => faq.popular).map(faq => ({
+      ...faq,
+      category: cat.title
+    }))
+  );
 
-  // Filter FAQs based on search
-  const filteredCategories = faqCategories.map(category => ({
-    ...category,
-    faqs: category.faqs.filter(faq => searchQuery === '' || faq.q.toLowerCase().includes(searchQuery.toLowerCase()) || faq.a.toLowerCase().includes(searchQuery.toLowerCase()))
-  })).filter(category => category.faqs.length > 0);
-  return <div className="min-h-screen flex flex-col">
+  // Memoize filtered categories for performance
+  const filteredCategories = useMemo(() => 
+    faqCategories.map(category => ({
+      ...category,
+      faqs: category.faqs.filter(faq => 
+        debouncedSearch === '' || 
+        faq.q.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
+        faq.a.toLowerCase().includes(debouncedSearch.toLowerCase())
+      )
+    })).filter(category => category.faqs.length > 0),
+    [debouncedSearch]
+  );
+  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  // Generate structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqCategories.flatMap(cat => 
+      cat.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    )
+  };
+  
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>FAQs - Frequently Asked Questions | myhealth checkup</title>
+        <meta 
+          name="description" 
+          content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." 
+        />
+        <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/faqs" />
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
       <Header />
+      
       <main className="flex-grow bg-muted/30">
+        {/* Breadcrumbs */}
+        <nav className="container mx-auto px-4 py-3 sm:py-4" aria-label="Breadcrumb">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Home
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator>
+                <ChevronRight className="h-4 w-4" />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage className="text-foreground font-medium">
+                  FAQs
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </nav>
+
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-primary via-primary/90 to-secondary text-white">
-          <div className="container mx-auto px-4 py-16 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <div className="container mx-auto px-4 py-12 sm:py-16 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
               Frequently Asked Questions
             </h1>
-            <p className="text-lg md:text-xl mb-8 text-white/90">
+            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90 max-w-2xl mx-auto">
               Find answers to common questions about health testing and our platform
             </p>
             
             {/* Search Bar */}
-            <div className="max-w-xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input type="text" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-12 h-12 text-base bg-white" />
+            <div className="max-w-xl sm:max-w-2xl mx-auto">
+              <div className="relative">
+                <Search 
+                  className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" 
+                  aria-hidden="true" 
+                />
+                <Input 
+                  type="search" 
+                  placeholder="Search FAQs..." 
+                  value={searchQuery} 
+                  onChange={e => setSearchQuery(e.target.value)} 
+                  className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50"
+                  aria-label="Search frequently asked questions"
+                  aria-describedby="search-description"
+                />
+                <span id="search-description" className="sr-only">
+                  Type to search through all FAQ categories and questions
+                </span>
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0"
+                    aria-label="Clear search"
+                  >
+                    ×
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12 bg-white">
-          <div className="max-w-5xl mx-auto">
-            {/* Popular Questions */}
-            {searchQuery === '' && <Card className="mb-12 border-primary/20">
-                <CardHeader className="bg-[#081129]">
-              <CardTitle className="flex items-center gap-2 text-white">
-                    <TrendingUp className="h-5 w-5 text-primary" />
-                    Popular Questions
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="bg-[#081129]">
-                  <div className="grid gap-4">
-                    {popularQuestions.map((faq, idx) => <div key={idx} className="p-4 rounded-lg transition-colors bg-white">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1">
-                            <h4 className="font-semibold mb-2 text-foreground">{faq.q}</h4>
-                            <p className="text-sm text-muted-foreground">{faq.a}</p>
-                          </div>
-                          <Badge variant="secondary" className="shrink-0">
-                            {faq.category}
-                          </Badge>
-                        </div>
-                      </div>)}
-                  </div>
-                </CardContent>
-              </Card>}
+        {/* Popular Questions */}
+        {debouncedSearch === '' && (
+          <div className="container mx-auto px-4 py-8 sm:py-12">
+            <div className="bg-[hsl(var(--section-dark))] rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
+                Popular Questions
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {popularQuestions.map((faq, idx) => (
+                  <Card 
+                    key={idx} 
+                    className="bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 cursor-pointer group"
+                  >
+                    <CardHeader className="p-4 sm:p-6">
+                      <Badge className="mb-2 sm:mb-3 bg-primary/20 text-white border-primary/30 w-fit text-xs sm:text-sm">
+                        {faq.category}
+                      </Badge>
+                      <CardTitle className="text-base sm:text-lg text-white group-hover:text-primary transition-colors">
+                        {faq.q}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4 sm:p-6 pt-0">
+                      <p className="text-white/80 text-sm line-clamp-3">{faq.a}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
-            {/* Search Results Count */}
-            {searchQuery && <div className="mb-6 text-muted-foreground">
-                Found {filteredCategories.reduce((sum, cat) => sum + cat.faqs.length, 0)} results for "{searchQuery}"
-              </div>}
-
-            {/* FAQ Categories */}
-            <div className="space-y-6">
-              {filteredCategories.map((category, categoryIndex) => <Card key={categoryIndex}>
-                  <CardHeader className="from-primary/5 to-secondary/5 bg-[t#] rounded bg-[#e70d69]">
-                    <CardTitle className="flex items-center gap-3 font-medium text-white text-left">
-                      <div className="p-2 rounded-lg bg-primary/10 text-primary">
+        {/* FAQ Categories */}
+        <div className="container mx-auto px-4 py-8 sm:py-12">
+          {filteredCategories.length > 0 ? (
+            <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
+              {filteredCategories.map((category, catIdx) => (
+                <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="bg-primary/20 p-1.5 sm:p-2 rounded-lg text-primary flex-shrink-0">
                         {category.icon}
                       </div>
-                      <div>
-                        <div className="text-xl">{category.title}</div>
-                        
-                      </div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6 bg-[t] bg-[#081129]">
-                    <Accordion type="single" collapsible className="w-full">
-                      {category.faqs.map((faq, faqIndex) => <AccordionItem key={faqIndex} value={`${categoryIndex}-${faqIndex}`} className="border-b last:border-0">
-                          <AccordionTrigger className="text-left hover:text-primary transition-colors py-4">
-                            <div className="flex items-start gap-3 pr-4">
-                              <span className="font-semibold text-[\xA2#] text-white">{faq.q}</span>
-                              {faq.popular && <Badge variant="secondary" className="shrink-0 ml-2">
-                                  Popular
-                                </Badge>}
-                            </div>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 flex-1 min-w-0">
+                        {category.title}
+                      </h3>
+                      <Badge className="bg-primary/10 text-primary border-primary/20 text-xs sm:text-sm flex-shrink-0">
+                        {category.faqs.length}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="p-4 sm:p-6">
+                    <Accordion type="single" collapsible>
+                      {category.faqs.map((faq, faqIdx) => (
+                        <AccordionItem 
+                          key={faqIdx} 
+                          value={`faq-${catIdx}-${faqIdx}`} 
+                          className="border-b last:border-0"
+                        >
+                          <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-gray-900 font-medium text-sm sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
+                            {faq.q}
                           </AccordionTrigger>
-                          <AccordionContent className="text-muted-foreground pb-4">
-                            <p className="leading-relaxed">{faq.a}</p>
+                          <AccordionContent className="text-gray-700 pb-3 sm:pb-4 leading-relaxed text-sm sm:text-base">
+                            {faq.a}
                           </AccordionContent>
-                        </AccordionItem>)}
+                        </AccordionItem>
+                      ))}
                     </Accordion>
-                  </CardContent>
-                </Card>)}
-            </div>
-
-            {/* No Results */}
-            {filteredCategories.length === 0 && searchQuery && <Card className="text-center py-12">
-                <CardContent>
-                  <Search className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-xl font-semibold mb-2">No results found</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Try adjusting your search terms or browse all categories
-                  </p>
-                  <Button onClick={() => setSearchQuery('')} variant="outline">
-                    Clear Search
-                  </Button>
-                </CardContent>
-              </Card>}
-
-            {/* Quick Links */}
-            {searchQuery === '' && <Card className="mt-12 bg-gradient-to-br from-muted/50 to-muted/30">
-                <CardHeader>
-                  <CardTitle>Related Resources</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <Link to="/how-it-works">
-                      <div className="p-4 rounded-lg bg-background hover:bg-primary/5 transition-colors border">
-                        <h4 className="font-semibold mb-2">How It Works</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Learn about our testing process
-                        </p>
-                      </div>
-                    </Link>
-                    <Link to="/compare-tests">
-                      <div className="p-4 rounded-lg bg-background hover:bg-primary/5 transition-colors border">
-                        <h4 className="font-semibold mb-2">Compare Tests</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Find and compare health tests
-                        </p>
-                      </div>
-                    </Link>
-                    <Link to="/trusted-providers">
-                      <div className="p-4 rounded-lg bg-background hover:bg-primary/5 transition-colors border">
-                        <h4 className="font-semibold mb-2">Our Providers</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Meet our accredited partners
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>}
-
-            {/* Contact Support */}
-            <Card className="mt-12 border-primary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Mail className="h-5 w-5 text-primary" />
-                  Still Have Questions?
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-6 text-muted-foreground">
-                  Can't find what you're looking for? Our friendly support team is here to help.
-                </p>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="p-6 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 rounded-lg bg-primary text-primary-foreground">
-                        <Mail className="h-5 w-5" />
-                      </div>
-                      <h4 className="font-semibold text-lg">Email Support</h4>
-                    </div>
-                    <p className="text-sm mb-2 font-medium">support@myhealthcheckup.co.uk</p>
-                    <p className="text-xs text-muted-foreground">Response within 24 hours</p>
-                  </div>
-                  <div className="p-6 rounded-lg bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 rounded-lg bg-secondary text-secondary-foreground">
-                        <Phone className="h-5 w-5" />
-                      </div>
-                      <h4 className="font-semibold text-lg">Phone Support</h4>
-                    </div>
-                    <p className="text-sm mb-2 font-medium">0800 123 4567</p>
-                    <p className="text-xs text-muted-foreground">Monday - Friday, 9am - 6pm GMT</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+            </Accordion>
+          ) : (
+            <div className="text-center py-12 sm:py-16 bg-white rounded-xl shadow-lg px-4">
+              <div className="flex justify-center mb-4">
+                <AlertCircle className="h-16 w-16 sm:h-20 sm:w-20 text-gray-300" />
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">No results found</h3>
+              <p className="text-gray-600 mb-6 text-sm sm:text-base max-w-md mx-auto">
+                We couldn't find any FAQs matching "{debouncedSearch}". Try different keywords or browse all categories.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button 
+                  onClick={() => setSearchQuery('')} 
+                  className="bg-primary hover:bg-primary/90 min-h-[44px]"
+                >
+                  Clear Search
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={scrollToTop}
+                  className="min-h-[44px]"
+                >
+                  Back to Top
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Related Resources */}
+        <div className="container mx-auto px-4 py-8 sm:py-12 border-t border-gray-200">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
+              Related Resources
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow">
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-primary text-lg sm:text-xl">Browse Tests</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <p className="text-gray-700 mb-4 text-sm sm:text-base">
+                    Explore our comprehensive range of health tests from UKAS-accredited providers.
+                  </p>
+                  <Link to="/compare-tests">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]"
+                    >
+                      View All Tests
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow">
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-primary text-lg sm:text-xl">How It Works</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <p className="text-gray-700 mb-4 text-sm sm:text-base">
+                    Learn about our simple 3-step process from booking to receiving your results.
+                  </p>
+                  <Link to="/how-it-works">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]"
+                    >
+                      Learn More
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
+
+        {/* Contact Support */}
+        <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+                Still have questions?
+              </h2>
+              <p className="text-gray-700 mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto">
+                Our support team is here to help you find the right test for your needs.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <Card className="bg-white border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg">
+                  <CardHeader className="p-4 sm:p-6">
+                    <div className="flex justify-center mb-3 sm:mb-4">
+                      <div className="bg-primary/10 p-3 sm:p-4 rounded-full">
+                        <Mail className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
+                      </div>
+                    </div>
+                    <CardTitle className="text-lg sm:text-xl">Email Support</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 sm:p-6 pt-0">
+                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
+                      Get detailed answers to your questions
+                    </p>
+                    <a 
+                      href="mailto:support@myhealthcheckup.co.uk" 
+                      className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                    >
+                      support@myhealthcheckup.co.uk
+                    </a>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg">
+                  <CardHeader className="p-4 sm:p-6">
+                    <div className="flex justify-center mb-3 sm:mb-4">
+                      <div className="bg-primary/10 p-3 sm:p-4 rounded-full">
+                        <Phone className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
+                      </div>
+                    </div>
+                    <CardTitle className="text-lg sm:text-xl">Phone Support</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 sm:p-6 pt-0">
+                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
+                      Speak with our team directly
+                    </p>
+                    <a 
+                      href="tel:+442012345678" 
+                      className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
+                    >
+                      +44 20 1234 5678
+                    </a>
+                    <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                      Mon-Fri: 9am-6pm GMT
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Back to Top Button */}
+        {showBackToTop && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 bg-primary hover:bg-primary/90 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            aria-label="Scroll back to top"
+          >
+            <ArrowUp className="h-6 w-6" />
+          </button>
+        )}
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default FAQsPage;
