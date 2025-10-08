@@ -48,7 +48,7 @@ const Header = ({
   }
   // Determine header and toolbar state based on scroll
   const headerBarClasses = cn(
-    "bg-[#081129] px-3 sm:px-6 lg:px-16 py-4 lg:py-[30px]",
+    "bg-[hsl(var(--section-dark))] px-3 sm:px-6 lg:px-16 py-4 lg:py-[30px]",
     styles.header,
     scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible
   );
