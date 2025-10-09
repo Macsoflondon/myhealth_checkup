@@ -80,17 +80,7 @@ const NewHero = () => {
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
               <div className="relative w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden">
-                <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  preload="metadata"
-                  poster="/lovable-uploads/hero-image-1.png"
-                  className="absolute inset-0 w-full h-full object-cover object-center"
-                  src="/hero-video-new.mp4" 
-                  aria-label="myhealth checkup - Your health is your greatest asset"
-                >
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -102,9 +92,9 @@ const NewHero = () => {
       {/* Full-width Headline Banner */}
       <section className="w-full bg-[#081129] py-0">
         <div className="w-full px-4 my-0 bg-[#081129] py-[10px]">
-          <h1 className="text-2xl sm:text-3xl text-[#22c0d4] text-center leading-tight md:text-5xl my-[10px] font-medium xl:text-4xl">
+          <h1 className="text-2xl sm:text-3xl text-[#22c0d4] leading-tight my-[10px] font-medium xl:text-4xl md:text-4xl text-left">
             Compare the UK's leading private health test providers
-            <span className="block text-[#fc0173] mt-2 my-[28px] font-medium text-4xl">All in one place!</span>
+            <span className="block text-[#fc0173] mt-2 my-[28px] font-medium text-3xl">All in one place!</span>
           </h1>
         </div>
       </section>
