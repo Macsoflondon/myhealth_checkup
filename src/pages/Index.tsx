@@ -8,11 +8,9 @@ import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
-import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import { TestCategories, MostPopularTests, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, HowItWorks, MediaSpotlight } from "@/components/LazyLoadedComponents";
 const Index = () => {
   usePerformanceOptimization();
-  useMobileOptimization();
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",

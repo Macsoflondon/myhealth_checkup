@@ -1,4 +1,4 @@
-// Direct App entry - v3.0 cache-busted
+// Direct App entry - v3.1 cache-busted
 import { StrictMode } from "react";
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'

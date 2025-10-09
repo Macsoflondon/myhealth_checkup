@@ -19,6 +19,7 @@ const OptimizedLoadingSpinner = ({ message = "Loading..." }: { message?: string 
 // Lazy load the main App component for code splitting
 const LazyApp = lazy(() => import("@/App"));
 
+// OptimizedApp v2.0 - No performance hooks here
 export default function OptimizedApp() {
   return (
     <ErrorBoundary>
