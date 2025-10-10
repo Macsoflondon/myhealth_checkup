@@ -33,7 +33,7 @@ const Header = ({
   }, [location.pathname]);
   if (isMobile) {
     return <ErrorBoundary>
-        <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
+        <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
           <div className="px-3 py-2 flex justify-between items-center gap-3 bg-[#081129]">
             <div className="flex-shrink-0">
               <Logo />
@@ -53,7 +53,7 @@ const Header = ({
   const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-[30px]", styles.header, scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible);
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar, scrollDirection === 'down' && !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky);
   return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-white border-b border-gray-200", className)}>
+      <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
           <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-6 w-full">
