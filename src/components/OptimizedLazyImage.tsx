@@ -100,9 +100,9 @@ export const OptimizedLazyImage = memo(({
       setImageSrc(optimizedSrc);
       setIsLoading(false);
       setHasError(false);
-    } catch (error) {
-      console.warn('Failed to load image:', src, error);
-      setHasError(true);
+      } catch (error) {
+        // Silently handle image load errors in production
+        setHasError(true);
       setIsLoading(false);
     }
   };

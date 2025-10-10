@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, Search, Filter, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { detailedProviders } from "@/data/compare/detailedProviders";
+import { logger } from "@/lib/logger";
 interface ProviderTest {
   id: string;
   test_name: string;
@@ -47,12 +48,12 @@ const ProviderTestCatalogPage = () => {
         error: fetchError
       } = await supabase.from('provider_tests').select('*').eq('provider_id', providerId).eq('is_active', true);
       if (fetchError) {
-        console.error('Fetch error:', fetchError);
+        logger.error('Fetch error:', fetchError);
       }
 
       // If no tests exist, trigger scraping
       if (!existingTests || existingTests.length === 0) {
-        console.log('No tests found, triggering scraper...');
+        logger.debug('No tests found, triggering scraper...');
         const {
           data: scrapeResult
         } = await supabase.functions.invoke('provider-scraper', {
@@ -61,7 +62,7 @@ const ProviderTestCatalogPage = () => {
             action: 'scrape'
           }
         });
-        console.log('Scrape result:', scrapeResult);
+        logger.debug('Scrape result:', scrapeResult);
 
         // Fetch tests again after scraping
         const {
@@ -72,7 +73,7 @@ const ProviderTestCatalogPage = () => {
         setTests(existingTests);
       }
     } catch (error) {
-      console.error('Error fetching tests:', error);
+      logger.error('Error fetching tests:', error);
       setError('Failed to load tests. Please try again later.');
     } finally {
       setLoading(false);

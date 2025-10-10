@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { logger } from '@/lib/logger';
 
 interface VideoUploadProps {
   onVideoUploaded?: (videoUrl: string) => void;
@@ -105,7 +106,7 @@ export function VideoUpload({ onVideoUploaded }: VideoUploadProps) {
       onVideoUploaded?.(publicUrl);
       
     } catch (error) {
-      console.error('Upload error:', error);
+      logger.error('Upload error:', error);
       toast({
         variant: "destructive",
         title: "Upload failed",

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, User, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { logger } from "@/lib/logger";
 
 const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
 
@@ -25,7 +26,7 @@ export const HeroToolbar = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      console.log("Searching for:", searchQuery);
+      logger.debug("Searching for:", searchQuery);
     }
   };
 

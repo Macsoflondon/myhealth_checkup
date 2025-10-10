@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { toast } from "@/components/ui/sonner";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 export function useFavorites(user: User | null, category: string) {
   const [favorites, setFavorites] = useState<string[]>([]);
@@ -27,7 +28,7 @@ export function useFavorites(user: User | null, category: string) {
       if (error) throw error;
       setFavorites(data?.map(f => f.test_id) || []);
     } catch (error: any) {
-      console.error('Error fetching favorites:', error);
+      logger.error('Error fetching favorites:', error);
     }
   };
   

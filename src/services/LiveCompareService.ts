@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 export interface LiveTestData {
   id: string;
@@ -75,13 +76,13 @@ export class LiveCompareService {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error fetching tests:', error);
+        logger.error('Error fetching tests:', error);
         return [];
       }
 
       return this.transformToCompareData(data || []);
     } catch (error) {
-      console.error('Error in getTestsByCategory:', error);
+      logger.error('Error in getTestsByCategory:', error);
       return [];
     }
   }
@@ -106,13 +107,13 @@ export class LiveCompareService {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error searching tests:', error);
+        logger.error('Error searching tests:', error);
         return [];
       }
 
       return this.transformToCompareData(data || []);
     } catch (error) {
-      console.error('Error in searchTests:', error);
+      logger.error('Error in searchTests:', error);
       return [];
     }
   }
@@ -126,7 +127,7 @@ export class LiveCompareService {
         .in('provider_id', Object.keys(this.PROVIDER_LOGOS));
 
       if (error) {
-        console.error('Error fetching categories:', error);
+        logger.error('Error fetching categories:', error);
         return [];
       }
 

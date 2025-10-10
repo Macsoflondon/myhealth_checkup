@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, Heart, ShoppingBag, FileText } from "lucide-react";
+import { logger } from "@/lib/logger";
 
 type Favorite = {
   id: string;
@@ -66,7 +67,7 @@ const Dashboard = () => {
       if (error) throw error;
       setFavorites(data || []);
     } catch (error) {
-      console.error('Error fetching favorites:', error);
+      logger.error('Error fetching favorites:', error);
       toast.error('Failed to load favorites');
     } finally {
       setLoadingData(false);
@@ -86,7 +87,7 @@ const Dashboard = () => {
       if (error) throw error;
       setOrders(data || []);
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      logger.error('Error fetching orders:', error);
       toast.error('Failed to load orders');
     } finally {
       setLoadingData(false);
@@ -104,9 +105,9 @@ const Dashboard = () => {
       
       setFavorites((prev) => prev.filter((fav) => fav.id !== id));
       toast.success("Removed from favorites");
-    } catch (error) {
-      console.error('Error removing favorite:', error);
-      toast.error('Failed to remove favorite');
+      } catch (error) {
+        logger.error('Error removing favorite:', error);
+        toast.error('Failed to remove favorite');
     }
   };
 

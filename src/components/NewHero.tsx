@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import AccreditationLogos from "@/components/AccreditationLogos";
+import { logger } from "@/lib/logger";
 const NewHero = () => {
   const {
     t
@@ -40,7 +41,7 @@ const NewHero = () => {
         });
       }
     } catch (error) {
-      console.error('AI analysis error:', error);
+      logger.error('AI analysis error:', error);
       toast({
         title: "Analysis Error",
         description: "Unable to analyze your query. Proceeding with regular search.",

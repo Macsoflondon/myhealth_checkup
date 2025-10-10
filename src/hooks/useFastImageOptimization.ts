@@ -96,7 +96,7 @@ export function useFastImageOptimization({
       await loadImage(imageSrc);
       retryCountRef.current = 0;
     } catch (error) {
-      console.warn(`Image load failed (attempt ${retryCountRef.current + 1}):`, error);
+      // Silently handle image load retries in production
       
       if (retryCountRef.current < maxRetries) {
         retryCountRef.current++;

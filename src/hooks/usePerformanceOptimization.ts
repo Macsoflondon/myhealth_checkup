@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from "react";
+import { logger } from "@/lib/logger";
 
 // Enhanced performance optimization hook with mobile-specific optimizations
 export function usePerformanceOptimization() {
@@ -69,7 +70,7 @@ export function usePerformanceOptimization() {
           const entries = entryList.getEntries();
           const lastEntry = entries[entries.length - 1];
           if (lastEntry) {
-            console.log('LCP:', lastEntry.startTime);
+            logger.debug('LCP:', lastEntry.startTime);
           }
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
@@ -79,7 +80,7 @@ export function usePerformanceOptimization() {
           const entries = entryList.getEntries();
           entries.forEach(entry => {
             const fidEntry = entry as any; // Type assertion for FID entry
-            console.log('FID:', fidEntry.processingStart - fidEntry.startTime);
+            logger.debug('FID:', fidEntry.processingStart - fidEntry.startTime);
           });
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
@@ -90,13 +91,13 @@ export function usePerformanceOptimization() {
           entries.forEach(entry => {
             const clsEntry = entry as any; // Type assertion for CLS entry
             if (!clsEntry.hadRecentInput) {
-              console.log('CLS:', clsEntry.value);
+              logger.debug('CLS:', clsEntry.value);
             }
           });
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
       } catch (error) {
-        console.warn('Performance Observer not supported:', error);
+        // Silently handle performance observer errors
       }
     }
   }, []);
@@ -125,7 +126,7 @@ export function usePerformanceOptimization() {
       // Clear unused blob URLs to prevent memory leaks
       if (window.URL && window.URL.revokeObjectURL) {
         // This would be called when component unmounts
-        console.log('Cleaning up blob URLs and cached resources');
+        logger.debug('Cleaning up blob URLs and cached resources');
       }
     };
   }, []);

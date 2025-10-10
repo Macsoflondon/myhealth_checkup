@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, Heart, Clock, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { detailedProviders } from "@/data/compare/detailedProviders";
+import { logger } from "@/lib/logger";
 
 interface TestDetail {
   id: string;
@@ -51,7 +52,7 @@ const TestDetailPage = () => {
 
       setTest(data);
     } catch (error) {
-      console.error('Error fetching test detail:', error);
+      logger.error('Error fetching test detail:', error);
       setError('Failed to load test details. Please try again later.');
     } finally {
       setLoading(false);

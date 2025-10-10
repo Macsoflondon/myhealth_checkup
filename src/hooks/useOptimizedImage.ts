@@ -87,7 +87,7 @@ export function useOptimizedImage({
         }
       } catch (error) {
         if (!isCancelled) {
-          console.warn('Failed to load image:', src, error);
+          // Silently handle image load errors
           setImageSrc(placeholder);
           setHasError(true);
           setIsLoading(false);

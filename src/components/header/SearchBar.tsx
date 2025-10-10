@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { compareCategories } from "@/data/compare/categories";
+import { logger } from "@/lib/logger";
 
 // Category colors following design system
 const categoryColorMap: Record<string, string> = {
@@ -29,7 +30,7 @@ export const SearchBar = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Navigate to search results or handle search
-      console.log("Searching for:", searchQuery);
+      logger.debug("Searching for:", searchQuery);
     }
   };
   return <div className="relative w-full max-w-3xl">

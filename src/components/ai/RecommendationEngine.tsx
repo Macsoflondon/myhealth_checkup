@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 interface RecommendationProps {
   testName: string;
@@ -73,7 +74,7 @@ const RecommendationEngine = () => {
       if (error) throw error;
       setQueryHistory(data || []);
     } catch (error) {
-      console.error('Error loading query history:', error);
+      logger.error('Error loading query history:', error);
     }
   };
 
@@ -106,7 +107,7 @@ const RecommendationEngine = () => {
         loadQueryHistory(user.id);
       }
     } catch (error) {
-      console.error('Error getting AI recommendations:', error);
+      logger.error('Error getting AI recommendations:', error);
       toast.error('Unable to generate recommendations. Please try again.');
       setAnalysisResult({
         medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",

@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 export interface LiveTestData {
   id: string;
@@ -164,7 +165,7 @@ export class OptimizedLiveCompareService {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error searching tests:', error);
+        logger.error('Error searching tests:', error);
         return [];
       }
 
@@ -172,7 +173,7 @@ export class OptimizedLiveCompareService {
       this.setCachedData(cacheKey, result);
       return result;
     } catch (error) {
-      console.error('Error in searchTests:', error);
+      logger.error('Error in searchTests:', error);
       return [];
     }
   }
@@ -190,7 +191,7 @@ export class OptimizedLiveCompareService {
         .in('provider_id', Object.keys(this.PROVIDER_LOGOS));
 
       if (error) {
-        console.error('Error fetching categories:', error);
+        logger.error('Error fetching categories:', error);
         return [];
       }
 

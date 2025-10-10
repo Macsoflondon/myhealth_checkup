@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { providers } from "@/data/compare/providers";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import type { CompareTestData } from "@/services/OptimizedLiveCompareService";
+import { logger } from "@/lib/logger";
 const CompareTests = () => {
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -34,7 +35,7 @@ const CompareTests = () => {
         const categoriesData = await OptimizedLiveCompareService.getCategories();
         setCategories(categoriesData);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        logger.error('Error fetching categories:', error);
         setCategories([]);
       }
     };
@@ -71,7 +72,7 @@ const CompareTests = () => {
       }
       setTests(results);
     } catch (error) {
-      console.error('Error fetching tests:', error);
+      logger.error('Error fetching tests:', error);
       setTests([]);
     } finally {
       setIsLoading(false);

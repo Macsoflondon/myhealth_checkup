@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, FileText, Heart, Settings, TrendingUp, User, Bell } from "lucide-react";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
+import { logger } from "@/lib/logger";
 
 interface UserProfile {
   first_name: string | null;
@@ -104,7 +105,7 @@ export default function ClientPortal() {
       if (!insightsError) setInsights(insightsData || []);
 
     } catch (error) {
-      console.error("Error fetching portal data:", error);
+      logger.error("Error fetching portal data:", error);
       toast.error("Failed to load your health dashboard");
     } finally {
       setLoading(false);

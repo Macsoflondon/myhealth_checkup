@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { logger } from "@/lib/logger";
 
 export type UserRole = 'admin' | 'moderator' | 'user';
 
@@ -27,7 +28,7 @@ export function useUserRole() {
         
         setRoles(data?.map(r => r.role as UserRole) || ['user']);
       } catch (error) {
-        console.error('Error fetching user roles:', error);
+        logger.error('Error fetching user roles:', error);
         setRoles(['user']); // Default to user role
       } finally {
         setIsLoading(false);
