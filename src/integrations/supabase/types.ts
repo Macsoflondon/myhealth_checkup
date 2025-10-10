@@ -359,6 +359,36 @@ export type Database = {
         }
         Relationships: []
       }
+      lola_health_products: {
+        Row: {
+          areas_covered: string[] | null
+          created_at: string
+          id: string
+          price_gbp: number | null
+          product_name: string
+          product_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          areas_covered?: string[] | null
+          created_at?: string
+          id?: string
+          price_gbp?: number | null
+          product_name: string
+          product_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          areas_covered?: string[] | null
+          created_at?: string
+          id?: string
+          price_gbp?: number | null
+          product_name?: string
+          product_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           id: string
