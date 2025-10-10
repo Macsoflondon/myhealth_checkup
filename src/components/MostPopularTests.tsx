@@ -112,7 +112,7 @@ const MostPopularTests = () => {
         </div>
 
         <div className="flex justify-end mb-6">
-          <select className="px-4 border border-gray-300 rounded-md text-sm bg-[#e70d69] py-[38px]">
+          <select className="px-4 border border-gray-300 rounded-md text-sm bg-[#e70d69] px-14 ">
             <option>Price, high to low</option>
             <option>Price, low to high</option>
             <option>Most popular</option>
