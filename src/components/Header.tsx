@@ -62,7 +62,7 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="w-full">
+            <div className="w-full flex justify-center">
               <SearchBar />
             </div>
             
