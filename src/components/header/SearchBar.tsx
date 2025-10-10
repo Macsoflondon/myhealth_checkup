@@ -33,7 +33,7 @@ export const SearchBar = () => {
       logger.debug("Searching for:", searchQuery);
     }
   };
-  return <div className="relative w-full max-w-5xl">
+  return <div className="relative w-full max-w-full">
       <form onSubmit={handleSearch} className="flex w-full">
         <div className="relative flex-1 flex justify-center items-center ">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-health-success" />

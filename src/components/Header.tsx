@@ -56,13 +56,13 @@ const Header = ({
       <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
-          <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-6 w-full">
+          <div className="grid grid-cols-[auto,1fr,auto] items-center gap-6 w-full">
             <div className="flex items-center gap-2 flex-shrink-0">
               <img src="/lovable-uploads/hero-image-3.png" alt="" aria-hidden="true" className={styles.headerImage} />
               <Logo />
             </div>
             
-            <div className="max-w-screen-2xl max-w-full px-0.5 ">
+            <div className="w-full">
               <SearchBar />
             </div>
             
