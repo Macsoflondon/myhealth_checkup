@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -102,15 +102,15 @@ const App = () => (
               <Route path="/partners" element={<PartnersPage />} />
               <Route path="/blog" element={<HealthBlogPage />} />
               <Route path="/find-test" element={<AssistedTestFinderPage />} />
-              <Route path="/find-a-clinic" element={<FindClinicPage />} />
               <Route path="/find-clinic" element={<FindClinicPage />} />
+              <Route path="/find-a-clinic" element={<Navigate to="/find-clinic" replace />} />
               <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
               <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
               <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
-              <Route path="/tests/fertility" element={<FertilityTestsPageWrapper />} />
               <Route path="/fertility-tests" element={<FertilityTestsPageWrapper />} />
+              <Route path="/tests/fertility" element={<Navigate to="/fertility-tests" replace />} />
               <Route path="/popular-tests" element={<MostPopularTestsPage />} />
-              <Route path="/most-popular-tests" element={<MostPopularTestsPage />} />
+              <Route path="/most-popular-tests" element={<Navigate to="/popular-tests" replace />} />
               <Route path="/at-home-tests" element={<AtHomeTestsPage />} />
               <Route path="/wellness" element={<WellnessPage />} />
               <Route path="/conditions" element={<ConditionsPage />} />

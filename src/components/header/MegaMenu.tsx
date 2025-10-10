@@ -13,7 +13,7 @@ const navigationCategories = [
   },
   { 
     name: "Most popular tests", 
-    path: "/most-popular-tests",
+    path: "/popular-tests",
     isStatic: true 
   },
   { 

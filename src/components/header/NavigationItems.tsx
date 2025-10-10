@@ -24,7 +24,7 @@ const categoryColorMap: Record<string, string> = {
 
 // Main navigation structure - primary items shown in toolbar
 export const primaryNavigationItems = [
-  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
+  { name: "MOST POPULAR TESTS", path: "/popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
   { name: "CANCER SCREENING", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
   { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },

@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 const FindClinicPage: React.FC = () => {
   const title = "Find a Clinic | myhealth checkup";
   const description = "Find nearby private health test locations and clinics in the UK. Search by postcode and view clinic details on an interactive map.";
-  const canonical = "https://myhealth-checkup.example/find-a-clinic";
+  const canonical = "https://myhealth-checkup.example/find-clinic";
 
   return (
     <>

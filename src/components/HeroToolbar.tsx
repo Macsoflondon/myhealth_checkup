@@ -8,7 +8,7 @@ const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
 
 const navigationItems = [
   { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true },
-  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true },
+  { name: "MOST POPULAR TESTS", path: "/popular-tests", highlighted: true },
   { name: "WOMEN'S HEALTH", path: "/womens-health" },
   { name: "MEN'S HEALTH", path: "/mens-health" },
   { name: "GENERAL WELLNESS", path: "/wellness" },
