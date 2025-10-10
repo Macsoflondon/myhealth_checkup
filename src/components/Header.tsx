@@ -62,7 +62,7 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="max-w-screen-2xl w-full px-14 ">
+            <div className="max-w-screen-2xl max-w-full px-0.5 ">
               <SearchBar />
             </div>
             
