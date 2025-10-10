@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,15 +13,24 @@ import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthInd
 import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle } from "lucide-react";
 const Auth = () => {
+  const { user, isLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const passwordStrength = validatePassword(password);
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate("/dashboard");
+    }
+  }, [user, isLoading, navigate]);
   const validateForm = (): boolean => {
     let isValid = true;
 
@@ -49,10 +59,16 @@ const Auth = () => {
       isValid = false;
     }
 
-    // Full name validation for sign up
-    if (isSignUp && !fullName.trim()) {
-      toast.error("Full name is required");
-      isValid = false;
+    // Name validation for sign up
+    if (isSignUp) {
+      if (!firstName.trim()) {
+        toast.error("First name is required");
+        isValid = false;
+      }
+      if (!lastName.trim()) {
+        toast.error("Last name is required");
+        isValid = false;
+      }
     }
     return isValid;
   };
@@ -71,7 +87,8 @@ const Auth = () => {
           password,
           options: {
             data: {
-              full_name: fullName
+              first_name: firstName.trim(),
+              last_name: lastName.trim()
             },
             emailRedirectTo: `${window.location.origin}/`
           }
@@ -109,7 +126,7 @@ const Auth = () => {
           return;
         }
         toast.success("Logged in successfully!");
-        navigate("/compare");
+        navigate("/dashboard");
       }
     } catch (error: any) {
       toast.error("An unexpected error occurred. Please try again.");
@@ -125,10 +142,34 @@ const Auth = () => {
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
           <form onSubmit={handleAuth} className="space-y-4">
-            {isSignUp && <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input id="fullName" type="text" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Enter your full name" required={isSignUp} />
-              </div>}
+            {isSignUp && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input 
+                    id="firstName" 
+                    type="text" 
+                    value={firstName} 
+                    onChange={e => setFirstName(e.target.value)} 
+                    placeholder="Enter your first name" 
+                    required={isSignUp}
+                    disabled={loading}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input 
+                    id="lastName" 
+                    type="text" 
+                    value={lastName} 
+                    onChange={e => setLastName(e.target.value)} 
+                    placeholder="Enter your last name" 
+                    required={isSignUp}
+                    disabled={loading}
+                  />
+                </div>
+              </>
+            )}
             
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>

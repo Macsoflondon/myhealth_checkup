@@ -81,7 +81,7 @@ const Dashboard = () => {
         .from('orders')
         .select('*')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        .order('order_date', { ascending: false });
       
       if (error) throw error;
       setOrders(data || []);
