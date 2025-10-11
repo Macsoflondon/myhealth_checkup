@@ -82,7 +82,7 @@ const NewHero = () => {
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
               <div className="relative w-[90vw] sm:w-[95vw] md:w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto rounded-lg">
-                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
