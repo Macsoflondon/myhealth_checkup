@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import AccreditationLogos from "@/components/AccreditationLogos";
 import { logger } from "@/lib/logger";
+import { providers } from "@/data/compare/providers";
 const NewHero = () => {
   const {
     t
@@ -234,6 +235,29 @@ const NewHero = () => {
       
       {/* Accreditation Logos */}
       <AccreditationLogos />
+      
+      {/* Our Partners Section */}
+      <section className="w-full py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-12">
+            Our Partners
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            {providers.map((provider) => (
+              <div
+                key={provider.id}
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+              >
+                <img
+                  src={provider.logo}
+                  alt={`${provider.name} logo`}
+                  className="h-12 md:h-16 w-auto object-contain mx-auto"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-8 bg-[#081129]">
