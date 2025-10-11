@@ -3,7 +3,7 @@ export const providers = [
   {
     id: "medichecks",
     name: "Medichecks",
-    logo: "/lovable-uploads/provider-medichecks.png",
+    logo: "/lovable-uploads/provider-medichecks-new.png",
     website: "https://medichecks.com"
   },
   {
@@ -33,7 +33,7 @@ export const providers = [
   {
     id: "goodbody-clinic",
     name: "GoodBody Clinic", 
-    logo: "/lovable-uploads/provider-goodbody.png",
+    logo: "/lovable-uploads/provider-goodbody-new.png",
     website: "https://goodbody.co.uk"
   },
   {
