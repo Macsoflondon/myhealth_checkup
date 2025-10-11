@@ -54,8 +54,27 @@ const Header = ({
   const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible);
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar, scrollDirection === 'down' && !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky);
   return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50", className)}>
-        {/* Navigation Menu (Toolbar) */}
+      <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
+        {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
+        <div className={headerBarClasses}>
+          <div className="grid grid-cols-[auto,1fr,auto] items-center gap-6 w-full">
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <img src="/lovable-uploads/hero-image-3.png" alt="" aria-hidden="true" className={styles.headerImage} />
+              <Logo />
+            </div>
+            
+            <div className="w-full flex justify-center">
+              <SearchBar />
+            </div>
+            
+            <div className="flex items-center gap-2 flex-shrink-0 justify-end">
+              <LanguageSwitcher />
+              <UserMenu />
+            </div>
+          </div>
+        </div>
+        
+        {/* Bottom row - Navigation Menu (Toolbar) */}
         <div className={toolbarClasses}>
           <div className="flex items-center justify-between px-6 lg:px-16 w-full">
             {/* Logo - appears when video scrolls out of view */}
