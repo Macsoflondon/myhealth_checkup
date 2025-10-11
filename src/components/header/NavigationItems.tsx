@@ -112,7 +112,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         );
       default:
         // Show all categories for MOST POPULAR TESTS
-        return compareCategories.slice(0, 8); // Limit to prevent overflow
+        return compareCategories.slice(0, 6); // Limit to prevent overflow
     }
   };
 
@@ -142,8 +142,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           
           {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
-            <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] min-w-[500px] max-w-[600px]">
-              <div className="p-6">
+            <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto">
+              <div className="p-4">
                 {getGoodbodyTestsForDropdown(item.name) ? (
                   // Show Goodbody tests for health-specific sections
                   <>
@@ -152,7 +152,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                         <Link
                           key={test.id}
                           to={test.url || `/book/${test.id}`}
-                          className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                          className="group block p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                           onClick={onItemClick}
                         >
                           <div className="flex items-center justify-between">
@@ -181,12 +181,12 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                   </>
                 ) : (
                   // Show categories for FIND YOUR TEST and MOST POPULAR TESTS
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-2">
                     {getFilteredCategories(item.name).map((category) => (
                       <Link
                         key={category.id}
                         to={`/compare?category=${category.id}`}
-                        className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="group block p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         onClick={onItemClick}
                       >
                         <div className="flex items-center gap-3">
