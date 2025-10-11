@@ -259,7 +259,7 @@ const NewHero = () => {
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
             {providers.slice(4, 7).map((provider) => (
               <div
                 key={provider.id}
@@ -268,11 +268,7 @@ const NewHero = () => {
                 <img
                   src={provider.logo}
                   alt={`${provider.name} logo`}
-                  className={
-                    provider.id === "goodbody-clinic"
-                      ? "h-36 md:h-48 w-full object-cover mx-auto"
-                      : "h-36 md:h-48 w-auto object-contain mx-auto"
-                  }
+                  className="h-36 md:h-48 w-auto object-contain mx-auto"
                 />
               </div>
             ))}
