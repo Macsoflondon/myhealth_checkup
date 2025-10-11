@@ -11,5 +11,13 @@ export const Logo = () => {
       });
     }
   };
-  return;
+  return (
+    <Link to="/" onClick={handleClick} className="flex items-center">
+      <img 
+        src={logo} 
+        alt="My Health Checkup" 
+        className="h-12 w-auto"
+      />
+    </Link>
+  );
 };
