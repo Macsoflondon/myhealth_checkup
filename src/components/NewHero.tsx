@@ -242,8 +242,29 @@ const NewHero = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-12">
             Our Partners
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            {providers.map((provider) => (
+          {/* Top Row - 4 providers */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
+            {providers.slice(0, 4).map((provider) => (
+              <div
+                key={provider.id}
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+              >
+                <img
+                  src={provider.logo}
+                  alt={`${provider.name} logo`}
+                  className={
+                    provider.id === "medichecks"
+                      ? "h-48 md:h-64 w-auto object-contain mx-auto"
+                      : "h-12 md:h-16 w-auto object-contain mx-auto"
+                  }
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Row - 3 providers (centered) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
+            {providers.slice(4, 7).map((provider) => (
               <div
                 key={provider.id}
                 className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
