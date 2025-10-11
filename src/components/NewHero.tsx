@@ -92,12 +92,9 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-0 -mt-2 -mb-2">
-      <div className="w-full px-4 bg-[#081129] py-0">
-        <h1 className="text-2xl sm:text-3xl leading-tight font-medium xl:text-4xl md:text-4xl text-center sm:text-left">
-          <span className="text-[#22c0d4]">Compare the UK's leading private health test providers<span className="hidden sm:inline"> - </span></span>
-          <span className="block sm:inline text-[#fc0173]">All in one place!</span>
-        </h1>
+      <section className="w-full bg-[#081129] py-0 -mt-2 -mb-2 my-0">
+      <div className="w-full bg-[#081129] px-0 mx-[10px] py-0">
+        
         </div>
       </section>
       
@@ -111,11 +108,11 @@ const NewHero = () => {
     }}>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="wave-pattern h-full w-full"></div>
+          <div className="wave-pattern h-full w-full bg-[t#] bg-[#081129]"></div>
         </div>
         
         <div className="relative z-10 w-full my-0 py-0 bg-[#081129]">
-          <div className="w-full text-center px-4">
+          <div className="w-full text-center px-4 py-[30px]">
             {/* Trust Indicators */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-12 max-w-5xl mx-auto px-4">
               <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
@@ -243,34 +240,16 @@ const NewHero = () => {
           </h2>
           {/* Top Row - 4 providers */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-            {providers.slice(0, 4).map((provider) => (
-              <div
-                key={provider.id}
-                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-              >
-                <img
-                  src={provider.logo}
-                  alt={`${provider.name} logo`}
-                  className="h-36 md:h-48 w-auto object-contain mx-auto"
-                />
-              </div>
-            ))}
+            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
+              </div>)}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map((provider) => (
-              <div
-                key={provider.id}
-                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-              >
-                <img
-                  src={provider.logo}
-                  alt={`${provider.name} logo`}
-                  className="h-36 md:h-48 w-auto object-contain mx-auto"
-                />
-              </div>
-            ))}
+            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
+              </div>)}
           </div>
         </div>
       </section>
