@@ -243,35 +243,35 @@ const NewHero = () => {
             Our Partners
           </h2>
           {/* Top Row - 4 providers */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
             {providers.slice(0, 4).map((provider) => (
               <div
                 key={provider.id}
-                className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
               >
                 <img
                   src={provider.logo}
                   alt={`${provider.name} logo`}
-                  className="h-48 md:h-64 w-auto object-contain mx-auto"
+                  className="h-36 md:h-48 w-auto object-contain mx-auto"
                 />
               </div>
             ))}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
             {providers.slice(4, 7).map((provider) => (
               <div
                 key={provider.id}
-                className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
               >
                 <img
                   src={provider.logo}
                   alt={`${provider.name} logo`}
                   className={
                     provider.id === "goodbody-clinic"
-                      ? "h-48 md:h-64 w-full object-cover mx-auto"
-                      : "h-48 md:h-64 w-auto object-contain mx-auto"
+                      ? "h-36 md:h-48 w-full object-cover mx-auto"
+                      : "h-36 md:h-48 w-auto object-contain mx-auto"
                   }
                 />
               </div>
