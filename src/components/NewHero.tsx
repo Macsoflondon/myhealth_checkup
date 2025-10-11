@@ -251,7 +251,11 @@ const NewHero = () => {
                 <img
                   src={provider.logo}
                   alt={`${provider.name} logo`}
-                  className="h-12 md:h-16 w-auto object-contain mx-auto"
+                  className={
+                    provider.id === "medichecks"
+                      ? "h-48 md:h-64 w-auto object-contain mx-auto"
+                      : "h-12 md:h-16 w-auto object-contain mx-auto"
+                  }
                 />
               </div>
             ))}
