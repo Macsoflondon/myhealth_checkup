@@ -275,6 +275,8 @@ const NewHero = () => {
                   className={
                     provider.id === "medichecks"
                       ? "h-48 md:h-64 w-auto object-contain mx-auto"
+                      : provider.id === "goodbody-clinic"
+                      ? "h-48 md:h-64 w-full object-cover mx-auto"
                       : "h-12 md:h-16 w-auto object-contain mx-auto"
                   }
                 />
