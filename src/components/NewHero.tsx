@@ -81,7 +81,7 @@ const NewHero = () => {
           <div className="w-full text-center px-0">
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
-              <div className="relative w-[95vw] sm:w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto">
+              <div className="relative w-[90vw] sm:w-[95vw] md:w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto rounded-lg">
                 <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
@@ -117,23 +117,22 @@ const NewHero = () => {
         <div className="relative z-10 w-full my-0 py-[20px] bg-[#081129]">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto px-4">
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 bg-white">
-                <CheckCircle2 className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center font-medium text-base text-[#081129]">No GP Referral Needed</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-12 max-w-5xl mx-auto px-4">
+              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
+                <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">No GP Referral Needed</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 bg-white py-[20px]">
-                <Shield className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="font-medium text-center text-base text-[#081129]">UKAS-Accredited Laboratories</span>
+              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
+                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">UKAS-Accredited Laboratories</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 bg-white py-[4px]">
-                <MapPin className="w-8 h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="font-medium text-center text-base text-[#081129]">At-Home Test or In-Clinic Blood Draw</span>
+              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
+                <MapPin className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">At-Home Test or In-Clinic Blood Draw</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 bg-white py-[20px]">
-                <Clock aria-hidden="true" className="w-8 h-8 text-health-success shrink-0 mx-[10px]" />
-                <span className="font-medium text-center text-base my-0 px-0 mx-0 text-[#081129]">Test Results
- In 3-5 Days *</span>
+              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
+                <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">Test Results In 3-5 Days *</span>
               </div>
             </div>
 
