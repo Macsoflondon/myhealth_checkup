@@ -71,77 +71,90 @@ const Footer = () => {
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-          <div className="text-[t] text-[#e70d69] font-medium">
-            <h3 id="footer-services" className="font-semibold mb-4 text-[s#] text-white">{t('footer.categories')}</h3>
+        {/* Top Section - Links Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {/* Categories Column */}
+          <div>
+            <h3 id="footer-services" className="font-semibold text-lg mb-4 text-white">{t('footer.categories')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
               {serviceSections.map((service, index) => <li key={index}>
-                  <Link to={service.link} className="text-white hover:text-white transition-colors">
+                  <Link to={service.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
                     {service.name}
                   </Link>
                 </li>)}
             </ul>
           </div>
 
+          {/* Quick Links Column */}
           <div>
             <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-info">
               {informationSections.map((info, index) => <li key={index}>
-                  <Link to={info.link} className="text-white hover:text-white transition-colors">
+                  <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
                     {info.name}
                   </Link>
                 </li>)}
             </ul>
           </div>
 
+          {/* Legal Column */}
           <div>
             <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-company">
               {companySections.map((company, index) => <li key={index}>
-                  <Link to={company.link} className="text-white hover:text-white transition-colors">
+                  <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
                     {company.name}
                   </Link>
                 </li>)}
             </ul>
           </div>
+        </div>
 
-          <div>
+        {/* Bottom Section - Brand, Social, and Quality Assurance */}
+        <div className="border-t border-gray-700 pt-8">
+          {/* Logo and Disclaimer */}
+          <div className="mb-6">
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <div className="h-8 w-8 flex items-center justify-center">
                 <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
               </div>
               <span className="text-lg font-bold">
-                <span className="text-[#e70d69]">myhealth</span> <span className="text-wellness-600">checkup</span>
+                <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
               </span>
             </Link>
-            <p className="mb-2 text-xs font-light text-left text-white">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
-            <p className="mb-4 text-xs font-light text-left text-white">Company No. 16589056</p>
-            <div className="flex space-x-6 rounded decoration-white mb-6">
+            <p className="mb-2 text-xs font-light text-white max-w-2xl">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
+            <p className="text-xs font-light text-white">Company No. 16589056</p>
+          </div>
+
+          {/* Social Media and Quality Assurance Logos */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            {/* Social Media - Left */}
+            <div className="flex space-x-6">
               {socialLinks.map((social, index) => <a key={index} href={social.url} className="hover:opacity-75 transition-opacity" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
                   {social.icon}
                   <span className="sr-only">{social.name}</span>
                 </a>)}
             </div>
             
-            {/* Regulatory Body Logos - 2x2 Mobile Layout */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-md">
+            {/* Quality Assurance Logos - Right */}
+            <div className="flex gap-6 items-center">
               <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-0.5 shadow-md">
-                  <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain rounded-lg" />
+                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
+                  <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-xs font-medium">Care Quality Commission</span>
               </div>
               
               <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-0.5 shadow-md">
-                  <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain rounded-lg" />
+                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
+                  <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-xs font-medium">EU GDPR Compliant</span>
               </div>
               
               <div className="flex flex-col items-center text-center space-y-2">
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center p-0.5 shadow-md bg-[#081129]">
-                  <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain rounded-lg" />
+                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
+                  <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-white text-xs font-medium">ICO Registered</span>
               </div>
@@ -149,15 +162,16 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-8 mt-8">
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white ">
+        {/* Copyright and Additional Links */}
+        <div className="border-t border-gray-700 pt-6 mt-8">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white">
             <p className="font-normal text-[#e70d69]">
               {t('footer.copyright')}
             </p>
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <Link to="/accessibility" className="hover:text-white ">{t('footer.links.accessibility')}</Link>
-              <Link to="/sitemap" className="hover:text-health-600 transition-colors">{t('footer.links.sitemap')}</Link>
-              <Link to="/cookies" className="hover:text-health-600 transition-colors">{t('footer.links.cookiePolicy')}</Link>
+              <Link to="/accessibility" className="hover:text-[#e70d69] transition-colors">{t('footer.links.accessibility')}</Link>
+              <Link to="/sitemap" className="hover:text-[#e70d69] transition-colors">{t('footer.links.sitemap')}</Link>
+              <Link to="/cookies" className="hover:text-[#e70d69] transition-colors">{t('footer.links.cookiePolicy')}</Link>
             </nav>
           </div>
         </div>
