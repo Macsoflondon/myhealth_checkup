@@ -1,4 +1,6 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
+import { Card } from "@/components/ui/card";
+
 const HowItWorks = () => {
   return <section className="bg-white py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-4">
@@ -12,7 +14,7 @@ const HowItWorks = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {[{
             step: "1",
             title: "Search & Compare",
@@ -33,30 +35,23 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => <div 
-                key={index} 
-                className="group relative bg-white rounded-xl border-l-4 border-gray-200 hover:border-[#22c0d4] shadow-md hover:shadow-xl transition-all duration-300 p-6 lg:p-8"
-              >
-                {/* Step Number Badge */}
-                <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#FA6980] to-[#22c0d4] shadow-lg z-10">
-                  <span className="text-white font-bold text-lg">{item.step}</span>
-                </div>
-
-                {/* Icon Container */}
-                <div className="mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-[#FA6980] to-[#4A6FA5] rounded-2xl flex items-center justify-center mx-auto transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <item.icon className="w-10 h-10 text-white" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl lg:text-2xl font-bold mb-3 text-[#22c0d4] text-center">
-                  {item.title}
-                </h3>
-                <p className="text-center text-[#081129] text-base lg:text-lg leading-relaxed">
-                  {item.description}
-                </p>
-              </div>)}
+          }].map((item, index) => (
+            <Card 
+              key={index} 
+              className="text-center p-3 bg-[#081129] shadow-white shadow-lg"
+            >
+              <item.icon className="h-8 w-8 text-white mx-auto mb-2" />
+              <div className="text-[#FA6980] text-xs font-bold mb-1">
+                Step {item.step}
+              </div>
+              <h3 className="mb-1 text-[#22c0d4] text-base font-bold">
+                {item.title}
+              </h3>
+              <p className="text-xs text-[#22c0d4] font-semibold">
+                {item.description}
+              </p>
+            </Card>
+          ))}
           </div>
         </div>
       </div>
