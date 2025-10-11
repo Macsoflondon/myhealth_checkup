@@ -5,7 +5,7 @@ const ConditionsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Health Conditions Testing | My Health Checkup</title>
+        <title>Health Conditions Testing | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Specialized health tests for specific medical conditions and symptoms." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/conditions" />
       </Helmet>

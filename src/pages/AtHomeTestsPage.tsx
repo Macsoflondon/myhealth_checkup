@@ -5,7 +5,7 @@ const AtHomeTestsPage = () => {
   return (
     <>
       <Helmet>
-        <title>At-Home Health Tests | My Health Checkup</title>
+        <title>At-Home Health Tests | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Convenient at-home health testing kits with professional lab analysis and fast results." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/at-home-tests" />
       </Helmet>

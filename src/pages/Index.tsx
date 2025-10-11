@@ -44,7 +44,7 @@ const Index = () => {
   return <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
-        <title>myhealth checkup - Compare Private Blood Tests & Health Screenings UK 2024</title>
+        <title>myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
         <meta name="keywords" content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024" />
         <link rel="canonical" href="https://myhealthhub.co.uk/" />
@@ -52,7 +52,7 @@ const Index = () => {
         {/* Enhanced Open Graph / Social Media */}
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="myhealth checkup" />
-        <meta property="og:title" content="myhealth checkup - Compare Private Blood Tests & Health Screenings UK" />
+        <meta property="og:title" content="myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta property="og:description" content="Compare private health tests from 10+ UK providers. Real-time prices, expert reviews, and AI recommendations. Hospital-grade testing made simple." />
         <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
         <meta property="og:url" content="https://myhealthhub.co.uk/" />
@@ -61,7 +61,7 @@ const Index = () => {
         {/* Enhanced Twitter Meta */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@myhealthhub" />
-        <meta name="twitter:title" content="myhealth checkup - UK's Leading Health Test Comparison Platform" />
+        <meta name="twitter:title" content="myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Compare private blood tests, health screenings & wellness services. Real-time prices from 10+ providers. AI-powered recommendations." />
         <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
         

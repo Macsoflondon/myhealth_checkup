@@ -78,20 +78,20 @@ const ThyroidPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Thyroid Blood Tests | TSH, T3, T4 & Antibody Testing | My Health Checkup</title>
+        <title>Thyroid Blood Tests | TSH, T3, T4 & Antibody Testing | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Comprehensive thyroid function tests including TSH, T3, T4, and thyroid antibodies. Professional thyroid screening from £69 with fast results." />
         <meta name="keywords" content="thyroid blood test, TSH test, T3 T4 test, thyroid antibodies, hypothyroid, hyperthyroid, thyroid function test" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/thyroid" />
         
         {/* Open Graph Tags */}
-        <meta property="og:title" content="Thyroid Blood Tests | My Health Checkup" />
+        <meta property="og:title" content="Thyroid Blood Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta property="og:description" content="Comprehensive thyroid function testing including hormones and antibodies" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/thyroid" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Thyroid Blood Tests | My Health Checkup" />
+        <meta name="twitter:title" content="Thyroid Blood Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Professional thyroid function testing with fast results" />
       </Helmet>
       

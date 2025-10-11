@@ -102,20 +102,20 @@ const WellnessPage = () => {
   return (
     <>
       <Helmet>
-        <title>Wellness Blood Tests | Comprehensive Health Screening | My Health Checkup</title>
+        <title>Wellness Blood Tests | Comprehensive Health Screening | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Comprehensive wellness blood tests including liver, kidney, cardiac risk, sports fitness, and stress testing. Professional health screening from £25." />
         <meta name="keywords" content="wellness blood tests, health screening, liver test, kidney test, cardiac risk, sports fitness test, anaemia test, cortisol test" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/wellness" />
         
         {/* Open Graph Tags */}
-        <meta property="og:title" content="Wellness Blood Tests | My Health Checkup" />
+        <meta property="og:title" content="Wellness Blood Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta property="og:description" content="Comprehensive wellness blood tests for optimal health monitoring and screening" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/wellness" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Wellness Blood Tests | My Health Checkup" />
+        <meta name="twitter:title" content="Wellness Blood Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Comprehensive wellness blood tests for optimal health monitoring" />
       </Helmet>
       

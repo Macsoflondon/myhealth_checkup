@@ -141,20 +141,20 @@ const MensHealthPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Men's Health Blood Tests | Male Hormone & Prostate Testing | My Health Checkup</title>
+        <title>Men's Health Blood Tests | Male Hormone & Prostate Testing | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Comprehensive men's health testing including testosterone, prostate PSA, erectile dysfunction, and complete male wellness screening from £45." />
         <meta name="keywords" content="men's health tests, testosterone test, prostate PSA test, male hormones, erectile dysfunction test, well man test" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/mens-health" />
         
         {/* Open Graph Tags */}
-        <meta property="og:title" content="Men's Health Blood Tests | My Health Checkup" />
+        <meta property="og:title" content="Men's Health Blood Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta property="og:description" content="Professional men's health testing including hormones, prostate, and wellness screening" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/mens-health" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Men's Health Blood Tests | My Health Checkup" />
+        <meta name="twitter:title" content="Men's Health Blood Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Comprehensive men's health testing with fast results" />
       </Helmet>
       

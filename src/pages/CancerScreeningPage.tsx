@@ -112,14 +112,14 @@ const CancerScreeningPage = () => {
         <link rel="canonical" href="https://myhealthcheckup.co.uk/cancer-screening" />
         
         {/* Open Graph Tags */}
-        <meta property="og:title" content="Cancer Screening Tests | My Health Checkup" />
+        <meta property="og:title" content="Cancer Screening Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta property="og:description" content="Comprehensive cancer screening for early detection and prevention" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/cancer-screening" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Cancer Screening Tests | My Health Checkup" />
+        <meta name="twitter:title" content="Cancer Screening Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Professional cancer screening with fast results" />
       </Helmet>
       
