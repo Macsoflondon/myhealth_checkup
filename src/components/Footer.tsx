@@ -110,24 +110,10 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Section - Brand, Social, and Quality Assurance */}
+        {/* Bottom Section - Social and Quality Assurance */}
         <div className="border-t border-gray-700 pt-8">
-          {/* Logo and Disclaimer */}
-          <div className="mb-6">
-            <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 flex items-center justify-center">
-                <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
-              </div>
-              <span className="text-lg font-bold">
-                <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
-              </span>
-            </Link>
-            <p className="mb-2 text-xs font-light text-white max-w-2xl">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
-            <p className="text-xs font-light text-white">Company No. 16589056</p>
-          </div>
-
           {/* Social Media and Quality Assurance Logos */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
             {/* Social Media - Left */}
             <div className="flex space-x-6">
               {socialLinks.map((social, index) => <a key={index} href={social.url} className="hover:opacity-75 transition-opacity" aria-label={`Follow us on ${social.name}`} target="_blank" rel="noopener noreferrer">
@@ -159,6 +145,20 @@ const Footer = () => {
                 <span className="text-white text-xs font-medium">ICO Registered</span>
               </div>
             </div>
+          </div>
+
+          {/* Logo and Disclaimer - Below */}
+          <div className="mb-6">
+            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+              <div className="h-8 w-8 flex items-center justify-center">
+                <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
+              </div>
+              <span className="text-lg font-bold">
+                <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
+              </span>
+            </Link>
+            <p className="mb-2 text-xs font-light text-white max-w-2xl">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
+            <p className="text-xs font-light text-white">Company No. 16589056</p>
           </div>
         </div>
 
