@@ -76,7 +76,7 @@ const NewHero = () => {
   }], []);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-[#081129]">
+      <section className="relative overflow-hidden bg-[#081129] -mb-2">
         <div className="w-full py-0">
           <div className="w-full text-center px-0">
             {/* Hero Video Container - Responsive */}
@@ -92,8 +92,8 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-0">
-      <div className="w-full px-4 bg-[#081129]">
+      <section className="w-full bg-[#081129] py-0 -mt-2 -mb-2">
+      <div className="w-full px-4 bg-[#081129] py-0">
         <h1 className="text-2xl sm:text-3xl leading-tight font-medium xl:text-4xl md:text-4xl text-center sm:text-left">
           <span className="text-[#22c0d4]">Compare the UK's leading private health test providers<span className="hidden sm:inline"> - </span></span>
           <span className="block sm:inline text-[#fc0173]">All in one place!</span>
@@ -114,7 +114,7 @@ const NewHero = () => {
           <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full my-0 py-[20px] bg-[#081129]">
+        <div className="relative z-10 w-full my-0 py-0 bg-[#081129]">
           <div className="w-full text-center px-4">
             {/* Trust Indicators */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-12 max-w-5xl mx-auto px-4">
