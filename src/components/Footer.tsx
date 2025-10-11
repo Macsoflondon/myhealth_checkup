@@ -72,7 +72,7 @@ const Footer = () => {
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
         {/* Top Section - Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {/* Categories Column */}
           <div>
             <h3 id="footer-services" className="font-semibold text-lg mb-4 text-white">{t('footer.categories')}</h3>
@@ -85,28 +85,31 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Quick Links Column */}
-          <div>
-            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
-            <ul className="space-y-2" aria-labelledby="footer-info">
-              {informationSections.map((info, index) => <li key={index}>
-                  <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
-                    {info.name}
-                  </Link>
-                </li>)}
-            </ul>
-          </div>
+          {/* Quick Links and Legal Side by Side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Quick Links Column */}
+            <div>
+              <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
+              <ul className="space-y-2" aria-labelledby="footer-info">
+                {informationSections.map((info, index) => <li key={index}>
+                    <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
+                      {info.name}
+                    </Link>
+                  </li>)}
+              </ul>
+            </div>
 
-          {/* Legal Column */}
-          <div>
-            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
-            <ul className="space-y-2" aria-labelledby="footer-company">
-              {companySections.map((company, index) => <li key={index}>
-                  <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
-                    {company.name}
-                  </Link>
-                </li>)}
-            </ul>
+            {/* Legal Column */}
+            <div>
+              <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
+              <ul className="space-y-2" aria-labelledby="footer-company">
+                {companySections.map((company, index) => <li key={index}>
+                    <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
+                      {company.name}
+                    </Link>
+                  </li>)}
+              </ul>
+            </div>
           </div>
         </div>
 
