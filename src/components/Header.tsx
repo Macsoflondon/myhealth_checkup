@@ -51,7 +51,7 @@ const Header = ({
       </ErrorBoundary>;
   }
   // Determine header and toolbar state based on scroll
-  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-[30px]", styles.header, scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible);
+  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible);
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar, scrollDirection === 'down' && !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
