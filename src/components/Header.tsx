@@ -22,7 +22,8 @@ const Header = ({
   const isMobile = useIsMobile();
   const {
     scrollDirection,
-    isAtTop
+    isAtTop,
+    videoOutOfView
   } = useScrollDirection();
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
@@ -75,7 +76,23 @@ const Header = ({
         
         {/* Bottom row - Navigation Menu (Toolbar) */}
         <div className={toolbarClasses}>
-          <NavigationItems className="flex justify-center items-center gap-8" />
+          <div className="flex items-center justify-between px-6 lg:px-16 w-full">
+            {/* Logo - appears when video scrolls out of view */}
+            <div className={cn(
+              "transition-all duration-300 flex-shrink-0",
+              videoOutOfView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 pointer-events-none"
+            )}>
+              <Logo />
+            </div>
+            
+            {/* Navigation - stays centered */}
+            <div className="flex-1 flex justify-center">
+              <NavigationItems className="flex items-center gap-8" />
+            </div>
+            
+            {/* Spacer to balance logo and keep nav centered */}
+            <div className="w-[180px] flex-shrink-0" aria-hidden="true"></div>
+          </div>
         </div>
       </header>
     </ErrorBoundary>;

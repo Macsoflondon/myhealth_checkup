@@ -4,6 +4,7 @@ interface ScrollState {
   scrollDirection: 'up' | 'down' | 'idle';
   scrollY: number;
   isAtTop: boolean;
+  videoOutOfView: boolean;
 }
 
 export const useScrollDirection = (threshold: number = 6): ScrollState => {
@@ -11,6 +12,7 @@ export const useScrollDirection = (threshold: number = 6): ScrollState => {
     scrollDirection: 'idle',
     scrollY: 0,
     isAtTop: true,
+    videoOutOfView: false,
   });
 
   useEffect(() => {
@@ -32,11 +34,13 @@ export const useScrollDirection = (threshold: number = 6): ScrollState => {
 
       const newDirection = currentScrollY > lastScrollY ? 'down' : 'up';
       const isAtTop = currentScrollY <= 50;
+      const videoOutOfView = currentScrollY > 400;
 
       setScrollState({
         scrollDirection: isAtTop ? 'idle' : newDirection,
         scrollY: currentScrollY,
         isAtTop,
+        videoOutOfView,
       });
 
       lastScrollY = currentScrollY;
