@@ -252,11 +252,7 @@ const NewHero = () => {
                 <img
                   src={provider.logo}
                   alt={`${provider.name} logo`}
-                  className={
-                    provider.id === "medichecks"
-                      ? "h-48 md:h-64 w-auto object-contain mx-auto"
-                      : "h-12 md:h-16 w-auto object-contain mx-auto"
-                  }
+                  className="h-48 md:h-64 w-auto object-contain mx-auto"
                 />
               </div>
             ))}
@@ -273,11 +269,9 @@ const NewHero = () => {
                   src={provider.logo}
                   alt={`${provider.name} logo`}
                   className={
-                    provider.id === "medichecks"
-                      ? "h-48 md:h-64 w-auto object-contain mx-auto"
-                      : provider.id === "goodbody-clinic"
+                    provider.id === "goodbody-clinic"
                       ? "h-48 md:h-64 w-full object-cover mx-auto"
-                      : "h-12 md:h-16 w-auto object-contain mx-auto"
+                      : "h-48 md:h-64 w-auto object-contain mx-auto"
                   }
                 />
               </div>
