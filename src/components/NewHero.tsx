@@ -76,13 +76,13 @@ const NewHero = () => {
   }], []);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-white">
-        <div className="w-full -mt-[10px]">
+      <section className="relative overflow-hidden bg-white -mt-[72px] pt-[72px]">
+        <div className="w-full">
           <div className="w-full text-center px-0">
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
-              <div className="relative w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto rounded-lg">
-                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
+              <div className="relative w-full h-[80vh] sm:h-[85vh] md:h-[90vh] lg:h-[95vh] xl:h-screen overflow-hidden mx-auto">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>

@@ -326,7 +326,7 @@ const FAQsPage = () => {
     })))
   };
   return <div className="min-h-screen flex flex-col">
-      <Helmet className="text-white">
+      <Helmet>
         <title>FAQs - Frequently Asked Questions | myhealth checkup</title>
         <meta name="description" content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." />
         <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
