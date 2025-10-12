@@ -9,7 +9,6 @@ import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { useScrollDirection } from "@/hooks/useScrollDirection";
 import styles from "./Header.module.css";
 interface HeaderProps {
   className?: string;
@@ -20,11 +19,6 @@ const Header = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
-  const {
-    scrollDirection,
-    isAtTop,
-    videoOutOfView
-  } = useScrollDirection();
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
@@ -50,9 +44,9 @@ const Header = ({
         </header>
       </ErrorBoundary>;
   }
-  // Determine header and toolbar state based on scroll
-  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, scrollDirection === 'down' && !isAtTop ? styles.headerHidden : styles.headerVisible);
-  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar, scrollDirection === 'down' && !isAtTop ? styles.toolbarSticky : styles.toolbarUnsticky);
+  // Header and toolbar always sticky
+  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, styles.headerVisible);
+  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
