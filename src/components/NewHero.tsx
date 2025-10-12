@@ -76,13 +76,13 @@ const NewHero = () => {
   }], []);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-white">
-        <div className="w-full">
+      <section className="relative overflow-hidden bg-[#081129]">
+        <div className="w-full py-0">
           <div className="w-full text-center px-0">
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
-              <div className="relative w-full h-[80vh] sm:h-[85vh] md:h-[90vh] lg:h-[95vh] xl:h-screen overflow-hidden mx-auto">
-                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 35%' }} src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
+              <div className="relative w-[90vw] sm:w-[95vw] md:w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto rounded-lg">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -93,10 +93,10 @@ const NewHero = () => {
       
       {/* Full-width Headline Banner */}
       <section className="w-full bg-[#081129] py-0">
-      <div className="w-full px-4 bg-[#081129]">
+      <div className="w-full px-4 bg-[#081129] py-[30px]">
         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl leading-tight font-medium text-center whitespace-nowrap">
-          <span className="text-[#22c0d4]">Compare the UK's leading private health test providers - </span>
-          <span className="text-[#fc0173]">All in one place!</span>
+          <span className="text-[#22c0d4] py-[20px] my-[20px] font-normal text-3xl">Compare the UK's leading private health test providers - </span>
+          <span className="text-[#fc0173] font-normal text-3xl">All in one place!</span>
         </h1>
         </div>
       </section>
@@ -243,34 +243,16 @@ const NewHero = () => {
           </h2>
           {/* Top Row - 4 providers */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-            {providers.slice(0, 4).map((provider) => (
-              <div
-                key={provider.id}
-                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-              >
-                <img
-                  src={provider.logo}
-                  alt={`${provider.name} logo`}
-                  className="h-36 md:h-48 w-auto object-contain mx-auto"
-                />
-              </div>
-            ))}
+            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
+              </div>)}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map((provider) => (
-              <div
-                key={provider.id}
-                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
-              >
-                <img
-                  src={provider.logo}
-                  alt={`${provider.name} logo`}
-                  className="h-36 md:h-48 w-auto object-contain mx-auto"
-                />
-              </div>
-            ))}
+            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
+              </div>)}
           </div>
         </div>
       </section>
