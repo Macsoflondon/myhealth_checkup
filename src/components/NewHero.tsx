@@ -76,13 +76,13 @@ const NewHero = () => {
   }], []);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-[#081129] -mb-2">
+      <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full py-0">
           <div className="w-full text-center px-0">
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
               <div className="relative w-[90vw] sm:w-[95vw] md:w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto rounded-lg">
-                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset" className="absolute inset-0 w-full h-full object-contain object-center my-0">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -92,9 +92,12 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-0 -mt-2 -mb-2 my-0">
-      <div className="w-full bg-[#081129] px-0 mx-[10px] py-0">
-        
+      <section className="w-full bg-[#081129] py-0">
+      <div className="w-full px-4 bg-[#081129]">
+        <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl leading-tight font-medium text-center whitespace-nowrap">
+          <span className="text-[#22c0d4]">Compare the UK's leading private health test providers - </span>
+          <span className="text-[#fc0173]">All in one place!</span>
+        </h1>
         </div>
       </section>
       
@@ -108,11 +111,11 @@ const NewHero = () => {
     }}>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="wave-pattern h-full w-full bg-[t#] bg-[#081129]"></div>
+          <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full my-0 py-0 bg-[#081129]">
-          <div className="w-full text-center px-4 py-[30px] my-[10px]">
+        <div className="relative z-10 w-full my-0 py-[20px] bg-[#081129]">
+          <div className="w-full text-center px-4">
             {/* Trust Indicators */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-12 max-w-5xl mx-auto px-4">
               <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
@@ -215,7 +218,7 @@ const NewHero = () => {
             {/* Stats Grid */}
             <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur bg-white">
-                <span className="text-[#22c0d4] text-center text-lg font-bold">200+ Available Tests</span>
+                <span className="text-[#22c0d4] text-center text-lg font-bold">7 Trusted Providers</span>
               </div>
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-white">
                 <span className="text-center text-lg font-semibold text-[#e70d69]">300+ Available Tests</span>
@@ -240,16 +243,34 @@ const NewHero = () => {
           </h2>
           {/* Top Row - 4 providers */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
-              </div>)}
+            {providers.slice(0, 4).map((provider) => (
+              <div
+                key={provider.id}
+                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+              >
+                <img
+                  src={provider.logo}
+                  alt={`${provider.name} logo`}
+                  className="h-36 md:h-48 w-auto object-contain mx-auto"
+                />
+              </div>
+            ))}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
-              </div>)}
+            {providers.slice(4, 7).map((provider) => (
+              <div
+                key={provider.id}
+                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+              >
+                <img
+                  src={provider.logo}
+                  alt={`${provider.name} logo`}
+                  className="h-36 md:h-48 w-auto object-contain mx-auto"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
