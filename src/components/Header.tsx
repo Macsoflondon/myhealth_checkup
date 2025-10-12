@@ -59,7 +59,6 @@ const Header = ({
         <div className={headerBarClasses}>
           <div className="grid grid-cols-[auto,1fr,auto] items-center gap-6 w-full">
             <div className="flex items-center gap-2 flex-shrink-0">
-              <img src="/lovable-uploads/hero-image-3.png" alt="" aria-hidden="true" className={styles.headerImage} />
               <Logo />
             </div>
             
