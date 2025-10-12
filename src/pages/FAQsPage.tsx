@@ -8,31 +8,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { 
-  Search, 
-  Mail, 
-  Phone, 
-  TrendingUp, 
-  Shield, 
-  FileCheck, 
-  ChevronRight, 
-  ArrowUp,
-  AlertCircle 
-} from 'lucide-react';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
+import { Search, Mail, Phone, TrendingUp, Shield, FileCheck, ChevronRight, ArrowUp, AlertCircle } from 'lucide-react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 const FAQsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [showBackToTop, setShowBackToTop] = useState(false);
-  
+
   // Debounce search input for performance
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,16 +22,17 @@ const FAQsPage = () => {
     }, 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
-  
+
   // Show/hide back to top button
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 400);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, {
+      passive: true
+    });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
   const faqCategories = [{
     title: "Getting Started",
     icon: <TrendingUp className="h-5 w-5" />,
@@ -312,54 +295,40 @@ const FAQsPage = () => {
   }];
 
   // Popular questions from all categories
-  const popularQuestions = faqCategories.flatMap(cat => 
-    cat.faqs.filter(faq => faq.popular).map(faq => ({
-      ...faq,
-      category: cat.title
-    }))
-  );
+  const popularQuestions = faqCategories.flatMap(cat => cat.faqs.filter(faq => faq.popular).map(faq => ({
+    ...faq,
+    category: cat.title
+  })));
 
   // Memoize filtered categories for performance
-  const filteredCategories = useMemo(() => 
-    faqCategories.map(category => ({
-      ...category,
-      faqs: category.faqs.filter(faq => 
-        debouncedSearch === '' || 
-        faq.q.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
-        faq.a.toLowerCase().includes(debouncedSearch.toLowerCase())
-      )
-    })).filter(category => category.faqs.length > 0),
-    [debouncedSearch]
-  );
-  
+  const filteredCategories = useMemo(() => faqCategories.map(category => ({
+    ...category,
+    faqs: category.faqs.filter(faq => debouncedSearch === '' || faq.q.toLowerCase().includes(debouncedSearch.toLowerCase()) || faq.a.toLowerCase().includes(debouncedSearch.toLowerCase()))
+  })).filter(category => category.faqs.length > 0), [debouncedSearch]);
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
-  
+
   // Generate structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqCategories.flatMap(cat => 
-      cat.faqs.map(faq => ({
-        "@type": "Question",
-        "name": faq.q,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.a
-        }
-      }))
-    )
+    "mainEntity": faqCategories.flatMap(cat => cat.faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    })))
   };
-  
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>FAQs - Frequently Asked Questions | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." 
-        />
+        <meta name="description" content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." />
         <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/faqs" />
         <script type="application/ld+json">
@@ -371,12 +340,12 @@ const FAQsPage = () => {
       
       <main className="flex-grow bg-muted/30">
         {/* Breadcrumbs */}
-        <nav className="container mx-auto px-4 py-3 sm:py-4" aria-label="Breadcrumb">
+        <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 sm:py-4 bg-[#081129]">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link to="/" className="text-white hover:text-foreground transition-colors">
                     Home
                   </Link>
                 </BreadcrumbLink>
@@ -406,51 +375,27 @@ const FAQsPage = () => {
             {/* Search Bar */}
             <div className="max-w-xl sm:max-w-2xl mx-auto">
               <div className="relative">
-                <Search 
-                  className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" 
-                  aria-hidden="true" 
-                />
-                <Input 
-                  type="search" 
-                  placeholder="Search FAQs..." 
-                  value={searchQuery} 
-                  onChange={e => setSearchQuery(e.target.value)} 
-                  className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50"
-                  aria-label="Search frequently asked questions"
-                  aria-describedby="search-description"
-                />
+                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+                <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50" aria-label="Search frequently asked questions" aria-describedby="search-description" />
                 <span id="search-description" className="sr-only">
                   Type to search through all FAQ categories and questions
                 </span>
-                {searchQuery && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0"
-                    aria-label="Clear search"
-                  >
+                {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0" aria-label="Clear search">
                     ×
-                  </Button>
-                )}
+                  </Button>}
               </div>
             </div>
           </div>
         </div>
 
         {/* Popular Questions */}
-        {debouncedSearch === '' && (
-          <div className="container mx-auto px-4 py-8 sm:py-12">
+        {debouncedSearch === '' && <div className="container mx-auto px-4 py-8 sm:py-12">
             <div className="bg-[hsl(var(--section-dark))] rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl">
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
                 Popular Questions
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {popularQuestions.map((faq, idx) => (
-                  <Card 
-                    key={idx} 
-                    className="bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 cursor-pointer group"
-                  >
+                {popularQuestions.map((faq, idx) => <Card key={idx} className="bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 cursor-pointer group">
                     <CardHeader className="p-4 sm:p-6">
                       <Badge className="mb-2 sm:mb-3 bg-primary/20 text-white border-primary/30 w-fit text-xs sm:text-sm">
                         {faq.category}
@@ -462,19 +407,15 @@ const FAQsPage = () => {
                     <CardContent className="p-4 sm:p-6 pt-0">
                       <p className="text-white/80 text-sm line-clamp-3">{faq.a}</p>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
-          </div>
-        )}
+          </div>}
 
         {/* FAQ Categories */}
         <div className="container mx-auto px-4 py-8 sm:py-12">
-          {filteredCategories.length > 0 ? (
-            <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
-              {filteredCategories.map((category, catIdx) => (
-                <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
+          {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
+              {filteredCategories.map((category, catIdx) => <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
                   <div className="bg-gradient-to-r from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="bg-primary/20 p-1.5 sm:p-2 rounded-lg text-primary flex-shrink-0">
@@ -490,27 +431,18 @@ const FAQsPage = () => {
                   </div>
                   <div className="p-4 sm:p-6">
                     <Accordion type="single" collapsible>
-                      {category.faqs.map((faq, faqIdx) => (
-                        <AccordionItem 
-                          key={faqIdx} 
-                          value={`faq-${catIdx}-${faqIdx}`} 
-                          className="border-b last:border-0"
-                        >
+                      {category.faqs.map((faq, faqIdx) => <AccordionItem key={faqIdx} value={`faq-${catIdx}-${faqIdx}`} className="border-b last:border-0">
                           <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-gray-900 font-medium text-sm sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
                             {faq.q}
                           </AccordionTrigger>
                           <AccordionContent className="text-gray-700 pb-3 sm:pb-4 leading-relaxed text-sm sm:text-base">
                             {faq.a}
                           </AccordionContent>
-                        </AccordionItem>
-                      ))}
+                        </AccordionItem>)}
                     </Accordion>
                   </div>
-                </div>
-              ))}
-            </Accordion>
-          ) : (
-            <div className="text-center py-12 sm:py-16 bg-white rounded-xl shadow-lg px-4">
+                </div>)}
+            </Accordion> : <div className="text-center py-12 sm:py-16 bg-white rounded-xl shadow-lg px-4">
               <div className="flex justify-center mb-4">
                 <AlertCircle className="h-16 w-16 sm:h-20 sm:w-20 text-gray-300" />
               </div>
@@ -519,22 +451,14 @@ const FAQsPage = () => {
                 We couldn't find any FAQs matching "{debouncedSearch}". Try different keywords or browse all categories.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button 
-                  onClick={() => setSearchQuery('')} 
-                  className="bg-primary hover:bg-primary/90 min-h-[44px]"
-                >
+                <Button onClick={() => setSearchQuery('')} className="bg-primary hover:bg-primary/90 min-h-[44px]">
                   Clear Search
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={scrollToTop}
-                  className="min-h-[44px]"
-                >
+                <Button variant="outline" onClick={scrollToTop} className="min-h-[44px]">
                   Back to Top
                 </Button>
               </div>
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Related Resources */}
@@ -553,10 +477,7 @@ const FAQsPage = () => {
                     Explore our comprehensive range of health tests from UKAS-accredited providers.
                   </p>
                   <Link to="/compare-tests">
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]"
-                    >
+                    <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]">
                       View All Tests
                     </Button>
                   </Link>
@@ -572,10 +493,7 @@ const FAQsPage = () => {
                     Learn about our simple 3-step process from booking to receiving your results.
                   </p>
                   <Link to="/how-it-works">
-                    <Button 
-                      variant="outline" 
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]"
-                    >
+                    <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]">
                       Learn More
                     </Button>
                   </Link>
@@ -610,10 +528,7 @@ const FAQsPage = () => {
                     <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
                       Get detailed answers to your questions
                     </p>
-                    <a 
-                      href="mailto:support@myhealthcheckup.co.uk" 
-                      className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
-                    >
+                    <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
                       support@myhealthcheckup.co.uk
                     </a>
                   </CardContent>
@@ -632,10 +547,7 @@ const FAQsPage = () => {
                     <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
                       Speak with our team directly
                     </p>
-                    <a 
-                      href="tel:+442012345678" 
-                      className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
-                    >
+                    <a href="tel:+442012345678" className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
                       +44 20 1234 5678
                     </a>
                     <p className="text-xs sm:text-sm text-gray-500 mt-2">
@@ -649,19 +561,11 @@ const FAQsPage = () => {
         </div>
         
         {/* Back to Top Button */}
-        {showBackToTop && (
-          <button
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 bg-primary hover:bg-primary/90 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            aria-label="Scroll back to top"
-          >
+        {showBackToTop && <button onClick={scrollToTop} className="fixed bottom-6 right-6 z-50 bg-primary hover:bg-primary/90 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" aria-label="Scroll back to top">
             <ArrowUp className="h-6 w-6" />
-          </button>
-        )}
+          </button>}
       </main>
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default FAQsPage;
