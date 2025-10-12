@@ -326,7 +326,7 @@ const FAQsPage = () => {
     })))
   };
   return <div className="min-h-screen flex flex-col">
-      <Helmet>
+      <Helmet className="text-white">
         <title>FAQs - Frequently Asked Questions | myhealth checkup</title>
         <meta name="description" content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." />
         <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
@@ -413,7 +413,7 @@ const FAQsPage = () => {
           </div>}
 
         {/* FAQ Categories */}
-        <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">
+        <div className="container mx-auto px-4 py-8 sm:py-12">
           {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
               {filteredCategories.map((category, catIdx) => <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
                   <div className="bg-gradient-to-r from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
