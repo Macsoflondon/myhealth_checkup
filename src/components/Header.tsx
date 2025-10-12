@@ -8,6 +8,7 @@ import { NavigationItems } from "./header/NavigationItems";
 import { UserMenu } from "./header/UserMenu";
 import { MobileMenu } from "./header/MobileMenu";
 import { LanguageSwitcher } from "./header/LanguageSwitcher";
+import { UtilityBar } from "./header/UtilityBar";
 import { ErrorBoundary } from "./ErrorBoundary";
 import styles from "./Header.module.css";
 interface HeaderProps {
@@ -49,6 +50,9 @@ const Header = ({
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
+        {/* Utility Bar - Marquee promo banner */}
+        <UtilityBar />
+        
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
           <div className="relative flex items-center justify-between w-full py-[20px] bg-[#081129]">
