@@ -24,17 +24,18 @@ const categoryColorMap: Record<string, string> = {
 
 // Main navigation structure - primary items shown in toolbar
 export const primaryNavigationItems = [
-  { name: "MOST POPULAR TESTS", path: "/popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
-  { name: "CANCER SCREENING", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
-  { name: "WOMEN'S HEALTH", path: "/womens-health", hasDropdown: true, megaMenu: true },
-  { name: "MEN'S HEALTH", path: "/mens-health", hasDropdown: true, megaMenu: true },
-  { name: "GENERAL WELLNESS", path: "/wellness", hasDropdown: true, megaMenu: true }
+  { name: "Most Popular Tests", path: "/popular-tests", highlighted: true, hasDropdown: true, megaMenu: true },
+  { name: "Cancer Screening", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
+  { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
+  { name: "Men's Health", path: "/mens-health", hasDropdown: true, megaMenu: true },
+  { name: "Fertility", path: "/fertility-tests", hasDropdown: true, megaMenu: true },
+  { name: "General Wellness", path: "/wellness", hasDropdown: true, megaMenu: true },
+  { name: "Know My Results", path: "/dashboard" }
 ];
 
 // Additional pages for the MORE dropdown - organized by user needs
 export const moreNavigationItems = [
   // Information Pages
-  { name: "How It Works", path: "/how-it-works" },
   { name: "About Us", path: "/about" },
   { name: "FAQs", path: "/faqs" },
   
@@ -48,7 +49,6 @@ export const moreNavigationItems = [
   { name: "Compare Tests", path: "/compare" },
   
   // Business
-  { name: "Partners", path: "/partners" },
   { name: "Contact Us", path: "/contact" }
 ];
 
@@ -86,8 +86,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
   };
 
   const getGoodbodyTestsForDropdown = (itemName: string) => {
-    // For MOST POPULAR TESTS, show categories
-    if (itemName === "MOST POPULAR TESTS") {
+    // For Most Popular Tests, show categories
+    if (itemName === "Most Popular Tests") {
       return null; // Will use categories
     }
     
@@ -98,32 +98,28 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
   const getFilteredCategories = (itemName: string) => {
     // Filter categories based on navigation item using the universal taxonomy
     switch (itemName) {
-      case "WOMEN'S HEALTH":
+      case "Women's Health":
         return compareCategories.filter(cat => 
           ['fertility', 'hormones'].includes(cat.id)
         );
-      case "MEN'S HEALTH":
+      case "Men's Health":
         return compareCategories.filter(cat => 
           ['hormones', 'heart-health', 'general-health'].includes(cat.id)
         );
-      case "HORMONES":
+      case "Fertility":
         return compareCategories.filter(cat => 
-          ['hormones', 'thyroid', 'fertility'].includes(cat.id)
+          ['fertility', 'hormones'].includes(cat.id)
         );
-      case "THYROID":
-        return compareCategories.filter(cat => 
-          ['thyroid', 'hormones'].includes(cat.id)
-        );
-      case "CANCER SCREENING":
+      case "Cancer Screening":
         return compareCategories.filter(cat => 
           ['cancer-screening', 'general-health'].includes(cat.id)
         );
-      case "GENERAL WELLNESS":
+      case "General Wellness":
         return compareCategories.filter(cat => 
           ['vitamins', 'general-health', 'heart-health', 'liver-health', 'hormones', 'thyroid'].includes(cat.id)
         );
       default:
-        // Show all categories for MOST POPULAR TESTS
+        // Show all categories for Most Popular Tests
         return compareCategories.slice(0, 8); // Limit to prevent overflow
     }
   };
@@ -139,10 +135,10 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         >
           <Link
             to={item.path}
-            className={`text-sm font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 ${
+            className={`text-sm font-medium transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
                   (item as any).highlighted 
-                    ? "text-[#FA6980]"
-                : "text-gray-700"
+                    ? "text-[#E70D69]"
+                : "text-gray-900"
             }`}
             onClick={onItemClick}
           >
@@ -240,9 +236,9 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         onMouseLeave={handleMouseLeave}
       >
         <button
-          className="text-sm font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 text-gray-700"
+          className="text-sm font-medium transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-gray-900"
         >
-          MORE
+          More
           <ChevronDown className="w-3 h-3" />
         </button>
         
