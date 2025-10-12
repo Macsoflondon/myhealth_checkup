@@ -24,7 +24,12 @@ const categoryColorMap: Record<string, string> = {
   'womens-health-checks': 'bg-pink-500 text-white',
   'female-hormone-tests': 'bg-purple-600 text-white',
   'female-fertility-tests': 'bg-red-400 text-white',
-  'sports-performance-tests': 'bg-blue-500 text-white'
+  'sports-performance-tests': 'bg-blue-500 text-white',
+  'mens-health-checks': 'bg-blue-500 text-white',
+  'male-hormone-tests': 'bg-teal-600 text-white',
+  'male-fertility-tests': 'bg-red-400 text-white',
+  'prostate-tests': 'bg-indigo-600 text-white',
+  'erectile-dysfunction-tests': 'bg-purple-500 text-white'
 };
 
 // Main navigation structure - primary items shown in toolbar
@@ -110,7 +115,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         );
       case "Men's Health":
         return compareCategories.filter(cat => 
-          ['hormones', 'heart-health', 'general-health'].includes(cat.id)
+          ['mens-health-checks', 'male-hormone-tests', 'male-fertility-tests', 
+           'sports-performance-tests'].includes(cat.id)
         );
       case "Fertility":
         return compareCategories.filter(cat => 

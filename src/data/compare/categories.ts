@@ -97,6 +97,36 @@ export const compareCategories = [
     searchTerms: ["sports", "athletic", "performance", "fitness", "athlete testing"]
   },
   {
+    id: "mens-health-checks",
+    name: "Men's Health Checks",
+    description: "Essential comprehensive health screening for men",
+    searchTerms: ["well man", "mens health check", "male health", "comprehensive mens", "advanced well man", "premium complete"]
+  },
+  {
+    id: "male-hormone-tests",
+    name: "Male Hormone Tests", 
+    description: "Testosterone and male hormone balance testing",
+    searchTerms: ["male hormones", "mens hormones", "testosterone", "male hormone balance", "androgen"]
+  },
+  {
+    id: "male-fertility-tests",
+    name: "Male Fertility Tests",
+    description: "Male fertility assessment and reproductive health screening", 
+    searchTerms: ["male fertility", "sperm analysis", "semen analysis", "fertility testing", "reproductive health"]
+  },
+  {
+    id: "prostate-tests",
+    name: "Prostate Tests",
+    description: "Prostate health screening and PSA testing",
+    searchTerms: ["prostate", "psa", "prostate specific antigen", "prostate health", "prostate screening"]
+  },
+  {
+    id: "erectile-dysfunction-tests",
+    name: "Erectile Dysfunction Tests",
+    description: "Erectile dysfunction assessment and hormone testing",
+    searchTerms: ["erectile dysfunction", "ed", "impotence", "sexual dysfunction", "erectile health"]
+  },
+  {
     id: "longevity-tests",
     name: "Longevity Tests",
     description: "Comprehensive health markers for longevity and preventive care",
