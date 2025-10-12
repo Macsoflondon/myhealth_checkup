@@ -57,16 +57,16 @@ const Header = ({
       <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
-          <div className="grid grid-cols-[auto,1fr,auto] items-center gap-6 w-full">
-            <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="relative flex items-center justify-between w-full">
+            <div className="flex items-center gap-2 flex-shrink-0 z-10">
               <Logo />
             </div>
             
-            <div className="w-full flex justify-center">
+            <div className="absolute left-1/2 -translate-x-1/2 z-0">
               <SearchBar />
             </div>
             
-            <div className="flex items-center gap-2 flex-shrink-0 justify-end">
+            <div className="flex items-center gap-2 flex-shrink-0 justify-end z-10">
               <LanguageSwitcher />
               <UserMenu />
             </div>
