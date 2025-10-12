@@ -18,7 +18,7 @@ const HealthResources = () => {
     readTime: "6 min read",
     link: "/resources/screening-by-age"
   }];
-  return <section className="py-16 bg-[#1a1b34]">
+  return <section className="py-16 bg-[#081129]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-[#e70d69] text-center">
@@ -49,7 +49,7 @@ const HealthResources = () => {
               </Card>)}
           </div>
           
-          <div className="text-center mt-12 bg-[#1a1b34]">
+          <div className="text-center mt-12 bg-[#081129]">
             <Button className="bg-health-600 hover:bg-health-700">
               View All Resources
               <ArrowRight className="ml-2 h-5 w-5" />

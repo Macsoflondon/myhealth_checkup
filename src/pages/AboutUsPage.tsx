@@ -29,9 +29,9 @@ const AboutUsPage = () => {
       </Helmet>
       
       <Header />
-      <main className="flex-grow bg-[#1a1b34]">
-        <div className="bg-gradient-to-br from-health-50 to-wellness-50 bg-[#1a1b34] py-0">
-          <div className="container mx-auto px-4 bg-[#1a1b34]">
+      <main className="flex-grow bg-[#081129]">
+        <div className="bg-gradient-to-br from-health-50 to-wellness-50 bg-[#081129] py-0">
+          <div className="container mx-auto px-4 bg-[#081129]">
             <div className="text-center mb-12">
               <h1 className="text-4xl mb-6 text-[#22c0d4] text-center md:text-4xl font-semibold my-0 py-[30px]">
                 About myhealth checkup
@@ -41,7 +41,7 @@ const AboutUsPage = () => {
         </div>
 
         <section className="bg-white my-0 py-0">
-          <div className="container mx-auto px-4 my-0 py-[10px] bg-[#1a1b34]">
+          <div className="container mx-auto px-4 my-0 py-[10px] bg-[#081129]">
             <div className="max-w-4xl mx-auto">
               <div className="text-lg text-gray-600 space-y-6">
                 <p className="text-white my-0 py-0 text-left font-light text-base">
@@ -54,7 +54,7 @@ const AboutUsPage = () => {
           </div>
         </section>
 
-        <section className="bg-[#1a1b34] py-0">
+        <section className="bg-[#081129] py-0">
           <div className="container mx-auto px-4 my-[10px]">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#22c0d4] my-0 py-[10px]">Our Mission</h2>
@@ -76,7 +76,7 @@ const AboutUsPage = () => {
         </section>
 
         <section className="bg-gray-50 py-0">
-          <div className="container mx-auto px-4 bg-[#1a1b34]">
+          <div className="container mx-auto px-4 bg-[#081129]">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#22c0d4]">Our Values</h2>
               <p className="max-w-3xl mx-auto text-lg text-[#e70d69]">
@@ -99,7 +99,7 @@ const AboutUsPage = () => {
         <FounderStory />
         <PartnerShowcase />
 
-        <section className="py-16 bg-[#1a1b34] my-0">
+        <section className="py-16 bg-[#081129] my-0">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-8 text-[#22c0d4]">Join The Community</h2>

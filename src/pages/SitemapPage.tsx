@@ -89,7 +89,7 @@ const SitemapPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-muted/30">
-        <div className="container mx-auto px-4 py-12 bg-[#1a1b34]">
+        <div className="container mx-auto px-4 py-12 bg-[#081129]">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h1 className="text-4xl font-bold mb-6 text-[#22c0d4]">Site Map</h1>

@@ -76,8 +76,8 @@ const HealthBlogPage = () => {
         {/* Categories Filter */}
         <section className="border-b my-0 py-0">
           <div className="container mx-auto px-4 my-[10px]">
-            <div className="flex flex-wrap gap-2 justify-center bg-[#1a1b34]">
-              {categories.map((category, index) => <Button key={index} variant={index === 0 ? "default" : "outline"} size="sm" className="bg-[#22c0d4] text-white text-center text-xs font-medium">
+            <div className="flex flex-wrap gap-2 justify-center bg-[#081129]">
+              {categories.map((category, index) => <Button key={index} variant={index === 0 ? "default" : "outline"} size="sm" className="bg-[#e70d69] hover:bg-[#22c0d4] text-white text-center text-xs font-medium">
                   {category}
                 </Button>)}
             </div>
@@ -129,8 +129,8 @@ const HealthBlogPage = () => {
         </section>
 
         {/* Recent Articles */}
-        <section className="py-16 bg-[#1a1b34]">
-          <div className="container mx-auto px-4 bg-[#1a1b34]">
+        <section className="py-16 bg-[#081129]">
+          <div className="container mx-auto px-4 bg-[#081129]">
             <div className="text-center mb-12">
               <h2 className="font-bold mb-4 text-[#22c0d4] text-4xl">Recent Articles</h2>
               <p className="text-xl text-[#e70d69]">Stay up to date with the latest health insights</p>

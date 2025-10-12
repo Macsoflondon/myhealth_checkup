@@ -18,9 +18,9 @@ export const HormonesCategoryColor: CategoryColor = {
   primary: '#FFFFFF',          // Card background
   light: '#F8FAFC',            // Hover or subtle highlight background
   text: '#111827',             // Main text on light backgrounds
-  icon: '#1A1B34',             // Icons, CTA outline, header stripe
+  icon: '#081129',             // Icons, CTA outline, header stripe
   border: '#E5E7EB',           // Card border and dividers
-  pinColor: '#1A1B34'         // Map pin
+  pinColor: '#e70d69'         // Map pin
 };
 
 export const categoryColors: CategoryColor[] = [

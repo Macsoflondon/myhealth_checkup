@@ -14,27 +14,27 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 329 89% 48%;
+    --primary: 343 91% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 280 100% 70%;
+    --secondary: 189 69% 47%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 95%;
     --muted-foreground: 220 10% 45%;
 
-    --accent: 340 100% 60%;
+    --accent: 343 91% 48%;
     --accent-foreground: 0 0% 100%;
     
-    --health-primary: 220 100% 50%;
-    --health-secondary: 280 100% 70%;
-    --health-accent: 340 100% 60%;
+    --health-primary: 189 69% 47%;
+    --health-secondary: 343 91% 48%;
+    --health-accent: 343 91% 48%;
     --health-success: 150 100% 45%;
     --health-warning: 45 100% 60%;
-    --health-highlight: 330 91% 48%;
-    --health-heading: 186 71% 48%;
-    --health-icon: 222 40% 11%;
-    --section-dark: 237 33% 15%;
+    --health-highlight: 343 91% 48%;
+    --health-heading: 189 69% 47%;
+    --health-icon: 211 80% 8%;
+    --section-dark: 211 80% 8%;
     
     --gradient-health: linear-gradient(135deg, hsl(220 100% 50%), hsl(280 100% 70%));
     --gradient-accent: linear-gradient(135deg, hsl(340 100% 60%), hsl(280 100% 70%));
@@ -68,27 +68,27 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 329 89% 58%;
+    --primary: 343 91% 58%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 280 100% 75%;
+    --secondary: 189 69% 57%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 15%;
     --muted-foreground: 220 10% 65%;
 
-    --accent: 340 100% 65%;
+    --accent: 343 91% 58%;
     --accent-foreground: 0 0% 100%;
     
-    --health-primary: 220 100% 60%;
-    --health-secondary: 280 100% 75%;
-    --health-accent: 340 100% 65%;
+    --health-primary: 189 69% 57%;
+    --health-secondary: 343 91% 58%;
+    --health-accent: 343 91% 58%;
     --health-success: 150 100% 50%;
     --health-warning: 45 100% 65%;
-    --health-highlight: 330 91% 55%;
-    --health-heading: 186 71% 48%;
-    --health-icon: 222 40% 11%;
-    --section-dark: 237 33% 15%;
+    --health-highlight: 343 91% 58%;
+    --health-heading: 189 69% 57%;
+    --health-icon: 211 80% 8%;
+    --section-dark: 211 80% 8%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
