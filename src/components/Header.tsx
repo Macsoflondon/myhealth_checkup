@@ -48,7 +48,7 @@ const Header = ({
   const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-[10px]", styles.toolbar);
   return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
+      <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
           <div className="relative flex items-center justify-between w-full">
