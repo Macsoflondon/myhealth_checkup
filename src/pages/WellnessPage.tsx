@@ -1,102 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield, Users, Zap, Moon, Droplet, TestTube2, Stethoscope, Brain, Bug } from "lucide-react";
-
-const wellnessTests = [
-  {
-    id: "hepatitis-screening",
-    name: "Hepatitis Screening Blood Test",
-    description: "Comprehensive screening for Hepatitis A, B, and C to protect your liver health",
-    icon: Shield,
-    category: "Liver Health",
-    price: "£89"
-  },
-  {
-    id: "liver-blood-test",
-    name: "Liver Blood Test",
-    description: "Monitor liver function with comprehensive liver enzyme and protein testing",
-    icon: Heart,
-    category: "Liver Health", 
-    price: "£65"
-  },
-  {
-    id: "kidney-blood-test",
-    name: "Kidney Blood Test",
-    description: "Assess kidney function and health with creatinine, urea, and eGFR testing",
-    icon: Droplet,
-    category: "Kidney Health",
-    price: "£55"
-  },
-  {
-    id: "cardiac-risk",
-    name: "Cardiac Risk Blood Test",
-    description: "Evaluate cardiovascular risk with cholesterol, triglycerides, and cardiac markers",
-    icon: Activity,
-    category: "Heart Health",
-    price: "£75"
-  },
-  {
-    id: "sports-fitness",
-    name: "Sports & Fitness Blood Test",
-    description: "Optimize athletic performance with specialized fitness and nutrition biomarkers",
-    icon: Zap,
-    category: "Sports Performance",
-    price: "£125"
-  },
-  {
-    id: "tiredness-test",
-    name: "Tiredness Blood Test",
-    description: "Identify causes of fatigue with comprehensive energy and vitamin analysis",
-    icon: Moon,
-    category: "Energy & Fatigue",
-    price: "£95"
-  },
-  {
-    id: "anaemia-test",
-    name: "Anaemia Blood Test",
-    description: "Screen for anaemia with iron studies, B12, folate, and blood count analysis",
-    icon: TestTube2,
-    category: "Blood Health",
-    price: "£45"
-  },
-  {
-    id: "full-blood-count",
-    name: "Full Blood Count Test",
-    description: "Complete analysis of blood cells including red cells, white cells, and platelets",
-    icon: Stethoscope,
-    category: "Blood Health",
-    price: "£35"
-  },
-  {
-    id: "blood-group",
-    name: "Blood Group Blood Test",
-    description: "Determine your ABO blood group and Rhesus factor for medical records",
-    icon: Users,
-    category: "General Health",
-    price: "£25"
-  },
-  {
-    id: "cortisol-stress",
-    name: "Cortisol Stress Blood Test",
-    description: "Measure stress hormone levels to assess adrenal function and stress impact",
-    icon: Brain,
-    category: "Stress & Hormones",
-    price: "£65"
-  },
-  {
-    id: "helicobacter-pylori",
-    name: "Helicobacter Pylori Blood Test",
-    description: "Screen for H. pylori bacteria that can cause stomach ulcers and digestive issues",
-    icon: Bug,
-    category: "Digestive Health",
-    price: "£45"
-  }
-];
+import { Heart, Activity, Shield } from "lucide-react";
+import { wellnessCategories } from "@/data/wellnessCategories";
 
 const WellnessPage = () => {
   return (
@@ -145,49 +55,53 @@ const WellnessPage = () => {
           </div>
         </section>
 
-        {/* Tests Grid */}
+        {/* Category Grid */}
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-foreground mb-4">
-                  Available Wellness Tests
+                  Browse Tests by Category
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Choose from our comprehensive range of wellness blood tests
+                  Choose from our comprehensive range of wellness testing categories
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {wellnessTests.map((test) => {
-                  const IconComponent = test.icon;
+                {wellnessCategories.map((category) => {
+                  const IconComponent = category.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+                    <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
                       <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
-                              <IconComponent className="h-5 w-5" />
-                            </div>
-                            <div>
-                              <Badge variant="secondary" className="text-xs">
-                                {test.category}
-                              </Badge>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
-                          </div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <div 
+                            className={`w-3 h-3 rounded-full ${category.colorClass}`}
+                            style={{ backgroundColor: category.colorHex }}
+                          />
+                          <CardTitle className="text-xl leading-tight text-health-heading">
+                            {category.name}
+                          </CardTitle>
                         </div>
-                        <CardTitle className="text-lg leading-tight text-health-heading">{test.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                          {category.testCount} {category.testCount === 1 ? 'test' : 'tests'}
+                        </p>
                       </CardHeader>
                       <CardContent className="pt-0">
-                        <CardDescription className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                          {test.description}
+                        <CardDescription className="text-sm text-muted-foreground mb-4">
+                          {category.description}
                         </CardDescription>
-                        <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
-                          Compare Providers
-                        </Button>
+                        <Link to={`/compare?category=${category.id}`}>
+                          <Button 
+                            className="w-full transition-colors"
+                            style={{ 
+                              backgroundColor: category.colorHex,
+                              color: 'white'
+                            }}
+                          >
+                            View Tests
+                          </Button>
+                        </Link>
                       </CardContent>
                     </Card>
                   );

@@ -71,6 +71,78 @@ export const compareCategories = [
     name: "Cancer Screening",
     description: "Early detection and preventive screening",
     searchTerms: ["cancer", "screening", "tumour", "psa", "cea", "ca125", "oncology"]
+  },
+  {
+    id: "longevity-tests",
+    name: "Longevity Tests",
+    description: "Comprehensive health markers for longevity and preventive care",
+    searchTerms: ["longevity", "preventive", "comprehensive health", "wellness screening", "life extension"]
+  },
+  {
+    id: "iron-tests",
+    name: "Iron Tests",
+    description: "Iron levels, ferritin, and anaemia screening",
+    searchTerms: ["iron", "ferritin", "anaemia", "anemia", "iron deficiency", "haemoglobin"]
+  },
+  {
+    id: "energy-tests",
+    name: "Energy Tests",
+    description: "Fatigue, tiredness, and energy level testing",
+    searchTerms: ["energy", "fatigue", "tiredness", "exhaustion", "low energy", "chronic fatigue"]
+  },
+  {
+    id: "nutrition-tests",
+    name: "Nutrition Tests",
+    description: "Vitamin levels and nutritional deficiency screening",
+    searchTerms: ["nutrition", "nutritional", "diet", "vitamin deficiency", "malnutrition"]
+  },
+  {
+    id: "sexual-health",
+    name: "Sexual Health Tests",
+    description: "Comprehensive sexual health and hormone screening",
+    searchTerms: ["sexual health", "sti", "std", "sexual wellness", "reproductive health"]
+  },
+  {
+    id: "gp-monitoring",
+    name: "GP Monitoring Tests",
+    description: "Routine health checks and general practitioner monitoring",
+    searchTerms: ["gp monitoring", "routine check", "general practitioner", "health monitoring", "annual check"]
+  },
+  {
+    id: "antibody-tests",
+    name: "Antibody Tests",
+    description: "Antibody screening and autoimmune disease detection",
+    searchTerms: ["antibody", "antibodies", "immunoglobulin", "serology", "immune response"]
+  },
+  {
+    id: "infection-tests",
+    name: "Infection Tests",
+    description: "Infectious disease screening and pathogen detection",
+    searchTerms: ["infection", "infectious", "bacterial", "viral", "pathogen", "disease screening"]
+  },
+  {
+    id: "immunity-tests",
+    name: "Immunity Tests",
+    description: "Immune system function and defense assessment",
+    searchTerms: ["immunity", "immune system", "immune function", "immunology", "immune defense"]
+  },
+  {
+    id: "autoimmunity-tests",
+    name: "Autoimmunity Tests",
+    description: "Autoimmune condition screening and monitoring",
+    searchTerms: ["autoimmune", "autoimmunity", "lupus", "rheumatoid", "auto-immune"]
+  },
+  {
+    id: "liver-health",
+    name: "Liver Health",
+    description: "Liver function testing and hepatic health monitoring",
+    searchTerms: ["liver", "hepatic", "liver function", "alt", "ast", "alp", "bilirubin"]
+  },
+  {
+    id: "kidney-health",
+    name: "Kidney Health",
+    description: "Kidney function assessment and renal health screening",
+    searchTerms: ["kidney", "renal", "kidney function", "creatinine", "urea", "egfr"]
   }
 ];
 

@@ -116,7 +116,9 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         );
       case "General Wellness":
         return compareCategories.filter(cat => 
-          ['vitamins', 'general-health', 'heart-health', 'liver-health', 'hormones', 'thyroid'].includes(cat.id)
+          ['longevity-tests', 'iron-tests', 'heart-health', 'energy-tests', 'nutrition-tests', 
+           'allergy-testing', 'sexual-health', 'gp-monitoring', 'antibody-tests', 'infection-tests', 
+           'immunity-tests', 'autoimmunity-tests', 'liver-health', 'kidney-health'].includes(cat.id)
         );
       default:
         // Show all categories for Most Popular Tests
