@@ -51,7 +51,7 @@ const Header = ({
         <UtilityBar />
         
         {/* Main header bar - Logo, Search, User Controls */}
-        <div className="bg-white border-b border-gray-200 px-6 lg:px-16 py-3">
+        <div className="bg-[#1a1b34] px-6 lg:px-16 py-3">
           <div className="relative flex items-center justify-between w-full">
             <div className="flex items-center gap-2 flex-shrink-0 z-10">
               <Logo />
