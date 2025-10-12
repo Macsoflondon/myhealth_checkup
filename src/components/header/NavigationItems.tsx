@@ -128,8 +128,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           <Link
             to={item.path}
             className={`text-sm font-bold transition-colors px-9 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 ${
-              (item as any).highlighted 
-                ? "text-pink-500" 
+                  (item as any).highlighted 
+                    ? "text-[#E70D69]"
                 : "text-gray-700"
             }`}
             onClick={onItemClick}

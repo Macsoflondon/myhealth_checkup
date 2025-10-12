@@ -41,7 +41,7 @@ const HowItWorks = () => {
               className="text-center p-3 bg-[#081129] shadow-white shadow-lg"
             >
               <item.icon className="h-8 w-8 text-white mx-auto mb-2" />
-              <div className="text-[#FA6980] text-xs font-bold mb-1">
+              <div className="text-[#E70D69] text-xs font-bold mb-1">
                 Step {item.step}
               </div>
               <h3 className="mb-1 text-[#22c0d4] text-base font-bold">
