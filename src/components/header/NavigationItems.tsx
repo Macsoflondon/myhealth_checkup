@@ -11,6 +11,7 @@ const categoryColorMap: Record<string, string> = {
   'blood-tests': 'bg-red-500 text-white',
   'hormones': 'bg-pink-500 text-white', 
   'thyroid': 'bg-emerald-500 text-white',
+  'thyroid-tests': 'bg-emerald-500 text-white',
   'vitamins': 'bg-lime-500 text-white',
   'diabetes': 'bg-orange-500 text-white',
   'heart-health': 'bg-red-600 text-white',
@@ -19,7 +20,11 @@ const categoryColorMap: Record<string, string> = {
   'fertility': 'bg-purple-500 text-white',
   'general-health': 'bg-teal-500 text-white',
   'allergy-testing': 'bg-indigo-500 text-white',
-  'cancer-screening': 'bg-gray-700 text-white'
+  'cancer-screening': 'bg-gray-700 text-white',
+  'womens-health-checks': 'bg-pink-500 text-white',
+  'female-hormone-tests': 'bg-purple-600 text-white',
+  'female-fertility-tests': 'bg-red-400 text-white',
+  'sports-performance-tests': 'bg-blue-500 text-white'
 };
 
 // Main navigation structure - primary items shown in toolbar
@@ -100,7 +105,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
     switch (itemName) {
       case "Women's Health":
         return compareCategories.filter(cat => 
-          ['fertility', 'hormones'].includes(cat.id)
+          ['womens-health-checks', 'female-hormone-tests', 'female-fertility-tests', 
+           'thyroid-tests', 'sports-performance-tests'].includes(cat.id)
         );
       case "Men's Health":
         return compareCategories.filter(cat => 

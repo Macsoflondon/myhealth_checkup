@@ -67,10 +67,34 @@ export const compareCategories = [
     searchTerms: ["allergy", "allergic", "intolerance", "food sensitivity", "ige"]
   },
   {
-    id: "cancer-screening", 
-    name: "Cancer Screening",
-    description: "Early detection and preventive screening",
-    searchTerms: ["cancer", "screening", "tumour", "psa", "cea", "ca125", "oncology"]
+    id: "womens-health-checks",
+    name: "Women's Health Checks",
+    description: "Essential comprehensive health screening for women",
+    searchTerms: ["well woman", "womens health check", "female health", "comprehensive womens", "essential well woman"]
+  },
+  {
+    id: "female-hormone-tests",
+    name: "Female Hormone Tests", 
+    description: "Hormone balance and reproductive health testing",
+    searchTerms: ["female hormones", "womens hormones", "estrogen", "progesterone", "menopause", "pcos"]
+  },
+  {
+    id: "female-fertility-tests",
+    name: "Female Fertility Tests",
+    description: "Fertility assessment and reproductive health screening", 
+    searchTerms: ["female fertility", "ovarian reserve", "amh", "fertility testing", "conception"]
+  },
+  {
+    id: "thyroid-tests",
+    name: "Thyroid Tests",
+    description: "Thyroid function and hormone testing",
+    searchTerms: ["thyroid", "tsh", "t3", "t4", "thyroid antibodies", "hypothyroid", "hyperthyroid"]
+  },
+  {
+    id: "sports-performance-tests",
+    name: "Sports Performance Tests",
+    description: "Athletic performance optimization and health monitoring",
+    searchTerms: ["sports", "athletic", "performance", "fitness", "athlete testing"]
   },
   {
     id: "longevity-tests",
