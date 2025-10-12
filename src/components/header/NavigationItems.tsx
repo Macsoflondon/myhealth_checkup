@@ -69,8 +69,12 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
     }
   };
 
-  const handleMouseLeave = () => {
-    setActiveDropdown(null);
+  const handleMouseLeave = (event: React.MouseEvent) => {
+    // Only close if mouse leaves both the nav item AND the dropdown
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    if (!relatedTarget?.closest('.dropdown-content')) {
+      setActiveDropdown(null);
+    }
   };
 
   const getGoodbodyTestsForDropdown = (itemName: string) => {
@@ -127,7 +131,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         >
           <Link
             to={item.path}
-            className={`text-sm font-bold transition-colors px-9 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 ${
+            className={`text-sm font-bold transition-colors px-3 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 ${
                   (item as any).highlighted 
                     ? "text-[#E70D69]"
                 : "text-gray-700"
@@ -142,7 +146,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           
           {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
-            <div className="absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto">
+            <div className="dropdown-content absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto">
               <div className="p-6">
                 {getGoodbodyTestsForDropdown(item.name) ? (
                   // Show Goodbody tests for health-specific sections
@@ -155,7 +159,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                           className="group block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                           onClick={onItemClick}
                         >
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center">
                             <div className="flex-1 min-w-0">
                               <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
                                 {test.name}
@@ -168,11 +172,6 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                                   {test.biomarkers} biomarkers • {test.turnaround}
                                 </p>
                               )}
-                            </div>
-                            <div className="text-right">
-                              <span className="text-sm font-semibold text-primary">
-                                £{test.price}
-                              </span>
                             </div>
                           </div>
                         </Link>
@@ -229,14 +228,14 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         onMouseLeave={handleMouseLeave}
       >
         <button
-          className="text-sm font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 text-gray-700"
+          className="text-sm font-bold transition-colors px-3 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 text-gray-700"
         >
           MORE
           <ChevronDown className="w-3 h-3" />
         </button>
         
         {activeDropdown === "MORE" && (
-          <div className="absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[100] min-w-[280px] max-h-[70vh] overflow-y-auto">
+          <div className="dropdown-content absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[280px] max-h-[70vh] overflow-y-auto">
             <div className="p-4">
               <div className="grid grid-cols-1 gap-1">
                 {moreNavigationItems.map((item) => (
