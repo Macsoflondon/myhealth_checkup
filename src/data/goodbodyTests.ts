@@ -384,6 +384,78 @@ export const goodbodyTests: GoodbodyTest[] = [
     turnaround: '2-3 days',
     categories: ['general-wellness'],
     url: 'https://health.goodbodyclinic.com/product/sports-and-fitness-blood-test/'
+  },
+
+  // ========== Prenatal & Pregnancy Testing ==========
+  {
+    id: 'Goodbody150',
+    name: 'Prenatal Paternity Test',
+    price: 399,
+    description: 'Non-invasive prenatal paternity test using cell-free fetal DNA from a simple blood sample. Accurate results from 8 weeks of pregnancy to determine biological father.',
+    biomarkers: 1,
+    turnaround: '7-10 working days',
+    categories: ['fertility', 'prenatal-paternity-tests'],
+    url: '/tests/prenatal-paternity'
+  },
+  {
+    id: 'Goodbody151',
+    name: 'Gender Reveal Blood Test',
+    price: 79,
+    description: 'Early gender determination blood test from 8 weeks pregnancy. Non-invasive test analyzing fetal DNA in maternal blood to reveal baby\'s sex.',
+    biomarkers: 1,
+    turnaround: '3-5 working days',
+    categories: ['fertility', 'gender-reveal-tests'],
+    url: '/tests/gender-reveal'
+  },
+  {
+    id: 'Goodbody152',
+    name: 'PrenatalSAFE 3 NIPT Blood Test',
+    price: 349,
+    description: 'Non-invasive prenatal test screening for the 3 most common trisomies (Down syndrome/T21, Edwards syndrome/T18, Patau syndrome/T13). Safe for mother and baby.',
+    biomarkers: 3,
+    turnaround: '7-10 working days',
+    categories: ['fertility', 'nipt-tests'],
+    url: '/tests/prenatalsafe-3'
+  },
+  {
+    id: 'Goodbody153',
+    name: 'PrenatalSAFE 5 NIPT Blood Test',
+    price: 449,
+    description: 'Extended NIPT screening covering 5 chromosome conditions including trisomies 21, 18, 13 plus sex chromosome aneuploidies (Turner and Klinefelter syndromes).',
+    biomarkers: 5,
+    turnaround: '7-10 working days',
+    categories: ['fertility', 'nipt-tests'],
+    url: '/tests/prenatalsafe-5'
+  },
+  {
+    id: 'Goodbody154',
+    name: 'PrenatalSAFE Karyo NIPT Blood Test',
+    price: 599,
+    description: 'Comprehensive chromosomal analysis screening all 23 chromosome pairs for numerical abnormalities. Most detailed non-invasive prenatal screening available.',
+    biomarkers: 23,
+    turnaround: '10-14 working days',
+    categories: ['fertility', 'nipt-tests'],
+    url: '/tests/prenatalsafe-karyo'
+  },
+  {
+    id: 'Goodbody155',
+    name: 'PrenatalSAFE Karyo Plus NIPT Blood Test',
+    price: 699,
+    description: 'Advanced karyotype screening plus microdeletion syndromes. Screens all chromosomes and 9 common genetic microdeletion conditions including DiGeorge and Prader-Willi.',
+    biomarkers: 32,
+    turnaround: '10-14 working days',
+    categories: ['fertility', 'nipt-tests'],
+    url: '/tests/prenatalsafe-karyo-plus'
+  },
+  {
+    id: 'Goodbody156',
+    name: 'PrenatalSAFE Complete Plus NIPT Blood Test',
+    price: 799,
+    description: 'Most comprehensive NIPT available. Complete chromosome screening, microdeletions, and genetic syndrome panel. Includes follow-up genetic counseling.',
+    biomarkers: 43,
+    turnaround: '10-14 working days',
+    categories: ['fertility', 'nipt-tests'],
+    url: '/tests/prenatalsafe-complete-plus'
   }
 ];
 

@@ -127,6 +127,24 @@ export const compareCategories = [
     searchTerms: ["erectile dysfunction", "ed", "impotence", "sexual dysfunction", "erectile health"]
   },
   {
+    id: "prenatal-paternity-tests",
+    name: "Prenatal Paternity Tests",
+    description: "Non-invasive prenatal paternity testing during pregnancy",
+    searchTerms: ["prenatal paternity", "dna paternity", "pregnancy paternity", "paternity testing", "father identification"]
+  },
+  {
+    id: "gender-reveal-tests",
+    name: "Gender Reveal Tests",
+    description: "Early gender determination blood tests from 8 weeks pregnancy",
+    searchTerms: ["gender reveal", "baby gender", "sex determination", "boy or girl", "gender blood test", "pink or blue"]
+  },
+  {
+    id: "nipt-tests",
+    name: "NIPT Tests",
+    description: "Non-invasive prenatal testing for chromosomal conditions",
+    searchTerms: ["nipt", "non invasive prenatal", "prenatal safe", "chromosome screening", "down syndrome", "trisomy", "fetal dna"]
+  },
+  {
     id: "longevity-tests",
     name: "Longevity Tests",
     description: "Comprehensive health markers for longevity and preventive care",

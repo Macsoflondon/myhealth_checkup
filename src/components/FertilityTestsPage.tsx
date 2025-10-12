@@ -64,59 +64,81 @@ const FertilityTestsPage = () => {
 
   const fertilityTests = [
     {
-      id: 'male-fertility-sperm',
-      name: 'Male Fertility Sperm Test',
-      description: 'Are you planning to have children and want to make sure your sperm and hormone levels are normal? Perhaps you and your...',
-      price: '£209.00',
-      turnaround: 'Results estimated in 2 working days',
-      biomarkers: '23 biomarkers',
-      rating: 5.0,
-      reviews: 1,
-      collection: 'Finger-prick or Venous collection'
+      id: 'prenatal-paternity',
+      name: 'Prenatal Paternity Test',
+      description: 'Non-invasive prenatal paternity test using cell-free fetal DNA from a simple blood sample. Accurate results from 8 weeks of pregnancy.',
+      price: '£399.00',
+      turnaround: 'Results estimated in 7-10 working days',
+      biomarkers: '1 result (paternity confirmation)',
+      rating: 4.9,
+      reviews: 67,
+      collection: 'Venous blood collection'
     },
     {
-      id: 'advanced-male-fertility',
-      name: 'Advanced Male Fertility Hormone Blood Test',
-      description: 'Have you and your partner been trying to conceive for a while? With our Advanced Male Fertility Hormon...',
-      price: '£72.00',
-      turnaround: 'Results estimated in 2 working days',
-      biomarkers: '7 biomarkers',
-      rating: 4.5,
-      reviews: 14,
-      collection: 'Finger-prick or Venous collection'
-    },
-    {
-      id: 'zika-antibodies',
-      name: 'Zika Virus Antibodies Blood Test (Flavivirus)',
-      description: 'Recently travelled to a Zika-affected area or planning pregnancy? This test detects Zika virus IgM and IgG antibodies, helping...',
-      price: '£189.00',
-      turnaround: 'Results estimated in 14 working days',
-      biomarkers: '2 biomarkers',
-      rating: 5.0,
-      reviews: 3,
-      collection: 'Venous collection'
-    },
-    {
-      id: 'erectile-dysfunction',
-      name: 'Erectile Dysfunction Blood Test',
-      description: 'Investigate the potential causes of erectile dysfunction with hormone and health markers that could be affecting your sexual health',
-      price: '£99.00',
-      turnaround: 'Results estimated in 3 working days',
-      biomarkers: '12 biomarkers',
-      rating: 4.6,
-      reviews: 28,
-      collection: 'Finger-prick or Venous collection'
-    },
-    {
-      id: 'chlamydia-gonorrhoea',
-      name: 'Chlamydia and Gonorrhoea Urine Test',
-      description: 'Have no symptoms but want a quick and private screening for chlamydia and gonorrhoea? Our discreet postal urine test',
-      price: '£59.00',
-      turnaround: 'Results estimated in 2 working days',
-      biomarkers: '2 biomarkers',
+      id: 'gender-reveal',
+      name: 'Gender Reveal Blood Test',
+      description: 'Early gender determination from 8 weeks pregnancy. Non-invasive test analyzing fetal DNA in maternal blood to reveal your baby\'s sex.',
+      price: '£79.00',
+      turnaround: 'Results estimated in 3-5 working days',
+      biomarkers: '1 result (gender determination)',
       rating: 4.8,
-      reviews: 156,
-      collection: 'Urine collection'
+      reviews: 342,
+      collection: 'Venous blood collection'
+    },
+    {
+      id: 'prenatalsafe-3',
+      name: 'PrenatalSAFE 3 NIPT Blood Test',
+      description: 'Non-invasive prenatal test screening for the 3 most common trisomies: Down syndrome (T21), Edwards syndrome (T18), and Patau syndrome (T13).',
+      price: '£349.00',
+      turnaround: 'Results estimated in 7-10 working days',
+      biomarkers: '3 chromosome conditions',
+      rating: 5.0,
+      reviews: 128,
+      collection: 'Venous blood collection'
+    },
+    {
+      id: 'prenatalsafe-5',
+      name: 'PrenatalSAFE 5 NIPT Blood Test',
+      description: 'Extended NIPT screening covering 5 chromosome conditions including common trisomies plus sex chromosome aneuploidies.',
+      price: '£449.00',
+      turnaround: 'Results estimated in 7-10 working days',
+      biomarkers: '5 chromosome conditions',
+      rating: 4.9,
+      reviews: 94,
+      collection: 'Venous blood collection'
+    },
+    {
+      id: 'prenatalsafe-karyo',
+      name: 'PrenatalSAFE Karyo NIPT Blood Test',
+      description: 'Comprehensive chromosomal analysis screening all 23 chromosome pairs for numerical abnormalities. Most detailed NIPT available.',
+      price: '£599.00',
+      turnaround: 'Results estimated in 10-14 working days',
+      biomarkers: '23 chromosome pairs',
+      rating: 5.0,
+      reviews: 56,
+      collection: 'Venous blood collection'
+    },
+    {
+      id: 'prenatalsafe-karyo-plus',
+      name: 'PrenatalSAFE Karyo Plus NIPT Blood Test',
+      description: 'Advanced karyotype screening plus microdeletion syndromes. Screens all chromosomes and 9 common genetic microdeletion conditions.',
+      price: '£699.00',
+      turnaround: 'Results estimated in 10-14 working days',
+      biomarkers: '23 chromosomes + 9 microdeletions',
+      rating: 5.0,
+      reviews: 41,
+      collection: 'Venous blood collection'
+    },
+    {
+      id: 'prenatalsafe-complete-plus',
+      name: 'PrenatalSAFE Complete Plus NIPT Blood Test',
+      description: 'Most comprehensive NIPT available. Complete chromosome screening, microdeletions, and genetic syndrome panel with genetic counseling.',
+      price: '£799.00',
+      turnaround: 'Results estimated in 10-14 working days',
+      biomarkers: '23 chromosomes + 20+ conditions',
+      rating: 5.0,
+      reviews: 32,
+      collection: 'Venous blood collection'
     }
   ];
 
@@ -129,11 +151,11 @@ const FertilityTestsPage = () => {
           <nav className="text-sm text-gray-500 mb-4">
             <span className="cursor-pointer hover:text-[#E91E63]" onClick={() => navigate('/')}>Home</span> 
             <span className="mx-2">/</span> 
-            <span>Male Fertility Blood Tests</span>
+            <span>Prenatal & Pregnancy Testing</span>
           </nav>
           
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Male Fertility Blood Tests</h1>
-          <p className="text-lg text-gray-600">Our male fertility tests were created by award winning fertility nurse and consultant, Kate Davies. Test a range of factors from hormone levels to sexual health.</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Prenatal & Pregnancy Testing</h1>
+          <p className="text-lg text-gray-600">Non-invasive prenatal testing (NIPT) for expectant parents. Screen for chromosomal conditions, determine gender early, or confirm paternity safely during pregnancy.</p>
         </div>
 
         <div className="flex justify-end mb-6">
