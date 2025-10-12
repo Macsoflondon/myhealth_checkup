@@ -70,11 +70,15 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
   };
 
   const handleMouseLeave = (event: React.MouseEvent) => {
-    // Only close if mouse leaves both the nav item AND the dropdown
     const relatedTarget = event.relatedTarget as HTMLElement;
-    if (!relatedTarget?.closest('.dropdown-content')) {
-      setActiveDropdown(null);
+    
+    // Don't close if mouse is moving to the dropdown or staying within navigation area
+    if (relatedTarget?.closest('.dropdown-content') || 
+        relatedTarget?.closest('nav')) {
+      return;
     }
+    
+    setActiveDropdown(null);
   };
 
   const getGoodbodyTestsForDropdown = (itemName: string) => {
@@ -146,7 +150,11 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           
           {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
-            <div className="dropdown-content absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto">
+            <div 
+              className="dropdown-content absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto"
+              onMouseEnter={() => handleMouseEnter(item.name)}
+              onMouseLeave={handleMouseLeave}
+            >
               <div className="p-6">
                 {getGoodbodyTestsForDropdown(item.name) ? (
                   // Show Goodbody tests for health-specific sections
@@ -235,7 +243,11 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         </button>
         
         {activeDropdown === "MORE" && (
-          <div className="dropdown-content absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[280px] max-h-[70vh] overflow-y-auto">
+          <div 
+            className="dropdown-content absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[280px] max-h-[70vh] overflow-y-auto"
+            onMouseEnter={() => setActiveDropdown("MORE")}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="p-4">
               <div className="grid grid-cols-1 gap-1">
                 {moreNavigationItems.map((item) => (
