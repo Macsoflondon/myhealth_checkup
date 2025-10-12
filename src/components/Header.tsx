@@ -62,7 +62,7 @@ const Header = ({
               <Logo />
             </div>
             
-            <div className="absolute left-1/2 -translate-x-1/2 z-0">
+            <div className="absolute left-1/2 -translate-x-1/2 z-0 w-full max-w-[576px]">
               <SearchBar />
             </div>
             
