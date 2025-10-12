@@ -326,7 +326,7 @@ const FAQsPage = () => {
     })))
   };
   return <div className="min-h-screen flex flex-col">
-      <Helmet>
+      <Helmet className="text-white">
         <title>FAQs - Frequently Asked Questions | myhealth checkup</title>
         <meta name="description" content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." />
         <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
@@ -351,7 +351,7 @@ const FAQsPage = () => {
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator>
-                <ChevronRight className="h-4 w-4 text-white" />
+                <ChevronRight className="h-4 w-4" />
               </BreadcrumbSeparator>
               <BreadcrumbItem>
                 <BreadcrumbPage className="text-foreground font-medium">
@@ -364,7 +364,7 @@ const FAQsPage = () => {
 
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-primary via-primary/90 to-secondary text-white">
-          <div className="container mx-auto px-4 py-12 sm:py-16 text-center">
+          <div className="container mx-auto px-4 py-12 sm:py-16 text-center bg-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
               Frequently Asked Questions
             </h1>
@@ -374,7 +374,7 @@ const FAQsPage = () => {
             
             {/* Search Bar */}
             <div className="max-w-xl sm:max-w-2xl mx-auto">
-              <div className="relative">
+              <div className="relative text-left font-medium text-[#081129]">
                 <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50" aria-label="Search frequently asked questions" aria-describedby="search-description" />
                 <span id="search-description" className="sr-only">
