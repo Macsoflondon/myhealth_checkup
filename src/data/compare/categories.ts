@@ -215,6 +215,42 @@ export const compareCategories = [
     name: "Kidney Health",
     description: "Kidney function assessment and renal health screening",
     searchTerms: ["kidney", "renal", "kidney function", "creatinine", "urea", "egfr"]
+  },
+  {
+    id: "weight-loss-tests",
+    name: "Weight Loss Tests",
+    description: "Weight management and metabolic health screening",
+    searchTerms: ["weight loss", "weight management", "metabolism", "metabolic health", "thyroid weight", "hormone weight"]
+  },
+  {
+    id: "diabetes-tests",
+    name: "Diabetes Tests",
+    description: "Diabetes screening and blood sugar monitoring",
+    searchTerms: ["diabetes", "diabetic", "hba1c", "glucose", "blood sugar", "insulin", "prediabetes"]
+  },
+  {
+    id: "cholesterol-tests",
+    name: "Cholesterol Tests",
+    description: "Cholesterol and lipid profile screening",
+    searchTerms: ["cholesterol", "lipid", "lipid profile", "triglycerides", "hdl", "ldl", "cardiovascular risk"]
+  },
+  {
+    id: "vitamins-tests",
+    name: "Vitamins Tests",
+    description: "Essential vitamin level screening",
+    searchTerms: ["vitamins", "vitamin d", "vitamin b12", "folate", "vitamin deficiency", "nutrient levels"]
+  },
+  {
+    id: "advanced-vitamins-tests",
+    name: "Advanced Vitamins Tests",
+    description: "Comprehensive vitamin and mineral panel",
+    searchTerms: ["advanced vitamins", "comprehensive vitamins", "vitamin panel", "micronutrient panel", "extended vitamins"]
+  },
+  {
+    id: "coeliac-tests",
+    name: "Coeliac Tests",
+    description: "Coeliac disease and gluten sensitivity screening",
+    searchTerms: ["coeliac", "celiac", "gluten", "gluten sensitivity", "gluten intolerance", "wheat allergy"]
   }
 ];
 

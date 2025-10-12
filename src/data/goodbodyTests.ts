@@ -19,7 +19,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'Comprehensive vitamin and mineral analysis',
     biomarkers: 10,
     turnaround: '2-3 days',
-    categories: ['general-wellness', 'vitamins'],
+    categories: ['general-wellness', 'vitamins', 'advanced-vitamins-tests'],
     url: 'https://health.goodbodyclinic.com/product/advanced-vitamins-blood-test/'
   },
   {
@@ -113,7 +113,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'Complete cholesterol and lipid profile',
     biomarkers: 6,
     turnaround: '2-3 days',
-    categories: ['general-wellness', 'heart-health'],
+    categories: ['general-wellness', 'heart-health', 'cholesterol-tests'],
     url: 'https://health.goodbodyclinic.com/product/cholesterol-blood-test/'
   },
 
@@ -147,7 +147,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'HbA1c test for diabetes screening',
     biomarkers: 1,
     turnaround: '2-3 days',
-    categories: ['general-wellness', 'diabetes'],
+    categories: ['general-wellness', 'diabetes', 'diabetes-tests'],
     url: 'https://health.goodbodyclinic.com/product/diabetes-hba1c-blood-test/'
   },
 
@@ -287,7 +287,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'Essential vitamin levels assessment',
     biomarkers: 3,
     turnaround: '2-3 days',
-    categories: ['general-wellness', 'vitamins'],
+    categories: ['general-wellness', 'vitamins', 'vitamins-tests'],
     url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
   },
   {
@@ -329,7 +329,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'Screen for coeliac disease',
     biomarkers: 2,
     turnaround: '3-5 days',
-    categories: ['general-wellness'],
+    categories: ['general-wellness', 'coeliac-tests', 'allergy-testing'],
     url: 'https://health.goodbodyclinic.com/product/coeliac-screen-blood-test/'
   },
   {
@@ -361,7 +361,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'Comprehensive allergy panel testing',
     biomarkers: 300,
     turnaround: '5-7 days',
-    categories: ['general-wellness'],
+    categories: ['general-wellness', 'allergy-testing'],
     url: 'https://health.goodbodyclinic.com/product/complete-allergy-blood-test/'
   },
   {
@@ -456,6 +456,18 @@ export const goodbodyTests: GoodbodyTest[] = [
     turnaround: '10-14 working days',
     categories: ['fertility', 'nipt-tests'],
     url: '/tests/prenatalsafe-complete-plus'
+  },
+  
+  // Weight Loss & Metabolic Health
+  {
+    id: 'Goodbody160',
+    name: 'Weight Loss Blood Test',
+    price: 89,
+    description: 'Comprehensive metabolic screening including thyroid function, hormones, and nutritional markers affecting weight management',
+    biomarkers: 20,
+    turnaround: '2-3 days',
+    categories: ['general-wellness', 'weight-loss-tests', 'thyroid-tests', 'hormones'],
+    url: '/tests/weight-loss'
   }
 ];
 

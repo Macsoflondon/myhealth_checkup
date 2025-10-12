@@ -32,7 +32,13 @@ const categoryColorMap: Record<string, string> = {
   'erectile-dysfunction-tests': 'bg-purple-500 text-white',
   'prenatal-paternity-tests': 'bg-violet-600 text-white',
   'gender-reveal-tests': 'bg-pink-400 text-white',
-  'nipt-tests': 'bg-blue-600 text-white'
+  'nipt-tests': 'bg-blue-600 text-white',
+  'weight-loss-tests': 'bg-pink-500 text-white',
+  'diabetes-tests': 'bg-orange-500 text-white',
+  'cholesterol-tests': 'bg-red-600 text-white',
+  'vitamins-tests': 'bg-lime-500 text-white',
+  'advanced-vitamins-tests': 'bg-green-600 text-white',
+  'coeliac-tests': 'bg-amber-500 text-white'
 };
 
 // Main navigation structure - primary items shown in toolbar
@@ -131,9 +137,11 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         );
       case "General Wellness":
         return compareCategories.filter(cat => 
-          ['longevity-tests', 'iron-tests', 'heart-health', 'energy-tests', 'nutrition-tests', 
-           'allergy-testing', 'sexual-health', 'gp-monitoring', 'antibody-tests', 'infection-tests', 
-           'immunity-tests', 'autoimmunity-tests', 'liver-health', 'kidney-health'].includes(cat.id)
+          ['weight-loss-tests', 'diabetes-tests', 'cholesterol-tests', 'vitamins-tests', 
+           'advanced-vitamins-tests', 'allergy-testing', 'coeliac-tests',
+           'antibody-tests', 'infection-tests', 'immunity-tests', 'autoimmunity-tests', 
+           'liver-health', 'kidney-health', 'sexual-health', 'iron-tests', 'heart-health', 
+           'energy-tests', 'nutrition-tests'].includes(cat.id)
         );
       default:
         // Show all categories for Most Popular Tests
