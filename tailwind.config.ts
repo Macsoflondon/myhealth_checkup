@@ -134,6 +134,10 @@ export default {
 				slideUp: {
 					from: { transform: 'translateY(10px)', opacity: '0' },
 					to: { transform: 'translateY(0)', opacity: '1' }
+				},
+				marquee: {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-50%)' }
 				}
 			},
 			animation: {
@@ -141,7 +145,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
 				fadeIn: 'fadeIn 0.5s ease-in-out',
-				slideUp: 'slideUp 0.5s ease-in-out'
+				slideUp: 'slideUp 0.5s ease-in-out',
+				marquee: 'marquee 20s linear infinite'
 			}
 		}
 	},
