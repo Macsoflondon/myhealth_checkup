@@ -74,11 +74,15 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
     
     // Don't close if mouse is moving to the dropdown or staying within navigation area
     if (relatedTarget?.closest('.dropdown-content') || 
+        relatedTarget?.closest('.nav-item-wrapper') ||
         relatedTarget?.closest('nav')) {
       return;
     }
     
-    setActiveDropdown(null);
+    // Small delay to prevent accidental closes during rapid movements
+    setTimeout(() => {
+      setActiveDropdown(null);
+    }, 100);
   };
 
   const getGoodbodyTestsForDropdown = (itemName: string) => {
@@ -129,15 +133,15 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
       {primaryNavigationItems.map((item) => (
         <div 
           key={item.path}
-          className="relative"
+          className="relative nav-item-wrapper"
           onMouseEnter={() => handleMouseEnter(item.name)}
           onMouseLeave={handleMouseLeave}
         >
           <Link
             to={item.path}
-            className={`text-sm font-bold transition-colors px-3 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 ${
+            className={`text-sm font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 ${
                   (item as any).highlighted 
-                    ? "text-[#E70D69]"
+                    ? "text-[#FA6980]"
                 : "text-gray-700"
             }`}
             onClick={onItemClick}
@@ -151,7 +155,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
             <div 
-              className="dropdown-content absolute top-full left-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto"
+              className="dropdown-content absolute top-full left-0 mt-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto"
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
@@ -231,12 +235,12 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
       
       {/* MORE Dropdown */}
       <div 
-        className="relative"
+        className="relative nav-item-wrapper"
         onMouseEnter={() => setActiveDropdown("MORE")}
         onMouseLeave={handleMouseLeave}
       >
         <button
-          className="text-sm font-bold transition-colors px-3 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 text-gray-700"
+          className="text-sm font-bold transition-colors px-1.5 py-1 whitespace-nowrap hover:opacity-80 uppercase inline-flex items-center gap-1 text-gray-700"
         >
           MORE
           <ChevronDown className="w-3 h-3" />
@@ -244,7 +248,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         
         {activeDropdown === "MORE" && (
           <div 
-            className="dropdown-content absolute top-full right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[280px] max-h-[70vh] overflow-y-auto"
+            className="dropdown-content absolute top-full right-0 mt-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[280px] max-h-[70vh] overflow-y-auto"
             onMouseEnter={() => setActiveDropdown("MORE")}
             onMouseLeave={handleMouseLeave}
           >

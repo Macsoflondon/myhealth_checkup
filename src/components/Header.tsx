@@ -70,7 +70,7 @@ const Header = ({
         {/* Bottom row - Navigation Menu (Toolbar) */}
         <div className={toolbarClasses}>
           <div className="flex items-center justify-center px-6 lg:px-16 w-full">
-            <NavigationItems className="flex items-center gap-2" />
+            <NavigationItems className="flex items-center gap-1" />
           </div>
         </div>
       </header>
