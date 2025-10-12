@@ -95,7 +95,7 @@ const NewHero = () => {
       <section className="w-full bg-[#081129] py-0">
       <div className="w-full px-4 bg-[#081129] py-[30px]">
         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl leading-tight font-medium text-center whitespace-nowrap">
-          <span className="text-[#22c0d4] py-[20px] my-[20px] font-normal text-3xl">Compare the UK's leading private health test providers - </span>
+          <span className="py-[20px] my-[20px] font-normal text-3xl text-white">Compare the UK's leading private health test providers - </span>
           <span className="text-[#fc0173] font-normal text-3xl">All in one place!</span>
         </h1>
         </div>
