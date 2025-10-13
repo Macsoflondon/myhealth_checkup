@@ -92,9 +92,9 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-3 -mt-1">
+      <section className="w-full bg-[#081129] py-2 sm:py-3 -mt-1">
       <div className="w-full px-4">
-        <h1 className="text-sm sm:text-base md:text-lg lg:text-xl leading-tight font-normal text-center">
+        <h1 className="text-xs sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
           <span className="text-white">Compare the UK's leading private health test providers - </span>
           <span className="text-[#fc0173]">All in one place!</span>
         </h1>
@@ -111,22 +111,22 @@ const NewHero = () => {
         <div className="relative z-10 w-full py-6 bg-[#081129]">
           <div className="w-full text-center px-4">
             {/* Trust Indicators - 2x2 Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 max-w-3xl mx-auto px-4">
-              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
-                <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">No GP Referral Needed</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 sm:mb-8 max-w-3xl mx-auto px-3 sm:px-4">
+              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
+                <CheckCircle2 className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">No GP Referral Needed</span>
               </div>
-              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
-                <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">UKAS-Accredited Laboratories</span>
+              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
+                <Shield className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">UKAS-Accredited Laboratories</span>
               </div>
-              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
-                <MapPin className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">At-Home Test or In-Clinic Blood Draw</span>
+              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
+                <MapPin className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">At-Home Test or In-Clinic Blood Draw</span>
               </div>
-              <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
-                <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">Test Results In 3-5 Days *</span>
+              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
+                <Clock className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">Test Results In 3-5 Days *</span>
               </div>
             </div>
 
