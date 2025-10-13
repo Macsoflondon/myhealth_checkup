@@ -82,7 +82,7 @@ const NewHero = () => {
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
               <div className="relative w-[90vw] sm:w-[95vw] md:w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden mx-auto rounded-lg">
-                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/hero-video-new.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -102,13 +102,7 @@ const NewHero = () => {
       </section>
       
       {/* Trust Indicators and Search Section */}
-      <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white" style={{
-      backgroundImage: `linear-gradient(rgba(8, 17, 41, 0.8), rgba(8, 17, 41, 0.8)), url('/lovable-uploads/11b262c6-6809-4179-be41-47c54752fd80.png')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      willChange: 'transform'
-    }}>
+      <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="wave-pattern h-full w-full"></div>
