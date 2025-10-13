@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { providers } from "@/data/compare/providers";
 
 // Merge default icon options once
 L.Icon.Default.mergeOptions({
@@ -23,6 +24,7 @@ L.Icon.Default.mergeOptions({
 
 const RMapContainer = MapContainer as any;
 const RTileLayer = TileLayer as any;
+const RMarker = Marker as any;
 
 interface ClinicItem {
   id?: string;
@@ -47,6 +49,77 @@ const DEFAULT_ZOOM = 11;
 function mToKm(m?: number) {
   if (typeof m !== "number") return "";
   return (m / 1000).toFixed(2);
+}
+
+// Helper function to extract provider name from clinic name and get logo
+function getProviderLogo(clinicName: string): string | null {
+  const lowerName = clinicName.toLowerCase();
+  
+  // Match clinic name to provider
+  if (lowerName.includes("medichecks")) {
+    return providers.find(p => p.id === "medichecks")?.logo || null;
+  }
+  if (lowerName.includes("thriva")) {
+    return providers.find(p => p.id === "thriva")?.logo || null;
+  }
+  if (lowerName.includes("randox")) {
+    return providers.find(p => p.id === "randox")?.logo || null;
+  }
+  if (lowerName.includes("london medical laboratory") || lowerName.includes("lml")) {
+    return providers.find(p => p.id === "london-medical-laboratory")?.logo || null;
+  }
+  if (lowerName.includes("lola health") || lowerName.includes("lola")) {
+    return providers.find(p => p.id === "lola-health")?.logo || null;
+  }
+  if (lowerName.includes("goodbody")) {
+    return providers.find(p => p.id === "goodbody-clinic")?.logo || null;
+  }
+  if (lowerName.includes("tuli health") || lowerName.includes("tuli")) {
+    return providers.find(p => p.id === "tuli-health")?.logo || null;
+  }
+  
+  return null;
+}
+
+// Create custom icon for provider markers
+function createProviderIcon(clinicName: string) {
+  const logoUrl = getProviderLogo(clinicName);
+  
+  if (logoUrl) {
+    return L.divIcon({
+      html: `
+        <div style="
+          width: 40px;
+          height: 40px;
+          background: white;
+          border-radius: 50%;
+          border: 3px solid #FA6980;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          overflow: hidden;
+        ">
+          <img 
+            src="${logoUrl}" 
+            alt="Provider logo"
+            style="
+              width: 28px;
+              height: 28px;
+              object-fit: contain;
+            "
+          />
+        </div>
+      `,
+      className: 'custom-provider-marker',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -40]
+    });
+  }
+  
+  // Fallback to default icon
+  return new L.Icon.Default();
 }
 
 function FlyTo({
@@ -251,11 +324,11 @@ const ClinicMap: React.FC = () => {
               <FlyTo center={userCenter} />
 
               {userCenter && (
-                <Marker position={userCenter}>
+                <RMarker position={userCenter}>
                   <Popup>
                     <div className="font-medium">You are here</div>
                   </Popup>
-                </Marker>
+                </RMarker>
               )}
 
               {sortedItems.map((clinic, idx) => {
@@ -267,8 +340,10 @@ const ClinicMap: React.FC = () => {
                 
                 if (typeof lat !== "number" || typeof lon !== "number") return null;
                 
+                const customIcon = createProviderIcon(clinic.name || "");
+                
                 return (
-                  <Marker key={idx} position={[lat, lon]}>
+                  <RMarker key={idx} position={[lat, lon]} icon={customIcon}>
                     <Popup>
                       <div className="min-w-[200px]">
                         <div className="font-semibold text-[#081129] mb-1">
@@ -294,7 +369,7 @@ const ClinicMap: React.FC = () => {
                         )}
                       </div>
                     </Popup>
-                  </Marker>
+                  </RMarker>
                 );
               })}
             </RMapContainer>
