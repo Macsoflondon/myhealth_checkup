@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Heart, Activity, Droplets, Dna, Apple, ArrowRight, TestTube, User, UserCheck, FlaskConical, Weight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { getCategoryCSSClasses } from "@/data/categoryColors";
 interface CategoryCardProps {
   title: string;
@@ -11,7 +12,9 @@ interface CategoryCardProps {
   link: string;
   testCount?: number;
   providerCount?: number;
+  featured?: boolean;
 }
+
 const CategoryCard = ({
   title,
   description,
@@ -19,25 +22,76 @@ const CategoryCard = ({
   color,
   link,
   testCount,
-  providerCount
+  providerCount,
+  featured = false
 }: CategoryCardProps) => {
-  return <Link to={link} className={cn("block p-6 rounded-xl transition-all duration-300", "bg-white shadow-lg shadow-gray-100/40 hover:shadow-xl hover:scale-105", "border border-gray-100 hover:border-gray-200")}>
-      <div className={cn("w-14 h-14 rounded-lg mb-4 flex items-center justify-center", color)}>
-        {icon}
-      </div>
-      <h3 className="text-xl font-semibold mb-2 text-[#081129]">{title}</h3>
-      <p className="text-gray-600 mb-4 text-sm leading-relaxed">{description}</p>
+  return (
+    <Link 
+      to={link} 
+      className={cn(
+        "group relative overflow-hidden rounded-2xl transition-all duration-500",
+        "bg-gradient-to-br from-white to-gray-50/50",
+        "border border-gray-200/60 hover:border-[#FA6980]/30",
+        "hover:shadow-2xl hover:shadow-[#FA6980]/10",
+        "hover:-translate-y-2",
+        featured && "md:col-span-2 md:row-span-1"
+      )}
+    >
+      {/* Gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#FA6980]/5 to-[#3A5F85]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
-      {/* Provider and test count indicators */}
-      <div className="flex justify-between items-center mb-4 text-xs text-gray-500">
-        {testCount && <span>{testCount} tests available</span>}
-        {providerCount && <span>{providerCount} providers</span>}
+      <div className={cn("p-6 relative z-10", featured && "md:p-8")}>
+        {/* Icon with gradient background */}
+        <div className="mb-4 flex items-start justify-between">
+          <div className={cn(
+            "relative rounded-xl p-3.5 bg-gradient-to-br shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
+            "from-[#FA6980] to-[#e70d69]"
+          )}>
+            <div className="absolute inset-0 bg-white/20 rounded-xl" />
+            {icon}
+          </div>
+          
+          {/* Stats badges */}
+          <div className="flex flex-col gap-1.5">
+            {testCount && (
+              <Badge variant="secondary" className="bg-[#3A5F85]/10 text-[#3A5F85] border-0 text-xs font-medium px-2.5 py-0.5">
+                {testCount} tests
+              </Badge>
+            )}
+            {providerCount && (
+              <Badge variant="secondary" className="bg-[#FA6980]/10 text-[#e70d69] border-0 text-xs font-medium px-2.5 py-0.5">
+                {providerCount} providers
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Content */}
+        <h3 className={cn(
+          "font-bold mb-3 text-[#081129] group-hover:text-[#FA6980] transition-colors duration-300",
+          featured ? "text-2xl md:text-3xl" : "text-xl"
+        )}>
+          {title}
+        </h3>
+        
+        <p className={cn(
+          "text-gray-600 leading-relaxed mb-5",
+          featured ? "text-base" : "text-sm"
+        )}>
+          {description}
+        </p>
+        
+        {/* CTA */}
+        <div className="flex items-center text-[#FA6980] font-semibold text-sm group-hover:gap-3 gap-2 transition-all duration-300">
+          <span>Compare Options</span>
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+        </div>
       </div>
-      
-      <div className="flex items-center text-health-600 font-medium">
-        Compare All Options <ArrowRight className="ml-2 h-4 w-4" />
-      </div>
-    </Link>;
+
+      {/* Bottom accent line */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#FA6980] to-[#3A5F85] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+    </Link>
+  );
 };
 const TestCategories = (): JSX.Element => {
   const categories = [{
@@ -113,37 +167,56 @@ const TestCategories = (): JSX.Element => {
     testCount: 16,
     providerCount: 10
   }];
-  return <section className="py-16 bg-white">
+  return (
+    <section className="py-20 bg-gradient-to-b from-white via-gray-50/30 to-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-semibold mb-4 text-4xl my-0 py-[20px] text-[#22c0d4]" style={{
-          color: '#22c0d4'
-        }}>Test Categories</h2>
-          <p className="max-w-3xl mx-auto text-xl text-[#081129] font-medium">
-            Explore our comprehensive range of health tests, carefully curated from the UK's most trusted providers.
+        {/* Header */}
+        <div className="text-center mb-16 space-y-4">
+          <Badge className="bg-[#22c0d4]/10 text-[#22c0d4] border-0 px-4 py-1.5 text-sm font-semibold mb-4">
+            HEALTH TESTING SERVICES
+          </Badge>
+          <h2 className="font-bold text-4xl md:text-5xl text-[#081129] mb-4">
+            Explore Test Categories
+          </h2>
+          <p className="max-w-3xl mx-auto text-lg text-gray-600 leading-relaxed">
+            Compare comprehensive health tests from the UK's most trusted providers. 
+            All tests are UKAS-accredited with fast turnaround times.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+        {/* Category Grid - 3 columns with featured items */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
           {categories.map((category, index) => {
-          const colors = getCategoryCSSClasses(category.categoryId);
-          return <CategoryCard key={index} {...category} color={colors.primary} />;
-        })}
+            const colors = getCategoryCSSClasses(category.categoryId);
+            // Make first category featured (spans 2 columns)
+            const isFeatured = index === 0;
+            return (
+              <CategoryCard 
+                key={index} 
+                {...category} 
+                color={colors.primary}
+                featured={isFeatured}
+              />
+            );
+          })}
         </div>
 
-        <div className="text-center mt-12 my-[60px]">
-          <Button variant="outline" size="lg" asChild style={{
-          backgroundColor: '#e70d69',
-          color: 'white',
-          borderColor: '#e70d69'
-        }}>
+        {/* CTA Button */}
+        <div className="text-center mt-16">
+          <Button 
+            variant="default" 
+            size="lg" 
+            asChild
+            className="bg-gradient-to-r from-[#FA6980] to-[#e70d69] hover:from-[#e70d69] hover:to-[#FA6980] text-white border-0 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          >
             <Link to="/compare">
               View All Tests
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 export default TestCategories;
