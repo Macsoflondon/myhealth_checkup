@@ -59,21 +59,21 @@ const NewHero = () => {
     }
   }, [handleSearch]);
   const popularSearches = useMemo(() => [{
-    name: "General Health Test",
+    name: t('hero.generalHealthTest'),
     route: "/test/general-health"
   }, {
-    name: "Male Hormone Test",
+    name: t('hero.maleHormoneTest'),
     route: "/test/male-hormones"
   }, {
-    name: "Vitamin D Test",
+    name: t('hero.vitaminDTest'),
     route: "/test/vitamin-d"
   }, {
-    name: "Iron Profile",
+    name: t('hero.ironProfile'),
     route: "/test/iron-profile"
   }, {
-    name: "Well Woman Test",
+    name: t('hero.wellWomanTest'),
     route: "/test/well-woman"
-  }], []);
+  }], [t]);
   return <>
       {/* Hero Video Section */}
       <section className="relative overflow-hidden bg-[#081129] -mb-1">
@@ -105,8 +105,8 @@ const NewHero = () => {
       <section className="w-full bg-[#081129] py-2 sm:py-3 -mt-1">
       <div className="w-full px-4">
         <h1 className="text-xs sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
-          <span className="text-white">Compare the UK's leading private health test providers - </span>
-          <span className="text-[#fc0173]">All in one place!</span>
+          <span className="text-white">{t('hero.compareProviders')} </span>
+          <span className="text-[#fc0173]">{t('hero.allInOnePlace')}</span>
         </h1>
         </div>
       </section>
@@ -124,19 +124,19 @@ const NewHero = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 sm:mb-8 max-w-3xl mx-auto px-3 sm:px-4">
               <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
                 <CheckCircle2 className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">No GP Referral Needed</span>
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
               </div>
               <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
                 <Shield className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">UKAS-Accredited Laboratories</span>
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
               </div>
               <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
                 <MapPin className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">At-Home Test or In-Clinic Blood Draw</span>
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
               </div>
               <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
                 <Clock className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">Test Results In 3-5 Days *</span>
+                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
               </div>
             </div>
 
@@ -154,10 +154,10 @@ const NewHero = () => {
                 }} className="px-6 sm:px-8 py-3 text-base text-white rounded-xl transition-all duration-300 transform hover:scale-105 min-h-[44px] bg-[#22c0d4] sm:py-[16px] font-medium sm:text-sm text-center my-[10px]">
                     {isAnalyzing ? <>
                         <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Analyzing...
+                        {t('hero.analyzing')}
                       </> : <>
                         <Bot className="w-5 h-5 mr-2" />
-                        Start Your Search
+                        {t('hero.startSearch')}
                       </>}
                   </Button>
                 </div>
@@ -166,13 +166,13 @@ const NewHero = () => {
                 {aiResults && <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                     <div className="flex items-center gap-2 mb-3">
                       <Bot className="w-5 h-5 text-blue-600" />
-                      <h3 className="font-semibold text-blue-800">AI Analysis Results</h3>
+                      <h3 className="font-semibold text-blue-800">{t('hero.aiAnalysisResults')}</h3>
                     </div>
                     
                     <p className="text-[#081129] mb-4">{aiResults.analysis}</p>
                     
                     {aiResults.recommendedTests?.length > 0 && <div className="mb-4">
-                        <h4 className="font-medium text-green-800 mb-2">✅ Tests We Offer:</h4>
+                        <h4 className="font-medium text-green-800 mb-2">{t('hero.testsWeOffer')}</h4>
                         <div className="space-y-2">
                           {aiResults.recommendedTests.map((test: any, index: number) => <div key={index} className="bg-white p-3 rounded border border-green-200">
                               <div className="font-medium text-green-700">{test.testName}</div>
@@ -183,7 +183,7 @@ const NewHero = () => {
                       </div>}
                     
                     {aiResults.alternativeProviders?.length > 0 && <div className="mb-4">
-                        <h4 className="font-medium text-orange-800 mb-2">⚠️ Tests Not Available - Alternative Providers:</h4>
+                        <h4 className="font-medium text-orange-800 mb-2">{t('hero.testsNotAvailable')}</h4>
                         <div className="space-y-2">
                           {aiResults.alternativeProviders.map((alt: any, index: number) => <div key={index} className="bg-orange-50 p-3 rounded border border-orange-200">
                               <div className="font-medium text-orange-700">{alt.testName}</div>
@@ -194,13 +194,13 @@ const NewHero = () => {
                       </div>}
                     
                     <Button onClick={() => navigate('/compare-tests')} className="w-full mt-3 bg-health-primary hover:bg-health-primary/90">
-                      Compare Available Tests
+                      {t('hero.compareAvailableTests')}
                     </Button>
                   </div>}
                 
                 {/* Popular Searches */}
                 <div className="mt-6 my-[10px]">
-                  <p className="text-sm text-[#081129] mb-3">Popular searches:</p>
+                  <p className="text-sm text-[#081129] mb-3">{t('hero.popularSearches')}</p>
                   <div className="space-y-2">
                     {/* Top row - 3 tests */}
                     <div className="flex flex-wrap gap-2 justify-center">
@@ -222,14 +222,14 @@ const NewHero = () => {
             {/* Stats Grid */}
             <div className="flex flex-wrap justify-center gap-4 mb-8 max-w-4xl mx-auto px-4">
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur bg-white">
-                <span className="text-[#22c0d4] text-center text-lg font-bold">7 Trusted Providers</span>
+                <span className="text-[#22c0d4] text-center text-lg font-bold">{t('hero.trustedProviders')}</span>
               </div>
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-white">
-                <span className="text-center text-lg font-semibold text-[#e70d69]">200+ Available Tests</span>
+                <span className="text-center text-lg font-semibold text-[#e70d69]">{t('hero.availableTests')}</span>
               </div>
               
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-white py-0">
-                <span className="text-center text-[#22c0d4] text-lg font-bold">150 + Nationwide Clinics</span>
+                <span className="text-center text-[#22c0d4] text-lg font-bold">{t('hero.nationwideClinics')}</span>
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@ const NewHero = () => {
       <section className="w-full py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-8">
-            Our Partners
+            {t('hero.ourPartners')}
           </h2>
           {/* Top Row - 4 providers */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
@@ -265,7 +265,7 @@ const NewHero = () => {
       <section className="w-full py-8 bg-[#081129]">
         <div className="w-full px-4">
           <h2 className="text-xl sm:text-2xl text-center leading-tight font-medium lg:text-4xl md:text-4xl text-white">
-            Your <span className="text-[#22c0d4]">health</span> is your greatest <span className="text-[#e70d69]">asset!</span>
+            Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!
           </h2>
         </div>
       </section>
