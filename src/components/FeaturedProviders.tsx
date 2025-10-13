@@ -83,8 +83,8 @@ const FeaturedProviders = () => {
           {featuredProviderData.map(provider => <Card key={provider.id} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-start gap-3 md:gap-4 mb-4 my-0">
-                  <div className="w-6 h-6 md:w-7 md:h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    <ProviderLogo provider={provider.name} className="w-4 h-4 md:w-5 md:h-5" />
+                  <div className="w-3 h-3 md:w-3.5 md:h-3.5 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <ProviderLogo provider={provider.name} className="w-2 h-2 md:w-2.5 md:h-2.5" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1 truncate">{provider.name}</h3>
