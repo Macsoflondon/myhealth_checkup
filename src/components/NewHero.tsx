@@ -76,13 +76,13 @@ const NewHero = () => {
   }], []);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-[#081129]">
+      <section className="relative overflow-hidden bg-[#081129] -mb-1">
         <div className="w-full">
-          <div className="w-full text-center">
+          <div className="w-full">
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
-              <div className="relative w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[65vh] xl:h-[80vh] overflow-hidden">
-                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
+              <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] overflow-hidden">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover object-center" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -92,11 +92,11 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-4">
-      <div className="w-full px-4 bg-[#081129]">
-        <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl leading-tight font-medium text-center">
-          <span className="font-normal text-white">Compare the UK's leading private health test providers - </span>
-          <span className="text-[#fc0173] font-normal">All in one place!</span>
+      <section className="w-full bg-[#081129] py-3 -mt-1">
+      <div className="w-full px-4">
+        <h1 className="text-sm sm:text-base md:text-lg lg:text-xl leading-tight font-normal text-center">
+          <span className="text-white">Compare the UK's leading private health test providers - </span>
+          <span className="text-[#fc0173]">All in one place!</span>
         </h1>
         </div>
       </section>
