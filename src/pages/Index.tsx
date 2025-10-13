@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import NewHero from "@/components/NewHero";
 import CallToAction from "@/components/CallToAction";
 import UKASBanner from "@/components/UKASBanner";
+import PromoBanner from "@/components/PromoBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
@@ -83,6 +84,7 @@ const Index = () => {
         </script>
       </Helmet>
       
+      <PromoBanner />
       <UKASBanner />
       <Header />
       
