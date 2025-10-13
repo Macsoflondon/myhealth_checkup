@@ -77,11 +77,11 @@ const NewHero = () => {
   return <>
       {/* Hero Video Section */}
       <section className="relative overflow-hidden bg-[#081129]">
-        <div className="w-full py-0">
-          <div className="w-full text-center px-0">
+        <div className="w-full">
+          <div className="w-full text-center">
             {/* Hero Video Container - Responsive */}
             <div className="relative mx-auto w-full">
-              <div className="relative w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[70vh] xl:h-screen overflow-hidden">
+              <div className="relative w-full h-[35vh] sm:h-[45vh] md:h-[55vh] lg:h-[65vh] xl:h-[80vh] overflow-hidden">
                 <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain object-center" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
                   Your browser does not support the video tag.
                 </video>
@@ -92,11 +92,11 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-0">
-      <div className="w-full px-4 bg-[#081129] py-[30px]">
-        <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl leading-tight font-medium text-center whitespace-nowrap">
-          <span className="py-[20px] my-[20px] font-normal text-3xl text-white">Compare the UK's leading private health test providers - </span>
-          <span className="text-[#fc0173] font-normal text-3xl">All in one place!</span>
+      <section className="w-full bg-[#081129] py-4">
+      <div className="w-full px-4 bg-[#081129]">
+        <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl leading-tight font-medium text-center">
+          <span className="font-normal text-white">Compare the UK's leading private health test providers - </span>
+          <span className="text-[#fc0173] font-normal">All in one place!</span>
         </h1>
         </div>
       </section>
@@ -108,10 +108,10 @@ const NewHero = () => {
           <div className="wave-pattern h-full w-full"></div>
         </div>
         
-        <div className="relative z-10 w-full my-0 py-[20px] bg-[#081129]">
+        <div className="relative z-10 w-full py-6 bg-[#081129]">
           <div className="w-full text-center px-4">
-            {/* Trust Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-12 max-w-5xl mx-auto px-4">
+            {/* Trust Indicators - 2x2 Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 max-w-3xl mx-auto px-4">
               <div className="rounded-xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-3 min-h-[100px]">
                 <CheckCircle2 className="w-6 h-6 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center sm:text-left text-sm sm:text-base font-medium text-[#081129] leading-tight">No GP Referral Needed</span>
@@ -131,7 +131,7 @@ const NewHero = () => {
             </div>
 
             {/* Search Section */}
-            <div className="max-w-4xl mx-auto mb-12 px-2 shadow-lime-400 rounded">
+            <div className="max-w-4xl mx-auto mb-8 px-2 shadow-lime-400 rounded">
               <div className="rounded-2xl p-4 sm:p-6 shadow-2xl py-[14px] bg-white">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
@@ -210,7 +210,7 @@ const NewHero = () => {
             </div>
 
             {/* Stats Grid */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4 mb-8 max-w-4xl mx-auto px-4">
               <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur bg-white">
                 <span className="text-[#22c0d4] text-center text-lg font-bold">7 Trusted Providers</span>
               </div>
@@ -230,9 +230,9 @@ const NewHero = () => {
       <AccreditationLogos />
       
       {/* Our Partners Section */}
-      <section className="w-full py-16 bg-gray-50">
+      <section className="w-full py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-8">
             Our Partners
           </h2>
           {/* Top Row - 4 providers */}
