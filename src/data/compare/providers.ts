@@ -41,5 +41,29 @@ export const providers = [
     name: "Tuli Health",
     logo: "/lovable-uploads/provider-tuli-health.png",
     website: "https://tulihealth.com"
+  },
+  {
+    id: "superdrug",
+    name: "Superdrug Nurse Clinic",
+    logo: "/lovable-uploads/provider-superdrug.png",
+    website: "https://www.superdrug.com/health-services"
+  },
+  {
+    id: "ultrasound-direct",
+    name: "Ultrasound Direct",
+    logo: "/lovable-uploads/provider-ultrasound-direct.png",
+    website: "https://www.ultrasounddirect.co.uk"
+  },
+  {
+    id: "nhs-hospitals",
+    name: "NHS Hospitals",
+    logo: "/lovable-uploads/provider-nhs.png",
+    website: "https://www.nhs.uk"
+  },
+  {
+    id: "independent",
+    name: "Independent Clinics",
+    logo: "/lovable-uploads/provider-independent.png",
+    website: ""
   }
 ];
