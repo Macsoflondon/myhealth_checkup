@@ -76,33 +76,29 @@ const NewHero = () => {
   }], [t]);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-[#081129] -mb-1">
+      <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full">
-          <div className="w-full">
-            {/* Hero Video Container - Responsive */}
-            <div className="relative mx-auto w-full">
-              <div className="relative w-full aspect-video overflow-hidden">
-                <video 
+          {/* Hero Video Container - More compact on mobile */}
+          <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:aspect-video overflow-hidden">
+            <video
                   autoPlay 
                   loop 
                   muted 
                   playsInline 
                   preload="auto"
                   poster="/lovable-uploads/hero-image-1.png" 
-                  className="absolute inset-0 w-full h-full object-cover object-center" 
-                  src="/myhealth_checkup.mp4" 
-                  aria-label="myhealth checkup - Your health is your greatest asset"
-                >
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
+              className="absolute inset-0 w-full h-full object-cover object-center" 
+              src="/myhealth_checkup.mp4" 
+              aria-label="myhealth checkup - Your health is your greatest asset"
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-2 sm:py-3 -mt-1">
+      <section className="w-full bg-[#081129] py-2 sm:py-3">
       <div className="w-full px-4">
         <h1 className="text-xs sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
           <span className="text-white">{t('hero.compareProviders')} </span>
@@ -112,16 +108,11 @@ const NewHero = () => {
       </section>
       
       {/* Trust Indicators and Search Section */}
-      <section className="hero-bg relative overflow-hidden bg-gradient-to-br from-health-primary via-health-secondary to-health-accent text-white">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="wave-pattern h-full w-full"></div>
-        </div>
-        
+      <section className="relative overflow-hidden bg-[#081129] text-white w-full">
         <div className="relative z-10 w-full py-6 bg-[#081129]">
           <div className="w-full text-center px-4">
             {/* Trust Indicators - 2x2 Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 sm:mb-8 max-w-3xl mx-auto px-3 sm:px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
               <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
                 <CheckCircle2 className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
@@ -141,7 +132,7 @@ const NewHero = () => {
             </div>
 
             {/* Search Section */}
-            <div className="max-w-4xl mx-auto mb-8 px-2 shadow-lime-400 rounded">
+            <div className="max-w-4xl mx-auto mb-8 px-4">
               <div className="rounded-2xl p-4 sm:p-6 shadow-2xl py-[14px] bg-white">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1 relative">
