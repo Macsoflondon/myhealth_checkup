@@ -77,8 +77,18 @@ function getProviderLogo(clinicName: string): string | null {
   if (lowerName.includes("tuli health") || lowerName.includes("tuli")) {
     return providers.find(p => p.id === "tuli-health")?.logo || null;
   }
+  if (lowerName.includes("superdrug")) {
+    return providers.find(p => p.id === "superdrug")?.logo || null;
+  }
+  if (lowerName.includes("ultrasound direct")) {
+    return providers.find(p => p.id === "ultrasound-direct")?.logo || null;
+  }
+  if (lowerName.includes("hospital") || lowerName.includes("infirmary")) {
+    return providers.find(p => p.id === "nhs-hospitals")?.logo || null;
+  }
   
-  return null;
+  // Default to independent clinics
+  return providers.find(p => p.id === "independent")?.logo || null;
 }
 
 // Create custom icon for provider markers
