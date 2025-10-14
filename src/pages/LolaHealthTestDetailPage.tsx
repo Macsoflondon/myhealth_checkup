@@ -244,7 +244,7 @@ const LolaHealthTestDetailPage = () => {
                     <Button 
                       size="lg" 
                       className="w-full"
-                      onClick={() => window.open(test.url, '_blank')}
+                      onClick={() => window.open('https://referrals.lolahealth.com/myhealthcheckup', '_blank')}
                       disabled={!test.is_active}
                     >
                       <ExternalLink className="mr-2 h-4 w-4" />

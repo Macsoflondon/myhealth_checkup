@@ -28,7 +28,7 @@ export const providers = [
     id: "lola-health",
     name: "Lola Health",
     logo: "/lovable-uploads/provider-lola-health.png",
-    website: "https://lolahealth.com" 
+    website: "https://referrals.lolahealth.com/myhealthcheckup" 
   },
   {
     id: "goodbody-clinic",

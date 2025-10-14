@@ -59,7 +59,7 @@ const FeaturedProviders = () => {
     description: "Modern health testing platform focused on women's health and wellness with innovative approaches",
     location: "UK Wide",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
-    website: "lolahealth.com"
+    website: "referrals.lolahealth.com/myhealthcheckup"
   }, {
     id: "Tuli",
     name: "Tuli Health",
