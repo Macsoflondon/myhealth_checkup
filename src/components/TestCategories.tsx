@@ -14,7 +14,6 @@ interface CategoryCardProps {
   providerCount?: number;
   featured?: boolean;
 }
-
 const CategoryCard = ({
   title,
   description,
@@ -25,59 +24,35 @@ const CategoryCard = ({
   providerCount,
   featured = false
 }: CategoryCardProps) => {
-  return (
-    <Link 
-      to={link} 
-      className={cn(
-        "group relative overflow-hidden rounded-2xl transition-all duration-500",
-        "bg-gradient-to-br from-white to-gray-50/50",
-        "border border-gray-200/60 hover:border-[#FA6980]/30",
-        "hover:shadow-2xl hover:shadow-[#FA6980]/10",
-        "hover:-translate-y-2",
-        featured && "md:col-span-2 md:row-span-1"
-      )}
-    >
+  return <Link to={link} className={cn("group relative overflow-hidden rounded-2xl transition-all duration-500", "bg-gradient-to-br from-white to-gray-50/50", "border border-gray-200/60 hover:border-[#FA6980]/30", "hover:shadow-2xl hover:shadow-[#FA6980]/10", "hover:-translate-y-2", featured && "md:col-span-2 md:row-span-1")}>
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#FA6980]/5 to-[#3A5F85]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className={cn("p-6 relative z-10", featured && "md:p-8")}>
         {/* Icon with gradient background */}
         <div className="mb-4 flex items-start justify-between">
-          <div className={cn(
-            "relative rounded-xl p-3.5 bg-gradient-to-br shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3",
-            "from-[#FA6980] to-[#e70d69]"
-          )}>
+          <div className={cn("relative rounded-xl p-3.5 bg-gradient-to-br shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3", "from-[#FA6980] to-[#e70d69]")}>
             <div className="absolute inset-0 bg-white/20 rounded-xl" />
             {icon}
           </div>
           
           {/* Stats badges */}
           <div className="flex flex-col gap-1.5">
-            {testCount && (
-              <Badge variant="secondary" className="bg-[#3A5F85]/10 text-[#3A5F85] border-0 text-xs font-medium px-2.5 py-0.5">
+            {testCount && <Badge variant="secondary" className="bg-[#3A5F85]/10 text-[#3A5F85] border-0 text-xs font-medium px-2.5 py-0.5">
                 {testCount} tests
-              </Badge>
-            )}
-            {providerCount && (
-              <Badge variant="secondary" className="bg-[#FA6980]/10 text-[#e70d69] border-0 text-xs font-medium px-2.5 py-0.5">
+              </Badge>}
+            {providerCount && <Badge variant="secondary" className="bg-[#FA6980]/10 text-[#e70d69] border-0 text-xs font-medium px-2.5 py-0.5">
                 {providerCount} providers
-              </Badge>
-            )}
+              </Badge>}
           </div>
         </div>
 
         {/* Content */}
-        <h3 className={cn(
-          "font-bold mb-3 text-[#081129] group-hover:text-[#FA6980] transition-colors duration-300",
-          featured ? "text-2xl md:text-3xl" : "text-xl"
-        )}>
+        <h3 className={cn("font-bold mb-3 text-[#081129] group-hover:text-[#FA6980] transition-colors duration-300", featured ? "text-2xl md:text-3xl" : "text-xl")}>
           {title}
         </h3>
         
-        <p className={cn(
-          "text-gray-600 leading-relaxed mb-5",
-          featured ? "text-base" : "text-sm"
-        )}>
+        <p className={cn("text-gray-600 leading-relaxed mb-5", featured ? "text-base" : "text-sm")}>
           {description}
         </p>
         
@@ -90,8 +65,7 @@ const CategoryCard = ({
 
       {/* Bottom accent line */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#FA6980] to-[#3A5F85] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-    </Link>
-  );
+    </Link>;
 };
 const TestCategories = (): JSX.Element => {
   const categories = [{
@@ -167,9 +141,8 @@ const TestCategories = (): JSX.Element => {
     testCount: 16,
     providerCount: 10
   }];
-  return (
-    <section className="py-20 bg-gradient-to-b from-white via-gray-50/30 to-white">
-      <div className="container mx-auto px-4">
+  return <section className="py-20 bg-gradient-to-b from-white via-gray-50/30 to-white">
+      <div className="container mx-auto px-4 py-[60px]">
         {/* Header */}
         <div className="text-center mb-16 space-y-4">
           <Badge className="bg-[#22c0d4]/10 text-[#22c0d4] border-0 px-4 py-1.5 text-sm font-semibold mb-4">
@@ -187,28 +160,16 @@ const TestCategories = (): JSX.Element => {
         {/* Category Grid - 3 columns with featured items */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
           {categories.map((category, index) => {
-            const colors = getCategoryCSSClasses(category.categoryId);
-            // Make first category featured (spans 2 columns)
-            const isFeatured = index === 0;
-            return (
-              <CategoryCard 
-                key={index} 
-                {...category} 
-                color={colors.primary}
-                featured={isFeatured}
-              />
-            );
-          })}
+          const colors = getCategoryCSSClasses(category.categoryId);
+          // Make first category featured (spans 2 columns)
+          const isFeatured = index === 0;
+          return <CategoryCard key={index} {...category} color={colors.primary} featured={isFeatured} />;
+        })}
         </div>
 
         {/* CTA Button */}
         <div className="text-center mt-16">
-          <Button 
-            variant="default" 
-            size="lg" 
-            asChild
-            className="bg-gradient-to-r from-[#FA6980] to-[#e70d69] hover:from-[#e70d69] hover:to-[#FA6980] text-white border-0 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-          >
+          <Button variant="default" size="lg" asChild className="bg-gradient-to-r from-[#FA6980] to-[#e70d69] hover:from-[#e70d69] hover:to-[#FA6980] text-white border-0 px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
             <Link to="/compare">
               View All Tests
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -216,7 +177,6 @@ const TestCategories = (): JSX.Element => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
 export default TestCategories;

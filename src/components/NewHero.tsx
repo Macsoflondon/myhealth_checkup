@@ -80,17 +80,7 @@ const NewHero = () => {
         <div className="w-full">
           {/* Hero Video Container - More compact on mobile */}
           <div className="relative w-full aspect-[9/16] sm:aspect-[4/3] md:aspect-[3/2] lg:aspect-video overflow-hidden bg-[#081129]">
-            <video
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  preload="auto"
-                  poster="/lovable-uploads/hero-image-1.png" 
-              className="absolute inset-0 w-full h-full object-contain"
-              src="/myhealth_checkup.mp4" 
-              aria-label="myhealth checkup - Your health is your greatest asset"
-            >
+            <video autoPlay loop muted playsInline preload="auto" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -231,7 +221,7 @@ const NewHero = () => {
       <AccreditationLogos />
       
       {/* Our Partners Section */}
-      <section className="w-full py-8 bg-gray-50">
+      <section className="w-full bg-gray-50 py-[22px]">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-8">
             {t('hero.ourPartners')}
