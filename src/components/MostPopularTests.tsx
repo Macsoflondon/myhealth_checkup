@@ -63,6 +63,17 @@ const TestCard = ({
 const MostPopularTests = () => {
   const navigate = useNavigate();
   const popularTests = [{
+    id: 'lola-core-health-45',
+    category: 'Comprehensive Health Panel',
+    name: 'Core Health 45 - Lola Health',
+    description: '45 essential biomarkers including blood analysis, cardiovascular health, kidney function, inflammation, vitamins, liver function, thyroid function, diabetes screening, and full blood count. Includes at-home phlebotomy service and doctor-reviewed results.',
+    price: '£140.00',
+    turnaround: 'Results estimated in 2-4 working days',
+    biomarkers: '45 biomarkers',
+    rating: 4.7,
+    reviews: 847,
+    collection: 'At-home phlebotomy service'
+  }, {
     id: 'optimal-health',
     category: 'Longevity called. It wants your blood',
     name: 'Optimal Health Blood Test',

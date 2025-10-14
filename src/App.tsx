@@ -60,6 +60,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import ClientPortal from "./pages/ClientPortal";
 import ModernSlaveryPage from "./pages/ModernSlaveryPage";
 import AffiliateDisclosurePage from "./pages/AffiliateDisclosurePage";
+import LolaHealthTestDetailPage from "./pages/LolaHealthTestDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -136,6 +137,10 @@ const App = () => (
               <Route path="/portal" element={<ProtectedRoute><ClientPortal /></ProtectedRoute>} />
               <Route path="/modern-slavery" element={<ModernSlaveryPage />} />
               <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
+              
+              {/* Lola Health test detail pages */}
+              <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
+              
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -256,7 +256,7 @@ export class OptimizedLiveCompareService {
       'thriva': 'Home kit only',
       'randox': 'Clinic visit only',
       'london-medical-laboratory': 'Clinic visit only',
-      'lola-health': 'Home kit only',
+      'lola-health': 'At-home phlebotomy service',
       'goodbody-clinic': 'Home kit or pharmacy clinic',
       'tuli-health': 'Home kit only'
     };

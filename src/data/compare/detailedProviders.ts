@@ -185,14 +185,17 @@ export const detailedProviders = [
   {
     id: "lola-health",
     name: "Lola Health",
-    website: "https://www.lolahealth.co.uk",
-    coreServices: "General wellness panels, fertility, PCOS, thyroid and fatigue",
-    tests: "Women's health and wellness tests",
-    sampleCollection: "Home kits",
-    turnaroundTime: "2-3 days",
-    customerReviews: "4.6/5 (Trustpilot)",
-    keyDifferentiators: "Women's health focus, affordable bundles, free consultations on selected plans",
-    description: "Modern health testing platform focused on women's health and wellness"
+    website: "https://lolahealth.com",
+    phone: "020 3870 3444",
+    email: "hello@lolahealth.com",
+    accreditation: "NHS-accredited laboratories (ISO 15189)",
+    coreServices: "70+ biomarkers across comprehensive health panels, at-home phlebotomy service, individual biomarker testing",
+    tests: "40+ blood tests including comprehensive panels and individual biomarkers",
+    sampleCollection: "Dedicated phlebotomist service for at-home venous blood collection",
+    turnaroundTime: "2-4 working days",
+    customerReviews: "4.7/5 (Trustpilot)",
+    keyDifferentiators: "At-home phlebotomy service (not finger-prick), doctor-reviewed results, app-powered insights, comprehensive and individual testing options",
+    description: "Modern health testing platform with at-home professional phlebotomy service, offering both comprehensive health panels (Core Health 45, Peak Insights) and individual biomarkers from £11.88. All results reviewed by doctors and delivered via app with personalized insights."
   },
   {
     id: "goodbody-clinic",
