@@ -163,7 +163,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
             className={`text-sm font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
                   (item as any).highlighted 
                     ? "text-[#E70D69]"
-                : "text-gray-900"
+                : "text-white"
             }`}
             onClick={onItemClick}
           >
@@ -261,7 +261,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         onMouseLeave={handleMouseLeave}
       >
         <button
-          className="text-sm font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-gray-900"
+          className="text-sm font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
         >
           More
           <ChevronDown className="w-3 h-3" />

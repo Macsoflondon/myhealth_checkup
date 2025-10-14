@@ -84,7 +84,6 @@ const Index = () => {
         </script>
       </Helmet>
       
-      <PromoBanner />
       <UKASBanner />
       <Header />
       
