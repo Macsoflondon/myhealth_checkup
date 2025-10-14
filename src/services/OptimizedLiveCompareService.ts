@@ -37,12 +37,12 @@ const cache = new Map<string, { data: any; timestamp: number }>();
 
 export class OptimizedLiveCompareService {
   private static readonly PROVIDER_LOGOS: Record<string, string> = {
-    'medichecks': '/lovable-uploads/provider-medichecks.png',
+    'medichecks': '/lovable-uploads/provider-medichecks-new-v2.svg',
     'thriva': '/lovable-uploads/provider-thriva.png',
     'randox': '/lovable-uploads/provider-randox.png',
     'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
     'lola-health': '/lovable-uploads/provider-lola-health.png',
-    'goodbody-clinic': '/lovable-uploads/provider-goodbody.png',
+    'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v2.svg',
     'tuli-health': '/lovable-uploads/provider-tuli-health.png'
   };
 

@@ -61,6 +61,7 @@ import ClientPortal from "./pages/ClientPortal";
 import ModernSlaveryPage from "./pages/ModernSlaveryPage";
 import AffiliateDisclosurePage from "./pages/AffiliateDisclosurePage";
 import LolaHealthTestDetailPage from "./pages/LolaHealthTestDetailPage";
+import GoodbodyTestDetailPage from "./pages/GoodbodyTestDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -139,7 +140,8 @@ const App = () => (
               <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
               
               {/* Lola Health test detail pages */}
-              <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
+            <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
+            <Route path="/goodbody/:testId" element={<GoodbodyTestDetailPage />} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
