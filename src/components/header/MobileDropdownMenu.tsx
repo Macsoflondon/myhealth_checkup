@@ -105,10 +105,10 @@ export const MobileDropdownMenu = ({
   return (
     <div 
       className={cn(
-        "fixed inset-x-0 top-[72px] bg-background border-t shadow-lg z-40 animate-in slide-in-from-top-2 duration-200",
+        "fixed inset-x-0 top-[60px] bg-white dark:bg-gray-900 border-t shadow-2xl z-[60] animate-in slide-in-from-top-2 duration-200",
         className
       )}
-      style={{ maxHeight: "70vh" }}
+      style={{ maxHeight: "calc(100vh - 60px)" }}
     >
       <div className="overflow-y-auto scrollbar-hide">
         <div className="py-4 px-4 space-y-1">

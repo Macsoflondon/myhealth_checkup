@@ -46,7 +46,7 @@ export const LanguageSwitcher = () => {
           <span className="text-lg">{currentLanguage.flag}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-800 z-[100] shadow-xl border-2">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}

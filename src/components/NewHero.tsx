@@ -79,7 +79,7 @@ const NewHero = () => {
       <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full">
           {/* Hero Video Container - More compact on mobile */}
-          <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[80vh] lg:aspect-video overflow-hidden">
+          <div className="relative w-full aspect-[9/16] sm:aspect-[4/3] md:aspect-[3/2] lg:aspect-video overflow-hidden bg-[#081129]">
             <video
                   autoPlay 
                   loop 
@@ -87,7 +87,7 @@ const NewHero = () => {
                   playsInline 
                   preload="auto"
                   poster="/lovable-uploads/hero-image-1.png" 
-              className="absolute inset-0 w-full h-full object-cover object-top" 
+              className="absolute inset-0 w-full h-full object-contain"
               src="/myhealth_checkup.mp4" 
               aria-label="myhealth checkup - Your health is your greatest asset"
             >

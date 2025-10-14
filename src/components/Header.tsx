@@ -30,13 +30,13 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
-          <div className="px-3 py-2 flex justify-between items-center gap-3 bg-[#081129]">
+          <div className="px-4 py-3 flex justify-between items-center gap-3 bg-[#081129]">
             <div className="flex-shrink-0">
               <Logo />
             </div>
             
             {/* Right side controls */}
-            <div className="flex items-center gap-1.5 flex-shrink-0">
+            <div className="flex items-center gap-2.5 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
