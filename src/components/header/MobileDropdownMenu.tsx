@@ -103,23 +103,31 @@ export const MobileDropdownMenu = ({
   if (!isOpen) return null;
 
   return (
-    <div 
-      className={cn(
-        "fixed inset-x-0 top-[60px] bg-white dark:bg-gray-900 border-t shadow-2xl z-[60] animate-in slide-in-from-top-2 duration-200",
-        className
-      )}
-      style={{ maxHeight: "calc(100vh - 60px)" }}
-    >
-      <div className="overflow-y-auto scrollbar-hide">
-        <div className="py-4 px-4 space-y-1">
+    <>
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[59] animate-in fade-in duration-200"
+        onClick={onItemClick}
+      />
+      
+      {/* Menu */}
+      <div 
+        className={cn(
+          "fixed inset-x-0 top-[56px] bg-white dark:bg-gray-900 border-t shadow-2xl z-[60] animate-in slide-in-from-top-2 duration-200",
+          className
+        )}
+        style={{ maxHeight: "calc(100vh - 56px)" }}
+      >
+        <div className="overflow-y-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="py-2 px-3 space-y-0.5">
           {/* Main Health Categories */}
           {mobileNavigationItems.map((item) => {
             const isExpanded = expandedCategories.has(item.name);
             const popularTests = getTestsForCategories(item.categories);
 
             return (
-              <div key={item.name} className="border-b border-border/50 last:border-b-0">
-                <div className="flex items-center justify-between py-3">
+              <div key={item.name} className="border-b border-border/30 last:border-b-0">
+                <div className="flex items-center justify-between py-3.5">
                   <Link
                     to={item.path}
                     className="flex items-center gap-3 flex-1 min-w-0"
@@ -202,5 +210,6 @@ export const MobileDropdownMenu = ({
         </div>
       </div>
     </div>
+    </>
   );
 };

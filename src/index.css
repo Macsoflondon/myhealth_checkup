@@ -193,6 +193,30 @@
       image-rendering: -webkit-optimize-contrast;
       image-rendering: optimizeSpeed;
     }
+    
+    /* Mobile performance optimizations */
+    body {
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+    }
+    
+    /* Optimize touch interactions */
+    button, a, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    
+    /* Reduce paint areas for mobile */
+    .mobile-optimized {
+      contain: layout style paint;
+    }
+    
+    /* Better text rendering on mobile */
+    body {
+      text-rendering: optimizeSpeed;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
   }
   
   /* Reduce motion for better performance and accessibility */

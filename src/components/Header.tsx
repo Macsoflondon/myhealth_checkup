@@ -29,15 +29,14 @@ const Header = ({
   }, [location.pathname]);
   if (isMobile) {
     return <ErrorBoundary>
-        <header className={cn("sticky top-0 z-50 bg-[#081129]", className)}>
-          <div className="px-4 py-3 flex justify-between items-center gap-3 bg-[#081129]">
+        <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
+          <div className="px-3 py-2 flex justify-between items-center gap-2 bg-[#081129] h-14">
             <div className="flex-shrink-0">
               <Logo />
             </div>
             
             {/* Right side controls */}
-            <div className="flex items-center gap-2.5 flex-shrink-0">
-              <LanguageSwitcher />
+            <div className="flex items-center gap-2 flex-shrink-0">
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             </div>

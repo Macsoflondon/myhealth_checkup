@@ -78,9 +78,19 @@ const NewHero = () => {
       {/* Hero Video Section */}
       <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full">
-          {/* Hero Video Container - More compact on mobile */}
-          <div className="relative w-full aspect-[9/16] sm:aspect-[4/3] md:aspect-[3/2] lg:aspect-video overflow-hidden bg-[#081129]">
-            <video autoPlay loop muted playsInline preload="auto" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-contain" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
+          {/* Hero Video Container - Optimized for mobile */}
+          <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] lg:aspect-video overflow-hidden bg-[#081129]">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              preload="metadata" 
+              poster="/lovable-uploads/hero-image-1.png" 
+              className="absolute inset-0 w-full h-full object-cover"
+              src="/myhealth_checkup.mp4" 
+              aria-label="myhealth checkup - Your health is your greatest asset"
+            >
               Your browser does not support the video tag.
             </video>
           </div>
@@ -88,56 +98,65 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-2 sm:py-3">
-      <div className="w-full px-4">
-        <h1 className="text-xs sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
-          <span className="text-white">{t('hero.compareProviders')} </span>
-          <span className="text-[#fc0173]">{t('hero.allInOnePlace')}</span>
-        </h1>
+      <section className="w-full bg-[#081129] py-1.5 sm:py-2">
+        <div className="w-full px-3 sm:px-4">
+          <h1 className="text-[11px] sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
+            <span className="text-white">{t('hero.compareProviders')} </span>
+            <span className="text-[#fc0173]">{t('hero.allInOnePlace')}</span>
+          </h1>
         </div>
       </section>
       
       {/* Trust Indicators and Search Section */}
       <section className="relative overflow-hidden bg-[#081129] text-white w-full">
-        <div className="relative z-10 w-full py-6 bg-[#081129]">
-          <div className="w-full text-center px-4">
-            {/* Trust Indicators - 2x2 Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
-              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
-                <CheckCircle2 className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
+        <div className="relative z-10 w-full py-3 sm:py-6 bg-[#081129]">
+          <div className="w-full text-center px-3 sm:px-4">
+            {/* Trust Indicators - Mobile optimized */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-3xl mx-auto">
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+                <CheckCircle2 className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
               </div>
-              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
-                <Shield className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+                <Shield className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
               </div>
-              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
-                <MapPin className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+                <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
               </div>
-              <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] transition-all duration-300 bg-white flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 min-h-[80px] sm:min-h-[100px]">
-                <Clock className="w-5 h-5 sm:w-8 sm:h-8 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center sm:text-left text-xs sm:text-base font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+                <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
               </div>
             </div>
 
             {/* Search Section */}
-            <div className="max-w-4xl mx-auto mb-8 px-4">
-              <div className="rounded-2xl p-4 sm:p-6 shadow-2xl py-[14px] bg-white">
-                <div className="flex flex-col sm:flex-row gap-4">
+            <div className="max-w-4xl mx-auto mb-4 sm:mb-6">
+              <div className="rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-xl bg-white">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-health-success w-5 h-5" />
-                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 pr-4 py-3 sm:py-4 text-base sm:text-lg border-2 border-gray-200 rounded-xl focus:border-health-primary focus:outline-none text-[#081129] w-full " />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
+                    <input 
+                      type="text" 
+                      placeholder={t('hero.searchPrompt')} 
+                      value={searchTerm} 
+                      onChange={e => setSearchTerm(e.target.value)} 
+                      onKeyPress={handleKeyPress} 
+                      className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" 
+                    />
                   </div>
-                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" style={{
-                  backgroundColor: '#22c0d4',
-                  color: 'white'
-                }} className="px-6 sm:px-8 py-3 text-base text-white rounded-xl transition-all duration-300 transform hover:scale-105 min-h-[44px] bg-[#22c0d4] sm:py-[16px] font-medium sm:text-sm text-center my-[10px]">
+                  <Button 
+                    onClick={handleSearch} 
+                    disabled={isAnalyzing} 
+                    size="lg"
+                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] font-medium"
+                  >
                     {isAnalyzing ? <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
                         {t('hero.analyzing')}
                       </> : <>
-                        <Bot className="w-5 h-5 mr-2" />
+                        <Bot className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                         {t('hero.startSearch')}
                       </>}
                   </Button>
@@ -179,73 +198,85 @@ const NewHero = () => {
                     </Button>
                   </div>}
                 
-                {/* Popular Searches */}
-                <div className="mt-6 my-[10px]">
-                  <p className="text-sm text-[#081129] mb-3">{t('hero.popularSearches')}</p>
-                  <div className="space-y-2">
-                    {/* Top row - 3 tests */}
-                    <div className="flex flex-wrap gap-2 justify-center">
-                      {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] font-sans">
-                          {search.name}
-                        </button>)}
-                    </div>
-                    {/* Bottom row - 2 tests evenly spaced */}
-                    <div className="flex gap-2 justify-center">
-                      {popularSearches.slice(3, 5).map((search, index) => <button key={index + 3} onClick={() => navigate(search.route)} className="px-3 py-1 text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] font-sans">
-                          {search.name}
-                        </button>)}
-                    </div>
+                {/* Popular Searches - Mobile optimized */}
+                <div className="mt-3 sm:mt-4">
+                  <p className="text-xs sm:text-sm text-[#081129] mb-2">{t('hero.popularSearches')}</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
+                    {popularSearches.slice(0, 3).map((search, index) => (
+                      <button 
+                        key={index} 
+                        onClick={() => navigate(search.route)} 
+                        className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] active:scale-95"
+                      >
+                        {search.name}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Stats Grid */}
-            <div className="flex flex-wrap justify-center gap-4 mb-8 max-w-4xl mx-auto px-4">
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 backdrop-blur bg-white">
-                <span className="text-[#22c0d4] text-center text-lg font-bold">{t('hero.trustedProviders')}</span>
+            {/* Stats Grid - Mobile optimized */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
+              <div className="rounded-lg p-3 sm:p-4 border border-white/20 shadow-md hover:shadow-lg transition-all duration-200 bg-white">
+                <span className="text-[#22c0d4] text-center text-xs sm:text-base font-bold block">{t('hero.trustedProviders')}</span>
               </div>
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-white">
-                <span className="text-center text-lg font-semibold text-[#e70d69]">{t('hero.availableTests')}</span>
+              <div className="rounded-lg p-3 sm:p-4 border border-white/20 shadow-md hover:shadow-lg transition-all duration-200 bg-white">
+                <span className="text-center text-xs sm:text-base font-semibold text-[#e70d69] block">{t('hero.availableTests')}</span>
               </div>
-              
-              <div className="backdrop-blur rounded-lg p-6 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 flex-1 min-w-[200px] max-w-[250px] flex items-center justify-center space-x-3 bg-white py-0">
-                <span className="text-center text-[#22c0d4] text-lg font-bold">{t('hero.nationwideClinics')}</span>
+              <div className="rounded-lg p-3 sm:p-4 border border-white/20 shadow-md hover:shadow-lg transition-all duration-200 bg-white col-span-2 sm:col-span-1">
+                <span className="text-center text-[#22c0d4] text-xs sm:text-base font-bold block">{t('hero.nationwideClinics')}</span>
               </div>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Accreditation Logos */}
-      <AccreditationLogos />
+      {/* Accreditation Logos - Lazy loaded */}
+      <div className="w-full">
+        <AccreditationLogos />
+      </div>
       
       {/* Our Partners Section */}
-      <section className="w-full bg-gray-50 py-[22px]">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#081129] mb-8">
+      <section className="w-full bg-gray-50 py-4 sm:py-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-[#081129] mb-4 sm:mb-6">
             {t('hero.ourPartners')}
           </h2>
           {/* Top Row - 4 providers */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
-              </div>)}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-3 sm:mb-6">
+            {providers.slice(0, 4).map(provider => (
+              <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
+                <img 
+                  src={provider.logo} 
+                  alt={`${provider.name} logo`} 
+                  className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" 
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-                <img src={provider.logo} alt={`${provider.name} logo`} className="h-36 md:h-48 w-auto object-contain mx-auto" />
-              </div>)}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 max-w-4xl mx-auto">
+            {providers.slice(4, 7).map(provider => (
+              <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
+                <img 
+                  src={provider.logo} 
+                  alt={`${provider.name} logo`} 
+                  className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" 
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
       
       {/* Full-width Text Banner Divider */}
-      <section className="w-full py-8 bg-[#081129]">
-        <div className="w-full px-4">
-          <h2 className="text-xl sm:text-2xl text-center leading-tight font-medium lg:text-4xl md:text-4xl text-white">
+      <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129]">
+        <div className="w-full px-3 sm:px-4">
+          <h2 className="text-base sm:text-xl md:text-2xl lg:text-4xl text-center leading-tight font-medium text-white">
             Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!
           </h2>
         </div>
