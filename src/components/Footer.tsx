@@ -53,6 +53,12 @@ const Footer = () => {
     name: t('footer.links.termsConditions'),
     link: "/terms"
   }, {
+    name: "Fair Trading Policy",
+    link: "/fair-trading"
+  }, {
+    name: "How We Rank",
+    link: "/how-we-rank"
+  }, {
     name: t('footer.links.partners'),
     link: "/partners"
   }];

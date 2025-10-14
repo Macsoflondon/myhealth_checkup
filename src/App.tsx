@@ -60,6 +60,8 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import ClientPortal from "./pages/ClientPortal";
 import ModernSlaveryPage from "./pages/ModernSlaveryPage";
 import AffiliateDisclosurePage from "./pages/AffiliateDisclosurePage";
+import FairTradingPolicyPage from "./pages/FairTradingPolicyPage";
+import HowWeRankPage from "./pages/HowWeRankPage";
 import LolaHealthTestDetailPage from "./pages/LolaHealthTestDetailPage";
 import GoodbodyTestDetailPage from "./pages/GoodbodyTestDetailPage";
 import MedichecksTestDetailPage from "./pages/MedichecksTestDetailPage";
@@ -139,6 +141,8 @@ const App = () => (
               <Route path="/portal" element={<ProtectedRoute><ClientPortal /></ProtectedRoute>} />
               <Route path="/modern-slavery" element={<ModernSlaveryPage />} />
               <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
+              <Route path="/fair-trading" element={<FairTradingPolicyPage />} />
+              <Route path="/how-we-rank" element={<HowWeRankPage />} />
               
               {/* Lola Health test detail pages */}
           <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
