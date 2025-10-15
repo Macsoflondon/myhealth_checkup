@@ -114,22 +114,26 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50 py-10 px-4">
+      <main className="flex-grow bg-gray-50 py-4 sm:py-6 md:py-10 px-3 sm:px-4">
         <div className="container mx-auto max-w-5xl">
-          <h1 className="text-3xl font-bold mb-6">My Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">My Dashboard</h1>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="sticky top-0 z-10 bg-background mb-6 shadow-sm">
-              <TabsTrigger value="favorites" className="flex items-center gap-2">
-                <Heart className="h-4 w-4" /> Favorites
+            <TabsList className="sticky top-0 z-10 bg-background mb-4 sm:mb-6 shadow-sm w-full sm:w-auto">
+              <TabsTrigger value="favorites" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base flex-1 sm:flex-initial">
+                <Heart className="h-3 w-3 sm:h-4 sm:w-4" /> 
+                <span className="hidden xs:inline">Favorites</span>
+                <span className="xs:hidden">Saved</span>
               </TabsTrigger>
-              <TabsTrigger value="orders" className="flex items-center gap-2">
-                <ShoppingBag className="h-4 w-4" /> My Orders
+              <TabsTrigger value="orders" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base flex-1 sm:flex-initial">
+                <ShoppingBag className="h-3 w-3 sm:h-4 sm:w-4" /> 
+                <span className="hidden xs:inline">My Orders</span>
+                <span className="xs:hidden">Orders</span>
               </TabsTrigger>
             </TabsList>
             
             <TabsContent value="favorites">
-              <h2 className="text-2xl font-semibold mb-4">Saved Tests & Services</h2>
+              <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Saved Tests & Services</h2>
               
               {loadingData ? (
                 <div className="flex justify-center p-8">
@@ -148,29 +152,31 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {favorites.map((favorite) => (
                     <Card key={favorite.id}>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="flex justify-between items-start">
-                          <span>{favorite.name}</span>
+                      <CardHeader className="pb-2 p-4 sm:p-6">
+                        <CardTitle className="flex justify-between items-start gap-2">
+                          <span className="text-base sm:text-lg">{favorite.name}</span>
                           <Button 
                             variant="ghost" 
                             size="sm" 
                             onClick={() => removeFavorite(favorite.id)}
+                            className="shrink-0"
                           >
                             <Trash2 className="h-4 w-4 text-red-500" />
                           </Button>
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="text-xs sm:text-sm">
                           {favorite.provider} | {favorite.category}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="p-4 sm:p-6 pt-0">
                       <div className="flex justify-end items-center">
                         <Button 
                           size="sm"
                           onClick={() => navigate(`/compare?category=${favorite.category}`)}
+                          className="text-xs sm:text-sm"
                         >
                           View Details
                         </Button>
@@ -183,7 +189,7 @@ const Dashboard = () => {
             </TabsContent>
             
             <TabsContent value="orders">
-              <h2 className="text-2xl font-semibold mb-4">My Orders & Results</h2>
+              <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">My Orders & Results</h2>
               
               {loadingData ? (
                 <div className="flex justify-center p-8">
@@ -202,19 +208,19 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {orders.map((order) => (
                     <Card key={order.id}>
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <CardTitle>{order.name}</CardTitle>
-                            <CardDescription>
+                      <CardHeader className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                          <div className="flex-1">
+                            <CardTitle className="text-base sm:text-lg mb-2">{order.name}</CardTitle>
+                            <CardDescription className="text-xs sm:text-sm">
                               Order #{order.id.slice(0, 8)} | {order.provider}
                             </CardDescription>
                           </div>
-                          <div className="text-right">
-                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                          <div className="flex sm:flex-col items-start gap-2 sm:text-right">
+                            <span className={`inline-block px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                               order.status === 'completed' ? 'bg-green-100 text-green-800' :
                               order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                               order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
@@ -222,20 +228,20 @@ const Dashboard = () => {
                             }`}>
                               {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                             </span>
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-xs text-gray-500 sm:mt-1">
                               {new Date(order.order_date).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="p-4 sm:p-6 pt-0">
                       <div className="flex justify-end items-center">
                         {order.result_url && (
                           <Button 
-                            className="flex items-center gap-2"
+                            className="flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto"
                             onClick={() => window.open(order.result_url || '#')}
                           >
-                            <FileText className="h-4 w-4" />
+                            <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
                             View Results
                           </Button>
                         )}

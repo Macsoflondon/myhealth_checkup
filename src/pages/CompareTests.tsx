@@ -110,45 +110,45 @@ const CompareTests = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="py-12 md:py-16 bg-[#081129]">
-          <div className="container mx-auto max-w-7xl px-4 text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="h-6 w-6 text-primary" />
-              <Badge variant="secondary" className="text-primary border-primary/20 bg-white">
+        <section className="py-6 sm:py-10 md:py-16 bg-[#081129]">
+          <div className="container mx-auto max-w-7xl px-3 sm:px-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <Badge variant="secondary" className="text-primary border-primary/20 bg-white text-xs sm:text-sm">
                 Live Pricing
               </Badge>
             </div>
-            <h1 className="text-3xl font-bold mb-4 text-white md:text-4xl">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-white">
               Compare Health Tests
             </h1>
-              <p className="text-lg md:text-xl max-w-3xl mx-auto mb-6 text-white">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl mx-auto mb-4 sm:mb-6 text-white px-2">
                 Find the perfect health test from {memoizedStats.providerCount} trusted UK providers. 
                 Real-time prices, expert reviews, and AI-powered recommendations.
               </p>
             
             {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-6 mt-8">
-              <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-white">{memoizedStats.testCount}+ Tests Available</span>
+            <div className="flex flex-col xs:flex-row flex-wrap justify-center gap-3 sm:gap-6 mt-4 sm:mt-8">
+              <div className="flex items-center justify-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
+                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-white">{memoizedStats.testCount}+ Tests Available</span>
               </div>
-              <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-2">
-                <Clock className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-white">Real-time Pricing</span>
+              <div className="flex items-center justify-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
+                <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-white">Real-time Pricing</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Filters and Results */}
-        <section className="py-8 px-4 bg-white">
+        <section className="py-4 sm:py-6 md:py-8 px-3 sm:px-4 bg-white">
           <div className="container mx-auto max-w-7xl">
             <CompareFilters categories={categories} selectedCategory={selectedCategory} selectedProviders={selectedProviders} searchTerm={searchTerm} sortOrder={sortOrder} onCategoryChange={handleCategoryChange} onProviderChange={handleProviderChange} onSearchChange={setSearchTerm} onSortChange={setSortOrder} testCount={tests.length} isLoading={isLoading} />
 
-            {isLoading ? <div className="flex items-center justify-center py-16">
-                <div className="text-center">
-                  <Loader2 className="h-12 w-12 animate-spin text-health-primary mx-auto mb-4" />
-                  <p className="text-muted-foreground text-lg">Finding the best tests for you...</p>
+            {isLoading ? <div className="flex items-center justify-center py-8 sm:py-12 md:py-16">
+                <div className="text-center px-4">
+                  <Loader2 className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 animate-spin text-health-primary mx-auto mb-3 sm:mb-4" />
+                  <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Finding the best tests for you...</p>
                 </div>
               </div> : <ModernCompareTable tests={tests} selectedCategory={selectedCategory} />}
           </div>

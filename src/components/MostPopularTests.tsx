@@ -32,29 +32,29 @@ const TestCard = ({
     navigate(`/compare?test=${id}`);
   };
   return <Card className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 h-full flex flex-col">
-      <div className="bg-[#1a365d] text-white p-4 text-center">
-        <h3 className="text-sm font-medium">{category}</h3>
+      <div className="bg-[#1a365d] text-white p-3 sm:p-4 text-center">
+        <h3 className="text-xs sm:text-sm font-medium">{category}</h3>
       </div>
       
-      <CardContent className="p-6 flex-1 flex flex-col">
-        <h4 className="text-xl font-bold text-gray-900 mb-3">{name}</h4>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">{description}</p>
+      <CardContent className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col">
+        <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{name}</h4>
+        <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3 flex-1">{description}</p>
         
-        <div className="space-y-2 mb-4">
-          <p className="text-sm text-gray-600">{turnaround}</p>
-          <p className="text-sm text-gray-600">{biomarkers}</p>
+        <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+          <p className="text-xs sm:text-sm text-gray-600">{turnaround}</p>
+          <p className="text-xs sm:text-sm text-gray-600">{biomarkers}</p>
           
           {/* Star Rating */}
           <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />)}
-            <span className="text-sm text-gray-600 ml-1">({reviews})</span>
+            {[...Array(5)].map((_, i) => <Star key={i} className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />)}
+            <span className="text-xs sm:text-sm text-gray-600 ml-1">({reviews})</span>
           </div>
         </div>
         
-        <div className="text-2xl font-bold text-gray-900 mb-2">{price}</div>
-        <p className="text-sm text-gray-500 mb-4">{collection}</p>
+        <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1.5 sm:mb-2">{price}</div>
+        <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">{collection}</p>
         
-        <Button onClick={handleSelectTest} variant="outline" className="w-full py-3 text-gray-700 border-gray-300 hover:bg-gray-50 mt-auto">
+        <Button onClick={handleSelectTest} variant="outline" className="w-full py-2.5 sm:py-3 text-sm sm:text-base text-gray-700 border-gray-300 hover:bg-gray-50 mt-auto">
           Select test
         </Button>
       </CardContent>
@@ -107,23 +107,23 @@ const MostPopularTests = () => {
     reviews: 1234,
     collection: 'Finger-prick or Venous collection'
   }];
-  return <section className="bg-gray-50 py-16">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="mb-8">
+  return <section className="bg-gray-50 py-8 sm:py-12 md:py-16">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
+        <div className="mb-6 sm:mb-8">
           <nav className="text-sm text-gray-500 mb-4">
              
              
             
           </nav>
           
-          <h1 className="text-4xl font-bold mb-4 text-center text-[#22c0d4]" style={{
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-center text-[#22c0d4]" style={{
           color: '#22c0d4'
         }}>The Most Popular Tests Amongst Our Providers</h1>
-          <p className="text-lg font-medium text-center text-[#081129]">Check out our best selling tests, used by thousands of people</p>
+          <p className="text-sm sm:text-base md:text-lg font-medium text-center text-[#081129] px-2">Check out our best selling tests, used by thousands of people</p>
         </div>
 
-        <div className="flex justify-end mb-6">
-          <select className="px-4 border border-gray-300 rounded-md text-sm bg-[#e70d69] px-14 ">
+        <div className="flex justify-end mb-4 sm:mb-6">
+          <select className="px-3 sm:px-4 md:px-14 py-2 border border-gray-300 rounded-md text-xs sm:text-sm bg-[#e70d69] text-white">
             <option>Price, high to low</option>
             <option>Price, low to high</option>
             <option>Most popular</option>
@@ -131,12 +131,12 @@ const MostPopularTests = () => {
           </select>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           {popularTests.map(test => <TestCard key={test.id} {...test} />)}
         </div>
 
-        <div className="text-center mt-8">
-          <Button onClick={() => navigate('/compare')} className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-3 text-lg font-medium rounded-full">
+        <div className="text-center mt-6 sm:mt-8">
+          <Button onClick={() => navigate('/compare')} className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-full w-full sm:w-auto">
             View all tests
           </Button>
         </div>
