@@ -260,7 +260,6 @@ Guidelines:
       }
     } catch (storageError) {
       console.error('Failed to store health query:', storageError);
-      }
     }
 
     return new Response(JSON.stringify(analysisResult), {
