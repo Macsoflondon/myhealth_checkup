@@ -8,3 +8,9 @@ verify_jwt = false
 
 [functions.geocode-clinic]
 verify_jwt = true
+
+# Health AI Analysis API
+# Requires authentication - Uses OpenAI API for personalized health recommendations
+# Security: JWT verification, verified userId from token, input sanitization
+[functions.health-ai-analysis]
+verify_jwt = true

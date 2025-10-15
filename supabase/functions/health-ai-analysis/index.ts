@@ -19,7 +19,30 @@ serve(async (req) => {
   }
 
   try {
-    const { query, age, gender, userId } = await req.json();
+    // Verify authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      console.error('Authentication error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Use verified user ID from the authenticated token
+    const verifiedUserId = user.id;
+
+    const { query, age, gender } = await req.json();
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
     if (!openAIApiKey) {
@@ -219,24 +242,24 @@ Guidelines:
 
     // Store query in database if user is authenticated (GDPR compliant)
     // Note: Queries are automatically deleted after 90 days via cleanup_old_health_queries()
-    if (userId) {
-      try {
-        const { error: dbError } = await supabase
-          .from('health_queries')
-          .insert({
-            user_id: userId,
-            query_text: sanitizedQuery,
-            age: age || null,
-            gender: gender || null,
-            ai_response: analysisResult
-          });
-        
-        if (dbError) {
-          console.error('Error storing health query:', dbError);
-          // Don't fail the request if storage fails
-        }
-      } catch (storageError) {
-        console.error('Failed to store health query:', storageError);
+    // Using verified user ID from JWT token for security
+    try {
+      const { error: dbError } = await supabase
+        .from('health_queries')
+        .insert({
+          user_id: verifiedUserId,
+          query_text: sanitizedQuery,
+          age: age || null,
+          gender: gender || null,
+          ai_response: analysisResult
+        });
+      
+      if (dbError) {
+        console.error('Error storing health query:', dbError);
+        // Don't fail the request if storage fails
+      }
+    } catch (storageError) {
+      console.error('Failed to store health query:', storageError);
       }
     }
 
