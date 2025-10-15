@@ -2,3 +2,6 @@ project_id = "clvuioagsgfadynuvodj"
 
 [functions.lml-nearest]
 verify_jwt = false
+
+[functions.geocode-clinic]
+verify_jwt = true
