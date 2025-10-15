@@ -1,3 +1,35 @@
+/**
+ * LML Nearest Clinics API Proxy
+ * 
+ * SECURITY NOTICE: This endpoint is intentionally PUBLIC (verify_jwt=false)
+ * 
+ * Rationale for Public Access:
+ * - Users need to search for nearby testing locations BEFORE authentication
+ * - Clinic location data is non-sensitive, publicly available information
+ * - Enables better user experience for clinic discovery
+ * 
+ * Security Measures Implemented:
+ * 1. IP-based rate limiting: 10 requests per minute per client
+ * 2. Strict maxPages validation: Maximum 3 pages to prevent API quota exhaustion
+ * 3. Input validation for latitude/longitude coordinates
+ * 4. Rate limit headers in responses for transparency
+ * 5. Automatic cleanup of old rate limit entries
+ * 6. Bearer token stored securely in Supabase secrets (not exposed to client)
+ * 
+ * Protection Against:
+ * - API quota exhaustion (maxPages limit + rate limiting)
+ * - Denial of service attacks (per-IP rate limiting)
+ * - Excessive data retrieval (strict page limits)
+ * - Invalid coordinate injection (range validation)
+ * 
+ * Monitoring:
+ * - All requests logged with coordinates and page counts
+ * - Rate limit violations logged with client identifiers
+ * - API errors captured for debugging
+ * 
+ * Last Security Review: 2025-10-15
+ */
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
