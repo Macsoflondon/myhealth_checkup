@@ -5,6 +5,27 @@ import { logger } from "@/lib/logger";
 
 export type UserRole = 'admin' | 'moderator' | 'user';
 
+/**
+ * SECURITY WARNING: Client-side role checking for UI display only
+ * 
+ * This hook fetches user roles from the database for UI rendering purposes.
+ * NEVER use this hook alone for authorization of sensitive operations.
+ * 
+ * For server-side operations (edge functions, RLS policies):
+ * - Always validate roles using the has_role() database function
+ * - Never trust client-side role checks for authorization
+ * - Implement proper server-side validation in edge functions
+ * 
+ * Example: In an edge function for admin operations:
+ * ```
+ * const { data: isAdmin } = await supabase.rpc('has_role', {
+ *   _user_id: user.id,
+ *   _role: 'admin'
+ * });
+ * if (!isAdmin) throw new Error('Unauthorized');
+ * ```
+ */
+
 export function useUserRole() {
   const { user } = useAuth();
   const [roles, setRoles] = useState<UserRole[]>([]);

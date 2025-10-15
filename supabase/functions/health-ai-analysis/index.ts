@@ -26,6 +26,47 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
+    // Input validation to prevent prompt injection
+    if (!query || typeof query !== 'string') {
+      throw new Error('Query is required and must be a string');
+    }
+
+    // Limit query length to prevent abuse
+    if (query.length > 500) {
+      throw new Error('Query is too long. Please limit to 500 characters');
+    }
+
+    // Sanitize query - remove potentially harmful patterns
+    const sanitizedQuery = query
+      .trim()
+      .replace(/[<>]/g, '') // Remove angle brackets
+      .substring(0, 500); // Ensure max length
+
+    // Check for suspicious prompt injection patterns
+    const suspiciousPatterns = [
+      /ignore\s+(previous|all|above)\s+instructions/i,
+      /system\s*:/i,
+      /\[INST\]/i,
+      /<<SYS>>/i,
+    ];
+
+    const hasSuspiciousContent = suspiciousPatterns.some(pattern => 
+      pattern.test(sanitizedQuery)
+    );
+
+    if (hasSuspiciousContent) {
+      throw new Error('Query contains invalid content. Please rephrase your question');
+    }
+
+    // Validate age and gender if provided
+    if (age !== null && age !== undefined && (typeof age !== 'number' || age < 0 || age > 120)) {
+      throw new Error('Invalid age value');
+    }
+
+    if (gender && typeof gender !== 'string') {
+      throw new Error('Invalid gender value');
+    }
+
     // Get all available tests from our trusted providers
     const { data: availableTests, error: testsError } = await supabase
       .from('provider_tests')
@@ -80,7 +121,7 @@ CRITICAL MEDICAL DISCLAIMERS:
 Our trusted providers and available tests:
 ${testListForAI}
 
-User query: "${query}"
+User query: "${sanitizedQuery}"
 
 Provide general wellness guidance and suggest relevant preventive health tests from our trusted providers ONLY. 
 
@@ -122,7 +163,7 @@ Guidelines:
         model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: prompt },
-          { role: 'user', content: query }
+          { role: 'user', content: sanitizedQuery }
         ],
         max_tokens: 1000,
         temperature: 0.3,
@@ -169,14 +210,22 @@ Guidelines:
       };
     }
 
+    // Validate responses contain medical disclaimers
+    if (!analysisResult.medicalDisclaimer || 
+        !analysisResult.medicalDisclaimer.includes('not medical advice')) {
+      console.error('AI response missing medical disclaimer');
+      analysisResult.medicalDisclaimer = "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.";
+    }
+
     // Store query in database if user is authenticated (GDPR compliant)
+    // Note: Queries are automatically deleted after 90 days via cleanup_old_health_queries()
     if (userId) {
       try {
         const { error: dbError } = await supabase
           .from('health_queries')
           .insert({
             user_id: userId,
-            query_text: query,
+            query_text: sanitizedQuery,
             age: age || null,
             gender: gender || null,
             ai_response: analysisResult

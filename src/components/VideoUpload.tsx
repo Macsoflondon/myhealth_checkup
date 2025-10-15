@@ -94,16 +94,19 @@ export function VideoUpload({ onVideoUploaded }: VideoUploadProps) {
 
       if (error) throw error;
 
-      const { data: { publicUrl } } = supabase.storage
+      // Generate signed URL with 1 hour expiration for private bucket
+      const { data: signedUrlData, error: urlError } = await supabase.storage
         .from('videos')
-        .getPublicUrl(data.path);
+        .createSignedUrl(data.path, 3600); // 1 hour expiry
+
+      if (urlError) throw urlError;
 
       toast({
         title: "Upload successful",
         description: "Your video has been uploaded successfully.",
       });
 
-      onVideoUploaded?.(publicUrl);
+      onVideoUploaded?.(signedUrlData.signedUrl);
       
     } catch (error) {
       logger.error('Upload error:', error);
