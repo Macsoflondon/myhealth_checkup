@@ -1,6 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 
+// ============================================================================
+// Type Definitions
+// ============================================================================
+
 export interface LiveTestData {
   id: string;
   test_name: string;
@@ -31,11 +35,18 @@ export interface CompareTestData {
   available: boolean;
 }
 
-// Cache configuration
+// ============================================================================
+// Cache Configuration
+// ============================================================================
+
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const cache = new Map<string, { data: any; timestamp: number }>();
 
-export class OptimizedLiveCompareService {
+// ============================================================================
+// Compare Service - Unified service for test comparison functionality
+// ============================================================================
+
+export class CompareService {
   private static readonly PROVIDER_LOGOS: Record<string, string> = {
     'medichecks': '/lovable-uploads/provider-medichecks-new-v2.svg',
     'thriva': '/lovable-uploads/provider-thriva.png',
@@ -56,6 +67,10 @@ export class OptimizedLiveCompareService {
     'tuli-health': 'Tuli Health'
   };
 
+  // ============================================================================
+  // Cache Management
+  // ============================================================================
+
   private static getCacheKey(method: string, params: any): string {
     return `${method}_${JSON.stringify(params)}`;
   }
@@ -72,6 +87,14 @@ export class OptimizedLiveCompareService {
   private static setCachedData<T>(key: string, data: T): void {
     cache.set(key, { data, timestamp: Date.now() });
   }
+
+  public static clearCache(): void {
+    cache.clear();
+  }
+
+  // ============================================================================
+  // Core Query Methods
+  // ============================================================================
 
   static async getTestsByCategory(category: string, providers: string[] = ['all']): Promise<CompareTestData[]> {
     const cacheKey = this.getCacheKey('getTestsByCategory', { category, providers });
@@ -108,7 +131,7 @@ export class OptimizedLiveCompareService {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error fetching tests:', error);
+        logger.error('Error fetching tests:', error);
         return [];
       }
 
@@ -116,28 +139,9 @@ export class OptimizedLiveCompareService {
       this.setCachedData(cacheKey, result);
       return result;
     } catch (error) {
-      console.error('Error in getTestsByCategory:', error);
+      logger.error('Error in getTestsByCategory:', error);
       return [];
     }
-  }
-
-  private static getCategorySearchTerms(category: string): string[] {
-    const categoryMap: Record<string, string[]> = {
-      'Blood Tests': ['blood', 'full blood count', 'fbc', 'biochemistry', 'blood panel'],
-      'Hormone Tests': ['hormone', 'hormonal', 'testosterone', 'estrogen', 'progesterone', 'cortisol'],
-      'Thyroid Tests': ['thyroid', 'tsh', 't3', 't4', 'thyroglobulin', 'thyroid antibodies'],
-      'Vitamin & Mineral Tests': ['vitamin', 'mineral', 'b12', 'd3', 'folate', 'iron', 'zinc', 'magnesium', 'nutrient'],
-      'Diabetes Testing': ['diabetes', 'diabetic', 'glucose', 'hba1c', 'insulin', 'blood sugar'],
-      'Heart Health': ['heart', 'cardiac', 'cardiovascular', 'cholesterol', 'lipid', 'triglycerides', 'hdl', 'ldl'],
-      'Liver Health': ['liver', 'hepatic', 'alt', 'ast', 'bilirubin', 'liver function'],
-      'Kidney Health': ['kidney', 'renal', 'creatinine', 'urea', 'kidney function', 'egfr'],
-      'Fertility Testing': ['fertility', 'reproductive', 'sperm', 'ovarian', 'amh', 'fsh', 'lh'],
-      'General Health': ['general', 'comprehensive', 'health check', 'wellness', 'screening'],
-      'Allergy Testing': ['allergy', 'allergic', 'intolerance', 'food sensitivity', 'ige'],
-      'Cancer Screening': ['cancer', 'screening', 'tumour', 'psa', 'cea', 'ca125', 'oncology']
-    };
-    
-    return categoryMap[category] || [category.toLowerCase()];
   }
 
   static async searchTests(searchTerm: string, providers: string[] = ['all']): Promise<CompareTestData[]> {
@@ -152,9 +156,9 @@ export class OptimizedLiveCompareService {
         .from('provider_tests')
         .select('id, test_name, provider_id, category, price, description, is_active, image_url, url, created_at, updated_at')
         .eq('is_active', true)
-        .or(`test_name.ilike.%${searchTerm}%, description.ilike.%${searchTerm}%`)
+        .or(`test_name.ilike.%${searchTerm}%, description.ilike.%${searchTerm}%, category.ilike.%${searchTerm}%`)
         .order('price', { ascending: true })
-        .limit(30); // Limit search results
+        .limit(50);
 
       if (!providers.includes('all')) {
         query = query.in('provider_id', providers);
@@ -195,6 +199,7 @@ export class OptimizedLiveCompareService {
         return [];
       }
 
+      // Count tests per category
       const categoryMap = new Map<string, number>();
       data?.forEach(item => {
         if (item.category) {
@@ -203,6 +208,7 @@ export class OptimizedLiveCompareService {
         }
       });
 
+      // Convert to array and sort by count
       const result = Array.from(categoryMap.entries())
         .map(([category, count]) => ({
           id: category.toLowerCase().replace(/[^a-z0-9]/g, '-'),
@@ -214,10 +220,14 @@ export class OptimizedLiveCompareService {
       this.setCachedData(cacheKey, result);
       return result;
     } catch (error) {
-      console.error('Error in getCategories:', error);
+      logger.error('Error in getCategories:', error);
       return [];
     }
   }
+
+  // ============================================================================
+  // Data Transformation
+  // ============================================================================
 
   private static transformToCompareData(tests: LiveTestData[]): CompareTestData[] {
     return tests.map(test => ({
@@ -225,7 +235,7 @@ export class OptimizedLiveCompareService {
       name: test.test_name,
       provider: this.PROVIDER_NAMES[test.provider_id] || test.provider_id,
       price: test.price || 0,
-      category: test.category || 'General',
+      category: test.category,
       description: test.description || '',
       features: {
         turnaround: this.estimateTurnaround(test.provider_id),
@@ -237,47 +247,88 @@ export class OptimizedLiveCompareService {
     }));
   }
 
-  private static estimateTurnaround(providerId: string): string {
-    const turnarounds: Record<string, string> = {
-      'medichecks': '2 working days',
-      'thriva': '2 days (48 hours)',
-      'randox': '2-5 working days',
-      'london-medical-laboratory': '1-3 working days',
-      'lola-health': '2-4 working days',
-      'goodbody-clinic': '2-3 working days',
-      'tuli-health': '3-5 working days'
+  // ============================================================================
+  // Helper Methods
+  // ============================================================================
+
+  private static getCategorySearchTerms(category: string): string[] {
+    const categoryMap: Record<string, string[]> = {
+      'Blood Tests': ['blood', 'full blood count', 'fbc', 'biochemistry', 'blood panel'],
+      'Hormone Tests': ['hormone', 'hormonal', 'testosterone', 'estrogen', 'progesterone', 'cortisol'],
+      'Thyroid Tests': ['thyroid', 'tsh', 't3', 't4', 'thyroglobulin', 'thyroid antibodies'],
+      'Vitamin & Mineral Tests': ['vitamin', 'mineral', 'b12', 'd3', 'folate', 'iron', 'zinc', 'magnesium', 'nutrient'],
+      'Diabetes Testing': ['diabetes', 'diabetic', 'glucose', 'hba1c', 'insulin', 'blood sugar'],
+      'Heart Health': ['heart', 'cardiac', 'cardiovascular', 'cholesterol', 'lipid', 'triglycerides', 'hdl', 'ldl'],
+      'Liver Health': ['liver', 'hepatic', 'alt', 'ast', 'bilirubin', 'liver function'],
+      'Kidney Health': ['kidney', 'renal', 'creatinine', 'urea', 'kidney function', 'egfr'],
+      'Fertility Testing': ['fertility', 'reproductive', 'sperm', 'ovarian', 'amh', 'fsh', 'lh'],
+      'General Health': ['general', 'comprehensive', 'health check', 'wellness', 'screening'],
+      'Allergy Testing': ['allergy', 'allergic', 'intolerance', 'food sensitivity', 'ige'],
+      'Cancer Screening': ['cancer', 'screening', 'tumour', 'psa', 'cea', 'ca125', 'oncology']
     };
-    return turnarounds[providerId] || '3-5 working days';
+    
+    return categoryMap[category] || [category.toLowerCase()];
+  }
+
+  private static estimateTurnaround(providerId: string): string {
+    const turnaroundMap: Record<string, string> = {
+      'medichecks': '24-48 hours',
+      'thriva': '2-3 days',
+      'randox': '1-2 days',
+      'london-medical-laboratory': '24 hours',
+      'lola-health': '48 hours',
+      'goodbody-clinic': '2-4 days',
+      'tuli-health': '1-3 days'
+    };
+    return turnaroundMap[providerId] || '2-3 days';
   }
 
   private static getCollectionMethod(providerId: string): string {
-    const methods: Record<string, string> = {
-      'medichecks': 'Home finger-prick or clinic venous',
-      'thriva': 'Home kit only',
-      'randox': 'Clinic visit only',
-      'london-medical-laboratory': 'Clinic visit only',
-      'lola-health': 'At-home phlebotomy service',
-      'goodbody-clinic': 'Home kit or pharmacy clinic',
-      'tuli-health': 'Home kit only'
+    const collectionMap: Record<string, string> = {
+      'medichecks': 'Home kit or clinic',
+      'thriva': 'Home finger-prick',
+      'randox': 'Walk-in clinic',
+      'london-medical-laboratory': 'Clinic venous draw',
+      'lola-health': 'Home kit',
+      'goodbody-clinic': 'Clinic appointment',
+      'tuli-health': 'Pharmacy network'
     };
-    return methods[providerId] || 'Home kit or clinic';
+    return collectionMap[providerId] || 'Various options';
   }
 
   private static extractBioMarkers(description: string): string {
-    if (description.toLowerCase().includes('biomarker')) {
-      return 'Multiple biomarkers';
-    }
-    if (description.toLowerCase().includes('hormone')) {
-      return 'Hormone levels';
-    }
-    if (description.toLowerCase().includes('vitamin')) {
-      return 'Vitamin levels';
-    }
-    return 'Various markers';
+    if (!description) return '';
+    
+    // Simple extraction of common biomarkers mentioned in description
+    const commonMarkers = [
+      'cholesterol', 'hdl', 'ldl', 'triglycerides',
+      'glucose', 'hba1c', 'insulin',
+      'tsh', 't3', 't4',
+      'vitamin d', 'b12', 'folate', 'iron',
+      'testosterone', 'estrogen', 'progesterone',
+      'cortisol', 'dhea'
+    ];
+    
+    const found = commonMarkers.filter(marker => 
+      description.toLowerCase().includes(marker)
+    );
+    
+    return found.length > 0 ? found.slice(0, 3).join(', ') : '';
   }
 
-  // Clear cache when needed
-  static clearCache(): void {
-    cache.clear();
+  // ============================================================================
+  // Utility Methods
+  // ============================================================================
+
+  public static getProviderLogo(providerId: string): string {
+    return this.PROVIDER_LOGOS[providerId] || '/placeholder.svg';
+  }
+
+  public static getProviderName(providerId: string): string {
+    return this.PROVIDER_NAMES[providerId] || providerId;
+  }
+
+  public static getSupportedProviders(): string[] {
+    return Object.keys(this.PROVIDER_LOGOS);
   }
 }

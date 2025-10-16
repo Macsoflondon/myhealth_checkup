@@ -5,14 +5,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ModernCompareTable } from "@/components/compare/ModernCompareTable";
 import { CompareFilters } from "@/components/compare/CompareFilters";
-import { OptimizedLiveCompareService } from "@/services/OptimizedLiveCompareService";
+import { CompareService } from "@/services/CompareService";
+import type { CompareTestData } from "@/services/CompareService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Sparkles, TrendingUp, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { providers } from "@/data/compare/providers";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import type { CompareTestData } from "@/services/OptimizedLiveCompareService";
 import { logger } from "@/lib/logger";
 const CompareTests = () => {
   const location = useLocation();
@@ -32,7 +32,7 @@ const CompareTests = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoriesData = await OptimizedLiveCompareService.getCategories();
+        const categoriesData = await CompareService.getCategories();
         setCategories(categoriesData);
       } catch (error) {
         logger.error('Error fetching categories:', error);
@@ -57,11 +57,11 @@ const CompareTests = () => {
     try {
       let results: CompareTestData[] = [];
       if (searchTerm.trim()) {
-        results = await OptimizedLiveCompareService.searchTests(searchTerm, selectedProviders);
+        results = await CompareService.searchTests(searchTerm, selectedProviders);
       } else {
         // Use category name for better matching
         const categoryName = selectedCategory === "all" ? "all" : categories.find(cat => cat.id === selectedCategory)?.name || selectedCategory;
-        results = await OptimizedLiveCompareService.getTestsByCategory(categoryName, selectedProviders);
+        results = await CompareService.getTestsByCategory(categoryName, selectedProviders);
       }
 
       // Sort results

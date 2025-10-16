@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useOrders } from "@/hooks/useOrders";
-import type { CompareTestData } from "@/services/LiveCompareService";
+import type { CompareTestData } from "@/services/CompareService";
 interface ModernCompareTableProps {
   tests: CompareTestData[];
   selectedCategory?: string;
