@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/sonner";
 import { User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { ordersApi } from "@/api";
 
 export function useOrders(user: User | null) {
   const navigate = useNavigate();
@@ -14,16 +14,14 @@ export function useOrders(user: User | null) {
     }
     
     try {
-      const { error } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user.id,
-          test_id: testId,
-          provider: provider,
-          name: testName,
-          price: price,
-          status: 'pending',
-        });
+      const { error } = await ordersApi.createOrder({
+        user_id: user.id,
+        test_id: testId,
+        provider: provider,
+        name: testName,
+        price: price,
+        status: 'pending',
+      });
       
       if (error) throw error;
       

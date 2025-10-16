@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/components/ui/sonner";
 import Header from "@/components/Header";
@@ -11,28 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Trash2, Heart, ShoppingBag, FileText } from "lucide-react";
 import { logger } from "@/lib/logger";
-
-type Favorite = {
-  id: string;
-  test_id: string;
-  category: string;
-  provider: string;
-  created_at: string;
-  name?: string;
-  price?: number;
-};
-
-type Order = {
-  id: string;
-  test_id: string;
-  provider: string;
-  status: string;
-  order_date: string;
-  result_url: string | null;
-  result_date: string | null;
-  name?: string;
-  price?: number;
-};
+import { favoritesApi, ordersApi, type Favorite, type Order } from "@/api";
 
 const Dashboard = () => {
   const { user, isLoading } = useAuth();
@@ -59,11 +37,7 @@ const Dashboard = () => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase
-        .from('favorites')
-        .select('*')
-        .eq('user_id', user.id);
-      
+      const { data, error } = await favoritesApi.getUserFavorites(user.id);
       if (error) throw error;
       setFavorites(data || []);
     } catch (error) {
@@ -78,12 +52,7 @@ const Dashboard = () => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('order_date', { ascending: false });
-      
+      const { data, error } = await ordersApi.getUserOrders(user.id);
       if (error) throw error;
       setOrders(data || []);
     } catch (error) {
@@ -96,18 +65,22 @@ const Dashboard = () => {
 
   const removeFavorite = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('favorites')
-        .delete()
-        .eq('id', id);
+      const favorite = favorites.find(f => f.id === id);
+      if (!favorite || !user) return;
+
+      const { error } = await favoritesApi.removeFavorite(
+        user.id,
+        favorite.test_id,
+        favorite.category
+      );
       
       if (error) throw error;
       
       setFavorites((prev) => prev.filter((fav) => fav.id !== id));
       toast.success("Removed from favorites");
-      } catch (error) {
-        logger.error('Error removing favorite:', error);
-        toast.error('Failed to remove favorite');
+    } catch (error) {
+      logger.error('Error removing favorite:', error);
+      toast.error('Failed to remove favorite');
     }
   };
 

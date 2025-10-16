@@ -1,4 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
+import { providerService } from "./ProviderService";
+import { providerService } from "./ProviderService";
 import { logger } from "@/lib/logger";
 
 // ============================================================================
@@ -271,29 +273,11 @@ export class CompareService {
   }
 
   private static estimateTurnaround(providerId: string): string {
-    const turnaroundMap: Record<string, string> = {
-      'medichecks': '24-48 hours',
-      'thriva': '2-3 days',
-      'randox': '1-2 days',
-      'london-medical-laboratory': '24 hours',
-      'lola-health': '48 hours',
-      'goodbody-clinic': '2-4 days',
-      'tuli-health': '1-3 days'
-    };
-    return turnaroundMap[providerId] || '2-3 days';
+    return providerService.estimateTurnaround(providerId);
   }
 
   private static getCollectionMethod(providerId: string): string {
-    const collectionMap: Record<string, string> = {
-      'medichecks': 'Home kit or clinic',
-      'thriva': 'Home finger-prick',
-      'randox': 'Walk-in clinic',
-      'london-medical-laboratory': 'Clinic venous draw',
-      'lola-health': 'Home kit',
-      'goodbody-clinic': 'Clinic appointment',
-      'tuli-health': 'Pharmacy network'
-    };
-    return collectionMap[providerId] || 'Various options';
+    return providerService.getCollectionMethod(providerId);
   }
 
   private static extractBioMarkers(description: string): string {
