@@ -1,6 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
 import { providerService } from "./ProviderService";
-import { providerService } from "./ProviderService";
 import { logger } from "@/lib/logger";
 
 // ============================================================================
