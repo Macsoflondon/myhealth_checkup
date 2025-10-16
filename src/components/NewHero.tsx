@@ -80,17 +80,7 @@ const NewHero = () => {
         <div className="w-full">
           {/* Hero Video Container - Optimized for mobile */}
           <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] lg:aspect-video overflow-hidden bg-[#081129]">
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              preload="metadata" 
-              poster="/lovable-uploads/hero-image-1.png" 
-              className="absolute inset-0 w-full h-full object-cover"
-              src="/myhealth_checkup.mp4" 
-              aria-label="myhealth checkup - Your health is your greatest asset"
-            >
+            <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -101,8 +91,8 @@ const NewHero = () => {
       <section className="w-full bg-[#081129] py-1.5 sm:py-2">
         <div className="w-full px-3 sm:px-4">
           <h1 className="text-[11px] sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
-            <span className="text-white">{t('hero.compareProviders')} </span>
-            <span className="text-[#fc0173]">{t('hero.allInOnePlace')}</span>
+            <span className="text-white font-medium text-4xl">{t('hero.compareProviders')} </span>
+            <span className="text-[#fc0173] font-medium text-4xl">{t('hero.allInOnePlace')}</span>
           </h1>
         </div>
       </section>
@@ -137,21 +127,9 @@ const NewHero = () => {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
-                    <input 
-                      type="text" 
-                      placeholder={t('hero.searchPrompt')} 
-                      value={searchTerm} 
-                      onChange={e => setSearchTerm(e.target.value)} 
-                      onKeyPress={handleKeyPress} 
-                      className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" 
-                    />
+                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
                   </div>
-                  <Button 
-                    onClick={handleSearch} 
-                    disabled={isAnalyzing} 
-                    size="lg"
-                    className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] font-medium"
-                  >
+                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] font-medium">
                     {isAnalyzing ? <>
                         <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
                         {t('hero.analyzing')}
@@ -202,15 +180,9 @@ const NewHero = () => {
                 <div className="mt-3 sm:mt-4">
                   <p className="text-xs sm:text-sm text-[#081129] mb-2">{t('hero.popularSearches')}</p>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-                    {popularSearches.slice(0, 3).map((search, index) => (
-                      <button 
-                        key={index} 
-                        onClick={() => navigate(search.route)} 
-                        className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] active:scale-95"
-                      >
+                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] active:scale-95">
                         {search.name}
-                      </button>
-                    ))}
+                      </button>)}
                   </div>
                 </div>
               </div>
@@ -245,30 +217,16 @@ const NewHero = () => {
           </h2>
           {/* Top Row - 4 providers */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-3 sm:mb-6">
-            {providers.slice(0, 4).map(provider => (
-              <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
-                <img 
-                  src={provider.logo} 
-                  alt={`${provider.name} logo`} 
-                  className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" 
-                  loading="lazy"
-                />
-              </div>
-            ))}
+            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
+                <img src={provider.logo} alt={`${provider.name} logo`} className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" loading="lazy" />
+              </div>)}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map(provider => (
-              <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
-                <img 
-                  src={provider.logo} 
-                  alt={`${provider.name} logo`} 
-                  className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" 
-                  loading="lazy"
-                />
-              </div>
-            ))}
+            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
+                <img src={provider.logo} alt={`${provider.name} logo`} className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" loading="lazy" />
+              </div>)}
           </div>
         </div>
       </section>
