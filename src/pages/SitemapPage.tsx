@@ -88,12 +88,12 @@ const SitemapPage = () => {
   }];
   return <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-muted/30">
+      <main className="flex-grow bg-[#081129]">
         <div className="container mx-auto px-4 py-12 bg-[#081129]">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h1 className="text-4xl font-bold mb-6 text-[#22c0d4]">Site Map</h1>
-              <p className="text-xl text-[#e70d69] font-medium">
+              <p className="font-normal text-xl text-white">
                 Navigate our complete site structure and find exactly what you're looking for.
               </p>
             </div>
