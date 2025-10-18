@@ -338,7 +338,7 @@ const FAQsPage = () => {
       
       <Header />
       
-      <main className="flex-grow bg-muted/30">
+      <main className="flex-grow bg-[ffffff] bg-white">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 sm:py-4 bg-[#081129]">
           <Breadcrumb>
@@ -363,12 +363,12 @@ const FAQsPage = () => {
         </nav>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-primary via-primary/90 to-secondary text-white">
+        <div className="bg-gradient-to-br from-primary via-primary/90 to-secondary text-white bg-[#081129]">
           <div className="container mx-auto px-4 py-12 sm:py-16 text-center bg-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-[#081129]">
               Frequently Asked Questions
             </h1>
-            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto font-medium md:text-xl px-[10px] text-[#081129]">
               Find answers to common questions about health testing and our platform
             </p>
             
@@ -376,7 +376,7 @@ const FAQsPage = () => {
             <div className="max-w-xl sm:max-w-2xl mx-auto">
               <div className="relative text-left font-medium text-[#081129]">
                 <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50" aria-label="Search frequently asked questions" aria-describedby="search-description" />
+                <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
                 <span id="search-description" className="sr-only">
                   Type to search through all FAQ categories and questions
                 </span>
@@ -395,17 +395,17 @@ const FAQsPage = () => {
                 Popular Questions
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {popularQuestions.map((faq, idx) => <Card key={idx} className="bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 cursor-pointer group">
-                    <CardHeader className="p-4 sm:p-6">
-                      <Badge className="mb-2 sm:mb-3 bg-primary/20 text-white border-primary/30 w-fit text-xs sm:text-sm">
+                {popularQuestions.map((faq, idx) => <Card key={idx} className="border-white/20 transition-all duration-300 cursor-pointer group bg-white">
+                    <CardHeader className="p-4 sm:p-6 bg-white">
+                      <Badge className="mb-2 sm:mb-3 text-white border-primary/30 w-fit text-xs sm:text-sm bg-[#081129]">
                         {faq.category}
                       </Badge>
-                      <CardTitle className="text-base sm:text-lg text-white group-hover:text-primary transition-colors">
+                      <CardTitle className="text-base sm:text-lg transition-colors text-[#081129]">
                         {faq.q}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="p-4 sm:p-6 pt-0">
-                      <p className="text-white/80 text-sm line-clamp-3">{faq.a}</p>
+                    <CardContent className="p-4 sm:p-6 pt-0 bg-white">
+                      <p className="line-clamp-3 px-[10px] font-semibold text-base text-white">{faq.a}</p>
                     </CardContent>
                   </Card>)}
               </div>
@@ -413,18 +413,18 @@ const FAQsPage = () => {
           </div>}
 
         {/* FAQ Categories */}
-        <div className="container mx-auto px-4 py-8 sm:py-12">
+        <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">
           {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
               {filteredCategories.map((category, catIdx) => <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <div className="bg-gradient-to-r from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                  <div className="from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-[t#ransparent] bg-[#081129]">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="bg-primary/20 p-1.5 sm:p-2 rounded-lg text-primary flex-shrink-0">
                         {category.icon}
                       </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 flex-1 min-w-0">
+                      <h3 className="text-lg sm:text-xl font-bold flex-1 min-w-0 text-white">
                         {category.title}
                       </h3>
-                      <Badge className="bg-primary/10 text-primary border-primary/20 text-xs sm:text-sm flex-shrink-0">
+                      <Badge className="bg-primary/10 text-primary border-primary/20 text-xs sm:text-sm flex-shrink-0 rounded">
                         {category.faqs.length}
                       </Badge>
                     </div>
@@ -464,7 +464,7 @@ const FAQsPage = () => {
         {/* Related Resources */}
         <div className="container mx-auto px-4 py-8 sm:py-12 border-t border-gray-200">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-white">
               Related Resources
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -484,11 +484,11 @@ const FAQsPage = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow">
+              <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow bg-white">
                 <CardHeader className="p-4 sm:p-6">
                   <CardTitle className="text-primary text-lg sm:text-xl">How It Works</CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 sm:p-6 pt-0">
+                <CardContent className="p-4 sm:p-6 pt-0 bg-[t] bg-white">
                   <p className="text-gray-700 mb-4 text-sm sm:text-base">
                     Learn about our simple 3-step process from booking to receiving your results.
                   </p>
@@ -507,10 +507,10 @@ const FAQsPage = () => {
         <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-white">
                 Still have questions?
               </h2>
-              <p className="text-gray-700 mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto">
+              <p className="mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto text-white">
                 Our support team is here to help you find the right test for your needs.
               </p>
               
@@ -525,7 +525,7 @@ const FAQsPage = () => {
                     <CardTitle className="text-lg sm:text-xl">Email Support</CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 sm:p-6 pt-0">
-                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
+                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base font-medium">
                       Get detailed answers to your questions
                     </p>
                     <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
@@ -544,13 +544,13 @@ const FAQsPage = () => {
                     <CardTitle className="text-lg sm:text-xl">Phone Support</CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 sm:p-6 pt-0">
-                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">
+                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base font-medium">
                       Speak with our team directly
                     </p>
                     <a href="tel:+442012345678" className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
                       +44 20 1234 5678
                     </a>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                    <p className="text-xs sm:text-sm mt-2 text-[#081129]">
                       Mon-Fri: 9am-6pm GMT
                     </p>
                   </CardContent>
