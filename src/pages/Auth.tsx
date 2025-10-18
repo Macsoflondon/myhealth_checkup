@@ -196,7 +196,7 @@ const Auth = () => {
                 </Alert>}
             </div>
 
-            <Button type="submit" disabled={loading || oauthLoading} className="w-full bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium">
+            <Button type="submit" disabled={loading || oauthLoading} className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium">
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
