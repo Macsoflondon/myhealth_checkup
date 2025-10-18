@@ -14,7 +14,10 @@ import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle } from "lucide-react";
 const Auth = () => {
-  const { user, isLoading } = useAuth();
+  const {
+    user,
+    isLoading
+  } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -139,56 +142,34 @@ const Auth = () => {
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+        <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
           <h2 className="text-2xl font-bold text-center mb-6 text-[#22c0d4]">
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
 
           {/* Google Sign In */}
-          <GoogleSignInButton 
-            mode={isSignUp ? "signup" : "signin"}
-            disabled={loading || oauthLoading}
-            onLoading={setOauthLoading}
-          />
+          <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || oauthLoading} onLoading={setOauthLoading} />
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-4 text-muted-foreground">or continue with email</span>
+              <span className="bg-white px-4 text-[#081129]">or continue with email</span>
             </div>
           </div>
 
           <form onSubmit={handleAuth} className="space-y-4">
-            {isSignUp && (
-              <>
+            {isSignUp && <>
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input 
-                    id="firstName" 
-                    type="text" 
-                    value={firstName} 
-                    onChange={e => setFirstName(e.target.value)} 
-                    placeholder="Enter your first name" 
-                    required={isSignUp}
-                    disabled={loading || oauthLoading}
-                  />
+                  <Input id="firstName" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Enter your first name" required={isSignUp} disabled={loading || oauthLoading} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input 
-                    id="lastName" 
-                    type="text" 
-                    value={lastName} 
-                    onChange={e => setLastName(e.target.value)} 
-                    placeholder="Enter your last name" 
-                    required={isSignUp}
-                    disabled={loading || oauthLoading}
-                  />
+                  <Input id="lastName" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Enter your last name" required={isSignUp} disabled={loading || oauthLoading} />
                 </div>
-              </>
-            )}
+              </>}
             
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -215,12 +196,12 @@ const Auth = () => {
                 </Alert>}
             </div>
 
-            <Button type="submit" disabled={loading || oauthLoading} className="w-full text-white text-xl bg-[#081129]">
+            <Button type="submit" disabled={loading || oauthLoading} className="w-full bg-[#22c0d4] font-semibold text-[#e70d69] text-base rounded drop-shadow-md ">
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
             <div className="text-center mt-4">
-              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base font-semibold text-[#081129]">
+              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-[#081129] font-medium">
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
             </div>
