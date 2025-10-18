@@ -83,7 +83,7 @@ const Footer = () => {
           <div>
             <h3 id="footer-services" className="font-semibold text-lg mb-4 text-white">{t('footer.categories')}</h3>
             <ul className="space-y-2" aria-labelledby="footer-services">
-              {serviceSections.map((service, index) => <li key={index}>
+              {serviceSections.map((service, index) => <li key={index} className="py-0">
                   <Link to={service.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
                     {service.name}
                   </Link>
@@ -120,7 +120,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section - Social and Quality Assurance */}
-        <div className="border-t border-gray-700 pt-8">
+        <div className="border-t border-gray-700 pt-8 py-0">
           {/* Social Media and Quality Assurance Logos */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
             {/* Social Media - Left */}
@@ -133,7 +133,7 @@ const Footer = () => {
             
             {/* Quality Assurance Logos - Right */}
             <div className="flex gap-6 items-center">
-              <div className="flex flex-col items-center text-center space-y-2">
+              <div className="flex flex-col items-center text-center space-y-2 py-[10px]">
                 <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
                   <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
                 </div>
@@ -172,7 +172,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright and Additional Links */}
-        <div className="border-t border-gray-700 pt-6 mt-8">
+        <div className="border-t border-gray-700 pt-6 mt-8 py-[4px]">
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white">
             <p className="font-normal text-[#e70d69]">
               {t('footer.copyright')}
