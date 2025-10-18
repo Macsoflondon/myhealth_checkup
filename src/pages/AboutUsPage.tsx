@@ -29,8 +29,8 @@ const AboutUsPage = () => {
       </Helmet>
       
       <Header />
-      <main className="flex-grow bg-[#081129]">
-        <div className="bg-gradient-to-br from-health-50 to-wellness-50 bg-[#081129] py-0">
+      <main className="flex-grow bg-[#081120]">
+        <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-0 bg-[#081120]">
           <div className="container mx-auto px-4 bg-[#081129]">
             <div className="text-center mb-12">
               <h1 className="text-4xl mb-6 text-[#22c0d4] text-center md:text-4xl font-semibold my-0 py-[30px]">
@@ -40,8 +40,8 @@ const AboutUsPage = () => {
           </div>
         </div>
 
-        <section className="bg-white my-0 py-0">
-          <div className="container mx-auto px-4 my-0 py-[10px] bg-[#081129]">
+        <section className="my-0 py-0 bg-[#081129]">
+          <div className="container mx-auto px-4 my-0 py-[20px] bg-[#081129]">
             <div className="max-w-4xl mx-auto">
               <div className="text-lg text-gray-600 space-y-6">
                 <p className="text-white my-0 py-0 text-left font-light text-base">
@@ -75,11 +75,11 @@ const AboutUsPage = () => {
           </div>
         </section>
 
-        <section className="bg-gray-50 py-0">
+        <section className="py-0 bg-[#081129]">
           <div className="container mx-auto px-4 bg-[#081129]">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-[#22c0d4]">Our Values</h2>
-              <p className="max-w-3xl mx-auto text-lg text-[#e70d69]">
+              <h2 className="text-3xl mb-4 text-[#22c0d4] font-medium">Our Values</h2>
+              <p className="max-w-3xl mx-auto text-[#e70d69] font-medium text-2xl">
                 These core values guide everything we do and shape how we serve our community.
               </p>
             </div>
@@ -88,7 +88,7 @@ const AboutUsPage = () => {
               {values.map((value, index) => <div key={index} className="bg-white p-8 rounded-lg shadow-md">
                   <div className="flex items-center mb-4">
                     {value.icon}
-                    <h3 className="text-xl font-semibold ml-3">{value.title}</h3>
+                    <h3 className="text-xl font-semibold ml-3 text-[#081129]">{value.title}</h3>
                   </div>
                   <p className="text-gray-600">{value.description}</p>
                 </div>)}
@@ -103,7 +103,7 @@ const AboutUsPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-8 text-[#22c0d4]">Join The Community</h2>
-              <p className="text-lg mb-8 text-[#e70d69]">
+              <p className="mb-8 text-[#e70d69] font-medium text-lg">
                 Become part of a growing community of health-conscious individuals who are taking charge of their wellbeing through knowledge and early detection.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
