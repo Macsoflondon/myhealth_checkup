@@ -54,7 +54,7 @@ const Header = ({
         
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
-          <div className="relative flex items-center justify-between w-full py-[20px] bg-[#081129]">
+          <div className="relative flex items-center justify-between w-full bg-[#081129] py-0">
             <div className="flex items-center gap-2 flex-shrink-0 z-10">
               <Logo />
             </div>
