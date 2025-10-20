@@ -143,7 +143,7 @@ const Auth = () => {
       <Header />
       <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#22c0d4]">
+          <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
 
