@@ -426,7 +426,7 @@ const FAQsPage = () => {
               <div className="flex justify-center mb-4">
                 <AlertCircle className="h-16 w-16 sm:h-20 sm:w-20 text-gray-300" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">No results found</h3>
+              <h3 className="text-xl font-bold mb-2 sm:text-2xl text-[#22c0d4]">No results found</h3>
               <p className="text-gray-600 mb-6 text-sm sm:text-base max-w-md mx-auto">
                 We couldn't find any FAQs matching "{debouncedSearch}". Try different keywords or browse all categories.
               </p>
