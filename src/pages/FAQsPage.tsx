@@ -342,10 +342,10 @@ const FAQsPage = () => {
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="container mx-auto px-4 py-3 sm:py-4 bg-[#081129]">
           <Breadcrumb>
-            <BreadcrumbList>
+            <BreadcrumbList className="bg-white">
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/" className="text-white hover:text-foreground transition-colors">
+                  <Link to="/" className="text-[#0811 hover:text-foreground transition-colors">
                     Home
                   </Link>
                 </BreadcrumbLink>
@@ -354,7 +354,7 @@ const FAQsPage = () => {
                 <ChevronRight className="h-4 w-4" />
               </BreadcrumbSeparator>
               <BreadcrumbItem>
-                <BreadcrumbPage className="text-foreground font-medium">
+                <BreadcrumbPage className="font-medium text-white">
                   FAQs
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -364,11 +364,11 @@ const FAQsPage = () => {
 
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-primary via-primary/90 to-secondary text-white bg-[#081129]">
-          <div className="container mx-auto px-4 py-12 sm:py-16 text-center bg-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-[#081129]">
+          <div className="container mx-auto px-4 py-12 sm:py-16 text-center bg-[#081129]">
+            <h1 className="text-3xl sm:text-4xl mb-3 sm:mb-4 md:text-4xl font-medium text-white">
               Frequently Asked Questions
             </h1>
-            <p className="text-base sm:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto font-medium md:text-xl px-[10px] text-[#081129]">
+            <p className="text-base sm:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto font-medium md:text-xl px-[10px] text-white">
               Find answers to common questions about health testing and our platform
             </p>
             
@@ -376,7 +376,7 @@ const FAQsPage = () => {
             <div className="max-w-xl sm:max-w-2xl mx-auto">
               <div className="relative text-left font-medium text-[#081129]">
                 <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
+                <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded-xl" />
                 <span id="search-description" className="sr-only">
                   Type to search through all FAQ categories and questions
                 </span>
@@ -389,15 +389,15 @@ const FAQsPage = () => {
         </div>
 
         {/* Popular Questions */}
-        {debouncedSearch === '' && <div className="container mx-auto px-4 py-8 sm:py-12">
+        {debouncedSearch === '' && <div className="container mx-auto px-4 py-8 sm:py-12 bg-[#081129]">
             <div className="bg-[hsl(var(--section-dark))] rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl">
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
                 Popular Questions
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {popularQuestions.map((faq, idx) => <Card key={idx} className="border-white/20 transition-all duration-300 cursor-pointer group bg-white">
-                    <CardHeader className="p-4 sm:p-6 bg-white">
-                      <Badge className="mb-2 sm:mb-3 text-white border-primary/30 w-fit text-xs sm:text-sm bg-[#081129]">
+                    <CardHeader className="p-4 sm:p-6 bg-white py-[14px]">
+                      <Badge className="mb-2 sm:mb-3 text-white border-primary/30 w-fit text-xs sm:text-sm bg-[#22c0d4]">
                         {faq.category}
                       </Badge>
                       <CardTitle className="text-base sm:text-lg transition-colors text-[#081129]">
@@ -413,10 +413,10 @@ const FAQsPage = () => {
           </div>}
 
         {/* FAQ Categories */}
-        <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">
+        <div className="container mx-auto px-4 py-8 sm:py-12 bg-[#081129]">
           {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
               {filteredCategories.map((category, catIdx) => <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <div className="from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-[t#ransparent] bg-[#081129]">
+                  <div className="from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-[t#ransparent] bg-[#22c0d4]">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="bg-primary/20 p-1.5 sm:p-2 rounded-lg text-primary flex-shrink-0">
                         {category.icon}
@@ -429,7 +429,7 @@ const FAQsPage = () => {
                       </Badge>
                     </div>
                   </div>
-                  <div className="p-4 sm:p-6">
+                  <div className="p-4 sm:p-6 rounded-3xl shadow-health-accent ">
                     <Accordion type="single" collapsible>
                       {category.faqs.map((faq, faqIdx) => <AccordionItem key={faqIdx} value={`faq-${catIdx}-${faqIdx}`} className="border-b last:border-0">
                           <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-gray-900 font-medium text-sm sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
@@ -462,9 +462,9 @@ const FAQsPage = () => {
         </div>
 
         {/* Related Resources */}
-        <div className="container mx-auto px-4 py-8 sm:py-12 border-t border-gray-200">
+        <div className="container mx-auto px-4 py-8 sm:py-12 border-t border-gray-200 bg-[#081129]">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-white">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-[#e70d69]">
               Related Resources
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -504,13 +504,13 @@ const FAQsPage = () => {
         </div>
 
         {/* Contact Support */}
-        <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12">
+        <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-white">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-[#e70d69]">
                 Still have questions?
               </h2>
-              <p className="mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto text-white">
+              <p className="mb-6 sm:mb-8 text-base max-w-2xl mx-auto sm:text-lg text-[#22c0d4] font-bold">
                 Our support team is here to help you find the right test for your needs.
               </p>
               
