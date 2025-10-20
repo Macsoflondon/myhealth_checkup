@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 const HowItWorks = () => {
   return <section className="bg-white lg:py-20 py-[44px]">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl shadow-xl p-8 lg:p-12 mb-12">
+        <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl shadow-xl p-8 lg:p-12 mb-12 py-0">
           <div className="text-center mb-12 lg:mb-16">
             <h2 className="mb-4 text-4xl lg:text-5xl font-bold text-[#22c0d4]">
               How It Works

@@ -178,7 +178,7 @@ const NewHero = () => {
                 
                 {/* Popular Searches - Mobile optimized */}
                 <div className="mt-3 sm:mt-4">
-                  <p className="text-xs sm:text-sm text-[#081129] mb-2">{t('hero.popularSearches')}</p>
+                  <p className="text-xs sm:text-sm text-[#081129] mb-2 font-semibold">{t('hero.popularSearches')}</p>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
                     {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] active:scale-95">
                         {search.name}
@@ -217,14 +217,14 @@ const NewHero = () => {
           </h2>
           {/* Top Row - 4 providers */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-3 sm:mb-6">
-            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
+            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center py-0">
                 <img src={provider.logo} alt={`${provider.name} logo`} className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" loading="lazy" />
               </div>)}
           </div>
 
           {/* Bottom Row - 3 providers (centered) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center">
+            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center py-0">
                 <img src={provider.logo} alt={`${provider.name} logo`} className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" loading="lazy" />
               </div>)}
           </div>
@@ -234,7 +234,7 @@ const NewHero = () => {
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129]">
         <div className="w-full px-3 sm:px-4">
-          <h2 className="text-base sm:text-xl md:text-2xl lg:text-4xl text-center leading-tight font-medium text-white">
+          <h2 className="text-base sm:text-xl lg:text-4xl text-center leading-tight font-medium text-white md:text-4xl">
             Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!
           </h2>
         </div>
