@@ -359,9 +359,7 @@ const FAQsPage = () => {
               <div className="relative text-left font-medium text-[#081129]">
                 <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
-                <span id="search-description" className="sr-only">
-                  Type to search through all FAQ categories and questions
-                </span>
+                
                 {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0" aria-label="Clear search">
                     ×
                   </Button>}
@@ -377,7 +375,7 @@ const FAQsPage = () => {
                 Popular Questions
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {popularQuestions.map((faq, idx) => <Card key={idx} className="border-white/20 transition-all duration-300 cursor-pointer group bg-white">
+                {popularQuestions.map((faq, idx) => <Card key={idx} className="border-white/20 transition-all duration-300 cursor-pointer group bg-[#081129]">
                     <CardHeader className="p-4 sm:p-6 bg-white">
                       <Badge className="mb-2 sm:mb-3 text-white border-primary/30 w-fit text-xs sm:text-sm bg-[#081129]">
                         {faq.category}
