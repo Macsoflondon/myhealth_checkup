@@ -34,7 +34,7 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => <Card key={index} className="text-center p-3 bg-[#081129] shadow-white shadow-lg">
+          }].map((item, index) => <Card key={index} className="text-center p-3 bg-[#081129] shadow-white shadow-lg py-[22px] my-[10px]">
               <item.icon className="h-8 w-8 text-white mx-auto mb-2" />
               <div className="text-[#E70D69] text-xs font-bold mb-1">
                 Step {item.step}
