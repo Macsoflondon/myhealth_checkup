@@ -14,7 +14,7 @@ const HowItWorksPage = () => {
       <main className="flex-grow">
         
         
-        <HowItWorks className="bg-[t] bg-[#081129]" />
+        <HowItWorks />
         <Enhanced3StepProcess />
         
         <section className="py-16 bg-white">
