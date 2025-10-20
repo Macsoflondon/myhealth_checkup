@@ -405,7 +405,7 @@ const FAQsPage = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-4 sm:p-6 pt-0 bg-white">
-                      <p className="line-clamp-3 px-[10px] font-semibold text-base text-white">{faq.a}</p>
+                      <p className="line-clamp-3 px-[10px] font-semibold text-base text-[#081129]">{faq.a}</p>
                     </CardContent>
                   </Card>)}
               </div>
