@@ -37,6 +37,7 @@ const Header = ({
             
             {/* Right side controls */}
             <div className="flex items-center gap-2 flex-shrink-0">
+              <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             </div>
