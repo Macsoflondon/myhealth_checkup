@@ -21,11 +21,9 @@ L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   shadowUrl: markerShadow
 });
-
 const RMapContainer = MapContainer as any;
 const RTileLayer = TileLayer as any;
 const RMarker = Marker as any;
-
 interface ClinicItem {
   id?: string;
   name: string;
@@ -41,11 +39,9 @@ interface ClinicItem {
   access_note?: string;
   distance?: number; // meters
 }
-
 const DEFAULT_LON = -0.1278; // London
 const DEFAULT_LAT = 51.5074;
 const DEFAULT_ZOOM = 11;
-
 function mToKm(m?: number) {
   if (typeof m !== "number") return "";
   return (m / 1000).toFixed(2);
@@ -54,7 +50,7 @@ function mToKm(m?: number) {
 // Helper function to extract provider name from clinic name and get logo
 function getProviderLogo(clinicName: string): string | null {
   const lowerName = clinicName.toLowerCase();
-  
+
   // Match clinic name to provider
   if (lowerName.includes("medichecks")) {
     return providers.find(p => p.id === "medichecks")?.logo || null;
@@ -86,7 +82,7 @@ function getProviderLogo(clinicName: string): string | null {
   if (lowerName.includes("hospital") || lowerName.includes("infirmary")) {
     return providers.find(p => p.id === "nhs-hospitals")?.logo || null;
   }
-  
+
   // Default to independent clinics
   return providers.find(p => p.id === "independent")?.logo || null;
 }
@@ -94,7 +90,6 @@ function getProviderLogo(clinicName: string): string | null {
 // Create custom icon for provider markers
 function createProviderIcon(clinicName: string) {
   const logoUrl = getProviderLogo(clinicName);
-  
   if (logoUrl) {
     return L.divIcon({
       html: `
@@ -127,11 +122,10 @@ function createProviderIcon(clinicName: string) {
       popupAnchor: [0, -40]
     });
   }
-  
+
   // Fallback to default icon
   return new L.Icon.Default();
 }
-
 function FlyTo({
   center
 }: {
@@ -147,7 +141,6 @@ function FlyTo({
   }, [center, map]);
   return null;
 }
-
 const ClinicMap: React.FC = () => {
   const [postcode, setPostcode] = useState("");
   const [items, setItems] = useState<ClinicItem[]>([]);
@@ -155,7 +148,6 @@ const ClinicMap: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"alpha" | "distance">("alpha");
-  
   const center = useMemo(() => userCenter || [DEFAULT_LAT, DEFAULT_LON] as [number, number], [userCenter]);
 
   // Load clinics (try Supabase first, fallback to local JSON)
@@ -210,7 +202,6 @@ const ClinicMap: React.FC = () => {
     };
     loadDefault();
   }, []);
-
   async function geocodePostcode(pc: string): Promise<{
     lat: number;
     lon: number;
@@ -223,7 +214,6 @@ const ClinicMap: React.FC = () => {
       lon: j.result.longitude
     };
   }
-
   async function fetchNearestViaProxy(lat: number, lon: number, maxPages = 3): Promise<ClinicItem[]> {
     const {
       data,
@@ -239,7 +229,6 @@ const ClinicMap: React.FC = () => {
     const items = Array.isArray((data as any)?.items) ? (data as any).items : [];
     return items as ClinicItem[];
   }
-
   const handleFind = async () => {
     if (!postcode.trim()) return;
     setLoading(true);
@@ -265,7 +254,6 @@ const ClinicMap: React.FC = () => {
       setLoading(false);
     }
   };
-
   const sortedItems = useMemo(() => {
     const arr = [...items];
     if (mode === "alpha") {
@@ -277,16 +265,14 @@ const ClinicMap: React.FC = () => {
     }
     return arr;
   }, [items, mode]);
-
-  return (
-    <section aria-label="Find a clinic" className="py-8 bg-white">
+  return <section aria-label="Find a clinic" className="py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl font-bold mb-4 text-[#22c0d4]">
             Find Your Nearest Test Location
           </h1>
-          <p className="text-gray-600 max-w-3xl mx-auto">
+          <p className="max-w-3xl mx-auto text-white">
             Default view shows locations from our local directory (A–Z). Enter a postcode to see 
             nearest London Medical Laboratory clinics.
           </p>
@@ -295,65 +281,36 @@ const ClinicMap: React.FC = () => {
         {/* Search Bar */}
         <div className="max-w-2xl mx-auto mb-8">
           <div className="flex gap-3">
-            <Input 
-              value={postcode} 
-              onChange={e => setPostcode(e.target.value)} 
-              placeholder="Enter your postcode (e.g., SW11 6QZ)" 
-              className="flex-1 h-12 text-base"
-              onKeyPress={(e) => e.key === 'Enter' && handleFind()}
-            />
-            <Button 
-              onClick={handleFind} 
-              disabled={loading}
-              className="bg-[#081129] hover:bg-[#081129]/90 text-white px-8 h-12 text-base font-medium"
-            >
+            <Input value={postcode} onChange={e => setPostcode(e.target.value)} placeholder="Enter your postcode (e.g., SW11 6QZ)" className="flex-1 h-12 text-base" onKeyPress={e => e.key === 'Enter' && handleFind()} />
+            <Button onClick={handleFind} disabled={loading} className="text-white px-8 h-12 text-base font-medium bg-[#22c0d4]">
               {loading ? "Searching..." : "Find clinics"}
             </Button>
           </div>
-          {error && (
-            <div className="text-sm text-red-600 mt-2">
+          {error && <div className="text-sm text-red-600 mt-2">
               {error}
-            </div>
-          )}
+            </div>}
         </div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,400px] gap-6">
           {/* Map */}
           <div className="bg-white rounded-lg border overflow-hidden">
-            <RMapContainer 
-              center={center} 
-              zoom={DEFAULT_ZOOM} 
-              scrollWheelZoom={true} 
-              className="h-[500px] w-full"
-            >
-              <RTileLayer 
-                attribution="&copy; OpenStreetMap contributors" 
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+            <RMapContainer center={center} zoom={DEFAULT_ZOOM} scrollWheelZoom={true} className="h-[500px] w-full">
+              <RTileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <FlyTo center={userCenter} />
 
-              {userCenter && (
-                <RMarker position={userCenter}>
+              {userCenter && <RMarker position={userCenter}>
                   <Popup>
                     <div className="font-medium">You are here</div>
                   </Popup>
-                </RMarker>
-              )}
+                </RMarker>}
 
               {sortedItems.map((clinic, idx) => {
-                const lat = typeof clinic.latitude === "number" ? clinic.latitude : 
-                          typeof clinic.lat === "number" ? clinic.lat : undefined;
-                const lon = typeof clinic.longitude === "number" ? clinic.longitude : 
-                          typeof clinic.lng === "number" ? clinic.lng : 
-                          typeof clinic.lon === "number" ? clinic.lon : undefined;
-                
-                if (typeof lat !== "number" || typeof lon !== "number") return null;
-                
-                const customIcon = createProviderIcon(clinic.name || "");
-                
-                return (
-                  <RMarker key={idx} position={[lat, lon]} icon={customIcon}>
+              const lat = typeof clinic.latitude === "number" ? clinic.latitude : typeof clinic.lat === "number" ? clinic.lat : undefined;
+              const lon = typeof clinic.longitude === "number" ? clinic.longitude : typeof clinic.lng === "number" ? clinic.lng : typeof clinic.lon === "number" ? clinic.lon : undefined;
+              if (typeof lat !== "number" || typeof lon !== "number") return null;
+              const customIcon = createProviderIcon(clinic.name || "");
+              return <RMarker key={idx} position={[lat, lon]} icon={customIcon}>
                     <Popup>
                       <div className="min-w-[200px]">
                         <div className="font-semibold text-[#081129] mb-1">
@@ -362,26 +319,19 @@ const ClinicMap: React.FC = () => {
                         <div className="text-sm text-gray-600 mb-2">
                           {clinic.full_address || clinic.address || ""}
                         </div>
-                        {clinic.postal_code && (
-                          <div className="text-sm text-gray-600 mb-2">
+                        {clinic.postal_code && <div className="text-sm text-gray-600 mb-2">
                             {clinic.postal_code}
-                          </div>
-                        )}
-                        {typeof clinic.distance === "number" && (
-                          <div className="text-xs text-gray-500">
+                          </div>}
+                        {typeof clinic.distance === "number" && <div className="text-xs text-gray-500">
                             {mToKm(clinic.distance)} km away
-                          </div>
-                        )}
-                        {clinic.access_note && (
-                          <div className="text-xs text-gray-500 mt-1">
+                          </div>}
+                        {clinic.access_note && <div className="text-xs text-gray-500 mt-1">
                             {clinic.access_note}
-                          </div>
-                        )}
+                          </div>}
                       </div>
                     </Popup>
-                  </RMarker>
-                );
-              })}
+                  </RMarker>;
+            })}
             </RMapContainer>
           </div>
 
@@ -390,17 +340,13 @@ const ClinicMap: React.FC = () => {
             <div className="p-4 border-b bg-gray-50">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-gray-900">Clinics</h3>
-                <Badge 
-                  variant="secondary" 
-                  className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium"
-                >
+                <Badge variant="secondary" className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-medium">
                   {mode === "alpha" ? "A–Z" : "Nearest"}
                 </Badge>
               </div>
             </div>
             <div className="max-h-[450px] overflow-auto">
-              {sortedItems.map((clinic, i) => (
-                <div key={i} className="p-4 border-b hover:bg-gray-50 transition-colors">
+              {sortedItems.map((clinic, i) => <div key={i} className="p-4 border-b hover:bg-gray-50 transition-colors">
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 mt-1">
                       <MapPin className="h-4 w-4 text-[#081129]" />
@@ -412,36 +358,25 @@ const ClinicMap: React.FC = () => {
                       <p className="text-sm text-gray-600 mb-1">
                         {clinic.full_address || clinic.address || ""}
                       </p>
-                      {clinic.postal_code && (
-                        <p className="text-sm text-gray-600 mb-2">
+                      {clinic.postal_code && <p className="text-sm text-gray-600 mb-2">
                           {clinic.postal_code}
-                        </p>
-                      )}
-                      {clinic.access_note && (
-                        <p className="text-xs text-gray-500">
+                        </p>}
+                      {clinic.access_note && <p className="text-xs text-gray-500">
                           {clinic.access_note}
-                        </p>
-                      )}
-                      {typeof clinic.distance === "number" && (
-                        <p className="text-xs text-gray-500 mt-1">
+                        </p>}
+                      {typeof clinic.distance === "number" && <p className="text-xs text-gray-500 mt-1">
                           {mToKm(clinic.distance)} km away
-                        </p>
-                      )}
+                        </p>}
                     </div>
                   </div>
-                </div>
-              ))}
-              {sortedItems.length === 0 && (
-                <div className="p-8 text-center text-gray-500">
+                </div>)}
+              {sortedItems.length === 0 && <div className="p-8 text-center text-gray-500">
                   No clinics to display
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ClinicMap;

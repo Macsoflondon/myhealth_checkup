@@ -142,16 +142,16 @@ const TestCategories = (): JSX.Element => {
     providerCount: 10
   }];
   return <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white via-gray-50/30 to-white">
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-8 sm:py-12 md:py-[60px]">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-8 sm:py-12 md:py-[60px] bg-[#081129]">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16 space-y-3 sm:space-y-4">
           <Badge className="bg-[#22c0d4]/10 text-[#22c0d4] border-0 px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
             HEALTH TESTING SERVICES
           </Badge>
-          <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#081129] mb-3 sm:mb-4 px-2">
+          <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4 px-2 text-white">
             Explore Test Categories
           </h2>
-          <p className="max-w-3xl mx-auto text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed px-4">
+          <p className="max-w-3xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed px-4 text-white">
             Compare comprehensive health tests from the UK's most trusted providers. 
             All tests are UKAS-accredited with fast turnaround times.
           </p>

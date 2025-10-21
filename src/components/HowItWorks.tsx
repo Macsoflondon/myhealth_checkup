@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 const HowItWorks = () => {
   return <section className="bg-white lg:py-20 py-[44px]">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl shadow-xl p-8 lg:p-12 mb-12 py-0">
+        <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl shadow-xl p-8 lg:p-12 mb-12 py-[8px]">
           <div className="text-center mb-12 lg:mb-16">
             <h2 className="mb-4 text-4xl lg:text-5xl font-bold text-[#22c0d4]">
               How It Works
@@ -34,7 +34,7 @@ const HowItWorks = () => {
             title: "Get Results",
             description: "Receive your results and recommendations securely online within 3-5 days",
             icon: Award
-          }].map((item, index) => <Card key={index} className="text-center p-3 bg-[#081129] shadow-white shadow-lg py-[22px] my-[10px]">
+          }].map((item, index) => <Card key={index} className="text-center p-3 bg-[#081129] shadow-white shadow-lg">
               <item.icon className="h-8 w-8 text-white mx-auto mb-2" />
               <div className="text-[#E70D69] text-xs font-bold mb-1">
                 Step {item.step}
@@ -42,7 +42,7 @@ const HowItWorks = () => {
               <h3 className="mb-1 text-[#22c0d4] text-base font-bold">
                 {item.title}
               </h3>
-              <p className="text-xs text-[#22c0d4] font-semibold">
+              <p className="text-[#22c0d4] font-semibold text-base">
                 {item.description}
               </p>
             </Card>)}
