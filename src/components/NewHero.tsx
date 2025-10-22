@@ -91,8 +91,8 @@ const NewHero = () => {
       <section className="w-full bg-[#081129] py-1.5 sm:py-2">
         <div className="w-full px-3 sm:px-4">
           <h1 className="text-[11px] sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
-            <span className="text-white font-medium text-3xl">{t('hero.compareProviders')} </span>
-            <span className="text-[#fc0173] font-medium text-3xl">{t('hero.allInOnePlace')}</span>
+            <span className="text-white font-medium text-5xl">{t('hero.compareProviders')} </span>
+            <span className="text-[#fc0173] font-medium text-5xl text-left">{t('hero.allInOnePlace')}</span>
           </h1>
         </div>
       </section>
