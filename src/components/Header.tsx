@@ -47,7 +47,7 @@ const Header = ({
   }
   // Header and toolbar always sticky
   const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, styles.headerVisible);
-  const toolbarClasses = cn("bg-[#081129] my-0 mx-0 px-0 py-[10px]", styles.toolbar);
+  const toolbarClasses = cn("bg-[#081129] my-0 mx-0 px-0 py-[10px] border-b border-[#fff]", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Utility Bar - Marquee promo banner */}
