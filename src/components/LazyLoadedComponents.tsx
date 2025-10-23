@@ -41,7 +41,7 @@ export const LazyMediaSpotlight = lazy(() => import("./MediaSpotlight"));
 // Wrapped components with loading states
 export const TestCategories = () => <ErrorBoundary>
     <Suspense fallback={<LoadingSpinner message="Loading test categories..." />}>
-      <LazyTestCategories className="bg-[#081129]" />
+      <LazyTestCategories />
     </Suspense>
   </ErrorBoundary>;
 export const FeaturedProviders = () => <ErrorBoundary>
@@ -71,7 +71,7 @@ export const PartnerShowcase = () => <ErrorBoundary>
   </ErrorBoundary>;
 export const ClinicMap = () => <ErrorBoundary>
     <Suspense fallback={<LoadingSpinner message="Loading clinic map..." />}>
-      <LazyClinicMap className="bg-[#081129]" />
+      <LazyClinicMap />
     </Suspense>
   </ErrorBoundary>;
 export const HealthResources = () => <ErrorBoundary>
@@ -81,7 +81,7 @@ export const HealthResources = () => <ErrorBoundary>
   </ErrorBoundary>;
 export const HowItWorks = () => <ErrorBoundary>
     <Suspense fallback={<LoadingSpinner message="Loading process info..." />}>
-      <LazyHowItWorks className="bg-[ansparent] bg-[#081120]" />
+      <LazyHowItWorks />
     </Suspense>
   </ErrorBoundary>;
 export const MediaSpotlight = () => <ErrorBoundary>
