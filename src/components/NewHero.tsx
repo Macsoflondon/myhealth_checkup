@@ -88,11 +88,11 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-1.5 sm:py-2">
-        <div className="w-full px-3 sm:px-4">
-          <h1 className="text-[11px] sm:text-sm md:text-base lg:text-lg leading-tight font-normal text-center">
-            <span className="text-white font-medium px-[16px] py-[20px] my-[10px] text-6xl">{t('hero.compareProviders')} </span>
-            <span className="text-[#fc0173] font-medium text-left px-[206px] py-[20px] text-6xl">{t('hero.allInOnePlace')}</span>
+      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
+        <div className="w-full px-4 sm:px-6 md:px-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto">
+            <span className="text-white block sm:inline">{t('hero.compareProviders')} </span>
+            <span className="text-[#fc0173] block sm:inline mt-2 sm:mt-0">{t('hero.allInOnePlace')}</span>
           </h1>
         </div>
       </section>
