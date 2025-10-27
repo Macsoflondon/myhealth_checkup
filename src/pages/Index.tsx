@@ -87,7 +87,7 @@ const Index = () => {
       <UKASBanner />
       <Header />
       
-      <main className="flex-1 space-y-8">
+      <main className="flex-1 space-y-2 sm:space-y-4 md:space-y-6">
         <NewHero />
         <HowItWorks />
         <MediaSpotlight />
