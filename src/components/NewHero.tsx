@@ -91,9 +91,12 @@ const NewHero = () => {
       <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
         <div className="w-full px-4 sm:px-6 md:px-8">
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto">
-            <span className="text-white block sm:inline">{t('hero.compareProviders')} </span>
-            <span className="text-[#fc0173] block sm:inline mt-2 sm:mt-0">{t('hero.allInOnePlace')}</span>
+            <span className="text-white block sm:inline">It's time to feel like </span>
+            <span className="text-[#22c0d4] italic block sm:inline mt-2 sm:mt-0">yourself again</span>
           </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 text-center max-w-4xl mx-auto mt-4">
+            Take control of your health with trusted private testing. Compare prices, book online, get results fast.
+          </p>
         </div>
       </section>
       

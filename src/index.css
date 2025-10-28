@@ -36,8 +36,15 @@
     --health-icon: 211 80% 8%;
     --section-dark: 211 80% 8%;
     
-    --gradient-health: linear-gradient(135deg, hsl(220 100% 50%), hsl(280 100% 70%));
-    --gradient-accent: linear-gradient(135deg, hsl(340 100% 60%), hsl(280 100% 70%));
+    --gradient-health: linear-gradient(135deg, hsl(189 69% 47%), hsl(189 69% 65%));
+    --gradient-accent: linear-gradient(135deg, hsl(343 91% 48%), hsl(343 91% 65%));
+    --gradient-hero: linear-gradient(180deg, hsl(211 80% 8%), hsl(211 80% 12%));
+    --gradient-soft: linear-gradient(135deg, hsl(189 69% 47% / 0.1), hsl(343 91% 48% / 0.1));
+    
+    --shadow-soft: 0 4px 20px hsl(211 80% 8% / 0.08);
+    --shadow-elevation: 0 10px 40px hsl(211 80% 8% / 0.12);
+    --shadow-glow-teal: 0 0 30px hsl(189 69% 47% / 0.3);
+    --shadow-glow-pink: 0 0 30px hsl(343 91% 48% / 0.3);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;

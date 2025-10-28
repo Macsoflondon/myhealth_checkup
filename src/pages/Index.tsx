@@ -9,6 +9,10 @@ import PromoBanner from "@/components/PromoBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+import HealthJourneyTimeline from "@/components/HealthJourneyTimeline";
+import HealthConcernsTabs from "@/components/HealthConcernsTabs";
+import OutcomeTestimonials from "@/components/OutcomeTestimonials";
+import ExpertSupport from "@/components/ExpertSupport";
 import { TestCategories, MostPopularTests, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, HowItWorks, MediaSpotlight } from "@/components/LazyLoadedComponents";
 const Index = () => {
   usePerformanceOptimization();
@@ -87,18 +91,17 @@ const Index = () => {
       <UKASBanner />
       <Header />
       
-      <main className="flex-1 space-y-2 sm:space-y-4 md:space-y-6">
+      <main className="flex-1 space-y-0">
         <NewHero />
+        <HealthJourneyTimeline />
+        <HealthConcernsTabs />
+        <OutcomeTestimonials />
         <HowItWorks />
         <MediaSpotlight />
-        <TestCategories />
         <MostPopularTests />
-        <HealthBenefitsInfographic />
-        <FounderStory />
-        <PartnerShowcase />
-        <ClinicMap />
+        <ExpertSupport />
         <CallToAction />
-        </main>
+      </main>
         
         <Footer />
         <CookieConsent />
