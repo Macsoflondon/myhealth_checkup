@@ -227,11 +227,9 @@ const WomensHealthPage = () => {
                <h1 className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">
                 {t('womensHealth.title')}
               </h1>
-              <p style={{
-              color: '#081129'
-            }} className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
-                {t('womensHealth.subtitle')}
-              </p>
+          <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
+            {t('womensHealth.subtitle')}
+          </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   {t('womensHealth.browseAllTests')}
