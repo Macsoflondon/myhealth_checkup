@@ -96,10 +96,7 @@ const NewHero = () => {
             <span className="text-white block sm:inline">It's time to feel like </span>
             <span className="text-[#22c0d4] italic block sm:inline mt-2 sm:mt-0">yourself again</span>
           </h1>
-          <p className="text-base sm:text-lg max-w-4xl mx-auto mt-4 font-normal text-center text-white md:text-lg">At myhealth checkup, we believe your health is your greatest asset. That’s why we’ve created the UK’s only independent comparison platform dedicated to private health and wellness testing. We partner exclusively with UKAS-accredited labs, CQC-regulated providers, and ISO 15189-certified clinics to bring you safe, high-quality diagnostics all in one place. From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence.
-
-
- Your health. Your choice. One trusted platform.</p>
+          <p className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-white font-normal md:text-lg">At myhealth checkup, we believe your health is your greatest asset. That’s why we’ve created the UK’s only independent comparison platform dedicated to private health and wellness testing. We partner exclusively with UKAS-accredited labs, CQC-regulated providers, and ISO 15189-certified clinics to bring you safe, high-quality diagnostics all in one place. From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence. </p>
         </div>
       </section>
       
