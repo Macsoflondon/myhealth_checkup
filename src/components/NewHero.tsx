@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import AccreditationLogos from "@/components/AccreditationLogos";
 import { logger } from "@/lib/logger";
 import { providers } from "@/data/compare/providers";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 const NewHero = () => {
   const {
     t
@@ -218,19 +220,35 @@ const NewHero = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-[#081129] mb-4 sm:mb-6">
             {t('hero.ourPartners')}
           </h2>
-          {/* Top Row - 4 providers */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mb-3 sm:mb-6">
-            {providers.slice(0, 4).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center py-0">
-                <img src={provider.logo} alt={`${provider.name} logo`} className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" loading="lazy" />
-              </div>)}
-          </div>
-
-          {/* Bottom Row - 3 providers (centered) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 max-w-4xl mx-auto">
-            {providers.slice(4, 7).map(provider => <div key={provider.id} className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center py-0">
-                <img src={provider.logo} alt={`${provider.name} logo`} className="h-24 sm:h-32 md:h-40 w-auto object-contain mx-auto" loading="lazy" />
-              </div>)}
-          </div>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 3000,
+              }),
+            ]}
+            className="w-full max-w-5xl mx-auto"
+          >
+            <CarouselContent>
+              {providers.map(provider => (
+                <CarouselItem key={provider.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4">
+                  <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-32 sm:h-40">
+                    <img 
+                      src={provider.logo} 
+                      alt={`${provider.name} logo`} 
+                      className="h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto" 
+                      loading="lazy" 
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden sm:flex" />
+            <CarouselNext className="hidden sm:flex" />
+          </Carousel>
         </div>
       </section>
       
