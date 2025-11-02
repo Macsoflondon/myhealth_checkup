@@ -110,8 +110,15 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
       return null; // Will use categories
     }
     
-  // For specific health sections, show actual Goodbody tests
-  return getTestsForNavigation(itemName);
+    // For Cancer Screening, Women's Health, Men's Health, and Fertility - show actual Goodbody tests
+    if (itemName === "Cancer Screening" || 
+        itemName === "Women's Health" || 
+        itemName === "Men's Health" || 
+        itemName === "Fertility") {
+      return getTestsForNavigation(itemName.toUpperCase());
+    }
+    
+    return null; // Will use categories for others
   };
 
   const getFilteredCategories = (itemName: string) => {
