@@ -91,14 +91,22 @@ const NewHero = () => {
       
       {/* Full-width Headline Banner */}
       <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
-        <div className="w-full px-4 sm:px-6 md:px-8">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto">
+        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
+          <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto my-0 py-[20px] lg:text-4xl">
             <span className="text-white block sm:inline">It's time to feel like </span>
             <span className="text-[#22c0d4] italic block sm:inline mt-2 sm:mt-0">yourself again</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 text-center max-w-4xl mx-auto mt-4">
-            Take control of your health with trusted private testing. Compare prices, book online, get results fast.
-          </p>
+          <p className="text-base sm:text-lg md:text-xl max-w-4xl mx-auto mt-4 text-white/[0.31] font-normal text-center">At myhealth checkup, we believe your health is your greatest asset. That’s why we’ve created the UK’s only independent comparison platform dedicated to private health and wellness testing.
+
+
+
+
+We partner exclusively with UKAS-accredited labs, CQC-regulated providers, and ISO 15189-certified clinics to bring you safe, high-quality diagnostics all in one place. From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence.
+
+
+
+
+Your health. Your choice. One trusted platform.</p>
         </div>
       </section>
       
@@ -220,31 +228,18 @@ const NewHero = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-[#081129] mb-4 sm:mb-6">
             {t('hero.ourPartners')}
           </h2>
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 3000,
-              }),
-            ]}
-            className="w-full max-w-5xl mx-auto"
-          >
+          <Carousel opts={{
+          align: "start",
+          loop: true
+        }} plugins={[Autoplay({
+          delay: 3000
+        })]} className="w-full max-w-5xl mx-auto">
             <CarouselContent>
-              {providers.map(provider => (
-                <CarouselItem key={provider.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4">
+              {providers.map(provider => <CarouselItem key={provider.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4">
                   <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-32 sm:h-40">
-                    <img 
-                      src={provider.logo} 
-                      alt={`${provider.name} logo`} 
-                      className="h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto" 
-                      loading="lazy" 
-                    />
+                    <img src={provider.logo} alt={`${provider.name} logo`} className="h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto" loading="lazy" />
                   </div>
-                </CarouselItem>
-              ))}
+                </CarouselItem>)}
             </CarouselContent>
             <CarouselPrevious className="hidden sm:flex" />
             <CarouselNext className="hidden sm:flex" />
