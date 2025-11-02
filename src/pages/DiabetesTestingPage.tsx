@@ -43,14 +43,13 @@ const DiabetesTestingPage = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+        <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-[#081129] text-white">Early Detection</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Diabetes Testing & Monitoring
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl mb-8 text-white">
                 Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults 
                 aged 30-60 looking to manage their metabolic health proactively.
               </p>
@@ -68,10 +67,10 @@ const DiabetesTestingPage = () => {
         </section>
 
         {/* Warning Signs */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Early Warning Signs</h2>
+              <h2 className="text-3xl font-bold text-center mb-12 text-[#081129] my-[20px]">Early Warning Signs</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                   "Increased thirst",
@@ -94,10 +93,10 @@ const DiabetesTestingPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Diabetes Testing Options</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Diabetes Testing Options</h2>
               <p className="text-xl text-muted-foreground">Choose the right test for your needs</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">

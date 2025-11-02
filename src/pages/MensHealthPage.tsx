@@ -160,18 +160,18 @@ const MensHealthPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
-                Men's Health Blood Tests
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{color: '#081129'}}>
-                Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, 
-                and complete wellness testing tailored for men's unique health needs.
-              </p>
+      {/* Hero Section */}
+      <section className="bg-[#081129] py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Men's Health Blood Tests
+            </h1>
+            <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
+              Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, 
+              and complete wellness testing tailored for men's unique health needs.
+            </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   Browse All Tests
@@ -185,10 +185,10 @@ const MensHealthPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
+              <h2 className="text-3xl font-bold mb-8 text-[#081129] my-[20px]">
                 Why Men's Health Testing Matters
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -225,7 +225,7 @@ const MensHealthPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

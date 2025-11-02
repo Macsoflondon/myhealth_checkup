@@ -56,14 +56,13 @@ const VitaminDeficiencyPage = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-green-50 to-emerald-50 py-16">
+        <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-green-100 text-green-800">Nutritional Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Vitamin & Mineral Testing
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl mb-8 text-white">
                 Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. 
                 Essential testing for health-conscious UK adults aged 30-60.
               </p>
@@ -84,10 +83,10 @@ const VitaminDeficiencyPage = () => {
         
 
         {/* Available Tests */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Vitamin Deficiency Tests</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Vitamin Deficiency Tests</h2>
               <p className="text-xl text-muted-foreground">Identify and address nutritional gaps</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -121,10 +120,10 @@ const VitaminDeficiencyPage = () => {
         </section>
 
         {/* Why Test For Deficiencies */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Why Test for Vitamin Deficiencies?</h2>
+              <h2 className="text-3xl font-bold text-center mb-12 text-[#081129] my-[20px]">Why Test for Vitamin Deficiencies?</h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <Card className="p-6">
                   <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">

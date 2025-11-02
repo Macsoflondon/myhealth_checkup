@@ -127,13 +127,13 @@ const CancerScreeningPage = () => {
       
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+        <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Cancer Screening Tests
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-xl mb-8 max-w-2xl mx-auto text-white">
                 Comprehensive cancer screening tests for early detection and peace of mind. 
                 Regular screening saves lives - start your prevention journey today.
               </p>
@@ -150,11 +150,11 @@ const CancerScreeningPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
+                <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">
                   Available Cancer Screening Tests
                 </h2>
                 <p className="text-lg text-muted-foreground">
@@ -275,16 +275,16 @@ const CancerScreeningPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
+              <h2 className="text-3xl font-bold mb-12 text-[#081129] my-[20px]">
                 Why Choose Cancer Screening?
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Shield className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
                   <p className="text-muted-foreground">
@@ -292,8 +292,8 @@ const CancerScreeningPage = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Heart className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
                   <p className="text-muted-foreground">
@@ -301,8 +301,8 @@ const CancerScreeningPage = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
+                    <Users className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">Expert Care</h3>
                   <p className="text-muted-foreground">

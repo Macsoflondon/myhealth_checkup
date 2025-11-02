@@ -38,17 +38,13 @@ const GutHealthPage = () => {
       <Header />
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-amber-50 to-orange-50 py-16">
+        <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-amber-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <Droplets className="h-8 w-8 text-white" />
-              </div>
-              <Badge className="mb-4 bg-amber-100 text-amber-800">Digestive Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Gut Health & Microbiome Testing
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl mb-8 text-white">
                 Discover the secrets of your gut microbiome. Advanced testing for digestive health, 
                 food intolerances, and gut-brain connection for UK adults aged 30-60.
               </p>
@@ -66,10 +62,10 @@ const GutHealthPage = () => {
         </section>
 
         {/* Gut Health Impact */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Your Gut Affects Everything</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Your Gut Affects Everything</h2>
               <p className="text-xl text-muted-foreground">The gut-body connection</p>
             </div>
             <div className="grid md:grid-cols-4 gap-8">
@@ -106,10 +102,10 @@ const GutHealthPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Gut Health Testing Options</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Gut Health Testing Options</h2>
               <p className="text-xl text-muted-foreground">From basic screening to comprehensive analysis</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">

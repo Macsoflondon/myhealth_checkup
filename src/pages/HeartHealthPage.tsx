@@ -125,14 +125,13 @@ const HeartHealthPage = () => {
       <Header />
       <main className="flex-grow bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+        <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">Heart Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                 Cardiovascular Health Testing
               </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide" style={{color: '#081129'}}>
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
                 Comprehensive heart health screening for UK adults aged 30-60. 
                 Monitor your cardiovascular risk and take proactive steps towards a healthier heart.
               </p>
@@ -149,10 +148,10 @@ const HeartHealthPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
+              <h2 className="text-3xl font-bold mb-8 text-[#081129] my-[20px]">
                 Why Test Your Heart Health?
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -189,7 +188,7 @@ const HeartHealthPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
