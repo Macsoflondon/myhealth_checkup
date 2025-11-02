@@ -65,6 +65,7 @@ import HowWeRankPage from "./pages/HowWeRankPage";
 import LolaHealthTestDetailPage from "./pages/LolaHealthTestDetailPage";
 import GoodbodyTestDetailPage from "./pages/GoodbodyTestDetailPage";
 import MedichecksTestDetailPage from "./pages/MedichecksTestDetailPage";
+import HealthDashboardPage from "./pages/HealthDashboardPage";
 
 const queryClient = new QueryClient();
 
@@ -138,6 +139,7 @@ const App = () => (
               
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/health-dashboard" element={<ProtectedRoute><HealthDashboardPage /></ProtectedRoute>} />
               <Route path="/portal" element={<ProtectedRoute><ClientPortal /></ProtectedRoute>} />
               <Route path="/modern-slavery" element={<ModernSlaveryPage />} />
               <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />

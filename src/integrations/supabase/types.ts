@@ -94,7 +94,7 @@ export type Database = {
           action: string
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           new_data: Json | null
           old_data: Json | null
           record_id: string | null
@@ -106,7 +106,7 @@ export type Database = {
           action: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           new_data?: Json | null
           old_data?: Json | null
           record_id?: string | null
@@ -118,7 +118,7 @@ export type Database = {
           action?: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           new_data?: Json | null
           old_data?: Json | null
           record_id?: string | null
@@ -127,6 +127,66 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      biomarker_readings: {
+        Row: {
+          appointment_id: string | null
+          biomarker_name: string
+          created_at: string | null
+          id: string
+          recorded_at: string
+          reference_range_max: number | null
+          reference_range_min: number | null
+          status: string | null
+          unit: string | null
+          uploaded_test_result_id: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          appointment_id?: string | null
+          biomarker_name: string
+          created_at?: string | null
+          id?: string
+          recorded_at: string
+          reference_range_max?: number | null
+          reference_range_min?: number | null
+          status?: string | null
+          unit?: string | null
+          uploaded_test_result_id?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          appointment_id?: string | null
+          biomarker_name?: string
+          created_at?: string | null
+          id?: string
+          recorded_at?: string
+          reference_range_max?: number | null
+          reference_range_min?: number | null
+          status?: string | null
+          unit?: string | null
+          uploaded_test_result_id?: string | null
+          user_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "biomarker_readings_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "biomarker_readings_uploaded_test_result_id_fkey"
+            columns: ["uploaded_test_result_id"]
+            isOneToOne: false
+            referencedRelation: "uploaded_test_results"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       biomarkers_library: {
         Row: {
@@ -796,6 +856,48 @@ export type Database = {
         }
         Relationships: []
       }
+      uploaded_test_results: {
+        Row: {
+          created_at: string | null
+          file_url: string | null
+          id: string
+          notes: string | null
+          parsed_data: Json | null
+          provider_id: string | null
+          test_date: string
+          test_name: string
+          updated_at: string | null
+          uploaded_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          parsed_data?: Json | null
+          provider_id?: string | null
+          test_date: string
+          test_name: string
+          updated_at?: string | null
+          uploaded_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          parsed_data?: Json | null
+          provider_id?: string | null
+          test_date?: string
+          test_name?: string
+          updated_at?: string | null
+          uploaded_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_consents: {
         Row: {
           consent_date: string
@@ -804,7 +906,7 @@ export type Database = {
           consent_withdrawn_date: string | null
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           user_agent: string | null
           user_id: string
           version: string
@@ -816,7 +918,7 @@ export type Database = {
           consent_withdrawn_date?: string | null
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           user_agent?: string | null
           user_id: string
           version: string
@@ -828,10 +930,82 @@ export type Database = {
           consent_withdrawn_date?: string | null
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           user_agent?: string | null
           user_id?: string
           version?: string
+        }
+        Relationships: []
+      }
+      user_health_data: {
+        Row: {
+          created_at: string | null
+          data_source: string
+          id: string
+          metric_type: string
+          recorded_at: string
+          synced_at: string | null
+          unit: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string | null
+          data_source: string
+          id?: string
+          metric_type: string
+          recorded_at: string
+          synced_at?: string | null
+          unit?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          created_at?: string | null
+          data_source?: string
+          id?: string
+          metric_type?: string
+          recorded_at?: string
+          synced_at?: string | null
+          unit?: string | null
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      user_health_scores: {
+        Row: {
+          calculated_at: string | null
+          created_at: string | null
+          heart_score: number | null
+          hormonal_score: number | null
+          id: string
+          metabolic_score: number | null
+          nutritional_score: number | null
+          overall_score: number | null
+          user_id: string
+        }
+        Insert: {
+          calculated_at?: string | null
+          created_at?: string | null
+          heart_score?: number | null
+          hormonal_score?: number | null
+          id?: string
+          metabolic_score?: number | null
+          nutritional_score?: number | null
+          overall_score?: number | null
+          user_id: string
+        }
+        Update: {
+          calculated_at?: string | null
+          created_at?: string | null
+          heart_score?: number | null
+          hormonal_score?: number | null
+          id?: string
+          metabolic_score?: number | null
+          nutritional_score?: number | null
+          overall_score?: number | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -979,15 +1153,54 @@ export type Database = {
         }
         Relationships: []
       }
+      wearable_connections: {
+        Row: {
+          access_token: string | null
+          connected_at: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          last_sync_at: string | null
+          provider: string
+          refresh_token: string | null
+          token_expires_at: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          connected_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider: string
+          refresh_token?: string | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          connected_at?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          provider?: string
+          refresh_token?: string | null
+          token_expires_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      cleanup_old_health_queries: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      cleanup_old_health_queries: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
