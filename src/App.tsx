@@ -67,10 +67,11 @@ import GoodbodyTestDetailPage from "./pages/GoodbodyTestDetailPage";
 import MedichecksTestDetailPage from "./pages/MedichecksTestDetailPage";
 import HealthDashboardPage from "./pages/HealthDashboardPage";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => {
+  const queryClient = new QueryClient();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <HelmetProvider>
         <TooltipProvider>
@@ -159,6 +160,7 @@ const App = () => (
       </HelmetProvider>
     </AuthProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
