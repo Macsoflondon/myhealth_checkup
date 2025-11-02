@@ -7,10 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield } from "lucide-react";
 import { wellnessCategories } from "@/data/wellnessCategories";
-
 const WellnessPage = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Wellness Blood Tests | Comprehensive Health Screening | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Comprehensive wellness blood tests including liver, kidney, cardiac risk, sports fitness, and stress testing. Professional health screening from £25." />
@@ -33,13 +31,11 @@ const WellnessPage = () => {
       
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
+        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">
-                Wellness Blood Tests
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">General Wellness</h1>
+              <p className="mb-8 max-w-2xl mx-auto text-white font-normal text-lg">
                 Comprehensive wellness and lifestyle health tests to optimize your wellbeing. 
                 Monitor key health markers and prevent potential health issues.
               </p>
@@ -47,7 +43,7 @@ const WellnessPage = () => {
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
                   Browse All Tests
                 </Button>
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="text-black">
                   Find a Clinic
                 </Button>
               </div>
@@ -56,29 +52,27 @@ const WellnessPage = () => {
         </section>
 
         {/* Category Grid */}
-        <section className="py-16">
+        <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-foreground mb-4">
+                <h2 className="text-3xl font-bold mb-4 text-[#22c0d4]">
                   Browse Tests by Category
                 </h2>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-white">
                   Choose from our comprehensive range of wellness testing categories
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {wellnessCategories.map((category) => {
-                  const IconComponent = category.icon;
-                  return (
-                    <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
+                {wellnessCategories.map(category => {
+                const IconComponent = category.icon;
+                return <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
                       <CardHeader className="pb-4">
                         <div className="flex items-center gap-3 mb-2">
-                          <div 
-                            className={`w-3 h-3 rounded-full ${category.colorClass}`}
-                            style={{ backgroundColor: category.colorHex }}
-                          />
+                          <div className={`w-3 h-3 rounded-full ${category.colorClass}`} style={{
+                        backgroundColor: category.colorHex
+                      }} />
                           <CardTitle className="text-xl leading-tight text-health-heading">
                             {category.name}
                           </CardTitle>
@@ -92,20 +86,16 @@ const WellnessPage = () => {
                           {category.description}
                         </CardDescription>
                         <Link to={`/compare?category=${category.id}`}>
-                          <Button 
-                            className="w-full transition-colors"
-                            style={{ 
-                              backgroundColor: category.colorHex,
-                              color: 'white'
-                            }}
-                          >
+                          <Button className="w-full transition-colors" style={{
+                        backgroundColor: category.colorHex,
+                        color: 'white'
+                      }}>
                             View Tests
                           </Button>
                         </Link>
                       </CardContent>
-                    </Card>
-                  );
-                })}
+                    </Card>;
+              })}
               </div>
             </div>
           </div>
@@ -153,8 +143,6 @@ const WellnessPage = () => {
       </main>
       
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default WellnessPage;
