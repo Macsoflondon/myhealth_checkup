@@ -151,7 +151,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
 
   return (
     <nav className={`relative ${className}`} aria-label="Main Navigation">
-      {primaryNavigationItems.map((item) => (
+      {primaryNavigationItems.filter(item => item.name !== "How It Works").map((item) => (
         <div 
           key={item.path}
           className="relative nav-item-wrapper"
@@ -292,6 +292,15 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           </div>
         )}
       </div>
+      
+      {/* How It Works - standalone item */}
+      <Link
+        to="/how-it-works"
+        className="text-sm font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
+        onClick={onItemClick}
+      >
+        How It Works
+      </Link>
     </nav>
   );
 };
