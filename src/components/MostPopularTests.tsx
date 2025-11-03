@@ -136,31 +136,6 @@ const MostPopularTests = () => {
         </div>
       </section>
 
-      {/* Tests Section */}
-      <section className="bg-white/[0.31] py-8 sm:py-12 md:py-16">
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
-
-        <div className="flex justify-end mb-4 sm:mb-6">
-          <select className="px-3 sm:px-4 md:px-14 py-2 border border-gray-300 rounded-md text-xs sm:text-sm bg-[#e70d69] text-white">
-            <option>Price, high to low</option>
-            <option>Price, low to high</option>
-            <option>Most popular</option>
-            <option>Newest</option>
-          </select>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          {popularTests.map(test => <TestCard key={test.id} {...test} />)}
-        </div>
-
-        <div className="text-center mt-6 sm:mt-8">
-          <Button onClick={() => navigate('/compare')} className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-full w-full sm:w-auto">
-            View all tests
-          </Button>
-        </div>
-      </div>
-    </section>
-
       {/* Benefits Section */}
       <section className="bg-white py-12">
         <div className="container mx-auto px-4">
@@ -200,6 +175,31 @@ const MostPopularTests = () => {
           </div>
         </div>
       </section>
+
+      {/* Tests Section */}
+      <section className="bg-white/[0.31] py-8 sm:py-12 md:py-16">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
+
+        <div className="flex justify-end mb-4 sm:mb-6">
+          <select className="px-3 sm:px-4 md:px-14 py-2 border border-gray-300 rounded-md text-xs sm:text-sm bg-[#e70d69] text-white">
+            <option>Price, high to low</option>
+            <option>Price, low to high</option>
+            <option>Most popular</option>
+            <option>Newest</option>
+          </select>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+          {popularTests.map(test => <TestCard key={test.id} {...test} />)}
+        </div>
+
+        <div className="text-center mt-6 sm:mt-8">
+          <Button onClick={() => navigate('/compare')} className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-full w-full sm:w-auto">
+            View all tests
+          </Button>
+        </div>
+      </div>
+    </section>
     </>;
 };
 export default MostPopularTests;
