@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { Star, TrendingUp, Award, Users } from 'lucide-react';
 interface TestCardProps {
   id: string;
   category: string;
@@ -107,20 +107,38 @@ const MostPopularTests = () => {
     reviews: 1234,
     collection: 'Finger-prick or Venous collection'
   }];
-  return <section className="bg-gray-50 py-8 sm:py-12 md:py-16">
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
-        <div className="mb-6 sm:mb-8">
-          <nav className="text-sm text-gray-500 mb-4">
-             
-             
-            
-          </nav>
-          
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-center text-[#22c0d4]" style={{
-          color: '#22c0d4'
-        }}>The Most Popular Tests Amongst Our Providers</h1>
-          <p className="text-sm sm:text-base md:text-lg font-medium text-center text-[#081129] px-2">Check out our best selling tests, used by thousands of people</p>
+  return <>
+      {/* Hero Section */}
+      <section className="bg-[#081129] py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Most Popular Tests</h1>
+            <p className="text-xl text-white max-w-2xl mx-auto mb-8">
+              Check out our best-selling tests, trusted by thousands of people across the UK for comprehensive health screening.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="bg-primary text-primary-foreground hover:bg-health-heading"
+                onClick={() => navigate('/compare')}
+              >
+                Browse All Tests
+              </Button>
+              <Button 
+                size="lg" 
+                className="bg-[#22C0D4] text-white hover:bg-[#E70D69]"
+                onClick={() => navigate('/find-clinic')}
+              >
+                Find a Clinic
+              </Button>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* Tests Section */}
+      <section className="bg-white/[0.31] py-8 sm:py-12 md:py-16">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
 
         <div className="flex justify-end mb-4 sm:mb-6">
           <select className="px-3 sm:px-4 md:px-14 py-2 border border-gray-300 rounded-md text-xs sm:text-sm bg-[#e70d69] text-white">
@@ -141,6 +159,47 @@ const MostPopularTests = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+
+      {/* Benefits Section */}
+      <section className="bg-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold text-[#081129] my-[20px] mb-12">
+              Why Choose Popular Tests?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Proven Track Record</h3>
+                <p className="text-muted-foreground">
+                  Tests chosen by thousands of satisfied customers for reliable health insights
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <Award className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Comprehensive Coverage</h3>
+                <p className="text-muted-foreground">
+                  Our most popular tests cover the widest range of essential health markers
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Community Trust</h3>
+                <p className="text-muted-foreground">
+                  Join thousands who trust these tests for their health monitoring needs
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>;
 };
 export default MostPopularTests;

@@ -31,19 +31,19 @@ const WellnessPage = () => {
       
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
+        <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">General Wellness</h1>
-              <p className="mb-8 max-w-2xl mx-auto text-white font-normal text-lg">
-                Comprehensive wellness and lifestyle health tests to optimize your wellbeing. 
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">General Wellness</h1>
+              <p className="text-xl text-white max-w-2xl mx-auto mb-8">
+                Comprehensive wellness and lifestyle health tests to optimise your wellbeing. 
                 Monitor key health markers and prevent potential health issues.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
                   Browse All Tests
                 </Button>
-                <Button size="lg" variant="outline" className="text-black">
+                <Button size="lg" className="bg-[#22C0D4] text-white hover:bg-[#E70D69]">
                   Find a Clinic
                 </Button>
               </div>
@@ -102,36 +102,36 @@ const WellnessPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-16 bg-muted/30">
+        <section className="bg-white py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
+              <h2 className="text-3xl font-bold text-[#081129] my-[20px] mb-12">
                 Why Choose Wellness Testing?
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Shield className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Early Detection</h3>
                   <p className="text-muted-foreground">
                     Identify potential health issues before they become serious problems
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Activity className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Activity className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Optimize Performance</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Optimise Performance</h3>
                   <p className="text-muted-foreground">
                     Monitor key biomarkers to enhance your physical and mental performance
                   </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-primary" />
+                  <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Heart className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Peace of Mind</h3>
                   <p className="text-muted-foreground">
                     Regular monitoring gives you confidence in your health status
                   </p>
