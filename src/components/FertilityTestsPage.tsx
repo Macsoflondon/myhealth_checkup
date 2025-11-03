@@ -174,32 +174,6 @@ const FertilityTestsPage = () => {
         </div>
       </section>
 
-      <main className="max-w-6xl mx-auto px-6 py-8 bg-white/[0.31]">
-        <div className="mb-8">
-          <nav className="text-sm text-gray-500 mb-4">
-            <span className="cursor-pointer hover:text-[#E91E63]" onClick={() => navigate('/')}>Home</span> 
-            <span className="mx-2">/</span> 
-            <span>Prenatal & Pregnancy Testing</span>
-          </nav>
-        </div>
-
-        <div className="flex justify-end mb-6">
-          <select className="px-4 py-2 border border-gray-300 rounded-md text-sm bg-white">
-            <option>Featured</option>
-            <option>Price, low to high</option>
-            <option>Price, high to low</option>
-            <option>Most popular</option>
-            <option>Newest</option>
-          </select>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {fertilityTests.map((test) => (
-            <TestCard key={test.id} {...test} />
-          ))}
-        </div>
-      </main>
-
       {/* Benefits Section */}
       <section className="bg-white py-12">
         <div className="container mx-auto px-4">
@@ -239,6 +213,32 @@ const FertilityTestsPage = () => {
           </div>
         </div>
       </section>
+
+      <main className="max-w-6xl mx-auto px-6 py-8 bg-white/[0.31]">
+        <div className="mb-8">
+          <nav className="text-sm text-gray-500 mb-4">
+            <span className="cursor-pointer hover:text-[#E91E63]" onClick={() => navigate('/')}>Home</span> 
+            <span className="mx-2">/</span> 
+            <span>Prenatal & Pregnancy Testing</span>
+          </nav>
+        </div>
+
+        <div className="flex justify-end mb-6">
+          <select className="px-4 py-2 border border-gray-300 rounded-md text-sm bg-white">
+            <option>Featured</option>
+            <option>Price, low to high</option>
+            <option>Price, high to low</option>
+            <option>Most popular</option>
+            <option>Newest</option>
+          </select>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {fertilityTests.map((test) => (
+            <TestCard key={test.id} {...test} />
+          ))}
+        </div>
+      </main>
       
       <Footer />
     </div>
