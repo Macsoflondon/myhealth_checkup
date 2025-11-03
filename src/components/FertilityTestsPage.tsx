@@ -224,7 +224,7 @@ const FertilityTestsPage = () => {
         </div>
 
         <div className="flex justify-end mb-6">
-          <select className="px-4 py-2 border border-gray-300 rounded-md text-sm bg-white">
+          <select className="px-4 py-2 border border-border rounded-md text-sm bg-background text-foreground">
             <option>Featured</option>
             <option>Price, low to high</option>
             <option>Price, high to low</option>
