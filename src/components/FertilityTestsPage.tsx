@@ -215,14 +215,6 @@ const FertilityTestsPage = () => {
       </section>
 
       <main className="max-w-6xl mx-auto px-6 py-8 bg-white/[0.31]">
-        <div className="mb-8">
-          <nav className="text-sm text-gray-500 mb-4">
-            <span className="cursor-pointer hover:text-[#E91E63]" onClick={() => navigate('/')}>Home</span> 
-            <span className="mx-2">/</span> 
-            <span>Prenatal & Pregnancy Testing</span>
-          </nav>
-        </div>
-
         <div className="flex justify-end mb-6">
           <select className="px-4 py-2 border border-border rounded-md text-sm bg-background text-foreground">
             <option>Featured</option>
