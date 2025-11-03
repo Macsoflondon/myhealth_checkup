@@ -286,7 +286,7 @@ const CancerScreeningPage = () => {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
                     <Shield className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Early Detection</h3>
                   <p className="text-muted-foreground">
                     Catch cancer early when treatment is most effective
                   </p>
@@ -295,7 +295,7 @@ const CancerScreeningPage = () => {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
                     <Heart className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Peace of Mind</h3>
                   <p className="text-muted-foreground">
                     Regular screening provides reassurance about your health
                   </p>
@@ -304,7 +304,7 @@ const CancerScreeningPage = () => {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
                     <Users className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Expert Care</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Expert Care</h3>
                   <p className="text-muted-foreground">
                     All results reviewed by qualified healthcare professionals
                   </p>
