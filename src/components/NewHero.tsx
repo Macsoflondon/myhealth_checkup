@@ -104,7 +104,7 @@ const NewHero = () => {
               That's why we've created the UK's only independent comparison platform dedicated to private health and wellness testing.
             </p>
             <p className="mb-2">
-              We partner exclusively with UKAS-accredited labs, CQC-regulated providers, and ISO 15189-certified clinics to bring you safe, high-quality diagnostics all in one place.
+              We partner exclusively with CQC-regulated providers who only use UKAS-accredited labs and are ISO 15189 certified to bring you safe, high-quality diagnostics all in one place.
             </p>
             <p>
               From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence.
