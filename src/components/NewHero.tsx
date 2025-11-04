@@ -239,8 +239,8 @@ const NewHero = () => {
         })]} className="w-full max-w-5xl mx-auto">
             <CarouselContent>
               {providers.map(provider => <CarouselItem key={provider.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4">
-                  <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-64 sm:h-80">
-                    <img src={provider.logo} alt={`${provider.name} logo`} className="h-40 sm:h-56 md:h-64 w-auto object-contain mx-auto" loading="lazy" />
+                  <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-32 sm:h-40">
+                    <img src={provider.logo} alt={`${provider.name} logo`} className="h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto" loading="lazy" />
                   </div>
                 </CarouselItem>)}
             </CarouselContent>
