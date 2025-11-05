@@ -51,35 +51,13 @@ export const ProviderLogo = ({ provider, className = "h-16 w-auto", priority = f
     );
   }
 
-  // SVG files don't need WebP optimization
-  const isSvg = logoSrc.endsWith('.svg');
-  
-  if (isSvg) {
-    return (
-      <img
-        src={logoSrc}
-        alt={`${provider} logo`}
-        className={className}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-      />
-    );
-  }
-
-  // For raster images, use picture element for WebP support
-  const webpSrc = logoSrc.replace(/\.(png|jpg|jpeg)$/, '.webp');
-  
   return (
-    <picture>
-      <source srcSet={webpSrc} type="image/webp" />
-      <img
-        src={logoSrc}
-        alt={`${provider} logo`}
-        className={className}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        fetchPriority={priority ? "high" : "auto"}
-      />
-    </picture>
+    <img
+      src={logoSrc}
+      alt={`${provider} logo`}
+      className={className}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+    />
   );
 };
