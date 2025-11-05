@@ -11,7 +11,12 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
   
-  const provider = detailedProviders.find(p => p.id.toLowerCase() === providerId?.toLowerCase());
+  // Match provider by exact ID first, then by partial match (e.g., 'randox' matches 'randox-health')
+  const provider = detailedProviders.find(p => {
+    const lowerId = p.id.toLowerCase();
+    const lowerProviderId = providerId?.toLowerCase() || '';
+    return lowerId === lowerProviderId || lowerId.startsWith(lowerProviderId + '-');
+  });
   
   if (!provider) {
     return (
