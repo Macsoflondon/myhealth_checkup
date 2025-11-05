@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
+import TrustBadgesSection from "@/components/TrustBadgesSection";
 import { Shield, Users, Award, Heart } from "lucide-react";
 const AboutUsPage = () => {
   const values = [{
@@ -30,6 +31,8 @@ const AboutUsPage = () => {
       
       <Header />
       <main className="flex-grow bg-[#081120]">
+        <TrustBadgesSection />
+        
         <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-0 bg-[#081120]">
           <div className="container mx-auto px-4 bg-[#081129]">
             <div className="text-center mb-12">

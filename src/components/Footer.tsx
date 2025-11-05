@@ -172,7 +172,12 @@ const Footer = () => {
         </div>
 
         {/* Copyright and Additional Links */}
-        <div className="border-t border-gray-700 pt-6 mt-8 py-[4px]">
+        <div className="border-t border-gray-700 pt-6 mt-8">
+          <div className="text-center mb-4">
+            <p className="text-sm text-gray-400 max-w-3xl mx-auto">
+              <strong>Important:</strong> MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers who are UKAS-accredited, CQC-regulated, or ISO 15189-certified.
+            </p>
+          </div>
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white">
             <p className="font-normal text-[#e70d69]">
               {t('footer.copyright')}

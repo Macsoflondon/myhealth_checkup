@@ -70,53 +70,53 @@ const FeaturedProviders = () => {
     tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
     website: "tuli.health"
   }];
-  return <section id="providers" className="bg-[hsl(var(--section-dark))] py-0">
-      <div className="container mx-auto px-4 bg-white">
-        <div className="text-center mb-12 bg-[#081129] my-[50px] py-[30px]">
-          <h2 className="text-3xl mb-4 text-center text-white my-0 font-semibold md:text-5xl">Trusted Providers</h2>
-          <p className="text-xl max-w-3xl mx-auto text-[#e70d69] text-center py-0 my-[20px] font-semibold">
+  return <section id="providers" className="bg-white py-16 md:py-20">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">Featured Partners</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Accredited health testing providers with proven track records
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {featuredProviderData.map(provider => <Card key={provider.id} className="transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-              <CardContent className="p-4 md:p-6">
-                <div className="flex items-start gap-3 md:gap-4 mb-4 my-0">
-                  <div className="w-3 h-3 md:w-3.5 md:h-3.5 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    <ProviderLogo provider={provider.name} className="w-2 h-2 md:w-2.5 md:h-2.5" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredProviderData.map(provider => <Card key={provider.id} className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-2">
+                    <ProviderLogo provider={provider.name} className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1 truncate">{provider.name}</h3>
-                    <div className="flex items-center space-x-1 mb-2">
+                    <h3 className="text-lg font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
+                    <div className="flex items-center space-x-1.5">
                       <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                      <span className="font-medium text-gray-900 text-sm md:text-base">{provider.rating}</span>
-                      <span className="text-xs md:text-sm text-gray-500 truncate">({provider.reviews}) reviews</span>
+                      <span className="font-semibold text-gray-900">{provider.rating}</span>
+                      <span className="text-sm text-gray-500">({provider.reviews})</span>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-xs md:text-sm text-gray-600 mb-4 line-clamp-3">
+                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                   {provider.description}
                 </p>
 
-                <div className="flex items-start text-xs md:text-sm text-gray-500 mb-4">
-                  <MapPin className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="line-clamp-2 break-words">{provider.location}</span>
+                <div className="flex items-center text-sm text-gray-500 mb-4">
+                  <MapPin className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                  <span className="truncate">{provider.location}</span>
                 </div>
 
-                <div className="flex flex-wrap gap-1 mb-6">
-                  {provider.tags.map((tag, tagIndex) => <Badge key={tagIndex} variant="secondary" className="text-xs">
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {provider.tags.slice(0, 3).map((tag, tagIndex) => <Badge key={tagIndex} variant="secondary" className="text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
                       {tag}
                     </Badge>)}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
-                  <Button variant="outline" size="sm" className="flex-1 min-h-[40px]" style={{
-                backgroundColor: '#e70d69',
-                borderColor: '#e70d69',
-                color: 'white'
-              }} asChild>
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="flex-1 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white"
+                    asChild>
                     <Link to={`/provider/${provider.id.toLowerCase()}`}>
                       View Profile
                     </Link>
