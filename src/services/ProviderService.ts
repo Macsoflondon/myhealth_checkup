@@ -26,7 +26,7 @@ class ProviderService {
     medichecks: {
       id: "medichecks",
       name: "Medichecks",
-      logo: "/lovable-uploads/provider-medichecks-new.png",
+      logo: "/lovable-uploads/provider-medichecks-new-v3.png",
       description: "UK's leading blood testing service",
       accreditations: ["UKAS", "ISO 15189"],
     },

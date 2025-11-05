@@ -49,7 +49,7 @@ const cache = new Map<string, { data: any; timestamp: number }>();
 
 export class CompareService {
   private static readonly PROVIDER_LOGOS: Record<string, string> = {
-    'medichecks': '/lovable-uploads/provider-medichecks-new-v2.svg',
+    'medichecks': '/lovable-uploads/provider-medichecks-new-v3.png',
     'thriva': '/lovable-uploads/provider-thriva.png',
     'randox': '/lovable-uploads/provider-randox.png',
     'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',

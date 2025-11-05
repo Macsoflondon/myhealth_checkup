@@ -3,7 +3,7 @@ export const providers = [
   {
     id: "medichecks",
     name: "Medichecks",
-    logo: "/lovable-uploads/provider-medichecks-new-v2.svg",
+    logo: "/lovable-uploads/provider-medichecks-new-v3.png",
     website: "https://medichecks.com"
   },
   {

@@ -10,7 +10,7 @@ export const ProviderLogo = ({ provider, className = "h-16 w-auto" }: ProviderLo
     const normalizedName = providerName.toLowerCase();
     
     if (normalizedName.includes('medichecks')) {
-      return '/lovable-uploads/ec80388e-5881-4301-9d04-207aee8293be.png';
+      return '/lovable-uploads/provider-medichecks-new-v3.png';
     }
     
     if (normalizedName.includes('goodbody')) {

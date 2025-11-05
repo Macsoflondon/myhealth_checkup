@@ -108,7 +108,7 @@ export default function MedichecksTestDetailPage() {
           {/* Provider Badge */}
           <div className="mb-6">
             <img 
-              src="/lovable-uploads/provider-medichecks-new-v2.svg" 
+              src="/lovable-uploads/provider-medichecks-new-v3.png" 
               alt="Medichecks" 
               className="h-12 mb-4"
             />
