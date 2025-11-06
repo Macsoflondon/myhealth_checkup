@@ -4,10 +4,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MostPopularTests from '@/components/MostPopularTests';
 import UKASBanner from '@/components/UKASBanner';
-
 const MostPopularTestsPage = () => {
-  return (
-    <>
+  return <>
       <Helmet>
         <title>Most Popular Health Tests | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Discover our most popular health tests, trusted by thousands of customers. Comprehensive blood testing from £159." />
@@ -26,11 +24,9 @@ const MostPopularTestsPage = () => {
       <div className="min-h-screen bg-[#081129]">
         <UKASBanner />
         <Header />
-        <MostPopularTests />
+        <MostPopularTests className="bg-[#081129]" />
         <Footer />
       </div>
-    </>
-  );
+    </>;
 };
-
 export default MostPopularTestsPage;

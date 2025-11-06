@@ -117,18 +117,10 @@ const MostPopularTests = () => {
               Check out our best-selling tests, trusted by thousands of people across the UK for comprehensive health screening.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-primary text-primary-foreground hover:bg-health-heading"
-                onClick={() => navigate('/compare')}
-              >
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading" onClick={() => navigate('/compare')}>
                 Browse All Tests
               </Button>
-              <Button 
-                size="lg" 
-                className="bg-[#22C0D4] text-white hover:bg-[#E70D69]"
-                onClick={() => navigate('/find-clinic')}
-              >
+              <Button size="lg" className="bg-[#22C0D4] text-white hover:bg-[#E70D69]" onClick={() => navigate('/find-clinic')}>
                 Find a Clinic
               </Button>
             </div>
@@ -138,7 +130,7 @@ const MostPopularTests = () => {
 
       {/* Benefits Section */}
       <section className="bg-white py-12">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 my-[10px] py-[10px] bg-white">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-[#081129] my-[20px] mb-12">
               Why Choose Popular Tests?
