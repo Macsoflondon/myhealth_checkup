@@ -32,7 +32,7 @@ const TestCard = ({
     navigate(`/compare?test=${id}`);
   };
   return <Card className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 h-full flex flex-col">
-      <div className="bg-[#1a365d] text-white p-3 sm:p-4 text-center">
+      <div className="bg-[#1a365d] text-white p-5 sm:p-6 md:p-8 text-center">
         <h3 className="text-xs sm:text-sm font-medium">{category}</h3>
       </div>
       
