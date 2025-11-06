@@ -13,7 +13,7 @@ import HealthJourneyTimeline from "@/components/HealthJourneyTimeline";
 import HealthConcernsTabs from "@/components/HealthConcernsTabs";
 import OutcomeTestimonials from "@/components/OutcomeTestimonials";
 import ExpertSupport from "@/components/ExpertSupport";
-import { TestCategories, MostPopularTests, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, HowItWorks, MediaSpotlight } from "@/components/LazyLoadedComponents";
+import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, HowItWorks, MediaSpotlight } from "@/components/LazyLoadedComponents";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 const Index = () => {
   usePerformanceOptimization();
@@ -100,7 +100,7 @@ const Index = () => {
         <OutcomeTestimonials />
         <HowItWorks />
         <MediaSpotlight />
-        <MostPopularTests />
+        
         <ExpertSupport />
         <CallToAction />
       </main>
