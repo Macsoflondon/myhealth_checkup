@@ -121,7 +121,9 @@
   }
 
   body {
-    @apply bg-[hsl(var(--section-dark))] text-white font-sans;
+    @apply bg-white font-sans;
+    color: #081129;
+    font-weight: 500;
   }
 
   .health-gradient {
