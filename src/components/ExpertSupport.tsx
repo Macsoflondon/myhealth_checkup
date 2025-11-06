@@ -1,43 +1,34 @@
 import { MessageCircle, UserCheck, Award, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-
 const ExpertSupport = () => {
   const navigate = useNavigate();
-
-  const supportFeatures = [
-    {
-      icon: UserCheck,
-      title: "Expert Guidance Included",
-      description: "Many tests include GP consultation recommendations. Get professional interpretation of your results, not just numbers.",
-      color: "text-[#22c0d4]",
-      bgColor: "bg-[#22c0d4]/10"
-    },
-    {
-      icon: Award,
-      title: "UKAS-Accredited Labs",
-      description: "All testing performed by UK-accredited laboratories to the highest ISO 15189 medical standards.",
-      color: "text-[#e70d69]",
-      bgColor: "bg-[#e70d69]/10"
-    },
-    {
-      icon: MessageCircle,
-      title: "Ongoing Support",
-      description: "Questions about your results? Our customer support team is here to help guide you through your health journey.",
-      color: "text-[#22c0d4]",
-      bgColor: "bg-[#22c0d4]/10"
-    },
-    {
-      icon: HeartHandshake,
-      title: "Your Health Partner",
-      description: "We're with you for the long term. Track results over time, compare trends, and optimise your health continuously.",
-      color: "text-[#e70d69]",
-      bgColor: "bg-[#e70d69]/10"
-    }
-  ];
-
-  return (
-    <section className="w-full bg-gradient-to-b from-[#081129] to-[#0a1836] py-12 sm:py-16 md:py-20">
+  const supportFeatures = [{
+    icon: UserCheck,
+    title: "Expert Guidance Included",
+    description: "Many tests include GP consultation recommendations. Get professional interpretation of your results, not just numbers.",
+    color: "text-[#22c0d4]",
+    bgColor: "bg-[#22c0d4]/10"
+  }, {
+    icon: Award,
+    title: "UKAS-Accredited Labs",
+    description: "All testing performed by UK-accredited laboratories to the highest ISO 15189 medical standards.",
+    color: "text-[#e70d69]",
+    bgColor: "bg-[#e70d69]/10"
+  }, {
+    icon: MessageCircle,
+    title: "Ongoing Support",
+    description: "Questions about your results? Our customer support team is here to help guide you through your health journey.",
+    color: "text-[#22c0d4]",
+    bgColor: "bg-[#22c0d4]/10"
+  }, {
+    icon: HeartHandshake,
+    title: "Your Health Partner",
+    description: "We're with you for the long term. Track results over time, compare trends, and optimise your health continuously.",
+    color: "text-[#e70d69]",
+    bgColor: "bg-[#e70d69]/10"
+  }];
+  return <section className="w-full bg-gradient-to-b from-[#081129] to-[#0a1836] py-12 sm:py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
@@ -52,12 +43,8 @@ const ExpertSupport = () => {
         {/* Support Features Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12">
           {supportFeatures.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={index}
-                className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 border border-white/10 group hover:scale-105"
-              >
+          const Icon = feature.icon;
+          return <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 border border-white/10 group hover:scale-105">
                 <div className={`${feature.bgColor} ${feature.color} w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                   <Icon className="w-7 h-7" />
                 </div>
@@ -67,9 +54,8 @@ const ExpertSupport = () => {
                 <p className="text-gray-300 text-sm leading-relaxed">
                   {feature.description}
                 </p>
-              </div>
-            );
-          })}
+              </div>;
+        })}
         </div>
 
         {/* CTA Section */}
@@ -81,36 +67,18 @@ const ExpertSupport = () => {
             Join thousands who've discovered the power of private health testing
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              onClick={() => navigate('/compare-tests')}
-              size="lg"
-              className="bg-white text-[#22c0d4] hover:bg-gray-100 px-8 py-6 text-lg rounded-xl font-semibold shadow-lg"
-            >
+            <Button onClick={() => navigate('/compare-tests')} size="lg" className="bg-white text-[#22c0d4] hover:bg-gray-100 px-8 py-6 text-lg rounded-xl font-semibold shadow-lg">
               Compare Tests Now
             </Button>
-            <Button
-              onClick={() => navigate('/how-it-works')}
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg rounded-xl font-semibold"
-            >
+            <Button onClick={() => navigate('/how-it-works')} size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg rounded-xl font-semibold">
               Learn How It Works
             </Button>
           </div>
         </div>
 
         {/* Trust Indicators */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-400 text-sm mb-4">Trusted by health-conscious individuals across the UK</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-            <img src="/ukas-logo.png" alt="UKAS Accredited" className="h-12 w-auto grayscale" loading="lazy" />
-            <img src="/cqc-logo.png" alt="CQC Regulated" className="h-12 w-auto grayscale" loading="lazy" />
-            <img src="/iso-logo.png" alt="ISO 15189" className="h-12 w-auto grayscale" loading="lazy" />
-          </div>
-        </div>
+        
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ExpertSupport;
