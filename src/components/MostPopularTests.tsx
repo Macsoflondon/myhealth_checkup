@@ -54,7 +54,7 @@ const TestCard = ({
         <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1.5 sm:mb-2">{price}</div>
         <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">{collection}</p>
         
-        <Button onClick={handleSelectTest} variant="outline" className="w-full py-2.5 sm:py-3 text-sm sm:text-base text-gray-700 border-gray-300 hover:bg-gray-50 mt-auto">
+        <Button onClick={handleSelectTest} variant="outline" className="w-full py-2.5 sm:py-3 text-sm sm:text-base text-[#081129] border-gray-300 hover:bg-gray-50 mt-auto">
           Select test
         </Button>
       </CardContent>

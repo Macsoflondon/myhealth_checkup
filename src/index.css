@@ -26,6 +26,10 @@
     --accent: 343 91% 48%;
     --accent-foreground: 0 0% 100%;
     
+    --outline-foreground: 211 80% 8%;
+    --ghost-foreground: 211 80% 8%;
+    --link-foreground: 211 80% 8%;
+    
     --health-primary: 189 69% 47%;
     --health-secondary: 343 91% 48%;
     --health-accent: 343 91% 48%;

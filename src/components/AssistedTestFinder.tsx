@@ -338,7 +338,7 @@ export const AssistedTestFinder = () => {
                   <div className="text-2xl font-bold text-gray-900 mb-2">{test.price}</div>
                   <p className="text-sm text-gray-500 mb-4">{test.collection}</p>
                   
-                  <Button onClick={() => handleSelectTest(test.id)} variant="outline" className="w-full py-3 text-gray-700 border-gray-300 hover:bg-gray-50">
+                  <Button onClick={() => handleSelectTest(test.id)} variant="outline" className="w-full py-3 text-[#081129] border-gray-300 hover:bg-gray-50">
                     Select test
                   </Button>
                 </div>

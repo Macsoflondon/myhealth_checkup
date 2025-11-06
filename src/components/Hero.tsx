@@ -31,7 +31,7 @@ const Hero = () => {
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             
-            <Button variant="outline" className="text-lg px-8 py-6 border-health-300 text-health-700 hover:bg-health-50">
+            <Button variant="outline" className="text-lg px-8 py-6 border-health-300 text-[#081129] hover:bg-health-50">
               View Subscriptions
             </Button>
           </div>
