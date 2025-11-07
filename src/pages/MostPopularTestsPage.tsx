@@ -24,7 +24,7 @@ const MostPopularTestsPage = () => {
       <div className="min-h-screen bg-[#081129]">
         <UKASBanner />
         <Header />
-        <MostPopularTests />
+        <MostPopularTests className="bg-[#081129]" />
         <Footer />
       </div>
     </>;
