@@ -55,6 +55,7 @@ export const primaryNavigationItems = [
 // Additional pages for the MORE dropdown - organized by user needs
 export const moreNavigationItems = [
   // Information Pages
+  { name: "How It Works", path: "/how-it-works" },
   { name: "About Us", path: "/about" },
   { name: "FAQs", path: "/faqs" },
   
@@ -299,15 +300,6 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           </div>
         )}
       </div>
-      
-      {/* How It Works - standalone item */}
-      <Link
-        to="/how-it-works"
-        className="text-sm font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
-        onClick={onItemClick}
-      >
-        How It Works
-      </Link>
     </nav>
   );
 };
