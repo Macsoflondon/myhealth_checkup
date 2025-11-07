@@ -118,7 +118,7 @@ const NewHero = () => {
         <div className="relative z-10 w-full py-3 sm:py-6 bg-[#081129]">
           <div className="w-full text-center px-3 sm:px-4">
             {/* Trust Indicators - Mobile optimized */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-3xl mx-auto">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
                 <CheckCircle2 className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
