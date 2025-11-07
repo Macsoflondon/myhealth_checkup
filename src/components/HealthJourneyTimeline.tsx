@@ -44,8 +44,23 @@ const HealthJourneyTimeline = () => {
   ];
 
   return (
-    <section className="w-full bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="w-full relative py-12 sm:py-16 md:py-20 overflow-hidden">
+      {/* Background gradient layer */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white" />
+      
+      {/* Faded blood tubes background image */}
+      <div 
+        className="absolute inset-0 opacity-[0.08]"
+        style={{
+          backgroundImage: 'url(/lovable-uploads/blood-tubes-background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+      
+      {/* Content wrapper with relative positioning */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#081129] mb-4">
