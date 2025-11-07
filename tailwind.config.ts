@@ -149,7 +149,7 @@ export default {
 				pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
 				fadeIn: 'fadeIn 0.5s ease-in-out',
 				slideUp: 'slideUp 0.5s ease-in-out',
-				marquee: 'marquee 10s linear infinite'
+				marquee: 'marquee 8s linear infinite'
 			}
 		}
 	},
