@@ -53,24 +53,40 @@ export const primaryNavigationItems = [
 ];
 
 // Additional pages for the MORE dropdown - organized by user needs
-export const moreNavigationItems = [
-  // Information Pages
-  { name: "How It Works", path: "/how-it-works" },
-  { name: "About Us", path: "/about" },
-  { name: "FAQs", path: "/faqs" },
-  
-  // Services
-  { name: "Trusted UK Providers", path: "/trusted-providers" },
-  { name: "Find a Clinic", path: "/find-clinic" },
-  { name: "Assisted Test Finder", path: "/assisted-test-finder" },
-  
-  // Resources
-  { name: "Health Resources Hub", path: "/health-blog" },
-  { name: "Compare Tests", path: "/compare" },
-  
-  // Business
-  { name: "Contact Us", path: "/contact" }
+export const moreNavigationSections = [
+  {
+    title: "About",
+    items: [
+      { name: "How It Works", path: "/how-it-works" },
+      { name: "About Us", path: "/about" },
+      { name: "FAQs", path: "/faqs" }
+    ]
+  },
+  {
+    title: "Services",
+    items: [
+      { name: "Trusted UK Providers", path: "/trusted-providers" },
+      { name: "Find a Clinic", path: "/find-clinic" },
+      { name: "Assisted Test Finder", path: "/assisted-test-finder" }
+    ]
+  },
+  {
+    title: "Resources",
+    items: [
+      { name: "Health Resources Hub", path: "/health-blog" },
+      { name: "Compare Tests", path: "/compare" }
+    ]
+  },
+  {
+    title: "Contact",
+    items: [
+      { name: "Contact Us", path: "/contact" }
+    ]
+  }
 ];
+
+// Flattened list for backwards compatibility
+export const moreNavigationItems = moreNavigationSections.flatMap(section => section.items);
 
 export const navigationItems = primaryNavigationItems;
 
@@ -282,20 +298,37 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
             onMouseLeave={handleMouseLeave}
           >
             <div className="p-4">
-              <div className="grid grid-cols-1 gap-1">
-                {moreNavigationItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className="block p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                    onClick={onItemClick}
-                  >
-                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-primary transition-colors">
-                      {item.name}
-                    </span>
-                  </Link>
-                ))}
-              </div>
+              {moreNavigationSections.map((section, sectionIndex) => (
+                <div key={section.title}>
+                  {/* Section Heading */}
+                  <div className="px-2 py-2">
+                    <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      {section.title}
+                    </h3>
+                  </div>
+                  
+                  {/* Section Items */}
+                  <div className="grid grid-cols-1 gap-1 mb-3">
+                    {section.items.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className="block p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        onClick={onItemClick}
+                      >
+                        <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-primary transition-colors">
+                          {item.name}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  
+                  {/* Divider between sections (except last) */}
+                  {sectionIndex < moreNavigationSections.length - 1 && (
+                    <div className="border-t border-gray-200 dark:border-gray-700 mb-3" />
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}
