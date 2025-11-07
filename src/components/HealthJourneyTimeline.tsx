@@ -50,7 +50,7 @@ const HealthJourneyTimeline = () => {
       
       {/* Faded blood tubes background image */}
       <div 
-        className="absolute inset-0 opacity-[0.08]"
+        className="absolute inset-0 opacity-[0.15]"
         style={{
           backgroundImage: 'url(/lovable-uploads/blood-tubes-background.jpg)',
           backgroundSize: 'cover',
