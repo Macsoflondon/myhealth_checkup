@@ -19,7 +19,7 @@ class ProviderService {
     goodbody: {
       id: "goodbody",
       name: "Goodbody Clinic",
-      logo: "/lovable-uploads/provider-goodbody-new.png",
+      logo: "/lovable-uploads/provider-goodbody-new-v3.png",
       description: "Premium health screening services",
       accreditations: ["CQC", "UKAS"],
     },

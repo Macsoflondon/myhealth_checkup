@@ -54,7 +54,7 @@ export class CompareService {
     'randox': '/lovable-uploads/provider-randox.png',
     'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
     'lola-health': '/lovable-uploads/provider-lola-health.png',
-    'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v2.svg',
+    'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
     'tuli-health': '/lovable-uploads/provider-tuli-health.png'
   };
 

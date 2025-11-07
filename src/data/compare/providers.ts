@@ -33,7 +33,7 @@ export const providers = [
   {
     id: "goodbody-clinic",
     name: "GoodBody Clinic", 
-    logo: "/lovable-uploads/provider-goodbody-new-v2.svg",
+    logo: "/lovable-uploads/provider-goodbody-new-v3.png",
     website: "https://goodbody.co.uk"
   },
   {

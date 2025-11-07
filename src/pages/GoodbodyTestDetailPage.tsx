@@ -106,7 +106,7 @@ const GoodbodyTestDetailPage = () => {
                       <p className="text-lg text-muted-foreground">{test.description}</p>
                     </div>
                     <img 
-                      src="/lovable-uploads/provider-goodbody-new-v2.svg" 
+                      src="/lovable-uploads/provider-goodbody-new-v3.png" 
                       alt="GoodBody Clinic" 
                       className="w-24 h-24 object-contain ml-4"
                     />
