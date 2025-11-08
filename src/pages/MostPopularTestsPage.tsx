@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
 import MostPopularTests from '@/components/MostPopularTests';
 import UKASBanner from '@/components/UKASBanner';
+import BackToTop from '@/components/BackToTop';
 const MostPopularTestsPage = () => {
   return <>
       <Helmet>
@@ -24,6 +25,7 @@ const MostPopularTestsPage = () => {
         <UKASBanner />
         <Header />
         <MostPopularTests />
+        <BackToTop />
       </div>
     </>;
 };
