@@ -271,3 +271,45 @@
     }
   }
 }
+
+@layer utilities {
+  .tap-highlight-transparent {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .select-none-mobile {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  .gpu-acceleration {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Playful icon animations */
+  .icon-bounce {
+    animation: gentle-bounce 0.6s ease-in-out;
+  }
+  
+  @keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  /* Smooth section transitions */
+  .smooth-appear {
+    animation: smooth-fade-up 0.4s ease-out;
+  }
+  
+  @keyframes smooth-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
