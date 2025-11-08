@@ -57,6 +57,7 @@ import IronProfileTestPage from "./pages/IronProfileTestPage";
 import LipidProfileTestPage from "./pages/LipidProfileTestPage";
 import WellWomanTestPage from "./pages/WellWomanTestPage";
 import { ScrollToTop } from "./components/ScrollToTop";
+import BackToTop from "./components/BackToTop";
 import ClientPortal from "./pages/ClientPortal";
 import ModernSlaveryPage from "./pages/ModernSlaveryPage";
 import AffiliateDisclosurePage from "./pages/AffiliateDisclosurePage";
@@ -83,6 +84,7 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
+            <BackToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/compare" element={<CompareTests />} />
