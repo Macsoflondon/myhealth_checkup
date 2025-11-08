@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ModernCompareTable } from "@/components/compare/ModernCompareTable";
 import { CompareFilters } from "@/components/compare/CompareFilters";
+import { AdvancedFilters, AdvancedFilterOptions } from "@/components/compare/AdvancedFilters";
 import { CompareService } from "@/services/CompareService";
 import type { CompareTestData } from "@/services/CompareService";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,12 +22,21 @@ const CompareTests = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [tests, setTests] = useState<CompareTestData[]>([]);
+  const [allTests, setAllTests] = useState<CompareTestData[]>([]);
   const [categories, setCategories] = useState<Array<{
     id: string;
     name: string;
     count: number;
   }>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilterOptions>({
+    biomarkers: [],
+    priceRange: [0, 500],
+    processingTime: [],
+    gpReview: null,
+    bloodDraw: null
+  });
 
   // Fetch categories on mount with error handling
   useEffect(() => {
@@ -51,6 +61,63 @@ const CompareTests = () => {
     }
   }, [location.search, categories]);
 
+  // Apply advanced filters to test results
+  const applyAdvancedFilters = useCallback((testList: CompareTestData[]) => {
+    let filtered = [...testList];
+    
+    // Price range filter
+    filtered = filtered.filter(test => 
+      test.price >= advancedFilters.priceRange[0] && 
+      test.price <= advancedFilters.priceRange[1]
+    );
+    
+    // Biomarkers filter
+    if (advancedFilters.biomarkers.length > 0) {
+      filtered = filtered.filter(test => {
+        const biomarkersText = (test.features.bioMarkers || test.description || '').toLowerCase();
+        return advancedFilters.biomarkers.some(marker => 
+          biomarkersText.includes(marker.toLowerCase())
+        );
+      });
+    }
+    
+    // Processing time filter
+    if (advancedFilters.processingTime.length > 0) {
+      filtered = filtered.filter(test => {
+        const turnaround = test.features.turnaround.toLowerCase();
+        return advancedFilters.processingTime.some(time => {
+          switch(time) {
+            case 'same-day': return turnaround.includes('same day') || turnaround.includes('24h');
+            case '24-48h': return turnaround.includes('24') || turnaround.includes('48') || turnaround.includes('2 day');
+            case '3-5days': return turnaround.includes('3') || turnaround.includes('5 day');
+            case '1week': return turnaround.includes('week') || turnaround.includes('7 day');
+            case '2weeks': return turnaround.includes('2 week') || turnaround.includes('14 day');
+            default: return false;
+          }
+        });
+      });
+    }
+    
+    // GP Review filter (based on provider characteristics)
+    if (advancedFilters.gpReview !== null) {
+      filtered = filtered.filter(test => {
+        const hasGPReview = ['Medichecks', 'Thriva', 'Randox'].includes(test.provider);
+        return advancedFilters.gpReview ? hasGPReview : !hasGPReview;
+      });
+    }
+    
+    // Blood Draw filter (based on collection method)
+    if (advancedFilters.bloodDraw !== null) {
+      filtered = filtered.filter(test => {
+        const hasBloodDraw = test.features.collection.toLowerCase().includes('clinic') || 
+                            test.features.collection.toLowerCase().includes('nurse');
+        return advancedFilters.bloodDraw ? hasBloodDraw : !hasBloodDraw;
+      });
+    }
+    
+    return filtered;
+  }, [advancedFilters]);
+
   // Fetch tests when filters change with debouncing
   const fetchTests = useCallback(async () => {
     setIsLoading(true);
@@ -70,14 +137,20 @@ const CompareTests = () => {
       } else {
         results.sort((a, b) => a.price - b.price);
       }
-      setTests(results);
+      
+      setAllTests(results);
+      
+      // Apply advanced filters
+      const filteredResults = applyAdvancedFilters(results);
+      setTests(filteredResults);
     } catch (error) {
       logger.error('Error fetching tests:', error);
       setTests([]);
+      setAllTests([]);
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm, selectedProviders, selectedCategory, categories, sortOrder]);
+  }, [searchTerm, selectedProviders, selectedCategory, categories, sortOrder, applyAdvancedFilters]);
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchTests();
@@ -95,6 +168,25 @@ const CompareTests = () => {
       setSelectedProviders([providerId]);
     }
   }, []);
+  
+  const handleAdvancedFiltersChange = useCallback((filters: AdvancedFilterOptions) => {
+    setAdvancedFilters(filters);
+    // Re-apply filters to existing results
+    const filteredResults = applyAdvancedFilters(allTests);
+    setTests(filteredResults);
+  }, [allTests, applyAdvancedFilters]);
+  
+  const handleClearAdvancedFilters = useCallback(() => {
+    const defaultFilters: AdvancedFilterOptions = {
+      biomarkers: [],
+      priceRange: [0, 500],
+      processingTime: [],
+      gpReview: null,
+      bloodDraw: null
+    };
+    setAdvancedFilters(defaultFilters);
+    setTests(allTests);
+  }, [allTests]);
   const memoizedStats = useMemo(() => ({
     testCount: tests.length,
     providerCount: providers.length
@@ -143,7 +235,27 @@ const CompareTests = () => {
         {/* Filters and Results */}
         <section className="py-4 sm:py-6 md:py-8 px-3 sm:px-4 bg-white">
           <div className="container mx-auto max-w-7xl">
-            <CompareFilters categories={categories} selectedCategory={selectedCategory} selectedProviders={selectedProviders} searchTerm={searchTerm} sortOrder={sortOrder} onCategoryChange={handleCategoryChange} onProviderChange={handleProviderChange} onSearchChange={setSearchTerm} onSortChange={setSortOrder} testCount={tests.length} isLoading={isLoading} />
+            <CompareFilters 
+              categories={categories} 
+              selectedCategory={selectedCategory} 
+              selectedProviders={selectedProviders} 
+              searchTerm={searchTerm} 
+              sortOrder={sortOrder} 
+              onCategoryChange={handleCategoryChange} 
+              onProviderChange={handleProviderChange} 
+              onSearchChange={setSearchTerm} 
+              onSortChange={setSortOrder} 
+              testCount={tests.length} 
+              isLoading={isLoading} 
+            />
+            
+            <div className="my-6">
+              <AdvancedFilters 
+                filters={advancedFilters}
+                onFiltersChange={handleAdvancedFiltersChange}
+                onClearFilters={handleClearAdvancedFilters}
+              />
+            </div>
 
             {isLoading ? <div className="flex items-center justify-center py-8 sm:py-12 md:py-16">
                 <div className="text-center px-4">
