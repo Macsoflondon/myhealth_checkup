@@ -100,8 +100,8 @@ const Index = () => {
         <OutcomeTestimonials />
         <MediaSpotlight />
         
-        <ExpertSupport />
-        <CallToAction />
+        <ExpertSupport className="bg-[#081129]" />
+        <CallToAction className="bg-[#081129]" />
       </main>
         
         <Footer />

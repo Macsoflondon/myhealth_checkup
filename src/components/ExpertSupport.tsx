@@ -59,32 +59,7 @@ const ExpertSupport = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-[#22c0d4] to-[#1aa8ba] rounded-2xl p-8 sm:p-12 text-center shadow-2xl">
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Take Control of Your Health?
-          </h3>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands who've discovered the power of private health testing
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              onClick={() => navigate('/compare-tests')} 
-              size="lg" 
-              className="bg-white text-[#22c0d4] hover:bg-gray-100 px-8 py-6 text-lg rounded-xl font-semibold shadow-lg group"
-            >
-              Compare Tests Now
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button 
-              onClick={() => navigate('/how-it-works')} 
-              size="lg" 
-              variant="outline" 
-              className="border-2 border-white text-white hover:bg-white hover:text-[#22c0d4] bg-transparent px-8 py-6 text-lg rounded-xl font-semibold"
-            >
-              Learn How It Works
-            </Button>
-          </div>
-        </div>
+        
 
         {/* Trust Indicators */}
         
