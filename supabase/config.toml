@@ -20,3 +20,9 @@ verify_jwt = true
 # Security: Input validation, rate limiting via AI gateway
 [functions.test-recommendations]
 verify_jwt = false
+
+# Send Test Notification API
+# Requires authentication - Sends test email/SMS notifications
+# Security: JWT verification, verified userId from token
+[functions.send-test-notification]
+verify_jwt = true

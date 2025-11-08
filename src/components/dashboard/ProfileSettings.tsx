@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Save, Loader2, User, MapPin, Phone, Heart, AlertCircle, Mail, Bell, MessageSquare } from "lucide-react";
+import { Save, Loader2, User, MapPin, Phone, Heart, AlertCircle, Mail, Bell, MessageSquare, Send } from "lucide-react";
 import { usersApi, preferencesApi, type UserProfile, type EmailNotificationPreferences, type SmsNotificationPreferences } from "@/api";
 import { logger } from "@/lib/logger";
+import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
@@ -22,6 +23,8 @@ const ProfileSettings = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSavingNotifications, setIsSavingNotifications] = useState(false);
   const [isSavingSms, setIsSavingSms] = useState(false);
+  const [sendingTestEmail, setSendingTestEmail] = useState<string | null>(null);
+  const [sendingTestSms, setSendingTestSms] = useState<string | null>(null);
   
   // Email notification preferences
   const [notificationEmail, setNotificationEmail] = useState(true);
@@ -219,6 +222,60 @@ const ProfileSettings = () => {
       toast.error('Failed to update SMS preferences');
     } finally {
       setIsSavingSms(false);
+    }
+  };
+
+  const handleSendTestEmail = async (notificationType: string) => {
+    if (!user) return;
+
+    setSendingTestEmail(notificationType);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-test-notification', {
+        body: { 
+          type: 'email',
+          notificationType 
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.success) {
+        toast.success(data.message || 'Test email sent successfully');
+      } else {
+        throw new Error(data?.error || 'Failed to send test email');
+      }
+    } catch (error: any) {
+      logger.error('Error sending test email:', error);
+      toast.error(error.message || 'Failed to send test email. Make sure RESEND_API_KEY is configured.');
+    } finally {
+      setSendingTestEmail(null);
+    }
+  };
+
+  const handleSendTestSms = async (notificationType: string) => {
+    if (!user) return;
+
+    setSendingTestSms(notificationType);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-test-notification', {
+        body: { 
+          type: 'sms',
+          notificationType 
+        }
+      });
+
+      if (error) throw error;
+
+      if (data?.success) {
+        toast.success(data.message || 'Test SMS sent successfully');
+      } else {
+        throw new Error(data?.error || 'Failed to send test SMS');
+      }
+    } catch (error: any) {
+      logger.error('Error sending test SMS:', error);
+      toast.error(error.message || 'SMS functionality not yet configured');
+    } finally {
+      setSendingTestSms(null);
     }
   };
 
@@ -485,55 +542,109 @@ const ProfileSettings = () => {
 
           {/* Individual Notification Types */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="orderUpdates" className="text-sm font-medium">
-                  Order Updates
-                </Label>
-                <p className="text-xs text-muted-foreground">
-                  Get notified about your test orders and results
-                </p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="orderUpdates" className="text-sm font-medium">
+                    Order Updates
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Get notified about your test orders and results
+                  </p>
+                </div>
+                <Switch
+                  id="orderUpdates"
+                  checked={notificationOrderUpdates}
+                  onCheckedChange={setNotificationOrderUpdates}
+                  disabled={!notificationEmail}
+                />
               </div>
-              <Switch
-                id="orderUpdates"
-                checked={notificationOrderUpdates}
-                onCheckedChange={setNotificationOrderUpdates}
-                disabled={!notificationEmail}
-              />
+              {notificationEmail && notificationOrderUpdates && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSendTestEmail('results')}
+                  disabled={!!sendingTestEmail}
+                  className="ml-auto flex items-center gap-2"
+                >
+                  {sendingTestEmail === 'results' ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Send className="h-3 w-3" />
+                  )}
+                  Send Test
+                </Button>
+              )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="healthInsights" className="text-sm font-medium">
-                  Health Insights
-                </Label>
-                <p className="text-xs text-muted-foreground">
-                  Personalised health tips and insights based on your data
-                </p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="healthInsights" className="text-sm font-medium">
+                    Health Insights
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Personalised health tips and insights based on your data
+                  </p>
+                </div>
+                <Switch
+                  id="healthInsights"
+                  checked={notificationHealthInsights}
+                  onCheckedChange={setNotificationHealthInsights}
+                  disabled={!notificationEmail}
+                />
               </div>
-              <Switch
-                id="healthInsights"
-                checked={notificationHealthInsights}
-                onCheckedChange={setNotificationHealthInsights}
-                disabled={!notificationEmail}
-              />
+              {notificationEmail && notificationHealthInsights && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSendTestEmail('promotions')}
+                  disabled={!!sendingTestEmail}
+                  className="ml-auto flex items-center gap-2"
+                >
+                  {sendingTestEmail === 'promotions' ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Send className="h-3 w-3" />
+                  )}
+                  Send Test
+                </Button>
+              )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="testReminders" className="text-sm font-medium">
-                  Test Reminders
-                </Label>
-                <p className="text-xs text-muted-foreground">
-                  Reminders for upcoming tests and appointments
-                </p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="testReminders" className="text-sm font-medium">
+                    Test Reminders
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Reminders for upcoming tests and appointments
+                  </p>
+                </div>
+                <Switch
+                  id="testReminders"
+                  checked={notificationTestReminders}
+                  onCheckedChange={setNotificationTestReminders}
+                  disabled={!notificationEmail}
+                />
               </div>
-              <Switch
-                id="testReminders"
-                checked={notificationTestReminders}
-                onCheckedChange={setNotificationTestReminders}
-                disabled={!notificationEmail}
-              />
+              {notificationEmail && notificationTestReminders && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleSendTestEmail('appointments')}
+                  disabled={!!sendingTestEmail}
+                  className="ml-auto flex items-center gap-2"
+                >
+                  {sendingTestEmail === 'appointments' ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Send className="h-3 w-3" />
+                  )}
+                  Send Test
+                </Button>
+              )}
             </div>
 
             <div className="flex items-center justify-between">
@@ -621,55 +732,109 @@ const ProfileSettings = () => {
 
               {/* Individual SMS Notification Types */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label htmlFor="smsResults" className="text-sm font-medium">
-                      Test Results Available
-                    </Label>
-                    <p className="text-xs text-muted-foreground">
-                      Get notified immediately when test results are ready
-                    </p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="smsResults" className="text-sm font-medium">
+                        Test Results Available
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Get notified immediately when test results are ready
+                      </p>
+                    </div>
+                    <Switch
+                      id="smsResults"
+                      checked={notificationSmsResults}
+                      onCheckedChange={setNotificationSmsResults}
+                      disabled={!notificationSms}
+                    />
                   </div>
-                  <Switch
-                    id="smsResults"
-                    checked={notificationSmsResults}
-                    onCheckedChange={setNotificationSmsResults}
-                    disabled={!notificationSms}
-                  />
+                  {notificationSms && notificationSmsResults && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleSendTestSms('results')}
+                      disabled={!!sendingTestSms}
+                      className="ml-auto flex items-center gap-2"
+                    >
+                      {sendingTestSms === 'results' ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <Send className="h-3 w-3" />
+                      )}
+                      Send Test
+                    </Button>
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label htmlFor="smsAppointments" className="text-sm font-medium">
-                      Appointment Reminders
-                    </Label>
-                    <p className="text-xs text-muted-foreground">
-                      Reminders before your scheduled appointments
-                    </p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="smsAppointments" className="text-sm font-medium">
+                        Appointment Reminders
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Reminders before your scheduled appointments
+                      </p>
+                    </div>
+                    <Switch
+                      id="smsAppointments"
+                      checked={notificationSmsAppointments}
+                      onCheckedChange={setNotificationSmsAppointments}
+                      disabled={!notificationSms}
+                    />
                   </div>
-                  <Switch
-                    id="smsAppointments"
-                    checked={notificationSmsAppointments}
-                    onCheckedChange={setNotificationSmsAppointments}
-                    disabled={!notificationSms}
-                  />
+                  {notificationSms && notificationSmsAppointments && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleSendTestSms('appointments')}
+                      disabled={!!sendingTestSms}
+                      className="ml-auto flex items-center gap-2"
+                    >
+                      {sendingTestSms === 'appointments' ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <Send className="h-3 w-3" />
+                      )}
+                      Send Test
+                    </Button>
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label htmlFor="smsUrgent" className="text-sm font-medium">
-                      Urgent Health Alerts
-                    </Label>
-                    <p className="text-xs text-muted-foreground">
-                      Critical health updates requiring immediate attention
-                    </p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="smsUrgent" className="text-sm font-medium">
+                        Urgent Health Alerts
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Critical health updates requiring immediate attention
+                      </p>
+                    </div>
+                    <Switch
+                      id="smsUrgent"
+                      checked={notificationSmsUrgent}
+                      onCheckedChange={setNotificationSmsUrgent}
+                      disabled={!notificationSms}
+                    />
                   </div>
-                  <Switch
-                    id="smsUrgent"
-                    checked={notificationSmsUrgent}
-                    onCheckedChange={setNotificationSmsUrgent}
-                    disabled={!notificationSms}
-                  />
+                  {notificationSms && notificationSmsUrgent && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleSendTestSms('urgent')}
+                      disabled={!!sendingTestSms}
+                      className="ml-auto flex items-center gap-2"
+                    >
+                      {sendingTestSms === 'urgent' ? (
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                      ) : (
+                        <Send className="h-3 w-3" />
+                      )}
+                      Send Test
+                    </Button>
+                  )}
                 </div>
               </div>
             </>
