@@ -2,6 +2,8 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "npm:resend@2.0.0";
 
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -73,35 +75,96 @@ serve(async (req: Request): Promise<Response> => {
 
       const emailContent = getEmailContent(notificationType, profile.first_name || 'there');
 
-      const emailResponse = await resend.emails.send({
-        from: "myhealth checkup <notifications@updates.myhealthcheckup.co.uk>",
-        to: [email],
-        subject: emailContent.subject,
-        html: emailContent.html,
-      });
+      // Create notification history entry
+      const { error: logError } = await supabase
+        .from('notification_history')
+        .insert({
+          user_id: user.id,
+          notification_type: 'email',
+          notification_category: notificationType,
+          status: 'pending',
+          recipient: email,
+          subject: emailContent.subject,
+        });
 
-      console.log("Test email sent successfully:", emailResponse);
+      if (logError) {
+        console.error("Error logging notification:", logError);
+      }
 
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
-          message: `Test ${notificationType} email sent to ${email}`,
-          emailId: emailResponse.id
-        }),
-        {
-          status: 200,
-          headers: {
-            "Content-Type": "application/json",
-            ...corsHeaders,
-          },
-        }
-      );
+      try {
+        const emailResponse = await resend.emails.send({
+          from: "myhealth checkup <notifications@updates.myhealthcheckup.co.uk>",
+          to: [email],
+          subject: emailContent.subject,
+          html: emailContent.html,
+        });
+
+        console.log("Test email sent successfully:", emailResponse);
+
+        // Update notification status to sent
+        await supabase
+          .from('notification_history')
+          .update({
+            status: 'sent',
+            sent_at: new Date().toISOString(),
+          })
+          .eq('user_id', user.id)
+          .eq('recipient', email)
+          .eq('status', 'pending')
+          .eq('notification_category', notificationType)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        return new Response(
+          JSON.stringify({ 
+            success: true, 
+            message: `Test ${notificationType} email sent to ${email}`,
+            emailId: emailResponse.id
+          }),
+          {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json",
+              ...corsHeaders,
+            },
+          }
+        );
+      } catch (emailError: any) {
+        console.error("Email send error:", emailError);
+        
+        // Update notification status to failed
+        await supabase
+          .from('notification_history')
+          .update({
+            status: 'failed',
+            error_message: emailError.message || 'Email send failed',
+          })
+          .eq('user_id', user.id)
+          .eq('recipient', email)
+          .eq('status', 'pending')
+          .eq('notification_category', notificationType)
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        throw emailError;
+      }
     } else if (type === 'sms') {
       // SMS functionality would require a service like Twilio
-      // For now, return a placeholder response
+      // For now, log the attempt and return a placeholder response
       if (!profile.phone) {
         throw new Error("No phone number configured");
       }
+
+      // Log SMS attempt
+      await supabase
+        .from('notification_history')
+        .insert({
+          user_id: user.id,
+          notification_type: 'sms',
+          notification_category: notificationType,
+          status: 'pending',
+          recipient: profile.phone,
+        });
 
       return new Response(
         JSON.stringify({ 
