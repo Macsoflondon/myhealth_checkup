@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import NotificationPreview from "./NotificationPreview";
 
 const ProfileSettings = () => {
   const { user } = useAuth();
@@ -451,11 +452,16 @@ const ProfileSettings = () => {
       {/* Email Notification Preferences */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Mail className="h-5 w-5" />
-            Email Notifications
-          </CardTitle>
-          <CardDescription>Control what emails you receive from us</CardDescription>
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <CardTitle className="flex items-center gap-2">
+                <Mail className="h-5 w-5" />
+                Email Notifications
+              </CardTitle>
+              <CardDescription>Control what emails you receive from us</CardDescription>
+            </div>
+            <NotificationPreview />
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Master Email Toggle */}
@@ -573,11 +579,16 @@ const ProfileSettings = () => {
       {/* SMS Notification Preferences */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5" />
-            SMS Notifications
-          </CardTitle>
-          <CardDescription>Receive urgent updates via text message</CardDescription>
+          <div className="flex items-start justify-between">
+            <div className="space-y-1.5">
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                SMS Notifications
+              </CardTitle>
+              <CardDescription>Receive urgent updates via text message</CardDescription>
+            </div>
+            <NotificationPreview />
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Master SMS Toggle */}
