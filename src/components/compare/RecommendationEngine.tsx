@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,10 +12,14 @@ import {
   Clock, 
   Beaker,
   TrendingUp,
-  AlertCircle
+  AlertCircle,
+  Save,
+  Check
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { preferencesApi, RecommendationPreferences } from "@/api/supabase/preferences.api";
 
 interface RecommendationEngineProps {
   tests: CompareTestData[];
@@ -47,16 +51,128 @@ export const RecommendationEngine = ({
   onRecommendationGenerated 
 }: RecommendationEngineProps) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [preferences, setPreferences] = useState<Preferences>({
     price: 3,
     speed: 3,
     comprehensiveness: 3
   });
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isLoadingPreferences, setIsLoadingPreferences] = useState(false);
+  const [isSavingPreferences, setIsSavingPreferences] = useState(false);
+  const [preferencesChanged, setPreferencesChanged] = useState(false);
   const [recommendation, setRecommendation] = useState<RecommendationResult | null>(null);
+  const [saveTimeoutId, setSaveTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+  // Load saved preferences when component mounts
+  useEffect(() => {
+    if (user) {
+      loadPreferences();
+    }
+  }, [user]);
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutId) {
+        clearTimeout(saveTimeoutId);
+      }
+    };
+  }, [saveTimeoutId]);
+
+  const loadPreferences = async () => {
+    if (!user) return;
+    
+    setIsLoadingPreferences(true);
+    try {
+      const savedPrefs = await preferencesApi.getRecommendationPreferences(user.id);
+      if (savedPrefs) {
+        setPreferences(savedPrefs);
+      }
+    } catch (error) {
+      console.error("Error loading preferences:", error);
+    } finally {
+      setIsLoadingPreferences(false);
+    }
+  };
+
+  const savePreferences = async (newPreferences: Preferences) => {
+    if (!user) return;
+    
+    setIsSavingPreferences(true);
+    try {
+      const result = await preferencesApi.saveRecommendationPreferences(user.id, newPreferences);
+      
+      if (result.success) {
+        setPreferencesChanged(false);
+        toast({
+          title: "Preferences Saved",
+          description: "Your recommendation preferences have been saved.",
+        });
+      } else {
+        toast({
+          title: "Save Failed",
+          description: result.error || "Failed to save preferences.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error("Error saving preferences:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while saving preferences.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSavingPreferences(false);
+    }
+  };
+
+  // Debounced auto-save when preferences change
+  const debouncedSave = useCallback((newPreferences: Preferences) => {
+    if (!user) return;
+
+    // Clear existing timeout
+    if (saveTimeoutId) {
+      clearTimeout(saveTimeoutId);
+    }
+
+    // Set new timeout for auto-save after 2 seconds of inactivity
+    const timeoutId = setTimeout(() => {
+      savePreferences(newPreferences);
+    }, 2000);
+
+    setSaveTimeoutId(timeoutId);
+  }, [user, saveTimeoutId]);
 
   const handlePreferenceChange = (key: keyof Preferences, value: number[]) => {
-    setPreferences(prev => ({ ...prev, [key]: value[0] }));
+    const newPreferences = { ...preferences, [key]: value[0] };
+    setPreferences(newPreferences);
+    setPreferencesChanged(true);
+    
+    // Auto-save for logged-in users
+    if (user) {
+      debouncedSave(newPreferences);
+    }
+  };
+
+  const handleManualSave = () => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to save your preferences.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Clear debounce timeout and save immediately
+    if (saveTimeoutId) {
+      clearTimeout(saveTimeoutId);
+      setSaveTimeoutId(null);
+    }
+    
+    savePreferences(preferences);
   };
 
   const generateRecommendation = async () => {
@@ -142,13 +258,54 @@ export const RecommendationEngine = ({
       {/* Preferences Card */}
       <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
-            AI-Powered Recommendation
-          </CardTitle>
-          <p className="text-sm text-muted-foreground mt-1">
-            Set your priorities and let AI suggest the best test for you
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                AI-Powered Recommendation
+              </CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">
+                Set your priorities and let AI suggest the best test for you
+              </p>
+            </div>
+            
+            {user && (
+              <div className="flex items-center gap-2">
+                {isLoadingPreferences && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Loading...
+                  </div>
+                )}
+                
+                {isSavingPreferences && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Saving...
+                  </div>
+                )}
+                
+                {!isSavingPreferences && !isLoadingPreferences && !preferencesChanged && (
+                  <div className="flex items-center gap-1 text-xs text-green-600">
+                    <Check className="h-3 w-3" />
+                    Saved
+                  </div>
+                )}
+                
+                {preferencesChanged && !isSavingPreferences && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleManualSave}
+                    className="gap-1 h-7 text-xs"
+                  >
+                    <Save className="h-3 w-3" />
+                    Save
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Price Preference */}
@@ -249,6 +406,15 @@ export const RecommendationEngine = ({
             <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 p-3 rounded-md">
               <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <span>Select at least 2 tests to get a personalized recommendation</span>
+            </div>
+          )}
+          
+          {!user && (
+            <div className="flex items-start gap-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 p-3 rounded-md border border-amber-200 dark:border-amber-800">
+              <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Tip:</strong> Log in to automatically save your preferences for next time!
+              </span>
             </div>
           )}
         </CardContent>

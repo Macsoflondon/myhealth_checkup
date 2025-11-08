@@ -1019,6 +1019,9 @@ export type Database = {
           notification_sms: boolean | null
           preferred_language: string | null
           preferred_units: string | null
+          recommendation_comprehensiveness_weight: number | null
+          recommendation_price_weight: number | null
+          recommendation_speed_weight: number | null
           saved_filters: Json | null
           theme: string | null
           updated_at: string
@@ -1033,6 +1036,9 @@ export type Database = {
           notification_sms?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
+          recommendation_comprehensiveness_weight?: number | null
+          recommendation_price_weight?: number | null
+          recommendation_speed_weight?: number | null
           saved_filters?: Json | null
           theme?: string | null
           updated_at?: string
@@ -1047,6 +1053,9 @@ export type Database = {
           notification_sms?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
+          recommendation_comprehensiveness_weight?: number | null
+          recommendation_price_weight?: number | null
+          recommendation_speed_weight?: number | null
           saved_filters?: Json | null
           theme?: string | null
           updated_at?: string
