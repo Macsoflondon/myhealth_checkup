@@ -14,3 +14,9 @@ verify_jwt = true
 # Security: JWT verification, verified userId from token, input sanitization
 [functions.health-ai-analysis]
 verify_jwt = true
+
+# Test Recommendations API
+# Public access - Uses Lovable AI to recommend best tests from comparison
+# Security: Input validation, rate limiting via AI gateway
+[functions.test-recommendations]
+verify_jwt = false

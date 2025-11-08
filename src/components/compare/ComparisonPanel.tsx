@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { CompareTestData } from "@/services/CompareService";
+import { RecommendationEngine } from "./RecommendationEngine";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   X, 
   CheckCircle2, 
@@ -18,7 +20,8 @@ import {
   PoundSterling,
   Beaker,
   TrendingUp,
-  ExternalLink
+  ExternalLink,
+  Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +38,8 @@ export const ComparisonPanel = ({
   onClose,
   onRemoveTest
 }: ComparisonPanelProps) => {
+  const [highlightedTestId, setHighlightedTestId] = useState<string | null>(null);
+  
   if (tests.length === 0) return null;
 
   const comparisonFeatures = [
@@ -109,17 +114,32 @@ export const ComparisonPanel = ({
         </DialogHeader>
 
         <ScrollArea className="flex-1 px-6 py-4">
-          <div className="space-y-6">
-            {/* Test Headers */}
-            <div className="grid gap-4" style={{ gridTemplateColumns: `200px repeat(${tests.length}, minmax(250px, 1fr))` }}>
-              <div className="font-semibold text-muted-foreground sticky left-0 bg-background z-10">
-                Test Details
-              </div>
-              {tests.map((test) => (
-                <div 
-                  key={test.id}
-                  className="relative bg-card rounded-lg border border-border p-4 shadow-sm"
-                >
+          <Tabs defaultValue="comparison" className="w-full">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
+              <TabsTrigger value="comparison" className="gap-2">
+                <TrendingUp className="h-4 w-4" />
+                Side-by-Side
+              </TabsTrigger>
+              <TabsTrigger value="recommendation" className="gap-2">
+                <Sparkles className="h-4 w-4" />
+                AI Recommendation
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="comparison" className="space-y-6">
+              {/* Test Headers */}
+              <div className="grid gap-4" style={{ gridTemplateColumns: `200px repeat(${tests.length}, minmax(250px, 1fr))` }}>
+                <div className="font-semibold text-muted-foreground sticky left-0 bg-background z-10">
+                  Test Details
+                </div>
+                {tests.map((test) => (
+                  <div 
+                    key={test.id}
+                    className={cn(
+                      "relative bg-card rounded-lg border border-border p-4 shadow-sm transition-all",
+                      highlightedTestId === test.id && "ring-2 ring-green-500 shadow-lg"
+                    )}
+                  >
                   <Button
                     variant="ghost"
                     size="icon"
@@ -240,7 +260,15 @@ export const ComparisonPanel = ({
                 ))}
               </div>
             </div>
-          </div>
+          </TabsContent>
+
+          <TabsContent value="recommendation" className="space-y-6">
+            <RecommendationEngine 
+              tests={tests}
+              onRecommendationGenerated={setHighlightedTestId}
+            />
+          </TabsContent>
+        </Tabs>
         </ScrollArea>
 
         {/* Footer Actions */}
