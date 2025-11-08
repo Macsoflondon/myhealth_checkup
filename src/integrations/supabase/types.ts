@@ -1020,6 +1020,9 @@ export type Database = {
           notification_promotions: boolean | null
           notification_push: boolean | null
           notification_sms: boolean | null
+          notification_sms_appointments: boolean | null
+          notification_sms_results: boolean | null
+          notification_sms_urgent: boolean | null
           notification_test_reminders: boolean | null
           preferred_language: string | null
           preferred_units: string | null
@@ -1041,6 +1044,9 @@ export type Database = {
           notification_promotions?: boolean | null
           notification_push?: boolean | null
           notification_sms?: boolean | null
+          notification_sms_appointments?: boolean | null
+          notification_sms_results?: boolean | null
+          notification_sms_urgent?: boolean | null
           notification_test_reminders?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
@@ -1062,6 +1068,9 @@ export type Database = {
           notification_promotions?: boolean | null
           notification_push?: boolean | null
           notification_sms?: boolean | null
+          notification_sms_appointments?: boolean | null
+          notification_sms_results?: boolean | null
+          notification_sms_urgent?: boolean | null
           notification_test_reminders?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null

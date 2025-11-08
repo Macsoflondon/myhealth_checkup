@@ -14,6 +14,13 @@ export interface EmailNotificationPreferences {
   notification_test_reminders: boolean;
 }
 
+export interface SmsNotificationPreferences {
+  notification_sms: boolean;
+  notification_sms_results: boolean;
+  notification_sms_appointments: boolean;
+  notification_sms_urgent: boolean;
+}
+
 export const preferencesApi = {
   async getRecommendationPreferences(
     userId: string
@@ -146,6 +153,72 @@ export const preferencesApi = {
 
       if (error) {
         console.error("Error inserting email notification preferences:", error);
+        return { success: false, error: error.message };
+      }
+    }
+
+    return { success: true };
+  },
+
+  async getSmsNotificationPreferences(
+    userId: string
+  ): Promise<SmsNotificationPreferences | null> {
+    const { data, error } = await supabase
+      .from("user_preferences")
+      .select(
+        "notification_sms, notification_sms_results, notification_sms_appointments, notification_sms_urgent"
+      )
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error fetching SMS notification preferences:", error);
+      return null;
+    }
+
+    if (!data) {
+      return null;
+    }
+
+    return {
+      notification_sms: data.notification_sms ?? false,
+      notification_sms_results: data.notification_sms_results ?? true,
+      notification_sms_appointments: data.notification_sms_appointments ?? true,
+      notification_sms_urgent: data.notification_sms_urgent ?? true,
+    };
+  },
+
+  async saveSmsNotificationPreferences(
+    userId: string,
+    preferences: Partial<SmsNotificationPreferences>
+  ): Promise<{ success: boolean; error?: string }> {
+    // First, check if a preferences record exists
+    const { data: existingPrefs } = await supabase
+      .from("user_preferences")
+      .select("id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (existingPrefs) {
+      // Update existing record
+      const { error } = await supabase
+        .from("user_preferences")
+        .update(preferences)
+        .eq("user_id", userId);
+
+      if (error) {
+        console.error("Error updating SMS notification preferences:", error);
+        return { success: false, error: error.message };
+      }
+    } else {
+      // Insert new record
+      const { error } = await supabase.from("user_preferences").insert({
+        user_id: userId,
+        ...preferences,
+      });
+
+      if (error) {
+        console.error("Error inserting SMS notification preferences:", error);
         return { success: false, error: error.message };
       }
     }

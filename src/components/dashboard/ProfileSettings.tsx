@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Save, Loader2, User, MapPin, Phone, Heart, AlertCircle, Mail, Bell } from "lucide-react";
-import { usersApi, preferencesApi, type UserProfile, type EmailNotificationPreferences } from "@/api";
+import { Save, Loader2, User, MapPin, Phone, Heart, AlertCircle, Mail, Bell, MessageSquare } from "lucide-react";
+import { usersApi, preferencesApi, type UserProfile, type EmailNotificationPreferences, type SmsNotificationPreferences } from "@/api";
 import { logger } from "@/lib/logger";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const ProfileSettings = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const ProfileSettings = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSavingNotifications, setIsSavingNotifications] = useState(false);
+  const [isSavingSms, setIsSavingSms] = useState(false);
   
   // Email notification preferences
   const [notificationEmail, setNotificationEmail] = useState(true);
@@ -26,6 +28,12 @@ const ProfileSettings = () => {
   const [notificationHealthInsights, setNotificationHealthInsights] = useState(true);
   const [notificationPromotions, setNotificationPromotions] = useState(false);
   const [notificationTestReminders, setNotificationTestReminders] = useState(true);
+
+  // SMS notification preferences
+  const [notificationSms, setNotificationSms] = useState(false);
+  const [notificationSmsResults, setNotificationSmsResults] = useState(true);
+  const [notificationSmsAppointments, setNotificationSmsAppointments] = useState(true);
+  const [notificationSmsUrgent, setNotificationSmsUrgent] = useState(true);
   
   // Form fields
   const [firstName, setFirstName] = useState("");
@@ -48,6 +56,7 @@ const ProfileSettings = () => {
     if (user) {
       fetchProfile();
       fetchNotificationPreferences();
+      fetchSmsPreferences();
     }
   }, [user]);
 
@@ -100,6 +109,23 @@ const ProfileSettings = () => {
       }
     } catch (error) {
       logger.error('Error fetching notification preferences:', error);
+    }
+  };
+
+  const fetchSmsPreferences = async () => {
+    if (!user) return;
+    
+    try {
+      const data = await preferencesApi.getSmsNotificationPreferences(user.id);
+      
+      if (data) {
+        setNotificationSms(data.notification_sms);
+        setNotificationSmsResults(data.notification_sms_results);
+        setNotificationSmsAppointments(data.notification_sms_appointments);
+        setNotificationSmsUrgent(data.notification_sms_urgent);
+      }
+    } catch (error) {
+      logger.error('Error fetching SMS preferences:', error);
     }
   };
 
@@ -165,6 +191,33 @@ const ProfileSettings = () => {
       toast.error('Failed to update notification preferences');
     } finally {
       setIsSavingNotifications(false);
+    }
+  };
+
+  const handleSaveSms = async () => {
+    if (!user) return;
+    
+    setIsSavingSms(true);
+    try {
+      const updates: Partial<SmsNotificationPreferences> = {
+        notification_sms: notificationSms,
+        notification_sms_results: notificationSmsResults,
+        notification_sms_appointments: notificationSmsAppointments,
+        notification_sms_urgent: notificationSmsUrgent,
+      };
+
+      const result = await preferencesApi.saveSmsNotificationPreferences(user.id, updates);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update SMS preferences');
+      }
+      
+      toast.success('SMS preferences updated');
+    } catch (error) {
+      logger.error('Error updating SMS preferences:', error);
+      toast.error('Failed to update SMS preferences');
+    } finally {
+      setIsSavingSms(false);
     }
   };
 
@@ -502,6 +555,129 @@ const ProfileSettings = () => {
               size="sm"
             >
               {isSavingNotifications ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                  Save Preferences
+                </>
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* SMS Notification Preferences */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            SMS Notifications
+          </CardTitle>
+          <CardDescription>Receive urgent updates via text message</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Master SMS Toggle */}
+          <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+            <div className="space-y-0.5">
+              <Label htmlFor="masterSms" className="text-base font-medium">
+                SMS Notifications
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Enable text message notifications
+              </p>
+            </div>
+            <Switch
+              id="masterSms"
+              checked={notificationSms}
+              onCheckedChange={setNotificationSms}
+            />
+          </div>
+
+          {phoneNumber ? (
+            <>
+              <Alert>
+                <Phone className="h-4 w-4" />
+                <AlertDescription>
+                  SMS notifications will be sent to: <strong>{phoneNumber}</strong>
+                </AlertDescription>
+              </Alert>
+
+              <Separator />
+
+              {/* Individual SMS Notification Types */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="smsResults" className="text-sm font-medium">
+                      Test Results Available
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Get notified immediately when test results are ready
+                    </p>
+                  </div>
+                  <Switch
+                    id="smsResults"
+                    checked={notificationSmsResults}
+                    onCheckedChange={setNotificationSmsResults}
+                    disabled={!notificationSms}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="smsAppointments" className="text-sm font-medium">
+                      Appointment Reminders
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Reminders before your scheduled appointments
+                    </p>
+                  </div>
+                  <Switch
+                    id="smsAppointments"
+                    checked={notificationSmsAppointments}
+                    onCheckedChange={setNotificationSmsAppointments}
+                    disabled={!notificationSms}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="smsUrgent" className="text-sm font-medium">
+                      Urgent Health Alerts
+                    </Label>
+                    <p className="text-xs text-muted-foreground">
+                      Critical health updates requiring immediate attention
+                    </p>
+                  </div>
+                  <Switch
+                    id="smsUrgent"
+                    checked={notificationSmsUrgent}
+                    onCheckedChange={setNotificationSmsUrgent}
+                    disabled={!notificationSms}
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Please add your phone number above to enable SMS notifications. Standard message rates may apply.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <div className="flex justify-end pt-4">
+            <Button 
+              onClick={handleSaveSms} 
+              disabled={isSavingSms || !phoneNumber}
+              size="sm"
+            >
+              {isSavingSms ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
