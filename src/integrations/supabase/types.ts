@@ -1015,8 +1015,12 @@ export type Database = {
           dashboard_layout: Json | null
           id: string
           notification_email: boolean | null
+          notification_health_insights: boolean | null
+          notification_order_updates: boolean | null
+          notification_promotions: boolean | null
           notification_push: boolean | null
           notification_sms: boolean | null
+          notification_test_reminders: boolean | null
           preferred_language: string | null
           preferred_units: string | null
           recommendation_comprehensiveness_weight: number | null
@@ -1032,8 +1036,12 @@ export type Database = {
           dashboard_layout?: Json | null
           id?: string
           notification_email?: boolean | null
+          notification_health_insights?: boolean | null
+          notification_order_updates?: boolean | null
+          notification_promotions?: boolean | null
           notification_push?: boolean | null
           notification_sms?: boolean | null
+          notification_test_reminders?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
           recommendation_comprehensiveness_weight?: number | null
@@ -1049,8 +1057,12 @@ export type Database = {
           dashboard_layout?: Json | null
           id?: string
           notification_email?: boolean | null
+          notification_health_insights?: boolean | null
+          notification_order_updates?: boolean | null
+          notification_promotions?: boolean | null
           notification_push?: boolean | null
           notification_sms?: boolean | null
+          notification_test_reminders?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
           recommendation_comprehensiveness_weight?: number | null

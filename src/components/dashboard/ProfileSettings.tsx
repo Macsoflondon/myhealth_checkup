@@ -6,17 +6,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Save, Loader2, User, MapPin, Phone, Heart, AlertCircle } from "lucide-react";
-import { usersApi, type UserProfile } from "@/api";
+import { Save, Loader2, User, MapPin, Phone, Heart, AlertCircle, Mail, Bell } from "lucide-react";
+import { usersApi, preferencesApi, type UserProfile, type EmailNotificationPreferences } from "@/api";
 import { logger } from "@/lib/logger";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 
 const ProfileSettings = () => {
   const { user } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSavingNotifications, setIsSavingNotifications] = useState(false);
+  
+  // Email notification preferences
+  const [notificationEmail, setNotificationEmail] = useState(true);
+  const [notificationOrderUpdates, setNotificationOrderUpdates] = useState(true);
+  const [notificationHealthInsights, setNotificationHealthInsights] = useState(true);
+  const [notificationPromotions, setNotificationPromotions] = useState(false);
+  const [notificationTestReminders, setNotificationTestReminders] = useState(true);
   
   // Form fields
   const [firstName, setFirstName] = useState("");
@@ -38,6 +47,7 @@ const ProfileSettings = () => {
   useEffect(() => {
     if (user) {
       fetchProfile();
+      fetchNotificationPreferences();
     }
   }, [user]);
 
@@ -75,6 +85,24 @@ const ProfileSettings = () => {
     }
   };
 
+  const fetchNotificationPreferences = async () => {
+    if (!user) return;
+    
+    try {
+      const data = await preferencesApi.getEmailNotificationPreferences(user.id);
+      
+      if (data) {
+        setNotificationEmail(data.notification_email);
+        setNotificationOrderUpdates(data.notification_order_updates);
+        setNotificationHealthInsights(data.notification_health_insights);
+        setNotificationPromotions(data.notification_promotions);
+        setNotificationTestReminders(data.notification_test_reminders);
+      }
+    } catch (error) {
+      logger.error('Error fetching notification preferences:', error);
+    }
+  };
+
   const handleSave = async () => {
     if (!user) return;
     
@@ -109,6 +137,34 @@ const ProfileSettings = () => {
       toast.error('Failed to update profile');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleSaveNotifications = async () => {
+    if (!user) return;
+    
+    setIsSavingNotifications(true);
+    try {
+      const updates: Partial<EmailNotificationPreferences> = {
+        notification_email: notificationEmail,
+        notification_order_updates: notificationOrderUpdates,
+        notification_health_insights: notificationHealthInsights,
+        notification_promotions: notificationPromotions,
+        notification_test_reminders: notificationTestReminders,
+      };
+
+      const result = await preferencesApi.saveEmailNotificationPreferences(user.id, updates);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update preferences');
+      }
+      
+      toast.success('Notification preferences updated');
+    } catch (error) {
+      logger.error('Error updating notification preferences:', error);
+      toast.error('Failed to update notification preferences');
+    } finally {
+      setIsSavingNotifications(false);
     }
   };
 
@@ -339,6 +395,128 @@ const ProfileSettings = () => {
         </CardContent>
       </Card>
 
+      {/* Email Notification Preferences */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-5 w-5" />
+            Email Notifications
+          </CardTitle>
+          <CardDescription>Control what emails you receive from us</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Master Email Toggle */}
+          <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+            <div className="space-y-0.5">
+              <Label htmlFor="masterEmail" className="text-base font-medium">
+                Email Notifications
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Receive all email notifications
+              </p>
+            </div>
+            <Switch
+              id="masterEmail"
+              checked={notificationEmail}
+              onCheckedChange={setNotificationEmail}
+            />
+          </div>
+
+          <Separator />
+
+          {/* Individual Notification Types */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="orderUpdates" className="text-sm font-medium">
+                  Order Updates
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Get notified about your test orders and results
+                </p>
+              </div>
+              <Switch
+                id="orderUpdates"
+                checked={notificationOrderUpdates}
+                onCheckedChange={setNotificationOrderUpdates}
+                disabled={!notificationEmail}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="healthInsights" className="text-sm font-medium">
+                  Health Insights
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Personalised health tips and insights based on your data
+                </p>
+              </div>
+              <Switch
+                id="healthInsights"
+                checked={notificationHealthInsights}
+                onCheckedChange={setNotificationHealthInsights}
+                disabled={!notificationEmail}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="testReminders" className="text-sm font-medium">
+                  Test Reminders
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Reminders for upcoming tests and appointments
+                </p>
+              </div>
+              <Switch
+                id="testReminders"
+                checked={notificationTestReminders}
+                onCheckedChange={setNotificationTestReminders}
+                disabled={!notificationEmail}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="promotions" className="text-sm font-medium">
+                  Promotions & Offers
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Special offers, discounts and new test launches
+                </p>
+              </div>
+              <Switch
+                id="promotions"
+                checked={notificationPromotions}
+                onCheckedChange={setNotificationPromotions}
+                disabled={!notificationEmail}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4">
+            <Button 
+              onClick={handleSaveNotifications} 
+              disabled={isSavingNotifications}
+              size="sm"
+            >
+              {isSavingNotifications ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4" />
+                  Save Preferences
+                </>
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="flex justify-end">
         <Button 
           onClick={handleSave} 
@@ -354,7 +532,7 @@ const ProfileSettings = () => {
           ) : (
             <>
               <Save className="mr-2 h-4 w-4" />
-              Save Changes
+              Save Profile Changes
             </>
           )}
         </Button>
