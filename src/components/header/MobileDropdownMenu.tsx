@@ -142,7 +142,7 @@ export const MobileDropdownMenu = ({
                   </Link>
                   
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-sm">
                       {item.testCount} tests
                     </Badge>
                     <button
@@ -152,9 +152,9 @@ export const MobileDropdownMenu = ({
                     >
                       <ChevronRight 
                         className={cn(
-                          "h-4 w-4 transition-transform duration-200 text-muted-foreground",
+                          "h-5 w-5 transition-transform duration-200 text-muted-foreground",
                           isExpanded && "rotate-90"
-                        )} 
+                        )}
                       />
                     </button>
                   </div>
@@ -163,7 +163,7 @@ export const MobileDropdownMenu = ({
                 {/* Expanded Content */}
                 {isExpanded && (
                   <div className="pb-3 pl-8 space-y-2 animate-in slide-in-from-top-1 duration-200">
-                    <div className="text-sm text-muted-foreground mb-2">Popular tests:</div>
+                    <div className="text-base text-muted-foreground mb-2">Popular tests:</div>
                     {popularTests.map((test, index) => (
                       <Link
                         key={index}
@@ -171,21 +171,21 @@ export const MobileDropdownMenu = ({
                         className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-accent/50 transition-colors group"
                         onClick={onItemClick}
                       >
-                        <span className="text-sm text-foreground group-hover:text-primary">
+                        <span className="text-lg text-foreground group-hover:text-primary">
                           {test.name}
                         </span>
-                        <span className="text-sm font-medium text-primary">
+                        <span className="text-lg font-medium text-primary">
                           £{test.price}
                         </span>
                       </Link>
                     ))}
                     <Link
                       to={item.path}
-                      className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 font-medium transition-colors py-1"
+                      className="inline-flex items-center gap-1 text-lg text-primary hover:text-primary/80 font-medium transition-colors py-1"
                       onClick={onItemClick}
                     >
                       View all {item.name.toLowerCase()}
-                      <ChevronRight className="h-3 w-3" />
+                      <ChevronRight className="h-4 w-4" />
                     </Link>
                   </div>
                 )}

@@ -114,13 +114,13 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
           >
             <Link
               to={item.path}
-              className="flex items-center gap-1 text-gray-700 hover:text-primary transition-colors font-medium text-sm py-2 px-1"
+              className="flex items-center gap-1 text-gray-700 hover:text-primary transition-colors font-medium text-xl py-2.5 px-2"
               onClick={onItemClick}
             >
               {item.name}
               {hasDropdown && (
                 <ChevronDown 
-                  className={`h-3 w-3 transition-transform duration-200 ${
+                  className={`h-4 w-4 transition-transform duration-200 ${
                     isActive ? 'rotate-180' : ''
                   }`} 
                 />
@@ -163,13 +163,13 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                                   className={`w-2 h-2 rounded-full ${testCategoryColor.primary} opacity-70`}
                                 />
                               )}
-                              <span className="text-sm font-medium text-gray-800 group-hover:text-primary">
+                              <span className="text-lg font-medium text-gray-800 group-hover:text-primary">
                                 {test.name.length > 35 ? `${test.name.substring(0, 35)}...` : test.name}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-gray-500">{test.provider}</span>
-                              <span className="text-xs font-medium text-primary">£{test.price}</span>
+                              <span className="text-sm text-gray-500">{test.provider}</span>
+                              <span className="text-sm font-medium text-primary">£{test.price}</span>
                             </div>
                           </div>
                         </Link>
@@ -181,13 +181,13 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                   <div className="mt-3 pt-2 border-t border-gray-100">
                     <Link
                       to={item.path}
-                      className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1 text-lg font-medium transition-colors ${
                         categoryColor ? categoryColor.text : 'text-primary'
                       } hover:opacity-80`}
                       onClick={onItemClick}
                     >
                       View all {item.name.toLowerCase()} tests
-                      <ChevronDown className="h-3 w-3 rotate-[-90deg]" />
+                      <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
                     </Link>
                   </div>
                 </div>
