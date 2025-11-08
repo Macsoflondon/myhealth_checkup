@@ -1,4 +1,4 @@
-import { MessageCircle, UserCheck, Award, HeartHandshake } from "lucide-react";
+import { MessageCircle, UserCheck, Award, HeartHandshake, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 const ExpertSupport = () => {
@@ -67,10 +67,20 @@ const ExpertSupport = () => {
             Join thousands who've discovered the power of private health testing
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button onClick={() => navigate('/compare-tests')} size="lg" className="bg-white text-[#22c0d4] hover:bg-gray-100 px-8 py-6 text-lg rounded-xl font-semibold shadow-lg">
+            <Button 
+              onClick={() => navigate('/compare-tests')} 
+              size="lg" 
+              className="bg-white text-[#22c0d4] hover:bg-gray-100 px-8 py-6 text-lg rounded-xl font-semibold shadow-lg group"
+            >
               Compare Tests Now
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button onClick={() => navigate('/how-it-works')} size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 px-8 py-6 text-lg rounded-xl font-semibold">
+            <Button 
+              onClick={() => navigate('/how-it-works')} 
+              size="lg" 
+              variant="outline" 
+              className="border-2 border-white text-white hover:bg-white hover:text-[#22c0d4] bg-transparent px-8 py-6 text-lg rounded-xl font-semibold"
+            >
               Learn How It Works
             </Button>
           </div>
