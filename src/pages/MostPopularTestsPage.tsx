@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import MostPopularTests from '@/components/MostPopularTests';
 import UKASBanner from '@/components/UKASBanner';
 const MostPopularTestsPage = () => {
@@ -24,8 +23,7 @@ const MostPopularTestsPage = () => {
       <div className="min-h-screen bg-[#081129]">
         <UKASBanner />
         <Header />
-        <MostPopularTests className="bg-[#081129]" />
-        <Footer />
+        <MostPopularTests />
       </div>
     </>;
 };
