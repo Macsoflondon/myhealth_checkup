@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
@@ -12,10 +13,14 @@ import type { CompareTestData } from "@/services/CompareService";
 interface ModernCompareTableProps {
   tests: CompareTestData[];
   selectedCategory?: string;
+  selectedTestIds?: string[];
+  onTestSelect?: (testId: string) => void;
 }
 export const ModernCompareTable = ({
   tests,
-  selectedCategory
+  selectedCategory,
+  selectedTestIds = [],
+  onTestSelect
 }: ModernCompareTableProps) => {
   const {
     user
@@ -108,11 +113,25 @@ export const ModernCompareTable = ({
         {tests.map(test => {
         const isFavorite = favorites.includes(test.id);
         const isOutOfStock = test.available === false;
-        return <Card key={test.id} className={cn("group hover:shadow-xl transition-all duration-300 border-border/50 bg-white", isOutOfStock && "opacity-60")}>
+        const isSelected = selectedTestIds.includes(test.id);
+        return <Card key={test.id} className={cn("group hover:shadow-xl transition-all duration-300 border-border/50 bg-white relative", isOutOfStock && "opacity-60", isSelected && "ring-2 ring-primary shadow-2xl")}>
+              {/* Selection Checkbox */}
+              {onTestSelect && (
+                <div className="absolute top-3 left-3 z-10">
+                  <div className={cn("bg-background rounded-md border-2 p-1 shadow-sm transition-all", isSelected && "border-primary bg-primary/10")}>
+                    <Checkbox
+                      checked={isSelected}
+                      onCheckedChange={() => onTestSelect(test.id)}
+                      className="h-5 w-5"
+                    />
+                  </div>
+                </div>
+              )}
+              
               <CardContent className="p-4 sm:p-6 bg-white">
                 {/* Provider Header */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
+                  <div className={cn("flex items-center gap-3", onTestSelect && "ml-10")}>
                     <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                       <AvatarImage src={test.providerLogo} alt={test.provider} />
                       <AvatarFallback className="text-xs">{test.provider.slice(0, 2).toUpperCase()}</AvatarFallback>

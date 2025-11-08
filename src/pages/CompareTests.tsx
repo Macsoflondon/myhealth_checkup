@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import { ModernCompareTable } from "@/components/compare/ModernCompareTable";
 import { CompareFilters } from "@/components/compare/CompareFilters";
 import { AdvancedFilters, AdvancedFilterOptions } from "@/components/compare/AdvancedFilters";
+import { ComparisonBar } from "@/components/compare/ComparisonBar";
+import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { CompareService } from "@/services/CompareService";
 import type { CompareTestData } from "@/services/CompareService";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,6 +39,12 @@ const CompareTests = () => {
     gpReview: null,
     bloodDraw: null
   });
+  
+  // Comparison mode state
+  const [selectedTestIds, setSelectedTestIds] = useState<string[]>([]);
+  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  
+  const selectedTests = tests.filter(test => selectedTestIds.includes(test.id));
 
   // Fetch categories on mount with error handling
   useEffect(() => {
@@ -187,6 +195,39 @@ const CompareTests = () => {
     setAdvancedFilters(defaultFilters);
     setTests(allTests);
   }, [allTests]);
+  
+  // Comparison handlers
+  const handleTestSelect = useCallback((testId: string) => {
+    setSelectedTestIds(prev => {
+      if (prev.includes(testId)) {
+        return prev.filter(id => id !== testId);
+      } else {
+        // Limit to 4 tests for comparison
+        if (prev.length >= 4) {
+          return prev;
+        }
+        return [...prev, testId];
+      }
+    });
+  }, []);
+  
+  const handleRemoveFromComparison = useCallback((testId: string) => {
+    setSelectedTestIds(prev => prev.filter(id => id !== testId));
+  }, []);
+  
+  const handleOpenComparison = useCallback(() => {
+    if (selectedTestIds.length >= 2) {
+      setIsComparisonOpen(true);
+    }
+  }, [selectedTestIds.length]);
+  
+  const handleCloseComparison = useCallback(() => {
+    setIsComparisonOpen(false);
+  }, []);
+  
+  const handleClearAllSelections = useCallback(() => {
+    setSelectedTestIds([]);
+  }, []);
   const memoizedStats = useMemo(() => ({
     testCount: tests.length,
     providerCount: providers.length
@@ -262,10 +303,41 @@ const CompareTests = () => {
                   <Loader2 className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 animate-spin text-health-primary mx-auto mb-3 sm:mb-4" />
                   <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Finding the best tests for you...</p>
                 </div>
-              </div> : <ModernCompareTable tests={tests} selectedCategory={selectedCategory} />}
+              </div> : (
+                <>
+                  <ModernCompareTable 
+                    tests={tests} 
+                    selectedCategory={selectedCategory}
+                    selectedTestIds={selectedTestIds}
+                    onTestSelect={handleTestSelect}
+                  />
+                  
+                  {/* Spacer for comparison bar */}
+                  {selectedTests.length > 0 && (
+                    <div className="h-24" />
+                  )}
+                </>
+              )}
           </div>
         </section>
         </main>
+        
+        {/* Comparison Bar */}
+        <ComparisonBar
+          selectedTests={selectedTests}
+          onRemoveTest={handleRemoveFromComparison}
+          onCompare={handleOpenComparison}
+          onClearAll={handleClearAllSelections}
+        />
+        
+        {/* Comparison Panel */}
+        <ComparisonPanel
+          tests={selectedTests}
+          isOpen={isComparisonOpen}
+          onClose={handleCloseComparison}
+          onRemoveTest={handleRemoveFromComparison}
+        />
+        
         <Footer />
       </div>
     </ErrorBoundary>;
