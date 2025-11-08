@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/components/ui/sonner";
 import Header from "@/components/Header";
@@ -8,16 +8,18 @@ import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Heart, ShoppingBag, FileText } from "lucide-react";
+import { Trash2, Heart, ShoppingBag, FileText, User, Package, Clock, PoundSterling } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { favoritesApi, ordersApi, type Favorite, type Order } from "@/api";
+import ProfileSettings from "@/components/dashboard/ProfileSettings";
 
 const Dashboard = () => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [activeTab, setActiveTab] = useState("favorites");
+  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "favorites");
   const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
@@ -92,16 +94,21 @@ const Dashboard = () => {
           <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">My Dashboard</h1>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="sticky top-0 z-10 bg-background mb-4 sm:mb-6 shadow-sm w-full sm:w-auto">
-              <TabsTrigger value="favorites" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base flex-1 sm:flex-initial">
-                <Heart className="h-3 w-3 sm:h-4 sm:w-4" /> 
-                <span className="hidden xs:inline">Favorites</span>
-                <span className="xs:hidden">Saved</span>
+            <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsTrigger value="favorites" className="flex items-center gap-2">
+                <Heart className="h-4 w-4" /> 
+                <span className="hidden sm:inline">Saved Tests</span>
+                <span className="sm:hidden">Saved</span>
               </TabsTrigger>
-              <TabsTrigger value="orders" className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base flex-1 sm:flex-initial">
-                <ShoppingBag className="h-3 w-3 sm:h-4 sm:w-4" /> 
-                <span className="hidden xs:inline">My Orders</span>
-                <span className="xs:hidden">Orders</span>
+              <TabsTrigger value="orders" className="flex items-center gap-2">
+                <Package className="h-4 w-4" /> 
+                <span className="hidden sm:inline">Order History</span>
+                <span className="sm:hidden">Orders</span>
+              </TabsTrigger>
+              <TabsTrigger value="profile" className="flex items-center gap-2">
+                <User className="h-4 w-4" /> 
+                <span className="hidden sm:inline">Profile</span>
+                <span className="sm:hidden">Profile</span>
               </TabsTrigger>
             </TabsList>
             
@@ -135,25 +142,36 @@ const Dashboard = () => {
                             variant="ghost" 
                             size="sm" 
                             onClick={() => removeFavorite(favorite.id)}
-                            className="shrink-0"
+                            className="shrink-0 hover:bg-destructive/10"
                           >
-                            <Trash2 className="h-4 w-4 text-red-500" />
+                            <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </CardTitle>
                         <CardDescription className="text-xs sm:text-sm">
-                          {favorite.provider} | {favorite.category}
+                          {favorite.provider}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="p-4 sm:p-6 pt-0">
-                      <div className="flex justify-end items-center">
-                        <Button 
-                          size="sm"
-                          onClick={() => navigate(`/compare?category=${favorite.category}`)}
-                          className="text-xs sm:text-sm"
-                        >
-                          View Details
-                        </Button>
-                      </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            {favorite.price && (
+                              <div className="flex items-center gap-1">
+                                <PoundSterling className="h-3 w-3" />
+                                <span>{favorite.price}</span>
+                              </div>
+                            )}
+                            <div className="px-2 py-1 bg-muted rounded text-xs">
+                              {favorite.category}
+                            </div>
+                          </div>
+                          <Button 
+                            size="sm"
+                            onClick={() => navigate(`/compare?category=${favorite.category}`)}
+                            className="text-xs sm:text-sm"
+                          >
+                            View Details
+                          </Button>
+                        </div>
                       </CardContent>
                     </Card>
                   ))}
@@ -189,41 +207,54 @@ const Dashboard = () => {
                           <div className="flex-1">
                             <CardTitle className="text-base sm:text-lg mb-2">{order.name}</CardTitle>
                             <CardDescription className="text-xs sm:text-sm">
-                              Order #{order.id.slice(0, 8)} | {order.provider}
+                              Order #{order.id.slice(0, 8)} · {order.provider}
                             </CardDescription>
                           </div>
                           <div className="flex sm:flex-col items-start gap-2 sm:text-right">
                             <span className={`inline-block px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
-                              order.status === 'completed' ? 'bg-green-100 text-green-800' :
-                              order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                              'bg-[#081129] text-white'
+                              order.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                              order.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                              order.status === 'cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
+                              'bg-primary text-primary-foreground'
                             }`}>
                               {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                             </span>
-                            <p className="text-xs text-gray-500 sm:mt-1">
-                              {new Date(order.order_date).toLocaleDateString()}
-                            </p>
                           </div>
                         </div>
                       </CardHeader>
                       <CardContent className="p-4 sm:p-6 pt-0">
-                      <div className="flex justify-end items-center">
-                        {order.result_url && (
-                          <Button 
-                            className="flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto"
-                            onClick={() => window.open(order.result_url || '#')}
-                          >
-                            <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
-                            View Results
-                          </Button>
-                        )}
-                      </div>
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>{new Date(order.order_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                            </div>
+                            {order.price && (
+                              <div className="flex items-center gap-1">
+                                <PoundSterling className="h-3 w-3" />
+                                <span>{order.price}</span>
+                              </div>
+                            )}
+                          </div>
+                          {order.result_url && (
+                            <Button 
+                              className="flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto"
+                              onClick={() => window.open(order.result_url || '#')}
+                            >
+                              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+                              View Results
+                            </Button>
+                          )}
+                        </div>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
               )}
+            </TabsContent>
+
+            <TabsContent value="profile">
+              <ProfileSettings />
             </TabsContent>
           </Tabs>
         </div>
