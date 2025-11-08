@@ -109,6 +109,15 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			boxShadow: {
+				'soft': 'var(--shadow-soft)',
+				'card': 'var(--shadow-card)',
+				'card-hover': 'var(--shadow-card-hover)',
+				'elevation': 'var(--shadow-elevation)',
+				'elevation-high': 'var(--shadow-elevation-high)',
+				'glow-teal': 'var(--shadow-glow-teal)',
+				'glow-pink': 'var(--shadow-glow-pink)',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
