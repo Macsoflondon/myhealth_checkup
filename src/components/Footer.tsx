@@ -77,8 +77,8 @@ const Footer = () => {
   }];
   return <footer className="pt-16 pb-8 border-t bg-[#081129]">
       <div className="container mx-auto px-4">
-        {/* Top Section - Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {/* Top Section - 4 Column Links Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Categories Column */}
           <div>
             <h3 id="footer-services" className="font-semibold text-lg mb-4 text-white">{t('footer.categories')}</h3>
@@ -91,31 +91,44 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Quick Links and Legal Side by Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Quick Links Column */}
-            <div>
-              <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
-              <ul className="space-y-2" aria-labelledby="footer-info">
-                {informationSections.map((info, index) => <li key={index}>
-                    <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
-                      {info.name}
-                    </Link>
-                  </li>)}
-              </ul>
-            </div>
+          {/* Quick Links Column */}
+          <div>
+            <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
+            <ul className="space-y-2" aria-labelledby="footer-info">
+              {informationSections.map((info, index) => <li key={index}>
+                  <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
+                    {info.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
 
-            {/* Legal Column */}
-            <div>
-              <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
-              <ul className="space-y-2" aria-labelledby="footer-company">
-                {companySections.map((company, index) => <li key={index}>
-                    <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
-                      {company.name}
-                    </Link>
-                  </li>)}
-              </ul>
-            </div>
+          {/* Legal Column */}
+          <div>
+            <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
+            <ul className="space-y-2" aria-labelledby="footer-company">
+              {companySections.map((company, index) => <li key={index}>
+                  <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm">
+                    {company.name}
+                  </Link>
+                </li>)}
+            </ul>
+          </div>
+
+          {/* Company Description Column */}
+          <div>
+            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+              <div className="h-8 w-8 flex items-center justify-center">
+                <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
+              </div>
+              <span className="text-lg font-bold">
+                <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
+              </span>
+            </Link>
+            <p className="mb-3 text-sm font-light text-white leading-relaxed">
+              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
+            </p>
+            <p className="text-xs font-light text-white opacity-80">Company No. 16589056</p>
           </div>
         </div>
 
@@ -156,19 +169,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Logo and Disclaimer - Below */}
-          <div className="mb-6">
-            <Link to="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 flex items-center justify-center">
-                <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
-              </div>
-              <span className="text-lg font-bold">
-                <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
-              </span>
-            </Link>
-            <p className="mb-2 text-xs font-light text-white max-w-2xl">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
-            <p className="text-xs font-light text-white">Company No. 16589056</p>
-          </div>
         </div>
 
         {/* Copyright and Additional Links */}
