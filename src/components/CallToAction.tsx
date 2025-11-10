@@ -7,6 +7,7 @@ interface CallToActionProps {
   className?: string;
 }
 
+
 const CallToAction = ({ className }: CallToActionProps) => {
   const navigate = useNavigate();
   
