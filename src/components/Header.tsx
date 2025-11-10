@@ -46,8 +46,8 @@ const Header = ({ className }: HeaderProps) => {
     );
   }
   // Toolbar always sticky
-  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, styles.headerVisible);
-  const toolbarClasses = cn("bg-[#081129] my-0 mx-0 px-0 py-[10px] border-b border-[#fff]", styles.toolbar);
+  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-3", styles.header, styles.headerVisible);
+  const toolbarClasses = cn("bg-[#081129] my-0 mx-0 px-0 py-4 border-b border-[#fff]", styles.toolbar);
   return (
     <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
@@ -75,7 +75,7 @@ const Header = ({ className }: HeaderProps) => {
         {/* Bottom row - Navigation Menu (Toolbar) */}
         <div className={toolbarClasses}>
           <div className="flex items-center justify-center px-6 lg:px-16 w-full">
-            <NavigationItems className="flex items-center gap-1" />
+            <NavigationItems className="flex items-center gap-2" />
           </div>
         </div>
       </header>
