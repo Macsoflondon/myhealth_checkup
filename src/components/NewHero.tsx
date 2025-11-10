@@ -89,25 +89,41 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Full-width Headline Banner */}
-      <section className="w-full bg-white py-3 sm:py-4 md:py-6 relative overflow-hidden">
-        {/* Background image - faded */}
+      {/* Hero Section with Background Image */}
+      <section className="hero-section relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-white">
+        {/* Background image with parallax effect */}
         <div 
-          className="absolute inset-0 opacity-[0.08]"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
           style={{
             backgroundImage: 'url(/lovable-uploads/blood-tubes-background.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
+            backgroundAttachment: 'fixed'
           }}
         />
         
-        <div className="w-full px-4 sm:px-6 md:px-8 relative z-10">
-          <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto my-0 py-[20px] lg:text-4xl">
-            <span className="text-[#081129] block sm:inline">It's time to feel like </span>
-            <span className="text-[#081129]">yourself again</span>
+        {/* Mobile background (no parallax) */}
+        <div 
+          className="absolute inset-0 bg-cover bg-top bg-no-repeat md:hidden"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/blood-tubes-background.jpg)',
+          }}
+        />
+        
+        {/* Top overlay for gentle fade */}
+        <div className="absolute inset-0 bg-white/15 z-[1]" />
+        
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-[200px] z-[2]"
+             style={{
+               background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%)'
+             }}
+        />
+        
+        {/* Hero content */}
+        <div className="w-full px-4 sm:px-6 md:px-8 relative z-[3] py-[10vh] sm:py-[15vh] md:py-[20vh]">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-bold text-center max-w-6xl mx-auto mb-8">
+            <span className="text-[#081129]">It's time to feel like yourself again</span>
           </h1>
-          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-[#081129] font-normal md:text-lg space-y-3">
+          <div className="text-base sm:text-lg max-w-4xl mx-auto text-center text-[#081129] font-normal md:text-lg space-y-3">
             <p className="mb-2">
               At myhealth checkup, we believe your health is your greatest asset.
             </p>
