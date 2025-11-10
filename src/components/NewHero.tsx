@@ -89,9 +89,9 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Hero Section with Background Image - Extended */}
+      {/* Hero Section with Background Image - Extended Down Through Sections */}
       <section className="hero-section relative w-full flex items-center justify-center overflow-hidden bg-white"
-               style={{ minHeight: 'calc(100vh + 300px)' }}>
+               style={{ minHeight: 'calc(100vh + 1000px)' }}>
         {/* Background image - scrolling */}
         <div 
           className="absolute inset-0 bg-cover bg-no-repeat"
@@ -105,15 +105,15 @@ const NewHero = () => {
         {/* Softer white overlay across entire image */}
         <div className="absolute inset-0 bg-white/45 z-[1]" />
         
-        {/* Bottom gradient fade into navy (#081129) */}
-        <div className="absolute bottom-0 left-0 right-0 h-[250px] z-[2]"
+        {/* Very gradual bottom fade into partners section gray */}
+        <div className="absolute bottom-0 left-0 right-0 h-[700px] z-[2]"
              style={{
-               background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #081129 100%)'
+               background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(249, 250, 251, 0.3) 40%, rgba(249, 250, 251, 0.7) 70%, #f9fafb 100%)'
              }}
         />
         
-        {/* Hero content */}
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-[10vw] relative z-[3] py-[20vh] hero-content">
+        {/* Hero content - reduced spacing */}
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-[10vw] relative z-[3] py-8 sm:py-12 md:py-16 hero-content">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-bold text-center max-w-6xl mx-auto mb-8 text-[#081129]">
             It's time to feel like yourself again
           </h1>
@@ -134,9 +134,9 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Trust Indicators and Search Section */}
-      <section className="relative overflow-hidden bg-[#081129] text-white w-full">
-        <div className="relative z-10 w-full py-3 sm:py-6 bg-[#081129]">
+      {/* Trust Indicators and Search Section - Transparent to allow fade through */}
+      <section className="relative overflow-hidden text-white w-full">
+        <div className="relative z-10 w-full py-3 sm:py-6">
           <div className="w-full text-center px-3 sm:px-4">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
