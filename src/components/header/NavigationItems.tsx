@@ -47,8 +47,10 @@ export const primaryNavigationItems = [
   { name: "General Wellness", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "Men's Health", path: "/mens-health", hasDropdown: true, megaMenu: true },
+  { name: "Sports/Fitness Health", path: "/sports-performance", hasDropdown: true, megaMenu: true },
   { name: "Fertility", path: "/fertility-tests", hasDropdown: true, megaMenu: true },
   { name: "Cancer Screening", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
+  { name: "At Home Tests", path: "/at-home-tests", hasDropdown: false },
   { name: "How It Works", path: "/how-it-works" }
 ];
 
@@ -150,6 +152,11 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         return compareCategories.filter(cat => 
           ['mens-health-checks', 'male-hormone-tests', 'male-fertility-tests', 
            'sports-performance-tests'].includes(cat.id)
+        );
+      case "Sports/Fitness Health":
+        return compareCategories.filter(cat => 
+          ['sports-performance-tests', 'vitamins-tests', 'energy-tests', 
+           'nutrition-tests', 'iron-tests'].includes(cat.id)
         );
       case "Fertility":
         return compareCategories.filter(cat => 
