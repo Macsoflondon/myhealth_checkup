@@ -103,7 +103,7 @@ const NewHero = () => {
         />
         
         {/* Softer white overlay across entire image */}
-        <div className="absolute inset-0 bg-white/45 z-[1]" />
+        <div className="absolute inset-0 bg-white/60 z-[1]" />
         
         {/* Very gradual bottom fade into partners section gray */}
         <div className="absolute bottom-0 left-0 right-0 h-[700px] z-[2]"
