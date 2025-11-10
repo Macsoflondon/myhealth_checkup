@@ -90,13 +90,24 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
-        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
+      <section className="w-full bg-white py-3 sm:py-4 md:py-6 relative overflow-hidden">
+        {/* Background image - faded */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/blood-tubes-background.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        
+        <div className="w-full px-4 sm:px-6 md:px-8 relative z-10">
           <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto my-0 py-[20px] lg:text-4xl">
-            <span className="text-white block sm:inline">It's time to feel like </span>
-            <span className="text-[#22c0d4]">yourself again</span>
+            <span className="text-[#081129] block sm:inline">It's time to feel like </span>
+            <span className="text-[#081129]">yourself again</span>
           </h1>
-          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-white font-normal md:text-lg space-y-3">
+          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-[#081129] font-normal md:text-lg space-y-3">
             <p className="mb-2">
               At myhealth checkup, we believe your health is your greatest asset.
             </p>
