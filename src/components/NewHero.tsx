@@ -89,35 +89,14 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Hero Section with Background Image - Extended Down Through Sections */}
-      <section className="hero-section relative w-full flex items-center justify-center overflow-hidden bg-white"
-               style={{ minHeight: 'calc(100vh + 1000px)' }}>
-        {/* Background image - scrolling */}
-        <div 
-          className="absolute inset-0 bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: 'url(/lovable-uploads/blood-tubes-background.jpg)',
-            backgroundPosition: 'center top',
-            backgroundAttachment: 'scroll'
-          }}
-        />
-        
-        {/* Softer white overlay across entire image */}
-        <div className="absolute inset-0 bg-white/60 z-[1]" />
-        
-        {/* Very gradual bottom fade into partners section gray */}
-        <div className="absolute bottom-0 left-0 right-0 h-[700px] z-[2]"
-             style={{
-               background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(249, 250, 251, 0.3) 40%, rgba(249, 250, 251, 0.7) 70%, #f9fafb 100%)'
-             }}
-        />
-        
-        {/* Hero content - reduced spacing */}
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-[10vw] relative z-[3] py-8 sm:py-12 md:py-16 hero-content">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-bold text-center max-w-6xl mx-auto mb-8 text-[#081129]">
-            It's time to feel like yourself again
+      {/* Full-width Headline Banner */}
+      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
+        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
+          <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto my-0 py-[20px] lg:text-4xl">
+            <span className="text-white block sm:inline">It's time to feel like </span>
+            <span className="text-[#22c0d4]">yourself again</span>
           </h1>
-          <div className="text-base sm:text-lg max-w-4xl mx-auto text-center text-[#081129] font-normal md:text-lg space-y-3">
+          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-white font-normal md:text-lg space-y-3">
             <p className="mb-2">
               At myhealth checkup, we believe your health is your greatest asset.
             </p>
@@ -134,9 +113,9 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Trust Indicators and Search Section - Transparent to allow fade through */}
-      <section className="relative overflow-hidden text-white w-full">
-        <div className="relative z-10 w-full py-3 sm:py-6">
+      {/* Trust Indicators and Search Section */}
+      <section className="relative overflow-hidden bg-[#081129] text-white w-full">
+        <div className="relative z-10 w-full py-3 sm:py-6 bg-[#081129]">
           <div className="w-full text-center px-3 sm:px-4">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
