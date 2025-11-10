@@ -29,13 +29,13 @@ const Header = ({ className }: HeaderProps) => {
     return (
       <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
-          <div className="px-3 py-2 flex justify-between items-center gap-2 bg-[#081129] h-14">
+          <div className="px-4 py-3 flex justify-between items-center gap-3 bg-[#081129] h-16">
             <div className="flex-shrink-0">
               <Logo />
             </div>
 
             {/* Right side controls */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center gap-3 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />

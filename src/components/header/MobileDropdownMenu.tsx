@@ -133,16 +133,16 @@ export const MobileDropdownMenu = ({
                     className="flex items-center gap-3 flex-1 min-w-0"
                     onClick={onItemClick}
                   >
-                    <span className="text-lg flex-shrink-0">{item.icon}</span>
+                    <span className="text-2xl flex-shrink-0">{item.icon}</span>
                     <div className="flex-1 min-w-0">
-                      <span className="font-medium text-foreground block">
+                      <span className="font-semibold text-lg text-foreground block">
                         {item.name}
                       </span>
                     </div>
                   </Link>
                   
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Badge variant="secondary" className="text-sm">
+                    <Badge variant="secondary" className="text-base">
                       {item.testCount} tests
                     </Badge>
                     <button
@@ -163,7 +163,7 @@ export const MobileDropdownMenu = ({
                 {/* Expanded Content */}
                 {isExpanded && (
                   <div className="pb-3 pl-8 space-y-2 animate-in slide-in-from-top-1 duration-200">
-                    <div className="text-base text-muted-foreground mb-2">Popular tests:</div>
+                    <div className="text-lg text-muted-foreground mb-2">Popular tests:</div>
                     {popularTests.map((test, index) => (
                       <Link
                         key={index}
@@ -171,21 +171,21 @@ export const MobileDropdownMenu = ({
                         className="flex items-center justify-between py-2 px-3 rounded-md hover:bg-accent/50 transition-colors group"
                         onClick={onItemClick}
                       >
-                        <span className="text-lg text-foreground group-hover:text-primary">
+                        <span className="text-xl text-foreground group-hover:text-primary">
                           {test.name}
                         </span>
-                        <span className="text-lg font-medium text-primary">
+                        <span className="text-xl font-medium text-primary">
                           £{test.price}
                         </span>
                       </Link>
                     ))}
                     <Link
                       to={item.path}
-                      className="inline-flex items-center gap-1 text-lg text-primary hover:text-primary/80 font-medium transition-colors py-1"
+                      className="inline-flex items-center gap-1 text-xl text-primary hover:text-primary/80 font-medium transition-colors py-1"
                       onClick={onItemClick}
                     >
                       View all {item.name.toLowerCase()}
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className="h-5 w-5" />
                     </Link>
                   </div>
                 )}
@@ -202,8 +202,8 @@ export const MobileDropdownMenu = ({
                 className="flex items-center gap-3 py-3 px-2 rounded-md hover:bg-accent/50 transition-colors"
                 onClick={onItemClick}
               >
-                <span className="text-lg">{item.icon}</span>
-                <span className="font-medium text-foreground">{item.name}</span>
+                <span className="text-2xl">{item.icon}</span>
+                <span className="font-semibold text-lg text-foreground">{item.name}</span>
               </Link>
             ))}
           </div>
