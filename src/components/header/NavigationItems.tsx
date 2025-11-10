@@ -184,7 +184,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         >
           <Link
             to={item.path}
-            className={`text-2xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
+            className={`text-3xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
                   (item as any).highlighted 
                     ? "text-[#E70D69]"
                 : "text-white"
@@ -193,7 +193,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           >
             {item.name}
             {item.hasDropdown && (
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-5 h-5" />
             )}
           </Link>
           
@@ -285,10 +285,10 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         onMouseLeave={handleMouseLeave}
       >
         <button
-          className="text-2xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
+          className="text-3xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
         >
           More
-          <ChevronDown className="w-4 h-4" />
+          <ChevronDown className="w-5 h-5" />
         </button>
         
         {activeDropdown === "MORE" && (
