@@ -1,7 +1,13 @@
 import { MessageCircle, UserCheck, Award, HeartHandshake, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-const ExpertSupport = () => {
+import { cn } from "@/lib/utils";
+
+interface ExpertSupportProps {
+  className?: string;
+}
+
+const ExpertSupport = ({ className }: ExpertSupportProps) => {
   const navigate = useNavigate();
   const supportFeatures = [{
     icon: UserCheck,
@@ -28,7 +34,7 @@ const ExpertSupport = () => {
     color: "text-[#e70d69]",
     bgColor: "bg-[#e70d69]/10"
   }];
-  return <section className="w-full bg-gradient-to-b from-[#081129] to-[#0a1836] py-12 sm:py-16 md:py-20">
+  return <section className={cn("w-full bg-gradient-to-b from-[#081129] to-[#0a1836] py-12 sm:py-16 md:py-20", className)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">

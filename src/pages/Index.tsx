@@ -15,6 +15,8 @@ import OutcomeTestimonials from "@/components/OutcomeTestimonials";
 import ExpertSupport from "@/components/ExpertSupport";
 import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, MediaSpotlight } from "@/components/LazyLoadedComponents";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
+import HealthAssetSection from "@/components/HealthAssetSection";
+import NationwideClinics from "@/components/NationwideClinics";
 const Index = () => {
   usePerformanceOptimization();
   const structuredData = {
@@ -93,15 +95,34 @@ const Index = () => {
       <Header />
       
       <main className="flex-1 space-y-0">
+        {/* 1. Hero Section */}
         <NewHero />
-        <TrustBadgesSection />
-        <HealthJourneyTimeline />
-        <HealthConcernsTabs />
-        <OutcomeTestimonials />
-        <MediaSpotlight />
         
-        <ExpertSupport className="bg-[#081129]" />
-        <CallToAction className="bg-[#081129]" />
+        {/* 2. Your Health is Your Greatest Asset */}
+        <HealthAssetSection />
+        
+        {/* 3. Our Partners → Trusted Health Comparison Platform (merged) */}
+        <div className="bg-gradient-to-b from-white via-gray-50 to-white">
+          <PartnerShowcase />
+          <TrustBadgesSection />
+        </div>
+        
+        {/* 4. Your Health Journey Simplified */}
+        <HealthJourneyTimeline />
+        
+        {/* 5. Comprehensive Care for Your Top Concerns */}
+        <HealthConcernsTabs />
+        
+        {/* 6. Results That Change Lives - REMOVED */}
+        
+        {/* 7. Nationwide Clinics Map */}
+        <NationwideClinics />
+        
+        {/* 8. You're Never Alone with Your Health Journey */}
+        <ExpertSupport />
+        
+        {/* 9. Take Control of Your Health Today */}
+        <CallToAction />
       </main>
         
         <Footer />
