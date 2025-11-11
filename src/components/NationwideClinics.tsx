@@ -4,6 +4,8 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import { MapPin, Search, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import "leaflet/dist/leaflet.css";
@@ -33,6 +35,7 @@ const NationwideClinics = () => {
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [postcode, setPostcode] = useState("");
   const [radius, setRadius] = useState(25);
+  const [atHomeOnly, setAtHomeOnly] = useState(false);
   const [center, setCenter] = useState<[number, number]>([51.5074, -0.1278]); // London default
   const [loading, setLoading] = useState(true);
 
@@ -72,10 +75,26 @@ const NationwideClinics = () => {
     }
   };
 
+  // Filter clinics based on at-home kits toggle
+  // Providers that offer at-home kits: Thriva, Medichecks, Randox
+  const filteredClinics = atHomeOnly
+    ? clinics.filter((clinic) => {
+        const providerId = clinic.provider_id?.toLowerCase() || "";
+        const accessNote = clinic.access_note?.toLowerCase() || "";
+        return (
+          providerId.includes("thriva") ||
+          providerId.includes("medichecks") ||
+          providerId.includes("randox") ||
+          accessNote.includes("home") ||
+          accessNote.includes("kit")
+        );
+      })
+    : clinics;
+
   const badges = [
     { label: "Trusted Providers", value: "7", color: "bg-[#22c0d4]" },
     { label: "Available Tests", value: "200+", color: "bg-[#e70d69]" },
-    { label: "Nationwide Clinics", value: clinics.length.toString(), color: "bg-[#081129]" },
+    { label: "Nationwide Clinics", value: filteredClinics.length.toString(), color: "bg-[#081129]" },
   ];
 
   return (
@@ -106,7 +125,7 @@ const NationwideClinics = () => {
 
         {/* Search Controls */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-[#081129] mb-2">
                 Postcode
@@ -148,6 +167,18 @@ const NationwideClinics = () => {
               </Button>
             </div>
           </div>
+          
+          {/* At-home kits filter toggle */}
+          <div className="flex items-center space-x-2 pt-4 border-t border-gray-200">
+            <Switch
+              id="at-home-kits"
+              checked={atHomeOnly}
+              onCheckedChange={setAtHomeOnly}
+            />
+            <Label htmlFor="at-home-kits" className="text-sm font-medium text-[#081129] cursor-pointer">
+              At-home kits only
+            </Label>
+          </div>
         </div>
 
         {/* Map */}
@@ -164,7 +195,7 @@ const NationwideClinics = () => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               <MarkerClusterGroup>
-                {clinics.map((clinic) => (
+                {filteredClinics.map((clinic) => (
                   <Marker
                     // @ts-ignore
                     key={clinic.id}
