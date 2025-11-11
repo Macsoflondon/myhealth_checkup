@@ -156,7 +156,9 @@ const NationwideClinics = () => {
   ).map((clinic) => ({
     ...clinic,
     distance: calculateDistance(center[0], center[1], clinic.latitude, clinic.longitude),
-  })).sort((a, b) => (a.distance || 0) - (b.distance || 0));
+  }))
+  .filter((clinic) => (clinic.distance || 0) <= radius) // Filter by radius
+  .sort((a, b) => (a.distance || 0) - (b.distance || 0));
 
   const badges = [
     { label: "Trusted Providers", value: "7", color: "bg-[#22c0d4]" },
