@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { ModernCompareTable } from "@/components/compare/ModernCompareTable";
 import { CompareFilters } from "@/components/compare/CompareFilters";
 import { AdvancedFilters, AdvancedFilterOptions } from "@/components/compare/AdvancedFilters";
@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Sparkles, TrendingUp, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { providers } from "@/data/compare/providers";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { logger } from "@/lib/logger";
 const CompareTests = () => {
   const location = useLocation();

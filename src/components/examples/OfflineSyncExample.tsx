@@ -9,8 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Heart } from "lucide-react";
 import { useOptimisticUpdate } from "@/hooks/useOptimisticUpdate";
 import { useOfflineSync } from "@/hooks/useOfflineSync";
-import { OfflineSyncIndicator } from "@/components/OfflineSyncIndicator";
-import { OptimisticUpdateIndicator } from "@/components/OptimisticUpdateIndicator";
+import { OfflineSyncIndicator } from "@/components/common/OfflineSyncIndicator";
+import { OptimisticUpdateIndicator } from "@/components/common/OptimisticUpdateIndicator";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Favorite {

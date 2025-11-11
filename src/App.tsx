@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { ScrollToTop } from "./components/ScrollToTop";
-import BackToTop from "./components/BackToTop";
+import { ScrollToTop } from "./components/common/ScrollToTop";
+import BackToTop from "./components/common/BackToTop";
 import { AppRoutes } from "./routes";
 
 const App = () => {

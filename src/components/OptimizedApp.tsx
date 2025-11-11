@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { Loader2 } from "lucide-react";
 
 // Optimized loading component with skeleton

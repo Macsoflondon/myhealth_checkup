@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { HeroToolbar } from "./HeroToolbar";
+import { HeroToolbar } from "../HeroToolbar";
 
 const Hero = () => {
   return (

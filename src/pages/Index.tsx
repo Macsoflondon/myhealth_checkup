@@ -1,13 +1,13 @@
 import React, { useState, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import NewHero from "@/components/NewHero";
-import CallToAction from "@/components/CallToAction";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import NewHero from "@/components/sections/NewHero";
+import CallToAction from "@/components/sections/CallToAction";
 import UKASBanner from "@/components/UKASBanner";
 import PromoBanner from "@/components/PromoBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import HealthJourneyTimeline from "@/components/HealthJourneyTimeline";
 import HealthConcernsTabs from "@/components/HealthConcernsTabs";
@@ -16,7 +16,7 @@ import ExpertSupport from "@/components/ExpertSupport";
 import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, MediaSpotlight } from "@/components/LazyLoadedComponents";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import HealthAssetSection from "@/components/HealthAssetSection";
-import NationwideClinics from "@/components/NationwideClinics";
+import NationwideClinics from "@/components/sections/NationwideClinics";
 const Index = () => {
   usePerformanceOptimization();
   const structuredData = {

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
-import AccreditationLogos from "@/components/AccreditationLogos";
+import AccreditationLogos from "@/components/sections/AccreditationLogos";
 import { logger } from "@/lib/logger";
 import { providers } from "@/data/compare/providers";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";

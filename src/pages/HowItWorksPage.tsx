@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import HowItWorks from "@/components/HowItWorks";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import HowItWorks from "@/components/sections/HowItWorks";
 import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
 const HowItWorksPage = () => {
   return <div className="min-h-screen flex flex-col">

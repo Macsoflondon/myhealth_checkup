@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import ClinicMap from "@/components/ClinicMap";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { Helmet } from "react-helmet-async";
