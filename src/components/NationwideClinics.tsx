@@ -44,6 +44,7 @@ const NationwideClinics = () => {
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     loadClinics();
@@ -142,6 +143,7 @@ const NationwideClinics = () => {
   const handleClearSearch = () => {
     setPostcode("");
     setSearchError(null);
+    setShowAll(false);
     
     // Try to get user's geolocation, fallback to London
     if (navigator.geolocation) {
@@ -346,7 +348,7 @@ const NationwideClinics = () => {
               {filteredClinics.length} Clinic{filteredClinics.length !== 1 ? "s" : ""} Found
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredClinics.slice(0, 12).map((clinic) => (
+              {filteredClinics.slice(0, showAll ? filteredClinics.length : 12).map((clinic) => (
                 <div
                   key={clinic.id}
                   className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
@@ -395,6 +397,20 @@ const NationwideClinics = () => {
                 </div>
               ))}
             </div>
+            
+            {/* Show All / Show Less Button */}
+            {filteredClinics.length > 12 && (
+              <div className="mt-8 text-center">
+                <Button
+                  onClick={() => setShowAll(!showAll)}
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold px-8"
+                >
+                  {showAll ? "Show Less" : `Show All ${filteredClinics.length} Clinics`}
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
