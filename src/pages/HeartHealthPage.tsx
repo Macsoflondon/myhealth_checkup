@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -136,12 +137,16 @@ const HeartHealthPage = () => {
                 Monitor your cardiovascular risk and take proactive steps towards a healthier heart.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
-                  Check Your Heart
-                </Button>
-                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                  Risk Calculator
-                </Button>
+                <Link to="/compare?category=heart-health" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
+                    Browse All Heart Health Tests
+                  </Button>
+                </Link>
+                <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                    Find a Clinic
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

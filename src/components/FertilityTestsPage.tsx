@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Star, Shield, Activity, Heart } from 'lucide-react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -155,20 +155,22 @@ const FertilityTestsPage = () => {
               Non-invasive prenatal testing (NIPT) for expectant parents. Screen for chromosomal conditions, determine gender early, or confirm paternity safely during pregnancy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-primary text-primary-foreground hover:bg-health-heading"
-                onClick={() => navigate('/compare')}
-              >
-                Browse All Tests
-              </Button>
-              <Button 
-                size="lg" 
-                className="bg-[#22C0D4] text-white hover:bg-[#E70D69]"
-                onClick={() => navigate('/find-clinic')}
-              >
-                Find a Clinic
-              </Button>
+              <Link to="/compare?category=fertility" className="flex-1 sm:flex-initial">
+                <Button 
+                  size="lg" 
+                  className="w-full bg-primary text-primary-foreground hover:bg-health-heading"
+                >
+                  Browse All Fertility Tests
+                </Button>
+              </Link>
+              <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                <Button 
+                  size="lg" 
+                  className="w-full bg-[#22C0D4] text-white hover:bg-[#E70D69]"
+                >
+                  Find a Clinic
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

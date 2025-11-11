@@ -162,12 +162,16 @@ const MensHealthPage = () => {
                 and complete wellness testing tailored for men's unique health needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
-                  Browse All Tests
-                </Button>
-                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                  Find a Clinic
-                </Button>
+                <Link to="/compare?category=mens-health" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
+                    Browse All Men's Health Tests
+                  </Button>
+                </Link>
+                <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                    Find a Clinic
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
