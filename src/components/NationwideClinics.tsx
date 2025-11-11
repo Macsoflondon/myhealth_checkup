@@ -30,6 +30,10 @@ interface Clinic {
   provider_id?: string;
 }
 
+interface ClinicWithDistance extends Clinic {
+  distance?: number;
+}
+
 const NationwideClinics = () => {
   const navigate = useNavigate();
   const [clinics, setClinics] = useState<Clinic[]>([]);
@@ -75,9 +79,21 @@ const NationwideClinics = () => {
     }
   };
 
-  // Filter clinics based on at-home kits toggle
-  // Providers that offer at-home kits: Thriva, Medichecks, Randox
-  const filteredClinics = atHomeOnly
+  // Calculate distance between two points using Haversine formula
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 3959; // Earth's radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  // Filter clinics based on at-home kits toggle and add distance calculations
+  const filteredClinics: ClinicWithDistance[] = (atHomeOnly
     ? clinics.filter((clinic) => {
         const providerId = clinic.provider_id?.toLowerCase() || "";
         const accessNote = clinic.access_note?.toLowerCase() || "";
@@ -89,7 +105,11 @@ const NationwideClinics = () => {
           accessNote.includes("kit")
         );
       })
-    : clinics;
+    : clinics
+  ).map((clinic) => ({
+    ...clinic,
+    distance: calculateDistance(center[0], center[1], clinic.latitude, clinic.longitude),
+  })).sort((a, b) => (a.distance || 0) - (b.distance || 0));
 
   const badges = [
     { label: "Trusted Providers", value: "7", color: "bg-[#22c0d4]" },
@@ -224,6 +244,65 @@ const NationwideClinics = () => {
             </MapContainer>
           )}
         </div>
+
+        {/* Clinic List */}
+        {filteredClinics.length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-[#081129] mb-6">
+              {filteredClinics.length} Clinic{filteredClinics.length !== 1 ? "s" : ""} Found
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredClinics.slice(0, 12).map((clinic) => (
+                <div
+                  key={clinic.id}
+                  className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="font-bold text-[#081129] text-lg leading-tight pr-2">
+                      {clinic.name}
+                    </h4>
+                    {clinic.distance && (
+                      <span className="flex-shrink-0 bg-[#22c0d4] text-white text-xs font-semibold px-2 py-1 rounded-full">
+                        {clinic.distance.toFixed(1)} mi
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2 mb-4">
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {clinic.full_address}
+                    </p>
+                    <p className="text-sm font-medium text-[#081129]">
+                      {clinic.postal_code}
+                    </p>
+                  </div>
+
+                  {clinic.provider_id && (
+                    <div className="mb-3">
+                      <span className="inline-block bg-[#e70d69] text-white text-xs font-medium px-3 py-1 rounded-full">
+                        {clinic.provider_id}
+                      </span>
+                    </div>
+                  )}
+
+                  {clinic.access_note && (
+                    <p className="text-xs text-gray-500 mb-4 line-clamp-2">
+                      {clinic.access_note}
+                    </p>
+                  )}
+
+                  <Button
+                    onClick={() => navigate("/clinics")}
+                    size="sm"
+                    className="w-full bg-[#081129] hover:bg-[#081129]/90 text-white"
+                  >
+                    View Details
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
