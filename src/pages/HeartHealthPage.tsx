@@ -306,6 +306,32 @@ const HeartHealthPage = () => {
             </div>
           </div>
         </section>
+
+        {/* Bottom CTA Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-4 text-[#081129]">
+                Protect Your Heart Health Today
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Compare heart health tests from trusted UK providers or find a clinic near you
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/compare?category=heart-health" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
+                    Browse All Heart Health Tests
+                  </Button>
+                </Link>
+                <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                    Find a Clinic
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
