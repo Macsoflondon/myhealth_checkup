@@ -7,6 +7,7 @@ import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Shield, Heart, Activity, Users, Zap, TestTube2, Target, Stethoscope } from 'lucide-react';
 const mensHealthTests = [{
   id: "premium-complete-blood",
@@ -275,18 +276,34 @@ const MensHealthPage = () => {
           <div className="container mx-auto px-4">
             <ScrollFadeIn>
               <div className="max-w-4xl mx-auto text-center">
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/compare?category=mens-health" className="flex-1 sm:flex-initial">
-                    <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
-                      Browse All Men's Health Tests
-                    </Button>
-                  </Link>
-                  <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                    <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                      Find a Clinic
-                    </Button>
-                  </Link>
-                </div>
+                <TooltipProvider>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/compare?category=mens-health" className="flex-1 sm:flex-initial">
+                          <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
+                            Browse All Men's Health Tests
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Compare prices from 7+ trusted UK providers</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                            Find a Clinic
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>150+ clinics nationwide with instant availability</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
               </div>
             </ScrollFadeIn>
           </div>
@@ -344,18 +361,34 @@ const MensHealthPage = () => {
                 <p className="text-lg text-muted-foreground mb-8">
                   Compare men's health tests from trusted UK providers or find a clinic near you
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/compare?category=mens-health" className="flex-1 sm:flex-initial">
-                    <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
-                      Browse All Men's Health Tests
-                    </Button>
-                  </Link>
-                  <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                    <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                      Find a Clinic
-                    </Button>
-                  </Link>
-                </div>
+                <TooltipProvider>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/compare?category=mens-health" className="flex-1 sm:flex-initial">
+                          <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
+                            Browse All Men's Health Tests
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Compare prices from 7+ trusted UK providers</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                            Find a Clinic
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>150+ clinics nationwide with instant availability</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
               </div>
             </ScrollFadeIn>
           </div>

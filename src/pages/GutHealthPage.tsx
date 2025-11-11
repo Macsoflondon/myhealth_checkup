@@ -7,6 +7,7 @@ import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Activity, Zap, Shield, Heart, Droplets, ArrowRight } from 'lucide-react';
 const GutHealthPage = () => {
   const gutTests = [{
@@ -146,17 +147,33 @@ const GutHealthPage = () => {
                 Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
-                  <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
-                    <ArrowRight className="h-5 w-5" />
-                    Compare All Gut Tests
-                  </Button>
-                </Link>
-                <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                  <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                    Find a Clinic
-                  </Button>
-                </Link>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
+                        <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
+                          <ArrowRight className="h-5 w-5" />
+                          Browse All Gut Health Tests
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Compare prices from 7+ trusted UK providers</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                        <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                          Find a Clinic
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>150+ clinics nationwide with instant availability</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </ScrollFadeIn>
           </div>

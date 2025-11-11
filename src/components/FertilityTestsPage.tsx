@@ -6,6 +6,7 @@ import { Star, Shield, Activity, Heart } from 'lucide-react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface TestCardProps {
   id: string;
@@ -245,24 +246,40 @@ const FertilityTestsPage = () => {
                 <p className="text-lg text-muted-foreground mb-8">
                   Compare prenatal tests from trusted UK providers or find a clinic near you
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/compare?category=fertility" className="flex-1 sm:flex-initial">
-                    <Button 
-                      size="lg" 
-                      className="w-full bg-primary text-primary-foreground hover:bg-health-heading"
-                    >
-                      Browse All Fertility Tests
-                    </Button>
-                  </Link>
-                  <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                    <Button 
-                      size="lg" 
-                      className="w-full bg-[#22C0D4] text-white hover:bg-[#E70D69]"
-                    >
-                      Find a Clinic
-                    </Button>
-                  </Link>
-                </div>
+                <TooltipProvider>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/compare?category=fertility" className="flex-1 sm:flex-initial">
+                          <Button 
+                            size="lg" 
+                            className="w-full bg-primary text-primary-foreground hover:bg-health-heading"
+                          >
+                            Browse All Fertility Tests
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Compare prices from 7+ trusted UK providers</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                          <Button 
+                            size="lg" 
+                            className="w-full bg-[#22C0D4] text-white hover:bg-[#E70D69]"
+                          >
+                            Find a Clinic
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>150+ clinics nationwide with instant availability</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
               </div>
             </ScrollFadeIn>
           </div>
