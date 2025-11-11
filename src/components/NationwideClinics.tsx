@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useClinicsData } from "@/hooks/useClinicsData";
+import { useGeocoding } from "@/hooks/useGeocoding";
+import { useUserLocation } from "@/hooks/useUserLocation";
+import { filterAndSortClinics } from "@/utils/clinicFilters";
+import { DISTANCE_CONFIG } from "@/constants/config";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -19,119 +23,41 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-interface Clinic {
-  id: string;
-  name: string;
-  full_address: string;
-  postal_code: string;
-  latitude: number;
-  longitude: number;
-  access_note?: string;
-  provider_id?: string;
-}
-
-interface ClinicWithDistance extends Clinic {
-  distance?: number;
-}
-
 const NationwideClinics = () => {
   const navigate = useNavigate();
-  const [clinics, setClinics] = useState<Clinic[]>([]);
+  const { clinics, loading } = useClinicsData();
+  const { location, requestGeolocation } = useUserLocation();
+  const { geocodePostcode, searching, error: geocodeError } = useGeocoding();
+  
   const [postcode, setPostcode] = useState("");
-  const [radius, setRadius] = useState(25);
+  const [radius, setRadius] = useState<number>(DISTANCE_CONFIG.DEFAULT_RADIUS_MILES);
   const [atHomeOnly, setAtHomeOnly] = useState(false);
-  const [center, setCenter] = useState<[number, number]>([51.5074, -0.1278]); // London default
-  const [loading, setLoading] = useState(true);
-  const [searching, setSearching] = useState(false);
-  const [searchError, setSearchError] = useState<string | null>(null);
+  const [center, setCenter] = useState<[number, number]>(location);
   const [showAll, setShowAll] = useState(false);
 
+  // Update center when location changes
   useEffect(() => {
-    loadClinics();
+    setCenter(location);
+  }, [location]);
+
+  // Request geolocation on mount
+  useEffect(() => {
     requestGeolocation();
-  }, []);
+  }, [requestGeolocation]);
 
-  const requestGeolocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCenter([latitude, longitude]);
-        },
-        (error) => {
-          console.log("Geolocation not available:", error);
-        }
-      );
+  const handleSearch = async () => {
+    if (!postcode.trim()) return;
+    
+    const result = await geocodePostcode(postcode);
+    if (result) {
+      setCenter([result.lat, result.lon]);
     }
   };
 
-  const loadClinics = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("clinics")
-        .select("*")
-        .not("latitude", "is", null)
-        .not("longitude", "is", null);
-
-      if (error) throw error;
-      setClinics(data || []);
-    } catch (error) {
-      console.error("Error loading clinics:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Calculate distance between two points using Haversine formula
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 3959; // Earth's radius in miles
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
-
-  // Geocode postcode using Nominatim API
-  const geocodePostcode = async (postcodeInput: string) => {
-    setSearching(true);
-    setSearchError(null);
-
-    try {
-      const formattedPostcode = postcodeInput.trim().replace(/\s+/g, "+");
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${formattedPostcode},UK&limit=1`
-      );
-      
-      if (!response.ok) {
-        throw new Error("Geocoding service unavailable");
-      }
-
-      const data = await response.json();
-      
-      if (data.length === 0) {
-        setSearchError("Postcode not found. Please check and try again.");
-        return;
-      }
-
-      const { lat, lon } = data[0];
-      setCenter([parseFloat(lat), parseFloat(lon)]);
-      setSearchError(null);
-    } catch (error) {
-      console.error("Error geocoding postcode:", error);
-      setSearchError("Unable to search postcode. Please try again.");
-    } finally {
-      setSearching(false);
-    }
-  };
-
-  const handleSearch = () => {
-    if (postcode.trim()) {
-      geocodePostcode(postcode);
-    }
+  const handleClearSearch = () => {
+    setPostcode("");
+    setShowAll(false);
+    requestGeolocation();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -140,48 +66,16 @@ const NationwideClinics = () => {
     }
   };
 
-  const handleClearSearch = () => {
-    setPostcode("");
-    setSearchError(null);
-    setShowAll(false);
-    
-    // Try to get user's geolocation, fallback to London
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCenter([latitude, longitude]);
-        },
-        () => {
-          // Fallback to London if geolocation fails
-          setCenter([51.5074, -0.1278]);
-        }
-      );
-    } else {
-      setCenter([51.5074, -0.1278]);
-    }
-  };
+  // Filter and sort clinics
+  const filteredClinics = filterAndSortClinics(
+    clinics,
+    center[0],
+    center[1],
+    radius,
+    atHomeOnly
+  );
 
-  // Filter clinics based on at-home kits toggle and add distance calculations
-  const filteredClinics: ClinicWithDistance[] = (atHomeOnly
-    ? clinics.filter((clinic) => {
-        const providerId = clinic.provider_id?.toLowerCase() || "";
-        const accessNote = clinic.access_note?.toLowerCase() || "";
-        return (
-          providerId.includes("thriva") ||
-          providerId.includes("medichecks") ||
-          providerId.includes("randox") ||
-          accessNote.includes("home") ||
-          accessNote.includes("kit")
-        );
-      })
-    : clinics
-  ).map((clinic) => ({
-    ...clinic,
-    distance: calculateDistance(center[0], center[1], clinic.latitude, clinic.longitude),
-  }))
-  .filter((clinic) => (clinic.distance || 0) <= radius) // Filter by radius
-  .sort((a, b) => (a.distance || 0) - (b.distance || 0));
+  const displayedClinics = showAll ? filteredClinics : filteredClinics.slice(0, 12);
 
   const badges = [
     { label: "Trusted Providers", value: "7", color: "bg-[#22c0d4]" },
@@ -253,8 +147,8 @@ const NationwideClinics = () => {
                   </Button>
                 )}
               </div>
-              {searchError && (
-                <p className="text-sm text-red-600 mt-1">{searchError}</p>
+              {geocodeError && (
+                <p className="text-sm text-red-600 mt-1">{geocodeError}</p>
               )}
             </div>
             <div>
@@ -266,10 +160,11 @@ const NationwideClinics = () => {
                 onChange={(e) => setRadius(Number(e.target.value))}
                 className="w-full rounded-md border border-gray-300 px-3 py-2"
               >
-                <option value={5}>5 miles</option>
-                <option value={10}>10 miles</option>
-                <option value={25}>25 miles</option>
-                <option value={50}>50 miles</option>
+                {DISTANCE_CONFIG.RADIUS_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option} miles
+                  </option>
+                ))}
               </select>
             </div>
             <div className="flex items-end">
@@ -283,7 +178,7 @@ const NationwideClinics = () => {
               </Button>
             </div>
           </div>
-          
+
           {/* At-home kits filter toggle */}
           <div className="flex items-center space-x-2 pt-4 border-t border-gray-200">
             <Switch
@@ -322,9 +217,14 @@ const NationwideClinics = () => {
                         <h3 className="font-bold text-[#081129] mb-1">{clinic.name}</h3>
                         <p className="text-sm text-gray-600 mb-1">{clinic.full_address}</p>
                         <p className="text-sm text-gray-600 mb-1">{clinic.postal_code}</p>
+                        {clinic.distance && (
+                          <p className="text-sm font-medium text-[#22c0d4] mb-1">
+                            {clinic.distance.toFixed(1)} miles away
+                          </p>
+                        )}
                         {clinic.provider_id && (
                           <p className="text-sm font-medium text-[#22c0d4]">
-                            Provider ID: {clinic.provider_id}
+                            Provider: {clinic.provider_id}
                           </p>
                         )}
                         {clinic.access_note && (
@@ -348,7 +248,7 @@ const NationwideClinics = () => {
               {filteredClinics.length} Clinic{filteredClinics.length !== 1 ? "s" : ""} Found
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredClinics.slice(0, showAll ? filteredClinics.length : 12).map((clinic) => (
+              {displayedClinics.map((clinic) => (
                 <div
                   key={clinic.id}
                   className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
@@ -363,7 +263,7 @@ const NationwideClinics = () => {
                       </span>
                     )}
                   </div>
-                  
+
                   <div className="space-y-2 mb-4">
                     <p className="text-sm text-gray-600 line-clamp-2">
                       {clinic.full_address}
@@ -388,7 +288,7 @@ const NationwideClinics = () => {
                   )}
 
                   <Button
-                    onClick={() => navigate("/clinics")}
+                    onClick={() => navigate("/find-clinic")}
                     size="sm"
                     className="w-full bg-[#081129] hover:bg-[#081129]/90 text-white"
                   >
@@ -397,7 +297,7 @@ const NationwideClinics = () => {
                 </div>
               ))}
             </div>
-            
+
             {/* Show All / Show Less Button */}
             {filteredClinics.length > 12 && (
               <div className="mt-8 text-center">
@@ -418,7 +318,7 @@ const NationwideClinics = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             size="lg"
-            onClick={() => navigate("/clinics")}
+            onClick={() => navigate("/find-clinic")}
             className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white font-semibold rounded-xl shadow-lg"
           >
             <MapPin className="w-5 h-5 mr-2" />
@@ -426,7 +326,7 @@ const NationwideClinics = () => {
           </Button>
           <Button
             size="lg"
-            onClick={() => navigate("/providers")}
+            onClick={() => navigate("/trusted-providers")}
             variant="outline"
             className="border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold rounded-xl"
           >

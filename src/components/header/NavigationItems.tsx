@@ -1,45 +1,4 @@
-
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { compareCategories } from "@/data/compare/categories";
-import { getTestsForNavigation } from "@/data/goodbodyTests";
-
-// Category colors following design system (using semantic color tokens)
-const categoryColorMap: Record<string, string> = {
-  'blood-tests': 'bg-red-500 text-white',
-  'hormones': 'bg-pink-500 text-white', 
-  'thyroid': 'bg-emerald-500 text-white',
-  'thyroid-tests': 'bg-emerald-500 text-white',
-  'vitamins': 'bg-lime-500 text-white',
-  'diabetes': 'bg-orange-500 text-white',
-  'heart-health': 'bg-red-600 text-white',
-  'liver-health': 'bg-yellow-500 text-white',
-  'kidney-health': 'bg-[#081129] text-white',
-  'fertility': 'bg-purple-500 text-white',
-  'general-health': 'bg-teal-500 text-white',
-  'allergy-testing': 'bg-indigo-500 text-white',
-  'cancer-screening': 'bg-gray-700 text-white',
-  'womens-health-checks': 'bg-pink-500 text-white',
-  'female-hormone-tests': 'bg-purple-600 text-white',
-  'female-fertility-tests': 'bg-red-400 text-white',
-  'sports-performance-tests': 'bg-blue-500 text-white',
-  'mens-health-checks': 'bg-blue-500 text-white',
-  'male-hormone-tests': 'bg-teal-600 text-white',
-  'male-fertility-tests': 'bg-red-400 text-white',
-  'prostate-tests': 'bg-indigo-600 text-white',
-  'erectile-dysfunction-tests': 'bg-purple-500 text-white',
-  'prenatal-paternity-tests': 'bg-violet-600 text-white',
-  'gender-reveal-tests': 'bg-pink-400 text-white',
-  'nipt-tests': 'bg-blue-600 text-white',
-  'weight-loss-tests': 'bg-pink-500 text-white',
-  'diabetes-tests': 'bg-orange-500 text-white',
-  'cholesterol-tests': 'bg-red-600 text-white',
-  'vitamins-tests': 'bg-lime-500 text-white',
-  'advanced-vitamins-tests': 'bg-green-600 text-white',
-  'coeliac-tests': 'bg-amber-500 text-white'
-};
+import { getCategoryColor } from "@/constants/categories";
 
 // Main navigation structure - primary items shown in toolbar
 export const primaryNavigationItems = [
@@ -247,7 +206,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                         onClick={onItemClick}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`w-3 h-3 rounded-full flex-shrink-0 ${categoryColorMap[category.id] || 'bg-gray-400'}`}></div>
+                          <div className={`w-3 h-3 rounded-full flex-shrink-0 ${getCategoryColor(category.id)}`}></div>
                           <div className="flex-1 min-w-0">
                             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors">
                               {category.name}
