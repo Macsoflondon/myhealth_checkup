@@ -230,14 +230,6 @@ const WomensHealthPage = () => {
           <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
             {t('womensHealth.subtitle')}
           </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
-                  {t('womensHealth.browseAllTests')}
-                </Button>
-                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                  {t('womensHealth.findClinic')}
-                </Button>
-              </div>
             </div>
           </div>
         </section>
@@ -344,6 +336,22 @@ const WomensHealthPage = () => {
                       </CardContent>
                     </Card>;
               })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="bg-[#E70D69] text-white hover:bg-[#E70D69]/90 transition-colors">
+                  {t('womensHealth.browseAllTests')}
+                </Button>
+                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                  {t('womensHealth.findClinic')}
+                </Button>
               </div>
             </div>
           </div>
