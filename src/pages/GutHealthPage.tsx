@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -142,10 +143,19 @@ const GutHealthPage = () => {
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
             </p>
-            <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
-              <ArrowRight className="h-5 w-5" />
-              Compare All Gut Tests
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
+                <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
+                  <ArrowRight className="h-5 w-5" />
+                  Compare All Gut Tests
+                </Button>
+              </Link>
+              <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                  Find a Clinic
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
