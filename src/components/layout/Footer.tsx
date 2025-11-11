@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import cqcLogo from "../assets/compliance/cqc-logo.png";
-import icoLogo from "../assets/compliance/ico-logo.png";
+import cqcLogo from "@/assets/compliance/cqc-logo.png";
+import icoLogo from "@/assets/compliance/ico-logo.png";
 const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 const Footer = () => {
   const {
