@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -139,23 +140,25 @@ const GutHealthPage = () => {
         {/* Call to Action */}
         <section className="py-16 bg-amber-50">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Test Your Gut Health?</h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
-                <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
-                  <ArrowRight className="h-5 w-5" />
-                  Compare All Gut Tests
-                </Button>
-              </Link>
-              <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                  Find a Clinic
-                </Button>
-              </Link>
-            </div>
+            <ScrollFadeIn>
+              <h2 className="text-3xl font-bold mb-4">Ready to Test Your Gut Health?</h2>
+              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
+                    <ArrowRight className="h-5 w-5" />
+                    Compare All Gut Tests
+                  </Button>
+                </Link>
+                <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                    Find a Clinic
+                  </Button>
+                </Link>
+              </div>
+            </ScrollFadeIn>
           </div>
         </section>
       </main>
