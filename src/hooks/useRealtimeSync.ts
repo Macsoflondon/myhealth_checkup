@@ -1,20 +1,12 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { ConnectionManager } from '@/services/ConnectionManager';
 import { ConflictResolver } from '@/services/ConflictResolver';
+import { useRealtimeConnection } from './useRealtimeConnection';
+import { useRealtimeEvents, RealtimeEventConfig } from './useRealtimeEvents';
+import { useOfflineQueue } from './useOfflineQueue';
 
-export interface RealtimeSyncConfig<T> {
-  table: string;
-  filter?: string;
-  event?: 'INSERT' | 'UPDATE' | 'DELETE' | '*';
-  onInsert?: (record: T) => void;
-  onUpdate?: (record: T) => void;
-  onDelete?: (record: T) => void;
-  onError?: (error: Error) => void;
+export interface RealtimeSyncConfig<T> extends RealtimeEventConfig<T> {
   enableOfflineQueue?: boolean;
-  conflictResolution?: 'server-wins' | 'client-wins' | 'last-write-wins' | 'custom';
-  customResolver?: (local: T, remote: T) => T;
 }
 
 export interface SyncStatus {
@@ -28,289 +20,126 @@ export interface SyncStatus {
 export function useRealtimeSync<T extends { id?: string; updated_at?: string }>(
   config: RealtimeSyncConfig<T>
 ) {
-  const [status, setStatus] = useState<SyncStatus>({
-    connected: false,
-    syncing: false,
-    lastSync: null,
-    queuedUpdates: 0,
-    errors: [],
+  const [syncing, setSyncing] = useState(false);
+  const conflictResolver = useRef(new ConflictResolver<T>());
+
+  const {
+    status: connectionStatus,
+    channelRef,
+    updateStatus: updateConnectionStatus,
+    cleanup,
+    attemptReconnect,
+    isOnline,
+  } = useRealtimeConnection();
+
+  const onSyncComplete = useCallback(() => {
+    updateConnectionStatus({ lastSync: new Date() });
+    setSyncing(false);
+  }, [updateConnectionStatus]);
+
+  const onSyncError = useCallback((error: Error) => {
+    updateConnectionStatus({ 
+      errors: [...connectionStatus.errors, error]
+    });
+  }, [connectionStatus.errors, updateConnectionStatus]);
+
+  const { attachEventHandlers } = useRealtimeEvents(
+    config,
+    conflictResolver,
+    onSyncComplete,
+    onSyncError
+  );
+
+  const {
+    queuedCount,
+    processing,
+    queueUpdate: queueOfflineUpdate,
+    processQueue,
+    clearQueue,
+  } = useOfflineQueue({
+    enabled: config.enableOfflineQueue || false,
+    onInsert: config.onInsert,
+    onUpdate: config.onUpdate,
+    onDelete: config.onDelete,
   });
 
-  const channelRef = useRef<RealtimeChannel | null>(null);
-  const connectionManager = useRef(ConnectionManager.getInstance());
-  const conflictResolver = useRef(new ConflictResolver<T>());
-  const offlineQueue = useRef<Array<{ type: string; data: T }>>([]);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
-
-  // Handle incoming updates with conflict resolution
-  const handleUpdate = useCallback(
-    async (payload: any) => {
-      const record = payload.new as T;
-      
-      if (config.conflictResolution && record.updated_at) {
-        try {
-          const resolved = await conflictResolver.current.resolve(
-            record,
-            config.conflictResolution,
-            config.customResolver
-          );
-          
-          if (config.onUpdate) {
-            config.onUpdate(resolved);
-          }
-        } catch (error) {
-          setStatus(prev => ({
-            ...prev,
-            errors: [...prev.errors, error as Error],
-          }));
-          
-          if (config.onError) {
-            config.onError(error as Error);
-          }
-        }
-      } else {
-        if (config.onUpdate) {
-          config.onUpdate(record);
-        }
-      }
-      
-      setStatus(prev => ({
-        ...prev,
-        lastSync: new Date(),
-        syncing: false,
-      }));
-    },
-    [config]
-  );
-
-  // Handle inserts
-  const handleInsert = useCallback(
-    (payload: any) => {
-      const record = payload.new as T;
-      
-      if (config.onInsert) {
-        config.onInsert(record);
-      }
-      
-      setStatus(prev => ({
-        ...prev,
-        lastSync: new Date(),
-        syncing: false,
-      }));
-    },
-    [config]
-  );
-
-  // Handle deletes
-  const handleDelete = useCallback(
-    (payload: any) => {
-      const record = payload.old as T;
-      
-      if (config.onDelete) {
-        config.onDelete(record);
-      }
-      
-      setStatus(prev => ({
-        ...prev,
-        lastSync: new Date(),
-        syncing: false,
-      }));
-    },
-    [config]
-  );
-
-  // Process offline queue
-  const processOfflineQueue = useCallback(async () => {
-    if (offlineQueue.current.length === 0) return;
-    
-    setStatus(prev => ({ ...prev, syncing: true }));
-    
-    const queue = [...offlineQueue.current];
-    offlineQueue.current = [];
-    
-    for (const item of queue) {
-      try {
-        // Re-apply queued updates
-        if (item.type === 'UPDATE' && config.onUpdate) {
-          config.onUpdate(item.data);
-        } else if (item.type === 'INSERT' && config.onInsert) {
-          config.onInsert(item.data);
-        } else if (item.type === 'DELETE' && config.onDelete) {
-          config.onDelete(item.data);
-        }
-      } catch (error) {
-        console.error('Error processing offline queue item:', error);
-        // Re-add to queue if failed
-        offlineQueue.current.push(item);
-      }
-    }
-    
-    setStatus(prev => ({
-      ...prev,
-      syncing: false,
-      queuedUpdates: offlineQueue.current.length,
-    }));
-  }, [config]);
-
-  // Setup realtime subscription
   const setupSubscription = useCallback(() => {
     const channel = supabase.channel(`realtime:${config.table}:${Date.now()}`);
     
-    // Configure channel based on events
-    let channelWithEvents = channel;
-    
-    const subscribeConfig: any = {
-      event: config.event === '*' ? '*' : config.event || '*',
-      schema: 'public',
-      table: config.table,
-    };
-    
-    if (config.filter) {
-      subscribeConfig.filter = config.filter;
-    }
-    
-    if (config.event === '*' || !config.event) {
-      channelWithEvents
-        .on('postgres_changes' as any, {
-          event: 'INSERT',
-          schema: 'public',
-          table: config.table,
-          ...(config.filter ? { filter: config.filter } : {}),
-        }, handleInsert)
-        .on('postgres_changes' as any, {
-          event: 'UPDATE',
-          schema: 'public',
-          table: config.table,
-          ...(config.filter ? { filter: config.filter } : {}),
-        }, handleUpdate)
-        .on('postgres_changes' as any, {
-          event: 'DELETE',
-          schema: 'public',
-          table: config.table,
-          ...(config.filter ? { filter: config.filter } : {}),
-        }, handleDelete);
-    } else {
-      const handler = config.event === 'INSERT' ? handleInsert
-        : config.event === 'UPDATE' ? handleUpdate
-        : handleDelete;
-      
-      channelWithEvents.on('postgres_changes' as any, subscribeConfig, handler);
-    }
+    const channelWithEvents = attachEventHandlers(channel);
     
     channelWithEvents.subscribe((status) => {
       if (status === 'SUBSCRIBED') {
-        setStatus(prev => ({
-          ...prev,
-          connected: true,
-          errors: [],
-        }));
+        updateConnectionStatus({ 
+          connected: true, 
+          errors: [] 
+        });
         
-        // Process any queued offline updates
         if (config.enableOfflineQueue) {
-          processOfflineQueue();
+          processQueue();
         }
       } else if (status === 'CHANNEL_ERROR') {
-        setStatus(prev => ({
-          ...prev,
+        updateConnectionStatus({
           connected: false,
-          errors: [...prev.errors, new Error('Channel subscription error')],
-        }));
+          errors: [...connectionStatus.errors, new Error('Channel subscription error')],
+        });
         
-        // Attempt reconnection
-        if (reconnectTimeoutRef.current) {
-          clearTimeout(reconnectTimeoutRef.current);
-        }
-        reconnectTimeoutRef.current = setTimeout(() => {
-          setupSubscription();
-        }, 5000);
+        attemptReconnect(setupSubscription);
       } else if (status === 'TIMED_OUT') {
-        setStatus(prev => ({
-          ...prev,
+        updateConnectionStatus({
           connected: false,
-          errors: [...prev.errors, new Error('Connection timed out')],
-        }));
+          errors: [...connectionStatus.errors, new Error('Connection timed out')],
+        });
       }
     });
     
     channelRef.current = channel;
-  }, [config, handleInsert, handleUpdate, handleDelete, processOfflineQueue]);
+  }, [
+    config,
+    attachEventHandlers,
+    processQueue,
+    updateConnectionStatus,
+    connectionStatus.errors,
+    attemptReconnect,
+    channelRef,
+  ]);
 
-  // Handle online/offline events
   useEffect(() => {
-    const handleOnline = () => {
-      console.log('Connection restored, resubscribing...');
-      setupSubscription();
-    };
-    
-    const handleOffline = () => {
-      console.log('Connection lost, entering offline mode...');
-      setStatus(prev => ({
-        ...prev,
-        connected: false,
-      }));
-      
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current);
-        channelRef.current = null;
-      }
-    };
-    
-    connectionManager.current.on('online', handleOnline);
-    connectionManager.current.on('offline', handleOffline);
-    
-    return () => {
-      connectionManager.current.off('online', handleOnline);
-      connectionManager.current.off('offline', handleOffline);
-    };
-  }, [setupSubscription]);
-
-  // Initialize subscription
-  useEffect(() => {
-    if (connectionManager.current.isOnline()) {
+    if (isOnline) {
       setupSubscription();
     }
     
-    return () => {
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-      }
-      
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current);
-        channelRef.current = null;
-      }
-    };
-  }, [setupSubscription]);
+    return cleanup;
+  }, [setupSubscription, cleanup, isOnline]);
 
-  // Queue updates when offline
   const queueUpdate = useCallback(
     (type: 'INSERT' | 'UPDATE' | 'DELETE', data: T) => {
-      if (config.enableOfflineQueue && !status.connected) {
-        offlineQueue.current.push({ type, data });
-        setStatus(prev => ({
-          ...prev,
-          queuedUpdates: offlineQueue.current.length,
-        }));
-      }
+      queueOfflineUpdate(type, data, connectionStatus.connected);
     },
-    [config.enableOfflineQueue, status.connected]
+    [queueOfflineUpdate, connectionStatus.connected]
   );
 
-  // Manual sync trigger
   const triggerSync = useCallback(async () => {
-    if (!status.connected) {
+    if (!connectionStatus.connected) {
       console.warn('Cannot sync while offline');
       return;
     }
     
-    setStatus(prev => ({ ...prev, syncing: true }));
-    await processOfflineQueue();
-  }, [status.connected, processOfflineQueue]);
+    setSyncing(true);
+    await processQueue();
+  }, [connectionStatus.connected, processQueue]);
 
-  // Clear errors
   const clearErrors = useCallback(() => {
-    setStatus(prev => ({ ...prev, errors: [] }));
-  }, []);
+    updateConnectionStatus({ errors: [] });
+  }, [updateConnectionStatus]);
+
+  const status: SyncStatus = {
+    connected: connectionStatus.connected,
+    syncing: syncing || processing,
+    lastSync: connectionStatus.lastSync,
+    queuedUpdates: queuedCount,
+    errors: connectionStatus.errors,
+  };
 
   return {
     status,

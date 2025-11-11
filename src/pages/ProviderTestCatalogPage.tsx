@@ -7,16 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, Search, Filter, ExternalLink } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { logger } from "@/lib/logger";
+import { providersApi } from "@/api";
 interface ProviderTest {
   id: string;
   test_name: string;
-  description: string;
-  price: number;
-  category: string;
-  url: string;
+  description?: string;
+  price?: number;
+  category?: string;
+  url?: string;
   image_url?: string;
 }
 const ProviderTestCatalogPage = () => {
@@ -39,39 +39,19 @@ const ProviderTestCatalogPage = () => {
     filterTests();
   }, [tests, searchTerm, selectedCategory]);
   const fetchProviderTests = async () => {
+    if (!providerId) return;
+    
     try {
       setLoading(true);
-
-      // First try to get existing tests
-      const {
-        data: existingTests,
-        error: fetchError
-      } = await supabase.from('provider_tests').select('*').eq('provider_id', providerId).eq('is_active', true);
-      if (fetchError) {
-        logger.error('Fetch error:', fetchError);
+      
+      const { data, error } = await providersApi.getProviderCatalog(providerId);
+      
+      if (error) {
+        logger.error('Fetch error:', error);
+        throw error;
       }
-
-      // If no tests exist, trigger scraping
-      if (!existingTests || existingTests.length === 0) {
-        logger.debug('No tests found, triggering scraper...');
-        const {
-          data: scrapeResult
-        } = await supabase.functions.invoke('provider-scraper', {
-          body: {
-            providerId,
-            action: 'scrape'
-          }
-        });
-        logger.debug('Scrape result:', scrapeResult);
-
-        // Fetch tests again after scraping
-        const {
-          data: newTests
-        } = await supabase.from('provider_tests').select('*').eq('provider_id', providerId).eq('is_active', true);
-        setTests(newTests || []);
-      } else {
-        setTests(existingTests);
-      }
+      
+      setTests(data || []);
     } catch (error) {
       logger.error('Error fetching tests:', error);
       setError('Failed to load tests. Please try again later.');

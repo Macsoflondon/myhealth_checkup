@@ -6,4 +6,7 @@ export { useGeocoding } from "./useGeocoding";
 export { useUserLocation } from "./useUserLocation";
 export { useNavigationData } from "./useNavigationData";
 export { useRealtimeSync } from "./useRealtimeSync";
+export { useRealtimeConnection } from "./useRealtimeConnection";
+export { useRealtimeEvents } from "./useRealtimeEvents";
+export { useOfflineQueue } from "./useOfflineQueue";
 export { useOfflineSync } from "./useOfflineSync";

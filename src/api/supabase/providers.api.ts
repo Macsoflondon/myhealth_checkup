@@ -145,6 +145,43 @@ class ProvidersApi {
       return false;
     }
   }
+
+  /**
+   * Fetch provider test catalog with optional scraping trigger
+   */
+  async getProviderCatalog(providerId: string): Promise<ApiResponse<ProviderTestData[]>> {
+    try {
+      // First try to get existing tests
+      const existingTests = await this.getProviderTests(providerId);
+
+      // If no tests exist, trigger scraping
+      if (!existingTests.data || existingTests.data.length === 0) {
+        await this.triggerProviderScrape(providerId);
+        
+        // Fetch tests again after scraping
+        return await this.getProviderTests(providerId);
+      }
+
+      return existingTests;
+    } catch (error) {
+      return { data: null, error: error as Error };
+    }
+  }
+
+  /**
+   * Trigger provider scraper edge function
+   */
+  async triggerProviderScrape(providerId: string): Promise<ApiResponse<any>> {
+    try {
+      const { data, error } = await supabase.functions.invoke('provider-scraper', {
+        body: { providerId, action: 'scrape' }
+      });
+
+      return { data, error };
+    } catch (error) {
+      return { data: null, error: error as Error };
+    }
+  }
 }
 
 export const providersApi = new ProvidersApi();

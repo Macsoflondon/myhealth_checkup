@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import UKASBanner from '@/components/UKASBanner';
 type Step = 'welcome' | 'gender' | 'concerns' | 'results';
 interface GenderOption {
