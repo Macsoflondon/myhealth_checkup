@@ -44,12 +44,9 @@ const HealthJourneyTimeline = () => {
   ];
 
   return (
-    <section className="w-full relative py-12 sm:py-16 md:py-20 overflow-hidden bg-[#eef2f5]">
-      {/* Top fade from white */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none z-10" />
-      
-      {/* Bottom fade to #f9fafb */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#f9fafb] pointer-events-none z-10" />
+    <section className="w-full relative py-12 sm:py-16 md:py-20 overflow-hidden">
+      {/* Background gradient layer */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white" />
       
       {/* Faded blood tubes background image */}
       <div 

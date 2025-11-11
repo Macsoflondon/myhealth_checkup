@@ -17,7 +17,6 @@ import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcas
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import HealthAssetSection from "@/components/HealthAssetSection";
 import NationwideClinics from "@/components/NationwideClinics";
-import MergedPartnersSection from "@/components/MergedPartnersSection";
 const Index = () => {
   usePerformanceOptimization();
   const structuredData = {
@@ -103,7 +102,10 @@ const Index = () => {
         <HealthAssetSection />
         
         {/* 3. Our Partners → Trusted Health Comparison Platform (merged) */}
-        <MergedPartnersSection />
+        <div className="bg-gradient-to-b from-white via-gray-50 to-white">
+          <PartnerShowcase />
+          <TrustBadgesSection />
+        </div>
         
         {/* 4. Your Health Journey Simplified */}
         <HealthJourneyTimeline />

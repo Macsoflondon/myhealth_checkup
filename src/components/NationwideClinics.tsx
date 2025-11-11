@@ -79,20 +79,14 @@ const NationwideClinics = () => {
   ];
 
   return (
-    <section className="w-full bg-[#081129] py-16 sm:py-20 relative">
-      {/* Top fade from white to navy */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent pointer-events-none" />
-      
-      {/* Bottom fade to #f9fafb */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#f9fafb] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+    <section className="w-full bg-gradient-to-b from-white to-gray-50 py-12 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#081129] mb-3">
             Nationwide Clinics
           </h2>
-          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
             Find trusted blood test clinics near you
           </p>
         </div>
@@ -111,10 +105,10 @@ const NationwideClinics = () => {
         </div>
 
         {/* Search Controls */}
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="lg:col-span-2">
-              <label className="block text-sm font-medium text-white mb-2">
+              <label className="block text-sm font-medium text-[#081129] mb-2">
                 Postcode
               </label>
               <div className="relative">
@@ -129,13 +123,13 @@ const NationwideClinics = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white mb-2">
+              <label className="block text-sm font-medium text-[#081129] mb-2">
                 Radius (miles)
               </label>
               <select
                 value={radius}
                 onChange={(e) => setRadius(Number(e.target.value))}
-                className="w-full rounded-md border border-white/20 bg-white/10 text-white px-3 py-2"
+                className="w-full rounded-md border border-gray-300 px-3 py-2"
               >
                 <option value={5}>5 miles</option>
                 <option value={10}>10 miles</option>
@@ -147,7 +141,7 @@ const NationwideClinics = () => {
               <Button
                 onClick={requestGeolocation}
                 variant="outline"
-                className="w-full border-white/20 text-white hover:bg-white/20"
+                className="w-full"
               >
                 <Navigation className="w-4 h-4 mr-2" />
                 Use My Location
