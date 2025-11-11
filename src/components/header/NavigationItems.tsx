@@ -175,7 +175,8 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
 
   return (
     <nav className={`relative ${className}`} aria-label="Main Navigation">
-      {primaryNavigationItems.filter(item => item.name !== "How It Works").map((item) => (
+      <div className="flex items-center justify-center gap-0.5 md:gap-1 flex-wrap">
+        {primaryNavigationItems.filter(item => item.name !== "How It Works").map((item) => (
         <div 
           key={item.path}
           className="relative nav-item-wrapper"
@@ -184,7 +185,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         >
           <Link
             to={item.path}
-            className={`text-3xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
+            className={`text-sm md:text-base lg:text-lg font-semibold transition-colors px-2 md:px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
                   (item as any).highlighted 
                     ? "text-[#E70D69]"
                 : "text-white"
@@ -193,18 +194,18 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           >
             {item.name}
             {item.hasDropdown && (
-              <ChevronDown className="w-5 h-5" />
+              <ChevronDown className="w-4 h-4 md:w-5 md:h-5" />
             )}
           </Link>
           
           {/* Mega Menu Dropdown */}
           {item.hasDropdown && activeDropdown === item.name && (
             <div 
-              className="dropdown-content absolute top-full left-0 mt-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[500px] max-w-[600px] max-h-[70vh] overflow-y-auto"
+              className="dropdown-content absolute top-full left-0 mt-0 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[9999] min-w-[280px] sm:min-w-[500px] max-w-[90vw] sm:max-w-[600px] max-h-[70vh] overflow-y-auto"
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {getGoodbodyTestsForDropdown(item.name) ? (
                   // Show Goodbody tests for health-specific sections
                   <>
@@ -237,7 +238,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                   </>
                 ) : (
                   // Show categories for FIND YOUR TEST and MOST POPULAR TESTS
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     {getFilteredCategories(item.name).map((category) => (
                       <Link
                         key={category.id}
@@ -276,19 +277,19 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
             </div>
           )}
         </div>
-      ))}
+        ))}
       
-      {/* MORE Dropdown */}
-      <div 
-        className="relative nav-item-wrapper"
-        onMouseEnter={() => setActiveDropdown("MORE")}
-        onMouseLeave={handleMouseLeave}
-      >
+        {/* MORE Dropdown */}
+        <div 
+          className="relative nav-item-wrapper"
+          onMouseEnter={() => setActiveDropdown("MORE")}
+          onMouseLeave={handleMouseLeave}
+        >
         <button
-          className="text-3xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
+          className="text-sm md:text-base lg:text-lg font-semibold transition-colors px-2 md:px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
         >
           More
-          <ChevronDown className="w-5 h-5" />
+          <ChevronDown className="w-4 h-4 md:w-5 md:h-5" />
         </button>
         
         {activeDropdown === "MORE" && (
@@ -330,8 +331,9 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
                 </div>
               ))}
             </div>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );

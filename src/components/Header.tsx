@@ -74,8 +74,8 @@ const Header = ({ className }: HeaderProps) => {
 
         {/* Bottom row - Navigation Menu (Toolbar) */}
         <div className={toolbarClasses}>
-          <div className="flex items-center justify-center px-6 lg:px-16 w-full">
-            <NavigationItems className="flex items-center gap-1" />
+          <div className="flex items-center justify-center px-2 sm:px-4 lg:px-16 w-full overflow-x-auto">
+            <NavigationItems className="flex items-center gap-0.5 md:gap-1 min-w-max" />
           </div>
         </div>
       </header>
