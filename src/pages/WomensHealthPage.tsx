@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -346,12 +347,16 @@ const WomensHealthPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-[#E70D69] text-white hover:bg-[#E70D69]/90 transition-colors">
-                  {t('womensHealth.browseAllTests')}
-                </Button>
-                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                  {t('womensHealth.findClinic')}
-                </Button>
+                <Link to="/compare?category=womens-health" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-[#E70D69] text-white hover:bg-[#E70D69]/90 transition-colors">
+                    {t('womensHealth.browseAllTests')}
+                  </Button>
+                </Link>
+                <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                  <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                    {t('womensHealth.findClinic')}
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
