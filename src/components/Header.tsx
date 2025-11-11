@@ -29,13 +29,13 @@ const Header = ({ className }: HeaderProps) => {
     return (
       <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
-          <div className="px-4 py-3 flex justify-between items-center gap-3 bg-[#081129] h-16">
+          <div className="px-3 py-2 flex justify-between items-center gap-2 bg-[#081129] h-14">
             <div className="flex-shrink-0">
               <Logo />
             </div>
 
             {/* Right side controls */}
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -46,8 +46,8 @@ const Header = ({ className }: HeaderProps) => {
     );
   }
   // Toolbar always sticky
-  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-3", styles.header, styles.headerVisible);
-  const toolbarClasses = cn("bg-[#081129] my-0 mx-0 px-0 py-4 border-b border-[#fff]", styles.toolbar);
+  const headerBarClasses = cn("bg-[#081129] px-6 lg:px-16 py-2", styles.header, styles.headerVisible);
+  const toolbarClasses = cn("bg-[#081129] my-0 mx-0 px-0 py-[10px] border-b border-[#fff]", styles.toolbar);
   return (
     <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
@@ -74,8 +74,8 @@ const Header = ({ className }: HeaderProps) => {
 
         {/* Bottom row - Navigation Menu (Toolbar) */}
         <div className={toolbarClasses}>
-          <div className="flex items-center justify-center px-2 lg:px-4 w-full">
-            <NavigationItems className="flex items-center gap-0.5" />
+          <div className="flex items-center justify-center px-6 lg:px-16 w-full">
+            <NavigationItems className="flex items-center gap-1" />
           </div>
         </div>
       </header>

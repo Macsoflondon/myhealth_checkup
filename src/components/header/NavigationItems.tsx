@@ -47,10 +47,8 @@ export const primaryNavigationItems = [
   { name: "General Wellness", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "Men's Health", path: "/mens-health", hasDropdown: true, megaMenu: true },
-  { name: "Sports/Fitness Health", path: "/sports-performance", hasDropdown: true, megaMenu: true },
   { name: "Fertility", path: "/fertility-tests", hasDropdown: true, megaMenu: true },
   { name: "Cancer Screening", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
-  { name: "At Home Tests", path: "/at-home-tests", hasDropdown: false },
   { name: "How It Works", path: "/how-it-works" }
 ];
 
@@ -153,11 +151,6 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           ['mens-health-checks', 'male-hormone-tests', 'male-fertility-tests', 
            'sports-performance-tests'].includes(cat.id)
         );
-      case "Sports/Fitness Health":
-        return compareCategories.filter(cat => 
-          ['sports-performance-tests', 'vitamins-tests', 'energy-tests', 
-           'nutrition-tests', 'iron-tests'].includes(cat.id)
-        );
       case "Fertility":
         return compareCategories.filter(cat => 
           ['prenatal-paternity-tests', 'gender-reveal-tests', 'nipt-tests'].includes(cat.id)
@@ -191,7 +184,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         >
           <Link
             to={item.path}
-            className={`text-lg font-bold transition-colors px-2 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
+            className={`text-3xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 ${
                   (item as any).highlighted 
                     ? "text-[#E70D69]"
                 : "text-white"
@@ -200,7 +193,7 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
           >
             {item.name}
             {item.hasDropdown && (
-              <ChevronDown className="w-3.5 h-3.5" />
+              <ChevronDown className="w-5 h-5" />
             )}
           </Link>
           
@@ -292,10 +285,10 @@ export const NavigationItems = ({ onItemClick, className = "" }: NavigationItems
         onMouseLeave={handleMouseLeave}
       >
         <button
-          className="text-lg font-bold transition-colors px-2 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
+          className="text-3xl font-bold transition-colors px-3 py-2 whitespace-nowrap hover:text-[#E70D69] inline-flex items-center gap-1 text-white"
         >
           More
-          <ChevronDown className="w-3.5 h-3.5" />
+          <ChevronDown className="w-5 h-5" />
         </button>
         
         {activeDropdown === "MORE" && (

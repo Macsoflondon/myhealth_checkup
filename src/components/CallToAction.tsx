@@ -1,17 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Search } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-interface CallToActionProps {
-  className?: string;
-}
-
-
-const CallToAction = ({ className }: CallToActionProps) => {
+const CallToAction = () => {
   const navigate = useNavigate();
   
-  return <section className={cn("py-16 bg-[#081129]", className)}>
+  return <section className="py-16 bg-[#081129]">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center text-[#22c0d4]">

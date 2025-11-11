@@ -15,7 +15,6 @@ import OutcomeTestimonials from "@/components/OutcomeTestimonials";
 import ExpertSupport from "@/components/ExpertSupport";
 import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, MediaSpotlight } from "@/components/LazyLoadedComponents";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
-import NationwideClinics from "@/components/NationwideClinics";
 const Index = () => {
   usePerformanceOptimization();
   const structuredData = {
@@ -95,7 +94,6 @@ const Index = () => {
       
       <main className="flex-1 space-y-0">
         <NewHero />
-        <NationwideClinics />
         <TrustBadgesSection />
         <HealthJourneyTimeline />
         <HealthConcernsTabs />
