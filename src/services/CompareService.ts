@@ -6,6 +6,9 @@ import { getCategorySearchTerms } from "@/constants/categories";
 import { CACHE_CONFIG } from "@/constants/config";
 import type { CompareTestData } from "@/types";
 
+// Re-export for backwards compatibility
+export type { CompareTestData };
+
 // ============================================================================
 // Type Definitions
 // ============================================================================

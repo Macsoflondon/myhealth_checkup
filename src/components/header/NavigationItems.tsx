@@ -1,4 +1,9 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 import { getCategoryColor } from "@/constants/categories";
+import { compareCategories } from "@/data/compare/categories";
+import { getTestsForNavigation } from "@/data/goodbodyTests";
 
 // Main navigation structure - primary items shown in toolbar
 export const primaryNavigationItems = [
