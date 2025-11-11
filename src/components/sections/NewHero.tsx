@@ -236,7 +236,7 @@ const NewHero = () => {
           loop: true
         }} plugins={[Autoplay({
           delay: 3000
-        })]} className="w-full max-w-5xl mx-auto">
+        }) as any]} className="w-full max-w-5xl mx-auto">
             <CarouselContent>
               {providers.map(provider => <CarouselItem key={provider.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4">
                   <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-32 sm:h-40">
