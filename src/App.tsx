@@ -10,8 +10,19 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import BackToTop from "./components/common/BackToTop";
 import { AppRoutes } from "./routes";
 
+// Create QueryClient outside component to prevent recreation on every render
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 const App = () => {
-  const queryClient = new QueryClient();
   
   return (
     <QueryClientProvider client={queryClient}>

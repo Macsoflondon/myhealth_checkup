@@ -66,43 +66,37 @@ export default function ClientPortal() {
     try {
       setLoading(true);
 
-      // Fetch user profile
-      const { data: profileData, error: profileError } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("user_id", user?.id)
-        .single();
+      // Fetch all data in parallel for 3-4x faster loading
+      const [profileData, appointmentsData, resultsData, insightsData] = await Promise.all([
+        supabase
+          .from("user_profiles")
+          .select("*")
+          .eq("user_id", user?.id)
+          .single(),
+        supabase
+          .from("appointments")
+          .select("*")
+          .eq("user_id", user?.id)
+          .order("appointment_date", { ascending: false }),
+        supabase
+          .from("test_results")
+          .select("*")
+          .eq("user_id", user?.id)
+          .order("result_date", { ascending: false }),
+        supabase
+          .from("health_insights")
+          .select("*")
+          .eq("user_id", user?.id)
+          .order("created_at", { ascending: false })
+          .limit(5)
+      ]);
 
-      if (profileError) throw profileError;
-      setProfile(profileData);
+      if (profileData.error) throw profileData.error;
+      setProfile(profileData.data);
 
-      // Fetch appointments
-      const { data: appointmentsData, error: appointmentsError } = await supabase
-        .from("appointments")
-        .select("*")
-        .eq("user_id", user?.id)
-        .order("appointment_date", { ascending: false });
-
-      if (!appointmentsError) setAppointments(appointmentsData || []);
-
-      // Fetch test results
-      const { data: resultsData, error: resultsError } = await supabase
-        .from("test_results")
-        .select("*")
-        .eq("user_id", user?.id)
-        .order("result_date", { ascending: false });
-
-      if (!resultsError) setTestResults(resultsData || []);
-
-      // Fetch health insights
-      const { data: insightsData, error: insightsError } = await supabase
-        .from("health_insights")
-        .select("*")
-        .eq("user_id", user?.id)
-        .order("created_at", { ascending: false })
-        .limit(5);
-
-      if (!insightsError) setInsights(insightsData || []);
+      if (!appointmentsData.error) setAppointments(appointmentsData.data || []);
+      if (!resultsData.error) setTestResults(resultsData.data || []);
+      if (!insightsData.error) setInsights(insightsData.data || []);
 
     } catch (error) {
       logger.error("Error fetching portal data:", error);

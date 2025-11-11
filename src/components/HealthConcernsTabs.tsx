@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Heart, Battery, Brain, Apple, Users, Baby, Flame, Sparkles } from "lucide-react";
+import { OptimizedImage } from "@/components/common/OptimizedImage";
 
 const HealthConcernsTabs = () => {
   const navigate = useNavigate();
@@ -157,11 +158,13 @@ const HealthConcernsTabs = () => {
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 {/* Image */}
                 <div className="order-2 md:order-1">
-                  <img
+                  <OptimizedImage
                     src={concern.image}
                     alt={concern.title}
+                    width={800}
+                    height={600}
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="rounded-2xl shadow-xl w-full h-auto object-cover"
-                    loading="lazy"
                   />
                 </div>
 

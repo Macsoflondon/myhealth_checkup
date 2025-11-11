@@ -303,7 +303,19 @@ const CompareTests = () => {
                   <Loader2 className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 animate-spin text-health-primary mx-auto mb-3 sm:mb-4" />
                   <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Finding the best tests for you...</p>
                 </div>
-              </div> : (
+              </div> : tests.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="max-w-md mx-auto">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+                      <TrendingUp className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No tests found</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Try adjusting your filters or search terms to find more tests.
+                    </p>
+                  </div>
+                </div>
+              ) : (
                 <>
                   <ModernCompareTable 
                     tests={tests} 

@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import React, { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,14 +9,17 @@ import PromoBanner from "@/components/PromoBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
-import HealthJourneyTimeline from "@/components/HealthJourneyTimeline";
-import HealthConcernsTabs from "@/components/HealthConcernsTabs";
-import OutcomeTestimonials from "@/components/OutcomeTestimonials";
-import ExpertSupport from "@/components/ExpertSupport";
+import { LazySection } from "@/components/common/LazySection";
 import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, MediaSpotlight } from "@/components/LazyLoadedComponents";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import HealthAssetSection from "@/components/HealthAssetSection";
-import NationwideClinics from "@/components/sections/NationwideClinics";
+
+// Lazy load below-fold components for better initial load performance
+const HealthJourneyTimeline = lazy(() => import("@/components/HealthJourneyTimeline"));
+const HealthConcernsTabs = lazy(() => import("@/components/HealthConcernsTabs"));
+const OutcomeTestimonials = lazy(() => import("@/components/OutcomeTestimonials"));
+const ExpertSupport = lazy(() => import("@/components/ExpertSupport"));
+const NationwideClinics = lazy(() => import("@/components/sections/NationwideClinics"));
 const Index = () => {
   usePerformanceOptimization();
   const structuredData = {
@@ -108,18 +111,34 @@ const Index = () => {
         </div>
         
         {/* 4. Your Health Journey Simplified */}
-        <HealthJourneyTimeline />
+        <LazySection>
+          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
+            <HealthJourneyTimeline />
+          </Suspense>
+        </LazySection>
         
         {/* 5. Comprehensive Care for Your Top Concerns */}
-        <HealthConcernsTabs />
+        <LazySection>
+          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
+            <HealthConcernsTabs />
+          </Suspense>
+        </LazySection>
         
         {/* 6. Results That Change Lives - REMOVED */}
         
         {/* 7. Nationwide Clinics Map */}
-        <NationwideClinics />
+        <LazySection>
+          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
+            <NationwideClinics />
+          </Suspense>
+        </LazySection>
         
         {/* 8. You're Never Alone with Your Health Journey */}
-        <ExpertSupport />
+        <LazySection>
+          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
+            <ExpertSupport />
+          </Suspense>
+        </LazySection>
         
         {/* 9. Take Control of Your Health Today */}
         <CallToAction />
