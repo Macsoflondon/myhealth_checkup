@@ -139,6 +139,27 @@ const NationwideClinics = () => {
     }
   };
 
+  const handleClearSearch = () => {
+    setPostcode("");
+    setSearchError(null);
+    
+    // Try to get user's geolocation, fallback to London
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCenter([latitude, longitude]);
+        },
+        () => {
+          // Fallback to London if geolocation fails
+          setCenter([51.5074, -0.1278]);
+        }
+      );
+    } else {
+      setCenter([51.5074, -0.1278]);
+    }
+  };
+
   // Filter clinics based on at-home kits toggle and add distance calculations
   const filteredClinics: ClinicWithDistance[] = (atHomeOnly
     ? clinics.filter((clinic) => {
@@ -199,24 +220,36 @@ const NationwideClinics = () => {
               <label className="block text-sm font-medium text-[#081129] mb-2">
                 Postcode
               </label>
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Enter postcode (e.g., SW1A 1AA)"
-                  value={postcode}
-                  onChange={(e) => setPostcode(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="pl-10 pr-24"
-                />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Button
-                  onClick={handleSearch}
-                  disabled={!postcode.trim() || searching}
-                  size="sm"
-                  className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
-                >
-                  {searching ? "Searching..." : "Search"}
-                </Button>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    type="text"
+                    placeholder="Enter postcode (e.g., SW1A 1AA)"
+                    value={postcode}
+                    onChange={(e) => setPostcode(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="pl-10 pr-24"
+                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Button
+                    onClick={handleSearch}
+                    disabled={!postcode.trim() || searching}
+                    size="sm"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
+                  >
+                    {searching ? "Searching..." : "Search"}
+                  </Button>
+                </div>
+                {postcode && (
+                  <Button
+                    onClick={handleClearSearch}
+                    variant="outline"
+                    size="default"
+                    className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white"
+                  >
+                    Clear
+                  </Button>
+                )}
               </div>
               {searchError && (
                 <p className="text-sm text-red-600 mt-1">{searchError}</p>
