@@ -10,13 +10,16 @@ interface CallToActionProps {
 const CallToAction = ({ className }: CallToActionProps) => {
   const navigate = useNavigate();
   
-  return <section className={cn("py-16 bg-[#081129]", className)}>
-      <div className="container mx-auto px-4">
+  return <section className={cn("py-16 bg-white relative", className)}>
+      {/* Bottom fade to navy */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#081129] pointer-events-none" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center text-[#22c0d4]">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-center text-[#081129]">
             Take Control of Your Health Today
           </h2>
-          <p className="text-xl mb-8 text-white/90 my-0 py-0">
+          <p className="text-xl mb-8 text-gray-600 my-0 py-0">
             Join thousands of customers who've discovered health insights that made a difference.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -32,7 +35,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
               size="lg" 
               onClick={() => navigate('/compare-tests')}
               variant="outline" 
-              className="border-2 border-white text-white hover:bg-white hover:text-[#081129] bg-transparent font-semibold rounded-xl group"
+              className="border-2 border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4] hover:text-white bg-transparent font-semibold rounded-xl group"
             >
               Browse All 300+ Tests
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

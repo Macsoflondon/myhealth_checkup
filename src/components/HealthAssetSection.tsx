@@ -25,8 +25,14 @@ const HealthAssetSection = () => {
   ];
 
   return (
-    <section className="w-full bg-white py-16 sm:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="w-full bg-[#f9fafb] py-16 sm:py-20 relative">
+      {/* Top fade from hero */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/50 to-transparent pointer-events-none" />
+      
+      {/* Bottom fade to white */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-white pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#081129] mb-4">
             Your Health is Your <span className="text-[#e70d69]">Greatest Asset</span>

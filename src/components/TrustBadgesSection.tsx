@@ -17,8 +17,11 @@ const TrustBadgesSection = () => {
     title: "Secure Platform",
     description: "ISO certified processes"
   }];
-  return <section className="bg-white py-12 md:py-16">
-      <div className="container mx-auto px-4">
+  return <section className="bg-white py-12 md:py-16 relative">
+      {/* Bottom fade to #eef2f5 */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#eef2f5] pointer-events-none" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8">
           
           <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3 text-[#081129]">

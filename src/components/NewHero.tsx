@@ -89,14 +89,20 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
-        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
+      {/* Full-width Headline Banner with overlay and bottom fade */}
+      <section className="w-full bg-[#081129] py-8 sm:py-12 md:py-16 relative">
+        {/* Overlay: rgba(255, 255, 255, 0.45) */}
+        <div className="absolute inset-0 bg-white/45" />
+        
+        {/* Bottom fade to #f9fafb */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#f9fafb] pointer-events-none z-10" />
+        
+        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
           <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto my-0 py-[20px] lg:text-4xl">
-            <span className="text-white block sm:inline">It's time to feel like </span>
-            <span className="text-[#22c0d4]">yourself again</span>
+            <span className="text-[#081129] block sm:inline">It's time to feel like </span>
+            <span className="text-[#081129]">yourself again</span>
           </h1>
-          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-white font-normal md:text-lg space-y-3">
+          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-[#081129] font-normal md:text-lg space-y-3">
             <p className="mb-2">
               At myhealth checkup, we believe your health is your greatest asset.
             </p>
