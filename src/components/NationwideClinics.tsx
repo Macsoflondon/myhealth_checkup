@@ -42,6 +42,8 @@ const NationwideClinics = () => {
   const [atHomeOnly, setAtHomeOnly] = useState(false);
   const [center, setCenter] = useState<[number, number]>([51.5074, -0.1278]); // London default
   const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
 
   useEffect(() => {
     loadClinics();
@@ -90,6 +92,51 @@ const NationwideClinics = () => {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
+  };
+
+  // Geocode postcode using Nominatim API
+  const geocodePostcode = async (postcodeInput: string) => {
+    setSearching(true);
+    setSearchError(null);
+
+    try {
+      const formattedPostcode = postcodeInput.trim().replace(/\s+/g, "+");
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${formattedPostcode},UK&limit=1`
+      );
+      
+      if (!response.ok) {
+        throw new Error("Geocoding service unavailable");
+      }
+
+      const data = await response.json();
+      
+      if (data.length === 0) {
+        setSearchError("Postcode not found. Please check and try again.");
+        return;
+      }
+
+      const { lat, lon } = data[0];
+      setCenter([parseFloat(lat), parseFloat(lon)]);
+      setSearchError(null);
+    } catch (error) {
+      console.error("Error geocoding postcode:", error);
+      setSearchError("Unable to search postcode. Please try again.");
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleSearch = () => {
+    if (postcode.trim()) {
+      geocodePostcode(postcode);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   // Filter clinics based on at-home kits toggle and add distance calculations
@@ -153,13 +200,25 @@ const NationwideClinics = () => {
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Enter postcode..."
+                  placeholder="Enter postcode (e.g., SW1A 1AA)"
                   value={postcode}
                   onChange={(e) => setPostcode(e.target.value)}
-                  className="pl-10"
+                  onKeyPress={handleKeyPress}
+                  className="pl-10 pr-24"
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Button
+                  onClick={handleSearch}
+                  disabled={!postcode.trim() || searching}
+                  size="sm"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
+                >
+                  {searching ? "Searching..." : "Search"}
+                </Button>
               </div>
+              {searchError && (
+                <p className="text-sm text-red-600 mt-1">{searchError}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-[#081129] mb-2">
