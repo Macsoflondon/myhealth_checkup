@@ -34,6 +34,18 @@ export const useNavigationData = () => {
            'sports-performance-tests'].includes(cat.id)
         );
       
+      case "Sports/Fitness Health":
+        return compareCategories.filter(cat => 
+          ['sports-performance-tests', 'vitamins-tests', 'advanced-vitamins-tests',
+           'energy-tests', 'nutrition-tests', 'hormones', 'iron-tests'].includes(cat.id)
+        );
+      
+      case "At Home Tests":
+        return compareCategories.filter(cat => 
+          ['blood-tests', 'vitamins-tests', 'hormones', 'thyroid',
+           'diabetes-tests', 'cholesterol-tests', 'allergy-testing', 'sexual-health'].includes(cat.id)
+        );
+      
       case "Fertility":
         return compareCategories.filter(cat => 
           ['prenatal-paternity-tests', 'gender-reveal-tests', 'nipt-tests'].includes(cat.id)
