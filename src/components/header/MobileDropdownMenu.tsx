@@ -36,11 +36,18 @@ const mobileNavigationItems = [
     testCount: 15
   },
   {
-    name: "Sports Performance",
+    name: "Sports/Fitness Health",
     path: "/sports-performance", 
     icon: "🏃",
     categories: ["vitamins", "blood-tests"],
     testCount: 9
+  },
+  {
+    name: "At Home Tests",
+    path: "/at-home-tests",
+    icon: "🏠",
+    categories: ["general-health", "blood-tests"],
+    testCount: 18
   },
   {
     name: "Vitamins & Deficiencies",
