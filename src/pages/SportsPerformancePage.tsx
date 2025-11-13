@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { sportsPerformanceCategories } from "@/data/sportsPerformanceCategories";
-import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker } from "lucide-react";
+import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface TestData {
@@ -86,6 +86,57 @@ const SportsPerformancePage = () => {
       title: "Competitive Edge",
       description: "Data-driven insights to optimize training, nutrition, and performance outcomes",
       color: "#E70D69"
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "James Patterson",
+      sport: "Marathon Runner",
+      rating: 5,
+      quote: "The vitamin D and iron deficiency results explained why my training had plateaued. Within 8 weeks of supplementation, I knocked 12 minutes off my personal best.",
+      image: "👤"
+    },
+    {
+      name: "Sarah Chen",
+      sport: "CrossFit Athlete",
+      rating: 5,
+      quote: "Discovering my testosterone levels were low was a game-changer. My recovery improved dramatically, and I'm now competing at a national level.",
+      image: "👤"
+    },
+    {
+      name: "Marcus Thompson",
+      sport: "Professional Cyclist",
+      rating: 5,
+      quote: "Regular performance testing has become essential to my training regime. The insights help me optimise nutrition and avoid overtraining.",
+      image: "👤"
+    }
+  ];
+
+  const performanceMarkers = [
+    {
+      icon: Heart,
+      title: "Cardiovascular Markers",
+      biomarkers: ["Haemoglobin", "Ferritin", "Cholesterol"],
+      description: "Essential for oxygen transport, endurance capacity, and cardiovascular health during intense training."
+    },
+    {
+      icon: Zap,
+      title: "Energy & Metabolism",
+      biomarkers: ["Vitamin B12", "Vitamin D", "Thyroid (TSH, T3, T4)"],
+      description: "Critical for energy production, metabolic efficiency, and optimal recovery between training sessions."
+    },
+    {
+      icon: Activity,
+      title: "Recovery & Inflammation",
+      biomarkers: ["CRP", "Cortisol", "Testosterone"],
+      description: "Monitor inflammation levels, stress response, and hormonal balance for optimal recovery and muscle adaptation."
+    },
+    {
+      icon: TrendingUp,
+      title: "Performance Optimisation",
+      biomarkers: ["Magnesium", "Calcium", "Creatine Kinase"],
+      description: "Track electrolyte balance and muscle damage markers to prevent injury and enhance athletic performance."
     }
   ];
 
@@ -332,6 +383,93 @@ const SportsPerformancePage = () => {
                 View All Sports Performance Tests
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Performance Optimization Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Key Biomarkers for Athletic Performance
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                Understanding your biomarkers enables data-driven decisions to enhance training, recovery, and competitive performance
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {performanceMarkers.map((marker, index) => {
+                const IconComponent = marker.icon;
+                return (
+                  <Card key={index} className="border-2 hover:border-[#FA6980] transition-all duration-300 hover:shadow-xl">
+                    <CardHeader>
+                      <div className="flex items-start gap-4">
+                        <div className="w-14 h-14 rounded-lg bg-[#FA6980]/10 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-7 h-7 text-[#FA6980]" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-xl mb-2">{marker.title}</CardTitle>
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {marker.biomarkers.map((biomarker, i) => (
+                              <Badge key={i} variant="secondary" className="text-xs">
+                                {biomarker}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">{marker.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Athlete Testimonials Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-[#FA6980] text-white border-none">
+                Success Stories
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Real Athletes, Real Results
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Discover how sports performance testing has helped athletes reach new heights
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FA6980] to-[#E70D69] flex items-center justify-center text-2xl">
+                        {testimonial.image}
+                      </div>
+                      <div>
+                        <CardTitle className="text-base">{testimonial.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground">{testimonial.sport}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-1 mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-[#FA6980] text-[#FA6980]" />
+                      ))}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground italic">"{testimonial.quote}"</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
