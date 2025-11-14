@@ -43,7 +43,7 @@ const HealthAssetSection = () => {
             return (
               <div 
                 key={index} 
-                className="flex flex-col items-center text-center p-6 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-300 hover:scale-105"
+                className="glass-card flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:scale-105"
               >
                 <div className="w-14 h-14 bg-[#22c0d4] rounded-full flex items-center justify-center mb-4">
                   <Icon className="w-7 h-7 text-white" />

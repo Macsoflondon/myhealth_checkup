@@ -206,13 +206,13 @@ const NewHero = () => {
 
             {/* Stats Grid - Mobile optimized */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
-              <div className="rounded-lg p-3 sm:p-4 border border-white/20 shadow-md hover:shadow-lg transition-all duration-200 bg-white">
+              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
                 <span className="text-[#22c0d4] text-center text-xs sm:text-base font-bold block">{t('hero.trustedProviders')}</span>
               </div>
-              <div className="rounded-lg p-3 sm:p-4 border border-white/20 shadow-md hover:shadow-lg transition-all duration-200 bg-white">
+              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
                 <span className="text-center text-xs sm:text-base font-semibold text-[#e70d69] block">{t('hero.availableTests')}</span>
               </div>
-              <div className="rounded-lg p-3 sm:p-4 border border-white/20 shadow-md hover:shadow-lg transition-all duration-200 bg-white">
+              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
                 <span className="text-center text-[#22c0d4] text-xs sm:text-base font-bold block">{t('hero.nationwideClinics')}</span>
               </div>
             </div>
