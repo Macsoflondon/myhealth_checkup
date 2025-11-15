@@ -25,6 +25,18 @@ export const compareCategories = [
     searchTerms: ["vitamin", "mineral", "b12", "d3", "folate", "iron", "zinc", "magnesium", "nutrient"]
   },
   {
+    id: "liver",
+    name: "Liver Health Tests",
+    description: "Liver function and enzyme testing",
+    searchTerms: ["liver", "hepatic", "alt", "ast", "liver function", "liver enzyme"]
+  },
+  {
+    id: "diabetes",
+    name: "Diabetes Testing",
+    description: "Blood sugar and glucose monitoring",
+    searchTerms: ["diabetes", "glucose", "hba1c", "blood sugar", "diabetic"]
+  },
+  {
     id: "cancer-screening",
     name: "Cancer Screening",
     description: "Early detection and preventive screening",

@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { compareCategories } from "@/data/compare/categories";
 import { goodbodyTests } from "@/data/goodbodyTests";
+import { medichecksTests } from "@/data/medichecksTests";
+import { londonLaboratoryTests } from "@/data/londonLaboratoryTests";
 
 /**
  * Hook to provide navigation data and filtering logic
@@ -8,13 +10,38 @@ import { goodbodyTests } from "@/data/goodbodyTests";
 export const useNavigationData = () => {
   /**
    * Get tests filtered by category for navigation dropdowns
+   * Combines Goodbody, Medichecks, and London Laboratory tests
    */
   const getTestsForNavigation = (categoryFilter: string) => {
-    return goodbodyTests.filter(test => 
+    const goodbodyFiltered = goodbodyTests.filter(test => 
       test.categories.some(cat => 
         cat.toUpperCase() === categoryFilter.toUpperCase()
       )
-    ).slice(0, 6); // Limit to 6 tests for dropdown
+    );
+    
+    const medichecksFiltered = medichecksTests.filter(test => 
+      test.category.toUpperCase() === categoryFilter.toUpperCase()
+    ).map(test => ({
+      id: test.id,
+      name: test.name,
+      provider: 'Medichecks',
+      price: test.price,
+      categories: [test.category],
+      description: test.description
+    }));
+    
+    const londonLabFiltered = londonLaboratoryTests.filter(test => 
+      test.category.toUpperCase() === categoryFilter.toUpperCase()
+    ).map(test => ({
+      id: test.id,
+      name: test.name,
+      provider: 'London Medical Laboratory',
+      price: test.price,
+      categories: [test.category],
+      description: test.description
+    }));
+    
+    return [...goodbodyFiltered, ...medichecksFiltered, ...londonLabFiltered].slice(0, 10);
   };
 
   /**
