@@ -46,6 +46,8 @@ export interface TestFeatures {
 export interface CompareTestData extends Test {
   features: TestFeatures;
   providerLogo: string;
+  dataSource?: 'live' | 'cache' | 'database';
+  lastUpdated?: string;
 }
 
 export interface UserProfile {

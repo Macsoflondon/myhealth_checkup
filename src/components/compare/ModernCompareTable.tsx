@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/CompareService";
+import { DataSourceIndicator } from "./DataSourceIndicator";
 interface ModernCompareTableProps {
   tests: CompareTestData[];
   selectedCategory?: string;
@@ -150,6 +151,17 @@ export const ModernCompareTable = ({
                     <Heart className={cn("h-5 w-5", isFavorite && "fill-current")} />
                   </Button>
                 </div>
+                
+                {/* Data Source Indicator */}
+                {test.dataSource && (
+                  <div className="mb-3">
+                    <DataSourceIndicator 
+                      source={test.dataSource}
+                      timestamp={test.lastUpdated}
+                      providerName={test.provider}
+                    />
+                  </div>
+                )}
 
                 {/* Test Info */}
                 <div className="mb-4">
