@@ -12,6 +12,7 @@ interface MegaMenuDropdownProps {
   onItemClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: (event?: React.MouseEvent) => void;
+  isMobile?: boolean;
 }
 
 export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
@@ -21,30 +22,35 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   categories,
   onItemClick,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  isMobile = false
 }) => {
   return (
     <div 
-      className="dropdown-content absolute top-full left-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[280px] sm:min-w-[500px] max-w-[90vw] sm:max-w-[600px] max-h-[70vh] overflow-y-auto"
+      className={`dropdown-content absolute top-full left-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[280px] max-w-[90vw] overflow-y-auto ${
+        isMobile ? 'sm:max-w-[400px] max-h-[60vh]' : 'sm:min-w-[500px] sm:max-w-[600px] max-h-[70vh]'
+      }`}
       style={{ 
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
         zIndex: 9999,
-        position: 'absolute'
+        position: 'absolute',
+        WebkitOverflowScrolling: 'touch'
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="p-4 sm:p-6">
         {goodbodyTests ? (
           // Show Goodbody tests for health-specific sections
           <div className="grid grid-cols-1 gap-2">
             {goodbodyTests.map((test) => (
-              <Link
-                key={test.id}
-                to={test.url || `/book/${test.id}`}
-                className="group block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                onClick={onItemClick}
-              >
+                <Link
+                  key={test.id}
+                  to={test.url || `/book/${test.id}`}
+                  className="group block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:bg-gray-200 dark:active:bg-gray-700"
+                  onClick={onItemClick}
+                >
                 <div className="flex items-center">
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-pink-600 transition-colors">
@@ -70,7 +76,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
               <Link
                 key={category.id}
                 to={`/compare?category=${category.id}`}
-                className="group block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="group block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:bg-gray-200 dark:active:bg-gray-700"
                 onClick={onItemClick}
               >
                 <div className="flex items-center gap-3">
