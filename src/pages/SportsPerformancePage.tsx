@@ -343,41 +343,7 @@ const SportsPerformancePage = () => {
 
         {/* Athlete Testimonials Section */}
         <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-[#FA6980] text-white border-none">
-                Success Stories
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Real Athletes, Real Results
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Discover how sports performance testing has helped athletes reach new heights
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {testimonials.map((testimonial, index) => <Card key={index} className="border-2 hover:shadow-xl transition-all duration-300">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FA6980] to-[#E70D69] flex items-center justify-center text-2xl">
-                        {testimonial.image}
-                      </div>
-                      <div>
-                        <CardTitle className="text-base">{testimonial.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{testimonial.sport}</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-[#FA6980] text-[#FA6980]" />)}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground italic">"{testimonial.quote}"</p>
-                  </CardContent>
-                </Card>)}
-            </div>
-          </div>
+          
         </section>
 
         {/* CTA Section */}
