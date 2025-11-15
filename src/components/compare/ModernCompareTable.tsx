@@ -11,6 +11,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/CompareService";
 import { DataSourceIndicator } from "./DataSourceIndicator";
+import { AddPriceAlertButton } from "./AddPriceAlertButton";
 interface ModernCompareTableProps {
   tests: CompareTestData[];
   selectedCategory?: string;
@@ -203,16 +204,29 @@ export const ModernCompareTable = ({
                         </Badge>}
                     </div>
                     
-                    <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} size="sm" className="bg-[#22c0d4] hover:bg-[#1aa8ba] text-sm sm:text-base px-4 sm:px-6 text-white min-h-[44px] touch-manipulation active:scale-95 transition-transform">
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Select Test</span>
-                      <span className="sm:hidden">Select</span>
-                    </Button>
+                  <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} size="sm" className="bg-[#22c0d4] hover:bg-[#1aa8ba] text-sm sm:text-base px-4 sm:px-6 text-white min-h-[44px] touch-manipulation active:scale-95 transition-transform">
+                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Select Test</span>
+                    <span className="sm:hidden">Select</span>
+                  </Button>
+                </div>
+                
+                {/* Price Alert Button */}
+                {user && (
+                  <div className="mb-3">
+                    <AddPriceAlertButton
+                      testId={test.id}
+                      testName={test.name}
+                      provider={test.provider}
+                      userId={user.id}
+                      currentPrice={test.price}
+                    />
                   </div>
-                  
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4 text-[#22c0d4]" />
-                    <span className="font-medium text-[#081129]">Results in {test.features?.turnaround || '1-2 days'}</span>
+                )}
+                
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4 text-[#22c0d4]" />
+                  <span className="font-medium text-[#081129]">Results in {test.features?.turnaround || '1-2 days'}</span>
                     <span className="text-muted-foreground">•</span>
                     <span className="font-medium text-[#081129]">Free shipping</span>
                   </div>
