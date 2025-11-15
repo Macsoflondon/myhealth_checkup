@@ -4,6 +4,7 @@ import { cacheService } from "./CacheService";
 import { TestDataTransformer } from "./transformers/testDataTransformer";
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { compareCategories } from "@/data/compare/categories";
+import { LiveDataService } from "./LiveDataService";
 
 // Re-export for backwards compatibility
 export type { CompareTestData };
@@ -38,6 +39,28 @@ export class CompareService {
     if (cached) return cached;
 
     try {
+      // If specific providers requested, try live data first
+      if (providers.length > 0 && providers[0] !== 'all') {
+        const liveResults: CompareTestData[] = [];
+        
+        for (const providerId of providers) {
+          const { data, source } = await LiveDataService.getLiveTestData(providerId, category);
+          liveResults.push(...data);
+          
+          if (source === 'live') {
+            logger.info(`Using live data for ${providerId}`);
+          } else {
+            logger.info(`Using ${source} data for ${providerId}`);
+          }
+        }
+        
+        if (liveResults.length > 0) {
+          cacheService.set(cacheKey, liveResults);
+          return liveResults;
+        }
+      }
+
+      // Fallback to database query
       const query = TestQueryBuilder.buildCategoryQuery(category, providers);
       const { data, error } = await query;
 
