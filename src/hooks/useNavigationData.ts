@@ -101,7 +101,8 @@ export const useNavigationData = () => {
    * Determine if an item should show Goodbody tests or categories
    */
   const shouldShowGoodbodyTests = (itemName: string): boolean => {
-    return ['Cancer Screening', "Women's Health", "Men's Health", 'Fertility'].includes(itemName);
+    // All navigation items now use category layout
+    return false;
   };
 
   return useMemo(() => ({

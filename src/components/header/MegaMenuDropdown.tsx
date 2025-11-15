@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
-import { getCategoryColor } from "@/constants/categories";
+import { getCategoryPinColor } from "@/data/categoryColors";
 import { GoodbodyTest } from "@/data/goodbodyTests";
 
 interface MegaMenuDropdownProps {
@@ -87,34 +87,38 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
             ))}
           </div>
         ) : categories ? (
-          // Show categories
+          // Show categories in browse style
           <div>
-            <div className="mb-4">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <div className="mb-5">
+              <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                 Browse by Category
               </h3>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {categories.map((category) => (
-                <Link
-                  key={category.id}
-                  to={`/compare?category=${category.id}`}
-                  className="group block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:bg-gray-200 dark:active:bg-gray-700 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                  onClick={onItemClick}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 ${getCategoryColor(category.id)}`}></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {categories.map((category) => {
+                const dotColor = getCategoryPinColor(category.id);
+                return (
+                  <Link
+                    key={category.id}
+                    to={`/compare?category=${category.id}`}
+                    className="group flex items-start gap-3"
+                    onClick={onItemClick}
+                  >
+                    <div 
+                      className="w-3 h-3 rounded-full flex-shrink-0 mt-1"
+                      style={{ backgroundColor: dotColor }}
+                    />
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-500 transition-colors mb-1">
+                      <h3 className="text-base font-semibold text-foreground mb-1">
                         {category.name}
                       </h3>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                      <p className="text-sm text-muted-foreground leading-tight">
                         {category.description}
                       </p>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         ) : null}
