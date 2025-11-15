@@ -124,6 +124,7 @@ serve(async (req) => {
 function determineProvider(clinicName: string): string {
   const name = clinicName.toLowerCase();
   
+  // Priority order matters - check specific providers first
   if (name.includes('tuli health')) return 'tuli-health';
   if (name.includes('superdrug')) return 'superdrug';
   if (name.includes('ultrasound direct')) return 'ultrasound-direct';
@@ -131,7 +132,22 @@ function determineProvider(clinicName: string): string {
   if (name.includes('goodbody') || name.includes('good body')) return 'goodbody-clinic';
   if (name.includes('randox')) return 'randox';
   if (name.includes('london medical')) return 'london-medical-laboratory';
-  if (name.includes('hospital') || name.includes('infirmary')) return 'nhs-hospitals';
+  
+  // NHS and hospital locations
+  if (name.includes('hospital') || name.includes('infirmary') || name.includes('nhs')) return 'nhs-hospitals';
+  
+  // Common partner/franchise clinics offering Medichecks services
+  if (name.includes('firstsight')) return 'medichecks';
+  if (name.includes('get a drip')) return 'medichecks';
+  if (name.includes('bioma')) return 'medichecks';
+  
+  // Independent pharmacies and clinics
+  if (name.includes('pharmacy')) return 'independent';
+  if (name.includes('clinic')) return 'independent';
+  if (name.includes('health centre') || name.includes('health center')) return 'independent';
+  if (name.includes('medical')) return 'independent';
+  if (name.includes('aesthetics')) return 'independent';
+  if (name.includes('wellbeing')) return 'independent';
   
   return 'independent';
 }

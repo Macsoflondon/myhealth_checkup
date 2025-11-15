@@ -1,0 +1,206 @@
+[
+  {
+    "name": "Sculptic Clinic",
+    "fullAddress": "10 Nugents Entry, Enniskillen, BT74 7DF",
+    "postalCode": "BT74 7DF",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Glow Medspa",
+    "fullAddress": "Unit 2, 57 Harbour Road, Inverness, IV1 1UF",
+    "postalCode": "IV1 1UF",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Superdrug Nurse Clinic Bath",
+    "fullAddress": "30-32 Westgate Street, Bath, BA1 1EL",
+    "postalCode": "BA1 1EL",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - McQueen's Pharmacy",
+    "fullAddress": "3 Maplehurst Cl, Dartford, DA2 7WX",
+    "postalCode": "DA2 7WX",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Swinford Pharmacy",
+    "fullAddress": "154 Hagley Road, Oldswinford, Stourbridge, DY8 2JH",
+    "postalCode": "DY8 2JH",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Everest Oldham",
+    "fullAddress": "57 Manchester Road, Oldham, OL8 4LN",
+    "postalCode": "OL8 4LN",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Everest Nelson",
+    "fullAddress": "96 Every Street, Nelson, BB9 7LS",
+    "postalCode": "BB9 7LS",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Everest Darwin",
+    "fullAddress": "21, Cemetery Road, BB3 2LZ",
+    "postalCode": "BB3 2LZ",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Wellbeing Pharmacy - Oxford",
+    "fullAddress": "190 Abingdon Road, Oxford, OX1 4RA",
+    "postalCode": "OX1 4RA",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Nikkiz Beauty & Aesthetics",
+    "fullAddress": "16 Mallard Way, Pride Park, Derby, DE24 8GX",
+    "postalCode": "DE24 8GX",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Yorkshire Blood Clinic",
+    "fullAddress": "118 Queens Road, Halifax, HX1 3XY",
+    "postalCode": "HX1 3XY",
+    "appointmentRequired": true
+  },
+  {
+    "name": "LN Aesthetics Skin & Health Clinic",
+    "fullAddress": "261 High Street, Walton, Felixstowe, IP11 9DU",
+    "postalCode": "IP11 9DU",
+    "appointmentRequired": true
+  },
+  {
+    "name": "FirstSight Southampton",
+    "fullAddress": "Hampshire Wellbeing Centre, Utilita Bowl, Botley Road, Southampton, SO30 3XH",
+    "postalCode": "SO30 3XH",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Bruntsfield Pharmacy & Travel And Health Clinic",
+    "fullAddress": "129 Bruntsfield Place, Edinburgh, EH10 4EQ",
+    "postalCode": "EH10 4EQ",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Medical Weight Care",
+    "fullAddress": "Suite 4.07, Windsor House, Cornwall Road, Harrogate, HG1 2PW",
+    "postalCode": "HG1 2PW",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Medical Weight Care",
+    "fullAddress": "Within Yarm Podiatry and Physiotherapy, 89a High Street, Yarm, TS15 9BG",
+    "postalCode": "TS15 9BG",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Elite Health & Urgent Care",
+    "fullAddress": "2 North Street, Hailsham, BN27 1DQ",
+    "postalCode": "BN27 1DQ",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Ardcroft Medical Clinic",
+    "fullAddress": "21 Main Street, Bothwell, G71 8RD",
+    "postalCode": "G71 8RD",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Ultrasound Direct Heathrow",
+    "fullAddress": "10 Station Road, Ashford, TW15 2RY",
+    "postalCode": "TW15 2RY",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Sheer Nutrition",
+    "fullAddress": "The Epione Clinic, 30 New Canal Street, Salisbury, SP1 2AQ",
+    "postalCode": "SP1 2AQ",
+    "appointmentRequired": false
+  },
+  {
+    "name": "Inuvi Clinic",
+    "fullAddress": "18 Wimpole Street, London, W1G 8GD",
+    "postalCode": "W1G 8GD",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy",
+    "fullAddress": "167-169 High Road, Chadwell Heath, London, RM6 6NL",
+    "postalCode": "RM6 6NL",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy",
+    "fullAddress": "414-416 Green Lane, London, IG3 9JX",
+    "postalCode": "IG3 9JX",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Paster Pharmacy",
+    "fullAddress": "212 Preston Road, Wembley, London, HA9 8PB",
+    "postalCode": "HA9 8PB",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Everest Pharmacy",
+    "fullAddress": "178 Stockport road, Manchester, M13 9AB",
+    "postalCode": "M13 9AB",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Rifaray Pharmacy and Clinic",
+    "fullAddress": "River House, 1 Maidstone Road, Sidcup, DA14 5RH",
+    "postalCode": "DA14 5RH",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Caxton Pharmacy",
+    "fullAddress": "3 Widmore Road, Bromley, BR1 1RL",
+    "postalCode": "BR1 1RL",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Fairlee Pharmacy",
+    "fullAddress": "26 Queenstown Road, London, SW8 3RX",
+    "postalCode": "SW8 3RX",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - British Chemist",
+    "fullAddress": "381 Church Lane, London, NW9 8JB",
+    "postalCode": "NW9 8JB",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Zenith Pharmacy",
+    "fullAddress": "9-9A Birchfield Road, Birmingham, B19 1SU",
+    "postalCode": "B19 1SU",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Tuli Health - Ham Parade Pharmacy & Travel Clinic",
+    "fullAddress": "305 Richmond Rd, Kingston upon Thames, KT2 5QU",
+    "postalCode": "KT2 5QU",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Luanne Naturopathic Nutrition & Phlebotomy",
+    "fullAddress": "The Paddock, Shangton Road, Tur Langton, LE8 0PN",
+    "postalCode": "LE8 0PN",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Ultrasound Direct Lincoln",
+    "fullAddress": "The Lawn, 2 Ingleman Place, Union Rd, Lincoln, LN1 3BU",
+    "postalCode": "LN1 3BU",
+    "appointmentRequired": true
+  },
+  {
+    "name": "Ultrasound Direct Norwich",
+    "fullAddress": "14 Pottergate, Norwich, NR2 1DS",
+    "postalCode": "NR2 1DS",
+    "appointmentRequired": true
+  }
+]
