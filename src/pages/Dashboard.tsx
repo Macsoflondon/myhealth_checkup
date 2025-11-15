@@ -8,10 +8,11 @@ import Footer from "@/components/layout/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Heart, ShoppingBag, FileText, User, Package, Clock, PoundSterling } from "lucide-react";
+import { Trash2, Heart, ShoppingBag, FileText, User, Package, Clock, PoundSterling, Bell } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { favoritesApi, ordersApi, type Favorite, type Order } from "@/api";
 import ProfileSettings from "@/components/dashboard/ProfileSettings";
+import { PriceAlertSettings } from "@/components/dashboard/PriceAlertSettings";
 
 const Dashboard = () => {
   const { user, isLoading } = useAuth();
@@ -251,6 +252,10 @@ const Dashboard = () => {
                   ))}
                 </div>
               )}
+            </TabsContent>
+
+            <TabsContent value="alerts">
+              {user && <PriceAlertSettings userId={user.id} />}
             </TabsContent>
 
             <TabsContent value="profile">

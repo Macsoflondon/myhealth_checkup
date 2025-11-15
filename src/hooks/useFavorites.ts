@@ -66,7 +66,24 @@ export function useFavorites(user: User | null, category: string) {
         
         if (error) throw error;
         setFavorites(prev => [...prev, testId]);
-        toast.success("Added to favorites");
+        
+        // Automatically create a price alert with 10% threshold
+        try {
+          await supabase
+            .from('price_alert_preferences')
+            .insert({
+              user_id: user.id,
+              test_id: testId,
+              provider: item.provider,
+              threshold_percentage: 10,
+              enabled: true,
+            });
+        } catch (alertError) {
+          // Ignore if alert already exists (unique constraint)
+          console.log('Price alert creation skipped:', alertError);
+        }
+        
+        toast.success("Added to favorites with price alert enabled");
       }
       return true;
     } catch (error: any) {
