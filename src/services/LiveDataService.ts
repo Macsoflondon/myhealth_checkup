@@ -223,7 +223,7 @@ export class LiveDataService {
     const logos: Record<string, string> = {
       'medichecks': '/lovable-uploads/provider-medichecks-new-v3.png',
       'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
-      'goodbody': '/lovable-uploads/provider-goodbody-new-v3.png',
+      'goodbody': '/lovable-uploads/provider-goodbody-new-v4.png',
     };
     return logos[providerId] || '';
   }

@@ -11,8 +11,8 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'randox': '/lovable-uploads/provider-randox.png',
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
-  'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
-  'goodbody': '/lovable-uploads/provider-goodbody-new-v3.png',
+  'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v4.png',
+  'goodbody': '/lovable-uploads/provider-goodbody-new-v4.png',
   'tuli-health': '/lovable-uploads/provider-tuli-health.png',
   'london-medical': '/lovable-uploads/provider-london-medical.png',
 };
