@@ -8,6 +8,7 @@ import { CompareFilters } from "@/components/compare/CompareFilters";
 import { AdvancedFilters, AdvancedFilterOptions } from "@/components/compare/AdvancedFilters";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
+import { ProviderDataStatus } from "@/components/compare/ProviderDataStatus";
 import { CompareService } from "@/services/CompareService";
 import type { CompareTestData } from "@/services/CompareService";
 import { Card, CardContent } from "@/components/ui/card";
@@ -317,6 +318,9 @@ const CompareTests = () => {
                 </div>
               ) : (
                 <>
+                  {/* Provider Data Freshness Status */}
+                  <ProviderDataStatus tests={tests} />
+                  
                   <ModernCompareTable 
                     tests={tests} 
                     selectedCategory={selectedCategory}

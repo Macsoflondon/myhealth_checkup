@@ -25,6 +25,8 @@ export interface LiveTestData {
   url: string | null;
   created_at: string;
   updated_at: string;
+  dataSource?: 'live' | 'cache' | 'database';
+  lastUpdated?: string;
 }
 
 export class CompareService {
@@ -45,7 +47,13 @@ export class CompareService {
         
         for (const providerId of providers) {
           const { data, source } = await LiveDataService.getLiveTestData(providerId, category);
-          liveResults.push(...data);
+          // Attach data source metadata to each test
+          const enrichedData = data.map(test => ({
+            ...test,
+            dataSource: source,
+            lastUpdated: new Date().toISOString()
+          }));
+          liveResults.push(...enrichedData);
           
           if (source === 'live') {
             logger.info(`Using live data for ${providerId}`);
@@ -69,7 +77,11 @@ export class CompareService {
         return [];
       }
 
-      const result = TestDataTransformer.transformMultiple(data || []);
+      const result = TestDataTransformer.transformMultiple(data || []).map(test => ({
+        ...test,
+        dataSource: 'database' as const,
+        lastUpdated: new Date().toISOString()
+      }));
       cacheService.set(cacheKey, result);
       return result;
     } catch (error) {
