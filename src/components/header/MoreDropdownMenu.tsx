@@ -11,24 +11,30 @@ interface MoreDropdownMenuProps {
   onItemClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: (event?: React.MouseEvent) => void;
+  isMobile?: boolean;
 }
 
 export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  isMobile = false
 }) => {
   return (
     <div 
-      className="dropdown-content absolute top-full right-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[280px] max-h-[70vh] overflow-y-auto"
+      className={`dropdown-content absolute top-full right-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[280px] overflow-y-auto ${
+        isMobile ? 'max-h-[60vh]' : 'max-h-[70vh]'
+      }`}
       style={{ 
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
         zIndex: 9999,
-        position: 'absolute'
+        position: 'absolute',
+        WebkitOverflowScrolling: 'touch'
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="p-4">
         {sections.map((section, sectionIndex) => (
@@ -46,7 +52,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:bg-gray-200 dark:active:bg-gray-700"
                   onClick={onItemClick}
                 >
                   <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-pink-600 transition-colors">
