@@ -159,7 +159,7 @@ const MensHealthPage = () => {
               </h1>
               <p style={{
               color: '#081129'
-            }} className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white font-normal font-sans">
+            }} className="mb-8 max-w-2xl mx-auto tracking-wide text-[#fafcfa] text-xl font-sans font-medium">
                 Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, 
                 and complete wellness testing tailored for men's unique health needs.
               </p>
