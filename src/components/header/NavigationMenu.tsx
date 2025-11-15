@@ -53,15 +53,16 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     
     const relatedTarget = event.relatedTarget as HTMLElement;
     
+    // Keep dropdown open if moving to dropdown content or another nav item
     if (relatedTarget?.closest('.dropdown-content') || 
-        relatedTarget?.closest('.nav-item-wrapper') ||
-        relatedTarget?.closest('nav')) {
+        relatedTarget?.closest('.nav-item-wrapper')) {
       return;
     }
     
+    // Add delay before closing to prevent flickering
     setTimeout(() => {
       setActiveDropdown(null);
-    }, 100);
+    }, 150);
   };
 
   const handleClick = (e: React.MouseEvent, itemName: string) => {
