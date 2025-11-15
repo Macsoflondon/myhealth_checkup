@@ -302,13 +302,13 @@ const SportsPerformancePage = () => {
         </section>
 
         {/* Performance Optimization Section */}
-        <section className="py-16">
+        <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="text-center mb-12 bg-[#081129]">
+              <h2 className="text-3xl font-bold mb-4 md:text-[t] text-white">
                 Key Biomarkers for Athletic Performance
               </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-lg max-w-3xl mx-auto font-normal text-white">
                 Understanding your biomarkers enables data-driven decisions to enhance training, recovery, and competitive performance
               </p>
             </div>
@@ -333,7 +333,7 @@ const SportsPerformancePage = () => {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-muted-foreground">{marker.description}</p>
+                      <p className="text-[#081129]">{marker.description}</p>
                     </CardContent>
                   </Card>;
             })}
@@ -342,17 +342,15 @@ const SportsPerformancePage = () => {
         </section>
 
         {/* Athlete Testimonials Section */}
-        <section className="py-16 bg-muted/30">
-          
-        </section>
+        
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-[#FA6980] to-[#E70D69] text-white">
+        <section className="py-16 bg-gradient-to-br from-[#FA6980] to-[#FFFFFF] ext-white bg-white">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#081129]">
               Ready to Optimise Your Performance?
             </h2>
-            <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
+            <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90 text-[#081129]">
               Compare sports performance tests from trusted UK providers and take control of your athletic health today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
