@@ -45,8 +45,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   };
 
   return (
-    <nav className={`relative ${className}`} aria-label="Main Navigation">
-      <div className="flex items-center justify-center gap-0.5 md:gap-1 flex-wrap">
+    <nav className={`relative ${className}`} aria-label="Main Navigation" style={{ position: 'relative', zIndex: 100 }}>
+      <div className="flex items-center justify-center gap-0.5 md:gap-1 flex-wrap" style={{ position: 'relative' }}>
         {/* Primary Navigation Items */}
         {primaryNavigationItems.filter(item => item.name !== "How It Works").map((item) => (
           <div 
