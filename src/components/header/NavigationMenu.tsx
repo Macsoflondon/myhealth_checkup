@@ -22,6 +22,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { getTestsForNavigation, getFilteredCategories, shouldShowGoodbodyTests } = useNavigationData();
   const isMobile = useIsMobile();
+  const leaveTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   // Close dropdown when clicking outside on mobile
   useEffect(() => {
@@ -41,28 +42,30 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const handleMouseEnter = (itemName: string) => {
     if (isMobile) return; // Disable hover on mobile
     
+    // Clear any pending close timeout
+    if (leaveTimeoutRef.current) {
+      clearTimeout(leaveTimeoutRef.current);
+      leaveTimeoutRef.current = null;
+    }
+    
     const item = primaryNavigationItems.find(nav => nav.name === itemName);
-    if (item?.hasDropdown) {
+    if (item?.hasDropdown || itemName === "MORE") {
       setActiveDropdown(itemName);
     }
   };
 
-  const handleMouseLeave = (event?: React.MouseEvent) => {
+  const handleMouseLeave = () => {
     if (isMobile) return; // Disable hover on mobile
-    if (!event) return;
     
-    const relatedTarget = event.relatedTarget as HTMLElement;
-    
-    // Keep dropdown open if moving to dropdown content or another nav item
-    if (relatedTarget?.closest('.dropdown-content') || 
-        relatedTarget?.closest('.nav-item-wrapper')) {
-      return;
+    // Clear any existing timeout
+    if (leaveTimeoutRef.current) {
+      clearTimeout(leaveTimeoutRef.current);
     }
     
-    // Add delay before closing to prevent flickering
-    setTimeout(() => {
+    // Set a timeout to close the dropdown
+    leaveTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
-    }, 150);
+    }, 200);
   };
 
   const handleClick = (e: React.MouseEvent, itemName: string) => {
@@ -143,7 +146,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           {/* MORE Dropdown */}
           <div 
             className="relative nav-item-wrapper"
-            onMouseEnter={() => !isMobile && setActiveDropdown("MORE")}
+            onMouseEnter={() => handleMouseEnter("MORE")}
             onMouseLeave={handleMouseLeave}
           >
             <button
@@ -168,7 +171,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               <MoreDropdownMenu
                 sections={moreNavigationSections}
                 onItemClick={handleItemClick}
-                onMouseEnter={() => !isMobile && setActiveDropdown("MORE")}
+                onMouseEnter={() => handleMouseEnter("MORE")}
                 onMouseLeave={handleMouseLeave}
                 isMobile={isMobile}
               />
