@@ -1,9 +1,9 @@
 export const FeaturedPublications = () => {
   const publications = [
-    "Bloomberg",
-    "The Guardian",
-    "Cosmopolitan",
-    "TechCrunch"
+    { name: "Bloomberg", url: "https://www.bloomberg.com" },
+    { name: "The Guardian", url: "https://www.theguardian.com" },
+    { name: "Cosmopolitan", url: "https://www.cosmopolitan.com" },
+    { name: "TechCrunch", url: "https://www.techcrunch.com" }
   ];
 
   return (
@@ -16,12 +16,17 @@ export const FeaturedPublications = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 max-w-5xl mx-auto">
           {publications.map((publication) => (
             <div 
-              key={publication} 
+              key={publication.name} 
               className="flex items-center justify-center"
             >
-              <h4 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center transition-all duration-300 hover:scale-105 hover:text-[#e70d69] cursor-default">
-                {publication}
-              </h4>
+              <a 
+                href={publication.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center transition-all duration-300 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
+              >
+                {publication.name}
+              </a>
             </div>
           ))}
         </div>
