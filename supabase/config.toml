@@ -26,3 +26,34 @@ verify_jwt = false
 # Security: JWT verification, verified userId from token
 [functions.send-test-notification]
 verify_jwt = true
+
+# Provider Scrapers - Automated data collection from health test providers
+[functions.goodbody-scraper]
+verify_jwt = false
+
+[functions.medichecks-scraper]
+verify_jwt = false
+
+[functions.lola-health-scraper]
+verify_jwt = false
+
+[functions.randox-scraper]
+verify_jwt = false
+
+[functions.scrape-london-lab]
+verify_jwt = false
+
+[functions.provider-scraper]
+verify_jwt = false
+
+[functions.price-updates]
+verify_jwt = false
+
+[functions.price-alert-checker]
+verify_jwt = true
+
+[functions.update-provider-tests]
+verify_jwt = false
+
+[functions.bulk-add-clinics]
+verify_jwt = true
