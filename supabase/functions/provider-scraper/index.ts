@@ -198,7 +198,7 @@ const providerTestData: Record<string, any[]> = {
       provider_test_id: 'rx-cancer-001'
     }
   ],
-  'goodbody': [
+  'goodbody-clinic': [
     {
       test_name: 'Essential Wellness Profile',
       description: 'Comprehensive health assessment with GP review and follow-up',
@@ -216,7 +216,7 @@ const providerTestData: Record<string, any[]> = {
       provider_test_id: 'gb-advanced-001'
     }
   ],
-  'lola': [
+  'lola-health': [
     {
       test_name: 'Women\'s Fertility Test',
       description: 'Comprehensive fertility assessment for women planning pregnancy',
@@ -234,7 +234,7 @@ const providerTestData: Record<string, any[]> = {
       provider_test_id: 'lola-hormone-001'
     }
   ],
-  'tuli': [
+  'tuli-health': [
     {
       test_name: 'Health Check at Your Local Pharmacy',
       description: 'Convenient blood testing available at 300+ local pharmacies',
