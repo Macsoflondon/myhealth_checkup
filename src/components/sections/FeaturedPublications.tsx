@@ -19,7 +19,7 @@ export const FeaturedPublications = () => {
               key={publication} 
               className="flex items-center justify-center"
             >
-              <h4 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center">
+              <h4 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center transition-all duration-300 hover:scale-105 hover:text-[#e70d69] cursor-default">
                 {publication}
               </h4>
             </div>
