@@ -1,5 +1,11 @@
 project_id = "clvuioagsgfadynuvodj"
 
+# AI Test Mapper
+# Requires authentication - Uses OpenAI API to semantically match provider tests to master tests
+# Security: JWT verification, service role access for database writes
+[functions.ai-test-mapper]
+verify_jwt = true
+
 # Thriva Scraper
 [functions.thriva-scraper]
 verify_jwt = false
