@@ -13,6 +13,7 @@ import { LazySection } from "@/components/common/LazySection";
 import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, MediaSpotlight } from "@/components/LazyLoadedComponents";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import HealthAssetSection from "@/components/HealthAssetSection";
+import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 
 // Lazy load below-fold components for better initial load performance
 const HealthJourneyTimeline = lazy(() => import("@/components/HealthJourneyTimeline"));
@@ -103,6 +104,9 @@ const Index = () => {
         
         {/* 2. Your Health is Your Greatest Asset */}
         <HealthAssetSection />
+        
+        {/* 2.5. Featured Publications */}
+        <FeaturedPublications />
         
         {/* 3. Our Partners → Trusted Health Comparison Platform (merged) */}
         <div className="bg-gradient-to-b from-white via-gray-50 to-white">
