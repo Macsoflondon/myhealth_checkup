@@ -22,6 +22,9 @@ import WellWomanTestPage from "@/pages/WellWomanTestPage";
 import LolaHealthTestDetailPage from "@/pages/LolaHealthTestDetailPage";
 import GoodbodyTestDetailPage from "@/pages/GoodbodyTestDetailPage";
 import MedichecksTestDetailPage from "@/pages/MedichecksTestDetailPage";
+import ThrivaTestDetailPage from "@/pages/ThrivaTestDetailPage";
+import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
+import TuliHealthTestDetailPage from "@/pages/TuliHealthTestDetailPage";
 
 export const testRoutes = (
   <>
@@ -57,5 +60,8 @@ export const testRoutes = (
     <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
     <Route path="/goodbody/:testId" element={<GoodbodyTestDetailPage />} />
     <Route path="/medichecks/:testId" element={<MedichecksTestDetailPage />} />
+    <Route path="/thriva/:testId" element={<ThrivaTestDetailPage />} />
+    <Route path="/randox/:testId" element={<RandoxTestDetailPage />} />
+    <Route path="/tuli-health/:testId" element={<TuliHealthTestDetailPage />} />
   </>
 );
