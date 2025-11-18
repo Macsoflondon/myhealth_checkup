@@ -1,5 +1,9 @@
 project_id = "clvuioagsgfadynuvodj"
 
+# Thriva Scraper
+[functions.thriva-scraper]
+verify_jwt = false
+
 # LML Nearest Clinics API
 # Public access (no JWT) - Users search for clinics BEFORE authentication
 # Security: IP rate limiting (10/min), maxPages limit (3), input validation
