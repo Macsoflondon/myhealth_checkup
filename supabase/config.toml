@@ -40,6 +40,9 @@ verify_jwt = false
 [functions.randox-scraper]
 verify_jwt = false
 
+[functions.tuli-health-scraper]
+verify_jwt = false
+
 [functions.scrape-london-lab]
 verify_jwt = false
 
