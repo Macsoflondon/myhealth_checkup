@@ -9,6 +9,7 @@ import NotFound from "@/pages/NotFound";
 import AdminClinicUploadPage from "@/pages/AdminClinicUploadPage";
 import AdminTestUploadPage from "@/pages/AdminTestUploadPage";
 import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
+import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
@@ -25,6 +26,7 @@ export function AppRoutes() {
       <Route path="/admin/clinic-upload" element={<AdminClinicUploadPage />} />
       <Route path="/admin/test-upload" element={<AdminTestUploadPage />} />
       <Route path="/admin/data-refresh" element={<AdminDataRefreshPage />} />
+      <Route path="/admin/test-mapper" element={<AdminTestMapperPage />} />
       
       {/* Feature Routes */}
       {featureRoutes}
