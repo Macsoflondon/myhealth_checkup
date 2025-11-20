@@ -118,7 +118,7 @@ export const ModernCompareTable = ({
         const isFavorite = favorites.includes(test.id);
         const isOutOfStock = test.available === false;
         const isSelected = selectedTestIds.includes(test.id);
-        return <Card key={test.id} className={cn("group hover:shadow-elevation-3 transition-all duration-[280ms] ease-[cubic-bezier(0.4,0,0.2,1)] shadow-elevation-2 bg-surface relative rounded-xl", isOutOfStock && "opacity-60", isSelected && "ring-2 ring-primary shadow-elevation-4")}>
+        return <Card key={test.id} className={cn("group hover:shadow-elevation-3 transition-all shadow-elevation-2 bg-surface relative rounded-xl", isOutOfStock && "opacity-60", isSelected && "ring-2 ring-primary shadow-elevation-4")}>
               {/* Selection Checkbox */}
               {onTestSelect && (
                 <div className="absolute top-3 left-3 z-10">

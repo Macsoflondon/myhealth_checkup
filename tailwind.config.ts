@@ -77,6 +77,27 @@ export default {
 					foreground: 'hsl(var(--error-foreground))',
 					container: 'hsl(var(--error-container))',
 				},
+				// Legacy health colors mapped to Material Design (backward compatibility)
+				'health-primary': 'hsl(var(--primary))',
+				'health-secondary': 'hsl(var(--secondary))',
+				'health-accent': 'hsl(var(--primary))',
+				'health-heading': 'hsl(var(--tertiary))',
+				'health-success': 'hsl(var(--primary))',
+				'health-warning': 'hsl(38 92% 50%)',
+				'health-highlight': 'hsl(var(--secondary))',
+				'health-icon': 'hsl(var(--primary))',
+				health: {
+					50: 'hsl(186 75% 97%)',
+					100: 'hsl(186 75% 94%)',
+					200: 'hsl(186 75% 88%)',
+					300: 'hsl(186 75% 76%)',
+					400: 'hsl(186 75% 64%)',
+					500: 'hsl(186 82% 48%)',
+					600: 'hsl(186 82% 38%)',
+					700: 'hsl(186 82% 28%)',
+					800: 'hsl(186 82% 18%)',
+					900: 'hsl(186 82% 12%)',
+				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
@@ -118,6 +139,12 @@ export default {
 				'2xl': '20px',
 				'3xl': '24px',
 				full: '9999px',
+			},
+			transitionDuration: {
+				'280': '280ms',
+			},
+			transitionTimingFunction: {
+				'material': 'cubic-bezier(0.4, 0, 0.2, 1)',
 			},
 			boxShadow: {
 				'elevation-0': 'var(--elevation-0)',

@@ -249,9 +249,9 @@
     @apply text-sm sm:text-base;
   }
   
-  /* Focus styles for better accessibility */
+  /* Focus styles for better accessibility - Material Design */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-health-600;
+    @apply outline-2 outline-offset-2 outline-primary;
   }
   
   /* Performance optimizations */
