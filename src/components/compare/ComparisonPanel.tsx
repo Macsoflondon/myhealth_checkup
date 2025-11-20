@@ -21,9 +21,11 @@ import {
   Beaker,
   TrendingUp,
   ExternalLink,
-  Sparkles
+  Sparkles,
+  GripVertical
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDraggable } from "@/hooks";
 
 interface ComparisonPanelProps {
   tests: CompareTestData[];
@@ -39,6 +41,17 @@ export const ComparisonPanel = ({
   onRemoveTest
 }: ComparisonPanelProps) => {
   const [highlightedTestId, setHighlightedTestId] = useState<string | null>(null);
+  const [orderedTests, setOrderedTests] = useState(tests);
+
+  React.useEffect(() => {
+    setOrderedTests(tests);
+  }, [tests]);
+
+  const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
+    items: orderedTests,
+    onReorder: setOrderedTests,
+    getId: (test) => test.id,
+  });
   
   if (tests.length === 0) return null;
 
@@ -128,18 +141,27 @@ export const ComparisonPanel = ({
 
             <TabsContent value="comparison" className="space-y-6">
               {/* Test Headers */}
-              <div className="grid gap-4" style={{ gridTemplateColumns: `200px repeat(${tests.length}, minmax(250px, 1fr))` }}>
+              <div className="grid gap-4" style={{ gridTemplateColumns: `200px repeat(${orderedTests.length}, minmax(250px, 1fr))` }}>
                 <div className="font-semibold text-muted-foreground sticky left-0 bg-background z-10">
                   Test Details
                 </div>
-                {tests.map((test) => (
+                {orderedTests.map((test, index) => (
                   <div 
                     key={test.id}
+                    draggable
+                    data-index={index}
+                    onDragStart={(e) => onDragStart(e, { id: test.id, index })}
+                    onDragEnd={onDragEnd}
+                    onDragOver={onDragOver}
+                    onDrop={(e) => onDrop(e, index)}
                     className={cn(
-                      "relative bg-card rounded-lg border border-border p-4 shadow-sm transition-all",
-                      highlightedTestId === test.id && "ring-2 ring-green-500 shadow-lg"
+                      "draggable-element relative bg-card rounded-lg border border-border p-4 shadow-sm transition-all",
+                      highlightedTestId === test.id && "ring-2 ring-green-500 shadow-lg",
+                      draggedOverIndex === index && "drag-over"
                     )}
                   >
+                  <GripVertical className="drag-handle absolute top-2 left-2 h-4 w-4" />
+                  
                   <Button
                     variant="ghost"
                     size="icon"
@@ -149,7 +171,7 @@ export const ComparisonPanel = ({
                     <X className="h-3 w-3" />
                   </Button>
                   
-                  <div className="mb-2">
+                  <div className="mb-2 ml-6">
                     <img 
                       src={test.providerLogo} 
                       alt={test.provider}
@@ -157,13 +179,13 @@ export const ComparisonPanel = ({
                     />
                   </div>
                   
-                  <h3 className="font-semibold text-sm mb-2 pr-6 line-clamp-2">
+                  <h3 className="font-semibold text-sm mb-2 pr-6 ml-6 line-clamp-2">
                     {test.name}
                   </h3>
                   
                   <Badge 
                     variant="secondary" 
-                    className="text-xs"
+                    className="text-xs ml-6"
                   >
                     {test.category}
                   </Badge>
@@ -180,14 +202,14 @@ export const ComparisonPanel = ({
                     "grid gap-4 py-3 px-4",
                     idx % 2 === 0 ? "bg-muted/30" : "bg-background"
                   )}
-                  style={{ gridTemplateColumns: `200px repeat(${tests.length}, minmax(250px, 1fr))` }}
+                  style={{ gridTemplateColumns: `200px repeat(${orderedTests.length}, minmax(250px, 1fr))` }}
                 >
                   <div className="flex items-center gap-2 font-medium text-sm sticky left-0 z-10" style={{ backgroundColor: idx % 2 === 0 ? 'hsl(var(--muted) / 0.3)' : 'hsl(var(--background))' }}>
                     <feature.icon className="h-4 w-4 text-muted-foreground" />
                     <span>{feature.label}</span>
                   </div>
                   
-                  {tests.map((test, testIdx) => {
+                  {orderedTests.map((test, testIdx) => {
                     const value = feature.render(test);
                     const isBestPrice = feature.key === 'price' && test.price === lowestPrice;
                     const isFastestTurnaround = feature.key === 'turnaround' && 
@@ -232,8 +254,8 @@ export const ComparisonPanel = ({
                 Full Descriptions
               </h3>
               
-              <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${tests.length}, minmax(300px, 1fr))` }}>
-                {tests.map((test) => (
+              <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${orderedTests.length}, minmax(300px, 1fr))` }}>
+                {orderedTests.map((test) => (
                   <div 
                     key={test.id}
                     className="bg-card rounded-lg border border-border p-4 space-y-3"
@@ -264,7 +286,7 @@ export const ComparisonPanel = ({
 
           <TabsContent value="recommendation" className="space-y-6">
             <RecommendationEngine 
-              tests={tests}
+              tests={orderedTests}
               onRecommendationGenerated={setHighlightedTestId}
             />
           </TabsContent>
@@ -274,7 +296,7 @@ export const ComparisonPanel = ({
         {/* Footer Actions */}
         <div className="border-t border-border px-6 py-4 flex items-center justify-between bg-muted/30">
           <div className="text-sm text-muted-foreground">
-            Comparing {tests.length} {tests.length === 1 ? 'test' : 'tests'}
+            Comparing {orderedTests.length} {orderedTests.length === 1 ? 'test' : 'tests'}
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={onClose}>

@@ -8,11 +8,13 @@ import Footer from "@/components/layout/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Heart, ShoppingBag, FileText, User, Package, Clock, PoundSterling, Bell } from "lucide-react";
+import { Trash2, Heart, ShoppingBag, FileText, User, Package, Clock, PoundSterling, Bell, GripVertical } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { favoritesApi, ordersApi, type Favorite, type Order } from "@/api";
 import ProfileSettings from "@/components/dashboard/ProfileSettings";
 import { PriceAlertSettings } from "@/components/dashboard/PriceAlertSettings";
+import { useDraggable } from "@/hooks";
+import { cn } from "@/lib/utils";
 
 const Dashboard = () => {
   const { user, isLoading } = useAuth();
@@ -22,6 +24,30 @@ const Dashboard = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "favorites");
   const [loadingData, setLoadingData] = useState(true);
+
+  // Draggable functionality for favorites
+  const favoriteDrag = useDraggable({
+    items: favorites,
+    onReorder: (reordered) => {
+      setFavorites(reordered);
+      if (user) {
+        localStorage.setItem(`favorite-order-${user.id}`, JSON.stringify(reordered.map(f => f.id)));
+      }
+    },
+    getId: (fav) => fav.id,
+  });
+
+  // Draggable functionality for orders
+  const orderDrag = useDraggable({
+    items: orders,
+    onReorder: (reordered) => {
+      setOrders(reordered);
+      if (user) {
+        localStorage.setItem(`order-sort-${user.id}`, JSON.stringify(reordered.map(o => o.id)));
+      }
+    },
+    getId: (order) => order.id,
+  });
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -42,7 +68,19 @@ const Dashboard = () => {
     try {
       const { data, error } = await favoritesApi.getUserFavorites(user.id);
       if (error) throw error;
-      setFavorites(data || []);
+      
+      // Restore saved order from localStorage
+      const savedOrder = localStorage.getItem(`favorite-order-${user.id}`);
+      if (savedOrder && data) {
+        const orderIds = JSON.parse(savedOrder);
+        const orderedData = orderIds
+          .map((id: string) => data.find(f => f.id === id))
+          .filter(Boolean)
+          .concat(data.filter(f => !orderIds.includes(f.id)));
+        setFavorites(orderedData);
+      } else {
+        setFavorites(data || []);
+      }
     } catch (error) {
       logger.error('Error fetching favorites:', error);
       toast.error('Failed to load favorites');
@@ -57,7 +95,19 @@ const Dashboard = () => {
     try {
       const { data, error } = await ordersApi.getUserOrders(user.id);
       if (error) throw error;
-      setOrders(data || []);
+      
+      // Restore saved order from localStorage
+      const savedOrder = localStorage.getItem(`order-sort-${user.id}`);
+      if (savedOrder && data) {
+        const orderIds = JSON.parse(savedOrder);
+        const orderedData = orderIds
+          .map((id: string) => data.find(o => o.id === id))
+          .filter(Boolean)
+          .concat(data.filter(o => !orderIds.includes(o.id)));
+        setOrders(orderedData);
+      } else {
+        setOrders(data || []);
+      }
     } catch (error) {
       logger.error('Error fetching orders:', error);
       toast.error('Failed to load orders');
@@ -134,11 +184,26 @@ const Dashboard = () => {
                 </Card>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  {favorites.map((favorite) => (
-                    <Card key={favorite.id}>
+                  {favorites.map((favorite, index) => (
+                    <Card 
+                      key={favorite.id}
+                      draggable
+                      data-index={index}
+                      onDragStart={(e) => favoriteDrag.onDragStart(e, { id: favorite.id, index })}
+                      onDragEnd={favoriteDrag.onDragEnd}
+                      onDragOver={favoriteDrag.onDragOver}
+                      onDrop={(e) => favoriteDrag.onDrop(e, index)}
+                      className={cn(
+                        "draggable-element",
+                        favoriteDrag.draggedOverIndex === index && "drag-over"
+                      )}
+                    >
                       <CardHeader className="pb-2 p-4 sm:p-6">
                         <CardTitle className="flex justify-between items-start gap-2">
-                          <span className="text-base sm:text-lg">{favorite.name}</span>
+                          <div className="flex items-center gap-2 flex-1">
+                            <GripVertical className="drag-handle h-4 w-4 shrink-0" />
+                            <span className="text-base sm:text-lg">{favorite.name}</span>
+                          </div>
                           <Button 
                             variant="ghost" 
                             size="sm" 
@@ -201,12 +266,27 @@ const Dashboard = () => {
                 </Card>
               ) : (
                 <div className="space-y-3 sm:space-y-4">
-                  {orders.map((order) => (
-                    <Card key={order.id}>
+                  {orders.map((order, index) => (
+                    <Card 
+                      key={order.id}
+                      draggable
+                      data-index={index}
+                      onDragStart={(e) => orderDrag.onDragStart(e, { id: order.id, index })}
+                      onDragEnd={orderDrag.onDragEnd}
+                      onDragOver={orderDrag.onDragOver}
+                      onDrop={(e) => orderDrag.onDrop(e, index)}
+                      className={cn(
+                        "draggable-element",
+                        orderDrag.draggedOverIndex === index && "drag-over"
+                      )}
+                    >
                       <CardHeader className="p-4 sm:p-6">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                           <div className="flex-1">
-                            <CardTitle className="text-base sm:text-lg mb-2">{order.name}</CardTitle>
+                            <div className="flex items-center gap-2 mb-2">
+                              <GripVertical className="drag-handle h-4 w-4 shrink-0" />
+                              <CardTitle className="text-base sm:text-lg">{order.name}</CardTitle>
+                            </div>
                             <CardDescription className="text-xs sm:text-sm">
                               Order #{order.id.slice(0, 8)} · {order.provider}
                             </CardDescription>
