@@ -423,6 +423,95 @@
   }
 }
 
+/* ============================================
+   MATERIAL DESIGN DRAGGABLE STATE LAYERS
+   ============================================ */
+
+/* Base draggable element */
+.draggable-element {
+  cursor: grab;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: var(--elevation-2);
+  transition: box-shadow var(--duration-standard) var(--easing-emphasized),
+              transform var(--duration-standard) var(--easing-emphasized);
+}
+
+/* Dragging state - 16% overlay */
+.draggable-element.is-dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+  box-shadow: var(--elevation-4);
+  transform: scale(1.02);
+  transition: all var(--duration-quick) var(--easing-emphasized-accelerate);
+}
+
+.draggable-element.is-dragging::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: currentColor;
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* Drag over state - Drop target indicator */
+.drag-over {
+  position: relative;
+}
+
+.drag-over::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px dashed hsl(var(--primary));
+  border-radius: 12px;
+  background-color: hsl(var(--primary) / 0.08);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Drag handle icon */
+.drag-handle {
+  cursor: grab;
+  opacity: 0;
+  transition: opacity var(--duration-standard) var(--easing-emphasized);
+  color: hsl(var(--muted-foreground));
+}
+
+.draggable-element:hover .drag-handle {
+  opacity: 0.6;
+}
+
+.draggable-element.is-dragging .drag-handle {
+  cursor: grabbing;
+  opacity: 1;
+}
+
+/* Drag handle active state */
+.drag-handle:active {
+  opacity: 1;
+  color: hsl(var(--primary));
+}
+
+/* Performance optimization */
+.draggable-element.is-dragging {
+  will-change: transform;
+}
+
+.draggable-element:not(.is-dragging) {
+  will-change: auto;
+}
+
 @layer utilities {
   .tap-highlight-transparent {
     -webkit-tap-highlight-color: transparent;

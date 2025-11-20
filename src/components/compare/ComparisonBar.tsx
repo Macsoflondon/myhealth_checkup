@@ -2,8 +2,9 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CompareTestData } from "@/services/CompareService";
-import { X, ArrowRight, GitCompare } from "lucide-react";
+import { X, ArrowRight, GitCompare, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDraggable } from "@/hooks";
 
 interface ComparisonBarProps {
   selectedTests: CompareTestData[];
@@ -18,6 +19,18 @@ export const ComparisonBar = ({
   onCompare,
   onClearAll
 }: ComparisonBarProps) => {
+  const [orderedTests, setOrderedTests] = React.useState(selectedTests);
+
+  React.useEffect(() => {
+    setOrderedTests(selectedTests);
+  }, [selectedTests]);
+
+  const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
+    items: orderedTests,
+    onReorder: setOrderedTests,
+    getId: (test) => test.id,
+  });
+
   if (selectedTests.length === 0) return null;
 
   return (
@@ -38,11 +51,21 @@ export const ComparisonBar = ({
 
             {/* Selected Test Pills */}
             <div className="flex gap-2 overflow-x-auto flex-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
-              {selectedTests.map((test) => (
+              {orderedTests.map((test, index) => (
                 <div
                   key={test.id}
-                  className="flex items-center gap-2 bg-muted rounded-full pl-3 pr-2 py-1 whitespace-nowrap text-xs"
+                  draggable
+                  data-index={index}
+                  onDragStart={(e) => onDragStart(e, { id: test.id, index })}
+                  onDragEnd={onDragEnd}
+                  onDragOver={onDragOver}
+                  onDrop={(e) => onDrop(e, index)}
+                  className={cn(
+                    "draggable-element flex items-center gap-2 bg-muted rounded-full pl-2 pr-2 py-1 whitespace-nowrap text-xs",
+                    draggedOverIndex === index && "drag-over"
+                  )}
                 >
+                  <GripVertical className="drag-handle h-3 w-3 shrink-0" />
                   <span className="font-medium truncate max-w-[150px]">
                     {test.name}
                   </span>
@@ -76,19 +99,19 @@ export const ComparisonBar = ({
             
             <Button
               onClick={onCompare}
-              disabled={selectedTests.length < 2}
+              disabled={orderedTests.length < 2}
               className={cn(
                 "gap-2 bg-primary hover:bg-primary/90",
-                selectedTests.length < 2 && "opacity-50 cursor-not-allowed"
+                orderedTests.length < 2 && "opacity-50 cursor-not-allowed"
               )}
             >
-              Compare {selectedTests.length > 1 ? `${selectedTests.length} Tests` : ''}
+              Compare {orderedTests.length > 1 ? `${orderedTests.length} Tests` : ''}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
-        {selectedTests.length === 1 && (
+        {orderedTests.length === 1 && (
           <p className="text-xs text-muted-foreground mt-2 text-center">
             Select at least one more test to compare
           </p>

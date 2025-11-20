@@ -10,3 +10,4 @@ export { useRealtimeConnection } from "./useRealtimeConnection";
 export { useRealtimeEvents } from "./useRealtimeEvents";
 export { useOfflineQueue } from "./useOfflineQueue";
 export { useOfflineSync } from "./useOfflineSync";
+export { useDraggable } from "./useDraggable";

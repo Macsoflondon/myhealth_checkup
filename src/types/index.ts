@@ -36,3 +36,23 @@ export interface LiveTestData {
   created_at: string;
   updated_at: string;
 }
+
+/**
+ * Draggable item interface for drag and drop operations
+ */
+export interface DraggableItem {
+  id: string;
+  index: number;
+}
+
+/**
+ * Drag handlers interface for drag and drop operations
+ */
+export interface DragHandlers<T = any> {
+  onDragStart: (e: React.DragEvent, item: DraggableItem) => void;
+  onDragEnd: (e: React.DragEvent) => void;
+  onDragOver: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent, targetIndex: number) => void;
+  draggedItem: DraggableItem | null;
+  draggedOverIndex: number | null;
+}
