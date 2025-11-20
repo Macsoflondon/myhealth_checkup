@@ -16,11 +16,11 @@ interface CompareFiltersProps {
   selectedCategory: string;
   selectedProviders: string[];
   searchTerm: string;
-  sortOrder: 'asc' | 'desc';
+  sortOrder: string;
   onCategoryChange: (category: string) => void;
   onProviderChange: (providerId: string) => void;
   onSearchChange: (term: string) => void;
-  onSortChange: (order: 'asc' | 'desc') => void;
+  onSortChange: (order: string) => void;
   testCount: number;
   isLoading: boolean;
 }
@@ -94,7 +94,7 @@ export const CompareFilters = ({
             
             {/* Sort Order */}
             <div>
-              <Select value={sortOrder} onValueChange={value => onSortChange(value as 'asc' | 'desc')}>
+              <Select value={sortOrder} onValueChange={onSortChange}>
                 <SelectTrigger className="bg-background/50 border-border/50">
                   <div className="flex items-center gap-2">
                     <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
@@ -102,8 +102,13 @@ export const CompareFilters = ({
                   </div>
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border z-50">
-                  <SelectItem value="asc">Price: Low to High</SelectItem>
-                  <SelectItem value="desc">Price: High to Low</SelectItem>
+                  <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                  <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                  <SelectItem value="turnaround-asc">Turnaround: Fastest First</SelectItem>
+                  <SelectItem value="turnaround-desc">Turnaround: Slowest First</SelectItem>
+                  <SelectItem value="biomarkers-desc">Biomarkers: Most to Least</SelectItem>
+                  <SelectItem value="biomarkers-asc">Biomarkers: Least to Most</SelectItem>
+                  <SelectItem value="popularity-desc">Most Popular</SelectItem>
                 </SelectContent>
               </Select>
             </div>

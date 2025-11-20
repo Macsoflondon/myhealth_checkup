@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award } from "lucide-react";
+import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award, TestTube, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -163,6 +163,37 @@ export const ModernCompareTable = ({
                     />
                   </div>
                 )}
+
+                {/* Badges: Popular, Accreditations, Biomarkers, Fast Turnaround */}
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {test.popularityScore && test.popularityScore >= 70 && (
+                    <Badge variant="secondary" className="bg-amber-100 text-amber-800 text-xs">
+                      <TrendingUp className="h-3 w-3 mr-1" />
+                      Popular
+                    </Badge>
+                  )}
+                  
+                  {test.accreditations?.map(acc => (
+                    <Badge key={acc} variant="outline" className="text-xs border-blue-200 text-blue-700">
+                      <Award className="h-3 w-3 mr-1" />
+                      {acc}
+                    </Badge>
+                  ))}
+                  
+                  {test.biomarkerCount && test.biomarkerCount >= 15 && (
+                    <Badge variant="secondary" className="bg-purple-100 text-purple-800 text-xs">
+                      <TestTube className="h-3 w-3 mr-1" />
+                      {test.biomarkerCount} biomarkers
+                    </Badge>
+                  )}
+                  
+                  {test.turnaroundDays && test.turnaroundDays <= 2 && (
+                    <Badge className="bg-green-100 text-green-800 text-xs">
+                      <Zap className="h-3 w-3 mr-1" />
+                      Fast results
+                    </Badge>
+                  )}
+                </div>
 
                 {/* Test Info */}
                 <div className="mb-4">
