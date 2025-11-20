@@ -23,7 +23,7 @@ const CompareTests = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedProviders, setSelectedProviders] = useState<string[]>(["all"]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortOrder, setSortOrder] = useState<string>('price-asc');
   const [tests, setTests] = useState<CompareTestData[]>([]);
   const [allTests, setAllTests] = useState<CompareTestData[]>([]);
   const [categories, setCategories] = useState<Array<{
@@ -38,7 +38,10 @@ const CompareTests = () => {
     priceRange: [0, 500],
     processingTime: [],
     gpReview: null,
-    bloodDraw: null
+    bloodDraw: null,
+    accreditations: [],
+    popularOnly: false,
+    minBiomarkerCount: null
   });
   
   // Comparison mode state
@@ -124,6 +127,29 @@ const CompareTests = () => {
       });
     }
     
+    // Accreditations filter
+    if (advancedFilters.accreditations.length > 0) {
+      filtered = filtered.filter(test => 
+        test.accreditations?.some(acc => 
+          advancedFilters.accreditations.includes(acc)
+        )
+      );
+    }
+    
+    // Popular tests filter (assuming 70+ popularity score is "popular")
+    if (advancedFilters.popularOnly) {
+      filtered = filtered.filter(test => 
+        (test.popularityScore || 0) >= 70
+      );
+    }
+    
+    // Minimum biomarker count filter
+    if (advancedFilters.minBiomarkerCount !== null) {
+      filtered = filtered.filter(test => 
+        (test.biomarkerCount || 0) >= advancedFilters.minBiomarkerCount!
+      );
+    }
+    
     return filtered;
   }, [advancedFilters]);
 
@@ -140,12 +166,8 @@ const CompareTests = () => {
         results = await CompareService.getTestsByCategory(categoryName, selectedProviders);
       }
 
-      // Sort results
-      if (sortOrder === 'desc') {
-        results.sort((a, b) => b.price - a.price);
-      } else {
-        results.sort((a, b) => a.price - b.price);
-      }
+      // Sort results with multi-criteria support
+      results = sortTests(results, sortOrder);
       
       setAllTests(results);
       
@@ -167,6 +189,41 @@ const CompareTests = () => {
 
     return () => clearTimeout(timeoutId);
   }, [fetchTests]);
+
+  // Enhanced sorting function
+  const sortTests = useCallback((testList: CompareTestData[], sortOption: string): CompareTestData[] => {
+    const sorted = [...testList];
+    
+    switch(sortOption) {
+      case 'price-asc':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'turnaround-asc':
+        return sorted.sort((a, b) => 
+          (a.turnaroundDays || 999) - (b.turnaroundDays || 999)
+        );
+      case 'turnaround-desc':
+        return sorted.sort((a, b) => 
+          (b.turnaroundDays || 0) - (a.turnaroundDays || 0)
+        );
+      case 'biomarkers-asc':
+        return sorted.sort((a, b) => 
+          (a.biomarkerCount || 0) - (b.biomarkerCount || 0)
+        );
+      case 'biomarkers-desc':
+        return sorted.sort((a, b) => 
+          (b.biomarkerCount || 0) - (a.biomarkerCount || 0)
+        );
+      case 'popularity-desc':
+        return sorted.sort((a, b) => 
+          (b.popularityScore || 0) - (a.popularityScore || 0)
+        );
+      default:
+        return sorted.sort((a, b) => a.price - b.price);
+    }
+  }, []);
+
   const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(category);
   }, []);
@@ -191,7 +248,10 @@ const CompareTests = () => {
       priceRange: [0, 500],
       processingTime: [],
       gpReview: null,
-      bloodDraw: null
+      bloodDraw: null,
+      accreditations: [],
+      popularOnly: false,
+      minBiomarkerCount: null
     };
     setAdvancedFilters(defaultFilters);
     setTests(allTests);

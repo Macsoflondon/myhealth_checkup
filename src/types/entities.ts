@@ -48,6 +48,11 @@ export interface CompareTestData extends Test {
   providerLogo: string;
   dataSource?: 'live' | 'cache' | 'database';
   lastUpdated?: string;
+  accreditations?: string[];
+  popularityScore?: number;
+  biomarkerCount?: number;
+  turnaroundDays?: number;
+  userRating?: number; // Placeholder for future implementation
 }
 
 export interface UserProfile {

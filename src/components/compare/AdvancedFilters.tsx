@@ -24,8 +24,12 @@ import {
   PoundSterling, 
   Stethoscope,
   Syringe,
-  ChevronDown
+  ChevronDown,
+  Award,
+  TrendingUp,
+  TestTube
 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 export interface AdvancedFilterOptions {
@@ -34,6 +38,9 @@ export interface AdvancedFilterOptions {
   processingTime: string[];
   gpReview: boolean | null;
   bloodDraw: boolean | null;
+  accreditations: string[];
+  popularOnly: boolean;
+  minBiomarkerCount: number | null;
 }
 
 interface AdvancedFiltersProps {
@@ -86,7 +93,10 @@ export const AdvancedFilters = ({
     filters.processingTime.length + 
     (filters.gpReview !== null ? 1 : 0) + 
     (filters.bloodDraw !== null ? 1 : 0) +
-    (filters.priceRange[0] !== 0 || filters.priceRange[1] !== 500 ? 1 : 0);
+    (filters.priceRange[0] !== 0 || filters.priceRange[1] !== 500 ? 1 : 0) +
+    filters.accreditations.length +
+    (filters.popularOnly ? 1 : 0) +
+    (filters.minBiomarkerCount !== null ? 1 : 0);
 
   const handleBiomarkerToggle = (biomarker: string) => {
     const newBiomarkers = filters.biomarkers.includes(biomarker)
@@ -116,6 +126,23 @@ export const AdvancedFilters = ({
   const handleBloodDrawToggle = () => {
     const newValue = filters.bloodDraw === null ? true : filters.bloodDraw ? false : null;
     onFiltersChange({ ...filters, bloodDraw: newValue });
+  };
+
+  const handleAccreditationToggle = (accreditation: string) => {
+    const newAccreditations = filters.accreditations.includes(accreditation)
+      ? filters.accreditations.filter(a => a !== accreditation)
+      : [...filters.accreditations, accreditation];
+    
+    onFiltersChange({ ...filters, accreditations: newAccreditations });
+  };
+
+  const handlePopularToggle = (checked: boolean) => {
+    onFiltersChange({ ...filters, popularOnly: checked });
+  };
+
+  const handleMinBiomarkerChange = (value: string) => {
+    const count = value === 'any' ? null : parseInt(value);
+    onFiltersChange({ ...filters, minBiomarkerCount: count });
   };
 
   return (
@@ -267,10 +294,76 @@ export const AdvancedFilters = ({
                 </div>
               </div>
 
+              {/* Accreditations Filter */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Award className="h-4 w-4 text-muted-foreground" />
+                  <Label className="text-sm font-medium">Accreditations</Label>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {['UKAS', 'CQC', 'ISO 15189'].map(accreditation => (
+                    <Button
+                      key={accreditation}
+                      variant={filters.accreditations.includes(accreditation) ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handleAccreditationToggle(accreditation)}
+                      className={cn(
+                        "rounded-full text-xs h-8",
+                        filters.accreditations.includes(accreditation) && 
+                        "bg-health-primary hover:bg-health-primary/90"
+                      )}
+                    >
+                      <Award className="h-3 w-3 mr-1" />
+                      {accreditation}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Popularity Filter */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                    <Label htmlFor="popular-only" className="cursor-pointer text-sm">
+                      Show Popular Tests Only
+                    </Label>
+                  </div>
+                  <Switch
+                    id="popular-only"
+                    checked={filters.popularOnly}
+                    onCheckedChange={handlePopularToggle}
+                  />
+                </div>
+              </div>
+
+              {/* Minimum Biomarkers Filter */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <TestTube className="h-4 w-4 text-muted-foreground" />
+                  <Label className="text-sm font-medium">Minimum Biomarkers</Label>
+                </div>
+                <Select
+                  value={filters.minBiomarkerCount?.toString() || 'any'}
+                  onValueChange={handleMinBiomarkerChange}
+                >
+                  <SelectTrigger className="bg-background/50 border-border/50">
+                    <SelectValue placeholder="Any amount" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="any">Any amount</SelectItem>
+                    <SelectItem value="5">5+ biomarkers</SelectItem>
+                    <SelectItem value="10">10+ biomarkers</SelectItem>
+                    <SelectItem value="15">15+ biomarkers</SelectItem>
+                    <SelectItem value="20">20+ biomarkers</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               {/* Biomarkers Filter */}
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
-                  Biomarkers Tested
+                  Specific Biomarkers
                   {filters.biomarkers.length > 0 && (
                     <Badge variant="secondary" className="ml-2 h-5 px-2 text-xs">
                       {filters.biomarkers.length} selected
