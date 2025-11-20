@@ -5,18 +5,18 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "state-layer relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-shadow [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:relative [&_svg]:z-10",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1 hover:bg-primary/92 active:bg-primary/88",
+        default: "bg-primary text-primary-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1",
         destructive:
-          "bg-error text-error-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1 hover:bg-error/92 active:bg-error/88",
+          "bg-error text-error-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1",
         outline:
-          "border border-tertiary bg-transparent text-tertiary hover:bg-tertiary/8 active:bg-tertiary/12",
+          "border border-tertiary bg-transparent text-tertiary",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1 hover:bg-secondary/92 active:bg-secondary/88",
-        ghost: "text-primary hover:bg-primary/8 active:bg-primary/12",
+          "bg-secondary text-secondary-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1",
+        ghost: "text-primary",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -40,7 +40,7 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -77,7 +77,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         onClick={asChild ? onClick : handleClick}
         {...props}
-      />
+      >
+        <span className="relative z-10">{children}</span>
+      </Comp>
     )
   }
 )

@@ -53,7 +53,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
               <Link
                 key={test.id}
                 to={test.url || `/book/${test.id}`}
-                className="group block p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors active:bg-gray-200 dark:active:bg-gray-700 border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
                 onClick={onItemClick}
               >
                 <div className="flex items-start justify-between">
@@ -101,7 +101,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                   <Link
                     key={category.id}
                     to={`/compare?category=${category.id}`}
-                    className="group flex items-start gap-3"
+                    className="state-layer group flex items-start gap-3 p-3 rounded-lg transition-shadow"
                     onClick={onItemClick}
                   >
                     <div 
