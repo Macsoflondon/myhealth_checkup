@@ -12,6 +12,7 @@ import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/CompareService";
 import { DataSourceIndicator } from "./DataSourceIndicator";
 import { AddPriceAlertButton } from "./AddPriceAlertButton";
+
 interface ModernCompareTableProps {
   tests: CompareTestData[];
   selectedCategory?: string;
@@ -67,44 +68,44 @@ export const ModernCompareTable = ({
   
   return <div className="space-y-4">
       {/* Featured/Best Value Cards */}
-      {tests.length > 0 && <div className="grid gap-4 md:grid-cols-3 mb-8 bg-white">
-          <Card className="border-health-primary/50 bg-white shadow-lg">
+      {tests.length > 0 && <div className="grid gap-4 md:grid-cols-3 mb-8">
+          <Card className="border-primary shadow-elevation-2 hover:shadow-elevation-3">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-center gap-2 text-[#e70d69] text-lg font-bold">
-                <Award className="h-4 w-4 text-health-primary" />
-                <span className="text-health-primary font-semibold text-base">Best Value</span>
+              <div className="flex items-center justify-center gap-2">
+                <Award className="h-5 w-5 text-primary" />
+                <span className="text-headline-small font-medium text-primary">Best Value</span>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-center text-[#081129] font-medium text-sm">
+              <p className="text-center text-body-medium font-medium">
                 Most comprehensive test for the price
               </p>
             </CardContent>
           </Card>
           
-          <Card className="border-health-secondary/50 bg-white shadow-lg">
+          <Card className="border-secondary shadow-elevation-2 hover:shadow-elevation-3">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-center gap-2 text-lg font-bold">
-                <Clock className="h-4 w-4 text-health-secondary" />
-                <span className="text-health-secondary font-semibold text-base">Fastest Results</span>
+              <div className="flex items-center justify-center gap-2">
+                <Clock className="h-5 w-5 text-secondary" />
+                <span className="text-headline-small font-medium text-secondary">Fastest Results</span>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-center text-[#081129] font-medium">
+              <p className="text-body-medium text-center font-medium">
                 Get your results in 24-48 hours
               </p>
             </CardContent>
           </Card>
           
-          <Card className="border-health-accent/50 bg-white shadow-lg">
+          <Card className="border-tertiary shadow-elevation-2 hover:shadow-elevation-3">
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-center gap-2 text-lg font-bold">
-                <Star className="h-4 w-4 text-health-accent" />
-                <span className="text-health-accent text-base font-semibold">Most Popular</span>
+              <div className="flex items-center justify-center gap-2">
+                <Star className="h-5 w-5 text-tertiary" />
+                <span className="text-headline-small font-medium text-tertiary">Most Popular</span>
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-center font-medium text-[#081129]">
+              <p className="text-body-medium text-center font-medium">
                 Chosen by thousands of customers
               </p>
             </CardContent>
@@ -117,11 +118,11 @@ export const ModernCompareTable = ({
         const isFavorite = favorites.includes(test.id);
         const isOutOfStock = test.available === false;
         const isSelected = selectedTestIds.includes(test.id);
-        return <Card key={test.id} className={cn("group hover:shadow-xl transition-all duration-300 border-border/50 bg-white relative", isOutOfStock && "opacity-60", isSelected && "ring-2 ring-primary shadow-2xl")}>
+        return <Card key={test.id} className={cn("group hover:shadow-elevation-3 transition-all duration-[280ms] ease-[cubic-bezier(0.4,0,0.2,1)] shadow-elevation-2 bg-surface relative rounded-xl", isOutOfStock && "opacity-60", isSelected && "ring-2 ring-primary shadow-elevation-4")}>
               {/* Selection Checkbox */}
               {onTestSelect && (
                 <div className="absolute top-3 left-3 z-10">
-                  <div className={cn("bg-background rounded-md border-2 p-1 shadow-sm transition-all", isSelected && "border-primary bg-primary/10")}>
+                  <div className={cn("bg-surface rounded-md border-2 p-1 shadow-elevation-1 transition-all", isSelected && "border-primary bg-primary-container")}>
                     <Checkbox
                       checked={isSelected}
                       onCheckedChange={() => onTestSelect(test.id)}
@@ -131,24 +132,24 @@ export const ModernCompareTable = ({
                 </div>
               )}
               
-              <CardContent className="p-4 sm:p-6 bg-white">
+              <CardContent className="p-6 bg-surface">
                 {/* Provider Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className={cn("flex items-center gap-3", onTestSelect && "ml-10")}>
-                    <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
+                    <Avatar className="h-10 w-10 shadow-elevation-1">
                       <AvatarImage src={test.providerLogo} alt={test.provider} />
                       <AvatarFallback className="text-xs">{test.provider.slice(0, 2).toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-xs font-bold sm:text-sm text-[#081129]">{test.provider}</p>
-                      <div className="flex items-center gap-1 text-xs">
+                      <p className="text-body-medium font-medium">{test.provider}</p>
+                      <div className="flex items-center gap-1">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold text-sm text-[#081129]">4.8</span>
+                        <span className="text-body-small font-semibold">4.8</span>
                       </div>
                     </div>
                   </div>
                   
-                  <Button variant="ghost" size="sm" onClick={() => handleToggleFavorite(test.id)} className={cn("hover:bg-pink-50 min-h-[44px] min-w-[44px] p-0", isFavorite ? "text-pink-500" : "text-muted-foreground")} disabled={!user}>
+                  <Button variant="ghost" size="icon" onClick={() => handleToggleFavorite(test.id)} className={cn("hover:bg-secondary-container", isFavorite ? "text-secondary" : "text-muted-foreground")} disabled={!user}>
                     <Heart className={cn("h-5 w-5", isFavorite && "fill-current")} />
                   </Button>
                 </div>
@@ -197,48 +198,47 @@ export const ModernCompareTable = ({
 
                 {/* Test Info */}
                 <div className="mb-4">
-                  <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 group-hover:text-health-primary transition-colors text-[#081129]">
+                  <h3 className="text-headline-small font-medium mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                     {test.name}
                   </h3>
-                  <p className="text-sm sm:text-base line-clamp-2 mb-3 text-[#081129]">
+                  <p className="text-body-medium text-muted-foreground line-clamp-2 mb-3">
                     {test.description || "Comprehensive health screening"}
                   </p>
                   
-                  {/* Test Features - Responsive */}
+                  {/* Test Features */}
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Biomarkers:</span>
-                      <span className="font-medium text-sm text-[#081129]">{test.features?.bioMarkers || 'Multiple'}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-body-medium text-muted-foreground">Biomarkers:</span>
+                      <span className="text-body-medium font-medium">{test.features?.bioMarkers || 'Multiple'}</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Turnaround:</span>
-                      <Badge variant="secondary" className="text-xs h-5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-body-medium text-muted-foreground">Turnaround:</span>
+                      <Badge variant="secondary">
                         {test.features?.turnaround || '1-2 days'}
                       </Badge>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Collection:</span>
-                      <span className="font-medium text-sm text-[#081129]">{test.features?.collection || 'At home'}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-body-medium text-muted-foreground">Collection:</span>
+                      <span className="text-body-medium font-medium">{test.features?.collection || 'At home'}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Price and Actions */}
-                <div className="border-t border-border pt-4">
+                <div className="border-t pt-4">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-2xl sm:text-3xl font-bold text-[#22c0d4]">
+                      <p className="text-headline-large font-bold text-primary">
                         £{test.price.toFixed(2)}
                       </p>
-                      {isOutOfStock && <Badge variant="destructive" className="text-xs mt-1">
+                      {isOutOfStock && <Badge variant="destructive" className="mt-1">
                           Out of Stock
                         </Badge>}
                     </div>
                     
-                  <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} size="sm" className="bg-[#22c0d4] hover:bg-[#1aa8ba] text-sm sm:text-base px-4 sm:px-6 text-white min-h-[44px] touch-manipulation active:scale-95 transition-transform">
+                  <Button onClick={() => handlePlaceOrder(test.id, test.provider)} disabled={isOutOfStock || !user} size="default" className="bg-primary hover:bg-primary/92 text-primary-foreground">
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Select Test</span>
-                    <span className="sm:hidden">Select</span>
+                    Select Test
                   </Button>
                 </div>
                 
@@ -255,11 +255,11 @@ export const ModernCompareTable = ({
                   </div>
                 )}
                 
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4 text-[#22c0d4]" />
-                  <span className="font-medium text-[#081129]">Results in {test.features?.turnaround || '1-2 days'}</span>
-                    <span className="text-muted-foreground">•</span>
-                    <span className="font-medium text-[#081129]">Free shipping</span>
+                <div className="flex items-center gap-2 text-body-medium text-muted-foreground">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span className="font-medium">Results in {test.features?.turnaround || '1-2 days'}</span>
+                    <span>•</span>
+                    <span className="font-medium">Free shipping</span>
                   </div>
                 </div>
               </CardContent>
