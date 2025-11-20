@@ -361,6 +361,47 @@
   }
 }
 
+/* Material Design State Layers */
+.state-layer {
+  position: relative;
+  overflow: hidden;
+}
+
+.state-layer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 200ms var(--easing-emphasized);
+  pointer-events: none;
+}
+
+/* Hover State - 8% opacity */
+.state-layer:hover::before {
+  opacity: 0.08;
+}
+
+/* Pressed State - 12% opacity */
+.state-layer:active::before {
+  opacity: 0.12;
+  transition-duration: 100ms;
+}
+
+/* Focus State - 12% opacity */
+.state-layer:focus-visible::before {
+  opacity: 0.12;
+}
+
+/* Disabled State - no overlay */
+.state-layer:disabled::before,
+.state-layer[disabled]::before {
+  opacity: 0;
+}
+
 /* Ripple Effect Styles */
 .ripple-effect {
   position: absolute;
@@ -368,6 +409,7 @@
   background-color: rgba(255, 255, 255, 0.3);
   pointer-events: none;
   animation: ripple 600ms var(--easing-emphasized);
+  z-index: 1;
 }
 
 @keyframes ripple {

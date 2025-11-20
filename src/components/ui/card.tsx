@@ -5,14 +5,17 @@ import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean }
+>(({ className, interactive, onClick, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      "rounded-xl bg-surface border-0 text-card-foreground shadow-elevation-2 hover:shadow-elevation-3 hover:bg-surface-tint transition-all",
+      "rounded-xl bg-surface border-0 text-card-foreground shadow-elevation-2 transition-all",
+      interactive && "state-layer cursor-pointer hover:shadow-elevation-3",
+      !interactive && "hover:shadow-elevation-3 hover:bg-surface-tint",
       className
     )}
+    onClick={onClick}
     {...props}
   />
 ))
