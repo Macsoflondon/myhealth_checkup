@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import Index from "@/pages/Index";
 import NotFound from "@/pages/NotFound";
 import AdminClinicUploadPage from "@/pages/AdminClinicUploadPage";
+import AdminClinicScraperPage from "@/pages/AdminClinicScraperPage";
 import AdminTestUploadPage from "@/pages/AdminTestUploadPage";
 import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
 import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
@@ -24,6 +25,7 @@ export function AppRoutes() {
       
       {/* Admin Routes */}
       <Route path="/admin/clinic-upload" element={<AdminClinicUploadPage />} />
+      <Route path="/admin/clinic-scraper" element={<AdminClinicScraperPage />} />
       <Route path="/admin/test-upload" element={<AdminTestUploadPage />} />
       <Route path="/admin/data-refresh" element={<AdminDataRefreshPage />} />
       <Route path="/admin/test-mapper" element={<AdminTestMapperPage />} />
