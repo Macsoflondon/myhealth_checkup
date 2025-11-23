@@ -28,8 +28,8 @@ const HealthAssetSection = () => {
     <section className="w-full bg-white py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#1a1b34] mb-4">
-            Your Health is Your <span className="text-[#FA6980]">Greatest Asset</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-4">
+            Your Health is Your <span className="text-[#e70d69]">Greatest Asset</span>
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto font-elegant italic leading-relaxed">
             Take control of your health with confidence. Compare private blood tests, health screenings, 
@@ -45,10 +45,10 @@ const HealthAssetSection = () => {
                 key={index} 
                 className="glass-card flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:scale-105"
               >
-                <div className="w-14 h-14 bg-[#3A5F85] rounded-full flex items-center justify-center mb-4">
+                <div className="w-14 h-14 bg-[#22c0d4] rounded-full flex items-center justify-center mb-4">
                   <Icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-lg font-heading font-bold text-[#1a1b34] mb-2">
+                <h3 className="text-lg font-heading font-bold text-[#081129] mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-gray-600">

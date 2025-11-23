@@ -79,10 +79,10 @@ const NewHero = () => {
   }], [t]);
   return <>
       {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-[#1a1b34]">
+      <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full">
           {/* Hero Video Container - Optimized for mobile */}
-          <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] lg:aspect-video overflow-hidden bg-[#1a1b34]">
+          <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] lg:aspect-video overflow-hidden bg-[#081129]">
             <video autoPlay loop muted playsInline preload="metadata" poster="/lovable-uploads/hero-image-1.png" className="absolute inset-0 w-full h-full object-cover" src="/myhealth_checkup.mp4" aria-label="myhealth checkup - Your health is your greatest asset">
               Your browser does not support the video tag.
             </video>
@@ -91,12 +91,12 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#1a1b34] py-3 sm:py-4 md:py-6">
+      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
           <ScrollFadeIn delay={100}>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
               <span className="text-white block sm:inline">It's time to feel like </span>
-              <span className="text-[#3A5F85]">yourself again</span>
+              <span className="text-[#22c0d4]">yourself again</span>
             </h1>
           </ScrollFadeIn>
           <ScrollFadeIn delay={300}>
@@ -119,26 +119,26 @@ const NewHero = () => {
       </section>
       
       {/* Trust Indicators and Search Section */}
-      <section className="relative overflow-hidden bg-[#1a1b34] text-white w-full">
-        <div className="relative z-10 w-full py-3 sm:py-6 bg-[#1a1b34]">
+      <section className="relative overflow-hidden bg-[#081129] text-white w-full">
+        <div className="relative z-10 w-full py-3 sm:py-6 bg-[#081129]">
           <div className="w-full text-center px-3 sm:px-4">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
                 <CheckCircle2 className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#1a1b34] leading-tight">{t('hero.noGPReferral')}</span>
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
               </div>
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
                 <Shield className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#1a1b34] leading-tight">{t('hero.ukasAccredited')}</span>
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
               </div>
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
                 <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#1a1b34] leading-tight">{t('hero.atHomeTest')}</span>
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
               </div>
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
                 <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#1a1b34] leading-tight">{t('hero.resultsTime')}</span>
+                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
               </div>
             </div>
 
@@ -148,9 +148,9 @@ const NewHero = () => {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
-                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#1a1b34]" />
+                    <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
                   </div>
-                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#3A5F85] hover:bg-[#2d4d6b] font-medium">
+                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] font-medium">
                     {isAnalyzing ? <>
                         <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
                         {t('hero.analyzing')}
@@ -168,7 +168,7 @@ const NewHero = () => {
                       <h3 className="font-semibold text-blue-800">{t('hero.aiAnalysisResults')}</h3>
                     </div>
                     
-                    <p className="text-[#1a1b34] mb-4">{aiResults.analysis}</p>
+                    <p className="text-[#081129] mb-4">{aiResults.analysis}</p>
                     
                     {aiResults.recommendedTests?.length > 0 && <div className="mb-4">
                         <h4 className="font-medium text-green-800 mb-2">{t('hero.testsWeOffer')}</h4>
@@ -176,7 +176,7 @@ const NewHero = () => {
                           {aiResults.recommendedTests.map((test: any, index: number) => <div key={index} className="bg-white p-3 rounded border border-green-200">
                               <div className="font-medium text-green-700">{test.testName}</div>
                               <div className="text-sm text-gray-600">{test.reason}</div>
-                              <div className="text-xs mt-1 text-white bg-[#3A5F85]">Category: {test.category}</div>
+                              <div className="text-xs mt-1 text-white bg-[#22c0d4]">Category: {test.category}</div>
                             </div>)}
                         </div>
                       </div>}
@@ -199,9 +199,9 @@ const NewHero = () => {
                 
                 {/* Popular Searches - Mobile optimized */}
                 <div className="mt-3 sm:mt-4">
-                  <p className="text-xs sm:text-sm text-[#1a1b34] mb-2 font-semibold">{t('hero.popularSearches')}</p>
+                  <p className="text-xs sm:text-sm text-[#081129] mb-2 font-semibold">{t('hero.popularSearches')}</p>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#1a1b34] active:scale-95">
+                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] active:scale-95">
                         {search.name}
                       </button>)}
                   </div>
@@ -212,13 +212,13 @@ const NewHero = () => {
             {/* Stats Grid - Mobile optimized */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
               <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
-                <span className="text-[#3A5F85] text-center text-xs sm:text-base font-bold block">{t('hero.trustedProviders')}</span>
+                <span className="text-[#22c0d4] text-center text-xs sm:text-base font-bold block">{t('hero.trustedProviders')}</span>
               </div>
               <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
-                <span className="text-center text-xs sm:text-base font-semibold text-[#FA6980] block">{t('hero.availableTests')}</span>
+                <span className="text-center text-xs sm:text-base font-semibold text-[#e70d69] block">{t('hero.availableTests')}</span>
               </div>
               <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
-                <span className="text-center text-[#3A5F85] text-xs sm:text-base font-bold block">{t('hero.nationwideClinics')}</span>
+                <span className="text-center text-[#22c0d4] text-xs sm:text-base font-bold block">{t('hero.nationwideClinics')}</span>
               </div>
             </div>
           </div>
@@ -233,7 +233,7 @@ const NewHero = () => {
       {/* Our Partners Section */}
       <section className="w-full bg-gray-50 py-4 sm:py-6">
         <div className="max-w-7xl mx-auto px-3 sm:px-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-center text-[#1a1b34] mb-4 sm:mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6">
             {t('hero.ourPartners')}
           </h2>
           <Carousel opts={{
@@ -256,11 +256,11 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Text Banner Divider */}
-      <section className="w-full py-4 sm:py-6 md:py-8 bg-[#1a1b34]">
+      <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129]">
         <div className="w-full px-3 sm:px-4">
           <ScrollFadeIn delay={200}>
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
-              Your <span className="text-[#3A5F85]">{t('hero.health')}</span> is your greatest <span className="text-[#FA6980]">{t('hero.asset')}</span>!
+              Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!
             </h2>
           </ScrollFadeIn>
         </div>
