@@ -11,6 +11,7 @@ import { logger } from "@/lib/logger";
 import { providers } from "@/data/compare/providers";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 const NewHero = () => {
   const {
     t
@@ -92,24 +93,28 @@ const NewHero = () => {
       {/* Full-width Headline Banner */}
       <section className="w-full bg-[#1a1b34] py-3 sm:py-4 md:py-6">
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
-            <span className="text-white block sm:inline">It's time to feel like </span>
-            <span className="text-[#3A5F85]">yourself again</span>
-          </h1>
-          <div className="text-base sm:text-lg lg:text-xl max-w-4xl mx-auto mt-6 text-center text-white font-sans font-light leading-relaxed space-y-4">
-            <p className="font-elegant italic text-lg sm:text-xl lg:text-2xl mb-4">
-              At myhealth checkup, we believe your health is your greatest asset.
-            </p>
-            <p className="mb-2">
-              That's why we've created the UK's only independent comparison platform dedicated to private health and wellness testing.
-            </p>
-            <p className="mb-2">
-              We partner exclusively with CQC-regulated providers who only use UKAS-accredited labs and are ISO 15189 certified to bring you safe, high-quality diagnostics all in one place.
-            </p>
-            <p>
-              From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence.
-            </p>
-          </div>
+          <ScrollFadeIn delay={100}>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
+              <span className="text-white block sm:inline">It's time to feel like </span>
+              <span className="text-[#3A5F85]">yourself again</span>
+            </h1>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={300}>
+            <div className="text-base sm:text-lg lg:text-xl max-w-4xl mx-auto mt-6 text-center text-white font-sans font-light leading-relaxed space-y-4">
+              <p className="font-elegant italic text-lg sm:text-xl lg:text-2xl mb-4">
+                At myhealth checkup, we believe your health is your greatest asset.
+              </p>
+              <p className="mb-2">
+                That's why we've created the UK's only independent comparison platform dedicated to private health and wellness testing.
+              </p>
+              <p className="mb-2">
+                We partner exclusively with CQC-regulated providers who only use UKAS-accredited labs and are ISO 15189 certified to bring you safe, high-quality diagnostics all in one place.
+              </p>
+              <p>
+                From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence.
+              </p>
+            </div>
+          </ScrollFadeIn>
         </div>
       </section>
       
@@ -253,9 +258,11 @@ const NewHero = () => {
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-4 sm:py-6 md:py-8 bg-[#1a1b34]">
         <div className="w-full px-3 sm:px-4">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
-            Your <span className="text-[#3A5F85]">{t('hero.health')}</span> is your greatest <span className="text-[#FA6980]">{t('hero.asset')}</span>!
-          </h2>
+          <ScrollFadeIn delay={200}>
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
+              Your <span className="text-[#3A5F85]">{t('hero.health')}</span> is your greatest <span className="text-[#FA6980]">{t('hero.asset')}</span>!
+            </h2>
+          </ScrollFadeIn>
         </div>
       </section>
     </>;
