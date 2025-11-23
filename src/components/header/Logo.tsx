@@ -16,7 +16,7 @@ export const Logo = () => {
       <img 
         src={logo} 
         alt="My Health Checkup" 
-        className="h-10 sm:h-16 lg:h-20 w-auto"
+        className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto"
         loading="eager"
       />
     </Link>
