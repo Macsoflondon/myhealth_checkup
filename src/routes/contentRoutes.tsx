@@ -9,6 +9,7 @@ import SitemapPage from "@/pages/SitemapPage";
 import ConditionsPage from "@/pages/ConditionsPage";
 import TrustedProvidersPage from "@/pages/TrustedProvidersPage";
 import SportsPerformancePage from "@/pages/SportsPerformancePage";
+import TypographyShowcasePage from "@/pages/TypographyShowcasePage";
 
 export const contentRoutes = (
   <>
@@ -23,5 +24,6 @@ export const contentRoutes = (
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
     <Route path="/sports-performance" element={<SportsPerformancePage />} />
+    <Route path="/typography-showcase" element={<TypographyShowcasePage />} />
   </>
 );
