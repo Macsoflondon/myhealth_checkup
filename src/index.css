@@ -224,8 +224,17 @@
 
   body {
     @apply bg-white font-sans;
-    color: #081129;
-    font-weight: 500;
+    color: #1a1b34;
+    font-weight: 400;
+  }
+  
+  /* Brand Typography Application */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+  
+  .elegant-text {
+    @apply font-elegant;
   }
 
   .health-gradient {

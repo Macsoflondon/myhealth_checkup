@@ -24,7 +24,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Roboto', 'system-ui', 'sans-serif'],
+				sans: ['Lato', 'system-ui', 'sans-serif'], // Body text
+				heading: ['Montserrat', 'system-ui', 'sans-serif'], // Headings
+				elegant: ['EB Garamond', 'Georgia', 'serif'], // Elegant accents
 			},
 			spacing: {
 				'1': '8px',
