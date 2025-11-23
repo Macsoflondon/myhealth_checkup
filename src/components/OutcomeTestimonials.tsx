@@ -78,7 +78,7 @@ const OutcomeTestimonials = () => {
 
         {/* Testimonial Card */}
         <div className="max-w-6xl mx-auto">
-          <Card className="overflow-hidden shadow-2xl border-0">
+          <Card className="overflow-hidden shadow-2xl border-0 hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)] hover:-translate-y-2 transition-all duration-500 hover-glow-gradient">
             <div className="grid md:grid-cols-2 gap-0">
               {/* Image Side */}
               <div className="relative h-64 md:h-auto">
@@ -144,7 +144,7 @@ const OutcomeTestimonials = () => {
               onClick={goToPrevious}
               variant="outline"
               size="icon"
-              className="rounded-full w-12 h-12 border-2 border-[#22c0d4] hover:bg-[#22c0d4] hover:text-white"
+              className="rounded-full w-12 h-12 border-2 border-[#22c0d4] hover:bg-[#22c0d4] hover:text-white hover:scale-110 hover:shadow-lg transition-all duration-300"
             >
               <ChevronLeft className="w-6 h-6" />
             </Button>
@@ -154,10 +154,10 @@ const OutcomeTestimonials = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`h-3 rounded-full transition-all duration-300 hover:scale-110 ${
                     index === currentIndex
-                      ? "bg-[#e70d69] w-8"
-                      : "bg-gray-300 hover:bg-gray-400"
+                      ? "bg-[#e70d69] w-8 shadow-md"
+                      : "bg-gray-300 hover:bg-gray-400 w-3"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -168,7 +168,7 @@ const OutcomeTestimonials = () => {
               onClick={goToNext}
               variant="outline"
               size="icon"
-              className="rounded-full w-12 h-12 border-2 border-[#22c0d4] hover:bg-[#22c0d4] hover:text-white"
+              className="rounded-full w-12 h-12 border-2 border-[#22c0d4] hover:bg-[#22c0d4] hover:text-white hover:scale-110 hover:shadow-lg transition-all duration-300"
             >
               <ChevronRight className="w-6 h-6" />
             </Button>

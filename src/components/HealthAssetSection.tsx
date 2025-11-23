@@ -43,9 +43,9 @@ const HealthAssetSection = () => {
             return (
               <div 
                 key={index} 
-                className="glass-card flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:scale-105"
+                className="glass-card flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover-glow-turquoise cursor-pointer"
               >
-                <div className="w-14 h-14 bg-[#22c0d4] rounded-full flex items-center justify-center mb-4">
+                <div className="w-14 h-14 bg-[#22c0d4] rounded-full flex items-center justify-center mb-4 hover:scale-110 transition-transform duration-300">
                   <Icon className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-lg font-heading font-bold text-[#081129] mb-2">

@@ -88,6 +88,10 @@ export default {
 				'health-warning': 'hsl(38 92% 50%)',
 				'health-highlight': 'hsl(var(--secondary))',
 				'health-icon': 'hsl(var(--primary))',
+				// Brand specific colors
+				'brand-turquoise': 'hsl(187 72% 48%)',
+				'brand-pink': 'hsl(335 89% 48%)',
+				'brand-navy': 'hsl(224 67% 10%)',
 				health: {
 					50: 'hsl(186 75% 97%)',
 					100: 'hsl(186 75% 94%)',
@@ -156,7 +160,11 @@ export default {
 				'elevation-4': 'var(--elevation-4)',
 				'elevation-5': 'var(--elevation-5)',
 			},
-			keyframes: {
+			backgroundImage: {
+				'gradient-brand': 'linear-gradient(135deg, hsl(187 72% 48%), hsl(335 89% 48%))',
+				'gradient-brand-reverse': 'linear-gradient(135deg, hsl(335 89% 48%), hsl(187 72% 48%))',
+				'gradient-brand-soft': 'linear-gradient(135deg, hsl(187 72% 48% / 0.1), hsl(335 89% 48% / 0.1))',
+			},
 				'accordion-down': {
 					from: {
 						height: '0'
