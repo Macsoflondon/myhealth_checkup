@@ -15,7 +15,7 @@ const categoryColorMap: Record<string, string> = {
   'vitamins': 'bg-lime-500 text-white',
   'cancer-screening': 'bg-purple-600 text-white',
   'heart-health': 'bg-red-600 text-white',
-  'mens-health': 'bg-[#081129] text-white',
+  'mens-health': 'bg-[#1a1b34] text-white',
   'womens-health': 'bg-pink-600 text-white',
   'fertility': 'bg-purple-500 text-white',
   'general-health': 'bg-teal-500 text-white',
@@ -39,7 +39,7 @@ export const SearchBar = () => {
           <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
           <Input type="text" placeholder="Search from over 200 tests" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-9 pr-3 w-full text-sm md:text-base bg-white text-[#1a1b34] border-gray-300 ring-purple-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-r-none rounded-sm py-2 md:py-2.5" />
         </div>
-        <Button type="submit" size="sm" className="text-white px-3 md:px-4 py-2 md:py-2.5 rounded-l-none border-l-0 h-full bg-[#E70D69] hover:bg-[#E70D69]/90">
+        <Button type="submit" size="sm" className="text-white px-3 md:px-4 py-2 md:py-2.5 rounded-l-none border-l-0 h-full bg-[#FA6980] hover:bg-[#FA6980]/90">
           <Search className="h-4 w-4 text-white" />
         </Button>
       </form>
