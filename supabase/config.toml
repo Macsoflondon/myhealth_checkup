@@ -31,6 +31,12 @@ verify_jwt = true
 [functions.test-recommendations]
 verify_jwt = false
 
+# Sports Test Recommendations API
+# Public access - Uses Lovable AI for sport-specific test recommendations
+# Security: Input validation, rate limiting via AI gateway
+[functions.sports-test-recommendations]
+verify_jwt = false
+
 # Send Test Notification API
 # Requires authentication - Sends test email/SMS notifications
 # Security: JWT verification, verified userId from token
