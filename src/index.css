@@ -97,6 +97,9 @@
     --gradient-accent: linear-gradient(135deg, hsl(335 89% 48%), hsl(335 89% 60%));
     --gradient-hero: linear-gradient(180deg, hsl(224 67% 10%), hsl(224 67% 15%));
     --gradient-soft: linear-gradient(135deg, hsl(187 72% 48% / 0.1), hsl(335 89% 48% / 0.1));
+    --gradient-brand: linear-gradient(135deg, hsl(187 72% 48%), hsl(335 89% 48%));
+    --gradient-brand-reverse: linear-gradient(135deg, hsl(335 89% 48%), hsl(187 72% 48%));
+    --gradient-overlay: linear-gradient(135deg, hsl(187 72% 48% / 0.95), hsl(335 89% 48% / 0.95));
     
     --shadow-soft: 0 2px 8px hsl(224 67% 10% / 0.06);
     --shadow-card: 0 1px 3px hsl(224 67% 10% / 0.03), 0 4px 8px hsl(224 67% 10% / 0.05), 0 8px 16px hsl(224 67% 10% / 0.06);
@@ -589,6 +592,66 @@
     border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--glass-shadow);
     animation: float 3.5s ease-in-out infinite;
+  }
+  
+  /* Brand gradient overlays */
+  .gradient-overlay-hero {
+    background: var(--gradient-overlay);
+    position: relative;
+  }
+  
+  .gradient-overlay-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-brand);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .gradient-overlay-hero:hover::before {
+    opacity: 0.1;
+  }
+  
+  .gradient-brand-text {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .gradient-bg-brand {
+    background: var(--gradient-brand);
+  }
+  
+  .gradient-bg-brand-reverse {
+    background: var(--gradient-brand-reverse);
+  }
+  
+  /* Hover glow effects with brand colors */
+  .hover-glow-turquoise {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-glow-turquoise:hover {
+    box-shadow: 0 0 20px hsl(187 72% 48% / 0.5), 0 0 40px hsl(187 72% 48% / 0.3);
+  }
+  
+  .hover-glow-pink {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-glow-pink:hover {
+    box-shadow: 0 0 20px hsl(335 89% 48% / 0.5), 0 0 40px hsl(335 89% 48% / 0.3);
+  }
+  
+  .hover-glow-gradient {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-glow-gradient:hover {
+    box-shadow: 0 0 20px hsl(187 72% 48% / 0.4), 0 0 40px hsl(335 89% 48% / 0.4);
   }
   
   /* Disable floating animation for users who prefer reduced motion */

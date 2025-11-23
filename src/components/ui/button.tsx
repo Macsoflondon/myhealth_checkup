@@ -5,19 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "state-layer relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-shadow [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:relative [&_svg]:z-10",
+  "state-layer relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all duration-300 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:relative [&_svg]:z-10",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1",
+        default: "bg-primary text-primary-foreground shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
         destructive:
-          "bg-error text-error-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1",
+          "bg-error text-error-foreground shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
         outline:
-          "border border-tertiary bg-transparent text-tertiary",
+          "border-2 border-tertiary bg-transparent text-tertiary hover:bg-tertiary hover:text-white hover:scale-105 active:scale-95",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-elevation-2 hover:shadow-elevation-4 active:shadow-elevation-1",
-        ghost: "text-primary",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-secondary text-secondary-foreground shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
+        ghost: "text-primary hover:bg-primary/10 hover:scale-105 active:scale-95",
+        link: "text-primary underline-offset-4 hover:underline hover:scale-105 active:scale-95",
+        gradient: "bg-gradient-to-r from-primary to-secondary text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
       },
       size: {
         default: "h-12 px-8 py-2",

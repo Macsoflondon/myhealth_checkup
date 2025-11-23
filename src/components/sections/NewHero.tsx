@@ -91,8 +91,10 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6">
-        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
+      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6 relative overflow-hidden">
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.05)] to-[hsl(335_89%_48%_/_0.05)] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
           <ScrollFadeIn delay={100}>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
               <span className="text-white block sm:inline">It's time to feel like </span>
@@ -124,19 +126,19 @@ const NewHero = () => {
           <div className="w-full text-center px-3 sm:px-4">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-turquoise cursor-pointer">
                 <CheckCircle2 className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
               </div>
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-turquoise cursor-pointer">
                 <Shield className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
               </div>
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-pink cursor-pointer">
                 <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
               </div>
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-lg transition-all duration-200 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px]">
+              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-pink cursor-pointer">
                 <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
               </div>
@@ -150,7 +152,7 @@ const NewHero = () => {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
                     <input type="text" placeholder={t('hero.searchPrompt')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
                   </div>
-                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] font-medium">
+                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] hover:shadow-lg hover:scale-105 font-medium">
                     {isAnalyzing ? <>
                         <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
                         {t('hero.analyzing')}
@@ -201,7 +203,7 @@ const NewHero = () => {
                 <div className="mt-3 sm:mt-4">
                   <p className="text-xs sm:text-sm text-[#081129] mb-2 font-semibold">{t('hero.popularSearches')}</p>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white rounded-full transition-all duration-200 text-[#081129] active:scale-95">
+                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white hover:scale-105 rounded-full transition-all duration-200 text-[#081129] active:scale-95 hover:shadow-md">
                         {search.name}
                       </button>)}
                   </div>
@@ -211,14 +213,14 @@ const NewHero = () => {
 
             {/* Stats Grid - Mobile optimized */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
-              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
+              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover-glow-turquoise cursor-pointer">
                 <span className="text-[#22c0d4] text-center text-xs sm:text-base font-bold block">{t('hero.trustedProviders')}</span>
               </div>
-              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
+              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover-glow-pink cursor-pointer">
                 <span className="text-center text-xs sm:text-base font-semibold text-[#e70d69] block">{t('hero.availableTests')}</span>
               </div>
-              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg transition-all duration-200">
-                <span className="text-center text-[#22c0d4] text-xs sm:text-base font-bold block">{t('hero.nationwideClinics')}</span>
+              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover-glow-gradient cursor-pointer">
+                <span className="text-center text-xs sm:text-base font-bold block gradient-brand-text">{t('hero.nationwideClinics')}</span>
               </div>
             </div>
           </div>
@@ -256,8 +258,10 @@ const NewHero = () => {
       </section>
       
       {/* Full-width Text Banner Divider */}
-      <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129]">
-        <div className="w-full px-3 sm:px-4">
+      <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129] relative overflow-hidden">
+        {/* Gradient overlay effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.1)] via-transparent to-[hsl(335_89%_48%_/_0.1)] pointer-events-none" />
+        <div className="w-full px-3 sm:px-4 relative z-10">
           <ScrollFadeIn delay={200}>
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
               Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!
