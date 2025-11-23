@@ -47,8 +47,8 @@ const Testimonials = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold mb-4">What Our Customers Say</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">What Our Customers Say</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg font-elegant italic">
             Real stories from people who've taken control of their health with our testing services.
           </p>
         </div>
@@ -62,7 +62,7 @@ const Testimonials = () => {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-lg text-gray-700 mb-6 italic">
+                <p className="text-xl text-gray-700 mb-6 font-elegant italic leading-relaxed">
                   "{testimonials[currentIndex].content}"
                 </p>
                 <div className="mb-4">

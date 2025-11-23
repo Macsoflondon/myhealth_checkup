@@ -92,12 +92,12 @@ const NewHero = () => {
       {/* Full-width Headline Banner */}
       <section className="w-full bg-[#1a1b34] py-3 sm:py-4 md:py-6">
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 ">
-          <h1 className="text-xl sm:text-2xl md:text-3xl xl:text-5xl leading-tight font-medium text-center max-w-6xl mx-auto my-0 py-[20px] lg:text-4xl">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
             <span className="text-white block sm:inline">It's time to feel like </span>
             <span className="text-[#3A5F85]">yourself again</span>
           </h1>
-          <div className="text-base sm:text-lg max-w-4xl mx-auto mt-4 text-center text-white font-normal md:text-lg space-y-3">
-            <p className="mb-2">
+          <div className="text-base sm:text-lg lg:text-xl max-w-4xl mx-auto mt-6 text-center text-white font-sans font-light leading-relaxed space-y-4">
+            <p className="font-elegant italic text-lg sm:text-xl lg:text-2xl mb-4">
               At myhealth checkup, we believe your health is your greatest asset.
             </p>
             <p className="mb-2">
@@ -228,7 +228,7 @@ const NewHero = () => {
       {/* Our Partners Section */}
       <section className="w-full bg-gray-50 py-4 sm:py-6">
         <div className="max-w-7xl mx-auto px-3 sm:px-4">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-[#1a1b34] mb-4 sm:mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-center text-[#1a1b34] mb-4 sm:mb-6">
             {t('hero.ourPartners')}
           </h2>
           <Carousel opts={{
@@ -253,7 +253,7 @@ const NewHero = () => {
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-4 sm:py-6 md:py-8 bg-[#1a1b34]">
         <div className="w-full px-3 sm:px-4">
-          <h2 className="text-base sm:text-xl lg:text-4xl text-center leading-tight font-medium text-white md:text-4xl">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
             Your <span className="text-[#3A5F85]">{t('hero.health')}</span> is your greatest <span className="text-[#FA6980]">{t('hero.asset')}</span>!
           </h2>
         </div>
