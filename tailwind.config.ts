@@ -44,21 +44,21 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				// Material 3 Primary - Turquoise (Brand)
+				// Material 3 Primary - Turquoise (Brand #3A5F85)
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
 					container: 'hsl(var(--primary-container))',
 					'on-container': 'hsl(var(--primary-on-container))',
 				},
-				// Material 3 Secondary - Pink (Brand)
+				// Material 3 Secondary - Pink (Brand #FA6980)
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))',
 					container: 'hsl(var(--secondary-container))',
 					'on-container': 'hsl(var(--secondary-on-container))',
 				},
-				// Material 3 Tertiary - Navy (Brand)
+				// Material 3 Tertiary - Navy (Brand #1a1b34)
 				tertiary: {
 					DEFAULT: 'hsl(var(--tertiary))',
 					foreground: 'hsl(var(--tertiary-foreground))',
