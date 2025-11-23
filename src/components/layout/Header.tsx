@@ -62,10 +62,6 @@ const Header = ({ className }: HeaderProps) => {
               <Logo />
             </div>
 
-            <div className="absolute left-1/2 -translate-x-1/2 z-0 w-full max-w-[400px] md:max-w-[480px]">
-              <SearchBar />
-            </div>
-
             <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0 justify-end z-10">
               <LanguageSwitcher />
               <UserMenu />
