@@ -11,6 +11,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { sportsPerformanceCategories } from "@/data/sportsPerformanceCategories";
 import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
 interface TestData {
   id: string;
   test_name: string;
@@ -235,6 +236,24 @@ const SportsPerformancePage = () => {
                     </CardContent>
                   </Card>;
             })}
+            </div>
+          </div>
+        </section>
+
+        {/* AI Recommendation Engine Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Personalized Test Recommendations
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Get AI-powered test suggestions tailored to your sport, training goals, and experience level
+              </p>
+            </div>
+            
+            <div className="max-w-5xl mx-auto">
+              <SportsTestRecommendationEngine />
             </div>
           </div>
         </section>
