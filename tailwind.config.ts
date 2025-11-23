@@ -163,8 +163,9 @@ export default {
 			backgroundImage: {
 				'gradient-brand': 'linear-gradient(135deg, hsl(187 72% 48%), hsl(335 89% 48%))',
 				'gradient-brand-reverse': 'linear-gradient(135deg, hsl(335 89% 48%), hsl(187 72% 48%))',
-				'gradient-brand-soft': 'linear-gradient(135deg, hsl(187 72% 48% / 0.1), hsl(335 89% 48% / 0.1))',
+				'gradient-brand-soft': 'linear-gradient(135deg, hsla(187, 72%, 48%, 0.1), hsla(335, 89%, 48%, 0.1))',
 			},
+			keyframes: {
 				'accordion-down': {
 					from: {
 						height: '0'

@@ -96,10 +96,10 @@
     --gradient-health: linear-gradient(135deg, hsl(187 72% 48%), hsl(187 72% 60%));
     --gradient-accent: linear-gradient(135deg, hsl(335 89% 48%), hsl(335 89% 60%));
     --gradient-hero: linear-gradient(180deg, hsl(224 67% 10%), hsl(224 67% 15%));
-    --gradient-soft: linear-gradient(135deg, hsl(187 72% 48% / 0.1), hsl(335 89% 48% / 0.1));
+    --gradient-soft: linear-gradient(135deg, hsla(187, 72%, 48%, 0.1), hsla(335, 89%, 48%, 0.1));
     --gradient-brand: linear-gradient(135deg, hsl(187 72% 48%), hsl(335 89% 48%));
     --gradient-brand-reverse: linear-gradient(135deg, hsl(335 89% 48%), hsl(187 72% 48%));
-    --gradient-overlay: linear-gradient(135deg, hsl(187 72% 48% / 0.95), hsl(335 89% 48% / 0.95));
+    --gradient-overlay: linear-gradient(135deg, hsla(187, 72%, 48%, 0.95), hsla(335, 89%, 48%, 0.95));
     
     --shadow-soft: 0 2px 8px hsl(224 67% 10% / 0.06);
     --shadow-card: 0 1px 3px hsl(224 67% 10% / 0.03), 0 4px 8px hsl(224 67% 10% / 0.05), 0 8px 16px hsl(224 67% 10% / 0.06);
@@ -166,16 +166,10 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 205 39% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 351 94% 75%;
-    --secondary-foreground: 0 0% 100%;
-
     --muted: 220 15% 15%;
     --muted-foreground: 220 10% 65%;
 
-    --accent: 351 94% 75%;
+    --accent: 335 89% 60%;
     --accent-foreground: 0 0% 100%;
     
     --health-primary: 187 72% 60%;
@@ -214,11 +208,10 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
-
-@layer base {
+  
+  /* Base element styles */
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   
   html {
@@ -226,18 +219,19 @@
   }
 
   body {
-    @apply bg-white font-sans;
+    background-color: white;
+    font-family: 'Lato', system-ui, sans-serif;
     color: #081129;
     font-weight: 400;
   }
   
   /* Brand Typography Application */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    font-family: 'Montserrat', system-ui, sans-serif;
   }
   
   .elegant-text {
-    @apply font-elegant;
+    font-family: 'EB Garamond', Georgia, serif;
   }
 
   .health-gradient {
