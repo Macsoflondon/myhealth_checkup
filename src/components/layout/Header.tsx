@@ -7,6 +7,7 @@ import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
 import { MobileMenu } from "../header/MobileMenu";
+import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
@@ -41,6 +42,9 @@ const Header = ({ className }: HeaderProps) => {
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             </div>
           </div>
+          
+          {/* Mobile Navigation Drawer */}
+          <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </header>
       </ErrorBoundary>
     );
