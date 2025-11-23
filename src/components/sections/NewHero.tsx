@@ -92,8 +92,22 @@ const NewHero = () => {
       
       {/* Full-width Headline Banner */}
       <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6 relative overflow-hidden">
+        {/* Background image layer */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/lovable-uploads/hero-bg-blood-rack.jpeg"
+            alt=""
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-[#081129]/75 z-[1]" />
+        
         {/* Gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.05)] to-[hsl(335_89%_48%_/_0.05)] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.05)] to-[hsl(335_89%_48%_/_0.05)] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none z-[2]" />
+        
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
           <ScrollFadeIn delay={100}>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
@@ -120,9 +134,24 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Trust Indicators and Search Section */}
-      <section className="relative overflow-hidden bg-[#081129] text-white w-full">
-        <div className="relative z-10 w-full py-3 sm:py-6 bg-[#081129]">
+      {/* Background wrapper for pink tubes image */}
+      <div className="relative w-full">
+        {/* Pink tubes background */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
+            alt=""
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        
+        {/* Dark overlay for consistency */}
+        <div className="absolute inset-0 bg-[#081129]/80 z-[1]" />
+        
+        {/* Trust Indicators and Search Section */}
+        <section className="relative overflow-hidden text-white w-full">
+          <div className="relative z-10 w-full py-3 sm:py-6">
           <div className="w-full text-center px-3 sm:px-4">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
@@ -224,12 +253,13 @@ const NewHero = () => {
               </div>
             </div>
           </div>
+          </div>
+        </section>
+        
+        {/* Accreditation Logos - Lazy loaded */}
+        <div className="w-full relative z-10">
+          <AccreditationLogos />
         </div>
-      </section>
-      
-      {/* Accreditation Logos - Lazy loaded */}
-      <div className="w-full">
-        <AccreditationLogos />
       </div>
       
       {/* Our Partners Section */}
