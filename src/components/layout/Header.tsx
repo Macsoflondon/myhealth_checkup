@@ -55,9 +55,6 @@ const Header = ({ className }: HeaderProps) => {
   return (
     <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
-        {/* Utility Bar - Marquee promo banner */}
-        <UtilityBar />
-
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className={headerBarClasses}>
           <div className="relative flex items-center justify-between w-full bg-[#081129] py-0">
