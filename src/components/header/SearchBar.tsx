@@ -33,13 +33,13 @@ export const SearchBar = () => {
       logger.debug("Searching for:", searchQuery);
     }
   };
-  return <div className="relative w-full max-w-[576px]">
+  return <div className="relative w-full max-w-[400px] md:max-w-[480px]">
       <form onSubmit={handleSearch} className="flex w-full">
         <div className="relative flex-1 flex justify-center items-center ">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
-          <Input type="text" placeholder="Search from over 200 tests" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 pr-4 w-full text-base bg-white text-[#1a1b34] border-gray-300 ring-purple-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-r-none rounded-sm py-[12px]" />
+          <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+          <Input type="text" placeholder="Search from over 200 tests" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-9 pr-3 w-full text-sm md:text-base bg-white text-[#1a1b34] border-gray-300 ring-purple-100 focus:border-primary focus:ring-1 focus:ring-primary rounded-r-none rounded-sm py-2 md:py-2.5" />
         </div>
-        <Button type="submit" size="default" className="text-white px-6 py-3 rounded-l-none border-l-0 h-full bg-[#E70D69] hover:bg-[#E70D69]/90">
+        <Button type="submit" size="sm" className="text-white px-3 md:px-4 py-2 md:py-2.5 rounded-l-none border-l-0 h-full bg-[#E70D69] hover:bg-[#E70D69]/90">
           <Search className="h-4 w-4 text-white" />
         </Button>
       </form>
