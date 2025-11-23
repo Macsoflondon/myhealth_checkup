@@ -68,8 +68,8 @@ const OutcomeTestimonials = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#1a1b34] mb-4">
-            Results That <span className="text-[#FA6980]">Change Lives</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-4">
+            Results That <span className="text-[#e70d69]">Change Lives</span>
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto font-elegant italic">
             Real people, real results. See how private testing helped them take control
@@ -97,7 +97,7 @@ const OutcomeTestimonials = () => {
 
               {/* Content Side */}
               <div className="p-8 sm:p-10 bg-white relative">
-                <Quote className="absolute top-6 right-6 w-12 h-12 text-[#FA6980] opacity-10" />
+                <Quote className="absolute top-6 right-6 w-12 h-12 text-[#e70d69] opacity-10" />
                 
                 {/* Symptoms Before */}
                 <div className="mb-6">
@@ -129,7 +129,7 @@ const OutcomeTestimonials = () => {
 
                 {/* Improvement Stat */}
                 <div className="mb-6">
-                  <div className="text-3xl font-heading font-bold text-[#3A5F85] mb-1">
+                  <div className="text-3xl font-heading font-bold text-[#22c0d4] mb-1">
                     {current.improvement}
                   </div>
                   <div className="text-sm text-gray-600">Test Used: {current.testUsed}</div>
@@ -144,7 +144,7 @@ const OutcomeTestimonials = () => {
               onClick={goToPrevious}
               variant="outline"
               size="icon"
-              className="rounded-full w-12 h-12 border-2 border-[#3A5F85] hover:bg-[#3A5F85] hover:text-white"
+              className="rounded-full w-12 h-12 border-2 border-[#22c0d4] hover:bg-[#22c0d4] hover:text-white"
             >
               <ChevronLeft className="w-6 h-6" />
             </Button>
@@ -156,7 +156,7 @@ const OutcomeTestimonials = () => {
                   onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex
-                      ? "bg-[#FA6980] w-8"
+                      ? "bg-[#e70d69] w-8"
                       : "bg-gray-300 hover:bg-gray-400"
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
@@ -168,7 +168,7 @@ const OutcomeTestimonials = () => {
               onClick={goToNext}
               variant="outline"
               size="icon"
-              className="rounded-full w-12 h-12 border-2 border-[#3A5F85] hover:bg-[#3A5F85] hover:text-white"
+              className="rounded-full w-12 h-12 border-2 border-[#22c0d4] hover:bg-[#22c0d4] hover:text-white"
             >
               <ChevronRight className="w-6 h-6" />
             </Button>
@@ -178,19 +178,19 @@ const OutcomeTestimonials = () => {
         {/* Trust Stats */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
           <div className="text-center">
-            <div className="text-4xl font-heading font-bold text-[#3A5F85] mb-2">93%</div>
+            <div className="text-4xl font-heading font-bold text-[#22c0d4] mb-2">93%</div>
             <div className="text-sm text-gray-600">Improved quality of life</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-heading font-bold text-[#FA6980] mb-2">81%</div>
+            <div className="text-4xl font-heading font-bold text-[#e70d69] mb-2">81%</div>
             <div className="text-sm text-gray-600">Better energy levels</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-heading font-bold text-[#3A5F85] mb-2">4.8/5</div>
+            <div className="text-4xl font-heading font-bold text-[#22c0d4] mb-2">4.8/5</div>
             <div className="text-sm text-gray-600">Average customer rating</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-heading font-bold text-[#FA6980] mb-2">10k+</div>
+            <div className="text-4xl font-heading font-bold text-[#e70d69] mb-2">10k+</div>
             <div className="text-sm text-gray-600">Tests completed</div>
           </div>
         </div>
