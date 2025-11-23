@@ -242,8 +242,8 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
 
     console.log(`${providerTest.test_name} → ${mapping.master_test_name} (${mapping.confidence_score}%): ${mapping.reasoning}`);
 
-    if (mapping.confidence_score >= 80) {
-      // High confidence - auto-map
+    if (mapping.confidence_score >= 75) {
+      // High confidence - auto-map (Day 1: 75% threshold for launch blitz)
       if (!dryRun) {
         try {
           const providerTestId = await generateProviderTestId(supabase, providerTest.provider_id);
@@ -313,7 +313,7 @@ serve(async (req) => {
   }
 
   try {
-    const { dryRun = true, confidenceThreshold = 80, batchSize = 10 } = await req.json();
+    const { dryRun = true, confidenceThreshold = 75, batchSize = 10 } = await req.json();
 
     console.log('=== AI Test Mapper Started ===');
     console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
