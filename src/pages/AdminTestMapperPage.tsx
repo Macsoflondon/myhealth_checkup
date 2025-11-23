@@ -3,8 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, CheckCircle, AlertCircle, XCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, XCircle, Download, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface MappingResult {
   total_processed: number;
@@ -28,6 +31,8 @@ export default function AdminTestMapperPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<MappingResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confidenceThreshold, setConfidenceThreshold] = useState(75);
+  const [batchSize, setBatchSize] = useState(10);
 
   const runMapper = async (dryRun: boolean) => {
     setIsRunning(true);
@@ -40,8 +45,8 @@ export default function AdminTestMapperPage() {
       const { data, error: functionError } = await supabase.functions.invoke('ai-test-mapper', {
         body: {
           dryRun,
-          batchSize: 10,
-          confidenceThreshold: 80,
+          batchSize,
+          confidenceThreshold,
         },
       });
 
@@ -60,16 +65,115 @@ export default function AdminTestMapperPage() {
     }
   };
 
+  const exportReviewQueue = () => {
+    if (!result || result.review_needed.length === 0) return;
+    
+    const csvContent = [
+      ['Provider', 'Test Name', 'Suggested Master Test', 'Confidence', 'Reasoning'],
+      ...result.review_needed.flatMap(item =>
+        item.suggestions.map((s: any) => [
+          item.provider,
+          item.test,
+          s.master_test_name,
+          `${s.confidence_score}%`,
+          s.reasoning
+        ])
+      )
+    ].map(row => row.join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `test-mapping-review-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    toast.success('Review queue exported to CSV');
+  };
+
+  const completionRate = result 
+    ? Math.round((result.high_confidence_mapped / result.total_processed) * 100)
+    : 0;
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">AI Test Mapper</h1>
-        <p className="text-muted-foreground">
-          Automatically map provider tests to master tests using OpenAI GPT-5 semantic analysis
-        </p>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
+              <Zap className="h-8 w-8 text-primary" />
+              AI Test Mapper - Day 1 Launch Blitz
+            </h1>
+            <p className="text-muted-foreground">
+              Automatically map 192 unmapped provider tests to master tests using OpenAI GPT-5 semantic analysis
+            </p>
+          </div>
+          {result && result.review_needed.length > 0 && (
+            <Button onClick={exportReviewQueue} variant="outline" size="sm">
+              <Download className="mr-2 h-4 w-4" />
+              Export Review Queue
+            </Button>
+          )}
+        </div>
+        
+        {result && (
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Auto-mapping Progress</span>
+              <span className="font-medium">{completionRate}% of tests mapped</span>
+            </div>
+            <Progress value={completionRate} className="h-2" />
+            <p className="text-xs text-muted-foreground">
+              Target: 85%+ mapping rate (currently {result.high_confidence_mapped}/{result.total_processed})
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="grid gap-6 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Configuration</CardTitle>
+            <CardDescription>
+              Adjust mapping parameters for Day 1 launch blitz (75% confidence threshold for maximum coverage)
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="confidence">Confidence Threshold (%)</Label>
+                <Input
+                  id="confidence"
+                  type="number"
+                  min="60"
+                  max="100"
+                  value={confidenceThreshold}
+                  onChange={(e) => setConfidenceThreshold(Number(e.target.value))}
+                  disabled={isRunning}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Minimum confidence for auto-mapping (Day 1: 75%)
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="batch">Batch Size</Label>
+                <Input
+                  id="batch"
+                  type="number"
+                  min="5"
+                  max="20"
+                  value={batchSize}
+                  onChange={(e) => setBatchSize(Number(e.target.value))}
+                  disabled={isRunning}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Tests processed per AI call (10 recommended)
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Execute Mapping</CardTitle>
@@ -113,11 +217,18 @@ export default function AdminTestMapperPage() {
               </Button>
             </div>
 
-            <div className="text-sm text-muted-foreground space-y-1">
-              <p>• <strong>Dry Run:</strong> Analyzes tests and shows what would be mapped (no database changes)</p>
-              <p>• <strong>Live Mapping:</strong> Creates actual mappings in the database (≥80% confidence)</p>
-              <p>• Batch size: 10 tests per batch with 2s delays</p>
-              <p>• Confidence threshold: 80% for auto-mapping, 60-79% flagged for review</p>
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+              <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                <Zap className="h-4 w-4 text-primary" />
+                Day 1: Test Mapping Blitz Strategy
+              </h4>
+              <div className="text-sm space-y-1 text-muted-foreground">
+                <p>• <strong>Dry Run First:</strong> Preview results and verify AI accuracy before committing</p>
+                <p>• <strong>Live Mapping:</strong> Creates actual mappings in database (≥{confidenceThreshold}% confidence)</p>
+                <p>• <strong>Manual Review:</strong> 60-{confidenceThreshold-1}% confidence tests flagged for review (export CSV)</p>
+                <p>• <strong>Target:</strong> Map 85%+ of 192 unmapped tests (163+ successful mappings)</p>
+                <p>• Batch processing: {batchSize} tests per batch with 2s delays between batches</p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -154,12 +265,12 @@ export default function AdminTestMapperPage() {
                   <div className="text-center p-4 bg-green-50 dark:bg-green-950 rounded-lg">
                     <div className="text-3xl font-bold text-green-600">{result.high_confidence_mapped}</div>
                     <div className="text-sm text-green-700 dark:text-green-400">High Confidence</div>
-                    <div className="text-xs text-green-600 dark:text-green-500">≥80% Auto-mapped</div>
+                    <div className="text-xs text-green-600 dark:text-green-500">≥{confidenceThreshold}% Auto-mapped</div>
                   </div>
                   <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
                     <div className="text-3xl font-bold text-yellow-600">{result.medium_confidence_review}</div>
                     <div className="text-sm text-yellow-700 dark:text-yellow-400">Needs Review</div>
-                    <div className="text-xs text-yellow-600 dark:text-yellow-500">60-79% Confidence</div>
+                    <div className="text-xs text-yellow-600 dark:text-yellow-500">60-{confidenceThreshold-1}% Confidence</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
                     <div className="text-3xl font-bold text-gray-600">{result.low_confidence_skipped}</div>
@@ -175,7 +286,7 @@ export default function AdminTestMapperPage() {
                 <CardHeader>
                   <CardTitle>High Confidence Mappings Created</CardTitle>
                   <CardDescription>
-                    {result.mappings_created.length} test mappings with ≥80% confidence
+                    {result.mappings_created.length} test mappings with ≥{confidenceThreshold}% confidence
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -209,7 +320,7 @@ export default function AdminTestMapperPage() {
                     Medium Confidence - Manual Review Needed
                   </CardTitle>
                   <CardDescription>
-                    {result.review_needed.length} tests require manual verification (60-79% confidence)
+                    {result.review_needed.length} tests require manual verification (60-{confidenceThreshold-1}% confidence)
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
