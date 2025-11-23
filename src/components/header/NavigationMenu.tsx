@@ -106,11 +106,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             >
               <Link
                 to={item.hasDropdown && isMobile ? '#' : item.path}
-                className={`state-layer text-xs sm:text-sm md:text-base font-semibold transition-colors px-1.5 sm:px-2 md:px-3 py-2 rounded-sm whitespace-nowrap inline-flex items-center gap-1 ${
+                className={`group relative text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 px-2 sm:px-3 md:px-4 py-2.5 rounded-md whitespace-nowrap inline-flex items-center gap-1.5 ${
                   (item as any).highlighted 
-                    ? "text-[#E70D69]"
-                    : "text-white hover:text-[#E70D69]"
-                } ${activeDropdown === item.name && isMobile ? 'text-[#E70D69]' : ''}`}
+                    ? "text-brand-pink bg-brand-pink/10"
+                    : "text-white hover:text-brand-turquoise hover:bg-white/5"
+                } ${activeDropdown === item.name && isMobile ? 'text-brand-turquoise bg-white/10' : ''}`}
                 onClick={(e) => {
                   if (item.hasDropdown && isMobile) {
                     handleClick(e, item.name);
@@ -150,8 +150,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             onMouseLeave={handleMouseLeave}
           >
             <button
-              className={`state-layer text-xs sm:text-sm md:text-base font-semibold transition-colors px-1.5 sm:px-2 md:px-3 py-2 rounded-sm whitespace-nowrap inline-flex items-center gap-1 ${
-                activeDropdown === "MORE" && isMobile ? 'text-[#E70D69]' : 'text-white hover:text-[#E70D69]'
+              className={`group relative text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 px-2 sm:px-3 md:px-4 py-2.5 rounded-md whitespace-nowrap inline-flex items-center gap-1.5 ${
+                activeDropdown === "MORE" && isMobile ? 'text-brand-turquoise bg-white/10' : 'text-white hover:text-brand-turquoise hover:bg-white/5'
               }`}
               onClick={(e) => {
                 if (isMobile) {
