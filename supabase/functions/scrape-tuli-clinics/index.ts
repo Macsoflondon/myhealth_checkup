@@ -21,62 +21,23 @@ serve(async (req) => {
   try {
     console.log('Scraping Tuli Health locations...');
     
-    // Tuli Health locations page
-    const url = 'https://www.tulihealth.co.uk/locations';
+    // NOTE: Tuli Health operates through pharmacy partners, not dedicated clinics
+    // Network information: https://www.tuli.health/phlebotomy-network
+    // They claim 308+ pharmacy partners but don't publicly list all locations
     
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; MyHealthCheckup/1.0; +https://myhealthcheckup.co.uk)'
+    console.warn('LIMITATION: Tuli Health operates through pharmacy network - locations not publicly scrapable. Requires API access or manual partnership list.');
+    
+    // Sample pharmacy partners (this is illustrative - full list requires API access)
+    const clinics: ClinicData[] = [
+      {
+        name: 'Tuli Health Partner - Central London Pharmacy',
+        fullAddress: 'Example pharmacy location placeholder',
+        postalCode: 'W1A 1AA',
+        appointmentRequired: false
       }
-    });
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
-    }
-
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    
-    if (!doc) {
-      throw new Error('Failed to parse HTML');
-    }
-
-    const clinics: ClinicData[] = [];
-
-    // Parse clinic locations
-    const locationElements = doc.querySelectorAll('.location, .clinic, [data-location-item]');
-    
-    for (const element of locationElements) {
-      try {
-        const nameEl = element.querySelector('.location-name, .clinic-title, h3, h4');
-        const addressEl = element.querySelector('.location-address, .address');
-        const postcodeEl = element.querySelector('.postcode');
-        
-        if (nameEl && addressEl) {
-          const name = nameEl.textContent?.trim() || '';
-          const fullAddress = addressEl.textContent?.trim() || '';
-          
-          let postalCode = postcodeEl?.textContent?.trim() || '';
-          if (!postalCode) {
-            const postcodeMatch = fullAddress.match(/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/i);
-            postalCode = postcodeMatch ? postcodeMatch[0] : '';
-          }
-
-          if (name && fullAddress) {
-            clinics.push({
-              name: `Tuli Health - ${name}`,
-              fullAddress,
-              postalCode,
-              appointmentRequired: true
-            });
-          }
-        }
-      } catch (err) {
-        console.error('Error parsing location element:', err);
-      }
-    }
-
-    console.log(`Scraped ${clinics.length} Tuli Health locations`);
+    console.log(`Returning ${clinics.length} Tuli Health partner locations (placeholder - requires API integration)`);
 
     return new Response(
       JSON.stringify({

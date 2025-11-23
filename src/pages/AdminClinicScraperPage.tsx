@@ -119,8 +119,9 @@ const AdminClinicScraperPage: React.FC = () => {
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
-                  This will scrape clinic data from Goodbody, Randox, Tuli Health, and London Medical Laboratory websites.
-                  Clinics will be automatically geocoded and uploaded. This may take 5-10 minutes.
+                  <strong>Technical Limitation:</strong> All provider websites use JavaScript-rendered content that cannot be scraped with basic HTML parsing.
+                  This tool returns manually collected sample data for testing. For production, clinic data must be collected via:
+                  (1) Manual website inspection, (2) Provider API integration, or (3) Direct provider partnerships.
                 </AlertDescription>
               </Alert>
 
@@ -222,8 +223,9 @@ const AdminClinicScraperPage: React.FC = () => {
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              <strong>Note:</strong> Scrapers use template selectors that may need adjustment based on each provider's actual HTML structure.
-              Check logs if scrapers return 0 clinics and update CSS selectors accordingly.
+              <strong>Note:</strong> Provider websites use JavaScript-rendered content. These scrapers return manually collected sample data (3-4 clinics per provider).
+              For the full "150+ clinics" target, you'll need to: (1) manually collect data from each provider's website, (2) request API access from providers, or (3) establish direct data partnerships.
+              The existing 46 Medichecks clinics remain in the database.
             </AlertDescription>
           </Alert>
         </div>

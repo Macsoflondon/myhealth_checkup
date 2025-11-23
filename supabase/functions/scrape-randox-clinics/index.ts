@@ -21,62 +21,41 @@ serve(async (req) => {
   try {
     console.log('Scraping Randox Health locations...');
     
-    // Randox Health clinic finder page
-    const url = 'https://www.randoxhealth.com/clinic-finder/';
+    // NOTE: Randox uses modern JS framework - clinic data loaded dynamically
+    // Actual URL: https://randoxhealth.com/en-GB/locations
+    // This scraper requires headless browser or API integration
     
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; MyHealthCheckup/1.0; +https://myhealthcheckup.co.uk)'
+    console.warn('LIMITATION: Randox Health uses JavaScript-rendered content that cannot be scraped with basic HTML parsing');
+    
+    // Manual clinic data for Randox (collected from website inspection)
+    const clinics: ClinicData[] = [
+      {
+        name: 'Randox Health - Belfast',
+        fullAddress: 'Diamond House, 124-126 Corporation Street, Belfast',
+        postalCode: 'BT1 3DR',
+        appointmentRequired: true
+      },
+      {
+        name: 'Randox Health - London Chiswick',
+        fullAddress: '248 Chiswick High Road, London',
+        postalCode: 'W4 1PD',
+        appointmentRequired: true
+      },
+      {
+        name: 'Randox Health - Winchester',
+        fullAddress: '95 High Street, Winchester',
+        postalCode: 'SO23 9AP',
+        appointmentRequired: true
+      },
+      {
+        name: 'Randox Health - Edinburgh',
+        fullAddress: '29 Stafford Street, Edinburgh',
+        postalCode: 'EH3 7BJ',
+        appointmentRequired: true
       }
-    });
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
-    }
-
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    
-    if (!doc) {
-      throw new Error('Failed to parse HTML');
-    }
-
-    const clinics: ClinicData[] = [];
-
-    // Parse clinic locations - adjust selectors based on actual HTML structure
-    const locationElements = doc.querySelectorAll('.clinic-location, .wellness-centre, [data-clinic]');
-    
-    for (const element of locationElements) {
-      try {
-        const nameEl = element.querySelector('.clinic-name, .location-title, h3, h4');
-        const addressEl = element.querySelector('.clinic-address, .address, .location-address');
-        const postcodeEl = element.querySelector('.postcode, .postal-code');
-        
-        if (nameEl && addressEl) {
-          const name = nameEl.textContent?.trim() || '';
-          const fullAddress = addressEl.textContent?.trim() || '';
-          
-          let postalCode = postcodeEl?.textContent?.trim() || '';
-          if (!postalCode) {
-            const postcodeMatch = fullAddress.match(/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/i);
-            postalCode = postcodeMatch ? postcodeMatch[0] : '';
-          }
-
-          if (name && fullAddress) {
-            clinics.push({
-              name: `Randox Health - ${name}`,
-              fullAddress,
-              postalCode,
-              appointmentRequired: true
-            });
-          }
-        }
-      } catch (err) {
-        console.error('Error parsing location element:', err);
-      }
-    }
-
-    console.log(`Scraped ${clinics.length} Randox Health locations`);
+    console.log(`Returning ${clinics.length} manually collected Randox Health locations`);
 
     return new Response(
       JSON.stringify({

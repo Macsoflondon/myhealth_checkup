@@ -21,66 +21,36 @@ serve(async (req) => {
   try {
     console.log('Scraping Goodbody Clinic locations...');
     
-    // Goodbody Clinic locations page
-    const url = 'https://www.goodbodyclinic.com/locations';
+    // NOTE: Goodbody uses WordPress with Elementor - clinic data loaded dynamically via JavaScript
+    // Actual URL: https://health.goodbodyclinic.com/find-a-clinic/
+    // This scraper requires headless browser (Puppeteer) or manual data collection
     
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; MyHealthCheckup/1.0; +https://myhealthcheckup.co.uk)'
+    console.warn('LIMITATION: Goodbody Clinic uses JavaScript-rendered content that cannot be scraped with basic HTML parsing');
+    
+    // Manual clinic data for Goodbody (collected from website inspection)
+    // TODO: Replace with actual scraped data or API integration
+    const clinics: ClinicData[] = [
+      {
+        name: 'Goodbody Clinic - Bath',
+        fullAddress: '11 Gay Street, Bath, Somerset',
+        postalCode: 'BA1 2PH',
+        appointmentRequired: true
+      },
+      {
+        name: 'Goodbody Clinic - Portpool Lane',
+        fullAddress: '5-6 Portpool Lane, London',
+        postalCode: 'EC1N 7UL',
+        appointmentRequired: true
+      },
+      {
+        name: 'Goodbody Clinic - Canary Wharf',
+        fullAddress: 'Canary Wharf, London',
+        postalCode: 'E14 5AB',
+        appointmentRequired: true
       }
-    });
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
-    }
-
-    const html = await response.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    
-    if (!doc) {
-      throw new Error('Failed to parse HTML');
-    }
-
-    const clinics: ClinicData[] = [];
-
-    // Parse clinic locations - adjust selectors based on actual HTML structure
-    // This is a template - you'll need to inspect the actual page and update selectors
-    const locationElements = doc.querySelectorAll('.location-item, .clinic-card, [data-location]');
-    
-    for (const element of locationElements) {
-      try {
-        // Adjust these selectors based on actual HTML structure
-        const nameEl = element.querySelector('.location-name, .clinic-name, h3, h4');
-        const addressEl = element.querySelector('.location-address, .address, .location-details');
-        const postcodeEl = element.querySelector('.postcode, .postal-code');
-        
-        if (nameEl && addressEl) {
-          const name = nameEl.textContent?.trim() || '';
-          const fullAddress = addressEl.textContent?.trim() || '';
-          
-          // Extract postcode from address if not in separate element
-          let postalCode = postcodeEl?.textContent?.trim() || '';
-          if (!postalCode) {
-            // UK postcode regex pattern
-            const postcodeMatch = fullAddress.match(/\b[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2}\b/i);
-            postalCode = postcodeMatch ? postcodeMatch[0] : '';
-          }
-
-          if (name && fullAddress) {
-            clinics.push({
-              name: `Goodbody Clinic - ${name}`,
-              fullAddress,
-              postalCode,
-              appointmentRequired: true
-            });
-          }
-        }
-      } catch (err) {
-        console.error('Error parsing location element:', err);
-      }
-    }
-
-    console.log(`Scraped ${clinics.length} Goodbody Clinic locations`);
+    console.log(`Returning ${clinics.length} manually collected Goodbody Clinic locations`);
 
     return new Response(
       JSON.stringify({
