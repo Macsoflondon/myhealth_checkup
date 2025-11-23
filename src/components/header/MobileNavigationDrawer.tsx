@@ -99,9 +99,12 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-[85vw] sm:w-[400px] p-0 bg-white">
-        <SheetHeader className="px-6 py-4 border-b space-y-3">
-          <SheetTitle className="text-[#081129] text-left">Menu</SheetTitle>
+      <SheetContent 
+        side="left" 
+        className="w-[85vw] sm:w-[400px] p-0 bg-white border-r-2 border-brand-turquoise/20 animate-slide-in-left transition-transform duration-300 ease-out"
+      >
+        <SheetHeader className="px-6 py-4 border-b border-border bg-gradient-to-r from-brand-turquoise/5 to-brand-pink/5 space-y-3">
+          <SheetTitle className="text-brand-navy text-left font-bold">Menu</SheetTitle>
           
           {/* Search Input */}
           <div className="relative">
@@ -182,16 +185,16 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                     <button
                       onClick={() => toggleSection(item.name)}
                       className={cn(
-                        "w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors",
+                        "w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300",
                         expandedSections.has(item.name)
-                          ? "bg-[#e70d69]/10 text-[#e70d69]"
-                          : "hover:bg-gray-100 text-gray-900"
+                          ? "bg-brand-pink/10 text-brand-pink"
+                          : "hover:bg-muted text-foreground"
                       )}
                     >
                       <span className="font-semibold text-sm">{item.name}</span>
                       <ChevronDown
                         className={cn(
-                          "h-4 w-4 transition-transform",
+                          "h-4 w-4 transition-transform duration-300",
                           expandedSections.has(item.name) && "rotate-180"
                         )}
                       />
@@ -199,21 +202,21 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
 
                     {/* Expanded Category Items */}
                     {expandedSections.has(item.name) && (
-                      <div className="ml-2 mt-1 space-y-0.5">
+                      <div className="ml-2 mt-1 space-y-0.5 animate-fade-in">
                         {getFilteredCategories(item.name).slice(0, 6).map((category) => (
                           <Link
                             key={category.id}
                             to={`/compare?category=${category.id}`}
                             onClick={handleLinkClick}
-                            className="flex items-start gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-50 transition-colors group"
+                            className="flex items-start gap-3 px-4 py-2.5 rounded-lg hover:bg-muted transition-all duration-200 group"
                           >
-                            <div className="w-2 h-2 rounded-full bg-[#e70d69] mt-1.5 flex-shrink-0" />
+                            <div className="w-2 h-2 rounded-full bg-brand-pink mt-1.5 flex-shrink-0" />
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 group-hover:text-[#e70d69]">
+                              <p className="text-sm font-medium text-foreground group-hover:text-brand-pink transition-colors duration-200">
                                 {category.name}
                               </p>
                               {category.description && (
-                                <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">
+                                <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
                                   {category.description}
                                 </p>
                               )}
@@ -223,7 +226,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         <Link
                           to={item.path}
                           onClick={handleLinkClick}
-                          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#e70d69] hover:bg-[#e70d69]/5 rounded-lg mt-1"
+                          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-pink hover:bg-brand-pink/5 rounded-lg mt-1 transition-all duration-200"
                         >
                           View All
                           <ChevronRight className="h-3 w-3" />
@@ -236,10 +239,10 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                     to={item.path}
                     onClick={handleLinkClick}
                     className={cn(
-                      "flex items-center px-4 py-3 rounded-lg font-semibold text-sm transition-colors",
+                      "flex items-center px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-200",
                       (item as any).highlighted
-                        ? "text-[#e70d69] hover:bg-[#e70d69]/10"
-                        : "text-gray-900 hover:bg-gray-100"
+                        ? "text-brand-pink hover:bg-brand-pink/10"
+                        : "text-foreground hover:bg-muted"
                     )}
                   >
                     {item.name}
@@ -256,29 +259,29 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 <button
                   onClick={() => toggleSection(section.title)}
                   className={cn(
-                    "w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors",
+                    "w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300",
                     expandedSections.has(section.title)
-                      ? "bg-[#22c0d4]/10 text-[#22c0d4]"
-                      : "hover:bg-gray-100 text-gray-900"
+                      ? "bg-brand-turquoise/10 text-brand-turquoise"
+                      : "hover:bg-muted text-foreground"
                   )}
                 >
                   <span className="font-semibold text-sm">{section.title}</span>
                   <ChevronDown
                     className={cn(
-                      "h-4 w-4 transition-transform",
+                      "h-4 w-4 transition-transform duration-300",
                       expandedSections.has(section.title) && "rotate-180"
                     )}
                   />
                 </button>
 
                 {expandedSections.has(section.title) && (
-                  <div className="ml-2 mt-1 space-y-0.5">
+                  <div className="ml-2 mt-1 space-y-0.5 animate-fade-in">
                     {section.items.map((item) => (
                       <Link
                         key={item.path}
                         to={item.path}
                         onClick={handleLinkClick}
-                        className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:text-[#22c0d4] hover:bg-gray-50 rounded-lg transition-colors"
+                        className="flex items-center px-4 py-2.5 text-sm text-muted-foreground hover:text-brand-turquoise hover:bg-muted rounded-lg transition-all duration-200"
                       >
                         {item.name}
                       </Link>
