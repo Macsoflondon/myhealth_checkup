@@ -8,6 +8,7 @@ import HealthBlogPage from "@/pages/HealthBlogPage";
 import SitemapPage from "@/pages/SitemapPage";
 import ConditionsPage from "@/pages/ConditionsPage";
 import TrustedProvidersPage from "@/pages/TrustedProvidersPage";
+import SportsPerformancePage from "@/pages/SportsPerformancePage";
 
 export const contentRoutes = (
   <>
@@ -21,5 +22,6 @@ export const contentRoutes = (
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
+    <Route path="/sports-performance" element={<SportsPerformancePage />} />
   </>
 );
