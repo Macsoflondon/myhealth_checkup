@@ -1,7 +1,7 @@
 // Hero component with fullscreen video - v2.0
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -19,10 +19,21 @@ const NewHero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiResults, setAiResults] = useState<any>(null);
+  const [scrollY, setScrollY] = useState(0);
   const navigate = useNavigate();
   const {
     toast
   } = useToast();
+  
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   const handleSearch = useCallback(async () => {
     if (!searchTerm.trim()) return;
     setIsAnalyzing(true);
@@ -91,19 +102,28 @@ const NewHero = () => {
       </section>
       
       {/* Background wrapper for pink tubes image */}
-      <div className="relative w-full">
-        {/* Pink tubes background */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
-            alt=""
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+      <div className="relative w-full overflow-hidden">
+        {/* Pink tubes background with parallax effect */}
+        <div 
+          className="absolute inset-0 z-0 will-change-transform"
+          style={{
+            transform: `translateY(${scrollY * 0.3}px)`,
+            transition: 'transform 0.1s ease-out'
+          }}
+        >
+          <picture>
+            <source srcSet="/lovable-uploads/hero-bg-pink-tubes.webp" type="image/webp" />
+            <img 
+              src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
+              alt=""
+              className="w-full h-[120%] object-cover"
+              loading="lazy"
+            />
+          </picture>
         </div>
         
-        {/* Dark overlay for consistency */}
-        <div className="absolute inset-0 bg-[#081129]/80 z-[1]" />
+        {/* Lighter overlay for better background visibility */}
+        <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
         
         {/* Full-width Headline Banner */}
         <section className="w-full py-3 sm:py-4 md:py-6 relative overflow-hidden">
