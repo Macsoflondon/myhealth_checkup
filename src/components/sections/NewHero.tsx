@@ -101,7 +101,7 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Background wrapper for pink tubes image */}
+      {/* Background wrapper for pink tubes image - extends from headline through search section */}
       <div className="relative w-full overflow-hidden">
         {/* Pink tubes background with parallax effect */}
         <div 
@@ -125,11 +125,8 @@ const NewHero = () => {
         {/* Lighter overlay for better background visibility */}
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
         
-        {/* Full-width Headline Banner */}
-        <section className="w-full py-3 sm:py-4 md:py-6 relative overflow-hidden">
-          {/* Gradient overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.05)] to-[hsl(335_89%_48%_/_0.05)] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none z-[2]" />
-        
+        {/* Full-width Headline Banner - no separate background, uses parent wrapper background */}
+        <section className="w-full py-3 sm:py-4 md:py-6 relative">
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
           <ScrollFadeIn delay={100}>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
