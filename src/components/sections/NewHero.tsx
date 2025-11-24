@@ -90,23 +90,25 @@ const NewHero = () => {
         </div>
       </section>
       
-      {/* Full-width Headline Banner */}
-      <section className="w-full bg-[#081129] py-3 sm:py-4 md:py-6 relative overflow-hidden">
-        {/* Background image layer */}
+      {/* Background wrapper for pink tubes image */}
+      <div className="relative w-full">
+        {/* Pink tubes background */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/lovable-uploads/hero-bg-blood-rack.jpeg"
+            src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
             alt=""
             className="w-full h-full object-cover"
             loading="lazy"
           />
         </div>
         
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-[#081129]/75 z-[1]" />
+        {/* Dark overlay for consistency */}
+        <div className="absolute inset-0 bg-[#081129]/80 z-[1]" />
         
-        {/* Gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.05)] to-[hsl(335_89%_48%_/_0.05)] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none z-[2]" />
+        {/* Full-width Headline Banner */}
+        <section className="w-full py-3 sm:py-4 md:py-6 relative overflow-hidden">
+          {/* Gradient overlay on hover */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.05)] to-[hsl(335_89%_48%_/_0.05)] opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none z-[2]" />
         
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
           <ScrollFadeIn delay={100}>
@@ -132,22 +134,7 @@ const NewHero = () => {
             </div>
           </ScrollFadeIn>
         </div>
-      </section>
-      
-      {/* Background wrapper for pink tubes image */}
-      <div className="relative w-full">
-        {/* Pink tubes background */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
-            alt=""
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        </div>
-        
-        {/* Dark overlay for consistency */}
-        <div className="absolute inset-0 bg-[#081129]/80 z-[1]" />
+        </section>
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
