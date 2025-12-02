@@ -1,16 +1,7 @@
 import { Link } from "react-router-dom";
+import { providers } from "@/data/compare/providers";
 
 const PartnersGrid = () => {
-  const partners = [
-    { id: "medichecks", name: "Medichecks", initial: "M" },
-    { id: "thriva", name: "Thriva", initial: "T" },
-    { id: "goodbody-clinic", name: "Goodbody Clinic", initial: "G" },
-    { id: "randox", name: "Randox", initial: "R" },
-    { id: "lola-health", name: "Lola Health", initial: "L" },
-    { id: "tuli-health", name: "Tuli Health", initial: "T" },
-    { id: "london-medical-laboratory", name: "London Medical Laboratory", initial: "L" },
-  ];
-
   return (
     <section className="py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -18,19 +9,18 @@ const PartnersGrid = () => {
           Our Trusted Partners
         </h2>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-          {partners.map((partner) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6 max-w-5xl mx-auto items-center">
+          {providers.map((provider) => (
             <Link
-              key={partner.id}
-              to={`/provider/${partner.id}`}
-              className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-md hover:-translate-y-1 transition-all group"
+              key={provider.id}
+              to={`/provider/${provider.id}`}
+              className="bg-gray-50 rounded-xl p-4 flex items-center justify-center hover:shadow-md hover:-translate-y-1 transition-all group h-20"
             >
-              <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold text-gray-600 group-hover:bg-[hsl(var(--primary))] group-hover:text-white transition-colors">
-                {partner.initial}
-              </div>
-              <span className="text-sm font-medium text-[hsl(var(--navy))]">
-                {partner.name}
-              </span>
+              <img
+                src={provider.logo}
+                alt={`${provider.name} logo`}
+                className="max-h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all"
+              />
             </Link>
           ))}
         </div>
