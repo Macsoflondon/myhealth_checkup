@@ -1,10 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import MostPopularTests from '@/components/MostPopularTests';
 import UKASBanner from '@/components/UKASBanner';
+
 const MostPopularTestsPage = () => {
-  return <>
+  return (
+    <>
       <Helmet>
         <title>Most Popular Health Tests | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Discover our most popular health tests, trusted by thousands of customers. Comprehensive blood testing from £159." />
@@ -20,11 +23,16 @@ const MostPopularTestsPage = () => {
         <meta name="twitter:title" content="Most Popular Health Tests | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Discover our most popular health tests, trusted by thousands of customers." />
       </Helmet>
-      <div className="min-h-screen bg-[#081129]">
+      <div className="min-h-screen flex flex-col">
         <UKASBanner />
         <Header />
-        <MostPopularTests />
+        <main className="flex-1 bg-[#081129]">
+          <MostPopularTests />
+        </main>
+        <Footer />
       </div>
-    </>;
+    </>
+  );
 };
+
 export default MostPopularTestsPage;

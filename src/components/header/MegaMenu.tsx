@@ -149,10 +149,22 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                   <div className="space-y-2">
                     {getTestsForCategories(item.categories || []).map((test, index) => {
                       const testCategoryColor = getCategoryColor(test.category);
+                      // Generate the correct provider-specific URL
+                      const getTestUrl = () => {
+                        const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-').replace('clinic', '');
+                        if (providerSlug?.includes('medichecks')) return `/medichecks/${test.id}`;
+                        if (providerSlug?.includes('goodbody')) return `/goodbody/${test.id}`;
+                        if (providerSlug?.includes('lola')) return `/lola-health/${test.id}`;
+                        if (providerSlug?.includes('thriva')) return `/thriva/${test.id}`;
+                        if (providerSlug?.includes('randox')) return `/randox/${test.id}`;
+                        if (providerSlug?.includes('tuli')) return `/tuli-health/${test.id}`;
+                        // Fallback to compare page with category filter
+                        return `/compare?category=${test.category}`;
+                      };
                       return (
                         <Link
                           key={`${test.id}-${index}`}
-                          to={`/test/${test.id}`}
+                          to={getTestUrl()}
                           className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-colors group"
                           onClick={onItemClick}
                         >

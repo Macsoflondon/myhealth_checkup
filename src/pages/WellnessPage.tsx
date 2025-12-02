@@ -40,12 +40,16 @@ const WellnessPage = () => {
                 Monitor key health markers and prevent potential health issues.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Browse All Tests
-                </Button>
-                <Button size="lg" variant="outline" className="text-black">
-                  Find a Clinic
-                </Button>
+                <Link to="/compare?category=general-health">
+                  <Button size="lg" className="bg-primary hover:bg-primary/90">
+                    Browse All Tests
+                  </Button>
+                </Link>
+                <Link to="/find-clinic">
+                  <Button size="lg" variant="outline" className="text-black">
+                    Find a Clinic
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
