@@ -1,28 +1,25 @@
-import React, { Suspense, lazy } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import NewHero from "@/components/sections/NewHero";
-import CallToAction from "@/components/sections/CallToAction";
 import UKASBanner from "@/components/UKASBanner";
-import PromoBanner from "@/components/PromoBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
-import { LazySection } from "@/components/common/LazySection";
-import { TestCategories, HealthBenefitsInfographic, FounderStory, PartnerShowcase, ClinicMap, MediaSpotlight } from "@/components/LazyLoadedComponents";
-import TrustBadgesSection from "@/components/TrustBadgesSection";
-import HealthAssetSection from "@/components/HealthAssetSection";
-import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 
-// Lazy load below-fold components for better initial load performance
-const HealthJourneyTimeline = lazy(() => import("@/components/HealthJourneyTimeline"));
-const HealthConcernsTabs = lazy(() => import("@/components/HealthConcernsTabs"));
-const OutcomeTestimonials = lazy(() => import("@/components/OutcomeTestimonials"));
-const ExpertSupport = lazy(() => import("@/components/ExpertSupport"));
-const NationwideClinics = lazy(() => import("@/components/sections/NationwideClinics"));
+// New streamlined sections
+import HeroNew from "@/components/sections/HeroNew";
+import MissionSection from "@/components/sections/MissionSection";
+import AccreditationCards from "@/components/sections/AccreditationCards";
+import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
+import PartnersGrid from "@/components/sections/PartnersGrid";
+import JourneySimplified from "@/components/sections/JourneySimplified";
+import FindClinicSection from "@/components/sections/FindClinicSection";
+import HereToHelp from "@/components/sections/HereToHelp";
+import FinalCTA from "@/components/sections/FinalCTA";
+
 const Index = () => {
   usePerformanceOptimization();
+  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -53,104 +50,85 @@ const Index = () => {
       "closes": "23:59"
     }
   };
-  return <ErrorBoundary>
+
+  return (
+    <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-white">
-      <Helmet>
-        <title>myhealth checkup - Your health. Your choice. One trusted platform!</title>
-        <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from 10+ providers. Hospital-grade testing, real-time prices, expert reviews. Find your perfect health test today." />
-        <meta name="keywords" content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024" />
-        <link rel="canonical" href="https://myhealthhub.co.uk/" />
+        <Helmet>
+          <title>myhealth checkup - Compare Trusted Private Health Tests Across the UK</title>
+          <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use." />
+          <meta name="keywords" content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024" />
+          <link rel="canonical" href="https://myhealthhub.co.uk/" />
+          
+          {/* Open Graph */}
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="myhealth checkup" />
+          <meta property="og:title" content="myhealth checkup - Compare Trusted Private Health Tests" />
+          <meta property="og:description" content="Compare private health tests from accredited UK providers. Real-time prices, expert reviews, and transparent comparisons." />
+          <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+          <meta property="og:url" content="https://myhealthhub.co.uk/" />
+          <meta property="og:locale" content="en_GB" />
+          
+          {/* Twitter */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@myhealthhub" />
+          <meta name="twitter:title" content="myhealth checkup - Compare Trusted Private Health Tests" />
+          <meta name="twitter:description" content="Compare private blood tests, health screenings & wellness services. Real-time prices from accredited providers." />
+          <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+          
+          {/* Additional SEO */}
+          <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+          
+          {/* PWA */}
+          <link rel="manifest" href="/manifest.json" />
+          <meta name="theme-color" content="#22c0d4" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
+          
+          {/* Structured data */}
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+        </Helmet>
         
-        {/* Enhanced Open Graph / Social Media */}
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="myhealth checkup" />
-        <meta property="og:title" content="myhealth checkup - Your health. Your choice. One trusted platform!" />
-        <meta property="og:description" content="Compare private health tests from 10+ UK providers. Real-time prices, expert reviews, and AI recommendations. Hospital-grade testing made simple." />
-        <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-        <meta property="og:url" content="https://myhealthhub.co.uk/" />
-        <meta property="og:locale" content="en_GB" />
+        <UKASBanner />
+        <Header />
         
-        {/* Enhanced Twitter Meta */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@myhealthhub" />
-        <meta name="twitter:title" content="myhealth checkup - Your health. Your choice. One trusted platform!" />
-        <meta name="twitter:description" content="Compare private blood tests, health screenings & wellness services. Real-time prices from 10+ providers. AI-powered recommendations." />
-        <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-        
-        {/* Additional SEO Meta Tags */}
-        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-        <meta name="google-site-verification" content="your-google-verification-code" />
-        <meta name="msvalidate.01" content="your-bing-verification-code" />
-        
-        {/* PWA Manifest */}
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#22c0d4" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
-        
-        {/* Structured data JSON-LD */}
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      </Helmet>
-      
-      <UKASBanner />
-      <Header />
-      
-      <main className="flex-1 space-y-0">
-        {/* 1. Hero Section */}
-        <NewHero />
-        
-        {/* 2. Your Health is Your Greatest Asset */}
-        <HealthAssetSection />
-        
-        {/* 2.5. Featured Publications */}
-        <FeaturedPublications />
-        
-        {/* 3. Our Partners → Trusted Health Comparison Platform (merged) */}
-        <div className="bg-gradient-to-b from-white via-gray-50 to-white">
-          <PartnerShowcase />
-          <TrustBadgesSection />
-        </div>
-        
-        {/* 4. Your Health Journey Simplified */}
-        <LazySection>
-          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
-            <HealthJourneyTimeline />
-          </Suspense>
-        </LazySection>
-        
-        {/* 5. Comprehensive Care for Your Top Concerns */}
-        <LazySection>
-          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
-            <HealthConcernsTabs />
-          </Suspense>
-        </LazySection>
-        
-        {/* 6. Results That Change Lives - REMOVED */}
-        
-        {/* 7. Nationwide Clinics Map */}
-        <LazySection>
-          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
-            <NationwideClinics />
-          </Suspense>
-        </LazySection>
-        
-        {/* 8. You're Never Alone with Your Health Journey */}
-        <LazySection>
-          <Suspense fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
-            <ExpertSupport />
-          </Suspense>
-        </LazySection>
-        
-        {/* 9. Take Control of Your Health Today */}
-        <CallToAction />
-      </main>
-        
+        <main className="flex-1">
+          {/* 1. Hero Section */}
+          <HeroNew />
+          
+          {/* 2. Mission - Your Health is Your Greatest Asset */}
+          <MissionSection />
+          
+          {/* 3. Accreditation Cards */}
+          <AccreditationCards />
+          
+          {/* 4. Trusted Health Comparison Platform */}
+          <TrustPlatformSection />
+          
+          {/* 5. Partners Grid */}
+          <PartnersGrid />
+          
+          {/* 6. Your Health Journey Simplified */}
+          <JourneySimplified />
+          
+          {/* 7. Find a Clinic Near You */}
+          <FindClinicSection />
+          
+          {/* 8. Here to Help */}
+          <HereToHelp />
+          
+          {/* 9. Final CTA */}
+          <FinalCTA />
+        </main>
+          
         <Footer />
         <CookieConsent />
       </div>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
+
 export default Index;
