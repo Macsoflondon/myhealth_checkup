@@ -7,15 +7,88 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Validation limits
+const MAX_STRING_LENGTH = 500;
+const VALID_ATHLETE_TYPES = ['endurance', 'strength', 'team sports', 'recreational', 'other'];
+const VALID_EXPERIENCE_LEVELS = ['beginner', 'intermediate', 'advanced', 'professional'];
+const VALID_GENDERS = ['male', 'female', 'other', 'prefer not to say'];
+
+interface ValidatedInput {
+  athleteType: string;
+  trainingGoals: string;
+  experience?: string;
+  age?: number;
+  gender?: string;
+}
+
+function sanitizeString(str: unknown, maxLength: number): string {
+  if (typeof str !== 'string') return '';
+  // Remove potential prompt injection patterns and limit length
+  return str.slice(0, maxLength).replace(/[\x00-\x1F\x7F]/g, '').trim();
+}
+
+function validateInput(body: Record<string, unknown>): { valid: true; data: ValidatedInput } | { valid: false; error: string } {
+  const athleteType = sanitizeString(body.athleteType, 100);
+  const trainingGoals = sanitizeString(body.trainingGoals, MAX_STRING_LENGTH);
+  const experience = body.experience ? sanitizeString(body.experience, 50) : undefined;
+  const gender = body.gender ? sanitizeString(body.gender, 30) : undefined;
+  
+  // Validate required fields
+  if (!athleteType || athleteType.length < 2) {
+    return { valid: false, error: "Athlete type is required and must be at least 2 characters" };
+  }
+  
+  if (!trainingGoals || trainingGoals.length < 10) {
+    return { valid: false, error: "Training goals are required and must be at least 10 characters" };
+  }
+  
+  if (trainingGoals.length > MAX_STRING_LENGTH) {
+    return { valid: false, error: `Training goals must be less than ${MAX_STRING_LENGTH} characters` };
+  }
+  
+  // Validate age if provided
+  let validatedAge: number | undefined;
+  if (body.age !== undefined && body.age !== null) {
+    const age = Number(body.age);
+    if (isNaN(age) || age < 1 || age > 120) {
+      return { valid: false, error: "Age must be a number between 1 and 120" };
+    }
+    validatedAge = Math.floor(age);
+  }
+  
+  return {
+    valid: true,
+    data: {
+      athleteType,
+      trainingGoals,
+      experience,
+      age: validatedAge,
+      gender,
+    }
+  };
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { athleteType, trainingGoals, experience, age, gender } = await req.json();
+    const body = await req.json();
     
-    console.log('Received recommendation request:', { athleteType, trainingGoals, experience });
+    // Validate and sanitize input
+    const validation = validateInput(body);
+    if (!validation.valid) {
+      console.error('Validation error:', validation.error);
+      return new Response(
+        JSON.stringify({ error: validation.error }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    const { athleteType, trainingGoals, experience, age, gender } = validation.data;
+    
+    console.log('Received validated recommendation request:', { athleteType, trainingGoals: trainingGoals.slice(0, 50), experience });
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
