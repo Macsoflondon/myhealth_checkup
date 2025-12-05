@@ -129,7 +129,8 @@ export function ResponsiveImage({
         height={height}
         loading={priority ? "eager" : loading}
         decoding={priority ? "sync" : "async"}
-        fetchPriority={priority ? "high" : "auto"}
+        // @ts-ignore - fetchpriority is valid HTML attribute
+        fetchpriority={priority ? "high" : "auto"}
         onLoad={handleLoad}
         onError={handleError}
         className={imageStyles}
@@ -158,7 +159,8 @@ export function ResponsiveImage({
         height={height}
         loading={priority ? "eager" : loading}
         decoding={priority ? "sync" : "async"}
-        fetchPriority={priority ? "high" : "auto"}
+        // @ts-ignore - fetchpriority is valid HTML attribute
+        fetchpriority={priority ? "high" : "auto"}
         onLoad={handleLoad}
         onError={handleError}
         className={imageStyles}
@@ -277,7 +279,8 @@ export function HeroBackground({
           className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
           loading="eager"
           decoding="async"
-          fetchPriority="high"
+          // @ts-ignore - fetchpriority is valid HTML attribute
+          fetchpriority="high"
           onLoad={() => setIsLoaded(true)}
         />
       </picture>
