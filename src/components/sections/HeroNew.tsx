@@ -1,22 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HeroBackground } from "@/components/common/ResponsiveImage";
 
 const HeroNew = () => {
   return (
     <section className="relative min-h-[70vh] sm:min-h-[85vh] flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <picture>
-          <source srcSet="/lovable-uploads/hero-bg-pink-tubes.webp" type="image/webp" />
-          <img 
-            src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
-            alt=""
-            className="w-full h-full object-cover"
-          />
-        </picture>
-        <div className="absolute inset-0 bg-[hsl(var(--navy))]/70" />
-      </div>
+      {/* Optimized Background Image with WebP and srcset */}
+      <HeroBackground
+        src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
+        webpSrc="/lovable-uploads/hero-bg-pink-tubes.webp"
+        alt=""
+        overlayClassName="bg-[hsl(var(--navy))]/70"
+      />
 
       <div className="container mx-auto px-3 sm:px-4 relative z-10 py-8 sm:py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center">

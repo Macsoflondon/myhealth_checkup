@@ -60,6 +60,14 @@ const Index = () => {
           <meta name="keywords" content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024" />
           <link rel="canonical" href="https://myhealthhub.co.uk/" />
           
+          {/* Preload critical hero image for faster LCP */}
+          <link 
+            rel="preload" 
+            as="image" 
+            href="/lovable-uploads/hero-bg-pink-tubes.webp" 
+            type="image/webp"
+          />
+          
           {/* Open Graph */}
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
