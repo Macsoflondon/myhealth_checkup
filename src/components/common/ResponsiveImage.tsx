@@ -1,4 +1,30 @@
 import { useState, useMemo } from "react";
+import { cn } from "@/lib/utils";
+
+/**
+ * Image skeleton placeholder component for CLS reduction
+ */
+function ImageSkeleton({ 
+  className = "",
+  aspectRatio
+}: { 
+  className?: string;
+  aspectRatio?: number;
+}) {
+  return (
+    <div 
+      className={cn(
+        "animate-pulse bg-gradient-to-r from-muted via-muted/80 to-muted bg-[length:200%_100%]",
+        "rounded-lg overflow-hidden",
+        className
+      )}
+      style={aspectRatio ? { aspectRatio } : undefined}
+      aria-hidden="true"
+    >
+      <div className="w-full h-full bg-muted/50" />
+    </div>
+  );
+}
 
 interface ResponsiveImageProps {
   src: string;
@@ -106,10 +132,12 @@ export function ResponsiveImage({
     will-change-opacity
   `.trim();
 
+  const aspectRatio = width && height ? width / height : undefined;
+
   if (hasError) {
     return (
       <div 
-        className={`bg-muted flex items-center justify-center rounded ${className}`}
+        className={cn("bg-muted flex items-center justify-center rounded", className)}
         style={{ width, height }}
         role="img"
         aria-label={alt}
@@ -119,54 +147,72 @@ export function ResponsiveImage({
     );
   }
 
+  // Wrapper with skeleton for CLS prevention
+  const ImageWrapper = ({ children }: { children: React.ReactNode }) => (
+    <div className="relative" style={{ width, height, aspectRatio }}>
+      {/* Skeleton placeholder - hidden when loaded */}
+      {!isLoaded && (
+        <ImageSkeleton 
+          className="absolute inset-0 w-full h-full" 
+          aspectRatio={aspectRatio}
+        />
+      )}
+      {children}
+    </div>
+  );
+
   // If no WebP support needed (already WebP or unsupported format)
   if (!hasWebPSupport) {
     return (
-      <img 
-        src={src} 
-        alt={alt} 
-        width={width} 
-        height={height}
-        loading={priority ? "eager" : loading}
-        decoding={priority ? "sync" : "async"}
-        // @ts-ignore - fetchpriority is valid HTML attribute
-        fetchpriority={priority ? "high" : "auto"}
-        onLoad={handleLoad}
-        onError={handleError}
-        className={imageStyles}
-      />
+      <ImageWrapper>
+        <img 
+          src={src} 
+          alt={alt} 
+          width={width} 
+          height={height}
+          loading={priority ? "eager" : loading}
+          decoding={priority ? "sync" : "async"}
+          // @ts-ignore - fetchpriority is valid HTML attribute
+          fetchpriority={priority ? "high" : "auto"}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={imageStyles}
+        />
+      </ImageWrapper>
     );
   }
 
   return (
-    <picture>
-      {/* WebP format with responsive srcset for modern browsers */}
-      <source 
-        type="image/webp" 
-        srcSet={webpSrcSet}
-        sizes={sizes}
-      />
-      {/* Fallback with responsive srcset */}
-      <source
-        srcSet={fallbackSrcSet}
-        sizes={sizes}
-      />
-      {/* Base fallback image */}
-      <img 
-        src={src} 
-        alt={alt} 
-        width={width} 
-        height={height}
-        loading={priority ? "eager" : loading}
-        decoding={priority ? "sync" : "async"}
-        // @ts-ignore - fetchpriority is valid HTML attribute
-        fetchpriority={priority ? "high" : "auto"}
-        onLoad={handleLoad}
-        onError={handleError}
-        className={imageStyles}
-        sizes={sizes}
-      />
-    </picture>
+    <ImageWrapper>
+      <picture>
+        {/* WebP format with responsive srcset for modern browsers */}
+        <source 
+          type="image/webp" 
+          srcSet={webpSrcSet}
+          sizes={sizes}
+        />
+        {/* Fallback with responsive srcset */}
+        <source
+          srcSet={fallbackSrcSet}
+          sizes={sizes}
+        />
+        {/* Base fallback image */}
+        <img 
+          src={src} 
+          alt={alt} 
+          width={width} 
+          height={height}
+          loading={priority ? "eager" : loading}
+          decoding={priority ? "sync" : "async"}
+          // @ts-ignore - fetchpriority is valid HTML attribute
+          fetchpriority={priority ? "high" : "auto"}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={imageStyles}
+          sizes={sizes}
+        />
+      </picture>
+    </ImageWrapper>
   );
 }
 
@@ -195,37 +241,48 @@ export function ProviderLogoOptimized({
     md: 'h-12 w-auto max-w-[120px]',
     lg: 'h-16 w-auto max-w-[160px]'
   };
+
+  const skeletonSizes = {
+    sm: 'h-8 w-16',
+    md: 'h-12 w-24',
+    lg: 'h-16 w-32'
+  };
   
   const srcSet = useMemo(() => generateLogoSrcSet(src), [src]);
   const isSvg = src.toLowerCase().endsWith('.svg');
 
   if (hasError) {
     return (
-      <div className={`bg-muted rounded flex items-center justify-center ${sizeClasses[size]} ${className}`}>
+      <div className={cn("bg-muted rounded flex items-center justify-center", sizeClasses[size], className)}>
         <span className="text-muted-foreground text-[10px]">{alt.charAt(0)}</span>
       </div>
     );
   }
 
   return (
-    <img 
-      src={src}
-      srcSet={isSvg ? undefined : srcSet}
-      sizes={isSvg ? undefined : "(max-width: 640px) 48px, (max-width: 1024px) 96px, 192px"}
-      alt={alt}
-      className={`
-        object-contain 
-        ${sizeClasses[size]}
-        ${className}
-        ${!isLoaded ? 'opacity-0' : 'opacity-100'}
-        transition-opacity duration-300
-        filter grayscale hover:grayscale-0
-      `}
-      loading="lazy"
-      decoding="async"
-      onLoad={() => setIsLoaded(true)}
-      onError={() => setHasError(true)}
-    />
+    <div className="relative">
+      {/* Skeleton placeholder */}
+      {!isLoaded && (
+        <div className={cn("absolute inset-0 animate-pulse bg-muted rounded", skeletonSizes[size])} />
+      )}
+      <img 
+        src={src}
+        srcSet={isSvg ? undefined : srcSet}
+        sizes={isSvg ? undefined : "(max-width: 640px) 48px, (max-width: 1024px) 96px, 192px"}
+        alt={alt}
+        className={cn(
+          "object-contain transition-opacity duration-300",
+          "filter grayscale hover:grayscale-0",
+          sizeClasses[size],
+          className,
+          !isLoaded ? 'opacity-0' : 'opacity-100'
+        )}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+      />
+    </div>
   );
 }
 
@@ -254,7 +311,11 @@ export function HeroBackground({
   const hasWebPVersion = src.match(/\.(png|jpg|jpeg)$/i);
 
   return (
-    <div className={`absolute inset-0 z-0 ${className}`}>
+    <div className={cn("absolute inset-0 z-0", className)}>
+      {/* Skeleton placeholder for hero background */}
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted/90 to-muted animate-pulse" />
+      )}
       <picture>
         {hasWebPVersion && (
           <source 
@@ -276,7 +337,10 @@ export function HeroBackground({
         <img 
           src={src}
           alt={alt}
-          className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={cn(
+            "w-full h-full object-cover transition-opacity duration-500",
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          )}
           loading="eager"
           decoding="async"
           // @ts-ignore - fetchpriority is valid HTML attribute
@@ -284,7 +348,7 @@ export function HeroBackground({
           onLoad={() => setIsLoaded(true)}
         />
       </picture>
-      {overlayClassName && <div className={`absolute inset-0 ${overlayClassName}`} />}
+      {overlayClassName && <div className={cn("absolute inset-0", overlayClassName)} />}
     </div>
   );
 }
@@ -312,29 +376,42 @@ export function PartnerLogo({
 
   if (hasError) {
     return (
-      <div className={`bg-muted rounded flex items-center justify-center ${className}`}>
+      <div className={cn("bg-muted rounded flex items-center justify-center", className)}>
         <span className="text-muted-foreground text-[10px]">{alt.charAt(0)}</span>
       </div>
     );
   }
 
   return (
-    <picture>
-      {hasWebPVersion && (
-        <source 
-          srcSet={webpSrc}
-          type="image/webp"
-        />
+    <div className="relative">
+      {/* Skeleton placeholder */}
+      {!isLoaded && (
+        <div className={cn("absolute inset-0 animate-pulse bg-muted rounded", className)} />
       )}
-      <img 
-        src={src}
-        alt={alt}
-        className={`object-contain transition-all duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-        loading="lazy"
-        decoding="async"
-        onLoad={() => setIsLoaded(true)}
-        onError={() => setHasError(true)}
-      />
-    </picture>
+      <picture>
+        {hasWebPVersion && (
+          <source 
+            srcSet={webpSrc}
+            type="image/webp"
+          />
+        )}
+        <img 
+          src={src}
+          alt={alt}
+          className={cn(
+            "object-contain transition-all duration-300",
+            className,
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          )}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setIsLoaded(true)}
+          onError={() => setHasError(true)}
+        />
+      </picture>
+    </div>
   );
 }
+
+// Export skeleton for external use
+export { ImageSkeleton };
