@@ -5,6 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Input validation schema
 interface Test {
   id: string;
   name: string;
@@ -25,17 +26,91 @@ interface Preferences {
   comprehensiveness: number; // 1-5 weight
 }
 
+// Validation limits
+const MAX_TESTS = 50;
+const MAX_STRING_LENGTH = 500;
+const MAX_DESCRIPTION_LENGTH = 2000;
+
+function sanitizeString(str: string, maxLength: number): string {
+  if (typeof str !== 'string') return '';
+  // Remove potential prompt injection patterns and limit length
+  return str.slice(0, maxLength).replace(/[\x00-\x1F\x7F]/g, '');
+}
+
+function validateTest(test: unknown): test is Test {
+  if (!test || typeof test !== 'object') return false;
+  const t = test as Record<string, unknown>;
+  
+  return (
+    typeof t.id === 'string' && t.id.length <= 100 &&
+    typeof t.name === 'string' && t.name.length <= MAX_STRING_LENGTH &&
+    typeof t.provider === 'string' && t.provider.length <= 100 &&
+    typeof t.price === 'number' && t.price >= 0 && t.price <= 10000 &&
+    typeof t.category === 'string' && t.category.length <= 100 &&
+    (t.description === undefined || (typeof t.description === 'string' && t.description.length <= MAX_DESCRIPTION_LENGTH)) &&
+    (t.features === undefined || typeof t.features === 'object')
+  );
+}
+
+function validatePreferences(prefs: unknown): prefs is Preferences {
+  if (!prefs || typeof prefs !== 'object') return false;
+  const p = prefs as Record<string, unknown>;
+  
+  return (
+    typeof p.price === 'number' && p.price >= 1 && p.price <= 5 &&
+    typeof p.speed === 'number' && p.speed >= 1 && p.speed <= 5 &&
+    typeof p.comprehensiveness === 'number' && p.comprehensiveness >= 1 && p.comprehensiveness <= 5
+  );
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { tests, preferences } = await req.json() as { tests: Test[], preferences: Preferences };
+    const body = await req.json();
+    const { tests, preferences } = body as { tests: unknown[], preferences: unknown };
 
-    if (!tests || tests.length === 0) {
+    // Validate input structure
+    if (!Array.isArray(tests)) {
+      return new Response(
+        JSON.stringify({ error: "Tests must be an array" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (tests.length === 0) {
       return new Response(
         JSON.stringify({ error: "No tests provided" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (tests.length > MAX_TESTS) {
+      return new Response(
+        JSON.stringify({ error: `Maximum ${MAX_TESTS} tests allowed` }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate each test
+    const validatedTests: Test[] = [];
+    for (const test of tests) {
+      if (!validateTest(test)) {
+        console.error('Invalid test format:', JSON.stringify(test).slice(0, 200));
+        return new Response(
+          JSON.stringify({ error: "Invalid test format in request" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      validatedTests.push(test);
+    }
+
+    // Validate preferences
+    if (!validatePreferences(preferences)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid preferences format. Price, speed, and comprehensiveness must be numbers between 1-5" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -45,15 +120,15 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    // Build a detailed prompt for the AI
-    const testsDescription = tests.map((test, idx) => `
-Test ${idx + 1}: ${test.name}
-- Provider: ${test.provider}
+    // Build a detailed prompt for the AI with sanitized inputs
+    const testsDescription = validatedTests.map((test, idx) => `
+Test ${idx + 1}: ${sanitizeString(test.name, 200)}
+- Provider: ${sanitizeString(test.provider, 100)}
 - Price: £${test.price}
-- Turnaround Time: ${test.features.turnaround}
-- Sample Collection: ${test.features.collection}
-- Key Biomarkers: ${test.features.bioMarkers || 'Multiple biomarkers'}
-- Description: ${test.description || 'Comprehensive health screening'}
+- Turnaround Time: ${sanitizeString(test.features?.turnaround || 'Unknown', 50)}
+- Sample Collection: ${sanitizeString(test.features?.collection || 'Unknown', 50)}
+- Key Biomarkers: ${sanitizeString(test.features?.bioMarkers || 'Multiple biomarkers', 200)}
+- Description: ${sanitizeString(test.description || 'Comprehensive health screening', 300)}
 `).join('\n');
 
     const preferencesDescription = `
@@ -82,6 +157,8 @@ ${testsDescription}
 ${preferencesDescription}
 
 Provide a clear recommendation with reasoning.`;
+
+    console.log(`Processing recommendation request with ${validatedTests.length} tests`);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -122,14 +199,14 @@ Provide a clear recommendation with reasoning.`;
     const recommendation = data.choices?.[0]?.message?.content || "Unable to generate recommendation";
 
     // Calculate simple scores for each test based on preferences
-    const scoredTests = tests.map(test => {
-      const priceScore = preferences.price * (1 - (test.price / Math.max(...tests.map(t => t.price))));
+    const scoredTests = validatedTests.map(test => {
+      const priceScore = preferences.price * (1 - (test.price / Math.max(...validatedTests.map(t => t.price))));
       
-      const turnaroundDays = parseTurnaroundDays(test.features.turnaround);
-      const speedScore = preferences.speed * (1 - (turnaroundDays / Math.max(...tests.map(t => parseTurnaroundDays(t.features.turnaround)))));
+      const turnaroundDays = parseTurnaroundDays(test.features?.turnaround || '');
+      const speedScore = preferences.speed * (1 - (turnaroundDays / Math.max(...validatedTests.map(t => parseTurnaroundDays(t.features?.turnaround || '')))));
       
-      const biomarkerCount = test.features.bioMarkers?.split(',').length || 5;
-      const comprehensivenessScore = preferences.comprehensiveness * (biomarkerCount / Math.max(...tests.map(t => (t.features.bioMarkers?.split(',').length || 5))));
+      const biomarkerCount = test.features?.bioMarkers?.split(',').length || 5;
+      const comprehensivenessScore = preferences.comprehensiveness * (biomarkerCount / Math.max(...validatedTests.map(t => (t.features?.bioMarkers?.split(',').length || 5))));
       
       const totalScore = priceScore + speedScore + comprehensivenessScore;
       
