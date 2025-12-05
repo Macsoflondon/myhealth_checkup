@@ -11,10 +11,13 @@ const IV_LENGTH = 12;
 const SALT_LENGTH = 16;
 const ITERATIONS = 100000;
 
-// Get encryption key from environment or generate a default for development
+// Get encryption key from environment variable
 const getEncryptionSecret = (): string => {
-  // In production, this should come from environment variables
-  return 'mhc-secure-encryption-key-2024';
+  const key = import.meta.env.VITE_ENCRYPTION_KEY;
+  if (!key) {
+    throw new Error('VITE_ENCRYPTION_KEY environment variable is not configured. Please add this secret to enable encryption.');
+  }
+  return key;
 };
 
 /**
