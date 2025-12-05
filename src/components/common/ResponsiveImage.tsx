@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface ResponsiveImageProps {
   src: string;
@@ -12,24 +12,56 @@ interface ResponsiveImageProps {
   objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 }
 
+// Standard breakpoints for responsive images
+const IMAGE_BREAKPOINTS = [640, 1024, 1920] as const;
+
 /**
- * Generates WebP srcset with multiple densities for responsive images
- * Supports 1x, 2x, and 3x pixel densities for retina displays
+ * Generates responsive srcset with multiple sizes for bandwidth optimization
+ * Provides 640px, 1024px, and 1920px variants with WebP support
  */
-function generateSrcSet(src: string): { webpSrcSet: string; fallbackSrcSet: string; webpSrc: string } {
+function generateResponsiveSrcSet(src: string): { 
+  webpSrcSet: string; 
+  fallbackSrcSet: string; 
+  webpSrc: string;
+  sizes: string;
+} {
   const basePath = src.replace(/\.(png|jpg|jpeg|webp)$/i, '');
   const extension = src.match(/\.(png|jpg|jpeg|webp)$/i)?.[0] || '.png';
   const isWebP = extension.toLowerCase() === '.webp';
   
-  // For WebP source
+  // For WebP source - use original as base
   const webpSrc = isWebP ? src : `${basePath}.webp`;
   
-  // Generate srcset for different densities
-  // Since we have single files, we use width descriptors for responsive sizing
-  const webpSrcSet = webpSrc;
-  const fallbackSrcSet = src;
+  // Generate srcset with width descriptors for responsive sizing
+  // Format: "image-640.webp 640w, image-1024.webp 1024w, image-1920.webp 1920w"
+  const webpSrcSet = IMAGE_BREAKPOINTS
+    .map(width => `${basePath}-${width}.webp ${width}w`)
+    .join(', ');
   
-  return { webpSrcSet, fallbackSrcSet, webpSrc };
+  const fallbackSrcSet = IMAGE_BREAKPOINTS
+    .map(width => `${basePath}-${width}${extension} ${width}w`)
+    .join(', ');
+  
+  // Default responsive sizes attribute for optimal loading
+  const sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+  
+  return { webpSrcSet, fallbackSrcSet, webpSrc, sizes };
+}
+
+/**
+ * Generates srcset for provider logos with optimized small sizes
+ * Uses 48px, 96px, 192px for logos (retina support)
+ */
+function generateLogoSrcSet(src: string): string {
+  const basePath = src.replace(/\.(png|jpg|jpeg|webp|svg)$/i, '');
+  const extension = src.match(/\.(png|jpg|jpeg|webp|svg)$/i)?.[0] || '.png';
+  
+  // For SVGs, no srcset needed
+  if (extension.toLowerCase() === '.svg') return src;
+  
+  return [48, 96, 192]
+    .map(size => `${basePath}-${size}${extension} ${size}w`)
+    .join(', ');
 }
 
 export function ResponsiveImage({ 
@@ -40,14 +72,19 @@ export function ResponsiveImage({
   className = "",
   loading = "lazy",
   priority = false,
-  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
+  sizes: customSizes,
   objectFit = "cover"
 }: ResponsiveImageProps) {
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   
   const hasWebPSupport = src.match(/\.(png|jpg|jpeg)$/i);
-  const { webpSrc } = generateSrcSet(src);
+  const { webpSrc, webpSrcSet, fallbackSrcSet, sizes: defaultSizes } = useMemo(
+    () => generateResponsiveSrcSet(src),
+    [src]
+  );
+  
+  const sizes = customSizes || defaultSizes;
   
   const objectFitClass = {
     contain: 'object-contain',
@@ -60,18 +97,19 @@ export function ResponsiveImage({
   const handleLoad = () => setIsLoaded(true);
   const handleError = () => setHasError(true);
 
-  // Base image styles with loading state
+  // Base image styles with loading state and smooth fade-in
   const imageStyles = `
     ${objectFitClass}
     ${className}
-    ${!isLoaded ? 'opacity-0' : 'opacity-100'}
-    transition-opacity duration-300
+    ${!isLoaded ? 'opacity-0 scale-[1.02]' : 'opacity-100 scale-100'}
+    transition-all duration-500 ease-out
+    will-change-opacity
   `.trim();
 
   if (hasError) {
     return (
       <div 
-        className={`bg-muted flex items-center justify-center ${className}`}
+        className={`bg-muted flex items-center justify-center rounded ${className}`}
         style={{ width, height }}
         role="img"
         aria-label={alt}
@@ -101,13 +139,18 @@ export function ResponsiveImage({
 
   return (
     <picture>
-      {/* WebP format for modern browsers */}
+      {/* WebP format with responsive srcset for modern browsers */}
       <source 
         type="image/webp" 
-        srcSet={webpSrc}
+        srcSet={webpSrcSet}
         sizes={sizes}
       />
-      {/* Fallback for older browsers */}
+      {/* Fallback with responsive srcset */}
+      <source
+        srcSet={fallbackSrcSet}
+        sizes={sizes}
+      />
+      {/* Base fallback image */}
       <img 
         src={src} 
         alt={alt} 
@@ -122,6 +165,65 @@ export function ResponsiveImage({
         sizes={sizes}
       />
     </picture>
+  );
+}
+
+/**
+ * Optimized provider logo component with automatic srcset generation
+ * Uses smaller image sizes optimized for logo display (48-192px)
+ */
+interface ProviderLogoOptimizedProps {
+  src: string;
+  alt: string;
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export function ProviderLogoOptimized({
+  src,
+  alt,
+  className = "",
+  size = 'md'
+}: ProviderLogoOptimizedProps) {
+  const [hasError, setHasError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  const sizeClasses = {
+    sm: 'h-8 w-auto max-w-[80px]',
+    md: 'h-12 w-auto max-w-[120px]',
+    lg: 'h-16 w-auto max-w-[160px]'
+  };
+  
+  const srcSet = useMemo(() => generateLogoSrcSet(src), [src]);
+  const isSvg = src.toLowerCase().endsWith('.svg');
+
+  if (hasError) {
+    return (
+      <div className={`bg-muted rounded flex items-center justify-center ${sizeClasses[size]} ${className}`}>
+        <span className="text-muted-foreground text-[10px]">{alt.charAt(0)}</span>
+      </div>
+    );
+  }
+
+  return (
+    <img 
+      src={src}
+      srcSet={isSvg ? undefined : srcSet}
+      sizes={isSvg ? undefined : "(max-width: 640px) 48px, (max-width: 1024px) 96px, 192px"}
+      alt={alt}
+      className={`
+        object-contain 
+        ${sizeClasses[size]}
+        ${className}
+        ${!isLoaded ? 'opacity-0' : 'opacity-100'}
+        transition-opacity duration-300
+        filter grayscale hover:grayscale-0
+      `}
+      loading="lazy"
+      decoding="async"
+      onLoad={() => setIsLoaded(true)}
+      onError={() => setHasError(true)}
+    />
   );
 }
 
