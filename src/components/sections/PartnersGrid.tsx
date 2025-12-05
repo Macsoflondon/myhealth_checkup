@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { providers } from "@/data/compare/providers";
+import { PartnerLogo } from "@/components/common/ResponsiveImage";
 
 const PartnersGrid = () => {
   return (
@@ -16,10 +17,10 @@ const PartnersGrid = () => {
               to={`/provider/${provider.id}`}
               className="bg-gray-50 rounded-lg sm:rounded-xl p-2 sm:p-4 flex items-center justify-center hover:shadow-md hover:-translate-y-1 transition-all group h-14 sm:h-20"
             >
-              <img
+              <PartnerLogo
                 src={provider.logo}
                 alt={`${provider.name} logo`}
-                className="max-h-8 sm:max-h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all"
+                className="max-h-8 sm:max-h-12 w-auto grayscale group-hover:grayscale-0"
               />
             </Link>
           ))}
