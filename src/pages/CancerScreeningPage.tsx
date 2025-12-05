@@ -126,22 +126,22 @@ const CancerScreeningPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-16">
+        {/* Hero Section - Mobile optimized */}
+        <section className="bg-[#081129] py-10 sm:py-12 md:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-white leading-tight">
                 Cancer Screening Tests
               </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto text-white">
+              <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto text-white/90 px-2">
                 Comprehensive cancer screening tests for early detection and peace of mind. 
-                Regular screening saves lives - start your prevention journey today.
+                Regular screening saves lives.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 w-full sm:w-auto text-sm sm:text-base">
                   Browse Screening Tests
                 </Button>
-                <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+                <Button size="lg" className="bg-secondary hover:bg-secondary/90 w-full sm:w-auto text-sm sm:text-base" asChild>
                   <Link to="/find-clinic">Find a Clinic</Link>
                 </Button>
               </div>
@@ -162,60 +162,58 @@ const CancerScreeningPage = () => {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {cancerScreeningTests.map((test) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
-                              <IconComponent className="h-5 w-5" />
+                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20 touch-manipulation">
+                      <CardHeader className="p-4 sm:p-6 pb-3 sm:pb-4">
+                        <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+                          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                            <div className="p-1.5 sm:p-2 rounded-lg bg-health-heading/10 text-health-heading group-hover:bg-health-heading group-hover:text-white transition-colors">
+                              <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" />
                             </div>
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-[10px] sm:text-xs">
                               {test.category}
                             </Badge>
                           </div>
-                          <div className="text-right">
-                            <span className="text-2xl font-bold text-health-heading">{test.price}</span>
-                            <p className="text-xs text-muted-foreground">Results in {test.turnaround}</p>
+                          <div className="text-right flex-shrink-0">
+                            <span className="text-xl sm:text-2xl font-bold text-health-heading">{test.price}</span>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground">{test.turnaround}</p>
                           </div>
                         </div>
-                        <CardTitle className="text-lg leading-tight mb-2 text-health-heading">{test.name}</CardTitle>
-                        <CardDescription className="text-sm text-muted-foreground">
+                        <CardTitle className="text-base sm:text-lg leading-tight mb-1.5 sm:mb-2 text-health-heading">{test.name}</CardTitle>
+                        <CardDescription className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
                           {test.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pt-0 space-y-4">
+                      <CardContent className="p-4 sm:p-6 pt-0 space-y-3 sm:space-y-4">
                         <div>
-                          <h4 className="font-medium text-sm mb-2">
-                            Biomarkers Tested: {test.biomarkers.length}
-                            <br />
-                            Key Biomarkers:
+                          <h4 className="font-medium text-xs sm:text-sm mb-1.5 sm:mb-2">
+                            {test.biomarkers.length} Biomarkers:
                           </h4>
                           <div className="flex flex-wrap gap-1">
-                            {test.biomarkers.slice(0, 3).map((biomarker) => (
-                              <Badge key={biomarker} variant="outline" className="text-xs">
+                            {test.biomarkers.slice(0, 2).map((biomarker) => (
+                              <Badge key={biomarker} variant="outline" className="text-[10px] sm:text-xs px-1.5 py-0.5">
                                 {biomarker}
                               </Badge>
                             ))}
-                            {test.biomarkers.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{test.biomarkers.length - 3} more
+                            {test.biomarkers.length > 2 && (
+                              <Badge variant="outline" className="text-[10px] sm:text-xs px-1.5 py-0.5">
+                                +{test.biomarkers.length - 2} more
                               </Badge>
                             )}
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
-                          <ul className="text-xs text-muted-foreground space-y-1">
+                          <h4 className="font-medium text-xs sm:text-sm mb-1 sm:mb-2">Suitable For:</h4>
+                          <ul className="text-[10px] sm:text-xs text-muted-foreground space-y-0.5 sm:space-y-1">
                             {test.suitableFor.slice(0, 2).map((item, index) => (
                               <li key={index}>• {item}</li>
                             ))}
                           </ul>
                         </div>
-                        <Button className="w-full" style={{ backgroundColor: '#22c0d4' }}>
+                        <Button className="w-full text-xs sm:text-sm py-2 sm:py-2.5 bg-secondary hover:bg-secondary/90">
                           Compare Providers
                         </Button>
                       </CardContent>
