@@ -30,11 +30,16 @@
     <!-- Preconnect to origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical fonts for faster LCP -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+    
     <!-- Brand Typography: Montserrat (headings), Lato (body), Garamond (elegant accents) -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
-    <!-- Preload hero image for performance -->
-    <link rel="preload" as="image" href="/lovable-uploads/02b18d23-7b2e-42f1-90f6-554b455f3653.png" fetchpriority="high">
+    <!-- Preload hero background for performance -->
+    <link rel="preload" as="image" href="/lovable-uploads/hero-bg-pink-tubes.webp" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="/lovable-uploads/hero-bg-pink-tubes.jpeg" fetchpriority="high">
   </head>
 
   <body>
