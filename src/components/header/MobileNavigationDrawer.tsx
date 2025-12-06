@@ -1,11 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, ChevronRight, Search, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, X, MapPin, Phone, ArrowRight } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
 import { useNavigationData } from "@/hooks/useNavigationData";
 import { compareCategories } from "@/data/compare/categories";
@@ -21,25 +21,27 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
   const [searchQuery, setSearchQuery] = useState("");
   const { getFilteredCategories } = useNavigationData();
 
-  const toggleSection = (sectionName: string) => {
-    const newExpanded = new Set(expandedSections);
-    if (newExpanded.has(sectionName)) {
-      newExpanded.delete(sectionName);
-    } else {
-      newExpanded.add(sectionName);
-    }
-    setExpandedSections(newExpanded);
-  };
+  const toggleSection = useCallback((sectionName: string) => {
+    setExpandedSections(prev => {
+      const newExpanded = new Set(prev);
+      if (newExpanded.has(sectionName)) {
+        newExpanded.delete(sectionName);
+      } else {
+        newExpanded.add(sectionName);
+      }
+      return newExpanded;
+    });
+  }, []);
 
-  const handleLinkClick = () => {
+  const handleLinkClick = useCallback(() => {
     setSearchQuery("");
     onClose();
-  };
+  }, [onClose]);
 
   // Search filtering logic
   const filteredContent = useMemo(() => {
     if (!searchQuery.trim()) {
-      return null; // Show normal navigation
+      return null;
     }
 
     const query = searchQuery.toLowerCase();
@@ -101,25 +103,27 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent 
         side="left" 
-        className="w-[85vw] sm:w-[400px] p-0 bg-white border-r-2 border-brand-turquoise/20 animate-slide-in-left transition-transform duration-300 ease-out"
+        className="w-[85vw] max-w-[400px] p-0 bg-white border-r border-gray-200"
       >
-        <SheetHeader className="px-6 py-4 border-b border-border bg-gradient-to-r from-brand-turquoise/5 to-brand-pink/5 space-y-3">
-          <SheetTitle className="text-brand-navy text-left font-bold">Menu</SheetTitle>
+        <SheetHeader className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-[hsl(var(--secondary))]/5 to-[hsl(var(--primary))]/5">
+          <SheetTitle className="text-[hsl(var(--navy))] text-left font-heading font-bold text-lg">
+            Menu
+          </SheetTitle>
           
-          {/* Search Input */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          {/* Search Input with larger touch target */}
+          <div className="relative mt-3">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               type="text"
               placeholder="Search tests or categories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-9 text-sm"
+              className="pl-10 pr-10 h-12 text-base rounded-xl border-gray-200 focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]/20"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors touch-manipulation active:scale-95"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -127,12 +131,12 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
           </div>
         </SheetHeader>
 
-        <ScrollArea className="h-[calc(100vh-140px)]">
-          <div className="px-4 py-4 space-y-1">
+        <ScrollArea className="h-[calc(100vh-160px)]">
+          <div className="px-3 py-4 space-y-1">
             {/* Search Results */}
             {filteredContent && filteredContent.length > 0 && (
               <div className="space-y-1">
-                <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   {filteredContent.length} {filteredContent.length === 1 ? 'Result' : 'Results'}
                 </p>
                 {filteredContent.map((result, index) => (
@@ -140,11 +144,11 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                     key={`${result.path}-${index}`}
                     to={result.path}
                     onClick={handleLinkClick}
-                    className="flex items-start gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                    className="flex items-start gap-3 px-4 py-3.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors touch-manipulation group"
                   >
-                    <div className="w-2 h-2 rounded-full bg-[#e70d69] mt-1.5 flex-shrink-0" />
+                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--primary))] mt-2 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 group-hover:text-[#e70d69]">
+                      <p className="text-sm font-medium text-gray-900 group-hover:text-[hsl(var(--primary))] group-active:text-[hsl(var(--primary))]">
                         {result.name}
                       </p>
                       {result.description && (
@@ -153,11 +157,12 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         </p>
                       )}
                       {result.parentSection && (
-                        <p className="text-xs text-[#22c0d4] mt-1">
+                        <p className="text-xs text-[hsl(var(--secondary))] mt-1">
                           in {result.parentSection}
                         </p>
                       )}
                     </div>
+                    <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[hsl(var(--primary))] mt-1" />
                   </Link>
                 ))}
               </div>
@@ -165,10 +170,12 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
 
             {/* No Results */}
             {filteredContent && filteredContent.length === 0 && (
-              <div className="px-4 py-8 text-center">
-                <Search className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-sm font-medium text-gray-900 mb-1">No results found</p>
-                <p className="text-xs text-gray-500">
+              <div className="px-4 py-10 text-center">
+                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-7 w-7 text-gray-400" />
+                </div>
+                <p className="text-base font-medium text-gray-900 mb-1">No results found</p>
+                <p className="text-sm text-gray-500">
                   Try searching for different tests or categories
                 </p>
               </div>
@@ -178,139 +185,181 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
             {!filteredContent && (
               <>
                 {/* Primary Navigation Items */}
-                {primaryNavigationItems.map((item) => (
-              <div key={item.path}>
-                {item.hasDropdown ? (
-                  <div>
+                {primaryNavigationItems.map((item, index) => (
+                  <div 
+                    key={item.path}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 30}ms` }}
+                  >
+                    {item.hasDropdown ? (
+                      <div>
+                        <button
+                          onClick={() => toggleSection(item.name)}
+                          className={cn(
+                            "w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 touch-manipulation active:scale-[0.98] min-h-[52px]",
+                            expandedSections.has(item.name)
+                              ? "bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]"
+                              : "hover:bg-gray-50 active:bg-gray-100 text-gray-900"
+                          )}
+                        >
+                          <span className="font-semibold text-base">{item.name}</span>
+                          <ChevronDown
+                            className={cn(
+                              "h-5 w-5 transition-transform duration-300 ease-out",
+                              expandedSections.has(item.name) && "rotate-180"
+                            )}
+                          />
+                        </button>
+
+                        {/* Expanded Category Items with smooth animation */}
+                        <div 
+                          className={cn(
+                            "overflow-hidden transition-all duration-300 ease-out",
+                            expandedSections.has(item.name) 
+                              ? "max-h-[500px] opacity-100" 
+                              : "max-h-0 opacity-0"
+                          )}
+                        >
+                          <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-[hsl(var(--primary))]/20 pl-3">
+                            {getFilteredCategories(item.name).slice(0, 6).map((category, catIndex) => (
+                              <Link
+                                key={category.id}
+                                to={`/compare?category=${category.id}`}
+                                onClick={handleLinkClick}
+                                className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation group min-h-[48px]"
+                                style={{ animationDelay: `${catIndex * 50}ms` }}
+                              >
+                                <div className="w-2 h-2 rounded-full bg-[hsl(var(--primary))] mt-1.5 flex-shrink-0 group-active:scale-125 transition-transform" />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-gray-800 group-hover:text-[hsl(var(--primary))] group-active:text-[hsl(var(--primary))] transition-colors">
+                                    {category.name}
+                                  </p>
+                                  {category.description && (
+                                    <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">
+                                      {category.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </Link>
+                            ))}
+                            <Link
+                              to={item.path}
+                              onClick={handleLinkClick}
+                              className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 active:bg-[hsl(var(--primary))]/10 rounded-xl mt-1 transition-all touch-manipulation min-h-[44px]"
+                            >
+                              View All
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <Link
+                        to={item.path}
+                        onClick={handleLinkClick}
+                        className={cn(
+                          "flex items-center px-4 py-3.5 rounded-xl font-semibold text-base transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px]",
+                          (item as any).highlighted
+                            ? "text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/10 active:bg-[hsl(var(--primary))]/15"
+                            : "text-gray-900 hover:bg-gray-50 active:bg-gray-100"
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+
+                <Separator className="my-4" />
+
+                {/* More Navigation Sections */}
+                {moreNavigationSections.map((section, sectionIndex) => (
+                  <div 
+                    key={section.title}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${(primaryNavigationItems.length + sectionIndex) * 30}ms` }}
+                  >
                     <button
-                      onClick={() => toggleSection(item.name)}
+                      onClick={() => toggleSection(section.title)}
                       className={cn(
-                        "w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300",
-                        expandedSections.has(item.name)
-                          ? "bg-brand-pink/10 text-brand-pink"
-                          : "hover:bg-muted text-foreground"
+                        "w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 touch-manipulation active:scale-[0.98] min-h-[52px]",
+                        expandedSections.has(section.title)
+                          ? "bg-[hsl(var(--secondary))]/10 text-[hsl(var(--secondary))]"
+                          : "hover:bg-gray-50 active:bg-gray-100 text-gray-900"
                       )}
                     >
-                      <span className="font-semibold text-sm">{item.name}</span>
+                      <span className="font-semibold text-base">{section.title}</span>
                       <ChevronDown
                         className={cn(
-                          "h-4 w-4 transition-transform duration-300",
-                          expandedSections.has(item.name) && "rotate-180"
+                          "h-5 w-5 transition-transform duration-300 ease-out",
+                          expandedSections.has(section.title) && "rotate-180"
                         )}
                       />
                     </button>
 
-                    {/* Expanded Category Items */}
-                    {expandedSections.has(item.name) && (
-                      <div className="ml-2 mt-1 space-y-0.5 animate-fade-in">
-                        {getFilteredCategories(item.name).slice(0, 6).map((category) => (
+                    <div 
+                      className={cn(
+                        "overflow-hidden transition-all duration-300 ease-out",
+                        expandedSections.has(section.title) 
+                          ? "max-h-[400px] opacity-100" 
+                          : "max-h-0 opacity-0"
+                      )}
+                    >
+                      <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-[hsl(var(--secondary))]/20 pl-3">
+                        {section.items.map((item) => (
                           <Link
-                            key={category.id}
-                            to={`/compare?category=${category.id}`}
+                            key={item.path}
+                            to={item.path}
                             onClick={handleLinkClick}
-                            className="flex items-start gap-3 px-4 py-2.5 rounded-lg hover:bg-muted transition-all duration-200 group"
+                            className="flex items-center px-3 py-3 text-sm text-gray-700 hover:text-[hsl(var(--secondary))] active:text-[hsl(var(--secondary))] hover:bg-gray-50 active:bg-gray-100 rounded-xl transition-all duration-150 touch-manipulation min-h-[48px]"
                           >
-                            <div className="w-2 h-2 rounded-full bg-brand-pink mt-1.5 flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-foreground group-hover:text-brand-pink transition-colors duration-200">
-                                {category.name}
-                              </p>
-                              {category.description && (
-                                <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
-                                  {category.description}
-                                </p>
-                              )}
-                            </div>
+                            {item.name}
                           </Link>
                         ))}
-                        <Link
-                          to={item.path}
-                          onClick={handleLinkClick}
-                          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-pink hover:bg-brand-pink/5 rounded-lg mt-1 transition-all duration-200"
-                        >
-                          View All
-                          <ChevronRight className="h-3 w-3" />
-                        </Link>
                       </div>
-                    )}
+                    </div>
                   </div>
-                ) : (
-                  <Link
-                    to={item.path}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      "flex items-center px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-200",
-                      (item as any).highlighted
-                        ? "text-brand-pink hover:bg-brand-pink/10"
-                        : "text-foreground hover:bg-muted"
-                    )}
+                ))}
+
+                <Separator className="my-4" />
+
+                {/* Quick Action Buttons */}
+                <div className="space-y-2 px-1">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-gray-200 hover:border-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 active:scale-[0.98] transition-all touch-manipulation"
                   >
-                    {item.name}
-                  </Link>
-                )}
+                    <Link to="/find-clinic" onClick={handleLinkClick}>
+                      <MapPin className="w-5 h-5 mr-3 text-[hsl(var(--primary))]" />
+                      Find a Clinic
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-gray-200 hover:border-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))]/5 active:scale-[0.98] transition-all touch-manipulation"
+                  >
+                    <Link to="/contact" onClick={handleLinkClick}>
+                      <Phone className="w-5 h-5 mr-3 text-[hsl(var(--secondary))]" />
+                      Contact Us
+                    </Link>
+                  </Button>
                 </div>
-              ))}
 
-              <Separator className="my-4" />
-
-              {/* More Navigation Sections */}
-              {moreNavigationSections.map((section) => (
-              <div key={section.title}>
-                <button
-                  onClick={() => toggleSection(section.title)}
-                  className={cn(
-                    "w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300",
-                    expandedSections.has(section.title)
-                      ? "bg-brand-turquoise/10 text-brand-turquoise"
-                      : "hover:bg-muted text-foreground"
-                  )}
-                >
-                  <span className="font-semibold text-sm">{section.title}</span>
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-transform duration-300",
-                      expandedSections.has(section.title) && "rotate-180"
-                    )}
-                  />
-                </button>
-
-                {expandedSections.has(section.title) && (
-                  <div className="ml-2 mt-1 space-y-0.5 animate-fade-in">
-                    {section.items.map((item) => (
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        onClick={handleLinkClick}
-                        className="flex items-center px-4 py-2.5 text-sm text-muted-foreground hover:text-brand-turquoise hover:bg-muted rounded-lg transition-all duration-200"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                {/* Primary CTA */}
+                <div className="px-1 pt-4 pb-6">
+                  <Button
+                    asChild
+                    className="w-full h-14 text-base font-semibold rounded-xl bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 active:scale-[0.98] transition-all touch-manipulation shadow-lg shadow-[hsl(var(--primary))]/20"
+                  >
+                    <Link to="/compare" onClick={handleLinkClick}>
+                      Find a Test
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Link>
+                  </Button>
                 </div>
-              ))}
-
-              <Separator className="my-4" />
-
-              {/* Quick Links */}
-              <div className="space-y-1">
-                <Link
-                  to="/find-clinic"
-                  onClick={handleLinkClick}
-                  className="flex items-center px-4 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  📍 Find a Clinic
-                </Link>
-                <Link
-                  to="/contact"
-                  onClick={handleLinkClick}
-                  className="flex items-center px-4 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  📞 Contact Us
-                </Link>
-              </div>
-            </>
+              </>
             )}
           </div>
         </ScrollArea>
