@@ -4,18 +4,19 @@ const MissionSection = () => {
       <div className="container mx-auto px-3 sm:px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 sm:mb-6 px-2">
-            <span className="text-[hsl(var(--navy))]">Your health is your </span>
-            <span className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))] bg-clip-text text-transparent">
-              greatest asset
-            </span>
+            <span style={{ color: "#081129" }}>Your health is your </span>
+            <span style={{ color: "#22c0d4" }}>greatest asset!</span>
           </h2>
-          
+
           <div className="space-y-3 sm:space-y-4 text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed px-2">
             <p>
-              At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information. Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
+              At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information.
+              Our mission is to empower you to take control of your health by making it simple to compare private health
+              tests from accredited UK providers.
             </p>
             <p>
-              We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
+              We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC
+              regulation.
             </p>
           </div>
         </div>
