@@ -30,7 +30,7 @@ const Header = ({ className }: HeaderProps) => {
     return (
       <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
-          <div className="px-2 sm:px-3 py-2 flex justify-between items-center gap-1.5 sm:gap-2 bg-brand-navy h-14">
+          <div className="px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2 sm:gap-3 bg-brand-navy min-h-[100px] sm:min-h-[120px]">
             <div className="flex-shrink-0">
               <Logo />
             </div>
@@ -50,7 +50,7 @@ const Header = ({ className }: HeaderProps) => {
     );
   }
   // Toolbar always sticky
-  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-3", styles.header, styles.headerVisible);
+  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[10px] border-b border-white/20", styles.toolbar);
   return (
     <ErrorBoundary>

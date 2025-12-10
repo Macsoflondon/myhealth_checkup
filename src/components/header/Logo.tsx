@@ -16,7 +16,7 @@ export const Logo = () => {
       <img 
         src={logo} 
         alt="My Health Checkup" 
-        className="h-16 sm:h-18 md:h-20 lg:h-24 w-auto"
+        className="h-32 sm:h-40 md:h-48 lg:h-56 xl:h-64 w-auto max-h-[20vh] object-contain"
         loading="eager"
       />
     </Link>
