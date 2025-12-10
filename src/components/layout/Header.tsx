@@ -15,7 +15,9 @@ import styles from "./Header.module.css";
 interface HeaderProps {
   className?: string;
 }
-const Header = ({ className }: HeaderProps) => {
+const Header = ({
+  className
+}: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -27,8 +29,7 @@ const Header = ({ className }: HeaderProps) => {
     setIsMenuOpen(false);
   }, [location.pathname]);
   if (isMobile) {
-    return (
-      <ErrorBoundary>
+    return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
           <div className="px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2 sm:gap-3 bg-brand-navy min-h-[100px] sm:min-h-[120px]">
             <div className="flex-shrink-0">
@@ -46,17 +47,15 @@ const Header = ({ className }: HeaderProps) => {
           {/* Mobile Navigation Drawer */}
           <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </header>
-      </ErrorBoundary>
-    );
+      </ErrorBoundary>;
   }
   // Toolbar always sticky
   const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[10px] border-b border-white/20", styles.toolbar);
-  return (
-    <ErrorBoundary>
+  return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className={headerBarClasses}>
+        <div className="">
           <div className="relative flex items-center justify-between w-full bg-brand-navy py-0">
             <div className="flex items-center gap-2 flex-shrink-0 z-10">
               <Logo />
@@ -76,7 +75,6 @@ const Header = ({ className }: HeaderProps) => {
           </div>
         </div>
       </header>
-    </ErrorBoundary>
-  );
+    </ErrorBoundary>;
 };
 export default Header;
