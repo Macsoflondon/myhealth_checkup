@@ -20,16 +20,16 @@ export const MobileMenu = ({
       aria-expanded={isMenuOpen} 
       aria-controls="mobile-menu" 
       className={cn(
-        "lg:hidden h-9 w-9 p-0 rounded-md transition-colors flex-shrink-0",
+        "lg:hidden h-8 w-8 p-0 rounded-md transition-colors flex-shrink-0",
         isMenuOpen 
           ? "bg-[#22c0d4]/20 text-[#22c0d4] border-2 border-[#22c0d4]" 
           : "text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4]"
       )}
     >
       {isMenuOpen ? (
-        <X className="h-5 w-5" />
+        <X className="h-4 w-4" />
       ) : (
-        <Menu className="h-5 w-5" />
+        <Menu className="h-4 w-4" />
       )}
     </Button>
   );
