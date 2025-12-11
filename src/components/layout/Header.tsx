@@ -32,16 +32,27 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
-          <div className="px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2 sm:gap-3 bg-brand-navy min-h-[100px] sm:min-h-[120px]">
-            <div className="flex-shrink-0">
-              <Logo />
-            </div>
+          <div className="px-3 sm:px-4 py-3 sm:py-4 flex flex-col gap-2 bg-brand-navy min-h-[100px] sm:min-h-[120px]">
+            <div className="flex justify-between items-center gap-2 sm:gap-3">
+              <div className="flex-shrink-0">
+                <Logo />
+              </div>
 
-            {/* Right side controls */}
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-              <LanguageSwitcher />
-              <UserMenu isMobile />
-              <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+              {/* Right side controls */}
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                <LanguageSwitcher />
+                <UserMenu isMobile />
+                <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+              </div>
+            </div>
+            
+            {/* Mobile tagline banner */}
+            <div className="flex justify-center w-full">
+              <img 
+                src={headerTaglineBanner} 
+                alt="Your health. Your choice. One trusted platform." 
+                className="h-8 sm:h-10 w-full max-w-[320px] object-contain"
+              />
             </div>
           </div>
           
@@ -67,7 +78,7 @@ const Header = ({
               <img 
                 src={headerTaglineBanner} 
                 alt="Your health. Your choice. One trusted platform." 
-                className="h-10 lg:h-12 max-w-[300px] lg:max-w-[400px] object-cover object-center"
+                className="h-12 lg:h-14 xl:h-16 max-w-[350px] lg:max-w-[450px] xl:max-w-[500px] object-contain"
               />
             </div>
 
