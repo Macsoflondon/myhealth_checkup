@@ -33,22 +33,18 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
-          <div className="px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-3 bg-brand-navy">
+          <div className="px-4 py-3 flex items-center justify-between bg-brand-navy">
+            {/* Mobile logo - left aligned */}
             <div className="flex-shrink-0">
-              <Logo />
-            </div>
-
-            {/* Mobile logo - inline */}
-            <div className="flex-1 flex justify-center px-2">
               <img 
                 src={mobileLogo} 
                 alt="myhealth checkup" 
-                className="h-10 sm:h-12 max-w-[180px] sm:max-w-[220px] object-contain"
+                className="h-9 max-w-[140px] object-contain"
               />
             </div>
 
             {/* Right side controls */}
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
