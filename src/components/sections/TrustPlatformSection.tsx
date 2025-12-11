@@ -1,5 +1,11 @@
 import { Eye, Stethoscope, BadgeCheck } from "lucide-react";
-const TrustPlatformSection = () => {
+import { cn } from "@/lib/utils";
+
+interface TrustPlatformSectionProps {
+  className?: string;
+}
+
+const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
   const features = [{
     icon: Eye,
     title: "Independent & Transparent",
@@ -13,7 +19,7 @@ const TrustPlatformSection = () => {
     title: "Quality Focused",
     description: "We only feature UKAS accredited laboratories, CQC regulated providers, and ISO 15189 certified facilities."
   }];
-  return <section className="py-12 sm:py-16 md:py-20 bg-[hsl(var(--navy))]">
+  return <section className={cn("py-12 sm:py-16 md:py-20 bg-[hsl(var(--navy))]", className)}>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-4">

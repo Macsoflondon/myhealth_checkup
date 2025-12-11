@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { ProviderLogo } from "@/components/ProviderLogo";
 import { useClinicsData } from "@/hooks/useClinicsData";
 import { useGeocoding } from "@/hooks/useGeocoding";
 import { useUserLocation } from "@/hooks/useUserLocation";
@@ -404,6 +405,16 @@ const LocationsPage = () => {
                 key={clinic.id}
                 className="bg-card rounded-xl border border-border p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-200"
               >
+                {/* Provider Logo */}
+                {clinic.provider_id && (
+                  <div className="mb-3">
+                    <ProviderLogo
+                      provider={clinic.provider_id}
+                      className="h-8 w-auto grayscale hover:grayscale-0 transition-all"
+                    />
+                  </div>
+                )}
+
                 {/* Clinic Name */}
                 <h3 className="font-heading font-bold text-foreground text-lg mb-2 leading-tight">
                   {clinic.name}
@@ -433,13 +444,15 @@ const LocationsPage = () => {
                     </span>
                   </div>
 
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-foreground/20 text-foreground hover:bg-foreground hover:text-background font-medium rounded-lg"
-                  >
-                    View Clinic
-                  </Button>
+                  <Link to={`/locations/${clinic.id}`}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-foreground/20 text-foreground hover:bg-foreground hover:text-background font-medium rounded-lg"
+                    >
+                      View Clinic
+                    </Button>
+                  </Link>
                 </div>
               </div>
             ))}
