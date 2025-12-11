@@ -56,7 +56,7 @@ const Header = ({
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="">
-          <div className="relative flex items-center justify-between w-full bg-brand-navy py-0">
+          <div className="relative w-full bg-brand-navy py-0 flex items-center justify-between">
             <div className="flex items-center gap-2 flex-shrink-0 z-10">
               <Logo />
             </div>
