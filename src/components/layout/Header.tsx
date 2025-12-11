@@ -36,7 +36,7 @@ const Header = ({
           <div className="px-4 py-3 flex items-center justify-between bg-brand-navy">
             {/* Mobile logo - left aligned */}
             <div className="flex-shrink-0">
-              <img src={mobileLogo} alt="myhealth checkup" className="h-9 max-w-[1500px] object-contain" />
+              <img src={mobileLogo} alt="myhealth checkup" className="h-9 max-w-[2500px] object-contain" />
             </div>
 
             {/* Right side controls */}
