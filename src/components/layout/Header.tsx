@@ -44,11 +44,11 @@ const Header = ({
             </div>
 
             {/* Right side controls */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-            </div>
+            </nav>
           </div>
           
           {/* Mobile Navigation Drawer */}
@@ -77,10 +77,10 @@ const Header = ({
               />
             </div>
 
-            <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0 justify-end z-10">
+            <nav className="flex items-center gap-2 flex-shrink-0 justify-end z-10" aria-label="User controls">
               <LanguageSwitcher />
               <UserMenu />
-            </div>
+            </nav>
           </div>
         </div>
 
