@@ -30,9 +30,9 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-md transition-colors flex-shrink-0"
+              className="h-8 w-8 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-md transition-colors flex-shrink-0"
             >
-              <User className="h-4.5 w-4.5" />
+              <User className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -56,11 +56,11 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-9 w-9 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-md transition-colors flex-shrink-0"
+        className="h-8 w-8 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-md transition-colors flex-shrink-0"
         asChild
       >
         <Link to="/auth" className="flex items-center justify-center" onClick={onItemClick}>
-          <User className="h-4.5 w-4.5" />
+          <User className="h-4 w-4" />
         </Link>
       </Button>
     );
