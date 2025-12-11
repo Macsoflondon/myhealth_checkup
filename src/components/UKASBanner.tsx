@@ -1,6 +1,6 @@
 import { Shield, Award, Bookmark } from 'lucide-react';
 const UKASBanner = () => {
-  return <div className="bg-[hsl(var(--navy))] text-tertiary py-2 px-2 sm:px-4">
+  return <div className="bg-[hsl(var(--navy))] text-tertiary py-1.5 px-2 sm:px-4">
       <div className="container mx-auto">
         <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap text-[#e70d68] md:gap-10">
           <div className="flex items-center gap-1 sm:gap-1.5">
