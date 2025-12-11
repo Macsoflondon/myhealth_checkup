@@ -34,10 +34,6 @@ const Header = ({
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
           <div className="px-4 py-3 flex items-center justify-between bg-brand-navy">
-            {/* Mobile logo - left aligned */}
-            <div className="flex-shrink-0">
-              <img src={mobileLogo} alt="myhealth checkup" className="h-8 sm:h-10 max-w-[280px] sm:max-w-[320px] object-contain" />
-            </div>
 
             {/* Right side controls */}
             <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
