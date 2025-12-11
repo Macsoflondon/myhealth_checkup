@@ -12,7 +12,7 @@ const UKASBanner = () => {
             <span className="text-[10px] sm:text-xs whitespace-nowrap font-sans font-semibold text-[#e70d68] md:text-base">CQC Regulated</span>
           </div>
           <div className="flex items-center gap-1 sm:gap-1.5">
-            <Bookmark className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[hsl(var(--primary))] flex-shrink-0 text-[#22c0d4]" />
+            <Bookmark className="w-3 h-3 sm:w-3.5 text-[hsl(var(--primary))] flex-shrink-0 sm:h-[18px] text-[#22c0d4]" />
             <span className="text-[10px] sm:text-xs whitespace-nowrap text-[#e70d68] font-semibold md:text-base">ISO 15189</span>
           </div>
         </div>
