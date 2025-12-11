@@ -36,11 +36,7 @@ const Header = ({
           <div className="px-4 py-3 flex items-center justify-between bg-brand-navy">
             {/* Mobile logo - left aligned */}
             <div className="flex-shrink-0">
-              <img 
-                src={mobileLogo} 
-                alt="myhealth checkup" 
-                className="h-9 max-w-[140px] object-contain"
-              />
+              <img src={mobileLogo} alt="myhealth checkup" className="h-9 max-w-[1500px] object-contain" />
             </div>
 
             {/* Right side controls */}
@@ -70,11 +66,7 @@ const Header = ({
 
             {/* Center tagline banner */}
             <div className="hidden md:flex flex-1 justify-center px-4 z-10">
-              <img 
-                src={headerTaglineBanner} 
-                alt="Your health. Your choice. One trusted platform." 
-                className="h-12 lg:h-14 xl:h-16 max-w-[350px] lg:max-w-[450px] xl:max-w-[500px] object-contain"
-              />
+              <img src={headerTaglineBanner} alt="Your health. Your choice. One trusted platform." className="h-12 lg:h-14 xl:h-16 max-w-[350px] lg:max-w-[450px] xl:max-w-[500px] object-contain" />
             </div>
 
             <nav className="flex items-center gap-2 flex-shrink-0 justify-end z-10" aria-label="User controls">
