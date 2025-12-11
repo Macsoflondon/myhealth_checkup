@@ -16,10 +16,8 @@ import JourneySimplified from "@/components/sections/JourneySimplified";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
-
 const Index = () => {
   usePerformanceOptimization();
-  
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -50,9 +48,7 @@ const Index = () => {
       "closes": "23:59"
     }
   };
-
-  return (
-    <ErrorBoundary>
+  return <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-white">
         <Helmet>
           <title>myhealth checkup - Compare Trusted Private Health Tests Across the UK</title>
@@ -61,12 +57,7 @@ const Index = () => {
           <link rel="canonical" href="https://myhealthhub.co.uk/" />
           
           {/* Preload critical hero image for faster LCP */}
-          <link 
-            rel="preload" 
-            as="image" 
-            href="/lovable-uploads/hero-bg-pink-tubes.webp" 
-            type="image/webp"
-          />
+          <link rel="preload" as="image" href="/lovable-uploads/hero-bg-pink-tubes.webp" type="image/webp" />
           
           {/* Open Graph */}
           <meta property="og:type" content="website" />
@@ -114,7 +105,7 @@ const Index = () => {
           <AccreditationCards />
           
           {/* 4. Trusted Health Comparison Platform */}
-          <TrustPlatformSection />
+          <TrustPlatformSection className="bg-[#081129]" />
           
           {/* 5. Partners Grid */}
           <PartnersGrid />
@@ -135,8 +126,6 @@ const Index = () => {
         <Footer />
         <CookieConsent />
       </div>
-    </ErrorBoundary>
-  );
+    </ErrorBoundary>;
 };
-
 export default Index;
