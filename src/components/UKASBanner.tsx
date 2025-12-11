@@ -8,14 +8,14 @@ const UKASBanner = () => {
             <span className="text-[8px] sm:text-[10px] md:text-sm whitespace-nowrap text-[#e70d68] font-sans font-bold">UKAS Accredited Labs</span>
           </div>
           
-          <div className="w-px h-3 sm:h-4 bg-white/30 flex-shrink-0" />
+          <div className="w-px h-3 sm:h-4 bg-[#22c0d4] flex-shrink-0" />
           
           <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
             <Award className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-[#22c0d4] flex-shrink-0" />
             <span className="text-[8px] sm:text-[10px] md:text-sm whitespace-nowrap font-sans font-semibold text-[#e70d68]">CQC Regulated</span>
           </div>
           
-          <div className="w-px h-3 sm:h-4 bg-white/30 flex-shrink-0" />
+          <div className="w-px h-3 sm:h-4 bg-[#22c0d4] flex-shrink-0" />
           
           <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
             <Bookmark className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-[#22c0d4] flex-shrink-0" />
