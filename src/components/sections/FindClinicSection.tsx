@@ -10,26 +10,26 @@ const FindClinicSection = () => {
   ];
 
   return (
-    <section className="py-10 sm:py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-3 sm:px-4">
+    <section className="py-12 sm:py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           {/* Badge */}
           <div className="flex justify-center mb-4 sm:mb-6">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[hsl(var(--secondary))]/10 text-[hsl(var(--secondary))]">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#e70d69]/10 text-[#e70d69]">
               <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="text-xs sm:text-sm font-medium">Nationwide Coverage</span>
             </div>
           </div>
 
           {/* Heading */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center mb-4 sm:mb-6 px-2">
-            <span className="text-[hsl(var(--navy))]">Find a Clinic </span>
-            <span className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))] bg-clip-text text-transparent">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6 px-2">
+            Find a Clinic{" "}
+            <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">
               Near You
             </span>
           </h2>
 
-          <p className="text-center text-gray-600 text-sm sm:text-base md:text-lg mb-6 sm:mb-10 max-w-2xl mx-auto px-2">
+          <p className="text-center text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-10 max-w-2xl mx-auto px-2">
             With over 500 partner clinic locations across the UK, getting a blood test has never been more convenient.
           </p>
 
@@ -37,10 +37,10 @@ const FindClinicSection = () => {
           <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-10">
             {stats.map((stat, index) => (
               <div key={index} className="text-center p-2 sm:p-4 rounded-lg sm:rounded-xl border border-gray-100">
-                <div className="text-lg sm:text-2xl md:text-3xl font-bold text-[hsl(var(--primary))]">
+                <div className="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-[#22c0d4]">
                   {stat.value}
                 </div>
-                <div className="text-[10px] sm:text-sm text-gray-600 mt-0.5 sm:mt-1">
+                <div className="text-[10px] sm:text-sm text-gray-600 font-sans mt-0.5 sm:mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -52,7 +52,7 @@ const FindClinicSection = () => {
             <Button 
               asChild 
               size="lg" 
-              className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto"
+              className="bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px]"
             >
               <Link to="/find-clinic">
                 <Navigation className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
@@ -63,7 +63,7 @@ const FindClinicSection = () => {
               asChild 
               variant="outline" 
               size="lg" 
-              className="border-[hsl(var(--navy))]/20 text-[hsl(var(--navy))] hover:bg-gray-50 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto"
+              className="border-2 border-[#081129]/20 text-[#081129] hover:bg-gray-50 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px]"
             >
               <Link to="/find-clinic">
                 <List className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
@@ -75,14 +75,14 @@ const FindClinicSection = () => {
 
         {/* Interactive Map Placeholder */}
         <div className="mt-12 max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-[hsl(var(--primary))]/5 to-[hsl(var(--secondary))]/5 rounded-2xl p-12 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[hsl(var(--primary))]/10 flex items-center justify-center">
-              <MapPin className="w-10 h-10 text-[hsl(var(--primary))]" />
+          <div className="bg-gradient-to-br from-[#22c0d4]/5 to-[#e70d69]/5 rounded-2xl p-12 text-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[#22c0d4]/10 flex items-center justify-center">
+              <MapPin className="w-10 h-10 text-[#22c0d4]" />
             </div>
-            <h3 className="text-xl font-semibold text-[hsl(var(--navy))] mb-2">
+            <h3 className="text-xl font-heading font-semibold text-[#081129] mb-2">
               Interactive Map
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-sans">
               Explore clinic locations from Medichecks, Goodbody, Randox, and more.
             </p>
           </div>

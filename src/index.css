@@ -35,16 +35,19 @@
     /* Material 3 Color System with Brand Colors */
 
     /* Primary - Turquoise (Brand #22c0d4) */
-    --primary: 205 39% 37%;
+    --primary: 187 72% 48%;
     --primary-foreground: 0 0% 100%;
     --primary-container: 187 72% 90%;
     --primary-on-container: 187 72% 15%;
 
     /* Secondary - Pink (Brand #e70d69) */
-    --secondary: 351 94% 70%;
+    --secondary: 335 89% 48%;
     --secondary-foreground: 0 0% 100%;
     --secondary-container: 335 89% 93%;
     --secondary-on-container: 335 89% 15%;
+
+    /* Navy (Brand #081129) */
+    --navy: 224 67% 10%;
 
     /* Tertiary - Navy (Brand #081129) */
     --tertiary: 224 67% 10%;
@@ -70,10 +73,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 205 39% 37%;
+    --primary: 187 72% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 351 94% 70%;
+    --secondary: 335 89% 48%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 95%;

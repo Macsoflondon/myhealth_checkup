@@ -59,15 +59,15 @@ const HeroNew = () => {
           {/* Trust Points with improved layout and visibility */}
           <div className="flex flex-wrap justify-center gap-3 sm:gap-6 md:gap-8 text-white animate-fade-in [animation-delay:400ms]">
             <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-[hsl(var(--primary))] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#22c0d4] animate-pulse" />
               <span className="text-sm font-medium">Independent & transparent</span>
             </div>
             <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-[hsl(var(--secondary))]" />
+              <span className="w-2 h-2 rounded-full bg-[#e70d69]" />
               <span className="text-sm font-medium">UKAS accredited labs</span>
             </div>
             <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-green-400" />
+              <span className="w-2 h-2 rounded-full bg-[#081129]" />
               <span className="text-sm font-medium">Free to use</span>
             </div>
           </div>

@@ -4,9 +4,9 @@ import { PartnerLogo } from "@/components/common/ResponsiveImage";
 
 const PartnersGrid = () => {
   return (
-    <section className="py-8 sm:py-12 md:py-16 bg-white">
-      <div className="container mx-auto px-3 sm:px-4">
-        <h2 className="text-center text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6 sm:mb-8">
+    <section className="py-12 sm:py-16 md:py-20 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        <h2 className="text-center text-xs sm:text-sm font-heading font-semibold text-[#081129] uppercase tracking-wider mb-6 sm:mb-8">
           Our Trusted Partners
         </h2>
         
