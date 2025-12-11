@@ -12,6 +12,7 @@ import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
+import headerTaglineBanner from "@/assets/header-tagline-banner.png";
 interface HeaderProps {
   className?: string;
 }
@@ -59,6 +60,15 @@ const Header = ({
           <div className="relative w-full bg-brand-navy py-0 flex items-center justify-between">
             <div className="flex items-center gap-2 flex-shrink-0 z-10">
               <Logo />
+            </div>
+
+            {/* Center tagline banner */}
+            <div className="hidden md:flex flex-1 justify-center px-4 z-10">
+              <img 
+                src={headerTaglineBanner} 
+                alt="Your health. Your choice. One trusted platform." 
+                className="h-10 lg:h-12 max-w-[300px] lg:max-w-[400px] object-cover object-center"
+              />
             </div>
 
             <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0 justify-end z-10">
