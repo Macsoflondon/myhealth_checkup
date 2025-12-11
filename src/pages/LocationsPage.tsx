@@ -3,15 +3,17 @@ import { useSearchParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { MapPin, Search, Droplets, Navigation, Phone, Clock } from "lucide-react";
+import { MapPin, Search, Droplets, Navigation, Phone, Clock, FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { useClinicsData } from "@/hooks/useClinicsData";
 import { useGeocoding } from "@/hooks/useGeocoding";
 import { useUserLocation } from "@/hooks/useUserLocation";
+import { useProviderTestCounts, getTestCountForProvider } from "@/hooks/useProviderTestCounts";
 import { filterAndSortClinics } from "@/utils/clinicFilters";
 import { DISTANCE_CONFIG } from "@/constants/config";
 import "leaflet/dist/leaflet.css";
@@ -63,6 +65,7 @@ const LocationsPage = () => {
   const { clinics, loading } = useClinicsData();
   const { location, requestGeolocation } = useUserLocation();
   const { geocodePostcode, searching, error: geocodeError } = useGeocoding();
+  const { data: testCounts = {} } = useProviderTestCounts();
 
   // Get initial state from URL params
   const initialPostcode = searchParams.get("postcode") || "";
@@ -425,22 +428,31 @@ const LocationsPage = () => {
                   {clinic.full_address || clinic.postal_code}
                 </p>
 
-                {/* Distance Badge */}
-                {clinic.distance && (
-                  <div className="mb-4">
+                {/* Distance and Test Count Badges */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {clinic.distance && (
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
                       <MapPin className="w-3 h-3" />
-                      {clinic.distance.toFixed(1)} miles away
+                      {clinic.distance.toFixed(1)} miles
                     </span>
-                  </div>
-                )}
+                  )}
+                  {(() => {
+                    const testCount = getTestCountForProvider(testCounts, clinic.provider_id);
+                    return testCount > 0 ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 bg-emerald-100 px-2 py-1 rounded-full">
+                        <FlaskConical className="w-3 h-3" />
+                        {testCount} tests
+                      </span>
+                    ) : null;
+                  })()}
+                </div>
 
                 {/* Service Type with Icon */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Droplets className="w-4 h-4 text-primary" />
                     <span className="text-sm text-muted-foreground">
-                      {clinic.access_note || "Venous Draw Blood Tests"}
+                      {clinic.access_note || "Blood Tests"}
                     </span>
                   </div>
 
