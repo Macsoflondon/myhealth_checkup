@@ -12,6 +12,8 @@ import {
   Navigation,
   Calendar,
   CheckCircle2,
+  Loader2,
+  Tag,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +21,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { useClinicsData } from "@/hooks/useClinicsData";
+import { useClinicTests } from "@/hooks/useClinicTests";
 import { providers } from "@/data/compare/providers";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -42,22 +45,11 @@ const OPENING_HOURS = [
   { day: "Sunday", hours: "Closed" },
 ];
 
-// Sample available tests (would come from database in production)
-const AVAILABLE_SERVICES = [
-  "Full Blood Count",
-  "Liver Function Test",
-  "Thyroid Function Test",
-  "Vitamin D Test",
-  "Iron Profile",
-  "Cholesterol Check",
-  "Diabetes Screening",
-  "Kidney Function Test",
-];
-
 const ClinicDetailPage = () => {
   const { clinicId } = useParams<{ clinicId: string }>();
   const { clinics, loading } = useClinicsData();
   const [clinic, setClinic] = useState<any>(null);
+  const [showAllTests, setShowAllTests] = useState(false);
 
   useEffect(() => {
     if (clinics.length > 0 && clinicId) {
@@ -75,6 +67,19 @@ const ClinicDetailPage = () => {
   };
 
   const providerInfo = clinic ? getProviderInfo(clinic.provider_id) : null;
+  
+  // Fetch tests available at this clinic based on provider
+  const { data: clinicTests = [], isLoading: testsLoading } = useClinicTests(clinic?.provider_id);
+  
+  // Group tests by category
+  const testsByCategory = clinicTests.reduce((acc, test) => {
+    const category = test.category || "General";
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(test);
+    return acc;
+  }, {} as Record<string, typeof clinicTests>);
+  
+  const displayedTests = showAllTests ? clinicTests : clinicTests.slice(0, 12);
 
   const handleGetDirections = () => {
     if (clinic?.latitude && clinic?.longitude) {
@@ -278,30 +283,117 @@ const ClinicDetailPage = () => {
 
             {/* Available Tests */}
             <div className="bg-card rounded-xl border border-border p-6 lg:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <Droplets className="w-5 h-5 text-primary" />
-                <h2 className="font-heading text-lg font-bold text-foreground">
-                  Available Tests
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {AVAILABLE_SERVICES.map((service) => (
-                  <div
-                    key={service}
-                    className="flex items-center gap-2 text-sm text-muted-foreground"
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Droplets className="w-5 h-5 text-primary" />
+                  <h2 className="font-heading text-lg font-bold text-foreground">
+                    Available Tests
+                  </h2>
+                  {clinicTests.length > 0 && (
+                    <Badge variant="secondary" className="ml-2">
+                      {clinicTests.length} tests
+                    </Badge>
+                  )}
+                </div>
+                {providerInfo && (
+                  <Link 
+                    to={`/provider/${providerInfo.id}/tests`}
+                    className="text-sm text-primary hover:underline hidden sm:inline-flex items-center gap-1"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                    <span>{service}</span>
-                  </div>
-                ))}
+                    View full catalogue
+                    <ExternalLink className="w-3 h-3" />
+                  </Link>
+                )}
               </div>
-              <div className="mt-4 pt-4 border-t border-border">
+              
+              {testsLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                  <span className="ml-2 text-muted-foreground">Loading available tests...</span>
+                </div>
+              ) : clinicTests.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {displayedTests.map((test) => (
+                      <div
+                        key={test.id}
+                        className="flex items-start gap-3 p-3 rounded-lg border border-border bg-muted/30 hover:bg-muted/50 transition-colors"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">
+                            {test.test_name}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            {test.price && (
+                              <span className="text-xs font-semibold text-primary">
+                                £{test.price.toFixed(2)}
+                              </span>
+                            )}
+                            {test.category && (
+                              <Badge variant="outline" className="text-xs px-1.5 py-0">
+                                <Tag className="w-2.5 h-2.5 mr-1" />
+                                {test.category}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        {test.url && (
+                          <a
+                            href={test.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:text-primary/80 flex-shrink-0"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {clinicTests.length > 12 && (
+                    <div className="mt-4 text-center">
+                      <Button 
+                        variant="ghost" 
+                        onClick={() => setShowAllTests(!showAllTests)}
+                        className="text-primary"
+                      >
+                        {showAllTests 
+                          ? "Show fewer tests" 
+                          : `Show all ${clinicTests.length} tests`
+                        }
+                      </Button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <Droplets className="w-10 h-10 text-muted-foreground/50 mx-auto mb-2" />
+                  <p className="text-muted-foreground text-sm">
+                    Test information not available for this clinic.
+                  </p>
+                  <p className="text-muted-foreground text-xs mt-1">
+                    Please contact the provider for available tests.
+                  </p>
+                </div>
+              )}
+              
+              <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-3">
                 <Link to="/compare">
                   <Button variant="link" className="p-0 h-auto text-primary">
-                    View all available tests
+                    Compare all tests
                     <ExternalLink className="w-4 h-4 ml-1" />
                   </Button>
                 </Link>
+                {providerInfo && (
+                  <Link to={`/provider/${providerInfo.id}/tests`} className="sm:hidden">
+                    <Button variant="link" className="p-0 h-auto text-primary">
+                      View full catalogue
+                      <ExternalLink className="w-4 h-4 ml-1" />
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
