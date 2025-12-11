@@ -23,7 +23,7 @@ const AccreditationCards = () => {
   ];
 
   return (
-    <section className="py-10 sm:py-14 bg-gray-50">
+    <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-3 gap-3 sm:gap-5 md:gap-8 max-w-4xl mx-auto">
           {accreditations.map((item, index) => (
@@ -41,10 +41,10 @@ const AccreditationCards = () => {
                   style={{ color: item.color }}
                 />
               </div>
-              <h3 className="font-heading font-bold text-[hsl(var(--navy))] text-xs sm:text-base md:text-lg leading-tight">
+              <h3 className="font-heading font-bold text-[#081129] text-xs sm:text-base md:text-lg leading-tight">
                 {item.title}
               </h3>
-              <p className="text-gray-500 text-[10px] sm:text-sm mt-0.5">
+              <p className="text-gray-600 font-sans text-[10px] sm:text-sm mt-0.5">
                 {item.subtitle}
               </p>
             </div>
