@@ -9,7 +9,7 @@ const UKASBanner = () => {
           </div>
           <div className="flex items-center gap-1 sm:gap-1.5">
             <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[hsl(var(--primary))] flex-shrink-0" />
-            <span className="text-tertiary font-medium text-[10px] sm:text-xs md:text-sm whitespace-nowrap">CQC regulated</span>
+            <span className="text-[10px] sm:text-xs whitespace-nowrap font-sans font-semibold text-[#e70d68] md:text-base">CQC regulated</span>
           </div>
           <div className="flex items-center gap-1 sm:gap-1.5">
             <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[hsl(var(--primary))] flex-shrink-0" />
