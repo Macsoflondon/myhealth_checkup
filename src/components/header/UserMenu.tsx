@@ -30,7 +30,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-0 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+              className="h-9 w-9 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors flex-shrink-0"
               aria-label="User menu"
             >
               <User className="h-5 w-5" />
@@ -57,7 +57,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-9 w-9 p-0 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+        className="h-9 w-9 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors flex-shrink-0"
         aria-label="Sign in"
         asChild
       >
@@ -74,7 +74,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 w-9 p-0 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            className="h-9 w-9 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors"
             aria-label="User menu"
           >
             <User className="h-5 w-5" />
@@ -101,7 +101,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-9 w-9 p-0 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+        className="h-9 w-9 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors"
         aria-label="Sign in"
         asChild
       >
