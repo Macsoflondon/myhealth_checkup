@@ -32,27 +32,25 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
-          <div className="px-3 sm:px-4 py-3 sm:py-4 flex flex-col gap-2 bg-brand-navy min-h-[100px] sm:min-h-[120px]">
-            <div className="flex justify-between items-center gap-2 sm:gap-3">
-              <div className="flex-shrink-0">
-                <Logo />
-              </div>
-
-              {/* Right side controls */}
-              <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <LanguageSwitcher />
-                <UserMenu isMobile />
-                <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-              </div>
+          <div className="px-3 sm:px-4 py-2 sm:py-3 flex justify-between items-center gap-2 bg-brand-navy">
+            <div className="flex-shrink-0">
+              <Logo />
             </div>
-            
-            {/* Mobile tagline banner */}
-            <div className="flex justify-center w-full">
+
+            {/* Mobile tagline banner - inline */}
+            <div className="flex-1 flex justify-center px-1">
               <img 
                 src={headerTaglineBanner} 
                 alt="Your health. Your choice. One trusted platform." 
-                className="h-8 sm:h-10 w-full max-w-[320px] object-contain"
+                className="h-6 sm:h-7 max-w-[140px] sm:max-w-[180px] object-contain"
               />
+            </div>
+
+            {/* Right side controls */}
+            <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
+              <LanguageSwitcher />
+              <UserMenu isMobile />
+              <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             </div>
           </div>
           
