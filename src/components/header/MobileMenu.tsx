@@ -26,11 +26,20 @@ export const MobileMenu = ({
           : "text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4]"
       )}
     >
-      {isMenuOpen ? (
-        <X className="h-4 w-4" />
-      ) : (
-        <Menu className="h-4 w-4" />
-      )}
+      <div className="relative h-4 w-4">
+        <Menu 
+          className={cn(
+            "h-4 w-4 absolute inset-0 transition-all duration-300 ease-out",
+            isMenuOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
+          )} 
+        />
+        <X 
+          className={cn(
+            "h-4 w-4 absolute inset-0 transition-all duration-300 ease-out",
+            isMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"
+          )} 
+        />
+      </div>
     </Button>
   );
 };
