@@ -1,6 +1,12 @@
 import { supabase } from "@/integrations/supabase/client";
 import { ApiResponse } from "./base";
 
+// Storage bucket for test result files
+const TEST_RESULTS_BUCKET = 'test-results';
+
+// Signed URL expiry time (1 hour in seconds)
+const SIGNED_URL_EXPIRY = 3600;
+
 export interface UploadedTestResult {
   id: string;
   user_id: string;
@@ -55,7 +61,40 @@ export interface HealthScore {
 }
 
 class HealthDataApi {
-  // Uploaded Test Results
+  /**
+   * Generate a signed URL for secure file access
+   * URLs expire after 1 hour for security
+   */
+  async getSecureFileUrl(filePath: string): Promise<string | null> {
+    if (!filePath) return null;
+    
+    // If it's already a full URL (external), return as-is
+    if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+      // For external URLs, we can't generate signed URLs
+      // Consider migrating to Supabase storage for security
+      return filePath;
+    }
+    
+    try {
+      const { data, error } = await supabase.storage
+        .from(TEST_RESULTS_BUCKET)
+        .createSignedUrl(filePath, SIGNED_URL_EXPIRY);
+      
+      if (error) {
+        console.error('Failed to generate signed URL:', error);
+        return null;
+      }
+      
+      return data.signedUrl;
+    } catch (error) {
+      console.error('Error generating signed URL:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get uploaded test results with secure file URLs
+   */
   async getUploadedTestResults(userId: string): Promise<ApiResponse<UploadedTestResult[]>> {
     const { data, error, count } = await supabase
       .from('uploaded_test_results')
@@ -63,7 +102,19 @@ class HealthDataApi {
       .eq('user_id', userId)
       .order('test_date', { ascending: false });
 
-    return { data, error, count };
+    if (error || !data) {
+      return { data, error, count };
+    }
+
+    // Generate signed URLs for file access
+    const resultsWithSignedUrls = await Promise.all(
+      data.map(async (result) => ({
+        ...result,
+        file_url: result.file_url ? await this.getSecureFileUrl(result.file_url) : null,
+      }))
+    );
+
+    return { data: resultsWithSignedUrls, error, count };
   }
 
   async uploadTestResult(result: Omit<UploadedTestResult, 'id' | 'user_id' | 'uploaded_at' | 'created_at' | 'updated_at'>): Promise<ApiResponse<UploadedTestResult>> {
