@@ -41,17 +41,17 @@ const HeroNew = () => {
           </div>
 
           {/* Trust Points with improved layout and visibility */}
-          <div className="flex-wrap gap-3 sm:gap-6 md:gap-8 text-white animate-fade-in [animation-delay:400ms] flex items-start justify-start">
-            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-none border-4 border-primary-container bg-[#081129]">
-              <span className="w-2 h-2 rounded-full bg-[#22c0d4] animate-pulse" />
-              <span className="font-sans text-base font-semibold text-primary-foreground">Independent & transparent</span>
+          <div className="flex flex-wrap gap-3 sm:gap-4 text-white animate-fade-in [animation-delay:400ms] justify-center">
+            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-[#081129]">
+              <div className="w-2 h-2 rounded-full bg-[#22c0d4] shrink-0" />
+              <span className="text-base font-sans font-semibold text-primary-foreground">Independent & transparent</span>
             </div>
-            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 bg-[#081129]">
-              <span className="w-2 h-2 rounded-full bg-[#e70d69]" />
+            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-[#081129]">
+              <div className="w-2 h-2 rounded-full bg-[#e70d69] shrink-0" />
               <span className="text-base font-sans font-semibold text-primary-foreground">UKAS accredited labs</span>
             </div>
-            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 bg-[#081129]">
-              <div className="w-3 h-3 rounded-full bg-white shrink-0" />
+            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-[#081129]">
+              <div className="w-2 h-2 rounded-full bg-white shrink-0" />
               <span className="text-base font-sans font-semibold text-primary-foreground">Free to use</span>
             </div>
           </div>
