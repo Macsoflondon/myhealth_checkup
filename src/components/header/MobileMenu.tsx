@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -11,41 +12,25 @@ export const MobileMenu = ({
   toggleMenu
 }: MobileMenuProps) => {
   return (
-    <button 
+    <Button 
+      variant="ghost"
+      size="sm"
       onClick={toggleMenu} 
       aria-label={isMenuOpen ? "Close menu" : "Open menu"} 
       aria-expanded={isMenuOpen} 
       aria-controls="mobile-menu" 
       className={cn(
-        "lg:hidden h-11 w-11 flex items-center justify-center touch-manipulation",
-        "rounded-xl transition-all duration-200 active:scale-90",
-        "min-h-[44px] min-w-[44px]", // Minimum touch target size
+        "lg:hidden h-9 w-9 p-0 rounded-md transition-colors flex-shrink-0",
         isMenuOpen 
-          ? "bg-[hsl(var(--primary))] text-white shadow-lg shadow-[hsl(var(--primary))]/30" 
-          : "text-white bg-white/10 hover:bg-white/20 border border-white/20"
+          ? "bg-[#22c0d4]/20 text-[#22c0d4] border-2 border-[#22c0d4]" 
+          : "text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4]"
       )}
     >
-      <div className="relative w-5 h-5">
-        {/* Animated hamburger to X transition */}
-        <span 
-          className={cn(
-            "absolute left-0 top-[4px] w-5 h-0.5 bg-current transition-all duration-300 ease-out",
-            isMenuOpen && "rotate-45 translate-y-[6px]"
-          )} 
-        />
-        <span 
-          className={cn(
-            "absolute left-0 top-[10px] w-5 h-0.5 bg-current transition-all duration-200",
-            isMenuOpen && "opacity-0 scale-x-0"
-          )} 
-        />
-        <span 
-          className={cn(
-            "absolute left-0 top-[16px] w-5 h-0.5 bg-current transition-all duration-300 ease-out",
-            isMenuOpen && "-rotate-45 -translate-y-[6px]"
-          )} 
-        />
-      </div>
-    </button>
+      {isMenuOpen ? (
+        <X className="h-5 w-5" />
+      ) : (
+        <Menu className="h-5 w-5" />
+      )}
+    </Button>
   );
 };
