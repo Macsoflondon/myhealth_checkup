@@ -13,6 +13,7 @@ import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
 import headerTaglineBanner from "@/assets/header-tagline-banner.png";
+import mobileLogo from "@/assets/mobile-logo.png";
 interface HeaderProps {
   className?: string;
 }
@@ -37,12 +38,12 @@ const Header = ({
               <Logo />
             </div>
 
-            {/* Mobile tagline banner - inline */}
+            {/* Mobile logo - inline */}
             <div className="flex-1 flex justify-center px-1">
               <img 
-                src={headerTaglineBanner} 
-                alt="Your health. Your choice. One trusted platform." 
-                className="h-6 sm:h-7 max-w-[140px] sm:max-w-[180px] object-contain"
+                src={mobileLogo} 
+                alt="myhealth checkup" 
+                className="h-8 sm:h-10 max-w-[160px] sm:max-w-[200px] object-contain"
               />
             </div>
 
