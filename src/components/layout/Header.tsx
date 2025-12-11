@@ -13,7 +13,7 @@ import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
 import headerTaglineBanner from "@/assets/header-tagline-banner.png";
-import mobileLogo from "@/assets/mobile-logo.png";
+import mobileLogo from "@/assets/mobile-banner-logo.png";
 interface HeaderProps {
   className?: string;
 }
@@ -36,7 +36,7 @@ const Header = ({
           <div className="px-4 py-3 flex items-center justify-between bg-brand-navy">
             {/* Mobile logo - left aligned */}
             <div className="flex-shrink-0">
-              <img src={mobileLogo} alt="myhealth checkup" className="h-9 max-w-[2500px] object-contain" />
+              <img src={mobileLogo} alt="myhealth checkup" className="h-8 sm:h-10 max-w-[280px] sm:max-w-[320px] object-contain" />
             </div>
 
             {/* Right side controls */}
