@@ -26,6 +26,7 @@ export const moreNavigationSections = [
     title: "Services",
     items: [
       { name: "Trusted UK Providers", path: "/trusted-providers" },
+      { name: "Clinic Locations", path: "/locations" },
       { name: "Find a Clinic", path: "/find-clinic" },
       { name: "Assisted Test Finder", path: "/assisted-test-finder" }
     ]
