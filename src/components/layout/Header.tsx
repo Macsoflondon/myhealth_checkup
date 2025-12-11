@@ -33,10 +33,14 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
-          <div className="px-4 py-3 flex items-center justify-between bg-brand-navy">
+          <div className="px-4 py-3 flex items-center justify-center bg-brand-navy">
+            {/* Brand name */}
+            <Link to="/" className="font-heading text-white text-lg font-bold tracking-tight mr-auto">
+              myhealth checkup
+            </Link>
 
-            {/* Right side controls */}
-            <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
+            {/* Centered navigation controls */}
+            <nav className="flex items-center gap-1" aria-label="User controls">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
