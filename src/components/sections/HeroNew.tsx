@@ -51,7 +51,7 @@ const HeroNew = () => {
               <span className="text-base font-sans font-semibold text-primary-foreground">UKAS accredited labs</span>
             </div>
             <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 bg-[#081129]">
-              <span className="w-2 h-2 min-w-[8px] min-h-[8px] inline-block rounded-full bg-white" />
+              <div className="w-3 h-3 rounded-full bg-white shrink-0" />
               <span className="text-base font-sans font-semibold text-primary-foreground">Free to use</span>
             </div>
           </div>
