@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { MapPin, Search, Navigation } from "lucide-react";
+import { MapPin, Search, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useClinicsData } from "@/hooks/useClinicsData";
 import { useGeocoding } from "@/hooks/useGeocoding";
@@ -23,6 +21,28 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
+// UK regions for area filter
+const UK_REGIONS = [
+  "All Areas",
+  "London",
+  "South East",
+  "South West",
+  "East",
+  "Midlands",
+  "North",
+  "Scotland",
+  "Wales",
+  "Northern Ireland",
+];
+
+// Service types
+const SERVICE_TYPES = [
+  "All Services",
+  "Venous Draw Blood Tests",
+  "Finger Prick Tests",
+  "At-Home Kits",
+];
+
 const NationwideClinics = () => {
   const navigate = useNavigate();
   const { clinics, loading } = useClinicsData();
@@ -30,10 +50,11 @@ const NationwideClinics = () => {
   const { geocodePostcode, searching, error: geocodeError } = useGeocoding();
   
   const [postcode, setPostcode] = useState("");
-  const [radius, setRadius] = useState<number>(DISTANCE_CONFIG.DEFAULT_RADIUS_MILES);
-  const [atHomeOnly, setAtHomeOnly] = useState(false);
+  const [selectedArea, setSelectedArea] = useState("All Areas");
+  const [selectedService, setSelectedService] = useState("All Services");
   const [center, setCenter] = useState<[number, number]>(location);
   const [showAll, setShowAll] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   // Update center when location changes
   useEffect(() => {
@@ -51,13 +72,8 @@ const NationwideClinics = () => {
     const result = await geocodePostcode(postcode);
     if (result) {
       setCenter([result.lat, result.lon]);
+      setShowMap(true);
     }
-  };
-
-  const handleClearSearch = () => {
-    setPostcode("");
-    setShowAll(false);
-    requestGeolocation();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -66,271 +82,240 @@ const NationwideClinics = () => {
     }
   };
 
-  // Filter and sort clinics
+  // Filter clinics based on area
+  const filteredByArea = selectedArea === "All Areas" 
+    ? clinics 
+    : clinics.filter(clinic => {
+        const address = clinic.full_address?.toLowerCase() || "";
+        const name = clinic.name?.toLowerCase() || "";
+        const areaLower = selectedArea.toLowerCase();
+        return address.includes(areaLower) || name.includes(areaLower);
+      });
+
+  // Filter and sort clinics by distance
   const filteredClinics = filterAndSortClinics(
-    clinics,
+    filteredByArea,
     center[0],
     center[1],
-    radius,
-    atHomeOnly
+    DISTANCE_CONFIG.DEFAULT_RADIUS_MILES * 10, // Larger radius for initial view
+    false
   );
 
-  const displayedClinics = showAll ? filteredClinics : filteredClinics.slice(0, 12);
-
-  const badges = [
-    { label: "Trusted Providers", value: "7", color: "bg-[#22c0d4]" },
-    { label: "Available Tests", value: "200+", color: "bg-[#e70d69]" },
-    { label: "Nationwide Clinics", value: filteredClinics.length.toString(), color: "bg-[#081129]" },
-  ];
+  const displayedClinics = showAll ? filteredClinics : filteredClinics.slice(0, 9);
 
   return (
-    <section className="w-full bg-gradient-to-b from-white to-gray-50 py-12 sm:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="w-full bg-white">
+      {/* Hero Section with Background Image */}
+      <div className="relative bg-gradient-to-b from-slate-50 to-white py-16 sm:py-20">
+        {/* Clinic Image */}
+        <div className="flex justify-center mb-8">
+          <div className="relative">
+            <img
+              src="/lovable-uploads/hero-image-1.png"
+              alt="Modern clinic interior"
+              className="w-48 h-48 sm:w-56 sm:h-56 object-cover rounded-2xl shadow-xl"
+            />
+          </div>
+        </div>
+
         {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#081129] mb-3">
-            Nationwide Clinics
+        <div className="text-center max-w-3xl mx-auto px-4">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Our clinic locations
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Find trusted blood test clinics near you
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6">
+            We have hundreds of locations across the UK, providing convenient, 
+            local appointments for customers just like you.
           </p>
-        </div>
-
-        {/* Badges */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 max-w-4xl mx-auto">
-          {badges.map((badge, index) => (
-            <div
-              key={index}
-              className={`${badge.color} text-white rounded-xl p-4 text-center shadow-lg`}
-            >
-              <div className="text-3xl font-bold mb-1">{badge.value}</div>
-              <div className="text-sm font-medium">{badge.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Search Controls */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium text-[#081129] mb-2">
-                Postcode
-              </label>
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Input
-                    type="text"
-                    placeholder="Enter postcode (e.g., SW1A 1AA)"
-                    value={postcode}
-                    onChange={(e) => setPostcode(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="pl-10 pr-24"
-                  />
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Button
-                    onClick={handleSearch}
-                    disabled={!postcode.trim() || searching}
-                    size="sm"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
-                  >
-                    {searching ? "Searching..." : "Search"}
-                  </Button>
-                </div>
-                {postcode && (
-                  <Button
-                    onClick={handleClearSearch}
-                    variant="outline"
-                    size="default"
-                    className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white"
-                  >
-                    Clear
-                  </Button>
-                )}
-              </div>
-              {geocodeError && (
-                <p className="text-sm text-red-600 mt-1">{geocodeError}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[#081129] mb-2">
-                Radius (miles)
-              </label>
-              <select
-                value={radius}
-                onChange={(e) => setRadius(Number(e.target.value))}
-                className="w-full rounded-md border border-gray-300 px-3 py-2"
-              >
-                {DISTANCE_CONFIG.RADIUS_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option} miles
-                  </option>
+          
+          {/* Trust Badge */}
+          <div className="flex justify-center">
+            <div className="inline-flex items-center gap-2 bg-white rounded-lg px-4 py-2 shadow-md border border-border/50">
+              <span className="text-sm font-medium text-muted-foreground">Rated</span>
+              <span className="text-sm font-bold text-foreground">Excellent</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <svg key={star} className="w-4 h-4 text-[#00b67a]" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
                 ))}
-              </select>
+              </div>
+              <span className="text-xs text-muted-foreground">(4.8)</span>
             </div>
-            <div className="flex items-end">
+          </div>
+        </div>
+      </div>
+
+      {/* Filters Section */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {/* Services Filter */}
+          <div>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Services
+            </label>
+            <select
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            >
+              {SERVICE_TYPES.map((service) => (
+                <option key={service} value={service}>
+                  {service}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Area Filter */}
+          <div>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Area
+            </label>
+            <select
+              value={selectedArea}
+              onChange={(e) => setSelectedArea(e.target.value)}
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            >
+              {UK_REGIONS.map((area) => (
+                <option key={area} value={area}>
+                  {area}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Postcode Search */}
+          <div>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Search by Postcode
+            </label>
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="Enter postcode"
+                value={postcode}
+                onChange={(e) => setPostcode(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="pr-20 h-12 rounded-lg border-border"
+              />
               <Button
-                onClick={requestGeolocation}
-                variant="outline"
-                className="w-full"
+                onClick={handleSearch}
+                disabled={!postcode.trim() || searching}
+                size="sm"
+                className="absolute right-1 top-1/2 -translate-y-1/2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md"
               >
-                <Navigation className="w-4 h-4 mr-2" />
-                Use My Location
+                {searching ? "..." : "Search"}
               </Button>
             </div>
-          </div>
-
-          {/* At-home kits filter toggle */}
-          <div className="flex items-center space-x-2 pt-4 border-t border-gray-200">
-            <Switch
-              id="at-home-kits"
-              checked={atHomeOnly}
-              onCheckedChange={setAtHomeOnly}
-            />
-            <Label htmlFor="at-home-kits" className="text-sm font-medium text-[#081129] cursor-pointer">
-              At-home kits only
-            </Label>
+            {geocodeError && (
+              <p className="text-sm text-destructive mt-1">{geocodeError}</p>
+            )}
           </div>
         </div>
 
-        {/* Map */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8" style={{ height: "500px" }}>
-          {!loading && (
-            <MapContainer
-              // @ts-ignore
-              center={center}
-              zoom={10}
-              style={{ height: "100%", width: "100%" }}
-            >
-              <TileLayer
+        {/* Optional Map Toggle */}
+        {showMap && (
+          <div className="bg-card rounded-xl shadow-lg overflow-hidden mb-8 border border-border" style={{ height: "400px" }}>
+            {!loading && (
+              <MapContainer
                 // @ts-ignore
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <MarkerClusterGroup>
-                {filteredClinics.map((clinic) => (
-                  <Marker
-                    // @ts-ignore
-                    key={clinic.id}
-                    position={[clinic.latitude, clinic.longitude]}
-                  >
-                    <Popup>
-                      <div className="p-2">
-                        <h3 className="font-bold text-[#081129] mb-1">{clinic.name}</h3>
-                        <p className="text-sm text-gray-600 mb-1">{clinic.full_address}</p>
-                        <p className="text-sm text-gray-600 mb-1">{clinic.postal_code}</p>
-                        {clinic.distance && (
-                          <p className="text-sm font-medium text-[#22c0d4] mb-1">
-                            {clinic.distance.toFixed(1)} miles away
-                          </p>
-                        )}
-                        {clinic.provider_id && (
-                          <p className="text-sm font-medium text-[#22c0d4]">
-                            Provider: {clinic.provider_id}
-                          </p>
-                        )}
-                        {clinic.access_note && (
-                          <p className="text-xs text-gray-500 mt-2">
-                            {clinic.access_note}
-                          </p>
-                        )}
-                      </div>
-                    </Popup>
-                  </Marker>
-                ))}
-              </MarkerClusterGroup>
-            </MapContainer>
-          )}
-        </div>
-
-        {/* Clinic List */}
-        {filteredClinics.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-2xl font-bold text-[#081129] mb-6">
-              {filteredClinics.length} Clinic{filteredClinics.length !== 1 ? "s" : ""} Found
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedClinics.map((clinic) => (
-                <div
-                  key={clinic.id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <h4 className="font-bold text-[#081129] text-lg leading-tight pr-2">
-                      {clinic.name}
-                    </h4>
-                    {clinic.distance && (
-                      <span className="flex-shrink-0 bg-[#22c0d4] text-white text-xs font-semibold px-2 py-1 rounded-full">
-                        {clinic.distance.toFixed(1)} mi
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="space-y-2 mb-4">
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {clinic.full_address}
-                    </p>
-                    <p className="text-sm font-medium text-[#081129]">
-                      {clinic.postal_code}
-                    </p>
-                  </div>
-
-                  {clinic.provider_id && (
-                    <div className="mb-3">
-                      <span className="inline-block bg-[#e70d69] text-white text-xs font-medium px-3 py-1 rounded-full">
-                        {clinic.provider_id}
-                      </span>
-                    </div>
-                  )}
-
-                  {clinic.access_note && (
-                    <p className="text-xs text-gray-500 mb-4 line-clamp-2">
-                      {clinic.access_note}
-                    </p>
-                  )}
-
-                  <Button
-                    onClick={() => navigate("/find-clinic")}
-                    size="sm"
-                    className="w-full bg-[#081129] hover:bg-[#081129]/90 text-white"
-                  >
-                    View Details
-                  </Button>
-                </div>
-              ))}
-            </div>
-
-            {/* Show All / Show Less Button */}
-            {filteredClinics.length > 12 && (
-              <div className="mt-8 text-center">
-                <Button
-                  onClick={() => setShowAll(!showAll)}
-                  size="lg"
-                  variant="outline"
-                  className="border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold px-8"
-                >
-                  {showAll ? "Show Less" : `Show All ${filteredClinics.length} Clinics`}
-                </Button>
-              </div>
+                center={center}
+                zoom={11}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  // @ts-ignore
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <MarkerClusterGroup>
+                  {filteredClinics.map((clinic) => (
+                    <Marker
+                      // @ts-ignore
+                      key={clinic.id}
+                      position={[clinic.latitude, clinic.longitude]}
+                    >
+                      <Popup>
+                        <div className="p-2">
+                          <h3 className="font-bold text-foreground mb-1">{clinic.name}</h3>
+                          <p className="text-sm text-muted-foreground mb-1">{clinic.full_address}</p>
+                          {clinic.distance && (
+                            <p className="text-sm font-medium text-primary">
+                              {clinic.distance.toFixed(1)} miles away
+                            </p>
+                          )}
+                        </div>
+                      </Popup>
+                    </Marker>
+                  ))}
+                </MarkerClusterGroup>
+              </MapContainer>
             )}
           </div>
         )}
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Clinic Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayedClinics.map((clinic) => (
+            <div
+              key={clinic.id}
+              className="bg-card rounded-xl border border-border p-6 hover:shadow-lg hover:border-primary/20 transition-all duration-200"
+            >
+              {/* Clinic Name */}
+              <h3 className="font-heading font-bold text-foreground text-lg mb-2 leading-tight">
+                {clinic.name}
+              </h3>
+              
+              {/* Address */}
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                {clinic.full_address || clinic.postal_code}
+              </p>
+
+              {/* Service Type with Icon */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Droplets className="w-4 h-4 text-primary" />
+                  <span className="text-sm text-muted-foreground">
+                    {clinic.access_note || "Venous Draw Blood Tests"}
+                  </span>
+                </div>
+                
+                <Button
+                  onClick={() => navigate("/find-clinic")}
+                  variant="outline"
+                  size="sm"
+                  className="border-foreground/20 text-foreground hover:bg-foreground hover:text-background font-medium rounded-lg"
+                >
+                  View Clinic
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Show More Button */}
+        {filteredClinics.length > 9 && (
+          <div className="mt-10 text-center">
+            <Button
+              onClick={() => setShowAll(!showAll)}
+              variant="outline"
+              size="lg"
+              className="border-2 border-foreground text-foreground hover:bg-foreground hover:text-background font-semibold px-8 rounded-lg"
+            >
+              {showAll ? "Show Less" : `View All ${filteredClinics.length} Clinics`}
+            </Button>
+          </div>
+        )}
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
           <Button
             size="lg"
             onClick={() => navigate("/find-clinic")}
-            className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white font-semibold rounded-xl shadow-lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl shadow-lg px-8"
           >
             <MapPin className="w-5 h-5 mr-2" />
-            Find a Clinic Near You
-          </Button>
-          <Button
-            size="lg"
-            onClick={() => navigate("/trusted-providers")}
-            variant="outline"
-            className="border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold rounded-xl"
-          >
-            View Providers
+            Find Your Nearest Clinic
           </Button>
         </div>
       </div>
