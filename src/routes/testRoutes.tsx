@@ -1,5 +1,6 @@
 import { Route, Navigate } from "react-router-dom";
 import CancerScreeningPage from "@/pages/CancerScreeningPage";
+import CancerComparisonPage from "@/pages/CancerComparisonPage";
 import DiabetesTestingPage from "@/pages/DiabetesTestingPage";
 import HeartHealthPage from "@/pages/HeartHealthPage";
 import VitaminDeficiencyPage from "@/pages/VitaminDeficiencyPage";
@@ -25,11 +26,11 @@ import MedichecksTestDetailPage from "@/pages/MedichecksTestDetailPage";
 import ThrivaTestDetailPage from "@/pages/ThrivaTestDetailPage";
 import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
 import TuliHealthTestDetailPage from "@/pages/TuliHealthTestDetailPage";
-
 export const testRoutes = (
   <>
     {/* Category Pages */}
     <Route path="/tests/cancer" element={<CancerScreeningPage />} />
+    <Route path="/cancer-screening-compare" element={<CancerComparisonPage />} />
     <Route path="/tests/diabetes" element={<DiabetesTestingPage />} />
     <Route path="/tests/heart" element={<HeartHealthPage />} />
     <Route path="/tests/vitamins" element={<VitaminDeficiencyPage />} />
