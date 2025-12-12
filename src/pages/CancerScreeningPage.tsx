@@ -16,7 +16,8 @@ const cancerScreeningTests = [
     price: "£89",
     biomarkers: ["Faecal Immunochemical Test", "Blood in stool detection", "Hemoglobin"],
     suitableFor: ["Adults 45+", "Family history", "Digestive symptoms", "Screening programme"],
-    turnaround: "5-7 days"
+    turnaround: "5-7 days",
+    cancerType: "bowel"
   },
   {
     id: "prostate-cancer",
@@ -27,7 +28,8 @@ const cancerScreeningTests = [
     price: "£125",
     biomarkers: ["PSA Total", "PSA Free", "PSA Ratio", "PSA Density"],
     suitableFor: ["Men 40+", "Urinary symptoms", "Family history", "Regular monitoring"],
-    turnaround: "3-5 days"
+    turnaround: "3-5 days",
+    cancerType: "prostate"
   },
   {
     id: "cervical-cancer",
@@ -38,7 +40,8 @@ const cancerScreeningTests = [
     price: "£149",
     biomarkers: ["HPV DNA", "Cytology", "High-risk HPV types", "Cell abnormalities"],
     suitableFor: ["Women 25-65", "Irregular smears", "HPV concerns", "Prevention"],
-    turnaround: "7-10 days"
+    turnaround: "7-10 days",
+    cancerType: "ovarian"
   },
   {
     id: "multi-cancer",
@@ -49,7 +52,8 @@ const cancerScreeningTests = [
     price: "£399",
     biomarkers: ["Circulating tumor DNA", "Protein biomarkers", "50+ cancer types"],
     suitableFor: ["High-risk individuals", "Comprehensive screening", "Early detection", "Peace of mind"],
-    turnaround: "10-14 days"
+    turnaround: "10-14 days",
+    cancerType: "multi"
   },
   {
     id: "breast-cancer",
@@ -60,7 +64,8 @@ const cancerScreeningTests = [
     price: "£189",
     biomarkers: ["CA 15-3", "CA 27.29", "CEA", "BRCA gene variants"],
     suitableFor: ["Family history", "BRCA testing", "Risk assessment", "Women 40+"],
-    turnaround: "7-10 days"
+    turnaround: "7-10 days",
+    cancerType: "breast"
   },
   {
     id: "lung-cancer",
@@ -71,7 +76,8 @@ const cancerScreeningTests = [
     price: "£169",
     biomarkers: ["CEA", "CYFRA 21-1", "NSE", "SCC Antigen"],
     suitableFor: ["Smokers", "Ex-smokers", "Respiratory symptoms", "High-risk occupations"],
-    turnaround: "5-7 days"
+    turnaround: "5-7 days",
+    cancerType: "liver"
   }
 ];
 
@@ -213,8 +219,8 @@ const CancerScreeningPage = () => {
                             ))}
                           </ul>
                         </div>
-                        <Button className="w-full text-xs sm:text-sm py-2 sm:py-2.5 bg-secondary hover:bg-secondary/90">
-                          Compare Providers
+                        <Button className="w-full text-xs sm:text-sm py-2 sm:py-2.5 bg-secondary hover:bg-secondary/90" asChild>
+                          <Link to={`/cancer-screening-compare?type=${test.cancerType}`}>Compare Providers</Link>
                         </Button>
                       </CardContent>
                     </Card>
