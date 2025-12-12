@@ -148,6 +148,9 @@ const CancerScreeningPage = () => {
                   <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
                 </Button>
                 <Button size="lg" className="bg-secondary hover:bg-secondary/90 w-full sm:w-auto text-sm sm:text-base" asChild>
+                  <Link to="/cancer-biomarkers-reference">Biomarkers Guide</Link>
+                </Button>
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto text-sm sm:text-base" asChild>
                   <Link to="/find-clinic">Find a Clinic</Link>
                 </Button>
               </div>

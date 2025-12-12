@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Shield, Activity, Heart, Target, Microscope, AlertCircle, Plus, Minus, ExternalLink } from 'lucide-react';
+import { Shield, Activity, Heart, Target, Microscope, AlertCircle, Plus, Minus, ExternalLink, BookOpen } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -144,6 +144,10 @@ export default function CancerComparisonPage() {
                 <Badge variant="outline" className="text-white border-white/30">
                   7 Trusted Providers
                 </Badge>
+                <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
+                  <BookOpen className="h-4 w-4 mr-1" />
+                  Biomarkers Reference Guide
+                </Link>
               </div>
             </div>
           </div>
