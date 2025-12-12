@@ -693,49 +693,109 @@ export type Database = {
       }
       provider_tests: {
         Row: {
+          biomarker_count: number | null
+          biomarkers_list: Json | null
           category: string | null
+          clinic_visit_available: boolean | null
           created_at: string
           description: string | null
+          gp_consultation_cost: number | null
+          gp_consultation_included: boolean | null
+          home_kit_available: boolean | null
           id: string
           image_url: string | null
           is_active: boolean
+          phlebotomy_cost: number | null
+          phlebotomy_included: boolean | null
           price: number | null
           provider_id: string
           provider_test_id: string | null
+          sample_type: string | null
           scraped_at: string
           test_name: string
           updated_at: string
           url: string | null
         }
         Insert: {
+          biomarker_count?: number | null
+          biomarkers_list?: Json | null
           category?: string | null
+          clinic_visit_available?: boolean | null
           created_at?: string
           description?: string | null
+          gp_consultation_cost?: number | null
+          gp_consultation_included?: boolean | null
+          home_kit_available?: boolean | null
           id?: string
           image_url?: string | null
           is_active?: boolean
+          phlebotomy_cost?: number | null
+          phlebotomy_included?: boolean | null
           price?: number | null
           provider_id: string
           provider_test_id?: string | null
+          sample_type?: string | null
           scraped_at?: string
           test_name: string
           updated_at?: string
           url?: string | null
         }
         Update: {
+          biomarker_count?: number | null
+          biomarkers_list?: Json | null
           category?: string | null
+          clinic_visit_available?: boolean | null
           created_at?: string
           description?: string | null
+          gp_consultation_cost?: number | null
+          gp_consultation_included?: boolean | null
+          home_kit_available?: boolean | null
           id?: string
           image_url?: string | null
           is_active?: boolean
+          phlebotomy_cost?: number | null
+          phlebotomy_included?: boolean | null
           price?: number | null
           provider_id?: string
           provider_test_id?: string | null
+          sample_type?: string | null
           scraped_at?: string
           test_name?: string
           updated_at?: string
           url?: string | null
+        }
+        Relationships: []
+      }
+      saved_comparisons: {
+        Row: {
+          category: string | null
+          comparison_name: string
+          created_at: string | null
+          id: string
+          notes: string | null
+          test_ids: string[]
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          comparison_name: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          test_ids: string[]
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          comparison_name?: string
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          test_ids?: string[]
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
