@@ -138,8 +138,8 @@ const CancerScreeningPage = () => {
                 Regular screening saves lives.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 w-full sm:w-auto text-sm sm:text-base">
-                  Browse Screening Tests
+                <Button size="lg" className="bg-primary hover:bg-primary/90 w-full sm:w-auto text-sm sm:text-base" asChild>
+                  <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
                 </Button>
                 <Button size="lg" className="bg-secondary hover:bg-secondary/90 w-full sm:w-auto text-sm sm:text-base" asChild>
                   <Link to="/find-clinic">Find a Clinic</Link>
