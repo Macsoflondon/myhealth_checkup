@@ -67,7 +67,7 @@ const Header = ({
 
             {/* Center tagline banner */}
             <div className="hidden md:flex flex-1 justify-center px-1 z-10">
-              <img alt="Your health. Your choice. One trusted platform." src="/lovable-uploads/6611bcfd-f109-41e9-b87e-d846ef5b61cc.png" className="h-24 lg:h-32 xl:h-40 max-w-[500px] lg:max-w-[650px] xl:max-w-[800px] object-contain" />
+              <img alt="Your health. Your choice. One trusted platform." src="/lovable-uploads/6611bcfd-f109-41e9-b87e-d846ef5b61cc.png" className="h-24 lg:h-32 xl:h-40 max-w-[500px] lg:max-w-[650px] xl:max-w-[1000px] object-contain " />
             </div>
 
             <nav className="flex items-center gap-2 flex-shrink-0 justify-end z-10" aria-label="User controls">
