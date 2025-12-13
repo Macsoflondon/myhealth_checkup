@@ -16,14 +16,12 @@ const HeroNew = () => {
           </div>
 
           {/* Headline with improved mobile sizing */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-5 sm:mb-6 leading-tight animate-fade-in [animation-delay:100ms]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-5 sm:mb-6 leading-tight animate-fade-in [animation-delay:100ms] lg:text-5xl">
             Compare trusted private health tests across the UK
           </h1>
 
           {/* Subheadline */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-100 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in [animation-delay:200ms]">
-            Your health is your greatest asset. Compare accredited providers in one place and book with confidence.
-          </p>
+          <p className="text-base sm:text-lg md:text-xl text-gray-100 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in [animation-delay:200ms]">Compare UKAS accredited private health tests in one place. Clear pricing. Clear providers.</p>
 
           {/* CTAs with improved visibility and touch targets */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10 sm:mb-12 px-2 animate-fade-in [animation-delay:300ms]">
