@@ -70,20 +70,18 @@ const Header = ({
               />
             </Link>
 
-            {/* Right: Tagline + Controls */}
-            <div className="flex items-center gap-4 lg:gap-6">
-              {/* Tagline - hidden on small screens */}
-              <div className="hidden lg:block">
-                <span className="text-white font-heading text-lg xl:text-xl font-semibold tracking-tight">
-                  Your <span className="text-brand-pink">health</span>. Your <span className="text-brand-turquoise">choice</span>. One <span className="text-brand-pink">trusted</span> platform.
-                </span>
-              </div>
-
-              <nav className="flex items-center gap-2" aria-label="User controls">
-                <LanguageSwitcher />
-                <UserMenu />
-              </nav>
+            {/* Center: Tagline - hidden on small screens */}
+            <div className="hidden lg:block">
+              <span className="text-white font-heading text-lg xl:text-xl font-semibold tracking-tight">
+                Your <span className="text-brand-pink">health</span>. Your <span className="text-brand-turquoise">choice</span>. One <span className="text-brand-pink">trusted</span> platform.
+              </span>
             </div>
+
+            {/* Right: Controls */}
+            <nav className="flex items-center gap-2" aria-label="User controls">
+              <LanguageSwitcher />
+              <UserMenu />
+            </nav>
           </div>
         </div>
 
