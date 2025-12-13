@@ -21,9 +21,7 @@ const HeroNew = () => {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-base sm:text-lg mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in [animation-delay:200ms] text-secondary text-center md:text-3xl">Compare UKAS accredited private health & cancer screening tests all in one place.
- 
-Independent Comparison.   Transparent.   Clear Pricing.   Free To Use.</p>
+          <p className="text-base sm:text-lg mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in [animation-delay:200ms] text-center text-white font-bold md:text-5xl">Compare UKAS accredited private health & cancer screening tests all in one place.</p>
 
           {/* CTAs with improved visibility and touch targets */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10 sm:mb-12 px-2 animate-fade-in [animation-delay:300ms]">
@@ -52,7 +50,7 @@ Independent Comparison.   Transparent.   Clear Pricing.   Free To Use.</p>
             </div>
             <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-primary">
               <div className="w-2 h-2 rounded-full shrink-0 bg-secondary" />
-              <span className="text-base font-sans font-semibold text-primary-foreground">Free to use</span>
+              <span className="font-sans font-semibold text-primary-foreground text-sm">Clear Pricing. </span>
             </div>
           </div>
         </div>
