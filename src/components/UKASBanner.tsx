@@ -1,6 +1,12 @@
 import { Shield, Award, Bookmark } from 'lucide-react';
-const UKASBanner = () => {
-  return <div className="hidden sm:block bg-[hsl(var(--navy))] text-tertiary py-1.5 px-2 sm:px-4">
+import { cn } from '@/lib/utils';
+
+interface UKASBannerProps {
+  className?: string;
+}
+
+const UKASBanner = ({ className }: UKASBannerProps) => {
+  return <div className={cn("hidden sm:block bg-[hsl(var(--navy))] text-tertiary py-1.5 px-2 sm:px-4", className)}>
       <div className="container mx-auto">
         <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 flex-nowrap overflow-x-auto text-[#e70d68]">
           <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
