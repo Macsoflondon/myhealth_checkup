@@ -60,23 +60,15 @@ const Header = ({
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-brand-navy px-4 lg:px-8">
-          <div className="relative flex items-center justify-between">
+          <div className="relative flex items-center justify-between py-[12px]">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <img 
-                src="/lovable-uploads/fcff419c-9bf2-4f2c-b144-23c529b5eb11.png" 
-                alt="myhealth checkup" 
-                className="h-10 lg:h-12 w-auto object-contain"
-              />
+              <img alt="myhealth checkup" className="h-10 lg:h-12 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
             </Link>
 
             {/* Center: Tagline banner image */}
             <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
-              <img 
-                src="/lovable-uploads/header-tagline-banner.png" 
-                alt="Your health. Your choice. One trusted platform." 
-                className="h-14 lg:h-16 xl:h-20 w-auto object-contain"
-              />
+              <img alt="Your health. Your choice. One trusted platform." className="h-14 lg:h-16 xl:h-20 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
             {/* Right: Controls */}
