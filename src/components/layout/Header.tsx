@@ -54,7 +54,7 @@ const Header = ({
       </ErrorBoundary>;
   }
   // Toolbar always sticky
-  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
+  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-2 lg:py-3", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[10px] border-b border-white/20", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
