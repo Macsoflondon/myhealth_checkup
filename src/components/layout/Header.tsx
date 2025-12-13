@@ -54,7 +54,7 @@ const Header = ({
       </ErrorBoundary>;
   }
   // Toolbar always sticky
-  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-2 lg:py-3", styles.header, styles.headerVisible);
+  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[10px] border-b border-white/20", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
@@ -67,7 +67,7 @@ const Header = ({
 
             {/* Center tagline banner */}
             <div className="hidden md:flex flex-1 justify-center px-1 z-10">
-              <img alt="Your health. Your choice. One trusted platform." src="/lovable-uploads/6611bcfd-f109-41e9-b87e-d846ef5b61cc.png" className="h-10 xl:max-w-[1000px] object-contain " />
+              <img alt="Your health. Your choice. One trusted platform." src="/lovable-uploads/6611bcfd-f109-41e9-b87e-d846ef5b61cc.png" className="h-18 xl:max-w-[1000px] object-contain " />
             </div>
 
             <nav className="flex items-center gap-2 flex-shrink-0 justify-end z-10" aria-label="User controls">
