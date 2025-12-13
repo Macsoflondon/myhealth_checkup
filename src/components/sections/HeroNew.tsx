@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { HeroBackground } from "@/components/common/ResponsiveImage";
 const HeroNew = () => {
@@ -26,7 +26,7 @@ const HeroNew = () => {
             <Button asChild size="lg" className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white px-8 py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px] shadow-lg shadow-[hsl(var(--primary))]/30 hover:shadow-xl hover:shadow-[hsl(var(--primary))]/40 transition-all duration-300 hover:-translate-y-0.5">
               <Link to="/compare">
                 Find a test
-                <ArrowRight className="ml-2 w-5 h-5" />
+                
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="border-2 border-white/50 bg-white/15 text-white hover:bg-white hover:text-[hsl(var(--navy))] px-8 py-6 text-base sm:text-lg rounded-xl backdrop-blur-md w-full sm:w-auto min-h-[52px] transition-all duration-300 hover:-translate-y-0.5 shadow-lg">
