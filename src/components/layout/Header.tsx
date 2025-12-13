@@ -60,9 +60,9 @@ const Header = ({
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="">
-          <div className="relative w-full bg-brand-navy py-0 flex items-center justify-between">
+          <div className="relative w-full bg-brand-navy py-4 lg:py-6 flex items-center justify-between">
             <div className="flex items-center gap-2 flex-shrink-0 z-10">
-              <Logo />
+              <Logo className="h-16 sm:h-20 lg:h-24 xl:h-28" />
             </div>
 
             {/* Center tagline banner */}
