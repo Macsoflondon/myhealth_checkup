@@ -91,7 +91,7 @@ const Index = () => {
           </script>
         </Helmet>
         
-        <UKASBanner className="bg-white" />
+        <UKASBanner className="bg-primary-container" />
         <Header />
         
         <main className="flex-1">
