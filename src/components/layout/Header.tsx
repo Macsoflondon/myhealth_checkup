@@ -59,21 +59,31 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="">
-          <div className="relative w-full bg-brand-navy py-1 flex items-center justify-between">
-            <div className="flex items-center gap-2 flex-shrink-0 z-10">
-              <Logo />
-            </div>
+        <div className="bg-brand-navy px-4 lg:px-8 py-2">
+          <div className="flex items-center justify-between">
+            {/* Left: Logo */}
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+              <img 
+                src="/lovable-uploads/fcff419c-9bf2-4f2c-b144-23c529b5eb11.png" 
+                alt="myhealth checkup" 
+                className="h-10 lg:h-12 w-auto object-contain"
+              />
+            </Link>
 
-            {/* Center tagline banner */}
-            <div className="hidden md:flex flex-1 justify-center z-10">
-              <img alt="Your health. Your choice. One trusted platform." src="/lovable-uploads/6611bcfd-f109-41e9-b87e-d846ef5b61cc.png" className="h-16 lg:h-20 xl:h-24 w-auto max-w-full object-contain" />
-            </div>
+            {/* Right: Tagline + Controls */}
+            <div className="flex items-center gap-4 lg:gap-6">
+              {/* Tagline - hidden on small screens */}
+              <div className="hidden lg:block">
+                <span className="text-white font-heading text-lg xl:text-xl font-semibold tracking-tight">
+                  Your <span className="text-brand-pink">health</span>. Your <span className="text-brand-turquoise">choice</span>. One <span className="text-brand-pink">trusted</span> platform.
+                </span>
+              </div>
 
-            <nav className="flex items-center gap-2 flex-shrink-0 justify-end z-10" aria-label="User controls">
-              <LanguageSwitcher />
-              <UserMenu />
-            </nav>
+              <nav className="flex items-center gap-2" aria-label="User controls">
+                <LanguageSwitcher />
+                <UserMenu />
+              </nav>
+            </div>
           </div>
         </div>
 
