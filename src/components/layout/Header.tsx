@@ -60,7 +60,7 @@ const Header = ({
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-brand-navy px-4 lg:px-8 py-2">
-          <div className="flex items-center justify-between">
+          <div className="relative flex items-center justify-between">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
               <img 
@@ -70,11 +70,13 @@ const Header = ({
               />
             </Link>
 
-            {/* Center: Tagline - hidden on small screens */}
-            <div className="hidden lg:block">
-              <span className="text-white font-heading text-lg xl:text-xl font-semibold tracking-tight">
-                Your <span className="text-brand-pink">health</span>. Your <span className="text-brand-turquoise">choice</span>. One <span className="text-brand-pink">trusted</span> platform.
-              </span>
+            {/* Center: Tagline banner image */}
+            <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
+              <img 
+                src="/lovable-uploads/header-tagline-banner.png" 
+                alt="Your health. Your choice. One trusted platform." 
+                className="h-12 xl:h-14 w-auto object-contain"
+              />
             </div>
 
             {/* Right: Controls */}
