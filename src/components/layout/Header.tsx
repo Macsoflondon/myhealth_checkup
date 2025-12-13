@@ -59,7 +59,7 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-brand-navy px-4 lg:px-8 py-1">
+        <div className="bg-brand-navy px-4 lg:px-8">
           <div className="relative flex items-center justify-between">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
