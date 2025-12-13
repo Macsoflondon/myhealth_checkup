@@ -63,7 +63,7 @@ const Header = ({
           <div className="relative flex items-center justify-between py-[12px]">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <img alt="myhealth checkup" className="h-10 lg:h-12 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
+              <img alt="myhealth checkup" className="h-32 lg:h-36 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
             </Link>
 
             {/* Center: Tagline banner image */}
