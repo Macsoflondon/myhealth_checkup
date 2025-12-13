@@ -10,9 +10,9 @@ const HeroNew = () => {
       <div className="container mx-auto px-4 sm:px-6 relative z-10 py-10 sm:py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge with animation */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--navy))]/90 border border-[hsl(var(--primary))]/40 mb-5 sm:mb-6 animate-fade-in shadow-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--navy))]/90 border border-[hsl(var(--primary))]/40 mb-5 sm:mb-6 animate-fade-in shadow-lg bg-secondary">
             <Sparkles className="w-4 h-4 text-[hsl(var(--primary))] animate-pulse" />
-            <span className="text-xs sm:text-sm font-medium text-white">UK's #1 Health Test Comparison Platform</span>
+            <span className="text-xs sm:text-sm font-medium text-white">UK's  #1  Health  Test  Comparison  Platform</span>
           </div>
 
           {/* Headline with improved mobile sizing */}
@@ -42,16 +42,16 @@ const HeroNew = () => {
 
           {/* Trust Points with improved layout and visibility */}
           <div className="flex flex-wrap gap-3 sm:gap-4 text-white animate-fade-in [animation-delay:400ms] justify-center">
-            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-[#081129]">
-              <div className="w-2 h-2 rounded-full bg-[#22c0d4] shrink-0" />
-              <span className="text-base font-sans font-semibold text-primary-foreground">Independent & transparent</span>
+            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-primary">
+              <div className="w-2 h-2 rounded-full shrink-0 bg-secondary" />
+              <span className="text-base font-sans font-semibold text-primary-foreground">Independent </span>
             </div>
-            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-[#081129]">
+            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-primary">
               <div className="w-2 h-2 rounded-full bg-[#e70d69] shrink-0" />
-              <span className="text-base font-sans font-semibold text-primary-foreground">UKAS accredited labs</span>
+              <span className="text-base font-sans font-semibold text-primary-foreground">Transparent</span>
             </div>
-            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-[#081129]">
-              <div className="w-2 h-2 rounded-full bg-white shrink-0" />
+            <div className="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-white/20 bg-primary">
+              <div className="w-2 h-2 rounded-full shrink-0 bg-secondary" />
               <span className="text-base font-sans font-semibold text-primary-foreground">Free to use</span>
             </div>
           </div>
