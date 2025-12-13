@@ -75,7 +75,7 @@ const Header = ({
               <img 
                 src="/lovable-uploads/header-tagline-banner.png" 
                 alt="Your health. Your choice. One trusted platform." 
-                className="h-[72px] lg:h-24 xl:h-28 w-auto object-contain"
+                className="h-20 lg:h-24 xl:h-28 w-auto object-contain"
               />
             </div>
 
