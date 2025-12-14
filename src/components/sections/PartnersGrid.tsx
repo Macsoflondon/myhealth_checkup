@@ -2,17 +2,9 @@ import { Link } from "react-router-dom";
 import { providers } from "@/data/compare/providers";
 import { PartnerLogo } from "@/components/common/ResponsiveImage";
 
-// Additional healthcare partners to display
-const additionalPartners = [
-  { id: "bupa", name: "Bupa", logo: null },
-  { id: "spire", name: "Spire", logo: null },
-  { id: "nuffield", name: "Nuffield Health", logo: null },
-  { id: "letsgetchecked", name: "LetsGetChecked", logo: null },
-];
-
 const PartnersGrid = () => {
-  // Combine existing providers with additional partners
-  const allPartners = [...providers, ...additionalPartners];
+  // Only show providers with actual logos
+  const allPartners = providers;
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
