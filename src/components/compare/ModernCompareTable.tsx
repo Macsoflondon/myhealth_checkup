@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award, TestTube, Zap } from "lucide-react";
+import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award, TestTube, Zap, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -12,6 +13,12 @@ import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/CompareService";
 import { DataSourceIndicator } from "./DataSourceIndicator";
 import { AddPriceAlertButton } from "./AddPriceAlertButton";
+
+// Helper to generate test detail URL
+const getTestDetailUrl = (provider: string, testId: string): string => {
+  const providerSlug = provider.toLowerCase().replace(/\s+/g, '-');
+  return `/${providerSlug}/${testId}`;
+};
 
 interface ModernCompareTableProps {
   tests: CompareTestData[];
@@ -211,11 +218,16 @@ export const ModernCompareTable = ({
                   )}
                 </div>
 
-                {/* Test Info - Mobile optimized */}
+                {/* Test Info - Mobile optimized with clickable link */}
                 <div className="mb-3 sm:mb-4">
-                  <h3 className="text-sm sm:text-headline-small font-medium mb-1.5 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
-                    {test.name}
-                  </h3>
+                  <Link 
+                    to={getTestDetailUrl(test.provider, test.id)}
+                    className="block hover:text-primary transition-colors"
+                  >
+                    <h3 className="text-sm sm:text-headline-small font-medium mb-1.5 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-tight">
+                      {test.name}
+                    </h3>
+                  </Link>
                   <p className="text-xs sm:text-body-medium text-muted-foreground line-clamp-2 mb-2 sm:mb-3">
                     {test.description || "Comprehensive health screening"}
                   </p>
@@ -241,46 +253,47 @@ export const ModernCompareTable = ({
 
                 {/* Price and Actions - Mobile optimized */}
                 <div className="border-t pt-3 sm:pt-4">
-                  <div className="flex items-center justify-between mb-3 sm:mb-4 gap-2">
+                  <div className="flex items-center justify-between mb-3 gap-2">
                     <div className="flex-shrink-0">
                       <p className="text-lg sm:text-headline-large font-bold text-primary">
                         £{test.price.toFixed(2)}
                       </p>
-                      {isOutOfStock && <Badge variant="destructive" className="mt-1 text-[10px] sm:text-xs">
+                      {isOutOfStock && (
+                        <Badge variant="destructive" className="mt-1 text-[10px] sm:text-xs">
                           Out of Stock
-                        </Badge>}
+                        </Badge>
+                      )}
                     </div>
                     
-                  <Button 
-                    onClick={() => handlePlaceOrder(test.id, test.provider)} 
-                    disabled={isOutOfStock || !user} 
-                    size="sm"
-                    className="bg-primary hover:bg-primary/92 text-primary-foreground text-xs sm:text-sm px-3 sm:px-4"
-                  >
-                    <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                    <span className="hidden xs:inline">Select Test</span>
-                    <span className="xs:hidden">Select</span>
-                  </Button>
-                </div>
-                
-                {/* Price Alert Button - Hidden on smallest screens */}
-                {user && (
-                  <div className="mb-2 sm:mb-3 hidden xs:block">
-                    <AddPriceAlertButton
-                      testId={test.id}
-                      testName={test.name}
-                      provider={test.provider}
-                      userId={user.id}
-                      currentPrice={test.price}
-                    />
+                    <div className="flex gap-2">
+                      <Button 
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="text-xs px-2 sm:px-3"
+                      >
+                        <Link to={getTestDetailUrl(test.provider, test.id)}>
+                          <ExternalLink className="h-3.5 w-3.5 mr-1" />
+                          <span className="hidden sm:inline">Details</span>
+                        </Link>
+                      </Button>
+                      <Button 
+                        onClick={() => handlePlaceOrder(test.id, test.provider)} 
+                        disabled={isOutOfStock || !user} 
+                        size="sm"
+                        className="bg-primary hover:bg-primary/92 text-primary-foreground text-xs px-2 sm:px-3"
+                      >
+                        <ShoppingCart className="h-3.5 w-3.5 mr-1" />
+                        <span className="hidden sm:inline">Select</span>
+                      </Button>
+                    </div>
                   </div>
-                )}
                 
-                <div className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-body-medium text-muted-foreground flex-wrap">
-                  <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-primary flex-shrink-0" />
-                  <span className="font-medium">{test.features?.turnaround || '1-2 days'}</span>
-                    <span className="hidden sm:inline">•</span>
-                    <span className="font-medium hidden sm:inline">Free shipping</span>
+                  <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3 text-primary flex-shrink-0" />
+                    <span className="font-medium">{test.features?.turnaround || '1-2 days'}</span>
+                    <span>•</span>
+                    <span className="font-medium">Free shipping</span>
                   </div>
                 </div>
               </CardContent>

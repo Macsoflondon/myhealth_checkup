@@ -303,32 +303,31 @@ const CompareTests = () => {
       
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-6 sm:py-10 md:py-16 bg-[#081129]">
-          <div className="container mx-auto max-w-7xl px-3 sm:px-4 text-center">
-            <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
-              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              <Badge variant="secondary" className="text-primary border-primary/20 bg-white text-xs sm:text-sm">
+        {/* Hero Section - Mobile optimized */}
+        <section className="py-4 sm:py-8 md:py-12 bg-[#081129]">
+          <div className="container mx-auto max-w-7xl px-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+              <Badge variant="secondary" className="text-primary border-primary/20 bg-white text-xs">
                 Live Pricing
               </Badge>
             </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-white">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 text-white">
               Compare Health Tests
             </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl mx-auto mb-4 sm:mb-6 text-white px-2">
-                Find the perfect health test from {memoizedStats.providerCount} trusted UK providers. 
-                Real-time prices, expert reviews, and AI-powered recommendations.
-              </p>
+            <p className="text-xs sm:text-sm md:text-base max-w-2xl mx-auto mb-3 sm:mb-4 text-white/90">
+              Find the perfect test from {memoizedStats.providerCount} trusted UK providers.
+            </p>
             
-            {/* Quick Stats */}
-            <div className="flex flex-col xs:flex-row flex-wrap justify-center gap-3 sm:gap-6 mt-4 sm:mt-8">
-              <div className="flex items-center justify-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
-                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-white">{memoizedStats.testCount}+ Tests Available</span>
+            {/* Quick Stats - horizontal on mobile */}
+            <div className="flex justify-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-1.5 bg-primary/10 backdrop-blur-sm rounded-full px-3 py-1.5">
+                <TrendingUp className="h-3 w-3 text-primary" />
+                <span className="text-[11px] sm:text-xs font-medium text-white">{memoizedStats.testCount}+ Tests</span>
               </div>
-              <div className="flex items-center justify-center gap-2 bg-primary/10 backdrop-blur-sm rounded-full px-3 sm:px-4 py-2">
-                <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
-                <span className="text-xs sm:text-sm font-medium text-white">Real-time Pricing</span>
+              <div className="flex items-center gap-1.5 bg-primary/10 backdrop-blur-sm rounded-full px-3 py-1.5">
+                <Clock className="h-3 w-3 text-primary" />
+                <span className="text-[11px] sm:text-xs font-medium text-white">Live Prices</span>
               </div>
             </div>
           </div>

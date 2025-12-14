@@ -5,6 +5,7 @@ import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
+import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 // New streamlined sections
 import HeroNew from "@/components/sections/HeroNew";
@@ -16,8 +17,10 @@ import JourneySimplified from "@/components/sections/JourneySimplified";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
+
 const Index = () => {
   usePerformanceOptimization();
+  useMobileOptimization();
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",

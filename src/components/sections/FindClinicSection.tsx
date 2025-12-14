@@ -73,16 +73,16 @@ const FindClinicSection = () => {
           </div>
         </div>
 
-        {/* Interactive Map Placeholder */}
-        <div className="mt-12 max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-[#22c0d4]/5 to-[#e70d69]/5 rounded-2xl p-12 text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-[#22c0d4]/10 flex items-center justify-center">
-              <MapPin className="w-10 h-10 text-[#22c0d4]" />
+        {/* Interactive Map Placeholder - optimized for mobile */}
+        <div className="mt-8 sm:mt-12 max-w-4xl mx-auto px-2">
+          <div className="bg-gradient-to-br from-[#22c0d4]/5 to-[#e70d69]/5 rounded-xl sm:rounded-2xl p-6 sm:p-12 text-center">
+            <div className="w-14 h-14 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-xl sm:rounded-2xl bg-[#22c0d4]/10 flex items-center justify-center">
+              <MapPin className="w-7 h-7 sm:w-10 sm:h-10 text-[#22c0d4]" />
             </div>
-            <h3 className="text-xl font-heading font-semibold text-[#081129] mb-2">
+            <h3 className="text-lg sm:text-xl font-heading font-semibold text-[#081129] mb-2">
               Interactive Map
             </h3>
-            <p className="text-gray-600 font-sans">
+            <p className="text-sm sm:text-base text-gray-600 font-sans">
               Explore clinic locations from Medichecks, Goodbody, Randox, and more.
             </p>
           </div>
