@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ChevronRight, Search, X, MapPin, Phone, ArrowRight } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -20,6 +20,40 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
   const { getFilteredCategories } = useNavigationData();
+  
+  // Swipe gesture state
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const isDragging = useRef<boolean>(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = true;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging.current) return;
+    touchEndX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isDragging.current) return;
+    
+    const swipeDistanceX = touchStartX.current - touchEndX.current;
+    const swipeDistanceY = Math.abs(touchStartY.current - (touchEndX.current ? touchEndX.current : touchStartY.current));
+    const minSwipeDistance = 80; // Minimum swipe distance to trigger close
+    
+    // Only close if horizontal swipe is dominant and distance is sufficient
+    if (swipeDistanceX > minSwipeDistance && swipeDistanceX > swipeDistanceY) {
+      onClose();
+    }
+    
+    isDragging.current = false;
+    touchEndX.current = 0;
+  }, [onClose]);
 
   const toggleSection = useCallback((sectionName: string) => {
     setExpandedSections(prev => {
@@ -104,6 +138,10 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
       <SheetContent 
         side="left" 
         className="w-[85vw] max-w-[400px] p-0 bg-white border-r border-gray-200"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        ref={contentRef}
       >
         <SheetHeader className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-[hsl(var(--secondary))]/5 to-[hsl(var(--primary))]/5">
           <SheetTitle className="text-[hsl(var(--navy))] text-left font-heading font-bold text-lg">
