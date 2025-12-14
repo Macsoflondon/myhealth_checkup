@@ -9,7 +9,7 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 // New streamlined sections
 import HeroNew from "@/components/sections/HeroNew";
 import MissionSection from "@/components/sections/MissionSection";
-import AccreditationCards from "@/components/sections/AccreditationCards";
+
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
@@ -98,13 +98,10 @@ const Index = () => {
           {/* 1. Hero Section */}
           <HeroNew />
           
-          {/* 2. Mission - Your Health is Your Greatest Asset */}
+          {/* 2. Mission + Accreditation Cards (Combined) */}
           <MissionSection />
           
-          {/* 3. Accreditation Cards */}
-          <AccreditationCards />
-          
-          {/* 4. Trusted Health Comparison Platform */}
+          {/* 3. Trusted Health Comparison Platform */}
           <TrustPlatformSection className="bg-[#081129]" />
           
           {/* 5. Partners Grid */}
