@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -6,16 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
 import ProviderComparisonSidebar from "@/components/ProviderComparisonSidebar";
 import { TestPageData } from "@/types/TestPageTypes";
+
 interface TestPageTemplateProps {
   data: TestPageData;
 }
+
 const TestPageTemplate = ({
   data
 }: TestPageTemplateProps) => {
-  const navigate = useNavigate();
   return <div className="min-h-screen bg-background">
       <Helmet>
         <title>{data.metaTitle}</title>
@@ -28,11 +28,13 @@ const TestPageTemplate = ({
         {/* Breadcrumb */}
         
 
-        {/* Back Button */}
-        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6 -ml-4">
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back
-        </Button>
+        {/* Back to Compare Button */}
+        <Link to="/compare">
+          <Button variant="ghost" className="mb-6 -ml-4">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Compare
+          </Button>
+        </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
