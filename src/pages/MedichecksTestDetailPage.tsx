@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Helmet } from "react-helmet-async";
 import { CheckCircle2, Clock, Home, Building2, ArrowLeft, ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import SimilarTestsSection from "@/components/SimilarTestsSection";
 
 interface MedichecksTest {
   id: string;
@@ -60,7 +61,7 @@ export default function MedichecksTestDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
-          <Link to="/compare-tests" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
+          <Link to="/compare" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Compare Tests
           </Link>
@@ -71,7 +72,7 @@ export default function MedichecksTestDetailPage() {
                 The Medichecks test you're looking for doesn't exist or has been removed.
               </p>
               <Button asChild>
-                <Link to="/compare-tests">Browse All Tests</Link>
+                <Link to="/compare">Browse All Tests</Link>
               </Button>
             </CardContent>
           </Card>
@@ -100,7 +101,7 @@ export default function MedichecksTestDetailPage() {
           <nav className="mb-8 flex items-center space-x-2 text-sm text-muted-foreground">
             <Link to="/" className="hover:text-primary">Home</Link>
             <span>/</span>
-            <Link to="/compare-tests" className="hover:text-primary">Compare Tests</Link>
+            <Link to="/compare" className="hover:text-primary">Compare Tests</Link>
             <span>/</span>
             <span className="text-foreground">Medichecks</span>
           </nav>
@@ -297,7 +298,14 @@ export default function MedichecksTestDetailPage() {
             </div>
           </div>
 
-          {/* Bottom CTA */}
+          {/* Similar Tests Section */}
+          <div className="mb-12">
+            <SimilarTestsSection 
+              category={test.category}
+              currentTestName={test.test_name}
+              currentProvider="medichecks"
+            />
+          </div>
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="py-8 text-center">
               <h2 className="text-2xl font-bold mb-4">Ready to Take Control of Your Health?</h2>
