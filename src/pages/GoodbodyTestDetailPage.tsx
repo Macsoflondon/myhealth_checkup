@@ -15,6 +15,7 @@ import {
   Droplets,
   Building2
 } from "lucide-react";
+import SimilarTestsSection from "@/components/SimilarTestsSection";
 
 const GoodbodyTestDetailPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -177,6 +178,13 @@ const GoodbodyTestDetailPage = () => {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Similar Tests */}
+              <SimilarTestsSection 
+                category={test.category || "General Health"}
+                currentTestName={test.test_name}
+                currentProvider="goodbody-clinic"
+              />
             </div>
 
             {/* Right Column - Booking Card */}

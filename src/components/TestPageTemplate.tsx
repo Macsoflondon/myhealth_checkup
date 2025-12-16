@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import ProviderComparisonSidebar from "@/components/ProviderComparisonSidebar";
+import SimilarTestsSection from "@/components/SimilarTestsSection";
 import { TestPageData } from "@/types/TestPageTypes";
 
 interface TestPageTemplateProps {
@@ -107,6 +108,13 @@ const TestPageTemplate = ({
                 </ul>
               </CardContent>
             </Card>
+
+            {/* Similar Tests Section */}
+            <SimilarTestsSection 
+              category={data.category}
+              currentTestName={data.title}
+              currentProvider={data.providers[0]?.name?.toLowerCase().replace(/\s+/g, '-')}
+            />
           </div>
 
           {/* Provider Comparison Sidebar */}
