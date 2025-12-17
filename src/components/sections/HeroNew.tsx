@@ -16,7 +16,7 @@ const HeroNew = () => {
 
           {/* Headline - optimized for mobile */}
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in px-2">
-            Compare Private Health Tests From Accredited Uk Providers
+            ​Find the right private health test for you  
           </h1>
 
           {/* CTAs - full width on mobile */}
