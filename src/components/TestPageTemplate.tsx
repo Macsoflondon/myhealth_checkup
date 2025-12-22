@@ -9,6 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import ProviderComparisonSidebar from "@/components/ProviderComparisonSidebar";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
 import { TestPageData } from "@/types/TestPageTypes";
+import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 
 interface TestPageTemplateProps {
   data: TestPageData;
@@ -25,9 +26,12 @@ const TestPageTemplate = ({
       
       <Header />
       
-      <main className="container mx-auto px-[20px] py-0">
+      <main className="container mx-auto px-[20px] py-6">
         {/* Breadcrumb */}
-        
+        <TestBreadcrumb 
+          providerName={data.providers[0]?.name || "Provider"} 
+          testName={data.title} 
+        />
 
         {/* Back to Compare Button */}
         <Link to="/compare">
