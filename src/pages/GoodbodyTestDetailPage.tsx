@@ -16,6 +16,7 @@ import {
   Building2
 } from "lucide-react";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
+import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 
 const GoodbodyTestDetailPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -73,15 +74,7 @@ const GoodbodyTestDetailPage = () => {
       <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
         {/* Breadcrumb Navigation */}
         <div className="container mx-auto px-4 py-6">
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span>/</span>
-            <Link to="/compare" className="hover:text-primary transition-colors">Compare Tests</Link>
-            <span>/</span>
-            <span className="text-foreground font-medium">GoodBody Clinic</span>
-            <span>/</span>
-            <span className="text-foreground font-medium">{test.test_name}</span>
-          </nav>
+          <TestBreadcrumb providerName="GoodBody Clinic" testName={test.test_name} />
 
           <Link to="/compare">
             <Button variant="ghost" size="sm" className="mb-6">

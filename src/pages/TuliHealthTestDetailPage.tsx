@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Helmet } from "react-helmet-async";
 import { CheckCircle2, Clock, Home, Building2, ArrowLeft, ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 
 interface TuliHealthTest {
   id: string;
@@ -60,7 +61,7 @@ export default function TuliHealthTestDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
-          <Link to="/compare-tests" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
+          <Link to="/compare" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Compare Tests
           </Link>
@@ -71,7 +72,7 @@ export default function TuliHealthTestDetailPage() {
                 The Tuli Health test you're looking for doesn't exist or has been removed.
               </p>
               <Button asChild>
-                <Link to="/compare-tests">Browse All Tests</Link>
+                <Link to="/compare">Browse All Tests</Link>
               </Button>
             </CardContent>
           </Card>
@@ -97,15 +98,8 @@ export default function TuliHealthTestDetailPage() {
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
           {/* Breadcrumb Navigation */}
-          <nav className="mb-8 flex items-center space-x-2 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-primary">Home</Link>
-            <span>/</span>
-            <Link to="/compare-tests" className="hover:text-primary">Compare Tests</Link>
-            <span>/</span>
-            <span className="text-foreground">Tuli Health</span>
-            <span>/</span>
-            <span className="text-foreground">{test.test_name}</span>
-          </nav>
+          <TestBreadcrumb providerName="Tuli Health" testName={test.test_name} />
+          
 
           {/* Test Header */}
           <div className="mb-8">
@@ -135,7 +129,7 @@ export default function TuliHealthTestDetailPage() {
                 </a>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/compare-tests">Compare with Other Providers</Link>
+                <Link to="/compare">Compare with Other Providers</Link>
               </Button>
             </div>
           </div>
@@ -280,7 +274,7 @@ export default function TuliHealthTestDetailPage() {
                     </a>
                   </Button>
                   <Button size="lg" variant="outline" asChild>
-                    <Link to="/compare-tests">Compare Providers</Link>
+                    <Link to="/compare">Compare Providers</Link>
                   </Button>
                 </div>
               </CardContent>

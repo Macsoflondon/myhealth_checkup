@@ -9,6 +9,7 @@ import { Helmet } from "react-helmet-async";
 import { CheckCircle2, Clock, Home, Building2, ArrowLeft, ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
+import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 
 interface MedichecksTest {
   id: string;
@@ -98,13 +99,7 @@ export default function MedichecksTestDetailPage() {
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
           {/* Breadcrumb Navigation */}
-          <nav className="mb-8 flex items-center space-x-2 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-primary">Home</Link>
-            <span>/</span>
-            <Link to="/compare" className="hover:text-primary">Compare Tests</Link>
-            <span>/</span>
-            <span className="text-foreground">Medichecks</span>
-          </nav>
+          <TestBreadcrumb providerName="Medichecks" testName={test.test_name} />
 
           {/* Provider Badge */}
           <div className="mb-6">

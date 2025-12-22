@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowLeft, CheckCircle2, Clock, Home, ExternalLink } from 'lucide-react';
+import TestBreadcrumb from '@/components/common/TestBreadcrumb';
 
 interface LolaHealthTest {
   id: string;
@@ -110,15 +111,7 @@ const LolaHealthTestDetailPage = () => {
         {/* Breadcrumb */}
         <div className="bg-[#081129] border-b border-white/10 py-4">
           <div className="container mx-auto px-4">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-              <span>/</span>
-              <Link to="/compare" className="hover:text-primary transition-colors">Compare Tests</Link>
-              <span>/</span>
-              <span className="text-white">Lola Health</span>
-              <span>/</span>
-              <span className="text-primary">{test.test_name}</span>
-            </div>
+            <TestBreadcrumb providerName="Lola Health" testName={test.test_name} />
           </div>
         </div>
 
