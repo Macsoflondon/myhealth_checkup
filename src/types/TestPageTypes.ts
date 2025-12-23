@@ -3,6 +3,9 @@ export interface TestProvider {
   price: number;
   url: string;
   features: string[];
+  turnaround?: string;
+  biomarkers?: number;
+  bookingUrl?: string;
 }
 
 export interface TestBiomarkerSection {
