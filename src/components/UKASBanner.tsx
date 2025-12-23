@@ -7,26 +7,26 @@ interface UKASBannerProps {
 
 const UKASBanner = ({ className }: UKASBannerProps) => {
   return (
-    <div className={cn("bg-[hsl(var(--navy))] text-tertiary py-1 sm:py-1.5 px-2 sm:px-4", className)}>
+    <div className={cn("bg-[hsl(var(--navy))] py-2 sm:py-2.5 px-3 sm:px-4", className)}>
       <div className="container mx-auto">
-        <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 flex-nowrap overflow-x-auto text-[#e70d68]">
-          <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-            <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#22c0d4] flex-shrink-0" />
-            <span className="text-[10px] sm:text-xs md:text-sm whitespace-nowrap text-[#e70d68] font-sans font-bold">UKAS Accredited</span>
+        <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-10 flex-nowrap overflow-x-auto">
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Shield className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[hsl(var(--secondary))] flex-shrink-0" />
+            <span className="text-[11px] sm:text-xs md:text-sm whitespace-nowrap text-[hsl(var(--secondary))] font-medium tracking-wide">UKAS Accredited</span>
           </div>
           
-          <div className="w-px h-3 sm:h-4 bg-[#22c0d4]/50 flex-shrink-0" />
+          <div className="w-px h-4 sm:h-5 bg-[hsl(var(--secondary))]/30 flex-shrink-0" />
           
-          <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-            <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#22c0d4] flex-shrink-0" />
-            <span className="text-[10px] sm:text-xs md:text-sm whitespace-nowrap font-sans font-semibold text-[#e70d68]">CQC Regulated</span>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Award className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[hsl(var(--secondary))] flex-shrink-0" />
+            <span className="text-[11px] sm:text-xs md:text-sm whitespace-nowrap text-[hsl(var(--secondary))] font-medium tracking-wide">CQC Regulated</span>
           </div>
           
-          <div className="w-px h-3 sm:h-4 bg-[#22c0d4]/50 flex-shrink-0" />
+          <div className="w-px h-4 sm:h-5 bg-[hsl(var(--secondary))]/30 flex-shrink-0" />
           
-          <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-            <Bookmark className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#22c0d4] flex-shrink-0" />
-            <span className="text-[10px] sm:text-xs md:text-sm whitespace-nowrap text-[#e70d68] font-semibold">ISO 15189</span>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Bookmark className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[hsl(var(--secondary))] flex-shrink-0" />
+            <span className="text-[11px] sm:text-xs md:text-sm whitespace-nowrap text-[hsl(var(--secondary))] font-medium tracking-wide">ISO 15189</span>
           </div>
         </div>
       </div>
