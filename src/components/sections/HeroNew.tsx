@@ -22,7 +22,7 @@ const HeroNew = () => {
           </div>
 
           {/* Headline */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-5 sm:mb-7 leading-tight animate-fade-in px-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-5 sm:mb-7 leading-tight animate-fade-in px-2 bg-gradient-to-r from-white via-[hsl(var(--secondary))] to-white bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
             Find the right private health test for you
           </h1>
 
