@@ -1,15 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CheckCircle, Clock, Shield, Star } from "lucide-react";
+import { CheckCircle, Clock, Shield, Star, Plus, Check } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { CompareTestData } from "@/services/CompareService";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 
 interface TestListCardProps {
   test: CompareTestData;
+  isSelected?: boolean;
+  onToggleSelect?: (test: CompareTestData) => void;
+  showCompareCheckbox?: boolean;
 }
 
 // Helper to generate test detail URL
@@ -18,19 +22,60 @@ const getTestDetailUrl = (provider: string, testId: string): string => {
   return `/${providerSlug}/${testId}`;
 };
 
-export const TestListCard: React.FC<TestListCardProps> = ({ test }) => {
+export const TestListCard: React.FC<TestListCardProps> = ({ 
+  test, 
+  isSelected = false,
+  onToggleSelect,
+  showCompareCheckbox = true,
+}) => {
   const isOutOfStock = test.available === false;
+  
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onToggleSelect?.(test);
+  };
   
   return (
     <Link
       to={getTestDetailUrl(test.provider, test.id)}
       className={cn(
-        "block bg-card rounded-2xl p-6 border border-border",
+        "block bg-card rounded-2xl p-6 border border-border relative",
         "hover:border-primary hover:shadow-lg transition-all duration-200",
-        isOutOfStock && "opacity-60"
+        isOutOfStock && "opacity-60",
+        isSelected && "ring-2 ring-primary border-primary"
       )}
     >
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+      {/* Compare Checkbox */}
+      {showCompareCheckbox && (
+        <div className="absolute top-4 right-4 z-10">
+          <Button
+            variant={isSelected ? "default" : "outline"}
+            size="sm"
+            onClick={handleCompareClick}
+            className={cn(
+              "h-8 gap-1.5 text-xs font-medium transition-all",
+              isSelected 
+                ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                : "hover:border-primary hover:text-primary"
+            )}
+          >
+            {isSelected ? (
+              <>
+                <Check className="h-3.5 w-3.5" />
+                Added
+              </>
+            ) : (
+              <>
+                <Plus className="h-3.5 w-3.5" />
+                Compare
+              </>
+            )}
+          </Button>
+        </div>
+      )}
+      
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pr-24 md:pr-28">
         {/* Test Info */}
         <div className="flex-1">
           <div className="flex items-start gap-3 mb-3">
