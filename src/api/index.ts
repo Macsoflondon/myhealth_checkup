@@ -2,7 +2,7 @@
  * Centralized API exports
  * 
  * Import APIs like this:
- * import { testsApi, favoritesApi, ordersApi } from '@/api';
+ * import { testsApi, favoritesApi, ordersApi, functionsApi } from '@/api';
  */
 
 export { testsApi } from './supabase/tests.api';
@@ -14,6 +14,20 @@ export { usersApi } from './supabase/users.api';
 export { healthDataApi } from './supabase/healthData.api';
 export { preferencesApi } from './supabase/preferences.api';
 export { notificationHistoryApi } from './supabase/notificationHistory.api';
+export { functionsApi } from './supabase/functions.api';
+
+// Re-export commonly used function helpers
+export { 
+  healthAIAnalysis,
+  getTestRecommendations,
+  getSportsRecommendations,
+  getPriceUpdates,
+  checkPriceAlerts,
+  mapTestWithAI,
+  sendNotification,
+  geocodeClinic,
+  findNearestLMLClinics
+} from './supabase/functions.api';
 
 export type { Test, ProviderTest } from './supabase/tests.api';
 export type { Favorite } from './supabase/favorites.api';
@@ -25,3 +39,10 @@ export type { UploadedTestResult, BiomarkerReading, UserHealthData, HealthScore 
 export type { RecommendationPreferences, EmailNotificationPreferences, SmsNotificationPreferences } from './supabase/preferences.api';
 export type { NotificationHistory } from './supabase/notificationHistory.api';
 export type { ApiResponse, PaginationParams, FilterParams } from './supabase/base';
+export type { 
+  HealthAIAnalysisRequest,
+  HealthAIAnalysisResponse,
+  TestRecommendationsRequest,
+  TestRecommendationsResponse,
+  FunctionResponse
+} from './supabase/functions.api';

@@ -8,7 +8,7 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 // New streamlined sections
-import HeroNew from "@/components/sections/HeroNew";
+import Hero from "@/components/sections/Hero";
 import MissionSection from "@/components/sections/MissionSection";
 
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
@@ -99,7 +99,7 @@ const Index = () => {
         
         <main className="flex-1">
           {/* 1. Hero Section */}
-          <HeroNew />
+          <Hero />
           
           {/* 2. Mission + Accreditation Cards (Combined) */}
           <MissionSection />
