@@ -31,7 +31,8 @@ export class TestDataTransformer {
       popularityScore: this.estimatePopularity(test.test_name, test.category),
       biomarkerCount: biomarkerCount,
       turnaroundDays: this.estimateTurnaroundDays(test.provider_id),
-      userRating: undefined // Placeholder for future implementation
+      userRating: undefined,
+      url: test.url || undefined
     };
   }
 
