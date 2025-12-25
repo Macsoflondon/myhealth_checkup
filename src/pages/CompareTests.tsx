@@ -53,6 +53,11 @@ const CompareTests = () => {
   const [tests, setTests] = useState<CompareTestData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Array<{ id: string; name: string; count: number }>>([]);
+  
+  // Pagination states
+  const ITEMS_PER_PAGE = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -109,6 +114,7 @@ const CompareTests = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
+      setCurrentPage(1); // Reset to first page when filters change
       fetchTests();
     }, 300);
     return () => clearTimeout(timeoutId);
@@ -199,6 +205,23 @@ const CompareTests = () => {
     testCount: tests.length,
     providerCount: providers.length,
   }), [tests.length]);
+
+  // Pagination logic
+  const paginatedTests = useMemo(() => {
+    return tests.slice(0, currentPage * ITEMS_PER_PAGE);
+  }, [tests, currentPage]);
+
+  const hasMoreTests = paginatedTests.length < tests.length;
+  const totalPages = Math.ceil(tests.length / ITEMS_PER_PAGE);
+
+  const handleLoadMore = useCallback(() => {
+    setIsLoadingMore(true);
+    // Simulate a small delay for smooth UX
+    setTimeout(() => {
+      setCurrentPage(prev => prev + 1);
+      setIsLoadingMore(false);
+    }, 300);
+  }, []);
 
   return (
     <ErrorBoundary>
@@ -334,9 +357,46 @@ const CompareTests = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {tests.map((test) => (
+                    {paginatedTests.map((test) => (
                       <TestListCard key={test.id} test={test} />
                     ))}
+                    
+                    {/* Pagination Controls */}
+                    {tests.length > ITEMS_PER_PAGE && (
+                      <div className="flex flex-col items-center gap-4 pt-8 pb-4">
+                        <p className="text-sm text-muted-foreground">
+                          Showing {paginatedTests.length} of {tests.length} tests
+                        </p>
+                        
+                        {hasMoreTests ? (
+                          <Button
+                            variant="outline"
+                            size="lg"
+                            onClick={handleLoadMore}
+                            disabled={isLoadingMore}
+                            className="min-w-[200px]"
+                          >
+                            {isLoadingMore ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                Loading...
+                              </>
+                            ) : (
+                              <>Load more tests</>
+                            )}
+                          </Button>
+                        ) : (
+                          <p className="text-sm text-muted-foreground font-medium">
+                            You've reached the end
+                          </p>
+                        )}
+                        
+                        {/* Page indicator */}
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <span>Page {currentPage} of {totalPages}</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </main>
