@@ -5,6 +5,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";
+import { ComparisonBar } from "@/components/compare/ComparisonBar";
+import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { CompareService } from "@/services/CompareService";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
@@ -15,10 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Filter, TrendingUp, Clock, Sparkles } from "lucide-react";
+import { Loader2, Filter, TrendingUp, Clock, Sparkles, GitCompare } from "lucide-react";
 import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { logger } from "@/lib/logger";
+import { toast } from "@/hooks/use-toast";
 
 const CATEGORY_LIST = [
   "general health",
@@ -58,6 +61,11 @@ const CompareTests = () => {
   const ITEMS_PER_PAGE = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // Comparison states
+  const MAX_COMPARE_TESTS = 3;
+  const [selectedTests, setSelectedTests] = useState<CompareTestData[]>([]);
+  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -223,6 +231,46 @@ const CompareTests = () => {
     }, 300);
   }, []);
 
+  // Comparison handlers
+  const handleToggleSelect = useCallback((test: CompareTestData) => {
+    setSelectedTests(prev => {
+      const isAlreadySelected = prev.some(t => t.id === test.id);
+      
+      if (isAlreadySelected) {
+        return prev.filter(t => t.id !== test.id);
+      }
+      
+      if (prev.length >= MAX_COMPARE_TESTS) {
+        toast({
+          title: "Maximum tests selected",
+          description: `You can compare up to ${MAX_COMPARE_TESTS} tests at a time. Remove one to add another.`,
+          variant: "destructive",
+        });
+        return prev;
+      }
+      
+      return [...prev, test];
+    });
+  }, []);
+
+  const handleRemoveTest = useCallback((testId: string) => {
+    setSelectedTests(prev => prev.filter(t => t.id !== testId));
+  }, []);
+
+  const handleClearAll = useCallback(() => {
+    setSelectedTests([]);
+  }, []);
+
+  const handleOpenComparison = useCallback(() => {
+    if (selectedTests.length >= 2) {
+      setIsComparisonOpen(true);
+    }
+  }, [selectedTests.length]);
+
+  const isTestSelected = useCallback((testId: string) => {
+    return selectedTests.some(t => t.id === testId);
+  }, [selectedTests]);
+
   return (
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-background">
@@ -358,7 +406,12 @@ const CompareTests = () => {
                 ) : (
                   <div className="space-y-4">
                     {paginatedTests.map((test) => (
-                      <TestListCard key={test.id} test={test} />
+                      <TestListCard 
+                        key={test.id} 
+                        test={test}
+                        isSelected={isTestSelected(test.id)}
+                        onToggleSelect={handleToggleSelect}
+                      />
                     ))}
                     
                     {/* Pagination Controls */}
@@ -403,6 +456,22 @@ const CompareTests = () => {
             </div>
           </div>
         </main>
+
+        {/* Comparison Bar - fixed at bottom when tests selected */}
+        <ComparisonBar
+          selectedTests={selectedTests}
+          onRemoveTest={handleRemoveTest}
+          onCompare={handleOpenComparison}
+          onClearAll={handleClearAll}
+        />
+
+        {/* Comparison Panel Modal */}
+        <ComparisonPanel
+          tests={selectedTests}
+          isOpen={isComparisonOpen}
+          onClose={() => setIsComparisonOpen(false)}
+          onRemoveTest={handleRemoveTest}
+        />
 
         <Footer />
       </div>
