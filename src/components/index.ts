@@ -11,9 +11,6 @@ export { default as BackToTop } from "./common/BackToTop";
 
 // Section components
 export { default as Hero } from "./sections/Hero";
-export { default as EnhancedHero } from "./sections/EnhancedHero";
-export { default as NewHero } from "./sections/NewHero";
-export { default as EnhancedSearchHero } from "./sections/EnhancedSearchHero";
 export { default as TestCategories } from "./sections/TestCategories";
 export { default as FeaturedTests } from "./sections/FeaturedTests";
 export { default as FeaturedProviders } from "./sections/FeaturedProviders";

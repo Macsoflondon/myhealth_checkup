@@ -1,4 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
+import { cacheService } from "./CacheService";
+import { logger } from "@/lib/logger";
 
 // ============================================================================
 // TypeScript Interfaces
@@ -31,12 +33,6 @@ export interface ProviderApiResponse {
   };
 }
 
-export interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-  version: string;
-}
-
 export interface RequestQueueItem {
   key: string;
   promise: Promise<any>;
@@ -57,15 +53,14 @@ export interface ThrottleConfig {
 
 // ============================================================================
 // Provider Data Service
+// Uses centralized CacheService for caching
 // ============================================================================
 
 export class ProviderDataService {
-  private static cache = new Map<string, CacheEntry<any>>();
   private static requestQueue = new Map<string, RequestQueueItem>();
   private static activeRequests = 0;
   private static lastRequestTime = 0;
   
-  private static readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
   private static readonly API_VERSION = "v1";
   
   private static readonly RETRY_CONFIG: RetryConfig = {
@@ -81,44 +76,24 @@ export class ProviderDataService {
   };
 
   // ============================================================================
-  // Cache Management
+  // Cache Key Generation (using CacheService)
   // ============================================================================
 
   private static getCacheKey(provider: string, category?: string, search?: string): string {
-    return `provider:${provider}:${category || 'all'}:${search || 'none'}`;
-  }
-
-  private static getFromCache<T>(key: string): T | null {
-    const entry = this.cache.get(key);
-    if (!entry) return null;
-    
-    const now = Date.now();
-    if (now - entry.timestamp > this.CACHE_TTL) {
-      this.cache.delete(key);
-      return null;
-    }
-    
-    return entry.data;
-  }
-
-  private static setCache<T>(key: string, data: T, version: string = this.API_VERSION): void {
-    this.cache.set(key, {
-      data,
-      timestamp: Date.now(),
-      version,
-    });
+    return cacheService.generateKey('provider', { provider, category, search });
   }
 
   public static clearCache(): void {
-    this.cache.clear();
+    cacheService.clear();
+    logger.info('ProviderDataService: Cache cleared');
   }
 
   public static clearCacheByPattern(pattern: string): void {
-    for (const key of this.cache.keys()) {
-      if (key.includes(pattern)) {
-        this.cache.delete(key);
-      }
-    }
+    const stats = cacheService.getStats();
+    stats.keys.filter(key => key.includes(pattern)).forEach(key => {
+      cacheService.delete(key);
+    });
+    logger.debug(`ProviderDataService: Cleared cache entries matching pattern: ${pattern}`);
   }
 
   // ============================================================================
@@ -160,7 +135,7 @@ export class ProviderDataService {
         lastError = error as Error;
         
         if (attempt === this.RETRY_CONFIG.maxRetries) {
-          console.error(`${context}: Max retries reached`, error);
+          logger.error(`${context}: Max retries reached`, error);
           throw error;
         }
         
@@ -169,7 +144,7 @@ export class ProviderDataService {
           this.RETRY_CONFIG.maxDelay
         );
         
-        console.warn(`${context}: Retry ${attempt + 1}/${this.RETRY_CONFIG.maxRetries} after ${delay}ms`, error);
+        logger.warn(`${context}: Retry ${attempt + 1}/${this.RETRY_CONFIG.maxRetries} after ${delay}ms`);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
@@ -187,6 +162,7 @@ export class ProviderDataService {
   ): Promise<T> {
     const existing = this.requestQueue.get(key);
     if (existing) {
+      logger.debug(`ProviderDataService: Deduplicating request for key: ${key}`);
       return existing.promise;
     }
     
@@ -220,9 +196,9 @@ export class ProviderDataService {
     const { category, search, forceRefresh = false } = options;
     const cacheKey = this.getCacheKey(providerId, category, search);
     
-    // Check cache first
+    // Check cache first using CacheService
     if (!forceRefresh) {
-      const cached = this.getFromCache<ProviderTest[]>(cacheKey);
+      const cached = cacheService.get<ProviderTest[]>(cacheKey);
       if (cached) return cached;
     }
     
@@ -261,7 +237,8 @@ export class ProviderDataService {
           `getTestsByProvider(${providerId})`
         );
         
-        this.setCache(cacheKey, result);
+        // Cache using CacheService
+        cacheService.set(cacheKey, result);
         return result;
       } finally {
         this.activeRequests--;
@@ -281,7 +258,7 @@ export class ProviderDataService {
     const cacheKey = this.getCacheKey('all', category, search);
     
     if (!forceRefresh) {
-      const cached = this.getFromCache<ProviderTest[]>(cacheKey);
+      const cached = cacheService.get<ProviderTest[]>(cacheKey);
       if (cached) return cached;
     }
     
@@ -323,7 +300,7 @@ export class ProviderDataService {
           'getAllProvidersTests'
         );
         
-        this.setCache(cacheKey, result);
+        cacheService.set(cacheKey, result);
         return result;
       } finally {
         this.activeRequests--;
@@ -332,9 +309,9 @@ export class ProviderDataService {
   }
 
   public static async getProviderCategories(providerId: string): Promise<string[]> {
-    const cacheKey = `categories:${providerId}`;
+    const cacheKey = cacheService.generateKey('categories', { providerId });
     
-    const cached = this.getFromCache<string[]>(cacheKey);
+    const cached = cacheService.get<string[]>(cacheKey);
     if (cached) return cached;
     
     return this.deduplicate(cacheKey, async () => {
@@ -358,7 +335,7 @@ export class ProviderDataService {
           `getProviderCategories(${providerId})`
         );
         
-        this.setCache(cacheKey, result);
+        cacheService.set(cacheKey, result);
         return result;
       } finally {
         this.activeRequests--;
@@ -391,10 +368,12 @@ export class ProviderDataService {
   // ============================================================================
 
   public static getCacheStats() {
+    const serviceStats = cacheService.getStats();
     return {
-      size: this.cache.size,
+      size: serviceStats.size,
       activeRequests: this.activeRequests,
       queuedRequests: this.requestQueue.size,
+      cacheKeys: serviceStats.keys.filter(k => k.includes('provider')),
     };
   }
 

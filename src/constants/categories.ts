@@ -1,5 +1,6 @@
 /**
- * Category configuration and search terms
+ * Category configuration, colors, and search terms
+ * Single source of truth for all category definitions
  */
 
 export const CATEGORY_COLORS: Record<string, string> = {
@@ -58,3 +59,34 @@ export function getCategoryColor(categoryId: string): string {
 export function getCategorySearchTerms(category: string): string[] {
   return CATEGORY_SEARCH_TERMS[category] || [category.toLowerCase()];
 }
+
+// Compare categories with full details - merged from src/data/compare/categories.ts
+export const compareCategories = [
+  { id: "blood-tests", name: "Blood Tests", description: "Comprehensive blood analysis and health markers", searchTerms: ["blood", "full blood count", "fbc", "biochemistry", "blood panel"] },
+  { id: "hormones", name: "Hormone Tests", description: "Thyroid, testosterone, and reproductive hormones", searchTerms: ["hormone", "hormonal", "testosterone", "estrogen", "progesterone", "cortisol"] },
+  { id: "thyroid", name: "Thyroid Tests", description: "Thyroid function and antibody testing", searchTerms: ["thyroid", "tsh", "t3", "t4", "thyroglobulin", "thyroid antibodies"] },
+  { id: "vitamins", name: "Vitamin & Mineral Tests", description: "Essential nutrients and deficiency screening", searchTerms: ["vitamin", "mineral", "b12", "d3", "folate", "iron", "zinc", "magnesium", "nutrient"] },
+  { id: "liver", name: "Liver Health Tests", description: "Liver function and enzyme testing", searchTerms: ["liver", "hepatic", "alt", "ast", "liver function", "liver enzyme"] },
+  { id: "diabetes", name: "Diabetes Testing", description: "Blood sugar and glucose monitoring", searchTerms: ["diabetes", "glucose", "hba1c", "blood sugar", "diabetic"] },
+  { id: "cancer-screening", name: "Cancer Screening", description: "Early detection and preventive screening", searchTerms: ["cancer", "screening", "tumour", "psa", "cea", "ca125", "oncology"] },
+  { id: "heart-health", name: "Heart Health", description: "Cardiovascular risk and cholesterol testing", searchTerms: ["heart", "cardiac", "cardiovascular", "cholesterol", "lipid", "triglycerides", "hdl", "ldl"] },
+  { id: "mens-health", name: "Men's Health", description: "Comprehensive men's health screening and monitoring", searchTerms: ["mens", "male", "prostate", "testosterone", "mens health", "male health"] },
+  { id: "womens-health", name: "Women's Health", description: "Comprehensive women's health screening and monitoring", searchTerms: ["womens", "female", "ovarian", "cervical", "womens health", "female health", "well woman"] },
+  { id: "fertility", name: "Fertility Testing", description: "Reproductive health and fertility assessments", searchTerms: ["fertility", "reproductive", "sperm", "ovarian", "amh", "fsh", "lh"] },
+  { id: "general-health", name: "General Health", description: "Comprehensive health screening packages", searchTerms: ["general", "comprehensive", "health check", "wellness", "screening"] },
+  { id: "allergy-testing", name: "Allergy Testing", description: "Food and environmental allergy screening", searchTerms: ["allergy", "allergic", "intolerance", "food sensitivity", "ige"] },
+  { id: "sports-performance-tests", name: "Sports Performance Tests", description: "Athletic performance optimization and health monitoring", searchTerms: ["sports", "athletic", "performance", "fitness", "athlete testing"] },
+  { id: "weight-loss-tests", name: "Weight Loss Tests", description: "Weight management and metabolic health screening", searchTerms: ["weight loss", "weight management", "metabolism", "metabolic health", "thyroid weight", "hormone weight"] },
+  { id: "longevity-tests", name: "Longevity Tests", description: "Comprehensive health markers for longevity and preventive care", searchTerms: ["longevity", "preventive", "comprehensive health", "wellness screening", "life extension"] },
+];
+
+// Category mapping helper function
+export const getCategoryFromTestName = (testName: string): string => {
+  const lowerTestName = testName.toLowerCase();
+  for (const category of compareCategories) {
+    if (category.searchTerms.some(term => lowerTestName.includes(term))) {
+      return category.name;
+    }
+  }
+  return "General Health";
+};
