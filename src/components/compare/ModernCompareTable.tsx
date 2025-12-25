@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award, TestTube, Zap, ExternalLink } from "lucide-react";
+import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award, TestTube, Zap, ExternalLink, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -13,6 +13,7 @@ import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/CompareService";
 import { DataSourceIndicator } from "./DataSourceIndicator";
 import { AddPriceAlertButton } from "./AddPriceAlertButton";
+import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 
 // Helper to generate test detail URL
 const getTestDetailUrl = (provider: string, testId: string): string => {
@@ -265,7 +266,21 @@ export const ModernCompareTable = ({
                       )}
                     </div>
                     
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
+                      {/* View Provider Button */}
+                      <Button 
+                        asChild
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs px-2 text-[#22c0d4] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10"
+                      >
+                        <Link to={`/provider/${test.provider.toLowerCase().replace(/\s+/g, '-')}`}>
+                          <Building2 className="h-3.5 w-3.5 mr-1" />
+                          <span className="hidden sm:inline">Provider</span>
+                        </Link>
+                      </Button>
+                      
+                      {/* Test Details Button */}
                       <Button 
                         asChild
                         variant="outline"
@@ -277,15 +292,33 @@ export const ModernCompareTable = ({
                           <span className="hidden sm:inline">Details</span>
                         </Link>
                       </Button>
-                      <Button 
-                        onClick={() => handlePlaceOrder(test.id, test.provider)} 
-                        disabled={isOutOfStock || !user} 
-                        size="sm"
-                        className="bg-primary hover:bg-primary/92 text-primary-foreground text-xs px-2 sm:px-3"
-                      >
-                        <ShoppingCart className="h-3.5 w-3.5 mr-1" />
-                        <span className="hidden sm:inline">Select</span>
-                      </Button>
+                      
+                      {/* Book Now Button - with UTM tracking */}
+                      {test.url ? (
+                        <Button 
+                          asChild
+                          size="sm"
+                          className="bg-primary hover:bg-primary/92 text-primary-foreground text-xs px-2 sm:px-3"
+                        >
+                          <a 
+                            href={buildProviderBookingUrl(test.url, test.provider.toLowerCase().replace(/\s+/g, '-'), test.name)}
+                            {...externalLinkProps}
+                          >
+                            <ShoppingCart className="h-3.5 w-3.5 mr-1" />
+                            <span className="hidden sm:inline">Book Now</span>
+                          </a>
+                        </Button>
+                      ) : (
+                        <Button 
+                          onClick={() => handlePlaceOrder(test.id, test.provider)} 
+                          disabled={isOutOfStock || !user} 
+                          size="sm"
+                          className="bg-primary hover:bg-primary/92 text-primary-foreground text-xs px-2 sm:px-3"
+                        >
+                          <ShoppingCart className="h-3.5 w-3.5 mr-1" />
+                          <span className="hidden sm:inline">Select</span>
+                        </Button>
+                      )}
                     </div>
                   </div>
                 

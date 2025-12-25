@@ -52,7 +52,8 @@ export interface CompareTestData extends Test {
   popularityScore?: number;
   biomarkerCount?: number;
   turnaroundDays?: number;
-  userRating?: number; // Placeholder for future implementation
+  userRating?: number;
+  url?: string; // Provider booking URL
 }
 
 export interface UserProfile {

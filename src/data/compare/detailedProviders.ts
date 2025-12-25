@@ -259,5 +259,40 @@ export const detailedProviders = [
     keyDifferentiators: "Central London clinic, fast turnaround, wide test menu, premium location",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
     description: "Professional medical laboratory services with comprehensive testing capabilities"
+  },
+  {
+    id: "tuli-health",
+    name: "Tuli Health",
+    website: "https://www.tulihealth.com",
+    phone: "020 3993 5717",
+    email: "hello@tulihealth.com",
+    accreditation: "CQC-registered, UKAS ISO 15189 accredited laboratories",
+    labAccreditation: "UKAS ISO 15189",
+    clinics: "Walk-in clinics across London and nationwide partner pharmacies",
+    coreServices: "Comprehensive blood testing: wellness panels, hormones, vitamins, thyroid, sexual health, fertility, allergy testing",
+    tests: "50+ blood tests covering general health, hormones, vitamins, and specialist panels",
+    sampleCollection: "Professional venous blood draw at clinic locations",
+    turnaroundTime: "2-5 working days",
+    customerReviews: "4.5/5 (Trustpilot)",
+    keyDifferentiators: "Convenient walk-in clinics, professional phlebotomy, competitive pricing, nationwide coverage through pharmacy partners",
+    description: "Tuli Health offers accessible private blood testing through their network of walk-in clinics and pharmacy partners. They provide professional venous blood collection with UKAS-accredited laboratory processing for accurate, reliable results."
+  },
+  {
+    id: "the-doctors-laboratory",
+    name: "The Doctors Laboratory",
+    website: "https://www.tdlpathology.com",
+    phone: "020 7307 7373",
+    email: "pathology@tdlpathology.com",
+    accreditation: "UKAS accredited (ISO 15189), CQC-registered",
+    labAccreditation: "UKAS ISO 15189:2012",
+    clinics: "Wimpole Street Clinic (London W1) and nationwide collection network",
+    coreServices: "3,000+ pathology tests: clinical biochemistry, haematology, immunology, microbiology, genetics, toxicology, specialist endocrinology",
+    tests: "3,000+ diagnostic tests available - one of the UK's most comprehensive test menus",
+    sampleCollection: "Venous blood draw at TDL clinics, GP surgeries, hospitals, home visits available",
+    turnaroundTime: "Same day to 2 working days (routine), specialist tests may take longer",
+    customerReviews: "4.8/5 (based on healthcare professional reviews)",
+    keyDifferentiators: "UK's largest independent pathology provider, 40+ years experience, same-day results for many tests, used by NHS and private hospitals, comprehensive test menu including rare and specialist tests",
+    parentCompany: "Sonic Healthcare (Global)",
+    description: "The Doctors Laboratory (TDL) is the UK's largest independent pathology provider, processing over 15 million tests annually. With UKAS accreditation and CQC registration, TDL provides gold-standard diagnostics used by NHS trusts, private hospitals, and leading healthcare providers. Their Wimpole Street clinic offers direct patient access to over 3,000 tests with many results available same day."
   }
 ];
