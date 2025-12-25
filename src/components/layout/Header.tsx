@@ -60,15 +60,15 @@ const Header = ({
       <header className={cn("sticky top-0 z-50", className)}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-brand-navy px-4 lg:px-8">
-          <div className="relative flex items-center justify-between py-2">
+          <div className="relative flex items-center justify-between py-4 lg:py-6">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <img alt="myhealth checkup" className="h-56 lg:h-64 xl:h-72 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
+              <img alt="myhealth checkup" className="h-16 lg:h-20 xl:h-24 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
             </Link>
 
             {/* Center: Tagline banner image */}
-            <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
-              <img alt="Your health. Your choice. One trusted platform." className="h-72 lg:h-80 xl:h-96 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
+            <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 max-w-[280px] xl:max-w-[320px]">
+              <img alt="Your health. Your choice. One trusted platform." className="h-12 lg:h-16 xl:h-20 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
             {/* Right: Controls */}
