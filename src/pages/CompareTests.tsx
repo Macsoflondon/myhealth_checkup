@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Sparkles, TrendingUp, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { providers } from "@/data/compare/providers";
+import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { logger } from "@/lib/logger";
 const CompareTests = () => {

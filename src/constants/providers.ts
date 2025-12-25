@@ -3,7 +3,14 @@
  * Used across CompareService, ProviderService, and components
  */
 
-import { Provider } from '@/types';
+export interface Provider {
+  id: string;
+  name: string;
+  logo: string;
+  website: string;
+  description?: string;
+  accreditations?: string[];
+}
 
 export const PROVIDER_LOGOS: Record<string, string> = {
   'medichecks': '/lovable-uploads/provider-medichecks-new-v3.png',
@@ -13,7 +20,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'lola-health': '/lovable-uploads/provider-lola-health.png',
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v4.png',
   'tuli-health': '/lovable-uploads/provider-tuli-health.png',
-  'the-doctors-laboratory': '/lovable-uploads/provider-london-medical.png', // Using similar logo for now
+  'the-doctors-laboratory': '/lovable-uploads/provider-london-medical.png',
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
@@ -27,11 +34,23 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'the-doctors-laboratory': 'The Doctors Laboratory',
 };
 
+export const PROVIDER_WEBSITES: Record<string, string> = {
+  'medichecks': 'https://medichecks.com',
+  'thriva': 'https://thriva.co',
+  'randox': 'https://randoxhealth.com',
+  'london-medical-laboratory': 'https://londonmedicallaboratory.com',
+  'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
+  'goodbody-clinic': 'https://goodbody.co.uk',
+  'tuli-health': 'https://tulihealth.com',
+  'the-doctors-laboratory': 'https://www.tdlpathology.com',
+};
+
 export const PROVIDER_DETAILS: Record<string, Provider> = {
   'goodbody-clinic': {
     id: 'goodbody-clinic',
     name: 'GoodBody Clinic',
     logo: PROVIDER_LOGOS['goodbody-clinic'],
+    website: PROVIDER_WEBSITES['goodbody-clinic'],
     description: 'Premium health screening services',
     accreditations: ['CQC', 'UKAS'],
   },
@@ -39,6 +58,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'medichecks',
     name: 'Medichecks',
     logo: PROVIDER_LOGOS['medichecks'],
+    website: PROVIDER_WEBSITES['medichecks'],
     description: 'UK\'s leading blood testing service',
     accreditations: ['UKAS', 'ISO 15189'],
   },
@@ -46,6 +66,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'lola-health',
     name: 'Lola Health',
     logo: PROVIDER_LOGOS['lola-health'],
+    website: PROVIDER_WEBSITES['lola-health'],
     description: 'Digital health testing platform',
     accreditations: ['UKAS'],
   },
@@ -53,6 +74,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'thriva',
     name: 'Thriva',
     logo: PROVIDER_LOGOS['thriva'],
+    website: PROVIDER_WEBSITES['thriva'],
     description: 'Personalised health insights',
     accreditations: ['UKAS'],
   },
@@ -60,6 +82,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'tuli-health',
     name: 'Tuli Health',
     logo: PROVIDER_LOGOS['tuli-health'],
+    website: PROVIDER_WEBSITES['tuli-health'],
     description: 'Comprehensive health assessments',
     accreditations: ['CQC'],
   },
@@ -67,6 +90,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'london-medical-laboratory',
     name: 'London Medical Laboratory',
     logo: PROVIDER_LOGOS['london-medical-laboratory'],
+    website: PROVIDER_WEBSITES['london-medical-laboratory'],
     description: 'Certified laboratory services',
     accreditations: ['UKAS', 'ISO 15189'],
   },
@@ -74,6 +98,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'randox',
     name: 'Randox Health',
     logo: PROVIDER_LOGOS['randox'],
+    website: PROVIDER_WEBSITES['randox'],
     description: 'Advanced health screening',
     accreditations: ['UKAS', 'ISO 15189'],
   },
@@ -81,6 +106,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     id: 'the-doctors-laboratory',
     name: 'The Doctors Laboratory',
     logo: PROVIDER_LOGOS['the-doctors-laboratory'],
+    website: PROVIDER_WEBSITES['the-doctors-laboratory'],
     description: 'UK\'s largest independent pathology provider',
     accreditations: ['UKAS', 'ISO 15189', 'CQC'],
   },
@@ -108,12 +134,30 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'the-doctors-laboratory': 'Venous (clinic)',
 };
 
+/**
+ * Array of core providers for UI components (carousel, grids, etc.)
+ * These are the primary partners displayed prominently on the site
+ */
+export const providers: Provider[] = [
+  PROVIDER_DETAILS['medichecks'],
+  PROVIDER_DETAILS['thriva'],
+  PROVIDER_DETAILS['randox'],
+  PROVIDER_DETAILS['london-medical-laboratory'],
+  PROVIDER_DETAILS['lola-health'],
+  PROVIDER_DETAILS['goodbody-clinic'],
+  PROVIDER_DETAILS['tuli-health'],
+];
+
 export function getProviderLogo(providerId: string): string {
   return PROVIDER_LOGOS[providerId] || '/placeholder.svg';
 }
 
 export function getProviderName(providerId: string): string {
   return PROVIDER_NAMES[providerId] || providerId;
+}
+
+export function getProviderWebsite(providerId: string): string {
+  return PROVIDER_WEBSITES[providerId] || '';
 }
 
 export function getProviderDetails(providerId: string): Provider | null {

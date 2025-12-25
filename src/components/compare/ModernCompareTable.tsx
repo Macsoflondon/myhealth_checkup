@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, Clock, Star, ShoppingCart, TrendingUp, Award, TestTube, Zap, ExternalLink, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useFavorites } from "@/hooks/useFavoritesApi";
 import { useOrders } from "@/hooks/useOrders";
 import type { CompareTestData } from "@/services/CompareService";
 import { DataSourceIndicator } from "./DataSourceIndicator";
