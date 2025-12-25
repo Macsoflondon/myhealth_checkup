@@ -3,7 +3,7 @@ import type { CompareTestData } from "@/types";
 import { cacheService } from "./CacheService";
 import { TestDataTransformer } from "./transformers/testDataTransformer";
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
-import { compareCategories } from "@/data/compare/categories";
+import { compareCategories } from "@/constants/categories";
 import { LiveDataService } from "./LiveDataService";
 
 // Re-export for backwards compatibility

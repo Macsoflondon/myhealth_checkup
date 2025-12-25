@@ -1,6 +1,6 @@
 
 // Re-export all data from the individual files
-import { compareCategories } from './categories';
+import { compareCategories } from '@/constants/categories';
 import { mappedTestData } from './mappedTestData';
 import { detailedProviders } from './detailedProviders';
 import { medichecksCompareData } from './medichecksData';

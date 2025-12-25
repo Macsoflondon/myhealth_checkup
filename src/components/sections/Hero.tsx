@@ -1,4 +1,4 @@
-// Hero component with fullscreen video - v2.0
+// Hero component with fullscreen video
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
 import { useState, useCallback, useMemo, useEffect } from "react";
@@ -12,7 +12,7 @@ import { providers } from "@/constants/providers";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
-const NewHero = () => {
+const Hero = () => {
   const {
     t
   } = useTranslation();
@@ -313,4 +313,4 @@ const NewHero = () => {
       </section>
     </>;
 };
-export default NewHero;
+export default Hero;
