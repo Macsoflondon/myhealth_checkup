@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { compareCategories } from "@/data/compare/categories";
+import { compareCategories } from "@/constants/categories";
 import { goodbodyTests } from "@/data/goodbodyTests";
 import { medichecksTests } from "@/data/medichecksTests";
 import { londonLaboratoryTests } from "@/data/londonLaboratoryTests";

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
 import { useNavigationData } from "@/hooks/useNavigationData";
-import { compareCategories } from "@/data/compare/categories";
+import { compareCategories } from "@/constants/categories";
 import { cn } from "@/lib/utils";
 
 interface MobileNavigationDrawerProps {

@@ -22,7 +22,7 @@ import { EnhancedComparisonTable } from '@/components/compare/EnhancedComparison
 import { SaveComparisonDialog } from '@/components/compare/SaveComparisonDialog';
 import { SavedComparisonsList } from '@/components/compare/SavedComparisonsList';
 import { ProviderLogo } from '@/components/ProviderLogo';
-import { compareCategories } from '@/data/compare/categories';
+import { compareCategories } from '@/constants/categories';
 import type { EnhancedTestData, SortOption, SavedComparison } from '@/types/comparison';
 
 const PROVIDERS = [

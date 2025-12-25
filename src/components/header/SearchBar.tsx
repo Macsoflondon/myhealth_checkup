@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { compareCategories } from "@/data/compare/categories";
+import { compareCategories } from "@/constants/categories";
 import { logger } from "@/lib/logger";
 
 // Category colors following design system

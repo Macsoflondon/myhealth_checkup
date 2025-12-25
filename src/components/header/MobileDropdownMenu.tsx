@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { compareCategories } from "@/data/compare/categories";
+import { compareCategories } from "@/constants/categories";
 import { cn } from "@/lib/utils";
 
 // Mobile navigation structure with categories and test counts

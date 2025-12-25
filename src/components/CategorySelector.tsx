@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { compareCategories } from '@/data/compare/categories';
+import { compareCategories } from '@/constants/categories';
 
 interface CategorySelectorProps {
   onCategorySelect?: (categoryId: string) => void;
