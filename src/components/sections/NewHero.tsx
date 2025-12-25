@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import AccreditationLogos from "@/components/sections/AccreditationLogos";
 import { logger } from "@/lib/logger";
-import { providers } from "@/data/compare/providers";
+import { providers } from "@/constants/providers";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";

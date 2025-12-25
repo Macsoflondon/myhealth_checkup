@@ -22,7 +22,7 @@ import Footer from "@/components/layout/Footer";
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { useClinicsData } from "@/hooks/useClinicsData";
 import { useClinicTests } from "@/hooks/useClinicTests";
-import { providers } from "@/data/compare/providers";
+import { providers } from "@/constants/providers";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { AssistedTestFinder } from '@/components/AssistedTestFinder';
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import UKASBanner from '@/components/UKASBanner';
 
 const AssistedTestFinderPage = () => {
   return (
@@ -20,7 +23,15 @@ const AssistedTestFinderPage = () => {
         <meta name="twitter:title" content="Find Your Perfect Health Test | myhealth checkup - Your health. Your choice. One trusted platform!" />
         <meta name="twitter:description" content="Let us help you find the perfect health test for your needs with our guided questionnaire." />
       </Helmet>
-      <AssistedTestFinder />
+      
+      <div className="min-h-screen bg-gray-50">
+        <UKASBanner />
+        <Header />
+        <main className="flex-1">
+          <AssistedTestFinder />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 };

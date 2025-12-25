@@ -1,5 +1,5 @@
 // Barrel export for custom hooks
-export { useFavorites } from "./useFavorites";
+export { useFavorites, useFavoritesApi } from "./useFavoritesApi";
 export { useOrders } from "./useOrders";
 export { useClinicsData } from "./useClinicsData";
 export { useGeocoding } from "./useGeocoding";

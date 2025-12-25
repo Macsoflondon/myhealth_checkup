@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { providers } from "@/data/compare/providers";
+import { providers } from "@/constants/providers";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";

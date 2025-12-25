@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Search, Filter, ArrowUpDown, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { providers } from "@/data/compare/providers";
+import { providers } from "@/constants/providers";
 interface CompareFiltersProps {
   categories: Array<{
     id: string;
