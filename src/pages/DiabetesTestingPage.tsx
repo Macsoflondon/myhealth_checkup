@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -45,20 +46,10 @@ const DiabetesTestingPage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Diabetes Testing & Monitoring
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults 
-                aged 30-60 looking to manage their metabolic health proactively.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Diabetes Testing & Monitoring"
+          subtitle="Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults aged 30-60 looking to manage their metabolic health proactively."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

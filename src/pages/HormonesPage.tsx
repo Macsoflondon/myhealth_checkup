@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -184,20 +185,10 @@ const HormonesPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Hormone Blood Tests
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. 
-                Optimize your health with professional hormone analysis and personalized insights.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Hormone Blood Tests"
+          subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimize your health with professional hormone analysis and personalized insights."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

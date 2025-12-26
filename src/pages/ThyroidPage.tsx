@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -100,20 +101,10 @@ const ThyroidPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Thyroid Blood Tests
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. 
-                Essential for detecting thyroid disorders and optimizing treatment.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Thyroid Blood Tests"
+          subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimizing treatment."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

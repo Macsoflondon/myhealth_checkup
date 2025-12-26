@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
+import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -56,24 +57,15 @@ const AtHomeTestsPage = () => {
         <Header />
         
         <main className="flex-1 bg-background">
-          {/* Hero Section */}
-          <section className="bg-[#081129] py-16">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-6">
-                  <Home className="h-5 w-5 text-[#22c0d4]" />
-                  <span className="text-white text-sm font-medium">Test from the comfort of home</span>
-                </div>
-                <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                  At-Home Health Tests
-                </h1>
-                <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                  Take control of your health with our convenient at-home testing kits. 
-                  Professional lab analysis with results delivered securely online.
-                </p>
-              </div>
+          <HeroSection
+            title="At-Home Health Tests"
+            subtitle="Take control of your health with our convenient at-home testing kits. Professional lab analysis with results delivered securely online."
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-6">
+              <Home className="h-5 w-5 text-[#22c0d4]" />
+              <span className="text-white text-sm font-medium">Test from the comfort of home</span>
             </div>
-          </section>
+          </HeroSection>
 
           {/* Action Buttons Bar */}
           <section className="bg-[#22C0D4] py-4">

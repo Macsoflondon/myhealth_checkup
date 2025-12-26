@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -149,18 +150,10 @@ const MensHealthPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        {/* Hero Section */}
-        <section className="from-primary/5 to-secondary/5 py-16 bg-[#081129]">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">Men's Health Blood Tests</h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, 
-                and complete wellness testing tailored for men's unique health needs.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Men's Health Blood Tests"
+          subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">
