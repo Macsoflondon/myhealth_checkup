@@ -25,7 +25,7 @@ export default {
     	extend: {
     		fontFamily: {
     			sans: [
-    				'Montserrat',
+    				'Open Sans',
     				'ui-sans-serif',
     				'system-ui',
     				'sans-serif',
@@ -45,7 +45,7 @@ export default {
     				'serif'
     			],
     			serif: [
-    				'Lora',
+    				'Merriweather',
     				'ui-serif',
     				'Georgia',
     				'Cambria',
@@ -54,7 +54,7 @@ export default {
     				'serif'
     			],
     			mono: [
-    				'JetBrains Mono',
+    				'Fira Code',
     				'ui-monospace',
     				'SFMono-Regular',
     				'Menlo',

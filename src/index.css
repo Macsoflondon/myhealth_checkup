@@ -2,6 +2,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,14 +38,14 @@
     /* Material 3 Color System with Brand Colors */
 
     /* Primary - Turquoise (Brand #22c0d4) */
-    --primary: 187 72% 48%;
+    --primary: 224 67% 10%;
     --primary-foreground: 0 0% 100%;
     --primary-container: 187 72% 90%;
     --primary-on-container: 187 72% 15%;
 
     /* Secondary - Pink (Brand #e70d69) */
-    --secondary: 335 89% 48%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 296 35% 90%;
+    --secondary-foreground: 116 63% 20%;
     --secondary-container: 335 89% 93%;
     --secondary-on-container: 335 89% 15%;
 
@@ -64,14 +67,14 @@
     --error: 0 72% 42%;
     --error-foreground: 0 0% 100%;
     --error-container: 0 100% 93%;
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 116 45% 96%;
+    --foreground: 224 67% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 116 45% 96%;
+    --card-foreground: 116 63% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 116 45% 96%;
+    --popover-foreground: 116 63% 20%;
 
     --primary: 187 72% 48%;
     --primary-foreground: 0 0% 100%;
@@ -79,11 +82,11 @@
     --secondary: 335 89% 48%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 296 25% 90%;
+    --muted-foreground: 116 23% 37%;
 
-    --accent: 351 94% 70%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 146 74% 92%;
+    --accent-foreground: 146 74% 20%;
 
     --outline-foreground: 238 33% 15%;
     --ghost-foreground: 238 33% 15%;
@@ -119,23 +122,23 @@
     --glass-border: 0 0% 100% / 0.2;
     --glass-shadow: 0 8px 32px hsl(211 80% 8% / 0.1);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 187 72% 48%;
+    --destructive-foreground: 335 89% 48%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 335 89% 48%;
+    --input: 296 15% 91%;
+    --ring: 187 72% 48%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 116 45% 96%;
+    --sidebar-foreground: 116 63% 25%;
+    --sidebar-primary: 116 63% 18%;
+    --sidebar-primary-foreground: 116 45% 96%;
+    --sidebar-accent: 296 35% 90%;
+    --sidebar-accent-foreground: 116 63% 20%;
+    --sidebar-border: 296 15% 91%;
+    --sidebar-ring: 296 5% 75%;
     --elevation-0: none;
     --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     --elevation-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -151,24 +154,36 @@
     --easing-emphasized-decelerate: cubic-bezier(0, 0, 0.2, 1);
     --easing-emphasized-accelerate: cubic-bezier(0.4, 0, 1, 1);
     --easing-standard: cubic-bezier(0.2, 0, 0, 1);
-    --font-sans: Montserrat, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-    --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
-    --shadow-sm: 0px 1px 1.5px 0px hsla(223, 69%, 10%, 0.1);
-    --shadow: 0px 1px 3px 0px hsla(223, 69%, 10%, 0.1);
-    --shadow-md: 0px 1px 4.5px 0px hsla(223, 69%, 10%, 0.1);
-    --shadow-lg: 0px 1px 7.5px 0px hsla(223, 69%, 10%, 0.1);
+    --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-serif: Merriweather, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --chart-1: 116 58% 39%;
+    --chart-2: 146 76% 61%;
+    --chart-3: 176 37% 24%;
+    --chart-4: 206 74% 66%;
+    --chart-5: 236 87% 67%;
+    --sidebar: 248 0.3% 98.4%;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
   }
 
   .dark {
     /* Material 3 Dark Mode Colors */
-    --primary: 187 72% 60%;
-    --primary-foreground: 187 72% 15%;
+    --primary: 187 72% 48%;
+    --primary-foreground: 210 40% 98.0392%;
     --primary-container: 187 72% 25%;
     --primary-on-container: 187 72% 90%;
 
-    --secondary: 335 89% 60%;
-    --secondary-foreground: 335 89% 15%;
+    --secondary: 335 89% 48%;
+    --secondary-foreground: 0 0% 100%;
     --secondary-container: 335 89% 30%;
     --secondary-on-container: 335 89% 93%;
 
@@ -184,20 +199,20 @@
     --error: 0 72% 70%;
     --error-foreground: 0 72% 15%;
     --error-container: 0 60% 25%;
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 224 67% 10%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 187 72% 48%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 335 89% 48%;
+    --popover-foreground: 335 89% 48%;
 
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 335 89% 48%;
+    --muted-foreground: 335 89% 48%;
 
-    --accent: 335 89% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 224 67% 10%;
+    --accent-foreground: 224 67% 10%;
 
     --health-primary: 187 72% 60%;
     --health-secondary: 335 89% 60%;
@@ -209,12 +224,12 @@
     --health-icon: 224 67% 10%;
     --section-dark: 224 67% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 187 72% 48%;
+    --destructive-foreground: 187 72% 48%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 335 89% 48%;
+    --input: 187 72% 48%;
+    --ring: 224 67% 10%;
 
     --shadow-soft: 0 2px 8px hsl(0 0% 100% / 0.04);
     --shadow-card: 0 1px 3px hsl(0 0% 0% / 0.2), 0 4px 8px hsl(0 0% 0% / 0.25), 0 8px 16px hsl(0 0% 0% / 0.3);
@@ -226,22 +241,32 @@
     --glass-border: 0 0% 100% / 0.1;
     --glass-shadow: 0 8px 32px hsl(0 0% 0% / 0.3);
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 116 2% 10%;
+    --sidebar-foreground: 296 35% 95%;
+    --sidebar-primary: 146 74% 55%;
+    --sidebar-primary-foreground: 116 43% 70%;
+    --sidebar-accent: 296 0% 13%;
+    --sidebar-accent-foreground: 296 35% 95%;
+    --sidebar-border: 296 0% 13%;
+    --sidebar-ring: 296 5% 83%;
     --font-sans: Montserrat, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
     --radius: 0.5rem;
-    --shadow-sm: 0px 1px 1.5px 0px hsla(223, 69%, 10%, 0.1);
-    --shadow: 0px 1px 3px 0px hsla(223, 69%, 10%, 0.1);
-    --shadow-md: 0px 1px 4.5px 0px hsla(223, 69%, 10%, 0.1);
-    --shadow-lg: 0px 1px 7.5px 0px hsla(223, 69%, 10%, 0.1);
+    --shadow-sm: 0px 1px 1.5px 0px hsl(0, 0%, 100%);
+    --shadow: 0px 1px 3px 0px hsl(0, 0%, 100%);
+    --shadow-md: 0px 1px 4.5px 0px hsl(0, 0%, 100%);
+    --shadow-lg: 0px 1px 7.5px 0px hsl(0, 0%, 100%);
+    --chart-1: 187 72% 48%;
+    --chart-2: 335 89% 48%;
+    --chart-3: 146 80% 55%;
+    --chart-4: 36 65% 60%;
+    --chart-5: 276 60% 45%;
+    --sidebar: 266 4% 20.8%;
+    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
 
   /* Base element styles */
