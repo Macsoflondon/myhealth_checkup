@@ -34,7 +34,7 @@ const WellnessPage = () => {
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
           <div className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-health-heading mb-6">General Wellness</h1>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">General Wellness</h1>
               <p className="mb-8 max-w-2xl mx-auto text-white font-normal text-lg">
                 Comprehensive wellness and lifestyle health tests to optimize your wellbeing. 
                 Monitor key health markers and prevent potential health issues.
