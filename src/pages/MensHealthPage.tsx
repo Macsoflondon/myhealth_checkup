@@ -152,9 +152,9 @@ const MensHealthPage = () => {
         {/* Hero Section */}
         <section className="from-primary/5 to-secondary/5 py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center text-primary-foreground">
-              <h1 className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">Men's Health Blood Tests</h1>
-              <p className="mb-8 max-w-2xl mx-auto tracking-wide text-xl font-sans font-medium text-white">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">Men's Health Blood Tests</h1>
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
                 Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, 
                 and complete wellness testing tailored for men's unique health needs.
               </p>

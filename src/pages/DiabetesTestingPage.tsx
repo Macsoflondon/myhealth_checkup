@@ -49,10 +49,10 @@ const DiabetesTestingPage = () => {
         <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
                 Diabetes Testing & Monitoring
               </h1>
-              <p className="text-xl mb-8 text-white">
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
                 Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults 
                 aged 30-60 looking to manage their metabolic health proactively.
               </p>

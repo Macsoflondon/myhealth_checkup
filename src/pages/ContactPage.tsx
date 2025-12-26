@@ -103,8 +103,8 @@ const ContactPage = () => {
         <div className="container mx-auto px-4 py-12 bg-[hsl(var(--navy))]">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold mb-6 text-white">Contact Us</h1>
-              <p className="text-xl text-white/90">
+              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">Contact Us</h1>
+              <p className="text-xl max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
                 We're here to help with any questions about health testing or our platform
               </p>
             </div>
