@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import UKASBanner from "@/components/UKASBanner";
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
@@ -284,6 +285,7 @@ const CompareTests = () => {
           <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
         </Helmet>
 
+        <UKASBanner />
         <Header />
 
         <main className="flex-grow">

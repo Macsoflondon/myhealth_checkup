@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import UKASBanner from "@/components/UKASBanner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield } from "lucide-react";
@@ -28,6 +29,7 @@ const WellnessPage = () => {
         <meta name="twitter:description" content="Comprehensive wellness blood tests for optimal health monitoring" />
       </Helmet>
       
+      <UKASBanner />
       <Header />
       
       <main className="min-h-screen bg-background">

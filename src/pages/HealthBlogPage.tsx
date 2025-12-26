@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import UKASBanner from '@/components/UKASBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -56,6 +57,7 @@ const HealthBlogPage = () => {
   }];
   const categories = ["All Articles", "Heart Health", "Nutrition", "Hormones", "Gut Health", "Cancer Screening", "Diabetes", "Mental Health", "Women's Health", "Men's Health"];
   return <div className="min-h-screen flex flex-col">
+      <UKASBanner />
       <Header />
       <main className="flex-grow">
         <HeroSection
