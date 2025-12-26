@@ -94,13 +94,14 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         />
       )}
 
-      <nav className={`relative ${className}`} aria-label="Main Navigation" style={{ position: 'relative', zIndex: 100 }}>
-        <div className="flex items-center justify-center gap-0 flex-wrap" style={{ position: 'relative' }}>
+      <nav className={`relative ${className}`} aria-label="Main Navigation" style={{ position: 'relative', zIndex: 100, overflow: 'visible' }}>
+        <div className="flex items-center justify-center gap-0 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
           {/* Primary Navigation Items */}
           {primaryNavigationItems.filter(item => item.name !== "How It Works").map((item) => (
             <div 
               key={item.path}
               className="relative nav-item-wrapper"
+              style={{ overflow: 'visible' }}
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >

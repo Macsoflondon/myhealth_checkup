@@ -57,7 +57,7 @@ const Header = ({
   const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[10px] border-b border-white/20", styles.toolbar);
   return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50", className)}>
+      <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-brand-navy px-4 lg:px-8">
           <div className="relative flex items-center justify-between py-2">
