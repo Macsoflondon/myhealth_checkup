@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -223,19 +224,10 @@ const WomensHealthPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
-          <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-               <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                {t('womensHealth.title')}
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                {t('womensHealth.subtitle')}
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title={t('womensHealth.title')}
+          subtitle={t('womensHealth.subtitle')}
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

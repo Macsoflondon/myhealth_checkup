@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -40,29 +41,20 @@ const GutHealthPage = () => {
       </Helmet>
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Gut Health & Microbiome Testing
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Discover the secrets of your gut microbiome. Advanced testing for digestive health, 
-                food intolerances, and gut-brain connection for UK adults aged 30-60.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
-                  <Activity className="h-5 w-5" />
-                  Compare Tests
-                </Button>
-                <Button variant="outline" size="lg" className="border-amber-500 text-amber-700 hover:bg-amber-50">
-                  Learn More
-                </Button>
-              </div>
-            </div>
+        <HeroSection
+          title="Gut Health & Microbiome Testing"
+          subtitle="Discover the secrets of your gut microbiome. Advanced testing for digestive health, food intolerances, and gut-brain connection for UK adults aged 30-60."
+        >
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
+              <Activity className="h-5 w-5" />
+              Compare Tests
+            </Button>
+            <Button variant="outline" size="lg" className="border-amber-500 text-amber-700 hover:bg-amber-50">
+              Learn More
+            </Button>
           </div>
-        </section>
+        </HeroSection>
 
         {/* Gut Health Impact */}
         <section className="py-16 bg-white">

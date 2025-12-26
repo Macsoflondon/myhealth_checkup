@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -58,29 +59,20 @@ const VitaminDeficiencyPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Vitamin & Mineral Testing
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. 
-                Essential testing for health-conscious UK adults aged 30-60.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2">
-                  <Leaf className="h-5 w-5" />
-                  Test My Vitamins
-                </Button>
-                <Button variant="outline" size="lg">
-                  Symptoms Checker
-                </Button>
-              </div>
-            </div>
+        <HeroSection
+          title="Vitamin & Mineral Testing"
+          subtitle="Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. Essential testing for health-conscious UK adults aged 30-60."
+        >
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button size="lg" className="gap-2">
+              <Leaf className="h-5 w-5" />
+              Test My Vitamins
+            </Button>
+            <Button variant="outline" size="lg">
+              Symptoms Checker
+            </Button>
           </div>
-        </section>
+        </HeroSection>
 
         {/* Common Deficiencies */}
         

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
+import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Droplets, Activity, Brain, Bone, Shield } from 'lucide-react';
@@ -79,32 +80,23 @@ const ConditionsPage = () => {
         <Header />
         
         <main className="flex-1 bg-background">
-          {/* Hero Section */}
-          <section className="bg-[#081129] py-16">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                  Health Conditions Testing
-                </h1>
-                <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                  Specialized testing for specific health conditions and symptoms. 
-                  Get answers and take control of your health.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/assisted-test-finder">
-                    <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white">
-                      Find Your Test
-                    </Button>
-                  </Link>
-                  <Link to="/compare">
-                    <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                      Compare All Tests
-                    </Button>
-                  </Link>
-                </div>
-              </div>
+          <HeroSection
+            title="Health Conditions Testing"
+            subtitle="Specialized testing for specific health conditions and symptoms. Get answers and take control of your health."
+          >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/assisted-test-finder">
+                <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white">
+                  Find Your Test
+                </Button>
+              </Link>
+              <Link to="/compare">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  Compare All Tests
+                </Button>
+              </Link>
             </div>
-          </section>
+          </HeroSection>
 
           {/* Conditions Grid */}
           <section className="py-16 bg-gray-50">

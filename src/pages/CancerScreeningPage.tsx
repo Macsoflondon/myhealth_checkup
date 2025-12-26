@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -132,20 +133,10 @@ const CancerScreeningPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        {/* Hero Section - Mobile optimized */}
-        <section className="bg-[#081129] py-10 sm:py-12 md:py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Cancer Screening Tests
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                Comprehensive cancer screening tests for early detection and peace of mind. 
-                Regular screening saves lives.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Cancer Screening Tests"
+          subtitle="Comprehensive cancer screening tests for early detection and peace of mind. Regular screening saves lives."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

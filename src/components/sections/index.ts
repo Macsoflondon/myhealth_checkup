@@ -5,6 +5,7 @@
 
 // Hero components
 export { default as Hero } from "./Hero";  // The main hero component
+export { default as HeroSection } from "./HeroSection";  // Reusable category page hero
 
 // Content sections
 export { default as AccreditationCards } from "./AccreditationCards";

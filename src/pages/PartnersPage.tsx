@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -67,20 +68,10 @@ const PartnersPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="from-primary/5 to-secondary/5 py-[54px] bg-[t] bg-[#081129]">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
-                Our Healthcare Partners
-              </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                We partner with the UK's most trusted and accredited healthcare providers 
-                to bring you reliable, high-quality health testing services.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Our Healthcare Partners"
+          subtitle="We partner with the UK's most trusted and accredited healthcare providers to bring you reliable, high-quality health testing services."
+        />
 
         {/* Partner Standards */}
         <section className="py-16 bg-white">
