@@ -799,6 +799,33 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_providers: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          provider_id: string
+          provider_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          provider_id: string
+          provider_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          provider_id?: string
+          provider_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       scraping_jobs: {
         Row: {
           created_at: string

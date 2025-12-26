@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, ArrowUpDown, RotateCcw, Bookmark, ChevronDown, Plus } from 'lucide-react';
+import { Filter, ArrowUpDown, RotateCcw, Bookmark, ChevronDown, Plus, Heart } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,8 @@ import { SaveComparisonDialog } from '@/components/compare/SaveComparisonDialog'
 import { SavedComparisonsList } from '@/components/compare/SavedComparisonsList';
 import { ProviderLogo } from '@/components/ProviderLogo';
 import { compareCategories } from '@/constants/categories';
+import { useSavedProviders } from '@/hooks/useSavedProviders';
+import { cn } from '@/lib/utils';
 import type { EnhancedTestData, SortOption, SavedComparison } from '@/types/comparison';
 
 const PROVIDERS = [
@@ -64,6 +66,8 @@ export default function EnhancedComparePage() {
     deleteSavedComparison,
     transformToEnhanced
   } = useEnhancedComparison();
+
+  const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
   // Fetch tests
   const fetchTests = useCallback(async () => {
@@ -336,9 +340,19 @@ export default function EnhancedComparePage() {
                                 checked={selectedProviders.includes(provider.id)}
                                 onCheckedChange={() => toggleProvider(provider.id)}
                               />
-                              <label htmlFor={provider.id} className="text-sm cursor-pointer">
+                              <label htmlFor={provider.id} className="text-sm cursor-pointer flex-1">
                                 {provider.name}
                               </label>
+                              <button
+                                onClick={() => toggleSaveProvider(provider.id, provider.name)}
+                                className={cn(
+                                  "p-1 rounded hover:bg-muted transition-colors",
+                                  isProviderSaved(provider.id) && "text-[#e70d69]"
+                                )}
+                                title={isProviderSaved(provider.id) ? "Remove from saved" : "Save provider"}
+                              >
+                                <Heart className={cn("h-3.5 w-3.5", isProviderSaved(provider.id) && "fill-current")} />
+                              </button>
                             </div>
                           ))}
                         </div>

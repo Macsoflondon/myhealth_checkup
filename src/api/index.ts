@@ -15,6 +15,7 @@ export { healthDataApi } from './supabase/healthData.api';
 export { preferencesApi } from './supabase/preferences.api';
 export { notificationHistoryApi } from './supabase/notificationHistory.api';
 export { functionsApi } from './supabase/functions.api';
+export { savedProvidersApi } from './supabase/savedProviders.api';
 
 // Re-export commonly used function helpers
 export { 
@@ -38,6 +39,7 @@ export type { UserProfile, UserPreferences } from './supabase/users.api';
 export type { UploadedTestResult, BiomarkerReading, UserHealthData, HealthScore } from './supabase/healthData.api';
 export type { RecommendationPreferences, EmailNotificationPreferences, SmsNotificationPreferences } from './supabase/preferences.api';
 export type { NotificationHistory } from './supabase/notificationHistory.api';
+export type { SavedProvider } from './supabase/savedProviders.api';
 export type { ApiResponse, PaginationParams, FilterParams } from './supabase/base';
 export type { 
   HealthAIAnalysisRequest,
