@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Clock, User, ArrowRight } from 'lucide-react';
+import HeroSection from "@/components/sections/HeroSection";
 const HealthBlogPage = () => {
   const featuredArticles = [{
     title: "Understanding Your Vitamin D Levels: A Complete Guide",
@@ -57,21 +58,10 @@ const HealthBlogPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#22c0d4]">
-                Health Resources
-              </h1>
-              <p className="text-xl mb-8 text-[#e70d69]">
-                Expert insights, health tips, and the latest research on preventive healthcare 
-                and health testing for UK adults aged 30-60.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Health Resources"
+          subtitle="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults aged 30-60."
+        />
 
         {/* Categories Filter */}
         <section className="border-b my-0 py-0">

@@ -22,6 +22,7 @@ import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
+import HeroSection from "@/components/sections/HeroSection";
 
 const CATEGORY_LIST = [
   "general health",
@@ -286,36 +287,26 @@ const CompareTests = () => {
         <Header />
 
         <main className="flex-grow">
-          {/* Page Header */}
-          <section className="py-12 px-6 bg-gradient-to-b from-primary/5 to-background dark:from-[hsl(var(--section-dark))] dark:to-background">
-            <div className="max-w-7xl mx-auto">
-              <p className="text-primary font-medium text-sm mb-2 tracking-wide">
-                Your Health. Your Choice. One Trusted Platform.
-              </p>
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                Compare private blood tests
-              </h1>
-              <p className="text-lg text-muted-foreground mb-6">
-                Transparent pricing and inclusions from trusted UK providers
-              </p>
-              
-              {/* Quick Stats */}
-              <div className="flex flex-wrap gap-3">
-                <div className="flex items-center gap-1.5 bg-primary/10 rounded-full px-4 py-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-foreground">{memoizedStats.testCount}+ Tests</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-primary/10 rounded-full px-4 py-2">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-foreground">Live Prices</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-green-500/10 rounded-full px-4 py-2">
-                  <Sparkles className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-medium text-foreground">UKAS Accredited</span>
-                </div>
+          <HeroSection
+            title="Compare Private Blood Tests"
+            subtitle="Transparent pricing and inclusions from trusted UK providers"
+          >
+            {/* Quick Stats */}
+            <div className="flex flex-wrap gap-3 justify-center mt-6">
+              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
+                <TrendingUp className="h-4 w-4 text-[#22C0D4]" />
+                <span className="text-sm font-medium text-white">{memoizedStats.testCount}+ Tests</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
+                <Clock className="h-4 w-4 text-[#22C0D4]" />
+                <span className="text-sm font-medium text-white">Live Prices</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
+                <Sparkles className="h-4 w-4 text-green-400" />
+                <span className="text-sm font-medium text-white">UKAS Accredited</span>
               </div>
             </div>
-          </section>
+          </HeroSection>
 
           {/* Main Content */}
           <div className="max-w-7xl mx-auto px-6 py-8">

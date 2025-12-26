@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield } from "lucide-react";
+import HeroSection from "@/components/sections/HeroSection";
 import { wellnessCategories } from "@/data/wellnessCategories";
 const WellnessPage = () => {
   return <>
@@ -30,18 +31,10 @@ const WellnessPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
-          <div className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">General Wellness</h1>
-              <p className="mb-8 max-w-2xl mx-auto text-white font-normal text-lg">
-                Comprehensive wellness and lifestyle health tests to optimize your wellbeing. 
-                Monitor key health markers and prevent potential health issues.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="General Wellness"
+          subtitle="Comprehensive wellness and lifestyle health tests to optimize your wellbeing. Monitor key health markers and prevent potential health issues."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

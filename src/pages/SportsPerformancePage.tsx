@@ -12,6 +12,7 @@ import { sportsPerformanceCategories } from "@/data/sportsPerformanceCategories"
 import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
+import HeroSection from "@/components/sections/HeroSection";
 interface TestData {
   id: string;
   test_name: string;
@@ -139,21 +140,10 @@ const SportsPerformancePage = () => {
         {/* Breadcrumb */}
         
 
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-[#081129] via-[#1a1b34] to-[#081129] text-white py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              
-              <h1 className="text-4xl md:text-5xl mb-6 font-semibold lg:text-5xl">
-                Sports Performance Blood Tests
-              </h1>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Optimise your athletic performance with comprehensive biomarker analysis. 
-                Monitor nutrition, recovery, and fitness markers from trusted UK laboratories.
-              </p>
-            </div>
-          </div>
-        </section>
+        <HeroSection
+          title="Sports Performance Blood Tests"
+          subtitle="Optimise your athletic performance with comprehensive biomarker analysis. Monitor nutrition, recovery, and fitness markers from trusted UK laboratories."
+        />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">

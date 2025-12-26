@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import UKASBanner from '@/components/UKASBanner';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import HeroSection from "@/components/sections/HeroSection";
 
 interface TestCardProps {
   id: string;
@@ -167,17 +168,10 @@ const FertilityTestsPage = () => {
         <div className="min-h-screen bg-white">
           <Header />
           
-          {/* Hero Section */}
-          <section className="bg-[#081129] py-16">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Prenatal & Pregnancy Testing</h1>
-                <p className="text-xl text-white max-w-2xl mx-auto mb-8">
-                  Non-invasive prenatal testing (NIPT) for expectant parents. Screen for chromosomal conditions, determine gender early, or confirm paternity safely during pregnancy.
-                </p>
-              </div>
-            </div>
-          </section>
+          <HeroSection
+            title="Prenatal & Pregnancy Testing"
+            subtitle="Non-invasive prenatal testing (NIPT) for expectant parents. Screen for chromosomal conditions, determine gender early, or confirm paternity safely during pregnancy."
+          />
 
           {/* Action Buttons Bar */}
           <section className="bg-[#22C0D4] py-4">
