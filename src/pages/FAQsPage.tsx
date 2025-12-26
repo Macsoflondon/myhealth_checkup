@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Mail, Phone, TrendingUp, Shield, FileCheck, ChevronRight, ArrowUp, AlertCircle } from 'lucide-react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import HeroSection from "@/components/sections/HeroSection";
 const FAQsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -338,35 +339,23 @@ const FAQsPage = () => {
       
       <Header />
       
-      <main className="flex-grow bg-[ffffff] bg-[#081129]">
-        {/* Breadcrumbs */}
-        <nav aria-label="Breadcrumb" className="container mx-auto px-4 sm:py-4 bg-[#081129] py-0">
-          
-        </nav>
-
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-primary via-primary/90 to-secondary text-white bg-[#081129] py-0">
-          <div className="container mx-auto px-4 sm:py-16 text-center py-0 bg-transparent">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-[#081129]">
-              Frequently Asked Questions
-            </h1>
-            <p className="text-base sm:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto font-medium md:text-xl px-[10px] text-[#081129]">
-              Find answers to common questions about health testing and our platform
-            </p>
-            
-            {/* Search Bar */}
-            <div className="max-w-xl sm:max-w-2xl mx-auto">
-              <div className="relative text-left font-medium text-[#081129]">
-                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
-                
-                {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0" aria-label="Clear search">
-                    ×
-                  </Button>}
-              </div>
+      <main className="flex-grow bg-background">
+        <HeroSection
+          title="Frequently Asked Questions"
+          subtitle="Find answers to common questions about health testing and our platform"
+        >
+          {/* Search Bar */}
+          <div className="max-w-xl sm:max-w-2xl mx-auto mt-6">
+            <div className="relative text-left">
+              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+              <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
+              
+              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0" aria-label="Clear search">
+                  ×
+                </Button>}
             </div>
           </div>
-        </div>
+        </HeroSection>
 
         {/* Popular Questions */}
         {debouncedSearch === '' && <div className="container mx-auto px-4 sm:py-12 py-[10px]">

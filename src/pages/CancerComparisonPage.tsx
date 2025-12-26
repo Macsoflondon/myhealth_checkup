@@ -18,6 +18,7 @@ import { CANCER_TYPES, CANCER_SEARCH_TERMS, getCancerTypeById } from '@/data/com
 import { supabase } from '@/integrations/supabase/client';
 import { getProviderLogo as getProviderLogoFn, PROVIDER_DETAILS } from '@/constants/providers';
 import { EnhancedTestData } from '@/types/comparison';
+import HeroSection from "@/components/sections/HeroSection";
 
 const CANCER_TYPE_ICONS: Record<string, React.ElementType> = {
   all: Shield,
@@ -122,36 +123,24 @@ export default function CancerComparisonPage() {
       <CancerScreeningDisclaimer variant="banner" />
 
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="bg-[#081129] text-white py-12 sm:py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl">
-              <Badge className="mb-4 bg-primary/20 text-primary border-primary/30">
-                Cancer Screening
-              </Badge>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold mb-4">
-                Compare Cancer Screening Tests
-              </h1>
-              <p className="text-lg text-gray-300 mb-6">
-                Compare cancer screening blood tests from trusted UK providers. Find the right test for 
-                prostate, ovarian, bowel, and other cancer markers.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Badge variant="outline" className="text-white border-white/30">
-                  <Shield className="h-4 w-4 mr-1" />
-                  UKAS Accredited Labs
-                </Badge>
-                <Badge variant="outline" className="text-white border-white/30">
-                  7 Trusted Providers
-                </Badge>
-                <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
-                  <BookOpen className="h-4 w-4 mr-1" />
-                  Biomarkers Reference Guide
-                </Link>
-              </div>
-            </div>
+        <HeroSection
+          title="Compare Cancer Screening Tests"
+          subtitle="Compare cancer screening blood tests from trusted UK providers. Find the right test for prostate, ovarian, bowel, and other cancer markers."
+        >
+          <div className="flex flex-wrap gap-4 justify-center mt-6">
+            <Badge variant="outline" className="text-white border-white/30">
+              <Shield className="h-4 w-4 mr-1" />
+              UKAS Accredited Labs
+            </Badge>
+            <Badge variant="outline" className="text-white border-white/30">
+              7 Trusted Providers
+            </Badge>
+            <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
+              <BookOpen className="h-4 w-4 mr-1" />
+              Biomarkers Reference Guide
+            </Link>
           </div>
-        </section>
+        </HeroSection>
 
         {/* Cancer Type Tabs */}
         <section className="border-b bg-muted/30">

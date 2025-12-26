@@ -5,6 +5,7 @@ import UKASBanner from "@/components/UKASBanner";
 import ClinicFinder from "@/components/ClinicFinder";
 import { MapPin, Shield, Clock, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import HeroSection from "@/components/sections/HeroSection";
 
 const FindClinicPage = () => {
   const benefits = [
@@ -75,36 +76,26 @@ const FindClinicPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-[#081129] via-[#1a1b34] to-[#081129] text-white py-12 md:py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                Find Your Nearest Blood Test Clinic
-              </h1>
-              <p className="text-lg md:text-xl text-gray-300 mb-6 max-w-3xl mx-auto">
-                Search over 150 UKAS-accredited clinic locations across the UK. 
-                Enter your postcode to find convenient testing facilities near you.
-              </p>
-              
-              {/* Stats Badges */}
-              <div className="flex flex-wrap justify-center gap-4 mt-8">
-                <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                  <span className="font-bold text-[#FA6980]">7</span>
-                  <span className="text-white ml-2">Trusted Providers</span>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                  <span className="font-bold text-[#22C0D4]">150+</span>
-                  <span className="text-white ml-2">Clinic Locations</span>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                  <span className="font-bold text-[#FA6980]">UKAS</span>
-                  <span className="text-white ml-2">Accredited Labs</span>
-                </div>
-              </div>
+        <HeroSection
+          title="Find Your Nearest Blood Test Clinic"
+          subtitle="Search over 150 UKAS-accredited clinic locations across the UK. Enter your postcode to find convenient testing facilities near you."
+        >
+          {/* Stats Badges */}
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
+            <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+              <span className="font-bold text-[#FA6980]">7</span>
+              <span className="text-white ml-2">Trusted Providers</span>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+              <span className="font-bold text-[#22C0D4]">150+</span>
+              <span className="text-white ml-2">Clinic Locations</span>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+              <span className="font-bold text-[#FA6980]">UKAS</span>
+              <span className="text-white ml-2">Accredited Labs</span>
             </div>
           </div>
-        </section>
+        </HeroSection>
 
         {/* Benefits Section */}
         <section className="py-12 bg-muted/30">

@@ -1,10 +1,10 @@
-
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Subscriptions from "@/components/Subscriptions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Star } from "lucide-react";
+import HeroSection from "@/components/sections/HeroSection";
 
 const SubscriptionsPage = () => {
   const benefits = [
@@ -25,18 +25,10 @@ const SubscriptionsPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-health-700">
-                Health Subscription Plans
-              </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Take the guesswork out of health monitoring with our convenient subscription plans. Regular testing, expert guidance, and peace of mind.
-              </p>
-            </div>
-          </div>
-        </div>
+        <HeroSection
+          title="Health Subscription Plans"
+          subtitle="Take the guesswork out of health monitoring with our convenient subscription plans. Regular testing, expert guidance, and peace of mind."
+        />
 
         <Subscriptions />
 

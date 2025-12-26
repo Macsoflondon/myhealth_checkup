@@ -11,6 +11,7 @@ import {
   Info, Users, Clock, Beaker, BookOpen, ExternalLink 
 } from "lucide-react";
 import { CancerScreeningDisclaimer } from "@/components/compliance/CancerScreeningDisclaimer";
+import HeroSection from "@/components/sections/HeroSection";
 
 const biomarkerData = [
   {
@@ -208,32 +209,23 @@ const CancerBiomarkersReferencePage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="bg-[#081129] py-12 sm:py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-primary/20 text-primary border-primary/30">
-                <BookOpen className="h-4 w-4 mr-1" />
-                Educational Resource
-              </Badge>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 text-white leading-tight">
-                Cancer Biomarkers Reference Library
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl mb-6 text-white/90 max-w-2xl mx-auto">
-                A comprehensive guide to understanding tumour markers, what they measure, 
-                and their role in cancer screening and monitoring.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
-                  <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
-                </Button>
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
-                  <Link to="/cancer-screening">View Cancer Screening</Link>
-                </Button>
-              </div>
-            </div>
+        <HeroSection
+          title="Cancer Biomarkers Reference Library"
+          subtitle="A comprehensive guide to understanding tumour markers, what they measure, and their role in cancer screening and monitoring."
+        >
+          <Badge className="mb-4 bg-primary/20 text-primary border-primary/30 absolute top-4 left-1/2 -translate-x-1/2 hidden">
+            <BookOpen className="h-4 w-4 mr-1" />
+            Educational Resource
+          </Badge>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+            <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+              <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
+              <Link to="/cancer-screening">View Cancer Screening</Link>
+            </Button>
           </div>
-        </section>
+        </HeroSection>
 
         {/* Disclaimer */}
         <div className="container mx-auto px-4 py-6">

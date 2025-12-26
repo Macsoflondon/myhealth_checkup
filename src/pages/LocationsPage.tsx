@@ -18,6 +18,7 @@ import { filterAndSortClinics } from "@/utils/clinicFilters";
 import { DISTANCE_CONFIG } from "@/constants/config";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import HeroSection from "@/components/sections/HeroSection";
 
 // Fix leaflet default icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -204,49 +205,31 @@ const LocationsPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <div className="relative bg-gradient-to-b from-slate-50 to-background py-12 sm:py-16">
-          {/* Clinic Image */}
-          <div className="flex justify-center mb-6">
-            <img
-              src="/lovable-uploads/hero-image-1.png"
-              alt="Modern clinic interior"
-              className="w-40 h-40 sm:w-48 sm:h-48 object-cover rounded-2xl shadow-xl"
-            />
-          </div>
-
-          {/* Header */}
-          <div className="text-center max-w-3xl mx-auto px-4">
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Our clinic locations
-            </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-6">
-              We have hundreds of locations across the UK, providing convenient, local appointments
-              for customers just like you.
-            </p>
-
-            {/* Trust Badge */}
-            <div className="flex justify-center">
-              <div className="inline-flex items-center gap-2 bg-card rounded-lg px-4 py-2 shadow-md border border-border/50">
-                <span className="text-sm font-medium text-muted-foreground">Rated</span>
-                <span className="text-sm font-bold text-foreground">Excellent</span>
-                <div className="flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      className="w-4 h-4 text-[#00b67a]"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <span className="text-xs text-muted-foreground">(4.8)</span>
+        <HeroSection
+          title="Our Clinic Locations"
+          subtitle="We have hundreds of locations across the UK, providing convenient, local appointments for customers just like you."
+        >
+          {/* Trust Badge */}
+          <div className="flex justify-center mt-6">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+              <span className="text-sm font-medium text-white/80">Rated</span>
+              <span className="text-sm font-bold text-white">Excellent</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <svg
+                    key={star}
+                    className="w-4 h-4 text-[#00b67a]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
               </div>
+              <span className="text-xs text-white/70">(4.8)</span>
             </div>
           </div>
-        </div>
+        </HeroSection>
 
         {/* Map Section */}
         <div className="bg-muted/30 py-8">
