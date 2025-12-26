@@ -104,10 +104,10 @@ const ThyroidPage = () => {
         <section className="bg-[#081129] py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
                 Thyroid Blood Tests
               </h1>
-              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
                 Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. 
                 Essential for detecting thyroid disorders and optimizing treatment.
               </p>

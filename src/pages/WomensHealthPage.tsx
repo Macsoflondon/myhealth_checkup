@@ -227,12 +227,12 @@ const WomensHealthPage = () => {
         <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto text-center">
-               <h1 className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">
+               <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
                 {t('womensHealth.title')}
               </h1>
-          <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
-            {t('womensHealth.subtitle')}
-          </p>
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
+                {t('womensHealth.subtitle')}
+              </p>
             </div>
           </div>
         </section>

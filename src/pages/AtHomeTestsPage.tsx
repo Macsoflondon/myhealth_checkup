@@ -64,10 +64,10 @@ const AtHomeTestsPage = () => {
                   <Home className="h-5 w-5 text-[#22c0d4]" />
                   <span className="text-white text-sm font-medium">Test from the comfort of home</span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
                   At-Home Health Tests
                 </h1>
-                <p className="text-xl mb-8 max-w-2xl mx-auto text-white/90">
+                <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
                   Take control of your health with our convenient at-home testing kits. 
                   Professional lab analysis with results delivered securely online.
                 </p>

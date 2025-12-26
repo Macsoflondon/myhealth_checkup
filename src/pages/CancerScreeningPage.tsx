@@ -136,10 +136,10 @@ const CancerScreeningPage = () => {
         <section className="bg-[#081129] py-10 sm:py-12 md:py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-white leading-tight">
+              <h1 className="text-4xl md:text-5xl font-normal mb-6 text-white">
                 Cancer Screening Tests
               </h1>
-              <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto text-white/90 px-2">
+              <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
                 Comprehensive cancer screening tests for early detection and peace of mind. 
                 Regular screening saves lives.
               </p>
