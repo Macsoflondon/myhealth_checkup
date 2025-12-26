@@ -66,6 +66,46 @@ const WellnessPage = () => {
           </div>
         </section>
 
+        {/* Benefits Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold text-foreground mb-12">
+                Why Choose Wellness Testing?
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
+                  <p className="text-muted-foreground">
+                    Identify potential health issues before they become serious problems
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Activity className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Optimize Performance</h3>
+                  <p className="text-muted-foreground">
+                    Monitor key biomarkers to enhance your physical and mental performance
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
+                  <p className="text-muted-foreground">
+                    Regular monitoring gives you confidence in your health status
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Category Grid */}
         <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
@@ -111,46 +151,6 @@ const WellnessPage = () => {
                       </CardContent>
                     </Card>;
               })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
-                Why Choose Wellness Testing?
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
-                  <p className="text-muted-foreground">
-                    Identify potential health issues before they become serious problems
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Activity className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Optimize Performance</h3>
-                  <p className="text-muted-foreground">
-                    Monitor key biomarkers to enhance your physical and mental performance
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
-                  <p className="text-muted-foreground">
-                    Regular monitoring gives you confidence in your health status
-                  </p>
-                </div>
               </div>
             </div>
           </div>
