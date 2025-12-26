@@ -71,18 +71,29 @@ const AtHomeTestsPage = () => {
                   Take control of your health with our convenient at-home testing kits. 
                   Professional lab analysis with results delivered securely online.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/compare?collection=home">
-                    <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white">
-                      Browse At-Home Tests
-                    </Button>
-                  </Link>
-                  <Link to="/assisted-test-finder">
-                    <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                      Find Your Test
-                    </Button>
-                  </Link>
-                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Action Buttons Bar */}
+          <section className="bg-[#22C0D4] py-4">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link to="/compare?collection=home">
+                  <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                    Compare Tests
+                  </Button>
+                </Link>
+                <Link to="/cancer-biomarkers">
+                  <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
+                    Biomarker Guide
+                  </Button>
+                </Link>
+                <Link to="/find-clinic">
+                  <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                    Find Clinic
+                  </Button>
+                </Link>
               </div>
             </div>
           </section>

@@ -151,15 +151,23 @@ const SportsPerformancePage = () => {
                 Optimise your athletic performance with comprehensive biomarker analysis. 
                 Monitor nutrition, recovery, and fitness markers from trusted UK laboratories.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-[#FA6980] hover:bg-[#E70D69] text-white" onClick={() => navigate('/compare?category=sports-performance')}>
-                  Browse All Tests
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" onClick={() => navigate('/find-clinic')}>
-                  Find a Clinic
-                </Button>
-              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Action Buttons Bar */}
+        <section className="bg-[#22C0D4] py-4">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold" onClick={() => navigate('/compare?category=sports-performance')}>
+                Compare Tests
+              </Button>
+              <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold" onClick={() => navigate('/cancer-biomarkers')}>
+                Biomarker Guide
+              </Button>
+              <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold" onClick={() => navigate('/find-clinic')}>
+                Find Clinic
+              </Button>
             </div>
           </div>
         </section>
