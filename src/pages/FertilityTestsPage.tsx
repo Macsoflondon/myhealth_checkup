@@ -175,24 +175,29 @@ const FertilityTestsPage = () => {
                 <p className="text-xl text-white max-w-2xl mx-auto mb-8">
                   Non-invasive prenatal testing (NIPT) for expectant parents. Screen for chromosomal conditions, determine gender early, or confirm paternity safely during pregnancy.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/compare?category=fertility" className="flex-1 sm:flex-initial">
-                    <Button 
-                      size="lg" 
-                      className="w-full bg-primary text-primary-foreground hover:bg-health-heading"
-                    >
-                      Browse All Fertility Tests
-                    </Button>
-                  </Link>
-                  <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                    <Button 
-                      size="lg" 
-                      className="w-full bg-[#22C0D4] text-white hover:bg-[#E70D69]"
-                    >
-                      Find a Clinic
-                    </Button>
-                  </Link>
-                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Action Buttons Bar */}
+          <section className="bg-[#22C0D4] py-4">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link to="/compare?category=fertility">
+                  <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                    Compare Tests
+                  </Button>
+                </Link>
+                <Link to="/cancer-biomarkers">
+                  <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
+                    Biomarker Guide
+                  </Button>
+                </Link>
+                <Link to="/find-clinic">
+                  <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                    Find Clinic
+                  </Button>
+                </Link>
               </div>
             </div>
           </section>
