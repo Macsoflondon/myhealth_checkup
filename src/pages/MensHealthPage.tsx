@@ -150,17 +150,37 @@ const MensHealthPage = () => {
       <Header />
       <main className="flex-grow bg-background">
         {/* Hero Section */}
-        <section className="from-primary/5 to-secondary/5 py-16 bg-[ransparent] bg-[#081129]">
+        <section className="from-primary/5 to-secondary/5 py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center text-primary-foreground">
-              
-              <h1 className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">Men's Health Tests</h1>
-              <p style={{
-              color: '#081129'
-            }} className="mb-8 max-w-2xl mx-auto tracking-wide text-xl font-sans font-medium text-white">
+              <h1 className="text-4xl text-health-heading mb-6 text-white md:text-5xl font-normal">Men's Health Blood Tests</h1>
+              <p className="mb-8 max-w-2xl mx-auto tracking-wide text-xl font-sans font-medium text-white">
                 Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, 
                 and complete wellness testing tailored for men's unique health needs.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Action Buttons Bar */}
+        <section className="bg-[#22C0D4] py-4">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/compare?category=mens-health">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Compare Tests
+                </Button>
+              </Link>
+              <Link to="/cancer-biomarkers">
+                <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
+                  Biomarker Guide
+                </Button>
+              </Link>
+              <Link to="/find-clinic">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Find Clinic
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

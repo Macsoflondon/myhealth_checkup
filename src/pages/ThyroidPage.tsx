@@ -105,20 +105,35 @@ const ThyroidPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                Thyroid Function Tests
+                Thyroid Blood Tests
               </h1>
               <p className="text-xl mb-8 max-w-2xl mx-auto tracking-wide text-white">
                 Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. 
                 Essential for detecting thyroid disorders and optimizing treatment.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-health-heading">
-                  Compare Thyroid Tests
+            </div>
+          </div>
+        </section>
+
+        {/* Action Buttons Bar */}
+        <section className="bg-[#22C0D4] py-4">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/compare?category=thyroid">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Compare Tests
                 </Button>
-                <Button size="lg" className="bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                  Find a Clinic
+              </Link>
+              <Link to="/cancer-biomarkers">
+                <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
+                  Biomarker Guide
                 </Button>
-              </div>
+              </Link>
+              <Link to="/find-clinic">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Find Clinic
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
