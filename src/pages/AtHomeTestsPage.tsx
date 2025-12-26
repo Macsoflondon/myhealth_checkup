@@ -104,8 +104,8 @@ const AtHomeTestsPage = () => {
               <div className="max-w-5xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-[#e70d69]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Home className="h-8 w-8 text-[#e70d69]" />
+                    <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <Home className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold mb-2 text-[#081129]">Convenient</h3>
                     <p className="text-muted-foreground">
@@ -113,8 +113,8 @@ const AtHomeTestsPage = () => {
                     </p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-[#22c0d4]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Clock className="h-8 w-8 text-[#22c0d4]" />
+                    <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <Clock className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold mb-2 text-[#081129]">Fast Results</h3>
                     <p className="text-muted-foreground">
@@ -122,8 +122,8 @@ const AtHomeTestsPage = () => {
                     </p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-[#3A5F85]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Shield className="h-8 w-8 text-[#3A5F85]" />
+                    <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <Shield className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold mb-2 text-[#081129]">UKAS Accredited</h3>
                     <p className="text-muted-foreground">
