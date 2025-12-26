@@ -143,17 +143,29 @@ const CancerScreeningPage = () => {
                 Comprehensive cancer screening tests for early detection and peace of mind. 
                 Regular screening saves lives.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 w-full sm:w-auto text-sm sm:text-base" asChild>
-                  <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Action Buttons Bar */}
+        <section className="bg-[#22C0D4] py-4">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/cancer-screening-compare">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Compare Tests
                 </Button>
-                <Button size="lg" className="bg-secondary hover:bg-secondary/90 w-full sm:w-auto text-sm sm:text-base" asChild>
-                  <Link to="/cancer-biomarkers-reference">Biomarkers Guide</Link>
+              </Link>
+              <Link to="/cancer-biomarkers-reference">
+                <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
+                  Biomarker Guide
                 </Button>
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 w-full sm:w-auto text-sm sm:text-base" asChild>
-                  <Link to="/find-clinic">Find a Clinic</Link>
+              </Link>
+              <Link to="/find-clinic">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Find Clinic
                 </Button>
-              </div>
+              </Link>
             </div>
           </div>
         </section>
