@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import UKASBanner from '@/components/UKASBanner';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -148,6 +149,7 @@ const MensHealthPage = () => {
         <meta name="twitter:description" content="Comprehensive men's health testing with fast results" />
       </Helmet>
       
+      <UKASBanner />
       <Header />
       <main className="flex-grow bg-background">
         <HeroSection

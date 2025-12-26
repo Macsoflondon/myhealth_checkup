@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import UKASBanner from '@/components/UKASBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
@@ -337,6 +338,7 @@ const FAQsPage = () => {
         </script>
       </Helmet>
       
+      <UKASBanner />
       <Header />
       
       <main className="flex-grow bg-background">

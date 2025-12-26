@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import UKASBanner from '@/components/UKASBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -98,6 +99,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <UKASBanner />
       <Header />
       <main className="flex-grow bg-muted/30">
         <div className="container mx-auto px-4 py-12 bg-[hsl(var(--navy))]">

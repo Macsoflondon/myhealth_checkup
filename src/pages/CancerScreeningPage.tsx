@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import UKASBanner from "@/components/UKASBanner";
 import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -130,6 +131,7 @@ const CancerScreeningPage = () => {
         <meta name="twitter:description" content="Professional cancer screening with fast results" />
       </Helmet>
       
+      <UKASBanner />
       <Header />
       
       <main className="min-h-screen bg-background">
