@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -8,13 +7,14 @@ import Footer from "@/components/layout/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2, Heart, ShoppingBag, FileText, User, Package, Clock, PoundSterling, Bell, GripVertical } from "lucide-react";
+import { Trash2, Heart, User, Package, Clock, PoundSterling, GripVertical, Building2, Star, ExternalLink } from "lucide-react";
 import { logger } from "@/lib/logger";
-import { favoritesApi, ordersApi, type Favorite, type Order } from "@/api";
+import { favoritesApi, ordersApi, savedProvidersApi, type Favorite, type Order, type SavedProvider } from "@/api";
 import ProfileSettings from "@/components/dashboard/ProfileSettings";
-import { PriceAlertSettings } from "@/components/dashboard/PriceAlertSettings";
 import { useDraggable } from "@/hooks";
 import { cn } from "@/lib/utils";
+import { ProviderLogo } from "@/components/ProviderLogo";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { user, isLoading } = useAuth();
@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [savedProviders, setSavedProviders] = useState<SavedProvider[]>([]);
   const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "favorites");
   const [loadingData, setLoadingData] = useState(true);
 
@@ -59,6 +60,7 @@ const Dashboard = () => {
     if (user) {
       fetchFavorites();
       fetchOrders();
+      fetchSavedProviders();
     }
   }, [user]);
 
@@ -111,8 +113,18 @@ const Dashboard = () => {
     } catch (error) {
       logger.error('Error fetching orders:', error);
       toast.error('Failed to load orders');
-    } finally {
-      setLoadingData(false);
+    }
+  };
+
+  const fetchSavedProviders = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await savedProvidersApi.getUserSavedProviders(user.id);
+      if (error) throw error;
+      setSavedProviders(data || []);
+    } catch (error) {
+      logger.error('Error fetching saved providers:', error);
     }
   };
 
@@ -137,6 +149,21 @@ const Dashboard = () => {
     }
   };
 
+  const removeSavedProvider = async (providerId: string) => {
+    if (!user) return;
+    
+    try {
+      const { error } = await savedProvidersApi.removeSavedProvider(user.id, providerId);
+      if (error) throw error;
+      
+      setSavedProviders(prev => prev.filter(p => p.provider_id !== providerId));
+      toast.success("Removed from saved providers");
+    } catch (error) {
+      logger.error('Error removing saved provider:', error);
+      toast.error('Failed to remove provider');
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -145,11 +172,16 @@ const Dashboard = () => {
           <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">My Dashboard</h1>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsList className="grid w-full grid-cols-4 mb-6">
               <TabsTrigger value="favorites" className="flex items-center gap-2">
                 <Heart className="h-4 w-4" /> 
                 <span className="hidden sm:inline">Saved Tests</span>
-                <span className="sm:hidden">Saved</span>
+                <span className="sm:hidden">Tests</span>
+              </TabsTrigger>
+              <TabsTrigger value="providers" className="flex items-center gap-2">
+                <Building2 className="h-4 w-4" /> 
+                <span className="hidden sm:inline">Saved Providers</span>
+                <span className="sm:hidden">Providers</span>
               </TabsTrigger>
               <TabsTrigger value="orders" className="flex items-center gap-2">
                 <Package className="h-4 w-4" /> 
@@ -244,6 +276,78 @@ const Dashboard = () => {
                 </div>
               )}
             </TabsContent>
+
+            <TabsContent value="providers">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Saved Providers</h2>
+              
+              {loadingData ? (
+                <div className="flex justify-center p-8">
+                  <p>Loading your saved providers...</p>
+                </div>
+              ) : savedProviders.length === 0 ? (
+                <Card>
+                  <CardContent className="pt-6 text-center">
+                    <p>You haven't saved any providers yet.</p>
+                    <Button 
+                      className="mt-4" 
+                      onClick={() => navigate("/trusted-providers")}
+                    >
+                      Browse Providers
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  {savedProviders.map((provider) => (
+                    <Card key={provider.id} className="transition-all duration-200 hover:shadow-md">
+                      <CardHeader className="pb-2 p-4 sm:p-6">
+                        <CardTitle className="flex justify-between items-start gap-2">
+                          <div className="flex items-center gap-3 flex-1">
+                            <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-1.5">
+                              <ProviderLogo provider={provider.provider_name} className="w-full h-full object-contain" />
+                            </div>
+                            <span className="text-base sm:text-lg">{provider.provider_name}</span>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => removeSavedProvider(provider.provider_id)}
+                            className="shrink-0 hover:bg-destructive/10"
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </CardTitle>
+                        <CardDescription className="text-xs sm:text-sm flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          Saved {new Date(provider.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="p-4 sm:p-6 pt-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <Button 
+                            size="sm"
+                            asChild
+                            className="text-xs sm:text-sm"
+                          >
+                            <Link to={`/provider/${provider.provider_id.toLowerCase()}`}>
+                              View Profile
+                            </Link>
+                          </Button>
+                          <Button 
+                            size="sm"
+                            variant="outline"
+                            onClick={() => navigate(`/compare?provider=${provider.provider_id.toLowerCase()}`)}
+                            className="text-xs sm:text-sm"
+                          >
+                            Browse Tests
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
             
             <TabsContent value="orders">
               <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">My Orders & Results</h2>
@@ -322,7 +426,7 @@ const Dashboard = () => {
                               className="flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto"
                               onClick={() => window.open(order.result_url || '#')}
                             >
-                              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+                              <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
                               View Results
                             </Button>
                           )}
@@ -332,10 +436,6 @@ const Dashboard = () => {
                   ))}
                 </div>
               )}
-            </TabsContent>
-
-            <TabsContent value="alerts">
-              {user && <PriceAlertSettings userId={user.id} />}
             </TabsContent>
 
             <TabsContent value="profile">

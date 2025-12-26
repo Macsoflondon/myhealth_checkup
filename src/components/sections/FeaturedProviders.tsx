@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Star, MapPin, ExternalLink } from "lucide-react";
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { Link } from "react-router-dom";
-import { detailedProviders } from "@/data/compare/detailedProviders";
+import { SaveProviderButton } from "@/components/common/SaveProviderButton";
+import { useSavedProviders } from "@/hooks/useSavedProviders";
+
 const FeaturedProviders = () => {
+  const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
+
   const featuredProviderData = [{
     id: "Medichecks",
     name: "Medichecks",
@@ -70,7 +74,9 @@ const FeaturedProviders = () => {
     tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
     website: "tuli.health"
   }];
-  return <section id="providers" className="bg-white py-16 md:py-20">
+
+  return (
+    <section id="providers" className="bg-white py-16 md:py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">Featured Partners</h2>
@@ -80,14 +86,21 @@ const FeaturedProviders = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProviderData.map(provider => <Card key={provider.id} className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200">
+          {featuredProviderData.map(provider => (
+            <Card key={provider.id} className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4 mb-4">
                   <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-2">
                     <ProviderLogo provider={provider.name} className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-lg font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
+                      <SaveProviderButton
+                        isSaved={isProviderSaved(provider.id)}
+                        onToggle={() => toggleSaveProvider(provider.id, provider.name)}
+                      />
+                    </div>
                     <div className="flex items-center space-x-1.5">
                       <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
                       <span className="font-semibold text-gray-900">{provider.rating}</span>
@@ -106,9 +119,11 @@ const FeaturedProviders = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mb-6">
-                  {provider.tags.slice(0, 3).map((tag, tagIndex) => <Badge key={tagIndex} variant="secondary" className="text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
+                  {provider.tags.slice(0, 3).map((tag, tagIndex) => (
+                    <Badge key={tagIndex} variant="secondary" className="text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
                       {tag}
-                    </Badge>)}
+                    </Badge>
+                  ))}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2">
@@ -116,7 +131,8 @@ const FeaturedProviders = () => {
                     variant="default" 
                     size="sm" 
                     className="flex-1 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white"
-                    asChild>
+                    asChild
+                  >
                     <Link to={`/provider/${provider.id.toLowerCase()}`}>
                       View Profile
                     </Link>
@@ -129,9 +145,12 @@ const FeaturedProviders = () => {
                   </Button>
                 </div>
               </CardContent>
-            </Card>)}
+            </Card>
+          ))}
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default FeaturedProviders;
