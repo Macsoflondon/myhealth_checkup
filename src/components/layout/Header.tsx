@@ -80,8 +80,8 @@ const Header = ({
         </div>
 
         {/* Bottom row - Navigation Menu (Toolbar) */}
-        <div className={toolbarClasses}>
-          <div className="flex items-center justify-center px-2 sm:px-4 lg:px-16 w-full overflow-x-auto overflow-y-visible">
+        <div className={toolbarClasses} style={{ overflow: 'visible' }}>
+          <div className="flex items-center justify-center px-2 sm:px-4 lg:px-16 w-full" style={{ overflow: 'visible' }}>
             <NavigationItems className="flex items-center gap-0 min-w-max" />
           </div>
         </div>
