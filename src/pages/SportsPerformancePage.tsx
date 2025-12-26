@@ -187,12 +187,8 @@ const SportsPerformancePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {benefits.map((benefit, index) => <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardHeader>
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{
-                  backgroundColor: `${benefit.color}20`
-                }}>
-                      <benefit.icon className="w-8 h-8" style={{
-                    color: benefit.color
-                  }} />
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-[#e70d69] shadow-lg">
+                      <benefit.icon className="w-8 h-8 text-white" />
                     </div>
                     <CardTitle className="text-xl">{benefit.title}</CardTitle>
                   </CardHeader>
