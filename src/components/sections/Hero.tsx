@@ -93,7 +93,7 @@ const Hero = () => {
       <section className="relative overflow-hidden bg-[#081129]">
         <div className="w-full">
           {/* Hero Video Container - Optimized for mobile */}
-          <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] lg:aspect-video overflow-hidden bg-[#081129]">
+          <div className="relative w-full aspect-[4/5] xs:aspect-[4/3] sm:aspect-[16/10] lg:aspect-video overflow-hidden bg-[#081129]">
             <video 
               autoPlay 
               loop 
@@ -139,7 +139,7 @@ const Hero = () => {
         <section className="w-full py-3 sm:py-4 md:py-6 relative">
         <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
           <ScrollFadeIn delay={100}>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-[20px] tracking-tight">
+            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-3 sm:py-4 md:py-5 px-2 sm:px-4 tracking-tight">
               <span className="text-white block sm:inline">It's time to feel like </span>
               <span className="text-[#22c0d4]">yourself again</span>
             </h1>
@@ -289,7 +289,7 @@ const Hero = () => {
           delay: 3000
         }) as any]} className="w-full max-w-5xl mx-auto">
             <CarouselContent>
-              {providers.map(provider => <CarouselItem key={provider.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4">
+              {providers.map(provider => <CarouselItem key={provider.id} className="basis-full xs:basis-1/2 sm:basis-1/3 md:basis-1/4">
                   <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-32 sm:h-40">
                     <img src={provider.logo} alt={`${provider.name} logo`} className="h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto" loading="lazy" />
                   </div>
