@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
+import PageHeading from '@/components/ui/page-heading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
@@ -343,7 +344,8 @@ const FAQsPage = () => {
       
       <main className="flex-grow bg-background">
         <HeroSection
-          title="Frequently Asked Questions"
+          title="Frequently Asked"
+          accent="Questions"
           subtitle="Find answers to common questions about health testing and our platform"
         >
           {/* Search Bar */}

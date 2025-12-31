@@ -10,6 +10,7 @@ import ProviderComparisonSidebar from "@/components/ProviderComparisonSidebar";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
 import ProviderPriceComparison from "@/components/compare/ProviderPriceComparison";
 import TestStructuredData from "@/components/seo/TestStructuredData";
+import PageHeading from "@/components/ui/page-heading";
 import { TestPageData } from "@/types/TestPageTypes";
 import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 
@@ -58,14 +59,13 @@ const TestPageTemplate = ({
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="mb-6 bg-[t] my-0 py-[20px] bg-[#081129]">
-              <div className="flex items-start justify-between gap-4 mb-4 py-0 bg-[#081129]">
-                <h1 style={{
-                color: '#081129'
-              }} className="text-3xl font-bold text-white mx-[20px]">
-                  {data.title}
-                </h1>
-                
+            <div className="mb-6 bg-[t] my-0 py-[20px] bg-[#081129] rounded-lg">
+              <div className="flex items-start justify-between gap-4 mb-4 py-0 bg-[#081129] mx-[20px]">
+                <PageHeading 
+                  title={data.title} 
+                  centered={false}
+                  className="text-2xl sm:text-3xl [&_span]:text-white"
+                />
               </div>
               
               <p className="text-xl mb-6 text-white mx-[20px] my-0 font-normal">

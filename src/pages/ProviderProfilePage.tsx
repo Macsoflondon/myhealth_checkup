@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,8 +27,11 @@ const ProviderProfilePage = () => {
         <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-foreground mb-4">Provider Not Found</h1>
-            <p className="text-muted-foreground mb-6">The provider you're looking for doesn't exist.</p>
+            <PageHeading 
+              title="Provider" 
+              accent="Not Found" 
+            />
+            <p className="text-muted-foreground mb-6 mt-4">The provider you're looking for doesn't exist.</p>
             <Button asChild>
               <Link to="/compare">Browse All Tests</Link>
             </Button>
@@ -99,7 +103,11 @@ const ProviderProfilePage = () => {
             </div>
             
             <div className="flex-1 w-full">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2">{provider.name}</h1>
+              <PageHeading 
+                title={provider.name} 
+                centered={false}
+                className="text-2xl md:text-3xl lg:text-4xl mb-2"
+              />
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
                 <div className="flex items-center space-x-1">

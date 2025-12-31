@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
+import PageHeading from "@/components/ui/page-heading";
 import { Shield, Users, Award, Heart } from "lucide-react";
 const AboutUsPage = () => {
   const values = [{
@@ -35,10 +36,12 @@ const AboutUsPage = () => {
         
         <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-0 bg-[#081120]">
           <div className="container mx-auto px-4 bg-[#081129]">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl mb-6 text-[#22c0d4] text-center md:text-4xl font-semibold my-0 py-[30px]">
-                About myhealth checkup
-              </h1>
+            <div className="text-center py-8">
+              <PageHeading 
+                title="About" 
+                accent="myhealth checkup" 
+                className="[&_span]:text-white"
+              />
             </div>
           </div>
         </div>

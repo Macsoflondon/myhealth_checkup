@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate, Link } from 'react-router-dom';
 import { Star, TrendingUp, Award, Users, Facebook, Instagram } from 'lucide-react';
 import { useTranslation } from "react-i18next";
+import PageHeading from '@/components/ui/page-heading';
 import cqcLogo from "../assets/compliance/cqc-logo.png";
 import icoLogo from "../assets/compliance/ico-logo.png";
 const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
@@ -118,7 +119,11 @@ const MostPopularTests = () => {
       <section className="bg-[#081129] py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Most Popular Tests</h1>
+            <PageHeading 
+              title="Most Popular" 
+              accent="Tests" 
+              className="[&_span]:text-white mb-6"
+            />
             <p className="text-xl text-white max-w-2xl mx-auto mb-8">
               Check out our best-selling tests, trusted by thousands of people across the UK for comprehensive health screening.
             </p>
