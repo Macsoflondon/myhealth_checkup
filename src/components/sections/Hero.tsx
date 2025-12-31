@@ -111,7 +111,65 @@ const Hero = () => {
         </div>
       </section>
       
-      {/* Background wrapper for pink tubes image - extends from headline through search section */}
+      {/* Mission Section - Clean white background */}
+      <section className="w-full bg-white py-8 sm:py-12 md:py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
+          <ScrollFadeIn delay={100}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl leading-tight font-heading font-bold text-left mb-6">
+              <span className="text-[#081129]">Your health is your </span>
+              <span className="text-[#22c0d4]">greatest asset</span>
+            </h2>
+          </ScrollFadeIn>
+          <ScrollFadeIn delay={200}>
+            <div className="text-base sm:text-lg text-[#081129] font-sans leading-relaxed space-y-4">
+              <p>
+                At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information. Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
+              </p>
+              <p>
+                We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
+              </p>
+              <p className="font-medium">
+                Our recommendations are based on clinical evidence and reviewed by registered healthcare professionals.
+              </p>
+            </div>
+          </ScrollFadeIn>
+          
+          {/* Trust Indicator Cards - Horizontal scroll */}
+          <ScrollFadeIn delay={300}>
+            <div className="mt-8 flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+              <div className="flex-shrink-0 bg-gray-50 rounded-xl p-4 flex items-center gap-3 min-w-[180px] shadow-sm border border-gray-100">
+                <div className="w-12 h-12 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-[#22c0d4]" />
+                </div>
+                <div>
+                  <p className="font-semibold text-[#081129] text-sm">UKAS Accredited</p>
+                  <p className="text-xs text-gray-500">Labs</p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 bg-gray-50 rounded-xl p-4 flex items-center gap-3 min-w-[180px] shadow-sm border border-gray-100">
+                <div className="w-12 h-12 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-[#22c0d4]" />
+                </div>
+                <div>
+                  <p className="font-semibold text-[#081129] text-sm">CQC Regulated</p>
+                  <p className="text-xs text-gray-500">Providers</p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 bg-gray-50 rounded-xl p-4 flex items-center gap-3 min-w-[180px] shadow-sm border border-gray-100">
+                <div className="w-12 h-12 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center">
+                  <Award className="w-6 h-6 text-[#22c0d4]" />
+                </div>
+                <div>
+                  <p className="font-semibold text-[#081129] text-sm">ISO 15189</p>
+                  <p className="text-xs text-gray-500">Certified</p>
+                </div>
+              </div>
+            </div>
+          </ScrollFadeIn>
+        </div>
+      </section>
+      
+      {/* Background wrapper for pink tubes image - extends through search section */}
       <div className="relative w-full overflow-hidden">
         {/* Pink tubes background with parallax effect */}
         <div 
@@ -134,34 +192,6 @@ const Hero = () => {
         
         {/* Lighter overlay for better background visibility */}
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
-        
-        {/* Full-width Headline Banner - no separate background, uses parent wrapper background */}
-        <section className="w-full py-3 sm:py-4 md:py-6 relative">
-        <div className="w-full px-4 sm:px-6 md:px-8 text-wellness-100 relative z-10">
-          <ScrollFadeIn delay={100}>
-            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-heading font-bold text-center max-w-6xl mx-auto my-0 py-3 sm:py-4 md:py-5 px-2 sm:px-4 tracking-tight">
-              <span className="text-white block sm:inline">It's time to feel like </span>
-              <span className="text-[#22c0d4]">yourself again</span>
-            </h1>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={300}>
-            <div className="text-base sm:text-lg lg:text-xl max-w-4xl mx-auto mt-6 text-center text-white font-sans font-light leading-relaxed space-y-4">
-              <p className="font-elegant italic text-lg sm:text-xl lg:text-2xl mb-4">
-                At myhealth checkup, we believe your health is your greatest asset.
-              </p>
-              <p className="mb-2">
-                That's why we've created the UK's only independent comparison platform dedicated to private health and wellness testing.
-              </p>
-              <p className="mb-2">
-                We partner exclusively with CQC-regulated providers who only use UKAS-accredited labs and are ISO 15189 certified to bring you safe, high-quality diagnostics all in one place.
-              </p>
-              <p>
-                From routine blood tests to advanced health screenings, we offer transparent pricing, trusted providers, and clear comparisons to help you make informed choices with confidence.
-              </p>
-            </div>
-          </ScrollFadeIn>
-        </div>
-        </section>
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
