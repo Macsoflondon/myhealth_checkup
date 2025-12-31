@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/components/ui/sonner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PageHeading from "@/components/ui/page-heading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -169,7 +170,12 @@ const Dashboard = () => {
       <Header />
       <main className="flex-grow bg-gray-50 py-4 sm:py-6 md:py-10 px-3 sm:px-4">
         <div className="container mx-auto max-w-5xl">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">My Dashboard</h1>
+          <PageHeading 
+            title="My" 
+            accent="Dashboard" 
+            centered={false}
+            className="text-2xl sm:text-3xl mb-4 sm:mb-6"
+          />
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-4 mb-6">

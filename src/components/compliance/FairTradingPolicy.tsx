@@ -1,15 +1,17 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, CheckCircle, Scale, FileText } from 'lucide-react';
+import PageHeading from '@/components/ui/page-heading';
 
 const FairTradingPolicy = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-          Fair Trading & Consumer Transparency Policy
-        </h1>
-        <div className="flex flex-col sm:flex-row gap-2 text-sm text-muted-foreground">
+        <PageHeading 
+          title="Fair Trading &" 
+          accent="Consumer Transparency Policy" 
+        />
+        <div className="flex flex-col sm:flex-row gap-2 text-sm text-muted-foreground mt-4 justify-center">
           <p><strong>Effective Date:</strong> 14 October 2025</p>
           <span className="hidden sm:inline">•</span>
           <p><strong>Review Date:</strong> 14 October 2026</p>

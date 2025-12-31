@@ -2,14 +2,16 @@ import React from 'react';
 import { Shield, Mail, Phone, MapPin, Clock, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import PageHeading from '@/components/ui/page-heading';
+
 const PrivacyPolicy = () => {
   return <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Shield className="h-8 w-8 text-health-600" />
-          <h1 className="text-3xl font-bold text-[#1a1b34]">Privacy Policy</h1>
-        </div>
-        <p className="text-gray-600">
+        <PageHeading 
+          title="Privacy" 
+          accent="Policy" 
+        />
+        <p className="text-gray-600 mt-4">
           Effective Date: 01/08/2025
         </p>
       </div>

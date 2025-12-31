@@ -1,15 +1,17 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, MapPin, Clock, Beaker, DollarSign, Award, RefreshCw, Shield } from 'lucide-react';
+import PageHeading from '@/components/ui/page-heading';
 
 const HowWeRank = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-          How We Rank & Compare – Consumer Disclosure
-        </h1>
-        <p className="text-lg text-muted-foreground">
+        <PageHeading 
+          title="How We Rank & Compare" 
+          accent="Consumer Disclosure" 
+        />
+        <p className="text-lg text-muted-foreground mt-4 text-center">
           myhealth checkup compares diagnostic test providers across the UK to help you make 
           informed health decisions.
         </p>

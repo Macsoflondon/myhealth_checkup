@@ -1,16 +1,17 @@
 import React from 'react';
 import { DollarSign, Shield, CheckCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import PageHeading from '@/components/ui/page-heading';
 
 const AffiliateDisclosure = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <DollarSign className="h-8 w-8 text-health-600" />
-          <h1 className="text-3xl font-bold">Affiliate Disclosure</h1>
-        </div>
-        <p className="text-gray-600">
+        <PageHeading 
+          title="Affiliate" 
+          accent="Disclosure" 
+        />
+        <p className="text-gray-600 mt-4">
           Effective Date: 01/08/2025
         </p>
       </div>
