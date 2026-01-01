@@ -113,8 +113,17 @@ const Hero = () => {
       {/* Mission Section */}
       <MissionSection />
       
-      {/* Background wrapper - solid navy background */}
-      <div className="relative w-full overflow-hidden bg-[#081129]">
+      {/* Background wrapper with tubes image */}
+      <div className="relative w-full overflow-hidden">
+        {/* Background image */}
+        <img 
+          src="/lovable-uploads/hero-bg-tubes.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          loading="lazy"
+        />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-[#081129]/40 z-[1]" />
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
