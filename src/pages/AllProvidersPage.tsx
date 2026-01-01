@@ -37,6 +37,7 @@ const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
   'randox': '/providers/randox',
   'lola-health': '/providers/lola-health',
   'tuli-health': '/providers/tuli-health',
+  'london-medical-laboratory': '/providers/london-medical-laboratory',
 };
 
 export default function AllProvidersPage() {
