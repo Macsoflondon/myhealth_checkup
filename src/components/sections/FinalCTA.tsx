@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -13,9 +14,11 @@ const FinalCTA = () => {
             <span className="text-xs sm:text-sm font-medium text-[#081129]">Start Your Journey Today</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-[#081129] mb-4 sm:mb-6 px-2">
-            Take Control of Your Health Today
-          </h2>
+          <SectionHeading 
+            title="Take Control of Your" 
+            gradientText="Health Today"
+            className="mb-4 sm:mb-6"
+          />
 
           <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
             Your health is your greatest asset. Compare trusted tests, find the right provider, and book with confidence.
