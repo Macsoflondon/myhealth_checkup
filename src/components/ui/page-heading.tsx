@@ -31,7 +31,7 @@ const PageHeading = ({
     >
       <span className="text-[#081129] block">{title}</span>
       {accent && (
-        <span className="gradient-heading-accent block">{accent}</span>
+        <span className="bg-gradient-to-r from-[#22c0d4] via-[#081129] to-[#e70d69] bg-clip-text text-transparent block">{accent}</span>
       )}
     </h1>
   );
