@@ -123,7 +123,7 @@ const Hero = () => {
           loading="lazy"
         />
         {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-[#081129]/40 z-[1]" />
+        <div className="absolute inset-0 bg-[#081129]/25 z-[1]" />
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
