@@ -67,6 +67,14 @@
   }
 }
 
+/* Extra small screens (under 375px) */
+@media (max-width: 374px) {
+  .headerImage {
+    max-height: 64px;
+    max-width: clamp(36px, 14vw, 120px);
+  }
+}
+
 /* Mobile header adjustments */
 @media (max-width: 1024px) {
   .header {

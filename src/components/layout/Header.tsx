@@ -45,28 +45,28 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-        <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
-          <div className="px-3 py-2 flex items-center justify-between bg-brand-navy">
+        <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md transition-all duration-300", className)}>
+          <div className="px-2 xs:px-3 py-2 flex items-center justify-between bg-brand-navy">
             {/* Logo - responsive sizing for mobile */}
             <Link to="/" className="flex items-center flex-shrink-0">
               <img 
                 alt="myhealth checkup" 
-                className="h-12 sm:h-14 w-auto object-contain" 
+                className="h-10 xs:h-12 sm:h-14 w-auto object-contain" 
                 src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" 
               />
             </Link>
 
-            {/* Tagline banner - mobile */}
-            <div className="flex-1 flex justify-center px-2">
+            {/* Tagline banner - mobile with responsive sizing */}
+            <div className="flex-1 flex justify-center px-1 xs:px-2">
               <img 
                 alt="Your health. Your choice. One trusted platform." 
-                className="h-10 sm:h-12 w-auto object-contain" 
+                className="h-8 xs:h-10 sm:h-12 max-w-[140px] xs:max-w-[180px] sm:max-w-none w-auto object-contain" 
                 src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" 
               />
             </div>
 
             {/* Navigation controls */}
-            <nav className="flex items-center gap-1" aria-label="User controls">
+            <nav className="flex items-center gap-0.5 xs:gap-1" aria-label="User controls">
               <LanguageSwitcher />
               <UserMenu isMobile />
               <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -109,7 +109,7 @@ const Header = ({
           className={cn(
             toolbarClasses, 
             "sticky top-0 z-50 transition-all duration-300",
-            isToolbarSticky && "shadow-lg animate-fade-in border-b-2 border-[#e70d69]"
+            isToolbarSticky && "shadow-lg border-b-2 border-[#e70d69] animate-fade-in"
           )} 
           style={{ overflow: 'visible' }}
         >
