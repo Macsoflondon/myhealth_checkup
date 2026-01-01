@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import PageHeading from "@/components/ui/page-heading";
+import { SectionHeading } from "@/components/ui/section-heading";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -133,8 +135,13 @@ export default function AllProvidersPage() {
         </div>
 
         {/* Provider Cards Grid */}
+        <SectionHeading 
+          title="Browse All" 
+          gradientText="Providers" 
+          className="mb-8"
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {providers.map((provider) => {
+          {providers.map((provider, index) => {
             const stats = providerStats?.[provider.id];
             const catalogRoute = PROVIDER_CATALOG_ROUTES[provider.id];
             const turnaround = PROVIDER_TURNAROUND_TIMES[provider.id];
@@ -142,7 +149,8 @@ export default function AllProvidersPage() {
             const details = PROVIDER_DETAILS[provider.id];
 
             return (
-              <Card key={provider.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/30">
+              <ScrollFadeIn key={provider.id} delay={index * 100} className="h-full">
+              <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/30 h-full">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="h-16 w-32 flex items-center">
@@ -238,21 +246,26 @@ export default function AllProvidersPage() {
                   </div>
                 </CardContent>
               </Card>
+              </ScrollFadeIn>
             );
           })}
         </div>
 
         {/* Trust Banner */}
-        <div className="mt-12 p-6 bg-muted/30 rounded-xl text-center">
-          <h3 className="text-lg font-semibold text-foreground mb-2">
-            Quality You Can Trust
-          </h3>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            All providers in our network are UKAS-accredited and/or CQC-registered, 
-            ensuring your tests are processed in ISO 15189 certified laboratories 
-            with the highest standards of accuracy and reliability.
-          </p>
-        </div>
+        <ScrollFadeIn delay={200}>
+          <div className="mt-12 p-6 bg-muted/30 rounded-xl text-center">
+            <SectionHeading 
+              title="Quality You Can" 
+              gradientText="Trust" 
+              className="mb-4"
+            />
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              All providers in our network are UKAS-accredited and/or CQC-registered, 
+              ensuring your tests are processed in ISO 15189 certified laboratories 
+              with the highest standards of accuracy and reliability.
+            </p>
+          </div>
+        </ScrollFadeIn>
       </div>
     </MainLayout>
   );
