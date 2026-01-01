@@ -45,7 +45,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-2.5">
               {serviceSections.map((service, index) => (
                 <li key={index}>
-                  <Link to={service.link} className="text-white hover:text-[#e70d69] transition-colors text-sm sm:text-base">
+                  <Link to={service.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm">
                     {service.name}
                   </Link>
                 </li>
@@ -58,7 +58,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-2.5">
               {informationSections.map((info, index) => (
                 <li key={index}>
-                  <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm sm:text-base">
+                  <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm">
                     {info.name}
                   </Link>
                 </li>
@@ -71,7 +71,7 @@ const Footer = () => {
             <ul className="space-y-2 sm:space-y-2.5">
               {companySections.map((company, index) => (
                 <li key={index}>
-                  <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm sm:text-base">
+                  <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm">
                     {company.name}
                   </Link>
                 </li>
@@ -85,11 +85,11 @@ const Footer = () => {
               <div className="h-8 w-8 sm:h-9 sm:w-9 flex items-center justify-center">
                 <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg" />
               </div>
-              <span className="text-lg sm:text-xl font-bold">
+              <span className="text-base sm:text-lg font-bold">
                 <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
               </span>
             </Link>
-            <p className="mb-3 sm:mb-4 text-sm sm:text-base text-white/90 leading-relaxed">
+            <p className="mb-3 sm:mb-4 text-xs sm:text-sm text-white/90 leading-relaxed">
               MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
             </p>
             <p className="text-xs sm:text-sm text-white/60">Company No. 16589056</p>
@@ -146,21 +146,21 @@ const Footer = () => {
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center p-2 shadow-lg">
                 <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
               </div>
-              <span className="text-white/80 text-xs sm:text-sm font-medium">CQC</span>
+              <span className="text-white/80 text-[10px] sm:text-xs font-medium">CQC</span>
             </div>
             
             <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center p-2 shadow-lg">
                 <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain" />
               </div>
-              <span className="text-white/80 text-xs sm:text-sm font-medium">GDPR</span>
+              <span className="text-white/80 text-[10px] sm:text-xs font-medium">GDPR</span>
             </div>
             
             <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center p-2 shadow-lg">
                 <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
               </div>
-              <span className="text-white/80 text-xs sm:text-sm font-medium">ICO</span>
+              <span className="text-white/80 text-[10px] sm:text-xs font-medium">ICO</span>
             </div>
           </div>
         </div>
