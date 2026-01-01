@@ -11,6 +11,7 @@ import ProviderProfilePage from "@/pages/ProviderProfilePage";
 import ProviderTestCatalogPage from "@/pages/ProviderTestCatalogPage";
 import TestDetailPage from "@/pages/TestDetailPage";
 import AllProvidersPage from "@/pages/AllProvidersPage";
+import ProviderComparisonPage from "@/pages/ProviderComparisonPage";
 import GoodbodyTestsCatalogPage from "@/pages/GoodbodyTestsCatalogPage";
 import MedichecksTestsCatalogPage from "@/pages/MedichecksTestsCatalogPage";
 import ThrivaTestsCatalogPage from "@/pages/ThrivaTestsCatalogPage";
@@ -35,6 +36,7 @@ export const featureRoutes = (
     <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
     <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
     <Route path="/providers" element={<AllProvidersPage />} />
+    <Route path="/providers/compare" element={<ProviderComparisonPage />} />
     <Route path="/providers/goodbody-clinic" element={<GoodbodyTestsCatalogPage />} />
     <Route path="/providers/medichecks" element={<MedichecksTestsCatalogPage />} />
     <Route path="/providers/thriva" element={<ThrivaTestsCatalogPage />} />
