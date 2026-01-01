@@ -3,6 +3,8 @@ import { providers } from "@/constants/providers";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
+import { SectionHeading } from "@/components/ui/section-heading";
+
 const PartnersGrid = () => {
   const plugin = useRef(Autoplay({
     delay: 2000,
@@ -14,9 +16,11 @@ const PartnersGrid = () => {
   const duplicatedProviders = [...providers, ...providers];
   return <section className="py-8 sm:py-12 md:py-16 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6">
-        <h2 className="text-center text-xs font-heading font-semibold text-foreground uppercase tracking-wider mb-8 sm:mb-10 sm:text-4xl">
-          Our Trusted Partners
-        </h2>
+        <SectionHeading 
+          title="Our Trusted" 
+          gradientText="Partners" 
+          className="mb-8 sm:mb-10"
+        />
         
         <Carousel opts={{
         align: "start",
