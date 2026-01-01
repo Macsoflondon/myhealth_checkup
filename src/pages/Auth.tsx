@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Header from "@/components/layout/Header";
@@ -24,10 +25,20 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const passwordStrength = validatePassword(password);
+
+  // Load saved email if "Remember Me" was checked previously
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,6 +173,14 @@ const Auth = () => {
           }
           return;
         }
+        
+        // Handle Remember Me
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
+        
         toast.success("Logged in successfully!");
         navigate("/dashboard");
       }
@@ -290,6 +309,23 @@ const Auth = () => {
                   <AlertDescription className="text-sm">{passwordError}</AlertDescription>
                 </Alert>}
             </div>
+
+            {!isSignUp && (
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked === true)}
+                  disabled={loading}
+                />
+                <Label
+                  htmlFor="rememberMe"
+                  className="text-sm font-normal text-[#081129] cursor-pointer"
+                >
+                  Remember me
+                </Label>
+              </div>
+            )}
 
             <Button type="submit" disabled={loading} className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium">
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
