@@ -49,12 +49,36 @@ const FemaleHormonesTestPage = () => {
     
     providers: [
       {
+        name: "Randox Health",
+        price: 43,
+        url: "https://randoxhealth.com/en-GB/product/female/clinic/female-hormone-test",
+        features: ["In-clinic visit", "Same-day results", "UKAS accredited"],
+        turnaround: "Same day",
+        biomarkers: 4
+      },
+      {
         name: "Medichecks",
         price: 79,
         url: "https://www.medichecks.com/products/female-hormone-check-blood-test",
-        features: ["4 key hormones", "3-4 day results", "Home collection"],
+        features: ["4 key hormones", "Home collection kit", "Doctor report"],
         turnaround: "3-4 days",
         biomarkers: 4
+      },
+      {
+        name: "Thriva",
+        price: 99,
+        url: "https://thriva.co/shop/womens-health-test-packages/womens-hormones-blood-test-insights",
+        features: ["Home finger-prick test", "GP-written report", "Nurse visit +£60"],
+        turnaround: "2-3 days",
+        biomarkers: 5
+      },
+      {
+        name: "London Medical Laboratory",
+        price: 99,
+        url: "https://www.londonmedicallaboratory.com/product/fertility-hormones-profile",
+        features: ["5 fertility hormones", "Home or clinic", "Next-day results"],
+        turnaround: "1-2 days",
+        biomarkers: 5
       },
       {
         name: "Medichecks Advanced",
