@@ -1,6 +1,6 @@
 import { Eye, Stethoscope, BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import PageHeading from "@/components/ui/page-heading";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 interface TrustPlatformSectionProps {
   className?: string;
@@ -25,9 +25,9 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
     <section className={cn("py-6 sm:py-8 md:py-10 bg-white", className)}>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-4 sm:mb-5 md:mb-6">
-          <PageHeading 
+          <SectionHeading 
             title="Trusted Health" 
-            accent="Comparison Platform" 
+            gradientText="Comparison Platform" 
             className="mb-2 sm:mb-3"
           />
           <p className="text-gray-600 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">

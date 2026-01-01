@@ -46,7 +46,6 @@ For category/landing pages, use `HeroSection` from `@/components/sections/HeroSe
 | AccessibilityPage.tsx | Raw `<h1>` with `text-4xl font-bold` | Now uses PageHeading |
 | NotFound.tsx | Raw `<h1>` with `text-6xl font-bold` | Now uses PageHeading |
 | EnhancedComparePage.tsx | Raw `<h1>` with `text-3xl md:text-4xl font-bold` | Now uses PageHeading |
-| TrustPlatformSection.tsx | Was `<h2>` - promoted to H1 | Now uses PageHeading with gradient |
 
 ### H2 Fixes (SectionHeading Component)
 | Page | Previous Issue | Fix Applied |
@@ -55,6 +54,9 @@ For category/landing pages, use `HeroSection` from `@/components/sections/HeroSe
 | CallToAction.tsx | Raw `<h2>` with turquoise text | Now uses SectionHeading |
 | MostPopularTests.tsx | Raw `<h2>` with `text-3xl font-bold` | Now uses SectionHeading |
 | SportsPerformancePage.tsx | 8× raw `<h2>` with inconsistent styles | Now uses SectionHeading |
+| TrustPlatformSection.tsx | Was PageHeading (H1) - reverted to section | Now uses SectionHeading |
+| OutcomeTestimonials.tsx | Raw `<h2>` with inline pink span | Now uses SectionHeading |
+| MedichecksTestDetailPage.tsx | Raw `<h2>` CTA heading | Now uses SectionHeading |
 
 ---
 
@@ -71,8 +73,8 @@ For category/landing pages, use `HeroSection` from `@/components/sections/HeroSe
 The following pages still have raw `<h2>` tags that should be converted to `SectionHeading`:
 
 ### High Priority (Public-facing pages)
-- [ ] MedichecksTestDetailPage.tsx (2× H2)
-- [ ] OutcomeTestimonials.tsx
+- [x] MedichecksTestDetailPage.tsx ✅ Fixed
+- [x] OutcomeTestimonials.tsx ✅ Fixed
 - [ ] ProfileSettings.tsx (dashboard component)
 
 ### Medium Priority (65+ files total with H2 tags)
