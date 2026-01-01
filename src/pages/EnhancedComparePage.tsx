@@ -26,6 +26,7 @@ import { compareCategories } from '@/constants/categories';
 import { useSavedProviders } from '@/hooks/useSavedProviders';
 import { cn } from '@/lib/utils';
 import type { EnhancedTestData, SortOption, SavedComparison } from '@/types/comparison';
+import PageHeading from '@/components/ui/page-heading';
 
 const PROVIDERS = [
   { id: 'medichecks', name: 'Medichecks' },
@@ -230,10 +231,11 @@ export default function EnhancedComparePage() {
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-8">
-            <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Compare Blood Tests & Cancer Screening
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <PageHeading 
+              title="Compare Blood Tests &" 
+              accent="Cancer Screening" 
+            />
+            <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
               Compare tests from 7 trusted UK providers. View prices, biomarkers, turnaround times, 
               and additional costs for GP consultations and phlebotomy side-by-side.
             </p>
