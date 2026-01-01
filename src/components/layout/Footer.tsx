@@ -34,6 +34,9 @@ const Footer = () => {
     name: t('footer.links.howItWorks'),
     link: "/how-it-works"
   }, {
+    name: "Our Providers",
+    link: "/providers"
+  }, {
     name: "Clinic Locations",
     link: "/locations"
   }, {
