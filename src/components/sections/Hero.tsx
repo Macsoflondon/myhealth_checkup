@@ -139,8 +139,8 @@ const Hero = () => {
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
-          <div className="relative z-10 w-full py-3 sm:py-6">
-          <div className="w-full text-center px-3 sm:px-4">
+          <div className="relative z-10 w-full py-4 sm:py-6 md:py-8 lg:py-10">
+          <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-turquoise cursor-pointer">
@@ -254,10 +254,10 @@ const Hero = () => {
       <PartnersGrid />
       
       {/* Full-width Text Banner Divider */}
-      <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129] relative overflow-hidden">
+      <section className="w-full py-6 sm:py-8 md:py-10 lg:py-12 bg-[#081129] relative overflow-hidden">
         {/* Gradient overlay effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.1)] via-transparent to-[hsl(335_89%_48%_/_0.1)] pointer-events-none" />
-        <div className="w-full px-3 sm:px-4 relative z-10">
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
           <ScrollFadeIn delay={200}>
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
               Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!

@@ -24,8 +24,8 @@ const HereToHelp = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6">
+    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-4xl mx-auto">
           {/* Badge */}
           <div className="flex justify-center mb-4 sm:mb-6">

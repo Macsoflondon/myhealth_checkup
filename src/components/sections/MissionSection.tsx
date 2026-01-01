@@ -20,8 +20,8 @@ const MissionSection = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-white">
-      <div className="container mx-auto px-4 sm:px-6">
+    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
             {/* Left Column - Text Content (60%) */}
@@ -31,12 +31,12 @@ const MissionSection = () => {
                 <div className="hidden sm:block w-1 bg-[#22c0d4] self-stretch min-h-[80px] rounded-full" />
                 
                 <div className="space-y-4 sm:space-y-6">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-[#081129] leading-tight">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] leading-tight">
                     Your health is your{" "}
                     <span className="text-[#22c0d4]">greatest asset</span>
                   </h2>
 
-                  <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
+                  <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
                     <p>
                       At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information.
                       Our mission is to empower you to take control of your health by making it simple to compare private health
