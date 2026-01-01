@@ -122,13 +122,12 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover z-0"
           loading="lazy"
         />
-        {/* Gradient overlay - lighter at top, darker at bottom for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/10 via-[#081129]/20 to-[#081129]/50 z-[1]" />
+        {/* No overlay - using text shadows for readability instead */}
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
           <div className="relative z-10 w-full py-4 sm:py-6 md:py-8 lg:py-10">
-          <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12">
+          <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12 [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]">
             {/* Trust Indicators - Mobile optimized */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
               <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-turquoise cursor-pointer">
