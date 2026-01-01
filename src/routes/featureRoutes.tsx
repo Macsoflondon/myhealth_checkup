@@ -17,6 +17,7 @@ import ThrivaTestsCatalogPage from "@/pages/ThrivaTestsCatalogPage";
 import RandoxTestsCatalogPage from "@/pages/RandoxTestsCatalogPage";
 import LolaHealthTestsCatalogPage from "@/pages/LolaHealthTestsCatalogPage";
 import TuliHealthTestsCatalogPage from "@/pages/TuliHealthTestsCatalogPage";
+import LondonMedicalLabTestsCatalogPage from "@/pages/LondonMedicalLabTestsCatalogPage";
 
 export const featureRoutes = (
   <>
@@ -40,5 +41,6 @@ export const featureRoutes = (
     <Route path="/providers/randox" element={<RandoxTestsCatalogPage />} />
     <Route path="/providers/lola-health" element={<LolaHealthTestsCatalogPage />} />
     <Route path="/providers/tuli-health" element={<TuliHealthTestsCatalogPage />} />
+    <Route path="/providers/london-medical-laboratory" element={<LondonMedicalLabTestsCatalogPage />} />
   </>
 );
