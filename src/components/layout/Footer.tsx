@@ -36,10 +36,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="pt-12 sm:pt-20 pb-8 sm:pb-10 bg-[#081129]">
+    <footer className="pt-8 sm:pt-12 pb-6 sm:pb-8 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section - 4 Column Links Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 lg:gap-16 mb-12 sm:mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-8 sm:mb-10">
           {/* Categories Column */}
           <div>
             <ul className="space-y-3 sm:space-y-4">
@@ -97,10 +97,10 @@ const Footer = () => {
         </div>
 
         {/* Divider Line */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#e70d69]/50 to-transparent mb-12 sm:mb-16" />
+        <div className="h-px bg-gradient-to-r from-transparent via-[#e70d69]/50 to-transparent mb-8 sm:mb-10" />
 
         {/* Bottom Section - Social and Quality Assurance */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-10 sm:gap-8 mb-12 sm:mb-16">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-6 mb-8 sm:mb-10">
           {/* Social Media - Outline style icons */}
           <div className="flex items-center gap-8">
             {/* Facebook - Blue outline */}
@@ -166,10 +166,10 @@ const Footer = () => {
         </div>
 
         {/* Bottom Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#e70d69]/50 to-transparent mb-6 sm:mb-8" />
+        <div className="h-px bg-gradient-to-r from-transparent via-[#e70d69]/50 to-transparent mb-4 sm:mb-6" />
 
         {/* Copyright and Additional Links */}
-        <div className="text-center mb-4 sm:mb-5">
+        <div className="text-center mb-3 sm:mb-4">
           <p className="text-xs sm:text-sm text-gray-400 max-w-3xl mx-auto px-2">
             <strong>Important:</strong> MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
           </p>
