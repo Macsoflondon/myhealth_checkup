@@ -54,9 +54,8 @@ const JourneySimplified = () => {
                 <div className="sm:hidden absolute left-1/2 top-[90px] h-8 w-0.5 bg-gradient-to-b from-[#22c0d4]/40 to-transparent -translate-x-1/2" />
               )}
               
-              <div className="relative inline-flex items-center justify-center w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[#22c0d4]/10 mb-5 sm:mb-6 transition-transform duration-300 group-hover:scale-110">
-                <step.icon className="w-7 h-7 sm:w-8 sm:h-8 text-[#22c0d4] transition-transform duration-300" />
-                <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#22c0d4] text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-[#22c0d4]/30">
+              <div className="relative inline-flex items-center justify-center w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[#22c0d4]/15 border-2 border-[#22c0d4]/30 mb-5 sm:mb-6 transition-all duration-300 group-hover:scale-110 group-hover:border-[#22c0d4] group-hover:shadow-lg group-hover:shadow-[#22c0d4]/20">
+                <span className="text-2xl sm:text-3xl font-bold text-[#22c0d4]">
                   {step.step}
                 </span>
               </div>
