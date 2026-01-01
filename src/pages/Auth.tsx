@@ -23,10 +23,44 @@ const Auth = () => {
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const passwordStrength = validatePassword(password);
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailError("");
+
+    if (!email) {
+      setEmailError("Email is required");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to send reset email");
+        return;
+      }
+
+      toast.success("Password reset email sent! Please check your inbox.");
+      setIsForgotPassword(false);
+    } catch (error: any) {
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Redirect authenticated users to dashboard
   useEffect(() => {
@@ -137,6 +171,70 @@ const Auth = () => {
       setLoading(false);
     }
   };
+  // Forgot password view
+  if (isForgotPassword) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
+          <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
+            <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
+              Reset Password
+            </h2>
+            
+            <p className="text-sm text-[#081129] text-center mb-6">
+              Enter your email address and we'll send you a link to reset your password.
+            </p>
+
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError("");
+                  }}
+                  placeholder="Enter your email"
+                  required
+                  disabled={loading}
+                  className={emailError ? "border-destructive" : ""}
+                />
+                {emailError && (
+                  <Alert variant="destructive" className="py-2">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription className="text-sm">{emailError}</AlertDescription>
+                  </Alert>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium"
+              >
+                {loading ? "Sending..." : "Send Reset Link"}
+              </Button>
+
+              <div className="text-center mt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsForgotPassword(false)}
+                  className="hover:underline text-center text-base text-[#081129] font-medium"
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            </form>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
@@ -170,7 +268,18 @@ const Auth = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password {isSignUp && <span className="text-xs text-muted-foreground">(minimum 8 characters)</span>}</Label>
+              <div className="flex justify-between items-center">
+                <Label htmlFor="password">Password {isSignUp && <span className="text-xs text-muted-foreground">(minimum 8 characters)</span>}</Label>
+                {!isSignUp && (
+                  <button
+                    type="button"
+                    onClick={() => setIsForgotPassword(true)}
+                    className="text-sm text-[#22c0d4] hover:underline font-medium"
+                  >
+                    Forgot password?
+                  </button>
+                )}
+              </div>
               <Input id="password" type="password" value={password} onChange={e => {
               setPassword(e.target.value);
               setPasswordError("");
