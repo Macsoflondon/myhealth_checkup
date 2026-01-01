@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -263,10 +264,11 @@ const HormonesPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {hormoneTests.map((test) => {
+                {hormoneTests.map((test, index) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
+                    <ScrollFadeIn key={test.id} delay={index * 100}>
+                    <Card className={`group hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -308,8 +310,8 @@ const HormonesPage = () => {
                           <div>
                             <h4 className="font-medium text-sm mb-2">Suitable For:</h4>
                             <ul className="text-xs text-muted-foreground space-y-1 min-h-[2.5rem]">
-                              {test.suitableFor.slice(0, 2).map((item, index) => (
-                                <li key={index}>• {item}</li>
+                              {test.suitableFor.slice(0, 2).map((item, idx) => (
+                                <li key={idx}>• {item}</li>
                               ))}
                             </ul>
                           </div>
@@ -321,6 +323,7 @@ const HormonesPage = () => {
                         </div>
                       </CardContent>
                     </Card>
+                    </ScrollFadeIn>
                   );
                 })}
               </div>

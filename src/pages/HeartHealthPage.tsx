@@ -206,10 +206,11 @@ const HeartHealthPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {heartTests.map((test) => {
+                {heartTests.map((test, index) => {
                   const IconComponent = test.icon;
                   return (
-                    <Card key={test.id} className="group hover:shadow-lg transition-all duration-300 bg-white shadow-md border-2 hover:border-opacity-80 h-full flex flex-col">
+                    <ScrollFadeIn key={test.id} delay={index * 100}>
+                    <Card className="group hover:shadow-xl hover:scale-[1.02] transition-all duration-300 bg-white shadow-md border-2 hover:border-opacity-80 h-full flex flex-col">
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -264,6 +265,7 @@ const HeartHealthPage = () => {
                         </div>
                       </CardContent>
                     </Card>
+                    </ScrollFadeIn>
                   );
                 })}
               </div>

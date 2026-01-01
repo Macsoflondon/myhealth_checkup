@@ -304,9 +304,10 @@ const WomensHealthPage = () => {
               
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {womensHealthTests.map(test => {
+                {womensHealthTests.map((test, index) => {
                 const IconComponent = test.icon;
-                return <Card key={test.id} className={`group hover:shadow-lg transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
+                return <ScrollFadeIn key={test.id} delay={index * 100}>
+                  <Card className={`group hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ${getCategoryBorderColor(test.category)} border-2 hover:border-opacity-80 h-full flex flex-col`}>
                       <CardHeader className="pb-4">
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-3">
@@ -357,7 +358,8 @@ const WomensHealthPage = () => {
                           </Button>
                         </div>
                       </CardContent>
-                    </Card>;
+                    </Card>
+                  </ScrollFadeIn>;
               })}
               </div>
             </div>
