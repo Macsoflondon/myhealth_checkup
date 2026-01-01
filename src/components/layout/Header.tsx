@@ -68,7 +68,7 @@ const Header = ({
   }
   // Toolbar always sticky
   const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
-  const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[6px] border-b border-white/20", styles.toolbar);
+  const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-1 border-b border-white/20", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
@@ -101,7 +101,7 @@ const Header = ({
           )} 
           style={{ overflow: 'visible' }}
         >
-          <div className="flex items-center justify-center px-2 sm:px-4 lg:px-16 w-full" style={{ overflow: 'visible' }}>
+          <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: 'visible' }}>
             <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
           </div>
         </div>
