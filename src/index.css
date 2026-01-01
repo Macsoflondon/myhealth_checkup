@@ -703,10 +703,41 @@
   }
 
   .gradient-brand-text {
-    background: var(--gradient-brand);
+    background: linear-gradient(
+      90deg,
+      hsl(var(--turquoise)) 0%,
+      hsl(var(--pink)) 50%,
+      hsl(var(--turquoise)) 100%
+    );
+    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  /* Reusable shimmer gradient text utility */
+  .shimmer-text {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--turquoise)) 0%,
+      hsl(var(--pink)) 50%,
+      hsl(var(--turquoise)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gradient-brand-text,
+    .shimmer-text {
+      animation: none;
+      background: linear-gradient(90deg, hsl(var(--turquoise)) 0%, hsl(var(--pink)) 100%);
+      background-size: 100% auto;
+    }
   }
 
   .gradient-bg-brand {
