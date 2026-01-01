@@ -68,7 +68,7 @@ const Header = ({
 
             {/* Center: Tagline banner image */}
             <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
-              <img alt="Your health. Your choice. One trusted platform." className="h-72 lg:h-80 xl:h-96 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
+              <img alt="Your health. Your choice. One trusted platform." className="h-56 lg:h-64 xl:h-72 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
             {/* Right: Controls */}
@@ -79,8 +79,8 @@ const Header = ({
           </div>
         </div>
 
-        {/* Bottom row - Navigation Menu (Toolbar) */}
-        <div className={toolbarClasses} style={{ overflow: 'visible' }}>
+        {/* Bottom row - Navigation Menu (Toolbar) - Sticky */}
+        <div className={cn(toolbarClasses, "sticky top-0 z-50")} style={{ overflow: 'visible' }}>
           <div className="flex items-center justify-center px-2 sm:px-4 lg:px-16 w-full" style={{ overflow: 'visible' }}>
             <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
           </div>
