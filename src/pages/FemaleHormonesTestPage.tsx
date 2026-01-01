@@ -95,6 +95,14 @@ const FemaleHormonesTestPage = () => {
         features: ["Complete hormone panel", "Fertility markers", "2-3 day results"],
         turnaround: "2-3 days",
         biomarkers: 6
+      },
+      {
+        name: "Lola Health",
+        price: 140,
+        url: "https://lolahealth.co/products/female-active-boost",
+        features: ["39 biomarkers", "At-home phlebotomy", "Doctor review included"],
+        turnaround: "2 days",
+        biomarkers: 39
       }
     ]
   };
