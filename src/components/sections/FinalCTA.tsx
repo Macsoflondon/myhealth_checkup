@@ -25,8 +25,9 @@ const FinalCTA = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
             <Button 
               asChild 
+              variant="shimmer"
               size="lg" 
-              className="bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px] shadow-lg shadow-[#22c0d4]/30"
+              className="px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px]"
             >
               <Link to="/compare">
                 Compare tests
