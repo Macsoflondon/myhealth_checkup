@@ -37,7 +37,7 @@ const Footer = () => {
 
   return (
     <footer className="pt-12 sm:pt-20 pb-8 sm:pb-10 bg-[#081129]">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section - 4 Column Links Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 lg:gap-16 mb-12 sm:mb-16">
           {/* Categories Column */}
