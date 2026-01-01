@@ -267,7 +267,7 @@ const Hero = () => {
                         </div>
                       </div>}
                     
-                    <Button onClick={() => navigate('/compare-tests')} className="w-full mt-3 bg-health-primary hover:bg-health-primary/90">
+                    <Button onClick={() => navigate('/compare-tests')} variant="shimmer" className="w-full mt-3">
                       {t('hero.compareAvailableTests')}
                     </Button>
                   </div>}
