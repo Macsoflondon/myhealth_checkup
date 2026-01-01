@@ -33,10 +33,16 @@ export const moreNavigationSections = [
     ]
   },
   {
+    title: "Compare",
+    items: [
+      { name: "Compare Tests", path: "/compare" },
+      { name: "Compare Providers", path: "/providers/compare" }
+    ]
+  },
+  {
     title: "Resources",
     items: [
-      { name: "Health Resources Hub", path: "/health-blog" },
-      { name: "Compare Tests", path: "/compare" }
+      { name: "Health Resources Hub", path: "/health-blog" }
     ]
   },
   {
