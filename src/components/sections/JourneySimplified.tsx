@@ -28,7 +28,7 @@ const JourneySimplified = () => {
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-[#081129] mb-4">
             Your Health Journey{" "}
-            <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">
+            <span className="shimmer-text">
               Simplified
             </span>
           </h2>

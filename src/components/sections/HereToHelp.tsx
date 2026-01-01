@@ -38,7 +38,7 @@ const HereToHelp = () => {
           {/* Heading */}
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6 px-2">
             You're Never Alone on Your{" "}
-            <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent block">
+            <span className="shimmer-text block">
               Health Journey
             </span>
           </h2>
