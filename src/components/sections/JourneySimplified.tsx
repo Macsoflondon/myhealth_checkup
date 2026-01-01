@@ -29,7 +29,7 @@ const JourneySimplified = () => {
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] mb-2">
             Your Health Journey
           </h1>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold bg-gradient-to-r from-[#22c0d4] via-[#081129] to-[#e70d69] bg-clip-text text-transparent inline-block" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent inline-block" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Simplified
           </h2>
           <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed">
