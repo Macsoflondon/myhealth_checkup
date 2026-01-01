@@ -224,19 +224,6 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-
-            {/* Stats Grid - Mobile optimized */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
-              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover-glow-turquoise cursor-pointer">
-                <span className="text-[#22c0d4] text-center text-xs sm:text-base font-bold block">{t('hero.trustedProviders')}</span>
-              </div>
-              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover-glow-pink cursor-pointer">
-                <span className="text-center text-xs sm:text-base font-semibold text-[#e70d69] block">{t('hero.availableTests')}</span>
-              </div>
-              <div className="glass-card rounded-lg p-3 sm:p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover-glow-gradient cursor-pointer">
-                <span className="text-center text-xs sm:text-base font-bold block gradient-brand-text">{t('hero.nationwideClinics')}</span>
-              </div>
-            </div>
           </div>
           </div>
         </section>
