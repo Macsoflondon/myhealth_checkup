@@ -49,6 +49,11 @@ const Header = ({
             </nav>
           </div>
           
+          {/* Mobile Accreditation Banner */}
+          <div className="bg-brand-navy/95 border-t border-white/10 py-1.5">
+            <AccreditationBanner compact />
+          </div>
+          
           {/* Mobile Navigation Drawer */}
           <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </header>
