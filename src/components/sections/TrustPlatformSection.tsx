@@ -21,13 +21,13 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
   }];
   
   return (
-    <section className={cn("pt-12 pb-8 sm:pt-16 sm:pb-12 md:pt-20 md:pb-16 bg-[#081129]", className)}>
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="text-center mb-10 sm:mb-14">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+    <section className={cn("pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-[#081129]", className)}>
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-white mb-3 sm:mb-4">
             Trusted Health Comparison Platform
           </h2>
-          <p className="text-gray-300 font-sans text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 font-sans text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed">
             Built on principles of transparency, clinical accuracy, and unwavering quality standards.
           </p>
         </div>
