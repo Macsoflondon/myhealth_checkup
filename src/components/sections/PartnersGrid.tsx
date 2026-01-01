@@ -12,7 +12,7 @@ const PartnersGrid = () => {
 
   // Duplicate providers for seamless infinite loop effect
   const duplicatedProviders = [...providers, ...providers];
-  return <section className="py-12 sm:py-16 md:py-20 bg-muted/30">
+  return <section className="py-8 sm:py-12 md:py-16 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6">
         <h2 className="text-center text-xs font-heading font-semibold text-foreground uppercase tracking-wider mb-8 sm:mb-10 sm:text-4xl">
           Our Trusted Partners
