@@ -93,7 +93,7 @@ const Header = ({
 
             {/* Center: Tagline banner image */}
             <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <img alt="Your health. Your choice. One trusted platform." className="h-64 lg:h-72 xl:h-80 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
+              <img alt="Your health. Your choice. One trusted platform." className="h-36 lg:h-40 xl:h-44 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
             {/* Right: Controls */}
