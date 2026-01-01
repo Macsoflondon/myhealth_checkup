@@ -6,6 +6,7 @@ import ClinicFinder from "@/components/ClinicFinder";
 import { MapPin, Shield, Clock, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import HeroSection from "@/components/sections/HeroSection";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const FindClinicPage = () => {
   const benefits = [
@@ -168,9 +169,11 @@ const FindClinicPage = () => {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                Partnered Testing Providers
-              </h2>
+              <SectionHeading 
+                title="Partnered Testing" 
+                gradientText="Providers" 
+                className="mb-6"
+              />
               <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
                 Our clinic network includes locations from seven trusted UK private health testing providers
               </p>

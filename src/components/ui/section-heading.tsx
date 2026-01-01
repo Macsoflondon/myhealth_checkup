@@ -6,11 +6,14 @@ interface SectionHeadingProps {
   className?: string;
   titleClassName?: string;
   gradientClassName?: string;
+  /** Enable entrance animation (default: true) */
+  animate?: boolean;
 }
 
 /**
  * Consistent section heading component with navy title + turquoise-to-pink gradient subtitle
  * Matches the "Your Health Journey / Simplified" and "Find a Clinic / Near You" pattern
+ * Includes entrance animation for visual polish
  */
 const SectionHeading = ({
   title,
@@ -18,9 +21,14 @@ const SectionHeading = ({
   className,
   titleClassName,
   gradientClassName,
+  animate = true,
 }: SectionHeadingProps) => {
   return (
-    <div className={cn("text-center mb-4 sm:mb-6", className)}>
+    <div className={cn(
+      "text-center mb-4 sm:mb-6",
+      animate && "animate-fade-in",
+      className
+    )}>
       <h2 className={cn(
         "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] mb-2",
         titleClassName

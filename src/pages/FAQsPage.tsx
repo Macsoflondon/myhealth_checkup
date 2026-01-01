@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
 import PageHeading from '@/components/ui/page-heading';
+import { SectionHeading } from '@/components/ui/section-heading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
@@ -364,9 +365,12 @@ const FAQsPage = () => {
         {/* Popular Questions */}
         {debouncedSearch === '' && <div className="container mx-auto px-4 sm:py-12 py-[10px]">
             <div className="bg-[hsl(var(--section-dark))] rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">
-                Popular Questions
-              </h2>
+              <SectionHeading 
+                title="Popular" 
+                gradientText="Questions" 
+                className="mb-4 sm:mb-6"
+                titleClassName="text-white"
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {popularQuestions.map((faq, idx) => <Card key={idx} className="border-white/20 transition-all duration-300 cursor-pointer group bg-[#081129]">
                     <CardHeader className="p-4 sm:p-6 bg-white">
@@ -437,9 +441,11 @@ const FAQsPage = () => {
         {/* Related Resources */}
         <div className="container mx-auto px-4 py-8 sm:py-12 border-t border-gray-200">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-white">
-              Related Resources
-            </h2>
+            <SectionHeading 
+              title="Related" 
+              gradientText="Resources" 
+              className="mb-4 sm:mb-6"
+            />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow">
                 <CardHeader className="p-4 sm:p-6">

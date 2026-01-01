@@ -5,6 +5,7 @@ import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import PageHeading from "@/components/ui/page-heading";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { Shield, Users, Award, Heart } from "lucide-react";
 const AboutUsPage = () => {
   const values = [{
@@ -62,33 +63,39 @@ const AboutUsPage = () => {
 
         <section className="bg-[#081129] py-0">
           <div className="container mx-auto px-4 my-[10px]">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-[#22c0d4] my-0 py-[10px]">Our Mission</h2>
-              <div className="text-lg text-gray-600 space-y-6 max-w-4xl mx-auto">
-                <p className="text-white font-light text-left">
-                  At myhealth checkup, we believe proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We are changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
-                </p>
-                
-                <p className="text-white text-left font-light">
-                  Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals, just straightforward, clinical-grade testing with expert guidance.
-                </p>
-                
-                <p className="text-white font-light text-base text-left">
-                  We have partnered with leading providers to bring you the most comprehensive range of tests at competitive prices, maintaining the highest standards of accuracy and confidentiality.
-                </p>
-              </div>
+            <SectionHeading 
+              title="Our" 
+              gradientText="Mission" 
+              className="mb-8"
+              titleClassName="text-white"
+            />
+            <div className="text-lg text-gray-600 space-y-6 max-w-4xl mx-auto">
+              <p className="text-white font-light text-left">
+                At myhealth checkup, we believe proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We are changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
+              </p>
+              
+              <p className="text-white text-left font-light">
+                Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals, just straightforward, clinical-grade testing with expert guidance.
+              </p>
+              
+              <p className="text-white font-light text-base text-left">
+                We have partnered with leading providers to bring you the most comprehensive range of tests at competitive prices, maintaining the highest standards of accuracy and confidentiality.
+              </p>
             </div>
           </div>
         </section>
 
         <section className="py-0 bg-[#081129]">
           <div className="container mx-auto px-4 bg-[#081129]">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl mb-4 text-[#22c0d4] font-medium">Our Values</h2>
-              <p className="max-w-3xl mx-auto text-[#e70d69] font-medium text-2xl">
-                These core values guide everything we do and shape how we serve our community.
-              </p>
-            </div>
+            <SectionHeading 
+              title="Our" 
+              gradientText="Values" 
+              className="mb-8"
+              titleClassName="text-white"
+            />
+            <p className="max-w-3xl mx-auto text-center text-[#e70d69] font-medium text-xl mb-12">
+              These core values guide everything we do and shape how we serve our community.
+            </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {values.map((value, index) => <div key={index} className="bg-white p-8 rounded-lg shadow-md">
@@ -108,7 +115,12 @@ const AboutUsPage = () => {
         <section className="py-16 bg-[#081129] my-0">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#22c0d4]">Join The Community</h2>
+              <SectionHeading 
+                title="Join The" 
+                gradientText="Community" 
+                className="mb-8"
+                titleClassName="text-white"
+              />
               <p className="mb-8 text-[#e70d69] font-medium text-lg">
                 Become part of a growing community of health-conscious individuals who are taking charge of their wellbeing through knowledge and early detection.
               </p>
