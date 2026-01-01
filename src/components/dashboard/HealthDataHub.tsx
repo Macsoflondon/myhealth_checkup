@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { TestResultUploader } from "./TestResultUploader";
 import { TestResultsTimeline } from "./TestResultsTimeline";
 import { HealthScoreCard } from "./HealthScoreCard";
+import PageHeading from "@/components/ui/page-heading";
 
 export const HealthDataHub = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -18,9 +19,13 @@ export const HealthDataHub = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-[#081129] mb-2">Health Dashboard</h1>
-        <p className="text-muted-foreground">
+      <div className="text-left">
+        <PageHeading 
+          title="Health" 
+          accent="Dashboard" 
+          centered={false}
+        />
+        <p className="text-muted-foreground mt-2">
           Track your health journey with test results, biomarkers, and wellness data all in one place
         </p>
       </div>
