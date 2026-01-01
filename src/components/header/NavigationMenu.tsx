@@ -110,8 +110,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                 className={`group relative text-xs sm:text-sm font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
                   (item as any).highlighted 
                     ? "text-brand-pink bg-brand-pink/10"
-                    : "text-white hover:text-brand-turquoise hover:bg-white/5"
-                } ${activeDropdown === item.name && isMobile ? 'text-brand-turquoise bg-white/10' : ''}`}
+                    : "text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5"
+                } ${activeDropdown === item.name && isMobile ? 'text-brand-pink bg-brand-navy/10' : ''}`}
                 onClick={(e) => {
                   if (item.hasDropdown && isMobile) {
                     handleClick(e, item.name);
@@ -152,7 +152,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           >
             <button
               className={`group relative text-xs sm:text-sm font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-                activeDropdown === "MORE" && isMobile ? 'text-brand-turquoise bg-white/10' : 'text-white hover:text-brand-turquoise hover:bg-white/5'
+                activeDropdown === "MORE" && isMobile ? 'text-brand-pink bg-brand-navy/10' : 'text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5'
               }`}
               onClick={(e) => {
                 if (isMobile) {
