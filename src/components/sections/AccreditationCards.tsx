@@ -6,19 +6,22 @@ const AccreditationCards = () => {
       icon: Shield,
       title: "UKAS Accredited",
       subtitle: "Labs",
-      color: "hsl(var(--primary))"
+      bgClass: "bg-primary/10",
+      iconClass: "text-primary"
     },
     {
       icon: FileCheck,
       title: "CQC Regulated",
       subtitle: "Providers",
-      color: "hsl(var(--secondary))"
+      bgClass: "bg-secondary/10",
+      iconClass: "text-secondary"
     },
     {
       icon: Award,
       title: "ISO 15189",
       subtitle: "Certified",
-      color: "hsl(var(--primary))"
+      bgClass: "bg-primary/10",
+      iconClass: "text-primary"
     }
   ];
 
@@ -33,12 +36,10 @@ const AccreditationCards = () => {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div 
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
-                style={{ backgroundColor: `${item.color}15` }}
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${item.bgClass}`}
               >
                 <item.icon 
-                  className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300" 
-                  style={{ color: item.color }}
+                  className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ${item.iconClass}`}
                 />
               </div>
               <div className="text-left min-w-0">
