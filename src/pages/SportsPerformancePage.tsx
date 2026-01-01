@@ -13,6 +13,7 @@ import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Z
 import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
 import HeroSection from "@/components/sections/HeroSection";
+import { SectionHeading } from "@/components/ui/section-heading";
 interface TestData {
   id: string;
   test_name: string;
@@ -166,9 +167,11 @@ const SportsPerformancePage = () => {
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Why Choose Sports Performance Testing?
-              </h2>
+              <SectionHeading 
+                title="Why Choose Sports" 
+                gradientText="Performance Testing?" 
+                className="mb-4"
+              />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Gain the competitive edge with data-driven insights into your athletic health
               </p>
@@ -194,9 +197,11 @@ const SportsPerformancePage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Sports Performance Categories
-              </h2>
+              <SectionHeading 
+                title="Sports Performance" 
+                gradientText="Categories" 
+                className="mb-4"
+              />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Explore specialized testing categories designed for athletes and fitness enthusiasts
               </p>
@@ -238,9 +243,11 @@ const SportsPerformancePage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Personalized Test Recommendations
-              </h2>
+              <SectionHeading 
+                title="Personalized Test" 
+                gradientText="Recommendations" 
+                className="mb-4"
+              />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Get AI-powered test suggestions tailored to your sport, training goals, and experience level
               </p>
@@ -256,9 +263,11 @@ const SportsPerformancePage = () => {
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Featured Sports Performance Tests
-              </h2>
+              <SectionHeading 
+                title="Featured Sports" 
+                gradientText="Performance Tests" 
+                className="mb-4"
+              />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Compare prices from trusted UK providers and book your test today
               </p>
@@ -318,9 +327,12 @@ const SportsPerformancePage = () => {
         <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12 bg-[#081129]">
-              <h2 className="text-3xl font-bold mb-4 md:text-[t] text-white">
-                Key Biomarkers for Athletic Performance
-              </h2>
+              <SectionHeading 
+                title="Key Biomarkers for" 
+                gradientText="Athletic Performance" 
+                className="mb-4"
+                titleClassName="text-white"
+              />
               <p className="text-lg max-w-3xl mx-auto font-normal text-white">
                 Understanding your biomarkers enables data-driven decisions to enhance training, recovery, and competitive performance
               </p>
@@ -358,9 +370,11 @@ const SportsPerformancePage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Trusted by Athletes Across the UK
-              </h2>
+              <SectionHeading 
+                title="Trusted by Athletes" 
+                gradientText="Across the UK" 
+                className="mb-4"
+              />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Hear from athletes who've optimised their performance with blood test insights
               </p>
@@ -395,9 +409,11 @@ const SportsPerformancePage = () => {
         {/* CTA Section */}
         <section className="py-16 bg-gradient-to-br from-[#FA6980] to-[#FFFFFF] ext-white bg-white">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#081129]">
-              Ready to Optimise Your Performance?
-            </h2>
+            <SectionHeading 
+              title="Ready to Optimise" 
+              gradientText="Your Performance?" 
+              className="mb-4"
+            />
             <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90 text-[#081129]">
               Compare sports performance tests from trusted UK providers and take control of your athletic health today.
             </p>

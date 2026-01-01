@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Sun, Zap, Shield, Leaf } from 'lucide-react';
+import { SectionHeading } from '@/components/ui/section-heading';
 const VitaminDeficiencyPage = () => {
   const vitaminTests = [{
     name: "Vitamin D Test",
@@ -83,7 +84,11 @@ const VitaminDeficiencyPage = () => {
         <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Vitamin Deficiency Tests</h2>
+              <SectionHeading 
+                title="Vitamin Deficiency" 
+                gradientText="Tests" 
+                className="mb-4"
+              />
               <p className="text-xl text-muted-foreground">Identify and address nutritional gaps</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -120,7 +125,11 @@ const VitaminDeficiencyPage = () => {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12 text-[#081129] my-[20px]">Why Test for Vitamin Deficiencies?</h2>
+              <SectionHeading 
+                title="Why Test for" 
+                gradientText="Vitamin Deficiencies?" 
+                className="mb-12"
+              />
               <div className="grid md:grid-cols-2 gap-8">
                 <Card className="p-6">
                   <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -172,9 +181,11 @@ const VitaminDeficiencyPage = () => {
           <div className="container mx-auto px-4">
             <ScrollFadeIn>
               <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                  Discover Your Vitamin Levels Today
-                </h2>
+                <SectionHeading 
+                  title="Discover Your" 
+                  gradientText="Vitamin Levels Today" 
+                  className="mb-4"
+                />
                 <p className="text-lg text-muted-foreground mb-8">
                   Compare vitamin tests from trusted UK providers or find a clinic near you
                 </p>

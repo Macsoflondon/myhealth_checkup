@@ -39,12 +39,22 @@ For category/landing pages, use `HeroSection` from `@/components/sections/HeroSe
 
 ## 🔧 FIXED PAGES (Updated in this audit)
 
+### H1 Fixes
 | Page | Previous Issue | Fix Applied |
 |------|----------------|-------------|
 | HealthDataHub.tsx | Raw `<h1>` with `text-3xl font-bold` | Now uses PageHeading |
 | AccessibilityPage.tsx | Raw `<h1>` with `text-4xl font-bold` | Now uses PageHeading |
 | NotFound.tsx | Raw `<h1>` with `text-6xl font-bold` | Now uses PageHeading |
 | EnhancedComparePage.tsx | Raw `<h1>` with `text-3xl md:text-4xl font-bold` | Now uses PageHeading |
+| TrustPlatformSection.tsx | Was `<h2>` - promoted to H1 | Now uses PageHeading with gradient |
+
+### H2 Fixes (SectionHeading Component)
+| Page | Previous Issue | Fix Applied |
+|------|----------------|-------------|
+| VitaminDeficiencyPage.tsx | 3× raw `<h2>` with inconsistent styles | Now uses SectionHeading |
+| CallToAction.tsx | Raw `<h2>` with turquoise text | Now uses SectionHeading |
+| MostPopularTests.tsx | Raw `<h2>` with `text-3xl font-bold` | Now uses SectionHeading |
+| SportsPerformancePage.tsx | 8× raw `<h2>` with inconsistent styles | Now uses SectionHeading |
 
 ---
 
@@ -53,6 +63,20 @@ For category/landing pages, use `HeroSection` from `@/components/sections/HeroSe
 | Page | Reason for Exception |
 |------|---------------------|
 | ClinicDetailPage.tsx | Dynamic clinic name H1 - needs custom sizing for long names |
+
+---
+
+## 📋 H2 AUDIT - REMAINING PAGES TO FIX
+
+The following pages still have raw `<h2>` tags that should be converted to `SectionHeading`:
+
+### High Priority (Public-facing pages)
+- [ ] MedichecksTestDetailPage.tsx (2× H2)
+- [ ] OutcomeTestimonials.tsx
+- [ ] ProfileSettings.tsx (dashboard component)
+
+### Medium Priority (65+ files total with H2 tags)
+Many additional pages with H2s - to be addressed in future passes.
 
 ---
 
