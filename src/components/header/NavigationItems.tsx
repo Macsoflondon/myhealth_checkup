@@ -6,9 +6,9 @@ export const primaryNavigationItems = [
   { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
   { name: "Men's Health", path: "/mens-health", hasDropdown: true, megaMenu: true },
   { name: "Sports/Fitness Health", path: "/sports-performance", hasDropdown: true, megaMenu: true },
-  { name: "At Home Tests", path: "/at-home-tests", hasDropdown: true, megaMenu: true },
   { name: "Fertility", path: "/fertility-tests", hasDropdown: true, megaMenu: true },
   { name: "Cancer Screening", path: "/tests/cancer", hasDropdown: true, megaMenu: true },
+  { name: "At Home Tests", path: "/at-home-tests", hasDropdown: true, megaMenu: true },
   { name: "How It Works", path: "/how-it-works" }
 ];
 
