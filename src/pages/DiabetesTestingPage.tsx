@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Activity, Clock, TrendingUp, AlertTriangle } from 'lucide-react';
+import { SectionHeading } from '@/components/ui/section-heading';
 
 const DiabetesTestingPage = () => {
   const diabetesTests = [
@@ -80,7 +81,7 @@ const DiabetesTestingPage = () => {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12 text-[#081129] my-[20px]">Early Warning Signs</h2>
+              <SectionHeading title="Early Warning" gradientText="Signs" className="mb-12" />
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                   "Increased thirst",
@@ -105,10 +106,8 @@ const DiabetesTestingPage = () => {
         {/* Available Tests */}
         <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Diabetes Testing Options</h2>
-              <p className="text-xl text-muted-foreground">Choose the right test for your needs</p>
-            </div>
+            <SectionHeading title="Diabetes Testing" gradientText="Options" className="mb-8" />
+            <p className="text-xl text-muted-foreground text-center mb-8">Choose the right test for your needs</p>
             <div className="grid md:grid-cols-2 gap-6">
               {diabetesTests.map((test, index) => (
                 <Card key={index} className="relative">
@@ -142,7 +141,7 @@ const DiabetesTestingPage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">Understanding Your Results</h2>
+              <SectionHeading title="Understanding Your" gradientText="Results" className="mb-8" />
               <div className="grid md:grid-cols-3 gap-6">
                 <Card className="bg-green-50 border-green-200">
                   <CardHeader>

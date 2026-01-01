@@ -18,6 +18,7 @@ import {
   MapPin
 } from "lucide-react";
 import { PROVIDER_LOGOS, PROVIDER_WEBSITES } from "@/constants/providers";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const PROVIDER_ID = "london-medical-laboratory";
 const PROVIDER_NAME = "London Medical Laboratory";

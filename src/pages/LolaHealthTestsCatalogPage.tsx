@@ -18,6 +18,7 @@ import {
   Heart,
   Shield
 } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const LolaHealthTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -205,7 +206,7 @@ const LolaHealthTestsCatalogPage = () => {
         <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl font-bold mb-4">About Lola Health</h2>
+              <SectionHeading title="About" gradientText="Lola Health" className="mb-4" />
               <p className="text-muted-foreground mb-6">
                 Lola Health specialises in women's health testing, offering personalised 
                 at-home test kits with expert support. Their tests cover hormones, 

@@ -18,6 +18,7 @@ import {
   MapPin,
   Shield
 } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const GoodbodyTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -209,7 +210,7 @@ const GoodbodyTestsCatalogPage = () => {
         <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl font-bold mb-4">About Goodbody Clinic</h2>
+              <SectionHeading title="About" gradientText="Goodbody Clinic" className="mb-4" />
               <p className="text-muted-foreground mb-6">
                 Goodbody Clinic is a leading UK provider of private blood tests, 
                 offering professional phlebotomy services at clinic locations nationwide. 

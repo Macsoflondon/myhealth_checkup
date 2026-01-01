@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Heart, Shield, Activity, Users, Baby, Flower2, Stethoscope, Target, Moon } from 'lucide-react';
+import { SectionHeading } from '@/components/ui/section-heading';
 const getCategoryColor = (category: string) => {
   const colorMap: {
     [key: string]: string;
@@ -258,9 +259,11 @@ const WomensHealthPage = () => {
         <section className="bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#081129] my-[20px]">
-                {t('womensHealth.benefitsTitle')}
-              </h2>
+              <SectionHeading 
+                title="Why Women's Health" 
+                gradientText="Testing Matters" 
+                className="mb-8"
+              />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
