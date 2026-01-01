@@ -88,8 +88,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Categories Column */}
           <div>
-            <h3 id="footer-services" className="font-semibold text-sm sm:text-lg mb-3 sm:mb-4 text-white">{t('footer.categories')}</h3>
-            <ul className="space-y-1.5 sm:space-y-2" aria-labelledby="footer-services">
+            <ul className="space-y-1.5 sm:space-y-2">
               {serviceSections.map((service, index) => (
                 <li key={index}>
                   <Link to={service.link} className="text-white/80 hover:text-[#e70d69] transition-colors text-xs sm:text-sm">
@@ -102,8 +101,7 @@ const Footer = () => {
 
           {/* Quick Links Column */}
           <div>
-            <h3 id="footer-info" className="font-semibold text-sm sm:text-lg mb-3 sm:mb-4 text-white">{t('footer.quickLinks')}</h3>
-            <ul className="space-y-1.5 sm:space-y-2" aria-labelledby="footer-info">
+            <ul className="space-y-1.5 sm:space-y-2">
               {informationSections.map((info, index) => (
                 <li key={index}>
                   <Link to={info.link} className="text-white/80 hover:text-[#e70d69] transition-colors text-xs sm:text-sm">
@@ -116,8 +114,7 @@ const Footer = () => {
 
           {/* Legal Column */}
           <div>
-            <h3 id="footer-company" className="font-semibold text-sm sm:text-lg mb-3 sm:mb-4 text-white">{t('footer.legal')}</h3>
-            <ul className="space-y-1.5 sm:space-y-2" aria-labelledby="footer-company">
+            <ul className="space-y-1.5 sm:space-y-2">
               {companySections.map((company, index) => (
                 <li key={index}>
                   <Link to={company.link} className="text-white/80 hover:text-[#e70d69] transition-colors text-xs sm:text-sm">
@@ -146,7 +143,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section - Social and Quality Assurance */}
-        <div className="border-t border-gray-700 pt-6 sm:pt-8">
+        <div className="border-t border-[#e70d69]/60 pt-6 sm:pt-8">
           {/* Social Media and Quality Assurance Logos */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-8 mb-6 sm:mb-8">
             {/* Social Media */}
@@ -193,7 +190,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright and Additional Links */}
-        <div className="border-t border-gray-700 pt-4 sm:pt-6 mt-6 sm:mt-8">
+        <div className="border-t border-[#e70d69]/60 pt-4 sm:pt-6 mt-6 sm:mt-8">
           <div className="text-center mb-3 sm:mb-4">
             <p className="text-[10px] sm:text-sm text-gray-400 max-w-3xl mx-auto px-2">
               <strong>Important:</strong> MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
