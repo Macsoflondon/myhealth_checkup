@@ -72,8 +72,8 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-brand-navy px-3 lg:px-6">
-          <div className="relative flex items-center justify-between py-0">
+        <div className="bg-brand-navy px-4 lg:px-8 py-4 lg:py-6">
+          <div className="relative flex items-center justify-between py-2 lg:py-4">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0 ml-4 lg:ml-6">
               <img alt="myhealth checkup" className="h-44 lg:h-48 xl:h-52 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
