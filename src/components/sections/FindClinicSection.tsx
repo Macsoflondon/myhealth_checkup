@@ -22,11 +22,11 @@ const FindClinicSection = () => {
           </div>
 
           {/* Heading */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6 px-2">
-            Find a Clinic{" "}
-            <span className="shimmer-text">
-              Near You
-            </span>
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center text-[#081129] mb-2 px-2">
+            Find a Clinic
+          </h1>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent mb-4 sm:mb-6 px-2" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Near You
           </h2>
 
           <p className="text-center text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-10 max-w-2xl mx-auto px-2">
