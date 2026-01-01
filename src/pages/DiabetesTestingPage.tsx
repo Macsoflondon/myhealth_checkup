@@ -110,7 +110,8 @@ const DiabetesTestingPage = () => {
             <p className="text-xl text-muted-foreground text-center mb-8">Choose the right test for your needs</p>
             <div className="grid md:grid-cols-2 gap-6">
               {diabetesTests.map((test, index) => (
-                <Card key={index} className="relative">
+                <ScrollFadeIn key={index} delay={index * 100}>
+                <Card className="relative group hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-xl">{test.name}</CardTitle>
@@ -132,6 +133,7 @@ const DiabetesTestingPage = () => {
                     </div>
                   </CardContent>
                 </Card>
+                </ScrollFadeIn>
               ))}
             </div>
           </div>
