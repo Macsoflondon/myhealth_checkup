@@ -80,7 +80,7 @@ const Header = ({
             </Link>
 
             {/* Center: Tagline banner image */}
-            <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
+            <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <img alt="Your health. Your choice. One trusted platform." className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
