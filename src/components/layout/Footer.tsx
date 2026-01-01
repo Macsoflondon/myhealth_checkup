@@ -160,7 +160,7 @@ const Footer = () => {
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
-                  <Facebook size={32} className="text-[#1877F2]" />
+                  <Instagram size={32} className="text-[#E4405F]" />
                   <span className="sr-only">{social.name}</span>
                 </a>
               ))}
