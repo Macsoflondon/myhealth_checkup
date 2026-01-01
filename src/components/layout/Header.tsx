@@ -97,7 +97,7 @@ const Header = ({
           className={cn(
             toolbarClasses, 
             "sticky top-0 z-50 transition-all duration-300",
-            isToolbarSticky && "shadow-lg animate-fade-in bg-[#0a1a3a]"
+            isToolbarSticky && "shadow-lg animate-fade-in bg-[#0a1a3a] border-b-2 border-[#e70d69]"
           )} 
           style={{ overflow: 'visible' }}
         >
