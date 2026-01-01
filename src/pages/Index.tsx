@@ -93,20 +93,20 @@ const Index = () => {
         {/* 1. Hero Section */}
         <Hero />
         
-        {/* 3. Trusted Health Comparison Platform */}
-        <TrustPlatformSection className="bg-[#081129]" />
-        
-        {/* 6. Your Health Journey Simplified */}
+        {/* 2. Your Health Journey Simplified */}
         <JourneySimplified />
         
-        {/* 7. Find a Clinic Near You */}
+        {/* 3. Find a Clinic Near You */}
         <FindClinicSection />
         
-        {/* 8. Here to Help */}
+        {/* 4. Here to Help */}
         <HereToHelp />
         
-        {/* 9. Final CTA */}
+        {/* 5. Final CTA */}
         <FinalCTA />
+        
+        {/* 6. Trusted Health Comparison Platform - Above Footer */}
+        <TrustPlatformSection className="bg-[#081129]" />
       </MainLayout>
     </ErrorBoundary>
   );
