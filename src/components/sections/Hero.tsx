@@ -122,8 +122,8 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover z-0"
           loading="lazy"
         />
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-[#081129]/25 z-[1]" />
+        {/* Gradient overlay - lighter at top, darker at bottom for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/10 via-[#081129]/20 to-[#081129]/50 z-[1]" />
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
