@@ -107,9 +107,9 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             >
               <Link
                 to={item.hasDropdown && isMobile ? '#' : item.path}
-                className={`group relative text-xs font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 ${
+                className={`group relative text-xs sm:text-sm font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-turquoise after:transition-all after:duration-300 ${
                   (item as any).highlighted 
-                    ? "text-brand-pink bg-brand-pink/10"
+                    ? "text-brand-pink bg-brand-pink/10 hover:after:bg-brand-pink"
                     : "text-white hover:text-brand-turquoise hover:bg-white/5"
                 } ${activeDropdown === item.name && isMobile ? 'text-brand-turquoise bg-white/10' : ''}`}
                 onClick={(e) => {
@@ -151,7 +151,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             onMouseLeave={handleMouseLeave}
           >
             <button
-              className={`group relative text-xs font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 ${
+              className={`group relative text-xs sm:text-sm font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-turquoise after:transition-all after:duration-300 ${
                 activeDropdown === "MORE" && isMobile ? 'text-brand-turquoise bg-white/10' : 'text-white hover:text-brand-turquoise hover:bg-white/5'
               }`}
               onClick={(e) => {
