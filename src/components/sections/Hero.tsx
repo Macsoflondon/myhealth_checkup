@@ -124,7 +124,7 @@ const Hero = () => {
           }}
         >
           <img 
-            src="/lovable-uploads/hero-bg-pink-tubes.jpg"
+            src="/lovable-uploads/hero-bg-new.jpg"
             alt=""
             className="w-full h-[120%] object-cover"
             loading="lazy"
