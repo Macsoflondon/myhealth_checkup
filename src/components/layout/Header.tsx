@@ -55,12 +55,12 @@ const Header = ({
   }
   // Toolbar always sticky
   const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
-  const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[10px] border-b border-white/20", styles.toolbar);
+  const toolbarClasses = cn("bg-brand-navy my-0 mx-0 px-0 py-[6px] border-b border-white/20", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-brand-navy px-4 lg:px-8">
-          <div className="relative flex items-center justify-between py-2">
+          <div className="relative flex items-center justify-between py-1">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
               <img alt="myhealth checkup" className="h-28 lg:h-32 xl:h-36 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
