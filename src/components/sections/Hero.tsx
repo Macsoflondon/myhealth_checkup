@@ -1,6 +1,6 @@
 // Hero component with fullscreen video
 import { Button } from "@/components/ui/button";
-import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Bot, Loader2 } from "lucide-react";
+import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Loader2 } from "lucide-react";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -78,14 +78,11 @@ const Hero = () => {
     name: t('hero.maleHormoneTest'),
     route: "/test/male-hormones"
   }, {
+    name: "Female Hormone Test",
+    route: "/test/female-hormones"
+  }, {
     name: t('hero.vitaminDTest'),
     route: "/test/vitamin-d"
-  }, {
-    name: t('hero.ironProfile'),
-    route: "/test/iron-profile"
-  }, {
-    name: t('hero.wellWomanTest'),
-    route: "/test/well-woman"
   }], [t]);
   return <>
       {/* Hero Video Section */}
@@ -127,50 +124,40 @@ const Hero = () => {
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
           <div className="relative z-10 w-full py-4 sm:py-6 md:py-8 lg:py-10">
-          <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12 [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]">
-            {/* Trust Indicators - Mobile optimized */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6 max-w-4xl mx-auto">
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-turquoise cursor-pointer">
-                <CheckCircle2 className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
+          <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Trust Indicators - Mobile optimized, 25% smaller */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-3xl mx-auto">
+              <div className="rounded-lg p-1.5 sm:p-2 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1 sm:gap-1.5 min-h-[45px] sm:min-h-[60px] hover-glow-turquoise cursor-pointer">
+                <CheckCircle2 className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
               </div>
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-turquoise cursor-pointer">
-                <Shield className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
+              <div className="rounded-lg p-1.5 sm:p-2 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1 sm:gap-1.5 min-h-[45px] sm:min-h-[60px] hover-glow-turquoise cursor-pointer">
+                <Shield className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
               </div>
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-pink cursor-pointer">
-                <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
+              <div className="rounded-lg p-1.5 sm:p-2 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1 sm:gap-1.5 min-h-[45px] sm:min-h-[60px] hover-glow-pink cursor-pointer">
+                <MapPin className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
               </div>
-              <div className="rounded-lg p-2 sm:p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1.5 sm:gap-2 min-h-[60px] sm:min-h-[80px] hover-glow-pink cursor-pointer">
-                <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-health-success shrink-0" aria-hidden="true" />
-                <span className="text-center text-[10px] sm:text-sm font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
+              <div className="rounded-lg p-1.5 sm:p-2 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-1 sm:gap-1.5 min-h-[45px] sm:min-h-[60px] hover-glow-pink cursor-pointer">
+                <Clock className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
               </div>
             </div>
 
             {/* Search Section */}
             <div className="max-w-4xl mx-auto mb-4 sm:mb-6">
               <div className="rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-xl bg-white">
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
-                    <input type="text" placeholder="Search from over 200 tests" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
-                  </div>
-                  <Button onClick={handleSearch} disabled={isAnalyzing} size="lg" className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-white rounded-lg sm:rounded-xl transition-all duration-200 active:scale-95 min-h-[44px] bg-[#22c0d4] hover:bg-[#1aa8ba] hover:shadow-lg hover:scale-105 font-medium">
-                    {isAnalyzing ? <>
-                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
-                        {t('hero.analyzing')}
-                      </> : <>
-                        <Bot className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                        {t('hero.startSearch')}
-                      </>}
-                  </Button>
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
+                  <input type="text" placeholder="Search from over 200 tests" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 sm:pl-14 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
+                  {isAnalyzing && <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 animate-spin text-health-primary" />}
                 </div>
                 
                 {/* AI Results */}
                 {aiResults && <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <Bot className="w-5 h-5 text-blue-600" />
+                      <Search className="w-5 h-5 text-blue-600" />
                       <h3 className="font-semibold text-blue-800">{t('hero.aiAnalysisResults')}</h3>
                     </div>
                     
@@ -207,7 +194,7 @@ const Hero = () => {
                 <div className="mt-3 sm:mt-4">
                   <p className="text-xs sm:text-sm text-[#081129] mb-2 font-semibold">{t('hero.popularSearches')}</p>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-                    {popularSearches.slice(0, 3).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white hover:scale-105 rounded-full transition-all duration-200 text-[#081129] active:scale-95 hover:shadow-md">
+                    {popularSearches.slice(0, 4).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white hover:scale-105 rounded-full transition-all duration-200 text-[#081129] active:scale-95 hover:shadow-md">
                         {search.name}
                       </button>)}
                   </div>
