@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -79,6 +79,8 @@ const ClinicFinder = () => {
   const [radiusFilter, setRadiusFilter] = useState<string>("all");
   const [providerFilter, setProviderFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
+  const [mapKey, setMapKey] = useState(0); // Key to force map remount if needed
+  const mapInitialized = useRef(false);
   const { toast } = useToast();
 
   // Load all clinics on mount
@@ -372,10 +374,12 @@ const ClinicFinder = () => {
               </div>
             ) : (
               <RMapContainer
+                key={`clinic-map-${mapKey}`}
                 center={mapCenter}
                 zoom={userLocation ? 12 : DEFAULT_ZOOM}
                 className="h-full w-full"
                 scrollWheelZoom={true}
+                whenReady={() => { mapInitialized.current = true; }}
               >
                 <RTileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -1,8 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
+
+// Type casting for react-leaflet compatibility
+const RMapContainer = MapContainer as any;
+const RTileLayer = TileLayer as any;
+const RMarker = Marker as any;
 import { MapPin, Search, Droplets, Navigation, Phone, Clock, FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -241,20 +246,18 @@ const LocationsPage = () => {
               style={{ height: "400px" }}
             >
               {!loading && (
-                <MapContainer
-                  // @ts-ignore
+                <RMapContainer
+                  key={`locations-map-${center[0]}-${center[1]}`}
                   center={center}
                   zoom={mapZoom}
                   style={{ height: "100%", width: "100%" }}
                 >
-                  <TileLayer
-                    // @ts-ignore
+                  <RTileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   <MarkerClusterGroup>
                     {sortedClinics.map((clinic) => (
-                      <Marker
-                        // @ts-ignore
+                      <RMarker
                         key={clinic.id}
                         position={[clinic.latitude, clinic.longitude]}
                       >
@@ -271,10 +274,10 @@ const LocationsPage = () => {
                             )}
                           </div>
                         </Popup>
-                      </Marker>
+                      </RMarker>
                     ))}
                   </MarkerClusterGroup>
-                </MapContainer>
+                </RMapContainer>
               )}
             </div>
           </div>
