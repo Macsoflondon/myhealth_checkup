@@ -1,18 +1,12 @@
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import UKASBanner from "@/components/UKASBanner";
-import CookieConsent from "@/components/compliance/CookieConsent";
+import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 // New streamlined sections
 import Hero from "@/components/sections/Hero";
-
-
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
-
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
@@ -51,8 +45,10 @@ const Index = () => {
       "closes": "23:59"
     }
   };
-  return <ErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-white">
+
+  return (
+    <ErrorBoundary>
+      <MainLayout>
         <Helmet>
           <title>myhealth checkup - Compare Trusted Private Health Tests Across the UK</title>
           <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use." />
@@ -94,34 +90,26 @@ const Index = () => {
           </script>
         </Helmet>
         
-        <UKASBanner className="bg-primary-foreground" />
-        <Header />
+        {/* 1. Hero Section */}
+        <Hero />
         
-        <main className="flex-1">
-          {/* 1. Hero Section */}
-          <Hero />
-          
-          
-          {/* 3. Trusted Health Comparison Platform */}
-          <TrustPlatformSection className="bg-[#081129]" />
-          
-          
-          {/* 6. Your Health Journey Simplified */}
-          <JourneySimplified />
-          
-          {/* 7. Find a Clinic Near You */}
-          <FindClinicSection />
-          
-          {/* 8. Here to Help */}
-          <HereToHelp />
-          
-          {/* 9. Final CTA */}
-          <FinalCTA />
-        </main>
-          
-        <Footer />
-        <CookieConsent />
-      </div>
-    </ErrorBoundary>;
+        {/* 3. Trusted Health Comparison Platform */}
+        <TrustPlatformSection className="bg-[#081129]" />
+        
+        {/* 6. Your Health Journey Simplified */}
+        <JourneySimplified />
+        
+        {/* 7. Find a Clinic Near You */}
+        <FindClinicSection />
+        
+        {/* 8. Here to Help */}
+        <HereToHelp />
+        
+        {/* 9. Final CTA */}
+        <FinalCTA />
+      </MainLayout>
+    </ErrorBoundary>
+  );
 };
+
 export default Index;
