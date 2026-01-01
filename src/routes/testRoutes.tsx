@@ -27,6 +27,7 @@ import MedichecksTestDetailPage from "@/pages/MedichecksTestDetailPage";
 import ThrivaTestDetailPage from "@/pages/ThrivaTestDetailPage";
 import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
 import TuliHealthTestDetailPage from "@/pages/TuliHealthTestDetailPage";
+import FemaleHormonesTestPage from "@/pages/FemaleHormonesTestPage";
 export const testRoutes = (
   <>
     {/* Category Pages */}
@@ -58,6 +59,7 @@ export const testRoutes = (
     <Route path="/test/iron-profile" element={<IronProfileTestPage />} />
     <Route path="/test/lipid-profile" element={<LipidProfileTestPage />} />
     <Route path="/test/well-woman" element={<WellWomanTestPage />} />
+    <Route path="/test/female-hormones" element={<FemaleHormonesTestPage />} />
     
     {/* Provider Test Detail Pages */}
     <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
