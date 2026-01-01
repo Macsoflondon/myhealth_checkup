@@ -9,7 +9,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 // New streamlined sections
 import Hero from "@/components/sections/Hero";
-import MissionSection from "@/components/sections/MissionSection";
+
 
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 
@@ -101,8 +101,6 @@ const Index = () => {
           {/* 1. Hero Section */}
           <Hero />
           
-          {/* 2. Mission + Accreditation Cards (Combined) */}
-          <MissionSection />
           
           {/* 3. Trusted Health Comparison Platform */}
           <TrustPlatformSection className="bg-[#081129]" />

@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import AccreditationLogos from "@/components/sections/AccreditationLogos";
 import PartnersGrid from "@/components/sections/PartnersGrid";
+import MissionSection from "@/components/sections/MissionSection";
 import { logger } from "@/lib/logger";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 const Hero = () => {
@@ -109,6 +110,8 @@ const Hero = () => {
         </div>
       </section>
       
+      {/* Mission Section */}
+      <MissionSection />
       
       {/* Background wrapper for pink tubes image - extends through search section */}
       <div className="relative w-full overflow-hidden">
