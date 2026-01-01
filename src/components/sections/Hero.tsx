@@ -127,20 +127,20 @@ const Hero = () => {
           <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12">
             {/* Trust Indicators - Mobile optimized, 25% smaller */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-3xl mx-auto">
-              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-turquoise cursor-pointer">
-                <CheckCircle2 className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-turquoise cursor-pointer">
+                <CheckCircle2 className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
               </div>
-              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-turquoise cursor-pointer">
-                <Shield className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-turquoise cursor-pointer">
+                <Shield className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
               </div>
-              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-pink cursor-pointer">
-                <MapPin className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-pink cursor-pointer">
+                <MapPin className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
               </div>
-              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-pink cursor-pointer">
-                <Clock className="w-3 h-3 sm:w-5 sm:h-5 text-health-success shrink-0" aria-hidden="true" />
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-pink cursor-pointer">
+                <Clock className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
                 <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
               </div>
             </div>
