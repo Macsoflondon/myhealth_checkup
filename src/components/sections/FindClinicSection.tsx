@@ -22,9 +22,11 @@ const FindClinicSection = () => {
           </div>
 
           {/* Heading */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center mb-4 sm:mb-6 px-2">
-            <span className="text-[#081129] block">Find a Clinic</span>
-            <span className="gradient-heading-accent block">Near You</span>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6 px-2">
+            Find a Clinic{" "}
+            <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">
+              Near You
+            </span>
           </h2>
 
           <p className="text-center text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-10 max-w-2xl mx-auto px-2">

@@ -27,8 +27,10 @@ const JourneySimplified = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-[#081129] mb-4">
-            <span className="block">Your Health Journey</span>
-            <span className="gradient-heading-accent">Simplified</span>
+            Your Health Journey{" "}
+            <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">
+              Simplified
+            </span>
           </h2>
           <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
             Finding the right health test shouldn't be complicated. We've made it simple in three easy steps.
