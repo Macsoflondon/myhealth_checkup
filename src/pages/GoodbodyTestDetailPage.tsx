@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { 
@@ -13,10 +13,17 @@ import {
   CheckCircle2, 
   Clock,
   Droplets,
-  Building2
+  Building2,
+  FlaskConical,
+  Users,
+  Stethoscope,
+  ExternalLink
 } from "lucide-react";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
 import TestBreadcrumb from "@/components/common/TestBreadcrumb";
+import PageHeading from "@/components/ui/page-heading";
+import { getGoodbodyTestByName, GoodbodyTestDetail } from "@/data/goodbodyTestDetails";
+import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 
 const GoodbodyTestDetailPage = () => {
   const { testId } = useParams<{ testId: string }>();
@@ -57,8 +64,23 @@ const GoodbodyTestDetailPage = () => {
     );
   }
 
-  const pageTitle = `${test.test_name} - GoodBody Clinic | Blood Test London`;
-  const pageDescription = `${test.description} Book your ${test.test_name} at GoodBody Clinic pharmacy locations across London. Professional venous blood collection with UKAS-accredited lab analysis. Price: £${test.price}`;
+  // Get rich content from our data file
+  const testDetails: GoodbodyTestDetail | undefined = getGoodbodyTestByName(test.test_name);
+  
+  // Build booking URL with UTM tracking
+  const bookingUrl = buildProviderBookingUrl(
+    testDetails?.goodbodyUrl || test.url || "https://health.goodbodyclinic.com",
+    "goodbody-clinic",
+    test.test_name
+  );
+
+  // Parse biomarkers from rich content or database
+  const biomarkers = testDetails?.biomarkers || 
+    (test.biomarkers_list ? (Array.isArray(test.biomarkers_list) ? test.biomarkers_list : []) : []);
+
+  const pageTitle = `${test.test_name} - GoodBody Clinic | Blood Test UK`;
+  const pageDescription = testDetails?.description || 
+    `${test.description} Book your ${test.test_name} at GoodBody Clinic pharmacy locations across the UK. Professional venous blood collection with UKAS-accredited lab analysis. Price: £${test.price}`;
 
   return (
     <>
@@ -93,14 +115,21 @@ const GoodbodyTestDetailPage = () => {
                 <CardContent className="p-8">
                   <div className="flex items-start justify-between mb-6">
                     <div className="flex-1">
-                      <Badge className="mb-3 bg-[#3A5F85] hover:bg-[#3A5F85]/90">
-                        {test.category}
+                      <Badge className="mb-3 bg-primary hover:bg-primary/90">
+                        {test.category || testDetails?.category}
                       </Badge>
-                      <h1 className="text-4xl font-bold mb-4">{test.test_name}</h1>
-                      <p className="text-lg text-muted-foreground">{test.description}</p>
+                      <PageHeading 
+                        title={test.test_name}
+                        accent={testDetails?.headline || "Blood Test"}
+                        centered={false}
+                        className="text-2xl sm:text-3xl md:text-4xl"
+                      />
+                      <p className="text-lg text-muted-foreground mt-4">
+                        {testDetails?.detailedDescription || test.description}
+                      </p>
                     </div>
                     <img 
-                      src="/lovable-uploads/provider-goodbody-new-v3.png" 
+                      src="/lovable-uploads/provider-goodbody-new-v4.png" 
                       alt="GoodBody Clinic" 
                       className="w-24 h-24 object-contain ml-4"
                     />
@@ -110,35 +139,37 @@ const GoodbodyTestDetailPage = () => {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="flex items-start gap-3">
-                      <Clock className="h-5 w-5 text-[#FA6980] mt-1 flex-shrink-0" />
+                      <Clock className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-semibold mb-1">Turnaround Time</h3>
-                        <p className="text-sm text-muted-foreground">2-3 working days</p>
+                        <p className="text-sm text-muted-foreground">
+                          {testDetails?.turnaround || "2-3 working days"}
+                        </p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                      <Droplets className="h-5 w-5 text-[#FA6980] mt-1 flex-shrink-0" />
+                      <Droplets className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-semibold mb-1">Sample Collection</h3>
                         <p className="text-sm text-muted-foreground">
-                          Venous blood draw at pharmacy clinic
+                          {testDetails?.sampleType || "Venous blood draw at pharmacy clinic"}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                      <MapPin className="h-5 w-5 text-[#FA6980] mt-1 flex-shrink-0" />
+                      <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-semibold mb-1">Location</h3>
                         <p className="text-sm text-muted-foreground">
-                          Multiple pharmacy clinics across London
+                          Multiple pharmacy clinics across the UK
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                      <Building2 className="h-5 w-5 text-[#FA6980] mt-1 flex-shrink-0" />
+                      <Building2 className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                       <div>
                         <h3 className="font-semibold mb-1">Accreditation</h3>
                         <p className="text-sm text-muted-foreground">
@@ -150,22 +181,84 @@ const GoodbodyTestDetailPage = () => {
                 </CardContent>
               </Card>
 
+              {/* Biomarkers Section */}
+              {biomarkers.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FlaskConical className="h-5 w-5 text-primary" />
+                      What&apos;s Tested ({biomarkers.length} Biomarkers)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {biomarkers.map((biomarker: string, index: number) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+                          <span className="text-sm">{biomarker}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Who Should Take This Test */}
+              {testDetails?.whoShouldTake && testDetails.whoShouldTake.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5 text-primary" />
+                      Who Should Take This Test?
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {testDetails.whoShouldTake.map((item, index) => (
+                        <li key={index} className="flex items-start gap-3">
+                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-1" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Preparation Instructions */}
+              {testDetails?.preparation && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Stethoscope className="h-5 w-5 text-primary" />
+                      Preparation Instructions
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{testDetails.preparation}</p>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Key Features */}
-              <Card>
+              <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
                 <CardContent className="p-6">
                   <h2 className="text-2xl font-bold mb-4">Why Choose GoodBody Clinic?</h2>
-                  <div className="space-y-3">
+                  <div className="grid md:grid-cols-2 gap-4">
                     {[
-                      "Professional venous blood collection by trained phlebotomists",
-                      "Convenient pharmacy locations across London",
-                      "UKAS-accredited laboratory analysis",
-                      "Walk-in or pre-booked appointments",
-                      "Fast 2-3 day turnaround for most tests",
-                      "Clear, detailed results with clinical guidance"
+                      { title: "Professional Blood Collection", desc: "Trained phlebotomists at all locations" },
+                      { title: "Convenient Pharmacy Locations", desc: "Clinics across the UK" },
+                      { title: "UKAS-Accredited Analysis", desc: "ISO 15189 certified laboratories" },
+                      { title: "Walk-in or Pre-booked", desc: "Flexible appointment options" },
+                      { title: "Fast Turnaround", desc: "Most results within 2-3 working days" },
+                      { title: "Expert Guidance", desc: "Clear results with clinical interpretation" }
                     ].map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <CheckCircle2 className="h-5 w-5 text-[#FA6980] mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
+                        <CheckCircle2 className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="font-medium">{feature.title}</p>
+                          <p className="text-sm text-muted-foreground">{feature.desc}</p>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -182,11 +275,13 @@ const GoodbodyTestDetailPage = () => {
 
             {/* Right Column - Booking Card */}
             <div className="lg:col-span-1">
-              <Card className="sticky top-24 border-2 border-[#FA6980]/20">
+              <Card className="sticky top-24 border-2 border-primary/20 shadow-lg">
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
                     <p className="text-sm text-muted-foreground mb-2">Test Price</p>
-                    <p className="text-5xl font-bold text-[#FA6980]">£{test.price}</p>
+                    <p className="text-5xl font-bold text-primary">
+                      £{test.price || testDetails?.price || "N/A"}
+                    </p>
                     <p className="text-sm text-muted-foreground mt-2">
                       Price includes clinic visit and lab analysis
                     </p>
@@ -194,17 +289,18 @@ const GoodbodyTestDetailPage = () => {
 
                   <div className="space-y-3">
                     <Button 
-                      className="w-full bg-[#FA6980] hover:bg-[#FA6980]/90 text-white"
+                      className="w-full"
                       size="lg"
+                      variant="gradient"
                       asChild
                     >
                       <a 
-                        href={test.url || "https://goodbody.co.uk"}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={bookingUrl}
+                        {...externalLinkProps}
                       >
                         <Calendar className="mr-2 h-5 w-5" />
-                        Book Appointment
+                        Book on GoodBody
+                        <ExternalLink className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
 
@@ -213,7 +309,7 @@ const GoodbodyTestDetailPage = () => {
                       className="w-full"
                       asChild
                     >
-                      <Link to="/find-clinic">
+                      <Link to="/find-a-clinic?provider=goodbody-clinic">
                         <MapPin className="mr-2 h-4 w-4" />
                         Find Nearest Clinic
                       </Link>
@@ -224,28 +320,36 @@ const GoodbodyTestDetailPage = () => {
 
                   <div className="space-y-4 text-sm">
                     <div>
-                      <h3 className="font-semibold mb-2">What's Included:</h3>
+                      <h3 className="font-semibold mb-2">What&apos;s Included:</h3>
                       <ul className="space-y-2 text-muted-foreground">
                         <li className="flex items-start gap-2">
-                          <span className="text-[#FA6980]">•</span>
+                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                           Professional blood collection
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-[#FA6980]">•</span>
+                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                           UKAS-accredited lab analysis
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-[#FA6980]">•</span>
+                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                           Detailed results report
                         </li>
                         <li className="flex items-start gap-2">
-                          <span className="text-[#FA6980]">•</span>
+                          <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                           Clinical interpretation guide
                         </li>
                       </ul>
                     </div>
 
-                    <div className="bg-accent/50 p-4 rounded-lg">
+                    {test.phlebotomy_included === false && test.phlebotomy_cost && (
+                      <div className="bg-muted/50 rounded-lg p-3">
+                        <p className="text-muted-foreground">
+                          <strong>Note:</strong> Phlebotomy (blood draw) costs an additional £{test.phlebotomy_cost}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="bg-accent/20 p-4 rounded-lg">
                       <p className="font-semibold mb-2">Need Help Choosing?</p>
                       <p className="text-muted-foreground mb-3">
                         Contact GoodBody Clinic for expert advice on which test is right for you.
