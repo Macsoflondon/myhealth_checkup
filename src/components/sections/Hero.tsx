@@ -147,10 +147,10 @@ const Hero = () => {
 
             {/* Search Section */}
             <div className="max-w-4xl mx-auto mb-4 sm:mb-6">
-              <div className="rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-xl bg-white">
+              <div className="rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-xl bg-white">
                 <div className="flex-1 relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
-                  <input type="text" placeholder="Search from over 200 tests" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-12 sm:pl-14 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
+                  <input type="text" placeholder="Search from over 200 tests" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-14 sm:pl-16 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
                   {isAnalyzing && <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 animate-spin text-health-primary" />}
                 </div>
                 
