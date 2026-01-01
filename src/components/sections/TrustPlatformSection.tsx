@@ -21,7 +21,7 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
   }];
   
   return (
-    <section className={cn("py-12 sm:py-16 md:py-20 bg-[#081129]", className)}>
+    <section className={cn("pt-12 pb-8 sm:pt-16 sm:pb-12 md:pt-20 md:pb-16 bg-[#081129]", className)}>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-10 sm:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-4">
