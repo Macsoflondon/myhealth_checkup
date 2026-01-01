@@ -21,7 +21,8 @@ import {
   MapPin, 
   Shield, 
   ChevronRight,
-  Building2
+  Building2,
+  BarChart3
 } from "lucide-react";
 
 interface ProviderStats {
@@ -101,6 +102,14 @@ export default function AllProvidersPage() {
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Browse blood tests and health screenings from UKAS-accredited laboratories and CQC-registered clinics
           </p>
+          <div className="mt-6">
+            <Button asChild size="lg" variant="outline" className="gap-2">
+              <Link to="/providers/compare">
+                <BarChart3 className="h-5 w-5" />
+                Compare Providers Side-by-Side
+              </Link>
+            </Button>
+          </div>
           
           {/* Summary Stats */}
           <div className="flex flex-wrap justify-center gap-6 mt-8">
