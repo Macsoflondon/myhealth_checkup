@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 const FindClinicSection = () => {
   const stats = [
-    { value: "500+", label: "Clinic Locations" },
-    { value: "8+", label: "Partner Networks" },
+    { value: "200+", label: "Clinic Locations" },
+    { value: "7+", label: "Partner Networks" },
     { value: "UK-wide", label: "Coverage" }
   ];
 
@@ -36,7 +36,11 @@ const FindClinicSection = () => {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-10">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center p-2 sm:p-4 rounded-lg sm:rounded-xl border border-gray-100">
+              <div 
+                key={index} 
+                className="text-center p-2 sm:p-4 rounded-lg sm:rounded-xl border-2 border-[#22c0d4]/30 hover:border-[#22c0d4] hover:shadow-lg hover:scale-105 transition-all duration-300 animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <div className="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-[#22c0d4]">
                   {stat.value}
                 </div>
