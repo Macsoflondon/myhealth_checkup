@@ -132,7 +132,7 @@ const Hero = () => {
         </div>
         
         {/* Lighter overlay for better background visibility */}
-        <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
+        <div className="absolute inset-0 bg-[#081129]/35 z-[1]" />
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
