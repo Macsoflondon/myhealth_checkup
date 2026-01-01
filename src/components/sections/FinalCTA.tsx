@@ -29,11 +29,10 @@ const FinalCTA = () => {
             <Button 
               asChild 
               size="lg" 
-              className="bg-[#22c0d4] text-white hover:bg-[#e70d69] px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-elevation-2 hover:shadow-elevation-4"
+              className="bg-[#22c0d4] text-white hover:bg-[#e70d69] border-2 border-[#081129] px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-elevation-2 hover:shadow-elevation-4"
             >
               <Link to="/compare">
                 Compare tests
-                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
             </Button>
             <Button 
