@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 interface Testimonial {
   name: string;
   role: string;
@@ -47,8 +48,11 @@ const Testimonials = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">What Our Customers Say</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg font-elegant italic">
+          <SectionHeading 
+            title="What Our Customers" 
+            gradientText="Say" 
+          />
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg font-elegant italic mt-4">
             Real stories from people who've taken control of their health with our testing services.
           </p>
         </div>

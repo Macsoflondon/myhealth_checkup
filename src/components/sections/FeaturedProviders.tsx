@@ -6,6 +6,7 @@ import { ProviderLogo } from "@/components/ProviderLogo";
 import { Link } from "react-router-dom";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
@@ -79,8 +80,11 @@ const FeaturedProviders = () => {
     <section id="providers" className="bg-white py-16 md:py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">Featured Partners</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <SectionHeading 
+            title="Featured" 
+            gradientText="Partners" 
+          />
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
             Accredited health testing providers with proven track records
           </p>
         </div>

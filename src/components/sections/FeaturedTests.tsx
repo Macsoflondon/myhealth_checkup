@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Home, Activity, Building } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 interface TestCardProps {
   title: string;
   description: string;
@@ -116,10 +117,11 @@ const FeaturedTests = () => {
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-            Featured Health Tests
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <SectionHeading 
+            title="Featured" 
+            gradientText="Health Tests" 
+          />
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
             Our most popular comprehensive health screenings, trusted by thousands of customers
           </p>
         </div>
