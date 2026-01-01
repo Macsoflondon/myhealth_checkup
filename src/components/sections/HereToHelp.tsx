@@ -36,11 +36,9 @@ const HereToHelp = () => {
           </div>
 
           {/* Heading */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6 px-2">
-            You're Never Alone on Your{" "}
-            <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent block">
-              Health Journey
-            </span>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-center mb-4 sm:mb-6 px-2">
+            <span className="text-[#081129] block">You're Never Alone on Your</span>
+            <span className="gradient-heading-accent block">Health Journey</span>
           </h2>
 
           <p className="text-center text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-8 sm:mb-12 max-w-2xl mx-auto px-2">
