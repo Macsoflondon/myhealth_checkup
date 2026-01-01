@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
-import PageHeading from '@/components/ui/page-heading';
+import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -103,19 +103,13 @@ const ContactPage = () => {
       <UKASBanner />
       <Header />
       <main className="flex-grow bg-muted/30">
-        <div className="container mx-auto px-4 py-12 bg-[hsl(var(--navy))]">
+        <HeroSection 
+          title="Contact" 
+          accent="Us"
+          subtitle="We're here to help with any questions about health testing or our platform"
+        />
+        <div className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <PageHeading 
-                title="Contact" 
-                accent="Us" 
-                className="[&_span]:text-white mb-6"
-              />
-              <p className="text-xl max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
-                We're here to help with any questions about health testing or our platform
-              </p>
-            </div>
-
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
               <Card>
