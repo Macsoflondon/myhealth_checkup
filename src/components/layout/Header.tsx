@@ -21,15 +21,28 @@ const Header = ({
   className
 }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const location = useLocation();
   const isMobile = useIsMobile();
+
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
+
   useEffect(() => {
     // Close mobile menu when route changes
     setIsMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Toolbar becomes sticky after scrolling past ~120px (header height)
+      setIsToolbarSticky(window.scrollY > 120);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   if (isMobile) {
     return <ErrorBoundary>
         <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md", className)}>
@@ -80,7 +93,14 @@ const Header = ({
         </div>
 
         {/* Bottom row - Navigation Menu (Toolbar) - Sticky */}
-        <div className={cn(toolbarClasses, "sticky top-0 z-50")} style={{ overflow: 'visible' }}>
+        <div 
+          className={cn(
+            toolbarClasses, 
+            "sticky top-0 z-50 transition-all duration-300",
+            isToolbarSticky && "shadow-lg animate-fade-in"
+          )} 
+          style={{ overflow: 'visible' }}
+        >
           <div className="flex items-center justify-center px-2 sm:px-4 lg:px-16 w-full" style={{ overflow: 'visible' }}>
             <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
           </div>
