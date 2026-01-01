@@ -84,7 +84,7 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-white px-4 lg:px-8 xl:px-12">
+        <div className="bg-brand-navy px-4 lg:px-8 xl:px-12">
           <div className="relative flex items-center justify-between py-2 lg:py-3">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
