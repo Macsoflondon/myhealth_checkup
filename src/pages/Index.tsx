@@ -106,7 +106,7 @@ const Index = () => {
         <FinalCTA />
         
         {/* 6. Trusted Health Comparison Platform - Above Footer */}
-        <TrustPlatformSection className="bg-[#081129]" />
+        <TrustPlatformSection />
       </MainLayout>
     </ErrorBoundary>
   );
