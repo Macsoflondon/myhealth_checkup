@@ -123,15 +123,12 @@ const Hero = () => {
             transition: 'transform 0.1s ease-out'
           }}
         >
-          <picture>
-            <source srcSet="/lovable-uploads/hero-bg-pink-tubes.webp" type="image/webp" />
-            <img 
-              src="/lovable-uploads/hero-bg-pink-tubes.jpeg"
-              alt=""
-              className="w-full h-[120%] object-cover"
-              loading="lazy"
-            />
-          </picture>
+          <img 
+            src="/lovable-uploads/hero-bg-pink-tubes.jpg"
+            alt=""
+            className="w-full h-[120%] object-cover"
+            loading="lazy"
+          />
         </div>
         
         {/* Lighter overlay for better background visibility */}
