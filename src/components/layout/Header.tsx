@@ -51,10 +51,19 @@ const Header = ({
             <Link to="/" className="flex items-center flex-shrink-0">
               <img 
                 alt="myhealth checkup" 
-                className="h-14 sm:h-16 w-auto object-contain" 
+                className="h-12 sm:h-14 w-auto object-contain" 
                 src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" 
               />
             </Link>
+
+            {/* Tagline banner - mobile */}
+            <div className="flex-1 flex justify-center px-2">
+              <img 
+                alt="Your health. Your choice. One trusted platform." 
+                className="h-10 sm:h-12 w-auto object-contain" 
+                src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" 
+              />
+            </div>
 
             {/* Navigation controls */}
             <nav className="flex items-center gap-1" aria-label="User controls">
@@ -75,20 +84,20 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-brand-navy px-3 lg:px-6">
-          <div className="relative flex items-center justify-between py-0">
+        <div className="bg-brand-navy px-4 lg:px-8 xl:px-12">
+          <div className="relative flex items-center justify-between py-2 lg:py-3">
             {/* Left: Logo */}
-            <Link to="/" className="flex items-center gap-2 flex-shrink-0 ml-4 lg:ml-6">
-              <img alt="myhealth checkup" className="h-44 lg:h-48 xl:h-52 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+              <img alt="myhealth checkup" className="h-36 lg:h-40 xl:h-44 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
             </Link>
 
             {/* Center: Tagline banner image */}
             <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <img alt="Your health. Your choice. One trusted platform." className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
+              <img alt="Your health. Your choice. One trusted platform." className="h-64 lg:h-72 xl:h-80 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
             {/* Right: Controls */}
-            <nav className="flex items-center gap-2" aria-label="User controls">
+            <nav className="flex items-center gap-3" aria-label="User controls">
               <LanguageSwitcher />
               <UserMenu />
             </nav>
