@@ -12,7 +12,7 @@ import Hero from "@/components/sections/Hero";
 import MissionSection from "@/components/sections/MissionSection";
 
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
-import PartnersGrid from "@/components/sections/PartnersGrid";
+
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
@@ -107,8 +107,6 @@ const Index = () => {
           {/* 3. Trusted Health Comparison Platform */}
           <TrustPlatformSection className="bg-[#081129]" />
           
-          {/* 5. Partners Grid */}
-          <PartnersGrid />
           
           {/* 6. Your Health Journey Simplified */}
           <JourneySimplified />

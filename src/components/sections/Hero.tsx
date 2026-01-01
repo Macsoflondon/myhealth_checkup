@@ -7,10 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 import AccreditationLogos from "@/components/sections/AccreditationLogos";
+import PartnersGrid from "@/components/sections/PartnersGrid";
 import { logger } from "@/lib/logger";
-import { providers } from "@/constants/providers";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 const Hero = () => {
   const {
@@ -249,28 +247,8 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Our Partners Section */}
-      <section className="w-full bg-gray-50 py-4 sm:py-6">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-center text-[#081129] mb-4 sm:mb-6">
-            {t('hero.ourPartners')}
-          </h2>
-          <Carousel opts={{
-          align: "start",
-          loop: true
-        }} plugins={[Autoplay({
-          delay: 3000
-        }) as any]} className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
-              {providers.map(provider => <CarouselItem key={provider.id} className="basis-full xs:basis-1/2 sm:basis-1/3 md:basis-1/4">
-                  <div className="bg-white rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center h-32 sm:h-40">
-                    <img src={provider.logo} alt={`${provider.name} logo`} className="h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto" loading="lazy" />
-                  </div>
-                </CarouselItem>)}
-            </CarouselContent>
-          </Carousel>
-        </div>
-      </section>
+      {/* Our Trusted Partners Section */}
+      <PartnersGrid />
       
       {/* Full-width Text Banner Divider */}
       <section className="w-full py-4 sm:py-6 md:py-8 bg-[#081129] relative overflow-hidden">
