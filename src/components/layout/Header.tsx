@@ -10,7 +10,6 @@ import { MobileMenu } from "../header/MobileMenu";
 import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
-import AccreditationBanner from "../header/AccreditationBanner";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
 import headerTaglineBanner from "@/assets/header-tagline-banner.png";
@@ -49,11 +48,6 @@ const Header = ({
             </nav>
           </div>
           
-          {/* Mobile Accreditation Banner */}
-          <div className="bg-brand-navy/95 border-t border-white/10 py-1.5">
-            <AccreditationBanner compact />
-          </div>
-          
           {/* Mobile Navigation Drawer */}
           <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </header>
@@ -72,9 +66,9 @@ const Header = ({
               <img alt="myhealth checkup" className="h-28 lg:h-32 xl:h-36 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
             </Link>
 
-            {/* Center: Accreditation badges */}
+            {/* Center: Tagline banner image */}
             <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
-              <AccreditationBanner />
+              <img alt="Your health. Your choice. One trusted platform." className="h-72 lg:h-80 xl:h-96 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
             </div>
 
             {/* Right: Controls */}
