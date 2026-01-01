@@ -10,6 +10,7 @@ import { useGeocoding } from "@/hooks/useGeocoding";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { filterAndSortClinics } from "@/utils/clinicFilters";
 import { DISTANCE_CONFIG } from "@/constants/config";
+import { SectionHeading } from "@/components/ui/section-heading";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -120,10 +121,11 @@ const NationwideClinics = () => {
 
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto px-4">
-          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Our clinic locations
-          </h2>
-          <p className="text-lg sm:text-xl text-muted-foreground mb-6">
+          <SectionHeading 
+            title="Our Clinic" 
+            gradientText="Locations" 
+          />
+          <p className="text-lg sm:text-xl text-muted-foreground mb-6 mt-4">
             We have hundreds of locations across the UK, providing convenient, 
             local appointments for customers just like you.
           </p>

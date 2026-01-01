@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Navigation, List, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { SectionHeading } from "@/components/ui/section-heading";
 const FindClinicSection = () => {
   const stats = [
     { value: "200+", label: "Clinic Locations" },
@@ -22,14 +22,10 @@ const FindClinicSection = () => {
           </div>
 
           {/* Heading */}
-          <div className="text-center mb-4 sm:mb-6">
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] mb-2">
-              Find a Clinic
-            </h1>
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent inline-block" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Near You
-            </h2>
-          </div>
+          <SectionHeading 
+            title="Find a Clinic" 
+            gradientText="Near You" 
+          />
 
           <p className="text-center text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-10 max-w-2xl mx-auto px-2">
             With over 500 partner clinic locations across the UK, getting a blood test has never been more convenient.
