@@ -113,26 +113,8 @@ const Hero = () => {
       {/* Mission Section */}
       <MissionSection />
       
-      {/* Background wrapper for pink tubes image - extends through search section */}
-      <div className="relative w-full overflow-hidden">
-        {/* Pink tubes background with parallax effect */}
-        <div 
-          className="absolute inset-0 z-0 will-change-transform"
-          style={{
-            transform: `translateY(${scrollY * 0.3}px)`,
-            transition: 'transform 0.1s ease-out'
-          }}
-        >
-          <img 
-            src="/lovable-uploads/hero-bg-tubes.jpg"
-            alt=""
-            className="w-full h-[120%] object-cover"
-            loading="lazy"
-          />
-        </div>
-        
-        {/* Lighter overlay for better background visibility */}
-        <div className="absolute inset-0 bg-[#081129]/35 z-[1]" />
+      {/* Background wrapper - solid navy background */}
+      <div className="relative w-full overflow-hidden bg-[#081129]">
         
         {/* Trust Indicators and Search Section */}
         <section className="relative overflow-hidden text-white w-full">
