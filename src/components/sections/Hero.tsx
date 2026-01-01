@@ -111,63 +111,6 @@ const Hero = () => {
         </div>
       </section>
       
-      {/* Mission Section - Clean white background */}
-      <section className="w-full bg-white py-8 sm:py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
-          <ScrollFadeIn delay={100}>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl leading-tight font-heading font-bold text-left mb-6">
-              <span className="text-[#081129]">Your health is your </span>
-              <span className="text-[#22c0d4]">greatest asset</span>
-            </h2>
-          </ScrollFadeIn>
-          <ScrollFadeIn delay={200}>
-            <div className="text-base sm:text-lg text-[#081129] font-sans leading-relaxed space-y-4">
-              <p>
-                At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information. Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
-              </p>
-              <p>
-                We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
-              </p>
-              <p className="font-medium">
-                Our recommendations are based on clinical evidence and reviewed by registered healthcare professionals.
-              </p>
-            </div>
-          </ScrollFadeIn>
-          
-          {/* Trust Indicator Cards - Horizontal scroll */}
-          <ScrollFadeIn delay={300}>
-            <div className="mt-8 flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-              <div className="flex-shrink-0 bg-gray-50 rounded-xl p-4 flex items-center gap-3 min-w-[180px] shadow-sm border border-gray-100">
-                <div className="w-12 h-12 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-[#22c0d4]" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[#081129] text-sm">UKAS Accredited</p>
-                  <p className="text-xs text-gray-500">Labs</p>
-                </div>
-              </div>
-              <div className="flex-shrink-0 bg-gray-50 rounded-xl p-4 flex items-center gap-3 min-w-[180px] shadow-sm border border-gray-100">
-                <div className="w-12 h-12 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center">
-                  <CheckCircle2 className="w-6 h-6 text-[#22c0d4]" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[#081129] text-sm">CQC Regulated</p>
-                  <p className="text-xs text-gray-500">Providers</p>
-                </div>
-              </div>
-              <div className="flex-shrink-0 bg-gray-50 rounded-xl p-4 flex items-center gap-3 min-w-[180px] shadow-sm border border-gray-100">
-                <div className="w-12 h-12 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center">
-                  <Award className="w-6 h-6 text-[#22c0d4]" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[#081129] text-sm">ISO 15189</p>
-                  <p className="text-xs text-gray-500">Certified</p>
-                </div>
-              </div>
-            </div>
-          </ScrollFadeIn>
-        </div>
-      </section>
       
       {/* Background wrapper for pink tubes image - extends through search section */}
       <div className="relative w-full overflow-hidden">
