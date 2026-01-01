@@ -29,20 +29,20 @@ const AccreditationCards = () => {
           {accreditations.map((item, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-2xl p-5 sm:p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group animate-fade-in"
+              className="bg-white rounded-xl p-3 sm:p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 group animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div 
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
                 style={{ backgroundColor: `${item.color}15` }}
               >
                 <item.icon 
-                  className="w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-300" 
+                  className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300" 
                   style={{ color: item.color }}
                 />
               </div>
               <div className="text-left min-w-0">
-                <h3 className="font-heading font-bold text-foreground text-sm sm:text-base md:text-lg leading-tight">
+                <h3 className="font-heading font-bold text-foreground text-xs sm:text-sm leading-tight">
                   {item.title}
                 </h3>
                 <p className="text-muted-foreground font-sans text-xs sm:text-sm mt-0.5">
