@@ -32,21 +32,21 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 max-w-xl mx-auto">
           {features.map((feature, index) => (
             <div 
               key={index} 
               style={{ animationDelay: `${index * 100}ms` }} 
-              className="relative p-5 sm:p-6 bg-white rounded-xl border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group animate-fade-in"
+              className="relative p-2 sm:p-3 bg-white rounded-lg border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group animate-fade-in"
             >
               {/* Icon container with brand turquoise */}
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#22c0d4] flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110">
-                <feature.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#22c0d4] flex items-center justify-center mb-2 transition-transform duration-300 group-hover:scale-110">
+                <feature.icon className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-heading font-semibold mb-3 text-[#081129]">
+              <h3 className="text-xs sm:text-sm font-heading font-semibold mb-1 text-[#081129]">
                 {feature.title}
               </h3>
-              <p className="text-sm sm:text-base leading-relaxed text-gray-600 font-sans">
+              <p className="text-[10px] sm:text-xs leading-relaxed text-gray-600 font-sans">
                 {feature.description}
               </p>
             </div>
