@@ -3,12 +3,6 @@ import { Navigation, List, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 const FindClinicSection = () => {
-  const stats = [
-    { value: "200+", label: "Clinic Locations" },
-    { value: "7+", label: "Partner Networks" },
-    { value: "UK-wide", label: "Coverage" }
-  ];
-
   return (
     <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
@@ -22,24 +16,6 @@ const FindClinicSection = () => {
           <p className="text-center text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-10 max-w-2xl mx-auto px-2">
             With over 500 partner clinic locations across the UK, getting a blood test has never been more convenient.
           </p>
-
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8 sm:mb-10">
-            {stats.map((stat, index) => (
-              <div 
-                key={index} 
-                className="text-center p-2 sm:p-4 rounded-lg sm:rounded-xl border-2 border-[#22c0d4]/30 hover:border-[#22c0d4] hover:shadow-lg hover:scale-105 transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="text-lg sm:text-2xl md:text-3xl font-heading font-bold text-[#22c0d4]">
-                  {stat.value}
-                </div>
-                <div className="text-[10px] sm:text-sm text-gray-600 font-sans mt-0.5 sm:mt-1">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-2">
