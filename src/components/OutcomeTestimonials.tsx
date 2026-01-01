@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const OutcomeTestimonials = () => {
   const testimonials = [
@@ -68,9 +69,11 @@ const OutcomeTestimonials = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-4">
-            Results That <span className="text-[#e70d69]">Change Lives</span>
-          </h2>
+          <SectionHeading 
+            title="Results That" 
+            gradientText="Change Lives" 
+            className="mb-4"
+          />
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto font-elegant italic">
             Real people, real results. See how private testing helped them take control
           </p>

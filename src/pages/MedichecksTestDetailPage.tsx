@@ -10,6 +10,7 @@ import { CheckCircle2, Clock, Home, Building2, ArrowLeft, ExternalLink } from "l
 import { Skeleton } from "@/components/ui/skeleton";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
 import TestBreadcrumb from "@/components/common/TestBreadcrumb";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 interface MedichecksTest {
   id: string;
@@ -303,7 +304,11 @@ export default function MedichecksTestDetailPage() {
           </div>
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="py-8 text-center">
-              <h2 className="text-2xl font-bold mb-4">Ready to Take Control of Your Health?</h2>
+              <SectionHeading 
+                title="Ready to Take Control" 
+                gradientText="of Your Health?" 
+                className="mb-4"
+              />
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
                 Book your {test.test_name} with Medichecks today and get doctor-reviewed results 
                 in just 2 working days. Join over 90,000 satisfied customers who trust Medichecks 
