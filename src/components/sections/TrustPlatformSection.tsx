@@ -21,13 +21,13 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
   }];
   
   return (
-    <section className={cn("py-6 sm:py-8 md:py-10 bg-[#081129]", className)}>
+    <section className={cn("py-6 sm:py-8 md:py-10 bg-white", className)}>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-4 sm:mb-5 md:mb-6">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-white mb-2 sm:mb-3">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-[#081129] mb-2 sm:mb-3">
             Trusted Health Comparison Platform
           </h2>
-          <p className="text-gray-300 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+          <p className="text-gray-600 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Built on principles of transparency, clinical accuracy, and unwavering quality standards.
           </p>
         </div>
@@ -37,7 +37,7 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
             <div 
               key={index} 
               style={{ animationDelay: `${index * 100}ms` }} 
-              className="relative p-2 sm:p-3 bg-white rounded-lg border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group animate-fade-in"
+              className="relative p-2 sm:p-3 bg-gray-50 rounded-lg border border-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group animate-fade-in"
             >
               {/* Icon container with brand turquoise */}
               <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#22c0d4] flex items-center justify-center mb-2 transition-transform duration-300 group-hover:scale-110">
