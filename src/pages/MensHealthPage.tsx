@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Shield, Heart, Activity, Users, Zap, TestTube2, Target, Stethoscope } from 'lucide-react';
+import { SectionHeading } from '@/components/ui/section-heading';
 const mensHealthTests = [{
   id: "premium-complete-blood",
   name: "Premium Complete Blood Test",
@@ -184,9 +185,11 @@ const MensHealthPage = () => {
         <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5 bg-white">
           <div className="container mx-auto px-4 bg-white">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-8 text-[#e70d69]">
-                Why Men's Health Testing Matters
-              </h2>
+              <SectionHeading 
+                title="Why Men's Health" 
+                gradientText="Testing Matters" 
+                className="mb-8"
+              />
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg bg-[#e70d69]">
@@ -326,14 +329,15 @@ const MensHealthPage = () => {
         <section className="py-16 bg-[#081129]">
           <div className="container mx-auto px-4 shadow-2xl shadow-white/20">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-white mb-4">
-                  Common Men's Health Concerns
-                </h2>
-                <p className="text-lg text-gray-300">
-                  Find the right test for your specific health concerns
-                </p>
-              </div>
+              <SectionHeading 
+                title="Common Men's Health" 
+                gradientText="Concerns" 
+                titleClassName="text-white"
+                className="mb-8"
+              />
+              <p className="text-lg text-gray-300 text-center mb-8">
+                Find the right test for your specific health concerns
+              </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {healthConcerns.map((concern, index) => <Card key={index} className="border-border bg-white shadow-md">

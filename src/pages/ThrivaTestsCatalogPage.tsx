@@ -18,6 +18,7 @@ import {
   Smartphone,
   Shield
 } from "lucide-react";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const ThrivaTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -205,7 +206,7 @@ const ThrivaTestsCatalogPage = () => {
         <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl font-bold mb-4">About Thriva</h2>
+              <SectionHeading title="About" gradientText="Thriva" className="mb-4" />
               <p className="text-muted-foreground mb-6">
                 Thriva makes health testing simple with at-home finger-prick kits 
                 and an intuitive app to track your results over time. Perfect for 
