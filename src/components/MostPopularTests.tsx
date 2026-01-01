@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Star, TrendingUp, Award, Users, Facebook, Instagram } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import PageHeading from '@/components/ui/page-heading';
+import { SectionHeading } from '@/components/ui/section-heading';
 import cqcLogo from "../assets/compliance/cqc-logo.png";
 import icoLogo from "../assets/compliance/ico-logo.png";
 const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
@@ -143,9 +144,11 @@ const MostPopularTests = () => {
       <section className="bg-white py-12">
         <div className="container mx-auto px-4 my-[10px] py-[10px] bg-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-[#081129] my-[20px] mb-12">
-              Why Choose Popular Tests?
-            </h2>
+            <SectionHeading 
+              title="Why Choose" 
+              gradientText="Popular Tests?" 
+              className="mb-12"
+            />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-[#e70d69] flex items-center justify-center mx-auto mb-4 shadow-lg">
