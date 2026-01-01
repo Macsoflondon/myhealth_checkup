@@ -11,6 +11,11 @@ import ProviderProfilePage from "@/pages/ProviderProfilePage";
 import ProviderTestCatalogPage from "@/pages/ProviderTestCatalogPage";
 import TestDetailPage from "@/pages/TestDetailPage";
 import GoodbodyTestsCatalogPage from "@/pages/GoodbodyTestsCatalogPage";
+import MedichecksTestsCatalogPage from "@/pages/MedichecksTestsCatalogPage";
+import ThrivaTestsCatalogPage from "@/pages/ThrivaTestsCatalogPage";
+import RandoxTestsCatalogPage from "@/pages/RandoxTestsCatalogPage";
+import LolaHealthTestsCatalogPage from "@/pages/LolaHealthTestsCatalogPage";
+import TuliHealthTestsCatalogPage from "@/pages/TuliHealthTestsCatalogPage";
 
 export const featureRoutes = (
   <>
@@ -28,5 +33,10 @@ export const featureRoutes = (
     <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
     <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
     <Route path="/providers/goodbody-clinic" element={<GoodbodyTestsCatalogPage />} />
+    <Route path="/providers/medichecks" element={<MedichecksTestsCatalogPage />} />
+    <Route path="/providers/thriva" element={<ThrivaTestsCatalogPage />} />
+    <Route path="/providers/randox" element={<RandoxTestsCatalogPage />} />
+    <Route path="/providers/lola-health" element={<LolaHealthTestsCatalogPage />} />
+    <Route path="/providers/tuli-health" element={<TuliHealthTestsCatalogPage />} />
   </>
 );
