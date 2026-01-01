@@ -42,7 +42,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 mb-8 sm:mb-10">
           {/* Categories Column */}
           <div>
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-2 sm:space-y-2.5">
               {serviceSections.map((service, index) => (
                 <li key={index}>
                   <Link to={service.link} className="text-white hover:text-[#e70d69] transition-colors text-sm sm:text-base">
@@ -55,7 +55,7 @@ const Footer = () => {
 
           {/* Quick Links Column */}
           <div>
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-2 sm:space-y-2.5">
               {informationSections.map((info, index) => (
                 <li key={index}>
                   <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-sm sm:text-base">
@@ -68,7 +68,7 @@ const Footer = () => {
 
           {/* Legal Column */}
           <div>
-            <ul className="space-y-3 sm:space-y-4">
+            <ul className="space-y-2 sm:space-y-2.5">
               {companySections.map((company, index) => (
                 <li key={index}>
                   <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-sm sm:text-base">
