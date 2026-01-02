@@ -8,6 +8,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import Hero from "@/components/sections/Hero";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import JourneySimplified from "@/components/sections/JourneySimplified";
+import TopConcernsSection from "@/components/sections/TopConcernsSection";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
@@ -96,7 +97,10 @@ const Index = () => {
         {/* 2. Your Health Journey Simplified */}
         <JourneySimplified />
         
-        {/* 3. Find a Clinic Near You */}
+        {/* 3. Comprehensive Care Categories */}
+        <TopConcernsSection />
+        
+        {/* 4. Find a Clinic Near You */}
         <FindClinicSection />
         
         {/* 4. Here to Help */}

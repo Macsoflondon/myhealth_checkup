@@ -23,4 +23,5 @@ export { default as NationwideClinics } from "./NationwideClinics";
 export { default as PartnersGrid } from "./PartnersGrid";
 export { default as TestCategories } from "./TestCategories";
 export { default as Testimonials } from "./Testimonials";
+export { default as TopConcernsSection } from "./TopConcernsSection";
 export { default as TrustPlatformSection } from "./TrustPlatformSection";
