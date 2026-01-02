@@ -27,17 +27,17 @@ export const OptimizedLazyImage = memo(({
   const imgRef = useRef<HTMLImageElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Optimize image URL based on device capabilities
+  // Cache mobile detection using matchMedia to avoid reflow
+  const isMobileRef = useRef<boolean | null>(null);
+  
+  // Optimize image URL based on device capabilities - avoiding reflow
   const getOptimizedSrc = (originalSrc: string) => {
     if (!originalSrc || originalSrc.startsWith('data:')) return originalSrc;
     
-    // Check if it's a high DPI display
-    const pixelRatio = window.devicePixelRatio || 1;
-    const isHighDPI = pixelRatio > 1;
-    
-    // For mobile devices, prefer smaller images
-    const isMobile = window.innerWidth <= 768;
-    const targetQuality = isMobile ? Math.min(quality, 60) : quality;
+    // Use matchMedia instead of innerWidth to avoid forced reflow
+    if (isMobileRef.current === null) {
+      isMobileRef.current = window.matchMedia('(max-width: 768px)').matches;
+    }
     
     // If it's already optimized or a local file, return as-is
     if (originalSrc.includes('?') || originalSrc.startsWith('/')) {
