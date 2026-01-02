@@ -1,52 +1,62 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { logger } from "@/lib/logger";
 
 // Enhanced performance optimization hook with mobile-specific optimizations
 export function usePerformanceOptimization() {
+  // Cache mobile detection to avoid repeated reflows
+  const isMobileRef = useRef<boolean | null>(null);
   
-  // Preload critical resources with mobile optimization
+  // Preload critical resources with mobile optimization - deferred to avoid reflow
   const preloadCriticalResources = useCallback(() => {
-    // Detect mobile device
-    const isMobile = window.innerWidth <= 768;
+    // Use requestIdleCallback or setTimeout to defer non-critical work
+    const scheduleWork = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
     
-    // Preload critical images (smaller versions for mobile)
-    const criticalImages = [
-      '/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png',
-      '/lovable-uploads/a4949588-cff7-48ae-ba93-d0040f1dd838.png'
-    ];
-
-    criticalImages.forEach(src => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = src;
-      if (isMobile) {
-        link.media = '(max-width: 768px)';
+    scheduleWork(() => {
+      // Use CSS media query check instead of innerWidth to avoid reflow
+      if (isMobileRef.current === null) {
+        isMobileRef.current = window.matchMedia('(max-width: 768px)').matches;
       }
-      document.head.appendChild(link);
-    });
+      const isMobile = isMobileRef.current;
+      
+      // Preload critical images (smaller versions for mobile)
+      const criticalImages = [
+        '/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png',
+        '/lovable-uploads/a4949588-cff7-48ae-ba93-d0040f1dd838.png'
+      ];
 
-    // Preload critical CSS and fonts
-    const criticalResources = [
-      { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap', as: 'style' }
-    ];
+      criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        if (isMobile) {
+          link.media = '(max-width: 768px)';
+        }
+        document.head.appendChild(link);
+      });
 
-    criticalResources.forEach(({ href, as }) => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = as;
-      link.href = href;
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
-    });
+      // Preload critical CSS and fonts
+      const criticalResources = [
+        { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap', as: 'style' }
+      ];
 
-    // Enable resource hints for better performance
-    const dnsPreconnects = ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
-    dnsPreconnects.forEach(href => {
-      const link = document.createElement('link');
-      link.rel = 'dns-prefetch';
-      link.href = href;
-      document.head.appendChild(link);
+      criticalResources.forEach(({ href, as }) => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = as;
+        link.href = href;
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      });
+
+      // Enable resource hints for better performance
+      const dnsPreconnects = ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
+      dnsPreconnects.forEach(href => {
+        const link = document.createElement('link');
+        link.rel = 'dns-prefetch';
+        link.href = href;
+        document.head.appendChild(link);
+      });
     });
   }, []);
 

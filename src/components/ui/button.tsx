@@ -46,29 +46,32 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Create ripple effect
-      const button = e.currentTarget;
-      const ripple = document.createElement('span');
-      const rect = button.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height);
-      const x = e.clientX - rect.left - rippleSize / 2;
-      const y = e.clientY - rect.top - rippleSize / 2;
+      // Defer ripple effect to next frame to avoid forced reflow
+      requestAnimationFrame(() => {
+        const button = e.currentTarget;
+        if (!button) return;
+        
+        // Batch read: get all layout info first
+        const rect = button.getBoundingClientRect();
+        const rippleSize = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - rippleSize / 2;
+        const y = e.clientY - rect.top - rippleSize / 2;
+        const existingRipple = button.querySelector('.ripple-effect');
 
-      ripple.style.width = ripple.style.height = `${rippleSize}px`;
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      ripple.classList.add('ripple-effect');
+        // Batch write: perform all DOM mutations together
+        if (existingRipple) {
+          existingRipple.remove();
+        }
+        
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `width: ${rippleSize}px; height: ${rippleSize}px; left: ${x}px; top: ${y}px;`;
+        ripple.classList.add('ripple-effect');
+        button.appendChild(ripple);
 
-      const existingRipple = button.querySelector('.ripple-effect');
-      if (existingRipple) {
-        existingRipple.remove();
-      }
-
-      button.appendChild(ripple);
-
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
       
       onClick?.(e);
     };

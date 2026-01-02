@@ -1,15 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export function useMobileOptimization() {
-  const [isMobile, setIsMobile] = useState(() => 
-    typeof window !== 'undefined' && window.innerWidth <= 768
-  );
+  // Use matchMedia instead of innerWidth to avoid forced reflow
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 768px)').matches;
+  });
+  
+  // Cache media query list to avoid repeated queries
+  const mediaQueryRef = useRef<MediaQueryList | null>(null);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile, { passive: true });
-    return () => window.removeEventListener('resize', checkMobile);
+    // Use matchMedia for efficient responsive detection without reflow
+    mediaQueryRef.current = window.matchMedia('(max-width: 768px)');
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+    
+    // Set initial value
+    setIsMobile(mediaQueryRef.current.matches);
+    
+    // Modern browsers support addEventListener on MediaQueryList
+    mediaQueryRef.current.addEventListener('change', handleChange);
+    
+    return () => {
+      mediaQueryRef.current?.removeEventListener('change', handleChange);
+    };
   }, []);
 
   useEffect(() => {
