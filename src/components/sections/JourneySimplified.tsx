@@ -1,25 +1,25 @@
 import { Search, GitCompare, Calendar } from "lucide-react";
-import journeyHeading from "@/assets/journey-heading.png";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const JourneySimplified = () => {
   const steps = [
     {
       icon: Search,
       step: "1",
-      title: "Search",
-      description: "Browse our extensive catalogue of health tests or use our smart search to find what you need."
+      title: "Tell us what you want to check",
+      description: "Search by symptom, condition, or browse our comprehensive test categories to find the right test for you."
     },
     {
       icon: GitCompare,
       step: "2",
-      title: "Compare",
-      description: "Compare prices, turnaround times, and features across multiple accredited providers."
+      title: "Compare trusted tests & providers",
+      description: "View side-by-side comparisons of prices, turnaround times, sample types, and what's included in each test."
     },
     {
       icon: Calendar,
       step: "3",
-      title: "Book",
-      description: "Choose your preferred provider and book directly through their secure platform."
+      title: "Book directly with your chosen provider",
+      description: "Click through to book directly with your chosen provider. No middlemen, no markup, just confidence."
     }
   ];
 
@@ -27,11 +27,13 @@ const JourneySimplified = () => {
     <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
-          <img 
-            src={journeyHeading} 
-            alt="Your Health Journey Simplified" 
-            className="mx-auto max-w-full h-auto"
+          <SectionHeading 
+            title="Your Health Journey" 
+            gradientText="Simplified" 
           />
+          <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mt-4">
+            Finding the right health test shouldn't be complicated. We've made it simple in three easy steps.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 md:gap-10 max-w-5xl mx-auto">
