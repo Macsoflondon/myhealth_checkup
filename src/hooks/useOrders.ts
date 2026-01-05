@@ -1,17 +1,30 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/sonner";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { logApiError } from "@/services/errorLogger";
+import { getUserFriendlyMessage } from "@/services/apiErrorHandler";
 
 export function useOrders(user: User | null) {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const placeOrder = async (testId: string, provider: string, testName?: string, price?: number) => {
+  const placeOrder = async (
+    testId: string, 
+    provider: string, 
+    testName?: string, 
+    price?: number
+  ) => {
     if (!user) {
       toast.error("Please sign in to place an order");
       navigate("/auth");
       return false;
     }
+    
+    if (isSubmitting) return false;
+    
+    setIsSubmitting(true);
     
     try {
       const { error } = await supabase
@@ -30,11 +43,23 @@ export function useOrders(user: User | null) {
       toast.success("Order placed successfully!");
       navigate("/dashboard?tab=orders");
       return true;
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      logApiError(error, 'orders/place', { testId, provider });
+      
+      const userMessage = getUserFriendlyMessage(error);
+      toast.error("Failed to place order", {
+        description: userMessage,
+        action: {
+          label: "Retry",
+          onClick: () => placeOrder(testId, provider, testName, price),
+        },
+      });
       return false;
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
-  return { placeOrder };
+  return { placeOrder, isSubmitting };
 }
