@@ -1,4 +1,78 @@
 project_id = "clvuioagsgfadynuvodj"
 
+# AI Test Mapper
+# Requires authentication - Uses OpenAI API to semantically match provider tests to master tests
+# Security: JWT verification, service role access for database writes
+[functions.ai-test-mapper]
+verify_jwt = true
+
+# Thriva Scraper
+[functions.thriva-scraper]
+verify_jwt = false
+
+# LML Nearest Clinics API
+# Public access (no JWT) - Users search for clinics BEFORE authentication
+# Security: IP rate limiting (10/min), maxPages limit (3), input validation
 [functions.lml-nearest]
 verify_jwt = false
+
+[functions.geocode-clinic]
+verify_jwt = true
+
+# Health AI Analysis API
+# Requires authentication - Uses OpenAI API for personalized health recommendations
+# Security: JWT verification, verified userId from token, input sanitization
+[functions.health-ai-analysis]
+verify_jwt = true
+
+# Test Recommendations API
+# Public access - Uses Lovable AI to recommend best tests from comparison
+# Security: Input validation, rate limiting via AI gateway
+[functions.test-recommendations]
+verify_jwt = false
+
+# Sports Test Recommendations API
+# Public access - Uses Lovable AI for sport-specific test recommendations
+# Security: Input validation, rate limiting via AI gateway
+[functions.sports-test-recommendations]
+verify_jwt = false
+
+# Send Test Notification API
+# Requires authentication - Sends test email/SMS notifications
+# Security: JWT verification, verified userId from token
+[functions.send-test-notification]
+verify_jwt = true
+
+# Provider Scrapers - Automated data collection from health test providers
+[functions.goodbody-scraper]
+verify_jwt = false
+
+[functions.medichecks-scraper]
+verify_jwt = false
+
+[functions.lola-health-scraper]
+verify_jwt = false
+
+[functions.randox-scraper]
+verify_jwt = false
+
+[functions.tuli-health-scraper]
+verify_jwt = false
+
+[functions.scrape-london-lab]
+verify_jwt = false
+
+[functions.provider-scraper]
+verify_jwt = false
+
+[functions.price-updates]
+verify_jwt = false
+
+[functions.price-alert-checker]
+verify_jwt = true
+
+[functions.update-provider-tests]
+verify_jwt = false
+
+[functions.bulk-add-clinics]
+verify_jwt = true

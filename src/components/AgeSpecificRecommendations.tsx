@@ -33,7 +33,7 @@ const AgeSpecificRecommendations = (): JSX.Element => {
     keyTests: ["Complete Health Check", "Cancer Screening", "Heart Health Panel", "Hormone Balance", "Stress Markers"],
     frequency: "Every 6-12 months",
     priority: "Cancer Prevention & Cardiovascular Health",
-    color: "bg-blue-100 border-blue-500 text-blue-700"
+    color: "bg-gray-100 border-gray-300 text-[#081129]"
   }, {
     range: "45-60",
     icon: <Heart className="w-6 h-6" />,
@@ -58,7 +58,7 @@ const AgeSpecificRecommendations = (): JSX.Element => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-health-700">Health Testing by Life Stage</h2>
+          <h2 className="text-3xl font-semibold mb-4 text-health-700">Health Testing by Life Stage</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Your health needs evolve throughout your life. Discover the most important tests for your age group.
           </p>

@@ -1,10 +1,15 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { Link } from 'react-router-dom';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import UKASBanner from '@/components/UKASBanner';
+import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Activity, Zap, Shield, Heart, Droplets, ArrowRight } from 'lucide-react';
 const GutHealthPage = () => {
   const gutTests = [{
@@ -35,41 +40,29 @@ const GutHealthPage = () => {
         <title>Gut Health & Microbiome Testing | Compare UK Providers | MyHealthHub</title>
         <meta name="description" content="Compare gut health tests from top UK providers. Microbiome analysis, food intolerance testing, and digestive health screening from £89." />
       </Helmet>
+      <UKASBanner />
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-amber-50 to-orange-50 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-amber-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <Droplets className="h-8 w-8 text-white" />
-              </div>
-              <Badge className="mb-4 bg-amber-100 text-amber-800">Digestive Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Gut Health & Microbiome Testing
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Discover the secrets of your gut microbiome. Advanced testing for digestive health, 
-                food intolerances, and gut-brain connection for UK adults aged 30-60.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
-                  <Activity className="h-5 w-5" />
-                  Compare Tests
-                </Button>
-                <Button variant="outline" size="lg" className="border-amber-500 text-amber-700 hover:bg-amber-50">
-                  Learn More
-                </Button>
-              </div>
-            </div>
+        <HeroSection
+          title="Gut Health & Microbiome Testing"
+          subtitle="Discover the secrets of your gut microbiome. Advanced testing for digestive health, food intolerances, and gut-brain connection for UK adults aged 30-60."
+        >
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
+              <Activity className="h-5 w-5" />
+              Compare Tests
+            </Button>
+            <Button variant="outline" size="lg" className="border-amber-500 text-amber-700 hover:bg-amber-50">
+              Learn More
+            </Button>
           </div>
-        </section>
+        </HeroSection>
 
         {/* Gut Health Impact */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Your Gut Affects Everything</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Your Gut Affects Everything</h2>
               <p className="text-xl text-muted-foreground">The gut-body connection</p>
             </div>
             <div className="grid md:grid-cols-4 gap-8">
@@ -106,10 +99,10 @@ const GutHealthPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Gut Health Testing Options</h2>
+              <h2 className="text-3xl font-bold mb-4 text-[#081129] my-[20px]">Gut Health Testing Options</h2>
               <p className="text-xl text-muted-foreground">From basic screening to comprehensive analysis</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -142,14 +135,41 @@ const GutHealthPage = () => {
         {/* Call to Action */}
         <section className="py-16 bg-amber-50">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Test Your Gut Health?</h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
-            </p>
-            <Button size="lg" className="gap-2 bg-amber-500 hover:bg-amber-600">
-              <ArrowRight className="h-5 w-5" />
-              Compare All Gut Tests
-            </Button>
+            <ScrollFadeIn>
+              <h2 className="text-3xl font-bold mb-4">Ready to Test Your Gut Health?</h2>
+              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Compare providers and find the perfect gut health test for your needs. Start your digestive health journey today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
+                        <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
+                          <ArrowRight className="h-5 w-5" />
+                          Browse All Gut Health Tests
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Compare prices from 7+ trusted UK providers</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                        <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                          Find a Clinic
+                        </Button>
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>150+ clinics nationwide with instant availability</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </ScrollFadeIn>
           </div>
         </section>
       </main>

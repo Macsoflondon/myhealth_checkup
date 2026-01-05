@@ -46,7 +46,7 @@ const ProactiveHealthJourney = () => {
     <section className="py-16 bg-gradient-to-br from-health-50 to-wellness-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Your Proactive Health Journey</h2>
+          <h2 className="text-3xl md:text-4xl font-semibold mb-4">Your Proactive Health Journey</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Transform your health with our evidence-based approach to preventive care
           </p>

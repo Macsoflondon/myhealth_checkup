@@ -1,72 +1,146 @@
-
-import React, { useState } from 'react';
-import { Brain, Sparkles, Target, Clock, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Brain, Sparkles, Target, Clock, TrendingUp, AlertTriangle, Stethoscope, History, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { logger } from '@/lib/logger';
 
 interface RecommendationProps {
-  test: string;
+  testName: string;
   provider: string;
-  price: number;
+  providerId: string;
+  price: number | null;
   reason: string;
+  category: string;
   urgency: 'low' | 'medium' | 'high';
   confidence: number;
+  actualTestId?: string;
+}
+
+interface AIAnalysisResult {
+  medicalDisclaimer: string;
+  analysis: string;
+  recommendedTests: RecommendationProps[];
+  generalGuidance: string;
+  whenToSeeDoctor: string;
+  hasRecommendations: boolean;
 }
 
 const RecommendationEngine = () => {
   const [symptoms, setSymptoms] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
-  const [recommendations, setRecommendations] = useState<RecommendationProps[]>([]);
+  const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [showHistory, setShowHistory] = useState(false);
+  const [queryHistory, setQueryHistory] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Check if user is authenticated
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+      if (user) {
+        loadQueryHistory(user.id);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        loadQueryHistory(session.user.id);
+      } else {
+        setQueryHistory([]);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const loadQueryHistory = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('health_queries')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setQueryHistory(data || []);
+    } catch (error) {
+      logger.error('Error loading query history:', error);
+    }
+  };
 
   const generateRecommendations = async () => {
+    if (!symptoms.trim()) {
+      toast.error('Please enter your symptoms or health goals');
+      return;
+    }
+
     setIsLoading(true);
-    
-    // Simulate AI processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Mock AI recommendations based on input
-    const mockRecommendations: RecommendationProps[] = [
-      {
-        test: "Full Blood Count & Biochemistry",
-        provider: "Medichecks",
-        price: 79,
-        reason: "Comprehensive health overview recommended for your age group",
-        urgency: "medium",
-        confidence: 85
-      },
-      {
-        test: "Thyroid Function Test",
-        provider: "Thriva",
-        price: 59,
-        reason: "Fatigue symptoms may indicate thyroid issues",
-        urgency: "high",
-        confidence: 92
-      },
-      {
-        test: "Vitamin D Test",
-        provider: "Superdrug Health",
-        price: 29,
-        reason: "Common deficiency causing fatigue",
-        urgency: "low",
-        confidence: 78
+    setAnalysisResult(null);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
+        body: { 
+          query: symptoms,
+          age: age ? parseInt(age) : null,
+          gender: gender || null,
+          userId: user?.id || null
+        }
+      });
+
+      if (error) {
+        throw error;
       }
-    ];
-    
-    setRecommendations(mockRecommendations);
-    setIsLoading(false);
+
+      setAnalysisResult(data);
+      if (user) {
+        toast.success('Recommendation saved to your account');
+        loadQueryHistory(user.id);
+      }
+    } catch (error) {
+      logger.error('Error getting AI recommendations:', error);
+      toast.error('Unable to generate recommendations. Please try again.');
+      setAnalysisResult({
+        medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
+        analysis: "Sorry, we couldn't analyze your request at the moment. Please try again or consult your healthcare professional.",
+        recommendedTests: [],
+        generalGuidance: "Please consult your healthcare professional for personalized health advice.",
+        whenToSeeDoctor: "Seek immediate medical attention for urgent symptoms or persistent health concerns.",
+        hasRecommendations: false
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadPreviousQuery = (query: any) => {
+    setSymptoms(query.query_text);
+    setAge(query.age?.toString() || '');
+    setGender(query.gender || '');
+    setAnalysisResult(query.ai_response);
+    setShowHistory(false);
+    toast.success('Previous query loaded');
   };
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'high':
+        return 'bg-red-100 text-red-800';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'low':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -74,37 +148,99 @@ const RecommendationEngine = () => {
     <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <Brain className="h-8 w-8 text-health-600" />
-          <h1 className="text-3xl font-bold">AI Health Recommendations</h1>
+          <Brain className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">AI Wellness Recommendations</h1>
         </div>
-        <p className="text-gray-600">
-          Get personalised test recommendations based on your symptoms and health goals
+        <p className="text-muted-foreground">
+          Get personalized wellness test recommendations from our trusted providers
         </p>
       </div>
 
+      {/* GDPR Notice for authenticated users */}
+      {user && (
+        <Alert className="mb-6 border-primary/20 bg-primary/5">
+          <Shield className="h-4 w-4 text-primary" />
+          <AlertDescription>
+            <strong>Your data is protected:</strong> All health queries are securely stored and encrypted. 
+            Only you can access your data. You can delete your queries anytime.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Medical Disclaimer */}
+      <Alert className="mb-6 border-amber-200 bg-amber-50">
+        <AlertTriangle className="h-4 w-4 text-amber-600" />
+        <AlertDescription className="text-amber-800">
+          <strong>Important:</strong> This tool provides general wellness information only and is not medical advice. 
+          Always consult your GP or healthcare professional regarding any health concerns or symptoms.
+        </AlertDescription>
+      </Alert>
+
+      {/* Sign-in prompt for guests */}
+      {!user && (
+        <Alert className="mb-6 border-primary/20 bg-primary/5">
+          <Shield className="h-4 w-4 text-primary" />
+          <AlertDescription>
+            <strong>Sign in to save your recommendations:</strong> Create an account to securely store 
+            your health queries and access them anytime. <a href="/auth" className="underline font-medium">Sign in now</a>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Query History */}
+      {user && queryHistory.length > 0 && (
+        <Card className="p-4 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold flex items-center gap-2">
+              <History className="h-5 w-5 text-primary" />
+              Your Recent Queries
+            </h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              {showHistory ? 'Hide' : 'Show'}
+            </Button>
+          </div>
+          {showHistory && (
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {queryHistory.map((query) => (
+                <Button
+                  key={query.id}
+                  variant="outline"
+                  className="w-full justify-start text-left h-auto py-3"
+                  onClick={() => loadPreviousQuery(query)}
+                >
+                  <div className="space-y-1 w-full">
+                    <p className="text-sm font-medium line-clamp-1">{query.query_text}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(query.created_at).toLocaleDateString()} • 
+                      {query.age && ` Age: ${query.age}`}
+                      {query.gender && ` • ${query.gender}`}
+                    </p>
+                  </div>
+                </Button>
+              ))}
+            </div>
+          )}
+        </Card>
+      )}
+
       <Card className="p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <Target className="h-5 w-5 text-health-600" />
-          Tell us about your health
+          <Target className="h-5 w-5 text-primary" />
+          Tell us about your wellness goals
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div>
             <label className="block text-sm font-medium mb-2">Age</label>
-            <Input
-              type="number"
-              placeholder="Enter your age"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
+            <Input type="number" placeholder="Enter your age" value={age} onChange={e => setAge(e.target.value)} />
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">Gender</label>
-            <select
-              className="w-full p-2 border rounded-md"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            >
+            <select className="w-full p-2 border rounded-md" value={gender} onChange={e => setGender(e.target.value)}>
               <option value="">Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -113,9 +249,7 @@ const RecommendationEngine = () => {
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">Lifestyle</label>
-            <select
-              className="w-full p-2 border rounded-md"
-            >
+            <select className="w-full p-2 border rounded-md">
               <option value="">Select lifestyle</option>
               <option value="sedentary">Sedentary</option>
               <option value="active">Active</option>
@@ -126,89 +260,133 @@ const RecommendationEngine = () => {
 
         <div className="mb-6">
           <label className="block text-sm font-medium mb-2">
-            Symptoms or Health Concerns
+            Wellness Goals or General Health Interests
           </label>
-          <textarea
-            className="w-full p-3 border rounded-md h-24 resize-none"
-            placeholder="Describe any symptoms you're experiencing or health goals you have (e.g., fatigue, weight management, preventive screening)..."
-            value={symptoms}
-            onChange={(e) => setSymptoms(e.target.value)}
+          <textarea 
+            className="w-full p-3 border rounded-md h-24 resize-none" 
+            placeholder="Describe your wellness goals or general health interests (e.g., energy levels, preventive screening, fitness optimization, general wellness check)..." 
+            value={symptoms} 
+            onChange={e => setSymptoms(e.target.value)} 
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            Note: For specific symptoms or medical concerns, please consult your healthcare professional directly.
+          </p>
         </div>
 
-        <Button
-          onClick={generateRecommendations}
-          disabled={isLoading || !symptoms.trim()}
-          className="w-full bg-health-600 hover:bg-health-700"
-        >
+        <Button onClick={generateRecommendations} disabled={isLoading || !symptoms.trim()} className="w-full">
           {isLoading ? (
             <>
               <Sparkles className="h-4 w-4 mr-2 animate-spin" />
-              Analysing your health needs...
+              Analyzing your wellness needs...
             </>
           ) : (
             <>
               <Brain className="h-4 w-4 mr-2" />
-              Get AI Recommendations
+              Get Wellness Recommendations
             </>
           )}
         </Button>
       </Card>
 
-      {recommendations.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-health-600" />
-            Personalised Recommendations
-          </h2>
-          
-          {recommendations.map((rec, index) => (
-            <Card key={index} className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-lg font-semibold">{rec.test}</h3>
-                    <Badge className={getUrgencyColor(rec.urgency)}>
-                      {rec.urgency} priority
-                    </Badge>
-                  </div>
-                  <p className="text-gray-600 mb-2">{rec.provider}</p>
-                  <p className="text-sm text-gray-700">{rec.reason}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-health-600 mb-1">
-                    £{rec.price}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {rec.confidence}% confidence
-                  </div>
-                </div>
+      {analysisResult && (
+        <div className="space-y-6">
+          {/* AI Analysis */}
+          <Card className="p-6 bg-blue-50 border-blue-200">
+            <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
+              <Brain className="h-5 w-5 text-primary" />
+              Wellness Analysis
+            </h2>
+            <p className="text-foreground mb-4">{analysisResult.analysis}</p>
+            
+            {analysisResult.generalGuidance && (
+              <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="font-medium text-green-800 mb-2">General Wellness Guidance:</h4>
+                <p className="text-green-700 text-sm">{analysisResult.generalGuidance}</p>
               </div>
+            )}
+          </Card>
+
+          {/* Medical Guidance */}
+          <Alert className="border-red-200 bg-red-50">
+            <Stethoscope className="h-4 w-4 text-red-600" />
+            <AlertDescription className="text-red-800">
+              <strong>When to see a doctor:</strong> {analysisResult.whenToSeeDoctor}
+            </AlertDescription>
+          </Alert>
+
+          {/* Test Recommendations */}
+          {analysisResult.recommendedTests.length > 0 && (
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Recommended Wellness Tests
+              </h2>
               
-              <Separator className="my-4" />
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">2-3 days</span>
+              {analysisResult.recommendedTests.map((rec, index) => (
+                <Card key={index} className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-lg font-semibold">{rec.testName}</h3>
+                        <Badge className={getUrgencyColor(rec.urgency)}>
+                          {rec.urgency} priority
+                        </Badge>
+                      </div>
+                      <p className="text-muted-foreground mb-2">{rec.provider}</p>
+                      <p className="text-sm text-foreground mb-2">{rec.reason}</p>
+                      <Badge variant="outline" className="text-xs">
+                        {rec.category}
+                      </Badge>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-primary mb-1">
+                        {rec.price ? `£${rec.price}` : 'Price TBC'}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {rec.confidence}% match
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Target className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">At-home kit</span>
+                  
+                  <Separator className="my-4" />
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">2-5 working days</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Target className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">At-home collection</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        Learn More
+                      </Button>
+                      <Button size="sm">
+                        View Test Details
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    Learn More
-                  </Button>
-                  <Button size="sm" className="bg-health-600 hover:bg-health-700">
-                    Book Test
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
+                  
+                  {/* Medical Disclaimer for each test */}
+                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
+                    This test recommendation is for wellness screening purposes only. Results should be discussed with your healthcare professional.
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          {/* Bottom Medical Disclaimer */}
+          <Alert className="border-amber-200 bg-amber-50">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-amber-800">
+              {analysisResult.medicalDisclaimer}
+            </AlertDescription>
+          </Alert>
         </div>
       )}
     </div>

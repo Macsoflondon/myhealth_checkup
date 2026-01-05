@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import UKASBanner from '@/components/UKASBanner';
 
 type Step = 'welcome' | 'gender' | 'concerns' | 'results';
 
@@ -179,12 +175,10 @@ export const AssistedTestFinder = () => {
   };
 
   const handleSelectTest = (testId: string) => {
-    // Navigate to compare page with specific test filter
     navigate(`/compare?test=${testId}`);
   };
 
   const handleViewAllTests = () => {
-    // Navigate to compare page with category filter
     if (selectedConcerns.length > 0) {
       const primaryConcern = selectedConcerns[0];
       navigate(`/compare?category=${primaryConcern}`);
@@ -193,57 +187,52 @@ export const AssistedTestFinder = () => {
     }
   };
 
+  // Navigation controls component
+  const NavigationControls = () => (
+    <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
+      <Button 
+        onClick={handleBack} 
+        variant="outline" 
+        className="flex items-center gap-2 px-6 py-3 rounded-full border-gray-300"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </Button>
+      <Button 
+        onClick={handleRestart} 
+        variant="outline" 
+        className="flex items-center gap-2 px-6 py-3 rounded-full border-pink-300 text-pink-600"
+      >
+        <RotateCcw className="w-4 h-4" />
+        Restart
+      </Button>
+    </div>
+  );
+
   if (currentStep === 'welcome') {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-gradient-to-b from-pink-100 to-white">
-          <UKASBanner />
-          <Header />
-        </div>
+      <div className="bg-gradient-to-b from-pink-100 to-white min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
             <h1 className="text-5xl font-bold text-gray-900 mb-8">
               Let's find you a test!
             </h1>
             <Button 
-              onClick={handleGetStarted}
+              onClick={handleGetStarted} 
               className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-12 py-4 text-lg font-medium rounded-full transition-colors"
             >
               Get started
             </Button>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   if (currentStep === 'gender') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-pink-100 to-white">
-        <UKASBanner />
-        <Header />
-        
-        {/* Navigation Controls */}
-        <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
-          <Button
-            onClick={handleBack}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 rounded-full border-gray-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
-          <Button
-            onClick={handleRestart}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 rounded-full border-pink-300 text-pink-600"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Restart
-          </Button>
-        </div>
-
+      <div className="bg-gradient-to-b from-pink-100 to-white min-h-[80vh]">
+        <NavigationControls />
         <div className="flex items-center justify-center min-h-[60vh] p-4">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -254,10 +243,10 @@ export const AssistedTestFinder = () => {
             </p>
             
             <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto">
-              {genderOptions.slice(0, 3).map((option) => (
-                <Button
-                  key={option.id}
-                  onClick={() => handleGenderSelect(option.id)}
+              {genderOptions.slice(0, 3).map(option => (
+                <Button 
+                  key={option.id} 
+                  onClick={() => handleGenderSelect(option.id)} 
                   className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-4 text-lg font-medium rounded-full min-w-[180px] transition-colors"
                 >
                   {option.label}
@@ -266,8 +255,8 @@ export const AssistedTestFinder = () => {
             </div>
             
             <div className="mt-4 flex justify-center">
-              <Button
-                onClick={() => handleGenderSelect('prefer-not-to-say')}
+              <Button 
+                onClick={() => handleGenderSelect('prefer-not-to-say')} 
                 className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-4 text-lg font-medium rounded-full min-w-[180px] transition-colors"
               >
                 Prefer not to say
@@ -275,37 +264,14 @@ export const AssistedTestFinder = () => {
             </div>
           </div>
         </div>
-        
-        <Footer />
       </div>
     );
   }
 
   if (currentStep === 'concerns') {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-pink-100 to-white">
-        <Header />
-        
-        {/* Navigation Controls */}
-        <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
-          <Button
-            onClick={handleBack}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 rounded-full border-gray-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
-          <Button
-            onClick={handleRestart}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 rounded-full border-pink-300 text-pink-600"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Restart
-          </Button>
-        </div>
-
+      <div className="bg-gradient-to-b from-pink-100 to-white min-h-[80vh]">
+        <NavigationControls />
         <div className="flex items-center justify-center min-h-[60vh] p-4">
           <div className="text-center max-w-5xl mx-auto">
             <h1 className="text-4xl font-bold text-gray-900 mb-12">
@@ -313,14 +279,14 @@ export const AssistedTestFinder = () => {
             </h1>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-              {concernOptions.map((option) => (
-                <Button
-                  key={option.id}
-                  onClick={() => handleConcernSelect(option.id)}
-                  variant={selectedConcerns.includes(option.id) ? 'default' : 'outline'}
+              {concernOptions.map(option => (
+                <Button 
+                  key={option.id} 
+                  onClick={() => handleConcernSelect(option.id)} 
+                  variant={selectedConcerns.includes(option.id) ? 'default' : 'outline'} 
                   className={`px-6 py-4 text-lg font-medium rounded-full transition-colors ${
-                    selectedConcerns.includes(option.id)
-                      ? 'bg-[#E91E63] hover:bg-[#C2185B] text-white border-[#E91E63]'
+                    selectedConcerns.includes(option.id) 
+                      ? 'bg-[#E91E63] hover:bg-[#C2185B] text-white border-[#E91E63]' 
                       : 'border-[#E91E63] text-[#E91E63] hover:bg-[#E91E63] hover:text-white'
                   }`}
                 >
@@ -330,47 +296,24 @@ export const AssistedTestFinder = () => {
             </div>
             
             <Button 
-              onClick={handleContinue}
-              className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-12 py-4 text-lg font-medium rounded-full transition-colors disabled:opacity-50"
+              onClick={handleContinue} 
+              className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-12 py-4 text-lg font-medium rounded-full transition-colors disabled:opacity-50" 
               disabled={selectedConcerns.length === 0}
             >
               Continue
             </Button>
           </div>
         </div>
-        
-        <Footer />
       </div>
     );
   }
 
   if (currentStep === 'results') {
     const recommendedTests = getRecommendedTests(selectedConcerns, selectedGender);
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-pink-100 to-white">
-        <Header />
-        
-        {/* Navigation Controls */}
-        <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
-          <Button
-            onClick={handleBack}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 rounded-full border-gray-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
-          <Button
-            onClick={handleRestart}
-            variant="outline"
-            className="flex items-center gap-2 px-6 py-3 rounded-full border-pink-300 text-pink-600"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Restart
-          </Button>
-        </div>
 
+    return (
+      <div className="bg-gradient-to-b from-pink-100 to-white bg-white min-h-[80vh]">
+        <NavigationControls />
         <div className="max-w-6xl mx-auto p-6">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -379,7 +322,7 @@ export const AssistedTestFinder = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {recommendedTests.map((test) => (
+            {recommendedTests.map(test => (
               <div key={test.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
                 <div className="bg-[#1a365d] text-white p-4 text-center">
                   <h3 className="text-sm font-medium">{test.category}</h3>
@@ -405,10 +348,10 @@ export const AssistedTestFinder = () => {
                   <div className="text-2xl font-bold text-gray-900 mb-2">{test.price}</div>
                   <p className="text-sm text-gray-500 mb-4">{test.collection}</p>
                   
-                  <Button
-                    onClick={() => handleSelectTest(test.id)}
-                    variant="outline"
-                    className="w-full py-3 text-gray-700 border-gray-300 hover:bg-gray-50"
+                  <Button 
+                    onClick={() => handleSelectTest(test.id)} 
+                    variant="outline" 
+                    className="w-full py-3 text-[#081129] border-gray-300 hover:bg-gray-50"
                   >
                     Select test
                   </Button>
@@ -418,18 +361,17 @@ export const AssistedTestFinder = () => {
           </div>
 
           <div className="text-center">
-            <Button
-              onClick={handleViewAllTests}
+            <Button 
+              onClick={handleViewAllTests} 
               className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-3 text-lg font-medium rounded-full"
             >
               View all tests
             </Button>
           </div>
         </div>
-        
-        <Footer />
       </div>
     );
   }
+
   return null;
 };

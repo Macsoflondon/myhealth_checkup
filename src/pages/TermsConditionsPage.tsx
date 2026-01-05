@@ -1,8 +1,9 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import PageHeading from '@/components/ui/page-heading';
 
 const TermsConditionsPage = () => {
   return (
@@ -13,8 +14,11 @@ const TermsConditionsPage = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <Badge className="mb-4">Legal Terms</Badge>
-              <h1 className="text-4xl font-bold mb-6">Terms & Conditions</h1>
-              <p className="text-xl text-muted-foreground">
+              <PageHeading 
+                title="Terms &" 
+                accent="Conditions" 
+              />
+              <p className="text-xl text-muted-foreground mt-4">
                 Please read these terms carefully before using our services
               </p>
               <p className="text-sm text-muted-foreground mt-2">

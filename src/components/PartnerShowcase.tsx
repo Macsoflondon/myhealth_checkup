@@ -32,7 +32,7 @@ export default function AsFeaturedIn({ providers = [] }: AsFeaturedInProps) {
               key={name}
               src={logos[name]} 
               alt={`${name} logo`} 
-              className="h-8 grayscale opacity-70"
+              className="h-4 grayscale opacity-70"
             />
           ))}
         </div>

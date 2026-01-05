@@ -1,0 +1,231 @@
+// Hero component with fullscreen video
+import { Button } from "@/components/ui/button";
+import { Shield, Clock, Award, CheckCircle2, Search, MapPin, Loader2 } from "lucide-react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from "react-i18next";
+import AccreditationLogos from "@/components/sections/AccreditationLogos";
+import PartnersGrid from "@/components/sections/PartnersGrid";
+import MissionSection from "@/components/sections/MissionSection";
+import { logger } from "@/lib/logger";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+const Hero = () => {
+  const {
+    t
+  } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiResults, setAiResults] = useState<any>(null);
+  const [scrollY, setScrollY] = useState(0);
+  const navigate = useNavigate();
+  const {
+    toast
+  } = useToast();
+  
+  // Parallax scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  const handleSearch = useCallback(async () => {
+    if (!searchTerm.trim()) return;
+    setIsAnalyzing(true);
+    setAiResults(null);
+    try {
+      const {
+        data,
+        error
+      } = await supabase.functions.invoke('health-ai-analysis', {
+        body: {
+          query: searchTerm
+        }
+      });
+      if (error) throw error;
+      setAiResults(data);
+      if (data.hasRecommendations) {
+        toast({
+          title: "AI Analysis Complete",
+          description: `Found ${data.recommendedTests?.length || 0} relevant tests for your query.`
+        });
+      }
+    } catch (error) {
+      logger.error('AI analysis error:', error);
+      toast({
+        title: "Analysis Error",
+        description: "Unable to analyze your query. Proceeding with regular search.",
+        variant: "destructive"
+      });
+      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }, [searchTerm, navigate, toast]);
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }, [handleSearch]);
+  const popularSearches = useMemo(() => [{
+    name: t('hero.generalHealthTest'),
+    route: "/test/general-health"
+  }, {
+    name: t('hero.maleHormoneTest'),
+    route: "/test/male-hormones"
+  }, {
+    name: "Female Hormone Test",
+    route: "/test/female-hormones"
+  }, {
+    name: t('hero.vitaminDTest'),
+    route: "/test/vitamin-d"
+  }], [t]);
+  return <>
+      {/* Hero Video Section */}
+      <section className="relative overflow-hidden bg-[#081129]">
+        <div className="w-full">
+          {/* Hero Video Container - Optimized for mobile */}
+          <div className="relative w-full aspect-[4/5] xs:aspect-[4/3] sm:aspect-[16/10] lg:aspect-video overflow-hidden bg-[#081129]">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              preload="auto"
+              poster="/lovable-uploads/hero-image-1.png" 
+              className="absolute inset-0 w-full h-full object-cover" 
+              src="/myhealth_checkup.mp4" 
+              aria-label="myhealth checkup - Your health is your greatest asset"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </section>
+      
+      {/* Mission Section */}
+      <MissionSection />
+      
+      {/* Background wrapper with tubes image */}
+      <div className="relative w-full overflow-hidden">
+        {/* Background image */}
+        <img 
+          src="/lovable-uploads/hero-bg-tubes.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          loading="lazy"
+        />
+        {/* No overlay - using text shadows for readability instead */}
+        
+        {/* Trust Indicators and Search Section */}
+        <section className="relative overflow-hidden text-white w-full">
+          <div className="relative z-10 w-full py-4 sm:py-6 md:py-8 lg:py-10">
+          <div className="w-full text-center px-4 sm:px-6 md:px-8 lg:px-12">
+            {/* Trust Indicators - Mobile optimized, 25% smaller */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mb-3 sm:mb-4 max-w-3xl mx-auto">
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-turquoise cursor-pointer">
+                <CheckCircle2 className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.noGPReferral')}</span>
+              </div>
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-turquoise cursor-pointer">
+                <Shield className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.ukasAccredited')}</span>
+              </div>
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-pink cursor-pointer">
+                <MapPin className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.atHomeTest')}</span>
+              </div>
+              <div className="rounded-lg p-1 sm:p-1.5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white border border-gray-100 flex flex-col items-center justify-center gap-0.5 sm:gap-1 min-h-[36px] sm:min-h-[48px] hover-glow-pink cursor-pointer">
+                <Clock className="w-2.5 h-2.5 sm:w-4 sm:h-4 text-health-success shrink-0" aria-hidden="true" />
+                <span className="text-center text-[9px] sm:text-xs font-medium text-[#081129] leading-tight">{t('hero.resultsTime')}</span>
+              </div>
+            </div>
+
+            {/* Search Section */}
+            <div className="max-w-4xl mx-auto mb-4 sm:mb-6">
+              <div className="rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-xl bg-white">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-health-success w-4 h-4 sm:w-5 sm:h-5" />
+                  <input type="text" placeholder="Search from over 200 tests" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyPress={handleKeyPress} className="w-full pl-14 sm:pl-16 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-health-primary focus:outline-none text-[#081129]" />
+                  {isAnalyzing && <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 animate-spin text-health-primary" />}
+                </div>
+                
+                {/* AI Results */}
+                {aiResults && <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Search className="w-5 h-5 text-blue-600" />
+                      <h3 className="font-semibold text-blue-800">{t('hero.aiAnalysisResults')}</h3>
+                    </div>
+                    
+                    <p className="text-[#081129] mb-4">{aiResults.analysis}</p>
+                    
+                    {aiResults.recommendedTests?.length > 0 && <div className="mb-4">
+                        <h4 className="font-medium text-green-800 mb-2">{t('hero.testsWeOffer')}</h4>
+                        <div className="space-y-2">
+                          {aiResults.recommendedTests.map((test: any, index: number) => <div key={index} className="bg-white p-3 rounded border border-green-200">
+                              <div className="font-medium text-green-700">{test.testName}</div>
+                              <div className="text-sm text-gray-600">{test.reason}</div>
+                              <div className="text-xs mt-1 text-white bg-[#22c0d4]">Category: {test.category}</div>
+                            </div>)}
+                        </div>
+                      </div>}
+                    
+                    {aiResults.alternativeProviders?.length > 0 && <div className="mb-4">
+                        <h4 className="font-medium text-orange-800 mb-2">{t('hero.testsNotAvailable')}</h4>
+                        <div className="space-y-2">
+                          {aiResults.alternativeProviders.map((alt: any, index: number) => <div key={index} className="bg-orange-50 p-3 rounded border border-orange-200">
+                              <div className="font-medium text-orange-700">{alt.testName}</div>
+                              <div className="text-sm text-gray-600">Suggested: {alt.suggestedProvider}</div>
+                              <div className="text-xs text-red-600 mt-1 italic">{alt.disclaimer}</div>
+                            </div>)}
+                        </div>
+                      </div>}
+                    
+                    <Button onClick={() => navigate('/compare-tests')} variant="shimmer" className="w-full mt-3">
+                      {t('hero.compareAvailableTests')}
+                    </Button>
+                  </div>}
+                
+                {/* Popular Searches - Mobile optimized */}
+                <div className="mt-3 sm:mt-4">
+                  <p className="text-xs sm:text-sm text-[#081129] mb-2 font-semibold">{t('hero.popularSearches')}</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
+                    {popularSearches.slice(0, 4).map((search, index) => <button key={index} onClick={() => navigate(search.route)} className="px-2.5 py-1.5 text-xs sm:text-sm bg-gray-100 hover:bg-health-primary hover:text-white hover:scale-105 rounded-full transition-all duration-200 text-[#081129] active:scale-95 hover:shadow-md">
+                        {search.name}
+                      </button>)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </section>
+        
+        {/* Accreditation Logos - Lazy loaded */}
+        <div className="w-full relative z-10">
+          <AccreditationLogos />
+        </div>
+      </div>
+      
+      {/* Our Trusted Partners Section */}
+      <PartnersGrid />
+      
+      {/* Full-width Text Banner Divider */}
+      <section className="w-full py-6 sm:py-8 md:py-10 lg:py-12 bg-[#081129] relative overflow-hidden">
+        {/* Gradient overlay effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(187_72%_48%_/_0.1)] via-transparent to-[hsl(335_89%_48%_/_0.1)] pointer-events-none" />
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
+          <ScrollFadeIn delay={200}>
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-center leading-tight font-heading font-bold text-white tracking-tight">
+              Your <span className="text-[#22c0d4]">{t('hero.health')}</span> is your greatest <span className="text-[#e70d69]">{t('hero.asset')}</span>!
+            </h2>
+          </ScrollFadeIn>
+        </div>
+      </section>
+    </>;
+};
+export default Hero;
