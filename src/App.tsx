@@ -2,11 +2,13 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { logApiError } from "@/services/errorLogger";
+import errorToast from "@/lib/errorToast";
 import Index from "./pages/Index";
 import CompareTests from "./pages/CompareTests";
 import Auth from "./pages/Auth";
@@ -47,7 +49,35 @@ import ConditionsPage from "./pages/ConditionsPage";
 import SportsPerformancePage from "./pages/SportsPerformancePage";
 import ThyroidPage from "./pages/ThyroidPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
+      refetchOnWindowFocus: false,
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      logApiError(error as Error, query.queryKey.toString(), { queryKey: query.queryKey });
+      // Only show toast if we don't have cached data to fall back on
+      if (query.state.data === undefined) {
+        errorToast.generic("load data");
+      }
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      logApiError(error as Error, "mutation");
+      errorToast.generic("save changes");
+    },
+  }),
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
