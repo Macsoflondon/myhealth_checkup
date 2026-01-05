@@ -1,10 +1,16 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { Link } from 'react-router-dom';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import UKASBanner from '@/components/UKASBanner';
+import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Activity, Clock, TrendingUp, AlertTriangle } from 'lucide-react';
+import { SectionHeading } from '@/components/ui/section-heading';
 
 const DiabetesTestingPage = () => {
   const diabetesTests = [
@@ -40,38 +46,42 @@ const DiabetesTestingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <UKASBanner />
       <Header />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-blue-50 to-indigo-50 py-16">
+        <HeroSection
+          title="Diabetes Testing & Monitoring"
+          subtitle="Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults aged 30-60 looking to manage their metabolic health proactively."
+        />
+
+        {/* Action Buttons Bar */}
+        <section className="bg-[#22C0D4] py-4">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-blue-100 text-blue-800">Early Detection</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Diabetes Testing & Monitoring
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults 
-                aged 30-60 looking to manage their metabolic health proactively.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2">
-                  <Activity className="h-5 w-5" />
-                  Find Your Test
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/compare?category=diabetes">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Compare Tests
                 </Button>
-                <Button variant="outline" size="lg">
-                  Learn More
+              </Link>
+              <Link to="/cancer-biomarkers">
+                <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
+                  Biomarker Guide
                 </Button>
-              </div>
+              </Link>
+              <Link to="/find-clinic">
+                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
+                  Find Clinic
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
 
         {/* Warning Signs */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Early Warning Signs</h2>
+              <SectionHeading title="Early Warning" gradientText="Signs" className="mb-12" />
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                   "Increased thirst",
@@ -94,15 +104,14 @@ const DiabetesTestingPage = () => {
         </section>
 
         {/* Available Tests */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-white/[0.31]">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Diabetes Testing Options</h2>
-              <p className="text-xl text-muted-foreground">Choose the right test for your needs</p>
-            </div>
+            <SectionHeading title="Diabetes Testing" gradientText="Options" className="mb-8" />
+            <p className="text-xl text-muted-foreground text-center mb-8">Choose the right test for your needs</p>
             <div className="grid md:grid-cols-2 gap-6">
               {diabetesTests.map((test, index) => (
-                <Card key={index} className="relative">
+                <ScrollFadeIn key={index} delay={index * 100}>
+                <Card className="relative group hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-xl">{test.name}</CardTitle>
@@ -124,6 +133,7 @@ const DiabetesTestingPage = () => {
                     </div>
                   </CardContent>
                 </Card>
+                </ScrollFadeIn>
               ))}
             </div>
           </div>
@@ -133,7 +143,7 @@ const DiabetesTestingPage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">Understanding Your Results</h2>
+              <SectionHeading title="Understanding Your" gradientText="Results" className="mb-8" />
               <div className="grid md:grid-cols-3 gap-6">
                 <Card className="bg-green-50 border-green-200">
                   <CardHeader>
@@ -164,6 +174,50 @@ const DiabetesTestingPage = () => {
                 </Card>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Bottom CTA Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <ScrollFadeIn>
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-3xl font-bold mb-4 text-[#081129]">
+                  Take Control of Your Diabetes Risk
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Compare diabetes tests from trusted UK providers or find a clinic near you
+                </p>
+                <TooltipProvider>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/compare?category=diabetes" className="flex-1 sm:flex-initial">
+                          <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
+                            Browse All Diabetes Tests
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Compare prices from 7+ trusted UK providers</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
+                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
+                            Find a Clinic
+                          </Button>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>150+ clinics nationwide with instant availability</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
+              </div>
+            </ScrollFadeIn>
           </div>
         </section>
       </main>

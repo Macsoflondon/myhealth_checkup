@@ -1,26 +1,25 @@
-
 import React from 'react';
 import { Shield, Mail, Phone, MapPin, Clock, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import PageHeading from '@/components/ui/page-heading';
 
 const PrivacyPolicy = () => {
-  return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+  return <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Shield className="h-8 w-8 text-health-600" />
-          <h1 className="text-3xl font-bold">Privacy Policy</h1>
-        </div>
-        <p className="text-gray-600">
+        <PageHeading 
+          title="Privacy" 
+          accent="Policy" 
+        />
+        <p className="text-gray-600 mt-4">
           Effective Date: 01/08/2025
         </p>
       </div>
 
       <div className="bg-blue-50 p-4 rounded-lg mb-6">
         <p className="text-sm text-gray-700">
-          <strong>Company:</strong> myhealthcheckup Ltd (trading as myhealth checkup)<br/>
-          <strong>Company Registration Number:</strong> 16589056<br/>
+          <strong>Company:</strong> myhealthcheckup Ltd (trading as myhealth checkup)<br />
+          <strong>Company Registration Number:</strong> 16589056<br />
           <strong>Registered Office:</strong> Flat 2/369 Clapham Road, London, United Kingdom, SW9 9BT
         </p>
       </div>
@@ -182,7 +181,7 @@ const PrivacyPolicy = () => {
             <p className="text-sm text-gray-600">Transfer your data</p>
           </div>
         </div>
-        <p className="text-gray-700 mt-4">Contact privacy@myhealthcheckup.co.uk to exercise these rights.</p>
+        <p className="text-gray-700 mt-4">Contact: privacy@myhealthcheckup.co.uk to exercise these rights.</p>
       </Card>
 
       <Card className="p-6">
@@ -211,19 +210,13 @@ const PrivacyPolicy = () => {
       </Card>
 
       <div className="text-center pt-8">
-        <Button 
-          onClick={() => window.print()}
-          variant="outline"
-          className="mr-4"
-        >
+        <Button onClick={() => window.print()} variant="outline" className="mr-4 bg-[#e70d69] text-white">
           Print Policy
         </Button>
-        <Button className="bg-health-600 hover:bg-health-700">
+        <Button className="bg-[#e70d69]">
           Download PDF
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default PrivacyPolicy;

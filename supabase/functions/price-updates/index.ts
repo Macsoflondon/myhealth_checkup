@@ -29,31 +29,31 @@ serve(async (req) => {
       // This would normally come from an external API in a real app
       const seedData = [
         {
-          provider: "Tuli",
+          provider: "tuli-health",
           test_id: "blood-test-1",
           price: 49.00,
           available: true
         },
         {
-          provider: "Medichecks",
+          provider: "medichecks",
           test_id: "blood-test-2",
           price: 59.00,
           available: true
         },
         {
-          provider: "Randox",
+          provider: "randox",
           test_id: "blood-test-3",
           price: 45.00,
           available: true
         },
         {
-          provider: "Tuli",
+          provider: "tuli-health",
           test_id: "weight-loss-1",
           price: 149.00,
           available: true
         },
         {
-          provider: "Goodbody",
+          provider: "goodbody-clinic",
           test_id: "weight-loss-2",
           price: 179.00,
           available: true

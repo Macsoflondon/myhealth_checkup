@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { Search, User, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { logger } from "@/lib/logger";
 
 const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
 
 const navigationItems = [
   { name: "FIND YOUR TEST", path: "/assisted-test-finder", highlighted: true },
-  { name: "MOST POPULAR TESTS", path: "/most-popular-tests", highlighted: true },
+  { name: "MOST POPULAR TESTS", path: "/popular-tests", highlighted: true },
   { name: "WOMEN'S HEALTH", path: "/womens-health" },
   { name: "MEN'S HEALTH", path: "/mens-health" },
   { name: "GENERAL WELLNESS", path: "/wellness" },
@@ -25,15 +26,15 @@ export const HeroToolbar = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      console.log("Searching for:", searchQuery);
+      logger.debug("Searching for:", searchQuery);
     }
   };
 
   return (
     <div className="bg-white border-b border-gray-200">
-      {/* Top bar with logo, search, and user actions */}
+      {/* Top bar with logo and user actions */}
       <div className="px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
+        <div className="w-full flex items-center justify-between">
           {/* Logo and tagline */}
           <Link to="/" className="flex items-center gap-3 flex-shrink-0">
             <img src={logo} alt="myhealth checkup Logo" className="h-10 w-10 rounded-lg" />
@@ -45,29 +46,6 @@ export const HeroToolbar = () => {
               Your health is your greatest asset!
             </div>
           </Link>
-
-          {/* Search bar */}
-          <form onSubmit={handleSearch} className="flex-1 max-w-lg mx-6">
-            <div className="relative flex">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search from over 300 tests"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-health-primary focus:ring-1 focus:ring-health-primary rounded-r-none"
-                />
-              </div>
-              <Button 
-                type="submit" 
-                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-l-none border-l-0 h-full"
-                size="default"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-            </div>
-          </form>
 
           {/* User actions */}
           <div className="flex items-center gap-3 flex-shrink-0">
@@ -89,10 +67,37 @@ export const HeroToolbar = () => {
         </div>
       </div>
 
+      {/* Centered search bar */}
+      <div className="px-4 py-3 border-t border-gray-100">
+        <div className="flex justify-center">
+          <form onSubmit={handleSearch} className="w-full max-w-2xl">
+            <div className="relative flex">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search from over 300 tests"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-3 w-full border-gray-300 focus:border-health-primary focus:ring-1 focus:ring-health-primary rounded-r-none"
+                />
+              </div>
+              <Button 
+                type="submit" 
+                className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-l-none border-l-0 h-full"
+                size="default"
+              >
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       {/* Navigation menu */}
       <div className="bg-white border-t border-gray-200">
         <div className="px-4 py-2">
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full">
             <nav className="flex items-center justify-center gap-4 flex-wrap">
               {navigationItems.map((item) => (
                 <Link
