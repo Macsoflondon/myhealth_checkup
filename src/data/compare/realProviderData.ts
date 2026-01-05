@@ -14,7 +14,7 @@ export const realTestData: RealTestData[] = [
     "Price (£)": 29.0,
     "Test URL": "https://www.medichecks.com/products/testosterone-blood-test",
     "Tags": "Hormone",
-    "Biomarker Count": 1
+    "Biomarker Count": 4
   },
   {
     "Provider": "Medichecks",

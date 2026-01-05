@@ -1,16 +1,12 @@
 
 // Re-export all data from the individual files
-import { compareCategories } from '@/constants/categories';
+import { compareCategories } from './categories';
+import { providers } from './providers';
 import { mappedTestData } from './mappedTestData';
 import { detailedProviders } from './detailedProviders';
-import { medichecksCompareData } from './medichecksData';
-import { londonLabCompareData } from './londonLabData';
 
-// Re-export providers from constants (single source of truth)
-export { providers, PROVIDER_DETAILS, getAllProviders } from '@/constants/providers';
+// Use the real mapped test data
+export const compareData = mappedTestData;
 
-// Combine all test data
-export const compareData = [...mappedTestData, ...medichecksCompareData, ...londonLabCompareData];
-
-// Re-export categories and detailed provider info
-export { compareCategories, detailedProviders };
+// Re-export categories, providers, and detailed provider info
+export { compareCategories, providers, detailedProviders };

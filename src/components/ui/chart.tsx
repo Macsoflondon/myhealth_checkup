@@ -65,45 +65,6 @@ const ChartContainer = React.forwardRef<
 })
 ChartContainer.displayName = "Chart"
 
-/**
- * Validates and sanitizes CSS color values to prevent XSS injection.
- * Only allows valid CSS color formats: hex, rgb, rgba, hsl, hsla, and named colors.
- * @security This function is critical for preventing XSS via dangerouslySetInnerHTML
- */
-const sanitizeCSSColor = (color: string): string | null => {
-  if (!color || typeof color !== 'string') return null
-  
-  // Remove any whitespace and convert to lowercase for validation
-  const trimmed = color.trim()
-  
-  // Reject any strings containing potentially dangerous characters
-  if (/[<>{}();\n\r"']/.test(trimmed) && !trimmed.match(/^(rgb|hsl)a?\(/)) {
-    return null
-  }
-  
-  // Valid CSS color patterns
-  const validPatterns = [
-    /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, // Hex colors
-    /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/, // RGB
-    /^rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*[\d.]+\s*\)$/, // RGBA
-    /^hsl\(\s*\d{1,3}\s*,\s*[\d.]+%\s*,\s*[\d.]+%\s*\)$/, // HSL
-    /^hsla\(\s*\d{1,3}\s*,\s*[\d.]+%\s*,\s*[\d.]+%\s*,\s*[\d.]+\s*\)$/, // HSLA
-    /^[a-zA-Z]+$/, // Named colors (e.g., "red", "blue")
-    /^var\(--[a-zA-Z0-9-]+\)$/, // CSS variables
-  ]
-  
-  const isValid = validPatterns.some(pattern => pattern.test(trimmed))
-  return isValid ? trimmed : null
-}
-
-/**
- * Sanitizes chart ID to prevent CSS selector injection
- * @security Ensures ID only contains safe characters for CSS selectors
- */
-const sanitizeChartId = (id: string): string => {
-  return id.replace(/[^a-zA-Z0-9-_]/g, '')
-}
-
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([_, config]) => config.theme || config.color
@@ -113,25 +74,20 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null
   }
 
-  const sanitizedId = sanitizeChartId(id)
-
   return (
     <style
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
             ([theme, prefix]) => `
-${prefix} [data-chart=${sanitizedId}] {
+${prefix} [data-chart=${id}] {
 ${colorConfig
   .map(([key, itemConfig]) => {
-    const rawColor =
+    const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color
-    const color = rawColor ? sanitizeCSSColor(rawColor) : null
-    const sanitizedKey = key.replace(/[^a-zA-Z0-9-_]/g, '')
-    return color ? `  --color-${sanitizedKey}: ${color};` : null
+    return color ? `  --color-${key}: ${color};` : null
   })
-  .filter(Boolean)
   .join("\n")}
 }
 `

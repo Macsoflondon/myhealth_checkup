@@ -1,112 +1,55 @@
+
 import { useNavigate, Link } from "react-router-dom";
-import { User, LogOut, LayoutDashboard } from "lucide-react";
+import { User, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
-import { useTranslation } from "react-i18next";
+
 interface UserMenuProps {
   isMobile?: boolean;
   onItemClick?: () => void;
 }
-export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
-  const { user, signOut } = useAuth();
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const handleSignOut = async () => {
-    await signOut();
-    onItemClick?.();
-  };
-  if (isMobile) {
-    if (user) {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 w-7 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors flex-shrink-0"
-              aria-label="User menu"
-            >
-              <User className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link to="/dashboard" className="flex items-center gap-2" onClick={onItemClick}>
-                <LayoutDashboard className="h-4 w-4" />
-                Dashboard
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    }
 
+export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  if (isMobile) {
     return (
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-7 w-7 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors flex-shrink-0"
-        aria-label="Sign in"
-        asChild
-      >
-        <Link to="/auth" className="flex items-center justify-center" onClick={onItemClick}>
-          <User className="h-4 w-4" />
+      <div className="pt-4 border-t border-gray-200 space-y-3">
+        <Link
+          to="/auth"
+          className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={onItemClick}
+        >
+          <User className="h-5 w-5" />
+          <span>Sign In</span>
         </Link>
-      </Button>
+        <Link
+          to="/dashboard"
+          className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={onItemClick}
+        >
+          <ShoppingCart className="h-5 w-5" />
+          <span>My Orders</span>
+        </Link>
+      </div>
     );
   }
-  if (user) {
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 w-7 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors"
-            aria-label="User menu"
-          >
-            <User className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem asChild>
-            <Link to="/dashboard" className="flex items-center gap-2">
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign Out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
-  }
+
   return (
     <div className="flex items-center gap-3">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-7 w-7 p-0 text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] rounded-lg transition-colors"
-        aria-label="Sign in"
-        asChild
-      >
-        <Link to="/auth" className="flex items-center justify-center">
-          <User className="h-4 w-4" />
+      <Button variant="ghost" size="sm" className="h-10 px-3" asChild>
+        <Link to="/auth" className="flex items-center gap-2">
+          <User className="h-5 w-5 text-gray-600" />
+        </Link>
+      </Button>
+      
+      <Button variant="ghost" size="sm" className="h-10 px-3 relative" asChild>
+        <Link to="/dashboard" className="flex items-center gap-2">
+          <ShoppingCart className="h-5 w-5 text-gray-600" />
+          <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center text-[10px] font-semibold">
+            0
+          </span>
         </Link>
       </Button>
     </div>

@@ -1,17 +1,16 @@
 import React from 'react';
 import { Shield, Users, CheckCircle, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import PageHeading from '@/components/ui/page-heading';
 
 const ModernSlaveryStatement = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <PageHeading 
-          title="Modern Slavery &" 
-          accent="ESG Statement" 
-        />
-        <p className="text-gray-600 mt-4">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Users className="h-8 w-8 text-health-600" />
+          <h1 className="text-3xl font-bold">Modern Slavery & ESG Statement</h1>
+        </div>
+        <p className="text-gray-600">
           Effective Date: 01/08/2025
         </p>
       </div>

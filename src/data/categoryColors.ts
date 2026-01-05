@@ -4,24 +4,13 @@
 export interface CategoryColor {
   id: string;
   name: string;
-  primary: string;
-  light: string;
-  text: string;
-  icon: string;
-  border: string;
-  pinColor: string;
+  primary: string;        // Main color (e.g., for backgrounds)
+  light: string;         // Light version (e.g., for hover states)
+  text: string;          // Text color on light backgrounds
+  icon: string;          // Icon color on colored backgrounds
+  border: string;        // Border color
+  pinColor: string;      // Map pin color (hex for map compatibility)
 }
-
-export const HormonesCategoryColor: CategoryColor = {
-  id: 'hormones',
-  name: 'Hormones',
-  primary: '#FFFFFF',          // Card background
-  light: '#F8FAFC',            // Hover or subtle highlight background
-  text: '#111827',             // Main text on light backgrounds
-  icon: '#081129',             // Icons, CTA outline, header stripe
-  border: '#E5E7EB',           // Card border and dividers
-  pinColor: '#e70d69'         // Map pin
-};
 
 export const categoryColors: CategoryColor[] = [
   {
@@ -97,7 +86,7 @@ export const categoryColors: CategoryColor[] = [
   {
     id: "blood-tests", 
     name: "Comprehensive Blood Panels",
-    primary: "bg-yellow-500",
+    primary: "bg-teal-600",
     light: "bg-teal-100",
     text: "text-teal-600",
     icon: "text-white",

@@ -1,16 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import UKASBanner from '@/components/UKASBanner';
-import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import HeroSection from '@/components/sections/HeroSection';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Sun, Zap, Shield, Leaf } from 'lucide-react';
-import { SectionHeading } from '@/components/ui/section-heading';
 const VitaminDeficiencyPage = () => {
   const vitaminTests = [{
     name: "Vitamin D Test",
@@ -59,36 +53,41 @@ const VitaminDeficiencyPage = () => {
     color: "text-green-600"
   }];
   return <div className="min-h-screen flex flex-col">
-      <UKASBanner />
       <Header />
       <main className="flex-grow">
-        <HeroSection
-          title="Vitamin & Mineral Testing"
-          subtitle="Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. Essential testing for health-conscious UK adults aged 30-60."
-        >
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="gap-2">
-              <Leaf className="h-5 w-5" />
-              Test My Vitamins
-            </Button>
-            <Button variant="outline" size="lg">
-              Symptoms Checker
-            </Button>
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-green-50 to-emerald-50 py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge className="mb-4 bg-green-100 text-green-800">Nutritional Health</Badge>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+                Vitamin & Mineral Testing
+              </h1>
+              <p className="text-xl text-muted-foreground mb-8">
+                Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. 
+                Essential testing for health-conscious UK adults aged 30-60.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button size="lg" className="gap-2">
+                  <Leaf className="h-5 w-5" />
+                  Test My Vitamins
+                </Button>
+                <Button variant="outline" size="lg">
+                  Symptoms Checker
+                </Button>
+              </div>
+            </div>
           </div>
-        </HeroSection>
+        </section>
 
         {/* Common Deficiencies */}
         
 
         {/* Available Tests */}
-        <section className="py-16 bg-white/[0.31]">
+        <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <SectionHeading 
-                title="Vitamin Deficiency" 
-                gradientText="Tests" 
-                className="mb-4"
-              />
+              <h2 className="text-3xl font-bold mb-4">Vitamin Deficiency Tests</h2>
               <p className="text-xl text-muted-foreground">Identify and address nutritional gaps</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -122,14 +121,10 @@ const VitaminDeficiencyPage = () => {
         </section>
 
         {/* Why Test For Deficiencies */}
-        <section className="py-16 bg-white">
+        <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <SectionHeading 
-                title="Why Test for" 
-                gradientText="Vitamin Deficiencies?" 
-                className="mb-12"
-              />
+              <h2 className="text-3xl font-bold text-center mb-12">Why Test for Vitamin Deficiencies?</h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <Card className="p-6">
                   <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -173,52 +168,6 @@ const VitaminDeficiencyPage = () => {
                 </Card>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Bottom CTA Section */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <ScrollFadeIn>
-              <div className="max-w-4xl mx-auto text-center">
-                <SectionHeading 
-                  title="Discover Your" 
-                  gradientText="Vitamin Levels Today" 
-                  className="mb-4"
-                />
-                <p className="text-lg text-muted-foreground mb-8">
-                  Compare vitamin tests from trusted UK providers or find a clinic near you
-                </p>
-                <TooltipProvider>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/compare?category=vitamins" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
-                            Browse All Vitamin Tests
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Compare prices from 7+ trusted UK providers</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                            Find a Clinic
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>150+ clinics nationwide with instant availability</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                </TooltipProvider>
-              </div>
-            </ScrollFadeIn>
           </div>
         </section>
       </main>

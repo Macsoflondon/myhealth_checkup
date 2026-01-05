@@ -5,17 +5,14 @@ import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean }
->(({ className, interactive, onClick, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
-      "rounded-xl bg-surface border-0 text-card-foreground shadow-elevation-2 transition-all duration-300",
-      interactive && "state-layer cursor-pointer hover:shadow-elevation-4 hover:scale-[1.02] hover:-translate-y-1",
-      !interactive && "hover:shadow-elevation-3 hover:-translate-y-0.5",
+      "rounded-lg border bg-card text-card-foreground shadow-sm",
       className
     )}
-    onClick={onClick}
     {...props}
   />
 ))
@@ -27,7 +24,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-2 p-6", className)}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
     {...props}
   />
 ))

@@ -71,6 +71,24 @@ VITE_SUPABASE_KEY=<your-supabase-key>
 
 These variables are used by the Supabase client in `src/integrations/supabase/client.ts`.
 
+## Error reporting
+
+Uncaught errors are forwarded to [Sentry](https://sentry.io/) via an `ErrorBoundary` component.
+
+### Configuration
+
+Set the `VITE_SENTRY_DSN` environment variable with your Sentry DSN:
+
+```bash
+# .env.development
+# leave empty to log errors to the console
+
+# .env.production
+VITE_SENTRY_DSN=your-production-dsn
+```
+
+If `VITE_SENTRY_DSN` is not provided, errors are only logged to the browser console. When the DSN is present, Sentry is initialised with the current Vite mode.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/37e227e1-0d67-4515-b064-99c243036534) and click on Share -> Publish.

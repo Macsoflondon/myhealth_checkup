@@ -1,10 +1,9 @@
 import React from 'react';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import PageHeading from '@/components/ui/page-heading';
 
 const CookiePolicyPage = () => {
   return (
@@ -15,11 +14,8 @@ const CookiePolicyPage = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <Badge className="mb-4">PECR Compliant</Badge>
-              <PageHeading 
-                title="Cookie" 
-                accent="Policy" 
-              />
-              <p className="text-xl text-muted-foreground mt-4">
+              <h1 className="text-4xl font-bold mb-6">Cookie Policy</h1>
+              <p className="text-xl text-muted-foreground">
                 This Cookie Policy explains how myhealthcheckup Ltd uses cookies and similar technologies
               </p>
               <p className="text-sm text-muted-foreground mt-2">

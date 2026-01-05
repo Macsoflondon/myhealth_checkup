@@ -13,7 +13,7 @@ const navigationCategories = [
   },
   { 
     name: "Most popular tests", 
-    path: "/popular-tests",
+    path: "/most-popular-tests",
     isStatic: true 
   },
   { 
@@ -40,7 +40,7 @@ const navigationCategories = [
     categories: ["thyroid", "hormones"]
   },
   { 
-    name: "Sports/Fitness Health", 
+    name: "Sports Performance", 
     path: "/sports-performance",
     categoryId: "vitamins",
     categories: ["vitamins", "blood-tests"]
@@ -111,7 +111,7 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
               <div className="flex items-center justify-between">
                 <Link
                   to={item.path}
-                  className="flex-1 flex items-center gap-2 text-gray-700 hover:text-primary transition-colors font-medium text-xl py-2.5"
+                  className="flex-1 flex items-center gap-2 text-gray-700 hover:text-primary transition-colors font-medium text-sm py-2"
                   onClick={onItemClick}
                 >
                   {categoryColor && (
@@ -125,9 +125,9 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
                   aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${item.name} category`}
                 >
                   {isExpanded ? (
-                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                    <ChevronDown className="h-4 w-4 text-gray-500" />
                   ) : (
-                    <ChevronRight className="h-5 w-5 text-gray-500" />
+                    <ChevronRight className="h-4 w-4 text-gray-500" />
                   )}
                 </button>
               </div>
@@ -137,21 +137,10 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
                 <div className="ml-4 space-y-2 py-2 border-l-2 border-gray-100 pl-3">
                   {getTestsForCategories(item.categories || []).map((test, index) => {
                     const testCategoryColor = getCategoryColor(test.category);
-                    // Generate the correct provider-specific URL
-                    const getTestUrl = () => {
-                      const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-').replace('clinic', '');
-                      if (providerSlug?.includes('medichecks')) return `/medichecks/${test.id}`;
-                      if (providerSlug?.includes('goodbody')) return `/goodbody/${test.id}`;
-                      if (providerSlug?.includes('lola')) return `/lola-health/${test.id}`;
-                      if (providerSlug?.includes('thriva')) return `/thriva/${test.id}`;
-                      if (providerSlug?.includes('randox')) return `/randox/${test.id}`;
-                      if (providerSlug?.includes('tuli')) return `/tuli-health/${test.id}`;
-                      return `/compare?category=${test.category}`;
-                    };
                     return (
                       <Link
                         key={`${test.id}-${index}`}
-                        to={getTestUrl()}
+                        to={`/test/${test.id}`}
                         className="block p-2 rounded-md hover:bg-gray-50 transition-colors"
                         onClick={onItemClick}
                       >
@@ -159,11 +148,11 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
                           {testCategoryColor && (
                             <div className={`w-1.5 h-1.5 rounded-full ${testCategoryColor.primary}`} />
                           )}
-                          <span className="text-lg font-medium text-gray-800">
+                          <span className="text-sm font-medium text-gray-800">
                             {test.name.length > 30 ? `${test.name.substring(0, 30)}...` : test.name}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
                           <span>{test.provider}</span>
                           <span className="font-medium text-primary">£{test.price}</span>
                         </div>
@@ -174,13 +163,13 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
                   {/* View All Link */}
                   <Link
                     to={item.path}
-                    className={`inline-flex items-center gap-1 text-sm font-medium mt-2 transition-colors ${
+                    className={`inline-flex items-center gap-1 text-xs font-medium mt-2 transition-colors ${
                       categoryColor ? categoryColor.text : 'text-primary'
                     } hover:opacity-80`}
                     onClick={onItemClick}
                   >
                     View all {item.name.toLowerCase()} tests
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-3 w-3" />
                   </Link>
                 </div>
               )}
@@ -193,7 +182,7 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
           <Link
             key={item.path}
             to={item.path}
-            className="flex items-center text-gray-700 hover:text-primary transition-colors font-medium text-xl py-2.5"
+            className="flex items-center text-gray-700 hover:text-primary transition-colors font-medium text-sm py-2"
             onClick={onItemClick}
           >
             {item.name}

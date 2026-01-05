@@ -5,19 +5,19 @@ import { Slider } from '@/components/ui/slider';
 import { Card } from '@/components/ui/card';
 
 interface VideoPlayerProps {
-  src: string;
+  src?: string | null;
   title?: string;
   className?: string;
   autoPlay?: boolean;
   controls?: boolean;
 }
 
-export function VideoPlayer({ 
-  src, 
-  title, 
-  className = "", 
+export function VideoPlayer({
+  src,
+  title,
+  className = "",
   autoPlay = false,
-  controls = true 
+  controls = true
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -115,6 +115,17 @@ export function VideoPlayer({
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
+
+  if (!src) {
+    return (
+      <Card className={`flex h-full min-h-[12rem] items-center justify-center bg-muted ${className}`}>
+        <div className="text-center">
+          <p className="text-lg font-semibold">No video selected</p>
+          <p className="text-sm text-muted-foreground">Upload a video to preview it here.</p>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className={`overflow-hidden bg-black ${className}`}>

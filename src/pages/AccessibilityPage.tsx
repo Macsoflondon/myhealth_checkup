@@ -1,10 +1,9 @@
 import React from 'react';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
-import PageHeading from '@/components/ui/page-heading';
 
 const AccessibilityPage = () => {
   return (
@@ -15,11 +14,8 @@ const AccessibilityPage = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <Badge className="mb-4">WCAG 2.1 AA Compliant</Badge>
-              <PageHeading 
-                title="Accessibility" 
-                accent="Statement" 
-              />
-              <p className="text-xl text-muted-foreground mt-6">
+              <h1 className="text-4xl font-bold mb-6">Accessibility Statement</h1>
+              <p className="text-xl text-muted-foreground">
                 We're committed to ensuring our website is accessible to everyone, 
                 regardless of ability or technology used.
               </p>

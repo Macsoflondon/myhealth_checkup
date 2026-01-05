@@ -26,41 +26,5 @@ export default defineConfig(({ mode }) => {
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL),
       'import.meta.env.VITE_SUPABASE_KEY': JSON.stringify(env.VITE_SUPABASE_KEY),
     },
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            // Vendor chunks for better caching
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'ui-vendor': [
-              '@radix-ui/react-dialog',
-              '@radix-ui/react-dropdown-menu',
-              '@radix-ui/react-tabs',
-              '@radix-ui/react-toast',
-              '@radix-ui/react-select',
-              '@radix-ui/react-accordion',
-            ],
-            'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
-            'map-vendor': ['leaflet', 'react-leaflet', 'react-leaflet-cluster'],
-            'chart-vendor': ['recharts'],
-          },
-        },
-      },
-      chunkSizeWarningLimit: 1000,
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: mode === 'production',
-        },
-      },
-    },
-    optimizeDeps: {
-      include: [
-        'react',
-        'react-dom',
-        '@tanstack/react-query',
-        '@supabase/supabase-js',
-      ],
-    },
   };
 });
