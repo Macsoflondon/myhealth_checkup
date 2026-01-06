@@ -1,15 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Helmet } from "react-helmet-async";
-import { CheckCircle2, Clock, Home, Building2, ExternalLink } from "lucide-react";
+import { CheckCircle2, Clock, Home, Building2, ExternalLink, ArrowLeft, FlaskConical, Info } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
 import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface ProviderTestData {
   id: string;
@@ -19,6 +22,14 @@ export interface ProviderTestData {
   url: string;
   price: number | null;
   provider_test_id?: string;
+  biomarkers_list?: string[] | null;
+  biomarker_count?: number | null;
+}
+
+interface BiomarkerInfo {
+  biomarker_name: string;
+  description: string;
+  category: string;
 }
 
 interface ProviderTestDetailTemplateProps {
@@ -40,23 +51,127 @@ const LoadingSkeleton = () => (
 );
 
 // Not found component
-const NotFoundState = ({ providerName }: { providerName: string }) => (
-  <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
-    <div className="container mx-auto px-4 max-w-5xl">
-      <Card>
-        <CardContent className="py-12 text-center">
-          <h2 className="text-2xl font-bold mb-4">Test Not Found</h2>
-          <p className="text-muted-foreground mb-6">
-            The {providerName} test you're looking for doesn't exist or has been removed.
-          </p>
-          <Button asChild>
-            <Link to="/compare">Browse All Tests</Link>
-          </Button>
-        </CardContent>
-      </Card>
+const NotFoundState = ({ providerName }: { providerName: string }) => {
+  const navigate = useNavigate();
+  
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Go Back
+        </Button>
+        <Card>
+          <CardContent className="py-12 text-center">
+            <h2 className="text-2xl font-bold mb-4">Test Not Found</h2>
+            <p className="text-muted-foreground mb-6">
+              The {providerName} test you're looking for doesn't exist or has been removed.
+            </p>
+            <Button asChild>
+              <Link to="/compare">Browse All Tests</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+// Biomarkers Section Component
+const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[] | null | undefined; biomarkerCount: number | null | undefined }) => {
+  const [biomarkerDetails, setBiomarkerDetails] = useState<Record<string, BiomarkerInfo>>({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchBiomarkerDetails = async () => {
+      if (!biomarkers || biomarkers.length === 0) return;
+      
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('biomarkers_library')
+          .select('biomarker_name, description, category')
+          .in('biomarker_name', biomarkers);
+        
+        if (!error && data) {
+          const details: Record<string, BiomarkerInfo> = {};
+          data.forEach((item) => {
+            details[item.biomarker_name.toLowerCase()] = item;
+          });
+          setBiomarkerDetails(details);
+        }
+      } catch (err) {
+        console.error('Error fetching biomarker details:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBiomarkerDetails();
+  }, [biomarkers]);
+
+  if (!biomarkers || biomarkers.length === 0) {
+    return null;
+  }
+
+  const displayCount = biomarkerCount || biomarkers.length;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <FlaskConical className="h-5 w-5 text-primary" />
+          Biomarkers Tested ({displayCount})
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground mb-4">
+          This test analyses the following biomarkers. Hover over each for more information.
+        </p>
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {[...Array(6)].map((_, i) => (
+              <Skeleton key={i} className="h-10 w-full" />
+            ))}
+          </div>
+        ) : (
+          <TooltipProvider>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {biomarkers.map((biomarker, index) => {
+                const details = biomarkerDetails[biomarker.toLowerCase()];
+                
+                return (
+                  <Tooltip key={index}>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-2 p-2 rounded-md border bg-muted/30 hover:bg-muted/50 transition-colors cursor-help">
+                        <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                        <span className="text-sm truncate">{biomarker}</span>
+                        {details && (
+                          <Info className="h-3 w-3 text-muted-foreground shrink-0 ml-auto" />
+                        )}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      {details ? (
+                        <div>
+                          <p className="font-semibold">{details.biomarker_name}</p>
+                          <p className="text-xs text-muted-foreground">{details.category}</p>
+                          <p className="text-sm mt-1">{details.description}</p>
+                        </div>
+                      ) : (
+                        <p>{biomarker}</p>
+                      )}
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+          </TooltipProvider>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
 
 export default function ProviderTestDetailTemplate({
   test,
@@ -64,6 +179,8 @@ export default function ProviderTestDetailTemplate({
   isLoading,
   testId,
 }: ProviderTestDetailTemplateProps) {
+  const navigate = useNavigate();
+
   if (isLoading) {
     return <LoadingSkeleton />;
   }
@@ -71,6 +188,11 @@ export default function ProviderTestDetailTemplate({
   if (!test) {
     return <NotFoundState providerName={providerConfig.name} />;
   }
+
+  // Parse biomarkers from JSON if needed
+  const biomarkers = Array.isArray(test.biomarkers_list) 
+    ? test.biomarkers_list 
+    : null;
 
   const pageTitle = `${test.test_name} - ${providerConfig.name} Blood Test | myhealth checkup`;
   const pageDescription = `${test.description} Book your ${test.test_name} blood test with ${providerConfig.name} through myhealth checkup. ${providerConfig.aboutText}`;
@@ -88,6 +210,12 @@ export default function ProviderTestDetailTemplate({
 
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
+          {/* Back Button */}
+          <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+
           {/* Breadcrumb Navigation */}
           <TestBreadcrumb providerName={providerConfig.name} testName={test.test_name} />
 
@@ -130,6 +258,12 @@ export default function ProviderTestDetailTemplate({
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Biomarkers Section */}
+              <BiomarkersSection 
+                biomarkers={biomarkers} 
+                biomarkerCount={test.biomarker_count} 
+              />
 
               {/* Sample Collection Options */}
               <Card>

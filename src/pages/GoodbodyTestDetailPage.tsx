@@ -14,13 +14,19 @@ const GoodbodyTestDetailPage = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("provider_tests")
-        .select("id, test_name, category, description, url, price, provider_test_id")
+        .select("id, test_name, category, description, url, price, provider_test_id, biomarkers_list, biomarker_count")
         .eq("provider_id", "goodbody-clinic")
         .eq("id", testId)
         .single();
 
       if (error) throw error;
-      return data as ProviderTestData;
+      
+      // Parse biomarkers_list if needed
+      const biomarkers = data.biomarkers_list 
+        ? (Array.isArray(data.biomarkers_list) ? data.biomarkers_list : null)
+        : null;
+      
+      return { ...data, biomarkers_list: biomarkers as string[] | null } as ProviderTestData;
     },
   });
 
