@@ -2,9 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import UKASBanner from '@/components/UKASBanner';
+import { MainLayout } from '@/layouts/MainLayout';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -205,7 +203,8 @@ const WomensHealthPage = () => {
     }) as string[],
     recommendedTest: t('womensHealth.healthConcerns.fertilityPlanning.recommendedTest')
   }];
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <MainLayout mainClassName="flex-1 bg-background">
       <Helmet>
         <title>{t('womensHealth.pageTitle')}</title>
         <meta name="description" content={t('womensHealth.metaDescription')} />
@@ -224,13 +223,10 @@ const WomensHealthPage = () => {
         <meta name="twitter:description" content={t('womensHealth.twitterDescription')} />
       </Helmet>
       
-      <UKASBanner />
-      <Header />
-      <main className="flex-grow bg-background">
-        <HeroSection
-          title={t('womensHealth.title')}
-          subtitle={t('womensHealth.subtitle')}
-        />
+      <HeroSection
+        title={t('womensHealth.title')}
+        subtitle={t('womensHealth.subtitle')}
+      />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">
@@ -470,8 +466,7 @@ const WomensHealthPage = () => {
             </ScrollFadeIn>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>;
+    </MainLayout>
+  );
 };
 export default WomensHealthPage;
