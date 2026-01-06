@@ -13,6 +13,7 @@ interface SimilarTest {
   price: number | null;
   category: string | null;
   biomarker_count: number | null;
+  provider_test_id: string | null;
 }
 
 interface SimilarTestsSectionProps {
@@ -34,7 +35,7 @@ const SimilarTestsSection = ({
       try {
         const { data, error } = await supabase
           .from('provider_tests')
-          .select('id, test_name, provider_id, price, category, biomarker_count')
+          .select('id, test_name, provider_id, price, category, biomarker_count, provider_test_id')
           .eq('is_active', true)
           .ilike('category', `%${category}%`)
           .neq('provider_id', currentProvider || '')
@@ -91,8 +92,16 @@ const SimilarTestsSection = ({
     return names[providerId.toLowerCase()] || providerId;
   };
 
-  const generateTestSlug = (testName: string) => {
-    return testName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const getTestSlug = (test: SimilarTest) => {
+    // Use provider_test_id if available, otherwise fall back to generated slug
+    if (test.provider_test_id) {
+      return test.provider_test_id;
+    }
+    // For GoodBody which uses id instead of provider_test_id
+    if (test.provider_id === 'goodbody-clinic' || test.provider_id === 'goodbody') {
+      return test.id;
+    }
+    return test.test_name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   };
 
   return (
@@ -112,7 +121,7 @@ const SimilarTestsSection = ({
           {similarTests.map((test) => (
             <Link
               key={test.id}
-              to={`${getProviderRoute(test.provider_id)}/${generateTestSlug(test.test_name)}`}
+              to={`${getProviderRoute(test.provider_id)}/${getTestSlug(test)}`}
               className="block"
             >
               <div className="border rounded-lg p-3 hover:border-primary hover:bg-accent/50 transition-colors">
