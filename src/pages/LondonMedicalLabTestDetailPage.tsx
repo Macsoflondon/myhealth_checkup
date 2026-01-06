@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import ProviderTestDetailTemplate, { ProviderTestData } from "@/components/templates/ProviderTestDetailTemplate";
 import { getProviderConfig } from "@/constants/providerTestPageConfig";
+import { findTestByIdOrSlug } from "@/utils/testSlugLookup";
 
 const providerConfig = getProviderConfig('london-medical-laboratory')!;
 
@@ -14,21 +14,8 @@ const LondonMedicalLabTestDetailPage = () => {
   useEffect(() => {
     const fetchTest = async () => {
       if (!testId) return;
-
-      const { data, error } = await supabase
-        .from('provider_tests')
-        .select('id, test_name, category, description, url, price, provider_test_id, biomarkers_list, biomarker_count')
-        .eq('provider_id', 'london-medical-laboratory')
-        .eq('provider_test_id', testId)
-        .eq('is_active', true)
-        .single();
-
-      if (!error && data) {
-        const biomarkers = data.biomarkers_list 
-          ? (Array.isArray(data.biomarkers_list) ? data.biomarkers_list : null)
-          : null;
-        setTest({ ...data, biomarkers_list: biomarkers as string[] | null });
-      }
+      const data = await findTestByIdOrSlug('london-medical-laboratory', testId);
+      setTest(data);
       setLoading(false);
     };
 
