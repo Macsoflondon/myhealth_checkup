@@ -326,7 +326,7 @@ export default function ProviderComparisonPage() {
                           const stats = providerStats[providerId];
                           return (
                             <td key={providerId} className="p-4 text-center">
-                              {stats?.min_price !== null ? (
+                              {stats && stats.min_price !== null ? (
                                 <span className="text-sm">
                                   {formatPrice(stats.min_price)} - {formatPrice(stats.max_price)}
                                 </span>
