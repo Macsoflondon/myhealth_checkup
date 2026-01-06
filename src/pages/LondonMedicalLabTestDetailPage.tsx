@@ -4,9 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import ProviderTestDetailTemplate, { ProviderTestData } from "@/components/templates/ProviderTestDetailTemplate";
 import { getProviderConfig } from "@/constants/providerTestPageConfig";
 
-const providerConfig = getProviderConfig('lola-health')!;
+const providerConfig = getProviderConfig('london-medical-laboratory')!;
 
-const LolaHealthTestDetailPage = () => {
+const LondonMedicalLabTestDetailPage = () => {
   const { testId } = useParams<{ testId: string }>();
   const [test, setTest] = useState<ProviderTestData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ const LolaHealthTestDetailPage = () => {
       const { data, error } = await supabase
         .from('provider_tests')
         .select('id, test_name, category, description, url, price, provider_test_id')
-        .eq('provider_id', 'lola-health')
+        .eq('provider_id', 'london-medical-laboratory')
         .eq('provider_test_id', testId)
         .eq('is_active', true)
         .single();
@@ -42,4 +42,4 @@ const LolaHealthTestDetailPage = () => {
   );
 };
 
-export default LolaHealthTestDetailPage;
+export default LondonMedicalLabTestDetailPage;
