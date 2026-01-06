@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import UKASBanner from '@/components/UKASBanner';
+import { MainLayout } from '@/layouts/MainLayout';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -131,7 +129,8 @@ const getCategoryButtonColor = (category: string) => {
   return buttonColorMap[category] || "bg-gray-500 hover:bg-gray-600";
 };
 const MensHealthPage = () => {
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <MainLayout mainClassName="flex-1 bg-background">
       <Helmet>
         <title>Men's Health Blood Tests | Male Hormone & Prostate Testing | myhealth checkup - Your health. Your choice. One trusted platform!</title>
         <meta name="description" content="Comprehensive men's health testing including testosterone, prostate PSA, erectile dysfunction, and complete male wellness screening from £45." />
@@ -150,13 +149,10 @@ const MensHealthPage = () => {
         <meta name="twitter:description" content="Comprehensive men's health testing with fast results" />
       </Helmet>
       
-      <UKASBanner />
-      <Header />
-      <main className="flex-grow bg-background">
-        <HeroSection
-          title="Men's Health Blood Tests"
-          subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
-        />
+      <HeroSection
+        title="Men's Health Blood Tests"
+        subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
+      />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">
@@ -412,8 +408,7 @@ const MensHealthPage = () => {
             </ScrollFadeIn>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>;
+    </MainLayout>
+  );
 };
 export default MensHealthPage;
