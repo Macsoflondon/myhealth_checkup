@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import MainLayout from "@/layouts/MainLayout";
 import UKASBanner from "@/components/UKASBanner";
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
-import { CompareService } from "@/services/CompareService";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,12 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Filter, TrendingUp, Clock, Sparkles, GitCompare } from "lucide-react";
+import { Loader2, Filter, TrendingUp, Clock, Sparkles } from "lucide-react";
 import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import HeroSection from "@/components/sections/HeroSection";
+import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 
 const CATEGORY_LIST = [
   "general health",
@@ -39,25 +36,11 @@ const CATEGORY_LIST = [
 ];
 
 const CompareTests = () => {
-  const location = useLocation();
-  
   // Filter states
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProvider, setSelectedProvider] = useState("all");
-  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [sampleMethod, setSampleMethod] = useState("all");
-  const [fastingRequired, setFastingRequired] = useState("any");
-  const [gpReview, setGpReview] = useState(false);
-  const [sortBy, setSortBy] = useState("price-asc");
+  const [filters, setFilters] = useState<CompareFilters>(defaultFilters);
   
   // Mobile filter visibility
   const [showFilters, setShowFilters] = useState(false);
-  
-  // Data states
-  const [tests, setTests] = useState<CompareTestData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [categories, setCategories] = useState<Array<{ id: string; name: string; count: number }>>([]);
   
   // Pagination states
   const ITEMS_PER_PAGE = 12;
@@ -69,141 +52,32 @@ const CompareTests = () => {
   const [selectedTests, setSelectedTests] = useState<CompareTestData[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
 
-  // Fetch categories on mount
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesData = await CompareService.getCategories();
-        setCategories(categoriesData);
-      } catch (error) {
-        logger.error("Error fetching categories:", error);
-        setCategories([]);
-      }
-    };
-    fetchCategories();
-  }, []);
+  // Use the centralised data hook
+  const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
 
-  // Parse query parameters from URL
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const categoryParam = queryParams.get("category");
-    if (categoryParam) {
-      setSelectedCategory(categoryParam);
+  // Set initial category from URL
+  React.useEffect(() => {
+    if (urlCategory && !filters.selectedCategory) {
+      setFilters(prev => ({ ...prev, selectedCategory: urlCategory }));
     }
-  }, [location.search]);
+  }, [urlCategory]);
 
-  // Fetch and filter tests
-  const fetchTests = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      let results: CompareTestData[] = [];
-      
-      const providerFilter = selectedProvider === "all" ? ["all"] : [selectedProvider];
-      
-      if (searchQuery.trim()) {
-        results = await CompareService.searchTests(searchQuery, providerFilter);
-      } else {
-        const categoryName = selectedCategory || "all";
-        results = await CompareService.getTestsByCategory(categoryName, providerFilter);
-      }
+  // Reset pagination when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
-      // Apply local filters
-      results = applyFilters(results);
-      
-      // Sort results
-      results = sortTests(results, sortBy);
-      
-      setTests(results);
-    } catch (error) {
-      logger.error("Error fetching tests:", error);
-      setTests([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [searchQuery, selectedProvider, selectedCategory, sortBy, priceRange, sampleMethod, fastingRequired, gpReview]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setCurrentPage(1); // Reset to first page when filters change
-      fetchTests();
-    }, 300);
-    return () => clearTimeout(timeoutId);
-  }, [fetchTests]);
-
-  // Apply local filters
-  const applyFilters = useCallback((testList: CompareTestData[]): CompareTestData[] => {
-    let filtered = [...testList];
-    
-    // Price range filter
-    if (priceRange.min) {
-      filtered = filtered.filter(test => test.price >= parseFloat(priceRange.min));
-    }
-    if (priceRange.max) {
-      filtered = filtered.filter(test => test.price <= parseFloat(priceRange.max));
-    }
-    
-    // Sample method filter
-    if (sampleMethod && sampleMethod !== "all") {
-      filtered = filtered.filter(test => {
-        const collection = (test.features?.collection || "").toLowerCase();
-        switch (sampleMethod) {
-          case "finger-prick":
-            return collection.includes("finger") || collection.includes("prick");
-          case "venous":
-            return collection.includes("clinic") || collection.includes("venous");
-          case "home-phlebotomy":
-            return collection.includes("home") && collection.includes("nurse");
-          default:
-            return true;
-        }
-      });
-    }
-    
-    // Fasting filter
-    if (fastingRequired && fastingRequired !== "any") {
-      // This would need fasting data in the test object
-      // For now, we'll skip this filter as the data structure may not have it
-    }
-    
-    // GP Review filter
-    if (gpReview) {
-      filtered = filtered.filter(test => {
-        // Providers that typically include GP review
-        return ["Medichecks", "Thriva", "Randox"].includes(test.provider);
-      });
-    }
-    
-    return filtered;
-  }, [priceRange, sampleMethod, fastingRequired, gpReview]);
-
-  // Sort tests
-  const sortTests = useCallback((testList: CompareTestData[], sortOption: string): CompareTestData[] => {
-    const sorted = [...testList];
-    
-    switch (sortOption) {
-      case "price-asc":
-        return sorted.sort((a, b) => a.price - b.price);
-      case "price-desc":
-        return sorted.sort((a, b) => b.price - a.price);
-      case "turnaround":
-        return sorted.sort((a, b) => (a.turnaroundDays || 999) - (b.turnaroundDays || 999));
-      case "popular":
-        return sorted.sort((a, b) => (b.popularityScore || 0) - (a.popularityScore || 0));
-      default:
-        return sorted.sort((a, b) => a.price - b.price);
-    }
+  // Filter update helpers
+  const updateFilter = useCallback(<K extends keyof CompareFilters>(
+    key: K,
+    value: CompareFilters[K]
+  ) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
   }, []);
 
   // Clear all filters
   const clearFilters = useCallback(() => {
-    setSearchQuery("");
-    setSelectedProvider("all");
-    setPriceRange({ min: "", max: "" });
-    setSelectedCategory("");
-    setSampleMethod("all");
-    setFastingRequired("any");
-    setGpReview(false);
-    setSortBy("price-asc");
+    setFilters(defaultFilters);
   }, []);
 
   // Format providers for the sidebar
@@ -226,7 +100,6 @@ const CompareTests = () => {
 
   const handleLoadMore = useCallback(() => {
     setIsLoadingMore(true);
-    // Simulate a small delay for smooth UX
     setTimeout(() => {
       setCurrentPage(prev => prev + 1);
       setIsLoadingMore(false);
@@ -286,9 +159,7 @@ const CompareTests = () => {
         </Helmet>
 
         <UKASBanner />
-        <Header />
-
-        <main className="flex-grow">
+        <MainLayout hideUKASBanner hideHeader hideFooter>
           <HeroSection
             title="Compare Private Blood Tests"
             subtitle="Transparent pricing and inclusions from trusted UK providers"
@@ -296,11 +167,11 @@ const CompareTests = () => {
             {/* Quick Stats */}
             <div className="flex flex-wrap gap-3 justify-center mt-6">
               <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <TrendingUp className="h-4 w-4 text-[#22C0D4]" />
+                <TrendingUp className="h-4 w-4 text-accent" />
                 <span className="text-sm font-medium text-white">{memoizedStats.testCount}+ Tests</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <Clock className="h-4 w-4 text-[#22C0D4]" />
+                <Clock className="h-4 w-4 text-accent" />
                 <span className="text-sm font-medium text-white">Live Prices</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
@@ -315,22 +186,22 @@ const CompareTests = () => {
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Filters Sidebar */}
               <FiltersSidebar
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
+                searchQuery={filters.searchQuery}
+                onSearchChange={(v) => updateFilter('searchQuery', v)}
                 providers={formattedProviders}
-                selectedProvider={selectedProvider}
-                onProviderChange={setSelectedProvider}
-                priceRange={priceRange}
-                onPriceRangeChange={setPriceRange}
+                selectedProvider={filters.selectedProvider}
+                onProviderChange={(v) => updateFilter('selectedProvider', v)}
+                priceRange={filters.priceRange}
+                onPriceRangeChange={(v) => updateFilter('priceRange', v)}
                 categories={CATEGORY_LIST}
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-                sampleMethod={sampleMethod}
-                onSampleMethodChange={setSampleMethod}
-                fastingRequired={fastingRequired}
-                onFastingChange={setFastingRequired}
-                gpReview={gpReview}
-                onGpReviewChange={setGpReview}
+                selectedCategory={filters.selectedCategory}
+                onCategoryChange={(v) => updateFilter('selectedCategory', v)}
+                sampleMethod={filters.sampleMethod}
+                onSampleMethodChange={(v) => updateFilter('sampleMethod', v)}
+                fastingRequired={filters.fastingRequired}
+                onFastingChange={(v) => updateFilter('fastingRequired', v)}
+                gpReview={filters.gpReview}
+                onGpReviewChange={(v) => updateFilter('gpReview', v)}
                 onClearFilters={clearFilters}
                 isVisible={showFilters}
                 onClose={() => setShowFilters(false)}
@@ -359,7 +230,10 @@ const CompareTests = () => {
                     <span className="text-sm text-muted-foreground hidden sm:inline">
                       Sort by:
                     </span>
-                    <Select value={sortBy} onValueChange={setSortBy}>
+                    <Select 
+                      value={filters.sortBy} 
+                      onValueChange={(v) => updateFilter('sortBy', v)}
+                    >
                       <SelectTrigger className="w-[180px] bg-background">
                         <SelectValue placeholder="Sort by" />
                       </SelectTrigger>
@@ -448,7 +322,7 @@ const CompareTests = () => {
               </main>
             </div>
           </div>
-        </main>
+        </MainLayout>
 
         {/* Comparison Bar - fixed at bottom when tests selected */}
         <ComparisonBar
@@ -465,8 +339,6 @@ const CompareTests = () => {
           onClose={() => setIsComparisonOpen(false)}
           onRemoveTest={handleRemoveTest}
         />
-
-        <Footer />
       </div>
     </ErrorBoundary>
   );

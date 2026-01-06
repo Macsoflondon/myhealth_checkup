@@ -8,6 +8,18 @@ export { default as Footer } from "./layout/Footer";
 export { ErrorBoundary } from "./common/ErrorBoundary";
 export { ScrollToTop } from "./common/ScrollToTop";
 export { default as BackToTop } from "./common/BackToTop";
+export { LazyImage } from "./common/LazyImage";
+export { FastLazyImage } from "./common/FastLazyImage";
+export { OptimizedImage } from "./common/OptimizedImage";
+export { OptimizedLazyImage } from "./common/OptimizedLazyImage";
+export { ResponsiveImage } from "./common/ResponsiveImage";
+export { LazySection } from "./common/LazySection";
+export { default as ScrollFadeIn } from "./common/ScrollFadeIn";
+export { default as TestBreadcrumb } from "./common/TestBreadcrumb";
+export { SaveProviderButton } from "./common/SaveProviderButton";
+export { OfflineSyncIndicator } from "./common/OfflineSyncIndicator";
+export { OptimisticUpdateIndicator } from "./common/OptimisticUpdateIndicator";
+export { RealtimeSyncIndicator } from "./common/RealtimeSyncIndicator";
 
 // Section components
 export { default as Hero } from "./sections/Hero";
@@ -19,3 +31,24 @@ export { default as CallToAction } from "./sections/CallToAction";
 export { default as NationwideClinics } from "./sections/NationwideClinics";
 export { default as AccreditationLogos } from "./sections/AccreditationLogos";
 export { default as HowItWorks } from "./sections/HowItWorks";
+export { default as JourneySimplified } from "./sections/JourneySimplified";
+export { default as TopConcernsSection } from "./sections/TopConcernsSection";
+export { default as FindClinicSection } from "./sections/FindClinicSection";
+export { default as HereToHelp } from "./sections/HereToHelp";
+export { default as FinalCTA } from "./sections/FinalCTA";
+export { default as TrustPlatformSection } from "./sections/TrustPlatformSection";
+
+// Provider components
+export { ProviderLogo } from "./ProviderLogo";
+
+// Compare components (via barrel)
+export * from "./compare";
+
+// Clinic components (via barrel)
+export * from "./clinic";
+
+// Booking components (via barrel)
+export * from "./booking";
+
+// Test components (via barrel)
+export * from "./tests";
