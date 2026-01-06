@@ -1,40 +1,32 @@
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 import ProviderTestDetailTemplate, { ProviderTestData } from "@/components/templates/ProviderTestDetailTemplate";
 import { getProviderConfig } from "@/constants/providerTestPageConfig";
+import { findTestByIdOrSlug } from "@/utils/testSlugLookup";
 
 const providerConfig = getProviderConfig('goodbody-clinic')!;
 
 const GoodbodyTestDetailPage = () => {
   const { testId } = useParams<{ testId: string }>();
+  const [test, setTest] = useState<ProviderTestData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const { data: test, isLoading } = useQuery({
-    queryKey: ["goodbody-test", testId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("provider_tests")
-        .select("id, test_name, category, description, url, price, provider_test_id, biomarkers_list, biomarker_count")
-        .eq("provider_id", "goodbody-clinic")
-        .eq("id", testId)
-        .single();
+  useEffect(() => {
+    const fetchTest = async () => {
+      if (!testId) return;
+      const data = await findTestByIdOrSlug('goodbody-clinic', testId);
+      setTest(data);
+      setLoading(false);
+    };
 
-      if (error) throw error;
-      
-      // Parse biomarkers_list if needed
-      const biomarkers = data.biomarkers_list 
-        ? (Array.isArray(data.biomarkers_list) ? data.biomarkers_list : null)
-        : null;
-      
-      return { ...data, biomarkers_list: biomarkers as string[] | null } as ProviderTestData;
-    },
-  });
+    fetchTest();
+  }, [testId]);
 
   return (
     <ProviderTestDetailTemplate
       test={test || null}
       providerConfig={providerConfig}
-      isLoading={isLoading}
+      isLoading={loading}
       testId={testId || ''}
     />
   );
