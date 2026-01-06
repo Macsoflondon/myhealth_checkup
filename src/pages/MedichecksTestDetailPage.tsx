@@ -17,14 +17,18 @@ export default function MedichecksTestDetailPage() {
 
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, category, description, url, price, provider_test_id')
+        .select('id, test_name, category, description, url, price, provider_test_id, biomarkers_list, biomarker_count')
         .eq('provider_id', 'medichecks')
         .eq('provider_test_id', testId)
         .eq('is_active', true)
         .single();
 
       if (!error && data) {
-        setTest(data);
+        // Parse biomarkers_list if it's a JSON string
+        const biomarkers = data.biomarkers_list 
+          ? (Array.isArray(data.biomarkers_list) ? data.biomarkers_list : null)
+          : null;
+        setTest({ ...data, biomarkers_list: biomarkers as string[] | null });
       }
       setLoading(false);
     };
