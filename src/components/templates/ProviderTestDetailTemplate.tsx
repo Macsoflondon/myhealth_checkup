@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Helmet } from "react-helmet-async";
-import { CheckCircle2, Clock, Home, Building2, ExternalLink, ArrowLeft, FlaskConical, Info } from "lucide-react";
+import { 
+  CheckCircle2, Clock, Home, Building2, ExternalLink, ArrowLeft, 
+  FlaskConical, Info, AlertTriangle, Stethoscope, HeartPulse, Shield 
+} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
@@ -24,6 +27,13 @@ export interface ProviderTestData {
   provider_test_id?: string;
   biomarkers_list?: string[] | null;
   biomarker_count?: number | null;
+  image_url?: string | null;
+  is_addon?: boolean;
+  original_price?: number | null;
+  discount_percentage?: number | null;
+  symptoms?: string[] | null;
+  conditions?: string[] | null;
+  who_should_test?: string | null;
 }
 
 interface BiomarkerInfo {
@@ -173,6 +183,74 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
   );
 };
 
+// Symptoms Section Component
+const SymptomsSection = ({ symptoms }: { symptoms: string[] | null | undefined }) => {
+  if (!symptoms || symptoms.length === 0) return null;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Stethoscope className="h-5 w-5 text-primary" />
+          Symptoms This Test Addresses
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {symptoms.map((symptom, i) => (
+            <li key={i} className="flex items-start gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary mt-1 shrink-0" />
+              <span className="text-sm">{symptom}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Conditions Section Component
+const ConditionsSection = ({ conditions }: { conditions: string[] | null | undefined }) => {
+  if (!conditions || conditions.length === 0) return null;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <HeartPulse className="h-5 w-5 text-primary" />
+          Conditions This Test Can Detect
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {conditions.map((condition, i) => (
+            <li key={i} className="flex items-start gap-2">
+              <Shield className="h-4 w-4 text-primary mt-1 shrink-0" />
+              <span className="text-sm">{condition}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Add-on Warning Component
+const AddonWarning = () => (
+  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+    <div className="flex items-start gap-3">
+      <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
+      <div>
+        <p className="font-semibold text-amber-800">Add-on Test</p>
+        <p className="text-sm text-amber-700">
+          This biomarker test can only be added to another blood test panel from Lola Health. 
+          Browse their test packages to add this biomarker.
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
 export default function ProviderTestDetailTemplate({
   test,
   providerConfig,
@@ -196,6 +274,8 @@ export default function ProviderTestDetailTemplate({
 
   const pageTitle = `${test.test_name} - ${providerConfig.name} Blood Test | myhealth checkup`;
   const pageDescription = `${test.description} Book your ${test.test_name} blood test with ${providerConfig.name} through myhealth checkup. ${providerConfig.aboutText}`;
+
+  const hasDiscount = test.original_price && test.original_price > (test.price || 0);
 
   return (
     <>
@@ -226,12 +306,33 @@ export default function ProviderTestDetailTemplate({
               alt={providerConfig.name} 
               className="h-12 mb-4"
             />
-            <Badge variant="secondary" className="mb-2">{providerConfig.badgeText}</Badge>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Badge variant="secondary">{providerConfig.badgeText}</Badge>
+              {test.is_addon && (
+                <Badge variant="outline" className="border-amber-500 text-amber-700">
+                  Add-on
+                </Badge>
+              )}
+            </div>
           </div>
+
+          {/* Product Image */}
+          {test.image_url && (
+            <div className="mb-6">
+              <img 
+                src={test.image_url} 
+                alt={test.test_name}
+                className="rounded-lg max-w-xs h-auto"
+              />
+            </div>
+          )}
 
           {/* Test Header */}
           <h1 className="text-4xl font-bold mb-4">{test.test_name}</h1>
           <p className="text-xl text-muted-foreground mb-8">{test.description}</p>
+
+          {/* Add-on Warning */}
+          {test.is_addon && <AddonWarning />}
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Main Content */}
@@ -264,6 +365,12 @@ export default function ProviderTestDetailTemplate({
                 biomarkers={biomarkers} 
                 biomarkerCount={test.biomarker_count} 
               />
+
+              {/* Symptoms Section */}
+              <SymptomsSection symptoms={test.symptoms} />
+
+              {/* Conditions Section */}
+              <ConditionsSection conditions={test.conditions} />
 
               {/* Sample Collection Options */}
               <Card>
@@ -320,7 +427,21 @@ export default function ProviderTestDetailTemplate({
                   {test.price && (
                     <>
                       <div className="text-center py-2">
-                        <span className="text-3xl font-bold text-primary">£{test.price}</span>
+                        <span className="text-3xl font-bold text-primary">
+                          £{test.price.toFixed(2)}
+                        </span>
+                        {hasDiscount && (
+                          <>
+                            <span className="text-lg text-muted-foreground line-through ml-2">
+                              £{test.original_price?.toFixed(2)}
+                            </span>
+                            {test.discount_percentage && (
+                              <Badge className="ml-2 bg-green-600 text-white hover:bg-green-700">
+                                {test.discount_percentage}% OFF
+                              </Badge>
+                            )}
+                          </>
+                        )}
                       </div>
                       <Separator />
                     </>
