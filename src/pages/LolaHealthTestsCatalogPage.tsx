@@ -162,9 +162,16 @@ const LolaHealthTestsCatalogPage = () => {
                           <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
                             {test.test_name}
                           </CardTitle>
-                          <Badge variant="secondary" className="shrink-0">
-                            {test.category}
-                          </Badge>
+                          <div className="flex gap-1.5 shrink-0">
+                            {test.is_addon && (
+                              <Badge variant="outline" className="border-amber-500 text-amber-700 text-xs">
+                                Add-on
+                              </Badge>
+                            )}
+                            <Badge variant="secondary">
+                              {test.category}
+                            </Badge>
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">

@@ -697,14 +697,18 @@ export type Database = {
           biomarkers_list: Json | null
           category: string | null
           clinic_visit_available: boolean | null
+          conditions: Json | null
           created_at: string
           description: string | null
+          discount_percentage: number | null
           gp_consultation_cost: number | null
           gp_consultation_included: boolean | null
           home_kit_available: boolean | null
           id: string
           image_url: string | null
           is_active: boolean
+          is_addon: boolean | null
+          original_price: number | null
           phlebotomy_cost: number | null
           phlebotomy_included: boolean | null
           price: number | null
@@ -712,23 +716,29 @@ export type Database = {
           provider_test_id: string | null
           sample_type: string | null
           scraped_at: string
+          symptoms: Json | null
           test_name: string
           updated_at: string
           url: string | null
+          who_should_test: string | null
         }
         Insert: {
           biomarker_count?: number | null
           biomarkers_list?: Json | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          conditions?: Json | null
           created_at?: string
           description?: string | null
+          discount_percentage?: number | null
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
           home_kit_available?: boolean | null
           id?: string
           image_url?: string | null
           is_active?: boolean
+          is_addon?: boolean | null
+          original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
           price?: number | null
@@ -736,23 +746,29 @@ export type Database = {
           provider_test_id?: string | null
           sample_type?: string | null
           scraped_at?: string
+          symptoms?: Json | null
           test_name: string
           updated_at?: string
           url?: string | null
+          who_should_test?: string | null
         }
         Update: {
           biomarker_count?: number | null
           biomarkers_list?: Json | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          conditions?: Json | null
           created_at?: string
           description?: string | null
+          discount_percentage?: number | null
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
           home_kit_available?: boolean | null
           id?: string
           image_url?: string | null
           is_active?: boolean
+          is_addon?: boolean | null
+          original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
           price?: number | null
@@ -760,9 +776,11 @@ export type Database = {
           provider_test_id?: string | null
           sample_type?: string | null
           scraped_at?: string
+          symptoms?: Json | null
           test_name?: string
           updated_at?: string
           url?: string | null
+          who_should_test?: string | null
         }
         Relationships: []
       }
