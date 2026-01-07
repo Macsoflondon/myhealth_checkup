@@ -9,16 +9,17 @@
  * - Enables better user experience for clinic discovery
  * 
  * Security Measures Implemented:
- * 1. IP-based rate limiting: 10 requests per minute per client
- * 2. Strict maxPages validation: Maximum 3 pages to prevent API quota exhaustion
+ * 1. Database-backed rate limiting: 10 requests per minute per client (persists across cold starts)
+ * 2. Strict maxPages validation: Maximum 1 page to prevent API quota exhaustion
  * 3. Input validation for latitude/longitude coordinates
  * 4. Rate limit headers in responses for transparency
- * 5. Automatic cleanup of old rate limit entries
+ * 5. Automatic cleanup of old rate limit entries via database function
  * 6. Bearer token stored securely in Supabase secrets (not exposed to client)
  * 
  * Protection Against:
  * - API quota exhaustion (maxPages limit + rate limiting)
- * - Denial of service attacks (per-IP rate limiting)
+ * - Denial of service attacks (per-IP rate limiting with persistence)
+ * - Cold start bypass (database-backed rate limiting)
  * - Excessive data retrieval (strict page limits)
  * - Invalid coordinate injection (range validation)
  * 
@@ -27,11 +28,12 @@
  * - Rate limit violations logged with client identifiers
  * - API errors captured for debugging
  * 
- * Last Security Review: 2025-10-15
+ * Last Security Review: 2026-01-07
  */
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -43,56 +45,85 @@ const LML_ENDPOINT = "https://api.londonmedicallaboratory.com/api/test_location/
 // Rate limiting configuration
 const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
 const MAX_REQUESTS_PER_WINDOW = 10;
-const MAX_PAGES_ALLOWED = 3; // Maximum pages to prevent API quota exhaustion
+const MAX_PAGES_ALLOWED = 1; // Reduced from 3 - most users only need nearby clinics
 
-// In-memory rate limiter (resets on cold start)
-const requestLog = new Map<string, number[]>();
-
+// Get client identifier for rate limiting
 function getRateLimitKey(req: Request): string {
-  // Use client IP from headers
   const forwarded = req.headers.get("x-forwarded-for");
   const realIp = req.headers.get("x-real-ip");
-  return forwarded?.split(',')[0] || realIp || "unknown";
+  return forwarded?.split(',')[0]?.trim() || realIp || "unknown";
 }
 
-function checkRateLimit(clientKey: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const windowStart = now - RATE_LIMIT_WINDOW_MS;
-  
-  // Get existing requests for this client
-  let timestamps = requestLog.get(clientKey) || [];
-  
-  // Remove old requests outside the window
-  timestamps = timestamps.filter(ts => ts > windowStart);
-  
-  // Check if limit exceeded
-  if (timestamps.length >= MAX_REQUESTS_PER_WINDOW) {
-    requestLog.set(clientKey, timestamps);
-    return { allowed: false, remaining: 0 };
-  }
-  
-  // Add current request
-  timestamps.push(now);
-  requestLog.set(clientKey, timestamps);
-  
-  return { 
-    allowed: true, 
-    remaining: MAX_REQUESTS_PER_WINDOW - timestamps.length 
-  };
-}
+// Database-backed rate limiting (persists across cold starts)
+async function checkRateLimit(
+  supabaseClient: any, 
+  clientKey: string, 
+  endpoint: string
+): Promise<{ allowed: boolean; remaining: number }> {
+  const now = new Date();
+  const windowStart = new Date(now.getTime() - RATE_LIMIT_WINDOW_MS);
 
-// Cleanup old entries periodically (runs on each request)
-function cleanupRateLimitCache() {
-  const now = Date.now();
-  const windowStart = now - RATE_LIMIT_WINDOW_MS;
-  
-  for (const [key, timestamps] of requestLog.entries()) {
-    const validTimestamps = timestamps.filter(ts => ts > windowStart);
-    if (validTimestamps.length === 0) {
-      requestLog.delete(key);
-    } else {
-      requestLog.set(key, validTimestamps);
+  try {
+    // Try to get existing rate limit entry for this window
+    const { data: existing, error: selectError } = await supabaseClient
+      .from('api_rate_limits')
+      .select('id, request_count')
+      .eq('endpoint', endpoint)
+      .eq('client_key', clientKey)
+      .gte('window_start', windowStart.toISOString())
+      .order('window_start', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (selectError && selectError.code !== 'PGRST116') {
+      // Error other than "no rows" - allow request but log
+      console.error('Rate limit check error:', selectError);
+      return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW };
     }
+
+    if (existing) {
+      // Entry exists in current window
+      if (existing.request_count >= MAX_REQUESTS_PER_WINDOW) {
+        return { allowed: false, remaining: 0 };
+      }
+
+      // Increment count
+      await supabaseClient
+        .from('api_rate_limits')
+        .update({ request_count: existing.request_count + 1 })
+        .eq('id', existing.id);
+
+      return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - existing.request_count - 1 };
+    }
+
+    // No entry exists - create new one
+    await supabaseClient
+      .from('api_rate_limits')
+      .insert({
+        endpoint,
+        client_key: clientKey,
+        request_count: 1,
+        window_start: now.toISOString()
+      });
+
+    return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW - 1 };
+  } catch (error) {
+    console.error('Rate limit error:', error);
+    // On error, allow request to prevent blocking legitimate users
+    return { allowed: true, remaining: MAX_REQUESTS_PER_WINDOW };
+  }
+}
+
+// Cleanup old rate limit entries (runs periodically)
+async function cleanupOldRateLimits(supabaseClient: any): Promise<void> {
+  try {
+    // Run cleanup ~10% of the time to reduce database load
+    if (Math.random() < 0.1) {
+      await supabaseClient.rpc('cleanup_old_rate_limits');
+      console.log('Rate limit cleanup completed');
+    }
+  } catch (error) {
+    console.error('Rate limit cleanup error:', error);
   }
 }
 
@@ -102,13 +133,18 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Cleanup rate limit cache
-  cleanupRateLimitCache();
+  // Initialize Supabase client with service role for rate limiting
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
+
+  // Cleanup old rate limit entries (probabilistic)
+  cleanupOldRateLimits(supabaseClient);
 
   try {
-    // Rate limiting check
+    // Rate limiting check (database-backed)
     const clientKey = getRateLimitKey(req);
-    const rateLimitCheck = checkRateLimit(clientKey);
+    const rateLimitCheck = await checkRateLimit(supabaseClient, clientKey, 'lml-nearest');
     
     if (!rateLimitCheck.allowed) {
       console.warn(`Rate limit exceeded for client: ${clientKey}`);
