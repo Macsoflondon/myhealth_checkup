@@ -15,6 +15,7 @@ import styles from "./Header.module.css";
 import headerTaglineBanner from "@/assets/header-tagline-banner.png";
 import mobileLogo from "@/assets/mobile-banner-logo.png";
 import myhealthLogo from "@/assets/myhealth-logo-turquoise.png";
+import taglineBanner from "@/assets/tagline-banner.png";
 interface HeaderProps {
   className?: string;
 }
@@ -93,11 +94,13 @@ const Header = ({
               />
             </Link>
 
-            {/* Center: Tagline */}
+            {/* Center: Tagline banner image */}
             <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <p className="text-white text-lg xl:text-xl font-sans">
-                Your <span className="font-semibold">health</span>. Your <span className="font-semibold">choice</span>. One trusted platform.
-              </p>
+              <img 
+                alt="Your health. Your choice. One trusted platform!" 
+                className="h-12 lg:h-14 xl:h-16 w-auto object-contain" 
+                src={taglineBanner} 
+              />
             </div>
 
             {/* Right: Controls */}
