@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
-import BackButton from "@/components/ui/BackButton";
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield } from "lucide-react";
@@ -34,9 +34,10 @@ const WellnessPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 pt-4">
-          <BackButton />
-        </div>
+        <PageBreadcrumb 
+          segments={[{ label: "Home", href: "/" }, { label: "Wellness" }]} 
+          backLabel="Back"
+        />
         <HeroSection
           title="General Wellness"
           subtitle="Comprehensive wellness and lifestyle health tests to optimize your wellbeing. Monitor key health markers and prevent potential health issues."

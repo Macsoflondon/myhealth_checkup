@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
-import BackButton from "@/components/ui/BackButton";
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -190,9 +190,10 @@ const HormonesPage = () => {
       <UKASBanner />
       <Header />
       <main className="flex-grow bg-background">
-        <div className="container mx-auto px-4 pt-4">
-          <BackButton />
-        </div>
+        <PageBreadcrumb 
+          segments={[{ label: "Home", href: "/" }, { label: "Hormone Tests" }]} 
+          backLabel="Back"
+        />
         <HeroSection
           title="Hormone Blood Tests"
           subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimize your health with professional hormone analysis and personalized insights."

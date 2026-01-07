@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MainLayout } from '@/layouts/MainLayout';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import BackButton from '@/components/ui/BackButton';
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -150,9 +150,10 @@ const MensHealthPage = () => {
         <meta name="twitter:description" content="Comprehensive men's health testing with fast results" />
       </Helmet>
       
-      <div className="container mx-auto px-4 pt-4">
-        <BackButton />
-      </div>
+      <PageBreadcrumb 
+        segments={[{ label: "Home", href: "/" }, { label: "Men's Health" }]} 
+        backLabel="Back"
+      />
       <HeroSection
         title="Men's Health Blood Tests"
         subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
