@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getGoodbodyTestBySlug, testNameToSlug, GoodbodyTestDetail } from "@/data/goodbodyTestDetails";
 
 export interface TestData {
   id: string;
@@ -134,10 +135,55 @@ export async function findTestByIdOrSlug(
   return null;
 }
 
+/**
+ * Check if biomarkers are corrupted (contain location/clinic names instead of actual biomarkers)
+ */
+function isBiomarkersCorrupted(biomarkers: string[] | null): boolean {
+  if (!biomarkers || biomarkers.length === 0) return false;
+  const corruptedTerms = ['location', 'clinic', 'aesthetic', 'pharmacy', 'centre', 'surgery'];
+  return biomarkers.some(b => 
+    corruptedTerms.some(term => b.toLowerCase().includes(term))
+  );
+}
+
+/**
+ * Get static biomarker data for GoodBody tests as fallback
+ */
+function getStaticBiomarkers(testName: string, providerId: string): string[] | null {
+  if (providerId !== 'goodbody-clinic') return null;
+  
+  // Try to find matching static data
+  const slug = testNameToSlug(testName);
+  const staticData = getGoodbodyTestBySlug(slug);
+  if (staticData?.biomarkers) {
+    return staticData.biomarkers;
+  }
+  
+  // Try alternate slug formats
+  const altSlug = testName.toLowerCase()
+    .replace(/ blood test$/i, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+  const altData = getGoodbodyTestBySlug(altSlug);
+  if (altData?.biomarkers) {
+    return altData.biomarkers;
+  }
+  
+  return null;
+}
+
 function parseTestData(data: any): TestData {
-  const biomarkers = data.biomarkers_list 
+  let biomarkers = data.biomarkers_list 
     ? (Array.isArray(data.biomarkers_list) ? data.biomarkers_list : null)
     : null;
+  
+  // Check if biomarkers are corrupted and use static data as fallback
+  if (isBiomarkersCorrupted(biomarkers) || !biomarkers) {
+    const staticBiomarkers = getStaticBiomarkers(data.test_name, data.provider_id || 'goodbody-clinic');
+    if (staticBiomarkers) {
+      biomarkers = staticBiomarkers;
+    }
+  }
   
   const symptoms = data.symptoms 
     ? (Array.isArray(data.symptoms) ? data.symptoms : null)

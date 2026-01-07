@@ -39,7 +39,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Vitamins & Nutrition",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/advanced-vitamins-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/advanced-vitamins-blood-test",
     price: 649
   },
   "advanced-well-man": {
@@ -60,7 +60,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "General Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/advanced-well-man-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/advanced-well-man-blood-test",
     price: 175
   },
   "advanced-well-woman": {
@@ -81,7 +81,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "General Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/advanced-well-woman-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/advanced-well-woman-blood-test",
     price: 175
   },
   "anaemia": {
@@ -102,7 +102,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Haematology",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/anaemia-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/anaemia-blood-test",
     price: 119
   },
   "anti-mullerian": {
@@ -123,7 +123,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Fertility",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/anti-mullerian-hormone-amh-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/anti-mullerian-hormone-amh-blood-test",
     price: 109
   },
   "autoimmune-disease": {
@@ -144,7 +144,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "3-5 working days",
     category: "Autoimmune",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/autoimmune-disease-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/autoimmune-disease-blood-test",
     price: 229
   },
   "blood-group": {
@@ -165,7 +165,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Haematology",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/blood-group-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/blood-group-blood-test",
     price: 109
   },
   "cardiac-risk": {
@@ -186,7 +186,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Heart & Cardiovascular",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/cardiac-risk-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/cardiac-risk-blood-test",
     price: 99
   },
   "cholesterol": {
@@ -207,7 +207,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Cholesterol & Lipids",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/cholesterol-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/cholesterol-blood-test",
     price: 79
   },
   "coeliac-disease": {
@@ -228,7 +228,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "3-5 working days",
     category: "Autoimmune",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/coeliac-disease-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/coeliac-disease-blood-test",
     price: 179
   },
   "complete-allergy": {
@@ -249,7 +249,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "5-7 working days",
     category: "Allergy",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/complete-allergy-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/complete-allergy-blood-test",
     price: 399
   },
   "complete-wellness": {
@@ -270,7 +270,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "3-5 working days",
     category: "General Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/complete-wellness-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/complete-wellness-blood-test",
     price: 249
   },
   "cortisol": {
@@ -291,7 +291,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Hormones",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/cortisol-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/cortisol-blood-test",
     price: 16
   },
   "diabetes": {
@@ -312,7 +312,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Diabetes",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/diabetes-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/diabetes-blood-test",
     price: 79
   },
   "enhanced-well-woman": {
@@ -333,7 +333,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "3-5 working days",
     category: "General Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/enhanced-well-woman-rachels-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/enhanced-well-woman-rachels-test",
     price: 175
   },
   "erectile-dysfunction": {
@@ -354,7 +354,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Men's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/erectile-dysfunction-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/erectile-dysfunction-blood-test",
     price: 11
   },
   "female-hormone-fertility": {
@@ -375,7 +375,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Women's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/female-hormone-fertility-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/female-hormone-fertility-blood-test",
     price: 119
   },
   "full-blood-count": {
@@ -396,7 +396,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Haematology",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/full-blood-count-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/full-blood-count-blood-test",
     price: 69
   },
   "hepatitis-screening": {
@@ -417,7 +417,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "3-5 working days",
     category: "Infectious Disease",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/hepatitis-screening-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/hepatitis-screening-blood-test",
     price: 129
   },
   "iron": {
@@ -438,7 +438,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Iron Studies",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/iron-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/iron-blood-test",
     price: 79
   },
   "kidney": {
@@ -459,7 +459,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Renal",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/kidney-function-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/kidney-function-blood-test",
     price: 79
   },
   "liver": {
@@ -480,7 +480,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Liver",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/liver-function-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/liver-function-blood-test",
     price: 79
   },
   "male-hormone-fertility": {
@@ -501,7 +501,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Men's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/male-hormone-fertility-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/male-hormone-fertility-blood-test",
     price: 79
   },
   "menopause": {
@@ -522,7 +522,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Women's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/menopause-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/menopause-blood-test",
     price: 119
   },
   "polycystic-ovary-syndrome": {
@@ -543,7 +543,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Women's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/polycystic-ovary-syndrome-pcos-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/polycystic-ovary-syndrome-pcos-blood-test",
     price: 129
   },
   "pregnancy": {
@@ -564,7 +564,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Women's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/pregnancy-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/pregnancy-blood-test",
     price: 79
   },
   "prostate-psa": {
@@ -585,7 +585,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Men's Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/prostate-psa-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/prostate-psa-blood-test",
     price: 119
   },
   "pylori": {
@@ -606,7 +606,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "3-5 working days",
     category: "Digestive Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/helicobacter-pylori-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/helicobacter-pylori-blood-test",
     price: 79
   },
   "sports-fitness": {
@@ -627,7 +627,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Sports Performance",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/sports-fitness-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/sports-fitness-blood-test",
     price: 199
   },
   "testosterone": {
@@ -648,7 +648,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Hormones",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/testosterone-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/testosterone-blood-test",
     price: 79
   },
   "thyroid-function": {
@@ -669,7 +669,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Thyroid",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/thyroid-function-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/thyroid-function-blood-test",
     price: 79
   },
   "thyroid-with-antibodies": {
@@ -690,7 +690,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "Thyroid",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/thyroid-with-antibodies-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/thyroid-with-antibodies-blood-test",
     price: 119
   },
   "tiredness-fatigue": {
@@ -711,7 +711,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "2-3 working days",
     category: "General Health",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/tiredness-fatigue-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/tiredness-fatigue-blood-test",
     price: 149
   },
   "trace-metal": {
@@ -732,7 +732,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "5-7 working days",
     category: "Vitamins & Nutrition",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/trace-metal-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/trace-metal-blood-test",
     price: 199
   },
   "vitamins": {
@@ -753,7 +753,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     sampleType: "Venous blood sample",
     turnaround: "1-2 working days",
     category: "Vitamins & Nutrition",
-    goodbodyUrl: "https://health.goodbodyclinic.com/product/vitamins-blood-test/",
+    goodbodyUrl: "https://goodbodyclinic.com/products/vitamins-blood-test",
     price: 99
   }
 };

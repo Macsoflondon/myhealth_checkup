@@ -128,24 +128,46 @@ function extractImageUrl(html: string): string | null {
 function extractBiomarkersList(html: string): string[] | null {
   const biomarkers: string[] = [];
   
-  // Look for common biomarker patterns in product description
-  // Pattern: "includes/tests/measures: X, Y, Z"
-  const listMatch = html.match(/(?:includes|tests|measures|checks|analyses)[:\s]+([^<.]+(?:,\s*[^<.]+)+)/gi);
-  if (listMatch) {
-    for (const match of listMatch) {
-      const items = match.replace(/^[^:]+:\s*/, '').split(/,\s*/).map(s => s.trim()).filter(s => s.length > 2 && s.length < 50);
-      biomarkers.push(...items);
-    }
-  }
+  // Terms to EXCLUDE - clinic locations and non-biomarker content
+  const excludeTerms = ['location', 'clinic', 'aesthetic', 'pharmacy', 'health centre', 'surgery', 
+    'appointment', 'book now', 'click here', 'read more', 'learn more', 'find out'];
   
-  // Look for bullet point lists
-  const bulletMatch = html.match(/<li[^>]*>([^<]+(?:vitamin|hormone|cholesterol|iron|thyroid|liver|kidney|glucose)[^<]*)<\/li>/gi);
+  // Valid biomarker keywords - must contain at least one of these
+  const validBiomarkerTerms = ['vitamin', 'hormone', 'cholesterol', 'hdl', 'ldl', 'triglyceride',
+    'iron', 'ferritin', 'thyroid', 'tsh', 't3', 't4', 'liver', 'kidney', 'glucose', 'hba1c',
+    'testosterone', 'oestradiol', 'estradiol', 'fsh', 'lh', 'blood count', 'haemoglobin',
+    'calcium', 'magnesium', 'zinc', 'folate', 'b12', 'crp', 'urea', 'creatinine', 'albumin',
+    'bilirubin', 'alt', 'ast', 'ggt', 'psa', 'amh', 'cortisol', 'dhea', 'prolactin', 'egfr',
+    'platelet', 'white blood', 'red blood', 'neutrophil', 'lymphocyte', 'potassium', 'sodium'];
+  
+  // Helper to check if text is a valid biomarker
+  const isValidBiomarker = (text: string): boolean => {
+    const lowerText = text.toLowerCase();
+    // Must NOT contain exclude terms
+    if (excludeTerms.some(term => lowerText.includes(term))) return false;
+    // Must contain at least one valid biomarker term
+    return validBiomarkerTerms.some(term => lowerText.includes(term));
+  };
+  
+  // Look for bullet point lists with biomarker keywords
+  const bulletMatch = html.match(/<li[^>]*>([^<]+)<\/li>/gi);
   if (bulletMatch) {
     for (const match of bulletMatch) {
       const text = match.replace(/<[^>]+>/g, '').trim();
-      if (text.length > 2 && text.length < 100) {
+      if (text.length > 2 && text.length < 100 && isValidBiomarker(text)) {
         biomarkers.push(text);
       }
+    }
+  }
+  
+  // Look for common biomarker list patterns with strict filtering
+  const listMatch = html.match(/(?:includes|tests|measures|checks|analyses)[:\s]+([^<.]+(?:,\s*[^<.]+)+)/gi);
+  if (listMatch) {
+    for (const match of listMatch) {
+      const items = match.replace(/^[^:]+:\s*/, '').split(/,\s*/)
+        .map(s => s.trim())
+        .filter(s => s.length > 2 && s.length < 50 && isValidBiomarker(s));
+      biomarkers.push(...items);
     }
   }
   
