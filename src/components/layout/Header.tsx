@@ -12,10 +12,8 @@ import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
-import headerTaglineBanner from "@/assets/header-tagline-banner.png";
-import mobileLogo from "@/assets/mobile-banner-logo.png";
 import myhealthLogo from "@/assets/myhealth-logo-turquoise.png";
-import taglineBanner from "@/assets/tagline-banner.png";
+import taglineBanner from "@/assets/tagline-banner-latest.png";
 interface HeaderProps {
   className?: string;
 }
