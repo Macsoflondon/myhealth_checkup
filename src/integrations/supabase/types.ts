@@ -720,6 +720,8 @@ export type Database = {
           test_name: string
           updated_at: string
           url: string | null
+          url_verified: boolean | null
+          url_verified_at: string | null
           who_should_test: string | null
         }
         Insert: {
@@ -750,6 +752,8 @@ export type Database = {
           test_name: string
           updated_at?: string
           url?: string | null
+          url_verified?: boolean | null
+          url_verified_at?: string | null
           who_should_test?: string | null
         }
         Update: {
@@ -780,6 +784,8 @@ export type Database = {
           test_name?: string
           updated_at?: string
           url?: string | null
+          url_verified?: boolean | null
+          url_verified_at?: string | null
           who_should_test?: string | null
         }
         Relationships: []
