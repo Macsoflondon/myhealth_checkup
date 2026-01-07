@@ -16,6 +16,7 @@ import TestBreadcrumb from "@/components/common/TestBreadcrumb";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
+import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
 
 export interface ProviderTestData {
   id: string;
@@ -82,6 +83,74 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
             </Button>
           </CardContent>
         </Card>
+      </div>
+    </div>
+  );
+};
+
+// Booking Button Component with URL validation and fallback
+const BookingButton = ({ 
+  testUrl, 
+  providerConfig 
+}: { 
+  testUrl: string; 
+  providerConfig: ProviderConfig;
+}) => {
+  const { isValid, isLoading } = useUrlValidation(testUrl);
+  const fallbackUrl = getProviderFallbackUrl(providerConfig.id);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-3">
+        <Skeleton className="h-11 w-full" />
+        <Skeleton className="h-4 w-48 mx-auto" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <Button 
+        size="lg" 
+        className="w-full" 
+        asChild
+      >
+        <a 
+          href={testUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center justify-center"
+        >
+          {providerConfig.ctaButtonText}
+          <ExternalLink className="ml-2 h-4 w-4" />
+        </a>
+      </Button>
+
+      <p className="text-xs text-center text-muted-foreground">
+        You'll be redirected to {providerConfig.name}'s secure booking platform
+      </p>
+
+      {/* Fallback option */}
+      <div className="pt-2 border-t border-border">
+        <p className="text-xs text-center text-muted-foreground mb-2">
+          Link not working?
+        </p>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="w-full" 
+          asChild
+        >
+          <a 
+            href={fallbackUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center justify-center text-xs"
+          >
+            Browse all {providerConfig.name} tests
+            <ExternalLink className="ml-1.5 h-3 w-3" />
+          </a>
+        </Button>
       </div>
     </div>
   );
@@ -457,25 +526,10 @@ export default function ProviderTestDetailTemplate({
                   
                   <Separator />
                   
-                  <Button 
-                    size="lg" 
-                    className="w-full" 
-                    asChild
-                  >
-                    <a 
-                      href={test.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center"
-                    >
-                      {providerConfig.ctaButtonText}
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-
-                  <p className="text-xs text-center text-muted-foreground">
-                    You'll be redirected to {providerConfig.name}'s secure booking platform
-                  </p>
+                  <BookingButton 
+                    testUrl={test.url}
+                    providerConfig={providerConfig}
+                  />
                 </CardContent>
               </Card>
 
