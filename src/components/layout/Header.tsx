@@ -45,24 +45,21 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-        <header className={cn("sticky top-0 z-50 bg-brand-navy shadow-md transition-all duration-300", className)}>
-          <div className="px-2 xs:px-3 py-2 flex items-center justify-between bg-brand-navy">
+        <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md transition-all duration-300", className)}>
+          <div className="px-2 xs:px-3 py-2 flex items-center justify-between bg-[#22c0d4]">
             {/* Logo - responsive sizing for mobile */}
             <Link to="/" className="flex items-center flex-shrink-0">
-              <img 
-                alt="myhealth checkup" 
-                className="h-10 xs:h-12 sm:h-14 w-auto object-contain" 
-                src="/lovable-uploads/myhealth-logo-bg-turquoise.png" 
-              />
+              <div className="flex flex-col">
+                <span className="text-white font-heading font-bold text-lg xs:text-xl leading-tight">myhealth</span>
+                <span className="text-white font-heading font-bold text-sm xs:text-base leading-tight">checkup</span>
+              </div>
             </Link>
 
-            {/* Tagline banner - mobile with responsive sizing */}
+            {/* Tagline banner - mobile */}
             <div className="flex-1 flex justify-center px-1 xs:px-2">
-              <img 
-                alt="Your health. Your choice. One trusted platform." 
-                className="h-8 xs:h-10 sm:h-12 max-w-[140px] xs:max-w-[180px] sm:max-w-none w-auto object-contain" 
-                src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" 
-              />
+              <p className="text-white text-[10px] xs:text-xs text-center font-sans leading-tight">
+                Your <span className="font-semibold">health</span>. Your <span className="font-semibold">choice</span>. One trusted platform.
+              </p>
             </div>
 
             {/* Navigation controls */}
@@ -79,21 +76,25 @@ const Header = ({
       </ErrorBoundary>;
   }
   // Toolbar always sticky
-  const headerBarClasses = cn("bg-brand-navy px-6 lg:px-16 py-6 lg:py-8", styles.header, styles.headerVisible);
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-1 border-y-2 border-[#e70d69] shadow-sm", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-brand-navy px-4 lg:px-8 xl:px-12">
-          <div className="relative flex items-center justify-between py-2 lg:py-3">
-            {/* Left: Logo */}
+        <div className="bg-[#22c0d4] px-4 lg:px-8 xl:px-12">
+          <div className="relative flex items-center justify-between py-3 lg:py-4">
+            {/* Left: Logo - text-based, smaller */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <img alt="myhealth checkup" className="h-36 lg:h-40 xl:h-44 w-auto object-contain" src="/lovable-uploads/myhealth-logo-bg-turquoise.png" />
+              <div className="flex flex-col">
+                <span className="text-white font-heading font-bold text-2xl lg:text-3xl xl:text-4xl leading-tight tracking-tight">myhealth</span>
+                <span className="text-white font-heading font-bold text-lg lg:text-xl xl:text-2xl leading-tight tracking-tight">checkup</span>
+              </div>
             </Link>
 
-            {/* Center: Tagline banner image */}
+            {/* Center: Tagline */}
             <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <img alt="Your health. Your choice. One trusted platform." className="h-64 lg:h-72 xl:h-80 w-auto object-contain" src="/lovable-uploads/52c165ee-be3b-4eff-a851-b5f76f9c7872.png" />
+              <p className="text-white text-lg xl:text-xl font-sans">
+                Your <span className="font-semibold">health</span>. Your <span className="font-semibold">choice</span>. One trusted platform.
+              </p>
             </div>
 
             {/* Right: Controls */}
