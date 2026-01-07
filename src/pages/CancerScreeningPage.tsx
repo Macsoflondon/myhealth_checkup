@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
 import HeroSection from "@/components/sections/HeroSection";
-import BackButton from "@/components/ui/BackButton";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -137,7 +137,14 @@ const CancerScreeningPage = () => {
       
       <main className="min-h-screen bg-background">
         <div className="container mx-auto px-4 pt-4">
-          <BackButton />
+          <PageBreadcrumb 
+            segments={[
+              { label: "Home", href: "/" },
+              { label: "Compare Tests", href: "/compare" },
+              { label: "Cancer Screening" }
+            ]}
+            backLabel="Back to Compare"
+          />
         </div>
         <HeroSection
           title="Cancer Screening Tests"

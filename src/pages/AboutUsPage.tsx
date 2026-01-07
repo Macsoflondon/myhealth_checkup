@@ -6,7 +6,7 @@ import PartnerShowcase from "@/components/PartnerShowcase";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import PageHeading from "@/components/ui/page-heading";
 import { SectionHeading } from "@/components/ui/section-heading";
-import BackButton from "@/components/ui/BackButton";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { Shield, Users, Award, Heart } from "lucide-react";
 const AboutUsPage = () => {
   const values = [{
@@ -35,7 +35,14 @@ const AboutUsPage = () => {
       <Header />
       <main className="flex-grow bg-[#081120]">
         <div className="container mx-auto px-4 pt-4">
-          <BackButton className="text-white hover:text-white/80" />
+          <PageBreadcrumb 
+            segments={[
+              { label: "Home", href: "/" },
+              { label: "About Us" }
+            ]}
+            backLabel="Back to Home"
+            className="[&_a]:text-gray-300 [&_a:hover]:text-white [&_span]:text-gray-300 [&_button]:text-[#22c0d4]"
+          />
         </div>
         <TrustBadgesSection />
         

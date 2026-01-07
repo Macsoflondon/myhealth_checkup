@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
-import BackButton from "@/components/ui/BackButton";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -106,7 +106,14 @@ const ThyroidPage = () => {
       <Header />
       <main className="flex-grow bg-background">
         <div className="container mx-auto px-4 pt-4">
-          <BackButton />
+          <PageBreadcrumb 
+            segments={[
+              { label: "Home", href: "/" },
+              { label: "Compare Tests", href: "/compare" },
+              { label: "Thyroid Tests" }
+            ]}
+            backLabel="Back to Compare"
+          />
         </div>
         <HeroSection
           title="Thyroid Blood Tests"

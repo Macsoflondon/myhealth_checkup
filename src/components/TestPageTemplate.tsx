@@ -1,18 +1,14 @@
-import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import ProviderComparisonSidebar from "@/components/ProviderComparisonSidebar";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
 import ProviderPriceComparison from "@/components/compare/ProviderPriceComparison";
 import TestStructuredData from "@/components/seo/TestStructuredData";
 import PageHeading from "@/components/ui/page-heading";
 import { TestPageData } from "@/types/TestPageTypes";
-import TestBreadcrumb from "@/components/common/TestBreadcrumb";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 
 interface TestPageTemplateProps {
   data: TestPageData;
@@ -42,19 +38,16 @@ const TestPageTemplate = ({
       <Header />
       
       <main className="container mx-auto px-[20px] py-6">
-        {/* Breadcrumb */}
-        <TestBreadcrumb 
-          providerName={data.providers[0]?.name || "Provider"} 
-          testName={data.title} 
+        {/* Breadcrumb with Back Button */}
+        <PageBreadcrumb 
+          segments={[
+            { label: "Home", href: "/" },
+            { label: "Compare Tests", href: "/compare" },
+            { label: data.category, href: `/compare?category=${encodeURIComponent(data.category)}` },
+            { label: data.title }
+          ]}
+          backLabel="Back to Compare"
         />
-
-        {/* Back to Compare Button */}
-        <Link to="/compare">
-          <Button variant="ghost" className="mb-6 -ml-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Compare
-          </Button>
-        </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}

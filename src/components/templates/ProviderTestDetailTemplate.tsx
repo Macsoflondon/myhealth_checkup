@@ -12,7 +12,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import SimilarTestsSection from "@/components/SimilarTestsSection";
-import TestBreadcrumb from "@/components/common/TestBreadcrumb";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
@@ -359,14 +359,16 @@ export default function ProviderTestDetailTemplate({
 
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
         <div className="container mx-auto px-4 max-w-5xl">
-          {/* Back Button */}
-          <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back
-          </Button>
-
-          {/* Breadcrumb Navigation */}
-          <TestBreadcrumb providerName={providerConfig.name} testName={test.test_name} />
+          {/* Breadcrumb with Back Button */}
+          <PageBreadcrumb 
+            segments={[
+              { label: "Home", href: "/" },
+              { label: "Compare Tests", href: "/compare" },
+              { label: providerConfig.name, href: `/providers/${providerConfig.id}` },
+              { label: test.test_name }
+            ]}
+            backLabel="Back to Compare"
+          />
 
           {/* Provider Badge */}
           <div className="mb-6">
