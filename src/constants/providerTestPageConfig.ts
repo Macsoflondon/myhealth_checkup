@@ -128,7 +128,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       labProcessing: 'UKAS ISO 15189 accredited',
       resultsDelivery: 'Online portal with detailed report',
       supportPhone: '020 7099 6657',
-      supportEmail: 'info@goodbody.co.uk',
+      supportEmail: 'info@goodbodyclinic.com',
     },
     ctaText: 'Book your test with GoodBody Clinic today for professional venous blood collection at a pharmacy near you. Expert service with fast, reliable results.',
     ctaButtonText: 'Book with GoodBody',
