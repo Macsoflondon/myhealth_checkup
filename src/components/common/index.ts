@@ -12,6 +12,7 @@ export { OfflineSyncIndicator } from "./OfflineSyncIndicator";
 export { OptimisticUpdateIndicator } from "./OptimisticUpdateIndicator";
 export { OptimizedImage } from "./OptimizedImage";
 export { OptimizedLazyImage } from "./OptimizedLazyImage";
+export { default as PageBreadcrumb } from "./PageBreadcrumb";
 export { RealtimeSyncIndicator } from "./RealtimeSyncIndicator";
 export { ResponsiveImage, HeroBackground } from "./ResponsiveImage";
 export { default as ScrollFadeIn } from "./ScrollFadeIn";

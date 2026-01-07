@@ -6,10 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Search, Filter, ExternalLink } from "lucide-react";
+import { Search, Filter, ExternalLink } from "lucide-react";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { logger } from "@/lib/logger";
 import { providersApi } from "@/api";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
+
 interface ProviderTest {
   id: string;
   test_name: string;
@@ -19,25 +21,28 @@ interface ProviderTest {
   url?: string;
   image_url?: string;
 }
+
 const ProviderTestCatalogPage = () => {
-  const {
-    providerId
-  } = useParams();
+  const { providerId } = useParams();
   const [tests, setTests] = useState<ProviderTest[]>([]);
   const [filteredTests, setFilteredTests] = useState<ProviderTest[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
   const provider = detailedProviders.find(p => p.id.toLowerCase() === providerId?.toLowerCase());
+  
   useEffect(() => {
     if (providerId) {
       fetchProviderTests();
     }
   }, [providerId]);
+  
   useEffect(() => {
     filterTests();
   }, [tests, searchTerm, selectedCategory]);
+  
   const fetchProviderTests = async () => {
     if (!providerId) return;
     
@@ -59,6 +64,7 @@ const ProviderTestCatalogPage = () => {
       setLoading(false);
     }
   };
+  
   const filterTests = () => {
     let filtered = tests;
     if (searchTerm) {
@@ -69,7 +75,9 @@ const ProviderTestCatalogPage = () => {
     }
     setFilteredTests(filtered);
   };
+  
   const categories = ["all", ...Array.from(new Set(tests.map(test => test.category)))];
+  
   if (!provider) {
     return <div className="min-h-screen bg-[#081129]">
         <Header />
@@ -82,21 +90,21 @@ const ProviderTestCatalogPage = () => {
         <Footer />
       </div>;
   }
+  
   return <div className="min-h-screen bg-[#081129]">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 mb-6">
-          <Link to="/#providers" className="text-gray-300 hover:text-white">
-            All Providers
-          </Link>
-          <span className="text-gray-300">/</span>
-          <Link to={`/provider/${providerId}`} className="flex items-center gap-2 text-gray-300 hover:text-white">
-            <ArrowLeft className="w-4 h-4" />
-            {provider.name}
-          </Link>
-        </nav>
+        {/* Breadcrumb with Back Button */}
+        <PageBreadcrumb 
+          segments={[
+            { label: "Home", href: "/" },
+            { label: "Providers", href: "/providers" },
+            { label: provider.name }
+          ]}
+          backLabel="Back to Providers"
+          className="[&_a]:text-gray-300 [&_a:hover]:text-white [&_span]:text-gray-300 [&_button]:text-[#22c0d4]"
+        />
 
         {/* Header */}
         <div className="mb-8">
