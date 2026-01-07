@@ -76,3 +76,8 @@ verify_jwt = false
 
 [functions.bulk-add-clinics]
 verify_jwt = true
+
+# Run All Scrapers - Scheduled cron job to update all provider data
+# Security: Uses service role key internally, no public access
+[functions.run-all-scrapers]
+verify_jwt = false
