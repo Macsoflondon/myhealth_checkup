@@ -9,6 +9,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { 
   FlaskConical, 
   Clock, 
@@ -16,12 +25,22 @@ import {
   ChevronRight,
   Home,
   Building2,
-  Shield
+  Shield,
+  Search,
+  SlidersHorizontal,
+  ArrowUpDown,
+  X
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 
+type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc" | "biomarkers-desc";
+
 const MedichecksTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("name-asc");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+  const [showFilters, setShowFilters] = useState(false);
 
   const { data: tests, isLoading } = useQuery({
     queryKey: ["medichecks-tests"],
@@ -44,11 +63,69 @@ const MedichecksTestsCatalogPage = () => {
     return cats.sort();
   }, [tests]);
 
+  // Get price bounds for slider
+  const priceBounds = useMemo(() => {
+    if (!tests) return { min: 0, max: 500 };
+    const prices = tests.map(t => t.price || 0);
+    return { min: Math.floor(Math.min(...prices)), max: Math.ceil(Math.max(...prices)) };
+  }, [tests]);
+
   const filteredTests = useMemo(() => {
     if (!tests) return [];
-    if (selectedCategory === "all") return tests;
-    return tests.filter((t) => t.category === selectedCategory);
-  }, [tests, selectedCategory]);
+    
+    let filtered = tests;
+    
+    // Category filter
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((t) => t.category === selectedCategory);
+    }
+    
+    // Search filter
+    if (searchTerm.trim()) {
+      const search = searchTerm.toLowerCase();
+      filtered = filtered.filter((t) => 
+        t.test_name.toLowerCase().includes(search) ||
+        t.description?.toLowerCase().includes(search) ||
+        t.category?.toLowerCase().includes(search)
+      );
+    }
+    
+    // Price range filter
+    filtered = filtered.filter((t) => {
+      const price = t.price || 0;
+      return price >= priceRange[0] && price <= priceRange[1];
+    });
+    
+    // Sorting
+    filtered = [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case "name-asc":
+          return a.test_name.localeCompare(b.test_name);
+        case "name-desc":
+          return b.test_name.localeCompare(a.test_name);
+        case "price-asc":
+          return (a.price || 0) - (b.price || 0);
+        case "price-desc":
+          return (b.price || 0) - (a.price || 0);
+        case "biomarkers-desc":
+          return (b.biomarker_count || 0) - (a.biomarker_count || 0);
+        default:
+          return 0;
+      }
+    });
+    
+    return filtered;
+  }, [tests, selectedCategory, searchTerm, priceRange, sortBy]);
+
+  const hasActiveFilters = searchTerm || selectedCategory !== "all" || 
+    priceRange[0] > priceBounds.min || priceRange[1] < priceBounds.max;
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("all");
+    setPriceRange([priceBounds.min, priceBounds.max]);
+    setSortBy("name-asc");
+  };
 
   const generateTestSlug = (testName: string) => {
     return testName
@@ -104,7 +181,67 @@ const MedichecksTestsCatalogPage = () => {
         </section>
 
         <section className="sticky top-16 z-20 bg-background/95 backdrop-blur-sm border-b py-4">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 space-y-4">
+            {/* Search and Sort Row */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search tests..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
+                  <SelectTrigger className="w-[180px]">
+                    <ArrowUpDown className="h-4 w-4 mr-2" />
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="name-asc">Name (A-Z)</SelectItem>
+                    <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+                    <SelectItem value="price-asc">Price (Low to High)</SelectItem>
+                    <SelectItem value="price-desc">Price (High to Low)</SelectItem>
+                    <SelectItem value="biomarkers-desc">Most Biomarkers</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={showFilters ? "bg-primary text-primary-foreground" : ""}
+                >
+                  <SlidersHorizontal className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Expandable Filters */}
+            {showFilters && (
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t">
+                <div className="flex-1 space-y-2">
+                  <label className="text-sm font-medium">Price Range: £{priceRange[0]} - £{priceRange[1]}</label>
+                  <Slider
+                    value={priceRange}
+                    min={priceBounds.min}
+                    max={priceBounds.max}
+                    step={5}
+                    onValueChange={(v) => setPriceRange(v as [number, number])}
+                    className="py-2"
+                  />
+                </div>
+                {hasActiveFilters && (
+                  <Button variant="ghost" size="sm" onClick={resetFilters} className="self-end">
+                    <X className="h-4 w-4 mr-1" />
+                    Reset Filters
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {/* Category Pills */}
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={selectedCategory === "all" ? "default" : "outline"}
