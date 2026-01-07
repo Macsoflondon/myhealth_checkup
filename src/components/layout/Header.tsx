@@ -98,7 +98,7 @@ const Header = ({
             <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <img 
                 alt="Your health. Your choice. One trusted platform!" 
-                className="h-12 lg:h-14 xl:h-16 w-auto object-contain" 
+                className="h-12 lg:h-14 xl:h-16 w-auto object-contain transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] cursor-default" 
                 src={taglineBanner} 
               />
             </div>
