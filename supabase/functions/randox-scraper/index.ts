@@ -61,7 +61,7 @@ serve(async (req) => {
 
     // Upsert all tests
     const testsToUpsert = randoxTests.map(test => ({
-      provider_id: 'randox-health',
+      provider_id: 'randox',
       provider_test_id: test.provider_test_id,
       test_name: test.test_name,
       category: test.category,

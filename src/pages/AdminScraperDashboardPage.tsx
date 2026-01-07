@@ -30,7 +30,7 @@ interface Provider {
 const PROVIDERS: Provider[] = [
   { id: 'lola-health', name: 'Lola Health', functionName: 'lola-health-scraper' },
   { id: 'medichecks', name: 'Medichecks', functionName: 'medichecks-scraper' },
-  { id: 'goodbody', name: 'GoodBody', functionName: 'goodbody-scraper' },
+  { id: 'goodbody-clinic', name: 'GoodBody', functionName: 'goodbody-scraper' },
   { id: 'thriva', name: 'Thriva', functionName: 'thriva-scraper' },
   { id: 'tuli-health', name: 'Tuli Health', functionName: 'tuli-health-scraper' },
   { id: 'randox', name: 'Randox', functionName: 'randox-scraper' },
