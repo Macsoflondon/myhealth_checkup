@@ -2,12 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Scale, CreditCard, Eye, Search, Loader2 } from "lucide-react";
 import { useState, useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import AccreditationLogos from "@/components/sections/AccreditationLogos";
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import { logger } from "@/lib/logger";
+import { providers } from "@/constants/providers";
 
 const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,6 +59,9 @@ const Hero = () => {
     { icon: CreditCard, text: "No payments taken on this site" },
     { icon: Eye, text: "Independent comparison" }
   ];
+
+  // Featured providers for logo strip
+  const featuredProviders = providers.slice(0, 6);
 
   return (
     <>
@@ -117,7 +121,7 @@ const Hero = () => {
             </div>
             
             {/* Trust Signals - Scannable, one line per idea, appears early */}
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-8 sm:mb-10">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-6 sm:mb-8">
               {trustSignals.map((signal, index) => (
                 <div 
                   key={index} 
@@ -127,6 +131,27 @@ const Hero = () => {
                   <span className="font-sans">{signal.text}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Provider Logos - Social proof, familiar brands */}
+            <div className="border-t border-gray-100 pt-6 sm:pt-8">
+              <p className="text-xs sm:text-sm text-gray-500 mb-4 font-sans">Trusted providers we compare:</p>
+              <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8">
+                {featuredProviders.map((provider) => (
+                  <Link 
+                    key={provider.id} 
+                    to={`/provider/${provider.id}`}
+                    className="grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+                  >
+                    <img 
+                      src={provider.logo} 
+                      alt={provider.name} 
+                      className="h-6 sm:h-8 md:h-10 w-auto object-contain"
+                      loading="lazy"
+                    />
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
