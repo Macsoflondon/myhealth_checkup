@@ -40,7 +40,7 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'randox': 'https://randoxhealth.com',
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
   'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
-  'goodbody-clinic': 'https://goodbody.co.uk',
+  'goodbody-clinic': 'https://goodbodyclinic.com',
   'tuli-health': 'https://tulihealth.com',
   'the-doctors-laboratory': 'https://www.tdlpathology.com',
 };
