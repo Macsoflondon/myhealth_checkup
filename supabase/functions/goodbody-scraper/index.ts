@@ -118,9 +118,26 @@ function extractImageUrl(html: string): string | null {
     return url.startsWith('//') ? 'https:' + url : url;
   }
   
+  // Try Shopify CDN images (cdn.shopify.com)
+  const shopifyCdnMatch = html.match(/https:\/\/cdn\.shopify\.com\/[^"'\s]+\.(?:jpg|jpeg|png|webp)/i);
+  if (shopifyCdnMatch) return shopifyCdnMatch[0];
+  
+  // Try srcset for highest resolution image
+  const srcsetMatch = html.match(/srcset="([^"]+)"/i);
+  if (srcsetMatch) {
+    const srcsetParts = srcsetMatch[1].split(',').map(s => s.trim());
+    const lastPart = srcsetParts[srcsetParts.length - 1];
+    const urlMatch = lastPart.match(/^(https?:\/\/[^\s]+)/);
+    if (urlMatch) return urlMatch[1];
+  }
+  
   // Try product image from img tag with product in class
   const imgMatch = html.match(/<img[^>]+class="[^"]*product[^"]*"[^>]+src="([^"]+)"/i);
   if (imgMatch) return imgMatch[1];
+  
+  // Try any product-media image
+  const mediaMatch = html.match(/<img[^>]+src="(https:\/\/cdn\.shopify\.com\/[^"]+)"/i);
+  if (mediaMatch) return mediaMatch[1];
   
   return null;
 }
@@ -130,24 +147,81 @@ function extractBiomarkersList(html: string): string[] | null {
   
   // Terms to EXCLUDE - clinic locations and non-biomarker content
   const excludeTerms = ['location', 'clinic', 'aesthetic', 'pharmacy', 'health centre', 'surgery', 
-    'appointment', 'book now', 'click here', 'read more', 'learn more', 'find out'];
+    'appointment', 'book now', 'click here', 'read more', 'learn more', 'find out', 'delivery',
+    'shipping', 'returns', 'contact', 'about us', 'privacy', 'terms', 'cookie'];
   
-  // Valid biomarker keywords - must contain at least one of these
-  const validBiomarkerTerms = ['vitamin', 'hormone', 'cholesterol', 'hdl', 'ldl', 'triglyceride',
-    'iron', 'ferritin', 'thyroid', 'tsh', 't3', 't4', 'liver', 'kidney', 'glucose', 'hba1c',
-    'testosterone', 'oestradiol', 'estradiol', 'fsh', 'lh', 'blood count', 'haemoglobin',
-    'calcium', 'magnesium', 'zinc', 'folate', 'b12', 'crp', 'urea', 'creatinine', 'albumin',
-    'bilirubin', 'alt', 'ast', 'ggt', 'psa', 'amh', 'cortisol', 'dhea', 'prolactin', 'egfr',
-    'platelet', 'white blood', 'red blood', 'neutrophil', 'lymphocyte', 'potassium', 'sodium'];
+  // Expanded valid biomarker keywords
+  const validBiomarkerTerms = [
+    // Vitamins & Minerals
+    'vitamin', 'b12', 'folate', 'folic acid', 'd3', 'vitamin d', 'vitamin a', 'vitamin e', 'vitamin c',
+    'iron', 'ferritin', 'tibc', 'transferrin', 'calcium', 'magnesium', 'zinc', 'copper', 'selenium',
+    'potassium', 'sodium', 'phosphate', 'chloride',
+    // Hormones
+    'hormone', 'testosterone', 'oestradiol', 'estradiol', 'oestrogen', 'estrogen', 'progesterone',
+    'fsh', 'lh', 'prolactin', 'dhea', 'dheas', 'cortisol', 'shbg', 'free androgen index',
+    'amh', 'anti-mullerian', 'tsh', 't3', 't4', 'free t3', 'free t4', 'ft3', 'ft4',
+    'anti-tpo', 'tpo antibodies', 'thyroglobulin', 'growth hormone', 'igf-1',
+    // Lipids & Heart
+    'cholesterol', 'hdl', 'ldl', 'triglyceride', 'total cholesterol', 'non-hdl',
+    'apolipoprotein', 'apob', 'apoa', 'lp(a)', 'lipoprotein', 'homocysteine', 'bnp',
+    // Liver
+    'liver', 'alt', 'ast', 'ggt', 'gamma gt', 'bilirubin', 'alkaline phosphatase', 'alp',
+    'albumin', 'total protein', 'globulin',
+    // Kidney
+    'kidney', 'urea', 'creatinine', 'egfr', 'uric acid', 'cystatin c',
+    // Diabetes
+    'glucose', 'hba1c', 'blood sugar', 'fasting glucose', 'insulin', 'c-peptide',
+    // Blood Count
+    'blood count', 'haemoglobin', 'hemoglobin', 'hematocrit', 'haematocrit',
+    'platelet', 'white blood', 'red blood', 'wbc', 'rbc', 'mcv', 'mch', 'mchc', 'rdw',
+    'neutrophil', 'lymphocyte', 'monocyte', 'eosinophil', 'basophil', 'reticulocyte',
+    // Inflammation
+    'crp', 'c-reactive', 'esr', 'sed rate', 'inflammation',
+    // Cancer Markers
+    'psa', 'cea', 'ca125', 'ca19-9', 'afp', 'alpha-fetoprotein', 'ca15-3',
+    // Other
+    'omega-3', 'omega-6', 'fatty acid', 'coeliac', 'celiac', 'tissue transglutaminase',
+    'rheumatoid factor', 'ana', 'antinuclear', 'thyroid'
+  ];
   
   // Helper to check if text is a valid biomarker
   const isValidBiomarker = (text: string): boolean => {
     const lowerText = text.toLowerCase();
-    // Must NOT contain exclude terms
     if (excludeTerms.some(term => lowerText.includes(term))) return false;
-    // Must contain at least one valid biomarker term
     return validBiomarkerTerms.some(term => lowerText.includes(term));
   };
+  
+  // Try to parse Shopify JSON-LD product data first (most structured)
+  const jsonLdMatch = html.match(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (jsonLdMatch) {
+    for (const block of jsonLdMatch) {
+      try {
+        const jsonContent = block.replace(/<script[^>]*>|<\/script>/gi, '');
+        const data = JSON.parse(jsonContent);
+        if (data.description) {
+          const descItems = data.description.split(/[,;•\n]/).map((s: string) => s.trim());
+          for (const item of descItems) {
+            if (item.length > 2 && item.length < 80 && isValidBiomarker(item)) {
+              biomarkers.push(item);
+            }
+          }
+        }
+      } catch (e) {
+        // JSON parse failed, continue with other methods
+      }
+    }
+  }
+  
+  // Extract from meta description
+  const metaDesc = html.match(/<meta\s+name="description"\s+content="([^"]+)"/i);
+  if (metaDesc) {
+    const descItems = metaDesc[1].split(/[,;•]/).map(s => s.trim());
+    for (const item of descItems) {
+      if (item.length > 2 && item.length < 80 && isValidBiomarker(item)) {
+        biomarkers.push(item);
+      }
+    }
+  }
   
   // Look for bullet point lists with biomarker keywords
   const bulletMatch = html.match(/<li[^>]*>([^<]+)<\/li>/gi);
@@ -160,40 +234,61 @@ function extractBiomarkersList(html: string): string[] | null {
     }
   }
   
-  // Look for common biomarker list patterns with strict filtering
-  const listMatch = html.match(/(?:includes|tests|measures|checks|analyses)[:\s]+([^<.]+(?:,\s*[^<.]+)+)/gi);
+  // Look for product feature tables
+  const tableMatch = html.match(/<td[^>]*>([^<]+)<\/td>/gi);
+  if (tableMatch) {
+    for (const match of tableMatch) {
+      const text = match.replace(/<[^>]+>/g, '').trim();
+      if (text.length > 2 && text.length < 80 && isValidBiomarker(text)) {
+        biomarkers.push(text);
+      }
+    }
+  }
+  
+  // Look for common biomarker list patterns
+  const listMatch = html.match(/(?:includes|tests|measures|checks|analyses|covering)[:\s]+([^<.]+(?:,\s*[^<.]+)+)/gi);
   if (listMatch) {
     for (const match of listMatch) {
       const items = match.replace(/^[^:]+:\s*/, '').split(/,\s*/)
         .map(s => s.trim())
-        .filter(s => s.length > 2 && s.length < 50 && isValidBiomarker(s));
+        .filter(s => s.length > 2 && s.length < 60 && isValidBiomarker(s));
       biomarkers.push(...items);
     }
   }
   
-  return biomarkers.length > 0 ? [...new Set(biomarkers)].slice(0, 50) : null;
+  // Clean up and deduplicate
+  const cleanedBiomarkers = [...new Set(
+    biomarkers.map(b => b.replace(/^\s*[-•]\s*/, '').trim())
+      .filter(b => b.length > 2)
+  )].slice(0, 60);
+  
+  return cleanedBiomarkers.length > 0 ? cleanedBiomarkers : null;
 }
 
 function determineCategory(title: string, description: string): string {
   const text = (title + ' ' + description).toLowerCase();
   
+  // Cancer screening - check first as these are specific
+  if (text.match(/cancer|tumour|tumor|psa|ca125|cea|afp|bowel screen/)) return 'Cancer Screening';
+  // Specific organ/function tests
   if (text.match(/liver/)) return 'Liver Function';
-  if (text.match(/heart|cardiovascular|cholesterol/)) return 'Heart Health';
-  if (text.match(/fertility|amh|ovarian/)) return 'Fertility';
-  if (text.match(/thyroid|tsh|t3|t4/)) return 'Thyroid';
-  if (text.match(/vitamin|mineral|b12|d3|folate/)) return 'Vitamins & Minerals';
+  if (text.match(/heart|cardiovascular|cholesterol|lipid|cardiac/)) return 'Heart Health';
+  if (text.match(/fertility|amh|ovarian|egg reserve/)) return 'Fertility';
+  if (text.match(/thyroid|tsh|t3|t4|hyperthyroid|hypothyroid/)) return 'Thyroid';
+  if (text.match(/vitamin|mineral|b12|d3|folate|nutritional/)) return 'Vitamins & Minerals';
   if (text.match(/iron|ferritin|anaemia|anemia/)) return 'Iron & Anaemia';
-  if (text.match(/diabetes|glucose|hba1c/)) return 'Diabetes';
-  if (text.match(/well\s*woman|female|menopause|pcos/)) return "Women's Health";
-  if (text.match(/well\s*man|male|testosterone|prostate/)) return "Men's Health";
+  if (text.match(/diabetes|glucose|hba1c|blood sugar/)) return 'Diabetes';
+  if (text.match(/well\s*woman|female|menopause|pcos|perimenopause/)) return "Women's Health";
+  if (text.match(/well\s*man|male|testosterone|prostate|erectile/)) return "Men's Health";
   if (text.match(/kidney|renal/)) return 'Kidney Function';
-  if (text.match(/inflammation|crp/)) return 'Inflammation';
-  if (text.match(/hormone/)) return 'Hormones';
-  if (text.match(/blood count|fbc|cbc/)) return 'Blood Count';
-  if (text.match(/sti|std|sexual/)) return 'Sexual Health';
-  if (text.match(/allergy|intolerance/)) return 'Allergy';
-  if (text.match(/cancer|tumour|psa/)) return 'Cancer Screening';
-  if (text.match(/essential|general|comprehensive/)) return 'General Health';
+  if (text.match(/inflammation|crp|autoimmune/)) return 'Inflammation';
+  if (text.match(/hormone|cortisol|dhea|endocrine/)) return 'Hormones';
+  if (text.match(/blood count|fbc|cbc|haematology/)) return 'Blood Count';
+  if (text.match(/sti|std|sexual|chlamydia|gonorrhoea/)) return 'Sexual Health';
+  if (text.match(/allergy|intolerance|food sensitivity/)) return 'Allergy';
+  if (text.match(/sports|fitness|performance|athlete/)) return 'Sports & Fitness';
+  if (text.match(/fatigue|tiredness|energy/)) return 'Fatigue & Energy';
+  if (text.match(/essential|general|comprehensive|full body/)) return 'General Health';
   
   return 'General Health';
 }
