@@ -12,6 +12,7 @@ import AdminQuickClinicImportPage from "@/pages/AdminQuickClinicImportPage";
 import AdminTestUploadPage from "@/pages/AdminTestUploadPage";
 import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
 import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
+import AdminScraperDashboardPage from "@/pages/AdminScraperDashboardPage";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
@@ -30,6 +31,7 @@ export function AppRoutes() {
       <Route path="/admin/quick-clinic-import" element={<AdminQuickClinicImportPage />} />
       <Route path="/admin/test-upload" element={<AdminTestUploadPage />} />
       <Route path="/admin/data-refresh" element={<AdminDataRefreshPage />} />
+      <Route path="/admin/scrapers" element={<AdminScraperDashboardPage />} />
       <Route path="/admin/test-mapper" element={<AdminTestMapperPage />} />
       
       {/* Feature Routes */}
