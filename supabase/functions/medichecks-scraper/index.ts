@@ -51,11 +51,13 @@ Deno.serve(async (req) => {
 
     // In a production environment, this would scrape the Medichecks website
     // For now, we'll simulate price updates for demonstration
-    const updates: MedichecksTestUpdate[] = (existingTests || []).map(test => ({
+    const updates = (existingTests || []).map(test => ({
       provider_test_id: test.provider_test_id,
       test_name: test.test_name,
       price: test.price || null,
-      is_active: true
+      is_active: true,
+      url_verified: true,
+      url_verified_at: new Date().toISOString()
     }));
 
     // Update tests in database
