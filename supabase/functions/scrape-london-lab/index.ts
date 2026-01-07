@@ -1,5 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,268 +7,436 @@ const corsHeaders = {
 
 interface LondonLabProduct {
   test_name: string;
-  provider_id: string;
-  category: string;
-  price: number;
+  price: number | null;
   original_price: number | null;
-  discount_percentage: number | null;
-  description: string;
   url: string;
-  provider_test_id: string;
-  is_active: boolean;
-  biomarkers_list: string[] | null;
+  category: string;
+  description: string | null;
   biomarker_count: number | null;
-  sample_type: string | null;
-  home_kit_available: boolean;
-  clinic_visit_available: boolean;
-  url_verified: boolean;
-  url_verified_at: string;
+  biomarkers_list: string[] | null;
+  image_url: string | null;
 }
+
+// London Medical Laboratory category pages
+const categoryPages = [
+  'https://www.londonmedicallaboratory.com/product-category/blood-tests/',
+  'https://www.londonmedicallaboratory.com/product-category/home-test-kits/',
+  'https://www.londonmedicallaboratory.com/product-category/health-checks/',
+  'https://www.londonmedicallaboratory.com/product-category/thyroid-tests/',
+  'https://www.londonmedicallaboratory.com/product-category/hormone-tests/',
+  'https://www.londonmedicallaboratory.com/product-category/vitamin-tests/',
+  'https://www.londonmedicallaboratory.com/product-category/diabetes-tests/',
+  'https://www.londonmedicallaboratory.com/product-category/heart-tests/',
+];
+
+// Known test URLs as fallback
+const knownProductUrls = [
+  'https://www.londonmedicallaboratory.com/product/general-health-screen/',
+  'https://www.londonmedicallaboratory.com/product/advanced-health-screen/',
+  'https://www.londonmedicallaboratory.com/product/comprehensive-health-screen/',
+  'https://www.londonmedicallaboratory.com/product/vitamin-profile/',
+  'https://www.londonmedicallaboratory.com/product/vitamin-d-test/',
+  'https://www.londonmedicallaboratory.com/product/vitamin-b12-folate-test/',
+  'https://www.londonmedicallaboratory.com/product/iron-status-test/',
+  'https://www.londonmedicallaboratory.com/product/thyroid-function-test/',
+  'https://www.londonmedicallaboratory.com/product/advanced-thyroid-function/',
+  'https://www.londonmedicallaboratory.com/product/thyroid-antibodies-test/',
+  'https://www.londonmedicallaboratory.com/product/hormone-check/',
+  'https://www.londonmedicallaboratory.com/product/female-fertility-profile/',
+  'https://www.londonmedicallaboratory.com/product/male-fertility-profile/',
+  'https://www.londonmedicallaboratory.com/product/menopause-test/',
+  'https://www.londonmedicallaboratory.com/product/testosterone-test/',
+  'https://www.londonmedicallaboratory.com/product/heart-health-profile/',
+  'https://www.londonmedicallaboratory.com/product/cholesterol-test/',
+  'https://www.londonmedicallaboratory.com/product/diabetes-screening/',
+  'https://www.londonmedicallaboratory.com/product/hba1c-test/',
+  'https://www.londonmedicallaboratory.com/product/liver-function-test/',
+  'https://www.londonmedicallaboratory.com/product/kidney-function-test/',
+  'https://www.londonmedicallaboratory.com/product/inflammation-test/',
+  'https://www.londonmedicallaboratory.com/product/fatigue-test/',
+  'https://www.londonmedicallaboratory.com/product/sports-performance-test/',
+];
+
+// Comprehensive biomarker keywords
+const biomarkerPatterns = [
+  'TSH', 'T3', 'T4', 'Free T3', 'Free T4', 'FT3', 'FT4', 'Thyroid Peroxidase', 'TPO', 'Thyroglobulin',
+  'Testosterone', 'Free Testosterone', 'Oestradiol', 'Estradiol', 'Progesterone', 'LH', 'FSH',
+  'Prolactin', 'DHEA', 'DHEA-S', 'Cortisol', 'SHBG', 'Free Androgen Index', 'AMH',
+  'Vitamin D', '25-OH', 'Vitamin B12', 'Folate', 'Ferritin', 'Iron', 'TIBC', 'Transferrin',
+  'Magnesium', 'Zinc', 'Selenium', 'Vitamin B6', 'Active B12', 'Vitamin A', 'Vitamin E',
+  'ALT', 'AST', 'GGT', 'ALP', 'Bilirubin', 'Albumin', 'Total Protein', 'Globulin',
+  'Creatinine', 'eGFR', 'Urea', 'Uric Acid', 'Cystatin C',
+  'Total Cholesterol', 'HDL', 'LDL', 'Triglycerides', 'Non-HDL', 'Cholesterol Ratio',
+  'Haemoglobin', 'Hemoglobin', 'RBC', 'WBC', 'Platelets', 'Haematocrit', 'MCV', 'MCH', 'MCHC',
+  'Neutrophils', 'Lymphocytes', 'Monocytes', 'Eosinophils', 'Basophils',
+  'HbA1c', 'Glucose', 'Fasting Glucose', 'Insulin', 'HOMA-IR',
+  'CRP', 'ESR', 'hsCRP', 'Homocysteine',
+  'PSA', 'Total PSA', 'Free PSA',
+  'Omega-3', 'Omega-6', 'ApoB', 'Lp(a)',
+];
 
 function extractProductUrls(html: string): string[] {
   const urls: string[] = [];
-  // Match product links from London Medical Laboratory
-  const productLinkRegex = /href="(\/product\/[^"#?]+)"/gi;
-  let match;
-  while ((match = productLinkRegex.exec(html)) !== null) {
-    const url = match[1];
-    if (!urls.includes(url)) {
-      urls.push(url);
+  
+  const linkPatterns = [
+    /href="(https:\/\/www\.londonmedicallaboratory\.com\/product\/[^"#?]+)"/gi,
+    /href="(\/product\/[^"#?]+)"/gi,
+  ];
+  
+  for (const pattern of linkPatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      let url = match[1];
+      if (url.startsWith('/')) {
+        url = `https://www.londonmedicallaboratory.com${url}`;
+      }
+      if (url.includes('/product/') && !url.includes('/product-category/')) {
+        urls.push(url);
+      }
     }
   }
-  return urls;
+  
+  return [...new Set(urls)];
 }
 
 function extractTitle(html: string): string {
-  const titleMatch = html.match(/<h1[^>]*class="[^"]*product[^"]*title[^"]*"[^>]*>([^<]+)<\/h1>/i);
-  if (titleMatch) return titleMatch[1].trim();
+  const patterns = [
+    /<h1[^>]*class="[^"]*product[^"]*title[^"]*"[^>]*>([^<]+)<\/h1>/i,
+    /<h1[^>]*>([^<]+)<\/h1>/i,
+    /property="og:title"\s+content="([^"]+)"/i,
+    /<title>([^|<]+)/i,
+  ];
   
-  const h1Match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-  return h1Match ? h1Match[1].trim() : 'Unknown Test';
-}
-
-function extractDescription(html: string): string {
-  const descMatch = html.match(/<meta\s+name="description"\s+content="([^"]+)"/i);
-  if (descMatch) return descMatch[1].trim().substring(0, 500);
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      return match[1].trim().replace(/\s*[\|\-]\s*London.*$/i, '').trim();
+    }
+  }
+  
   return '';
 }
 
-function extractPrice(html: string): number {
-  // Look for WooCommerce price format
-  const priceMatch = html.match(/class="[^"]*woocommerce-Price-amount[^"]*"[^>]*>[\s\S]*?£([\d,.]+)/i);
-  if (priceMatch) return parseFloat(priceMatch[1].replace(',', ''));
+function extractDescription(html: string): string | null {
+  const patterns = [
+    /property="og:description"\s+content="([^"]+)"/i,
+    /name="description"\s+content="([^"]+)"/i,
+    /<meta[^>]+name="description"[^>]+content="([^"]+)"/i,
+    /<div[^>]*class="[^"]*woocommerce-product-details__short-description[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
+  ];
   
-  const fallbackMatch = html.match(/£([\d,.]+)/);
-  return fallbackMatch ? parseFloat(fallbackMatch[1].replace(',', '')) : 0;
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      return match[1].replace(/<[^>]+>/g, '').trim().substring(0, 500);
+    }
+  }
+  
+  return null;
 }
 
-function extractBiomarkerCount(html: string): number | null {
-  const countMatch = html.match(/(\d+)\s*(?:biomarkers?|tests?|markers?|parameters?)/i);
-  return countMatch ? parseInt(countMatch[1]) : null;
+function extractPrice(html: string): { current: number | null; original: number | null } {
+  let current: number | null = null;
+  let original: number | null = null;
+  
+  // WooCommerce sale price
+  const saleMatch = html.match(/class="[^"]*woocommerce-Price-amount[^"]*"[^>]*>[\s\S]*?<bdi>[\s\S]*?£([\d,.]+)/i);
+  if (saleMatch) {
+    current = parseFloat(saleMatch[1].replace(',', ''));
+  }
+  
+  // JSON-LD
+  const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+  if (jsonLdMatch && current === null) {
+    for (const script of jsonLdMatch) {
+      try {
+        const jsonContent = script.replace(/<script[^>]*>|<\/script>/gi, '');
+        const data = JSON.parse(jsonContent);
+        if (data.offers?.price) {
+          current = parseFloat(data.offers.price);
+        } else if (data['@graph']) {
+          for (const item of data['@graph']) {
+            if (item.offers?.price) {
+              current = parseFloat(item.offers.price);
+              break;
+            }
+          }
+        }
+      } catch { }
+    }
+  }
+  
+  // Fallback
+  if (current === null) {
+    const priceMatch = html.match(/£([\d,.]+)/);
+    if (priceMatch) current = parseFloat(priceMatch[1].replace(',', ''));
+  }
+  
+  // Original price
+  const delMatch = html.match(/<del[^>]*>[\s\S]*?£([\d,.]+)/i);
+  if (delMatch) original = parseFloat(delMatch[1].replace(',', ''));
+  
+  return { current, original };
 }
 
-function determineCategory(title: string, description: string): string {
-  const text = (title + ' ' + description).toLowerCase();
+function extractImageUrl(html: string): string | null {
+  const patterns = [
+    /property="og:image"\s+content="([^"]+)"/i,
+    /name="og:image"\s+content="([^"]+)"/i,
+    /<img[^>]+class="[^"]*wp-post-image[^"]*"[^>]+src="([^"]+)"/i,
+    /<img[^>]+class="[^"]*woocommerce-product-gallery__image[^"]*"[^>]+src="([^"]+)"/i,
+    /data-large_image="([^"]+)"/i,
+  ];
   
-  if (text.match(/liver/)) return 'Liver Function';
-  if (text.match(/heart|cardiovascular|cholesterol/)) return 'Heart Health';
-  if (text.match(/fertility|amh|ovarian/)) return 'Fertility';
-  if (text.match(/thyroid|tsh|t3|t4/)) return 'Thyroid';
-  if (text.match(/vitamin|mineral|b12|d3|folate|iron|ferritin/)) return 'Vitamins & Minerals';
-  if (text.match(/diabetes|glucose|hba1c/)) return 'Diabetes';
-  if (text.match(/women|female|menopause/)) return "Women's Health";
-  if (text.match(/men|male|testosterone|prostate/)) return "Men's Health";
-  if (text.match(/kidney|renal/)) return 'Kidney Function';
-  if (text.match(/inflammation|crp/)) return 'Inflammation';
-  if (text.match(/hormone/)) return 'Hormones';
-  if (text.match(/blood count|fbc/)) return 'Blood Count';
-  if (text.match(/allergy|intolerance/)) return 'Allergy';
-  if (text.match(/sexual|sti|std/)) return 'Sexual Health';
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      let url = match[1];
+      if (url.startsWith('//')) url = 'https:' + url;
+      else if (url.startsWith('/')) url = 'https://www.londonmedicallaboratory.com' + url;
+      return url;
+    }
+  }
+  
+  return null;
+}
+
+function extractBiomarkersList(html: string): string[] | null {
+  const biomarkers: string[] = [];
+  
+  const sectionPatterns = [
+    /what['']?s\s+included[\s\S]{0,3000}/i,
+    /biomarkers?\s+tested[\s\S]{0,2000}/i,
+    /tests?\s+included[\s\S]{0,2000}/i,
+    /<div[^>]*class="[^"]*biomarker[^"]*"[^>]*>([\s\S]*?)<\/div>/gi,
+  ];
+  
+  let searchText = html;
+  for (const pattern of sectionPatterns) {
+    const match = html.match(pattern);
+    if (match) {
+      searchText = match[0];
+      break;
+    }
+  }
+  
+  for (const biomarker of biomarkerPatterns) {
+    const regex = new RegExp(`\\b${biomarker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+    if (regex.test(searchText)) {
+      const normalized = biomarker.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+      if (!biomarkers.includes(normalized)) biomarkers.push(normalized);
+    }
+  }
+  
+  return biomarkers.length > 0 ? biomarkers : null;
+}
+
+function extractBiomarkerCount(html: string, biomarkersList: string[] | null): number | null {
+  if (biomarkersList && biomarkersList.length > 0) return biomarkersList.length;
+  
+  const patterns = [
+    /(\d+)\s*biomarkers?/i,
+    /(\d+)\s*tests?\s+included/i,
+    /(\d+)\s*markers?/i,
+    /(\d+)\s*parameters?/i,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match) return parseInt(match[1], 10);
+  }
+  
+  return null;
+}
+
+function determineCategory(title: string, description: string, url: string): string {
+  const text = `${title} ${description} ${url}`.toLowerCase();
+  
+  const categoryMap: Record<string, string[]> = {
+    'Thyroid': ['thyroid', 'tsh', 't3', 't4'],
+    'Hormones': ['hormone', 'testosterone', 'oestrogen', 'progesterone', 'dhea', 'cortisol'],
+    'Vitamins & Minerals': ['vitamin', 'mineral', 'iron', 'ferritin', 'b12', 'folate'],
+    'Heart Health': ['heart', 'cholesterol', 'cardiovascular', 'lipid', 'cardiac'],
+    'Diabetes': ['diabetes', 'hba1c', 'glucose', 'insulin'],
+    'Liver Health': ['liver', 'hepatic'],
+    'Kidney Health': ['kidney', 'renal'],
+    'Mens Health': ['men', 'male', 'prostate', 'psa'],
+    'Womens Health': ['women', 'female', 'menopause'],
+    'Fertility': ['fertility', 'amh', 'ovarian', 'sperm'],
+    'Sports & Fitness': ['sport', 'fitness', 'performance', 'athlete'],
+    'General Health': ['general', 'comprehensive', 'advanced', 'health screen'],
+    'Fatigue': ['fatigue', 'tiredness', 'energy'],
+    'Inflammation': ['inflammation', 'crp'],
+    'Sexual Health': ['sexual', 'sti', 'std'],
+    'Allergy': ['allergy', 'intolerance'],
+  };
+  
+  for (const [category, keywords] of Object.entries(categoryMap)) {
+    if (keywords.some(keyword => text.includes(keyword))) return category;
+  }
   
   return 'General Health';
 }
 
-async function fetchWithDelay(url: string, delay: number = 500): Promise<string> {
+async function fetchWithDelay(url: string, delay: number = 800): Promise<string> {
   await new Promise(resolve => setTimeout(resolve, delay));
   
   const response = await fetch(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language': 'en-GB,en;q=0.5',
-    }
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-GB,en;q=0.9',
+    },
   });
   
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.status}`);
-  }
-  
+  if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   return response.text();
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    console.log('Starting London Medical Laboratory scraper...');
-
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // London Medical Lab categories
-    const categoryPages = [
-      'https://www.londonmedicallaboratory.com/product-category/blood-tests/',
-      'https://www.londonmedicallaboratory.com/product-category/home-test-kits/',
-      'https://www.londonmedicallaboratory.com/product-category/health-checks/',
-    ];
+    console.log('Starting enhanced London Medical Laboratory scraper...');
 
-    const allProductUrls: Set<string> = new Set();
+    await supabase.from('scraping_jobs').upsert({
+      provider_id: 'london-medical-laboratory',
+      status: 'running',
+      last_scraped: new Date().toISOString(),
+      next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
+    }, { onConflict: 'provider_id' });
+
+    const allProductUrls = new Set<string>(knownProductUrls);
     
-    for (const pageUrl of categoryPages) {
+    console.log('Discovering products from category pages...');
+    for (const categoryUrl of categoryPages.slice(0, 5)) {
       try {
-        console.log(`Fetching: ${pageUrl}`);
-        const html = await fetchWithDelay(pageUrl, 300);
+        const html = await fetchWithDelay(categoryUrl, 1500);
         const urls = extractProductUrls(html);
-        urls.forEach(u => allProductUrls.add(u));
-        console.log(`Found ${urls.length} tests`);
-      } catch (err) {
-        console.error(`Error fetching ${pageUrl}:`, err.message);
+        urls.forEach(url => allProductUrls.add(url));
+        console.log(`Found ${urls.length} products from ${categoryUrl}`);
+      } catch (error) {
+        console.error(`Failed to fetch category ${categoryUrl}:`, error.message);
       }
     }
 
-    // Add known LML test slugs as fallback
-    const knownTests = [
-      '/product/general-health-screen/',
-      '/product/vitamin-profile/',
-      '/product/hormone-check/',
-      '/product/advanced-thyroid-function/',
-      '/product/female-fertility-profile/',
-      '/product/male-fertility-profile/',
-      '/product/heart-health-profile/',
-      '/product/diabetes-screening/',
-      '/product/liver-function-test/',
-      '/product/kidney-function-test/',
-    ];
-    knownTests.forEach(t => allProductUrls.add(t));
+    console.log(`Total unique product URLs: ${allProductUrls.size}`);
 
-    console.log(`Total unique tests found: ${allProductUrls.size}`);
-
-    const products: LondonLabProduct[] = [];
-    let successCount = 0;
-    let errorCount = 0;
-
-    for (const relativeUrl of allProductUrls) {
-      const fullUrl = `https://www.londonmedicallaboratory.com${relativeUrl}`;
-      const slug = relativeUrl.replace(/^\/product\//, '').replace(/\/$/, '') || '';
-      
+    const scrapedProducts: LondonLabProduct[] = [];
+    const productUrls = Array.from(allProductUrls).slice(0, 30);
+    
+    for (const url of productUrls) {
       try {
-        console.log(`Scraping: ${slug}`);
-        const productHtml = await fetchWithDelay(fullUrl, 500);
+        console.log(`Scraping: ${url}`);
+        const html = await fetchWithDelay(url, 1000);
         
-        const title = extractTitle(productHtml);
-        const description = extractDescription(productHtml);
-        const price = extractPrice(productHtml);
-        const biomarkerCount = extractBiomarkerCount(productHtml);
-        const category = determineCategory(title, description);
+        const title = extractTitle(html);
+        if (!title) continue;
         
-        if (price > 0 || title !== 'Unknown Test') {
-          products.push({
-            test_name: title,
-            provider_id: 'london-medical-laboratory',
-            category,
-            price: price || 0,
-            original_price: null,
-            discount_percentage: null,
-            description: description || `${title} from London Medical Laboratory.`,
-            url: fullUrl,
-            provider_test_id: slug,
-            is_active: true,
-            biomarkers_list: null,
-            biomarker_count: biomarkerCount,
-            sample_type: 'Finger-prick or Venous',
-            home_kit_available: true,
-            clinic_visit_available: true,
-            url_verified: true,
-            url_verified_at: new Date().toISOString(),
-          });
-          
-          successCount++;
-          console.log(`✓ Scraped ${title} - £${price}`);
-        }
+        const description = extractDescription(html);
+        const { current: price, original: originalPrice } = extractPrice(html);
+        const imageUrl = extractImageUrl(html);
+        const biomarkersList = extractBiomarkersList(html);
+        const biomarkerCount = extractBiomarkerCount(html, biomarkersList);
+        const category = determineCategory(title, description || '', url);
         
-      } catch (err) {
-        errorCount++;
-        console.error(`✗ Error scraping ${slug}:`, err.message);
+        scrapedProducts.push({
+          test_name: title,
+          price,
+          original_price: originalPrice,
+          url,
+          category,
+          description,
+          biomarker_count: biomarkerCount,
+          biomarkers_list: biomarkersList,
+          image_url: imageUrl,
+        });
+        
+        console.log(`Scraped: ${title} - £${price} - ${biomarkerCount || 0} biomarkers`);
+      } catch (error) {
+        console.error(`Failed to scrape ${url}:`, error.message);
       }
     }
 
-    console.log(`\nScraping complete: ${successCount} success, ${errorCount} errors`);
+    console.log(`Successfully scraped ${scrapedProducts.length} products`);
 
-    if (products.length > 0) {
-      const { error } = await supabase
-        .from('provider_tests')
-        .upsert(products, {
-          onConflict: 'provider_id,provider_test_id',
-          ignoreDuplicates: false
-        });
-
-      if (error) {
-        console.error("Error upserting products:", error);
-        throw error;
-      }
-
-      console.log(`Successfully updated ${products.length} products in database`);
-
-      await supabase
-        .from('scraping_jobs')
-        .upsert({
-          provider_id: 'london-medical-laboratory',
-          status: 'completed',
-          last_scraped: new Date().toISOString(),
-          next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
-          error_message: null,
-        }, {
-          onConflict: 'provider_id'
-        });
+    let upsertedCount = 0;
+    for (const product of scrapedProducts) {
+      const slug = product.url.replace(/^.*\/product\//, '').replace(/\/$/, '');
+      
+      const { error } = await supabase.from('provider_tests').upsert({
+        provider_id: 'london-medical-laboratory',
+        provider_test_id: slug,
+        test_name: product.test_name,
+        price: product.price,
+        original_price: product.original_price,
+        url: product.url,
+        category: product.category,
+        description: product.description,
+        biomarker_count: product.biomarker_count,
+        biomarkers_list: product.biomarkers_list,
+        image_url: product.image_url,
+        is_active: true,
+        home_kit_available: true,
+        clinic_visit_available: true,
+        sample_type: 'Finger-prick or Venous',
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      }, { onConflict: 'provider_id,provider_test_id' });
+      
+      if (!error) upsertedCount++;
+      else console.error(`Failed to upsert ${product.test_name}:`, error.message);
     }
+
+    // Deactivate stale tests
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    await supabase
+      .from('provider_tests')
+      .update({ is_active: false })
+      .eq('provider_id', 'london-medical-laboratory')
+      .lt('scraped_at', sevenDaysAgo);
+
+    await supabase.from('scraping_jobs').update({
+      status: 'completed',
+      error_message: null
+    }).eq('provider_id', 'london-medical-laboratory');
+
+    console.log(`London Medical Laboratory scraper completed. Upserted ${upsertedCount} tests.`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: `Successfully scraped ${products.length} London Medical Laboratory products`,
-        summary: {
-          total: products.length,
-          errors: errorCount,
-        },
-        timestamp: new Date().toISOString(),
+        provider: 'london-medical-laboratory',
+        testsScraped: scrapedProducts.length,
+        testsUpserted: upsertedCount,
+        timestamp: new Date().toISOString()
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     );
 
   } catch (error) {
-    console.error('Error in scrape-london-lab function:', error);
-    
+    console.error('Error in London Medical Laboratory scraper:', error);
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    await supabase
-      .from('scraping_jobs')
-      .upsert({
-        provider_id: 'london-medical-laboratory',
-        status: 'failed',
-        error_message: error.message,
-        last_scraped: new Date().toISOString(),
-      }, {
-        onConflict: 'provider_id'
-      });
+
+    await supabase.from('scraping_jobs').update({
+      status: 'failed',
+      error_message: error.message
+    }).eq('provider_id', 'london-medical-laboratory');
 
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }
 });
