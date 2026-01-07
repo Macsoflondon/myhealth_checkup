@@ -294,7 +294,7 @@ const MostPopularTests = () => {
               <div className="mb-6">
                 <Link to="/" className="inline-flex items-center gap-2 mb-4">
                   <div className="h-8 w-8 flex items-center justify-center">
-                    <img src="/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
+                    <img src="/lovable-uploads/myhealth-logo-turquoise.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
                   </div>
                   <span className="text-lg font-bold">
                     <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>

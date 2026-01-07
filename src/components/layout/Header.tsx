@@ -52,7 +52,7 @@ const Header = ({
               <img 
                 alt="myhealth checkup" 
                 className="h-10 xs:h-12 sm:h-14 w-auto object-contain" 
-                src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" 
+                src="/lovable-uploads/myhealth-logo-turquoise.png" 
               />
             </Link>
 
@@ -88,7 +88,7 @@ const Header = ({
           <div className="relative flex items-center justify-between py-2 lg:py-3">
             {/* Left: Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <img alt="myhealth checkup" className="h-36 lg:h-40 xl:h-44 w-auto object-contain" src="/lovable-uploads/19e3ce59-f8d7-4363-b8ab-7baae3218e00.png" />
+              <img alt="myhealth checkup" className="h-36 lg:h-40 xl:h-44 w-auto object-contain" src="/lovable-uploads/myhealth-logo-turquoise.png" />
             </Link>
 
             {/* Center: Tagline banner image */}
