@@ -24,6 +24,8 @@ interface LolaHealthProduct {
   symptoms: string[] | null;
   conditions: string[] | null;
   who_should_test: string | null;
+  url_verified: boolean;
+  url_verified_at: string;
 }
 
 function extractProductUrls(html: string): string[] {
@@ -259,6 +261,8 @@ serve(async (req) => {
           symptoms: symptoms.length > 0 ? symptoms : null,
           conditions: conditions.length > 0 ? conditions : null,
           who_should_test: whoShouldTest,
+          url_verified: true,
+          url_verified_at: new Date().toISOString(),
         });
         
         successCount++;
