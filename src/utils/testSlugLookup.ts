@@ -26,6 +26,20 @@ export function generateTestSlug(testName: string): string {
   return testName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
+/**
+ * Generates possible slug variations for lookup
+ */
+function generateSlugVariations(slug: string): string[] {
+  const base = slug.toLowerCase().replace(/(^-|-$)/g, '');
+  return [
+    base,
+    `${base}-blood-test`,
+    `${base}-test`,
+    base.replace(/-blood-test$/, ''),
+    base.replace(/-test$/, ''),
+  ];
+}
+
 const SELECT_FIELDS = `
   id, test_name, category, description, url, price, provider_test_id, 
   biomarkers_list, biomarker_count, image_url, is_addon, 
@@ -68,6 +82,24 @@ export async function findTestByIdOrSlug(
     }
   }
 
+  // Generate slug variations to try
+  const variations = generateSlugVariations(testId);
+  
+  // Try each variation against provider_test_id
+  for (const variation of variations) {
+    const { data: variationMatch } = await supabase
+      .from('provider_tests')
+      .select(SELECT_FIELDS)
+      .eq('provider_id', providerId)
+      .eq('provider_test_id', variation)
+      .eq('is_active', true)
+      .single();
+    
+    if (variationMatch) {
+      return parseTestData(variationMatch);
+    }
+  }
+
   // Fallback: match by slug generated from test_name
   const { data: allTests } = await supabase
     .from('provider_tests')
@@ -76,9 +108,26 @@ export async function findTestByIdOrSlug(
     .eq('is_active', true);
 
   if (allTests) {
+    // Try exact slug match first
     const slugMatch = allTests.find(t => generateTestSlug(t.test_name) === testId);
     if (slugMatch) {
       return parseTestData(slugMatch);
+    }
+    
+    // Try partial match - URL slug contained in provider_test_id or vice versa
+    const partialMatch = allTests.find(t => 
+      t.provider_test_id?.includes(testId) || testId.includes(t.provider_test_id || '')
+    );
+    if (partialMatch) {
+      return parseTestData(partialMatch);
+    }
+    
+    // Try matching slug variations against test names
+    for (const variation of variations) {
+      const nameMatch = allTests.find(t => generateTestSlug(t.test_name) === variation);
+      if (nameMatch) {
+        return parseTestData(nameMatch);
+      }
     }
   }
 
