@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import UKASBanner from "@/components/UKASBanner";
+import BackButton from "@/components/ui/BackButton";
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
@@ -183,6 +184,9 @@ const CompareTests = () => {
 
           {/* Main Content */}
           <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="mb-4">
+              <BackButton />
+            </div>
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Filters Sidebar */}
               <FiltersSidebar

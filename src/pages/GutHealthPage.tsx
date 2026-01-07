@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
+import BackButton from '@/components/ui/BackButton';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
@@ -43,6 +44,9 @@ const GutHealthPage = () => {
       <UKASBanner />
       <Header />
       <main className="flex-grow">
+        <div className="container mx-auto px-4 pt-4">
+          <BackButton />
+        </div>
         <HeroSection
           title="Gut Health & Microbiome Testing"
           subtitle="Discover the secrets of your gut microbiome. Advanced testing for digestive health, food intolerances, and gut-brain connection for UK adults aged 30-60."

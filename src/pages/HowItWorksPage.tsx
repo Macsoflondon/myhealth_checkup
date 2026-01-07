@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
+import BackButton from "@/components/ui/BackButton";
 const HowItWorksPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Helmet>
@@ -12,7 +13,9 @@ const HowItWorksPage = () => {
       
       <Header />
       <main className="flex-grow">
-        
+        <div className="container mx-auto px-4 pt-4">
+          <BackButton />
+        </div>
         
         <HowItWorks />
         <Enhanced3StepProcess />

@@ -5,6 +5,7 @@ import MainLayout from "@/layouts/MainLayout";
 import PageHeading from "@/components/ui/page-heading";
 import { SectionHeading } from "@/components/ui/section-heading";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+import BackButton from "@/components/ui/BackButton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -95,6 +96,9 @@ export default function AllProvidersPage() {
       </Helmet>
 
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-4">
+          <BackButton />
+        </div>
         {/* Hero Section */}
         <div className="text-center mb-10">
           <PageHeading

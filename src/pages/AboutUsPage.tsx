@@ -6,6 +6,7 @@ import PartnerShowcase from "@/components/PartnerShowcase";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
 import PageHeading from "@/components/ui/page-heading";
 import { SectionHeading } from "@/components/ui/section-heading";
+import BackButton from "@/components/ui/BackButton";
 import { Shield, Users, Award, Heart } from "lucide-react";
 const AboutUsPage = () => {
   const values = [{
@@ -33,6 +34,9 @@ const AboutUsPage = () => {
       
       <Header />
       <main className="flex-grow bg-[#081120]">
+        <div className="container mx-auto px-4 pt-4">
+          <BackButton className="text-white hover:text-white/80" />
+        </div>
         <TrustBadgesSection />
         
         <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-0 bg-[#081120]">

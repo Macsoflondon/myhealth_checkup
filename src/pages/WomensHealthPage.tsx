@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { MainLayout } from '@/layouts/MainLayout';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
+import BackButton from '@/components/ui/BackButton';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -223,6 +224,9 @@ const WomensHealthPage = () => {
         <meta name="twitter:description" content={t('womensHealth.twitterDescription')} />
       </Helmet>
       
+      <div className="container mx-auto px-4 pt-4">
+        <BackButton />
+      </div>
       <HeroSection
         title={t('womensHealth.title')}
         subtitle={t('womensHealth.subtitle')}

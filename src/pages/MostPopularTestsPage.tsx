@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MostPopularTests from '@/components/MostPopularTests';
 import UKASBanner from '@/components/UKASBanner';
+import BackButton from '@/components/ui/BackButton';
 
 const MostPopularTestsPage = () => {
   return (
@@ -27,6 +28,9 @@ const MostPopularTestsPage = () => {
         <UKASBanner />
         <Header />
         <main className="flex-1 bg-[#081129]">
+          <div className="container mx-auto px-4 pt-4">
+            <BackButton className="text-white hover:text-white/80" />
+          </div>
           <MostPopularTests />
         </main>
         <Footer />

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
+import BackButton from "@/components/ui/BackButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -138,8 +139,9 @@ const SportsPerformancePage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        {/* Breadcrumb */}
-        
+        <div className="container mx-auto px-4 pt-4">
+          <BackButton />
+        </div>
 
         <HeroSection
           title="Sports Performance Blood Tests"
