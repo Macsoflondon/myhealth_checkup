@@ -28,12 +28,12 @@ interface GoodbodyProduct {
 
 function extractProductUrls(html: string): string[] {
   const urls: string[] = [];
-  // Match product/test links from Goodbody Clinic
-  const productLinkRegex = /href="(\/(?:tests?|products?)\/[^"#?]+)"/gi;
+  // Match Shopify product links /products/slug
+  const productLinkRegex = /href="(\/products\/[a-z0-9-]+)"/gi;
   let match;
   while ((match = productLinkRegex.exec(html)) !== null) {
     const url = match[1];
-    if (!urls.includes(url)) {
+    if (!urls.includes(url) && !url.includes('gift-card')) {
       urls.push(url);
     }
   }
@@ -41,19 +41,59 @@ function extractProductUrls(html: string): string[] {
 }
 
 function extractTitle(html: string): string {
-  const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-  return titleMatch ? titleMatch[1].trim() : 'Unknown Test';
+  // Try og:title first
+  const ogMatch = html.match(/<meta\s+property="og:title"\s+content="([^"]+)"/i);
+  if (ogMatch) return ogMatch[1].trim();
+  
+  // Try h1
+  const h1Match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
+  if (h1Match) return h1Match[1].trim();
+  
+  // Try title tag
+  const titleMatch = html.match(/<title>([^<|]+)/i);
+  if (titleMatch) return titleMatch[1].trim();
+  
+  return 'Unknown Test';
 }
 
 function extractDescription(html: string): string {
-  const descMatch = html.match(/<meta\s+name="description"\s+content="([^"]+)"/i);
+  const descMatch = html.match(/<meta\s+(?:name|property)="(?:description|og:description)"\s+content="([^"]+)"/i);
   if (descMatch) return descMatch[1].trim().substring(0, 500);
   return '';
 }
 
 function extractPrice(html: string): number {
-  const priceMatch = html.match(/£([\d,.]+)/);
-  return priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : 0;
+  // Try to find price in various formats
+  // Look for prices with decimal point first (e.g., £79.00, £175.00)
+  const decimalMatch = html.match(/£([\d,]+\.\d{2})/);
+  if (decimalMatch) {
+    const price = parseFloat(decimalMatch[1].replace(',', ''));
+    if (price > 0 && price < 10000) return price;
+  }
+  
+  // Look for "from £XX.XX" format
+  const fromMatch = html.match(/from\s*£([\d,]+(?:\.\d{2})?)/i);
+  if (fromMatch) {
+    const price = parseFloat(fromMatch[1].replace(',', ''));
+    if (price > 0 && price < 10000) return price;
+  }
+  
+  // Look for price in Shopify JSON data (price in pence)
+  const jsonPriceMatch = html.match(/"price":\s*(\d+)/);
+  if (jsonPriceMatch) {
+    const priceInPence = parseInt(jsonPriceMatch[1]);
+    const price = priceInPence / 100; // Convert pence to pounds
+    if (price > 0 && price < 10000) return price;
+  }
+  
+  // Try to find any pound price with decimal
+  const anyDecimalMatch = html.match(/£([\d,]+\.\d{2})\s*GBP/i);
+  if (anyDecimalMatch) {
+    const price = parseFloat(anyDecimalMatch[1].replace(',', ''));
+    if (price > 0 && price < 10000) return price;
+  }
+  
+  return 0;
 }
 
 function extractBiomarkerCount(html: string): number | null {
@@ -68,17 +108,19 @@ function determineCategory(title: string, description: string): string {
   if (text.match(/heart|cardiovascular|cholesterol/)) return 'Heart Health';
   if (text.match(/fertility|amh|ovarian/)) return 'Fertility';
   if (text.match(/thyroid|tsh|t3|t4/)) return 'Thyroid';
-  if (text.match(/vitamin|mineral|b12|d3|folate|iron|ferritin/)) return 'Vitamins & Minerals';
+  if (text.match(/vitamin|mineral|b12|d3|folate/)) return 'Vitamins & Minerals';
+  if (text.match(/iron|ferritin|anaemia|anemia/)) return 'Iron & Anaemia';
   if (text.match(/diabetes|glucose|hba1c/)) return 'Diabetes';
-  if (text.match(/women|female|menopause/)) return "Women's Health";
-  if (text.match(/men|male|testosterone|prostate/)) return "Men's Health";
+  if (text.match(/well\s*woman|female|menopause|pcos/)) return "Women's Health";
+  if (text.match(/well\s*man|male|testosterone|prostate/)) return "Men's Health";
   if (text.match(/kidney|renal/)) return 'Kidney Function';
   if (text.match(/inflammation|crp/)) return 'Inflammation';
   if (text.match(/hormone/)) return 'Hormones';
-  if (text.match(/blood count|fbc/)) return 'Blood Count';
+  if (text.match(/blood count|fbc|cbc/)) return 'Blood Count';
   if (text.match(/sti|std|sexual/)) return 'Sexual Health';
   if (text.match(/allergy|intolerance/)) return 'Allergy';
-  if (text.match(/cancer|tumour/)) return 'Cancer Screening';
+  if (text.match(/cancer|tumour|psa/)) return 'Cancer Screening';
+  if (text.match(/essential|general|comprehensive/)) return 'General Health';
   
   return 'General Health';
 }
@@ -88,9 +130,9 @@ async function fetchWithDelay(url: string, delay: number = 500): Promise<string>
   
   const response = await fetch(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language': 'en-GB,en;q=0.5',
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-GB,en;q=0.9',
     }
   });
   
@@ -113,11 +155,11 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Goodbody Clinic test pages
+    // Goodbody uses Shopify - fetch from collections
     const categoryPages = [
-      'https://www.goodbodyclinic.com/blood-tests',
-      'https://www.goodbodyclinic.com/health-checks',
-      'https://www.goodbodyclinic.com/private-gp',
+      'https://goodbodyclinic.com/collections/all',
+      'https://goodbodyclinic.com/collections/blood-tests',
+      'https://goodbodyclinic.com/collections/health-screens',
     ];
 
     const allProductUrls: Set<string> = new Set();
@@ -128,40 +170,57 @@ serve(async (req) => {
         const html = await fetchWithDelay(pageUrl, 300);
         const urls = extractProductUrls(html);
         urls.forEach(u => allProductUrls.add(u));
-        console.log(`Found ${urls.length} tests`);
+        console.log(`Found ${urls.length} products from ${pageUrl}`);
       } catch (err) {
         console.error(`Error fetching ${pageUrl}:`, err.message);
       }
     }
 
-    // Add known Goodbody test slugs as fallback
+    // Add known Goodbody product slugs as fallback (Shopify /products/ format)
     const knownTests = [
-      '/tests/full-blood-count',
-      '/tests/liver-function',
-      '/tests/kidney-function',
-      '/tests/thyroid-function',
-      '/tests/vitamin-d',
-      '/tests/iron-studies',
-      '/tests/lipid-profile',
-      '/tests/diabetes-check',
-      '/tests/testosterone',
-      '/tests/female-hormones',
+      '/products/advanced-vitamins-blood-test',
+      '/products/advanced-well-man-blood-test',
+      '/products/advanced-well-woman-blood-test',
+      '/products/anaemia-blood-test',
+      '/products/basic-vitamins-blood-test',
+      '/products/cardiac-health-blood-test',
+      '/products/diabetes-blood-test',
+      '/products/essential-blood-test',
+      '/products/essential-vitamins-blood-test',
+      '/products/female-fertility-blood-test',
+      '/products/full-blood-count-test',
+      '/products/gp-consultation',
+      '/products/hormone-blood-test-female',
+      '/products/hormone-blood-test-male',
+      '/products/iron-blood-test',
+      '/products/kidney-function-blood-test',
+      '/products/lipid-profile-blood-test',
+      '/products/liver-function-blood-test',
+      '/products/menopause-blood-test',
+      '/products/pcos-blood-test',
+      '/products/prostate-psa-blood-test',
+      '/products/testosterone-blood-test',
+      '/products/thyroid-blood-test',
+      '/products/thyroid-function-blood-test',
+      '/products/vitamin-d-blood-test',
+      '/products/well-man-blood-test',
+      '/products/well-woman-blood-test',
     ];
     knownTests.forEach(t => allProductUrls.add(t));
 
-    console.log(`Total unique tests found: ${allProductUrls.size}`);
+    console.log(`Total unique products to scrape: ${allProductUrls.size}`);
 
     const products: GoodbodyProduct[] = [];
     let successCount = 0;
     let errorCount = 0;
 
     for (const relativeUrl of allProductUrls) {
-      const fullUrl = `https://www.goodbodyclinic.com${relativeUrl}`;
+      const fullUrl = `https://goodbodyclinic.com${relativeUrl}`;
       const slug = relativeUrl.split('/').pop() || '';
       
       try {
         console.log(`Scraping: ${slug}`);
-        const productHtml = await fetchWithDelay(fullUrl, 500);
+        const productHtml = await fetchWithDelay(fullUrl, 400);
         
         const title = extractTitle(productHtml);
         const description = extractDescription(productHtml);
@@ -169,30 +228,35 @@ serve(async (req) => {
         const biomarkerCount = extractBiomarkerCount(productHtml);
         const category = determineCategory(title, description);
         
-        if (price > 0 || title !== 'Unknown Test') {
-          products.push({
-            test_name: title,
-            provider_id: 'goodbody-clinic',
-            category,
-            price: price || 0,
-            original_price: null,
-            discount_percentage: null,
-            description: description || `${title} from Goodbody Clinic with same-day appointments available.`,
-            url: fullUrl,
-            provider_test_id: slug,
-            is_active: true,
-            biomarkers_list: null,
-            biomarker_count: biomarkerCount,
-            sample_type: 'Venous blood',
-            clinic_visit_available: true,
-            home_kit_available: false,
-            url_verified: true,
-            url_verified_at: new Date().toISOString(),
-          });
-          
-          successCount++;
-          console.log(`✓ Scraped ${title} - £${price}`);
+        // Skip if no valid data
+        if (title === 'Unknown Test' && price === 0) {
+          console.log(`Skipping ${slug} - no valid data`);
+          errorCount++;
+          continue;
         }
+        
+        products.push({
+          test_name: title.replace(' – Goodbody Clinic', '').replace(' | Goodbody Clinic', '').trim(),
+          provider_id: 'goodbody-clinic',
+          category,
+          price: price || 0,
+          original_price: null,
+          discount_percentage: null,
+          description: description || `${title} from Goodbody Clinic with same-day appointments available across the UK.`,
+          url: fullUrl,
+          provider_test_id: slug,
+          is_active: true,
+          biomarkers_list: null,
+          biomarker_count: biomarkerCount,
+          sample_type: 'Venous blood',
+          clinic_visit_available: true,
+          home_kit_available: true,
+          url_verified: true,
+          url_verified_at: new Date().toISOString(),
+        });
+        
+        successCount++;
+        console.log(`✓ Scraped: ${title} - £${price}`);
         
       } catch (err) {
         errorCount++;
