@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
+import BackButton from '@/components/ui/BackButton';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import HeroSection from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
@@ -131,6 +132,9 @@ const HeartHealthPage = () => {
       <UKASBanner />
       <Header />
       <main className="flex-grow bg-background">
+        <div className="container mx-auto px-4 pt-4">
+          <BackButton />
+        </div>
         <HeroSection
           title="Heart Health Blood Tests"
           subtitle="Comprehensive heart health screening for UK adults aged 30-60. Monitor your cardiovascular risk and take proactive steps towards a healthier heart."

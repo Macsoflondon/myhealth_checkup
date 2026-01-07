@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
+import BackButton from "@/components/ui/BackButton";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -104,6 +105,9 @@ const ThyroidPage = () => {
       <UKASBanner />
       <Header />
       <main className="flex-grow bg-background">
+        <div className="container mx-auto px-4 pt-4">
+          <BackButton />
+        </div>
         <HeroSection
           title="Thyroid Blood Tests"
           subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimizing treatment."
