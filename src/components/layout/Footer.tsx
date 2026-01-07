@@ -83,7 +83,7 @@ const Footer = () => {
           <div className="col-span-2 sm:col-span-3 lg:col-span-1 lg:px-6">
             <Link to="/" className="inline-flex items-center gap-2 mb-3 sm:mb-4">
               <div className="h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center">
-                <img src="/lovable-uploads/myhealth-logo-turquoise.png" alt="myhealth checkup Logo" className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg" />
+                <img src="/lovable-uploads/myhealth-logo-bg-pink.png" alt="myhealth checkup Logo" className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg" />
               </div>
               <span className="text-base sm:text-lg font-bold">
                 <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
