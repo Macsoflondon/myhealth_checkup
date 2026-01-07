@@ -60,9 +60,11 @@ const Header = ({
 
             {/* Tagline banner - mobile */}
             <div className="flex-1 flex justify-center px-1 xs:px-2">
-              <p className="text-white text-[10px] xs:text-xs text-center font-sans leading-tight">
-                Your <span className="font-semibold">health</span>. Your <span className="font-semibold">choice</span>. One trusted platform.
-              </p>
+              <img 
+                alt="Your health. Your choice. One trusted platform!" 
+                className="h-6 xs:h-7 sm:h-8 w-auto object-contain animate-float" 
+                src={taglineBanner} 
+              />
             </div>
 
             {/* Navigation controls */}
@@ -95,10 +97,10 @@ const Header = ({
             </Link>
 
             {/* Center: Tagline banner image */}
-            <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <img 
                 alt="Your health. Your choice. One trusted platform!" 
-                className="h-12 lg:h-14 xl:h-16 w-auto object-contain animate-float hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] transition-all duration-300 cursor-default" 
+                className="h-16 md:h-18 lg:h-20 xl:h-24 w-auto object-contain animate-float hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] transition-all duration-300 cursor-default" 
                 src={taglineBanner} 
               />
             </div>
