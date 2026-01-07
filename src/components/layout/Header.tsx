@@ -100,7 +100,7 @@ const Header = ({
             <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <img 
                 alt="Your health. Your choice. One trusted platform!" 
-                className="h-40 lg:h-48 xl:h-56 w-auto object-contain animate-float hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] transition-all duration-300 cursor-default" 
+                className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain animate-float hover:scale-105 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] transition-all duration-300 cursor-default" 
                 src={taglineBanner} 
               />
             </div>
