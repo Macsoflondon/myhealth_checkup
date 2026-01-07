@@ -14,6 +14,7 @@ import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
 import headerTaglineBanner from "@/assets/header-tagline-banner.png";
 import mobileLogo from "@/assets/mobile-banner-logo.png";
+import myhealthLogo from "@/assets/myhealth-logo-turquoise.png";
 interface HeaderProps {
   className?: string;
 }
@@ -48,11 +49,12 @@ const Header = ({
         <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md transition-all duration-300", className)}>
           <div className="px-2 xs:px-3 py-2 flex items-center justify-between bg-[#22c0d4]">
             {/* Logo - responsive sizing for mobile */}
-            <Link to="/" className="flex items-center flex-shrink-0">
-              <div className="flex flex-col">
-                <span className="text-white font-heading font-bold text-lg xs:text-xl leading-tight">myhealth</span>
-                <span className="text-white font-heading font-bold text-sm xs:text-base leading-tight">checkup</span>
-              </div>
+            <Link to="/" className="flex items-center flex-shrink-0 transition-transform duration-200 hover:scale-105">
+              <img 
+                alt="myhealth checkup" 
+                className="h-8 xs:h-10 sm:h-12 w-auto object-contain" 
+                src={myhealthLogo} 
+              />
             </Link>
 
             {/* Tagline banner - mobile */}
@@ -82,12 +84,13 @@ const Header = ({
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-[#22c0d4] px-4 lg:px-8 xl:px-12">
           <div className="relative flex items-center justify-between py-3 lg:py-4">
-            {/* Left: Logo - text-based, smaller */}
-            <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-              <div className="flex flex-col">
-                <span className="text-white font-heading font-bold text-2xl lg:text-3xl xl:text-4xl leading-tight tracking-tight">myhealth</span>
-                <span className="text-white font-heading font-bold text-lg lg:text-xl xl:text-2xl leading-tight tracking-tight">checkup</span>
-              </div>
+            {/* Left: Logo - smaller with hover effect */}
+            <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+              <img 
+                alt="myhealth checkup" 
+                className="h-16 lg:h-20 xl:h-24 w-auto object-contain" 
+                src={myhealthLogo} 
+              />
             </Link>
 
             {/* Center: Tagline */}
