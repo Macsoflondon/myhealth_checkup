@@ -24,6 +24,7 @@ interface GoodbodyProduct {
   home_kit_available: boolean;
   url_verified: boolean;
   url_verified_at: string;
+  image_url: string | null;
 }
 
 function extractProductUrls(html: string): string[] {
@@ -99,6 +100,56 @@ function extractPrice(html: string): number {
 function extractBiomarkerCount(html: string): number | null {
   const countMatch = html.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
   return countMatch ? parseInt(countMatch[1]) : null;
+}
+
+function extractImageUrl(html: string): string | null {
+  // Try og:image meta tag first (most reliable)
+  const ogMatch = html.match(/<meta\s+(?:property|name)="og:image"\s+content="([^"]+)"/i);
+  if (ogMatch) return ogMatch[1];
+  
+  // Try alternate og:image format
+  const ogAltMatch = html.match(/<meta\s+content="([^"]+)"\s+(?:property|name)="og:image"/i);
+  if (ogAltMatch) return ogAltMatch[1];
+  
+  // Look for Shopify product featured image in JSON
+  const jsonMatch = html.match(/"featured_image":\s*"([^"]+)"/);
+  if (jsonMatch) {
+    const url = jsonMatch[1].replace(/\\\//g, '/');
+    return url.startsWith('//') ? 'https:' + url : url;
+  }
+  
+  // Try product image from img tag with product in class
+  const imgMatch = html.match(/<img[^>]+class="[^"]*product[^"]*"[^>]+src="([^"]+)"/i);
+  if (imgMatch) return imgMatch[1];
+  
+  return null;
+}
+
+function extractBiomarkersList(html: string): string[] | null {
+  const biomarkers: string[] = [];
+  
+  // Look for common biomarker patterns in product description
+  // Pattern: "includes/tests/measures: X, Y, Z"
+  const listMatch = html.match(/(?:includes|tests|measures|checks|analyses)[:\s]+([^<.]+(?:,\s*[^<.]+)+)/gi);
+  if (listMatch) {
+    for (const match of listMatch) {
+      const items = match.replace(/^[^:]+:\s*/, '').split(/,\s*/).map(s => s.trim()).filter(s => s.length > 2 && s.length < 50);
+      biomarkers.push(...items);
+    }
+  }
+  
+  // Look for bullet point lists
+  const bulletMatch = html.match(/<li[^>]*>([^<]+(?:vitamin|hormone|cholesterol|iron|thyroid|liver|kidney|glucose)[^<]*)<\/li>/gi);
+  if (bulletMatch) {
+    for (const match of bulletMatch) {
+      const text = match.replace(/<[^>]+>/g, '').trim();
+      if (text.length > 2 && text.length < 100) {
+        biomarkers.push(text);
+      }
+    }
+  }
+  
+  return biomarkers.length > 0 ? [...new Set(biomarkers)].slice(0, 50) : null;
 }
 
 function determineCategory(title: string, description: string): string {
@@ -227,6 +278,8 @@ serve(async (req) => {
         const price = extractPrice(productHtml);
         const biomarkerCount = extractBiomarkerCount(productHtml);
         const category = determineCategory(title, description);
+        const imageUrl = extractImageUrl(productHtml);
+        const biomarkersList = extractBiomarkersList(productHtml);
         
         // Skip if no valid data
         if (title === 'Unknown Test' && price === 0) {
@@ -246,13 +299,14 @@ serve(async (req) => {
           url: fullUrl,
           provider_test_id: slug,
           is_active: true,
-          biomarkers_list: null,
-          biomarker_count: biomarkerCount,
+          biomarkers_list: biomarkersList,
+          biomarker_count: biomarkerCount || (biomarkersList?.length || null),
           sample_type: 'Venous blood',
           clinic_visit_available: true,
           home_kit_available: true,
           url_verified: true,
           url_verified_at: new Date().toISOString(),
+          image_url: imageUrl,
         });
         
         successCount++;
