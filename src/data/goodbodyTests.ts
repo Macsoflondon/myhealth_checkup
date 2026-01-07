@@ -20,7 +20,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 10,
     turnaround: '2-3 days',
     categories: ['general-wellness', 'vitamins', 'advanced-vitamins-tests'],
-    url: 'https://health.goodbodyclinic.com/product/advanced-vitamins-blood-test/'
+    url: 'https://goodbodyclinic.com/products/advanced-vitamins-blood-test'
   },
   {
     id: 'Goodbody008',
@@ -30,7 +30,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 49,
     turnaround: '2-3 days',
     categories: ['mens-health', 'general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/advanced-well-man-test/'
+    url: 'https://goodbodyclinic.com/products/advanced-well-man-blood-test'
   },
   {
     id: 'Goodbody009',
@@ -40,7 +40,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 52,
     turnaround: '2-3 days',
     categories: ['womens-health', 'general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/advanced-well-woman-blood-test/'
+    url: 'https://goodbodyclinic.com/products/advanced-well-woman-blood-test'
   },
   {
     id: 'Goodbody120',
@@ -50,7 +50,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 52,
     turnaround: '2-3 days',
     categories: ['womens-health', 'general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/advanced-well-woman-blood-test/'
+    url: 'https://goodbodyclinic.com/products/advanced-well-woman-blood-test'
   },
   {
     id: 'Goodbody124',
@@ -60,7 +60,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 62,
     turnaround: '2-3 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/premium-complete-wellness-blood-test/'
+    url: 'https://goodbodyclinic.com/products/premium-complete-wellness-blood-test'
   },
 
   // Blood & General Health
@@ -72,7 +72,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 15,
     turnaround: '1-2 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/full-blood-count-blood-test/'
+    url: 'https://goodbodyclinic.com/products/full-blood-count-blood-test'
   },
   {
     id: 'Goodbody105',
@@ -82,7 +82,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '1-2 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/all-products/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/blood-group-test'
   },
   {
     id: 'Goodbody076',
@@ -92,7 +92,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 4,
     turnaround: '2-3 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/anaemia-blood-test'
   },
 
   // Cardiovascular Health
@@ -104,7 +104,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 8,
     turnaround: '2-3 days',
     categories: ['general-wellness', 'heart-health'],
-    url: 'https://health.goodbodyclinic.com/product/cardiac-risk-blood-test/'
+    url: 'https://goodbodyclinic.com/products/cardiac-risk-blood-test'
   },
   {
     id: 'Goodbody004',
@@ -114,7 +114,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 6,
     turnaround: '2-3 days',
     categories: ['general-wellness', 'heart-health', 'cholesterol-tests'],
-    url: 'https://health.goodbodyclinic.com/product/cholesterol-blood-test/'
+    url: 'https://goodbodyclinic.com/products/cholesterol-blood-test'
   },
 
   // Organ Function Tests
@@ -126,7 +126,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 3,
     turnaround: '2-3 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/kidney-blood-test/'
+    url: 'https://goodbodyclinic.com/products/kidney-blood-test'
   },
   {
     id: 'Goodbody003',
@@ -136,7 +136,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 6,
     turnaround: '2-3 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/liver-blood-test/'
+    url: 'https://goodbodyclinic.com/products/liver-blood-test'
   },
 
   // Diabetes & Metabolic Health
@@ -148,7 +148,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '2-3 days',
     categories: ['general-wellness', 'diabetes', 'diabetes-tests'],
-    url: 'https://health.goodbodyclinic.com/product/diabetes-hba1c-blood-test/'
+    url: 'https://goodbodyclinic.com/products/diabetes-hba1c-blood-test'
   },
 
   // Thyroid Tests
@@ -160,7 +160,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 2,
     turnaround: '2-3 days',
     categories: ['thyroid', 'hormones'],
-    url: 'https://health.goodbodyclinic.com/all-products/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/thyroid-function-blood-test'
   },
   {
     id: 'Goodbody064',
@@ -170,7 +170,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 5,
     turnaround: '3-5 days',
     categories: ['thyroid', 'hormones'],
-    url: 'https://health.goodbodyclinic.com/product/thyroid-function-with-antibodies-blood-test/'
+    url: 'https://goodbodyclinic.com/products/thyroid-function-with-antibodies-blood-test'
   },
 
   // Hormone Tests
@@ -182,7 +182,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '2-3 days',
     categories: ['mens-health', 'hormones'],
-    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/testosterone-blood-test'
   },
   {
     id: 'Goodbody123',
@@ -192,7 +192,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '2-3 days',
     categories: ['hormones', 'general-wellness'],
-    url: 'https://health.goodbodyclinic.com/all-products/'
+    url: 'https://goodbodyclinic.com/products/cortisol-blood-test'
   },
 
   // Women's Health & Fertility
@@ -204,7 +204,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 7,
     turnaround: '2-3 days',
     categories: ['womens-health', 'hormones', 'fertility'],
-    url: 'https://health.goodbodyclinic.com/fertility-blood-tests/'
+    url: 'https://goodbodyclinic.com/products/female-hormone-and-fertility-blood-test'
   },
   {
     id: 'Goodbody039',
@@ -214,7 +214,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '3-5 days',
     categories: ['womens-health', 'hormones', 'fertility'],
-    url: 'https://health.goodbodyclinic.com/product/anti-mullerian-hormone-blood-test/'
+    url: 'https://goodbodyclinic.com/products/anti-mullerian-hormone-blood-test'
   },
   {
     id: 'Goodbody014',
@@ -224,7 +224,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 12,
     turnaround: '2-3 days',
     categories: ['womens-health', 'hormones'],
-    url: 'https://health.goodbodyclinic.com/product/polycystic-ovary-syndrome-blood-test/'
+    url: 'https://goodbodyclinic.com/products/polycystic-ovary-syndrome-blood-test'
   },
   {
     id: 'Goodbody021',
@@ -234,7 +234,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 5,
     turnaround: '2-3 days',
     categories: ['womens-health', 'hormones'],
-    url: 'https://health.goodbodyclinic.com/product/menopause-blood-test/'
+    url: 'https://goodbodyclinic.com/products/menopause-blood-test'
   },
   {
     id: 'Goodbody040',
@@ -244,7 +244,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '2-3 days',
     categories: ['womens-health'],
-    url: 'https://health.goodbodyclinic.com/locations/kingsbury-clinic-british-chemist/'
+    url: 'https://goodbodyclinic.com/products/pregnancy-blood-test'
   },
 
   // Men's Health
@@ -256,7 +256,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 6,
     turnaround: '2-3 days',
     categories: ['mens-health', 'hormones', 'fertility'],
-    url: 'https://health.goodbodyclinic.com/product/male-hormone-and-fertility-blood-test/'
+    url: 'https://goodbodyclinic.com/products/male-hormone-and-fertility-blood-test'
   },
   {
     id: 'Goodbody067',
@@ -266,7 +266,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 11,
     turnaround: '2-3 days',
     categories: ['mens-health'],
-    url: 'https://health.goodbodyclinic.com/product/erectile-dysfunction-blood-test/'
+    url: 'https://goodbodyclinic.com/products/erectile-dysfunction-blood-test'
   },
   {
     id: 'Goodbody072',
@@ -276,7 +276,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '2-3 days',
     categories: ['mens-health'],
-    url: 'https://health.goodbodyclinic.com/product/prostate-psa-blood-test/'
+    url: 'https://goodbodyclinic.com/products/prostate-psa-blood-test'
   },
 
   // Vitamins & Minerals
@@ -288,7 +288,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 3,
     turnaround: '2-3 days',
     categories: ['general-wellness', 'vitamins', 'vitamins-tests'],
-    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/vitamins-blood-test'
   },
   {
     id: 'Goodbody013',
@@ -298,7 +298,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 5,
     turnaround: '2-3 days',
     categories: ['general-wellness', 'vitamins'],
-    url: 'https://health.goodbodyclinic.com/product/iron-blood-test/'
+    url: 'https://goodbodyclinic.com/products/iron-blood-test'
   },
   {
     id: 'Goodbody059',
@@ -308,7 +308,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 6,
     turnaround: '5-7 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/trace-metal-blood-test'
   },
 
   // Specialist Screening
@@ -320,7 +320,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 3,
     turnaround: '3-5 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/hepatitis-screening-blood-test/'
+    url: 'https://goodbodyclinic.com/products/hepatitis-screening-blood-test'
   },
   {
     id: 'Goodbody055',
@@ -330,7 +330,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 2,
     turnaround: '3-5 days',
     categories: ['general-wellness', 'coeliac-tests', 'allergy-testing'],
-    url: 'https://health.goodbodyclinic.com/product/coeliac-screen-blood-test/'
+    url: 'https://goodbodyclinic.com/products/coeliac-screen-blood-test'
   },
   {
     id: 'Goodbody054',
@@ -340,7 +340,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 6,
     turnaround: '5-7 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/general-health-blood-tests/?rc_page=6'
+    url: 'https://goodbodyclinic.com/products/autoimmune-disease-blood-test'
   },
   {
     id: 'Goodbody119',
@@ -350,7 +350,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '3-5 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/helicobacter-pylori-blood-test/'
+    url: 'https://goodbodyclinic.com/products/helicobacter-pylori-blood-test'
   },
 
   // Allergy & Fatigue
@@ -362,7 +362,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 300,
     turnaround: '5-7 days',
     categories: ['general-wellness', 'allergy-testing'],
-    url: 'https://health.goodbodyclinic.com/product/complete-allergy-blood-test/'
+    url: 'https://goodbodyclinic.com/products/complete-allergy-blood-test'
   },
   {
     id: 'Goodbody065',
@@ -371,7 +371,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     description: 'Find the cause of chronic fatigue',
     turnaround: '2-3 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/tiredness-and-fatigue-blood-test/'
+    url: 'https://goodbodyclinic.com/products/tiredness-and-fatigue-blood-test'
   },
 
   // Sports & Fitness
@@ -383,7 +383,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 18,
     turnaround: '2-3 days',
     categories: ['general-wellness'],
-    url: 'https://health.goodbodyclinic.com/product/sports-and-fitness-blood-test/'
+    url: 'https://goodbodyclinic.com/products/sports-and-fitness-blood-test'
   },
 
   // ========== Prenatal & Pregnancy Testing ==========
@@ -479,7 +479,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 70,
     turnaround: '2-3 weeks',
     categories: ['cancer-screening'],
-    url: 'https://health.goodbodyclinic.com/product/early-cancer-screening-blood-test/'
+    url: 'https://goodbodyclinic.com/products/early-cancer-screening-blood-test'
   },
   {
     id: 'Goodbody201',
@@ -489,7 +489,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 50,
     turnaround: '3-4 weeks',
     categories: ['cancer-screening'],
-    url: 'https://health.goodbodyclinic.com/product/hereditary-cancer-dna-test/'
+    url: 'https://goodbodyclinic.com/products/hereditary-cancer-dna-test'
   },
   {
     id: 'Goodbody202',
@@ -499,7 +499,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 7,
     turnaround: '2-3 weeks',
     categories: ['cancer-screening'],
-    url: 'https://health.goodbodyclinic.com/product/lung-cancer-screening-test/'
+    url: 'https://goodbodyclinic.com/products/lung-cancer-screening-test'
   },
   {
     id: 'Goodbody203',
@@ -509,7 +509,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 24,
     turnaround: '3 days',
     categories: ['cancer-screening', 'womens-health'],
-    url: 'https://health.goodbodyclinic.com/product/hpv-cervical-cancer-screening-home-test/'
+    url: 'https://goodbodyclinic.com/products/hpv-cervical-cancer-screening-home-test'
   },
   {
     id: 'Goodbody204',
@@ -519,7 +519,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '3-5 working days',
     categories: ['cancer-screening'],
-    url: 'https://health.goodbodyclinic.com/product/bowel-cancer-screening-test/'
+    url: 'https://goodbodyclinic.com/products/bowel-cancer-screening-test'
   },
   {
     id: 'Goodbody205',
@@ -529,7 +529,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 5,
     turnaround: '3-5 days',
     categories: ['cancer-screening', 'mens-health'],
-    url: 'https://health.goodbodyclinic.com/product/episwitch-pse-advanced-blood-test/'
+    url: 'https://goodbodyclinic.com/products/episwitch-pse-advanced-blood-test'
   },
   {
     id: 'Goodbody206',
@@ -539,7 +539,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 8,
     turnaround: '2-3 weeks',
     categories: ['cancer-screening', 'mens-health'],
-    url: 'https://health.goodbodyclinic.com/product/stockholm3-prostate-cancer-screening-blood-test/'
+    url: 'https://goodbodyclinic.com/products/stockholm3-prostate-cancer-screening-blood-test'
   },
   {
     id: 'Goodbody207',
@@ -549,7 +549,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 1,
     turnaround: '2-3 days',
     categories: ['cancer-screening', 'mens-health'],
-    url: 'https://health.goodbodyclinic.com/product/prostate-psa-blood-test/'
+    url: 'https://goodbodyclinic.com/products/prostate-psa-blood-test'
   },
   {
     id: 'Goodbody208',
@@ -559,7 +559,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 18,
     turnaround: '2-3 weeks',
     categories: ['cancer-screening'],
-    url: 'https://health.goodbodyclinic.com/product/guardant-reveal-cancer-test/'
+    url: 'https://goodbodyclinic.com/products/guardant-reveal-cancer-test'
   },
   {
     id: 'Goodbody209',
@@ -569,7 +569,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     biomarkers: 74,
     turnaround: '2-3 weeks',
     categories: ['cancer-screening'],
-    url: 'https://health.goodbodyclinic.com/product/guardant-360-cancer-test/'
+    url: 'https://goodbodyclinic.com/products/guardant-360-cancer-test'
   }
 ];
 
