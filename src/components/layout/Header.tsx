@@ -62,7 +62,7 @@ const Header = ({
             <div className="flex-1 flex justify-center px-1 xs:px-2">
               <img 
                 alt="Your health. Your choice. One trusted platform!" 
-                className="h-8 xs:h-10 sm:h-12 w-auto object-contain" 
+                className="h-8 xs:h-10 sm:h-12 w-auto object-contain animate-float" 
                 src={taglineBanner} 
               />
             </div>
@@ -100,7 +100,7 @@ const Header = ({
             <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <img 
                 alt="Your health. Your choice. One trusted platform!" 
-                className="h-16 lg:h-20 xl:h-24 w-auto object-contain hover:scale-105 transition-all duration-300 cursor-default" 
+                className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain animate-float hover:scale-105 transition-all duration-300 cursor-default" 
                 src={taglineBanner} 
               />
             </div>
