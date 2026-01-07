@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      api_rate_limits: {
+        Row: {
+          client_key: string
+          created_at: string | null
+          endpoint: string
+          id: string
+          request_count: number
+          window_start: string
+        }
+        Insert: {
+          client_key: string
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          request_count?: number
+          window_start: string
+        }
+        Update: {
+          client_key?: string
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          request_count?: number
+          window_start?: string
+        }
+        Relationships: []
+      }
       appointments: {
         Row: {
           appointment_date: string | null
@@ -1420,6 +1447,7 @@ export type Database = {
     }
     Functions: {
       cleanup_old_health_queries: { Args: never; Returns: undefined }
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

@@ -57,11 +57,8 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
 
         if (uploadError) throw uploadError;
 
-        const { data: { publicUrl } } = supabase.storage
-          .from('test-results')
-          .getPublicUrl(fileName);
-
-        fileUrl = publicUrl;
+        // Store file path (not URL) - signed URLs are generated on retrieval
+        fileUrl = fileName;
       }
 
       // Save test result to database
