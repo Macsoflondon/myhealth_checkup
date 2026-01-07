@@ -12,6 +12,7 @@ import TopConcernsSection from "@/components/sections/TopConcernsSection";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
+import StickyCtaBar from "@/components/common/StickyCtaBar";
 
 const Index = () => {
   usePerformanceOptimization();
@@ -111,6 +112,9 @@ const Index = () => {
         
         {/* 6. Trusted Health Comparison Platform - Above Footer */}
         <TrustPlatformSection />
+        
+        {/* Sticky CTA Bar - appears on scroll */}
+        <StickyCtaBar showAfter={600} />
       </MainLayout>
     </ErrorBoundary>
   );
