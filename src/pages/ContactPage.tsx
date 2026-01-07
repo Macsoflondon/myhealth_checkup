@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
-import BackButton from '@/components/ui/BackButton';
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -104,9 +104,10 @@ const ContactPage = () => {
       <UKASBanner />
       <Header />
       <main className="flex-grow bg-muted/30">
-        <div className="container mx-auto px-4 pt-4">
-          <BackButton />
-        </div>
+        <PageBreadcrumb 
+          segments={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} 
+          backLabel="Back"
+        />
         <HeroSection 
           title="Contact" 
           accent="Us"

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import UKASBanner from '@/components/UKASBanner';
-import BackButton from '@/components/ui/BackButton';
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,9 +58,10 @@ const AtHomeTestsPage = () => {
         <Header />
         
         <main className="flex-1 bg-background">
-          <div className="container mx-auto px-4 pt-4">
-            <BackButton />
-          </div>
+          <PageBreadcrumb 
+            segments={[{ label: "Home", href: "/" }, { label: "At-Home Tests" }]} 
+            backLabel="Back"
+          />
           <HeroSection
             title="At-Home Health Tests"
             subtitle="Take control of your health with our convenient at-home testing kits. Professional lab analysis with results delivered securely online."

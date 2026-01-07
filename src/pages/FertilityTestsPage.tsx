@@ -7,7 +7,7 @@ import { Star, Shield, Activity, Heart } from 'lucide-react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from '@/components/UKASBanner';
-import BackButton from '@/components/ui/BackButton';
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import HeroSection from "@/components/sections/HeroSection";
@@ -169,9 +169,10 @@ const FertilityTestsPage = () => {
         <div className="min-h-screen bg-white">
           <Header />
           
-          <div className="container mx-auto px-4 pt-4">
-            <BackButton />
-          </div>
+          <PageBreadcrumb 
+            segments={[{ label: "Home", href: "/" }, { label: "Fertility Tests" }]} 
+            backLabel="Back"
+          />
           <HeroSection
             title="Prenatal & Pregnancy Testing"
             subtitle="Non-invasive prenatal testing (NIPT) for expectant parents. Screen for chromosomal conditions, determine gender early, or confirm paternity safely during pregnancy."
