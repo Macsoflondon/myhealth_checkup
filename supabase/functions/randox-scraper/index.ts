@@ -61,7 +61,7 @@ serve(async (req) => {
 
     // Upsert all tests
     const testsToUpsert = randoxTests.map(test => ({
-      provider_id: 'randox',
+      provider_id: 'randox-health',
       provider_test_id: test.provider_test_id,
       test_name: test.test_name,
       category: test.category,
@@ -71,6 +71,8 @@ serve(async (req) => {
       is_active: true,
       scraped_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
+      url_verified: true,
+      url_verified_at: new Date().toISOString(),
     }));
 
     const { error: upsertError } = await supabase

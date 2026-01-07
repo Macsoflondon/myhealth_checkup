@@ -241,7 +241,6 @@ serve(async (req) => {
         onConflict: 'provider_id'
       });
 
-    // Prepare tests for upsert
     const testsToUpsert = thrivaTests.map(test => ({
       provider_id: 'thriva',
       provider_test_id: test.provider_test_id,
@@ -252,6 +251,8 @@ serve(async (req) => {
       url: test.url,
       is_active: true,
       scraped_at: new Date().toISOString(),
+      url_verified: true,
+      url_verified_at: new Date().toISOString(),
     }));
 
     console.log(`Upserting ${testsToUpsert.length} Thriva tests`);
