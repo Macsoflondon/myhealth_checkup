@@ -165,10 +165,28 @@ const Footer = () => {
         {/* Divider */}
         <div className="h-px bg-gradient-to-r from-transparent via-[#e70d69]/50 to-transparent mb-4 sm:mb-6" />
 
+        {/* Compliance Statements - Visible, explicit */}
+        <div className="bg-[#0a1633] rounded-lg p-4 sm:p-5 mb-4 sm:mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-center">
+            <div className="text-white/80">
+              <p className="text-xs sm:text-sm font-medium mb-1">We do not provide medical advice</p>
+              <p className="text-[10px] sm:text-xs text-white/60">Consult a healthcare professional for medical guidance</p>
+            </div>
+            <div className="text-white/80">
+              <p className="text-xs sm:text-sm font-medium mb-1">We do not process payments</p>
+              <p className="text-[10px] sm:text-xs text-white/60">All transactions are handled directly by providers</p>
+            </div>
+            <div className="text-white/80">
+              <p className="text-xs sm:text-sm font-medium mb-1">We do not influence provider pricing</p>
+              <p className="text-[10px] sm:text-xs text-white/60">Prices shown are set by providers and verified daily</p>
+            </div>
+          </div>
+        </div>
+
         {/* Copyright and Additional Links */}
         <div className="text-center mb-3 sm:mb-4">
           <p className="text-[10px] sm:text-xs text-gray-400 max-w-3xl mx-auto px-2">
-            <strong>Important:</strong> MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
+            MyHealth Checkup is an independent comparison platform. We may receive a referral fee when you book through our links. This does not affect our rankings or the prices you pay.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-center text-[10px] sm:text-xs text-white">
