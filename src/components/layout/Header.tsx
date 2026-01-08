@@ -52,7 +52,7 @@ const Header = ({
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img 
                   alt="myhealth checkup" 
-                  className="h-10 xs:h-12 w-auto object-contain" 
+                  className="h-14 xs:h-16 w-auto object-contain" 
                   src={myhealthLogo} 
                 />
               </Link>
@@ -61,7 +61,7 @@ const Header = ({
               <div className="flex-1 flex justify-center px-2">
                 <img 
                   alt="Your health. Your choice. One trusted platform!" 
-                  className="h-10 xs:h-12 w-auto object-contain" 
+                  className="h-14 xs:h-16 w-auto object-contain" 
                   src={taglineBanner} 
                 />
               </div>
