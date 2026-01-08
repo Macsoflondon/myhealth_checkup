@@ -14,6 +14,7 @@ import AllProvidersPage from "@/pages/AllProvidersPage";
 import ProviderComparisonPage from "@/pages/ProviderComparisonPage";
 import GoodbodyTestsCatalogPage from "@/pages/GoodbodyTestsCatalogPage";
 import MedichecksTestsCatalogPage from "@/pages/MedichecksTestsCatalogPage";
+import MedichecksMensHealthPage from "@/pages/MedichecksMensHealthPage";
 import ThrivaTestsCatalogPage from "@/pages/ThrivaTestsCatalogPage";
 import RandoxTestsCatalogPage from "@/pages/RandoxTestsCatalogPage";
 import LolaHealthTestsCatalogPage from "@/pages/LolaHealthTestsCatalogPage";
@@ -39,6 +40,7 @@ export const featureRoutes = (
     <Route path="/providers/compare" element={<ProviderComparisonPage />} />
     <Route path="/providers/goodbody-clinic" element={<GoodbodyTestsCatalogPage />} />
     <Route path="/providers/medichecks" element={<MedichecksTestsCatalogPage />} />
+    <Route path="/medichecks/mens-health" element={<MedichecksMensHealthPage />} />
     <Route path="/providers/thriva" element={<ThrivaTestsCatalogPage />} />
     <Route path="/providers/randox" element={<RandoxTestsCatalogPage />} />
     <Route path="/providers/lola-health" element={<LolaHealthTestsCatalogPage />} />
