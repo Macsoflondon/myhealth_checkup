@@ -45,7 +45,7 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md", className)}>
+      <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md border-b-2 border-[#e70d69]", className)}>
           <div className="container mx-auto px-4">
             {/* Top row: Logo + Navigation controls */}
             <div className="py-2 flex items-center justify-between">
