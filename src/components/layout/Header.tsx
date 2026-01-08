@@ -60,7 +60,7 @@ const Header = ({
             <div className="flex-1 flex justify-center px-1 xs:px-2">
               <img 
                 alt="Your health. Your choice. One trusted platform!" 
-                className="h-8 xs:h-10 sm:h-12 w-auto object-contain animate-float" 
+                className="h-8 xs:h-10 sm:h-12 w-auto object-contain" 
                 src={taglineBanner} 
               />
             </div>
@@ -83,31 +83,33 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-[#22c0d4] px-4 lg:px-8 xl:px-12">
-          <div className="relative flex items-center justify-between py-3 lg:py-4">
-            {/* Left: Logo - smaller with hover effect */}
-            <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
-              <img 
-                alt="myhealth checkup" 
-                className="h-16 lg:h-20 xl:h-24 w-auto object-contain" 
-                src={myhealthLogo} 
-              />
-            </Link>
+        <div className="bg-[#22c0d4]">
+          <div className="container mx-auto px-4 lg:px-8 xl:px-12">
+            <div className="relative flex items-center justify-between py-3 lg:py-4">
+              {/* Left: Logo - smaller with hover effect */}
+              <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+                <img 
+                  alt="myhealth checkup" 
+                  className="h-16 lg:h-20 xl:h-24 w-auto object-contain" 
+                  src={myhealthLogo} 
+                />
+              </Link>
 
-            {/* Center: Tagline banner image */}
-            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <img 
-                alt="Your health. Your choice. One trusted platform!" 
-                className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain animate-float hover:scale-105 transition-all duration-300 cursor-default" 
-                src={taglineBanner} 
-              />
+              {/* Center: Tagline banner image */}
+              <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <img 
+                  alt="Your health. Your choice. One trusted platform!" 
+                  className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain cursor-default" 
+                  src={taglineBanner} 
+                />
+              </div>
+
+              {/* Right: Controls */}
+              <nav className="flex items-center gap-3" aria-label="User controls">
+                <LanguageSwitcher />
+                <UserMenu />
+              </nav>
             </div>
-
-            {/* Right: Controls */}
-            <nav className="flex items-center gap-3" aria-label="User controls">
-              <LanguageSwitcher />
-              <UserMenu />
-            </nav>
           </div>
         </div>
 
