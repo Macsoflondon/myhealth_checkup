@@ -7,7 +7,7 @@ interface UKASBannerProps {
 
 const UKASBanner = ({ className }: UKASBannerProps) => {
   return (
-    <div className={cn("hidden md:block bg-white py-1 sm:py-1.5 px-2 sm:px-3 border-b-2 border-[#e70d69]", className)}>
+    <div className={cn("bg-white py-1 sm:py-1.5 px-2 sm:px-3 border-b-2 border-[#e70d69]", className)}>
       <div className="container mx-auto">
         <div className="flex items-center justify-center gap-2 xs:gap-3 sm:gap-6 md:gap-8 flex-wrap sm:flex-nowrap">
           <div className="flex items-center gap-1 xs:gap-1.5 sm:gap-2">
