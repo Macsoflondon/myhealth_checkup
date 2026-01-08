@@ -45,26 +45,18 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-        <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md", className)}>
+      <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md", className)}>
           <div className="container mx-auto px-4">
+            {/* Top row: Logo + Navigation controls */}
             <div className="py-2 flex items-center justify-between">
-              {/* Logo - responsive sizing for mobile */}
+              {/* Logo - larger for emphasis */}
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img 
                   alt="myhealth checkup" 
-                  className="h-14 xs:h-16 w-auto object-contain" 
+                  className="h-16 xs:h-20 w-auto object-contain drop-shadow-lg" 
                   src={myhealthLogo} 
                 />
               </Link>
-
-              {/* Tagline banner - mobile */}
-              <div className="flex-1 flex justify-center px-2">
-                <img 
-                  alt="Your health. Your choice. One trusted platform!" 
-                  className="h-14 xs:h-16 w-auto object-contain" 
-                  src={taglineBanner} 
-                />
-              </div>
 
               {/* Navigation controls */}
               <nav className="flex items-center gap-1" aria-label="User controls">
@@ -72,6 +64,15 @@ const Header = ({
                 <UserMenu isMobile />
                 <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
               </nav>
+            </div>
+
+            {/* Bottom row: Tagline banner - full width, centred */}
+            <div className="pb-3 flex justify-center">
+              <img 
+                alt="Your health. Your choice. One trusted platform!" 
+                className="h-12 xs:h-14 w-full max-w-sm object-contain drop-shadow-md" 
+                src={taglineBanner} 
+              />
             </div>
           </div>
           
