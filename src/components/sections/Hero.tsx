@@ -107,7 +107,6 @@ const Hero = () => {
                 onClick={() => navigate('/compare-tests')}
                 className="bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold rounded-xl shadow-md px-8"
               >
-                <Scale className="w-5 h-5 mr-2" />
                 Compare blood tests
               </Button>
               <Button 

@@ -13,7 +13,7 @@ const UKASBanner = ({ className }: UKASBannerProps) => {
           <div className="flex items-center gap-1 xs:gap-1.5 sm:gap-2">
             <Shield className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 text-[#22c0d4] flex-shrink-0" />
             <span className="text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide text-[#081129]">
-              UKAS Accredited
+              UKAS accredited laboratories only
             </span>
           </div>
           
@@ -22,7 +22,7 @@ const UKASBanner = ({ className }: UKASBannerProps) => {
           <div className="flex items-center gap-1 xs:gap-1.5 sm:gap-2">
             <Award className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 text-[#e70d69] flex-shrink-0" />
             <span className="text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide text-[#081129]">
-              CQC Regulated
+              CQC regulated providers
             </span>
           </div>
           
@@ -31,7 +31,7 @@ const UKASBanner = ({ className }: UKASBannerProps) => {
           <div className="flex items-center gap-1 xs:gap-1.5 sm:gap-2">
             <Bookmark className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 text-[#22c0d4] flex-shrink-0" />
             <span className="text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-semibold tracking-wide text-[#081129]">
-              ISO 15189
+              Independent comparison
             </span>
           </div>
         </div>
