@@ -45,32 +45,34 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-        <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md transition-all duration-300", className)}>
-          <div className="px-2 xs:px-3 py-2 flex items-center justify-between bg-[#22c0d4]">
-            {/* Logo - responsive sizing for mobile */}
-            <Link to="/" className="flex items-center flex-shrink-0 transition-transform duration-200 hover:scale-105">
-              <img 
-                alt="myhealth checkup" 
-                className="h-8 xs:h-10 sm:h-12 w-auto object-contain" 
-                src={myhealthLogo} 
-              />
-            </Link>
+        <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md", className)}>
+          <div className="container mx-auto px-4">
+            <div className="py-2 flex items-center justify-between">
+              {/* Logo - responsive sizing for mobile */}
+              <Link to="/" className="flex items-center flex-shrink-0">
+                <img 
+                  alt="myhealth checkup" 
+                  className="h-10 xs:h-12 w-auto object-contain" 
+                  src={myhealthLogo} 
+                />
+              </Link>
 
-            {/* Tagline banner - mobile */}
-            <div className="flex-1 flex justify-center px-1 xs:px-2">
-              <img 
-                alt="Your health. Your choice. One trusted platform!" 
-                className="h-8 xs:h-10 sm:h-12 w-auto object-contain" 
-                src={taglineBanner} 
-              />
+              {/* Tagline banner - mobile */}
+              <div className="flex-1 flex justify-center px-2">
+                <img 
+                  alt="Your health. Your choice. One trusted platform!" 
+                  className="h-10 xs:h-12 w-auto object-contain" 
+                  src={taglineBanner} 
+                />
+              </div>
+
+              {/* Navigation controls */}
+              <nav className="flex items-center gap-1" aria-label="User controls">
+                <LanguageSwitcher />
+                <UserMenu isMobile />
+                <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+              </nav>
             </div>
-
-            {/* Navigation controls */}
-            <nav className="flex items-center gap-0.5 xs:gap-1" aria-label="User controls">
-              <LanguageSwitcher />
-              <UserMenu isMobile />
-              <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-            </nav>
           </div>
           
           {/* Mobile Navigation Drawer */}
