@@ -49,33 +49,34 @@ export const useNavigationData = () => {
    */
   const getFilteredCategories = (itemName: string) => {
     switch (itemName) {
+      case "Most Popular Tests":
+        return compareCategories.filter(cat => 
+          ['general-health', 'blood-tests', 'hormones', 'thyroid', 'vitamins', 'heart-health', 'cancer-screening', 'fertility'].includes(cat.id)
+        );
+      
       case "Women's Health":
         return compareCategories.filter(cat => 
-          ['womens-health-checks', 'female-hormone-tests', 'female-fertility-tests', 
-           'thyroid-tests', 'sports-performance-tests'].includes(cat.id)
+          ['womens-health', 'hormones', 'fertility', 'thyroid'].includes(cat.id)
         );
       
       case "Men's Health":
         return compareCategories.filter(cat => 
-          ['mens-health-checks', 'male-hormone-tests', 'male-fertility-tests', 
-           'sports-performance-tests'].includes(cat.id)
+          ['mens-health', 'hormones', 'fertility', 'sports-performance-tests'].includes(cat.id)
         );
       
       case "Sports/Fitness Health":
         return compareCategories.filter(cat => 
-          ['sports-performance-tests', 'vitamins-tests', 'advanced-vitamins-tests',
-           'energy-tests', 'nutrition-tests', 'hormones', 'iron-tests'].includes(cat.id)
+          ['sports-performance-tests', 'vitamins', 'hormones', 'general-health', 'heart-health'].includes(cat.id)
         );
       
       case "At Home Tests":
         return compareCategories.filter(cat => 
-          ['blood-tests', 'vitamins-tests', 'hormones', 'thyroid',
-           'diabetes-tests', 'cholesterol-tests', 'allergy-testing', 'sexual-health'].includes(cat.id)
+          ['blood-tests', 'vitamins', 'hormones', 'thyroid', 'diabetes', 'heart-health', 'allergy-testing', 'general-health'].includes(cat.id)
         );
       
       case "Fertility":
         return compareCategories.filter(cat => 
-          ['prenatal-paternity-tests', 'gender-reveal-tests', 'nipt-tests'].includes(cat.id)
+          ['fertility', 'hormones', 'womens-health', 'mens-health'].includes(cat.id)
         );
       
       case "Cancer Screening":
@@ -85,11 +86,7 @@ export const useNavigationData = () => {
       
       case "General Wellness":
         return compareCategories.filter(cat => 
-          ['weight-loss-tests', 'diabetes-tests', 'cholesterol-tests', 'vitamins-tests', 
-           'advanced-vitamins-tests', 'allergy-testing', 'coeliac-tests',
-           'antibody-tests', 'infection-tests', 'immunity-tests', 'autoimmunity-tests', 
-           'liver-health', 'kidney-health', 'sexual-health', 'iron-tests', 'heart-health', 
-           'energy-tests', 'nutrition-tests'].includes(cat.id)
+          ['weight-loss-tests', 'diabetes', 'heart-health', 'vitamins', 'allergy-testing', 'liver', 'general-health', 'longevity-tests'].includes(cat.id)
         );
       
       default:
