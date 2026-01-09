@@ -95,7 +95,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       )}
 
       <nav className={`relative ${className}`} aria-label="Main Navigation" style={{ position: 'relative', zIndex: 100, overflow: 'visible' }}>
-        <div className="flex items-center justify-center gap-0 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
+        <div className="flex items-center justify-center gap-1 md:gap-2 lg:gap-3 xl:gap-4 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
           {/* Primary Navigation Items */}
           {primaryNavigationItems.filter(item => item.name !== "How It Works").map((item) => (
             <div 
@@ -107,7 +107,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             >
               <Link
                 to={item.hasDropdown && isMobile ? '#' : item.path}
-                className={`group relative text-base sm:text-lg font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+                className={`group relative text-xs md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 px-1.5 md:px-2.5 lg:px-3 xl:px-4 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-0.5 md:gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
                   (item as any).highlighted 
                     ? "text-brand-pink bg-brand-pink/10"
                     : "text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5"
@@ -122,7 +122,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               >
                 {item.name}
                 {item.hasDropdown && (
-                  <ChevronDown className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${
+                  <ChevronDown className={`w-3 h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4 transition-transform ${
                     activeDropdown === item.name && isMobile ? 'rotate-180' : ''
                   }`} />
                 )}
@@ -151,7 +151,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             onMouseLeave={handleMouseLeave}
           >
             <button
-              className={`group relative text-base sm:text-lg font-semibold transition-all duration-300 px-2 py-1.5 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+              className={`group relative text-xs md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 px-1.5 md:px-2.5 lg:px-3 xl:px-4 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-0.5 md:gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
                 activeDropdown === "MORE" && isMobile ? 'text-brand-pink bg-brand-navy/10' : 'text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5'
               }`}
               onClick={(e) => {
@@ -163,7 +163,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               }}
             >
               More
-              <ChevronDown className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform ${
+              <ChevronDown className={`w-3 h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4 transition-transform ${
                 activeDropdown === "MORE" && isMobile ? 'rotate-180' : ''
               }`} />
             </button>
