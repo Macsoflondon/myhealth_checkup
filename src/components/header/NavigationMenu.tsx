@@ -22,11 +22,10 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { getTestsForNavigation, getFilteredCategories, shouldShowGoodbodyTests } = useNavigationData();
   const isMobile = useIsMobile();
-  const leaveTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Close dropdown when clicking outside on mobile
+  // Close dropdown when clicking outside (for both desktop and mobile)
   useEffect(() => {
-    if (!isMobile || !activeDropdown) return;
+    if (!activeDropdown) return;
 
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -37,16 +36,10 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [isMobile, activeDropdown]);
+  }, [activeDropdown]);
 
   const handleMouseEnter = (itemName: string) => {
     if (isMobile) return; // Disable hover on mobile
-    
-    // Clear any pending close timeout
-    if (leaveTimeoutRef.current) {
-      clearTimeout(leaveTimeoutRef.current);
-      leaveTimeoutRef.current = null;
-    }
     
     const item = primaryNavigationItems.find(nav => nav.name === itemName);
     if (item?.hasDropdown || itemName === "MORE") {
@@ -54,18 +47,9 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     }
   };
 
+  // Dropdown stays open until user clicks a link or clicks outside
   const handleMouseLeave = () => {
-    if (isMobile) return; // Disable hover on mobile
-    
-    // Clear any existing timeout
-    if (leaveTimeoutRef.current) {
-      clearTimeout(leaveTimeoutRef.current);
-    }
-    
-    // Set a timeout to close the dropdown
-    leaveTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 200);
+    // Do nothing - dropdown stays open until clicked
   };
 
   const handleClick = (e: React.MouseEvent, itemName: string) => {
