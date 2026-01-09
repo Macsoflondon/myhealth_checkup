@@ -65,8 +65,11 @@ const Hero = () => {
 
   return (
     <>
-      {/* Hero Video Section */}
-      <section className="relative overflow-hidden bg-[#081129]">
+      {/* Hero Video Section - Pulled up to sit behind toolbar */}
+      <section 
+        className="relative overflow-hidden bg-[#081129]"
+        style={{ marginTop: 'calc(-1 * var(--toolbar-height, 50px))' }}
+      >
         <div className="relative w-full aspect-[4/5] xs:aspect-[4/3] sm:aspect-[16/10] lg:aspect-video overflow-hidden">
           <video 
             autoPlay 
