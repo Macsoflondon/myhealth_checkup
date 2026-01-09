@@ -10,6 +10,7 @@ interface MegaMenuDropdownProps {
   goodbodyTests?: GoodbodyTest[];
   categories?: Array<{ id: string; name: string; description: string }>;
   onItemClick?: () => void;
+  onClose?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: (event?: React.MouseEvent) => void;
   isMobile?: boolean;
@@ -21,6 +22,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   goodbodyTests,
   categories,
   onItemClick,
+  onClose,
   onMouseEnter,
   onMouseLeave,
   isMobile = false
@@ -70,6 +72,18 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="p-5 sm:p-6">
+        {/* Header with Close Button */}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">{itemName}</h2>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Close dropdown"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
         {/* Search Input */}
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -159,7 +173,6 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                       key={category.id}
                       to={`/compare?category=${category.id}`}
                       className="state-layer group flex items-start gap-3 p-3 rounded-lg transition-shadow"
-                      onClick={onItemClick}
                     >
                       <div 
                         className="w-3 h-3 rounded-full flex-shrink-0 mt-1"
@@ -190,7 +203,6 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           <Link
             to={itemPath}
             className="inline-flex items-center text-sm text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400 font-semibold transition-colors group"
-            onClick={onItemClick}
           >
             View all {itemName.toLowerCase()}
             <ChevronDown className="w-4 h-4 ml-1 rotate-[-90deg] group-hover:translate-x-1 transition-transform" />
