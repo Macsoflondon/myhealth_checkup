@@ -19,9 +19,24 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   onItemClick, 
   className = "" 
 }) => {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(() => {
+    // Restore from sessionStorage on mount
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('activeDropdown');
+    }
+    return null;
+  });
   const { getTestsForNavigation, getFilteredCategories, shouldShowGoodbodyTests } = useNavigationData();
   const isMobile = useIsMobile();
+
+  // Persist dropdown state to sessionStorage
+  useEffect(() => {
+    if (activeDropdown) {
+      sessionStorage.setItem('activeDropdown', activeDropdown);
+    } else {
+      sessionStorage.removeItem('activeDropdown');
+    }
+  }, [activeDropdown]);
 
   // Close dropdown when clicking outside (for both desktop and mobile)
   useEffect(() => {
@@ -37,6 +52,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [activeDropdown]);
+
+  // Close dropdown explicitly (for close button)
+  const handleCloseDropdown = () => {
+    setActiveDropdown(null);
+  };
 
   const handleMouseEnter = (itemName: string) => {
     if (isMobile) return; // Disable hover on mobile
@@ -120,6 +140,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                   goodbodyTests={shouldShowGoodbodyTests(item.name) ? getTestsForNavigation(item.name.toUpperCase()) : undefined}
                   categories={!shouldShowGoodbodyTests(item.name) ? getFilteredCategories(item.name) : undefined}
                   onItemClick={handleItemClick}
+                  onClose={handleCloseDropdown}
                   onMouseEnter={() => handleMouseEnter(item.name)}
                   onMouseLeave={handleMouseLeave}
                   isMobile={isMobile}
@@ -156,6 +177,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               <MoreDropdownMenu
                 sections={moreNavigationSections}
                 onItemClick={handleItemClick}
+                onClose={handleCloseDropdown}
                 onMouseEnter={() => handleMouseEnter("MORE")}
                 onMouseLeave={handleMouseLeave}
                 isMobile={isMobile}

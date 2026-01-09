@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { X } from "lucide-react";
 
 interface MoreDropdownSection {
   title: string;
@@ -9,6 +10,7 @@ interface MoreDropdownSection {
 interface MoreDropdownMenuProps {
   sections: MoreDropdownSection[];
   onItemClick?: () => void;
+  onClose?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: (event?: React.MouseEvent) => void;
   isMobile?: boolean;
@@ -17,6 +19,7 @@ interface MoreDropdownMenuProps {
 export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
+  onClose,
   onMouseEnter,
   onMouseLeave,
   isMobile = false
@@ -37,6 +40,18 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="p-5">
+        {/* Header with Close Button */}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">More</h2>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Close dropdown"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
         {sections.map((section, sectionIndex) => (
           <div key={section.title}>
             {/* Section Heading */}
@@ -53,7 +68,6 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                   key={item.path}
                   to={item.path}
                   className="state-layer block p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                  onClick={onItemClick}
                 >
                   <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-pink-600 dark:hover:text-pink-500 transition-colors">
                     {item.name}
