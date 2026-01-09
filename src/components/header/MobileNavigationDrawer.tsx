@@ -1,6 +1,27 @@
 import { useState, useMemo, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, ChevronRight, Search, X, MapPin, Phone, ArrowRight } from "lucide-react";
+import { 
+  ChevronDown, 
+  ChevronRight, 
+  Search, 
+  X, 
+  MapPin, 
+  Phone, 
+  ArrowRight,
+  Heart,
+  Droplets,
+  Activity,
+  Sparkles,
+  Baby,
+  Shield,
+  Apple,
+  Dumbbell,
+  Scale,
+  Clock,
+  TestTube,
+  Stethoscope,
+  Users
+} from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -16,9 +37,90 @@ interface MobileNavigationDrawerProps {
   onClose: () => void;
 }
 
+// Category icon mapping for visual hierarchy
+const getCategoryIcon = (categoryId: string) => {
+  const iconMap: Record<string, React.ElementType> = {
+    'blood-tests': Droplets,
+    'hormones': Activity,
+    'thyroid': Activity,
+    'vitamins': Sparkles,
+    'liver': Shield,
+    'diabetes': TestTube,
+    'cancer-screening': Shield,
+    'heart-health': Heart,
+    'mens-health': Users,
+    'womens-health': Users,
+    'fertility': Baby,
+    'general-health': Stethoscope,
+    'allergy-testing': Apple,
+    'sports-performance-tests': Dumbbell,
+    'weight-loss-tests': Scale,
+    'longevity-tests': Clock,
+  };
+  return iconMap[categoryId] || TestTube;
+};
+
+// Category colour mapping for visual distinction
+const getCategoryColour = (categoryId: string) => {
+  const colourMap: Record<string, string> = {
+    'blood-tests': 'bg-red-500',
+    'hormones': 'bg-purple-500',
+    'thyroid': 'bg-emerald-500',
+    'vitamins': 'bg-amber-500',
+    'liver': 'bg-yellow-600',
+    'diabetes': 'bg-orange-500',
+    'cancer-screening': 'bg-slate-700',
+    'heart-health': 'bg-rose-500',
+    'mens-health': 'bg-blue-500',
+    'womens-health': 'bg-pink-500',
+    'fertility': 'bg-violet-500',
+    'general-health': 'bg-teal-500',
+    'allergy-testing': 'bg-indigo-500',
+    'sports-performance-tests': 'bg-sky-500',
+    'weight-loss-tests': 'bg-lime-500',
+    'longevity-tests': 'bg-cyan-500',
+  };
+  return colourMap[categoryId] || 'bg-gray-500';
+};
+
+// Group categories for better organisation
+const categoryGroups = [
+  {
+    title: "Essential Tests",
+    icon: Stethoscope,
+    colour: "primary",
+    categories: ['blood-tests', 'general-health', 'vitamins', 'thyroid']
+  },
+  {
+    title: "Organ Health",
+    icon: Heart,
+    colour: "rose",
+    categories: ['heart-health', 'liver', 'diabetes']
+  },
+  {
+    title: "Gender Specific",
+    icon: Users,
+    colour: "indigo",
+    categories: ['mens-health', 'womens-health', 'fertility']
+  },
+  {
+    title: "Specialist Tests",
+    icon: Shield,
+    colour: "secondary",
+    categories: ['cancer-screening', 'hormones', 'allergy-testing']
+  },
+  {
+    title: "Lifestyle & Wellness",
+    icon: Dumbbell,
+    colour: "emerald",
+    categories: ['sports-performance-tests', 'weight-loss-tests', 'longevity-tests']
+  }
+];
+
 export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<'menu' | 'categories'>('menu');
   const { getFilteredCategories } = useNavigationData();
   
   // Swipe gesture state
@@ -44,9 +146,8 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     
     const swipeDistanceX = touchStartX.current - touchEndX.current;
     const swipeDistanceY = Math.abs(touchStartY.current - (touchEndX.current ? touchEndX.current : touchStartY.current));
-    const minSwipeDistance = 80; // Minimum swipe distance to trigger close
+    const minSwipeDistance = 80;
     
-    // Only close if horizontal swipe is dominant and distance is sufficient
     if (swipeDistanceX > minSwipeDistance && swipeDistanceX > swipeDistanceY) {
       onClose();
     }
@@ -85,6 +186,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
       path: string;
       description?: string;
       parentSection?: string;
+      categoryId?: string;
     }> = [];
 
     // Search through all categories
@@ -100,7 +202,8 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
           type: 'category',
           name: category.name,
           path: `/compare?category=${category.id}`,
-          description: category.description
+          description: category.description,
+          categoryId: category.id
         });
       }
     });
@@ -137,18 +240,47 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent 
         side="left" 
-        className="w-[85vw] max-w-[400px] p-0 bg-white border-r border-gray-200"
+        className="w-[88vw] max-w-[420px] p-0 bg-white border-r border-gray-200"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         ref={contentRef}
       >
-        <SheetHeader className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-[hsl(var(--secondary))]/5 to-[hsl(var(--primary))]/5">
-          <SheetTitle className="text-[hsl(var(--navy))] text-left font-heading font-bold text-lg">
-            Menu
-          </SheetTitle>
+        {/* Header with gradient */}
+        <SheetHeader className="px-5 py-4 border-b border-gray-100 bg-gradient-to-br from-[hsl(var(--secondary))]/10 via-white to-[hsl(var(--primary))]/10">
+          <div className="flex items-center justify-between">
+            <SheetTitle className="text-[hsl(var(--navy))] text-left font-heading font-bold text-xl">
+              myhealth checkup
+            </SheetTitle>
+          </div>
           
-          {/* Search Input with larger touch target */}
+          {/* Tab Switcher */}
+          <div className="flex gap-1 mt-3 p-1 bg-gray-100 rounded-xl">
+            <button
+              onClick={() => setActiveTab('menu')}
+              className={cn(
+                "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
+                activeTab === 'menu' 
+                  ? "bg-white text-[hsl(var(--navy))] shadow-sm" 
+                  : "text-gray-500 hover:text-gray-700"
+              )}
+            >
+              Menu
+            </button>
+            <button
+              onClick={() => setActiveTab('categories')}
+              className={cn(
+                "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
+                activeTab === 'categories' 
+                  ? "bg-white text-[hsl(var(--navy))] shadow-sm" 
+                  : "text-gray-500 hover:text-gray-700"
+              )}
+            >
+              Test Categories
+            </button>
+          </div>
+          
+          {/* Search Input */}
           <div className="relative mt-3">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
@@ -156,7 +288,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               placeholder="Search tests or categories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10 h-12 text-base rounded-xl border-gray-200 focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]/20"
+              className="pl-10 pr-10 h-12 text-base rounded-xl border-gray-200 focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]/20 bg-white"
             />
             {searchQuery && (
               <button
@@ -169,7 +301,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
           </div>
         </SheetHeader>
 
-        <ScrollArea className="h-[calc(100vh-160px)]">
+        <ScrollArea className="h-[calc(100vh-220px)]">
           <div className="px-3 py-4 space-y-1">
             {/* Search Results */}
             {filteredContent && filteredContent.length > 0 && (
@@ -177,32 +309,39 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 <p className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   {filteredContent.length} {filteredContent.length === 1 ? 'Result' : 'Results'}
                 </p>
-                {filteredContent.map((result, index) => (
-                  <Link
-                    key={`${result.path}-${index}`}
-                    to={result.path}
-                    onClick={handleLinkClick}
-                    className="flex items-start gap-3 px-4 py-3.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors touch-manipulation group"
-                  >
-                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--primary))] mt-2 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 group-hover:text-[hsl(var(--primary))] group-active:text-[hsl(var(--primary))]">
-                        {result.name}
-                      </p>
-                      {result.description && (
-                        <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">
-                          {result.description}
+                {filteredContent.map((result, index) => {
+                  const IconComponent = result.categoryId ? getCategoryIcon(result.categoryId) : ChevronRight;
+                  const bgColour = result.categoryId ? getCategoryColour(result.categoryId) : 'bg-gray-400';
+                  
+                  return (
+                    <Link
+                      key={`${result.path}-${index}`}
+                      to={result.path}
+                      onClick={handleLinkClick}
+                      className="flex items-start gap-3 px-4 py-3.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors touch-manipulation group"
+                    >
+                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0", bgColour)}>
+                        <IconComponent className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 group-hover:text-[hsl(var(--primary))]">
+                          {result.name}
                         </p>
-                      )}
-                      {result.parentSection && (
-                        <p className="text-xs text-[hsl(var(--secondary))] mt-1">
-                          in {result.parentSection}
-                        </p>
-                      )}
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[hsl(var(--primary))] mt-1" />
-                  </Link>
-                ))}
+                        {result.description && (
+                          <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">
+                            {result.description}
+                          </p>
+                        )}
+                        {result.parentSection && (
+                          <p className="text-xs text-[hsl(var(--secondary))] mt-1">
+                            in {result.parentSection}
+                          </p>
+                        )}
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[hsl(var(--primary))] mt-2" />
+                    </Link>
+                  );
+                })}
               </div>
             )}
 
@@ -219,8 +358,8 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               </div>
             )}
 
-            {/* Normal Navigation (when not searching) */}
-            {!filteredContent && (
+            {/* Tab Content */}
+            {!filteredContent && activeTab === 'menu' && (
               <>
                 {/* Primary Navigation Items */}
                 {primaryNavigationItems.map((item, index) => (
@@ -249,7 +388,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                           />
                         </button>
 
-                        {/* Expanded Category Items with smooth animation */}
+                        {/* Expanded Category Items */}
                         <div 
                           className={cn(
                             "overflow-hidden transition-all duration-300 ease-out",
@@ -258,28 +397,30 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                               : "max-h-0 opacity-0"
                           )}
                         >
-                          <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-[hsl(var(--primary))]/20 pl-3">
-                            {getFilteredCategories(item.name).slice(0, 6).map((category, catIndex) => (
-                              <Link
-                                key={category.id}
-                                to={`/compare?category=${category.id}`}
-                                onClick={handleLinkClick}
-                                className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation group min-h-[48px]"
-                                style={{ animationDelay: `${catIndex * 50}ms` }}
-                              >
-                                <div className="w-2 h-2 rounded-full bg-[hsl(var(--primary))] mt-1.5 flex-shrink-0 group-active:scale-125 transition-transform" />
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-gray-800 group-hover:text-[hsl(var(--primary))] group-active:text-[hsl(var(--primary))] transition-colors">
-                                    {category.name}
-                                  </p>
-                                  {category.description && (
-                                    <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">
-                                      {category.description}
+                          <div className="ml-2 mt-1 space-y-1 pl-3 border-l-2 border-[hsl(var(--primary))]/20">
+                            {getFilteredCategories(item.name).slice(0, 6).map((category) => {
+                              const IconComponent = getCategoryIcon(category.id);
+                              const bgColour = getCategoryColour(category.id);
+                              
+                              return (
+                                <Link
+                                  key={category.id}
+                                  to={`/compare?category=${category.id}`}
+                                  onClick={handleLinkClick}
+                                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation group min-h-[48px]"
+                                >
+                                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0", bgColour)}>
+                                    <IconComponent className="w-4 h-4 text-white" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-gray-800 group-hover:text-[hsl(var(--primary))] transition-colors">
+                                      {category.name}
                                     </p>
-                                  )}
-                                </div>
-                              </Link>
-                            ))}
+                                  </div>
+                                  <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[hsl(var(--primary))]" />
+                                </Link>
+                              );
+                            })}
                             <Link
                               to={item.path}
                               onClick={handleLinkClick}
@@ -343,7 +484,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                           : "max-h-0 opacity-0"
                       )}
                     >
-                      <div className="ml-3 mt-1 space-y-0.5 border-l-2 border-[hsl(var(--secondary))]/20 pl-3">
+                      <div className="ml-2 mt-1 space-y-0.5 border-l-2 border-[hsl(var(--secondary))]/20 pl-3">
                         {section.items.map((item) => (
                           <Link
                             key={item.path}
@@ -358,7 +499,92 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                     </div>
                   </div>
                 ))}
+              </>
+            )}
 
+            {/* Categories Tab - Grouped by type */}
+            {!filteredContent && activeTab === 'categories' && (
+              <div className="space-y-4">
+                {categoryGroups.map((group, groupIndex) => {
+                  const GroupIcon = group.icon;
+                  const groupCategories = compareCategories.filter(cat => 
+                    group.categories.includes(cat.id)
+                  );
+                  
+                  return (
+                    <div 
+                      key={group.title}
+                      className="animate-fade-in"
+                      style={{ animationDelay: `${groupIndex * 50}ms` }}
+                    >
+                      {/* Group Header */}
+                      <div className="flex items-center gap-2 px-3 py-2 mb-1">
+                        <div className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center",
+                          group.colour === 'primary' ? "bg-[hsl(var(--primary))]/15" :
+                          group.colour === 'secondary' ? "bg-[hsl(var(--secondary))]/15" :
+                          group.colour === 'rose' ? "bg-rose-500/15" :
+                          group.colour === 'indigo' ? "bg-indigo-500/15" :
+                          "bg-emerald-500/15"
+                        )}>
+                          <GroupIcon className={cn(
+                            "w-4 h-4",
+                            group.colour === 'primary' ? "text-[hsl(var(--primary))]" :
+                            group.colour === 'secondary' ? "text-[hsl(var(--secondary))]" :
+                            group.colour === 'rose' ? "text-rose-600" :
+                            group.colour === 'indigo' ? "text-indigo-600" :
+                            "text-emerald-600"
+                          )} />
+                        </div>
+                        <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                          {group.title}
+                        </h3>
+                      </div>
+                      
+                      {/* Category Cards Grid */}
+                      <div className="grid grid-cols-2 gap-2 px-1">
+                        {groupCategories.map((category) => {
+                          const IconComponent = getCategoryIcon(category.id);
+                          const bgColour = getCategoryColour(category.id);
+                          
+                          return (
+                            <Link
+                              key={category.id}
+                              to={`/compare?category=${category.id}`}
+                              onClick={handleLinkClick}
+                              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-150 touch-manipulation active:scale-[0.97] group"
+                            >
+                              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-sm", bgColour)}>
+                                <IconComponent className="w-5 h-5 text-white" />
+                              </div>
+                              <span className="text-xs font-medium text-gray-700 text-center leading-tight group-hover:text-[hsl(var(--primary))]">
+                                {category.name}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+                
+                {/* View All Tests Link */}
+                <div className="pt-2 px-1">
+                  <Link
+                    to="/compare"
+                    onClick={handleLinkClick}
+                    className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-[hsl(var(--secondary))]/10 text-[hsl(var(--secondary))] font-semibold hover:bg-[hsl(var(--secondary))]/20 active:scale-[0.98] transition-all touch-manipulation"
+                  >
+                    View All Test Categories
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {/* Quick Actions & CTA - Show for both tabs */}
+            {!filteredContent && (
+              <>
                 <Separator className="my-4" />
 
                 {/* Quick Action Buttons */}
