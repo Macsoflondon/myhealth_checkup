@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
+import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 
 interface MoreDropdownSection {
   title: string;
@@ -24,8 +25,17 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   onMouseLeave,
   isMobile = false
 }) => {
+  // Accessibility hook for focus trapping and arrow key navigation
+  const { containerRef } = useDropdownAccessibility({
+    isOpen: true,
+    onClose: onClose || (() => {}),
+  });
+
   return (
     <div 
+      ref={containerRef}
+      role="menu"
+      aria-label="More options dropdown menu"
       className={`dropdown-content absolute top-full right-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[320px] overflow-y-auto ${
         isMobile ? 'max-h-[60vh]' : 'max-h-[75vh]'
       }`}
