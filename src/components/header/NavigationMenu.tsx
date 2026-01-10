@@ -38,7 +38,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     }
   }, [activeDropdown]);
 
-  // Close dropdown when clicking outside (for both desktop and mobile)
+  // Close dropdown when clicking outside or pressing ESC (for both desktop and mobile)
   useEffect(() => {
     if (!activeDropdown) return;
 
@@ -49,8 +49,18 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       }
     };
 
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveDropdown(null);
+      }
+    };
+
     document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('keydown', handleEscKey);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleEscKey);
+    };
   }, [activeDropdown]);
 
   // Close dropdown explicitly (for close button)
@@ -88,13 +98,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     onItemClick?.();
   };
 
-  // Split navigation items into two rows for desktop/tablet (matching reference image)
-  const topRowItems = primaryNavigationItems.filter(item => 
-    ["Most Popular Tests", "General Wellness", "Women's Health", "Men's Health"].includes(item.name)
-  );
-  const bottomRowItems = primaryNavigationItems.filter(item => 
-    ["Sports/Fitness Health", "Fertility", "Cancer Screening", "At Home Tests"].includes(item.name)
-  );
+  // All navigation items for single row layout
+  const allNavItems = primaryNavigationItems.filter(item => item.name !== "How It Works");
 
   const renderNavItem = (item: typeof primaryNavigationItems[0]) => (
     <div 
@@ -195,21 +200,14 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         {/* Mobile: Single wrapped row */}
         {isMobile ? (
           <div className="flex items-center justify-center gap-1 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
-            {primaryNavigationItems.filter(item => item.name !== "How It Works").map(renderNavItem)}
+            {allNavItems.map(renderNavItem)}
             {renderMoreButton()}
           </div>
         ) : (
-          /* Desktop/Tablet: Two-row layout matching reference image */
-          <div className="flex flex-col items-center gap-1" style={{ position: 'relative', overflow: 'visible' }}>
-            {/* Top row: Most Popular, General Wellness, Women's Health, Men's Health */}
-            <div className="flex items-center justify-center gap-2 lg:gap-4" style={{ overflow: 'visible' }}>
-              {topRowItems.map(renderNavItem)}
-            </div>
-            {/* Bottom row: Sports/Fitness, Fertility, Cancer Screening, At Home Tests, More */}
-            <div className="flex items-center justify-center gap-2 lg:gap-4" style={{ overflow: 'visible' }}>
-              {bottomRowItems.map(renderNavItem)}
-              {renderMoreButton()}
-            </div>
+          /* Desktop/Tablet: Single row layout */
+          <div className="flex items-center justify-center gap-1 lg:gap-2 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
+            {allNavItems.map(renderNavItem)}
+            {renderMoreButton()}
           </div>
         )}
       </nav>
