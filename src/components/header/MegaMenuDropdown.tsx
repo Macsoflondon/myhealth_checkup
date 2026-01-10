@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ChevronDown, Search, X } from "lucide-react";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { GoodbodyTest } from "@/data/goodbodyTests";
+import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 
 interface MegaMenuDropdownProps {
   itemName: string;
@@ -28,6 +29,12 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   isMobile = false
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Accessibility hook for focus trapping and arrow key navigation
+  const { containerRef } = useDropdownAccessibility({
+    isOpen: true,
+    onClose: onClose || (() => {}),
+  });
 
   // Filter tests based on search query
   const filteredTests = useMemo(() => {
@@ -58,6 +65,9 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
 
   return (
     <div 
+      ref={containerRef}
+      role="menu"
+      aria-label={`${itemName} dropdown menu`}
       className={`dropdown-content absolute top-full left-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[320px] max-w-[90vw] overflow-y-auto ${
         isMobile ? 'sm:max-w-[400px] max-h-[60vh]' : 'sm:min-w-[540px] sm:max-w-[640px] max-h-[75vh]'
       }`}
