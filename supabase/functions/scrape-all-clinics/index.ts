@@ -10,7 +10,7 @@ interface ScraperResult {
   provider: string;
   success: boolean;
   count: number;
-  clinics?: any[];
+  clinics?: unknown[];
   error?: string;
 }
 
@@ -20,9 +20,67 @@ serve(async (req) => {
   }
 
   try {
+    // ============================================
+    // AUTHENTICATION CHECK
+    // ============================================
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('No authorization header provided');
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - No authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    // Create client with user's JWT to verify authentication
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    // Verify the user is authenticated
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+    if (authError || !user) {
+      console.error('Auth error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - Invalid token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // ============================================
+    // ADMIN ROLE CHECK
+    // ============================================
+    const { data: isAdmin, error: roleError } = await userClient.rpc('has_role', {
+      _user_id: user.id,
+      _role: 'admin'
+    });
+
+    if (roleError) {
+      console.error('Role check error:', roleError);
+      return new Response(
+        JSON.stringify({ error: 'Error checking user role' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!isAdmin) {
+      console.warn(`Non-admin user ${user.id} attempted to access scrape-all-clinics`);
+      return new Response(
+        JSON.stringify({ error: 'Forbidden - Admin access required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log(`Admin user ${user.id} authorized to run clinic scrapers`);
+
+    // ============================================
+    // SCRAPING LOGIC (with service role for database writes)
+    // ============================================
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     console.log('Starting scrape of all provider clinics...');
 
@@ -65,8 +123,10 @@ serve(async (req) => {
           if (data.clinics && data.clinics.length > 0) {
             console.log(`Auto-uploading ${data.count} clinics from ${data.provider}...`);
             
+            // Pass auth header to bulk-add-clinics (it also requires admin)
             const { error: uploadError } = await supabase.functions.invoke('bulk-add-clinics', {
-              body: { clinics: data.clinics }
+              body: { clinics: data.clinics },
+              headers: { Authorization: authHeader }
             });
 
             if (uploadError) {
@@ -93,7 +153,7 @@ serve(async (req) => {
           provider: scraperName,
           success: false,
           count: 0,
-          error: err.message
+          error: err instanceof Error ? err.message : 'Unknown error'
         });
       }
     }
@@ -113,7 +173,8 @@ serve(async (req) => {
           totalClinics
         },
         results,
-        completedAt: new Date().toISOString()
+        completedAt: new Date().toISOString(),
+        triggeredBy: user.id
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -123,7 +184,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false,
-        error: error.message 
+        error: error instanceof Error ? error.message : 'Unknown error'
       }),
       { 
         status: 500, 

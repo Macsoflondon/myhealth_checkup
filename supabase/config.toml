@@ -81,3 +81,13 @@ verify_jwt = true
 # Security: Uses service role key internally, no public access
 [functions.run-all-scrapers]
 verify_jwt = false
+
+# Scrape All Clinics - Admin-only function to scrape clinic data
+# Security: JWT verification required, admin role check in code
+[functions.scrape-all-clinics]
+verify_jwt = false
+
+# Server-Side Encryption Service
+# Security: JWT verification, encryption key stored in secrets (never sent to client)
+[functions.encrypt-sensitive-data]
+verify_jwt = false
