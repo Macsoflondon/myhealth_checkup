@@ -61,12 +61,12 @@ export const useNavigationData = () => {
       
       case "Men's Health":
         return compareCategories.filter(cat => 
-          ['mens-health', 'hormones', 'fertility', 'sports-performance-tests'].includes(cat.id)
+          ['mens-health', 'hormones', 'fertility', 'fitness-health'].includes(cat.id)
         );
       
-      case "Sports/Fitness Health":
+      case "Fitness Health":
         return compareCategories.filter(cat => 
-          ['sports-performance-tests', 'vitamins', 'hormones', 'general-health', 'heart-health'].includes(cat.id)
+          ['fitness-health', 'vitamins', 'hormones', 'general-health', 'heart-health'].includes(cat.id)
         );
       
       case "At Home Tests":
