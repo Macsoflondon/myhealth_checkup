@@ -9,8 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { sportsPerformanceCategories } from "@/data/sportsPerformanceCategories";
-import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap } from "lucide-react";
+import { fitnessHealthCategories, bodybuildingTests } from "@/data/fitnessHealthCategories";
+import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap, ExternalLink, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
 import HeroSection from "@/components/sections/HeroSection";
@@ -118,21 +118,21 @@ const SportsPerformancePage = () => {
   }];
   return <>
       <Helmet>
-        <title>Sports Performance Blood Tests | Athletic Optimization | myhealth checkup</title>
-        <meta name="description" content="Optimise your athletic performance with comprehensive sports blood tests. Monitor fitness biomarkers, nutrition status, and recovery markers from trusted UK providers. Compare prices and book today." />
-        <meta name="keywords" content="sports performance tests, athletic blood tests, fitness biomarkers, sports nutrition testing, endurance testing, recovery markers, athlete health screening, UK sports tests" />
+        <title>Fitness Health Blood Tests | Athletic & Bodybuilding Testing | myhealth checkup</title>
+        <meta name="description" content="Optimise your fitness and athletic performance with comprehensive health blood tests. Monitor bodybuilding biomarkers, nutrition status, and recovery markers from trusted UK providers. Compare prices and book today." />
+        <meta name="keywords" content="fitness health tests, bodybuilding blood tests, athletic blood tests, fitness biomarkers, bodybuilder profile, sports nutrition testing, endurance testing, recovery markers, athlete health screening, UK fitness tests" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/sports-performance" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Sports Performance Blood Tests | Athletic Optimization" />
-        <meta property="og:description" content="Monitor fitness biomarkers, nutrition, and recovery with sports performance blood tests from trusted UK providers." />
+        <meta property="og:title" content="Fitness Health Blood Tests | Bodybuilding & Athletic Testing" />
+        <meta property="og:description" content="Monitor fitness biomarkers, nutrition, and recovery with fitness health blood tests from trusted UK providers." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/sports-performance" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Sports Performance Blood Tests | Athletic Optimization" />
-        <meta name="twitter:description" content="Optimise athletic performance with comprehensive sports blood tests from trusted UK providers." />
+        <meta name="twitter:title" content="Fitness Health Blood Tests | Bodybuilding & Athletic Testing" />
+        <meta name="twitter:description" content="Optimise fitness and athletic performance with comprehensive blood tests from trusted UK providers." />
       </Helmet>
       
       <UKASBanner />
@@ -140,20 +140,20 @@ const SportsPerformancePage = () => {
       
       <main className="min-h-screen bg-background">
         <PageBreadcrumb 
-          segments={[{ label: "Home", href: "/" }, { label: "Sports Performance" }]} 
+          segments={[{ label: "Home", href: "/" }, { label: "Fitness Health" }]} 
           backLabel="Back"
         />
 
         <HeroSection
-          title="Sports Performance Blood Tests"
-          subtitle="Optimise your athletic performance with comprehensive biomarker analysis. Monitor nutrition, recovery, and fitness markers from trusted UK laboratories."
+          title="Fitness Health Blood Tests"
+          subtitle="Optimise your athletic performance with comprehensive biomarker analysis. Monitor bodybuilding markers, nutrition, recovery, and fitness biomarkers from trusted UK laboratories."
         />
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold" onClick={() => navigate('/compare?category=sports-performance')}>
+              <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold" onClick={() => navigate('/compare?category=fitness-health')}>
                 Compare Tests
               </Button>
               <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold" onClick={() => navigate('/cancer-biomarkers')}>
@@ -166,13 +166,111 @@ const SportsPerformancePage = () => {
           </div>
         </section>
 
+        {/* Featured Bodybuilding Profile Tests */}
+        <section className="py-16 bg-gradient-to-b from-muted/30 to-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <SectionHeading 
+                title="Bodybuilding" 
+                gradientText="Profile Tests" 
+                className="mb-4"
+              />
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Comprehensive blood panels designed specifically for bodybuilders, strength athletes, and fitness enthusiasts
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {bodybuildingTests.map((test) => (
+                <Card key={test.id} className="border-2 hover:border-[#E70D69] transition-all duration-300 hover:shadow-xl overflow-hidden">
+                  <CardHeader className="bg-gradient-to-r from-[#081129] to-[#081129]/90 text-white">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <Badge className="bg-[#E70D69] text-white mb-2">Bodybuilding</Badge>
+                        <CardTitle className="text-2xl text-white">{test.name}</CardTitle>
+                        <CardDescription className="text-white/80">{test.provider}</CardDescription>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-3xl font-bold text-[#22C0D4]">£{test.price}</span>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    <p className="text-muted-foreground mb-4 line-clamp-3">{test.description}</p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Beaker className="w-4 h-4 text-[#E70D69]" />
+                        <span className="font-medium">{test.biomarkerCount} Biomarkers</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-[#22C0D4]" />
+                        <span>{test.turnaroundTime}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <p className="text-sm font-medium mb-2">Key Biomarkers:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {test.biomarkers.slice(0, 6).map((biomarker, i) => (
+                          <Badge key={i} variant="secondary" className="text-xs">
+                            {biomarker}
+                          </Badge>
+                        ))}
+                        {test.biomarkers.length > 6 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{test.biomarkers.length - 6} more
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="mb-4 space-y-1">
+                      <p className="text-sm font-medium">Ideal for:</p>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        {test.whoShouldTest.slice(0, 2).map((item, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-[#22C0D4] mt-0.5 flex-shrink-0" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {test.features.phlebotomyIncluded && (
+                        <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                          Phlebotomy Included
+                        </Badge>
+                      )}
+                      {test.features.clinicVisitAvailable && (
+                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                          Clinic Visit
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <Button 
+                      className="w-full bg-[#E70D69] hover:bg-[#E70D69]/90 text-white"
+                      onClick={() => window.open(test.url, '_blank')}
+                    >
+                      Book Now
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Benefits Section */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <SectionHeading 
-                title="Why Choose Sports" 
-                gradientText="Performance Testing?" 
+                title="Why Choose Fitness" 
+                gradientText="Health Testing?" 
                 className="mb-4"
               />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -201,7 +299,7 @@ const SportsPerformancePage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <SectionHeading 
-                title="Sports Performance" 
+                title="Fitness Health" 
                 gradientText="Categories" 
                 className="mb-4"
               />
@@ -210,8 +308,8 @@ const SportsPerformancePage = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              {sportsPerformanceCategories.map(category => {
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+              {fitnessHealthCategories.map(category => {
               const IconComponent = category.icon;
               return <Card key={category.id} className="hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-[#FA6980] group" onClick={() => navigate(category.link)}>
                     <CardHeader>
@@ -267,8 +365,8 @@ const SportsPerformancePage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <SectionHeading 
-                title="Featured Sports" 
-                gradientText="Performance Tests" 
+                title="Featured Fitness" 
+                gradientText="Health Tests" 
                 className="mb-4"
               />
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -304,22 +402,22 @@ const SportsPerformancePage = () => {
                           <span>2-5 working days</span>
                         </div>
                       </div>
-                      <Button className="w-full bg-[#FA6980] hover:bg-[#E70D69] text-white" onClick={() => navigate('/compare?category=sports-performance')}>
+                      <Button className="w-full bg-[#FA6980] hover:bg-[#E70D69] text-white" onClick={() => navigate('/compare?category=fitness-health')}>
                         Compare Prices
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </CardContent>
                   </Card>)}
               </div> : <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">No sports performance tests found at the moment.</p>
+                <p className="text-muted-foreground mb-4">No fitness health tests found at the moment.</p>
                 <Button onClick={() => navigate('/compare')}>
                   Browse All Tests
                 </Button>
               </div>}
 
             <div className="text-center mt-12">
-              <Button size="lg" variant="outline" onClick={() => navigate('/compare?category=sports-performance')}>
-                View All Sports Performance Tests
+              <Button size="lg" variant="outline" onClick={() => navigate('/compare?category=fitness-health')}>
+                View All Fitness Health Tests
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -414,14 +512,14 @@ const SportsPerformancePage = () => {
           <div className="container mx-auto px-4 text-center">
             <SectionHeading 
               title="Ready to Optimise" 
-              gradientText="Your Performance?" 
+              gradientText="Your Fitness?" 
               className="mb-4"
             />
             <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90 text-[#081129]">
-              Compare sports performance tests from trusted UK providers and take control of your athletic health today.
+              Compare fitness health tests from trusted UK providers and take control of your athletic health today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" onClick={() => navigate('/compare?category=sports-performance')}>
+              <Button size="lg" variant="secondary" onClick={() => navigate('/compare?category=fitness-health')}>
                 Compare Tests Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

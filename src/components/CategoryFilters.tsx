@@ -72,9 +72,9 @@ const categoryItems: CategoryItem[] = [{
   color: 'bg-orange-300',
   path: '/skin-health'
 }, {
-  id: 'sports-performance',
-  name: 'Sports performance',
-  color: 'bg-[#081129]',
+  id: 'fitness-health',
+  name: 'Fitness health',
+  color: 'bg-[#E70D69]',
   path: '/sports-performance'
 }, {
   id: 'testosterone',
