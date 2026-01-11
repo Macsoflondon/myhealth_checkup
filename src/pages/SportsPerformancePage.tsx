@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { fitnessHealthCategories, bodybuildingTests } from "@/data/fitnessHealthCategories";
+import { fitnessHealthCategories, bodybuildingTests, athleteTests } from "@/data/fitnessHealthCategories";
 import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap, ExternalLink, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
@@ -252,6 +252,85 @@ const SportsPerformancePage = () => {
                     
                     <Button 
                       className="w-full bg-[#E70D69] hover:bg-[#E70D69]/90 text-white"
+                      onClick={() => window.open(test.url, '_blank')}
+                    >
+                      Book Now
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Athlete Performance Tests from Sports Blood Tests (Edge) */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <SectionHeading 
+                title="Athlete Performance" 
+                gradientText="Blood Tests" 
+                className="mb-4"
+              />
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Sport-specific blood tests from Sports Blood Tests (Edge) with sports doctor review and NHS lab analysis
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {athleteTests.map((test) => (
+                <Card key={test.id} className="border-2 hover:border-[#22C0D4] transition-all duration-300 hover:shadow-xl overflow-hidden">
+                  <CardHeader className="bg-gradient-to-r from-[#22C0D4] to-[#22C0D4]/90 text-white">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <Badge className="bg-white/20 text-white mb-2">{test.category.charAt(0).toUpperCase() + test.category.slice(1)}</Badge>
+                        <CardTitle className="text-xl text-white">{test.name}</CardTitle>
+                        <CardDescription className="text-white/80">{test.provider}</CardDescription>
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      {test.subscriptionPrice && (
+                        <div className="text-sm text-white/80">Subscribe & save: <span className="font-bold text-white">£{test.subscriptionPrice}</span></div>
+                      )}
+                      <span className="text-2xl font-bold text-white">£{test.price}</span>
+                      <span className="text-sm text-white/80 ml-1">one-time</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-6">
+                    <p className="text-muted-foreground mb-4 text-sm line-clamp-3">{test.description}</p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Beaker className="w-4 h-4 text-[#22C0D4]" />
+                        <span className="font-medium">{test.biomarkerCount} Biomarkers</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-[#E70D69]" />
+                        <span>{test.turnaroundTime}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {test.features.sportsDoctorReview && (
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
+                          Sports Doctor Review
+                        </Badge>
+                      )}
+                      {test.features.nhsLabAnalysis && (
+                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                          NHS Lab Analysis
+                        </Badge>
+                      )}
+                      {test.features.homeKitAvailable && (
+                        <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                          Home Kit
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <Button 
+                      className="w-full bg-[#22C0D4] hover:bg-[#22C0D4]/90 text-white"
                       onClick={() => window.open(test.url, '_blank')}
                     >
                       Book Now

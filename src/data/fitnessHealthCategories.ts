@@ -1,4 +1,4 @@
-import { Dumbbell, Activity, Zap, TrendingUp, FlaskConical } from 'lucide-react';
+import { Dumbbell, Activity, Zap, TrendingUp, FlaskConical, Bike, Timer, PersonStanding } from 'lucide-react';
 
 export interface FitnessCategory {
   id: string;
@@ -58,13 +58,13 @@ export const fitnessHealthCategories: FitnessCategory[] = [
   }
 ];
 
-// Bodybuilding Profile Test Data
-export interface BodybuildingTest {
+// Fitness Health Test Interface
+export interface FitnessTest {
   id: string;
   name: string;
   provider: string;
   price: number;
-  originalPrice?: number;
+  subscriptionPrice?: number;
   turnaroundTime: string;
   biomarkerCount: number;
   biomarkers: string[];
@@ -72,14 +72,21 @@ export interface BodybuildingTest {
   whoShouldTest: string[];
   sampleType: string;
   url: string;
+  category: 'bodybuilding' | 'cycling' | 'running' | 'weightlifting' | 'general-athlete';
   features: {
     phlebotomyIncluded: boolean;
     homeKitAvailable: boolean;
     clinicVisitAvailable: boolean;
+    sportsDoctorReview?: boolean;
+    nhsLabAnalysis?: boolean;
+    subscriptionAvailable?: boolean;
   };
 }
 
-export const bodybuildingTests: BodybuildingTest[] = [
+// Alias for backward compatibility
+export type BodybuildingTest = FitnessTest;
+
+export const bodybuildingTests: FitnessTest[] = [
   {
     id: 'medical-diagnosis-bodybuilder-profile',
     name: 'Bodybuilder Profile',
@@ -119,6 +126,7 @@ export const bodybuildingTests: BodybuildingTest[] = [
     ],
     sampleType: 'Blood',
     url: 'https://www.medical-diagnosis.co.uk/exam/profiles/health-checks-profiles/bodybuilder-profile/',
+    category: 'bodybuilding',
     features: {
       phlebotomyIncluded: true,
       homeKitAvailable: false,
@@ -183,6 +191,7 @@ export const bodybuildingTests: BodybuildingTest[] = [
     ],
     sampleType: 'Blood',
     url: 'https://medlabs.uk/product/bodybuilding/',
+    category: 'bodybuilding',
     features: {
       phlebotomyIncluded: true,
       homeKitAvailable: false,
@@ -190,3 +199,150 @@ export const bodybuildingTests: BodybuildingTest[] = [
     }
   }
 ];
+
+// Athlete Tests from Sports Blood Tests (Edge)
+export const athleteTests: FitnessTest[] = [
+  {
+    id: 'edge-male-cyclist',
+    name: 'Blood Test for Male Cyclists',
+    provider: 'Sports Blood Tests (Edge)',
+    price: 129,
+    subscriptionPrice: 116,
+    turnaroundTime: '2 working days',
+    biomarkerCount: 18,
+    biomarkers: [
+      'Active B12',
+      'Cortisol (9am)',
+      'Creatine Kinase',
+      'Creatinine',
+      'eGFR',
+      'Ferritin',
+      'Haemoglobin',
+      'hs-CRP',
+      'Luteinising Hormone',
+      'Prolactin',
+      'Red Blood Cell (RBC)',
+      'Testosterone (total)',
+      'Thyroid Stimulating Hormone',
+      'Thyroxine (T4, free direct)',
+      'Triiodothyronine (T3, free)',
+      'Urea',
+      'Vitamin D (25 OH)',
+      'White Blood Cell Count'
+    ],
+    description: 'Unlock your cycling potential with our sports blood test for male cyclists. It provides accurate insights into your body\'s performance and recovery, allowing you to optimise your training – whether it\'s nutrition, recovery, or muscle performance.',
+    whoShouldTest: [
+      'Amateur and professional cyclists',
+      'Athletes training for endurance events',
+      'Those experiencing performance plateaus',
+      'Cyclists monitoring recovery and training adaptation'
+    ],
+    sampleType: 'Finger Prick',
+    url: 'https://www.sportsbloodtests.co.uk/blood-tests/cyclists/cyclist-male/',
+    category: 'cycling',
+    features: {
+      phlebotomyIncluded: false,
+      homeKitAvailable: true,
+      clinicVisitAvailable: false,
+      sportsDoctorReview: true,
+      nhsLabAnalysis: true,
+      subscriptionAvailable: true
+    }
+  },
+  {
+    id: 'edge-male-runner',
+    name: 'Blood Test for Male Runners',
+    provider: 'Sports Blood Tests (Edge)',
+    price: 129,
+    subscriptionPrice: 116,
+    turnaroundTime: '2 working days',
+    biomarkerCount: 18,
+    biomarkers: [
+      'Active B12',
+      'Cortisol (9am)',
+      'Creatine Kinase',
+      'Creatinine',
+      'eGFR',
+      'Ferritin',
+      'Haemoglobin',
+      'hs-CRP',
+      'Luteinising Hormone',
+      'Prolactin',
+      'Red Blood Cell',
+      'Testosterone (total)',
+      'Thyroid Stimulating Hormone (TSH)',
+      'Thyroxine (T4, free direct)',
+      'Triiodothyronine (T3, free)',
+      'Urea',
+      'Vitamin D (25 OH)',
+      'White Blood Cell Count'
+    ],
+    description: 'Whether you\'re a seasoned runner or just starting your journey, achieving peak performance requires a deep understanding of your body\'s unique responses to training and recovery. Our Male Runner home blood test provides actionable insights to optimise your performance.',
+    whoShouldTest: [
+      'Marathon and long-distance runners',
+      'Recreational runners seeking performance gains',
+      'Athletes recovering from injury',
+      'Runners experiencing fatigue or performance decline'
+    ],
+    sampleType: 'Finger Prick',
+    url: 'https://www.sportsbloodtests.co.uk/blood-tests/runners/runner-male/',
+    category: 'running',
+    features: {
+      phlebotomyIncluded: false,
+      homeKitAvailable: true,
+      clinicVisitAvailable: false,
+      sportsDoctorReview: true,
+      nhsLabAnalysis: true,
+      subscriptionAvailable: true
+    }
+  },
+  {
+    id: 'edge-male-weightlifter',
+    name: 'Blood Test for Male Weightlifters',
+    provider: 'Sports Blood Tests (Edge)',
+    price: 125,
+    subscriptionPrice: 112,
+    turnaroundTime: '2 working days',
+    biomarkerCount: 17,
+    biomarkers: [
+      'Active B12',
+      'Alanine Aminotransferase (ALT)',
+      'Albumin',
+      'Cortisol (9am)',
+      'Creatine Kinase',
+      'Creatinine',
+      'eGFR',
+      'Follicle Stimulating Hormone',
+      'Free Testosterone (calculated)',
+      'hs-CRP',
+      'Luteinising Hormone',
+      'Oestradiol (Oestrogen)',
+      'Prolactin',
+      'Sex Hormone-Binding Globulin',
+      'Testosterone (total)',
+      'Urea',
+      'Vitamin D (25 OH)'
+    ],
+    description: 'Track key biomarkers affecting strength, recovery, and hormones with our at-home bodybuilder blood test. It measures testosterone, stress, inflammation, and essential nutrients to help you optimise muscle growth, endurance, and injury prevention.',
+    whoShouldTest: [
+      'Weightlifters and powerlifters',
+      'Bodybuilders at all levels',
+      'Strength training enthusiasts',
+      'Athletes monitoring hormone balance and recovery'
+    ],
+    sampleType: 'Finger Prick',
+    url: 'https://www.sportsbloodtests.co.uk/blood-tests/weightlifters/weightlifter-male/',
+    category: 'weightlifting',
+    features: {
+      phlebotomyIncluded: false,
+      homeKitAvailable: true,
+      clinicVisitAvailable: false,
+      sportsDoctorReview: true,
+      nhsLabAnalysis: true,
+      subscriptionAvailable: true
+    }
+  }
+];
+
+// Combined all fitness tests
+export const allFitnessTests: FitnessTest[] = [...bodybuildingTests, ...athleteTests];
