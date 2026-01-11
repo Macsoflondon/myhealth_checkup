@@ -1,143 +1,15 @@
 /**
- * Field-Level Encryption Service
- * Uses AES-GCM encryption for sensitive data protection
- * Key is derived from environment secret using PBKDF2
+ * Server-Side Encryption Service
+ * 
+ * SECURITY NOTICE: All encryption operations are performed server-side
+ * via an Edge Function. The encryption key is stored in edge function secrets
+ * and is NEVER exposed to the client-side JavaScript bundle.
+ * 
+ * This service provides a client-side wrapper that calls the server-side
+ * encryption endpoint for all cryptographic operations.
  */
 
-// Encryption configuration
-const ALGORITHM = 'AES-GCM';
-const KEY_LENGTH = 256;
-const IV_LENGTH = 12;
-const SALT_LENGTH = 16;
-const ITERATIONS = 100000;
-
-// Get encryption key from environment variable
-const getEncryptionSecret = (): string => {
-  const key = import.meta.env.VITE_ENCRYPTION_KEY;
-  if (!key) {
-    throw new Error('VITE_ENCRYPTION_KEY environment variable is not configured. Please add this secret to enable encryption.');
-  }
-  return key;
-};
-
-/**
- * Derives a cryptographic key from a password using PBKDF2
- */
-async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey> {
-  const encoder = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey(
-    'raw',
-    encoder.encode(password),
-    'PBKDF2',
-    false,
-    ['deriveKey']
-  );
-
-  return crypto.subtle.deriveKey(
-    {
-      name: 'PBKDF2',
-      salt: salt.buffer as ArrayBuffer,
-      iterations: ITERATIONS,
-      hash: 'SHA-256',
-    },
-    keyMaterial,
-    { name: ALGORITHM, length: KEY_LENGTH },
-    false,
-    ['encrypt', 'decrypt']
-  );
-}
-
-/**
- * Encrypts a string value using AES-GCM
- * Returns base64 encoded string: enc:salt+iv+ciphertext
- */
-export async function encryptField(plaintext: string): Promise<string> {
-  if (!plaintext) return plaintext;
-
-  try {
-    const encoder = new TextEncoder();
-    const salt = crypto.getRandomValues(new Uint8Array(SALT_LENGTH));
-    const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH));
-    
-    const key = await deriveKey(getEncryptionSecret(), salt);
-    
-    const ciphertext = await crypto.subtle.encrypt(
-      { name: ALGORITHM, iv: iv.buffer as ArrayBuffer },
-      key,
-      encoder.encode(plaintext)
-    );
-
-    // Combine salt + iv + ciphertext and encode as base64
-    const ciphertextArray = new Uint8Array(ciphertext);
-    const combined = new Uint8Array(salt.length + iv.length + ciphertextArray.length);
-    combined.set(salt, 0);
-    combined.set(iv, salt.length);
-    combined.set(ciphertextArray, salt.length + iv.length);
-
-    return 'enc:' + btoa(String.fromCharCode(...combined));
-  } catch (error) {
-    console.error('Encryption failed:', error);
-    throw new Error('Failed to encrypt sensitive data');
-  }
-}
-
-/**
- * Decrypts an AES-GCM encrypted string
- * Expects base64 encoded string: enc:salt+iv+ciphertext
- */
-export async function decryptField(encryptedText: string): Promise<string> {
-  if (!encryptedText) return encryptedText;
-  
-  // Check if the value is actually encrypted
-  if (!encryptedText.startsWith('enc:')) {
-    return encryptedText; // Return as-is if not encrypted
-  }
-
-  try {
-    const decoder = new TextDecoder();
-    const combined = new Uint8Array(
-      atob(encryptedText.slice(4)).split('').map(c => c.charCodeAt(0))
-    );
-
-    const salt = combined.slice(0, SALT_LENGTH);
-    const iv = combined.slice(SALT_LENGTH, SALT_LENGTH + IV_LENGTH);
-    const ciphertext = combined.slice(SALT_LENGTH + IV_LENGTH);
-
-    const key = await deriveKey(getEncryptionSecret(), salt);
-
-    const plaintext = await crypto.subtle.decrypt(
-      { name: ALGORITHM, iv: iv.buffer as ArrayBuffer },
-      key,
-      ciphertext.buffer as ArrayBuffer
-    );
-
-    return decoder.decode(plaintext);
-  } catch (error) {
-    console.error('Decryption failed:', error);
-    throw new Error('Failed to decrypt sensitive data');
-  }
-}
-
-/**
- * Encrypts an array of strings
- */
-export async function encryptArray(arr: string[] | null): Promise<string | null> {
-  if (!arr || arr.length === 0) return null;
-  return encryptField(JSON.stringify(arr));
-}
-
-/**
- * Decrypts an encrypted array
- */
-export async function decryptArray(encryptedArr: string | null): Promise<string[] | null> {
-  if (!encryptedArr) return null;
-  const decrypted = await decryptField(encryptedArr);
-  try {
-    return JSON.parse(decrypted);
-  } catch {
-    return null;
-  }
-}
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Sensitive field definitions for user_profiles table
@@ -170,64 +42,180 @@ export const SENSITIVE_FIELDS = [
 
 export type SensitiveField = typeof SENSITIVE_FIELDS[number];
 
+interface EncryptionResponse {
+  success: boolean;
+  data?: unknown;
+  error?: string;
+}
+
+/**
+ * Encrypts a string value using server-side AES-GCM encryption
+ * Returns base64 encoded string: enc:salt+iv+ciphertext
+ * 
+ * SECURITY: The encryption key is stored in edge function secrets
+ * and never exposed to the client.
+ */
+export async function encryptField(plaintext: string): Promise<string> {
+  if (!plaintext) return plaintext;
+
+  try {
+    const { data, error } = await supabase.functions.invoke<EncryptionResponse>(
+      'encrypt-sensitive-data',
+      {
+        body: { action: 'encrypt', data: plaintext }
+      }
+    );
+
+    if (error) {
+      console.error('Server encryption failed:', error);
+      throw new Error('Failed to encrypt sensitive data');
+    }
+
+    if (!data?.success) {
+      console.error('Server encryption returned error:', data?.error);
+      throw new Error(data?.error || 'Failed to encrypt sensitive data');
+    }
+
+    return data.data as string;
+  } catch (error) {
+    console.error('Encryption failed:', error);
+    throw new Error('Failed to encrypt sensitive data');
+  }
+}
+
+/**
+ * Decrypts an AES-GCM encrypted string using server-side decryption
+ * Expects base64 encoded string: enc:salt+iv+ciphertext
+ * 
+ * SECURITY: The decryption key is stored in edge function secrets
+ * and never exposed to the client.
+ */
+export async function decryptField(encryptedText: string): Promise<string> {
+  if (!encryptedText) return encryptedText;
+  
+  // Check if the value is actually encrypted
+  if (!encryptedText.startsWith('enc:')) {
+    return encryptedText; // Return as-is if not encrypted
+  }
+
+  try {
+    const { data, error } = await supabase.functions.invoke<EncryptionResponse>(
+      'encrypt-sensitive-data',
+      {
+        body: { action: 'decrypt', data: encryptedText }
+      }
+    );
+
+    if (error) {
+      console.error('Server decryption failed:', error);
+      throw new Error('Failed to decrypt sensitive data');
+    }
+
+    if (!data?.success) {
+      console.error('Server decryption returned error:', data?.error);
+      throw new Error(data?.error || 'Failed to decrypt sensitive data');
+    }
+
+    return data.data as string;
+  } catch (error) {
+    console.error('Decryption failed:', error);
+    throw new Error('Failed to decrypt sensitive data');
+  }
+}
+
+/**
+ * Encrypts an array of strings
+ */
+export async function encryptArray(arr: string[] | null): Promise<string | null> {
+  if (!arr || arr.length === 0) return null;
+  return encryptField(JSON.stringify(arr));
+}
+
+/**
+ * Decrypts an encrypted array
+ */
+export async function decryptArray(encryptedArr: string | null): Promise<string[] | null> {
+  if (!encryptedArr) return null;
+  const decrypted = await decryptField(encryptedArr);
+  try {
+    return JSON.parse(decrypted);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Encrypts sensitive fields in a user profile object before storage
+ * Uses server-side encryption for security.
  */
 export async function encryptSensitiveFields<T extends Record<string, unknown>>(
   data: T,
   fieldsToEncrypt: readonly string[] = SENSITIVE_FIELDS
 ): Promise<Record<string, unknown>> {
-  const encrypted: Record<string, unknown> = { ...data };
-
-  for (const field of fieldsToEncrypt) {
-    if (field in encrypted && encrypted[field] !== null && encrypted[field] !== undefined) {
-      const value = encrypted[field];
-      
-      if (Array.isArray(value)) {
-        encrypted[field] = await encryptArray(value as string[]);
-      } else if (typeof value === 'string') {
-        encrypted[field] = await encryptField(value);
+  try {
+    const { data: responseData, error } = await supabase.functions.invoke<EncryptionResponse>(
+      'encrypt-sensitive-data',
+      {
+        body: { 
+          action: 'encryptFields', 
+          data,
+          fields: fieldsToEncrypt
+        }
       }
-    }
-  }
+    );
 
-  return encrypted;
+    if (error) {
+      console.error('Server encryptFields failed:', error);
+      throw new Error('Failed to encrypt sensitive fields');
+    }
+
+    if (!responseData?.success) {
+      console.error('Server encryptFields returned error:', responseData?.error);
+      throw new Error(responseData?.error || 'Failed to encrypt sensitive fields');
+    }
+
+    return responseData.data as Record<string, unknown>;
+  } catch (error) {
+    console.error('encryptSensitiveFields failed:', error);
+    throw new Error('Failed to encrypt sensitive fields');
+  }
 }
 
 /**
  * Decrypts sensitive fields in a user profile object after retrieval
+ * Uses server-side decryption for security.
  */
 export async function decryptSensitiveFields<T extends Record<string, unknown>>(
   data: T,
   fieldsToDecrypt: readonly string[] = SENSITIVE_FIELDS
 ): Promise<Record<string, unknown>> {
-  const decrypted: Record<string, unknown> = { ...data };
-
-  for (const field of fieldsToDecrypt) {
-    if (field in decrypted && decrypted[field] !== null && decrypted[field] !== undefined) {
-      const value = decrypted[field];
-      
-      if (typeof value === 'string') {
-        // Check if it's an encrypted array or string
-        const decryptedValue = await decryptField(value);
-        
-        // Try to parse as JSON array
-        try {
-          const parsed = JSON.parse(decryptedValue);
-          if (Array.isArray(parsed)) {
-            decrypted[field] = parsed;
-            continue;
-          }
-        } catch {
-          // Not JSON, treat as string
+  try {
+    const { data: responseData, error } = await supabase.functions.invoke<EncryptionResponse>(
+      'encrypt-sensitive-data',
+      {
+        body: { 
+          action: 'decryptFields', 
+          data,
+          fields: fieldsToDecrypt
         }
-        
-        decrypted[field] = decryptedValue;
       }
-    }
-  }
+    );
 
-  return decrypted;
+    if (error) {
+      console.error('Server decryptFields failed:', error);
+      throw new Error('Failed to decrypt sensitive fields');
+    }
+
+    if (!responseData?.success) {
+      console.error('Server decryptFields returned error:', responseData?.error);
+      throw new Error(responseData?.error || 'Failed to decrypt sensitive fields');
+    }
+
+    return responseData.data as Record<string, unknown>;
+  } catch (error) {
+    console.error('decryptSensitiveFields failed:', error);
+    throw new Error('Failed to decrypt sensitive fields');
+  }
 }
 
 /**
