@@ -74,7 +74,11 @@ export default function AllProvidersPage() {
     },
   });
 
-  const providers = getAllProviders();
+  // Only show providers that have actual tests in the database
+  const allProviders = getAllProviders();
+  const providers = providerStats 
+    ? allProviders.filter(p => (providerStats[p.id]?.test_count || 0) > 0)
+    : allProviders;
 
   const totalTests = providerStats 
     ? Object.values(providerStats).reduce((sum, p) => sum + p.test_count, 0) 
