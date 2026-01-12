@@ -69,6 +69,7 @@ export const testRoutes = (
     <Route path="/medichecks/:testId" element={<MedichecksTestDetailPage />} />
     <Route path="/thriva/:testId" element={<ThrivaTestDetailPage />} />
     <Route path="/randox/:testId" element={<RandoxTestDetailPage />} />
+    <Route path="/randox-health/:testId" element={<RandoxTestDetailPage />} />
     
     <Route path="/london-medical-laboratory/:testId" element={<LondonMedicalLabTestDetailPage />} />
   </>
