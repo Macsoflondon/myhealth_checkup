@@ -154,15 +154,16 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                   <div className="space-y-2">
                     {getTestsForCategories(item.categories || []).map((test, index) => {
                       const testCategoryColor = getCategoryColor(test.category);
-                      // Generate the correct provider-specific URL
+                      // Generate the correct provider-specific URL using centralized mapping
                       const getTestUrl = () => {
-                        const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-').replace('clinic', '');
+                        const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-');
                         if (providerSlug?.includes('medichecks')) return `/medichecks/${test.id}`;
-                        if (providerSlug?.includes('goodbody')) return `/goodbody/${test.id}`;
+                        if (providerSlug?.includes('goodbody')) return `/goodbody-clinic/${test.id}`;
                         if (providerSlug?.includes('lola')) return `/lola-health/${test.id}`;
                         if (providerSlug?.includes('thriva')) return `/thriva/${test.id}`;
                         if (providerSlug?.includes('randox')) return `/randox/${test.id}`;
                         if (providerSlug?.includes('tuli')) return `/tuli-health/${test.id}`;
+                        if (providerSlug?.includes('london')) return `/london-medical-laboratory/${test.id}`;
                         // Fallback to compare page with category filter
                         return `/compare?category=${test.category}`;
                       };

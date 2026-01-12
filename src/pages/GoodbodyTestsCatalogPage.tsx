@@ -142,7 +142,7 @@ const GoodbodyTestsCatalogPage = () => {
                           {formatPrice(test.price)}
                         </div>
                         <div className="flex gap-2">
-                          <Link to={`/goodbody/${generateTestSlug(test.test_name)}`}>
+                          <Link to={`/goodbody-clinic/${generateTestSlug(test.test_name)}`}>
                             <Button size="sm" className="group/btn">
                               View Details
                               <ChevronRight className="h-4 w-4 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
