@@ -299,6 +299,40 @@ export const findNearestLMLClinics = (
 };
 
 // ============================================================================
+// Admin MFA Verification Functions
+// ============================================================================
+
+export interface AdminMFAVerificationResponse {
+  isAdmin: boolean;
+  hasMFA: boolean;
+  mfaVerified: boolean;
+  requiresMFA: boolean;
+  userId: string | null;
+  message: string;
+}
+
+export const verifyAdminMFA = async (): Promise<FunctionResponse<AdminMFAVerificationResponse>> => {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const accessToken = sessionData.session?.access_token;
+
+  if (!accessToken) {
+    return { 
+      data: null, 
+      error: new Error('No active session') 
+    };
+  }
+
+  return invokeFunction<AdminMFAVerificationResponse>(
+    'verify-admin-mfa',
+    { 
+      headers: { 
+        Authorization: `Bearer ${accessToken}` 
+      } 
+    }
+  );
+};
+
+// ============================================================================
 // Export all functions
 // ============================================================================
 
@@ -319,4 +353,7 @@ export const functionsApi = {
   // Location Functions
   geocodeClinic,
   findNearestLMLClinics,
+  
+  // Admin Functions
+  verifyAdminMFA,
 };
