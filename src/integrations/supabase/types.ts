@@ -735,9 +735,11 @@ export type Database = {
           image_url: string | null
           is_active: boolean
           is_addon: boolean | null
+          is_popular: boolean | null
           original_price: number | null
           phlebotomy_cost: number | null
           phlebotomy_included: boolean | null
+          popularity_rank: number | null
           price: number | null
           provider_id: string
           provider_test_id: string | null
@@ -767,9 +769,11 @@ export type Database = {
           image_url?: string | null
           is_active?: boolean
           is_addon?: boolean | null
+          is_popular?: boolean | null
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
+          popularity_rank?: number | null
           price?: number | null
           provider_id: string
           provider_test_id?: string | null
@@ -799,9 +803,11 @@ export type Database = {
           image_url?: string | null
           is_active?: boolean
           is_addon?: boolean | null
+          is_popular?: boolean | null
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
+          popularity_rank?: number | null
           price?: number | null
           provider_id?: string
           provider_test_id?: string | null

@@ -95,3 +95,8 @@ verify_jwt = false
 # Security: JWT verification in code, checks AAL2 for admin operations
 [functions.verify-admin-mfa]
 verify_jwt = false
+
+# Scrape Popular Tests - Crawls provider websites for their popular/bestseller tests
+# Security: No public access, uses Firecrawl API key from connector
+[functions.scrape-popular-tests]
+verify_jwt = false
