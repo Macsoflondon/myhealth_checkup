@@ -32,7 +32,6 @@ const PROVIDERS: Provider[] = [
   { id: 'medichecks', name: 'Medichecks', functionName: 'medichecks-scraper' },
   { id: 'goodbody-clinic', name: 'GoodBody', functionName: 'goodbody-scraper' },
   { id: 'thriva', name: 'Thriva', functionName: 'thriva-scraper' },
-  { id: 'tuli-health', name: 'Tuli Health', functionName: 'tuli-health-scraper' },
   { id: 'randox', name: 'Randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', name: 'London Medical Lab', functionName: 'scrape-london-lab' },
 ];

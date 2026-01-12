@@ -40,7 +40,6 @@ const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
   'thriva': '/providers/thriva',
   'randox': '/providers/randox',
   'lola-health': '/providers/lola-health',
-  'tuli-health': '/providers/tuli-health',
   'london-medical-laboratory': '/providers/london-medical-laboratory',
 };
 

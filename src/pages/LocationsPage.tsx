@@ -61,7 +61,6 @@ const PROVIDERS = [
   { value: "medichecks", label: "Medichecks" },
   { value: "goodbody", label: "Goodbody Clinic" },
   { value: "randox", label: "Randox Health" },
-  { value: "tuli-health", label: "Tuli Health" },
   { value: "thriva", label: "Thriva" },
   { value: "lola-health", label: "Lola Health" },
   { value: "london-medical-laboratory", label: "London Medical Laboratory" },

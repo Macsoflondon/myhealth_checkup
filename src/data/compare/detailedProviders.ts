@@ -261,23 +261,6 @@ export const detailedProviders = [
     description: "Professional medical laboratory services with comprehensive testing capabilities"
   },
   {
-    id: "tuli-health",
-    name: "Tuli Health",
-    website: "https://www.tulihealth.com",
-    phone: "020 3993 5717",
-    email: "hello@tulihealth.com",
-    accreditation: "CQC-registered, UKAS ISO 15189 accredited laboratories",
-    labAccreditation: "UKAS ISO 15189",
-    clinics: "Walk-in clinics across London and nationwide partner pharmacies",
-    coreServices: "Comprehensive blood testing: wellness panels, hormones, vitamins, thyroid, sexual health, fertility, allergy testing",
-    tests: "50+ blood tests covering general health, hormones, vitamins, and specialist panels",
-    sampleCollection: "Professional venous blood draw at clinic locations",
-    turnaroundTime: "2-5 working days",
-    customerReviews: "4.5/5 (Trustpilot)",
-    keyDifferentiators: "Convenient walk-in clinics, professional phlebotomy, competitive pricing, nationwide coverage through pharmacy partners",
-    description: "Tuli Health offers accessible private blood testing through their network of walk-in clinics and pharmacy partners. They provide professional venous blood collection with UKAS-accredited laboratory processing for accurate, reliable results."
-  },
-  {
     id: "the-doctors-laboratory",
     name: "The Doctors Laboratory",
     website: "https://www.tdlpathology.com",
