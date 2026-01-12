@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TestTube2, ChevronRight, ExternalLink } from "lucide-react";
 import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
+import { formatBiomarkerCount } from "@/utils/formatBiomarkers";
 
 const PROVIDER_ID = "london-medical-laboratory";
 const PROVIDER_NAME = "London Medical Laboratory";
@@ -117,7 +118,7 @@ export const LondonMedicalLabTestsCatalogPage = () => {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-1 text-muted-foreground">
                         <TestTube2 className="h-4 w-4" />
-                        <span>{test.biomarker_count || 0} biomarkers</span>
+                        <span>{formatBiomarkerCount(test.biomarker_count)}</span>
                       </div>
                       <span className="font-bold text-lg text-primary">
                         {formatPrice(test.price)}

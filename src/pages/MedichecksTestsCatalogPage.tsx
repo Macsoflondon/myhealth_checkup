@@ -29,6 +29,7 @@ import {
   TestTube2
 } from "lucide-react";
 import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
+import { formatBiomarkerCount } from "@/utils/formatBiomarkers";
 
 const PROVIDER_ID = "medichecks";
 const PROVIDER_NAME = "Medichecks";
@@ -273,7 +274,7 @@ const MedichecksTestsCatalogPage = () => {
                       <div className="flex flex-wrap gap-3 text-sm">
                         <div className="flex items-center gap-1.5 text-muted-foreground">
                           <FlaskConical className="h-4 w-4 text-primary" />
-                          <span>{test.biomarker_count || 0} biomarkers</span>
+                          <span>{formatBiomarkerCount(test.biomarker_count)}</span>
                         </div>
                         <div className="flex items-center gap-1.5 text-muted-foreground">
                           <TestTube className="h-4 w-4 text-primary" />
