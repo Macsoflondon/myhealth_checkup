@@ -73,9 +73,9 @@ async function scrapeProviderPopularTests(
       },
       body: JSON.stringify({
         url: provider.popularTestsUrl,
-        formats: ['markdown', 'links', {
-          type: 'json',
-          prompt: 'Extract a list of blood tests or health tests from this page. For each test, extract the test name and price in GBP if available. Return as an array of objects with "name" and "price" fields.',
+        formats: ['markdown', 'links', 'extract'],
+        extract: {
+          prompt: 'Extract a list of blood tests or health tests from this page. For each test, extract the test name and price in GBP if available. Focus on tests marked as popular, bestsellers, or featured. Return as an array of objects with "name" and "price" fields.',
           schema: {
             type: 'object',
             properties: {
@@ -84,15 +84,15 @@ async function scrapeProviderPopularTests(
                 items: {
                   type: 'object',
                   properties: {
-                    name: { type: 'string' },
-                    price: { type: 'number' }
+                    name: { type: 'string', description: 'The name of the blood test' },
+                    price: { type: 'number', description: 'Price in GBP' }
                   },
                   required: ['name']
                 }
               }
             }
           }
-        }],
+        },
         onlyMainContent: true,
         waitFor: 5000,
       }),
@@ -107,8 +107,8 @@ async function scrapeProviderPopularTests(
 
     const tests: ScrapedTest[] = [];
     
-    // Extract from JSON extraction if available
-    const extractedJson = data.data?.json?.tests || data.data?.llm_extraction?.tests || [];
+    // Extract from structured extraction if available
+    const extractedJson = data.data?.extract?.tests || data.extract?.tests || [];
     if (Array.isArray(extractedJson) && extractedJson.length > 0) {
       for (const item of extractedJson) {
         if (item.name && typeof item.name === 'string' && item.name.length > 3) {
