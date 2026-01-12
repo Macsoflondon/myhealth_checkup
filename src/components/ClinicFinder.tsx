@@ -342,7 +342,6 @@ const ClinicFinder = () => {
                     <SelectItem value="thriva">Thriva</SelectItem>
                     <SelectItem value="goodbody">Goodbody</SelectItem>
                     <SelectItem value="randox">Randox</SelectItem>
-                    <SelectItem value="tuli">Tuli Health</SelectItem>
                     <SelectItem value="lola">Lola Health</SelectItem>
                     <SelectItem value="london">London Medical Laboratory</SelectItem>
                   </SelectContent>

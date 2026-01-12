@@ -121,8 +121,7 @@ export class TestDataTransformer {
       'randox': ['UKAS', 'ISO 15189'],
       'thriva': ['CQC'],
       'london-medical-lab': ['CQC', 'ISO 15189'],
-      'lola-health': ['CQC'],
-      'tuli-health': ['UKAS']
+      'lola-health': ['CQC']
     };
     
     return accreditationMap[providerId] || [];
@@ -171,8 +170,7 @@ export class TestDataTransformer {
       'randox': 2,
       'thriva': 3,
       'london-medical-lab': 1,
-      'lola-health': 2,
-      'tuli-health': 2
+      'lola-health': 2
     };
     
     return turnaroundMap[providerId] || 3;

@@ -34,9 +34,6 @@ export const ProviderLogo = ({ provider, className = "h-16 w-auto", priority = f
       return '/lovable-uploads/provider-lola-health.png';
     }
     
-    if (normalizedName.includes('tuli')) {
-      return '/lovable-uploads/provider-tuli-health.png';
-    }
     
     return null;
   };

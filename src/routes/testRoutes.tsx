@@ -26,7 +26,7 @@ import GoodbodyTestDetailPage from "@/pages/GoodbodyTestDetailPage";
 import MedichecksTestDetailPage from "@/pages/MedichecksTestDetailPage";
 import ThrivaTestDetailPage from "@/pages/ThrivaTestDetailPage";
 import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
-import TuliHealthTestDetailPage from "@/pages/TuliHealthTestDetailPage";
+
 import LondonMedicalLabTestDetailPage from "@/pages/LondonMedicalLabTestDetailPage";
 import FemaleHormonesTestPage from "@/pages/FemaleHormonesTestPage";
 
@@ -69,7 +69,7 @@ export const testRoutes = (
     <Route path="/medichecks/:testId" element={<MedichecksTestDetailPage />} />
     <Route path="/thriva/:testId" element={<ThrivaTestDetailPage />} />
     <Route path="/randox/:testId" element={<RandoxTestDetailPage />} />
-    <Route path="/tuli-health/:testId" element={<TuliHealthTestDetailPage />} />
+    
     <Route path="/london-medical-laboratory/:testId" element={<LondonMedicalLabTestDetailPage />} />
   </>
 );

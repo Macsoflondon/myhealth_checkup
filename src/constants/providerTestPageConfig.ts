@@ -231,50 +231,6 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     canonicalBase: 'https://myhealthcheckup.co.uk/randox',
   },
 
-  'tuli-health': {
-    id: 'tuli-health',
-    name: 'Tuli Health',
-    logo: '/lovable-uploads/provider-tuli-health.png',
-    turnaround: '2-4 working days',
-    badgeText: 'Tuli Health Blood Test',
-    features: [
-      { title: 'Flexible Testing', description: 'At-home or clinic collection options' },
-      { title: 'Accredited Labs', description: 'Quality-assured laboratory processing' },
-      { title: 'Quick Turnaround', description: '2-4 working days for results' },
-      { title: 'Affordable Prices', description: 'Competitive pricing with no hidden fees' },
-    ],
-    sampleOptions: [
-      {
-        icon: 'home',
-        title: 'At-Home Collection Kit',
-        description: 'Easy-to-use finger-prick collection kit delivered to your door with clear instructions and prepaid return postage.',
-      },
-      {
-        icon: 'clinic',
-        title: 'Partner Clinic Visit',
-        description: 'Professional venous blood collection at a Tuli Health partner clinic location near you.',
-      },
-    ],
-    whyChoose: {
-      title: 'Why Choose Tuli Health?',
-      items: [
-        { bold: 'Accessible Testing:', text: 'Affordable health screening for everyone' },
-        { bold: 'Flexible Options:', text: 'Choose between home kits or clinic visits' },
-        { bold: 'Quality Results:', text: 'Accredited laboratory processing and analysis' },
-        { bold: 'Clear Insights:', text: 'Easy-to-understand results with recommendations' },
-      ],
-    },
-    quickInfo: {
-      sampleType: 'Finger-prick or venous blood',
-      labProcessing: 'Accredited laboratories',
-      resultsDelivery: 'Online portal with clear explanations',
-      supportEmail: 'support@tulihealth.com',
-    },
-    ctaText: 'Order your Tuli Health test today for affordable, convenient health testing. Get reliable results with clear, actionable insights.',
-    ctaButtonText: 'Book with Tuli Health',
-    aboutText: 'health test with flexible collection options. All tests are processed in accredited laboratories with clear, easy-to-understand results.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/tuli-health',
-  },
 
   'lola-health': {
     id: 'lola-health',

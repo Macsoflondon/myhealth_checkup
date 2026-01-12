@@ -19,7 +19,6 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v4.png',
-  'tuli-health': '/lovable-uploads/provider-tuli-health.png',
   'the-doctors-laboratory': '/lovable-uploads/provider-london-medical.png',
 };
 
@@ -30,7 +29,6 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'london-medical-laboratory': 'London Medical Laboratory',
   'lola-health': 'Lola Health',
   'goodbody-clinic': 'GoodBody Clinic',
-  'tuli-health': 'Tuli Health',
   'the-doctors-laboratory': 'The Doctors Laboratory',
 };
 
@@ -41,7 +39,6 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
   'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
   'goodbody-clinic': 'https://goodbodyclinic.com',
-  'tuli-health': 'https://tulihealth.com',
   'the-doctors-laboratory': 'https://www.tdlpathology.com',
 };
 
@@ -78,14 +75,6 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: 'Personalised health insights',
     accreditations: ['UKAS'],
   },
-  'tuli-health': {
-    id: 'tuli-health',
-    name: 'Tuli Health',
-    logo: PROVIDER_LOGOS['tuli-health'],
-    website: PROVIDER_WEBSITES['tuli-health'],
-    description: 'Comprehensive health assessments',
-    accreditations: ['CQC'],
-  },
   'london-medical-laboratory': {
     id: 'london-medical-laboratory',
     name: 'London Medical Laboratory',
@@ -117,7 +106,6 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   'medichecks': '1-3 days',
   'lola-health': '2-4 days',
   'thriva': '2-5 days',
-  'tuli-health': '3-5 days',
   'london-medical-laboratory': '24-72 hours',
   'randox': '2-4 days',
   'the-doctors-laboratory': 'Same day - 2 days',
@@ -128,7 +116,6 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'medichecks': 'Finger-prick or Venous',
   'lola-health': 'Finger-prick (home)',
   'thriva': 'Finger-prick (home)',
-  'tuli-health': 'Venous (clinic)',
   'london-medical-laboratory': 'Venous (clinic)',
   'randox': 'Venous (clinic)',
   'the-doctors-laboratory': 'Venous (clinic)',
@@ -145,7 +132,6 @@ export const providers: Provider[] = [
   PROVIDER_DETAILS['london-medical-laboratory'],
   PROVIDER_DETAILS['lola-health'],
   PROVIDER_DETAILS['goodbody-clinic'],
-  PROVIDER_DETAILS['tuli-health'],
 ];
 
 export function getProviderLogo(providerId: string): string {

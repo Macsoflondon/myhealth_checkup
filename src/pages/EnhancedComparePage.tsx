@@ -33,7 +33,6 @@ const PROVIDERS = [
   { id: 'thriva', name: 'Thriva' },
   { id: 'goodbody', name: 'Goodbody Clinic' },
   { id: 'randox', name: 'Randox Health' },
-  { id: 'tuli-health', name: 'Tuli Health' },
   { id: 'lola-health', name: 'Lola Health' },
   { id: 'london-medical-laboratory', name: 'London Medical Lab' },
 ];

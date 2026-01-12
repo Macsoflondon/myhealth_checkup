@@ -64,7 +64,7 @@ export function getProviderFallbackUrl(providerId: string): string {
     'lola-health': 'https://lolahealth.com/collections/blood-tests',
     'medichecks': 'https://medichecks.com/collections/all-tests',
     'goodbody-clinic': 'https://goodbody.co.uk/blood-tests',
-    'tuli-health': 'https://tulihealth.com/blood-tests',
+    
     'thriva': 'https://thriva.co/blood-tests',
     'randox': 'https://randoxhealth.com/tests',
     'london-medical-laboratory': 'https://www.londonmedicallaboratory.com/tests',
