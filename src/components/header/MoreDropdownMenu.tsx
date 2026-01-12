@@ -12,8 +12,6 @@ interface MoreDropdownMenuProps {
   sections: MoreDropdownSection[];
   onItemClick?: () => void;
   onClose?: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: (event?: React.MouseEvent) => void;
   isMobile?: boolean;
 }
 
@@ -21,8 +19,6 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
   onClose,
-  onMouseEnter,
-  onMouseLeave,
   isMobile = false
 }) => {
   // Accessibility hook for focus trapping and arrow key navigation
@@ -45,8 +41,6 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
         position: 'absolute',
         WebkitOverflowScrolling: 'touch'
       }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="p-5">
@@ -78,6 +72,10 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                   key={item.path}
                   to={item.path}
                   className="state-layer block p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                  onClick={() => {
+                    onClose?.();
+                    onItemClick?.();
+                  }}
                 >
                   <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-pink-600 dark:hover:text-pink-500 transition-colors">
                     {item.name}

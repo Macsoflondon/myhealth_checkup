@@ -12,8 +12,6 @@ interface MegaMenuDropdownProps {
   categories?: Array<{ id: string; name: string; description: string }>;
   onItemClick?: () => void;
   onClose?: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: (event?: React.MouseEvent) => void;
   isMobile?: boolean;
 }
 
@@ -24,8 +22,6 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   categories,
   onItemClick,
   onClose,
-  onMouseEnter,
-  onMouseLeave,
   isMobile = false
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,8 +78,6 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
         position: 'absolute',
         WebkitOverflowScrolling: 'touch'
       }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="p-5 sm:p-6">
