@@ -1,24 +1,15 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import MainLayout from "@/layouts/MainLayout";
-import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { 
-  TestTube2, 
-  Clock, 
-  ChevronRight, 
-  Filter,
-  ExternalLink,
-  MapPin
-} from "lucide-react";
-import { PROVIDER_LOGOS, PROVIDER_WEBSITES } from "@/constants/providers";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { TestTube2, ChevronRight, ExternalLink } from "lucide-react";
+import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
 
 const PROVIDER_ID = "london-medical-laboratory";
 const PROVIDER_NAME = "London Medical Laboratory";
@@ -41,13 +32,17 @@ export const LondonMedicalLabTestsCatalogPage = () => {
     },
   });
 
-  const categories = tests 
-    ? ['all', ...new Set(tests.map(t => t.category).filter(Boolean))]
-    : ['all'];
+  const categories = useMemo(() => {
+    if (!tests) return [];
+    const cats = [...new Set(tests.map(t => t.category).filter(Boolean))];
+    return cats.sort() as string[];
+  }, [tests]);
 
-  const filteredTests = tests?.filter(test => 
-    selectedCategory === 'all' || test.category === selectedCategory
-  );
+  const filteredTests = useMemo(() => {
+    if (!tests) return [];
+    if (selectedCategory === 'all') return tests;
+    return tests.filter(test => test.category === selectedCategory);
+  }, [tests, selectedCategory]);
 
   const formatPrice = (price: number | null) => {
     if (!price) return 'Price on request';
@@ -64,82 +59,21 @@ export const LondonMedicalLabTestsCatalogPage = () => {
         />
       </Helmet>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div className="flex items-center gap-4">
-            <img
-              src={PROVIDER_LOGOS[PROVIDER_ID]}
-              alt={`${PROVIDER_NAME} logo`}
-              className="h-12 w-auto object-contain"
-            />
-            <div>
-              <PageHeading title={PROVIDER_NAME} centered={false} />
-              <p className="text-muted-foreground mt-1">
-                UKAS-accredited laboratory services
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <Button asChild variant="outline">
-              <Link to="/providers">
-                ← All Providers
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <a 
-                href={PROVIDER_WEBSITES[PROVIDER_ID]} 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                Visit Website
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-        </div>
-
-        {/* Stats Bar */}
-        <div className="flex flex-wrap gap-4 mb-8">
-          <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-            <TestTube2 className="h-5 w-5 text-primary" />
-            <span className="font-semibold">
-              {isLoading ? <Skeleton className="h-4 w-8 inline-block" /> : tests?.length || 0} Tests
-            </span>
-          </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-secondary/50 rounded-full">
-            <Clock className="h-5 w-5 text-secondary-foreground" />
-            <span className="font-semibold">24-72 hours turnaround</span>
-          </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-accent/50 rounded-full">
-            <MapPin className="h-5 w-5 text-accent-foreground" />
-            <span className="font-semibold">Venous (clinic)</span>
-          </div>
-        </div>
-
-        {/* Category Filter */}
-        <section className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="h-5 w-5 text-muted-foreground" />
-            <span className="font-medium">Filter by Category</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(category)}
-                className="capitalize"
-              >
-                {category === 'all' ? 'All Tests' : category}
-              </Button>
-            ))}
-          </div>
-        </section>
+      <div className="min-h-screen bg-background">
+        <ProviderCatalogHeader
+          providerId={PROVIDER_ID}
+          providerName={PROVIDER_NAME}
+          tagline="UKAS-accredited laboratory services"
+          testCount={tests?.length || 0}
+          isLoading={isLoading}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          features={PROVIDER_FEATURES[PROVIDER_ID]}
+        />
 
         {/* Tests Grid */}
-        <section>
+        <section className="container mx-auto px-4 pb-12">
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
