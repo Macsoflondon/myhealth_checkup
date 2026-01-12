@@ -26,9 +26,9 @@ import GoodbodyTestDetailPage from "@/pages/GoodbodyTestDetailPage";
 import MedichecksTestDetailPage from "@/pages/MedichecksTestDetailPage";
 import ThrivaTestDetailPage from "@/pages/ThrivaTestDetailPage";
 import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
-
 import LondonMedicalLabTestDetailPage from "@/pages/LondonMedicalLabTestDetailPage";
 import FemaleHormonesTestPage from "@/pages/FemaleHormonesTestPage";
+import ProviderRedirect from "@/components/routing/ProviderRedirect";
 
 export const testRoutes = (
   <>
@@ -63,14 +63,16 @@ export const testRoutes = (
     <Route path="/test/well-woman" element={<WellWomanTestPage />} />
     <Route path="/test/female-hormones" element={<FemaleHormonesTestPage />} />
     
-    {/* Provider Test Detail Pages */}
+    {/* Provider Test Detail Pages - Primary routes match database provider_id */}
     <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
+    <Route path="/goodbody-clinic/:testId" element={<GoodbodyTestDetailPage />} />
     <Route path="/goodbody/:testId" element={<GoodbodyTestDetailPage />} />
     <Route path="/medichecks/:testId" element={<MedichecksTestDetailPage />} />
     <Route path="/thriva/:testId" element={<ThrivaTestDetailPage />} />
     <Route path="/randox/:testId" element={<RandoxTestDetailPage />} />
-    <Route path="/randox-health/:testId" element={<RandoxTestDetailPage />} />
-    
     <Route path="/london-medical-laboratory/:testId" element={<LondonMedicalLabTestDetailPage />} />
+    
+    {/* Provider route aliases/redirects for cleaner URLs */}
+    <Route path="/randox-health/:testId" element={<ProviderRedirect from="randox-health" to="randox" />} />
   </>
 );
