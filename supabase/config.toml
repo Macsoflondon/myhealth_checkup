@@ -91,3 +91,9 @@ verify_jwt = false
 # Security: JWT verification, encryption key stored in secrets (never sent to client)
 [functions.encrypt-sensitive-data]
 verify_jwt = false
+
+# Admin MFA Verification Service
+# Verifies admin users have MFA enabled and verified for privileged operations
+# Security: JWT verification in code, checks AAL2 for admin operations
+[functions.verify-admin-mfa]
+verify_jwt = false
