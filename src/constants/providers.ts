@@ -19,7 +19,6 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v4.png',
-  'the-doctors-laboratory': '/lovable-uploads/provider-london-medical.png',
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
@@ -29,7 +28,6 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'london-medical-laboratory': 'London Medical Laboratory',
   'lola-health': 'Lola Health',
   'goodbody-clinic': 'GoodBody Clinic',
-  'the-doctors-laboratory': 'The Doctors Laboratory',
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
@@ -39,7 +37,6 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
   'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
   'goodbody-clinic': 'https://goodbodyclinic.com',
-  'the-doctors-laboratory': 'https://www.tdlpathology.com',
 };
 
 export const PROVIDER_DETAILS: Record<string, Provider> = {
@@ -91,14 +88,6 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: 'Advanced health screening',
     accreditations: ['UKAS', 'ISO 15189'],
   },
-  'the-doctors-laboratory': {
-    id: 'the-doctors-laboratory',
-    name: 'The Doctors Laboratory',
-    logo: PROVIDER_LOGOS['the-doctors-laboratory'],
-    website: PROVIDER_WEBSITES['the-doctors-laboratory'],
-    description: 'UK\'s largest independent pathology provider',
-    accreditations: ['UKAS', 'ISO 15189', 'CQC'],
-  },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
@@ -108,7 +97,6 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   'thriva': '2-5 days',
   'london-medical-laboratory': '24-72 hours',
   'randox': '2-4 days',
-  'the-doctors-laboratory': 'Same day - 2 days',
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
@@ -118,7 +106,6 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'thriva': 'Finger-prick (home)',
   'london-medical-laboratory': 'Venous (clinic)',
   'randox': 'Venous (clinic)',
-  'the-doctors-laboratory': 'Venous (clinic)',
 };
 
 /**
