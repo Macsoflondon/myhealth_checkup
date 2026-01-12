@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useNavigationData } from "@/hooks/useNavigationData";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -19,24 +19,15 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   onItemClick, 
   className = "" 
 }) => {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(() => {
-    // Restore from sessionStorage on mount
-    if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('activeDropdown');
-    }
-    return null;
-  });
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { getTestsForNavigation, getFilteredCategories, shouldShowGoodbodyTests } = useNavigationData();
   const isMobile = useIsMobile();
+  const location = useLocation();
 
-  // Persist dropdown state to sessionStorage
+  // Close dropdown on route change
   useEffect(() => {
-    if (activeDropdown) {
-      sessionStorage.setItem('activeDropdown', activeDropdown);
-    } else {
-      sessionStorage.removeItem('activeDropdown');
-    }
-  }, [activeDropdown]);
+    setActiveDropdown(null);
+  }, [location.pathname]);
 
   // Close dropdown when clicking outside or pressing ESC (for both desktop and mobile)
   useEffect(() => {
@@ -68,29 +59,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     setActiveDropdown(null);
   };
 
-  const handleMouseEnter = (itemName: string) => {
-    if (isMobile) return; // Disable hover on mobile
-    
-    const item = primaryNavigationItems.find(nav => nav.name === itemName);
-    if (item?.hasDropdown || itemName === "MORE") {
-      setActiveDropdown(itemName);
-    }
-  };
-
-  // Dropdown stays open until user clicks a link or clicks outside
-  const handleMouseLeave = () => {
-    // Do nothing - dropdown stays open until clicked
-  };
-
-  const handleClick = (e: React.MouseEvent, itemName: string) => {
-    if (!isMobile) return; // Only handle clicks on mobile
-
-    const item = primaryNavigationItems.find(nav => nav.name === itemName);
-    if (item?.hasDropdown) {
-      e.preventDefault();
-      e.stopPropagation();
-      setActiveDropdown(activeDropdown === itemName ? null : itemName);
-    }
+  // Toggle dropdown on click (works for both mobile and desktop)
+  const handleDropdownToggle = (e: React.MouseEvent, itemName: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setActiveDropdown(activeDropdown === itemName ? null : itemName);
   };
 
   const handleItemClick = () => {
@@ -106,31 +79,37 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       key={item.path}
       className="relative nav-item-wrapper"
       style={{ overflow: 'visible' }}
-      onMouseEnter={() => handleMouseEnter(item.name)}
-      onMouseLeave={handleMouseLeave}
     >
-      <Link
-        to={item.hasDropdown && isMobile ? '#' : item.path}
-        className={`group relative text-xs md:text-sm lg:text-base font-semibold transition-all duration-300 px-2 md:px-3 lg:px-4 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-          (item as any).highlighted 
-            ? "text-brand-pink bg-brand-pink/10"
-            : "text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5"
-        } ${activeDropdown === item.name ? 'text-brand-pink bg-brand-navy/10' : ''}`}
-        onClick={(e) => {
-          if (item.hasDropdown && isMobile) {
-            handleClick(e, item.name);
-          } else {
-            handleItemClick();
-          }
-        }}
-      >
-        {item.name}
-        {item.hasDropdown && (
+      {item.hasDropdown ? (
+        <button
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded={activeDropdown === item.name}
+          className={`group relative text-xs md:text-sm lg:text-base font-semibold transition-all duration-300 px-2 md:px-3 lg:px-4 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+            (item as any).highlighted 
+              ? "text-brand-pink bg-brand-pink/10"
+              : "text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5"
+          } ${activeDropdown === item.name ? 'text-brand-pink bg-brand-navy/10' : ''}`}
+          onClick={(e) => handleDropdownToggle(e, item.name)}
+        >
+          {item.name}
           <ChevronDown className={`w-3 h-3 md:w-4 md:h-4 transition-transform ${
             activeDropdown === item.name ? 'rotate-180' : ''
           }`} />
-        )}
-      </Link>
+        </button>
+      ) : (
+        <Link
+          to={item.path}
+          className={`group relative text-xs md:text-sm lg:text-base font-semibold transition-all duration-300 px-2 md:px-3 lg:px-4 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+            (item as any).highlighted 
+              ? "text-brand-pink bg-brand-pink/10"
+              : "text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5"
+          }`}
+          onClick={handleItemClick}
+        >
+          {item.name}
+        </Link>
+      )}
       
       {/* Mega Menu Dropdown */}
       {item.hasDropdown && activeDropdown === item.name && (
@@ -141,8 +120,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           categories={!shouldShowGoodbodyTests(item.name) ? getFilteredCategories(item.name) : undefined}
           onItemClick={handleItemClick}
           onClose={handleCloseDropdown}
-          onMouseEnter={() => handleMouseEnter(item.name)}
-          onMouseLeave={handleMouseLeave}
           isMobile={isMobile}
         />
       )}
@@ -150,22 +127,15 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   );
 
   const renderMoreButton = () => (
-    <div 
-      className="relative nav-item-wrapper"
-      onMouseEnter={() => handleMouseEnter("MORE")}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="relative nav-item-wrapper">
       <button
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={activeDropdown === "MORE"}
         className={`group relative text-xs md:text-sm lg:text-base font-semibold transition-all duration-300 px-2 md:px-3 lg:px-4 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
           activeDropdown === "MORE" ? 'text-brand-pink bg-brand-navy/10' : 'text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5'
         }`}
-        onClick={(e) => {
-          if (isMobile) {
-            e.preventDefault();
-            e.stopPropagation();
-            setActiveDropdown(activeDropdown === "MORE" ? null : "MORE");
-          }
-        }}
+        onClick={(e) => handleDropdownToggle(e, "MORE")}
       >
         More
         <ChevronDown className={`w-3 h-3 md:w-4 md:h-4 transition-transform ${
@@ -178,8 +148,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           sections={moreNavigationSections}
           onItemClick={handleItemClick}
           onClose={handleCloseDropdown}
-          onMouseEnter={() => handleMouseEnter("MORE")}
-          onMouseLeave={handleMouseLeave}
           isMobile={isMobile}
         />
       )}
