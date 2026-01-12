@@ -5,7 +5,6 @@ import { useState, useCallback, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import AccreditationLogos from "@/components/sections/AccreditationLogos";
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import { logger } from "@/lib/logger";
 import { providers } from "@/constants/providers";
@@ -121,6 +120,68 @@ const Hero = () => {
                 Find the right test for you
               </Button>
             </div>
+
+            {/* Search Bar - Integrated into main hero */}
+            <div className="max-w-2xl mx-auto mb-8 sm:mb-10">
+              <div className="bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-100">
+                <p className="text-center text-sm sm:text-base text-gray-600 mb-4 font-sans">
+                  Or search for a specific test
+                </p>
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input 
+                    type="text" 
+                    placeholder="Search over 200 tests..." 
+                    value={searchTerm} 
+                    onChange={e => setSearchTerm(e.target.value)} 
+                    onKeyPress={handleKeyPress} 
+                    className="w-full pl-12 pr-4 py-3 text-base border border-gray-200 rounded-lg focus:border-[#22c0d4] focus:ring-2 focus:ring-[#22c0d4]/20 focus:outline-none text-[#081129] bg-white" 
+                  />
+                  {isAnalyzing && (
+                    <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 animate-spin text-[#22c0d4]" />
+                  )}
+                </div>
+                
+                {/* AI Results */}
+                {aiResults && (
+                  <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+                    <p className="text-[#081129] mb-3">{aiResults.analysis}</p>
+                    {aiResults.recommendedTests?.length > 0 && (
+                      <div className="space-y-2">
+                        {aiResults.recommendedTests.map((test: any, index: number) => (
+                          <div key={index} className="bg-gray-50 p-3 rounded border border-gray-200">
+                            <div className="font-medium text-[#081129]">{test.testName}</div>
+                            <div className="text-sm text-gray-600">{test.reason}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <Button 
+                      onClick={() => navigate('/compare-tests')} 
+                      className="w-full mt-3 bg-[#22c0d4] hover:bg-[#1ba8b8]"
+                    >
+                      View available tests
+                    </Button>
+                  </div>
+                )}
+                
+                {/* Popular Searches */}
+                <div className="mt-4 text-center">
+                  <p className="text-xs text-gray-500 mb-2">Popular:</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {popularSearches.map((search, index) => (
+                      <button 
+                        key={index} 
+                        onClick={() => navigate(search.route)} 
+                        className="px-3 py-1.5 text-sm bg-white hover:bg-[#22c0d4] hover:text-white rounded-full transition-colors text-[#081129] border border-gray-200"
+                      >
+                        {search.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {/* Trust Signals - Scannable, one line per idea, appears early */}
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-6 sm:mb-8">
@@ -158,75 +219,6 @@ const Hero = () => {
           </div>
         </div>
       </section>
-
-      {/* Search Section - Secondary action */}
-      <section className="bg-gray-50 py-8 sm:py-10 md:py-12">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md border border-gray-100">
-              <p className="text-center text-sm sm:text-base text-gray-600 mb-4 font-sans">
-                Or search for a specific test
-              </p>
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input 
-                  type="text" 
-                  placeholder="Search over 200 tests..." 
-                  value={searchTerm} 
-                  onChange={e => setSearchTerm(e.target.value)} 
-                  onKeyPress={handleKeyPress} 
-                  className="w-full pl-12 pr-4 py-3 text-base border border-gray-200 rounded-lg focus:border-[#22c0d4] focus:ring-2 focus:ring-[#22c0d4]/20 focus:outline-none text-[#081129]" 
-                />
-                {isAnalyzing && (
-                  <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 animate-spin text-[#22c0d4]" />
-                )}
-              </div>
-              
-              {/* AI Results */}
-              {aiResults && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <p className="text-[#081129] mb-3">{aiResults.analysis}</p>
-                  {aiResults.recommendedTests?.length > 0 && (
-                    <div className="space-y-2">
-                      {aiResults.recommendedTests.map((test: any, index: number) => (
-                        <div key={index} className="bg-white p-3 rounded border border-gray-200">
-                          <div className="font-medium text-[#081129]">{test.testName}</div>
-                          <div className="text-sm text-gray-600">{test.reason}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <Button 
-                    onClick={() => navigate('/compare-tests')} 
-                    className="w-full mt-3 bg-[#22c0d4] hover:bg-[#1ba8b8]"
-                  >
-                    View available tests
-                  </Button>
-                </div>
-              )}
-              
-              {/* Popular Searches */}
-              <div className="mt-4 text-center">
-                <p className="text-xs text-gray-500 mb-2">Popular:</p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {popularSearches.map((search, index) => (
-                    <button 
-                      key={index} 
-                      onClick={() => navigate(search.route)} 
-                      className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-[#22c0d4] hover:text-white rounded-full transition-colors text-[#081129]"
-                    >
-                      {search.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Accreditation Logos */}
-      <AccreditationLogos />
       
       {/* Trusted Partners */}
       <PartnersGrid />

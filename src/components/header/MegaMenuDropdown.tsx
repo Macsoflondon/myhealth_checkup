@@ -4,12 +4,15 @@ import { ChevronDown, Search, X } from "lucide-react";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { GoodbodyTest } from "@/data/goodbodyTests";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
+import { PopularTest } from "@/hooks/usePopularTestsFromDatabase";
+import { formatBiomarkerCount } from "@/utils/formatBiomarkers";
 
 interface MegaMenuDropdownProps {
   itemName: string;
   itemPath: string;
   goodbodyTests?: GoodbodyTest[];
   categories?: Array<{ id: string; name: string; description: string }>;
+  popularTests?: PopularTest[];
   onItemClick?: () => void;
   onClose?: () => void;
   isMobile?: boolean;
@@ -20,6 +23,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   itemPath,
   goodbodyTests,
   categories,
+  popularTests,
   onItemClick,
   onClose,
   isMobile = false
@@ -52,6 +56,17 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
     );
   }, [categories, searchQuery]);
 
+  // Filter popular tests based on search query
+  const filteredPopularTests = useMemo(() => {
+    if (!popularTests || !searchQuery.trim()) return popularTests;
+    const query = searchQuery.toLowerCase();
+    return popularTests.filter(test => 
+      test.test_name.toLowerCase().includes(query) ||
+      test.provider_name.toLowerCase().includes(query) ||
+      test.category?.toLowerCase().includes(query)
+    );
+  }, [popularTests, searchQuery]);
+
   const handleClearSearch = () => {
     setSearchQuery("");
   };
@@ -62,7 +77,8 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   };
 
   const hasResults = (filteredTests && filteredTests.length > 0) || 
-                     (filteredCategories && filteredCategories.length > 0);
+                     (filteredCategories && filteredCategories.length > 0) ||
+                     (filteredPopularTests && filteredPopularTests.length > 0);
 
   return (
     <div 
@@ -114,7 +130,60 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           )}
         </div>
 
-        {filteredTests ? (
+        {/* Popular Tests from Database */}
+        {filteredPopularTests ? (
+          <div className="grid grid-cols-1 gap-2">
+            <div className="mb-3">
+              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                {searchQuery ? `Results for "${searchQuery}"` : 'Top Tests from All Providers'}
+              </h3>
+            </div>
+            {filteredPopularTests.length > 0 ? (
+              filteredPopularTests.map((test) => (
+                <Link
+                  key={test.id}
+                  to={test.url || `/compare?test=${test.id}`}
+                  className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                  onClick={handleItemClick}
+                  target={test.url ? "_blank" : undefined}
+                  rel={test.url ? "noopener noreferrer" : undefined}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-500 transition-colors mb-1">
+                        {test.test_name}
+                      </h3>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                        {test.provider_name}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">
+                        <span className="inline-flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                          {test.category}
+                        </span>
+                        {test.turnaround_time && (
+                          <>
+                            <span>•</span>
+                            <span>{test.turnaround_time}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="ml-3 flex-shrink-0">
+                      <span className="text-sm font-bold text-pink-600 dark:text-pink-500">
+                        £{test.price?.toFixed(2) || '0.00'}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">
+                No tests found for "{searchQuery}"
+              </p>
+            )}
+          </div>
+        ) : filteredTests ? (
           // Show Goodbody tests for health-specific sections
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
