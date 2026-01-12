@@ -88,6 +88,11 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
     setActiveDropdown(null);
   };
 
+  const handleTestClick = () => {
+    setActiveDropdown(null);
+    onItemClick?.();
+  };
+
   const getTestsForCategories = (categories: string[]) => {
     const tests: any[] = [];
     categories.forEach(categoryId => {
@@ -166,7 +171,7 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                           key={`${test.id}-${index}`}
                           to={getTestUrl()}
                           className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-colors group"
-                          onClick={onItemClick}
+                          onClick={handleTestClick}
                         >
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
@@ -196,7 +201,7 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                       className={`inline-flex items-center gap-1 text-lg font-medium transition-colors ${
                         categoryColor ? categoryColor.text : 'text-primary'
                       } hover:opacity-80`}
-                      onClick={onItemClick}
+                      onClick={handleTestClick}
                     >
                       View all {item.name.toLowerCase()} tests
                       <ChevronDown className="h-4 w-4 rotate-[-90deg]" />

@@ -60,6 +60,11 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
     setSearchQuery("");
   };
 
+  const handleItemClick = () => {
+    onClose?.();
+    onItemClick?.();
+  };
+
   const hasResults = (filteredTests && filteredTests.length > 0) || 
                      (filteredCategories && filteredCategories.length > 0);
 
@@ -129,7 +134,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                   key={test.id}
                   to={test.url || `/book/${test.id}`}
                   className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                  onClick={onItemClick}
+                  onClick={handleItemClick}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -183,6 +188,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                       key={category.id}
                       to={`/compare?category=${category.id}`}
                       className="state-layer group flex items-start gap-3 p-3 rounded-lg transition-shadow"
+                      onClick={handleItemClick}
                     >
                       <div 
                         className="w-3 h-3 rounded-full flex-shrink-0 mt-1"
@@ -213,6 +219,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           <Link
             to={itemPath}
             className="inline-flex items-center text-sm text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400 font-semibold transition-colors group"
+            onClick={handleItemClick}
           >
             View all {itemName.toLowerCase()}
             <ChevronDown className="w-4 h-4 ml-1 rotate-[-90deg] group-hover:translate-x-1 transition-transform" />
