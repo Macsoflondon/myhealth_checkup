@@ -12,6 +12,7 @@ export interface PopularTest {
   turnaround_time: string;
   sample_type: string;
   url: string;
+  popularity_rank?: number;
 }
 
 const providerDisplayNames: Record<string, string> = {
@@ -25,14 +26,44 @@ const providerDisplayNames: Record<string, string> = {
 
 /**
  * Fetches the most popular tests from all providers
+ * Prioritizes tests marked as is_popular=true, ordered by popularity_rank
+ * Falls back to price-based ordering if no popular tests are marked yet
  */
 export const usePopularTestsFromDatabase = (limit: number = 10) => {
   return useQuery({
     queryKey: ['popular-tests-database', limit],
     queryFn: async (): Promise<PopularTest[]> => {
+      // First try to get tests marked as popular by the scraper
+      const { data: popularData, error: popularError } = await supabase
+        .from('provider_tests')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank')
+        .eq('is_active', true)
+        .eq('is_popular', true)
+        .not('price', 'is', null)
+        .order('popularity_rank', { ascending: true, nullsFirst: false })
+        .limit(limit);
+
+      if (!popularError && popularData && popularData.length >= limit) {
+        // We have enough popular tests from the scraper
+        return popularData.map(test => ({
+          id: test.id,
+          test_name: test.test_name,
+          provider_id: test.provider_id,
+          provider_name: providerDisplayNames[test.provider_id] || test.provider_id,
+          price: test.price || 0,
+          biomarker_count: test.biomarker_count || 0,
+          category: test.category || 'General Health',
+          turnaround_time: 'Results in 2-4 days',
+          sample_type: test.sample_type || 'Blood sample',
+          url: test.url || '',
+          popularity_rank: test.popularity_rank || undefined
+        }));
+      }
+
+      // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -63,7 +94,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             provider_id: test.provider_id,
             provider_name: providerDisplayNames[providerId] || providerId,
             price: test.price || 0,
-            biomarker_count: 0,
+            biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
             turnaround_time: 'Results in 2-4 days',
             sample_type: test.sample_type || 'Blood sample',
@@ -81,14 +112,42 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
 
 /**
  * Get popular tests for navigation menu dropdown
+ * Prioritizes tests marked as is_popular=true
  */
 export const usePopularTestsForNavigation = () => {
   return useQuery({
     queryKey: ['popular-tests-navigation'],
     queryFn: async (): Promise<PopularTest[]> => {
+      // First try to get tests marked as popular
+      const { data: popularData, error: popularError } = await supabase
+        .from('provider_tests')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank')
+        .eq('is_active', true)
+        .eq('is_popular', true)
+        .not('price', 'is', null)
+        .order('popularity_rank', { ascending: true, nullsFirst: false })
+        .limit(8);
+
+      if (!popularError && popularData && popularData.length >= 4) {
+        return popularData.map(test => ({
+          id: test.id,
+          test_name: test.test_name,
+          provider_id: test.provider_id,
+          provider_name: providerDisplayNames[test.provider_id] || test.provider_id,
+          price: test.price || 0,
+          biomarker_count: test.biomarker_count || 0,
+          category: test.category || 'General Health',
+          turnaround_time: 'Results in 2-4 days',
+          sample_type: test.sample_type || 'Blood sample',
+          url: test.url || '',
+          popularity_rank: test.popularity_rank || undefined
+        }));
+      }
+
+      // Fallback: Get diverse tests from all providers
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -117,9 +176,9 @@ export const usePopularTestsForNavigation = () => {
             id: test.id,
             test_name: test.test_name,
             provider_id: test.provider_id,
-            provider_name: providerDisplayNames[providerId] || providerId,
+            provider_name: providerDisplayNames[test.provider_id] || test.provider_id,
             price: test.price || 0,
-            biomarker_count: 0,
+            biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
             turnaround_time: 'Results in 2-4 days',
             sample_type: test.sample_type || 'Blood sample',
