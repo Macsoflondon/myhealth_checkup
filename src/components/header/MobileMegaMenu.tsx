@@ -137,15 +137,16 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
                 <div className="ml-4 space-y-2 py-2 border-l-2 border-gray-100 pl-3">
                   {getTestsForCategories(item.categories || []).map((test, index) => {
                     const testCategoryColor = getCategoryColor(test.category);
-                    // Generate the correct provider-specific URL
+                    // Generate the correct provider-specific URL using centralized mapping
                     const getTestUrl = () => {
-                      const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-').replace('clinic', '');
+                      const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-');
                       if (providerSlug?.includes('medichecks')) return `/medichecks/${test.id}`;
-                      if (providerSlug?.includes('goodbody')) return `/goodbody/${test.id}`;
+                      if (providerSlug?.includes('goodbody')) return `/goodbody-clinic/${test.id}`;
                       if (providerSlug?.includes('lola')) return `/lola-health/${test.id}`;
                       if (providerSlug?.includes('thriva')) return `/thriva/${test.id}`;
                       if (providerSlug?.includes('randox')) return `/randox/${test.id}`;
                       if (providerSlug?.includes('tuli')) return `/tuli-health/${test.id}`;
+                      if (providerSlug?.includes('london')) return `/london-medical-laboratory/${test.id}`;
                       return `/compare?category=${test.category}`;
                     };
                     return (

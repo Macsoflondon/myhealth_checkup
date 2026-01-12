@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, FlaskConical } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getProviderRoute, getProviderDisplayName } from "@/utils/providerRoutes";
 
 interface SimilarTest {
   id: string;
@@ -64,32 +65,8 @@ const SimilarTestsSection = ({
     return null;
   }
 
-  const getProviderRoute = (providerId: string) => {
-    const providerRoutes: Record<string, string> = {
-      'medichecks': '/medichecks',
-      'goodbody': '/goodbody',
-      'goodbody-clinic': '/goodbody',
-      'thriva': '/thriva',
-      'randox': '/randox',
-      'tuli-health': '/tuli-health',
-      'lola-health': '/lola-health',
-      'london-medical-laboratory': '/london-medical-laboratory',
-    };
-    return providerRoutes[providerId.toLowerCase()] || '/compare';
-  };
-
   const formatProviderName = (providerId: string) => {
-    const names: Record<string, string> = {
-      'medichecks': 'Medichecks',
-      'goodbody': 'Goodbody',
-      'goodbody-clinic': 'Goodbody Clinic',
-      'thriva': 'Thriva',
-      'randox': 'Randox',
-      'tuli-health': 'Tuli Health',
-      'lola-health': 'Lola Health',
-      'london-medical-laboratory': 'London Medical Lab',
-    };
-    return names[providerId.toLowerCase()] || providerId;
+    return getProviderDisplayName(providerId);
   };
 
   const getTestSlug = (test: SimilarTest) => {
