@@ -7,6 +7,7 @@ import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
+import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,8 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { toast } from "@/hooks/use-toast";
 import HeroSection from "@/components/sections/HeroSection";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
+import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
+import { getCategoryDisplayName } from "@/utils/categoryTaglines";
 
 const CATEGORY_LIST = [
   "general health",
@@ -55,6 +58,13 @@ const CompareTests = () => {
 
   // Use the centralised data hook
   const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
+  
+  // Fetch recommended tests for the current category
+  const effectiveCategory = filters.selectedCategory || urlCategory || "general-health";
+  const { data: recommendedTests = [], isLoading: isLoadingRecommended } = useRecommendedTests(
+    effectiveCategory,
+    8
+  );
 
   // Set initial category from URL
   React.useEffect(() => {
@@ -162,7 +172,9 @@ const CompareTests = () => {
         <UKASBanner />
         <MainLayout hideUKASBanner hideHeader hideFooter>
           <HeroSection
-            title="Compare Private Blood Tests"
+            title={effectiveCategory && effectiveCategory !== "all" 
+              ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
+              : "Compare Private Blood Tests"}
             subtitle="Transparent pricing and inclusions from trusted UK providers"
           >
             {/* Quick Stats */}
@@ -186,9 +198,21 @@ const CompareTests = () => {
             <PageBreadcrumb 
               segments={[
                 { label: "Home", href: "/" },
-                { label: "Compare Tests" }
+                { label: "Compare Tests", href: "/compare" },
+                ...(effectiveCategory && effectiveCategory !== "all" 
+                  ? [{ label: getCategoryDisplayName(effectiveCategory) }] 
+                  : [])
               ]}
               backLabel="Back to Home"
+            />
+            
+            {/* Recommended Tests Carousel */}
+            <RecommendedTestsCarousel
+              tests={recommendedTests}
+              category={effectiveCategory}
+              onSelectTest={handleToggleSelect}
+              selectedTestIds={selectedTests.map(t => t.id)}
+              isLoading={isLoadingRecommended}
             />
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Filters Sidebar */}
