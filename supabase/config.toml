@@ -100,3 +100,8 @@ verify_jwt = false
 # Security: No public access, uses Firecrawl API key from connector
 [functions.scrape-popular-tests]
 verify_jwt = false
+
+# Medichecks Firecrawl Scraper - Uses Firecrawl connector for reliable scraping
+# Security: No public access, uses Firecrawl API key from connector
+[functions.medichecks-firecrawl]
+verify_jwt = false
