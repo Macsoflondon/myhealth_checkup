@@ -14,6 +14,7 @@ import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
 import StickyCtaBar from "@/components/common/StickyCtaBar";
+import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 
 const Index = () => {
   usePerformanceOptimization();
@@ -99,7 +100,10 @@ const Index = () => {
         {/* 2. Our Trusted Partners */}
         <PartnersGrid />
         
-        {/* 3. Your Health Journey Simplified */}
+        {/* 3. Featured Publications */}
+        <FeaturedPublications />
+        
+        {/* 4. Your Health Journey Simplified */}
         <JourneySimplified />
         
         {/* 3. Comprehensive Care Categories */}

@@ -37,6 +37,7 @@ export { default as FindClinicSection } from "./sections/FindClinicSection";
 export { default as HereToHelp } from "./sections/HereToHelp";
 export { default as FinalCTA } from "./sections/FinalCTA";
 export { default as TrustPlatformSection } from "./sections/TrustPlatformSection";
+export { FeaturedPublications } from "./sections/FeaturedPublications";
 
 // Provider components
 export { ProviderLogo } from "./ProviderLogo";
