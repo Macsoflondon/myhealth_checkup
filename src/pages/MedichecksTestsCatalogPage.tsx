@@ -135,9 +135,11 @@ const MedichecksTestsCatalogPage = () => {
       .replace(/(^-|-$)/g, "");
   };
 
-  const formatPrice = (price: number | null) => {
-    if (!price) return 'Price on request';
-    return `£${price.toFixed(2)}`;
+  const formatPrice = (price: number | null, url: string | null) => {
+    if (!price) {
+      return { text: 'View on provider site', isLink: true, url };
+    }
+    return { text: `£${price.toFixed(2)}`, isLink: false, url: null };
   };
 
   return (
@@ -283,9 +285,27 @@ const MedichecksTestsCatalogPage = () => {
                       </div>
 
                       <div className="flex items-center justify-between pt-2 border-t">
-                        <div className="text-2xl font-bold text-primary">
-                          {formatPrice(test.price)}
-                        </div>
+                        {(() => {
+                          const priceInfo = formatPrice(test.price, test.url);
+                          if (priceInfo.isLink && priceInfo.url) {
+                            return (
+                              <a 
+                                href={priceInfo.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-lg font-semibold text-primary hover:underline flex items-center gap-1"
+                              >
+                                {priceInfo.text}
+                                <ExternalLink className="h-4 w-4" />
+                              </a>
+                            );
+                          }
+                          return (
+                            <div className="text-2xl font-bold text-primary">
+                              {priceInfo.text}
+                            </div>
+                          );
+                        })()}
                         <div className="flex gap-2">
                           <Link to={`/medichecks/${generateTestSlug(test.test_name)}`}>
                             <Button size="sm" className="group/btn">
@@ -293,7 +313,7 @@ const MedichecksTestsCatalogPage = () => {
                               <ChevronRight className="h-4 w-4 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
                             </Button>
                           </Link>
-                          {test.url && (
+                          {test.url && test.price && (
                             <Button asChild variant="outline" size="sm">
                               <a 
                                 href={test.url} 
