@@ -8,6 +8,9 @@ import { TestListCard } from "@/components/compare/TestListCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
+import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
+import { ProviderTableView } from "@/components/compare/ProviderTableView";
+import { TestViewToggle, type TestViewMode } from "@/components/compare/TestViewToggle";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +23,6 @@ import {
 import { Loader2, Filter, TrendingUp, Clock, Sparkles } from "lucide-react";
 import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import { toast } from "@/hooks/use-toast";
 import HeroSection from "@/components/sections/HeroSection";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
@@ -50,6 +52,9 @@ const CompareTests = () => {
   const ITEMS_PER_PAGE = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // View mode state
+  const [viewMode, setViewMode] = useState<TestViewMode>("list");
 
   // Comparison states - no limit on number of tests
   const [selectedTests, setSelectedTests] = useState<CompareTestData[]>([]);
@@ -230,9 +235,9 @@ const CompareTests = () => {
 
               {/* Results */}
               <main className="flex-1 min-w-0">
-                {/* Sort and Filter Toggle */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-4">
+                {/* Sort, View Toggle, and Filter Toggle */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                  <div className="flex items-center gap-4 flex-wrap">
                     <Button
                       variant="outline"
                       size="sm"
@@ -247,28 +252,31 @@ const CompareTests = () => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground hidden sm:inline">
-                      Sort by:
-                    </span>
-                    <Select 
-                      value={filters.sortBy} 
-                      onValueChange={(v) => updateFilter('sortBy', v)}
-                    >
-                      <SelectTrigger className="w-[180px] bg-background">
-                        <SelectValue placeholder="Sort by" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="price-asc">Price (low to high)</SelectItem>
-                        <SelectItem value="price-desc">Price (high to low)</SelectItem>
-                        <SelectItem value="turnaround">Fastest results</SelectItem>
-                        <SelectItem value="popular">Most popular</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {/* View Toggle */}
+                    <TestViewToggle value={viewMode} onChange={setViewMode} />
+                    
+                    {/* Sort - only show in list view */}
+                    {viewMode === "list" && (
+                      <Select 
+                        value={filters.sortBy} 
+                        onValueChange={(v) => updateFilter('sortBy', v)}
+                      >
+                        <SelectTrigger className="w-[160px] bg-background">
+                          <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="price-asc">Price (low to high)</SelectItem>
+                          <SelectItem value="price-desc">Price (high to low)</SelectItem>
+                          <SelectItem value="turnaround">Fastest results</SelectItem>
+                          <SelectItem value="popular">Most popular</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
                   </div>
                 </div>
 
-                {/* Test Cards */}
+                {/* Test Display - based on view mode */}
                 {isLoading ? (
                   <div className="flex justify-center items-center py-20">
                     <div className="text-center">
@@ -291,7 +299,50 @@ const CompareTests = () => {
                       </Button>
                     </div>
                   </div>
+                ) : viewMode === "grouped" ? (
+                  /* Grouped View - Tests clustered by type with expandable providers */
+                  <GroupedTestsTable
+                    tests={tests.map(t => ({
+                      id: t.id,
+                      testName: t.name,
+                      provider: t.provider,
+                      price: t.price,
+                      originalPrice: undefined,
+                      turnaroundDays: t.turnaroundDays,
+                      biomarkerCount: t.biomarkerCount,
+                      sampleType: t.features?.collection,
+                      homeKitAvailable: t.features?.collection?.toLowerCase().includes("home") || false,
+                      clinicVisitAvailable: t.features?.collection?.toLowerCase().includes("clinic") || false,
+                      gpReviewIncluded: false,
+                      url: t.url,
+                      description: t.description,
+                      category: t.category,
+                    }))}
+                    title="Tests by Type"
+                  />
+                ) : viewMode === "table" ? (
+                  /* Table View - All providers side by side */
+                  <ProviderTableView
+                    tests={tests.map(t => ({
+                      id: t.id,
+                      testName: t.name,
+                      provider: t.provider,
+                      price: t.price,
+                      originalPrice: undefined,
+                      turnaroundDays: t.turnaroundDays,
+                      biomarkerCount: t.biomarkerCount,
+                      sampleType: t.features?.collection,
+                      homeKitAvailable: t.features?.collection?.toLowerCase().includes("home") || false,
+                      clinicVisitAvailable: t.features?.collection?.toLowerCase().includes("clinic") || false,
+                      gpReviewIncluded: false,
+                      url: t.url,
+                      description: t.description,
+                      category: t.category,
+                    }))}
+                    title="Compare All Providers"
+                  />
                 ) : (
+                  /* List View - Original card layout */
                   <div className="space-y-4">
                     {paginatedTests.map((test) => (
                       <TestListCard 
