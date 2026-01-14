@@ -6,7 +6,7 @@ interface ProviderLogoProps {
   priority?: boolean;
 }
 
-export const ProviderLogo = ({ provider, className = "h-16 w-auto", priority = false }: ProviderLogoProps) => {
+export const ProviderLogo = ({ provider, className = "h-20 w-auto", priority = false }: ProviderLogoProps) => {
   const getProviderLogo = (providerName: string) => {
     const normalizedName = providerName.toLowerCase();
     
