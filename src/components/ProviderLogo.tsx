@@ -15,7 +15,7 @@ export const ProviderLogo = ({ provider, className = "h-16 w-auto", priority = f
     }
     
     if (normalizedName.includes('goodbody')) {
-      return '/lovable-uploads/provider-goodbody-new-v4.png';
+      return '/lovable-uploads/provider-goodbody-new-v3.png';
     }
     
     if (normalizedName.includes('thriva')) {
