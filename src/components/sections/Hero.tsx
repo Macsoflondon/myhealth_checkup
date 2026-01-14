@@ -116,13 +116,13 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Search Bar - Integrated into main hero */}
+            {/* Search Bar - Prominent navy themed section */}
             <div className="max-w-2xl mx-auto mb-8 sm:mb-10">
-              <div className="bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-100">
-                <p className="text-center text-sm sm:text-base text-gray-600 mb-4 font-sans">
+              <div className="bg-[#081129] rounded-2xl p-6 sm:p-8 shadow-xl">
+                <p className="text-center text-base sm:text-lg text-white font-medium mb-5">
                   Or search for a specific test
                 </p>
-                <div className="relative">
+                <div className="relative mb-4">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input 
                     type="text" 
@@ -130,23 +130,33 @@ const Hero = () => {
                     value={searchTerm} 
                     onChange={e => setSearchTerm(e.target.value)} 
                     onKeyPress={handleKeyPress} 
-                    className="w-full pl-12 pr-4 py-3 text-base border border-gray-200 rounded-lg focus:border-[#22c0d4] focus:ring-2 focus:ring-[#22c0d4]/20 focus:outline-none text-[#081129] bg-white" 
+                    className="w-full pl-12 pr-4 py-4 text-base border-0 rounded-xl focus:ring-2 focus:ring-[#22c0d4] focus:outline-none text-[#081129] bg-white shadow-md" 
                   />
                   {isAnalyzing && (
                     <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 animate-spin text-[#22c0d4]" />
                   )}
                 </div>
                 
+                {/* Search Button */}
+                <Button 
+                  onClick={handleSearch}
+                  disabled={!searchTerm.trim() || isAnalyzing}
+                  className="w-full bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base"
+                >
+                  <Search className="w-5 h-5 mr-2" />
+                  Start Your Search
+                </Button>
+                
                 {/* AI Results */}
                 {aiResults && (
-                  <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                    <p className="text-[#081129] mb-3">{aiResults.analysis}</p>
+                  <div className="mt-5 p-4 bg-white/10 rounded-xl border border-white/20">
+                    <p className="text-white mb-3">{aiResults.analysis}</p>
                     {aiResults.recommendedTests?.length > 0 && (
                       <div className="space-y-2">
                         {aiResults.recommendedTests.map((test: any, index: number) => (
-                          <div key={index} className="bg-gray-50 p-3 rounded border border-gray-200">
-                            <div className="font-medium text-[#081129]">{test.testName}</div>
-                            <div className="text-sm text-gray-600">{test.reason}</div>
+                          <div key={index} className="bg-white/10 p-3 rounded-lg border border-white/20">
+                            <div className="font-medium text-white">{test.testName}</div>
+                            <div className="text-sm text-white/70">{test.reason}</div>
                           </div>
                         ))}
                       </div>
@@ -161,14 +171,14 @@ const Hero = () => {
                 )}
                 
                 {/* Popular Searches */}
-                <div className="mt-4 text-center">
-                  <p className="text-xs text-gray-500 mb-2">Popular:</p>
+                <div className="mt-5 text-center">
+                  <p className="text-xs text-white/60 mb-3">Popular:</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {popularSearches.map((search, index) => (
                       <button 
                         key={index} 
                         onClick={() => navigate(search.route)} 
-                        className="px-3 py-1.5 text-sm bg-white hover:bg-[#22c0d4] hover:text-white rounded-full transition-colors text-[#081129] border border-gray-200"
+                        className="px-4 py-2 text-sm bg-white/10 hover:bg-[#22c0d4] text-white rounded-full transition-colors border border-white/30"
                       >
                         {search.name}
                       </button>
