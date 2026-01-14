@@ -164,7 +164,7 @@ export default function AllProvidersPage() {
               <Card className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/30 h-full">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="h-16 w-32 flex items-center">
+                    <div className="h-20 w-40 flex items-center">
                       <img
                         src={provider.logo}
                         alt={`${provider.name} logo`}
