@@ -6,6 +6,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 // New streamlined sections
 import Hero from "@/components/sections/Hero";
+import PartnersGrid from "@/components/sections/PartnersGrid";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import TopConcernsSection from "@/components/sections/TopConcernsSection";
@@ -95,7 +96,10 @@ const Index = () => {
         {/* 1. Hero Section */}
         <Hero />
         
-        {/* 2. Your Health Journey Simplified */}
+        {/* 2. Our Trusted Partners */}
+        <PartnersGrid />
+        
+        {/* 3. Your Health Journey Simplified */}
         <JourneySimplified />
         
         {/* 3. Comprehensive Care Categories */}
