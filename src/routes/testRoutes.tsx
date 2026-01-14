@@ -29,10 +29,14 @@ import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
 import LondonMedicalLabTestDetailPage from "@/pages/LondonMedicalLabTestDetailPage";
 import FemaleHormonesTestPage from "@/pages/FemaleHormonesTestPage";
 import ProviderRedirect from "@/components/routing/ProviderRedirect";
+import CategoryLandingPage from "@/pages/CategoryLandingPage";
 
 export const testRoutes = (
   <>
-    {/* Category Pages */}
+    {/* Dynamic Category Landing Page */}
+    <Route path="/tests/:category" element={<CategoryLandingPage />} />
+    
+    {/* Legacy Category Pages - specific routes override dynamic */}
     <Route path="/tests/cancer" element={<CancerScreeningPage />} />
     <Route path="/cancer-screening-compare" element={<CancerComparisonPage />} />
     <Route path="/cancer-biomarkers-reference" element={<CancerBiomarkersReferencePage />} />

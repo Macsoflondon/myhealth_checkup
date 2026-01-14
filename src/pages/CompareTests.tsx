@@ -51,8 +51,7 @@ const CompareTests = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  // Comparison states
-  const MAX_COMPARE_TESTS = 3;
+  // Comparison states - no limit on number of tests
   const [selectedTests, setSelectedTests] = useState<CompareTestData[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
 
@@ -117,22 +116,13 @@ const CompareTests = () => {
     }, 300);
   }, []);
 
-  // Comparison handlers
+  // Comparison handlers - unlimited test selection
   const handleToggleSelect = useCallback((test: CompareTestData) => {
     setSelectedTests(prev => {
       const isAlreadySelected = prev.some(t => t.id === test.id);
       
       if (isAlreadySelected) {
         return prev.filter(t => t.id !== test.id);
-      }
-      
-      if (prev.length >= MAX_COMPARE_TESTS) {
-        toast({
-          title: "Maximum tests selected",
-          description: `You can compare up to ${MAX_COMPARE_TESTS} tests at a time. Remove one to add another.`,
-          variant: "destructive",
-        });
-        return prev;
       }
       
       return [...prev, test];
