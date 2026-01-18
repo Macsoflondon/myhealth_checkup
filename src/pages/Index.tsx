@@ -10,6 +10,7 @@ import PartnersGrid from "@/components/sections/PartnersGrid";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import TopConcernsSection from "@/components/sections/TopConcernsSection";
+import MostPopularTestsSection from "@/components/sections/MostPopularTestsSection";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
@@ -106,7 +107,10 @@ const Index = () => {
         {/* 4. Your Health Journey Simplified */}
         <JourneySimplified />
         
-        {/* 3. Comprehensive Care Categories */}
+        {/* 5. Most Popular Tests from Our Providers */}
+        <MostPopularTestsSection />
+        
+        {/* 6. Comprehensive Care Categories */}
         <TopConcernsSection />
         
         {/* 4. Find a Clinic Near You */}
