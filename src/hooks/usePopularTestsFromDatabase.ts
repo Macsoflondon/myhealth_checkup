@@ -33,7 +33,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
   return useQuery({
     queryKey: ['popular-tests-database', limit],
     queryFn: async (): Promise<PopularTest[]> => {
-      // First try to get tests marked as popular by the scraper
+      // Get tests marked as popular, ordered by popularity_rank
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
         .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank')
@@ -43,8 +43,8 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         .order('popularity_rank', { ascending: true, nullsFirst: false })
         .limit(limit);
 
-      if (!popularError && popularData && popularData.length >= limit) {
-        // We have enough popular tests from the scraper
+      if (!popularError && popularData && popularData.length > 0) {
+        // Return popular tests in database order (already mixed by popularity_rank)
         return popularData.map(test => ({
           id: test.id,
           test_name: test.test_name,
