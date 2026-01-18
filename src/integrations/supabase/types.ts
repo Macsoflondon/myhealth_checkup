@@ -372,6 +372,7 @@ export type Database = {
         Row: {
           action_items: string[] | null
           created_at: string
+          created_by: string | null
           description: string
           expires_at: string | null
           id: string
@@ -386,6 +387,7 @@ export type Database = {
         Insert: {
           action_items?: string[] | null
           created_at?: string
+          created_by?: string | null
           description: string
           expires_at?: string | null
           id?: string
@@ -400,6 +402,7 @@ export type Database = {
         Update: {
           action_items?: string[] | null
           created_at?: string
+          created_by?: string | null
           description?: string
           expires_at?: string | null
           id?: string
