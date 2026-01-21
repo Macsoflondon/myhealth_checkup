@@ -115,7 +115,7 @@ const MostPopularTestsSection = () => {
               return (
                 <div
                   key={test.id}
-                  className="group bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col"
+                  className="group bg-[#e70d69]/5 rounded-xl border-2 border-[#e70d69]/30 hover:border-[#e70d69] hover:shadow-lg hover:shadow-[#e70d69]/20 transition-all duration-300 overflow-hidden flex flex-col"
                 >
                   {/* Provider Logo */}
                   <div className="p-4 pb-0">
@@ -175,34 +175,34 @@ const MostPopularTestsSection = () => {
                           £{test.price.toFixed(2)}
                         </span>
                       </div>
-                      {test.url ? (
-                        <a
-                          href={test.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block w-full"
-                        >
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                        {test.url ? (
+                          <a
+                            href={test.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block w-full"
                           >
-                            View test
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </a>
-                      ) : (
-                        <Link to={`/test/${test.id}`} className="block w-full">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                          >
-                            View test
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </Link>
-                      )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-white hover:text-[#22c0d4] hover:border-[#22c0d4]"
+                            >
+                              View test
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                          </a>
+                        ) : (
+                          <Link to={`/test/${test.id}`} className="block w-full">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-white hover:text-[#22c0d4] hover:border-[#22c0d4]"
+                            >
+                              View test
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                          </Link>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -217,7 +217,7 @@ const MostPopularTestsSection = () => {
             asChild
             variant="default"
             size="lg"
-            className="bg-primary hover:bg-primary/90"
+            className="bg-[#22c0d4] text-white border-2 border-[#22c0d4] hover:bg-white hover:text-[#22c0d4]"
           >
             <Link to="/popular-tests">
               View all popular tests
