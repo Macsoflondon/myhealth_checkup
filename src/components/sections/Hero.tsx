@@ -118,7 +118,7 @@ const Hero = () => {
 
             {/* Search Bar - Prominent navy themed section */}
             <div className="max-w-2xl mx-auto mb-8 sm:mb-10">
-              <div className="bg-[#081129] rounded-2xl p-6 sm:p-8 shadow-xl">
+              <div className="bg-[#e70d69] rounded-2xl p-6 sm:p-8 shadow-xl">
                 <p className="text-center text-base sm:text-lg text-white font-medium mb-5">
                   Or search for a specific test
                 </p>
@@ -141,7 +141,7 @@ const Hero = () => {
                 <Button 
                   onClick={handleSearch}
                   disabled={!searchTerm.trim() || isAnalyzing}
-                  className="w-full bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base"
+                  className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#22c0d4] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors"
                 >
                   <Search className="w-5 h-5 mr-2" />
                   Start Your Search
@@ -163,7 +163,7 @@ const Hero = () => {
                     )}
                     <Button 
                       onClick={() => navigate('/compare-tests')} 
-                      className="w-full mt-3 bg-[#22c0d4] hover:bg-[#1ba8b8]"
+                      className="w-full mt-3 bg-[#22c0d4] hover:bg-white hover:text-[#22c0d4] transition-colors"
                     >
                       View available tests
                     </Button>
