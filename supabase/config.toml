@@ -105,3 +105,8 @@ verify_jwt = false
 # Security: No public access, uses Firecrawl API key from connector
 [functions.medichecks-firecrawl]
 verify_jwt = false
+
+# Blood Test Analysis - AI-powered biomarker analysis using Lovable AI
+# Requires authentication - Users must be logged in
+[functions.blood-test-analysis]
+verify_jwt = false

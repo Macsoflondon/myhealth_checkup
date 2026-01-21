@@ -18,8 +18,8 @@ import MedichecksMensHealthPage from "@/pages/MedichecksMensHealthPage";
 import ThrivaTestsCatalogPage from "@/pages/ThrivaTestsCatalogPage";
 import RandoxTestsCatalogPage from "@/pages/RandoxTestsCatalogPage";
 import LolaHealthTestsCatalogPage from "@/pages/LolaHealthTestsCatalogPage";
-
 import LondonMedicalLabTestsCatalogPage from "@/pages/LondonMedicalLabTestsCatalogPage";
+import BloodTestAnalysisPage from "@/pages/BloodTestAnalysisPage";
 
 export const featureRoutes = (
   <>
@@ -44,7 +44,9 @@ export const featureRoutes = (
     <Route path="/providers/thriva" element={<ThrivaTestsCatalogPage />} />
     <Route path="/providers/randox" element={<RandoxTestsCatalogPage />} />
     <Route path="/providers/lola-health" element={<LolaHealthTestsCatalogPage />} />
-    
     <Route path="/providers/london-medical-laboratory" element={<LondonMedicalLabTestsCatalogPage />} />
+    <Route path="/blood-test-analysis" element={<BloodTestAnalysisPage />} />
+  </>
+);
   </>
 );
