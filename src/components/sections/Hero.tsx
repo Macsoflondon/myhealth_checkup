@@ -141,10 +141,10 @@ const Hero = () => {
                 <Button 
                   onClick={handleSearch}
                   disabled={!searchTerm.trim() || isAnalyzing}
-                  className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#22c0d4] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors"
+                  className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#081129] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors flex items-center justify-center"
                 >
-                  <Search className="w-5 h-5 mr-2" />
-                  Start Your Search
+                  <Search className="w-5 h-5 mr-3 flex-shrink-0" />
+                  <span>Start Your Search</span>
                 </Button>
                 
                 {/* AI Results */}
@@ -172,13 +172,13 @@ const Hero = () => {
                 
                 {/* Popular Searches */}
                 <div className="mt-5 text-center">
-                  <p className="text-xs text-white/60 mb-3">Popular:</p>
+                  <p className="text-sm font-bold text-white mb-3">Popular:</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {popularSearches.map((search, index) => (
                       <button 
                         key={index} 
                         onClick={() => navigate(search.route)} 
-                        className="px-4 py-2 text-sm bg-white/10 hover:bg-[#22c0d4] text-white rounded-full transition-colors border border-white/30"
+                        className="px-4 py-2 text-sm bg-[#22c0d4] hover:bg-white text-white hover:text-[#081129] rounded-full transition-colors border border-[#22c0d4] hover:border-white"
                       >
                         {search.name}
                       </button>
