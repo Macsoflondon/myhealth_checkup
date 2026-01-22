@@ -48,5 +48,3 @@ export const featureRoutes = (
     <Route path="/blood-test-analysis" element={<BloodTestAnalysisPage />} />
   </>
 );
-  </>
-);
