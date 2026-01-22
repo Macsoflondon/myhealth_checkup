@@ -5,7 +5,7 @@ import Autoplay from "embla-carousel-autoplay";
 export const FeaturedPublications = () => {
   const plugin = useRef(
     Autoplay({
-      delay: 3000,
+      delay: 5000,
       stopOnInteraction: false,
       stopOnMouseEnter: true
     })
@@ -27,8 +27,7 @@ export const FeaturedPublications = () => {
     { name: "Healthista", url: "https://www.healthista.com" },
     { name: "woman&home", url: "https://www.womanandhome.com" },
     { name: "Men's Health", url: "https://www.menshealth.com" },
-    { name: "VOGUE", url: "https://www.vogue.co.uk" },
-    { name: "i", url: "https://inews.co.uk" }
+    { name: "VOGUE", url: "https://www.vogue.co.uk" }
   ];
 
   // Group publications into sets of 4 for 2x2 display per slide
@@ -52,7 +51,7 @@ export const FeaturedPublications = () => {
           <CarouselContent>
             {groupedPublications.map((group, index) => (
               <CarouselItem key={index} className="basis-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
                   {group.map((publication) => (
                     <div 
                       key={publication.name} 
