@@ -61,7 +61,7 @@ export const FeaturedPublications = () => {
                         href={publication.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center transition-all duration-300 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
+                        className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center transition-all duration-500 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
                       >
                         {publication.name}
                       </a>
