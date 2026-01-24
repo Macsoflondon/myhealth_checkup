@@ -1,8 +1,12 @@
-import { useRef } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { useRef, useState, useCallback, useEffect } from "react";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { cn } from "@/lib/utils";
 
 export const FeaturedPublications = () => {
+  const [api, setApi] = useState<CarouselApi>();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  
   const plugin = useRef(
     Autoplay({
       delay: 5000,
@@ -10,6 +14,21 @@ export const FeaturedPublications = () => {
       stopOnMouseEnter: true
     })
   );
+
+  useEffect(() => {
+    if (!api) return;
+    
+    const onSelect = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    };
+    
+    api.on("select", onSelect);
+    onSelect();
+    
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   const publications = [
     { name: "Bloomberg", url: "https://www.bloomberg.com" },
@@ -46,11 +65,18 @@ export const FeaturedPublications = () => {
         <Carousel
           opts={{ align: "start", loop: true }}
           plugins={[plugin.current]}
+          setApi={setApi}
           className="w-full max-w-5xl mx-auto"
         >
           <CarouselContent>
             {groupedPublications.map((group, index) => (
-              <CarouselItem key={index} className="basis-full">
+              <CarouselItem 
+                key={index} 
+                className={cn(
+                  "basis-full transition-opacity duration-700 ease-in-out",
+                  selectedIndex === index ? "opacity-100" : "opacity-40"
+                )}
+              >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
                   {group.map((publication) => (
                     <div 
