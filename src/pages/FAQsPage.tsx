@@ -456,7 +456,7 @@ const FAQsPage = () => {
                   <p className="text-gray-700 mb-4 text-sm sm:text-base">
                     Explore our comprehensive range of health tests from UKAS-accredited providers.
                   </p>
-                  <Link to="/compare-tests">
+                  <Link to="/compare">
                     <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]">
                       View All Tests
                     </Button>

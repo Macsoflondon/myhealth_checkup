@@ -57,7 +57,7 @@ const StickyCtaBar = ({ showAfter = 600 }: StickyCtaBarProps) => {
           <div className="flex items-center gap-2 sm:gap-3">
             <Button
               size="sm"
-              onClick={() => navigate("/compare-tests")}
+              onClick={() => navigate("/compare")}
               className="bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold rounded-lg shadow-md px-4 sm:px-6"
             >
               <Scale className="w-4 h-4 mr-1.5 sm:mr-2" />

@@ -101,7 +101,7 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10">
               <Button 
                 size="lg" 
-                onClick={() => navigate('/compare-tests')}
+                onClick={() => navigate('/compare')}
                 className="bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold rounded-xl shadow-md px-8"
               >
                 Compare blood tests
@@ -162,7 +162,7 @@ const Hero = () => {
                       </div>
                     )}
                     <Button 
-                      onClick={() => navigate('/compare-tests')} 
+                      onClick={() => navigate('/compare')} 
                       className="w-full mt-3 bg-[#22c0d4] hover:bg-white hover:text-[#22c0d4] transition-colors"
                     >
                       View available tests

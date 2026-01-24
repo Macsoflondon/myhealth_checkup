@@ -34,7 +34,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
             </Button>
             <Button 
               size="lg" 
-              onClick={() => navigate('/compare-tests')}
+              onClick={() => navigate('/compare')}
               variant="outline" 
               className="border-2 border-white text-white hover:bg-white hover:text-[#081129] bg-transparent font-semibold rounded-xl group"
             >
