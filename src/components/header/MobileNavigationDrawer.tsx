@@ -427,7 +427,6 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                               className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 active:bg-[hsl(var(--primary))]/10 rounded-xl mt-1 transition-all touch-manipulation min-h-[44px]"
                             >
                               View All
-                              <ArrowRight className="h-4 w-4" />
                             </Link>
                           </div>
                         </div>
@@ -576,7 +575,6 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                     className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-[hsl(var(--secondary))]/10 text-[hsl(var(--secondary))] font-semibold hover:bg-[hsl(var(--secondary))]/20 active:scale-[0.98] transition-all touch-manipulation"
                   >
                     View All Test Categories
-                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -619,7 +617,6 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                   >
                     <Link to="/compare" onClick={handleLinkClick}>
                       Find a Test
-                      <ArrowRight className="w-5 h-5 ml-2" />
                     </Link>
                   </Button>
                 </div>

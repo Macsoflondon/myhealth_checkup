@@ -132,7 +132,6 @@ const SimilarTestsSection = ({
         <Button variant="outline" size="sm" className="w-full mt-4" asChild>
           <Link to={`/compare?category=${encodeURIComponent(category)}`}>
             View All {category} Tests
-            <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
         </Button>
       </CardContent>

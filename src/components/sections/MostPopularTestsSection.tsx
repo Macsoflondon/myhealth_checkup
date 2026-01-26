@@ -195,7 +195,6 @@ const MostPopularTestsSection = () => {
                               className="w-full bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-white hover:text-[#22c0d4] hover:border-[#22c0d4]"
                             >
                               View test
-                              <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                           </a>
                         ) : (
@@ -206,7 +205,6 @@ const MostPopularTestsSection = () => {
                               className="w-full bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-white hover:text-[#22c0d4] hover:border-[#22c0d4]"
                             >
                               View test
-                              <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                           </Link>
                         )}
@@ -228,7 +226,6 @@ const MostPopularTestsSection = () => {
           >
             <Link to="/popular-tests">
               View all popular tests
-              <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </div>

@@ -416,7 +416,6 @@ export default function ProviderComparisonPage() {
                             <Button asChild size="sm">
                               <Link to={`/providers/${providerId}`}>
                                 View Catalog
-                                <ArrowRight className="ml-1 h-4 w-4" />
                               </Link>
                             </Button>
                           </td>

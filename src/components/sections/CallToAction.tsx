@@ -39,7 +39,6 @@ const CallToAction = ({ className }: CallToActionProps) => {
               className="border-2 border-white text-white hover:bg-white hover:text-[#081129] bg-transparent font-semibold rounded-xl group"
             >
               Browse All 300+ Tests
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>

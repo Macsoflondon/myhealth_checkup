@@ -296,7 +296,6 @@ const MedichecksTestsCatalogPage = () => {
                                 className="text-lg font-semibold text-primary hover:underline flex items-center gap-1"
                               >
                                 {priceInfo.text}
-                                <ExternalLink className="h-4 w-4" />
                               </a>
                             );
                           }
@@ -308,9 +307,8 @@ const MedichecksTestsCatalogPage = () => {
                         })()}
                         <div className="flex gap-2">
                           <Link to={`/medichecks/${generateTestSlug(test.test_name)}`}>
-                            <Button size="sm" className="group/btn">
+                            <Button size="sm">
                               View Details
-                              <ChevronRight className="h-4 w-4 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
                             </Button>
                           </Link>
                           {test.url && test.price && (
@@ -320,7 +318,7 @@ const MedichecksTestsCatalogPage = () => {
                                 target="_blank" 
                                 rel="noopener noreferrer"
                               >
-                                <ExternalLink className="h-4 w-4" />
+                                Book
                               </a>
                             </Button>
                           )}

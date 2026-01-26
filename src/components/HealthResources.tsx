@@ -43,7 +43,6 @@ const HealthResources = () => {
                   
                   <Button variant="outline" className="w-full border-health-300 text-white bg-[#e70d69] text-center rounded-none">
                     Read More
-                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardContent>
               </Card>)}
@@ -52,7 +51,6 @@ const HealthResources = () => {
           <div className="text-center mt-12 bg-[#081129]">
             <Button className="bg-health-600 hover:bg-health-700">
               View All Resources
-              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
