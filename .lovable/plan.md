@@ -1,234 +1,193 @@
 
-# Full Provider Scraper Update Plan
+# Fix London Medical Laboratory Scraper
 
-## Overview
+## Problem Analysis
 
-This plan will run all 6 provider scrapers to update tests, pricing, and add any new or missing tests. It will also address the 58 Medichecks tests with missing prices and ensure star ratings are correctly displayed.
+The current scraper only captured 3 tests when there are **32+ tests** available on the LML website. The issues are:
 
----
+### Issue 1: Outdated Hardcoded URLs
 
-## Current State Analysis
+The scraper uses hardcoded `knownProductUrls` (lines 33-58) that are **returning 404 errors** because LML changed their URL structure:
 
-| Provider | Active Tests | Has Prices | Missing Prices | Last Scraped |
-|----------|-------------|------------|----------------|--------------|
-| Medichecks | 75 | 17 | **58** | 7 Jan 2026 |
-| Goodbody Clinic | 67 | 67 | 0 | 16 Jan 2026 |
-| Lola Health | 46 | 46 | 0 | 7 Jan 2026 |
-| Thriva | 25 | 25 | 0 | 26 Jan 2026 |
-| Randox | 20 | 20 | 0 | 7 Jan 2026 |
-| London Medical Lab | 3 | 3 | 0 | 14 Jan 2026 |
+| Old Format (In Scraper) | New Format (On Website) |
+|------------------------|------------------------|
+| `/product/vitamin-d-test/` | `/product/vitamin-d` |
+| `/product/cholesterol-test/` | `/product/cholesterol-profile` |
+| `/product/general-health-screen/` | `/product/general-health` |
+| `/product/thyroid-function-test/` | `/product/thyroid-function` |
 
-### Root Cause of Missing Medichecks Prices
+### Issue 2: Category Pages Not Working
 
-The 58 Medichecks tests with missing prices have **outdated URL formats**:
-- Old format: `https://www.medichecks.com/vitamin-tests/active-b12`
-- New Shopify format: `https://www.medichecks.com/products/active-b12-blood-test`
+The category URLs in the scraper (lines 21-30) don't include the main "All" category page which contains all 32 products:
+- Missing: `https://www.londonmedicallaboratory.com/product-category/all`
 
-Medichecks migrated to Shopify and the scraper now uses `/products/` URLs, but the old database entries still have legacy URLs that return 404 errors.
+### Issue 3: Processing Limit Too Low
 
----
-
-## Part 1: Run All Provider Scrapers
-
-### Scraper Execution Strategy
-
-The `run-all-scrapers` edge function will be invoked to run all 6 scrapers sequentially:
-
-1. **Lola Health Scraper** - Scrapes collections pages and individual product pages
-2. **Medichecks Scraper** - Uses Firecrawl for reliable product discovery and scraping
-3. **Goodbody Scraper** - Scrapes Shopify product pages
-4. **Thriva Scraper** - Scrapes their collection pages
-5. **Randox Scraper** - Scrapes their health check pages
-6. **London Medical Lab Scraper** - Scrapes their test catalogue
-
-### Expected Outcomes
-
-- Update all existing test prices to current values
-- Discover and add any new tests from provider websites
-- Update biomarker counts and descriptions
-- Refresh scraped_at timestamps
+Line 332 limits scraping to only 30 products: `productUrls.slice(0, 30)`
 
 ---
 
-## Part 2: Fix Medichecks Missing Prices
+## Complete Product List Found (32 Tests)
 
-### Approach: Use Firecrawl Scraper
+From the website scrape, here are all 32 tests with correct URLs and prices:
 
-The `medichecks-firecrawl` function is more reliable as it:
-1. Uses Firecrawl's `/map` endpoint to discover all `/products/` URLs
-2. Uses Firecrawl's `/scrape` endpoint for reliable HTML extraction
-3. Handles Shopify's dynamic pricing correctly
-
-### Database Cleanup Required
-
-Before running the scraper, we need to:
-1. Deactivate tests with legacy URLs that no longer exist
-2. Let the scraper create new entries with correct `/products/` URLs
-3. Match by test name to update existing entries where possible
-
-### Implementation Steps
-
-1. **Deploy updated Medichecks scraper** - Modify to:
-   - Increase product limit to 150 (from 100)
-   - Match existing tests by name when upserting
-   - Update URLs for tests that have moved to new format
-
-2. **Run Firecrawl-based scraper** - This will:
-   - Map medichecks.com to find all current product URLs
-   - Scrape each product page for accurate pricing
-   - Upsert with correct URLs and prices
-
----
-
-## Part 3: Fix Star Ratings Display
-
-### Current Rating System
-
-The platform uses two rating approaches:
-
-1. **Hardcoded Test Reviews** (`MostPopularTestsSection.tsx`)
-   - Real review data for 13 specific popular tests
-   - Falls back to `{ rating: 4.5, reviewCount: 150 }` for unknown tests
-
-2. **Generated Ratings** (`PremiumTestCard.tsx`, category pages)
-   - Uses fixed `rating = 4.8` with random review counts
-   - Not linked to actual test quality
-
-### Recommended Fix
-
-The rating display should be consistent and realistic:
-
-1. **Update `MostPopularTestsSection.tsx`**
-   - Ensure all provider tests have appropriate fallback ratings
-   - Remove hardcoded test IDs (they may change after scraping)
-
-2. **Update `PremiumTestCard.tsx`**
-   - Use a rating algorithm based on provider reputation:
-     - Medichecks: 4.7 (established, large review base)
-     - Goodbody: 4.8 (premium service)
-     - Lola Health: 4.6 (newer provider)
-     - Thriva: 4.5 (convenient service)
-     - Randox: 4.6 (clinical focused)
-     - London Medical Lab: 4.4 (specialist)
-
-3. **Update category pages** (e.g., `MedichecksMensHealthPage.tsx`)
-   - Standardise rating display across all test cards
+| Test Name | Price | URL Slug |
+|-----------|-------|----------|
+| Allergy Complete - 295 allergens tested | £319.00 | allergy-complete-295-allergens-tested |
+| Cholesterol Lipid Profile | £39.00 | cholesterol-profile |
+| Diabetes - Diagnosis and Monitoring (HbA1c) | £45.00 | diabetes-check |
+| Erectile Dysfunction Impotence Profile | £115.00 | erectile-dysfunction-profile |
+| Female Hair Loss Advanced | £185.00 | female-hair-loss-pfoile-adv |
+| Female Sexual Health - Advanced Screen | £189.00 | female-sexual-health |
+| Fertility Hormones Profile | £89.00 | fertility-hormones-profile |
+| General Health Profile | £89.00 | general-health |
+| Heart Health Profile | £59.00 | heart-health-profile |
+| Iron Status Profile | £49.00 | iron-status-profile |
+| Male Hair Loss Profile | £179.00 | male-hair-loss-profile |
+| Male Hormone Profile | £99.00 | male-hormone-profile |
+| Male Sexual Health - Advanced Screen | £179.00 | male-advanced-screen |
+| Menopause Hormones Profile | £79.00 | menopause-hormones-profile |
+| Premier General Health Profile | £99.00 | premier-health |
+| Progesterone | £39.00 | progesterone |
+| Prostate Profile | £79.00 | prostate-profile |
+| Sports Fitness Profile | £119.00 | premier-plus-sports-fitness-profile |
+| Sports Hormone Profile | £189.00 | premier-plus-sports-full-hormone-profile |
+| Testosterone Check | £39.00 | testosterone-check |
+| Testosterone Plus Profile | £59.00 | testosterone-plus |
+| Thyroid Full Profile | £79.00 | full-thyroid-profile |
+| Thyroid Function - Diagnosis and Monitoring | £49.00 | thyroid-function |
+| Tiredness/Fatigue Profile | £99.00 | tiredness-fatigue-profile |
+| Ultimate Athlete Performance | £209.00 | ultimate-athlete-performance |
+| Ultimate Athlete Performance (with PSA) | £219.00 | ultimate-athlete-performance-with-psa |
+| Vitamin B12 | £39.00 | vitamin-b12 |
+| Vitamin D | £49.00 | vitamin-d |
+| Vitamin Profile | £89.00 | vitamin-profiled-b12-folate |
+| Weight-loss management | £99.00 | weight-loss-monitoring |
+| Well Man Premier Plus Profile | £159.00 | well-man-premier-plus-profile |
+| Well Person Premier Plus Profile | £119.00 | well-person-premier-plus-profile |
+| Well Woman Premier Plus Profile | £159.00 | well-woman-premier-plus-profile |
 
 ---
 
-## Part 4: Implementation Steps
+## Implementation Plan
 
-### Step 1: Deploy Scraper Updates (if needed)
+### Step 1: Update Category Pages List
 
-Update `supabase/functions/medichecks-scraper/index.ts`:
-- Increase scrape limit to 150 products
-- Add URL migration logic for legacy entries
-
-### Step 2: Run Full Scraper Sequence
-
-1. Deploy the `run-all-scrapers` function
-2. Invoke it to trigger all 6 scrapers
-3. Monitor logs for success/failure
-
-### Step 3: Run Medichecks Firecrawl Backup
-
-If standard scraper doesn't get all prices:
-1. Deploy and run `medichecks-firecrawl` scraper
-2. This uses Firecrawl API for more reliable extraction
-
-### Step 4: Database Cleanup
-
-Run SQL to:
-1. Deactivate orphaned tests with 404 URLs
-2. Update price display for tests still missing prices to show "View on provider site" correctly
-
-### Step 5: Update Rating Display
-
-Update files:
-- `src/components/compare/PremiumTestCard.tsx`
-- `src/components/sections/MostPopularTestsSection.tsx`
-
-To use provider-based ratings instead of random generation.
-
----
-
-## Technical Details
-
-### Scraper Edge Functions
-
-| Function | Provider | Method | Status |
-|----------|----------|--------|--------|
-| `lola-health-scraper` | Lola Health | Direct HTTP | Active |
-| `medichecks-scraper` | Medichecks | Direct HTTP | Active |
-| `medichecks-firecrawl` | Medichecks | Firecrawl API | Backup |
-| `goodbody-scraper` | Goodbody | Direct HTTP | Active |
-| `thriva-scraper` | Thriva | Direct HTTP | Active |
-| `randox-scraper` | Randox | Direct HTTP | Active |
-| `scrape-london-lab` | LML | Direct HTTP | Active |
-
-### Database Updates
-
-The scrapers will upsert to `provider_tests` table with:
-- `ON CONFLICT (provider_id, test_name)` - Update existing by name
-- Sets `is_active = true`, `scraped_at = now()`
-- Updates `price`, `url`, `biomarker_count`, `description`
-
-### Rating Algorithm
+Add the main "All" category page and remove non-functional category pages:
 
 ```typescript
-const providerRatings: Record<string, number> = {
-  'medichecks': 4.7,
-  'goodbody-clinic': 4.8,
-  'lola-health': 4.6,
-  'thriva': 4.5,
-  'randox': 4.6,
-  'london-medical-laboratory': 4.4,
-};
+const categoryPages = [
+  'https://www.londonmedicallaboratory.com/product-category/all',  // Primary - contains all 32 products
+  'https://www.londonmedicallaboratory.com/product-category/general-health',
+  'https://www.londonmedicallaboratory.com/product-category/mens-health',
+  'https://www.londonmedicallaboratory.com/product-category/womens-health',
+  'https://www.londonmedicallaboratory.com/product-category/hormones',
+  'https://www.londonmedicallaboratory.com/product-category/fertility',
+  'https://www.londonmedicallaboratory.com/product-category/sports-fitness',
+  'https://www.londonmedicallaboratory.com/product-category/sexual-health',
+  'https://www.londonmedicallaboratory.com/product-category/allergy-and-intolerance',
+];
+```
 
-// Review count based on provider size
-const baseReviewCounts: Record<string, number> = {
-  'medichecks': 800,
-  'goodbody-clinic': 400,
-  'lola-health': 250,
-  'thriva': 300,
-  'randox': 200,
-  'london-medical-laboratory': 100,
+### Step 2: Replace Hardcoded URLs with Verified URLs
+
+Replace the outdated `knownProductUrls` array with all 32 verified product URLs:
+
+```typescript
+const knownProductUrls = [
+  'https://www.londonmedicallaboratory.com/product/allergy-complete-295-allergens-tested',
+  'https://www.londonmedicallaboratory.com/product/cholesterol-profile',
+  'https://www.londonmedicallaboratory.com/product/diabetes-check',
+  'https://www.londonmedicallaboratory.com/product/erectile-dysfunction-profile',
+  'https://www.londonmedicallaboratory.com/product/female-hair-loss-pfoile-adv',
+  'https://www.londonmedicallaboratory.com/product/female-sexual-health',
+  'https://www.londonmedicallaboratory.com/product/fertility-hormones-profile',
+  'https://www.londonmedicallaboratory.com/product/general-health',
+  'https://www.londonmedicallaboratory.com/product/heart-health-profile',
+  'https://www.londonmedicallaboratory.com/product/iron-status-profile',
+  'https://www.londonmedicallaboratory.com/product/male-hair-loss-profile',
+  'https://www.londonmedicallaboratory.com/product/male-hormone-profile',
+  'https://www.londonmedicallaboratory.com/product/male-advanced-screen',
+  'https://www.londonmedicallaboratory.com/product/menopause-hormones-profile',
+  'https://www.londonmedicallaboratory.com/product/premier-health',
+  'https://www.londonmedicallaboratory.com/product/progesterone',
+  'https://www.londonmedicallaboratory.com/product/prostate-profile',
+  'https://www.londonmedicallaboratory.com/product/premier-plus-sports-fitness-profile',
+  'https://www.londonmedicallaboratory.com/product/premier-plus-sports-full-hormone-profile',
+  'https://www.londonmedicallaboratory.com/product/testosterone-check',
+  'https://www.londonmedicallaboratory.com/product/testosterone-plus',
+  'https://www.londonmedicallaboratory.com/product/full-thyroid-profile',
+  'https://www.londonmedicallaboratory.com/product/thyroid-function',
+  'https://www.londonmedicallaboratory.com/product/tiredness-fatigue-profile',
+  'https://www.londonmedicallaboratory.com/product/ultimate-athlete-performance',
+  'https://www.londonmedicallaboratory.com/product/ultimate-athlete-performance-with-psa',
+  'https://www.londonmedicallaboratory.com/product/vitamin-b12',
+  'https://www.londonmedicallaboratory.com/product/vitamin-d',
+  'https://www.londonmedicallaboratory.com/product/vitamin-profiled-b12-folate',
+  'https://www.londonmedicallaboratory.com/product/weight-loss-monitoring',
+  'https://www.londonmedicallaboratory.com/product/well-man-premier-plus-profile',
+  'https://www.londonmedicallaboratory.com/product/well-person-premier-plus-profile',
+  'https://www.londonmedicallaboratory.com/product/well-woman-premier-plus-profile',
+];
+```
+
+### Step 3: Increase Processing Limit
+
+Change line 332 from `.slice(0, 30)` to `.slice(0, 50)` to ensure all products are processed:
+
+```typescript
+const productUrls = Array.from(allProductUrls).slice(0, 50);
+```
+
+### Step 4: Add Category Mapping for New Tests
+
+Expand the `determineCategory` function to include new categories found on the website:
+
+```typescript
+const categoryMap: Record<string, string[]> = {
+  // ... existing categories ...
+  'Weight Management': ['weight', 'ozempic', 'mounjaro', 'glp-1'],
+  'Hair Loss': ['hair loss', 'hair'],
+  'Wellness': ['well man', 'well woman', 'well person', 'wellness'],
 };
 ```
 
----
+### Step 5: Deactivate Legacy Test Entries
 
-## Expected Results After Implementation
-
-| Provider | Tests | With Prices | Rating Display |
-|----------|-------|-------------|----------------|
-| Medichecks | 75+ | 75+ | 4.7 stars |
-| Goodbody Clinic | 67+ | 67+ | 4.8 stars |
-| Lola Health | 46+ | 46+ | 4.6 stars |
-| Thriva | 25+ | 25+ | 4.5 stars |
-| Randox | 20+ | 20+ | 4.6 stars |
-| London Medical Lab | 3+ | 3+ | 4.4 stars |
-
-**Total: ~236+ tests with accurate prices and consistent star ratings**
+After running the updated scraper, run SQL to clean up any orphaned entries with old URL formats that no longer exist.
 
 ---
 
 ## Files to Modify
 
-| File | Purpose |
+| File | Changes |
 |------|---------|
-| `supabase/functions/medichecks-scraper/index.ts` | Increase limit, improve URL matching |
-| `src/components/compare/PremiumTestCard.tsx` | Provider-based ratings |
-| `src/components/sections/MostPopularTestsSection.tsx` | Consistent rating fallbacks |
-| `src/pages/MedichecksMensHealthPage.tsx` | Standardise ratings |
+| `supabase/functions/scrape-london-lab/index.ts` | Update category pages, replace hardcoded URLs, increase limit, improve category detection |
 
 ---
 
-## Execution Order
+## Expected Results After Implementation
 
-1. **Deploy scraper updates** (5 min)
-2. **Run `run-all-scrapers`** (10-15 min for all providers)
-3. **Run `medichecks-firecrawl`** as backup if needed (5 min)
-4. **Verify database updates** via query
-5. **Update rating components** (10 min)
-6. **Test display** in browser
+| Metric | Before | After |
+|--------|--------|-------|
+| Active Tests | 3 | 32+ |
+| Tests with Prices | 3 | 32+ |
+| Categories Covered | 3 | 12+ |
+
+The scraper will capture all 32 tests from London Medical Laboratory including:
+- **Allergy tests** (Allergy Complete - 295 allergens)
+- **Sexual health** (Male/Female Advanced Screens)
+- **Hair loss profiles** (Male/Female)
+- **Sports performance** (Fitness, Hormone, Ultimate Athlete)
+- **Weight management** (Ozempic/Mounjaro monitoring)
+- **Comprehensive wellness** (Well Man/Woman/Person Premier Plus)
+
+---
+
+## Execution Steps
+
+1. Update `supabase/functions/scrape-london-lab/index.ts` with all changes
+2. Deploy the updated edge function
+3. Run the scraper to populate all 32 tests
+4. Verify database has all tests with correct URLs and prices
+5. Deactivate any legacy entries with 404 URLs
