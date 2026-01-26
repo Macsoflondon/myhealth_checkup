@@ -416,9 +416,9 @@ Deno.serve(async (req) => {
 
     console.log(`Total unique product URLs to scrape: ${allProductUrls.size}`);
 
-    // Scrape individual products - increased limit to 100
+    // Scrape individual products - increased limit to 150 for comprehensive coverage
     const scrapedProducts: MedichecksProduct[] = [];
-    const productUrls = Array.from(allProductUrls).slice(0, 100);
+    const productUrls = Array.from(allProductUrls).slice(0, 150);
     
     for (const url of productUrls) {
       try {
