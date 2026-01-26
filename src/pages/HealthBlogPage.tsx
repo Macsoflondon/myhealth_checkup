@@ -219,12 +219,12 @@ const FeaturedArticleCard = ({ article, formatDate, getReadTime }: ArticleCardPr
         </p>
         <div className="flex justify-between items-center">
           <span className="text-xs text-muted-foreground">{formatDate(article.date)}</span>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="gap-1 text-[#e70d69] hover:text-[#e70d69]/80"
-            asChild
-          >
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="gap-1 text-[#22c0d4] hover:text-[#e70d69] transition-colors"
+              asChild
+            >
             <a 
               href={article.url} 
               target="_blank" 
@@ -292,7 +292,7 @@ const RecentArticleRow = ({ article, formatDate, getReadTime }: ArticleCardProps
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="gap-1 text-[#e70d69] hover:text-[#e70d69]/80"
+                className="gap-1 text-[#22c0d4] hover:text-[#e70d69] transition-colors"
                 asChild
               >
                 <a 
