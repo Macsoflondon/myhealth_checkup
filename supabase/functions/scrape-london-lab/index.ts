@@ -19,42 +19,52 @@ interface LondonLabProduct {
 
 // London Medical Laboratory category pages
 const categoryPages = [
-  'https://www.londonmedicallaboratory.com/product-category/blood-tests/',
-  'https://www.londonmedicallaboratory.com/product-category/home-test-kits/',
-  'https://www.londonmedicallaboratory.com/product-category/health-checks/',
-  'https://www.londonmedicallaboratory.com/product-category/thyroid-tests/',
-  'https://www.londonmedicallaboratory.com/product-category/hormone-tests/',
-  'https://www.londonmedicallaboratory.com/product-category/vitamin-tests/',
-  'https://www.londonmedicallaboratory.com/product-category/diabetes-tests/',
-  'https://www.londonmedicallaboratory.com/product-category/heart-tests/',
+  'https://www.londonmedicallaboratory.com/product-category/all',
+  'https://www.londonmedicallaboratory.com/product-category/general-health',
+  'https://www.londonmedicallaboratory.com/product-category/mens-health',
+  'https://www.londonmedicallaboratory.com/product-category/womens-health',
+  'https://www.londonmedicallaboratory.com/product-category/hormones',
+  'https://www.londonmedicallaboratory.com/product-category/fertility',
+  'https://www.londonmedicallaboratory.com/product-category/sports-fitness',
+  'https://www.londonmedicallaboratory.com/product-category/sexual-health',
+  'https://www.londonmedicallaboratory.com/product-category/allergy-and-intolerance',
 ];
 
-// Known test URLs as fallback
+// Known test URLs - verified 32 products from LML website
 const knownProductUrls = [
-  'https://www.londonmedicallaboratory.com/product/general-health-screen/',
-  'https://www.londonmedicallaboratory.com/product/advanced-health-screen/',
-  'https://www.londonmedicallaboratory.com/product/comprehensive-health-screen/',
-  'https://www.londonmedicallaboratory.com/product/vitamin-profile/',
-  'https://www.londonmedicallaboratory.com/product/vitamin-d-test/',
-  'https://www.londonmedicallaboratory.com/product/vitamin-b12-folate-test/',
-  'https://www.londonmedicallaboratory.com/product/iron-status-test/',
-  'https://www.londonmedicallaboratory.com/product/thyroid-function-test/',
-  'https://www.londonmedicallaboratory.com/product/advanced-thyroid-function/',
-  'https://www.londonmedicallaboratory.com/product/thyroid-antibodies-test/',
-  'https://www.londonmedicallaboratory.com/product/hormone-check/',
-  'https://www.londonmedicallaboratory.com/product/female-fertility-profile/',
-  'https://www.londonmedicallaboratory.com/product/male-fertility-profile/',
-  'https://www.londonmedicallaboratory.com/product/menopause-test/',
-  'https://www.londonmedicallaboratory.com/product/testosterone-test/',
-  'https://www.londonmedicallaboratory.com/product/heart-health-profile/',
-  'https://www.londonmedicallaboratory.com/product/cholesterol-test/',
-  'https://www.londonmedicallaboratory.com/product/diabetes-screening/',
-  'https://www.londonmedicallaboratory.com/product/hba1c-test/',
-  'https://www.londonmedicallaboratory.com/product/liver-function-test/',
-  'https://www.londonmedicallaboratory.com/product/kidney-function-test/',
-  'https://www.londonmedicallaboratory.com/product/inflammation-test/',
-  'https://www.londonmedicallaboratory.com/product/fatigue-test/',
-  'https://www.londonmedicallaboratory.com/product/sports-performance-test/',
+  'https://www.londonmedicallaboratory.com/product/allergy-complete-295-allergens-tested',
+  'https://www.londonmedicallaboratory.com/product/cholesterol-profile',
+  'https://www.londonmedicallaboratory.com/product/diabetes-check',
+  'https://www.londonmedicallaboratory.com/product/erectile-dysfunction-profile',
+  'https://www.londonmedicallaboratory.com/product/female-hair-loss-pfoile-adv',
+  'https://www.londonmedicallaboratory.com/product/female-sexual-health',
+  'https://www.londonmedicallaboratory.com/product/fertility-hormones-profile',
+  'https://www.londonmedicallaboratory.com/product/general-health',
+  'https://www.londonmedicallaboratory.com/product/heart-health-profile',
+  'https://www.londonmedicallaboratory.com/product/iron-status-profile',
+  'https://www.londonmedicallaboratory.com/product/male-hair-loss-profile',
+  'https://www.londonmedicallaboratory.com/product/male-hormone-profile',
+  'https://www.londonmedicallaboratory.com/product/male-advanced-screen',
+  'https://www.londonmedicallaboratory.com/product/menopause-hormones-profile',
+  'https://www.londonmedicallaboratory.com/product/premier-health',
+  'https://www.londonmedicallaboratory.com/product/progesterone',
+  'https://www.londonmedicallaboratory.com/product/prostate-profile',
+  'https://www.londonmedicallaboratory.com/product/premier-plus-sports-fitness-profile',
+  'https://www.londonmedicallaboratory.com/product/premier-plus-sports-full-hormone-profile',
+  'https://www.londonmedicallaboratory.com/product/testosterone-check',
+  'https://www.londonmedicallaboratory.com/product/testosterone-plus',
+  'https://www.londonmedicallaboratory.com/product/full-thyroid-profile',
+  'https://www.londonmedicallaboratory.com/product/thyroid-function',
+  'https://www.londonmedicallaboratory.com/product/tiredness-fatigue-profile',
+  'https://www.londonmedicallaboratory.com/product/ultimate-athlete-performance',
+  'https://www.londonmedicallaboratory.com/product/ultimate-athlete-performance-with-psa',
+  'https://www.londonmedicallaboratory.com/product/vitamin-b12',
+  'https://www.londonmedicallaboratory.com/product/vitamin-d',
+  'https://www.londonmedicallaboratory.com/product/vitamin-profiled-b12-folate',
+  'https://www.londonmedicallaboratory.com/product/weight-loss-monitoring',
+  'https://www.londonmedicallaboratory.com/product/well-man-premier-plus-profile',
+  'https://www.londonmedicallaboratory.com/product/well-person-premier-plus-profile',
+  'https://www.londonmedicallaboratory.com/product/well-woman-premier-plus-profile',
 ];
 
 // Comprehensive biomarker keywords
@@ -260,15 +270,18 @@ function determineCategory(title: string, description: string, url: string): str
     'Diabetes': ['diabetes', 'hba1c', 'glucose', 'insulin'],
     'Liver Health': ['liver', 'hepatic'],
     'Kidney Health': ['kidney', 'renal'],
-    'Mens Health': ['men', 'male', 'prostate', 'psa'],
+    'Mens Health': ['men', 'male', 'prostate', 'psa', 'erectile', 'impotence'],
     'Womens Health': ['women', 'female', 'menopause'],
     'Fertility': ['fertility', 'amh', 'ovarian', 'sperm'],
-    'Sports & Fitness': ['sport', 'fitness', 'performance', 'athlete'],
-    'General Health': ['general', 'comprehensive', 'advanced', 'health screen'],
+    'Sports & Fitness': ['sport', 'fitness', 'performance', 'athlete', 'ultimate athlete'],
+    'General Health': ['general', 'comprehensive', 'advanced', 'health screen', 'premier health', 'well person'],
     'Fatigue': ['fatigue', 'tiredness', 'energy'],
     'Inflammation': ['inflammation', 'crp'],
-    'Sexual Health': ['sexual', 'sti', 'std'],
-    'Allergy': ['allergy', 'intolerance'],
+    'Sexual Health': ['sexual', 'sti', 'std', 'sexual health'],
+    'Allergy': ['allergy', 'intolerance', 'allergen'],
+    'Weight Management': ['weight', 'weight-loss', 'ozempic', 'mounjaro', 'glp-1'],
+    'Hair Loss': ['hair loss', 'hair'],
+    'Wellness': ['well man', 'well woman', 'wellness'],
   };
   
   for (const [category, keywords] of Object.entries(categoryMap)) {
@@ -329,7 +342,7 @@ Deno.serve(async (req) => {
     console.log(`Total unique product URLs: ${allProductUrls.size}`);
 
     const scrapedProducts: LondonLabProduct[] = [];
-    const productUrls = Array.from(allProductUrls).slice(0, 30);
+    const productUrls = Array.from(allProductUrls).slice(0, 50);
     
     for (const url of productUrls) {
       try {
