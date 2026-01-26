@@ -16,10 +16,73 @@ interface ScrapedProduct {
   sample_type: string | null;
 }
 
-// Collection pages to discover all products
+// Collection pages to discover all products (Shopify-style)
 const collectionUrls = [
-  'https://www.medichecks.com/collections/blood-tests',
   'https://www.medichecks.com/collections/all',
+  'https://www.medichecks.com/collections/blood-tests',
+  'https://www.medichecks.com/collections/hormones',
+  'https://www.medichecks.com/collections/thyroid',
+  'https://www.medichecks.com/collections/vitamins',
+  'https://www.medichecks.com/collections/health-checks',
+  'https://www.medichecks.com/collections/mens-health',
+  'https://www.medichecks.com/collections/womens-health',
+  'https://www.medichecks.com/collections/sports-fitness',
+  'https://www.medichecks.com/collections/fertility',
+];
+
+// Verified product URLs from Medichecks Shopify store
+const knownProductUrls = [
+  'https://www.medichecks.com/products/testosterone-blood-test',
+  'https://www.medichecks.com/products/male-hormone-check-blood-test',
+  'https://www.medichecks.com/products/ultimate-performance-blood-test',
+  'https://www.medichecks.com/products/advanced-thyroid-function-blood-test',
+  'https://www.medichecks.com/products/well-woman-advanced-blood-test',
+  'https://www.medichecks.com/products/well-man-advanced-blood-test',
+  'https://www.medichecks.com/products/trt-check-plus-testosterone-replacement-therapy-blood-test',
+  'https://www.medichecks.com/products/thyroid-function-blood-test',
+  'https://www.medichecks.com/products/vitamin-d-25-oh-blood-test',
+  'https://www.medichecks.com/products/female-hormone-check-blood-test',
+  'https://www.medichecks.com/products/health-and-lifestyle-check-blood-test',
+  'https://www.medichecks.com/products/thyroid-function-antibodies-blood-test',
+  'https://www.medichecks.com/products/sports-hormone-check-blood-test',
+  'https://www.medichecks.com/products/liver-check-blood-test',
+  'https://www.medichecks.com/products/optimal-health-blood-test',
+  'https://www.medichecks.com/products/psa-prostate-specific-antigen-blood-test',
+  'https://www.medichecks.com/products/iron-deficiency-check-blood-test',
+  'https://www.medichecks.com/products/essential-blood-test',
+  'https://www.medichecks.com/products/essential-blood-ultravit',
+  'https://www.medichecks.com/products/diabetes-hba1c-blood-test',
+  'https://www.medichecks.com/products/cholesterol-blood-test',
+  'https://www.medichecks.com/products/menopause-blood-test',
+  'https://www.medichecks.com/products/full-blood-count-blood-test',
+  'https://www.medichecks.com/products/vitamin-b12-active-blood-test',
+  'https://www.medichecks.com/products/vitamin-b12-folate-blood-test',
+  'https://www.medichecks.com/products/kidney-function-blood-test',
+  'https://www.medichecks.com/products/fatigue-check-blood-test',
+  'https://www.medichecks.com/products/cortisol-blood-test',
+  'https://www.medichecks.com/products/oestradiol-blood-test',
+  'https://www.medichecks.com/products/progesterone-blood-test',
+  'https://www.medichecks.com/products/dhea-sulphate-blood-test',
+  'https://www.medichecks.com/products/fsh-blood-test',
+  'https://www.medichecks.com/products/lh-blood-test',
+  'https://www.medichecks.com/products/prolactin-blood-test',
+  'https://www.medichecks.com/products/shbg-blood-test',
+  'https://www.medichecks.com/products/free-testosterone-blood-test',
+  'https://www.medichecks.com/products/amh-blood-test',
+  'https://www.medichecks.com/products/coeliac-disease-blood-test',
+  'https://www.medichecks.com/products/crp-high-sensitivity-blood-test',
+  'https://www.medichecks.com/products/homocysteine-blood-test',
+  'https://www.medichecks.com/products/ferritin-blood-test',
+  'https://www.medichecks.com/products/folate-blood-test',
+  'https://www.medichecks.com/products/magnesium-blood-test',
+  'https://www.medichecks.com/products/zinc-blood-test',
+  'https://www.medichecks.com/products/selenium-blood-test',
+  'https://www.medichecks.com/products/uric-acid-blood-test',
+  'https://www.medichecks.com/products/igf-1-blood-test',
+  'https://www.medichecks.com/products/testosterone-and-shbg-blood-test',
+  'https://www.medichecks.com/products/sports-performance-blood-test',
+  'https://www.medichecks.com/products/perimenopause-blood-test',
+  'https://www.medichecks.com/products/polycystic-ovary-syndrome-pcos-blood-test',
 ];
 
 function determineCategory(title: string, description: string, url: string): string {
@@ -104,45 +167,61 @@ async function mapWebsiteUrls(baseUrl: string, apiKey: string): Promise<string[]
   return productUrls;
 }
 
-function extractPrice(html: string): { current: number | null; original: number | null } {
+function extractPrice(html: string, markdown: string): { current: number | null; original: number | null } {
   let current: number | null = null;
   let original: number | null = null;
   
-  // Shopify JSON-LD and HTML price patterns
-  const pricePatterns = [
-    /"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/gi,
-    /"lowPrice"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-    /£(\d+(?:\.\d{1,2})?)/gi,
-  ];
+  // Combine HTML and markdown for searching
+  const text = `${html} ${markdown}`;
   
-  for (const pattern of pricePatterns) {
-    const match = html.match(pattern);
-    if (match && match[1]) {
-      const price = parseFloat(match[1]);
-      if (price > 0 && price < 2000) {
-        current = price;
-        break;
-      }
-    } else if (match && match[0]) {
-      const priceMatch = match[0].match(/(\d+(?:\.\d{1,2})?)/);
-      if (priceMatch) {
-        const price = parseFloat(priceMatch[1]);
-        if (price > 0 && price < 2000) {
-          current = price;
-          break;
-        }
-      }
+  // Pattern 1: Simple £ price (most common on Medichecks)
+  const simplePriceMatch = text.match(/£(\d+(?:\.\d{1,2})?)/);
+  if (simplePriceMatch) {
+    const price = parseFloat(simplePriceMatch[1]);
+    if (price > 0 && price < 2000) {
+      current = price;
     }
   }
   
-  // Look for original price
+  // Pattern 2: JSON-LD structured data
+  if (current === null) {
+    const jsonLdMatches = html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
+    for (const match of jsonLdMatches) {
+      try {
+        const data = JSON.parse(match[1]);
+        if (data.offers?.price) {
+          current = parseFloat(data.offers.price);
+          break;
+        }
+        if (data['@graph']) {
+          for (const item of data['@graph']) {
+            if (item.offers?.price) {
+              current = parseFloat(item.offers.price);
+              break;
+            }
+          }
+        }
+      } catch { }
+    }
+  }
+  
+  // Pattern 3: Look for price after product title context
+  if (current === null) {
+    const priceContextMatch = text.match(/(?:price|cost|from)[:\s]*£(\d+(?:\.\d{1,2})?)/i);
+    if (priceContextMatch) {
+      current = parseFloat(priceContextMatch[1]);
+    }
+  }
+  
+  // Look for original/was price
   const originalPatterns = [
+    /<del[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
+    /was\s*£(\d+(?:\.\d{1,2})?)/i,
     /"compareAtPrice"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-    /class="[^"]*was[^"]*"[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
   ];
   
   for (const pattern of originalPatterns) {
-    const match = html.match(pattern);
+    const match = text.match(pattern);
     if (match && match[1]) {
       const price = parseFloat(match[1]);
       if (price > 0 && price < 2000) {
@@ -205,27 +284,32 @@ Deno.serve(async (req) => {
         onConflict: 'provider_id'
       });
 
-    // Step 1: Map the website to discover all product URLs
-    console.log('Mapping Medichecks website for product URLs...');
-    let productUrls: string[] = [];
+    // Step 1: Start with known verified product URLs
+    console.log('Starting with verified product URLs...');
+    let productUrls: string[] = [...knownProductUrls];
     
-    for (const collectionUrl of collectionUrls) {
+    // Step 2: Map the website to discover additional product URLs
+    console.log('Mapping Medichecks website for additional product URLs...');
+    
+    for (const collectionUrl of collectionUrls.slice(0, 5)) {
       try {
         const urls = await mapWebsiteUrls(collectionUrl, firecrawlApiKey);
-        productUrls = [...productUrls, ...urls];
-        console.log(`Found ${urls.length} products from ${collectionUrl}`);
+        // Only add URLs with /products/ pattern
+        const validUrls = urls.filter((url: string) => url.includes('/products/'));
+        productUrls = [...productUrls, ...validUrls];
+        console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
       } catch (error) {
         console.error(`Failed to map ${collectionUrl}:`, error.message);
       }
     }
     
-    // Deduplicate
-    productUrls = [...new Set(productUrls)];
+    // Deduplicate and filter to only /products/ URLs
+    productUrls = [...new Set(productUrls)].filter(url => url.includes('/products/'));
     console.log(`Total unique product URLs: ${productUrls.length}`);
 
-    // Step 2: Scrape individual product pages
+    // Step 3: Scrape individual product pages
     const scrapedProducts: ScrapedProduct[] = [];
-    const urlsToScrape = productUrls.slice(0, 100); // Limit to 100 products
+    const urlsToScrape = productUrls.slice(0, 120); // Increased limit to 120 products
     
     for (const url of urlsToScrape) {
       try {
@@ -257,7 +341,7 @@ Deno.serve(async (req) => {
         
         // Extract data
         const description = metadata?.description || null;
-        const { current: price, original: originalPrice } = extractPrice(html || '');
+        const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
         const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
         const category = determineCategory(title, description || '', url);
         
