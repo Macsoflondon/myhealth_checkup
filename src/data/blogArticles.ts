@@ -3,314 +3,327 @@ import type { BlogArticle } from "@/types/blog.types";
 /**
  * Blog Articles Data
  * 
- * This file contains blog articles from provider partners.
+ * This file contains 200+ blog articles from provider partners.
  * Articles link to original content on provider websites.
  * 
  * Sources: Lola Health, Medichecks, Thriva, Goodbody Clinic
  */
 
+// Category images for articles (Unsplash placeholders)
+const categoryImages: Record<string, string> = {
+  'Heart Health': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800',
+  'Cancer Screening': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800',
+  'Diabetes': 'https://images.unsplash.com/photo-1593491034932-844ab981ed7c?w=800',
+  'Nutrition': 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800',
+  'Vitamins': 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800',
+  'Hormones': 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800',
+  'Mental Health': 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800',
+  'Gut Health': 'https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800',
+  "Men's Health": 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
+  "Women's Health": 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800',
+  'Wellness': 'https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800',
+  'default': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800',
+};
+
+// Helper to get category image
+const getImage = (category: string): string => categoryImages[category] || categoryImages['default'];
+
+// Helper to normalize category
+const normalizeCategory = (rawCategory: string): string => {
+  const categoryMap: Record<string, string> = {
+    'cancer': 'Cancer Screening',
+    'heart health': 'Heart Health',
+    'nutrition': 'Nutrition',
+    'diabetes': 'Diabetes',
+    'vitamins': 'Vitamins',
+    'hormones': 'Hormones',
+    'hormone health': 'Hormones',
+    'mental health': 'Mental Health',
+    'gut health': 'Gut Health',
+    "men's health": "Men's Health",
+    "women's health": "Women's Health",
+    'wellness': 'Wellness',
+    'liver health': 'Gut Health',
+    'general health': 'Wellness',
+    'cholesterol': 'Heart Health',
+    'blood testing': 'Wellness',
+    'sexual health': 'Wellness',
+    'infection': 'Wellness',
+    'allergy': 'Wellness',
+    'thyroid': 'Hormones',
+  };
+  
+  const lower = rawCategory.toLowerCase().trim();
+  return categoryMap[lower] || 'Wellness';
+};
+
+// Generate dates (newest first, spread across recent months)
+const generateDate = (index: number): string => {
+  const baseDate = new Date('2025-01-26');
+  baseDate.setDate(baseDate.getDate() - index);
+  return baseDate.toISOString().split('T')[0];
+};
+
 export const blogArticles: BlogArticle[] = [
-  // === LOLA HEALTH ===
-  {
-    title: "Understanding LDH Elevated Causes and What They Mean",
-    excerpt: "Explains what elevated LDH levels are, what they signal about tissue damage and systemic stress, and how to respond for long-term health.",
-    url: "https://lolahealth.com/blogs/longevity/ldh-elevated-causes",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800",
-    provider: "Lola Health",
-    category: "Cancer Screening",
-    date: "2025-01-15"
-  },
-  {
-    title: "Gamma GT in Liver Function: A Key Biomarker for Longevity",
-    excerpt: "Breaks down what GGT is, why high levels matter for liver and metabolic health, and practical steps to lower risk over time.",
-    url: "https://lolahealth.com/blogs/longevity/gamma-gt-in-liver-function",
-    image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800",
-    provider: "Lola Health",
-    category: "Gut Health",
-    date: "2025-01-14"
-  },
-  {
-    title: "Master Your Triglycerides to HDL Ratio: A Key to Cardiometabolic Health",
-    excerpt: "Shows how the triglycerides to HDL ratio reflects cardiometabolic risk and offers nutrition and lifestyle tactics to improve it.",
-    url: "https://lolahealth.com/blogs/longevity/triglycerides-to-hdl-ratio",
-    image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800",
-    provider: "Lola Health",
-    category: "Heart Health",
-    date: "2025-01-13"
-  },
-  {
-    title: "What Is Metabolic Health? Unlock Better Energy for Life",
-    excerpt: "Defines metabolic health, outlines key biomarkers, and gives practical strategies to optimise energy, weight, and long-term disease risk.",
-    url: "https://lolahealth.com/blogs/longevity/what-is-metabolic-health",
-    image: "https://images.unsplash.com/photo-1593491034932-844ab981ed7c?w=800",
-    provider: "Lola Health",
-    category: "Diabetes",
-    date: "2025-01-12"
-  },
-  {
-    title: "Vitamin and Mineral Deficiency Testing: A Foundation for Longevity",
-    excerpt: "Explains how deficiency testing uncovers nutrient gaps that affect energy, immunity, and long-term health.",
-    url: "https://lolahealth.com/blogs/longevity/vitamin-and-mineral-deficiency-testing",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Lola Health",
-    category: "Nutrition",
-    date: "2025-01-11"
-  },
-  {
-    title: "What Is High Cortisol and How Does It Affect Your Health?",
-    excerpt: "Explains causes and symptoms of high cortisol, and practical strategies to reduce stress load for long-term health.",
-    url: "https://lolahealth.com/blogs/longevity/what-is-high-cortisol",
-    image: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800",
-    provider: "Lola Health",
-    category: "Hormones",
-    date: "2025-01-10"
-  },
-  {
-    title: "Discover the HbA1c Sugar Test: A Key to Unlocking Longevity",
-    excerpt: "Introduces the HbA1c sugar test, what results say about long-term glucose control, and ways to improve them.",
-    url: "https://lolahealth.com/blogs/longevity/hba-1-c-sugar-test",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800",
-    provider: "Lola Health",
-    category: "Diabetes",
-    date: "2025-01-09"
-  },
-  {
-    title: "A Guide to the Male Hormones Test for Health and Longevity",
-    excerpt: "Overviews key male hormone markers, how to prepare, interpret results, and use them to guide long-term health decisions.",
-    url: "https://lolahealth.com/blogs/longevity/male-hormones-test",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-    provider: "Lola Health",
-    category: "Men's Health",
-    date: "2025-01-08"
-  },
+  // === LOLA HEALTH (150+ articles) ===
+  { title: "Understanding LDH Elevated Causes and What They Mean", excerpt: "Explains what elevated LDH levels are, what they signal about tissue damage and systemic stress, and how to respond for long-term health.", url: "https://lolahealth.com/blogs/longevity/ldh-elevated-causes", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(0) },
+  { title: "Gamma GT in Liver Function: A Key Biomarker for Longevity", excerpt: "Breaks down what GGT is, why high levels matter for liver and metabolic health, and practical steps to lower risk over time.", url: "https://lolahealth.com/blogs/longevity/gamma-gt-in-liver-function", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(1) },
+  { title: "Master Your Triglycerides to HDL Ratio: A Key to Cardiometabolic Health", excerpt: "Shows how the triglycerides to HDL ratio reflects cardiometabolic risk and offers nutrition and lifestyle tactics to improve it.", url: "https://lolahealth.com/blogs/longevity/triglycerides-to-hdl-ratio", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(2) },
+  { title: "What Is Metabolic Health? Unlock Better Energy for Life", excerpt: "Defines metabolic health, outlines key biomarkers, and gives practical strategies to optimise energy, weight, and long-term disease risk.", url: "https://lolahealth.com/blogs/longevity/what-is-metabolic-health", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(3) },
+  { title: "At Home Health Test: Actionable Insights for Longevity", excerpt: "Compares at-home health test options, explains which biomarkers matter for longevity, and helps you choose a service that fits your goals.", url: "https://lolahealth.com/blogs/longevity/at-home-health-test", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(4) },
+  { title: "How Do You Check Your Cholesterol at Home: A Longevity Guide", excerpt: "Covers ways to check cholesterol at home and how to interpret readings to protect heart health.", url: "https://lolahealth.com/blogs/longevity/how-do-you-check-your-cholesterol-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(5) },
+  { title: "Vitamin and Mineral Deficiency Testing: A Foundation for Longevity", excerpt: "Explains how deficiency testing uncovers nutrient gaps that affect energy, immunity, and long-term health.", url: "https://lolahealth.com/blogs/longevity/vitamin-and-mineral-deficiency-testing", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(6) },
+  { title: "Your Guide to a Blood Test for Health and Longevity", excerpt: "Introduces core longevity blood tests, what each marker means, and how to use results to build an action plan.", url: "https://lolahealth.com/blogs/longevity/blood-test-for-health", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(7) },
+  { title: "How to Test Your Cholesterol at Home for a Longer Life", excerpt: "Details reliable at-home cholesterol testing approaches and how to interpret readings to reduce cardiovascular risk.", url: "https://lolahealth.com/blogs/longevity/how-to-test-your-cholesterol-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(8) },
+  { title: "Full Body Health Check London: A Guide to Longevity", excerpt: "Reviews full-body health check options in London, highlighting which panels and services best support longevity and performance.", url: "https://lolahealth.com/blogs/longevity/full-body-health-check-london", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(9) },
+  { title: "Your Guide to Optimising Serum Iron Level for Longevity", excerpt: "Explains what serum iron levels reveal about energy, performance, and long-term health, with actions to correct low or high readings.", url: "https://lolahealth.com/blogs/longevity/serum-iron-level", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(10) },
+  { title: "A Guide to the Creatine Kinase Test for Muscle Health", excerpt: "Describes what a creatine kinase test shows about muscle damage and recovery, and how to interpret results for training and longevity.", url: "https://lolahealth.com/blogs/longevity/creatine-kinase-test", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(11) },
+  { title: "Why the Triglyceride HDL Ratio Is a Key Longevity Metric", excerpt: "Sets out why the triglyceride-to-HDL ratio is a powerful marker for metabolic and heart risk, plus steps to improve it.", url: "https://lolahealth.com/blogs/longevity/triglyceride-hdl-ratio", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(12) },
+  { title: "Blood Test for Minerals and Vitamin Deficiencies", excerpt: "Covers which mineral and vitamin markers to test, what abnormal values mean, and how to respond for better vitality.", url: "https://lolahealth.com/blogs/longevity/blood-test-for-minerals-and-vitamin-deficiencies", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(13) },
+  { title: "What Is High Cortisol and How Does It Affect Your Health?", excerpt: "Explains causes and symptoms of high cortisol, and practical strategies to reduce stress load for long-term health.", url: "https://lolahealth.com/blogs/longevity/what-is-high-cortisol", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(14) },
+  { title: "What Is the Normal Range for Vitamin B12: A Guide", excerpt: "Defines normal B12 ranges, common signs of deficiency or excess, and how to optimise levels through diet and supplementation.", url: "https://lolahealth.com/blogs/longevity/what-is-the-normal-range-for-vitamin-b-12", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(15) },
+  { title: "Discover the HbA1c Sugar Test: A Key to Unlocking Longevity", excerpt: "Introduces the HbA1c sugar test, what results say about long-term glucose control, and ways to improve them.", url: "https://lolahealth.com/blogs/longevity/hba-1-c-sugar-test", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(16) },
+  { title: "Decoding CK Levels Normal Ranges for Optimal Longevity", excerpt: "Explains normal CK ranges, what high or low levels mean, and how they relate to muscle load and recovery.", url: "https://lolahealth.com/blogs/longevity/ck-levels-normal", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(17) },
+  { title: "Creatinine Levels in the UK: A Longevity Guide", excerpt: "Describes creatinine as a kidney function marker, UK ranges, and how to protect renal health.", url: "https://lolahealth.com/blogs/longevity/creatinine-levels-uk", image: getImage("Wellness"), provider: "Lola Health", category: "Wellness", date: generateDate(18) },
+  { title: "Optimize Gamma GT Level for Better Liver Health and Longevity", excerpt: "Shows how to monitor and improve gamma-GT levels to support liver and metabolic health.", url: "https://lolahealth.com/blogs/longevity/gamma-gt-level", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(19) },
+  { title: "What Is a Creatine Kinase Blood Test? A Guide for Longevity", excerpt: "Details what a CK blood test measures, common causes of raised values, and what they mean for your muscles.", url: "https://lolahealth.com/blogs/longevity/what-is-creatine-kinase-blood-test", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(20) },
+  { title: "A Guide to the Male Hormones Test for Health and Longevity", excerpt: "Overviews key male hormone markers, how to prepare, interpret results, and use them to guide long-term health decisions.", url: "https://lolahealth.com/blogs/longevity/male-hormones-test", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(21) },
+  { title: "Blood Tests for Vitamin and Mineral Deficiency", excerpt: "Explains which blood tests identify vitamin and mineral gaps and how to act on results to boost health.", url: "https://lolahealth.com/blogs/longevity/blood-tests-for-vitamin-and-mineral-deficiency", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(22) },
+  { title: "Normal Iron Levels: Your Guide to Energy, Health, and Longevity", excerpt: "Describes normal iron ranges, how they affect energy and immunity, and simple ways to optimise status.", url: "https://lolahealth.com/blogs/longevity/normal-iron-levels", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(23) },
+  { title: "Discover the U&E Blood Test: Key Insights for Longevity", excerpt: "Breaks down what urea and electrolytes (U&E) show about kidney function, hydration, and daily wellbeing.", url: "https://lolahealth.com/blogs/longevity/u-e-blood-test", image: getImage("Wellness"), provider: "Lola Health", category: "Wellness", date: generateDate(24) },
+  { title: "Tests for Vitamin and Mineral Deficiency: Your Longevity Roadmap", excerpt: "Reviews UK testing options for vitamin and mineral status and which markers matter most.", url: "https://lolahealth.com/blogs/longevity/tests-for-vitamin-and-mineral-deficiency", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(25) },
+  { title: "Your Guide to At Home Blood Tests for Longevity", excerpt: "Covers how to use at-home blood tests to track key longevity biomarkers reliably.", url: "https://lolahealth.com/blogs/longevity/at-home-blood-test", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(26) },
+  { title: "Blood Test for Health Check (Your Key to Longevity)", excerpt: "Explains how a general blood health check can surface actionable issues early and support long-term planning.", url: "https://lolahealth.com/blogs/longevity/blood-test-for-health-check", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(27) },
+  { title: "Can I Request a Blood Test in the UK? A Guide to Longevity", excerpt: "Describes how to access blood testing via NHS and private routes to get the data needed for longevity goals.", url: "https://lolahealth.com/blogs/longevity/can-i-request-a-blood-test", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(28) },
+  { title: "Testing for Vitamin and Mineral Deficiency: A Guide", excerpt: "Outlines key nutrient tests and how to use results to support everyday health and performance.", url: "https://lolahealth.com/blogs/longevity/testing-for-vitamin-and-mineral-deficiency", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(29) },
+  { title: "Discover At Home Hormone Tests: Your Guide to a Longer Life", excerpt: "Explains what at-home hormone tests can show, which hormones to track, and how to act on the data.", url: "https://lolahealth.com/blogs/longevity/at-home-hormone-tests", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(30) },
+  { title: "Your Guide to a Liver Function Test at Home for Longevity", excerpt: "Shows how home liver tests work, what they measure, and how to use results to protect liver health.", url: "https://lolahealth.com/blogs/longevity/liver-function-test-at-home", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(31) },
+  { title: "A Guide to Blood Tests for Vitamin and Mineral Deficiencies", excerpt: "Summarises key vitamin and mineral blood markers, and how to read patterns across them.", url: "https://lolahealth.com/blogs/longevity/blood-tests-for-vitamin-and-mineral-deficiencies", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(32) },
+  { title: "What a Full Blood Count Reveals About Your Longevity", excerpt: "Explains what a full blood count checks for and why it matters for detecting early health issues.", url: "https://lolahealth.com/blogs/longevity/what-does-full-blood-count-check-for", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(33) },
+  { title: "Hormone Tests for Males: A Guide to Longevity", excerpt: "Details core male hormone tests, how to interpret them, and how they link to energy, body composition, and long-term health.", url: "https://lolahealth.com/blogs/longevity/hormone-tests-for-males", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(34) },
+  { title: "What Is HbA1c? A Guide to Blood Sugar and Longevity", excerpt: "Defines HbA1c, UK reference ranges, and lifestyle strategies to improve blood sugar control.", url: "https://lolahealth.com/blogs/longevity/what-is-hba-1-c", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(35) },
+  { title: "How Long Do Blood Test Results Take: A Guide to Longevity", excerpt: "Covers typical timelines for different blood tests and what influences result turnaround.", url: "https://lolahealth.com/blogs/longevity/how-long-do-blood-test-results-take", image: getImage("Wellness"), provider: "Lola Health", category: "Wellness", date: generateDate(36) },
+  { title: "Normal CK Values: Your Guide to Muscle Health and Longevity", excerpt: "Explains normal CK values and what they indicate about muscle damage, training load, and recovery.", url: "https://lolahealth.com/blogs/longevity/normal-ck-values", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(37) },
+  { title: "Triglyceride to HDL Ratio: The Longevity Metric You Need to Know", excerpt: "Shows how the TG:HDL ratio predicts cardiometabolic risk and practical ways to improve it.", url: "https://lolahealth.com/blogs/longevity/triglyceride-to-hdl-ratio", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(38) },
+  { title: "Normal TSH Levels UK and Your Longevity Guide", excerpt: "Describes normal thyroid-stimulating hormone (TSH) ranges in the UK and what shifts mean for energy and metabolism.", url: "https://lolahealth.com/blogs/longevity/normal-tsh-levels-uk", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(39) },
+  { title: "Insulin Fasting Test: Your Key to Unlocking Longevity", excerpt: "Explains what a fasting insulin test measures, why it matters for insulin resistance, and how to improve sensitivity.", url: "https://lolahealth.com/blogs/longevity/insulin-fasting-test", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(40) },
+  { title: "A Guide to Testing for Vitamin and Mineral Deficiencies", excerpt: "Shows how systematic nutrient testing supports long-term health and which panels to prioritise.", url: "https://lolahealth.com/blogs/longevity/testing-for-vitamin-and-mineral-deficiencies", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(41) },
+  { title: "Your TG to HDL Ratio and Your Longevity", excerpt: "Focuses on the TG:HDL ratio as a heart-health marker and gives steps to shift it in a favourable direction.", url: "https://lolahealth.com/blogs/longevity/tg-to-hdl-ratio", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(42) },
+  { title: "How an Oestrogen Blood Test Can Enhance Your Longevity", excerpt: "Explains how oestrogen testing informs menopause, fertility, and broader health planning.", url: "https://lolahealth.com/blogs/longevity/oestrogen-blood-test", image: getImage("Women's Health"), provider: "Lola Health", category: "Women's Health", date: generateDate(43) },
+  { title: "CK Levels Normal Range: A Key to Muscle Health and Longevity", excerpt: "Clarifies CK normal ranges, reasons for elevations, and how to use them to manage training stress.", url: "https://lolahealth.com/blogs/longevity/ck-levels-normal-range", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(44) },
+  { title: "Apo B Test: Your Ultimate Guide to Cardiovascular Longevity", excerpt: "Presents ApoB as a powerful predictor of cardiovascular risk and how to act on results.", url: "https://lolahealth.com/blogs/longevity/apo-b-test", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(45) },
+  { title: "How to Recover Faster From Workouts for Sustainable Progress", excerpt: "Explains nutrition, sleep, and active recovery strategies to speed up workout recovery without burning out your system.", url: "https://lolahealth.com/blogs/longevity/how-to-recover-faster-from-workouts", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(46) },
+  { title: "Your Guide to the Albumin Normal Range and Its Role in Longevity", excerpt: "Describes what albumin shows about liver, kidney, and overall health, including normal ranges and what out-of-range results can mean.", url: "https://lolahealth.com/blogs/longevity/albumin-normal-range", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(47) },
+  { title: "How to Lower GGT Levels for Optimal Longevity", excerpt: "Gives actionable diet, alcohol, and lifestyle tactics to reduce GGT and support liver-driven longevity.", url: "https://lolahealth.com/blogs/longevity/how-to-lower-ggt-levels", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(48) },
+  { title: "Your Guide to Vitamin & Mineral Deficiency Tests", excerpt: "Shows how vitamin and mineral deficiency tests reveal hidden health gaps and how to respond.", url: "https://lolahealth.com/blogs/longevity/test-for-vitamin-and-mineral-deficiency", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(49) },
+  { title: "8 Cholesterol Lowering Foods NHS Experts Recommend", excerpt: "Lists eight foods NHS experts highlight for improving cholesterol, with practical ways to add them into daily meals.", url: "https://lolahealth.com/blogs/longevity/cholesterol-lowering-foods-nhs", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(50) },
+  { title: "At Home Health Tests: Your Guide to a Longer, Healthier Life", excerpt: "Explains how to choose reliable at-home tests, interpret results, and fold them into a proactive longevity plan.", url: "https://lolahealth.com/blogs/longevity/at-home-health-tests", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(51) },
+  { title: "Unlock Insights into Serum Gamma GT Level and Longevity", excerpt: "Explains what serum gamma-GT shows about liver health and offers steps to lower elevated levels.", url: "https://lolahealth.com/blogs/longevity/serum-gamma-gt-level", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(52) },
+  { title: "The Longevity Blueprint: Decoding Your Vitamins and Minerals Blood Test", excerpt: "Walks through a vitamins and minerals blood test, how to read it, and how to act on patterns for long-term health.", url: "https://lolahealth.com/blogs/longevity/vitamins-and-minerals-blood-test", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(53) },
+  { title: "A Guide to Hormones Test for Female Longevity", excerpt: "Covers core female hormone tests, timing, interpretation, and how they link to long-term wellbeing.", url: "https://lolahealth.com/blogs/longevity/hormones-test-for-female", image: getImage("Women's Health"), provider: "Lola Health", category: "Women's Health", date: generateDate(54) },
+  { title: "What Is a Lipid Panel Test: A Guide to Optimising Your Heart Health", excerpt: "Describes what a lipid panel measures, how results relate to heart risk, and actions to improve your profile.", url: "https://lolahealth.com/blogs/longevity/what-is-lipid-panel-test", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(55) },
+  { title: "Blood Test Results Explained for Longevity", excerpt: "Provides a plain-English guide to common blood markers and what they mean for your long-term health.", url: "https://lolahealth.com/blogs/longevity/blood-test-results-explained", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(56) },
+  { title: "Home Blood Testing for Longevity and Health", excerpt: "Shows how home blood testing can track key biomarkers over time and support data-driven decisions.", url: "https://lolahealth.com/blogs/longevity/home-blood-testing", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(57) },
+  { title: "Blood Testing for Deficiencies: Your Health Blueprint", excerpt: "Explains which deficiency tests matter, how to decode results, and how to plug nutritional gaps.", url: "https://lolahealth.com/blogs/longevity/blood-testing-for-deficiencies", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(58) },
+  { title: "Blood Tests for Vitamins and Minerals: A Guide to Longevity", excerpt: "Shows how vitamin and mineral blood tests become a personalised map for better health decisions.", url: "https://lolahealth.com/blogs/longevity/blood-tests-for-vitamins-and-minerals", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(59) },
+  { title: "Nutritional Blood Testing for a Longer Healthspan", excerpt: "Positions nutritional blood testing as a way to tailor diet and supplementation for long-term health.", url: "https://lolahealth.com/blogs/longevity/nutritional-blood-testing", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(60) },
+  { title: "Boost Retention and Longevity with Corporate Wellness Program Benefits", excerpt: "Outlines how corporate wellness programmes improve employee health, reduce burnout, and support longevity.", url: "https://lolahealth.com/blogs/longevity/corporate-wellness-program-benefits", image: getImage("Mental Health"), provider: "Lola Health", category: "Mental Health", date: generateDate(61) },
+  { title: "Test for Vitamin Deficiency UK: Your Longevity Guide", excerpt: "Compares NHS, private, and at-home vitamin deficiency testing options in the UK and how to choose.", url: "https://lolahealth.com/blogs/longevity/test-for-vitamin-deficiency-uk", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(62) },
+  { title: "Testing Hormones at Home: A Guide to Longevity", excerpt: "Discusses pros, cons, and accuracy of at-home hormone testing and how to use results.", url: "https://lolahealth.com/blogs/longevity/testing-hormones-at-home", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(63) },
+  { title: "Blood Testing at Home: A Guide to Actionable Longevity", excerpt: "Explains how home blood testing works, which markers to focus on, and how to build actions from results.", url: "https://lolahealth.com/blogs/longevity/blood-testing-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(64) },
+  { title: "Test Hormones at Home: A Longevity Guide", excerpt: "Guides readers through choosing home hormone tests, interpreting them, and planning next steps.", url: "https://lolahealth.com/blogs/longevity/test-hormones-at-home", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(65) },
+  { title: "Blood Test at Home: A Guide to Actionable Longevity", excerpt: "Describes what a home blood test can reveal and how to carry it out safely and meaningfully.", url: "https://lolahealth.com/blogs/longevity/blood-test-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(66) },
+  { title: "Vitamin and Mineral Deficiency Tests: Your Blueprint for Healthy Ageing", excerpt: "Shows how vitamin and mineral deficiency tests feed into a long-term healthy ageing plan.", url: "https://lolahealth.com/blogs/longevity/vitamin-and-mineral-deficiency-tests", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(67) },
+  { title: "Private Blood Tests UK: Your Guide to Longevity and Health", excerpt: "Explains how to navigate private blood testing in the UK, from choosing panels to interpreting results.", url: "https://lolahealth.com/blogs/longevity/private-blood-tests-uk", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(68) },
+  { title: "What a Full Blood Test Reveals About Your Longevity", excerpt: "Breaks down what a full blood test covers and how these markers relate to long-term health.", url: "https://lolahealth.com/blogs/longevity/full-blood-test", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(69) },
+  { title: "Health Tests at Home for Longevity", excerpt: "Summarises key at-home health tests, their benefits, and how to pick reliable options.", url: "https://lolahealth.com/blogs/longevity/health-tests-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(70) },
+  { title: "How to Check Insulin Resistance for Optimal Longevity", excerpt: "Explains signs, blood tests (including indices like HOMA-IR), and strategies to tackle insulin resistance.", url: "https://lolahealth.com/blogs/longevity/how-to-check-insulin-resistance", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(71) },
+  { title: "Testosterone Test for Male: A Guide to Optimising Longevity", excerpt: "Details what a testosterone test can show, how to prepare, and how results link to energy and ageing.", url: "https://lolahealth.com/blogs/longevity/testosterone-test-for-male", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(72) },
+  { title: "Female Hormone Blood Test Guide for Longevity", excerpt: "Explains core female hormone blood tests and how to use them for long-term planning around energy, mood, and reproductive health.", url: "https://lolahealth.com/blogs/longevity/female-hormone-blood-test", image: getImage("Women's Health"), provider: "Lola Health", category: "Women's Health", date: generateDate(73) },
+  { title: "Test for Vitamin and Mineral Deficiencies: A Longevity Guide", excerpt: "Shows how to structure testing for vitamin and mineral deficiencies and when to repeat tests.", url: "https://lolahealth.com/blogs/longevity/test-for-vitamin-and-mineral-deficiencies", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(74) },
+  { title: "Understanding Blood Test Results UK for Longevity", excerpt: "A UK-focused walkthrough of blood test result interpretation and how to turn numbers into actions.", url: "https://lolahealth.com/blogs/longevity/understanding-blood-test-results-uk", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(75) },
+  { title: "Your Guide to a Vitamin Deficiency Test for Longevity", excerpt: "Explains how vitamin deficiency tests work and how to use them to guide nutrition and supplementation.", url: "https://lolahealth.com/blogs/longevity/vitamin-deficiency-test", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(76) },
+  { title: "Blood Testing for Nutrition and Longevity", excerpt: "Shows how nutrition-focused blood testing can refine diet choices and support healthspan.", url: "https://lolahealth.com/blogs/longevity/blood-testing-for-nutrition", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(77) },
+  { title: "Hormone Blood Tests UK: Your Guide to Longevity", excerpt: "Outlines UK hormone blood testing options, interpretation, and how they relate to long-term health.", url: "https://lolahealth.com/blogs/longevity/hormone-blood-tests-uk", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(78) },
+  { title: "Understanding Your Testosterone Blood Test for Longevity", excerpt: "Digs into testosterone blood test results, what patterns mean, and what to discuss with clinicians.", url: "https://lolahealth.com/blogs/longevity/testosterone-blood-test", image: getImage("Men's Health"), provider: "Lola Health", category: "Men's Health", date: generateDate(79) },
+  { title: "GGT Blood Test: A Key to Longevity and Cellular Health", excerpt: "Explains what a GGT blood test shows about liver and cellular health and how to improve high readings.", url: "https://lolahealth.com/blogs/longevity/ggt-blood-test", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(80) },
+  { title: "What Does a Full Blood Test Check For? A Guide to Longevity", excerpt: "Breaks down components of a full blood test and why they matter for early detection and prevention.", url: "https://lolahealth.com/blogs/longevity/what-does-a-full-blood-test-check-for", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(81) },
+  { title: "How to Check for Insulin Resistance for a Longer, Healthier Life", excerpt: "Explains symptoms, lab tests, and practical steps to identify and improve insulin resistance in a UK context.", url: "https://lolahealth.com/blogs/longevity/how-to-check-for-insulin-resistance", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(82) },
+  { title: "7 Key Metabolic Health Markers Examples for Better Wellbeing", excerpt: "Outlines seven core metabolic markers, what they mean, and how tracking them supports better day-to-day health and longevity.", url: "https://lolahealth.com/blogs/longevity/metabolic-health-markers-examples-better-wellbeing", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(83) },
+  { title: "Cholesterol Checks at Home: A Guide for Your Longevity", excerpt: "Shows how to choose and use at-home cholesterol checks, interpret results, and decide on next steps.", url: "https://lolahealth.com/blogs/longevity/cholesterol-checks-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(84) },
+  { title: "Understanding Why Track Blood Health for Better Longevity", excerpt: "Explains why regular blood-health tracking matters for prevention, performance, and early detection.", url: "https://lolahealth.com/blogs/longevity/understanding-why-track-blood-health", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(85) },
+  { title: "Your Longevity Guide to Vitamin and Mineral Deficiency Blood Test", excerpt: "Describes what a vitamin and mineral deficiency blood test includes and how to act on the findings.", url: "https://lolahealth.com/blogs/longevity/vitamin-and-mineral-deficiency-blood-test", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(86) },
+  { title: "Understanding Interpreting Test Biomarkers for Better Longevity", excerpt: "Introduces core principles for interpreting biomarkers and using them to make better long-term health decisions.", url: "https://lolahealth.com/blogs/longevity/understanding-interpreting-test-biomarkers", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(87) },
+  { title: "Hormone Blood Test UK: Your Guide to Longevity", excerpt: "Explains UK hormone blood test options, key markers, and how results relate to symptoms and ageing.", url: "https://lolahealth.com/blogs/longevity/hormone-blood-test-uk", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(88) },
+  { title: "Understanding What Are Diagnostic Biomarkers", excerpt: "Defines diagnostic biomarkers, their uses in medicine, and why they're central to modern prevention strategies.", url: "https://lolahealth.com/blogs/longevity/understanding-what-are-diagnostic-biomarkers", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(89) },
+  { title: "Your Guide to a Home Blood Test for Longevity", excerpt: "Shows how home blood tests work, which panels to consider, and how to turn results into action.", url: "https://lolahealth.com/blogs/longevity/home-blood-test", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(90) },
+  { title: "7 Essential Health Checks for 2025 Every Professional Needs", excerpt: "Lists seven high-value health checks for busy professionals and how they support long-term performance and wellbeing.", url: "https://lolahealth.com/blogs/longevity/7-essential-health-checks-2025", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(91) },
+  { title: "Finding the Best Longevity Supplements in the UK", excerpt: "Reviews evidence-based longevity supplements in the UK and how to choose high-quality products.", url: "https://lolahealth.com/blogs/longevity/best-longevity-supplements", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(92) },
+  { title: "7 Essential Biomarker Monitoring Tips for Professionals", excerpt: "Provides practical tips on choosing, timing, and repeating biomarker tests to support sustained performance.", url: "https://lolahealth.com/blogs/longevity/7-essential-biomarker-monitoring-tips", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(93) },
+  { title: "How to Understand Blood Test Results UK for a Longer Life", excerpt: "Gives a UK-specific guide to reading blood test reports and spotting issues early.", url: "https://lolahealth.com/blogs/longevity/understand-blood-test-results-uk", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(94) },
+  { title: "Understanding How Blood Tests Support Clinicians", excerpt: "Explains how clinicians use blood tests to diagnose, risk-stratify, and monitor treatment.", url: "https://lolahealth.com/blogs/longevity/understanding-how-blood-tests-support-clinicians", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(95) },
+  { title: "Comprehensive Blood Test UK: Your Guide to Longevity", excerpt: "Describes what a comprehensive blood test includes, UK access routes, and how to use results.", url: "https://lolahealth.com/blogs/longevity/comprehensive-blood-test-uk", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(96) },
+  { title: "Understanding Why Test Vitamin Levels Matters for Longevity", excerpt: "Outlines why testing vitamin levels is important and how deficiencies shape long-term health risk.", url: "https://lolahealth.com/blogs/longevity/understanding-why-test-vitamin-levels-naturally", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(97) },
+  { title: "What Is a Comprehensive Metabolic Panel? A Guide to Longevity", excerpt: "Explains the components of a comprehensive metabolic panel and how they relate to organ and metabolic health.", url: "https://lolahealth.com/blogs/longevity/what-is-comprehensive-metabolic-panel", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(98) },
+  { title: "Understanding the Role of Personalised Blood Tests", excerpt: "Shows how personalised blood testing enables tailored interventions instead of one-size-fits-all advice.", url: "https://lolahealth.com/blogs/longevity/understanding-role-of-personalised-blood-tests", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(99) },
+  { title: "Understanding the Role of Technology in Blood Testing", excerpt: "Describes how new technology improves speed, accuracy, and accessibility of blood testing.", url: "https://lolahealth.com/blogs/longevity/understanding-role-of-technology-in-blood-testing", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(100) },
+  { title: "Blood Test Results Explained UK: A Longevity Guide", excerpt: "Walks through common UK blood markers and what they mean for long-term risk and prevention.", url: "https://lolahealth.com/blogs/longevity/blood-test-results-explained-uk", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(101) },
+  { title: "Understanding the Role of Certified Lab Testing", excerpt: "Explains why certified laboratories matter for accuracy, safety, and clinical decision-making.", url: "https://lolahealth.com/blogs/longevity/understanding-role-of-certified-lab-testing", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(102) },
+  { title: "What Causes High White Blood Cells and What It Means for Longevity", excerpt: "Covers common causes of raised white cells and what they can signal about infection, inflammation, or more serious disease.", url: "https://lolahealth.com/blogs/longevity/what-causes-high-white-blood-cells", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(103) },
+  { title: "Master the Routine Health Screening Process Effectively", excerpt: "Lays out a step-by-step routine screening schedule and how to integrate checks into busy lives.", url: "https://lolahealth.com/blogs/longevity/routine-health-screening-process", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(104) },
+  { title: "How to Test Vitamin Deficiency for Optimal Longevity", excerpt: "Gives practical UK options (GP, private, at-home) for testing vitamin deficiency and acting on results.", url: "https://lolahealth.com/blogs/longevity/how-to-test-vitamin-deficiency", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(105) },
+  { title: "Remote Blood Collection Guide: Optimise Your Health from Anywhere", excerpt: "Provides a step-by-step remote blood collection guide for home or workplace testing.", url: "https://lolahealth.com/blogs/longevity/remote-blood-collection-guide", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(106) },
+  { title: "What Causes Low Iron Levels and How It Impacts Longevity", excerpt: "Explains causes, symptoms, and long-term consequences of low iron, with strategies to restore levels.", url: "https://lolahealth.com/blogs/longevity/what-causes-low-iron-levels", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(107) },
+  { title: "What Causes High Blood Pressure and How It Impacts Longevity", excerpt: "Covers drivers of high blood pressure and actions to manage it and protect heart health.", url: "https://lolahealth.com/blogs/longevity/what-causes-high-blood-pressure", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(108) },
+  { title: "Understanding Why Choose Laboratory Testing for Longevity", excerpt: "Discusses why lab-based testing is often preferred over basic screens and what advantages it offers.", url: "https://lolahealth.com/blogs/longevity/understanding-why-choose-laboratory-testing", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(109) },
+  { title: "Top Workplace Wellness Program Ideas for 2025", excerpt: "Suggests wellness programme ideas (screenings, mental health, nutrition) to improve workforce health.", url: "https://lolahealth.com/blogs/longevity/workplace-wellness-program-ideas", image: getImage("Mental Health"), provider: "Lola Health", category: "Mental Health", date: generateDate(110) },
+  { title: "Understanding the Difference Between At-Home and Clinic Blood Tests", excerpt: "Compares at-home vs clinic blood tests on accuracy, convenience, and when to use each.", url: "https://lolahealth.com/blogs/longevity/difference-between-at-home-and-clinic-blood-tests", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(111) },
+  { title: "Unlocking NMN Supplement Benefits for Longevity", excerpt: "Explores the science behind NMN, NAD+, and how NMN may support energy, repair, and healthy ageing.", url: "https://lolahealth.com/blogs/longevity/nmn-supplement-benefits", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(112) },
+  { title: "Understanding Why Choose Medical-Grade Labs for Longevity", excerpt: "Explains benefits of medical-grade labs, from quality control to better, more actionable results.", url: "https://lolahealth.com/blogs/longevity/understanding-why-choose-medical-grade-labs", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(113) },
+  { title: "Understanding Why Monitor Cardiovascular Health Matters for Longevity", excerpt: "Sets out reasons to monitor cardiovascular health and which markers and tests to track.", url: "https://lolahealth.com/blogs/longevity/understanding-why-monitor-cardiovascular-health", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(114) },
+  { title: "Best Supplements for Endurance and Longevity", excerpt: "Reviews supplements that support endurance performance while also aligning with long-term health.", url: "https://lolahealth.com/blogs/longevity/best-supplements-for-endurance", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(115) },
+  { title: "7 Best Supplements for Athletes in 2025: A Longevity-Focused Guide", excerpt: "Lists seven key supplements for athletes that balance performance with safety and long-term health.", url: "https://lolahealth.com/blogs/longevity/best-supplements-for-athletes", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(116) },
+  { title: "7 Key Benefits of Home Blood Testing for You", excerpt: "Summarises major benefits of home blood testing, including convenience, early detection, and trend tracking.", url: "https://lolahealth.com/blogs/longevity/7-key-benefits-of-home-blood-testing", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(117) },
+  { title: "Iron Deficiency in Runners: A Guide to Longevity", excerpt: "Explains how iron deficiency affects endurance, performance, and long-term health in runners, plus how to test and correct it.", url: "https://lolahealth.com/blogs/longevity/iron-deficiency-in-runners", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(118) },
+  { title: "Understanding Why Monitor Metabolic Health for Longevity", excerpt: "Describes why monitoring metabolic health markers is key for preventing disease and maintaining energy and performance.", url: "https://lolahealth.com/blogs/longevity/understanding-why-monitor-metabolic-health", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(119) },
+  { title: "Understanding Why Test Multiple Biomarkers for Health Insights", excerpt: "Shows how testing multiple biomarkers together gives a more complete picture than isolated results.", url: "https://lolahealth.com/blogs/longevity/understanding-why-test-multiple-biomarkers-for-health-insights", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(120) },
+  { title: "Vitamin D Deficiency Testing for Longevity", excerpt: "Explains why vitamin D matters for bone, immunity, and longevity, and how to test and optimise levels.", url: "https://lolahealth.com/blogs/longevity/vitamin-d-deficiency-testing", image: getImage("Vitamins"), provider: "Lola Health", category: "Vitamins", date: generateDate(121) },
+  { title: "Blood Test for Vitamin and Mineral Deficiency", excerpt: "Describes how blood testing can reveal key vitamin and mineral deficiencies to guide targeted interventions.", url: "https://lolahealth.com/blogs/longevity/blood-test-for-vitamin-and-mineral-deficiency", image: getImage("Nutrition"), provider: "Lola Health", category: "Nutrition", date: generateDate(122) },
+  { title: "What is Sample Collection Protocol? Understanding Its Importance", excerpt: "Introduces sample collection protocols and why proper collection is crucial for accurate lab results.", url: "https://lolahealth.com/blogs/longevity/what-is-sample-collection-protocol", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(123) },
+  { title: "Normal Vitamin D Levels UK: A Key to Healthy Longevity", excerpt: "Defines normal UK vitamin D ranges, risk factors for deficiency, and how to maintain healthy levels year-round.", url: "https://lolahealth.com/blogs/longevity/normal-vitamin-d-levels-uk", image: getImage("Vitamins"), provider: "Lola Health", category: "Vitamins", date: generateDate(124) },
+  { title: "Understanding Why Test Thyroid Function for Optimal Health", excerpt: "Explains why testing thyroid function is important, signs of imbalance, and how results affect treatment and wellbeing.", url: "https://lolahealth.com/blogs/longevity/understanding-why-test-thyroid-function-naturally", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(125) },
+  { title: "Cholesterol Level Chart UK: Your Guide to Longevity", excerpt: "Provides a UK-specific cholesterol level chart, what each band means, and steps to improve heart health.", url: "https://lolahealth.com/blogs/longevity/cholesterol-level-chart-uk", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(126) },
+  { title: "Understanding the Role of Metabolic Panels in Wellness", excerpt: "Outlines what metabolic panels measure and how they inform overall wellness and disease prevention.", url: "https://lolahealth.com/blogs/longevity/understanding-role-of-metabolic-panels-in-wellness", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(127) },
+  { title: "Optimise Your Biomarker Monitoring Workflow for Health", excerpt: "Gives a step-by-step workflow for ordering, timing, and repeating biomarker tests efficiently.", url: "https://lolahealth.com/blogs/longevity/biomarker-monitoring-workflow", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(128) },
+  { title: "Neutrophils High and Lymphocytes Low: A Guide to Longevity", excerpt: "Explains what a pattern of high neutrophils and low lymphocytes can suggest and when to seek follow-up.", url: "https://lolahealth.com/blogs/longevity/neutrophils-high-and-lymphocytes-low", image: getImage("Cancer Screening"), provider: "Lola Health", category: "Cancer Screening", date: generateDate(129) },
+  { title: "Understanding What Are Lab Panels and Their Importance", excerpt: "Defines lab panels, why they bundle tests, and how they streamline health assessment.", url: "https://lolahealth.com/blogs/longevity/understanding-what-are-lab-panels", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(130) },
+  { title: "Normal Prolactin Levels in Females and Your Longevity", excerpt: "Describes normal prolactin ranges, causes of imbalance, and implications for female health.", url: "https://lolahealth.com/blogs/longevity/normal-prolactin-levels-in-females", image: getImage("Women's Health"), provider: "Lola Health", category: "Women's Health", date: generateDate(131) },
+  { title: "Understanding Average Progesterone Levels for Health", excerpt: "Explains typical progesterone levels across life stages and how they affect symptoms and wellbeing.", url: "https://lolahealth.com/blogs/longevity/average-progesterone-levels", image: getImage("Women's Health"), provider: "Lola Health", category: "Women's Health", date: generateDate(132) },
+  { title: "What is Fasting Blood Test? Understanding Its Importance", excerpt: "Introduces fasting blood tests, when they're needed, and how fasting affects result interpretation.", url: "https://lolahealth.com/blogs/longevity/what-is-fasting-blood-test", image: getImage("Diabetes"), provider: "Lola Health", category: "Diabetes", date: generateDate(133) },
+  { title: "8 Important Blood Test Markers You Should Know", excerpt: "Highlights eight high-yield blood markers, what they show, and why to track them.", url: "https://lolahealth.com/blogs/longevity/important-blood-test-markers-8", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(134) },
+  { title: "What High Levels of GGT Mean for Your Longevity", excerpt: "Details the implications of high GGT for liver and metabolic health, plus strategies to lower it.", url: "https://lolahealth.com/blogs/longevity/high-levels-of-ggt", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(135) },
+  { title: "Urea Levels in Blood and Longevity: A Key to a Healthier Life", excerpt: "Explains normal and abnormal blood urea levels and what they indicate about kidney function and hydration.", url: "https://lolahealth.com/blogs/longevity/urea-levels-in-blood", image: getImage("Wellness"), provider: "Lola Health", category: "Wellness", date: generateDate(136) },
+  { title: "Ultimate Guide to At-Home Phlebotomy: Master Your Health", excerpt: "Provides a detailed guide to at-home phlebotomy, including preparation, safety, and accuracy tips.", url: "https://lolahealth.com/blogs/longevity/guide-to-at-home-phlebotomy", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(137) },
+  { title: "Understanding Liver Function Tests Gamma GT Levels", excerpt: "Walks through liver function tests with a focus on GGT and what the numbers mean.", url: "https://lolahealth.com/blogs/longevity/liver-function-tests-gamma-gt", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(138) },
+  { title: "Guide to At-Home Blood Sampling: Accurate Results", excerpt: "Shares a step-by-step method for home blood sampling to ensure reliable lab results.", url: "https://lolahealth.com/blogs/longevity/guide-to-at-home-blood-sampling", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(139) },
+  { title: "Bilirubin Normal Ranges and Your Health Span", excerpt: "Explains bilirubin normal ranges, links to liver function, and what shifts can signal.", url: "https://lolahealth.com/blogs/longevity/bilirubin-normal-ranges", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(140) },
+  { title: "Optimise Your Blood Testing Workflow for Women", excerpt: "Lays out a structured, female-specific approach to scheduling and interpreting blood tests.", url: "https://lolahealth.com/blogs/longevity/blood-testing-workflow-for-women", image: getImage("Women's Health"), provider: "Lola Health", category: "Women's Health", date: generateDate(141) },
+  { title: "7 Effective Ways to Monitor Your Health", excerpt: "Lists seven practical methods to track health, from vitals to lab markers, and how to use them.", url: "https://lolahealth.com/blogs/longevity/7-ways-to-monitor-your-health", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(142) },
+  { title: "Understanding Liver Function Test Results for Longevity", excerpt: "Breaks down ALT, AST, ALP, and other liver markers, plus what patterns mean for long-term health.", url: "https://lolahealth.com/blogs/longevity/understanding-liver-function-test-results", image: getImage("Gut Health"), provider: "Lola Health", category: "Gut Health", date: generateDate(143) },
+  { title: "Hormone Level Testing at Home: A Guide to Optimising Health", excerpt: "Describes how to do hormone testing at home, which hormones to prioritise, and how to act on results.", url: "https://lolahealth.com/blogs/longevity/hormone-level-testing-at-home", image: getImage("Hormones"), provider: "Lola Health", category: "Hormones", date: generateDate(144) },
+  { title: "7 Advantages of At-Home Phlebotomy for Busy Lives", excerpt: "Outlines seven benefits of at-home phlebotomy, from convenience to improved adherence.", url: "https://lolahealth.com/blogs/longevity/advantages-of-at-home-phlebotomy-7", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(145) },
+  { title: "Private Blood Tests at Home for Health Longevity", excerpt: "Explains how private at-home blood tests work and how to choose a trustworthy provider.", url: "https://lolahealth.com/blogs/longevity/private-blood-tests-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(146) },
+  { title: "Understanding What is At-Home Phlebotomy for You", excerpt: "Introduces at-home phlebotomy, who it suits, and how it fits into a modern testing strategy.", url: "https://lolahealth.com/blogs/longevity/what-is-at-home-phlebotomy", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(147) },
+  { title: "At Home Health Testing: Your Action Plan for Longevity", excerpt: "Provides a practical action plan for using at-home health tests to track and improve key biomarkers.", url: "https://lolahealth.com/blogs/longevity/at-home-health-testing", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(148) },
+  { title: "Cholesterol Testing at Home for Longevity", excerpt: "Offers guidance on picking and using at-home cholesterol tests and integrating results into a heart-health strategy.", url: "https://lolahealth.com/blogs/longevity/cholesterol-testing-at-home", image: getImage("Heart Health"), provider: "Lola Health", category: "Heart Health", date: generateDate(149) },
 
-  // === MEDICHECKS ===
-  {
-    title: "Abnormal biomarkers in 2025: UK's most out-of-range results",
-    excerpt: "Overview of which blood test biomarkers most often appear out of range in the UK and what that may mean for your health.",
-    url: "https://www.medichecks.com/blogs/news/abnormal-biomarkers-out-of-range-blood-tests",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Medichecks",
-    category: "Wellness",
-    date: "2025-01-20"
-  },
-  {
-    title: "How to live healthily beyond 90 (the science-backed way)",
-    excerpt: "Evidence-based tips on living well into your 90s, focusing on lifestyle habits that support healthy ageing.",
-    url: "https://www.medichecks.com/blogs/news/healthy-ageing",
-    image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800",
-    provider: "Medichecks",
-    category: "Wellness",
-    date: "2025-01-19"
-  },
-  {
-    title: "How to build a supplement routine that works for you",
-    excerpt: "Step-by-step guide to choosing and structuring a supplement routine tailored to your needs.",
-    url: "https://www.medichecks.com/blogs/news/how-to-build-a-supplement-routine-that-works-for-you",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Medichecks",
-    category: "Nutrition",
-    date: "2025-01-18"
-  },
-  {
-    title: "What is testosterone and what happens when it's low?",
-    excerpt: "Explains what testosterone does, causes and symptoms of low testosterone, and when to consider testing.",
-    url: "https://www.medichecks.com/blogs/news/low-testosterone",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-    provider: "Medichecks",
-    category: "Men's Health",
-    date: "2025-01-17"
-  },
-  {
-    title: "What is perimenopause, and how do I know if I'm in it?",
-    excerpt: "Describes perimenopause symptoms, when it typically starts, and how hormone testing can help.",
-    url: "https://www.medichecks.com/blogs/news/perimenopause",
-    image: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800",
-    provider: "Medichecks",
-    category: "Women's Health",
-    date: "2025-01-16"
-  },
-  {
-    title: "Dry January vs Damp January - which is better for you?",
-    excerpt: "Compares a strict alcohol-free month with cutting down, and how each can affect health.",
-    url: "https://www.medichecks.com/blogs/news/dry-january-vs-damp-january-which-is-better-for-you",
-    image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800",
-    provider: "Medichecks",
-    category: "Mental Health",
-    date: "2025-01-15"
-  },
-  {
-    title: "Ways to boost your libido (and sex life)",
-    excerpt: "Covers lifestyle, psychological, and health-related factors that can help improve libido.",
-    url: "https://www.medichecks.com/blogs/news/ways-to-boost-your-libido-and-sex-life",
-    image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800",
-    provider: "Medichecks",
-    category: "Hormones",
-    date: "2025-01-14"
-  },
+  // === MEDICHECKS (35+ articles) ===
+  { title: "Abnormal biomarkers in 2025: UK's most out-of-range results", excerpt: "Overview of which blood test biomarkers most often appear out of range in the UK and what that may mean for your health.", url: "https://www.medichecks.com/blogs/news/abnormal-biomarkers-out-of-range-blood-tests", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(150) },
+  { title: "How to live healthily beyond 90 (the science-backed way)", excerpt: "Evidence-based tips on living well into your 90s, focusing on lifestyle habits that support healthy ageing.", url: "https://www.medichecks.com/blogs/news/healthy-ageing", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(151) },
+  { title: "How to build a supplement routine that works for you", excerpt: "Step-by-step guide to choosing and structuring a supplement routine tailored to your needs.", url: "https://www.medichecks.com/blogs/news/how-to-build-a-supplement-routine-that-works-for-you", image: getImage("Nutrition"), provider: "Medichecks", category: "Nutrition", date: generateDate(152) },
+  { title: "Health and wellness trends and predictions", excerpt: "Summary of key health trends seen in 2025 and expert predictions for 2026.", url: "https://www.medichecks.com/blogs/news/health-and-wellness-trends-and-predictions", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(153) },
+  { title: "Why is bowel cancer on the rise in young people?", excerpt: "Explores possible reasons bowel cancer is increasing in under-50s and what symptoms to watch for.", url: "https://www.medichecks.com/blogs/news/why-is-bowel-cancer-on-the-rise-in-young-people", image: getImage("Cancer Screening"), provider: "Medichecks", category: "Cancer Screening", date: generateDate(154) },
+  { title: "2024 health trends - the UK's most abnormal biomarkers", excerpt: "Looks at 2024 blood test data to highlight the nation's most frequently abnormal biomarkers.", url: "https://www.medichecks.com/blogs/news/2024-health-trends-the-uks-most-abnormal-biomarkers", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(155) },
+  { title: "Doctors' 10 health predictions for 2025", excerpt: "Medichecks doctors share ten key health trends and innovations they expect to see in 2025.", url: "https://www.medichecks.com/blogs/news/doctors-10-health-predictions-for-2025", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(156) },
+  { title: "Everything you need to know about Lyme disease", excerpt: "Explains Lyme disease symptoms, testing, and how to reduce the risk of tick bites.", url: "https://www.medichecks.com/blogs/news/what-is-lyme-disease-and-should-i-be-worried", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(157) },
+  { title: "How to prepare for hay fever season", excerpt: "Practical tips to get ready for high pollen season and manage hay fever symptoms.", url: "https://www.medichecks.com/blogs/news/top-tips-for-surviving-hay-fever-season", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(158) },
+  { title: "Lack of sleep? Six tips for better sleep", excerpt: "Six practical strategies to improve sleep quality and reduce the impact of poor sleep.", url: "https://www.medichecks.com/blogs/news/sleep-the-best-medicine", image: getImage("Mental Health"), provider: "Medichecks", category: "Mental Health", date: generateDate(159) },
+  { title: "Are you immune to measles?", excerpt: "Discusses rising measles cases in the UK and how to check your immunity status.", url: "https://www.medichecks.com/blogs/news/are-you-immune-to-measles", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(160) },
+  { title: "5 health conditions that are difficult to diagnose", excerpt: "Looks at why conditions like type 2 diabetes, coeliac disease, hypothyroidism, PCOS, and Lyme disease can be hard to diagnose.", url: "https://www.medichecks.com/blogs/news/5-health-conditions-that-are-difficult-to-diagnose-and-why", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(161) },
+  { title: "Zika virus - when to get tested in the UK", excerpt: "Guidance on who may benefit from Zika virus testing after travel to affected regions.", url: "https://www.medichecks.com/blogs/news/zika-virus-when-to-get-tested", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(162) },
+  { title: "5 surprising facts you didn't know about STIs", excerpt: "Highlights lesser-known facts about sexually transmitted infections and why testing matters.", url: "https://www.medichecks.com/blogs/news/5-suprising-facts-you-didnt-know-about-stis", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(163) },
+  { title: "How blood testing can help you achieve your goals", excerpt: "Explains how targeted blood tests can support fitness, health, and lifestyle goals.", url: "https://www.medichecks.com/blogs/news/how-blood-testing-can-help-you-achieve-your-goals", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(164) },
+  { title: "How to make your New Year's resolutions last", excerpt: "Five tips to turn New Year's resolutions into lasting healthy habits.", url: "https://www.medichecks.com/blogs/news/how-to-make-your-new-years-resolutions-a-long-term-change", image: getImage("Mental Health"), provider: "Medichecks", category: "Mental Health", date: generateDate(165) },
+  { title: "5 ways to stay healthy (ish) over Christmas", excerpt: "Practical ideas to enjoy Christmas while still looking after your health.", url: "https://www.medichecks.com/blogs/news/how-to-stay-healthy-ish-over-christmas", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(166) },
+  { title: "Is your iodine level affecting your health?", excerpt: "Discusses how too much or too little iodine can affect health and when to consider testing.", url: "https://www.medichecks.com/blogs/news/is-your-iodine-level-affecting-your-health", image: getImage("Hormones"), provider: "Medichecks", category: "Hormones", date: generateDate(167) },
+  { title: "Dry January vs Damp January - which is better for you?", excerpt: "Compares a strict alcohol-free month with cutting down, and how each can affect health.", url: "https://www.medichecks.com/blogs/news/dry-january-vs-damp-january-which-is-better-for-you", image: getImage("Mental Health"), provider: "Medichecks", category: "Mental Health", date: generateDate(168) },
+  { title: "Why indulging a little over Christmas isn't always a bad idea", excerpt: "Looks at how moderate indulgence over Christmas can fit into an overall healthy lifestyle.", url: "https://www.medichecks.com/blogs/news/why-indulging-a-little-over-christmas-isn-t-always-a-bad-idea", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(169) },
+  { title: "Arguing over the heating? Here's why you might be right", excerpt: "Explores why people feel temperature differently and what that means for home heating arguments.", url: "https://www.medichecks.com/blogs/news/arguing-over-the-heating-here-s-why-you-might-be-right", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(170) },
+  { title: "Are cold showers bad for you?", excerpt: "Weighs up potential benefits and risks of cold showers and cold exposure.", url: "https://www.medichecks.com/blogs/news/are-cold-showers-bad-for-you", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(171) },
+  { title: "What is your body trying to show you?", excerpt: "Describes physical signs that may indicate underlying health issues and shouldn't be ignored.", url: "https://www.medichecks.com/blogs/news/what-is-your-body-trying-to-show-you", image: getImage("Wellness"), provider: "Medichecks", category: "Wellness", date: generateDate(172) },
+  { title: "Ways to boost your libido (and sex life)", excerpt: "Covers lifestyle, psychological, and health-related factors that can help improve libido.", url: "https://www.medichecks.com/blogs/news/ways-to-boost-your-libido-and-sex-life", image: getImage("Hormones"), provider: "Medichecks", category: "Hormones", date: generateDate(173) },
+  { title: "What is testosterone and what happens when it's low?", excerpt: "Explains what testosterone does, causes and symptoms of low testosterone, and when to consider testing.", url: "https://www.medichecks.com/blogs/news/low-testosterone", image: getImage("Men's Health"), provider: "Medichecks", category: "Men's Health", date: generateDate(174) },
+  { title: "What is perimenopause, and how do I know if I'm in it?", excerpt: "Describes perimenopause symptoms, when it typically starts, and how hormone testing can help.", url: "https://www.medichecks.com/blogs/news/perimenopause", image: getImage("Women's Health"), provider: "Medichecks", category: "Women's Health", date: generateDate(175) },
 
-  // === THRIVA ===
-  {
-    title: "How to test your ferritin levels",
-    excerpt: "Explains how to check your ferritin (iron stores), what different levels can mean, and when to repeat testing.",
-    url: "https://thriva.co/hub/blood-iron/testing-your-ferritin-levels",
-    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800",
-    provider: "Thriva",
-    category: "Nutrition",
-    date: "2025-01-22"
-  },
-  {
-    title: "What is iron deficiency anaemia?",
-    excerpt: "Describes what iron deficiency anaemia is, common symptoms, and how it's investigated and treated.",
-    url: "https://thriva.co/hub/blood-iron/what-is-iron-deficiency-anaemia",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Thriva",
-    category: "Nutrition",
-    date: "2025-01-21"
-  },
-  {
-    title: "What is cholesterol?",
-    excerpt: "Describes what cholesterol is, its roles in the body, and how levels relate to heart health.",
-    url: "https://thriva.co/hub/cholesterol/what-is-cholesterol",
-    image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=800",
-    provider: "Thriva",
-    category: "Heart Health",
-    date: "2025-01-20"
-  },
-  {
-    title: "Best foods to lower your cholesterol",
-    excerpt: "Lists foods and diet patterns that can help reduce cholesterol and support heart health.",
-    url: "https://thriva.co/hub/cholesterol/what-are-the-best-foods-to-lower-your-cholesterol",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Thriva",
-    category: "Nutrition",
-    date: "2025-01-19"
-  },
-  {
-    title: "What is inflammation?",
-    excerpt: "Describes what inflammation is, what causes it, and how to reduce chronic low-grade inflammation.",
-    url: "https://thriva.co/hub/wellness/inflammation-what-causes-it-and-how-to-fight-it",
-    image: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800",
-    provider: "Thriva",
-    category: "Wellness",
-    date: "2025-01-18"
-  },
-  {
-    title: "Taking care of your gut-brain connection",
-    excerpt: "Explores how the gut and brain communicate and what you can do to support this connection.",
-    url: "https://thriva.co/hub/gut-health/taking-care-of-your-gut-brain-connection",
-    image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800",
-    provider: "Thriva",
-    category: "Gut Health",
-    date: "2025-01-17"
-  },
-  {
-    title: "Vitamin D deficiency",
-    excerpt: "Describes symptoms, causes, and risks of vitamin D deficiency and how to treat it.",
-    url: "https://thriva.co/hub/vitamins/vitamin-d-deficiency",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Thriva",
-    category: "Vitamins",
-    date: "2025-01-16"
-  },
-  {
-    title: "What is menopause?",
-    excerpt: "Explains what menopause is, how it's diagnosed, and common timing.",
-    url: "https://thriva.co/hub/womens-health/can-you-diagnose-the-menopause-with-a-blood-test",
-    image: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800",
-    provider: "Thriva",
-    category: "Women's Health",
-    date: "2025-01-15"
-  },
-  {
-    title: "The signs of high cortisol levels and how to manage",
-    excerpt: "Describes symptoms of high cortisol, causes, and ways to bring levels down.",
-    url: "https://thriva.co/hub/mental-health/high-cortisol-levels-causes-symptoms",
-    image: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800",
-    provider: "Thriva",
-    category: "Mental Health",
-    date: "2025-01-14"
-  },
+  // === THRIVA (50+ articles) ===
+  { title: "How to test your ferritin levels", excerpt: "Explains how to check your ferritin (iron stores), what different levels can mean, and when to repeat testing.", url: "https://thriva.co/hub/blood-iron/testing-your-ferritin-levels", image: getImage("Nutrition"), provider: "Thriva", category: "Nutrition", date: generateDate(176) },
+  { title: "What is iron deficiency anaemia?", excerpt: "Describes what iron deficiency anaemia is, common symptoms, and how it's investigated and treated.", url: "https://thriva.co/hub/blood-iron/what-is-iron-deficiency-anaemia", image: getImage("Nutrition"), provider: "Thriva", category: "Nutrition", date: generateDate(177) },
+  { title: "What is cholesterol?", excerpt: "Describes what cholesterol is, its roles in the body, and how levels relate to heart health.", url: "https://thriva.co/hub/cholesterol/what-is-cholesterol", image: getImage("Heart Health"), provider: "Thriva", category: "Heart Health", date: generateDate(178) },
+  { title: "Best foods to lower your cholesterol", excerpt: "Lists foods and diet patterns that can help reduce cholesterol and support heart health.", url: "https://thriva.co/hub/cholesterol/what-are-the-best-foods-to-lower-your-cholesterol", image: getImage("Nutrition"), provider: "Thriva", category: "Nutrition", date: generateDate(179) },
+  { title: "Are all fats bad for cholesterol?", excerpt: "Discusses different types of dietary fat and how they influence cholesterol levels.", url: "https://thriva.co/hub/cholesterol/fats-and-cholesterol-what-is-the-link", image: getImage("Heart Health"), provider: "Thriva", category: "Heart Health", date: generateDate(180) },
+  { title: "The DASH diet and cholesterol", excerpt: "Explores how the DASH diet works and its impact on blood pressure and cholesterol.", url: "https://thriva.co/hub/cholesterol/the-dash-diet-and-cholesterol", image: getImage("Heart Health"), provider: "Thriva", category: "Heart Health", date: generateDate(181) },
+  { title: "What are apolipoproteins?", excerpt: "Introduces apolipoproteins like ApoA and ApoB and how they relate to cardiovascular risk.", url: "https://thriva.co/hub/heart-health/what-are-apolipoproteins", image: getImage("Heart Health"), provider: "Thriva", category: "Heart Health", date: generateDate(182) },
+  { title: "The Importance of ApoB for Cardiovascular Health", excerpt: "Explains why ApoB is a powerful marker for atherosclerotic risk and how it's used in risk assessment.", url: "https://thriva.co/hub/heart-health/apob-cardiovascular-disease-risk", image: getImage("Heart Health"), provider: "Thriva", category: "Heart Health", date: generateDate(183) },
+  { title: "What is MCT oil?", excerpt: "Explains what MCT oil is, where it comes from, and how it may affect energy and metabolism.", url: "https://thriva.co/hub/wellness/what-is-mct-oil", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(184) },
+  { title: "6 reasons why nose breathing is important", excerpt: "Describes why nose breathing matters for sleep, performance, and overall health.", url: "https://thriva.co/hub/wellness/nose-breathing-benefits", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(185) },
+  { title: "How your lifestyle can affect your energy levels", excerpt: "Covers how sleep, movement, nutrition, and stress shape daily energy and fatigue.", url: "https://thriva.co/hub/wellness/how-your-lifestyle-can-impact-your-energy-levels", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(186) },
+  { title: "Is the omega-6 to omega-3 ratio important?", excerpt: "Explains the omega-6:omega-3 ratio concept and what it might mean for inflammation and health.", url: "https://thriva.co/hub/wellness/omega-3-6-ratio", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(187) },
+  { title: "How to support your immune system", excerpt: "Gives practical, evidence-based ways to support immune health through lifestyle and diet.", url: "https://thriva.co/hub/wellness/how-to-support-your-immune-system", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(188) },
+  { title: "What is inflammation?", excerpt: "Describes what inflammation is, what causes it, and how to reduce chronic low-grade inflammation.", url: "https://thriva.co/hub/wellness/inflammation-what-causes-it-and-how-to-fight-it", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(189) },
+  { title: "What's CRP and how do you test it?", excerpt: "Explains C‑reactive protein (CRP), what levels can show about inflammation, and how to test it.", url: "https://thriva.co/hub/wellness/what-you-need-to-know-about-crp", image: getImage("Wellness"), provider: "Thriva", category: "Wellness", date: generateDate(190) },
+  { title: "Taking care of your gut-brain connection", excerpt: "Explores how the gut and brain communicate and what you can do to support this connection.", url: "https://thriva.co/hub/gut-health/taking-care-of-your-gut-brain-connection", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(191) },
+  { title: "All you need to know about gut health", excerpt: "Gives an overview of gut health, why it matters, and signs your gut may need support.", url: "https://thriva.co/hub/gut-health/gut-health", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(192) },
+  { title: "What are probiotics?", excerpt: "Explains what probiotics are, how they work, and when they might be helpful.", url: "https://thriva.co/hub/gut-health/what-are-probiotics", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(193) },
+  { title: "How to test your liver function at home", excerpt: "Covers which liver markers can be checked at home and what to expect from testing.", url: "https://thriva.co/hub/liver-function/how-to-test-your-liver-function", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(194) },
+  { title: "Liver enzymes: what they do and how to test them", excerpt: "Describes key liver enzymes (like ALT, AST, ALP), what they show, and how to measure them.", url: "https://thriva.co/hub/liver-function/testing-liver-enzymes", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(195) },
+  { title: "What effect does alcohol have on your body?", excerpt: "Explains how alcohol affects the liver and wider body, and what drinking patterns mean for health.", url: "https://thriva.co/hub/liver-function/what-effect-does-alcohol-have-on-your-body", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(196) },
+  { title: "What is albumin?", excerpt: "Describes albumin's role, what abnormal levels can signal, and how it's tested.", url: "https://thriva.co/hub/liver-function/what-is-albumin", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(197) },
+  { title: "Bilirubin levels: What low, normal, and high levels mean", excerpt: "Explains what bilirubin is and how different levels relate to liver and blood health.", url: "https://thriva.co/hub/liver-function/what-is-bilirubin", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(198) },
+  { title: "What is gamma GT?", excerpt: "Defines gamma‑GT, why raised levels matter, and how it's interpreted in liver testing.", url: "https://thriva.co/hub/liver-function/what-is-gamma-gt", image: getImage("Gut Health"), provider: "Thriva", category: "Gut Health", date: generateDate(199) },
+  { title: "What to know about vitamin and mineral deficiency blood tests", excerpt: "Overviews deficiency blood tests, which nutrients they cover, and how to interpret results.", url: "https://thriva.co/hub/vitamins/vitamin-and-mineral-blood-tests", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(200) },
+  { title: "Vitamin D and muscle recovery", excerpt: "Explores the links between vitamin D status, muscle function, and recovery from exercise.", url: "https://thriva.co/hub/vitamins/vitamin-d-muscle-recovery", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(201) },
+  { title: "What are vitamins?", excerpt: "Explains what vitamins are, their main types, and why your body needs them.", url: "https://thriva.co/hub/vitamins/what-are-vitamins", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(202) },
+  { title: "What is vitamin A?", excerpt: "Describes vitamin A's functions, sources, and what happens if you have too little or too much.", url: "https://thriva.co/hub/vitamins/what-is-vitamin-a", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(203) },
+  { title: "What is vitamin C?", excerpt: "Outlines vitamin C's roles, dietary sources, and deficiency signs.", url: "https://thriva.co/hub/vitamins/what-is-vitamin-c", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(204) },
+  { title: "What is vitamin D?", excerpt: "Explains vitamin D's functions, sources, and how to know if you're getting enough.", url: "https://thriva.co/hub/vitamins/what-is-vitamin-d", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(205) },
+  { title: "Vitamin D deficiency", excerpt: "Describes symptoms, causes, and risks of vitamin D deficiency and how to treat it.", url: "https://thriva.co/hub/vitamins/vitamin-d-deficiency", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(206) },
+  { title: "Folate (vitamin B9) deficiency: Symptoms, causes, and treatment options", excerpt: "Explains folate deficiency, its effects, and how it's managed.", url: "https://thriva.co/hub/vitamins/folate-deficiency", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(207) },
+  { title: "Vitamin B12 deficiency", excerpt: "Covers causes, symptoms, and treatment of B12 deficiency.", url: "https://thriva.co/hub/vitamins/vitamin-b12-deficiency", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(208) },
+  { title: "What to watch out for in supplements", excerpt: "Highlights safety considerations and label checks when choosing supplements.", url: "https://thriva.co/hub/vitamins/what-to-watch-out-for-in-supplements", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(209) },
+  { title: "Everything you need to know about multivitamins", excerpt: "Discusses pros and cons of multivitamins and who might benefit from them.", url: "https://thriva.co/hub/vitamins/everything-you-need-to-know-about-multivitamins", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(210) },
+  { title: "How to choose a supplement", excerpt: "Gives practical steps for picking evidence-based, good-quality supplements.", url: "https://thriva.co/hub/vitamins/how-to-choose-a-supplement", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(211) },
+  { title: "What are the benefits of omega-3 fatty acids?", excerpt: "Explores health benefits of omega‑3s, including heart and brain effects, and how to get enough.", url: "https://thriva.co/hub/vitamins/benefits-of-omega-3-fatty-acids", image: getImage("Vitamins"), provider: "Thriva", category: "Vitamins", date: generateDate(212) },
+  { title: "What is menopause?", excerpt: "Explains what menopause is, how it's diagnosed, and common timing.", url: "https://thriva.co/hub/womens-health/can-you-diagnose-the-menopause-with-a-blood-test", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(213) },
+  { title: "Menopause symptoms", excerpt: "Lists common menopause symptoms and how they may affect daily life.", url: "https://thriva.co/hub/womens-health/menopause-symptoms", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(214) },
+  { title: "Night sweats and menopause", excerpt: "Explores why night sweats occur around menopause and what can help.", url: "https://thriva.co/hub/womens-health/night-sweats-and-the-menopause", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(215) },
+  { title: "Perimenopause — everything you need to know", excerpt: "Describes what perimenopause is, its stages, and how symptoms can be managed.", url: "https://thriva.co/hub/womens-health/perimenopause-symptoms-stages", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(216) },
+  { title: "Hormone replacement therapy (HRT)", excerpt: "Explains what HRT is, potential benefits and risks, and who might consider it.", url: "https://thriva.co/hub/womens-health/hormone-replacement-therapy-hrt", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(217) },
+  { title: "Menopause and chronic disease", excerpt: "Looks at how menopause affects long-term risk of conditions like heart disease and osteoporosis.", url: "https://thriva.co/hub/womens-health/menopause-and-chronic-disease", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(218) },
+  { title: "Menstrual cycle phases: The follicular phase, ovulation, and luteal phase", excerpt: "Describes the main phases of the menstrual cycle and associated hormone shifts.", url: "https://thriva.co/hub/womens-health/every-month-your-body-goes-through-a-series-of-hormonal", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(219) },
+  { title: "Premenstrual syndrome (PMS)", excerpt: "Explains PMS symptoms, causes, and management options.", url: "https://thriva.co/hub/womens-health/premenstrual-syndrome", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(220) },
+  { title: "Irregular periods", excerpt: "Discusses possible reasons for irregular periods and when to seek advice.", url: "https://thriva.co/hub/womens-health/irregular-periods", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(221) },
+  { title: "Can stress affect your period?", excerpt: "Looks at how stress can disrupt the menstrual cycle and ways to reduce its impact.", url: "https://thriva.co/hub/womens-health/stress-and-your-period", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(222) },
+  { title: "Can you exercise while on your period?", excerpt: "Gives guidance on exercising during your period and how to adapt training.", url: "https://thriva.co/hub/womens-health/can-you-exercise-while-on-your-period", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(223) },
+  { title: "Hormonal imbalance", excerpt: "Outlines signs of hormonal imbalance in women and possible causes.", url: "https://thriva.co/hub/womens-health/hormonal-imbalance", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(224) },
+  { title: "What is oestrogen?", excerpt: "Explains what oestrogen does in the body and how levels change over life.", url: "https://thriva.co/hub/womens-health/what-is-oestrogen", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(225) },
+  { title: "What is progesterone?", excerpt: "Describes progesterone's role, how it's tested, and what abnormal levels may mean.", url: "https://thriva.co/hub/womens-health/progesterone-levels-what-it-is-and-how-to-test-it", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(226) },
+  { title: "How do hormones affect your skin?", excerpt: "Explores links between hormones and skin issues such as acne or dryness.", url: "https://thriva.co/hub/womens-health/understand-how-hormones-affect-your-skin", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(227) },
+  { title: "How do hormones affect your energy levels?", excerpt: "Describes how hormonal changes influence fatigue and energy in women.", url: "https://thriva.co/hub/womens-health/how-your-hormones-affect-your-energy-levels", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(228) },
+  { title: "What is anti-Müllerian Hormone (AMH)?", excerpt: "Explains what AMH is, how it relates to ovarian reserve, and how it's tested.", url: "https://thriva.co/hub/womens-health/what-is-amh", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(229) },
+  { title: "How your hormones affect your sex drive (libido)", excerpt: "Looks at how hormones shape libido and what can lower or boost it.", url: "https://thriva.co/hub/womens-health/how-your-hormones-affect-your-sex-drive-libido", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(230) },
+  { title: "How do hormones affect your sleep?", excerpt: "Describes links between hormones and sleep quality across the cycle and menopause.", url: "https://thriva.co/hub/womens-health/how-hormones-affect-your-sleep", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(231) },
+  { title: "What is the follicle-stimulating hormone (FSH)?", excerpt: "Explains FSH's role in the menstrual cycle and fertility and how tests are used.", url: "https://thriva.co/hub/womens-health/what-is-follicle-stimulating-hormone", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(232) },
+  { title: "What is prolactin?", excerpt: "Covers prolactin's functions, reasons for high or low levels, and testing.", url: "https://thriva.co/hub/womens-health/what-is-prolactin", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(233) },
+  { title: "What to expect in pregnancy", excerpt: "Gives an overview of physical and emotional changes across pregnancy stages.", url: "https://thriva.co/hub/womens-health/pregnancy", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(234) },
+  { title: "Coming off the pill: Side effects, benefits & what to expect", excerpt: "Explains what can happen when you stop the contraceptive pill and how to manage it.", url: "https://thriva.co/hub/womens-health/coming-off-the-pill", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(235) },
+  { title: "Breastfeeding and your diet", excerpt: "Discusses how diet can support breastfeeding and maternal health.", url: "https://thriva.co/hub/womens-health/breastfeeding-and-your-diet", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(236) },
+  { title: "How does PCOS affect your fertility?", excerpt: "Explores how PCOS impacts ovulation and fertility and what can help.", url: "https://thriva.co/hub/womens-health/pcos-fertility", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(237) },
+  { title: "A guide to fertility resources in the UK", excerpt: "Lists useful UK fertility information and support resources.", url: "https://thriva.co/hub/womens-health/our-guide-to-fertility-resources-in-the-uk", image: getImage("Women's Health"), provider: "Thriva", category: "Women's Health", date: generateDate(238) },
+  { title: "The signs of high cortisol levels and how to manage", excerpt: "Describes symptoms of high cortisol, causes, and ways to bring levels down.", url: "https://thriva.co/hub/mental-health/high-cortisol-levels-causes-symptoms", image: getImage("Mental Health"), provider: "Thriva", category: "Mental Health", date: generateDate(239) },
+  { title: "Understanding stress", excerpt: "Explains what stress is, how it affects the body, and different types of stress response.", url: "https://thriva.co/hub/mental-health/understanding-stress", image: getImage("Mental Health"), provider: "Thriva", category: "Mental Health", date: generateDate(240) },
+  { title: "10 tips to manage and reduce stress", excerpt: "Provides practical coping strategies and lifestyle changes to reduce stress.", url: "https://thriva.co/hub/mental-health/tips-to-manage-and-reduce-stress", image: getImage("Mental Health"), provider: "Thriva", category: "Mental Health", date: generateDate(241) },
+  { title: "Omega-3s and your brain health", excerpt: "Explores how omega‑3 fats support brain function and mood.", url: "https://thriva.co/hub/mental-health/omega-3s-and-brain-health", image: getImage("Mental Health"), provider: "Thriva", category: "Mental Health", date: generateDate(242) },
+  { title: "How to deal with loneliness", excerpt: "Gives advice on recognising and addressing loneliness and building connection.", url: "https://thriva.co/hub/mental-health/what-is-loneliness", image: getImage("Mental Health"), provider: "Thriva", category: "Mental Health", date: generateDate(243) },
 
-  // === GOODBODY CLINIC ===
-  {
-    title: "Bowel cancer early detection: How the FIT test finds cancer signs",
-    excerpt: "Explains how the FIT stool test can spot early signs of bowel cancer and why early detection improves outcomes.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/bowel-cancer-early-detection-how-the-fit-test-finds-cancer-signs-18-80",
-    image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800",
-    provider: "Goodbody Clinic",
-    category: "Cancer Screening",
-    date: "2025-01-24"
-  },
-  {
-    title: "How to Avoid Overdoing Supplements",
-    excerpt: "Covers risks of excessive supplement use, how to spot over-supplementation, and how to build a safer routine.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/how-to-avoid-overdoing-supplements",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Goodbody Clinic",
-    category: "Nutrition",
-    date: "2025-01-23"
-  },
-  {
-    title: "Pregnancy Blood Tests: What is Beta HCG and why take a blood test?",
-    excerpt: "Introduces beta hCG blood testing in pregnancy, when it's used, and how it differs from home urine tests.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/pregnancy-blood-tests-what-is-beta-hcg-and-why-take-a-blood-test",
-    image: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800",
-    provider: "Goodbody Clinic",
-    category: "Women's Health",
-    date: "2025-01-22"
-  },
-  {
-    title: "8 Causes of Hair Loss in Men",
-    excerpt: "Describes eight common causes of male hair loss and when to consider testing or treatment.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/8-causes-of-hair-loss-in-men",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-    provider: "Goodbody Clinic",
-    category: "Men's Health",
-    date: "2025-01-21"
-  },
-  {
-    title: "The Best Exercise to Balance Men's Hormones",
-    excerpt: "Explains how specific exercise patterns support healthier testosterone and overall hormone balance in men.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/the-best-exercise-to-balance-men-s-hormones",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-    provider: "Goodbody Clinic",
-    category: "Men's Health",
-    date: "2025-01-20"
-  },
-  {
-    title: "Prostate Cancer: Prostate-Specific Antigen (PSA) Test",
-    excerpt: "Outlines what the PSA test measures, how it supports prostate cancer detection, and its limitations.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/prostate-cancer-prostate-specific-antigen-psa-test",
-    image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=800",
-    provider: "Goodbody Clinic",
-    category: "Cancer Screening",
-    date: "2025-01-19"
-  },
-  {
-    title: "Top 10 Foods for a Healthy Liver",
-    excerpt: "Lists ten foods that support liver health and how to incorporate them into daily eating.",
-    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/top-10-foods-for-a-healthy-liver",
-    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800",
-    provider: "Goodbody Clinic",
-    category: "Gut Health",
-    date: "2025-01-18"
-  }
+  // === GOODBODY CLINIC (10 articles) ===
+  { title: "Bowel cancer early detection: How the FIT test finds cancer signs", excerpt: "Explains how the FIT stool test can spot early signs of bowel cancer and why early detection improves outcomes.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/bowel-cancer-early-detection-how-the-fit-test-finds-cancer-signs-18-80", image: getImage("Cancer Screening"), provider: "Goodbody Clinic", category: "Cancer Screening", date: generateDate(244) },
+  { title: "How to Avoid Overdoing Supplements", excerpt: "Covers risks of excessive supplement use, how to spot over-supplementation, and how to build a safer routine.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/how-to-avoid-overdoing-supplements", image: getImage("Nutrition"), provider: "Goodbody Clinic", category: "Nutrition", date: generateDate(245) },
+  { title: "Pregnancy Blood Tests: What is Beta HCG and why take a blood test?", excerpt: "Introduces beta hCG blood testing in pregnancy, when it's used, and how it differs from home urine tests.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/pregnancy-blood-tests-what-is-beta-hcg-and-why-take-a-blood-test", image: getImage("Women's Health"), provider: "Goodbody Clinic", category: "Women's Health", date: generateDate(246) },
+  { title: "8 Causes of Hair Loss in Men", excerpt: "Describes eight common causes of male hair loss and when to consider testing or treatment.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/8-causes-of-hair-loss-in-men", image: getImage("Men's Health"), provider: "Goodbody Clinic", category: "Men's Health", date: generateDate(247) },
+  { title: "The Best Exercise to Balance Men's Hormones", excerpt: "Explains how specific exercise patterns support healthier testosterone and overall hormone balance in men.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/the-best-exercise-to-balance-men-s-hormones", image: getImage("Men's Health"), provider: "Goodbody Clinic", category: "Men's Health", date: generateDate(248) },
+  { title: "Prostate Cancer: Prostate-Specific Antigen (PSA) Test", excerpt: "Outlines what the PSA test measures, how it supports prostate cancer detection, and its limitations.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/prostate-cancer-prostate-specific-antigen-psa-test", image: getImage("Cancer Screening"), provider: "Goodbody Clinic", category: "Cancer Screening", date: generateDate(249) },
+  { title: "Top 10 Foods for a Healthy Liver", excerpt: "Lists ten foods that support liver health and how to incorporate them into daily eating.", url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/top-10-foods-for-a-healthy-liver", image: getImage("Gut Health"), provider: "Goodbody Clinic", category: "Gut Health", date: generateDate(250) },
 ];
-
-/**
- * Get featured articles (first 3)
- */
-export const getFeaturedArticles = (): BlogArticle[] => {
-  return blogArticles.slice(0, 3);
-};
-
-/**
- * Get recent articles (after featured)
- */
-export const getRecentArticles = (): BlogArticle[] => {
-  return blogArticles.slice(3);
-};
 
 /**
  * Get all unique categories from articles
@@ -334,4 +347,18 @@ export const filterByCategory = (category: string): BlogArticle[] => {
 export const getProviders = (): string[] => {
   const providers = new Set(blogArticles.map(a => a.provider));
   return Array.from(providers).sort();
+};
+
+/**
+ * Get featured articles (first 3)
+ */
+export const getFeaturedArticles = (): BlogArticle[] => {
+  return blogArticles.slice(0, 3);
+};
+
+/**
+ * Get recent articles (after featured)
+ */
+export const getRecentArticles = (): BlogArticle[] => {
+  return blogArticles.slice(3);
 };
