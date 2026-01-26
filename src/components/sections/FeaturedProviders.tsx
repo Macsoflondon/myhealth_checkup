@@ -65,15 +65,6 @@ const FeaturedProviders = () => {
     location: "UK Wide",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
     website: "referrals.lolahealth.com/myhealthcheckup"
-  }, {
-    id: "Tuli",
-    name: "Tuli Health",
-    rating: 4.5,
-    reviews: "1,123",
-    description: "Phlebotomy network enabling blood collection at 300+ local pharmacies with CQC registered service",
-    location: "300+ local pharmacies",
-    tags: ["Pharmacy Network", "CQC Registered", "Local Collection", "Convenient"],
-    website: "tuli.health"
   }];
 
   return (

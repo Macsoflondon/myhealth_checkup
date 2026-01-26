@@ -177,13 +177,12 @@ const FindClinicPage = () => {
               <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
                 Our clinic network includes locations from seven trusted UK private health testing providers
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 items-center">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 items-center">
                 {[
                   { name: "Medichecks", logo: "/lovable-uploads/provider-medichecks-new-v3.png" },
                   { name: "Thriva", logo: "/lovable-uploads/provider-thriva.png" },
                   { name: "Goodbody", logo: "/lovable-uploads/provider-goodbody-new-v4.png" },
                   { name: "Randox", logo: "/lovable-uploads/provider-randox.png" },
-                  { name: "Tuli Health", logo: "/lovable-uploads/provider-tuli-health.png" },
                   { name: "Lola Health", logo: "/lovable-uploads/provider-lola-health.png" },
                   { name: "London Medical Lab", logo: "/lovable-uploads/provider-london-medical.png" }
                 ].map((provider, index) => (

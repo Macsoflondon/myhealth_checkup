@@ -58,7 +58,6 @@ const TestDetailPage = () => {
     "randox-health": { rating: 4.8, reviews: "1,847" },
     "london-medical-laboratory": { rating: 4.4, reviews: "892" },
     "lola-health": { rating: 4.3, reviews: "567" },
-    "tuli-health": { rating: 4.5, reviews: "1,123" },
     "the-doctors-laboratory": { rating: 4.8, reviews: "2,234" }
   };
 

@@ -233,16 +233,6 @@ const providerTestData: Record<string, any[]> = {
       url: 'https://lolahealth.com/hormone-balance',
       provider_test_id: 'lola-hormone-001'
     }
-  ],
-  'tuli-health': [
-    {
-      test_name: 'Health Check at Your Local Pharmacy',
-      description: 'Convenient blood testing available at 300+ local pharmacies',
-      price: 99.00,
-      category: 'General Health',
-      url: 'https://tuli.health/pharmacy-testing',
-      provider_test_id: 'tuli-pharmacy-001'
-    }
   ]
 };
 

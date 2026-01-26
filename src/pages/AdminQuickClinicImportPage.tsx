@@ -111,7 +111,7 @@ const AdminQuickClinicImportPage: React.FC = () => {
                 Pre-Collected Clinic Data
               </CardTitle>
               <CardDescription>
-                Import from clinics_import_data.json (190+ clinics from Medichecks, Tuli Health, and partner locations)
+                Import from clinics_import_data.json (190+ clinics from Medichecks and partner locations)
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -121,7 +121,7 @@ const AdminQuickClinicImportPage: React.FC = () => {
                   This will import pre-collected clinic data that includes:
                   <ul className="list-disc list-inside mt-2 space-y-1">
                     <li>Medichecks partner clinics nationwide</li>
-                    <li>Tuli Health pharmacy network locations</li>
+                    <li>Randox Health clinic locations</li>
                     <li>Additional verified clinic partners</li>
                   </ul>
                   Clinics will be automatically geocoded. Duplicates will be skipped. Estimated time: 5-10 minutes.

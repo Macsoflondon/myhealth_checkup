@@ -87,7 +87,6 @@ serve(async (req) => {
     const scrapers = [
       'scrape-goodbody-clinics',
       'scrape-randox-clinics',
-      'scrape-tuli-clinics',
       'scrape-london-medical-clinics'
     ];
 
