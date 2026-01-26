@@ -9,7 +9,6 @@ export const providerLogos: Record<string, string> = {
   "goodbody": "https://www.goodbodyclinic.com/wp-content/uploads/2023/01/goodbody-clinic-logo.svg",
   "london-medical-laboratory": "https://www.londonmedicallaboratory.co.uk/assets/images/lml-logo.svg",
   "lola-health": "https://lolahealth.com/wp-content/uploads/2023/06/lola-health-logo.svg",
-  "tuli-health": "/lovable-uploads/providers/tuli-health.png",
 };
 
 export const providerDisplayNames: Record<string, string> = {
@@ -21,7 +20,6 @@ export const providerDisplayNames: Record<string, string> = {
   "goodbody": "Goodbody Clinic",
   "london-medical-laboratory": "London Medical Laboratory",
   "lola-health": "Lola Health",
-  "tuli-health": "Tuli Health",
 };
 
 export const getProviderLogo = (providerId: string): string => {

@@ -21,7 +21,6 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   'randox': '/randox',
   'randox-health': '/randox', // Alias
   'thriva': '/thriva',
-  'tuli-health': '/tuli-health',
 };
 
 // Provider display names
@@ -34,7 +33,6 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',
   'thriva': 'Thriva',
-  'tuli-health': 'Tuli Health',
 };
 
 /**
@@ -81,7 +79,6 @@ export function normalizeProviderFromName(providerName: string): string {
   if (name.includes('lola')) return 'lola-health';
   if (name.includes('thriva')) return 'thriva';
   if (name.includes('randox')) return 'randox';
-  if (name.includes('tuli')) return 'tuli-health';
   if (name.includes('london')) return 'london-medical-laboratory';
   
   return providerName;

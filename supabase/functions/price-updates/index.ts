@@ -29,7 +29,7 @@ serve(async (req) => {
       // This would normally come from an external API in a real app
       const seedData = [
         {
-          provider: "tuli-health",
+          provider: "medichecks",
           test_id: "blood-test-1",
           price: 49.00,
           available: true
@@ -47,7 +47,7 @@ serve(async (req) => {
           available: true
         },
         {
-          provider: "tuli-health",
+          provider: "thriva",
           test_id: "weight-loss-1",
           price: 149.00,
           available: true

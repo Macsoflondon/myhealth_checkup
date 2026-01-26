@@ -162,7 +162,6 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                         if (providerSlug?.includes('lola')) return `/lola-health/${test.id}`;
                         if (providerSlug?.includes('thriva')) return `/thriva/${test.id}`;
                         if (providerSlug?.includes('randox')) return `/randox/${test.id}`;
-                        if (providerSlug?.includes('tuli')) return `/tuli-health/${test.id}`;
                         if (providerSlug?.includes('london')) return `/london-medical-laboratory/${test.id}`;
                         // Fallback to compare page with category filter
                         return `/compare?category=${test.category}`;

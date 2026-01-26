@@ -178,13 +178,14 @@ function determineProvider(clinicName: string): string {
   const name = clinicName.toLowerCase();
   
   // Priority order matters - check specific providers first
-  if (name.includes('tuli health')) return 'tuli-health';
   if (name.includes('superdrug')) return 'superdrug';
   if (name.includes('ultrasound direct')) return 'ultrasound-direct';
   if (name.includes('medichecks')) return 'medichecks';
   if (name.includes('goodbody') || name.includes('good body')) return 'goodbody-clinic';
   if (name.includes('randox')) return 'randox';
   if (name.includes('london medical')) return 'london-medical-laboratory';
+  if (name.includes('lola')) return 'lola-health';
+  if (name.includes('thriva')) return 'thriva';
   
   // NHS and hospital locations
   if (name.includes('hospital') || name.includes('infirmary') || name.includes('nhs')) return 'nhs-hospitals';
