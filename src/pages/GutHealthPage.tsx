@@ -150,8 +150,7 @@ const GutHealthPage = () => {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link to="/compare?category=gut-health" className="flex-1 sm:flex-initial">
-                        <Button size="lg" className="w-full gap-2 bg-amber-500 hover:bg-amber-600">
-                          <ArrowRight className="h-5 w-5" />
+                        <Button size="lg" className="w-full bg-amber-500 hover:bg-amber-600">
                           Browse All Gut Health Tests
                         </Button>
                       </Link>

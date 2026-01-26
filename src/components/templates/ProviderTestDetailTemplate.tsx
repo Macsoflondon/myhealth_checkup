@@ -122,7 +122,6 @@ const BookingButton = ({
           className="flex items-center justify-center"
         >
           {providerConfig.ctaButtonText}
-          <ExternalLink className="ml-2 h-4 w-4" />
         </a>
       </Button>
 
@@ -148,7 +147,6 @@ const BookingButton = ({
             className="flex items-center justify-center text-xs"
           >
             Browse all {providerConfig.name} tests
-            <ExternalLink className="ml-1.5 h-3 w-3" />
           </a>
         </Button>
       </div>
@@ -593,7 +591,6 @@ export default function ProviderTestDetailTemplate({
               <Button size="lg" asChild>
                 <a href={test.url} target="_blank" rel="noopener noreferrer">
                   Book Your Test Now
-                  <ExternalLink className="ml-2 h-4 w-4" />
                 </a>
               </Button>
             </CardContent>

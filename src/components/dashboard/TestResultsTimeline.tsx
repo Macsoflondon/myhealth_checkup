@@ -112,7 +112,6 @@ export const TestResultsTimeline = () => {
                     asChild
                   >
                     <a href={result.file_url} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-4 h-4 mr-1" />
                       View File
                     </a>
                   </Button>

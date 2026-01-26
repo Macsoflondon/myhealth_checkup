@@ -475,7 +475,6 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                                           rel="noopener noreferrer"
                                         >
                                           Order
-                                          <ExternalLink className="h-3 w-3" />
                                         </a>
                                       </Button>
                                     ) : (

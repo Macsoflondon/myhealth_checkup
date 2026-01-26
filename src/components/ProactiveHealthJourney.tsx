@@ -84,9 +84,8 @@ const ProactiveHealthJourney = () => {
         </div>
         
         <div className="text-center mt-12">
-          <Button size="lg" className="group">
+          <Button size="lg">
             Start Your Journey
-            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
       </div>

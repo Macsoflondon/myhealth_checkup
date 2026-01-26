@@ -274,7 +274,6 @@ export const ComparisonPanel = ({
                       asChild
                     >
                       <a href={`#`} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-3 w-3" />
                         View Full Details
                       </a>
                     </Button>

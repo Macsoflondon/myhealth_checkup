@@ -106,7 +106,6 @@ export const ComparisonBar = ({
               )}
             >
               Compare {orderedTests.length > 1 ? `${orderedTests.length} Tests` : ''}
-              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </div>

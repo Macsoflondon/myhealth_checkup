@@ -57,9 +57,8 @@ const CategoryCard = ({
         </p>
         
         {/* CTA */}
-        <div className="flex items-center text-[#FA6980] font-semibold text-xs sm:text-sm group-hover:gap-2 sm:group-hover:gap-3 gap-1.5 sm:gap-2 transition-all duration-300">
+        <div className="flex items-center text-[#FA6980] font-semibold text-xs sm:text-sm transition-all duration-300">
           <span>Compare Options</span>
-          <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 group-hover:translate-x-1 transition-transform duration-300" />
         </div>
       </div>
 
@@ -172,7 +171,6 @@ const TestCategories = (): JSX.Element => {
           <Button variant="default" size="lg" asChild className="bg-gradient-to-r from-[#FA6980] to-[#e70d69] hover:from-[#e70d69] hover:to-[#FA6980] text-white border-0 px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 w-full sm:w-auto">
             <Link to="/compare">
               View All Tests
-              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
           </Button>
         </div>

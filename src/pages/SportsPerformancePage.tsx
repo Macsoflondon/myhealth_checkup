@@ -255,7 +255,6 @@ const SportsPerformancePage = () => {
                       onClick={() => window.open(test.url, '_blank')}
                     >
                       Book Now
-                      <ExternalLink className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -334,7 +333,6 @@ const SportsPerformancePage = () => {
                       onClick={() => window.open(test.url, '_blank')}
                     >
                       Book Now
-                      <ExternalLink className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
                 </Card>
@@ -410,7 +408,6 @@ const SportsPerformancePage = () => {
                       </Badge>
                       <Button variant="ghost" className="w-full group-hover:bg-[#FA6980] group-hover:text-white transition-colors">
                         View Tests
-                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </CardContent>
                   </Card>;

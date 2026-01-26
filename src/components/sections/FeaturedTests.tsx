@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -57,8 +58,8 @@ const TestCard = ({
         </ul>
       </CardContent>
       <CardFooter>
-        <Button className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
-          Select Test
+        <Button asChild className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
+          <Link to="/compare">Select Test</Link>
         </Button>
       </CardFooter>
     </Card>;
@@ -133,8 +134,8 @@ const FeaturedTests = () => {
         </div>
         
         <div className="mt-12 text-center">
-          <Button variant="outline" size="lg">
-            View All Tests
+          <Button variant="outline" size="lg" asChild>
+            <Link to="/compare">View All Tests</Link>
           </Button>
         </div>
       </div>
