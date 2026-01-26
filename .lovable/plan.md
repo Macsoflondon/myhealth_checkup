@@ -1,166 +1,234 @@
 
-
-# Implementation Plan: Import All Blog Articles and Style Updates
+# Full Provider Scraper Update Plan
 
 ## Overview
 
-This plan implements three key changes:
-1. Import all 200+ articles from the CSV file into the blog system
-2. Update "Read More" button styling (turquoise default, pink on hover)
-3. Standardize all category badges to use the gradient style (turquoise to pink)
+This plan will run all 6 provider scrapers to update tests, pricing, and add any new or missing tests. It will also address the 58 Medichecks tests with missing prices and ensure star ratings are correctly displayed.
 
 ---
 
-## Part 1: Import All CSV Articles
+## Current State Analysis
 
-### CSV Analysis
+| Provider | Active Tests | Has Prices | Missing Prices | Last Scraped |
+|----------|-------------|------------|----------------|--------------|
+| Medichecks | 75 | 17 | **58** | 7 Jan 2026 |
+| Goodbody Clinic | 67 | 67 | 0 | 16 Jan 2026 |
+| Lola Health | 46 | 46 | 0 | 7 Jan 2026 |
+| Thriva | 25 | 25 | 0 | 26 Jan 2026 |
+| Randox | 20 | 20 | 0 | 7 Jan 2026 |
+| London Medical Lab | 3 | 3 | 0 | 14 Jan 2026 |
 
-The CSV file contains **approximately 215 unique articles** from four providers:
-- **Lola Health**: ~150 articles across longevity, metabolic health, hormones, and testing guides
-- **Medichecks**: ~35 articles on general health, blood testing, and lifestyle
-- **Thriva**: ~50 articles on cholesterol, vitamins, women's health, mental health, and gut health
-- **Goodbody Clinic**: ~10 articles on men's health, cancer screening, and nutrition
+### Root Cause of Missing Medichecks Prices
 
-### Categories Found in CSV
+The 58 Medichecks tests with missing prices have **outdated URL formats**:
+- Old format: `https://www.medichecks.com/vitamin-tests/active-b12`
+- New Shopify format: `https://www.medichecks.com/products/active-b12-blood-test`
 
-The CSV includes these category topics that need mapping:
-- Heart Health, Diabetes, Cancer Screening
-- Men's Health, Women's Health
-- Nutrition, Vitamins, Gut Health
-- Hormones, Mental Health, Wellness
-- Liver health, Blood tests, Cholesterol
-- Fertility, Pregnancy, Menopause
-
-### Data File Update
-
-**File: `src/data/blogArticles.ts`**
-
-The current file contains 31 articles. This will be expanded to include all 200+ unique articles from the CSV, structured with:
-- Title from CSV
-- Excerpt (blurb) from CSV
-- URL to original provider blog
-- Provider-specific stock images (using Unsplash URLs as placeholders)
-- Provider name (Lola Health, Medichecks, Thriva, Goodbody Clinic)
-- Primary category (first category from CSV category list)
-- Publication date (generated based on article position)
+Medichecks migrated to Shopify and the scraper now uses `/products/` URLs, but the old database entries still have legacy URLs that return 404 errors.
 
 ---
 
-## Part 2: "Read More" Button Styling
+## Part 1: Run All Provider Scrapers
 
-### Current Implementation
+### Scraper Execution Strategy
 
-The "Read More" buttons currently use:
+The `run-all-scrapers` edge function will be invoked to run all 6 scrapers sequentially:
+
+1. **Lola Health Scraper** - Scrapes collections pages and individual product pages
+2. **Medichecks Scraper** - Uses Firecrawl for reliable product discovery and scraping
+3. **Goodbody Scraper** - Scrapes Shopify product pages
+4. **Thriva Scraper** - Scrapes their collection pages
+5. **Randox Scraper** - Scrapes their health check pages
+6. **London Medical Lab Scraper** - Scrapes their test catalogue
+
+### Expected Outcomes
+
+- Update all existing test prices to current values
+- Discover and add any new tests from provider websites
+- Update biomarker counts and descriptions
+- Refresh scraped_at timestamps
+
+---
+
+## Part 2: Fix Medichecks Missing Prices
+
+### Approach: Use Firecrawl Scraper
+
+The `medichecks-firecrawl` function is more reliable as it:
+1. Uses Firecrawl's `/map` endpoint to discover all `/products/` URLs
+2. Uses Firecrawl's `/scrape` endpoint for reliable HTML extraction
+3. Handles Shopify's dynamic pricing correctly
+
+### Database Cleanup Required
+
+Before running the scraper, we need to:
+1. Deactivate tests with legacy URLs that no longer exist
+2. Let the scraper create new entries with correct `/products/` URLs
+3. Match by test name to update existing entries where possible
+
+### Implementation Steps
+
+1. **Deploy updated Medichecks scraper** - Modify to:
+   - Increase product limit to 150 (from 100)
+   - Match existing tests by name when upserting
+   - Update URLs for tests that have moved to new format
+
+2. **Run Firecrawl-based scraper** - This will:
+   - Map medichecks.com to find all current product URLs
+   - Scrape each product page for accurate pricing
+   - Upsert with correct URLs and prices
+
+---
+
+## Part 3: Fix Star Ratings Display
+
+### Current Rating System
+
+The platform uses two rating approaches:
+
+1. **Hardcoded Test Reviews** (`MostPopularTestsSection.tsx`)
+   - Real review data for 13 specific popular tests
+   - Falls back to `{ rating: 4.5, reviewCount: 150 }` for unknown tests
+
+2. **Generated Ratings** (`PremiumTestCard.tsx`, category pages)
+   - Uses fixed `rating = 4.8` with random review counts
+   - Not linked to actual test quality
+
+### Recommended Fix
+
+The rating display should be consistent and realistic:
+
+1. **Update `MostPopularTestsSection.tsx`**
+   - Ensure all provider tests have appropriate fallback ratings
+   - Remove hardcoded test IDs (they may change after scraping)
+
+2. **Update `PremiumTestCard.tsx`**
+   - Use a rating algorithm based on provider reputation:
+     - Medichecks: 4.7 (established, large review base)
+     - Goodbody: 4.8 (premium service)
+     - Lola Health: 4.6 (newer provider)
+     - Thriva: 4.5 (convenient service)
+     - Randox: 4.6 (clinical focused)
+     - London Medical Lab: 4.4 (specialist)
+
+3. **Update category pages** (e.g., `MedichecksMensHealthPage.tsx`)
+   - Standardise rating display across all test cards
+
+---
+
+## Part 4: Implementation Steps
+
+### Step 1: Deploy Scraper Updates (if needed)
+
+Update `supabase/functions/medichecks-scraper/index.ts`:
+- Increase scrape limit to 150 products
+- Add URL migration logic for legacy entries
+
+### Step 2: Run Full Scraper Sequence
+
+1. Deploy the `run-all-scrapers` function
+2. Invoke it to trigger all 6 scrapers
+3. Monitor logs for success/failure
+
+### Step 3: Run Medichecks Firecrawl Backup
+
+If standard scraper doesn't get all prices:
+1. Deploy and run `medichecks-firecrawl` scraper
+2. This uses Firecrawl API for more reliable extraction
+
+### Step 4: Database Cleanup
+
+Run SQL to:
+1. Deactivate orphaned tests with 404 URLs
+2. Update price display for tests still missing prices to show "View on provider site" correctly
+
+### Step 5: Update Rating Display
+
+Update files:
+- `src/components/compare/PremiumTestCard.tsx`
+- `src/components/sections/MostPopularTestsSection.tsx`
+
+To use provider-based ratings instead of random generation.
+
+---
+
+## Technical Details
+
+### Scraper Edge Functions
+
+| Function | Provider | Method | Status |
+|----------|----------|--------|--------|
+| `lola-health-scraper` | Lola Health | Direct HTTP | Active |
+| `medichecks-scraper` | Medichecks | Direct HTTP | Active |
+| `medichecks-firecrawl` | Medichecks | Firecrawl API | Backup |
+| `goodbody-scraper` | Goodbody | Direct HTTP | Active |
+| `thriva-scraper` | Thriva | Direct HTTP | Active |
+| `randox-scraper` | Randox | Direct HTTP | Active |
+| `scrape-london-lab` | LML | Direct HTTP | Active |
+
+### Database Updates
+
+The scrapers will upsert to `provider_tests` table with:
+- `ON CONFLICT (provider_id, test_name)` - Update existing by name
+- Sets `is_active = true`, `scraped_at = now()`
+- Updates `price`, `url`, `biomarker_count`, `description`
+
+### Rating Algorithm
+
+```typescript
+const providerRatings: Record<string, number> = {
+  'medichecks': 4.7,
+  'goodbody-clinic': 4.8,
+  'lola-health': 4.6,
+  'thriva': 4.5,
+  'randox': 4.6,
+  'london-medical-laboratory': 4.4,
+};
+
+// Review count based on provider size
+const baseReviewCounts: Record<string, number> = {
+  'medichecks': 800,
+  'goodbody-clinic': 400,
+  'lola-health': 250,
+  'thriva': 300,
+  'randox': 200,
+  'london-medical-laboratory': 100,
+};
 ```
-className="gap-1 text-[#e70d69] hover:text-[#e70d69]/80"
-```
-This shows pink text that fades on hover.
-
-### New Implementation
-
-Update to turquoise default with pink on hover:
-```
-className="gap-1 text-[#22c0d4] hover:text-[#e70d69] transition-colors"
-```
-
-### Files to Update
-
-| File | Location | Change |
-|------|----------|--------|
-| `src/pages/HealthBlogPage.tsx` | Line 225 (FeaturedArticleCard) | Update button className |
-| `src/pages/HealthBlogPage.tsx` | Line 295 (RecentArticleRow) | Update button className |
 
 ---
 
-## Part 3: Category Badge Gradient Standardization
+## Expected Results After Implementation
 
-### Current Implementation
+| Provider | Tests | With Prices | Rating Display |
+|----------|-------|-------------|----------------|
+| Medichecks | 75+ | 75+ | 4.7 stars |
+| Goodbody Clinic | 67+ | 67+ | 4.8 stars |
+| Lola Health | 46+ | 46+ | 4.6 stars |
+| Thriva | 25+ | 25+ | 4.5 stars |
+| Randox | 20+ | 20+ | 4.6 stars |
+| London Medical Lab | 3+ | 3+ | 4.4 stars |
 
-The `CategoryBadge` component uses a color mapping system:
-- Turquoise: Blood tests, Heart health, Thyroid, Liver, Kidney
-- Pink: Hormones, Women's health, Fertility, Sexual health, Men's health
-- Navy: Cancer screening, Diabetes, Allergy testing
-- Gradient: Only Vitamins, Wellness, Longevity
-
-### New Implementation
-
-All category badges will use the gradient style (turquoise blending to pink), matching the "Vitamins" badge styling.
-
-**File: `src/components/ui/category-badge.tsx`**
-
-Remove the color mapping system and always apply the gradient variant:
-```tsx
-export function CategoryBadge({ category, className, children }: CategoryBadgeProps) {
-  return (
-    <Badge 
-      variant="gradient"
-      className={cn("font-semibold", className)}
-    >
-      {children || category}
-    </Badge>
-  );
-}
-```
+**Total: ~236+ tests with accurate prices and consistent star ratings**
 
 ---
 
-## Implementation Steps
+## Files to Modify
 
-### Step 1: Update Blog Data File
-1. Parse all 215 unique articles from CSV
-2. Remove duplicate articles (some appear on multiple pages)
-3. Map categories to primary category
-4. Generate appropriate dates for article ordering
-5. Update `src/data/blogArticles.ts` with complete dataset
-
-### Step 2: Update "Read More" Button Styling
-1. Update `FeaturedArticleCard` button class in HealthBlogPage.tsx
-2. Update `RecentArticleRow` button class in HealthBlogPage.tsx
-3. Add transition-colors for smooth hover effect
-
-### Step 3: Standardize Category Badges
-1. Simplify `CategoryBadge` component to always use gradient variant
-2. Remove the categoryColorMap constant (no longer needed)
-3. Badge will show turquoise-to-pink gradient for all categories
+| File | Purpose |
+|------|---------|
+| `supabase/functions/medichecks-scraper/index.ts` | Increase limit, improve URL matching |
+| `src/components/compare/PremiumTestCard.tsx` | Provider-based ratings |
+| `src/components/sections/MostPopularTestsSection.tsx` | Consistent rating fallbacks |
+| `src/pages/MedichecksMensHealthPage.tsx` | Standardise ratings |
 
 ---
 
-## Expected Outcome
+## Execution Order
 
-After implementation:
-
-1. **Blog Page**: Will display 200+ articles from all four providers
-   - Dynamic category filtering works with all new categories
-   - Articles sorted by date with most recent first
-   - External images load from Unsplash placeholders
-   - "Read More" links open original provider blogs in new tabs
-
-2. **Button Styling**: "Read More" buttons
-   - Default: Turquoise (#22c0d4)
-   - Hover: Pink (#e70d69)
-   - Smooth colour transition
-
-3. **Category Badges**: All badges display
-   - Gradient from turquoise to pink
-   - Consistent styling across all categories
-   - White text for readability
-
----
-
-## Technical Notes
-
-### Image Handling
-
-Since the CSV does not include actual image URLs, articles will use categorised Unsplash placeholder images:
-- Health/Medical themed images
-- Error fallback displays gradient placeholder
-- Lazy loading for performance
-
-### Category Normalization
-
-The CSV uses various category formats (e.g., "Men's Health", "Women's health", "General health"). The system will normalize these to consistent formats for filtering.
-
-### Duplicate Handling
-
-Some articles appear on multiple CSV pages. The implementation will deduplicate by URL to ensure each article appears only once.
-
+1. **Deploy scraper updates** (5 min)
+2. **Run `run-all-scrapers`** (10-15 min for all providers)
+3. **Run `medichecks-firecrawl`** as backup if needed (5 min)
+4. **Verify database updates** via query
+5. **Update rating components** (10 min)
+6. **Test display** in browser
