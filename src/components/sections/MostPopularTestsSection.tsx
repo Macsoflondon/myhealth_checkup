@@ -88,10 +88,13 @@ const MostPopularTestsSection = () => {
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
             MOST POPULAR
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            The most popular tests from our{" "}
-            <span className="bg-gradient-to-r from-[#e70d69] to-[#c70b5a] bg-clip-text text-transparent">
-              providers
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 leading-tight">
+            <span className="text-[#081129]">Most Popular Tests from Our </span>
+            <span 
+              className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent"
+              style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              Providers
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">

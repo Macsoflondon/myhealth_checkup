@@ -141,10 +141,9 @@ const Hero = () => {
                 <Button 
                   onClick={handleSearch}
                   disabled={!searchTerm.trim() || isAnalyzing}
-                  className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#081129] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors flex items-center justify-center"
+                  className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#081129] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors"
                 >
-                  <Search className="w-5 h-5 mr-3 flex-shrink-0" />
-                  <span>Start Your Search</span>
+                  Start Your Search
                 </Button>
                 
                 {/* AI Results */}

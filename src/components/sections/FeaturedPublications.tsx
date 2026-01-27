@@ -38,21 +38,21 @@ export const FeaturedPublications = () => {
   }
 
   return (
-    <section className="py-16 md:py-20 bg-[#F5F7FA]">
+    <section className="py-8 md:py-12 bg-[#F5F7FA]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h3 className="text-center text-sm md:text-base font-semibold text-gray-500 uppercase tracking-wider mb-12 md:mb-16">
+        <h3 className="text-center text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6 md:mb-8">
           Our Partners Have Featured In
         </h3>
         
         <Carousel
           opts={{ align: "start", loop: true }}
           plugins={[autoplayPlugin.current, Fade()]}
-          className="w-full max-w-5xl mx-auto"
+          className="w-full max-w-4xl mx-auto"
         >
           <CarouselContent>
             {groupedPublications.map((group, index) => (
               <CarouselItem key={index} className="basis-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 lg:gap-5">
                   {group.map((publication) => (
                     <div 
                       key={publication.name} 
@@ -62,7 +62,7 @@ export const FeaturedPublications = () => {
                         href={publication.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-400 text-center transition-all duration-800 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
+                        className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-400 text-center transition-all duration-800 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
                       >
                         {publication.name}
                       </a>
