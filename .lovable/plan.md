@@ -1,191 +1,89 @@
 
-# UI Refinements: Hero Button, H2 Headings, and Featured Publications
+# UI Refinements: Button Styling and Section Reordering
 
 ## Overview
 
-Three visual refinements to improve consistency and reduce visual weight:
+Two changes required:
 
-1. **Hero Search Button** - Remove icon, keep turquoise styling
-2. **H2 Headings** - Standardise to single-line format with navy lead + gradient main text
-3. **Featured Publications** - Reduce overall size and spacing
+1. **"Start Your Search" button** - Ensure it has turquoise background with white text (matching the popular tag buttons)
+2. **Insert Mission Section** - Place the "Your health is your greatest asset" section between the Hero trust signals and "Our Trusted Partners"
 
 ---
 
-## Change 1: Hero "Start Your Search" Button
+## Change 1: "Start Your Search" Button Styling
 
-### Current State
+### Current State (Line 144 in Hero.tsx)
 ```tsx
-<Button className="... bg-[#22c0d4] ... text-white ...">
-  <Search className="w-5 h-5 mr-3 flex-shrink-0" />
-  <span>Start Your Search</span>
-</Button>
+className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#081129] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors"
 ```
 
-### Target State
-```tsx
-<Button className="... bg-[#22c0d4] ... text-white ...">
-  Start Your Search
-</Button>
+### Analysis
+The button already has:
+- Turquoise background: `bg-[#22c0d4]`
+- White text: `text-white`
+
+This matches the popular tag buttons styling. No change needed for the button colour - it's already correct.
+
+---
+
+## Change 2: Insert Mission Section Between Hero and PartnersGrid
+
+### Current Order in Index.tsx
+```
+1. Hero (includes trust signals at bottom)
+2. PartnersGrid ("Our Trusted Partners")
+3. FeaturedPublications
+...
+```
+
+### New Order
+```
+1. Hero (includes trust signals at bottom)
+2. MissionSection ("Your health is your greatest asset")  <-- INSERT HERE
+3. PartnersGrid ("Our Trusted Partners")
+4. FeaturedPublications
+...
 ```
 
 ### File Changes
-| File | Line | Change |
-|------|------|--------|
-| `src/components/sections/Hero.tsx` | 146 | Remove `<Search className="w-5 h-5 mr-3 flex-shrink-0" />` |
-| `src/components/sections/Hero.tsx` | 147 | Change `<span>Start Your Search</span>` to plain text `Start Your Search` |
 
----
+**File:** `src/pages/Index.tsx`
 
-## Change 2: Standardise All H2 Headings to Single Line
+| Line | Change |
+|------|--------|
+| Import section | Add `import MissionSection from "@/components/sections/MissionSection";` |
+| After line 99 (`<Hero />`) | Add `<MissionSection />` before `<PartnersGrid />` |
 
-### Current Pattern (SectionHeading component)
-Two lines: Navy title on top, gradient subtitle below
-
-### New Pattern (Single Line)
-All on one line: "Navy Lead Words" + "Gradient Main Text"
-
-Example: **"Your Health Journey"** (navy) **"Simplified"** (gradient) → becomes → **"Your Health Journey Simplified"** (navy + gradient inline)
-
-### Update SectionHeading Component
-
-**File:** `src/components/ui/section-heading.tsx`
-
-Replace the two-element structure with a single inline h2:
-
+Updated section order:
 ```tsx
-const SectionHeading = ({
-  title,
-  gradientText,
-  className,
-  titleClassName,
-  gradientClassName,
-  animate = true,
-}: SectionHeadingProps) => {
-  return (
-    <div className={cn(
-      "text-center mb-4 sm:mb-6",
-      animate && "animate-fade-in",
-      className
-    )}>
-      <h2 className={cn(
-        "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold leading-tight",
-        titleClassName
-      )}>
-        <span className="text-[#081129]">{title} </span>
-        <span 
-          className={cn(
-            "bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent",
-            gradientClassName
-          )}
-          style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-        >
-          {gradientText}
-        </span>
-      </h2>
-    </div>
-  );
-};
-```
+{/* 1. Hero Section */}
+<Hero />
 
-### Update Custom H2s in Other Sections
+{/* 2. Mission Section - Your Health is Your Greatest Asset */}
+<MissionSection />
 
-**File:** `src/components/sections/TopConcernsSection.tsx` (lines 119-124)
-
-Current:
-```tsx
-<h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-  Comprehensive Care for Your{" "}
-  <span className="bg-gradient-to-r from-[#22c0d4] to-[#1a9aa8] bg-clip-text text-transparent">
-    Top Concerns
-  </span>
-</h2>
-```
-
-Update to match standard gradient (turquoise to pink):
-```tsx
-<h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-foreground mb-4">
-  <span className="text-[#081129]">Comprehensive Care for Your </span>
-  <span 
-    className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent"
-    style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-  >
-    Top Concerns
-  </span>
-</h2>
-```
-
-**File:** `src/components/sections/MostPopularTestsSection.tsx` (lines 91-96)
-
-Current:
-```tsx
-<h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-  The most popular tests from our{" "}
-  <span className="bg-gradient-to-r from-[#e70d69] to-[#c70b5a] bg-clip-text text-transparent">
-    providers
-  </span>
-</h2>
-```
-
-Update to standard format:
-```tsx
-<h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4">
-  <span className="text-[#081129]">Most Popular Tests from Our </span>
-  <span 
-    className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent"
-    style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-  >
-    Providers
-  </span>
-</h2>
+{/* 3. Our Trusted Partners */}
+<PartnersGrid />
 ```
 
 ---
 
-## Change 3: Shrink Featured Publications Section
-
-### Current Sizes
-- Section padding: `py-16 md:py-20`
-- Title margin: `mb-12 md:mb-16`
-- Publication text: `text-3xl sm:text-4xl lg:text-5xl xl:text-6xl`
-- Grid gap: `gap-4 md:gap-6 lg:gap-8`
-
-### Reduced Sizes
-- Section padding: `py-8 md:py-12`
-- Title margin: `mb-6 md:mb-8`
-- Publication text: `text-xl sm:text-2xl lg:text-3xl xl:text-4xl`
-- Grid gap: `gap-3 md:gap-4 lg:gap-5`
-
-**File:** `src/components/sections/FeaturedPublications.tsx`
-
-| Line | Current | New |
-|------|---------|-----|
-| 41 | `py-16 md:py-20` | `py-8 md:py-12` |
-| 43 | `mb-12 md:mb-16` | `mb-6 md:mb-8` |
-| 55 | `gap-4 md:gap-6 lg:gap-8` | `gap-3 md:gap-4 lg:gap-5` |
-| 65 | `text-3xl sm:text-4xl lg:text-5xl xl:text-6xl` | `text-xl sm:text-2xl lg:text-3xl xl:text-4xl` |
-
----
-
-## Files to Modify
+## Summary
 
 | File | Changes |
 |------|---------|
-| `src/components/sections/Hero.tsx` | Remove Search icon from "Start Your Search" button |
-| `src/components/ui/section-heading.tsx` | Restructure to single-line format with inline navy + gradient text |
-| `src/components/sections/TopConcernsSection.tsx` | Update H2 to use standard turquoise-to-pink gradient |
-| `src/components/sections/MostPopularTestsSection.tsx` | Update H2 to use standard format and gradient |
-| `src/components/sections/FeaturedPublications.tsx` | Reduce padding, margins, and text sizes |
+| `src/pages/Index.tsx` | Import MissionSection and insert it between Hero and PartnersGrid |
+
+The "Start Your Search" button already has the correct turquoise (#22c0d4) background with white text, matching the popular tag buttons below it.
 
 ---
 
 ## Visual Result
 
-### Before
-- Hero button: Turquoise with magnifying glass icon + "Start Your Search"
-- H2 headings: Two lines (title above, gradient below) OR mixed gradient directions
-- Featured Publications: Large text, generous spacing
+### Current Flow
+Hero → PartnersGrid → ...
 
-### After
-- Hero button: Clean turquoise button with just "Start Your Search" text
-- H2 headings: Single line with "Navy Lead Text" + "Turquoise-to-Pink Gradient" 
-- Featured Publications: Compact section with ~40% size reduction
+### New Flow  
+Hero → MissionSection ("Your health is your greatest asset") → PartnersGrid → ...
+
+The "Your health is your greatest asset" content with the accreditation cards will now appear immediately after the trust signals and before "Our Trusted Partners".
