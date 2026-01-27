@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useUserRole } from "@/hooks/useUserRole";
 import { useToast } from "@/hooks/use-toast";
 
 interface ScrapingJob {
@@ -37,8 +35,6 @@ const PROVIDERS: Provider[] = [
 ];
 
 const AdminScraperDashboardPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading: roleLoading } = useUserRole();
   const { toast } = useToast();
   const [jobs, setJobs] = useState<ScrapingJob[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
@@ -71,24 +67,9 @@ const AdminScraperDashboardPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchJobs();
-      fetchTestCounts();
-    }
-  }, [isAdmin]);
-
-  if (roleLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    navigate("/");
-    return null;
-  }
+    fetchJobs();
+    fetchTestCounts();
+  }, []);
 
   const runScraper = async (provider: Provider) => {
     setRunningScrapers(prev => new Set(prev).add(provider.id));

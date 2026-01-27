@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,13 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, RefreshCw, Database, Globe, CheckCircle2, XCircle, Clock, Zap } from "lucide-react";
-import { useUserRole } from "@/hooks/useUserRole";
 import { LiveDataService } from "@/services/LiveDataService";
 import { supabase } from "@/integrations/supabase/client";
 
 const AdminDataRefreshPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading: roleLoading } = useUserRole();
   const [isRefreshing, setIsRefreshing] = useState<Record<string, boolean>>({});
   const [refreshResults, setRefreshResults] = useState<Record<string, {
     success: boolean;
@@ -31,19 +27,6 @@ const AdminDataRefreshPage: React.FC = () => {
     { id: 'randox', name: 'Randox Health', hasLiveScraper: true, scraperFunction: 'randox-scraper' },
     { id: 'lola-health', name: 'Lola Health', hasLiveScraper: true, scraperFunction: 'lola-health-scraper' },
   ];
-
-  if (roleLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    navigate("/");
-    return null;
-  }
 
   const handleRunScraper = async (providerId: string, scraperFunction: string) => {
     setIsRefreshing(prev => ({ ...prev, [providerId]: true }));
