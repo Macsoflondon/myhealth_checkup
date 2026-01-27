@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { Download, Loader2, CheckCircle2, XCircle, AlertCircle, PlayCircle } from "lucide-react";
 import { toast } from "sonner";
-import { useUserRole } from "@/hooks/useUserRole";
 
 interface ScraperResult {
   provider: string;
@@ -30,18 +28,9 @@ interface ScrapeResponse {
 }
 
 const AdminClinicScraperPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading } = useUserRole();
   const [scraping, setScraping] = useState(false);
   const [results, setResults] = useState<ScraperResult[]>([]);
   const [summary, setSummary] = useState<ScrapeResponse['summary'] | null>(null);
-
-  React.useEffect(() => {
-    if (!isLoading && !isAdmin) {
-      toast.error('Access denied. Admin only.');
-      navigate('/');
-    }
-  }, [isAdmin, isLoading, navigate]);
 
   const handleScrapeAll = async () => {
     setScraping(true);
@@ -79,18 +68,6 @@ const AdminClinicScraperPage: React.FC = () => {
       setScraping(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,20 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { Upload, Loader2, CheckCircle2, AlertCircle, Database } from "lucide-react";
 import { toast } from "sonner";
-import { useUserRole } from "@/hooks/useUserRole";
 
 const AdminQuickClinicImportPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading } = useUserRole();
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<{ success: boolean; count: number; message: string } | null>(null);
-
-  React.useEffect(() => {
-    if (!isLoading && !isAdmin) {
-      toast.error('Access denied. Admin only.');
-      navigate('/');
-    }
-  }, [isAdmin, isLoading, navigate]);
 
   const handleQuickImport = async () => {
     setImporting(true);
@@ -78,18 +67,6 @@ const AdminQuickClinicImportPage: React.FC = () => {
       setImporting(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">

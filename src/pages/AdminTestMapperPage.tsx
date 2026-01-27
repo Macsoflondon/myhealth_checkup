@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useUserRole } from "@/hooks/useUserRole";
 
 interface MappingResult {
   total_processed: number;
@@ -30,35 +28,11 @@ interface MappingResult {
 }
 
 export default function AdminTestMapperPage() {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading: roleLoading } = useUserRole();
   const [isRunning, setIsRunning] = useState(false);
   const [result, setResult] = useState<MappingResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [confidenceThreshold, setConfidenceThreshold] = useState(75);
   const [batchSize, setBatchSize] = useState(10);
-
-  // Redirect non-admin users
-  useEffect(() => {
-    if (!roleLoading && !isAdmin) {
-      toast.error('Access denied. Admin only.');
-      navigate('/');
-    }
-  }, [isAdmin, roleLoading, navigate]);
-
-  // Show loading while checking role
-  if (roleLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  // Don't render if not admin
-  if (!isAdmin) {
-    return null;
-  }
 
   const runMapper = async (dryRun: boolean) => {
     setIsRunning(true);

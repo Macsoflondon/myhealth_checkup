@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,13 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Upload, CheckCircle2, XCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useUserRole } from "@/hooks/useUserRole";
 import { medichecksTests } from "@/data/medichecksTests";
 import { londonLaboratoryTests } from "@/data/londonLaboratoryTests";
 
 const AdminTestUploadPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading: roleLoading } = useUserRole();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState<{
     success: boolean;
@@ -21,19 +17,6 @@ const AdminTestUploadPage: React.FC = () => {
     inserted: number;
     errors: number;
   } | null>(null);
-
-  if (roleLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    navigate("/");
-    return null;
-  }
 
   const handleUploadTests = async () => {
     setIsUploading(true);

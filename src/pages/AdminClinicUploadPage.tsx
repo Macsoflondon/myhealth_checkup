@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { Upload, CheckCircle2, XCircle, AlertCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { useUserRole } from "@/hooks/useUserRole";
 
 interface ClinicData {
   name: string;
@@ -29,22 +27,12 @@ interface UploadResult {
 const BATCH_SIZE = 30;
 
 const AdminClinicUploadPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { isAdmin, isLoading } = useUserRole();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState<UploadResult[]>([]);
   const [currentBatch, setCurrentBatch] = useState(0);
   const [totalBatches, setTotalBatches] = useState(0);
   const [stats, setStats] = useState({ success: 0, error: 0, total: 0 });
-
-  // Redirect if not admin
-  React.useEffect(() => {
-    if (!isLoading && !isAdmin) {
-      toast.error('Access denied. Admin only.');
-      navigate('/');
-    }
-  }, [isAdmin, isLoading, navigate]);
 
   const loadClinicsFromFile = async (): Promise<ClinicData[]> => {
     try {
@@ -132,18 +120,6 @@ const AdminClinicUploadPage: React.FC = () => {
       setUploading(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">
