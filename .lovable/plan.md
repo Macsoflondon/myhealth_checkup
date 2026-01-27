@@ -1,89 +1,138 @@
 
-# UI Refinements: Button Styling and Section Reordering
+# Update MissionSection to Match Screenshot Design
 
 ## Overview
 
-Two changes required:
-
-1. **"Start Your Search" button** - Ensure it has turquoise background with white text (matching the popular tag buttons)
-2. **Insert Mission Section** - Place the "Your health is your greatest asset" section between the Hero trust signals and "Our Trusted Partners"
+Redesign the MissionSection component to match the uploaded screenshot reference, updating the layout, typography, text content, and accreditation card styling.
 
 ---
 
-## Change 1: "Start Your Search" Button Styling
+## Changes Required
 
-### Current State (Line 144 in Hero.tsx)
+### 1. Update Heading Style
+
+**Current:**
 ```tsx
-className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#081129] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors"
+Your health is your <span className="text-[#22c0d4]">greatest asset</span>
 ```
 
-### Analysis
-The button already has:
-- Turquoise background: `bg-[#22c0d4]`
-- White text: `text-white`
-
-This matches the popular tag buttons styling. No change needed for the button colour - it's already correct.
-
----
-
-## Change 2: Insert Mission Section Between Hero and PartnersGrid
-
-### Current Order in Index.tsx
-```
-1. Hero (includes trust signals at bottom)
-2. PartnersGrid ("Our Trusted Partners")
-3. FeaturedPublications
-...
-```
-
-### New Order
-```
-1. Hero (includes trust signals at bottom)
-2. MissionSection ("Your health is your greatest asset")  <-- INSERT HERE
-3. PartnersGrid ("Our Trusted Partners")
-4. FeaturedPublications
-...
-```
-
-### File Changes
-
-**File:** `src/pages/Index.tsx`
-
-| Line | Change |
-|------|--------|
-| Import section | Add `import MissionSection from "@/components/sections/MissionSection";` |
-| After line 99 (`<Hero />`) | Add `<MissionSection />` before `<PartnersGrid />` |
-
-Updated section order:
+**New:**
 ```tsx
-{/* 1. Hero Section */}
-<Hero />
+Your health is your <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">greatest asset</span>
+```
 
-{/* 2. Mission Section - Your Health is Your Greatest Asset */}
-<MissionSection />
+Apply the standard turquoise-to-pink gradient to "greatest asset" for consistency with other H2 headings.
 
-{/* 3. Our Trusted Partners */}
-<PartnersGrid />
+---
+
+### 2. Update Body Text Content
+
+Restructure paragraphs to match the screenshot with "checkup" highlighted:
+
+```text
+Paragraph 1:
+"At myhealth **checkup**, we believe everyone deserves access to transparent, trustworthy health information."
+
+Paragraph 2:
+"Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers."
+
+Paragraph 3:
+"We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation."
+```
+
+Remove the current third paragraph about "clinical evidence and registered healthcare professionals".
+
+---
+
+### 3. Update Accreditation Cards
+
+**Current format:**
+- Title: "UKAS Accredited" 
+- Subtitle: "Labs"
+
+**New format (single line):**
+- "UKAS Accredited Labs"
+- "CQC Regulated Providers"  
+- "ISO 15189 Certified"
+
+**Card styling changes:**
+- Title text in turquoise (#22c0d4) instead of navy
+- Remove separate subtitle - combine into single title
+- Keep light turquoise background (#e8f7f8)
+- Outline-style icons
+
+---
+
+### 4. Data Structure Update
+
+```tsx
+const accreditations = [
+  {
+    icon: Shield,
+    title: "UKAS Accredited Labs",
+  },
+  {
+    icon: FileCheck,
+    title: "CQC Regulated Providers",
+  },
+  {
+    icon: Award,
+    title: "ISO 15189 Certified",
+  }
+];
 ```
 
 ---
 
-## Summary
+## File to Modify
 
 | File | Changes |
 |------|---------|
-| `src/pages/Index.tsx` | Import MissionSection and insert it between Hero and PartnersGrid |
+| `src/components/sections/MissionSection.tsx` | Update heading gradient, restructure body text, redesign accreditation cards |
 
-The "Start Your Search" button already has the correct turquoise (#22c0d4) background with white text, matching the popular tag buttons below it.
+---
+
+## Technical Implementation
+
+### Updated Card Markup
+
+```tsx
+<div className="flex-1 lg:flex-none bg-[#e8f7f8] rounded-xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
+  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-transparent flex items-center justify-center flex-shrink-0">
+    <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c0d4]" strokeWidth={1.5} />
+  </div>
+  <h3 className="font-heading font-semibold text-[#22c0d4] text-sm sm:text-base">
+    {item.title}
+  </h3>
+</div>
+```
+
+### Updated Body Text
+
+```tsx
+<div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
+  <p>
+    At myhealth <span className="text-[#22c0d4] font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+  </p>
+  <p>
+    Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
+  </p>
+  <p>
+    We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
+  </p>
+</div>
+```
 
 ---
 
 ## Visual Result
 
-### Current Flow
-Hero → PartnersGrid → ...
+### Before
+- "greatest asset" in solid turquoise
+- Three paragraphs with different content  
+- Accreditation cards with title + subtitle in navy
 
-### New Flow  
-Hero → MissionSection ("Your health is your greatest asset") → PartnersGrid → ...
-
-The "Your health is your greatest asset" content with the accreditation cards will now appear immediately after the trust signals and before "Our Trusted Partners".
+### After
+- "greatest asset" with turquoise-to-pink gradient
+- Three paragraphs matching screenshot with "checkup" highlighted
+- Accreditation cards with single-line turquoise titles matching the reference design
