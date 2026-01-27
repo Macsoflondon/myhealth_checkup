@@ -4,18 +4,15 @@ const MissionSection = () => {
   const accreditations = [
     {
       icon: Shield,
-      title: "UKAS Accredited",
-      subtitle: "Labs",
+      title: "UKAS Accredited Labs",
     },
     {
       icon: FileCheck,
-      title: "CQC Regulated",
-      subtitle: "Providers",
+      title: "CQC Regulated Providers",
     },
     {
       icon: Award,
-      title: "ISO 15189",
-      subtitle: "Certified",
+      title: "ISO 15189 Certified",
     }
   ];
 
@@ -33,21 +30,18 @@ const MissionSection = () => {
                 <div className="space-y-4 sm:space-y-6">
                   <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] leading-tight">
                     Your health is your{" "}
-                    <span className="text-[#22c0d4]">greatest asset</span>
+                    <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">greatest asset</span>
                   </h2>
 
-                  <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
+                  <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
                     <p>
-                      At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information.
-                      Our mission is to empower you to take control of your health by making it simple to compare private health
-                      tests from accredited UK providers.
+                      At myhealth <span className="text-[#22c0d4] font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
                     </p>
                     <p>
-                      We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC
-                      regulation.
+                      Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
                     </p>
-                    <p className="text-[#081129] font-medium">
-                      Our recommendations are based on clinical evidence and reviewed by registered healthcare professionals.
+                    <p>
+                      We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
                     </p>
                   </div>
                 </div>
@@ -60,19 +54,14 @@ const MissionSection = () => {
                 {accreditations.map((item, index) => (
                   <div 
                     key={index} 
-                    className="flex-1 lg:flex-none bg-[#e8f7f8] border border-[#081129]/10 rounded-xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+                    className="flex-1 lg:flex-none bg-[#e8f7f8] rounded-xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
                   >
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c0d4]" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-transparent flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c0d4]" strokeWidth={1.5} />
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="font-heading font-bold text-[#081129] text-xs sm:text-sm leading-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 font-sans text-[10px] sm:text-xs">
-                        {item.subtitle}
-                      </p>
-                    </div>
+                    <h3 className="font-heading font-semibold text-[#22c0d4] text-sm sm:text-base">
+                      {item.title}
+                    </h3>
                   </div>
                 ))}
               </div>
