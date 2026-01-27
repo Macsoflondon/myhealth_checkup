@@ -13,6 +13,7 @@ import AdminTestUploadPage from "@/pages/AdminTestUploadPage";
 import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
 import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
 import AdminScraperDashboardPage from "@/pages/AdminScraperDashboardPage";
+import { AdminRoute } from "@/components/auth/AdminRoute";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
@@ -25,14 +26,14 @@ export function AppRoutes() {
       {/* Home */}
       <Route path="/" element={<Index />} />
       
-      {/* Admin Routes */}
-      <Route path="/admin/clinic-upload" element={<AdminClinicUploadPage />} />
-      <Route path="/admin/clinic-scraper" element={<AdminClinicScraperPage />} />
-      <Route path="/admin/quick-clinic-import" element={<AdminQuickClinicImportPage />} />
-      <Route path="/admin/test-upload" element={<AdminTestUploadPage />} />
-      <Route path="/admin/data-refresh" element={<AdminDataRefreshPage />} />
-      <Route path="/admin/scrapers" element={<AdminScraperDashboardPage />} />
-      <Route path="/admin/test-mapper" element={<AdminTestMapperPage />} />
+      {/* Admin Routes - Protected with server-side role verification */}
+      <Route path="/admin/clinic-upload" element={<AdminRoute><AdminClinicUploadPage /></AdminRoute>} />
+      <Route path="/admin/clinic-scraper" element={<AdminRoute><AdminClinicScraperPage /></AdminRoute>} />
+      <Route path="/admin/quick-clinic-import" element={<AdminRoute><AdminQuickClinicImportPage /></AdminRoute>} />
+      <Route path="/admin/test-upload" element={<AdminRoute><AdminTestUploadPage /></AdminRoute>} />
+      <Route path="/admin/data-refresh" element={<AdminRoute><AdminDataRefreshPage /></AdminRoute>} />
+      <Route path="/admin/scrapers" element={<AdminRoute><AdminScraperDashboardPage /></AdminRoute>} />
+      <Route path="/admin/test-mapper" element={<AdminRoute><AdminTestMapperPage /></AdminRoute>} />
       
       {/* Feature Routes */}
       {featureRoutes}
