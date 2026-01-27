@@ -1,138 +1,88 @@
 
-# Update MissionSection to Match Screenshot Design
+Problem restatement (what’s happening)
+- You’re on the homepage (route “/”), but some sections you expect (including the Mission section we inserted/updated) are not visible in the UI even after hard refresh and re-login.
+- In code, those sections are present and wired up, so the issue is “rendered but not visible” or “you’re not looking at the build you think you are”.
 
-## Overview
+Where the “missing sections” are in the code (single source of truth)
+- Homepage sections are assembled in: src/pages/Index.tsx
+- The section order is currently (with exact component names):
+  1) <Hero />
+  2) <MissionSection />   ← “Your health is your greatest asset”
+  3) <PartnersGrid />     ← “Our Trusted Partners”
+  4) <FeaturedPublications />
+  5) <JourneySimplified />
+  6) <MostPopularTestsSection />
+  7) <TopConcernsSection />
+  8) <FindClinicSection />
+  9) <HereToHelp />
+  10) <FinalCTA />
+  11) <TrustPlatformSection />
+  (+ StickyCtaBar)
 
-Redesign the MissionSection component to match the uploaded screenshot reference, updating the layout, typography, text content, and accreditation card styling.
+Key observation from the current project state
+- The homepage route is correctly configured to render Index: src/routes/index.tsx has <Route path="/" element={<Index />} />.
+- MissionSection exists and is imported + rendered at line 103 in src/pages/Index.tsx.
+- There is a hard console error being thrown by Google Translate:
+  “Uncaught RangeError: Maximum call stack size exceeded” coming from translate.googleapis.com.
+  This is important because Google Translate can manipulate/replace the DOM in a way that interferes with React rendering and layout. Even when it doesn’t crash the app completely, it can cause sections to appear missing, collapsed, or moved.
 
----
+Most likely causes (ranked)
+1) You are viewing a different environment or URL than the one being updated
+   - If you are checking a custom domain / published site, changes won’t appear until the project is published (your project currently shows “Published URL: (not published)” in Lovable).
+2) A layout/scroll container issue is clipping content
+   - Example: a wrapper with fixed height (100vh) + overflow hidden can prevent later sections from appearing even though they exist in the DOM.
+3) Google Translate script is breaking page layout/rendering
+   - The stack overflow error suggests the script is unstable in this environment; it can lead to “missing sections” symptoms.
 
-## Changes Required
+Implementation plan (what I will do in Default mode once you approve)
+A) Confirm environment mismatch quickly (fastest win)
+1. Add a temporary “Environment banner” (dev-only) at the top of the page that displays:
+   - window.location.hostname
+   - window.location.pathname
+   - build timestamp (from import.meta.env.MODE + Date.now at build or a simple constant)
+2. This makes it immediately obvious if you’re looking at preview vs a different host.
 
-### 1. Update Heading Style
+B) Add a temporary “Section Debug Panel” to remove guesswork
+1. Add a small fixed debug panel (enabled only when the URL contains ?debug=sections) that lists each homepage section with:
+   - “Found” / “Not found”
+   - Its current getBoundingClientRect().top and height
+   - A “Scroll to section” button that calls element.scrollIntoView({behavior:'smooth'})
+2. This will prove whether sections are:
+   - Not mounted at all, or
+   - Mounted but height=0 / off-screen / clipped by overflow.
 
-**Current:**
-```tsx
-Your health is your <span className="text-[#22c0d4]">greatest asset</span>
-```
+C) Fix the likely root: disable or defer Google Translate initialization
+Given brand rules (“Great British English only”) and the observed runtime error:
+1. Change useGoogleTranslate so it does NOT inject Google’s script on every page load.
+2. Only load the Google Translate script when the user explicitly opens the language menu (on-demand).
+3. Add defensive guards:
+   - Don’t inject the script twice
+   - Catch failures and don’t leave partial DOM changes behind
+4. If translation is not required, we can also fully remove the language switcher entry point to eliminate the risk entirely (recommended for stability and consistency with “Great British English only”).
 
-**New:**
-```tsx
-Your health is your <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">greatest asset</span>
-```
+D) If debug panel shows clipping: fix the layout clipping directly
+1. Identify the nearest parent container for the first “missing” section that has:
+   - overflow: hidden/clip
+   - position: absolute/fixed causing overlap
+   - height constraints (e.g., h-screen / 100vh)
+2. Adjust the responsible container styles so the document height expands normally and sections flow in order.
 
-Apply the standard turquoise-to-pink gradient to "greatest asset" for consistency with other H2 headings.
+Verification steps (how we’ll know it’s fixed)
+1. Desktop: confirm you can see, in order:
+   Hero → MissionSection → Our Trusted Partners → Featured Publications …
+2. Mobile (390x844): confirm MissionSection and PartnersGrid appear after Hero and are scrollable.
+3. Console: confirm the Google Translate “Maximum call stack size exceeded” error no longer occurs on initial page load.
+4. Remove debug UI after confirming (keep behind ?debug=sections if you want a permanent internal tool; otherwise delete it).
 
----
+Files that will likely change
+- src/pages/Index.tsx (temporary debug banner/panel hook-in)
+- src/hooks/useGoogleTranslate.ts (defer/disable script injection, add guards)
+- src/components/header/LanguageSwitcher.tsx (load-on-demand; or hide/remove if not needed)
+- Potentially a layout component if clipping is found (e.g., MainLayout or a section wrapper)
 
-### 2. Update Body Text Content
+What I need from you (so we don’t chase the wrong thing)
+- Tell me the exact URL you are checking when you say “it’s not there”:
+  - Is it the Lovable preview URL, or your custom domain (myhealthcheckup.co.uk), or something else?
+  - If it’s the custom domain: you won’t see changes until you Publish.
 
-Restructure paragraphs to match the screenshot with "checkup" highlighted:
-
-```text
-Paragraph 1:
-"At myhealth **checkup**, we believe everyone deserves access to transparent, trustworthy health information."
-
-Paragraph 2:
-"Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers."
-
-Paragraph 3:
-"We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation."
-```
-
-Remove the current third paragraph about "clinical evidence and registered healthcare professionals".
-
----
-
-### 3. Update Accreditation Cards
-
-**Current format:**
-- Title: "UKAS Accredited" 
-- Subtitle: "Labs"
-
-**New format (single line):**
-- "UKAS Accredited Labs"
-- "CQC Regulated Providers"  
-- "ISO 15189 Certified"
-
-**Card styling changes:**
-- Title text in turquoise (#22c0d4) instead of navy
-- Remove separate subtitle - combine into single title
-- Keep light turquoise background (#e8f7f8)
-- Outline-style icons
-
----
-
-### 4. Data Structure Update
-
-```tsx
-const accreditations = [
-  {
-    icon: Shield,
-    title: "UKAS Accredited Labs",
-  },
-  {
-    icon: FileCheck,
-    title: "CQC Regulated Providers",
-  },
-  {
-    icon: Award,
-    title: "ISO 15189 Certified",
-  }
-];
-```
-
----
-
-## File to Modify
-
-| File | Changes |
-|------|---------|
-| `src/components/sections/MissionSection.tsx` | Update heading gradient, restructure body text, redesign accreditation cards |
-
----
-
-## Technical Implementation
-
-### Updated Card Markup
-
-```tsx
-<div className="flex-1 lg:flex-none bg-[#e8f7f8] rounded-xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5">
-  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-transparent flex items-center justify-center flex-shrink-0">
-    <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c0d4]" strokeWidth={1.5} />
-  </div>
-  <h3 className="font-heading font-semibold text-[#22c0d4] text-sm sm:text-base">
-    {item.title}
-  </h3>
-</div>
-```
-
-### Updated Body Text
-
-```tsx
-<div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
-  <p>
-    At myhealth <span className="text-[#22c0d4] font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
-  </p>
-  <p>
-    Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
-  </p>
-  <p>
-    We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
-  </p>
-</div>
-```
-
----
-
-## Visual Result
-
-### Before
-- "greatest asset" in solid turquoise
-- Three paragraphs with different content  
-- Accreditation cards with title + subtitle in navy
-
-### After
-- "greatest asset" with turquoise-to-pink gradient
-- Three paragraphs matching screenshot with "checkup" highlighted
-- Accreditation cards with single-line turquoise titles matching the reference design
+If you approve this plan, I’ll switch to Default mode and implement the debug panel + the translate fix first (fastest to validate), then apply any layout fixes indicated by the debug readout.
