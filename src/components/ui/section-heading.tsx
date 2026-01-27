@@ -30,20 +30,20 @@ const SectionHeading = ({
       className
     )}>
       <h2 className={cn(
-        "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] mb-2",
+        "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold leading-tight",
         titleClassName
       )}>
-        {title}
+        <span className="text-[#081129]">{title} </span>
+        <span 
+          className={cn(
+            "bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent",
+            gradientClassName
+          )}
+          style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+        >
+          {gradientText}
+        </span>
       </h2>
-      <span 
-        className={cn(
-          "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent inline-block",
-          gradientClassName
-        )}
-        style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-      >
-        {gradientText}
-      </span>
     </div>
   );
 };
