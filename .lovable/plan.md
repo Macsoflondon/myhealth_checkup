@@ -1,65 +1,68 @@
 
-# Fix Pink Banner to Match Reference Design
+
+# Fix HealthAssetBanner Styling to Match Reference
 
 ## Problem Identified
 
-The current `HealthAssetBanner` component uses turquoise (#22c0d4) for the highlighted words "health" and "asset", but the reference screenshot shows these words in a **yellow/gold colour**. Additionally, the reference shows **dark navy border accents** at the top and bottom of the banner.
+After thorough investigation, I found that the HealthAssetBanner IS rendering but its styling does not match what you expected. Looking at your latest reference screenshot, it shows:
+
+1. **MissionSection** - Already implemented correctly with:
+   - "Your health is your greatest asset" (navy + gradient text)
+   - Turquoise vertical accent bar
+   - Mission paragraphs
+   - 3 accreditation cards on the right
+
+2. **HealthAssetBanner** (the full-width banner between Partners and Journey) currently has:
+   - Dark navy background (#081129)
+   - Pink top/bottom borders (#e70d69)
+   - "Your health is your greatest asset!" with turquoise "health" and pink "asset"
+
+Based on your feedback that the current implementation doesn't match the picture, I believe you want the HealthAssetBanner to be removed entirely OR restyled differently.
 
 ---
 
-## Visual Comparison
+## Clarification Needed
 
-| Element | Current Implementation | Reference Screenshot |
-|---------|----------------------|---------------------|
-| "health" colour | Turquoise (#22c0d4) | Yellow/Gold |
-| "asset" colour | Turquoise (#22c0d4) | Yellow/Gold |
-| Top border | None | Dark navy (#081129) accent line |
-| Bottom border | None | Dark navy (#081129) accent line |
+Looking at your reference screenshot, it only shows the MissionSection (which already looks correct). There is no separate full-width pink/navy banner visible in that image.
 
----
+**Two possible solutions:**
 
-## Changes Required
+### Option A: Remove the HealthAssetBanner Entirely
 
-### File: `src/components/sections/HealthAssetBanner.tsx`
+If the MissionSection already provides the "Your health is your greatest asset" message, we can remove the duplicate HealthAssetBanner component.
 
-**Updates:**
-1. Change the highlighted word colour from turquoise (#22c0d4) to a yellow/gold colour (approximately #FFD700 or similar warm gold)
-2. Add dark navy (#081129) border accents at the top and bottom of the section
+**Changes:**
+- Remove HealthAssetBanner from Index.tsx
+- Delete HealthAssetBanner.tsx file
 
-**Updated component:**
+### Option B: Restyle the Banner to a Different Design
 
-```tsx
-const HealthAssetBanner = () => {
-  return (
-    <section className="bg-[#e70d69] py-6 sm:py-8 border-t-4 border-b-4 border-[#081129]">
-      <div className="container mx-auto px-4">
-        <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white">
-          Your <span className="text-[#FFD700]">health</span> is your greatest <span className="text-[#FFD700]">asset</span>!
-        </h2>
-      </div>
-    </section>
-  );
-};
-
-export default HealthAssetBanner;
-```
-
----
-
-## Summary of Changes
-
-| Change | Before | After |
-|--------|--------|-------|
-| "health" span | `text-[#22c0d4]` | `text-[#FFD700]` (gold) |
-| "asset" span | `text-[#22c0d4]` | `text-[#FFD700]` (gold) |
-| Section borders | None | `border-t-4 border-b-4 border-[#081129]` |
+If you want to keep a banner between Partners and Journey but with different styling, please clarify:
+- What background colour should it have?
+- What text colours should "health" and "asset" use?
+- Should there be borders? What colour?
 
 ---
 
 ## Files to Modify
 
-| File | Action |
-|------|--------|
-| `src/components/sections/HealthAssetBanner.tsx` | **MODIFY** - Update highlight colour to gold, add navy border accents |
+| File | Option A (Remove) | Option B (Restyle) |
+|------|-------------------|-------------------|
+| `src/pages/Index.tsx` | Remove `<HealthAssetBanner />` | No change |
+| `src/components/sections/HealthAssetBanner.tsx` | Delete file | Update styling |
 
-This will make the pink banner match the reference screenshot exactly, with gold-highlighted keywords and dark navy framing borders.
+---
+
+## Recommendation
+
+Based on the reference screenshot you provided, I recommend **Option A** - removing the HealthAssetBanner entirely since the MissionSection already contains the "Your health is your greatest asset" message with proper styling.
+
+The current page flow would become:
+1. Hero
+2. MissionSection (with "Your health is your greatest asset" message)
+3. PartnersGrid ("Our Trusted Partners")
+4. JourneySimplified ("Your Health Journey Simplified")
+5. FeaturedPublications
+
+Please confirm which option you prefer, or provide additional details about how the banner should look.
+
