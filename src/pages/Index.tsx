@@ -8,6 +8,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import Hero from "@/components/sections/Hero";
 import MissionSection from "@/components/sections/MissionSection";
 import PartnersGrid from "@/components/sections/PartnersGrid";
+import HealthAssetBanner from "@/components/sections/HealthAssetBanner";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import TopConcernsSection from "@/components/sections/TopConcernsSection";
@@ -105,13 +106,16 @@ const Index = () => {
         {/* 3. Our Trusted Partners */}
         <PartnersGrid />
         
-        {/* 3. Featured Publications */}
-        <FeaturedPublications />
+        {/* 4. Pink Banner - Health Asset */}
+        <HealthAssetBanner />
         
-        {/* 4. Your Health Journey Simplified */}
+        {/* 5. Your Health Journey Simplified */}
         <JourneySimplified />
         
-        {/* 5. Most Popular Tests from Our Providers */}
+        {/* 6. Featured Publications */}
+        <FeaturedPublications />
+        
+        {/* 7. Most Popular Tests from Our Providers */}
         <MostPopularTestsSection />
         
         {/* 6. Comprehensive Care Categories */}
