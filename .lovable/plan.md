@@ -1,68 +1,108 @@
 
 
-# Fix HealthAssetBanner Styling to Match Reference
+# Add Tagline Video Section
 
-## Problem Identified
+## Overview
 
-After thorough investigation, I found that the HealthAssetBanner IS rendering but its styling does not match what you expected. Looking at your latest reference screenshot, it shows:
-
-1. **MissionSection** - Already implemented correctly with:
-   - "Your health is your greatest asset" (navy + gradient text)
-   - Turquoise vertical accent bar
-   - Mission paragraphs
-   - 3 accreditation cards on the right
-
-2. **HealthAssetBanner** (the full-width banner between Partners and Journey) currently has:
-   - Dark navy background (#081129)
-   - Pink top/bottom borders (#e70d69)
-   - "Your health is your greatest asset!" with turquoise "health" and pink "asset"
-
-Based on your feedback that the current implementation doesn't match the picture, I believe you want the HealthAssetBanner to be removed entirely OR restyled differently.
+Adding the uploaded video file "Your_health._Your_choice._One_trusted_platform!.mp4" as a new section positioned between:
+- **FeaturedPublications** ("Our Partners Have Featured In" carousel)
+- **MostPopularTestsSection** ("MOST POPULAR")
 
 ---
 
-## Clarification Needed
+## Implementation Steps
 
-Looking at your reference screenshot, it only shows the MissionSection (which already looks correct). There is no separate full-width pink/navy banner visible in that image.
+### Step 1: Copy Video File to Public Directory
 
-**Two possible solutions:**
+Copy the uploaded video to the public directory where other media assets are stored:
 
-### Option A: Remove the HealthAssetBanner Entirely
-
-If the MissionSection already provides the "Your health is your greatest asset" message, we can remove the duplicate HealthAssetBanner component.
-
-**Changes:**
-- Remove HealthAssetBanner from Index.tsx
-- Delete HealthAssetBanner.tsx file
-
-### Option B: Restyle the Banner to a Different Design
-
-If you want to keep a banner between Partners and Journey but with different styling, please clarify:
-- What background colour should it have?
-- What text colours should "health" and "asset" use?
-- Should there be borders? What colour?
+| Source | Destination |
+|--------|-------------|
+| `user-uploads://Your_health._Your_choice._One_trusted_platform!.mp4` | `public/tagline-video.mp4` |
 
 ---
 
-## Files to Modify
+### Step 2: Create New Video Section Component
 
-| File | Option A (Remove) | Option B (Restyle) |
-|------|-------------------|-------------------|
-| `src/pages/Index.tsx` | Remove `<HealthAssetBanner />` | No change |
-| `src/components/sections/HealthAssetBanner.tsx` | Delete file | Update styling |
+Create a new component `TaglineVideoSection.tsx` in `src/components/sections/`:
+
+**Design specifications:**
+- Full-width video with responsive aspect ratio (16:9 on desktop, taller on mobile)
+- Auto-play, muted, looping (standard for promotional videos)
+- Dark navy background (#081129) to frame the video
+- Clean section padding matching other sections (py-12 sm:py-16 md:py-20)
+- Accessible with fallback text for browsers that don't support video
 
 ---
 
-## Recommendation
+### Step 3: Update Homepage Layout
 
-Based on the reference screenshot you provided, I recommend **Option A** - removing the HealthAssetBanner entirely since the MissionSection already contains the "Your health is your greatest asset" message with proper styling.
+Modify `src/pages/Index.tsx` to:
+1. Import the new `TaglineVideoSection` component
+2. Place it between `<FeaturedPublications />` and `<MostPopularTestsSection />`
 
-The current page flow would become:
+**Updated section order:**
 1. Hero
-2. MissionSection (with "Your health is your greatest asset" message)
-3. PartnersGrid ("Our Trusted Partners")
-4. JourneySimplified ("Your Health Journey Simplified")
+2. MissionSection
+3. PartnersGrid
+4. JourneySimplified
 5. FeaturedPublications
+6. **TaglineVideoSection** (NEW)
+7. MostPopularTestsSection
+8. TopConcernsSection
+9. FindClinicSection
+10. HereToHelp
+11. FinalCTA
+12. TrustPlatformSection
 
-Please confirm which option you prefer, or provide additional details about how the banner should look.
+---
+
+## Files to Create/Modify
+
+| File | Action |
+|------|--------|
+| `public/tagline-video.mp4` | **CREATE** - Copy uploaded video |
+| `src/components/sections/TaglineVideoSection.tsx` | **CREATE** - New video section component |
+| `src/pages/Index.tsx` | **MODIFY** - Add import and place component |
+
+---
+
+## Technical Details
+
+### TaglineVideoSection Component
+
+```tsx
+const TaglineVideoSection = () => {
+  return (
+    <section className="py-12 sm:py-16 md:py-20 bg-[#081129]">
+      <div className="container mx-auto px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              preload="auto"
+              className="absolute inset-0 w-full h-full object-cover"
+              src="/tagline-video.mp4"
+              aria-label="Your health. Your choice. One trusted platform."
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+```
+
+**Key features:**
+- Responsive container with max-width for proper framing
+- Rounded corners and shadow for visual polish
+- Auto-play with muted audio (required for autoplay in browsers)
+- Loops continuously for seamless viewing
+- playsInline for mobile compatibility
+- Accessible aria-label matching the video content
 
