@@ -18,6 +18,7 @@ import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
 import StickyCtaBar from "@/components/common/StickyCtaBar";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
+import TaglineVideoSection from "@/components/sections/TaglineVideoSection";
 
 const Index = () => {
   usePerformanceOptimization();
@@ -113,7 +114,10 @@ const Index = () => {
         {/* 6. Featured Publications */}
         <FeaturedPublications />
         
-        {/* 7. Most Popular Tests from Our Providers */}
+        {/* 7. Tagline Video */}
+        <TaglineVideoSection />
+        
+        {/* 8. Most Popular Tests from Our Providers */}
         <MostPopularTestsSection />
         
         {/* 6. Comprehensive Care Categories */}
