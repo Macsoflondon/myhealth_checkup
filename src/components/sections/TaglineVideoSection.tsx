@@ -10,7 +10,7 @@ const TaglineVideoSection = () => {
               muted 
               playsInline 
               preload="auto"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-contain"
               src="/tagline-video.mp4"
               aria-label="Your health. Your choice. One trusted platform."
             >
