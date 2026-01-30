@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Scale, X } from "lucide-react";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StickyCtaBarProps {
@@ -60,9 +60,7 @@ const StickyCtaBar = ({ showAfter = 600 }: StickyCtaBarProps) => {
               onClick={() => navigate("/compare")}
               className="bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold rounded-lg shadow-md px-4 sm:px-6"
             >
-              <Scale className="w-4 h-4 mr-1.5 sm:mr-2" />
-              <span className="hidden xs:inline">Compare Tests</span>
-              <span className="xs:hidden">Compare</span>
+              Find Your Test
             </Button>
             <Button
               size="sm"

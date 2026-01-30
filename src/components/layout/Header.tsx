@@ -12,8 +12,7 @@ import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
-import myhealthLogo from "@/assets/myhealth-logo-turquoise.png";
-import taglineBanner from "@/assets/tagline-banner-latest.png";
+import myhealthLogo from "@/assets/myhealth-logo.png";
 interface HeaderProps {
   className?: string;
 }
@@ -45,7 +44,7 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-[#22c0d4] shadow-md border-b-2 border-[#e70d69]", className)}>
+      <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md border-b-2 border-[#e70d69]", className)}>
           <div className="container mx-auto px-4">
             {/* Top row: Logo + Navigation controls */}
             <div className="py-2 flex items-center justify-between">
@@ -66,13 +65,13 @@ const Header = ({
               </nav>
             </div>
 
-            {/* Bottom row: Tagline banner - full width, centred */}
+            {/* Bottom row: Tagline - full width, centred */}
             <div className="pb-3 flex justify-center">
-              <img 
-                alt="Your health. Your choice. One trusted platform!" 
-                className="h-12 xs:h-14 w-full max-w-sm object-contain drop-shadow-md" 
-                src={taglineBanner} 
-              />
+              <p className="text-sm xs:text-base font-bold tracking-wide text-center">
+                <span className="text-[#22c0d4]">Your Health.</span>{" "}
+                <span className="text-[#e70d69]">Your Choice.</span>{" "}
+                <span className="text-white">One Trusted Platform!</span>
+              </p>
             </div>
           </div>
           
@@ -86,7 +85,7 @@ const Header = ({
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
-        <div className="bg-[#22c0d4]">
+        <div className="bg-[#081129]">
           <div className="container mx-auto px-4 lg:px-8 xl:px-12">
             <div className="relative flex items-center justify-between py-3 lg:py-4">
               {/* Left: Logo - smaller with hover effect */}
@@ -98,13 +97,13 @@ const Header = ({
                 />
               </Link>
 
-              {/* Center: Tagline banner image */}
+              {/* Center: Tagline text */}
               <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <img 
-                  alt="Your health. Your choice. One trusted platform!" 
-                  className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain cursor-default" 
-                  src={taglineBanner} 
-                />
+                <p className="text-lg lg:text-xl xl:text-2xl font-bold tracking-wide text-center whitespace-nowrap">
+                  <span className="text-[#22c0d4]">Your Health.</span>{" "}
+                  <span className="text-[#e70d69]">Your Choice.</span>{" "}
+                  <span className="text-white">One Trusted Platform!</span>
+                </p>
               </div>
 
               {/* Right: Controls */}
