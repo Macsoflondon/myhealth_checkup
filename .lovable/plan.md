@@ -1,127 +1,91 @@
 
 
-# Cosmetic Changes: Header, Logo, and Sticky CTA Bar
+# Cosmetic Fixes Plan
 
 ## Overview
 
-Making four changes to update the header section styling, logo, tagline colours, and sticky CTA bar button text:
+Four cosmetic fixes to improve button styling and hover states:
 
-1. **Sticky CTA Bar**: Change button text from "Compare" to "Find Your Test"
-2. **Header background**: Change from turquoise (#22c0d4) to dark blue (#081129)
-3. **Logo**: Replace current turquoise logo with dark blue background version
-4. **Tagline colours**: Update "Your Health. Your Choice. One Trusted Platform!" to use:
-   - "Your Health" in turquoise (#22c0d4)
-   - "Your Choice" in pink (#e70d69)
-   - "One Trusted Platform" in white (#ffffff)
+1. **Sticky CTA Bar "Compare" button** - Show text "Compare" (currently "Find Your Test" was set but user wants "Compare")
+2. **Hero "Start Your Search" button** - Turquoise background, turns white on hover
+3. **Sign-in button (User icon)** - Hover should turn white (icon + border), not turquoise
+4. **Language button** - Hover should turn white, not turquoise
 
 ---
 
-## Change 1: Sticky CTA Bar Button Text
+## Issue 1: Sticky CTA Bar - Compare Button
 
 **File:** `src/components/common/StickyCtaBar.tsx`
 
+**Current behaviour:** Button shows "Find Your Test" text.
+
+**Fix:** Change text to "Compare" to match user's request.
+
 | Current | Updated |
 |---------|---------|
-| Scale icon + "Compare Tests" / "Compare" | "Find Your Test" (text only, no icon) |
+| Find Your Test | Compare |
 
-**Lines 62-66:**
 ```tsx
-// Before
-<Scale className="w-4 h-4 mr-1.5 sm:mr-2" />
-<span className="hidden xs:inline">Compare Tests</span>
-<span className="xs:hidden">Compare</span>
-
-// After
+// Before (line 64)
 Find Your Test
-```
-
-Also remove the `Scale` import from line 4.
-
----
-
-## Change 2: Header Background Colour
-
-**File:** `src/components/layout/Header.tsx`
-
-Change the header background from turquoise to dark navy on both mobile and desktop views.
-
-| Location | Current | Updated |
-|----------|---------|---------|
-| Line 48 (mobile) | `bg-[#22c0d4]` | `bg-[#081129]` |
-| Line 89 (desktop) | `bg-[#22c0d4]` | `bg-[#081129]` |
-
----
-
-## Change 3: Replace Logo with Dark Blue Version
-
-**File:** `src/components/layout/Header.tsx`
-
-The user wants the logo with the heart on a dark blue background. Looking at available assets:
-- Current: `myhealth-logo-turquoise.png` (turquoise background)
-- Available: `myhealth-logo.png` (likely dark blue version)
-
-| Line 15 | Current | Updated |
-|---------|---------|---------|
-| Import | `myhealth-logo-turquoise.png` | `myhealth-logo.png` |
-
-```tsx
-// Before
-import myhealthLogo from "@/assets/myhealth-logo-turquoise.png";
 
 // After
-import myhealthLogo from "@/assets/myhealth-logo.png";
+Compare
 ```
 
 ---
 
-## Change 4: Tagline with Coloured Text
+## Issue 2: Hero "Start Your Search" Button
 
-**File:** `src/components/layout/Header.tsx`
+**File:** `src/components/sections/Hero.tsx`
 
-Replace the static tagline banner image with styled text using the brand colours:
-- "Your Health" → Turquoise (#22c0d4)
-- "Your Choice" → Pink (#e70d69)
-- "One Trusted Platform" → White (#ffffff)
-
-### Desktop (Lines 102-108):
+**Current behaviour (Line 144):**
 ```tsx
-// Before (image)
-<img 
-  alt="Your health. Your choice. One trusted platform!" 
-  className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain" 
-  src={taglineBanner} 
-/>
-
-// After (styled text)
-<div className="text-center">
-  <p className="text-lg lg:text-xl xl:text-2xl font-bold tracking-wide">
-    <span className="text-[#22c0d4]">Your Health.</span>{" "}
-    <span className="text-[#e70d69]">Your Choice.</span>{" "}
-    <span className="text-white">One Trusted Platform!</span>
-  </p>
-</div>
+className="... bg-[#22c0d4] hover:bg-white hover:text-[#081129] ..."
 ```
 
-### Mobile (Lines 70-76):
-```tsx
-// Before (image)
-<img 
-  alt="Your health. Your choice. One trusted platform!" 
-  className="h-12 xs:h-14 w-full max-w-sm object-contain" 
-  src={taglineBanner} 
-/>
+This already has turquoise background with white hover. ✅ Already correct.
 
-// After (styled text)
-<div className="text-center">
-  <p className="text-sm xs:text-base font-bold tracking-wide">
-    <span className="text-[#22c0d4]">Your Health.</span>{" "}
-    <span className="text-[#e70d69]">Your Choice.</span>{" "}
-    <span className="text-white">One Trusted Platform!</span>
-  </p>
-</div>
+---
+
+## Issue 3: Sign-in Button (UserMenu) - White Hover
+
+**File:** `src/components/header/UserMenu.tsx`
+
+**Current behaviour:** Pink icon/border that turns turquoise on hover.
+
+```tsx
+className="... text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] ..."
 ```
 
-Remove the `taglineBanner` import from line 16 (no longer needed).
+**Fix:** Change hover to white instead of turquoise.
+
+| Element | Current Hover | Updated Hover |
+|---------|--------------|---------------|
+| Icon colour | `hover:text-[#22c0d4]` | `hover:text-white` |
+| Background | `hover:bg-[#22c0d4]/10` | `hover:bg-white/20` |
+| Border | `hover:border-[#22c0d4]` | `hover:border-white` |
+
+This change applies to **4 button instances** in UserMenu.tsx (lines 33, 60, 77, 104).
+
+---
+
+## Issue 4: Language Button - White Hover
+
+**File:** `src/components/header/LanguageSwitcher.tsx`
+
+**Current behaviour (Line 63):**
+```tsx
+className="... text-[#e70d69] hover:text-[#22c0d4] hover:bg-[#22c0d4]/10 border-2 border-[#e70d69]/60 hover:border-[#22c0d4] ..."
+```
+
+**Fix:** Same as UserMenu - change hover to white instead of turquoise.
+
+| Element | Current Hover | Updated Hover |
+|---------|--------------|---------------|
+| Icon colour | `hover:text-[#22c0d4]` | `hover:text-white` |
+| Background | `hover:bg-[#22c0d4]/10` | `hover:bg-white/20` |
+| Border | `hover:border-[#22c0d4]` | `hover:border-white` |
 
 ---
 
@@ -129,39 +93,33 @@ Remove the `taglineBanner` import from line 16 (no longer needed).
 
 | File | Changes |
 |------|---------|
-| `src/components/common/StickyCtaBar.tsx` | Change button text to "Find Your Test", remove Scale icon |
-| `src/components/layout/Header.tsx` | Change bg to dark blue, swap logo, replace tagline image with coloured text |
+| `src/components/common/StickyCtaBar.tsx` | Change button text to "Compare" |
+| `src/components/header/UserMenu.tsx` | Update 4 button hover states to white |
+| `src/components/header/LanguageSwitcher.tsx` | Update button hover state to white |
 
 ---
 
-## Visual Summary
+## Summary of Hover State Changes
 
-### Header Before:
+### Header Buttons (UserMenu + LanguageSwitcher)
+
 ```text
-┌────────────────────────────────────────────┐
-│  [Turquoise Background]                    │
-│  [Logo]     [Tagline Image]    [Controls]  │
-└────────────────────────────────────────────┘
+Default State:
+┌─────────────┐
+│  Pink icon  │  Pink border (#e70d69)
+└─────────────┘
+
+Hover State (NEW):
+┌─────────────┐
+│ White icon  │  White border + subtle white bg
+└─────────────┘
 ```
 
-### Header After:
+### Sticky CTA Bar Compare Button
+
 ```text
-┌────────────────────────────────────────────┐
-│  [Dark Blue Background]                    │
-│  [Dark Logo]  Your Health. Your Choice.    │
-│               One Trusted Platform!        │
-│                     [Controls]             │
-└────────────────────────────────────────────┘
-
-Tagline colours:
-- "Your Health." = Turquoise
-- "Your Choice." = Pink
-- "One Trusted Platform!" = White
+Current:              Updated:
+┌─────────────────┐   ┌───────────┐
+│ Find Your Test  │ → │  Compare  │
+└─────────────────┘   └───────────┘
 ```
-
-### Sticky CTA Bar:
-```text
-Before: [⚖️ Compare]
-After:  [Find Your Test]
-```
-
