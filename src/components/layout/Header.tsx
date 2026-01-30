@@ -12,7 +12,7 @@ import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
-import myhealthLogo from "@/assets/myhealth-logo.png";
+import myhealthLogo from "@/assets/logo-text-only.png";
 interface HeaderProps {
   className?: string;
 }
@@ -81,7 +81,7 @@ const Header = ({
       </ErrorBoundary>;
   }
   // Toolbar always sticky
-  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-1 border-y-2 border-[#e70d69] shadow-sm", styles.toolbar);
+  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-2 border-y-2 border-[#e70d69] shadow-sm", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
