@@ -52,7 +52,7 @@ const Header = ({
               <Link to="/" className="flex items-center flex-shrink-0">
                 <img 
                   alt="myhealth checkup" 
-                  className="h-16 xs:h-20 w-auto object-contain drop-shadow-lg" 
+                  className="h-32 xs:h-40 w-auto object-contain drop-shadow-lg" 
                   src={myhealthLogo} 
                 />
               </Link>
@@ -92,7 +92,7 @@ const Header = ({
               <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
                 <img 
                   alt="myhealth checkup" 
-                  className="h-16 lg:h-20 xl:h-24 w-auto object-contain" 
+                  className="h-32 lg:h-40 xl:h-48 w-auto object-contain" 
                   src={myhealthLogo} 
                 />
               </Link>
