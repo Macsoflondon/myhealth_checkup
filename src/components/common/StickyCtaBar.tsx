@@ -60,7 +60,7 @@ const StickyCtaBar = ({ showAfter = 600 }: StickyCtaBarProps) => {
               onClick={() => navigate("/compare")}
               className="bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold rounded-lg shadow-md px-4 sm:px-6"
             >
-              Find Your Test
+              Compare
             </Button>
             <Button
               size="sm"
