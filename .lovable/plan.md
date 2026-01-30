@@ -1,125 +1,167 @@
 
 
-# Redesign TaglineVideoSection with Dual Video Layout
+# Cosmetic Changes: Header, Logo, and Sticky CTA Bar
 
 ## Overview
 
-Redesigning the TaglineVideoSection to feature two side-by-side video cards - one for the current "Your health. Your choice." tagline video, and one for a future Medichecks provider video. The design will be fully responsive across all devices and visually polished to match the platform's design system.
+Making four changes to update the header section styling, logo, tagline colours, and sticky CTA bar button text:
 
-## Design Approach
-
-### Layout Structure
-- **Desktop (lg+)**: Two videos side-by-side in a 50/50 grid
-- **Tablet (md)**: Two videos side-by-side, slightly smaller
-- **Mobile (sm and below)**: Videos stack vertically, full width
-
-### Visual Design
-- Dark navy background (#081129) with subtle gradient overlay
-- White/light card containers for each video with rounded corners and shadows
-- Optional labels below each video (e.g., "myhealth checkup" and "Medichecks")
-- Consistent padding matching other sections (py-12 sm:py-16 md:py-20)
-- Hover effects on video cards for interactivity
-
-### Video Behaviour
-- Auto-play, muted, looping (standard for promotional content)
-- `playsInline` for mobile compatibility
-- `object-contain` to show full video without cropping
-- Fallback text for unsupported browsers
+1. **Sticky CTA Bar**: Change button text from "Compare" to "Find Your Test"
+2. **Header background**: Change from turquoise (#22c0d4) to dark blue (#081129)
+3. **Logo**: Replace current turquoise logo with dark blue background version
+4. **Tagline colours**: Update "Your Health. Your Choice. One Trusted Platform!" to use:
+   - "Your Health" in turquoise (#22c0d4)
+   - "Your Choice" in pink (#e70d69)
+   - "One Trusted Platform" in white (#ffffff)
 
 ---
 
-## Technical Implementation
+## Change 1: Sticky CTA Bar Button Text
 
-### File Changes
+**File:** `src/components/common/StickyCtaBar.tsx`
 
-| File | Action |
-|------|--------|
-| `src/components/sections/TaglineVideoSection.tsx` | **MODIFY** - Complete redesign with dual video layout |
+| Current | Updated |
+|---------|---------|
+| Scale icon + "Compare Tests" / "Compare" | "Find Your Test" (text only, no icon) |
 
-### Component Structure
+**Lines 62-66:**
+```tsx
+// Before
+<Scale className="w-4 h-4 mr-1.5 sm:mr-2" />
+<span className="hidden xs:inline">Compare Tests</span>
+<span className="xs:hidden">Compare</span>
 
-```
-TaglineVideoSection
-├── Section wrapper (navy background with gradient)
-├── Container with max-width
-├── Optional section heading
-└── Video grid (2 columns on desktop, 1 on mobile)
-    ├── Video Card 1: myhealth checkup tagline
-    │   ├── Video container with rounded corners
-    │   ├── Video element (tagline-video.mp4)
-    │   └── Label: "myhealth checkup"
-    └── Video Card 2: Medichecks (placeholder for now)
-        ├── Video container with rounded corners
-        ├── Video element (placeholder or same video)
-        └── Label: "Medichecks"
+// After
+Find Your Test
 ```
 
-### Key Styling
-
-| Element | Desktop | Tablet | Mobile |
-|---------|---------|--------|--------|
-| Grid | `grid-cols-2` | `grid-cols-2` | `grid-cols-1` |
-| Gap | `gap-8` | `gap-6` | `gap-6` |
-| Video aspect | 16:9 | 16:9 | 16:9 |
-| Card padding | `p-4` | `p-3` | `p-3` |
-| Card background | White with shadow | White with shadow | White with shadow |
-
-### Placeholder Approach
-
-Since the Medichecks video is not yet uploaded, the second video card will:
-1. Display a placeholder state with the Medichecks logo or a "Coming Soon" message
-2. OR temporarily use the same tagline video as a visual placeholder
-3. Be easily updatable when the Medichecks video is provided
+Also remove the `Scale` import from line 4.
 
 ---
 
-## Responsive Breakpoints
+## Change 2: Header Background Colour
 
+**File:** `src/components/layout/Header.tsx`
+
+Change the header background from turquoise to dark navy on both mobile and desktop views.
+
+| Location | Current | Updated |
+|----------|---------|---------|
+| Line 48 (mobile) | `bg-[#22c0d4]` | `bg-[#081129]` |
+| Line 89 (desktop) | `bg-[#22c0d4]` | `bg-[#081129]` |
+
+---
+
+## Change 3: Replace Logo with Dark Blue Version
+
+**File:** `src/components/layout/Header.tsx`
+
+The user wants the logo with the heart on a dark blue background. Looking at available assets:
+- Current: `myhealth-logo-turquoise.png` (turquoise background)
+- Available: `myhealth-logo.png` (likely dark blue version)
+
+| Line 15 | Current | Updated |
+|---------|---------|---------|
+| Import | `myhealth-logo-turquoise.png` | `myhealth-logo.png` |
+
+```tsx
+// Before
+import myhealthLogo from "@/assets/myhealth-logo-turquoise.png";
+
+// After
+import myhealthLogo from "@/assets/myhealth-logo.png";
+```
+
+---
+
+## Change 4: Tagline with Coloured Text
+
+**File:** `src/components/layout/Header.tsx`
+
+Replace the static tagline banner image with styled text using the brand colours:
+- "Your Health" → Turquoise (#22c0d4)
+- "Your Choice" → Pink (#e70d69)
+- "One Trusted Platform" → White (#ffffff)
+
+### Desktop (Lines 102-108):
+```tsx
+// Before (image)
+<img 
+  alt="Your health. Your choice. One trusted platform!" 
+  className="h-80 lg:h-96 xl:h-[28rem] w-auto object-contain" 
+  src={taglineBanner} 
+/>
+
+// After (styled text)
+<div className="text-center">
+  <p className="text-lg lg:text-xl xl:text-2xl font-bold tracking-wide">
+    <span className="text-[#22c0d4]">Your Health.</span>{" "}
+    <span className="text-[#e70d69]">Your Choice.</span>{" "}
+    <span className="text-white">One Trusted Platform!</span>
+  </p>
+</div>
+```
+
+### Mobile (Lines 70-76):
+```tsx
+// Before (image)
+<img 
+  alt="Your health. Your choice. One trusted platform!" 
+  className="h-12 xs:h-14 w-full max-w-sm object-contain" 
+  src={taglineBanner} 
+/>
+
+// After (styled text)
+<div className="text-center">
+  <p className="text-sm xs:text-base font-bold tracking-wide">
+    <span className="text-[#22c0d4]">Your Health.</span>{" "}
+    <span className="text-[#e70d69]">Your Choice.</span>{" "}
+    <span className="text-white">One Trusted Platform!</span>
+  </p>
+</div>
+```
+
+Remove the `taglineBanner` import from line 16 (no longer needed).
+
+---
+
+## Files to Modify
+
+| File | Changes |
+|------|---------|
+| `src/components/common/StickyCtaBar.tsx` | Change button text to "Find Your Test", remove Scale icon |
+| `src/components/layout/Header.tsx` | Change bg to dark blue, swap logo, replace tagline image with coloured text |
+
+---
+
+## Visual Summary
+
+### Header Before:
 ```text
-Mobile (< 640px)
-┌─────────────────────────┐
-│   ┌─────────────────┐   │
-│   │  Video 1        │   │
-│   │  (tagline)      │   │
-│   └─────────────────┘   │
-│   myhealth checkup      │
-│                         │
-│   ┌─────────────────┐   │
-│   │  Video 2        │   │
-│   │  (Medichecks)   │   │
-│   └─────────────────┘   │
-│   Medichecks            │
-└─────────────────────────┘
-
-Tablet/Desktop (≥ 768px)
-┌─────────────────────────────────────────────┐
-│   ┌──────────────────┐  ┌──────────────────┐│
-│   │  Video 1         │  │  Video 2         ││
-│   │  (tagline)       │  │  (Medichecks)    ││
-│   └──────────────────┘  └──────────────────┘│
-│   myhealth checkup         Medichecks       │
-└─────────────────────────────────────────────┘
+┌────────────────────────────────────────────┐
+│  [Turquoise Background]                    │
+│  [Logo]     [Tagline Image]    [Controls]  │
+└────────────────────────────────────────────┘
 ```
 
----
+### Header After:
+```text
+┌────────────────────────────────────────────┐
+│  [Dark Blue Background]                    │
+│  [Dark Logo]  Your Health. Your Choice.    │
+│               One Trusted Platform!        │
+│                     [Controls]             │
+└────────────────────────────────────────────┘
 
-## Brand Alignment
+Tagline colours:
+- "Your Health." = Turquoise
+- "Your Choice." = Pink
+- "One Trusted Platform!" = White
+```
 
-- Background: Navy #081129
-- Card backgrounds: White #ffffff
-- Labels: Turquoise #22c0d4 or Navy #081129
-- Hover accents: Pink #e70d69
-- Shadows: Subtle elevation for depth
-- Border radius: `rounded-2xl` (16px) matching Material Design 3 system
-
----
-
-## Outcome
-
-A polished, responsive dual-video section that:
-1. Displays the current tagline video on the left
-2. Provides a placeholder/ready slot for Medichecks video on the right
-3. Scales beautifully across mobile, tablet, and desktop
-4. Matches the platform's design language and brand colours
-5. Is easily updatable when the second video is uploaded
+### Sticky CTA Bar:
+```text
+Before: [⚖️ Compare]
+After:  [Find Your Test]
+```
 
