@@ -18,6 +18,7 @@ import HereToHelp from "@/components/sections/HereToHelp";
 import FinalCTA from "@/components/sections/FinalCTA";
 import StickyCtaBar from "@/components/common/StickyCtaBar";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
+import BrandVideoSection from "@/components/sections/BrandVideoSection";
 import TaglineVideoSection from "@/components/sections/TaglineVideoSection";
 
 const Index = () => {
@@ -113,7 +114,10 @@ const Index = () => {
         {/* 6. Featured Publications */}
         <FeaturedPublications />
         
-        {/* 7. Tagline Video */}
+        {/* 7. Brand Tagline Video */}
+        <BrandVideoSection />
+        
+        {/* 8. See How It Works */}
         <TaglineVideoSection />
         
         {/* 8. Most Popular Tests from Our Providers */}
