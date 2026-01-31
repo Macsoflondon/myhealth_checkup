@@ -1314,7 +1314,7 @@ export type Database = {
           account_status: string | null
           address_line1: string | null
           address_line2: string | null
-          allergies: string[] | null
+          allergies: string | null
           city: string | null
           country: string | null
           created_at: string
@@ -1323,12 +1323,12 @@ export type Database = {
           emergency_contact_phone: string | null
           first_name: string | null
           gender: string | null
-          health_conditions: string[] | null
+          health_conditions: string | null
           id: string
           last_login: string | null
           last_name: string | null
           lifestyle_factors: Json | null
-          medications: string[] | null
+          medications: string | null
           nhs_number: string | null
           phone_number: string | null
           postal_code: string | null
@@ -1339,7 +1339,7 @@ export type Database = {
           account_status?: string | null
           address_line1?: string | null
           address_line2?: string | null
-          allergies?: string[] | null
+          allergies?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -1348,12 +1348,12 @@ export type Database = {
           emergency_contact_phone?: string | null
           first_name?: string | null
           gender?: string | null
-          health_conditions?: string[] | null
+          health_conditions?: string | null
           id?: string
           last_login?: string | null
           last_name?: string | null
           lifestyle_factors?: Json | null
-          medications?: string[] | null
+          medications?: string | null
           nhs_number?: string | null
           phone_number?: string | null
           postal_code?: string | null
@@ -1364,7 +1364,7 @@ export type Database = {
           account_status?: string | null
           address_line1?: string | null
           address_line2?: string | null
-          allergies?: string[] | null
+          allergies?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -1373,12 +1373,12 @@ export type Database = {
           emergency_contact_phone?: string | null
           first_name?: string | null
           gender?: string | null
-          health_conditions?: string[] | null
+          health_conditions?: string | null
           id?: string
           last_login?: string | null
           last_name?: string | null
           lifestyle_factors?: Json | null
-          medications?: string[] | null
+          medications?: string | null
           nhs_number?: string | null
           phone_number?: string | null
           postal_code?: string | null
