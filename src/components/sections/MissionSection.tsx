@@ -17,7 +17,20 @@ const MissionSection = () => {
   ];
 
   return (
-    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
+    <section className="pt-0 pb-8 sm:pb-10 md:pb-12 lg:pb-14 bg-white">
+      {/* Navy banner heading */}
+      <div className="bg-brand-navy py-5 sm:py-6 md:py-8 mb-8 sm:mb-10 md:mb-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-center text-lg sm:text-xl md:text-2xl lg:text-3xl font-heading font-bold">
+            <span className="text-white">Your </span>
+            <span className="text-brand-turquoise">health</span>
+            <span className="text-white"> is your greatest </span>
+            <span className="text-brand-pink">asset</span>
+            <span className="text-white">!</span>
+          </h2>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
@@ -25,11 +38,11 @@ const MissionSection = () => {
             <div className="lg:col-span-3">
               <div className="flex items-start gap-4">
                 {/* Turquoise accent bar */}
-                <div className="hidden sm:block w-1 bg-[#22c0d4] self-stretch min-h-[80px] rounded-full" />
+                <div className="hidden sm:block w-1 bg-brand-turquoise self-stretch min-h-[80px] rounded-full" />
                 
                 <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
                   <p>
-                    At myhealth <span className="text-[#22c0d4] font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+                    At myhealth <span className="text-brand-turquoise font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
                   </p>
                   <p>
                     Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
