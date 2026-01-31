@@ -9,7 +9,6 @@ import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
 import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
-import { ProviderTableView } from "@/components/compare/ProviderTableView";
 import { TestViewToggle, type TestViewMode } from "@/components/compare/TestViewToggle";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
@@ -319,27 +318,6 @@ const CompareTests = () => {
                       category: t.category,
                     }))}
                     title="Tests by Type"
-                  />
-                ) : viewMode === "table" ? (
-                  /* Table View - All providers side by side */
-                  <ProviderTableView
-                    tests={tests.map(t => ({
-                      id: t.id,
-                      testName: t.name,
-                      provider: t.provider,
-                      price: t.price,
-                      originalPrice: undefined,
-                      turnaroundDays: t.turnaroundDays,
-                      biomarkerCount: t.biomarkerCount,
-                      sampleType: t.features?.collection,
-                      homeKitAvailable: t.features?.collection?.toLowerCase().includes("home") || false,
-                      clinicVisitAvailable: t.features?.collection?.toLowerCase().includes("clinic") || false,
-                      gpReviewIncluded: false,
-                      url: t.url,
-                      description: t.description,
-                      category: t.category,
-                    }))}
-                    title="Compare All Providers"
                   />
                 ) : (
                   /* List View - Original card layout */

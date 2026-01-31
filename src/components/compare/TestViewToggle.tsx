@@ -1,9 +1,9 @@
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { List, Layers, Table2 } from "lucide-react";
+import { List, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type TestViewMode = "list" | "grouped" | "table";
+export type TestViewMode = "list" | "grouped";
 
 interface TestViewToggleProps {
   value: TestViewMode;
@@ -38,14 +38,6 @@ export const TestViewToggle: React.FC<TestViewToggleProps> = ({
       >
         <Layers className="h-4 w-4" />
         <span className="hidden sm:inline text-sm">Grouped</span>
-      </ToggleGroupItem>
-      <ToggleGroupItem 
-        value="table" 
-        aria-label="Table view"
-        className="data-[state=on]:bg-background data-[state=on]:shadow-sm gap-1.5 px-3"
-      >
-        <Table2 className="h-4 w-4" />
-        <span className="hidden sm:inline text-sm">Table</span>
       </ToggleGroupItem>
     </ToggleGroup>
   );

@@ -5,7 +5,7 @@ import MainLayout from "@/layouts/MainLayout";
 import UKASBanner from "@/components/UKASBanner";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import HeroSection from "@/components/sections/HeroSection";
-import { ProviderTableView } from "@/components/compare/ProviderTableView";
+import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -263,7 +263,7 @@ const CategoryLandingPage: React.FC = () => {
               </div>
             ) : providerTests.length > 0 ? (
               <section className="mb-12">
-                <ProviderTableView
+                <GroupedTestsTable
                   tests={providerTests}
                   title={`Compare ${content.name} from UK Providers`}
                 />

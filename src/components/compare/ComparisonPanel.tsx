@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { CompareTestData } from "@/services/CompareService";
-import { RecommendationEngine } from "./RecommendationEngine";
 import {
   Dialog,
   DialogContent,
@@ -9,23 +8,17 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { 
   X, 
-  CheckCircle2, 
-  XCircle, 
-  Clock, 
-  PoundSterling,
-  Beaker,
-  TrendingUp,
+  Check,
+  Heart,
   ExternalLink,
-  Sparkles,
-  GripVertical
+  RefreshCw
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useDraggable } from "@/hooks";
 
 interface ComparisonPanelProps {
   tests: CompareTestData[];
@@ -40,268 +33,245 @@ export const ComparisonPanel = ({
   onClose,
   onRemoveTest
 }: ComparisonPanelProps) => {
-  const [highlightedTestId, setHighlightedTestId] = useState<string | null>(null);
-  const [orderedTests, setOrderedTests] = useState(tests);
+  const [liveUpdates, setLiveUpdates] = useState(false);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
-  React.useEffect(() => {
-    setOrderedTests(tests);
-  }, [tests]);
-
-  const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
-    items: orderedTests,
-    onReorder: setOrderedTests,
-    getId: (test) => test.id,
-  });
+  const toggleFavorite = (testId: string) => {
+    setFavorites(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(testId)) {
+        newSet.delete(testId);
+      } else {
+        newSet.add(testId);
+      }
+      return newSet;
+    });
+  };
   
   if (tests.length === 0) return null;
 
-  const comparisonFeatures = [
+  // Helper to get service location text
+  const getServiceLocation = (test: CompareTestData) => {
+    const collection = test.features?.collection?.toLowerCase() || "";
+    if (collection.includes("home") && collection.includes("clinic")) {
+      return "Home kit or clinic";
+    }
+    if (collection.includes("home")) {
+      return "Home kit";
+    }
+    if (collection.includes("clinic")) {
+      return "Clinic only";
+    }
+    return "Home kit or clinic";
+  };
+
+  // Helper to get biomarker count text
+  const getBiomarkerText = (test: CompareTestData) => {
+    if (test.biomarkerCount) {
+      return `${test.biomarkerCount}+ markers`;
+    }
+    return "Multiple markers";
+  };
+
+  // Helper to get turnaround time text
+  const getTurnaroundText = (test: CompareTestData) => {
+    if (test.turnaroundDays) {
+      if (test.turnaroundDays === 1) return "1-2 days";
+      if (test.turnaroundDays <= 3) return `${test.turnaroundDays}-${test.turnaroundDays + 1} days`;
+      return `${test.turnaroundDays}-${test.turnaroundDays + 2} days`;
+    }
+    return test.features?.turnaround || "2-5 days";
+  };
+
+  // Row labels matching reference image
+  const rows = [
     { 
-      key: 'price', 
-      label: 'Price', 
-      icon: PoundSterling,
-      render: (test: CompareTestData) => `£${test.price.toFixed(2)}`
+      key: "biomarkers", 
+      label: "Bio Markers",
+      render: (test: CompareTestData) => getBiomarkerText(test)
     },
     { 
-      key: 'provider', 
-      label: 'Provider', 
-      icon: TrendingUp,
-      render: (test: CompareTestData) => test.provider
+      key: "turnaround", 
+      label: "Turnaround Time",
+      render: (test: CompareTestData) => getTurnaroundText(test)
     },
     { 
-      key: 'turnaround', 
-      label: 'Turnaround Time', 
-      icon: Clock,
-      render: (test: CompareTestData) => test.features.turnaround
+      key: "location", 
+      label: "Service Location",
+      render: (test: CompareTestData) => getServiceLocation(test)
     },
     { 
-      key: 'collection', 
-      label: 'Sample Collection', 
-      icon: Beaker,
-      render: (test: CompareTestData) => test.features.collection
+      key: "doctorReview", 
+      label: "Doctor Review",
+      render: (test: CompareTestData) => (
+        <Check className="h-5 w-5 text-green-500 mx-auto" />
+      )
     },
     { 
-      key: 'bioMarkers', 
-      label: 'Key Biomarkers', 
-      icon: Beaker,
-      render: (test: CompareTestData) => test.features.bioMarkers || 'See full description'
+      key: "detailedReport", 
+      label: "Detailed report",
+      render: (test: CompareTestData) => (
+        <Check className="h-5 w-5 text-green-500 mx-auto" />
+      )
     },
   ];
 
-  // Find best value (lowest price)
-  const lowestPrice = Math.min(...tests.map(t => t.price));
-  
-  // Find fastest turnaround
-  const turnaroundValues = tests.map(t => {
-    const turnaround = t.features.turnaround.toLowerCase();
-    if (turnaround.includes('same day') || turnaround.includes('24h')) return 1;
-    if (turnaround.includes('48') || turnaround.includes('2 day')) return 2;
-    if (turnaround.includes('3') || turnaround.includes('5 day')) return 5;
-    if (turnaround.includes('week')) return 7;
-    return 14;
-  });
-  const fastestTurnaround = Math.min(...turnaroundValues);
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl h-[90vh] p-0 bg-background">
+      <DialogContent className="max-w-7xl max-h-[90vh] p-0 bg-background">
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border">
-          <div className="flex items-start justify-between">
+          <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-2xl font-bold">
-                Test Comparison
+              <DialogTitle className="text-xl font-bold">
+                {tests.length} results found
               </DialogTitle>
-              <DialogDescription className="mt-1">
+              <DialogDescription className="sr-only">
                 Compare {tests.length} selected tests side-by-side
               </DialogDescription>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={onClose}
-              className="h-8 w-8 rounded-full"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <RefreshCw className={cn(
+                  "h-4 w-4 text-muted-foreground",
+                  liveUpdates && "animate-spin"
+                )} />
+                <span className="text-sm text-muted-foreground">Live Updates {liveUpdates ? "On" : "Off"}</span>
+                <Switch
+                  id="live-updates"
+                  checked={liveUpdates}
+                  onCheckedChange={setLiveUpdates}
+                />
+              </div>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={onClose}
+                className="h-8 w-8 rounded-full"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 px-6 py-4">
-          <Tabs defaultValue="comparison" className="w-full">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
-              <TabsTrigger value="comparison" className="gap-2">
-                <TrendingUp className="h-4 w-4" />
-                Side-by-Side
-              </TabsTrigger>
-              <TabsTrigger value="recommendation" className="gap-2">
-                <Sparkles className="h-4 w-4" />
-                AI Recommendation
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="comparison" className="space-y-6">
-              {/* Test Headers */}
-              <div className="grid gap-4" style={{ gridTemplateColumns: `200px repeat(${orderedTests.length}, minmax(250px, 1fr))` }}>
-                <div className="font-semibold text-muted-foreground sticky left-0 bg-background z-10">
-                  Test Details
-                </div>
-                {orderedTests.map((test, index) => (
-                  <div 
-                    key={test.id}
-                    draggable
-                    data-index={index}
-                    onDragStart={(e) => onDragStart(e, { id: test.id, index })}
-                    onDragEnd={onDragEnd}
-                    onDragOver={onDragOver}
-                    onDrop={(e) => onDrop(e, index)}
-                    className={cn(
-                      "draggable-element relative bg-card rounded-lg border border-border p-4 shadow-sm transition-all",
-                      highlightedTestId === test.id && "ring-2 ring-green-500 shadow-lg",
-                      draggedOverIndex === index && "drag-over"
-                    )}
-                  >
-                  <GripVertical className="drag-handle absolute top-2 left-2 h-4 w-4" />
-                  
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onRemoveTest(test.id)}
-                    className="absolute top-2 right-2 h-6 w-6 rounded-full hover:bg-destructive/10 hover:text-destructive"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                  
-                  <div className="mb-2 ml-6">
-                    <img 
-                      src={test.providerLogo} 
-                      alt={test.provider}
-                      className="h-8 object-contain mb-2"
-                    />
-                  </div>
-                  
-                  <h3 className="font-semibold text-sm mb-2 pr-6 ml-6 line-clamp-2">
-                    {test.name}
-                  </h3>
-                  
-                  <Badge 
-                    variant="secondary" 
-                    className="text-xs ml-6"
-                  >
-                    {test.category}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-
-            {/* Comparison Rows */}
-            <div className="space-y-0 border border-border rounded-lg overflow-hidden">
-              {comparisonFeatures.map((feature, idx) => (
-                <div 
-                  key={feature.key}
-                  className={cn(
-                    "grid gap-4 py-3 px-4",
-                    idx % 2 === 0 ? "bg-muted/30" : "bg-background"
-                  )}
-                  style={{ gridTemplateColumns: `200px repeat(${orderedTests.length}, minmax(250px, 1fr))` }}
-                >
-                  <div className="flex items-center gap-2 font-medium text-sm sticky left-0 z-10" style={{ backgroundColor: idx % 2 === 0 ? 'hsl(var(--muted) / 0.3)' : 'hsl(var(--background))' }}>
-                    <feature.icon className="h-4 w-4 text-muted-foreground" />
-                    <span>{feature.label}</span>
-                  </div>
-                  
-                  {orderedTests.map((test, testIdx) => {
-                    const value = feature.render(test);
-                    const isBestPrice = feature.key === 'price' && test.price === lowestPrice;
-                    const isFastestTurnaround = feature.key === 'turnaround' && 
-                      turnaroundValues[testIdx] === fastestTurnaround;
-                    
-                    return (
-                      <div 
-                        key={test.id}
-                        className={cn(
-                          "flex items-center gap-2 text-sm px-4 py-2 rounded",
-                          isBestPrice && "bg-green-50 dark:bg-green-950/30 font-semibold",
-                          isFastestTurnaround && "bg-blue-50 dark:bg-blue-950/30 font-semibold"
-                        )}
-                      >
-                        {isBestPrice && (
-                          <Badge variant="default" className="bg-green-600 text-xs h-5">
-                            Best Price
-                          </Badge>
-                        )}
-                        {isFastestTurnaround && !isBestPrice && (
-                          <Badge variant="default" className="bg-blue-600 text-xs h-5">
-                            Fastest
-                          </Badge>
-                        )}
-                        <span className={cn(
-                          feature.key === 'bioMarkers' && "line-clamp-3",
-                          isBestPrice || isFastestTurnaround ? "font-semibold" : ""
-                        )}>
-                          {value}
+        <ScrollArea className="flex-1">
+          <div className="min-w-[800px]">
+            {/* Table */}
+            <table className="w-full border-collapse">
+              <thead>
+                {/* Test/Service Header Row */}
+                <tr className="border-b border-border">
+                  <th className="py-4 px-4 text-left text-sm font-medium text-muted-foreground w-[160px] bg-background sticky left-0 z-10">
+                    Test / Service
+                  </th>
+                  {tests.map((test) => (
+                    <th key={test.id} className="py-4 px-4 text-center min-w-[180px]">
+                      <div className="flex flex-col items-center gap-2">
+                        {/* Provider Logo / Test Image */}
+                        <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
+                          {test.providerLogo ? (
+                            <img 
+                              src={test.providerLogo} 
+                              alt={test.provider}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40" />
+                          )}
+                        </div>
+                        {/* Test Name */}
+                        <span className="font-semibold text-sm text-foreground line-clamp-2">
+                          {test.name}
+                        </span>
+                        {/* Price */}
+                        <span className="font-bold text-primary text-lg">
+                          £{test.price.toFixed(2)}
                         </span>
                       </div>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-
-            {/* Descriptions */}
-            <div className="space-y-4 mt-6">
-              <h3 className="font-semibold text-lg flex items-center gap-2">
-                <Beaker className="h-5 w-5 text-primary" />
-                Full Descriptions
-              </h3>
-              
-              <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${orderedTests.length}, minmax(300px, 1fr))` }}>
-                {orderedTests.map((test) => (
-                  <div 
-                    key={test.id}
-                    className="bg-card rounded-lg border border-border p-4 space-y-3"
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, idx) => (
+                  <tr 
+                    key={row.key}
+                    className={cn(
+                      "border-b border-border",
+                      idx % 2 === 0 ? "bg-muted/20" : "bg-background"
+                    )}
                   >
-                    <div>
-                      <h4 className="font-semibold text-sm mb-1">{test.name}</h4>
-                      <p className="text-xs text-muted-foreground line-clamp-4">
-                        {test.description || 'No detailed description available.'}
-                      </p>
-                    </div>
-                    
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="w-full gap-2"
-                      asChild
-                    >
-                      <a href={`#`} target="_blank" rel="noopener noreferrer">
-                        View Full Details
-                      </a>
-                    </Button>
-                  </div>
+                    <td className={cn(
+                      "py-4 px-4 text-sm font-medium text-foreground sticky left-0 z-10",
+                      idx % 2 === 0 ? "bg-muted/20" : "bg-background"
+                    )}>
+                      {row.label}
+                    </td>
+                    {tests.map((test) => (
+                      <td key={test.id} className="py-4 px-4 text-center text-sm text-foreground">
+                        {row.render(test)}
+                      </td>
+                    ))}
+                  </tr>
                 ))}
-              </div>
-            </div>
-          </TabsContent>
 
-          <TabsContent value="recommendation" className="space-y-6">
-            <RecommendationEngine 
-              tests={orderedTests}
-              onRecommendationGenerated={setHighlightedTestId}
-            />
-          </TabsContent>
-        </Tabs>
+                {/* Save Row */}
+                <tr className="border-b border-border">
+                  <td className="py-4 px-4 text-sm font-medium text-foreground bg-background sticky left-0 z-10">
+                    Save
+                  </td>
+                  {tests.map((test) => (
+                    <td key={test.id} className="py-4 px-4 text-center">
+                      <button 
+                        onClick={() => toggleFavorite(test.id)}
+                        className="mx-auto block"
+                      >
+                        <Heart 
+                          className={cn(
+                            "h-5 w-5 transition-colors",
+                            favorites.has(test.id) 
+                              ? "text-red-500 fill-red-500" 
+                              : "text-muted-foreground hover:text-red-500"
+                          )} 
+                        />
+                      </button>
+                    </td>
+                  ))}
+                </tr>
+
+                {/* Order Row */}
+                <tr>
+                  <td className="py-6 px-4 text-sm font-medium text-foreground bg-background sticky left-0 z-10">
+                    Order
+                  </td>
+                  {tests.map((test) => (
+                    <td key={test.id} className="py-6 px-4 text-center">
+                      <Button
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
+                        asChild
+                      >
+                        <a 
+                          href={test.url || "#"} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                        >
+                          Order Now
+                        </a>
+                      </Button>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ScrollBar orientation="horizontal" />
         </ScrollArea>
 
-        {/* Footer Actions */}
-        <div className="border-t border-border px-6 py-4 flex items-center justify-between bg-muted/30">
-          <div className="text-sm text-muted-foreground">
-            Comparing {orderedTests.length} {orderedTests.length === 1 ? 'test' : 'tests'}
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose}>
-              Close Comparison
-            </Button>
-          </div>
+        {/* Footer */}
+        <div className="border-t border-border px-6 py-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            Compare health services across leading providers
+          </p>
         </div>
       </DialogContent>
     </Dialog>
