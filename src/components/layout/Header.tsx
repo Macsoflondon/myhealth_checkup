@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
+import { AnimatedLogo } from "../header/AnimatedLogo";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
@@ -12,7 +13,7 @@ import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import styles from "./Header.module.css";
-import myhealthLogo from "@/assets/logo-text-only.png";
+
 interface HeaderProps {
   className?: string;
 }
@@ -50,11 +51,7 @@ const Header = ({
             <div className="py-2 flex items-center justify-between">
               {/* Logo - larger for emphasis */}
               <Link to="/" className="flex items-center flex-shrink-0">
-                <img 
-                  alt="myhealth checkup" 
-                  className="h-32 xs:h-40 w-auto object-contain drop-shadow-lg" 
-                  src={myhealthLogo} 
-                />
+                <AnimatedLogo className="h-32 xs:h-40" />
               </Link>
 
               {/* Navigation controls */}
@@ -90,11 +87,7 @@ const Header = ({
             <div className="relative flex items-center justify-between py-3 lg:py-4">
               {/* Left: Logo - smaller with hover effect */}
               <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
-                <img 
-                  alt="myhealth checkup" 
-                  className="h-32 lg:h-40 xl:h-48 w-auto object-contain" 
-                  src={myhealthLogo} 
-                />
+                <AnimatedLogo className="h-32 lg:h-40 xl:h-48" />
               </Link>
 
               {/* Center: Tagline text */}
