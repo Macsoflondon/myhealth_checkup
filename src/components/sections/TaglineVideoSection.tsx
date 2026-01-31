@@ -1,4 +1,5 @@
 import { Play } from "lucide-react";
+import taglineVideo from "@/assets/tagline-video.mp4";
 
 interface VideoCardProps {
   videoSrc?: string;
@@ -62,7 +63,7 @@ const TaglineVideoSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Video 1: myhealth checkup tagline */}
             <VideoCard 
-              videoSrc="/tagline-video.mp4"
+              videoSrc={taglineVideo}
               label="myhealth checkup"
             />
             
