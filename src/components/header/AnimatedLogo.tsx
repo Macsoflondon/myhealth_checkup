@@ -35,16 +35,6 @@ export const AnimatedLogo = ({ className, mobileClassName }: AnimatedLogoProps) 
 
   return (
     <div className={cn("relative", className, mobileClassName)}>
-      {/* Glow effect layer - extends beyond logo bounds */}
-      <div
-        className={cn(
-          "absolute -inset-8 rounded-full blur-2xl transition-all duration-1000",
-          currentLogo.glowClass,
-          isTransitioning ? "opacity-0" : "opacity-100"
-        )}
-        aria-hidden="true"
-      />
-      
       {/* Logo image */}
       <img
         src={currentLogo.src}
