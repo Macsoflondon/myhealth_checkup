@@ -1,89 +1,149 @@
 
 
-# Resize Tagline Slogans to Fit Evenly Across Header
+# Alternating Logo with Glow Effect
 
 ## Overview
 
-Adjust the three tagline slogans ("Your Health.", "Your Choice.", "One Trusted Platform!") to fit evenly on one line across the header bar on both desktop and mobile views.
+Implement a logo that alternates between the turquoise and pink variants every 30 seconds, with a pulsing glow/water effect behind it that matches the current logo colour.
 
 ---
 
-## Current Issue
+## What Will Change
 
-The tagline is absolutely positioned in the center of the header. With the larger logo sizes (h-32 to h-48), the available space is constrained. The current fixed text sizes may cause the tagline to overlap or not display properly on all screen sizes.
+### 1. Add New Logo Assets to Project
 
----
+Save the two uploaded logo images to the assets folder:
+- `logo-turquoise.png` - Turquoise "checkup" variant
+- `logo-pink.png` - Pink "checkup" variant
 
-## Proposed Solution
+### 2. Create Animated Logo Component
 
-### Desktop (Lines 100-107)
+Build a new `AnimatedLogo.tsx` component that:
+- Cycles between the two logo images every 30 seconds
+- Displays a pulsing glow effect behind the logo
+- Matches the glow colour to the current logo (turquoise or pink)
+- Includes smooth crossfade transitions between logos
 
-| Change | Current | Updated |
-|--------|---------|---------|
-| Text sizing | `text-lg lg:text-xl xl:text-2xl` | `text-base lg:text-lg xl:text-xl` |
-| Letter spacing | `tracking-wide` | `tracking-normal lg:tracking-wide` |
+### 3. Update Header Component
 
-This reduces the text size slightly to ensure it fits between the logo and controls without overlapping.
-
-### Mobile (Lines 69-75)
-
-| Change | Current | Updated |
-|--------|---------|---------|
-| Text sizing | `text-sm xs:text-base` | `text-xs xs:text-sm sm:text-base` |
-| Whitespace | No constraint | `whitespace-nowrap` |
-
-Smaller base size ensures it stays on one line on very small screens.
+Replace the static logo in `Header.tsx` with the new `AnimatedLogo` component for both mobile and desktop views.
 
 ---
 
-## File to Modify
+## Technical Details
 
-**`src/components/layout/Header.tsx`**
-
-### Desktop Tagline (Line 102):
-```tsx
-// Before
-<p className="text-lg lg:text-xl xl:text-2xl font-bold tracking-wide text-center whitespace-nowrap">
-
-// After
-<p className="text-base lg:text-lg xl:text-xl font-bold tracking-normal lg:tracking-wide text-center whitespace-nowrap">
-```
-
-### Mobile Tagline (Line 70):
-```tsx
-// Before
-<p className="text-sm xs:text-base font-bold tracking-wide text-center">
-
-// After
-<p className="text-xs xs:text-sm sm:text-base font-bold tracking-wide text-center whitespace-nowrap">
-```
-
----
-
-## Visual Summary
+### New Component: `src/components/header/AnimatedLogo.tsx`
 
 ```text
-Before (may overflow):
-┌─────────────────────────────────────────────────────────┐
-│ [LARGE LOGO]  Your Health. Your Choice. One...  [Ctrl] │
-│   128-192px     (text may overlap or wrap)              │
-└─────────────────────────────────────────────────────────┘
++------------------------------------------+
+|                                          |
+|   ┌────────────────────────────────┐     |
+|   │   Pulsing Glow Layer (behind)  │     |
+|   │   - Turquoise or Pink          │     |
+|   │   - Opacity animation 0.3-0.6  │     |
+|   │   - blur(20px)                 │     |
+|   └────────────────────────────────┘     |
+|                                          |
+|   ┌────────────────────────────────┐     |
+|   │   Logo Image (foreground)      │     |
+|   │   - Crossfade transition       │     |
+|   │   - 30s interval switch        │     |
+|   └────────────────────────────────┘     |
+|                                          |
++------------------------------------------+
+```
 
-After (fits evenly):
-┌─────────────────────────────────────────────────────────┐
-│ [LARGE LOGO]  Your Health. Your Choice. One...  [Ctrl] │
-│   128-192px     (properly sized, single line)           │
-└─────────────────────────────────────────────────────────┘
+**State Management:**
+- `currentLogoIndex` - Tracks which logo is active (0 = turquoise, 1 = pink)
+- `useEffect` with `setInterval` for 30-second switching
+- CSS transitions for smooth crossfade between logos
+
+**Glow Effect Implementation:**
+- Positioned `::before` pseudo-element or absolute div
+- Uses existing CSS variables: `--shadow-glow-teal` and `--shadow-glow-pink`
+- Pulsing animation keyframes for breathing effect
+
+### CSS Additions to `src/index.css`
+
+```css
+@keyframes logo-glow-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.logo-glow-turquoise {
+  box-shadow: 0 0 30px hsl(187 72% 48% / 0.5), 
+              0 0 60px hsl(187 72% 48% / 0.3),
+              0 0 90px hsl(187 72% 48% / 0.2);
+  animation: logo-glow-pulse 3s ease-in-out infinite;
+}
+
+.logo-glow-pink {
+  box-shadow: 0 0 30px hsl(335 89% 48% / 0.5), 
+              0 0 60px hsl(335 89% 48% / 0.3),
+              0 0 90px hsl(335 89% 48% / 0.2);
+  animation: logo-glow-pulse 3s ease-in-out infinite;
+}
+```
+
+### Header.tsx Changes
+
+**Before:**
+```tsx
+<img 
+  alt="myhealth checkup" 
+  className="h-32 lg:h-40 xl:h-48 w-auto object-contain" 
+  src={myhealthLogo} 
+/>
+```
+
+**After:**
+```tsx
+<AnimatedLogo 
+  className="h-32 lg:h-40 xl:h-48" 
+/>
 ```
 
 ---
 
-## Changes Summary
+## Files to Create
 
-| Location | Change |
-|----------|--------|
-| Desktop tagline (line 102) | Reduce text size from `text-lg/xl/2xl` to `text-base/lg/xl` |
-| Desktop tagline (line 102) | Adjust tracking from `tracking-wide` to `tracking-normal lg:tracking-wide` |
-| Mobile tagline (line 70) | Reduce text size from `text-sm/base` to `text-xs/sm/base` |
-| Mobile tagline (line 70) | Add `whitespace-nowrap` to prevent wrapping |
+| File | Purpose |
+|------|---------|
+| `src/assets/logo-turquoise.png` | Turquoise logo variant |
+| `src/assets/logo-pink.png` | Pink logo variant |
+| `src/components/header/AnimatedLogo.tsx` | New animated logo component |
+
+## Files to Modify
+
+| File | Changes |
+|------|---------|
+| `src/index.css` | Add glow pulse animation keyframes and utility classes |
+| `src/components/layout/Header.tsx` | Replace static logo with AnimatedLogo component |
+
+---
+
+## Animation Timeline
+
+```text
+0s        30s       60s       90s
+|---------|---------|---------|
+Turquoise  Pink     Turquoise  Pink
+   ↑         ↑         ↑         ↑
+   └─ Glow matches current logo colour
+```
+
+---
+
+## Accessibility Considerations
+
+- Respects `prefers-reduced-motion` - glow pulse disabled, logo still alternates
+- Alt text maintained for screen readers
+- No impact on navigation or functionality
 
