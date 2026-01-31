@@ -101,9 +101,8 @@ const CookieConsent = () => {
                 <Button
                   size="sm"
                   onClick={() => setShowSettings(true)}
-                  className="flex items-center gap-2 !bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+                  className="!bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
                 >
-                  <Settings className="h-4 w-4" />
                   Manage Preferences
                 </Button>
                 <Button
