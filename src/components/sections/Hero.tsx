@@ -120,7 +120,7 @@ const Hero = () => {
             <div className="max-w-2xl mx-auto mb-8 sm:mb-10">
               <div className="bg-brand-pink rounded-2xl p-6 sm:p-8 shadow-xl">
                 <p className="text-center text-base sm:text-lg text-white font-medium mb-5">
-                  Or search for a specific test
+                  Find the right test for you
                 </p>
                 <div className="relative mb-4">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
