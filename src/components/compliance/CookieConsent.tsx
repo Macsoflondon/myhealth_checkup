@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Settings, Shield, Eye, BarChart3 } from 'lucide-react';
+import { X, Shield, Eye, BarChart3, Cog } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -127,8 +127,8 @@ const CookieConsent = () => {
 
       {/* Cookie Settings Modal */}
       {showSettings && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 animate-fade-in">
+          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-brand-navy">Cookie Preferences</h2>
@@ -203,7 +203,7 @@ const CookieConsent = () => {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <Settings className="h-5 w-5 text-orange-600" />
+                      <Cog className="h-5 w-5 text-orange-600" />
                       <h3 className="font-medium text-brand-navy">Functional Cookies</h3>
                     </div>
                     <Switch
