@@ -38,42 +38,50 @@ export const FeaturedPublications = () => {
   }
 
   return (
-    <section className="py-8 md:py-12 bg-[#F5F7FA]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h3 className="text-center text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6 md:mb-8">
-          Our Partners Have Featured In
-        </h3>
-        
-        <Carousel
-          opts={{ align: "start", loop: true }}
-          plugins={[autoplayPlugin.current, Fade()]}
-          className="w-full max-w-4xl mx-auto"
-        >
-          <CarouselContent>
-            {groupedPublications.map((group, index) => (
-              <CarouselItem key={index} className="basis-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 lg:gap-5">
-                  {group.map((publication) => (
-                    <div 
-                      key={publication.name} 
-                      className="flex items-center justify-center"
-                    >
-                      <a 
-                        href={publication.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-400 text-center transition-all duration-800 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
+    <section className="bg-[#F5F7FA]">
+      {/* Top gradient divider */}
+      <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      
+      <div className="py-8 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h3 className="text-center text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6 md:mb-8">
+            Our Partners Have Featured In
+          </h3>
+          
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[autoplayPlugin.current, Fade()]}
+            className="w-full max-w-4xl mx-auto"
+          >
+            <CarouselContent>
+              {groupedPublications.map((group, index) => (
+                <CarouselItem key={index} className="basis-full">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 lg:gap-5">
+                    {group.map((publication) => (
+                      <div 
+                        key={publication.name} 
+                        className="flex items-center justify-center"
                       >
-                        {publication.name}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+                        <a 
+                          href={publication.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-400 text-center transition-all duration-800 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
+                        >
+                          {publication.name}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
+      
+      {/* Bottom gradient divider */}
+      <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
 };
