@@ -67,7 +67,7 @@ const Header = ({
 
             {/* Bottom row: Tagline - full width, centred */}
             <div className="pb-3 flex justify-center">
-              <p className="text-sm xs:text-base font-bold tracking-wide text-center">
+              <p className="text-xs xs:text-sm sm:text-base font-bold tracking-wide text-center whitespace-nowrap">
                 <span className="text-[#22c0d4]">Your Health.</span>{" "}
                 <span className="text-[#e70d69]">Your Choice.</span>{" "}
                 <span className="text-white">One Trusted Platform!</span>
@@ -99,7 +99,7 @@ const Header = ({
 
               {/* Center: Tagline text */}
               <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <p className="text-lg lg:text-xl xl:text-2xl font-bold tracking-wide text-center whitespace-nowrap">
+                <p className="text-base lg:text-lg xl:text-xl font-bold tracking-normal lg:tracking-wide text-center whitespace-nowrap">
                   <span className="text-[#22c0d4]">Your Health.</span>{" "}
                   <span className="text-[#e70d69]">Your Choice.</span>{" "}
                   <span className="text-white">One Trusted Platform!</span>
