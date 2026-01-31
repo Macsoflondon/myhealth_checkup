@@ -18,17 +18,25 @@ const MissionSection = () => {
 
   return (
     <section className="pt-0 pb-8 sm:pb-10 md:pb-12 lg:pb-14 bg-white">
-      {/* Navy banner heading */}
-      <div className="bg-brand-navy py-5 sm:py-6 md:py-8 mb-8 sm:mb-10 md:mb-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-center text-lg sm:text-xl md:text-2xl lg:text-3xl font-heading font-bold">
-            <span className="text-white">Your </span>
-            <span className="text-brand-turquoise">health</span>
-            <span className="text-white"> is your greatest </span>
-            <span className="text-brand-pink">asset</span>
-            <span className="text-white">!</span>
-          </h2>
+      {/* Navy banner heading with gradient dividers */}
+      <div className="mb-8 sm:mb-10 md:mb-12">
+        {/* Top gradient divider */}
+        <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        
+        <div className="bg-brand-navy py-5 sm:py-6 md:py-8">
+          <div className="container mx-auto px-4">
+            <h2 className="text-center text-lg sm:text-xl md:text-2xl lg:text-3xl font-heading font-bold">
+              <span className="text-white">Your </span>
+              <span className="text-brand-turquoise">health</span>
+              <span className="text-white"> is your greatest </span>
+              <span className="text-brand-pink">asset</span>
+              <span className="text-white">!</span>
+            </h2>
+          </div>
         </div>
+        
+        {/* Bottom gradient divider */}
+        <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
