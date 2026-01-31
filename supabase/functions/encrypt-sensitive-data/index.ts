@@ -18,9 +18,10 @@ const ITERATIONS = 100000;
  * This key is NEVER sent to the client
  */
 function getEncryptionSecret(): string {
-  const key = Deno.env.get('ENCRYPTION_KEY');
+  // Try both secret names for backwards compatibility
+  const key = Deno.env.get('VITE_ENCRYPTION_KEY') || Deno.env.get('ENCRYPTION_KEY');
   if (!key) {
-    throw new Error('ENCRYPTION_KEY environment variable is not configured');
+    throw new Error('Encryption key environment variable is not configured');
   }
   return key;
 }
@@ -118,15 +119,24 @@ async function decryptField(encryptedText: string): Promise<string> {
 }
 
 /**
- * Sensitive field definitions
+ * Sensitive field definitions - all PII fields requiring encryption
  */
 const SENSITIVE_USER_PROFILE_FIELDS = [
+  // Medical information
   'nhs_number',
   'health_conditions',
   'allergies',
   'medications',
+  // Contact information
+  'phone_number',
   'emergency_contact_name',
   'emergency_contact_phone',
+  // Address information (PII)
+  'address_line1',
+  'address_line2',
+  'postal_code',
+  // Date of birth (PII)
+  'date_of_birth',
 ];
 
 const SENSITIVE_WEARABLE_FIELDS = [
