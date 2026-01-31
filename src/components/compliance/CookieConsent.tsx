@@ -86,10 +86,10 @@ const CookieConsent = () => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="h-5 w-5 text-health-600" />
-                  <h3 className="font-semibold text-navy">Your Privacy Matters</h3>
+                  <Shield className="h-5 w-5 text-brand-turquoise" />
+                  <h3 className="font-semibold text-brand-navy">Your Privacy Matters</h3>
                 </div>
-                <p className="text-sm text-navy">
+                <p className="text-sm text-brand-navy">
                   We use cookies to enhance your experience, provide personalised content, and analyse our traffic.
                   By clicking "Accept All", you consent to our use of cookies. 
                   <a href="/privacy-policy" className="text-health-600 underline ml-1">
@@ -101,21 +101,21 @@ const CookieConsent = () => {
                 <Button
                   size="sm"
                   onClick={() => setShowSettings(true)}
-                  className="!bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+                  className="bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
                 >
                   Manage Preferences
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleRejectAll}
-                  className="!bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+                  className="bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
                 >
                   Reject All
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleAcceptAll}
-                  className="!bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+                  className="bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
                 >
                   Accept All
                 </Button>
@@ -131,7 +131,7 @@ const CookieConsent = () => {
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-navy">Cookie Preferences</h2>
+                <h2 className="text-xl font-semibold text-brand-navy">Cookie Preferences</h2>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -147,14 +147,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Shield className="h-5 w-5 text-green-600" />
-                      <h3 className="font-medium text-navy">Necessary Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">Necessary Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.necessary}
                       disabled={true}
                     />
                   </div>
-                  <p className="text-sm text-navy">
+                  <p className="text-sm text-brand-navy">
                     Essential for the website to function properly. These cannot be disabled.
                   </p>
                 </div>
@@ -166,14 +166,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5 text-blue-600" />
-                      <h3 className="font-medium text-navy">Analytics Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">Analytics Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.analytics}
                       onCheckedChange={(checked) => updatePreference('analytics', checked)}
                     />
                   </div>
-                  <p className="text-sm text-navy">
+                  <p className="text-sm text-brand-navy">
                     Help us understand how visitors interact with our website by collecting and reporting information anonymously.
                   </p>
                 </div>
@@ -185,14 +185,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Eye className="h-5 w-5 text-purple-600" />
-                      <h3 className="font-medium text-navy">Marketing Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">Marketing Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.marketing}
                       onCheckedChange={(checked) => updatePreference('marketing', checked)}
                     />
                   </div>
-                  <p className="text-sm text-navy">
+                  <p className="text-sm text-brand-navy">
                     Used to track visitors across websites to display relevant advertisements.
                   </p>
                 </div>
@@ -204,14 +204,14 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Settings className="h-5 w-5 text-orange-600" />
-                      <h3 className="font-medium text-navy">Functional Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">Functional Cookies</h3>
                     </div>
                     <Switch
                       checked={preferences.functional}
                       onCheckedChange={(checked) => updatePreference('functional', checked)}
                     />
                   </div>
-                  <p className="text-sm text-navy">
+                  <p className="text-sm text-brand-navy">
                     Enable enhanced functionality and personalisation, such as remembering your preferences.
                   </p>
                 </div>
@@ -220,13 +220,13 @@ const CookieConsent = () => {
               <div className="flex gap-2 mt-6 pt-6 border-t">
                 <Button
                   onClick={handleRejectAll}
-                  className="flex-1 !bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+                  className="flex-1 bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
                 >
                   Reject All
                 </Button>
                 <Button
                   onClick={handleSavePreferences}
-                  className="flex-1 !bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+                  className="flex-1 bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
                 >
                   Save Preferences
                 </Button>
