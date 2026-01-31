@@ -2,8 +2,8 @@ import brandVideo from "@/assets/brand-tagline-video.mp4";
 
 const BrandVideoSection = () => {
   return (
-    <section className="w-full bg-brand-navy py-4">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="w-full bg-brand-navy py-8 sm:py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <video
           autoPlay
           loop
