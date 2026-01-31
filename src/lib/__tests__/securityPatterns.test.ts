@@ -120,36 +120,36 @@ describe('Security Patterns', () => {
   });
 
   describe('Sensitive Data Encryption', () => {
-    it('should encrypt NHS number before storage', async () => {
+    it('should encrypt phone number before storage', async () => {
       const { usersApi } = await import('@/api/supabase/users.api');
       
       mockSingle.mockResolvedValue({ data: { id: '123' }, error: null });
       
       await usersApi.updateUserProfile('test-user-id', {
-        nhs_number: 'NHS123456789',
+        phone_number: '+447123456789',
       });
       
       // Verify the data was encrypted (starts with enc:)
       expect(mockUpdate).toHaveBeenCalledWith(
         expect.objectContaining({
-          nhs_number: expect.stringMatching(/^enc:/),
+          phone_number: expect.stringMatching(/^enc:/),
         })
       );
     });
 
-    it('should encrypt health conditions array before storage', async () => {
+    it('should encrypt date of birth before storage', async () => {
       const { usersApi } = await import('@/api/supabase/users.api');
       
       mockSingle.mockResolvedValue({ data: { id: '123' }, error: null });
       
       await usersApi.updateUserProfile('test-user-id', {
-        health_conditions: ['diabetes', 'hypertension'],
+        date_of_birth: '1990-01-15',
       });
       
-      // Verify the array was encrypted
+      // Verify the data was encrypted
       expect(mockUpdate).toHaveBeenCalledWith(
         expect.objectContaining({
-          health_conditions: expect.stringMatching(/^enc:/),
+          date_of_birth: expect.stringMatching(/^enc:/),
         })
       );
     });
