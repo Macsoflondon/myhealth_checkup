@@ -1,31 +1,25 @@
 
-## Remove Duplicate HealthAssetBanner
 
-### What I'll Do
+## Make Mission Text Bold and Update Accreditation Card Colours
 
-Remove the standalone `HealthAssetBanner` component from the homepage since its content ("Your health is your greatest asset!") is now integrated directly into the `MissionSection` as a navy banner heading.
+### Summary
+This plan updates the MissionSection to make the first paragraph bold for emphasis and changes the accreditation card icons and text from turquoise to pink while keeping the turquoise container backgrounds.
 
 ### Changes
 
-**1. Update `src/pages/Index.tsx`**
-- Remove the `HealthAssetBanner` import (line 11)
-- Remove the `<HealthAssetBanner />` component usage (line 112)
+**1. Bold the first paragraph**
+- Add `font-bold` class to the first paragraph text
+- Keep the "checkup" highlight in turquoise as it currently is
 
-**2. Optionally delete the component file**
-- `src/components/sections/HealthAssetBanner.tsx` can be deleted as it's no longer needed
+**2. Update accreditation card colours**
+- Change icon colour from turquoise (`text-[#22c0d4]`) to pink (`text-brand-pink` / `#e70d69`)
+- Change text colour from turquoise (`text-[#22c0d4]`) to pink (`text-brand-pink` / `#e70d69`)
+- Keep the container background as light turquoise (`#e8f7f8`)
 
-### Updated Section Order
+### Visual Result
+- The mission statement will stand out more with bold text
+- The three accreditation cards will have pink icons and pink text on a light turquoise background, creating a nice colour contrast
 
-After the change, the homepage sections will flow as:
-1. Hero
-2. MissionSection (includes the navy banner heading)
-3. PartnersGrid
-4. JourneySimplified
-5. FeaturedPublications
-6. TaglineVideoSection
-7. MostPopularTestsSection
-8. TopConcernsSection
-9. FindClinicSection
-10. HereToHelp
-11. FinalCTA
-12. TrustPlatformSection
+### File to Update
+- `src/components/sections/MissionSection.tsx`
+
