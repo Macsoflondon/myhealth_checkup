@@ -1239,16 +1239,7 @@ export type Database = {
           created_at: string
           dashboard_layout: Json | null
           id: string
-          notification_email: boolean | null
-          notification_health_insights: boolean | null
-          notification_order_updates: boolean | null
-          notification_promotions: boolean | null
           notification_push: boolean | null
-          notification_sms: boolean | null
-          notification_sms_appointments: boolean | null
-          notification_sms_results: boolean | null
-          notification_sms_urgent: boolean | null
-          notification_test_reminders: boolean | null
           preferred_language: string | null
           preferred_units: string | null
           recommendation_comprehensiveness_weight: number | null
@@ -1263,16 +1254,7 @@ export type Database = {
           created_at?: string
           dashboard_layout?: Json | null
           id?: string
-          notification_email?: boolean | null
-          notification_health_insights?: boolean | null
-          notification_order_updates?: boolean | null
-          notification_promotions?: boolean | null
           notification_push?: boolean | null
-          notification_sms?: boolean | null
-          notification_sms_appointments?: boolean | null
-          notification_sms_results?: boolean | null
-          notification_sms_urgent?: boolean | null
-          notification_test_reminders?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
           recommendation_comprehensiveness_weight?: number | null
@@ -1287,16 +1269,7 @@ export type Database = {
           created_at?: string
           dashboard_layout?: Json | null
           id?: string
-          notification_email?: boolean | null
-          notification_health_insights?: boolean | null
-          notification_order_updates?: boolean | null
-          notification_promotions?: boolean | null
           notification_push?: boolean | null
-          notification_sms?: boolean | null
-          notification_sms_appointments?: boolean | null
-          notification_sms_results?: boolean | null
-          notification_sms_urgent?: boolean | null
-          notification_test_reminders?: boolean | null
           preferred_language?: string | null
           preferred_units?: string | null
           recommendation_comprehensiveness_weight?: number | null
@@ -1314,7 +1287,6 @@ export type Database = {
           account_status: string | null
           address_line1: string | null
           address_line2: string | null
-          allergies: string | null
           city: string | null
           country: string | null
           created_at: string
@@ -1323,13 +1295,9 @@ export type Database = {
           emergency_contact_phone: string | null
           first_name: string | null
           gender: string | null
-          health_conditions: string | null
           id: string
           last_login: string | null
           last_name: string | null
-          lifestyle_factors: Json | null
-          medications: string | null
-          nhs_number: string | null
           phone_number: string | null
           postal_code: string | null
           updated_at: string
@@ -1339,7 +1307,6 @@ export type Database = {
           account_status?: string | null
           address_line1?: string | null
           address_line2?: string | null
-          allergies?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -1348,13 +1315,9 @@ export type Database = {
           emergency_contact_phone?: string | null
           first_name?: string | null
           gender?: string | null
-          health_conditions?: string | null
           id?: string
           last_login?: string | null
           last_name?: string | null
-          lifestyle_factors?: Json | null
-          medications?: string | null
-          nhs_number?: string | null
           phone_number?: string | null
           postal_code?: string | null
           updated_at?: string
@@ -1364,7 +1327,6 @@ export type Database = {
           account_status?: string | null
           address_line1?: string | null
           address_line2?: string | null
-          allergies?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -1373,13 +1335,9 @@ export type Database = {
           emergency_contact_phone?: string | null
           first_name?: string | null
           gender?: string | null
-          health_conditions?: string | null
           id?: string
           last_login?: string | null
           last_name?: string | null
-          lifestyle_factors?: Json | null
-          medications?: string | null
-          nhs_number?: string | null
           phone_number?: string | null
           postal_code?: string | null
           updated_at?: string

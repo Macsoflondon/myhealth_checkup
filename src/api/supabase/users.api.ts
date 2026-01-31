@@ -16,13 +16,8 @@ export interface UserProfile {
   city?: string;
   postal_code?: string;
   country?: string;
-  nhs_number?: string;
   emergency_contact_name?: string;
   emergency_contact_phone?: string;
-  allergies?: string[];
-  medications?: string[];
-  health_conditions?: string[];
-  lifestyle_factors?: Json;
   account_status?: string;
   last_login?: string;
   created_at: string;
@@ -35,8 +30,6 @@ export interface UserPreferences {
   theme?: string;
   preferred_language?: string;
   preferred_units?: string;
-  notification_email?: boolean;
-  notification_sms?: boolean;
   notification_push?: boolean;
   saved_filters?: Json;
   dashboard_layout?: Json;

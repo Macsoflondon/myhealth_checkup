@@ -16,11 +16,6 @@ import { supabase } from "@/integrations/supabase/client";
  * Includes all PII fields that should be encrypted at rest
  */
 export const SENSITIVE_USER_PROFILE_FIELDS = [
-  // Medical information
-  'nhs_number',
-  'health_conditions',
-  'allergies',
-  'medications',
   // Contact information
   'phone_number',
   'emergency_contact_name',

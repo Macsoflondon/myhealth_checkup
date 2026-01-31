@@ -37,7 +37,7 @@ export type { ProviderTestData, PriceUpdate } from './supabase/providers.api';
 export type { Clinic } from './supabase/clinics.api';
 export type { UserProfile, UserPreferences } from './supabase/users.api';
 export type { UploadedTestResult, BiomarkerReading, UserHealthData, HealthScore } from './supabase/healthData.api';
-export type { RecommendationPreferences, EmailNotificationPreferences, SmsNotificationPreferences } from './supabase/preferences.api';
+export type { RecommendationPreferences } from './supabase/preferences.api';
 export type { NotificationHistory } from './supabase/notificationHistory.api';
 export type { SavedProvider } from './supabase/savedProviders.api';
 export type { ApiResponse, PaginationParams, FilterParams } from './supabase/base';
