@@ -49,8 +49,8 @@ const MissionSection = () => {
                 <div className="hidden sm:block w-1 bg-brand-turquoise self-stretch min-h-[80px] rounded-full" />
                 
                 <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
-                  <p>
-                    At myhealth <span className="text-brand-turquoise font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+                  <p className="font-bold">
+                    At myhealth <span className="text-brand-turquoise">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
                   </p>
                   <p>
                     Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
@@ -71,9 +71,9 @@ const MissionSection = () => {
                     className="flex-1 lg:flex-none bg-[#e8f7f8] rounded-xl p-4 sm:p-5 flex items-center gap-3 sm:gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-transparent flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c0d4]" strokeWidth={1.5} />
+                      <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-pink" strokeWidth={1.5} />
                     </div>
-                    <h3 className="font-heading font-semibold text-[#22c0d4] text-sm sm:text-base">
+                    <h3 className="font-heading font-semibold text-brand-pink text-sm sm:text-base">
                       {item.title}
                     </h3>
                   </div>
