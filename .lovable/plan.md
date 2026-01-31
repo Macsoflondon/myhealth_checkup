@@ -1,69 +1,56 @@
 
 
-# Double the Header Logo Size
+# Remove Icon from Manage Preferences Button
 
 ## Overview
 
-Increase the logo size in the header by 2x on both mobile and desktop views.
+Remove the Settings icon from the "Manage Preferences" button in the cookie consent banner to align with the minimalist button styling standard.
 
 ---
 
-## Current vs Updated Sizes
+## Change Required
 
-### Desktop (Line 95)
+**File:** `src/components/compliance/CookieConsent.tsx`
 
-| Breakpoint | Current | Updated (2x) |
-|------------|---------|--------------|
-| Base | `h-16` (64px) | `h-32` (128px) |
-| Large (lg) | `h-20` (80px) | `h-40` (160px) |
-| XL | `h-24` (96px) | `h-48` (192px) |
+**Location:** Lines 104-108
 
-### Mobile (Line 55)
+### Current Code:
+```tsx
+<Button
+  size="sm"
+  onClick={() => setShowSettings(true)}
+  className="flex items-center gap-2 !bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+>
+  <Settings className="h-4 w-4" />
+  Manage Preferences
+</Button>
+```
 
-| Breakpoint | Current | Updated (2x) |
-|------------|---------|--------------|
-| Base | `h-16` (64px) | `h-32` (128px) |
-| XS+ | `h-20` (80px) | `h-40` (160px) |
+### Updated Code:
+```tsx
+<Button
+  size="sm"
+  onClick={() => setShowSettings(true)}
+  className="!bg-[#22c0d4] !text-white hover:!bg-[#fc0173] !border-[#22c0d4] hover:!border-[#fc0173] transition-all duration-200"
+>
+  Manage Preferences
+</Button>
+```
+
+---
+
+## Changes Summary
+
+| Change | Details |
+|--------|---------|
+| Remove icon | Delete `<Settings className="h-4 w-4" />` from button content |
+| Update className | Remove `flex items-center gap-2` as spacing classes are no longer needed without an icon |
 
 ---
 
 ## File to Modify
 
-**`src/components/layout/Header.tsx`**
-
-### Line 55 (Mobile logo):
-```tsx
-// Before
-className="h-16 xs:h-20 w-auto object-contain drop-shadow-lg"
-
-// After
-className="h-32 xs:h-40 w-auto object-contain drop-shadow-lg"
-```
-
-### Line 95 (Desktop logo):
-```tsx
-// Before
-className="h-16 lg:h-20 xl:h-24 w-auto object-contain"
-
-// After
-className="h-32 lg:h-40 xl:h-48 w-auto object-contain"
-```
-
----
-
-## Visual Summary
-
-```text
-Before:
-┌──────────────────────────────────────────────┐
-│ [Small Logo]   Tagline   [Controls]          │
-│    64-96px                                   │
-└──────────────────────────────────────────────┘
-
-After:
-┌──────────────────────────────────────────────┐
-│ [LARGE LOGO]   Tagline   [Controls]          │
-│   128-192px                                  │
-└──────────────────────────────────────────────┘
-```
+| File | Action |
+|------|--------|
+| `src/components/compliance/CookieConsent.tsx` | Remove Settings icon and update className |
 
