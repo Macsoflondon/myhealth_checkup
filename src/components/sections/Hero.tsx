@@ -61,7 +61,7 @@ const Hero = () => {
     <>
       {/* Hero Video Section - Pulled up to sit behind toolbar */}
       <section 
-        className="relative overflow-hidden bg-[#081129]"
+        className="relative overflow-hidden bg-brand-navy"
         style={{ marginTop: 'calc(-1 * var(--toolbar-height, 50px))' }}
       >
         <div className="relative w-full aspect-[4/5] xs:aspect-[4/3] sm:aspect-[16/10] lg:aspect-video overflow-hidden">
@@ -82,16 +82,16 @@ const Hero = () => {
       </section>
       
       {/* Main Hero Content - Clear promise, immediate action */}
-      <section className="bg-white py-10 sm:py-14 md:py-16 lg:py-20">
+      <section className="bg-background py-10 sm:py-14 md:py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Headline - Clear promise in plain language */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-[#081129] leading-tight mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-brand-navy leading-tight mb-4 sm:mb-6">
               Compare private blood tests from trusted UK providers
             </h1>
             
             {/* Subheading - What you get, no waffle */}
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 font-sans mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
               Prices, biomarkers, and turnaround times in one place.
               <br className="hidden sm:block" />
               No GP referral. UK accredited labs only.
@@ -102,7 +102,7 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 onClick={() => navigate('/compare')}
-                className="bg-[#22c0d4] hover:bg-[#1ba8b8] text-white font-semibold rounded-xl shadow-md px-8"
+                className="bg-brand-turquoise hover:bg-brand-turquoise/80 text-white font-semibold rounded-xl shadow-md px-8"
               >
                 Compare blood tests
               </Button>
@@ -110,30 +110,30 @@ const Hero = () => {
                 size="lg" 
                 variant="outline"
                 onClick={() => navigate('/assisted-test-finder')}
-                className="border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold rounded-xl"
+                className="border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold rounded-xl"
               >
                 Find the right test for you
               </Button>
             </div>
 
-            {/* Search Bar - Prominent navy themed section */}
+            {/* Search Bar - Prominent pink themed section */}
             <div className="max-w-2xl mx-auto mb-8 sm:mb-10">
-              <div className="bg-[#e70d69] rounded-2xl p-6 sm:p-8 shadow-xl">
+              <div className="bg-brand-pink rounded-2xl p-6 sm:p-8 shadow-xl">
                 <p className="text-center text-base sm:text-lg text-white font-medium mb-5">
                   Or search for a specific test
                 </p>
                 <div className="relative mb-4">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
                   <input 
                     type="text" 
                     placeholder="Search over 200 tests..." 
                     value={searchTerm} 
                     onChange={e => setSearchTerm(e.target.value)} 
                     onKeyPress={handleKeyPress} 
-                    className="w-full pl-12 pr-4 py-4 text-base border-0 rounded-xl focus:ring-2 focus:ring-[#22c0d4] focus:outline-none text-[#081129] bg-white shadow-md" 
+                    className="w-full pl-12 pr-4 py-4 text-base border-0 rounded-xl focus:ring-2 focus:ring-brand-turquoise focus:outline-none text-brand-navy bg-background shadow-md" 
                   />
                   {isAnalyzing && (
-                    <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 animate-spin text-[#22c0d4]" />
+                    <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 animate-spin text-brand-turquoise" />
                   )}
                 </div>
                 
@@ -141,7 +141,7 @@ const Hero = () => {
                 <Button 
                   onClick={handleSearch}
                   disabled={!searchTerm.trim() || isAnalyzing}
-                  className="w-full bg-[#22c0d4] hover:bg-white hover:text-[#081129] text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors disabled:bg-[#22c0d4] disabled:opacity-60"
+                  className="w-full bg-brand-turquoise hover:bg-background hover:text-brand-navy text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors disabled:bg-brand-turquoise disabled:opacity-60"
                 >
                   Start Your Search
                 </Button>
@@ -162,7 +162,7 @@ const Hero = () => {
                     )}
                     <Button 
                       onClick={() => navigate('/compare')} 
-                      className="w-full mt-3 bg-[#22c0d4] hover:bg-white hover:text-[#22c0d4] transition-colors"
+                      className="w-full mt-3 bg-brand-turquoise hover:bg-background hover:text-brand-turquoise transition-colors"
                     >
                       View available tests
                     </Button>
@@ -177,7 +177,7 @@ const Hero = () => {
                       <button 
                         key={index} 
                         onClick={() => navigate(search.route)} 
-                        className="px-4 py-2 text-sm bg-[#22c0d4] hover:bg-white text-white hover:text-[#081129] rounded-full transition-colors border border-[#22c0d4] hover:border-white"
+                        className="px-4 py-2 text-sm bg-brand-turquoise hover:bg-background text-white hover:text-brand-navy rounded-full transition-colors border border-brand-turquoise hover:border-background"
                       >
                         {search.name}
                       </button>
@@ -192,9 +192,9 @@ const Hero = () => {
               {trustSignals.map((signal, index) => (
                 <div 
                   key={index} 
-                  className="flex items-center gap-2 text-sm sm:text-base text-gray-700"
+                  className="flex items-center gap-2 text-sm sm:text-base text-muted-foreground"
                 >
-                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#22c0d4] flex-shrink-0" />
+                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-turquoise flex-shrink-0" />
                   <span className="font-sans">{signal.text}</span>
                 </div>
               ))}
