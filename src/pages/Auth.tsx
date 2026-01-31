@@ -12,12 +12,22 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthIndicator";
 import { validatePassword, validateEmail } from "@/lib/passwordValidation";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Lock } from "lucide-react";
+import { useAccountLockout } from "@/hooks/useAccountLockout";
+
 const Auth = () => {
   const {
     user,
     isLoading
   } = useAuth();
+  const {
+    isLocked,
+    remainingTimeFormatted,
+    attemptsRemaining,
+    recordFailedAttempt,
+    recordSuccessfulLogin,
+    canAttemptLogin,
+  } = useAccountLockout();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -122,6 +132,13 @@ const Auth = () => {
   };
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Check if account is locked (brute-force protection)
+    if (!isSignUp && !canAttemptLogin()) {
+      toast.error(`Account temporarily locked. Try again in ${remainingTimeFormatted}.`);
+      return;
+    }
+    
     if (!validateForm()) {
       return;
     }
@@ -163,9 +180,16 @@ const Auth = () => {
           password
         });
         if (error) {
+          // Record failed attempt for brute-force protection
+          const { isNowLocked, attemptsRemaining: remaining } = recordFailedAttempt();
+          
           // Handle specific auth errors
           if (error.message.includes('Invalid login credentials')) {
-            toast.error("Invalid email or password. Please check your credentials.");
+            if (isNowLocked) {
+              toast.error("Too many failed attempts. Account locked for 15 minutes.");
+            } else {
+              toast.error(`Invalid email or password. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.`);
+            }
           } else if (error.message.includes('Email not confirmed')) {
             toast.error("Please confirm your email address before signing in.");
           } else {
@@ -173,6 +197,9 @@ const Auth = () => {
           }
           return;
         }
+        
+        // Record successful login (resets lockout counter)
+        recordSuccessfulLogin();
         
         // Handle Remember Me
         if (rememberMe) {
@@ -258,9 +285,30 @@ const Auth = () => {
       <Header />
       <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
-          <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
+          <h2 className="text-2xl text-center mb-6 text-primary font-medium">
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
+
+          {/* Account Lockout Warning */}
+          {!isSignUp && isLocked && (
+            <Alert variant="destructive" className="mb-4">
+              <Lock className="h-4 w-4" />
+              <AlertDescription>
+                Account temporarily locked due to too many failed attempts. 
+                Please try again in {remainingTimeFormatted}.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Low attempts warning */}
+          {!isSignUp && !isLocked && attemptsRemaining <= 2 && attemptsRemaining > 0 && (
+            <Alert className="mb-4 border-amber-500 bg-amber-50">
+              <AlertCircle className="h-4 w-4 text-amber-600" />
+              <AlertDescription className="text-amber-800">
+                Warning: {attemptsRemaining} login attempt{attemptsRemaining !== 1 ? 's' : ''} remaining before temporary lockout.
+              </AlertDescription>
+            </Alert>
+          )}
 
           <form onSubmit={handleAuth} className="space-y-4">
             {isSignUp && <>
