@@ -27,23 +27,16 @@ const MissionSection = () => {
                 {/* Turquoise accent bar */}
                 <div className="hidden sm:block w-1 bg-[#22c0d4] self-stretch min-h-[80px] rounded-full" />
                 
-                <div className="space-y-4 sm:space-y-6">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-[#081129] leading-tight">
-                    Your health is your{" "}
-                    <span className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent">greatest asset</span>
-                  </h2>
-
-                  <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
-                    <p>
-                      At myhealth <span className="text-[#22c0d4] font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
-                    </p>
-                    <p>
-                      Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
-                    </p>
-                    <p>
-                      We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
-                    </p>
-                  </div>
+                <div className="space-y-4 text-gray-600 font-sans text-sm sm:text-base md:text-lg leading-relaxed">
+                  <p>
+                    At myhealth <span className="text-[#22c0d4] font-medium">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+                  </p>
+                  <p>
+                    Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
+                  </p>
+                  <p>
+                    We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
+                  </p>
                 </div>
               </div>
             </div>
