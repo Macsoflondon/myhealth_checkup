@@ -121,10 +121,10 @@ serve(async (req) => {
           console.log(`Failed to geocode: ${clinic.name}`);
         }
 
-        // Insert into database
+        // Upsert into database (handles duplicates gracefully)
         const { error } = await supabase
           .from('clinics')
-          .insert({
+          .upsert({
             name: clinic.name,
             full_address: clinic.fullAddress,
             postal_code: clinic.postalCode,
@@ -132,6 +132,9 @@ serve(async (req) => {
             longitude,
             provider_id: providerId,
             access_note: clinic.appointmentRequired ? 'Appointment required' : 'No appointment required'
+          }, {
+            onConflict: 'name',
+            ignoreDuplicates: true
           });
 
         if (error) {
@@ -178,6 +181,7 @@ function determineProvider(clinicName: string): string {
   const name = clinicName.toLowerCase();
   
   // Priority order matters - check specific providers first
+  if (name.includes('tuli')) return 'tuli-health';
   if (name.includes('superdrug')) return 'superdrug';
   if (name.includes('ultrasound direct')) return 'ultrasound-direct';
   if (name.includes('medichecks')) return 'medichecks';
