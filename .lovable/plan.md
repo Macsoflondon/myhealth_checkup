@@ -1,239 +1,183 @@
 
+# Clinic Data Import Plan
 
-# Automated Cron Schedules and Medichecks Scraper Refresh Plan
+## Current State
 
-## Current State Analysis
+| Metric | Value |
+|--------|-------|
+| Clinics in database | 43 |
+| Target | 100+ |
+| Clinics in import file | 379 |
+| Gap to close | 57+ clinics needed |
 
-### Existing Cron Jobs (Already Configured)
+### Current Provider Distribution
+- London Medical Laboratory: 12
+- Medichecks: 11
+- Goodbody Clinic: 9
+- Randox: 8
+- Unassigned: 3
 
-| Job Name | Schedule | Purpose | Status |
-|----------|----------|---------|--------|
-| `run-all-scrapers-morning` | `0 6 * * *` (06:00 UTC daily) | Run all 6 provider scrapers | Active |
-| `run-all-scrapers-afternoon` | `0 14 * * *` (14:00 UTC daily) | Run all 6 provider scrapers | Active |
-| `check-price-alerts-every-6-hours` | `0 1,7,13,19 * * *` | Check price alerts | Active |
-
-The cron jobs ARE already configured in pg_cron and active. The issue is that the scrapers themselves have not been running successfully, likely due to edge function deployment status or Firecrawl API issues.
-
-### Provider Data Freshness
-
-| Provider | Active Tests | Last Scraped | Days Stale |
-|----------|-------------|--------------|------------|
-| Thriva | 25 | 2026-02-01 | 0 (today) |
-| London Medical Laboratory | 33 | 2026-01-26 | 6 |
-| Goodbody Clinic | 67 | 2026-01-16 | 16 |
-| Lola Health | 46 | 2026-01-07 | 25 |
-| Randox | 20 | 2026-01-07 | 25 |
-| Medichecks | 17 | 2026-01-07 | 25 (critical) |
-
-### Medichecks Problem
-Medichecks switched to Shopify's `/products/` URL structure. The current scraper has 52 verified product URLs, but only 17 tests are in the database - indicating the scraper has not successfully run since the URL migration.
+### Import File Breakdown
+The `clinics_import_data.json` contains 379 clinics including:
+- Tuli Health pharmacy partners: ~70+ clinics
+- Ultrasound Direct locations: ~15 clinics
+- Superdrug Nurse Clinics: ~5 clinics
+- Independent clinics and aesthetics: ~200+
+- Other named providers: ~50+
 
 ---
 
-## Implementation Plan
+## Issue Identified
 
-### Step 1: Deploy and Test Medichecks Scraper
+The `bulk-add-clinics` edge function is missing a provider mapping for **Tuli Health** clinics. Looking at the import data, approximately 70+ clinics are named "Tuli Health - [Pharmacy Name]" but the function will incorrectly classify them as "independent" instead of "tuli-health".
 
-Two scrapers exist for Medichecks:
-1. **`medichecks-scraper`**: Native scraping with 150 product limit, Shopify-optimised
-2. **`medichecks-firecrawl`**: Uses Firecrawl API with 120 product limit
-
-Implementation:
-1. Deploy the `medichecks-scraper` edge function with the updated Shopify URL patterns
-2. Manually invoke the function to test scraping
-3. Verify database updates with scraped product data
-
-Expected outcome:
-- 52+ verified product URLs processed
-- Price data extracted using JSON-LD and regex patterns
-- Database updated with current prices and availability
-
-### Step 2: Optimise Cron Schedule
-
-Update the cron configuration to stagger scrapers and improve reliability:
-
-```text
-Current schedule (both run at once):
-- 06:00 UTC: run-all-scrapers-morning (all 6)
-- 14:00 UTC: run-all-scrapers-afternoon (all 6)
-
-Recommended schedule (staggered for API limits):
-- 04:00 UTC: Primary scrape run (all providers)
-- 16:00 UTC: Secondary scrape run (all providers)
-```
-
-The `run-all-scrapers` function already includes:
-- 2-second delay between each scraper
-- Admin email notification on completion/failure
-- Individual scraper error isolation
-
-### Step 3: Add Per-Provider Cron Jobs (Optional Enhancement)
-
-For more granular control, add individual provider schedules:
-
-```text
-Staggered individual scrapers (alternative approach):
-- 04:00 UTC: medichecks-scraper (high priority - Shopify updates frequently)
-- 05:00 UTC: goodbody-scraper
-- 06:00 UTC: lola-health-scraper
-- 07:00 UTC: thriva-scraper
-- 08:00 UTC: randox-scraper
-- 09:00 UTC: scrape-london-lab
-```
-
-This provides:
-- Better error isolation
-- More granular logging
-- Reduced API rate limiting risk
-
----
-
-## Technical Implementation
-
-### Database Migration Required
-
-Create/update cron jobs using pg_cron:
-
-```sql
--- Update existing morning scraper to run earlier (04:00 UTC)
-SELECT cron.unschedule('run-all-scrapers-morning');
-SELECT cron.schedule(
-  'run-all-scrapers-daily-4am',
-  '0 4 * * *',
-  $$
-  SELECT net.http_post(
-    url:='https://clvuioagsgfadynuvodj.supabase.co/functions/v1/run-all-scrapers',
-    headers:='{"Content-Type": "application/json", "Authorization": "Bearer [ANON_KEY]"}'::jsonb,
-    body:='{"replace": true}'::jsonb
-  ) as request_id;
-  $$
-);
-
--- Update afternoon scraper to 16:00 UTC
-SELECT cron.unschedule('run-all-scrapers-afternoon');
-SELECT cron.schedule(
-  'run-all-scrapers-daily-4pm',
-  '0 16 * * *',
-  $$
-  SELECT net.http_post(
-    url:='https://clvuioagsgfadynuvodj.supabase.co/functions/v1/run-all-scrapers',
-    headers:='{"Content-Type": "application/json", "Authorization": "Bearer [ANON_KEY]"}'::jsonb,
-    body:='{"replace": true}'::jsonb
-  ) as request_id;
-  $$
-);
-```
-
-### Manual Scraper Invocation
-
-To immediately refresh Medichecks data:
-
-```bash
-# Via edge function curl
-POST /functions/v1/medichecks-scraper
-Body: { "replace": true }
-```
-
-Or using `medichecks-firecrawl` for Firecrawl-powered scraping:
-
-```bash
-POST /functions/v1/medichecks-firecrawl
+### Current Provider Detection (Missing Tuli)
+```javascript
+// Current function checks for:
+- superdrug
+- ultrasound direct
+- medichecks
+- goodbody
+- randox
+- london medical
+- lola
+- thriva
+// ❌ Missing: tuli
 ```
 
 ---
 
-## Medichecks Scraper Details
+## Implementation Steps
 
-### Current URL Configuration
+### Step 1: Update Provider Detection
+Add Tuli Health to the `determineProvider()` function in `bulk-add-clinics`:
 
-The `medichecks-scraper` function includes:
+```javascript
+if (name.includes('tuli')) return 'tuli-health';
+```
 
-**Collection Pages** (for URL discovery):
-- `/collections/blood-tests`
-- `/collections/thyroid-tests`
-- `/collections/hormone-tests`
-- `/collections/vitamin-tests`
-- 9 additional collection pages
+This ensures the 70+ Tuli Health pharmacy partners are correctly categorised.
 
-**Verified Product URLs** (52 total):
-- `/products/thyroid-function-blood-test`
-- `/products/testosterone-blood-test`
-- `/products/ultimate-performance-blood-test`
-- 49 additional verified URLs
+### Step 2: Deploy Updated Edge Function
+Deploy the updated `bulk-add-clinics` function to enable correct provider assignment.
 
-### Price Extraction Logic
+### Step 3: Execute Import via Admin UI
+Navigate to `/admin/quick-clinic-import` while logged in as admin and click "Import Pre-Collected Clinic Data".
 
-Optimised for Shopify's structure:
-1. JSON-LD structured data (`"price": "X"`)
-2. Shopify-specific `data-product-price` attributes
-3. Currency regex fallback (`£X.XX`)
-4. Compare-at price for discounts
+The import process:
+1. Fetches `/clinics_import_data.json` (379 clinics)
+2. For each clinic:
+   - Determines provider from name
+   - Geocodes address via Nominatim API
+   - Inserts into `clinics` table
+3. Rate-limited at 1 second per clinic to respect Nominatim limits
+4. Total time: ~6-7 minutes
 
-### Database Fields Updated
-
-For each scraped product:
-- `test_name`: Extracted from title/h1
-- `price`: Current selling price
-- `original_price`: Compare-at price (if discounted)
-- `url`: Full product URL (verified)
-- `category`: Auto-detected from keywords
-- `biomarkers_list`: Extracted from page content
-- `biomarker_count`: Number of biomarkers
-- `sample_type`: Finger-prick or venous
-- `scraped_at`: Timestamp
-- `url_verified`: Set to true
+### Step 4: Handle Duplicates
+The current function uses simple INSERT which will fail on duplicates. We should add upsert logic or duplicate checking to handle clinics that may already exist.
 
 ---
 
-## Monitoring and Alerts
+## Technical Changes Required
 
-### Email Notifications
+### File: `supabase/functions/bulk-add-clinics/index.ts`
 
-The `run-all-scrapers` function sends branded emails to all admin users:
-- Success summary with per-provider status
-- Failure alerts with error details
-- Styled HTML email matching myhealth checkup branding
+**Change 1**: Add Tuli Health provider mapping
 
-### Scraping Jobs Table
-
-Track status in `scraping_jobs`:
-
-```sql
-SELECT provider_id, status, last_scraped, next_scrape, error_message
-FROM scraping_jobs
-ORDER BY last_scraped DESC;
+```javascript
+function determineProvider(clinicName: string): string {
+  const name = clinicName.toLowerCase();
+  
+  // Add Tuli Health check (high priority - many clinics)
+  if (name.includes('tuli')) return 'tuli-health';
+  
+  // ... existing checks
+}
 ```
 
-### Edge Function Logs
+**Change 2**: Add duplicate handling with upsert
 
-Monitor in Supabase dashboard:
-- `run-all-scrapers` - Orchestration logs
-- `medichecks-scraper` - Individual scraper logs
-- `medichecks-firecrawl` - Firecrawl API logs
+```javascript
+const { error } = await supabase
+  .from('clinics')
+  .upsert({
+    name: clinic.name,
+    full_address: clinic.fullAddress,
+    postal_code: clinic.postalCode,
+    latitude,
+    longitude,
+    provider_id: providerId,
+    access_note: clinic.appointmentRequired ? 'Appointment required' : 'No appointment required'
+  }, {
+    onConflict: 'name,postal_code',
+    ignoreDuplicates: true
+  });
+```
 
 ---
 
 ## Expected Outcomes
 
-After implementation:
+After successful import:
 
 | Metric | Before | After |
 |--------|--------|-------|
-| Medichecks active tests | 17 | 50-70 |
-| Data freshness (all providers) | 6-25 days stale | <12 hours |
-| Cron execution frequency | Twice daily | Twice daily (optimised times) |
-| Price accuracy | Unknown (stale) | Current within 12h |
-| Failed scraper visibility | Manual check | Admin email alerts |
+| Total clinics | 43 | 400+ |
+| Tuli Health | 0 | 70+ |
+| Ultrasound Direct | 0 | 15+ |
+| Superdrug | 0 | 5+ |
+| Independent/Other | 3 | 200+ |
+| Target met | No | Yes (100+ achieved) |
+
+### Geographic Coverage
+The import includes clinics across:
+- Scotland (Edinburgh, Glasgow, Paisley, Kirkwall)
+- Northern Ireland (Enniskillen)
+- Wales (implied in nationwide coverage)
+- England (London, Manchester, Birmingham, Bristol, etc.)
 
 ---
 
 ## Risk Considerations
 
-1. **Firecrawl API Limits**: The `medichecks-firecrawl` function may hit API limits. Fallback to native `medichecks-scraper` if needed.
+1. **Geocoding Rate Limits**: Nominatim has a 1 request/second limit. The function already respects this with 1-second delays.
 
-2. **Shopify Rate Limiting**: Native scrapers include 1-1.5s delays between requests.
+2. **Import Duration**: 379 clinics × 1 second = ~6-7 minutes total processing time.
 
-3. **Price Extraction Failures**: Products without extractable prices are still saved with `price: null` to maintain catalog coverage.
+3. **Partial Failures**: If geocoding fails for a clinic, it's still inserted with NULL coordinates. These can be geocoded later.
 
-4. **Duplicate Jobs**: Clean up duplicate scraping_jobs entries before running (some historical duplicates exist in the table).
+4. **Duplicate Handling**: Current function will error on duplicates. The upsert change will handle this gracefully.
 
+---
+
+## Verification Queries
+
+After import, verify with:
+
+```sql
+-- Total count
+SELECT COUNT(*) as total_clinics FROM clinics;
+
+-- By provider
+SELECT provider_id, COUNT(*) as count 
+FROM clinics 
+GROUP BY provider_id 
+ORDER BY count DESC;
+
+-- Geocoding success rate
+SELECT 
+  COUNT(*) as total,
+  COUNT(latitude) as geocoded,
+  ROUND(COUNT(latitude)::numeric / COUNT(*)::numeric * 100, 1) as geocoded_pct
+FROM clinics;
+
+-- Geographic distribution
+SELECT 
+  LEFT(postal_code, 2) as area,
+  COUNT(*) as clinics
+FROM clinics
+WHERE postal_code IS NOT NULL
+GROUP BY LEFT(postal_code, 2)
+ORDER BY clinics DESC
+LIMIT 20;
+```
