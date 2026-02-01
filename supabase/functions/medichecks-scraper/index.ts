@@ -18,55 +18,33 @@ interface MedichecksProduct {
   sample_type: string | null;
 }
 
-// Updated category pages - Medichecks now uses /collections/ and /products/ structure (Shopify)
+// Updated category pages - Medichecks Shopify collection URLs (verified Feb 2026)
 const categoryPages = [
-  'https://www.medichecks.com/collections/blood-tests',
-  'https://www.medichecks.com/collections/thyroid-tests',
-  'https://www.medichecks.com/collections/hormone-tests',
-  'https://www.medichecks.com/collections/vitamin-tests',
-  'https://www.medichecks.com/collections/heart-tests',
-  'https://www.medichecks.com/collections/diabetes-tests',
+  'https://www.medichecks.com/collections/best-sellers',
+  'https://www.medichecks.com/collections/all',
   'https://www.medichecks.com/collections/mens-health',
   'https://www.medichecks.com/collections/womens-health',
-  'https://www.medichecks.com/collections/sports-tests',
-  'https://www.medichecks.com/collections/fertility-tests',
-  'https://www.medichecks.com/collections/liver-tests',
-  'https://www.medichecks.com/collections/kidney-tests',
-  'https://www.medichecks.com/collections/all',
+  'https://www.medichecks.com/collections/heart-tests',
+  'https://www.medichecks.com/collections/featured-tests',
 ];
 
-// Known product URLs - updated to /products/ structure
+// Known working product URLs - verified on Medichecks site Feb 2026
 const knownProductUrls = [
-  'https://www.medichecks.com/products/thyroid-function-blood-test',
-  'https://www.medichecks.com/products/advanced-thyroid-function-blood-test',
   'https://www.medichecks.com/products/ultimate-performance-blood-test',
-  'https://www.medichecks.com/products/vitamin-d-blood-test',
-  'https://www.medichecks.com/products/testosterone-blood-test',
-  'https://www.medichecks.com/products/diabetes-hba1c-blood-test',
-  'https://www.medichecks.com/products/advanced-well-man-blood-test',
-  'https://www.medichecks.com/products/advanced-well-woman-blood-test',
-  'https://www.medichecks.com/products/cholesterol-blood-test',
-  'https://www.medichecks.com/products/liver-function-blood-test',
-  'https://www.medichecks.com/products/female-fertility-blood-test',
-  'https://www.medichecks.com/products/male-fertility-blood-test',
-  'https://www.medichecks.com/products/iron-status-blood-test',
-  'https://www.medichecks.com/products/sports-hormone-blood-test',
-  'https://www.medichecks.com/products/tiredness-fatigue-blood-test',
-  'https://www.medichecks.com/products/full-blood-count',
-  'https://www.medichecks.com/products/menopause-health-blood-test',
-  'https://www.medichecks.com/products/pcos-blood-test',
-  'https://www.medichecks.com/products/cortisol-blood-test',
-  'https://www.medichecks.com/products/vitamin-b12-blood-test',
-  'https://www.medichecks.com/products/kidney-function-blood-test',
-  'https://www.medichecks.com/products/inflammation-check-blood-test',
-  'https://www.medichecks.com/products/psa-prostate-blood-test',
-  'https://www.medichecks.com/products/male-hormone-blood-test',
-  'https://www.medichecks.com/products/female-hormone-blood-test',
-  'https://www.medichecks.com/products/baseline-health-blood-test',
-  'https://www.medichecks.com/products/essential-health-blood-test',
-  'https://www.medichecks.com/products/comprehensive-health-blood-test',
   'https://www.medichecks.com/products/optimal-health-blood-test',
-  'https://www.medichecks.com/products/baseline-plus-blood-test',
+  'https://www.medichecks.com/products/well-woman-advanced-blood-test',
+  'https://www.medichecks.com/products/well-man-advanced-blood-test',
+  'https://www.medichecks.com/products/testosterone-blood-test',
+  'https://www.medichecks.com/products/advanced-thyroid-function-blood-test',
+  'https://www.medichecks.com/products/thyroid-function-blood-test',
+  'https://www.medichecks.com/products/female-hormone-blood-test',
+  'https://www.medichecks.com/products/male-hormone-blood-test',
+  'https://www.medichecks.com/products/advanced-female-hormone-blood-test',
+  'https://www.medichecks.com/products/health-and-lifestyle-blood-test',
+  'https://www.medichecks.com/products/advanced-trt-testosterone-replacement-therapy-blood-test',
+  'https://www.medichecks.com/products/cortisol-blood-test',
+  'https://www.medichecks.com/products/coeliac-blood-test',
+  'https://www.medichecks.com/products/sports-hormone-blood-test',
 ];
 
 // Comprehensive biomarker keywords for extraction
@@ -176,25 +154,57 @@ function extractPrice(html: string): { current: number | null; original: number 
   let current: number | null = null;
   let original: number | null = null;
   
-  // Shopify JSON-LD price patterns
-  const pricePatterns = [
-    /"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/gi,
-    /"offers"\s*:\s*\{[^}]*"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-    /"lowPrice"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-    /data-product-price[^>]*>\s*£?(\d+(?:\.\d{1,2})?)/i,
-    /class="[^"]*price[^"]*"[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
-    />£(\d+(?:\.\d{1,2})?)</i,
-    /£(\d+(?:\.\d{1,2})?)/i,
+  // Priority 1: Look for price in the sidebar/main content area (e.g., £45)
+  // The price appears in spans like <span class="...text-xl lg:text-2xl...">£45</span>
+  const sidebarPricePatterns = [
+    /class="[^"]*tracking-0[^"]*"[^>]*>\s*£(\d+(?:\.\d{1,2})?)/gi,
+    /class="[^"]*text-xl[^"]*"[^>]*>\s*£(\d+(?:\.\d{1,2})?)/gi,
+    /class="[^"]*font-medium[^"]*"[^>]*>\s*£(\d+(?:\.\d{1,2})?)/gi,
   ];
   
-  for (const pattern of pricePatterns) {
-    const match = html.match(pattern);
-    if (match && match[1]) {
+  for (const pattern of sidebarPricePatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
       const price = parseFloat(match[1]);
-      if (price > 0 && price < 2000) { // Reasonable price range
+      if (price > 0 && price < 2000) {
         current = price;
         break;
       }
+    }
+    if (current) break;
+  }
+  
+  // Priority 2: JSON-LD structured data
+  if (!current) {
+    const jsonLdMatch = html.match(/"@type"\s*:\s*"Product"[\s\S]*?"offers"[\s\S]*?"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i);
+    if (jsonLdMatch && jsonLdMatch[1]) {
+      const price = parseFloat(jsonLdMatch[1]);
+      if (price > 0 && price < 2000) {
+        current = price;
+      }
+    }
+  }
+  
+  // Priority 3: Simple £ price extraction from visible content
+  if (!current) {
+    const simplePricePattern = />\s*£(\d+(?:\.\d{1,2})?)\s*</g;
+    const prices: number[] = [];
+    let match;
+    while ((match = simplePricePattern.exec(html)) !== null) {
+      const price = parseFloat(match[1]);
+      if (price > 10 && price < 2000) {
+        prices.push(price);
+      }
+    }
+    // Get the most common price (likely the main price)
+    if (prices.length > 0) {
+      const priceCount = prices.reduce((acc, p) => {
+        acc[p] = (acc[p] || 0) + 1;
+        return acc;
+      }, {} as Record<number, number>);
+      current = Object.entries(priceCount)
+        .sort((a, b) => b[1] - a[1])[0]?.[0] as unknown as number || prices[0];
+      current = Number(current);
     }
   }
   
@@ -204,14 +214,13 @@ function extractPrice(html: string): { current: number | null; original: number 
     /"compare_at_price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
     /class="[^"]*was[^"]*"[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
     /<del[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
-    /class="[^"]*compare[^"]*"[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
   ];
   
   for (const pattern of originalPatterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
       const price = parseFloat(match[1]);
-      if (price > 0 && price < 2000) {
+      if (price > 0 && price < 2000 && price !== current) {
         original = price;
         break;
       }
@@ -465,8 +474,15 @@ Deno.serve(async (req) => {
     let priceUpdateCount = 0;
     
     for (const product of scrapedProducts) {
-      // Only upsert if we have a valid price
-      const dataToUpsert = {
+      // Check if test already exists by URL
+      const { data: existing } = await supabase
+        .from('provider_tests')
+        .select('id')
+        .eq('provider_id', 'medichecks')
+        .eq('url', product.url)
+        .maybeSingle();
+
+      const dataToUpdate = {
         provider_id: 'medichecks',
         test_name: product.test_name,
         url: product.url,
@@ -485,21 +501,31 @@ Deno.serve(async (req) => {
 
       // Include price if we found one
       if (product.price !== null) {
-        Object.assign(dataToUpsert, {
+        Object.assign(dataToUpdate, {
           price: product.price,
           original_price: product.original_price,
         });
         priceUpdateCount++;
       }
 
-      const { error } = await supabase
-        .from('provider_tests')
-        .upsert(dataToUpsert, {
-          onConflict: 'provider_id,test_name',
-        });
+      let error;
+      if (existing) {
+        // Update existing record
+        const result = await supabase
+          .from('provider_tests')
+          .update(dataToUpdate)
+          .eq('id', existing.id);
+        error = result.error;
+      } else {
+        // Insert new record
+        const result = await supabase
+          .from('provider_tests')
+          .insert(dataToUpdate);
+        error = result.error;
+      }
       
       if (error) {
-        console.error(`Failed to upsert ${product.test_name}:`, error.message);
+        console.error(`Failed to save ${product.test_name}:`, error.message);
       } else {
         upsertedCount++;
       }
