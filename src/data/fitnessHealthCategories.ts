@@ -54,7 +54,7 @@ export const fitnessHealthCategories: FitnessCategory[] = [
     description: 'Advanced testing for competitive athletes seeking data-driven performance gains',
     color: '#081129',
     testCount: 6,
-    link: '/compare?category=fitness-health'
+    link: '/compare?category=fitness-health&test=performance-optimization'
   }
 ];
 
@@ -344,5 +344,45 @@ export const athleteTests: FitnessTest[] = [
   }
 ];
 
+// Performance Optimization Tests
+export const performanceOptimizationTests: FitnessTest[] = [
+  {
+    id: 'goodbody-sports-fitness',
+    name: 'Sports and Fitness Blood Test',
+    provider: 'Good Body Clinic',
+    price: 99,
+    turnaroundTime: '2-3 working days',
+    biomarkerCount: 11,
+    biomarkers: [
+      'Albumin',
+      'DHEA-Sulphate',
+      'Follicular Stimulating Hormone (FSH)',
+      'Free Androgen Index',
+      'Free Testosterone (Calculated)',
+      'Luteinizing Hormone (LH)',
+      'Oestradiol',
+      'Prolactin',
+      'Sex Hormone Binding Globulin (SHBG)',
+      'Testosterone',
+      'Progesterone'
+    ],
+    description: 'Comprehensive sports blood test checking key hormones and proteins for sports performance and fitness. Hormones impact fitness levels, fat storage, muscle mass, bone strength and endurance. Ideal for athletes, bodybuilders, gym enthusiasts and anyone wanting to optimise their training.',
+    whoShouldTest: [
+      'Athletes and fitness enthusiasts',
+      'Bodybuilders and gym-goers',
+      'Those struggling with low energy or slow recovery',
+      'Anyone wanting to optimise sports performance'
+    ],
+    sampleType: 'Blood (Finger Prick or Venous)',
+    url: 'https://goodbodyclinic.com/products/sports-and-fitness-blood-test',
+    category: 'general-athlete',
+    features: {
+      phlebotomyIncluded: false,
+      homeKitAvailable: true,
+      clinicVisitAvailable: true
+    }
+  }
+];
+
 // Combined all fitness tests
-export const allFitnessTests: FitnessTest[] = [...bodybuildingTests, ...athleteTests];
+export const allFitnessTests: FitnessTest[] = [...bodybuildingTests, ...athleteTests, ...performanceOptimizationTests];

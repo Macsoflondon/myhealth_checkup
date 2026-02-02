@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { fitnessHealthCategories, bodybuildingTests, athleteTests } from "@/data/fitnessHealthCategories";
+import { fitnessHealthCategories, bodybuildingTests, athleteTests, performanceOptimizationTests } from "@/data/fitnessHealthCategories";
 import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap, ExternalLink, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
@@ -166,6 +166,51 @@ const SportsPerformancePage = () => {
           </div>
         </section>
 
+        {/* Categories Section - Moved to top */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <SectionHeading 
+                title="Fitness Health" 
+                gradientText="Categories" 
+                className="mb-4"
+              />
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Explore specialized testing categories designed for athletes and fitness enthusiasts
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+              {fitnessHealthCategories.map(category => {
+              const IconComponent = category.icon;
+              return <Card key={category.id} className="hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-brand-pink group" onClick={() => navigate(category.link)}>
+                    <CardHeader>
+                      <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-3" style={{
+                    backgroundColor: `${category.color}20`
+                  }}>
+                        <IconComponent className="w-6 h-6" style={{
+                      color: category.color
+                    }} />
+                      </div>
+                      <CardTitle className="text-lg group-hover:text-brand-pink transition-colors">
+                        {category.name}
+                      </CardTitle>
+                      <CardDescription>{category.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Badge className="mb-4 bg-brand-pink text-white">
+                        {category.testCount} Tests Available
+                      </Badge>
+                      <Button variant="ghost" className="w-full group-hover:bg-brand-pink group-hover:text-white transition-colors">
+                        View Tests
+                      </Button>
+                    </CardContent>
+                  </Card>;
+            })}
+            </div>
+          </div>
+        </section>
+
         {/* Featured Bodybuilding Profile Tests */}
         <section className="py-16 bg-gradient-to-b from-muted/30 to-background">
           <div className="container mx-auto px-4">
@@ -182,16 +227,16 @@ const SportsPerformancePage = () => {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {bodybuildingTests.map((test) => (
-                <Card key={test.id} className="border-2 hover:border-[#E70D69] transition-all duration-300 hover:shadow-xl overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-[#081129] to-[#081129]/90 text-white">
+                <Card key={test.id} className="border-2 hover:border-brand-pink transition-all duration-300 hover:shadow-xl overflow-hidden">
+                  <CardHeader className="bg-gradient-to-r from-brand-navy to-brand-navy/90 text-white">
                     <div className="flex justify-between items-start">
                       <div>
-                        <Badge className="bg-[#E70D69] text-white mb-2">Bodybuilding</Badge>
+                        <Badge className="bg-brand-pink text-white mb-2">Bodybuilding</Badge>
                         <CardTitle className="text-2xl text-white">{test.name}</CardTitle>
                         <CardDescription className="text-white/80">{test.provider}</CardDescription>
                       </div>
                       <div className="text-right">
-                        <span className="text-3xl font-bold text-[#22C0D4]">£{test.price}</span>
+                        <span className="text-3xl font-bold text-brand-turquoise">£{test.price}</span>
                       </div>
                     </div>
                   </CardHeader>
@@ -200,11 +245,11 @@ const SportsPerformancePage = () => {
                     
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div className="flex items-center gap-2 text-sm">
-                        <Beaker className="w-4 h-4 text-[#E70D69]" />
+                        <Beaker className="w-4 h-4 text-brand-pink" />
                         <span className="font-medium">{test.biomarkerCount} Biomarkers</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <Clock className="w-4 h-4 text-[#22C0D4]" />
+                        <Clock className="w-4 h-4 text-brand-turquoise" />
                         <span>{test.turnaroundTime}</span>
                       </div>
                     </div>
@@ -230,7 +275,7 @@ const SportsPerformancePage = () => {
                       <ul className="text-sm text-muted-foreground space-y-1">
                         {test.whoShouldTest.slice(0, 2).map((item, i) => (
                           <li key={i} className="flex items-start gap-2">
-                            <Check className="w-4 h-4 text-[#22C0D4] mt-0.5 flex-shrink-0" />
+                            <Check className="w-4 h-4 text-brand-turquoise mt-0.5 flex-shrink-0" />
                             <span>{item}</span>
                           </li>
                         ))}
@@ -251,7 +296,7 @@ const SportsPerformancePage = () => {
                     </div>
                     
                     <Button 
-                      className="w-full bg-[#E70D69] hover:bg-[#E70D69]/90 text-white"
+                      className="w-full bg-brand-pink hover:bg-brand-pink/90 text-white"
                       onClick={() => window.open(test.url, '_blank')}
                     >
                       Book Now
@@ -329,7 +374,7 @@ const SportsPerformancePage = () => {
                     </div>
                     
                     <Button 
-                      className="w-full bg-[#22C0D4] hover:bg-[#22C0D4]/90 text-white"
+                      className="w-full bg-brand-turquoise hover:bg-brand-turquoise/90 text-white"
                       onClick={() => window.open(test.url, '_blank')}
                     >
                       Book Now
@@ -358,7 +403,7 @@ const SportsPerformancePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {benefits.map((benefit, index) => <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardHeader>
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-[#e70d69] shadow-lg">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-brand-pink shadow-lg">
                       <benefit.icon className="w-8 h-8 text-white" />
                     </div>
                     <CardTitle className="text-xl">{benefit.title}</CardTitle>
@@ -367,51 +412,6 @@ const SportsPerformancePage = () => {
                     <p className="text-muted-foreground">{benefit.description}</p>
                   </CardContent>
                 </Card>)}
-            </div>
-          </div>
-        </section>
-
-        {/* Categories Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Fitness Health" 
-                gradientText="Categories" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Explore specialized testing categories designed for athletes and fitness enthusiasts
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
-              {fitnessHealthCategories.map(category => {
-              const IconComponent = category.icon;
-              return <Card key={category.id} className="hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-[#FA6980] group" onClick={() => navigate(category.link)}>
-                    <CardHeader>
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-3" style={{
-                    backgroundColor: `${category.color}20`
-                  }}>
-                        <IconComponent className="w-6 h-6" style={{
-                      color: category.color
-                    }} />
-                      </div>
-                      <CardTitle className="text-lg group-hover:text-[#FA6980] transition-colors">
-                        {category.name}
-                      </CardTitle>
-                      <CardDescription>{category.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge variant="secondary" className="mb-4">
-                        {category.testCount} Tests Available
-                      </Badge>
-                      <Button variant="ghost" className="w-full group-hover:bg-[#FA6980] group-hover:text-white transition-colors">
-                        View Tests
-                      </Button>
-                    </CardContent>
-                  </Card>;
-            })}
             </div>
           </div>
         </section>
