@@ -49,13 +49,13 @@ const Header = ({
           <div className="container mx-auto px-4">
             {/* Top row: Logo + Navigation controls */}
             <div className="py-2 flex items-center justify-between">
-              {/* Logo - with glow effect, shifted left ~1.5cm total */}
-              <Link to="/" className="flex items-center flex-shrink-0 -ml-10" style={{ overflow: 'visible' }}>
+              {/* Logo - positioned at far left edge */}
+              <Link to="/" className="flex items-center flex-shrink-0 -ml-4" style={{ overflow: 'visible' }}>
                 <AnimatedLogo className="h-32 xs:h-40" />
               </Link>
 
-              {/* Navigation controls - shifted right ~1cm */}
-              <nav className="flex items-center gap-1 -mr-5" aria-label="User controls">
+              {/* Navigation controls - positioned at far right edge */}
+              <nav className="flex items-center gap-1 -mr-2" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu isMobile />
                 <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -85,8 +85,8 @@ const Header = ({
         <div className="bg-[#081129]">
           <div className="container mx-auto px-4 lg:px-8 xl:px-12">
             <div className="relative flex items-center justify-between py-3 lg:py-4">
-              {/* Left: Logo - with glow effect, shifted left ~1.5cm total */}
-              <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 -ml-10" style={{ overflow: 'visible' }}>
+              {/* Left: Logo - positioned at far left edge */}
+              <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 -ml-8 lg:-ml-12 xl:-ml-16" style={{ overflow: 'visible' }}>
                 <AnimatedLogo className="h-32 lg:h-40 xl:h-48" />
               </Link>
 
@@ -99,8 +99,8 @@ const Header = ({
                 </p>
               </div>
 
-              {/* Right: Controls - shifted right ~1cm */}
-              <nav className="flex items-center gap-3 -mr-5" aria-label="User controls">
+              {/* Right: Controls - positioned at far right edge */}
+              <nav className="flex items-center gap-3 -mr-4 lg:-mr-8 xl:-mr-12" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu />
               </nav>
