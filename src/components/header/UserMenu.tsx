@@ -1,5 +1,5 @@
-import { useNavigate, Link } from "react-router-dom";
-import { User, LogOut, LayoutDashboard } from "lucide-react";
+import { Link } from "react-router-dom";
+import { User, LogOut, LayoutDashboard, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,7 +17,6 @@ interface UserMenuProps {
 export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
   const { user, signOut } = useAuth();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const handleSignOut = async () => {
     await signOut();
     onItemClick?.();
@@ -41,6 +40,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
               <Link to="/dashboard" className="flex items-center gap-2" onClick={onItemClick}>
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/health-dashboard" className="flex items-center gap-2" onClick={onItemClick}>
+                <Activity className="h-4 w-4" />
+                Health Dashboard
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -85,6 +90,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Link to="/dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/health-dashboard" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Health Dashboard
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
