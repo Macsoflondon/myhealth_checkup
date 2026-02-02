@@ -86,8 +86,10 @@ const Hero = () => {
         <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Headline - Clear promise in plain language */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-brand-navy leading-tight mb-4 sm:mb-6">
-              Compare private blood tests from trusted UK providers
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight mb-4 sm:mb-6">
+              <span className="text-brand-navy">Compare the UK's leading private health test providers -</span>
+              <br />
+              <span className="text-brand-pink">All in one place!</span>
             </h1>
             
             {/* Subheading - What you get, no waffle */}
