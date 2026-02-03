@@ -46,16 +46,16 @@ const Header = ({
   if (isMobile) {
     return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md border-b-2 border-[#e70d69]", className)}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-3 sm:px-4">
             {/* Top row: Logo + Navigation controls */}
-            <div className="py-2 flex items-center justify-between">
-              {/* Logo - positioned at far left edge */}
-              <Link to="/" className="flex items-center flex-shrink-0 -ml-4" style={{ overflow: 'visible' }}>
-                <AnimatedLogo className="h-32 xs:h-40" />
+            <div className="py-1.5 sm:py-2 flex items-center justify-between">
+              {/* Logo - positioned at far left edge with mobile-first sizing */}
+              <Link to="/" className="flex items-center flex-shrink-0 -ml-2 sm:-ml-4" style={{ overflow: 'visible' }}>
+                <AnimatedLogo className="h-16 xs:h-20 sm:h-24" />
               </Link>
 
               {/* Navigation controls - positioned at far right edge */}
-              <nav className="flex items-center gap-1 -mr-2" aria-label="User controls">
+              <nav className="flex items-center gap-0.5 xs:gap-1 -mr-1 sm:-mr-2" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu isMobile />
                 <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -63,8 +63,8 @@ const Header = ({
             </div>
 
             {/* Bottom row: Tagline - full width, centred */}
-            <div className="pb-3 flex justify-center">
-              <p className="text-xs xs:text-sm sm:text-base font-bold tracking-wide text-center whitespace-nowrap">
+            <div className="pb-2 sm:pb-3 flex justify-center">
+              <p className="text-[10px] xs:text-xs sm:text-sm font-bold tracking-wide text-center whitespace-nowrap">
                 <span className="text-[#22c0d4]">Your Health.</span>{" "}
                 <span className="text-[#e70d69]">Your Choice.</span>{" "}
                 <span className="text-white">One Trusted Platform!</span>
