@@ -37,6 +37,12 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      
+      // Don't close if clicking on a link inside the dropdown - let navigation happen first
+      if (target.closest('a[href]')) {
+        return;
+      }
+      
       if (!target.closest('.nav-item-wrapper') && !target.closest('.dropdown-content')) {
         setActiveDropdown(null);
       }
