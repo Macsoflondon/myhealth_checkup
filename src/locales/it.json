@@ -2,7 +2,8 @@
   "common": {
     "signIn": "Accedi",
     "signUp": "Registrati",
-    "search": "Cerca",
+    "search": "Cerca test sanitari...",
+    "searchPlaceholder": "Cerca test sanitari, condizioni o sintomi",
     "loading": "Caricamento...",
     "error": "Errore",
     "success": "Successo",
@@ -64,18 +65,40 @@
     "wellWomanTest": "Test Well Woman"
   },
   "footer": {
-    "tagline": "La tua salute è il nostro obiettivo",
+    "tagline": "La tua salute è il tuo più grande tesoro!",
     "quickLinks": "Link rapidi",
     "categories": "Categorie",
     "support": "Supporto",
     "legal": "Legale",
-    "newsletter": {
-      "title": "Rimani aggiornato",
-      "description": "Iscriviti alla nostra newsletter per consigli sulla salute e offerte esclusive.",
-      "placeholder": "Inserisci la tua email",
-      "subscribe": "Iscriviti"
-    },
-    "copyright": "© 2024 HealthCompare. Tutti i diritti riservati."
+    "followUs": "Seguici",
+    "newsletter": "Newsletter",
+    "newsletterText": "Rimani aggiornato con le ultime informazioni sulla salute e raccomandazioni sui test",
+    "emailPlaceholder": "Inserisci la tua email",
+    "subscribe": "Iscriviti",
+    "copyright": "© 2024 My Health Checkup. Tutti i diritti riservati.",
+    "links": {
+      "aboutUs": "Chi siamo",
+      "howItWorks": "Come funziona",
+      "findClinic": "Trova clinica",
+      "contact": "Contatti",
+      "blog": "Blog",
+      "faqs": "FAQ",
+      "mensHealth": "Salute maschile",
+      "womensHealth": "Salute femminile",
+      "heartHealth": "Salute del cuore",
+      "diabetes": "Diabete",
+      "thyroid": "Tiroide",
+      "fertility": "Fertilità",
+      "support": "Supporto",
+      "partners": "Partner",
+      "accessibility": "Accessibilità",
+      "sitemap": "Mappa del sito",
+      "privacyPolicy": "Politica sulla privacy",
+      "termsConditions": "Termini e condizioni",
+      "cookiePolicy": "Politica dei cookie",
+      "affiliateDisclosure": "Divulgazione affiliati",
+      "modernSlavery": "Dichiarazione sulla schiavitù moderna"
+    }
   },
   "language": {
     "selectLanguage": "Seleziona lingua",

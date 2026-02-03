@@ -2,7 +2,8 @@
   "common": {
     "signIn": "登录",
     "signUp": "注册",
-    "search": "搜索",
+    "search": "搜索健康检测...",
+    "searchPlaceholder": "搜索健康检测、疾病或症状",
     "loading": "加载中...",
     "error": "错误",
     "success": "成功",
@@ -13,13 +14,13 @@
     "previous": "上一步",
     "learnMore": "了解更多",
     "getStarted": "开始",
-    "compareTests": "比较测试",
+    "compareTests": "比较检测",
     "bookNow": "立即预订",
     "viewDetails": "查看详情"
   },
   "navigation": {
     "home": "首页",
-    "compareTests": "比较测试",
+    "compareTests": "比较检测",
     "categories": "分类",
     "howItWorks": "工作原理",
     "about": "关于我们",
@@ -64,18 +65,40 @@
     "wellWomanTest": "女性健康检测"
   },
   "footer": {
-    "tagline": "您的健康是我们的目标",
+    "tagline": "您的健康是您最大的财富！",
     "quickLinks": "快速链接",
     "categories": "分类",
     "support": "支持",
     "legal": "法律",
-    "newsletter": {
-      "title": "保持更新",
-      "description": "订阅我们的通讯，获取健康建议和独家优惠。",
-      "placeholder": "输入您的邮箱",
-      "subscribe": "订阅"
-    },
-    "copyright": "© 2024 HealthCompare. 保留所有权利。"
+    "followUs": "关注我们",
+    "newsletter": "新闻通讯",
+    "newsletterText": "订阅以获取最新的健康见解和检测推荐",
+    "emailPlaceholder": "输入您的邮箱",
+    "subscribe": "订阅",
+    "copyright": "© 2024 My Health Checkup. 保留所有权利。",
+    "links": {
+      "aboutUs": "关于我们",
+      "howItWorks": "工作原理",
+      "findClinic": "查找诊所",
+      "contact": "联系我们",
+      "blog": "博客",
+      "faqs": "常见问题",
+      "mensHealth": "男性健康",
+      "womensHealth": "女性健康",
+      "heartHealth": "心脏健康",
+      "diabetes": "糖尿病",
+      "thyroid": "甲状腺",
+      "fertility": "生育",
+      "support": "支持",
+      "partners": "合作伙伴",
+      "accessibility": "无障碍",
+      "sitemap": "网站地图",
+      "privacyPolicy": "隐私政策",
+      "termsConditions": "条款和条件",
+      "cookiePolicy": "Cookie政策",
+      "affiliateDisclosure": "联盟披露",
+      "modernSlavery": "现代奴隶制声明"
+    }
   },
   "language": {
     "selectLanguage": "选择语言",

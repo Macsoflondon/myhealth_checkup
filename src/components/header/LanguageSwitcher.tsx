@@ -9,9 +9,11 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useGoogleTranslate } from '@/hooks/useGoogleTranslate';
+import { Loader2 } from 'lucide-react';
 
+// All languages with GB English as the base
 const languages = [
-  { code: 'en', name: 'English (UK)', flag: '🇬🇧' },
+  { code: 'en', name: 'English (UK)', flag: '🇬🇧', isBase: true },
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
@@ -28,6 +30,7 @@ export const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('en');
+  const [isTranslating, setIsTranslating] = useState(false);
   const { translateTo } = useGoogleTranslate();
 
   // Check for existing Google Translate cookie on mount
@@ -38,7 +41,10 @@ export const LanguageSwitcher = () => {
       const langMatch = googtrans.match(/\/en\/([a-z-]+)/i);
       if (langMatch) {
         const langCode = langMatch[1].split('-')[0]; // Handle zh-CN -> zh
-        setSelectedLang(langCode);
+        const validLang = languages.find(l => l.code === langCode);
+        if (validLang) {
+          setSelectedLang(langCode);
+        }
       }
     }
   }, []);
@@ -46,12 +52,21 @@ export const LanguageSwitcher = () => {
   const currentLanguage = languages.find(lang => lang.code === selectedLang) || languages[0];
 
   const handleLanguageChange = (languageCode: string) => {
+    if (languageCode === selectedLang) {
+      setIsOpen(false);
+      return;
+    }
+    
+    setIsTranslating(true);
     setSelectedLang(languageCode);
     i18n.changeLanguage(languageCode);
     setIsOpen(false);
     
-    // Trigger Google Translate for dynamic translation
-    translateTo(languageCode);
+    // Trigger Google Translate for dynamic page translation
+    // Small delay to show loading state
+    setTimeout(() => {
+      translateTo(languageCode);
+    }, 100);
   };
 
   return (
@@ -62,31 +77,45 @@ export const LanguageSwitcher = () => {
           size="sm" 
           className="h-12 w-12 p-2 text-[#e70d69] hover:text-white hover:bg-white/20 border-2 border-[#e70d69]/60 hover:border-white rounded-lg transition-colors flex-shrink-0"
           aria-label={t('language.selectLanguage')}
+          disabled={isTranslating}
         >
-          <span className="text-2xl">{currentLanguage.flag}</span>
+          {isTranslating ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <span className="text-2xl">{currentLanguage.flag}</span>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52 bg-white dark:bg-gray-800 z-[100] shadow-xl border-2">
-        <div className="px-2 py-1.5">
-          <p className="text-xs text-gray-500 font-medium">Select Language</p>
-          <p className="text-[10px] text-gray-400">Powered by Google Translate</p>
+      <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-gray-800 z-[100] shadow-xl border-2">
+        <div className="px-3 py-2">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select Language</p>
+          <p className="text-[10px] text-gray-400 mt-0.5">Powered by Google Translate</p>
         </div>
         <DropdownMenuSeparator />
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
-            className={`flex items-center gap-3 cursor-pointer ${
-              selectedLang === language.code ? 'bg-[#22c0d4]/10 text-[#22c0d4]' : ''
+            className={`flex items-center gap-3 cursor-pointer py-2.5 ${
+              selectedLang === language.code 
+                ? 'bg-[#22c0d4]/10 text-[#22c0d4] font-medium' 
+                : 'hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             <span className="text-lg">{language.flag}</span>
-            <span className="text-sm">{language.name}</span>
+            <span className="text-sm flex-1">{language.name}</span>
+            {language.isBase && (
+              <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">Base</span>
+            )}
             {selectedLang === language.code && (
-              <span className="ml-auto text-[#22c0d4]">✓</span>
+              <span className="text-[#22c0d4]">✓</span>
             )}
           </DropdownMenuItem>
         ))}
+        <DropdownMenuSeparator />
+        <div className="px-3 py-2 text-[10px] text-gray-400">
+          Base language: British English (GB)
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
