@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { TestResultUploader } from "./TestResultUploader";
 import { TestResultsTimeline } from "./TestResultsTimeline";
 import { HealthScoreCard } from "./HealthScoreCard";
+import { StoredBiomarkerAnalysis } from "./StoredBiomarkerAnalysis";
 import PageHeading from "@/components/ui/page-heading";
 export const HealthDataHub = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -106,6 +107,9 @@ export const HealthDataHub = () => {
           </Card>
 
           <HealthScoreCard />
+
+          {/* Stored Biomarker Analysis */}
+          <StoredBiomarkerAnalysis />
           
           <Card className="p-6 border-2">
             <h3 className="text-xl font-semibold mb-4 text-brand-navy">Getting Started</h3>
