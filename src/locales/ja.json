@@ -2,7 +2,8 @@
   "common": {
     "signIn": "ログイン",
     "signUp": "サインアップ",
-    "search": "検索",
+    "search": "健康検査を検索...",
+    "searchPlaceholder": "健康検査、症状または疾患を検索",
     "loading": "読み込み中...",
     "error": "エラー",
     "success": "成功",
@@ -64,18 +65,40 @@
     "wellWomanTest": "女性健康検査"
   },
   "footer": {
-    "tagline": "あなたの健康が私たちの目標です",
+    "tagline": "あなたの健康は最大の財産です！",
     "quickLinks": "クイックリンク",
     "categories": "カテゴリー",
     "support": "サポート",
     "legal": "法的事項",
-    "newsletter": {
-      "title": "最新情報をお届け",
-      "description": "健康のヒントと限定オファーを受け取るため、ニュースレターにご登録ください。",
-      "placeholder": "メールアドレスを入力",
-      "subscribe": "登録"
-    },
-    "copyright": "© 2024 HealthCompare. 全著作権所有。"
+    "followUs": "フォローする",
+    "newsletter": "ニュースレター",
+    "newsletterText": "最新の健康情報と検査のおすすめを受け取る",
+    "emailPlaceholder": "メールアドレスを入力",
+    "subscribe": "登録",
+    "copyright": "© 2024 My Health Checkup. 全著作権所有。",
+    "links": {
+      "aboutUs": "私たちについて",
+      "howItWorks": "仕組み",
+      "findClinic": "クリニック検索",
+      "contact": "お問い合わせ",
+      "blog": "ブログ",
+      "faqs": "よくある質問",
+      "mensHealth": "男性の健康",
+      "womensHealth": "女性の健康",
+      "heartHealth": "心臓の健康",
+      "diabetes": "糖尿病",
+      "thyroid": "甲状腺",
+      "fertility": "不妊治療",
+      "support": "サポート",
+      "partners": "パートナー",
+      "accessibility": "アクセシビリティ",
+      "sitemap": "サイトマップ",
+      "privacyPolicy": "プライバシーポリシー",
+      "termsConditions": "利用規約",
+      "cookiePolicy": "Cookieポリシー",
+      "affiliateDisclosure": "アフィリエイト開示",
+      "modernSlavery": "現代奴隷制声明"
+    }
   },
   "language": {
     "selectLanguage": "言語を選択",

@@ -2,7 +2,8 @@
   "common": {
     "signIn": "تسجيل الدخول",
     "signUp": "إنشاء حساب",
-    "search": "البحث",
+    "search": "البحث عن اختبارات صحية...",
+    "searchPlaceholder": "البحث عن اختبارات صحية أو حالات أو أعراض",
     "loading": "جار التحميل...",
     "error": "خطأ",
     "success": "نجح",
@@ -61,21 +62,43 @@
     "maleHormoneTest": "اختبار الهرمونات الذكورية",
     "vitaminDTest": "اختبار فيتامين د",
     "ironProfile": "ملف الحديد",
-    "wellWomanTest": "اختبار Well Woman"
+    "wellWomanTest": "اختبار صحة المرأة"
   },
   "footer": {
-    "tagline": "صحتك هي هدفنا",
+    "tagline": "صحتك هي أعظم كنوزك!",
     "quickLinks": "روابط سريعة",
     "categories": "الفئات",
     "support": "الدعم",
     "legal": "قانوني",
-    "newsletter": {
-      "title": "ابق محدثاً",
-      "description": "اشترك في نشرتنا الإخبارية للحصول على نصائح صحية وعروض حصرية.",
-      "placeholder": "أدخل بريدك الإلكتروني",
-      "subscribe": "اشتراك"
-    },
-    "copyright": "© 2024 HealthCompare. جميع الحقوق محفوظة."
+    "followUs": "تابعنا",
+    "newsletter": "النشرة الإخبارية",
+    "newsletterText": "ابق على اطلاع بأحدث الرؤى الصحية وتوصيات الاختبارات",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "subscribe": "اشتراك",
+    "copyright": "© 2024 My Health Checkup. جميع الحقوق محفوظة.",
+    "links": {
+      "aboutUs": "معلومات عنا",
+      "howItWorks": "كيف يعمل",
+      "findClinic": "العثور على عيادة",
+      "contact": "اتصل بنا",
+      "blog": "المدونة",
+      "faqs": "الأسئلة الشائعة",
+      "mensHealth": "صحة الرجل",
+      "womensHealth": "صحة المرأة",
+      "heartHealth": "صحة القلب",
+      "diabetes": "السكري",
+      "thyroid": "الغدة الدرقية",
+      "fertility": "الخصوبة",
+      "support": "الدعم",
+      "partners": "الشركاء",
+      "accessibility": "إمكانية الوصول",
+      "sitemap": "خريطة الموقع",
+      "privacyPolicy": "سياسة الخصوصية",
+      "termsConditions": "الشروط والأحكام",
+      "cookiePolicy": "سياسة ملفات تعريف الارتباط",
+      "affiliateDisclosure": "إفصاح الشركاء التابعين",
+      "modernSlavery": "بيان العبودية الحديثة"
+    }
   },
   "language": {
     "selectLanguage": "اختر اللغة",

@@ -3,8 +3,8 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://myhealthhub.com/sitemap.xml
+# Sitemap - Updated to correct domain
+Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
 
 # Important routes
 Allow: /compare

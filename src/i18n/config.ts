@@ -57,7 +57,8 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    lng: 'en', // Default to GB English
+    lng: 'en', // Default to GB English (en = en-GB for this platform)
+    supportedLngs: ['en', 'fr', 'es', 'de', 'it', 'pt', 'nl', 'pl', 'ar', 'zh', 'ja'],
     debug: false,
 
     interpolation: {
@@ -68,6 +69,11 @@ i18n
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
       lookupLocalStorage: 'i18nextLng',
+      // Map en-GB and en-US to our 'en' which is GB English
+      convertDetectedLanguage: (lng: string) => {
+        if (lng.startsWith('en')) return 'en'; // All English variants use GB English
+        return lng.split('-')[0]; // Use base language code
+      },
     },
   });
 
