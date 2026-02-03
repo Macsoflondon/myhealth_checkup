@@ -82,59 +82,59 @@ const Hero = () => {
       </section>
       
       {/* Main Hero Content - Clear promise, immediate action */}
-      <section className="bg-background py-10 sm:py-14 md:py-16 lg:py-20">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+      <section className="bg-background py-6 sm:py-10 md:py-14 lg:py-20">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Headline - Clear promise in plain language */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-snug mb-4 sm:mb-6">
+            {/* Headline - Clear promise in plain language, mobile-first sizing */}
+            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="text-brand-navy block">Compare the UK's leading private health test providers -</span>
               <span className="text-brand-pink block mt-1 sm:mt-2">All in one place!</span>
             </h1>
             
             {/* Subheading - What you get, no waffle */}
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground font-sans mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-sans mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
               Prices, biomarkers, and turnaround times in one place.
               <br className="hidden sm:block" />
               No GP referral. UK accredited labs only.
             </p>
             
             {/* Primary & Secondary CTAs - Immediate action path */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-10">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">
               <Button 
-                size="lg" 
+                size="default"
                 onClick={() => navigate('/compare')}
-                className="bg-brand-turquoise hover:bg-brand-turquoise/80 text-white font-semibold rounded-xl shadow-md px-8"
+                className="bg-brand-turquoise hover:bg-brand-turquoise/80 text-white font-semibold rounded-xl shadow-md px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12"
               >
                 Compare blood tests
               </Button>
               <Button 
-                size="lg" 
+                size="default"
                 variant="outline"
                 onClick={() => navigate('/assisted-test-finder')}
-                className="border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold rounded-xl"
+                className="border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold rounded-xl px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12"
               >
                 Find the right test for you
               </Button>
             </div>
 
             {/* Search Bar - Prominent pink themed section */}
-            <div className="max-w-2xl mx-auto mb-8 sm:mb-10">
-              <div className="bg-brand-pink rounded-2xl p-6 sm:p-8 shadow-xl">
-                <p className="text-center text-base sm:text-lg text-white font-medium mb-5">
+            <div className="max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10">
+              <div className="bg-brand-pink rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl">
+                <p className="text-center text-sm sm:text-base md:text-lg text-white font-medium mb-3 sm:mb-4 md:mb-5">
                   Find the right test for you
                 </p>
-                <div className="relative mb-4">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                <div className="relative mb-3 sm:mb-4">
+                  <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
                   <input 
                     type="text" 
                     placeholder="Search over 200 tests..." 
                     value={searchTerm} 
                     onChange={e => setSearchTerm(e.target.value)} 
                     onKeyPress={handleKeyPress} 
-                    className="w-full pl-12 pr-4 py-4 text-base border-0 rounded-xl focus:ring-2 focus:ring-brand-turquoise focus:outline-none text-brand-navy bg-background shadow-md" 
+                    className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 text-sm sm:text-base border-0 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-brand-turquoise focus:outline-none text-brand-navy bg-background shadow-md" 
                   />
                   {isAnalyzing && (
-                    <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 animate-spin text-brand-turquoise" />
+                    <Loader2 className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 animate-spin text-brand-turquoise" />
                   )}
                 </div>
                 
@@ -142,7 +142,7 @@ const Hero = () => {
                 <Button 
                   onClick={handleSearch}
                   disabled={!searchTerm.trim() || isAnalyzing}
-                  className="w-full bg-brand-turquoise hover:bg-background hover:text-brand-navy text-white font-semibold py-4 h-auto rounded-xl shadow-md text-base transition-colors disabled:bg-brand-turquoise disabled:opacity-60"
+                  className="w-full bg-brand-turquoise hover:bg-background hover:text-brand-navy text-white font-semibold py-3 sm:py-4 h-auto rounded-lg sm:rounded-xl shadow-md text-sm sm:text-base transition-colors disabled:bg-brand-turquoise disabled:opacity-60"
                 >
                   Start Your Search
                 </Button>
@@ -171,14 +171,14 @@ const Hero = () => {
                 )}
                 
                 {/* Popular Searches */}
-                <div className="mt-5 text-center">
-                  <p className="text-sm font-bold text-white mb-3">Popular:</p>
-                  <div className="flex flex-wrap gap-2 justify-center">
+                <div className="mt-3 sm:mt-4 md:mt-5 text-center">
+                  <p className="text-xs sm:text-sm font-bold text-white mb-2 sm:mb-3">Popular:</p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
                     {popularSearches.map((search, index) => (
                       <button 
                         key={index} 
                         onClick={() => navigate(search.route)} 
-                        className="px-4 py-2 text-sm bg-brand-turquoise hover:bg-background text-white hover:text-brand-navy rounded-full transition-colors border border-brand-turquoise hover:border-background"
+                        className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-brand-turquoise hover:bg-background text-white hover:text-brand-navy rounded-full transition-colors border border-brand-turquoise hover:border-background"
                       >
                         {search.name}
                       </button>
@@ -189,13 +189,13 @@ const Hero = () => {
             </div>
             
             {/* Trust Signals - Scannable, one line per idea, appears early */}
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-6 sm:mb-8">
+            <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 md:gap-x-6 gap-y-2 sm:gap-y-3 mb-4 sm:mb-6 md:mb-8">
               {trustSignals.map((signal, index) => (
                 <div 
                   key={index} 
-                  className="flex items-center gap-2 text-sm sm:text-base text-muted-foreground"
+                  className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm md:text-base text-muted-foreground"
                 >
-                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-turquoise flex-shrink-0" />
+                  <signal.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-brand-turquoise flex-shrink-0" />
                   <span className="font-sans">{signal.text}</span>
                 </div>
               ))}
