@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 
@@ -21,11 +21,27 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   onClose,
   isMobile = false
 }) => {
+  const navigate = useNavigate();
+  
   // Accessibility hook for focus trapping and arrow key navigation
   const { containerRef } = useDropdownAccessibility({
     isOpen: true,
     onClose: onClose || (() => {}),
   });
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Close dropdown first
+    onClose?.();
+    onItemClick?.();
+    
+    // Navigate after a short delay to ensure the dropdown has closed
+    setTimeout(() => {
+      navigate(path);
+    }, 10);
+  };
 
   return (
     <div 
@@ -41,7 +57,6 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
         position: 'absolute',
         WebkitOverflowScrolling: 'touch'
       }}
-      onClick={(e) => e.stopPropagation()}
     >
       <div className="p-5">
         {/* Header with Close Button */}
@@ -68,19 +83,16 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
             {/* Section Items */}
             <div className="grid grid-cols-1 gap-1.5 mb-4">
               {section.items.map((item) => (
-                <Link
+                <a
                   key={item.path}
-                  to={item.path}
-                  className="state-layer block p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                  onClick={() => {
-                    onClose?.();
-                    onItemClick?.();
-                  }}
+                  href={item.path}
+                  className="state-layer block p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
+                  onClick={(e) => handleLinkClick(e, item.path)}
                 >
                   <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-pink-600 dark:hover:text-pink-500 transition-colors">
                     {item.name}
                   </span>
-                </Link>
+                </a>
               ))}
             </div>
             
