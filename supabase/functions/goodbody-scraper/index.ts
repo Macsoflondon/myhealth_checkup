@@ -416,6 +416,8 @@ serve(async (req) => {
           url_verified: true,
           url_verified_at: new Date().toISOString(),
           image_url: imageUrl,
+          scraped_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         });
         
         successCount++;
