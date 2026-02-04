@@ -344,35 +344,27 @@ serve(async (req) => {
       }
     }
 
-    // Add known Goodbody product slugs as fallback (Shopify /products/ format)
+    // Known working Goodbody product slugs (verified Feb 2026 - removed 404s)
+    // These are only used as fallback if collection pages don't return products
     const knownTests = [
       '/products/advanced-vitamins-blood-test',
       '/products/advanced-well-man-blood-test',
       '/products/advanced-well-woman-blood-test',
       '/products/anaemia-blood-test',
-      '/products/basic-vitamins-blood-test',
-      '/products/cardiac-health-blood-test',
-      '/products/diabetes-blood-test',
-      '/products/essential-blood-test',
-      '/products/essential-vitamins-blood-test',
-      '/products/female-fertility-blood-test',
-      '/products/full-blood-count-test',
       '/products/gp-consultation',
-      '/products/hormone-blood-test-female',
-      '/products/hormone-blood-test-male',
       '/products/iron-blood-test',
-      '/products/kidney-function-blood-test',
-      '/products/lipid-profile-blood-test',
-      '/products/liver-function-blood-test',
       '/products/menopause-blood-test',
-      '/products/pcos-blood-test',
       '/products/prostate-psa-blood-test',
       '/products/testosterone-blood-test',
-      '/products/thyroid-blood-test',
       '/products/thyroid-function-blood-test',
-      '/products/vitamin-d-blood-test',
-      '/products/well-man-blood-test',
-      '/products/well-woman-blood-test',
+      // Removed legacy 404 slugs:
+      // well-woman-blood-test, well-man-blood-test, vitamin-d-blood-test,
+      // thyroid-blood-test, pcos-blood-test, liver-function-blood-test,
+      // lipid-profile-blood-test, kidney-function-blood-test,
+      // hormone-blood-test-male, hormone-blood-test-female,
+      // full-blood-count-test, female-fertility-blood-test,
+      // essential-vitamins-blood-test, essential-blood-test,
+      // diabetes-blood-test, cardiac-health-blood-test, basic-vitamins-blood-test
     ];
     knownTests.forEach(t => allProductUrls.add(t));
 

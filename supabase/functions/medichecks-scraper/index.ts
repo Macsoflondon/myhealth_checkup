@@ -474,12 +474,13 @@ Deno.serve(async (req) => {
     let priceUpdateCount = 0;
     
     for (const product of scrapedProducts) {
-      // Check if test already exists by URL
+      // Check if test already exists by (provider_id, test_name) to match unique constraint
       const { data: existing } = await supabase
         .from('provider_tests')
         .select('id')
         .eq('provider_id', 'medichecks')
-        .eq('url', product.url)
+        .eq('test_name', product.test_name)
+        .eq('is_active', true)
         .maybeSingle();
 
       const dataToUpdate = {
