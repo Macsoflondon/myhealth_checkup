@@ -15,49 +15,42 @@ interface RandoxProduct {
   biomarker_count: number | null;
   biomarkers_list: string[] | null;
   image_url: string | null;
+  test_type: 'clinic' | 'home';
 }
 
-// Randox Health category pages
+// Updated category pages - Randox restructured to /en-GB/ paths (verified Feb 2026)
 const categoryPages = [
-  'https://www.randoxhealth.com/tests',
-  'https://www.randoxhealth.com/tests/general-health',
-  'https://www.randoxhealth.com/tests/heart-health',
-  'https://www.randoxhealth.com/tests/diabetes',
-  'https://www.randoxhealth.com/tests/thyroid',
-  'https://www.randoxhealth.com/tests/vitamins-minerals',
-  'https://www.randoxhealth.com/tests/liver',
-  'https://www.randoxhealth.com/tests/kidney',
-  'https://www.randoxhealth.com/tests/mens-health',
-  'https://www.randoxhealth.com/tests/womens-health',
-  'https://www.randoxhealth.com/tests/sports-fitness',
+  'https://randoxhealth.com/en-GB/male-health',
+  'https://randoxhealth.com/en-GB/female-health',
+  'https://randoxhealth.com/en-GB/health-at-home',
+  'https://randoxhealth.com/en-GB/clinic-tests',
 ];
 
-// Known test URLs as fallback
+// Known working product URLs - verified on live Randox site Feb 2026
 const knownProductUrls = [
-  'https://www.randoxhealth.com/tests/essential-health-check',
-  'https://www.randoxhealth.com/tests/premium-health',
-  'https://www.randoxhealth.com/tests/signature',
-  'https://www.randoxhealth.com/tests/everyman',
-  'https://www.randoxhealth.com/tests/everywoman',
-  'https://www.randoxhealth.com/tests/heart-health',
-  'https://www.randoxhealth.com/tests/advanced-lipid',
-  'https://www.randoxhealth.com/tests/diabetes-screen',
-  'https://www.randoxhealth.com/tests/hba1c',
-  'https://www.randoxhealth.com/tests/thyroid',
-  'https://www.randoxhealth.com/tests/thyroid-advanced',
-  'https://www.randoxhealth.com/tests/vitamin-d',
-  'https://www.randoxhealth.com/tests/vitamin-b12-folate',
-  'https://www.randoxhealth.com/tests/iron-status',
-  'https://www.randoxhealth.com/tests/liver-function',
-  'https://www.randoxhealth.com/tests/kidney-function',
-  'https://www.randoxhealth.com/tests/testosterone',
-  'https://www.randoxhealth.com/tests/male-hormone',
-  'https://www.randoxhealth.com/tests/female-hormone',
-  'https://www.randoxhealth.com/tests/fertility',
-  'https://www.randoxhealth.com/tests/menopause',
-  'https://www.randoxhealth.com/tests/sports-performance',
-  'https://www.randoxhealth.com/tests/inflammation',
-  'https://www.randoxhealth.com/tests/fatigue',
+  // Clinic tests
+  'https://randoxhealth.com/en-GB/product/clinic/discovery-health-check',
+  'https://randoxhealth.com/en-GB/product/clinic/everyman-test',
+  'https://randoxhealth.com/en-GB/product/clinic/everywoman-test',
+  'https://randoxhealth.com/en-GB/product/clinic/signature-platinum-test',
+  'https://randoxhealth.com/en-GB/product/clinic/signature-platinum-plus-test',
+  'https://randoxhealth.com/en-GB/product/clinic/signature-prestige-test',
+  'https://randoxhealth.com/en-GB/product/clinic/essential-health-check',
+  // Home tests
+  'https://randoxhealth.com/en-GB/product/home/general-health-test',
+  'https://randoxhealth.com/en-GB/product/home/thyroid-function-home-test',
+  'https://randoxhealth.com/en-GB/product/home/female-hormone-Quickdraw',
+  'https://randoxhealth.com/en-GB/product/home/male-hormone-quickdraw',
+  'https://randoxhealth.com/en-GB/product/home/home-sti-test',
+  'https://randoxhealth.com/en-GB/product/home/food-sensitivity-test',
+  'https://randoxhealth.com/en-GB/product/home/gut-microbiome-test',
+  'https://randoxhealth.com/en-GB/product/home/nutrition-lifestyle-dna-home-test-kit',
+  'https://randoxhealth.com/en-GB/product/home/amh-home-test',
+  'https://randoxhealth.com/en-GB/product/home/psa-home-test',
+  'https://randoxhealth.com/en-GB/product/home/haemochromatosis-home-test-kit',
+  'https://randoxhealth.com/en-GB/product/home/coeliac-disease-home-test-kit',
+  'https://randoxhealth.com/en-GB/product/home/vitamin-d-home-test',
+  'https://randoxhealth.com/en-GB/product/home/liver-function-home-test',
 ];
 
 // Comprehensive biomarker keywords
@@ -81,9 +74,10 @@ const biomarkerPatterns = [
 function extractProductUrls(html: string): string[] {
   const urls: string[] = [];
   
+  // Updated patterns for new /en-GB/product/ structure
   const linkPatterns = [
-    /href="(\/tests\/[^"#?]+)"/gi,
-    /href="(https:\/\/www\.randoxhealth\.com\/tests\/[^"#?]+)"/gi,
+    /href="(\/en-GB\/product\/(?:clinic|home)\/[^"#?]+)"/gi,
+    /href="(https:\/\/randoxhealth\.com\/en-GB\/product\/(?:clinic|home)\/[^"#?]+)"/gi,
   ];
   
   for (const pattern of linkPatterns) {
@@ -91,12 +85,9 @@ function extractProductUrls(html: string): string[] {
     while ((match = pattern.exec(html)) !== null) {
       let url = match[1];
       if (url.startsWith('/')) {
-        url = `https://www.randoxhealth.com${url}`;
+        url = `https://randoxhealth.com${url}`;
       }
-      // Exclude category pages
-      if (url.split('/').length > 4) {
-        urls.push(url);
-      }
+      urls.push(url);
     }
   }
   
@@ -107,13 +98,18 @@ function extractTitle(html: string): string {
   const patterns = [
     /<h1[^>]*>([^<]+)<\/h1>/i,
     /property="og:title"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:title"/i,
     /<title>([^|<]+)/i,
   ];
   
   for (const pattern of patterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
-      return match[1].trim().replace(/\s*[\|\-]\s*Randox.*$/i, '').trim();
+      return match[1].trim()
+        .replace(/\s*[\|\-]\s*Randox.*$/i, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&#39;/g, "'")
+        .trim();
     }
   }
   
@@ -123,8 +119,9 @@ function extractTitle(html: string): string {
 function extractDescription(html: string): string | null {
   const patterns = [
     /property="og:description"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:description"/i,
     /name="description"\s+content="([^"]+)"/i,
-    /<meta[^>]+name="description"[^>]+content="([^"]+)"/i,
+    /content="([^"]+)"\s+name="description"/i,
   ];
   
   for (const pattern of patterns) {
@@ -141,7 +138,7 @@ function extractPrice(html: string): { current: number | null; original: number 
   let current: number | null = null;
   let original: number | null = null;
   
-  // Try JSON-LD
+  // Try JSON-LD structured data first
   const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
   if (jsonLdMatch) {
     for (const script of jsonLdMatch) {
@@ -151,37 +148,47 @@ function extractPrice(html: string): { current: number | null; original: number 
         if (data.offers?.price) {
           current = parseFloat(data.offers.price);
         }
+        if (data['@graph']) {
+          for (const item of data['@graph']) {
+            if (item.offers?.price) {
+              current = parseFloat(item.offers.price);
+              break;
+            }
+          }
+        }
       } catch { }
     }
   }
   
-  // Fallback patterns
+  // Fallback patterns for prices displayed on page
   if (current === null) {
     const pricePatterns = [
-      /class="[^"]*price[^"]*"[^>]*>£(\d+(?:\.\d{2})?)/i,
-      />£(\d+(?:\.\d{2})?)<\/span>/i,
-      /£(\d+(?:\.\d{2})?)/,
+      /class="[^"]*price[^"]*"[^>]*>[\s\S]*?£(\d+(?:,\d{3})*(?:\.\d{2})?)/i,
+      />\s*£(\d+(?:,\d{3})*(?:\.\d{2})?)\s*</i,
+      /£(\d+(?:,\d{3})*(?:\.\d{2})?)/,
     ];
     
     for (const pattern of pricePatterns) {
       const match = html.match(pattern);
       if (match && match[1]) {
-        current = parseFloat(match[1]);
-        break;
+        current = parseFloat(match[1].replace(',', ''));
+        if (current > 0 && current < 5000) break;
+        current = null;
       }
     }
   }
   
-  // Original price
+  // Original/was price
   const originalPatterns = [
-    /class="[^"]*was[^"]*"[^>]*>£(\d+(?:\.\d{2})?)/i,
-    /<del[^>]*>£(\d+(?:\.\d{2})?)/i,
+    /class="[^"]*was[^"]*"[^>]*>[\s\S]*?£(\d+(?:,\d{3})*(?:\.\d{2})?)/i,
+    /<del[^>]*>[\s\S]*?£(\d+(?:,\d{3})*(?:\.\d{2})?)/i,
+    /<s[^>]*>[\s\S]*?£(\d+(?:,\d{3})*(?:\.\d{2})?)/i,
   ];
   
   for (const pattern of originalPatterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
-      original = parseFloat(match[1]);
+      original = parseFloat(match[1].replace(',', ''));
       break;
     }
   }
@@ -192,9 +199,10 @@ function extractPrice(html: string): { current: number | null; original: number 
 function extractImageUrl(html: string): string | null {
   const patterns = [
     /property="og:image"\s+content="([^"]+)"/i,
-    /name="og:image"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:image"/i,
     /<img[^>]+class="[^"]*product[^"]*"[^>]+src="([^"]+)"/i,
     /<img[^>]+class="[^"]*hero[^"]*"[^>]+src="([^"]+)"/i,
+    /src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
   ];
   
   for (const pattern of patterns) {
@@ -202,7 +210,7 @@ function extractImageUrl(html: string): string | null {
     if (match && match[1]) {
       let url = match[1];
       if (url.startsWith('//')) url = 'https:' + url;
-      else if (url.startsWith('/')) url = 'https://www.randoxhealth.com' + url;
+      else if (url.startsWith('/')) url = 'https://randoxhealth.com' + url;
       return url;
     }
   }
@@ -256,19 +264,21 @@ function determineCategory(title: string, description: string, url: string): str
   
   const categoryMap: Record<string, string[]> = {
     'Thyroid': ['thyroid', 'tsh', 't3', 't4'],
-    'Hormones': ['hormone', 'testosterone', 'oestrogen', 'progesterone', 'dhea', 'cortisol'],
+    'Hormones': ['hormone', 'testosterone', 'oestrogen', 'progesterone', 'dhea', 'cortisol', 'quickdraw'],
     'Vitamins & Minerals': ['vitamin', 'mineral', 'iron', 'ferritin', 'b12', 'folate'],
     'Heart Health': ['heart', 'cholesterol', 'cardiovascular', 'lipid'],
     'Diabetes': ['diabetes', 'hba1c', 'glucose', 'insulin'],
     'Liver Health': ['liver', 'hepatic'],
     'Kidney Health': ['kidney', 'renal'],
-    'Mens Health': ['men', 'male', 'everyman', 'prostate'],
-    'Womens Health': ['women', 'female', 'everywoman', 'menopause'],
+    "Men's Health": ['men', 'male', 'everyman', 'prostate', 'psa'],
+    "Women's Health": ['women', 'female', 'everywoman', 'menopause', 'amh'],
     'Fertility': ['fertility', 'amh', 'ovarian'],
     'Sports & Fitness': ['sport', 'fitness', 'performance', 'athlete'],
-    'General Health': ['essential', 'premium', 'signature', 'comprehensive'],
-    'Fatigue': ['fatigue', 'tiredness', 'energy'],
-    'Inflammation': ['inflammation', 'crp'],
+    'General Health': ['essential', 'premium', 'signature', 'comprehensive', 'discovery', 'general'],
+    'Gut Health': ['gut', 'microbiome', 'coeliac', 'celiac'],
+    'Sexual Health': ['sti', 'sexual'],
+    'Genetic Testing': ['dna', 'genetic', 'haemochromatosis'],
+    'Allergy & Sensitivity': ['allergy', 'sensitivity', 'food sensitivity'],
   };
   
   for (const [category, keywords] of Object.entries(categoryMap)) {
@@ -276,6 +286,10 @@ function determineCategory(title: string, description: string, url: string): str
   }
   
   return 'General Health';
+}
+
+function determineTestType(url: string): 'clinic' | 'home' {
+  return url.includes('/product/home/') ? 'home' : 'clinic';
 }
 
 async function fetchWithDelay(url: string, delay: number = 1500): Promise<string> {
@@ -303,7 +317,7 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    console.log('Starting enhanced Randox Health scraper...');
+    console.log('Starting Randox Health scraper with updated /en-GB/product/ URL structure...');
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: 'randox',
@@ -315,7 +329,7 @@ Deno.serve(async (req) => {
     const allProductUrls = new Set<string>(knownProductUrls);
     
     console.log('Discovering products from category pages...');
-    for (const categoryUrl of categoryPages.slice(0, 5)) {
+    for (const categoryUrl of categoryPages) {
       try {
         const html = await fetchWithDelay(categoryUrl, 2000);
         const urls = extractProductUrls(html);
@@ -329,7 +343,7 @@ Deno.serve(async (req) => {
     console.log(`Total unique product URLs: ${allProductUrls.size}`);
 
     const scrapedProducts: RandoxProduct[] = [];
-    const productUrls = Array.from(allProductUrls).slice(0, 25);
+    const productUrls = Array.from(allProductUrls).slice(0, 50);
     
     for (const url of productUrls) {
       try {
@@ -337,7 +351,10 @@ Deno.serve(async (req) => {
         const html = await fetchWithDelay(url, 1500);
         
         const title = extractTitle(html);
-        if (!title) continue;
+        if (!title) {
+          console.log(`No title found for ${url}, skipping`);
+          continue;
+        }
         
         const description = extractDescription(html);
         const { current: price, original: originalPrice } = extractPrice(html);
@@ -345,6 +362,7 @@ Deno.serve(async (req) => {
         const biomarkersList = extractBiomarkersList(html);
         const biomarkerCount = extractBiomarkerCount(html, biomarkersList);
         const category = determineCategory(title, description || '', url);
+        const testType = determineTestType(url);
         
         scrapedProducts.push({
           test_name: title,
@@ -356,9 +374,10 @@ Deno.serve(async (req) => {
           biomarker_count: biomarkerCount,
           biomarkers_list: biomarkersList,
           image_url: imageUrl,
+          test_type: testType,
         });
         
-        console.log(`Scraped: ${title} - £${price} - ${biomarkerCount || 0} biomarkers`);
+        console.log(`Scraped: ${title} - £${price} - ${testType} test`);
       } catch (error) {
         console.error(`Failed to scrape ${url}:`, error.message);
       }
@@ -368,7 +387,16 @@ Deno.serve(async (req) => {
 
     let upsertedCount = 0;
     for (const product of scrapedProducts) {
-      const { error } = await supabase.from('provider_tests').upsert({
+      // Use test_name lookup to match unique constraint
+      const { data: existing } = await supabase
+        .from('provider_tests')
+        .select('id')
+        .eq('provider_id', 'randox')
+        .eq('test_name', product.test_name)
+        .eq('is_active', true)
+        .maybeSingle();
+
+      const dataToUpsert = {
         provider_id: 'randox',
         test_name: product.test_name,
         price: product.price,
@@ -384,7 +412,23 @@ Deno.serve(async (req) => {
         updated_at: new Date().toISOString(),
         url_verified: true,
         url_verified_at: new Date().toISOString(),
-      }, { onConflict: 'provider_id,test_name' });
+        home_kit_available: product.test_type === 'home',
+        clinic_visit_available: product.test_type === 'clinic',
+      };
+
+      let error;
+      if (existing) {
+        const result = await supabase
+          .from('provider_tests')
+          .update(dataToUpsert)
+          .eq('id', existing.id);
+        error = result.error;
+      } else {
+        const result = await supabase
+          .from('provider_tests')
+          .insert(dataToUpsert);
+        error = result.error;
+      }
       
       if (!error) upsertedCount++;
       else console.error(`Failed to upsert ${product.test_name}:`, error.message);
