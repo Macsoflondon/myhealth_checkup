@@ -93,7 +93,7 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         {/* White overlay for readability */}
-        <div className="absolute inset-0 bg-white/[0.75] z-[1]" />
+        <div className="absolute inset-0 bg-white/[0.65] z-[1]" />
         <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Headline - Clear promise in plain language, mobile-first sizing */}
