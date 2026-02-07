@@ -2,7 +2,11 @@
  * Test-related components barrel export
  */
 
-// Re-export from root components
+// Re-exports from root (pending physical move)
+export { AssistedTestFinder } from '../AssistedTestFinder';
+export { default as CategoryFilters } from '../CategoryFilters';
+export { default as CategorySelector } from '../CategorySelector';
+export { default as SimilarTestsSection } from '../SimilarTestsSection';
+export { default as SportsTestRecommendationEngine } from '../SportsTestRecommendationEngine';
 export { default as TestFilter } from '../TestFilter';
 export { default as TestPageTemplate } from '../TestPageTemplate';
-export { default as SimilarTestsSection } from '../SimilarTestsSection';
