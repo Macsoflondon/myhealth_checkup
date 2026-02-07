@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import cqcLogo from "@/assets/compliance/cqc-logo.png";
-import icoLogo from "@/assets/compliance/ico-logo.png";
-import companiesHouseLogo from "@/assets/compliance/companies-house-logo.svg";
+import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
-const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -108,7 +105,7 @@ const Footer = () => {
                   {/* TikTok */}
                   <a
                     href="https://www.tiktok.com/@myhealthcheckup"
-                    className="hover:opacity-80 transition-opacity flex flex-col items-center"
+                    className="hover:opacity-80 transition-opacity"
                     aria-label="Follow us on TikTok"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -119,7 +116,6 @@ const Footer = () => {
                       <path d="M30 17.5C30 17.5 29 21 26 21V28C26 30.761 23.761 33 21 33C18.239 33 16 30.761 16 28C16 25.239 18.239 23 21 23V26C19.895 26 19 26.895 19 28C19 29.105 19.895 30 21 30C22.105 30 23 29.105 23 28V13H26C26 15.485 28.015 17.5 30 17.5Z" fill="#E4405F" fillOpacity="0.6"/>
                       <path d="M32 19.5C32 19.5 31 23 28 23V30C28 32.761 25.761 35 23 35C20.239 35 18 32.761 18 30C18 27.239 20.239 25 23 25V28C21.895 28 21 28.895 21 30C21 31.105 21.895 32 23 32C24.105 32 25 31.105 25 30V15H28C28 17.485 30.015 19.5 32 19.5Z" fill="#22c0d4" fillOpacity="0.6"/>
                     </svg>
-                    <span className="text-white/70 text-[10px] font-medium mt-0.5">TikTok</span>
                   </a>
                 </div>
               </div>
@@ -142,13 +138,7 @@ const Footer = () => {
             {/* Column 4 - Compliance Badges */}
             <div className="col-span-2 lg:col-span-1">
               <div className="flex flex-row lg:flex-col gap-4 sm:gap-5 items-start">
-                {/* ICO Registered */}
-                <ComplianceBadge image={icoLogo} label="ICO Registered" innerLabel="REGISTERED" />
-                {/* Companies House */}
-                <ComplianceBadge image={companiesHouseLogo} label="Companies House" />
-                {/* UK GDPR */}
-                <ComplianceBadge image={gdprLogo} label="UK GDPR" />
-                {/* Cyber Essentials Certified */}
+                <img src={complianceBadges} alt="ICO Registered, Companies House, UK GDPR compliance badges" className="h-20 sm:h-24 w-auto object-contain" />
                 <ComplianceBadge image={cyberEssentialsLogo} label="Cyber Essentials" isCyberEssentials />
               </div>
             </div>
