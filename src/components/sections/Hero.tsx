@@ -117,53 +117,41 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Search Bar - Prominent pink themed section */}
-            <div className="max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-10">
-              <div className="bg-brand-pink rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 shadow-xl">
-                <p className="text-center text-sm sm:text-base md:text-lg text-white font-medium mb-3 sm:mb-4 md:mb-5">
-                  Find the right test for you
-                </p>
-                <div className="relative mb-3 sm:mb-4">
-                  <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Search Bar - Clean white card */}
+            <div className="max-w-4xl mx-auto mb-6 sm:mb-8 md:mb-10">
+              <div className="bg-background rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl">
+                <div className="relative">
+                  <Search className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-brand-turquoise w-5 h-5 sm:w-6 sm:h-6" />
                   <input 
                     type="text" 
-                    placeholder="Search over 200 tests..." 
+                    placeholder="Search from over 200 tests" 
                     value={searchTerm} 
                     onChange={e => setSearchTerm(e.target.value)} 
                     onKeyPress={handleKeyPress} 
-                    className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 text-sm sm:text-base border-0 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-brand-turquoise focus:outline-none text-brand-navy bg-background shadow-md" 
+                    className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-4 sm:py-5 text-base sm:text-lg border border-border rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-brand-turquoise focus:border-brand-turquoise focus:outline-none text-brand-navy bg-background" 
                   />
                   {isAnalyzing && (
-                    <Loader2 className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 animate-spin text-brand-turquoise" />
+                    <Loader2 className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 animate-spin text-brand-turquoise" />
                   )}
                 </div>
                 
-                {/* Search Button */}
-                <Button 
-                  onClick={handleSearch}
-                  disabled={!searchTerm.trim() || isAnalyzing}
-                  className="w-full bg-brand-turquoise hover:bg-background hover:text-brand-navy text-white font-semibold py-3 sm:py-4 h-auto rounded-lg sm:rounded-xl shadow-md text-sm sm:text-base transition-colors disabled:bg-brand-turquoise disabled:opacity-60"
-                >
-                  Start Your Search
-                </Button>
-                
                 {/* AI Results */}
                 {aiResults && (
-                  <div className="mt-5 p-4 bg-white/10 rounded-xl border border-white/20">
-                    <p className="text-white mb-3">{aiResults.analysis}</p>
+                  <div className="mt-4 p-4 bg-muted rounded-xl border border-border">
+                    <p className="text-foreground mb-3">{aiResults.analysis}</p>
                     {aiResults.recommendedTests?.length > 0 && (
                       <div className="space-y-2">
                         {aiResults.recommendedTests.map((test: any, index: number) => (
-                          <div key={index} className="bg-white/10 p-3 rounded-lg border border-white/20">
-                            <div className="font-medium text-white">{test.testName}</div>
-                            <div className="text-sm text-white/70">{test.reason}</div>
+                          <div key={index} className="bg-background p-3 rounded-lg border border-border">
+                            <div className="font-medium text-foreground">{test.testName}</div>
+                            <div className="text-sm text-muted-foreground">{test.reason}</div>
                           </div>
                         ))}
                       </div>
                     )}
                     <Button 
                       onClick={() => navigate('/compare')} 
-                      className="w-full mt-3 bg-brand-turquoise hover:bg-background hover:text-brand-turquoise transition-colors"
+                      className="w-full mt-3 bg-brand-turquoise hover:bg-brand-turquoise/80 text-white transition-colors"
                     >
                       View available tests
                     </Button>
@@ -171,14 +159,14 @@ const Hero = () => {
                 )}
                 
                 {/* Popular Searches */}
-                <div className="mt-3 sm:mt-4 md:mt-5 text-center">
-                  <p className="text-xs sm:text-sm font-bold text-white mb-2 sm:mb-3">Popular:</p>
-                  <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
+                <div className="mt-4 sm:mt-5 text-center">
+                  <p className="text-sm sm:text-base font-bold text-foreground mb-3 sm:mb-4">Popular searches:</p>
+                  <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
                     {popularSearches.map((search, index) => (
                       <button 
                         key={index} 
                         onClick={() => navigate(search.route)} 
-                        className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-brand-turquoise hover:bg-background text-white hover:text-brand-navy rounded-full transition-colors border border-brand-turquoise hover:border-background"
+                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-foreground bg-muted hover:bg-brand-turquoise hover:text-white rounded-full transition-colors border border-border hover:border-brand-turquoise"
                       >
                         {search.name}
                       </button>
