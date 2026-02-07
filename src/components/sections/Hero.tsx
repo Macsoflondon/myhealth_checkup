@@ -114,15 +114,14 @@ const Hero = () => {
               <Button 
                 size="default"
                 onClick={() => navigate('/compare')}
-                className="bg-brand-turquoise hover:bg-brand-turquoise/80 text-white font-semibold rounded-xl shadow-md px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-md px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
                 Compare blood tests
               </Button>
               <Button 
                 size="default"
-                variant="outline"
                 onClick={() => navigate('/assisted-test-finder')}
-                className="border-2 border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white font-semibold rounded-xl px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-md px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
                 Find the right test for you
               </Button>
@@ -135,11 +134,11 @@ const Hero = () => {
                   <Search className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-brand-turquoise w-5 h-5 sm:w-6 sm:h-6" />
                   <input 
                     type="text" 
-                    placeholder="Search from over 200 tests" 
+                    placeholder="Search from over 200 tests"
                     value={searchTerm} 
                     onChange={e => setSearchTerm(e.target.value)} 
                     onKeyPress={handleKeyPress} 
-                    className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-4 sm:py-5 text-base sm:text-lg border border-border rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-brand-turquoise focus:border-brand-turquoise focus:outline-none text-brand-navy bg-background" 
+                    className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-4 sm:py-5 text-base sm:text-lg border border-border rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-brand-turquoise focus:border-brand-turquoise focus:outline-none text-brand-navy bg-background placeholder:text-[#22c0d4]" 
                   />
                   {isAnalyzing && (
                     <Loader2 className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 animate-spin text-brand-turquoise" />
@@ -162,7 +161,7 @@ const Hero = () => {
                     )}
                     <Button 
                       onClick={() => navigate('/compare')} 
-                      className="w-full mt-3 bg-brand-turquoise hover:bg-brand-turquoise/80 text-white transition-colors"
+                      className="w-full mt-3 bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
                     >
                       View available tests
                     </Button>
@@ -177,7 +176,7 @@ const Hero = () => {
                       <button 
                         key={index} 
                         onClick={() => navigate(search.route)} 
-                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-foreground bg-muted hover:bg-brand-turquoise hover:text-white rounded-full transition-colors border border-border hover:border-brand-turquoise"
+                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-white bg-[#22c0d4] hover:bg-[#e70d69] rounded-full transition-colors duration-300"
                       >
                         {search.name}
                       </button>
