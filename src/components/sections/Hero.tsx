@@ -118,8 +118,8 @@ const Hero = () => {
             </div>
 
             {/* Search Bar - Prominent pink themed section */}
-            <div className="max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10">
-              <div className="bg-brand-pink rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl">
+            <div className="max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-10">
+              <div className="bg-brand-pink rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 shadow-xl">
                 <p className="text-center text-sm sm:text-base md:text-lg text-white font-medium mb-3 sm:mb-4 md:mb-5">
                   Find the right test for you
                 </p>
