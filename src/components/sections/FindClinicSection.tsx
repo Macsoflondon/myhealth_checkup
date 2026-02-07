@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Navigation, List } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -23,21 +22,18 @@ const FindClinicSection = () => {
             <Button 
               asChild 
               size="lg" 
-              className="bg-[#22c0d4] hover:bg-[#22c0d4]/90 text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px]"
+              className="bg-[#22c0d4] hover:bg-[#e70d69] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300"
             >
               <Link to="/find-clinic">
-                <Navigation className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                 Find nearest clinic
               </Link>
             </Button>
             <Button 
               asChild 
-              variant="outline" 
               size="lg" 
-              className="border-2 border-[#081129]/20 text-[#081129] hover:bg-gray-50 px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px]"
+              className="bg-[#e70d69] hover:bg-[#22c0d4] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300"
             >
               <Link to="/find-clinic">
-                <List className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                 Browse all locations
               </Link>
             </Button>

@@ -158,9 +158,8 @@ const TopConcernsSection = () => {
         <div className="text-center">
           <Button
             asChild
-            variant="outline"
             size="lg"
-            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+            className="bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
           >
             <Link to="/compare">
               View all categories

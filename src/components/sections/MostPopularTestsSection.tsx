@@ -193,9 +193,8 @@ const MostPopularTestsSection = () => {
                             className="block w-full"
                           >
                             <Button
-                              variant="outline"
                               size="sm"
-                              className="w-full bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-white hover:text-[#22c0d4] hover:border-[#22c0d4]"
+                              className="w-full bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
                             >
                               View test
                             </Button>
@@ -203,9 +202,8 @@ const MostPopularTestsSection = () => {
                         ) : (
                           <Link to={`/test/${test.id}`} className="block w-full">
                             <Button
-                              variant="outline"
                               size="sm"
-                              className="w-full bg-[#22c0d4] text-white border-[#22c0d4] hover:bg-white hover:text-[#22c0d4] hover:border-[#22c0d4]"
+                              className="w-full bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
                             >
                               View test
                             </Button>
@@ -223,9 +221,8 @@ const MostPopularTestsSection = () => {
         <div className="text-center">
           <Button
             asChild
-            variant="default"
             size="lg"
-            className="bg-[#22c0d4] text-white border-2 border-[#22c0d4] hover:bg-white hover:text-[#22c0d4]"
+            className="bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
           >
             <Link to="/popular-tests">
               View all popular tests

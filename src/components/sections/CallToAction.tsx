@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -27,16 +27,14 @@ const CallToAction = ({ className }: CallToActionProps) => {
             <Button 
               size="lg" 
               onClick={() => navigate('/assisted-test-finder')}
-              className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white font-semibold rounded-xl shadow-lg group"
+              className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
               Find Your Perfect Test
-              <Search className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
             </Button>
             <Button 
               size="lg" 
               onClick={() => navigate('/compare')}
-              variant="outline" 
-              className="border-2 border-white text-white hover:bg-white hover:text-[#081129] bg-transparent font-semibold rounded-xl group"
+              className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
               Browse All 300+ Tests
             </Button>
