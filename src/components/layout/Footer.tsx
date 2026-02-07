@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import cqcLogo from "@/assets/compliance/cqc-logo.png";
 import icoLogo from "@/assets/compliance/ico-logo.png";
+import companiesHouseLogo from "@/assets/compliance/companies-house-logo.svg";
+import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
 const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 
 const Footer = () => {
@@ -143,11 +145,11 @@ const Footer = () => {
                 {/* ICO Registered */}
                 <ComplianceBadge image={icoLogo} label="ICO Registered" innerLabel="REGISTERED" />
                 {/* Companies House */}
-                <ComplianceBadge label="Companies House" isCompaniesHouse />
+                <ComplianceBadge image={companiesHouseLogo} label="Companies House" />
                 {/* UK GDPR */}
                 <ComplianceBadge image={gdprLogo} label="UK GDPR" />
                 {/* Cyber Essentials Certified */}
-                <ComplianceBadge label="Cyber Essentials" isCyberEssentials />
+                <ComplianceBadge image={cyberEssentialsLogo} label="Cyber Essentials" isCyberEssentials />
               </div>
             </div>
           </div>
@@ -204,43 +206,24 @@ const ComplianceBadge = ({
   label,
   innerLabel,
   isCyberEssentials,
-  isCompaniesHouse,
 }: {
   image?: string;
   label: string;
   innerLabel?: string;
   isCyberEssentials?: boolean;
-  isCompaniesHouse?: boolean;
 }) => (
   <div className="flex flex-col items-center text-center space-y-1.5">
     <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex flex-col items-center justify-center p-2 shadow-lg ${
-      isCyberEssentials ? 'bg-[#22c0d4]' : 'bg-white'
+      isCyberEssentials ? 'bg-[#081129]' : 'bg-white'
     }`}>
       {image ? (
         <div className="flex flex-col items-center justify-center h-full gap-1">
-          <img src={image} alt={label} className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
+          <img src={image} alt={label} className="w-14 h-14 sm:w-16 sm:h-16 object-contain" />
           {innerLabel && (
             <span className="text-[#081129] text-[7px] sm:text-[8px] font-bold uppercase tracking-wider leading-none">
               {innerLabel}
             </span>
           )}
-        </div>
-      ) : isCyberEssentials ? (
-        <div className="flex flex-col items-center justify-center gap-0.5">
-          <span className="text-white font-bold text-2xl sm:text-3xl leading-none">✓</span>
-          <span className="text-white text-[7px] sm:text-[8px] font-bold leading-tight uppercase tracking-wide text-center">
-            CYBER<br/>ESSENTIALS
-          </span>
-          <span className="text-white text-[6px] sm:text-[7px] font-semibold uppercase tracking-wide">
-            CERTIFIED
-          </span>
-        </div>
-      ) : isCompaniesHouse ? (
-        <div className="flex flex-col items-center justify-center gap-0.5">
-          <span className="text-[#081129] text-2xl sm:text-3xl leading-none">🏛</span>
-          <span className="text-[#081129] text-[7px] sm:text-[8px] font-bold leading-tight uppercase tracking-wide text-center">
-            Companies<br/>House
-          </span>
         </div>
       ) : null}
     </div>
