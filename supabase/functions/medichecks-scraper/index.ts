@@ -25,7 +25,6 @@ const categoryPages = [
   'https://www.medichecks.com/collections/mens-health',
   'https://www.medichecks.com/collections/womens-health',
   'https://www.medichecks.com/collections/heart-tests',
-  'https://www.medichecks.com/collections/featured-tests',
 ];
 
 // Known working product URLs - verified on Medichecks site Feb 2026
@@ -37,11 +36,6 @@ const knownProductUrls = [
   'https://www.medichecks.com/products/testosterone-blood-test',
   'https://www.medichecks.com/products/advanced-thyroid-function-blood-test',
   'https://www.medichecks.com/products/thyroid-function-blood-test',
-  'https://www.medichecks.com/products/female-hormone-blood-test',
-  'https://www.medichecks.com/products/male-hormone-blood-test',
-  'https://www.medichecks.com/products/advanced-female-hormone-blood-test',
-  'https://www.medichecks.com/products/health-and-lifestyle-blood-test',
-  'https://www.medichecks.com/products/advanced-trt-testosterone-replacement-therapy-blood-test',
   'https://www.medichecks.com/products/cortisol-blood-test',
   'https://www.medichecks.com/products/coeliac-blood-test',
   'https://www.medichecks.com/products/sports-hormone-blood-test',
@@ -435,8 +429,8 @@ Deno.serve(async (req) => {
         const html = await fetchWithDelay(url, 1000);
         
         const title = extractTitle(html);
-        if (!title) {
-          console.log(`No title found for ${url}, skipping`);
+        if (!title || title.toLowerCase() === 'medichecks' || title.length < 5) {
+          console.log(`No valid title found for ${url}, skipping`);
           continue;
         }
         
@@ -472,21 +466,27 @@ Deno.serve(async (req) => {
     // Upsert to database
     let upsertedCount = 0;
     let priceUpdateCount = 0;
+    let reactivatedCount = 0;
     
     for (const product of scrapedProducts) {
-      // Check if test already exists by (provider_id, test_name) to match unique constraint
+      // Look up ANY existing record (active OR inactive) to avoid insert conflicts
+      // The unique constraint provider_tests_unique_active is on (provider_id, test_name) WHERE is_active = true
       const { data: existing } = await supabase
         .from('provider_tests')
-        .select('id')
+        .select('id, is_active')
         .eq('provider_id', 'medichecks')
         .eq('test_name', product.test_name)
-        .eq('is_active', true)
+        .order('is_active', { ascending: false }) // Prefer active records first
+        .limit(1)
         .maybeSingle();
 
-      const dataToUpdate = {
+      const slug = product.url.split('/products/').pop() || '';
+      
+      const dataToUpdate: Record<string, unknown> = {
         provider_id: 'medichecks',
         test_name: product.test_name,
         url: product.url,
+        provider_test_id: slug,
         category: product.category,
         description: product.description,
         biomarker_count: product.biomarker_count,
@@ -502,16 +502,18 @@ Deno.serve(async (req) => {
 
       // Include price if we found one
       if (product.price !== null) {
-        Object.assign(dataToUpdate, {
-          price: product.price,
-          original_price: product.original_price,
-        });
+        dataToUpdate.price = product.price;
+        dataToUpdate.original_price = product.original_price;
         priceUpdateCount++;
       }
 
       let error;
       if (existing) {
-        // Update existing record
+        // Update existing record — this reactivates inactive records too
+        if (!existing.is_active) {
+          reactivatedCount++;
+          console.log(`Reactivating: ${product.test_name}`);
+        }
         const result = await supabase
           .from('provider_tests')
           .update(dataToUpdate)
@@ -541,7 +543,7 @@ Deno.serve(async (req) => {
       })
       .eq('provider_id', 'medichecks');
 
-    console.log(`Medichecks scraper completed. Upserted ${upsertedCount} tests, ${priceUpdateCount} with prices.`);
+    console.log(`Medichecks scraper completed. Upserted ${upsertedCount} tests, ${priceUpdateCount} with prices, ${reactivatedCount} reactivated.`);
 
     return new Response(
       JSON.stringify({
@@ -550,6 +552,7 @@ Deno.serve(async (req) => {
         testsScraped: scrapedProducts.length,
         testsUpserted: upsertedCount,
         testsWithPrices: priceUpdateCount,
+        testsReactivated: reactivatedCount,
         timestamp: new Date().toISOString()
       }),
       {
