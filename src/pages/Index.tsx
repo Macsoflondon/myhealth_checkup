@@ -15,7 +15,7 @@ import TopConcernsSection from "@/components/sections/TopConcernsSection";
 import MostPopularTestsSection from "@/components/sections/MostPopularTestsSection";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
-import FinalCTA from "@/components/sections/FinalCTA";
+
 import StickyCtaBar from "@/components/common/StickyCtaBar";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import BrandVideoSection from "@/components/sections/BrandVideoSection";
@@ -128,8 +128,7 @@ const Index = () => {
         {/* 4. Here to Help */}
         <HereToHelp />
         
-        {/* 5. Final CTA */}
-        <FinalCTA />
+        {/* 5. Final CTA - now integrated into FindClinicSection */}
         
         {/* 6. Trusted Health Comparison Platform - Above Footer */}
         <TrustPlatformSection />

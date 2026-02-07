@@ -8,16 +8,18 @@ const Footer = () => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
-  const serviceSections = [
+  const categoryLinks = [
     { name: t('footer.links.mensHealth'), link: "/tests/mens-health" },
     { name: t('footer.links.womensHealth'), link: "/tests/womens-health" },
     { name: t('footer.links.heartHealth'), link: "/tests/heart" },
     { name: t('footer.links.diabetes'), link: "/compare?category=diabetes" },
     { name: t('footer.links.thyroid'), link: "/compare?category=thyroid" },
     { name: t('footer.links.fertility'), link: "/compare?category=fertility" },
+    { name: t('footer.links.cookiePolicy'), link: "/cookies" },
   ];
 
-  const informationSections = [
+  const companyLinks = [
+    { name: t('footer.links.aboutUs'), link: "/about" },
     { name: t('footer.links.howItWorks'), link: "/how-it-works" },
     { name: "Our Providers", link: "/providers" },
     { name: "Clinic Locations", link: "/locations" },
@@ -26,182 +28,171 @@ const Footer = () => {
     { name: t('footer.links.contact'), link: "/contact" },
   ];
 
-  const companySections = [
-    { name: t('footer.links.aboutUs'), link: "/about" },
-    { name: t('footer.links.privacyPolicy'), link: "/privacy-policy" },
-    { name: t('footer.links.termsConditions'), link: "/terms" },
-    { name: "Fair Trading Policy", link: "/fair-trading" },
-    { name: "How We Rank", link: "/how-we-rank" },
-    { name: t('footer.links.partners'), link: "/partners" },
-  ];
-
   return (
-    <footer className="pt-8 sm:pt-10 pb-6 sm:pb-8 bg-[#081129]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Grid - All elements in one row on desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[auto_auto_auto_1fr_auto_auto] gap-6 sm:gap-6 lg:gap-4 mb-6 sm:mb-8">
-          {/* Categories Column */}
-          <div>
-            <ul className="space-y-2 sm:space-y-2.5">
-              {serviceSections.map((service, index) => (
-                <li key={index}>
-                  <Link to={service.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm whitespace-nowrap">
-                    {service.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <footer>
+      {/* ========== Top Area - White Background ========== */}
+      <div className="bg-white pt-10 pb-8 sm:pt-12 sm:pb-10 border-t border-gray-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[1fr_1fr_auto_auto] gap-8 lg:gap-10 mb-8 sm:mb-10">
+            
+            {/* Column 1 - Category Links */}
+            <div>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {categoryLinks.map((item, index) => (
+                  <li key={index}>
+                    <Link to={item.link} className="text-[#081129] hover:text-[#e70d69] transition-colors text-xs sm:text-sm font-sans">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Quick Links Column */}
-          <div>
-            <ul className="space-y-2 sm:space-y-2.5">
-              {informationSections.map((info, index) => (
-                <li key={index}>
-                  <Link to={info.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm whitespace-nowrap">
-                    {info.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Column 2 - Company Links */}
+            <div>
+              <ul className="space-y-2.5 sm:space-y-3">
+                {companyLinks.map((item, index) => (
+                  <li key={index}>
+                    <Link to={item.link} className="text-[#081129] hover:text-[#e70d69] transition-colors text-xs sm:text-sm font-sans">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Legal Column */}
-          <div>
-            <ul className="space-y-2 sm:space-y-2.5">
-              {companySections.map((company, index) => (
-                <li key={index}>
-                  <Link to={company.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm whitespace-nowrap">
-                    {company.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Column 3 - Social Icons */}
+            <div className="col-span-2 sm:col-span-1">
+              <span className="text-xs sm:text-sm text-[#081129] font-semibold mb-3 block">Follow Us</span>
+              <div className="flex gap-3">
+                {/* Instagram */}
+                <a
+                  href="https://www.instagram.com/myhealthcheckup_uk"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 flex items-center justify-center hover:bg-[#e70d69] group transition-colors"
+                  aria-label="Follow us on Instagram"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" className="text-[#081129] group-hover:text-white transition-colors" fill="none"/>
+                    <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" className="text-[#081129] group-hover:text-white transition-colors" fill="none"/>
+                    <circle cx="17.5" cy="6.5" r="1.5" className="fill-[#081129] group-hover:fill-white transition-colors"/>
+                  </svg>
+                </a>
 
-          {/* Company Description Column - Gets remaining space */}
-          <div className="col-span-2 sm:col-span-3 lg:col-span-1 lg:px-6">
-            <Link to="/" className="inline-flex items-center gap-2 mb-3 sm:mb-4">
-              <div className="h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center">
-                <img src="/lovable-uploads/myhealth-logo-bg-pink.png" alt="myhealth checkup Logo" className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg" />
+                {/* Facebook */}
+                <a
+                  href="https://www.facebook.com/myhealthcheckupuk"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 flex items-center justify-center hover:bg-[#e70d69] group transition-colors"
+                  aria-label="Follow us on Facebook"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#081129] group-hover:text-white transition-colors" fill="none"/>
+                  </svg>
+                </a>
+
+                {/* TikTok */}
+                <a
+                  href="https://www.tiktok.com/@myhealthcheckup"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 flex items-center justify-center hover:bg-[#e70d69] group transition-colors"
+                  aria-label="Follow us on TikTok"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#081129] group-hover:text-white transition-colors" fill="none"/>
+                  </svg>
+                </a>
               </div>
-              <span className="text-base sm:text-lg font-bold">
-                <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
-              </span>
-            </Link>
-            <p className="mb-2 sm:mb-3 text-xs sm:text-sm text-white/90 leading-relaxed max-w-xs">
-              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
+            </div>
+
+            {/* Column 4 - Compliance Badges */}
+            <div className="col-span-2 sm:col-span-3 lg:col-span-1">
+              <div className="flex flex-row lg:flex-col gap-3 sm:gap-4">
+                <ComplianceBadge image={icoLogo} label="ICO Registered" />
+                <ComplianceBadge label="Companies House" text="CH" />
+                <ComplianceBadge image={gdprLogo} label="UK GDPR" />
+                <ComplianceBadge image={cqcLogo} label="CQC" />
+              </div>
+            </div>
+          </div>
+
+          {/* Disclaimer & Company Info */}
+          <div className="border-t border-gray-200 pt-6 sm:pt-8">
+            <div className="max-w-4xl">
+              <p className="text-xs sm:text-sm leading-relaxed mb-4">
+                <span className="font-semibold text-[#e70d69]">Important:</span>{" "}
+                <span className="text-gray-600">
+                  MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers. We may receive a referral fee when you book through our links. This does not affect our rankings or the prices you pay.
+                </span>
+              </p>
+              <p className="text-xs sm:text-sm text-[#081129] font-sans mb-1">
+                MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
+              </p>
+              <p className="text-[10px] sm:text-xs text-gray-400">Company No. 16589056</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ========== Copyright Bar - Navy ========== */}
+      <div className="bg-[#081129] py-3 sm:py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-xs sm:text-sm">
+            <p className="text-[#e70d69] font-medium">
+              {t('footer.copyright')}
             </p>
-            <p className="text-[10px] sm:text-xs text-white/60">Company No. 16589056</p>
-          </div>
-
-          {/* Social Media Column */}
-          <div className="flex flex-col items-start lg:items-center justify-start gap-3">
-            <span className="text-[10px] sm:text-xs text-white/60 font-medium">Follow Us</span>
-            <div className="flex gap-3">
-              {/* Facebook */}
-              <a 
-                href="https://www.facebook.com/myhealthcheckupuk" 
-                className="hover:opacity-75 transition-opacity" 
-                aria-label="Follow us on Facebook" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M24 4C12.954 4 4 12.954 4 24C4 35.046 12.954 44 24 44C35.046 44 44 35.046 44 24C44 12.954 35.046 4 24 4Z" stroke="#1877F2" strokeWidth="2" fill="none"/>
-                  <path d="M26.5 25.5H30L31 21.5H26.5V19.5C26.5 18.47 26.5 17.5 28.5 17.5H31V14.14C30.652 14.097 29.284 14 27.842 14C24.834 14 22.5 16.082 22.5 19.5V21.5H19V25.5H22.5V34H26.5V25.5Z" fill="#1877F2"/>
-                </svg>
-              </a>
-              
-              {/* Instagram */}
-              <a 
-                href="https://www.instagram.com/myhealthcheckup_uk" 
-                className="hover:opacity-75 transition-opacity" 
-                aria-label="Follow us on Instagram" 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="8" y="8" width="32" height="32" rx="8" stroke="url(#instagram-gradient)" strokeWidth="2" fill="none"/>
-                  <circle cx="24" cy="24" r="7" stroke="url(#instagram-gradient)" strokeWidth="2" fill="none"/>
-                  <circle cx="33" cy="15" r="2" fill="url(#instagram-gradient)"/>
-                  <defs>
-                    <linearGradient id="instagram-gradient" x1="8" y1="40" x2="40" y2="8" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#FD5"/>
-                      <stop offset="0.5" stopColor="#E4405F"/>
-                      <stop offset="1" stopColor="#833AB4"/>
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* Compliance Badges Column */}
-          <div className="flex flex-row lg:flex-col gap-2 items-start lg:items-center justify-start">
-            <div className="flex flex-col items-center text-center space-y-0.5">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center p-1 shadow-lg">
-                <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
-              </div>
-              <span className="text-white/80 text-[8px] sm:text-[9px] font-medium">CQC</span>
-            </div>
-            
-            <div className="flex flex-col items-center text-center space-y-0.5">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center p-1 shadow-lg">
-                <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain" />
-              </div>
-              <span className="text-white/80 text-[8px] sm:text-[9px] font-medium">GDPR</span>
-            </div>
-            
-            <div className="flex flex-col items-center text-center space-y-0.5">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center p-1 shadow-lg">
-                <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
-              </div>
-              <span className="text-white/80 text-[8px] sm:text-[9px] font-medium">ICO</span>
-            </div>
+            <nav className="flex gap-4">
+              <Link to="/accessibility" className="text-white hover:text-[#e70d69] transition-colors">
+                {t('footer.links.accessibility')}
+              </Link>
+              <Link to="/sitemap" className="text-white hover:text-[#e70d69] transition-colors">
+                {t('footer.links.sitemap')}
+              </Link>
+              <Link to="/privacy-policy" className="text-white hover:text-[#e70d69] transition-colors">
+                {t('footer.links.privacyPolicy')}
+              </Link>
+              <Link to="/terms" className="text-white hover:text-[#e70d69] transition-colors">
+                {t('footer.links.termsConditions')}
+              </Link>
+            </nav>
           </div>
         </div>
+      </div>
 
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#e70d69]/50 to-transparent mb-4 sm:mb-6" />
-
-        {/* Compliance Statements - Visible, explicit */}
-        <div className="bg-[#0a1633] rounded-lg p-4 sm:p-5 mb-4 sm:mb-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-center">
-            <div className="text-white/80">
-              <p className="text-xs sm:text-sm font-medium mb-1">We do not provide medical advice</p>
-              <p className="text-[10px] sm:text-xs text-white/60">Consult a healthcare professional for medical guidance</p>
-            </div>
-            <div className="text-white/80">
-              <p className="text-xs sm:text-sm font-medium mb-1">We do not process payments</p>
-              <p className="text-[10px] sm:text-xs text-white/60">All transactions are handled directly by providers</p>
-            </div>
-            <div className="text-white/80">
-              <p className="text-xs sm:text-sm font-medium mb-1">We do not influence provider pricing</p>
-              <p className="text-[10px] sm:text-xs text-white/60">Prices shown are set by providers and verified daily</p>
-            </div>
+      {/* ========== Brand Bar - Gradient ========== */}
+      <div className="bg-gradient-to-r from-[#e70d69] to-[#22c0d4] py-3 sm:py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center gap-3">
+            <img
+              src="/lovable-uploads/myhealth-logo-bg-pink.png"
+              alt="myhealth checkup"
+              className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg"
+            />
+            <p className="text-white font-heading font-bold text-xs sm:text-sm md:text-base">
+              Your health! Your choice! One trusted platform!
+            </p>
           </div>
-        </div>
-
-        {/* Copyright and Additional Links */}
-        <div className="text-center mb-3 sm:mb-4">
-          <p className="text-[10px] sm:text-xs text-gray-400 max-w-3xl mx-auto px-2">
-            MyHealth Checkup is an independent comparison platform. We may receive a referral fee when you book through our links. This does not affect our rankings or the prices you pay.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 text-center text-[10px] sm:text-xs text-white">
-          <p className="font-normal text-[#e70d69]">
-            {t('footer.copyright')}
-          </p>
-          <nav className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 gap-y-1">
-            <Link to="/accessibility" className="hover:text-[#e70d69] transition-colors">{t('footer.links.accessibility')}</Link>
-            <Link to="/sitemap" className="hover:text-[#e70d69] transition-colors">{t('footer.links.sitemap')}</Link>
-            <Link to="/cookies" className="hover:text-[#e70d69] transition-colors">{t('footer.links.cookiePolicy')}</Link>
-          </nav>
         </div>
       </div>
     </footer>
   );
 };
+
+/** Small compliance badge component */
+const ComplianceBadge = ({ image, label, text }: { image?: string; label: string; text?: string }) => (
+  <div className="flex flex-col items-center text-center space-y-1">
+    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-lg flex items-center justify-center p-1 shadow-md border border-gray-100">
+      {image ? (
+        <img src={image} alt={label} className="w-full h-full object-contain" />
+      ) : (
+        <span className="text-[#081129] font-bold text-xs">{text}</span>
+      )}
+    </div>
+    <span className="text-gray-500 text-[8px] sm:text-[9px] font-medium">{label}</span>
+  </div>
+);
 
 export default Footer;
