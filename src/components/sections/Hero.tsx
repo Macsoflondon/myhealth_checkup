@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { logger } from "@/lib/logger";
+import heroBgImage from "@/assets/hero-bg-blood-tubes.jpg";
 
 const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -82,8 +83,18 @@ const Hero = () => {
       </section>
       
       {/* Main Hero Content - Clear promise, immediate action */}
-      <section className="bg-background py-6 sm:py-10 md:py-14 lg:py-20">
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
+      <section className="relative overflow-hidden py-6 sm:py-10 md:py-14 lg:py-20">
+        {/* Background image */}
+        <img
+          src={heroBgImage}
+          alt=""
+          aria-hidden="true"
+          loading="eager"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
+        {/* White overlay for readability */}
+        <div className="absolute inset-0 bg-white/[0.87] z-[1]" />
+        <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Headline - Clear promise in plain language, mobile-first sizing */}
             <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
