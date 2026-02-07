@@ -14,6 +14,7 @@ import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthInd
 import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle, Lock } from "lucide-react";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 
 const Auth = () => {
   const {
@@ -375,9 +376,20 @@ const Auth = () => {
               </div>
             )}
 
-            <Button type="submit" disabled={loading} className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium">
+            <Button type="submit" disabled={loading || (!isSignUp && isLocked)} className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium">
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-muted" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
+              </div>
+            </div>
+
+            <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
 
             <div className="text-center mt-4">
               <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-[#081129] font-medium">
