@@ -1,90 +1,83 @@
 
 
-# Redesign Bottom Half of Homepage to Match Reference Image
+# Footer Redesign -- Exact Match to Reference Image
 
 ## Overview
 
-This plan restructures four sections and the footer to match the reference design screenshot. The key changes are layout restructuring (side-by-side sections), content additions (clinic stats, TikTok social icon, brand bar), and a complete footer redesign.
+Rewrite `src/components/layout/Footer.tsx` to precisely match the reference screenshot. The general structure (navy bg, 4 columns, copyright bar, pink divider, brand bar) is in place but the details are wrong. This plan fixes every visual discrepancy.
 
-## Section-by-Section Changes
+## Specific Changes
 
-### 1. FindClinicSection + FinalCTA -- Combined Side-by-Side Layout
+### 1. Compliance Badges -- Larger, More Detailed
 
-**Current**: Two separate full-width stacked sections.
-**New**: One section with a two-column grid layout on desktop, stacking vertically on mobile.
+The current badges are tiny generic squares (w-12/w-14). In the reference, they are tall rectangular cards with readable text and styling inside.
 
-- **Left column (FindClinicSection)**:
-  - Left-aligned heading "Find a Clinic **Near You**" (gradient text)
-  - Left-aligned paragraph: "With over 200 partner clinic locations across the UK, getting a blood test has never been more convenient. Whether you prefer a home kit or in-clinic appointment, we've got you covered."
-  - Three stat items in a row: "200+" / Clinic Locations, "7" / Partner Networks, "UK-wide" / Coverage
-  - Two CTA buttons below: "Find your nearest clinic" (turquoise, hover pink) and "Browse all clinic locations" (pink, hover turquoise)
+Changes:
+- Increase badge size to approximately `w-20 h-20 sm:w-24 sm:h-24` (roughly 80-96px)
+- Rounded corners with `rounded-xl`
+- **ICO Registered**: White background, display the ICO logo image with "REGISTERED" text below it inside the badge
+- **Companies House**: White background, display a building/crest emoji or icon with "Companies House" text inside
+- **UK GDPR**: White background, display the GDPR logo image with branding text
+- **Cyber Essentials Certified**: Turquoise (#22c0d4) background, large white checkmark, "CYBER ESSENTIALS" and "CERTIFIED" text in white, bold
 
-- **Right column (FinalCTA)**:
-  - Light grey background card (`bg-gray-50 rounded-2xl`)
-  - "Start Your Journey Today" badge at top
-  - Centred heading "Take Control of Your **Health Today**"
-  - Description text
-  - Two buttons: "Compare tests" (turquoise) and "Take the health quiz" (pink)
-  - Trust line: "Free to use . No registration required . Fully independent"
+### 2. Social Icons -- Larger with TikTok Label
 
-**Implementation**: Merge these into one combined section component or wrap both in a parent grid. The simplest approach is to edit `FindClinicSection.tsx` to include the FinalCTA content as a second column and remove the standalone `FinalCTA` from the page.
+- Increase social icon SVGs from `width="44"` to `width="52"` or `width="56"`
+- Add "TikTok" text label below the TikTok icon (matching the reference where it shows the brand name)
 
-### 2. TrustPlatformSection -- Wider Cards
+### 3. "Follow Us" Text -- Turquoise, Larger
 
-**Current**: Very compact, small cards with `max-w-xl`.
-**New**: Wider layout matching the reference -- full-width container with larger cards, bigger icons, and more padding. Remove the `max-w-xl` constraint.
+- Change "Follow Us" text colour from white to turquoise (#22c0d4)
+- Increase font size to `text-xl sm:text-2xl`
+- Keep bold weight
 
-### 3. HereToHelp -- Two-Column Layout
+### 4. Layout Spacing Adjustments
 
-**Current**: Centred heading with three resource cards in a 3-column grid below.
-**New**: Two-column layout on desktop:
-- **Left column**: Left-aligned heading "You're Never Alone on Your **Health Journey**", followed by a descriptive paragraph below
-- **Right column**: Three resource cards stacked vertically (Health Hub, FAQs, Contact Us) -- each as a horizontal row with icon, title, and description
+- Add more vertical padding to the main footer section: `pt-10 sm:pt-12 pb-6 sm:pb-8`
+- Increase gap between grid columns: `lg:gap-12`
+- Add more bottom margin after the social icons row: `mb-6 sm:mb-8`
 
-Resource card titles updated:
-- "Health Guides" becomes "Health Hub"
-- Description updated: "In-depth articles on tests, conditions and what your results mean."
-- FAQs description: "Answers to common questions about testing and our platform."
-- Contact Us description: "Get in touch with our team for personalised support."
+### 5. Brand Bar -- Exact Match
 
-### 4. Footer -- Complete Redesign
+The brand bar is close but needs refinement:
+- The heart logo should be slightly larger: `h-10 w-10 sm:h-12 sm:w-12`
+- "myhealth" text larger and bolder
+- "checkup" text in turquoise, positioned closer to "myhealth"
+- Slogan: "Your **health!** Your **choice!** One **trusted** platform!" with "health!" and "choice!" in pink (#e70d69) and "trusted" in turquoise (#22c0d4), rest in white
+- Ensure all elements are on a single horizontal line, centred
 
-**Current**: Navy background, 6-column grid with 3 link columns, company description, social, compliance badges. Separate compliance statements box.
-**New layout** (matching reference):
+### 6. Copyright Line
 
-- **Top area**: White/light background section with:
-  - Two link columns side by side (left-aligned):
-    - Column 1: Men's Health, Women's Health, Heart Health, Diabetes, Thyroid, Fertility, Cookie Policy
-    - Column 2: About Us, How It Works, Our Providers, Clinic Locations, FAQs, Blog, Contact
-  - "Follow Us" with three social icons (Instagram, Facebook, TikTok) -- larger, circular
-  - Important disclaimer text in pink/turquoise: "Important: MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers."
-  - Company info: "MYHEALTHCHECKUP LTD is the UK's leading health service comparison website." + Company No.
-  - Right side: Compliance badges stacked vertically (ICO Registered, Companies House, UK GDPR, Cyber Essentials Certified)
+- Ensure copyright text and "Accessibility" link are both in pink (#e70d69)
+- Centred, with adequate padding above and below
 
-- **Bottom copyright bar**: Navy background with copyright text and Accessibility link
-- **Brand bar at very bottom**: Pink-to-turquoise gradient bar with the myhealth checkup logo and slogan "Your health! Your choice! One trusted platform!"
+### 7. Pink Divider
 
-### 5. Update Index.tsx Section Order
+- Keep as `h-[2px] bg-[#e70d69]` (this matches the reference)
 
-Remove `FinalCTA` as a standalone import since it merges into the FindClinicSection combined layout:
-- Remove `<FinalCTA />` from the page
-- The combined FindClinic+FinalCTA section handles both
-
-## Files to Edit
+## File to Edit
 
 | File | Change |
 |------|--------|
-| `src/components/sections/FindClinicSection.tsx` | Major rewrite: two-column grid with clinic stats on left and FinalCTA content on right |
-| `src/components/sections/HereToHelp.tsx` | Restructure to two-column layout with left-aligned heading and stacked resource cards on right |
-| `src/components/sections/TrustPlatformSection.tsx` | Widen cards, increase padding and icon sizes to match reference |
-| `src/components/layout/Footer.tsx` | Complete redesign: white top section with new layout, compliance badges, social icons (add TikTok), disclaimer block, brand bar at bottom |
-| `src/pages/Index.tsx` | Remove `FinalCTA` import and usage |
+| `src/components/layout/Footer.tsx` | Full rewrite of the ComplianceBadge component to be larger and more detailed; increase social icon sizes; update "Follow Us" to turquoise; adjust spacing throughout; refine brand bar sizing |
 
-## Technical Notes
+## Technical Details
 
-- All buttons continue to follow the turquoise/pink two-tone hover-swap system
-- The brand colour palette (#22c0d4, #e70d69, #081129, #ffffff) is used exclusively
-- Mobile-first approach: the two-column layouts stack to single column on small screens
-- The TikTok social icon will be added as an inline SVG consistent with the existing Facebook and Instagram icons
-- "Companies House" and "Cyber Essentials" badges will use placeholder styled divs with text labels (same pattern as existing compliance badges) unless actual logo files are available
-- The brand bar at the footer bottom uses a gradient from pink to turquoise with the logo centred
+The `ComplianceBadge` component will be rewritten with larger dimensions and more content inside each badge:
+
+```text
+ComplianceBadge props:
+- image?: string (logo image path)
+- label: string (text below the badge)
+- text?: string (text inside the badge if no image)
+- isCyberEssentials?: boolean
+- innerLabel?: string (additional text inside the badge)
+
+Badge container: w-20 h-20 sm:w-24 sm:h-24 rounded-xl
+```
+
+Social icons will increase from 44px to 54px SVG width/height.
+
+"Follow Us" will use `text-[#22c0d4] font-heading font-bold text-xl sm:text-2xl`.
+
+No new files, no new dependencies. Only `Footer.tsx` is edited.
