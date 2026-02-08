@@ -1,6 +1,6 @@
 // Hero component - focused on speed, reassurance, and trust
 import { Button } from "@/components/ui/button";
-import { Shield, CreditCard, Eye, Search, Loader2 } from "lucide-react";
+import { Shield, CreditCard, Eye, Search, Loader2, UserX } from "lucide-react";
 import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -55,6 +55,7 @@ const Hero = () => {
     { icon: Shield, text: "UKAS accredited laboratories only" },
     { icon: Shield, text: "CQC regulated providers" },
     { icon: CreditCard, text: "No payments taken on this site" },
+    { icon: UserX, text: "No GP Referral Needed" },
     { icon: Eye, text: "Independent comparison" }
   ];
 
@@ -96,17 +97,30 @@ const Hero = () => {
         <div className="absolute inset-0 bg-white/[0.65] z-[1]" />
         <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Headline - Clear promise in plain language, mobile-first sizing */}
+            {/* Headline - Clear promise in plain language */}
             <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="text-brand-navy block">Compare the UK's leading private health test providers -</span>
               <span className="text-brand-pink block mt-1 sm:mt-2">All in one place!</span>
             </h1>
-            
-            {/* Subheading - What you get, no waffle */}
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-sans mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed">
-              Prices, biomarkers, and turnaround times in one place.
-              <br className="hidden sm:block" />
-              No GP referral. UK accredited labs only.
+
+            {/* Mission text block with turquoise left border */}
+            <div className="max-w-3xl mx-auto text-left mb-4 sm:mb-6 md:mb-8">
+              <div className="border-l-4 border-brand-turquoise pl-4 sm:pl-6 space-y-3 sm:space-y-4 text-gray-600 font-sans text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
+                <p className="font-bold">
+                  At myhealth <span className="text-brand-turquoise">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+                </p>
+                <p>
+                  Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
+                </p>
+                <p>
+                  We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
+                </p>
+              </div>
+            </div>
+
+            {/* Prices | Biomarkers | Turnaround Times */}
+            <p className="font-heading font-bold text-lg sm:text-xl md:text-2xl text-brand-navy mb-4 sm:mb-6 md:mb-8">
+              Prices | Biomarkers | Turnaround Times
             </p>
             
             {/* Primary & Secondary CTAs - Immediate action path */}
@@ -185,20 +199,38 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Trust Signals - Scannable, one line per idea, appears early */}
-            <div className="flex flex-wrap justify-center gap-x-3 sm:gap-x-4 md:gap-x-6 gap-y-2 sm:gap-y-3 mb-4 sm:mb-6 md:mb-8">
-              {trustSignals.map((signal, index) => (
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Signals Bar - separate band */}
+      <section className="bg-[#f0fafb] py-4 sm:py-5 md:py-6">
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
+          <div className="max-w-4xl mx-auto">
+            {/* Row 1: 3 items */}
+            <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-3 mb-3">
+              {trustSignals.slice(0, 3).map((signal, index) => (
                 <div 
                   key={index} 
-                  className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm md:text-base text-muted-foreground"
+                  className="flex items-center gap-2 sm:gap-2.5 text-sm sm:text-base text-brand-navy"
                 >
-                  <signal.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-brand-turquoise flex-shrink-0" />
-                  <span className="font-sans">{signal.text}</span>
+                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-turquoise flex-shrink-0" />
+                  <span className="font-sans font-semibold">{signal.text}</span>
                 </div>
               ))}
             </div>
-
+            {/* Row 2: 2 items centred */}
+            <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-3">
+              {trustSignals.slice(3).map((signal, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-center gap-2 sm:gap-2.5 text-sm sm:text-base text-brand-navy"
+                >
+                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-turquoise flex-shrink-0" />
+                  <span className="font-sans font-semibold">{signal.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
