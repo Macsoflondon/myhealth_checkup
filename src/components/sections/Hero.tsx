@@ -119,9 +119,14 @@ const Hero = () => {
             </div>
 
             {/* Prices | Biomarkers | Turnaround Times */}
-            <p className="font-heading font-bold text-lg sm:text-xl md:text-2xl text-brand-navy mb-4 sm:mb-6 md:mb-8">
-              Prices | Biomarkers | Turnaround Times
-            </p>
+            <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-3 mb-4 sm:mb-6 md:mb-8">
+              {["Prices", "Biomarkers", "Turnaround Times"].map((item, index) => (
+                <div key={index} className="flex items-center gap-2 sm:gap-2.5 text-sm sm:text-base text-brand-navy">
+                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-brand-turquoise flex-shrink-0" />
+                  <span className="font-sans font-semibold">{item}</span>
+                </div>
+              ))}
+            </div>
             
             {/* Primary & Secondary CTAs - Immediate action path */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">
