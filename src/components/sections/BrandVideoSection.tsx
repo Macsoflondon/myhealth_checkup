@@ -3,7 +3,7 @@ import brandVideo from "@/assets/brand-tagline-video.mp4";
 const BrandVideoSection = () => {
   return (
     <section className="w-full bg-brand-navy py-5 sm:py-8 md:py-12">
-      <div className="max-w-3xl mx-auto px-3 sm:px-4 md:px-6">
+      <div className="max-w-2xl ml-auto mr-4 sm:mr-8 md:mr-16 px-3 sm:px-4 md:px-6">
         <video
           autoPlay
           loop

@@ -110,11 +110,11 @@ const Index = () => {
         {/* 4. Your Health Journey Simplified */}
         <JourneySimplified />
         
+        {/* 5. Brand Tagline Video */}
+        <BrandVideoSection />
+        
         {/* 6. Featured Publications */}
         <FeaturedPublications />
-        
-        {/* 7. Brand Tagline Video */}
-        <BrandVideoSection />
         
         {/* 8. Most Popular Tests from Our Providers */}
         <MostPopularTestsSection />
