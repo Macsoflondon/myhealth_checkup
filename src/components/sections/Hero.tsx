@@ -52,11 +52,11 @@ const Hero = () => {
 
   // Trust signals - scannable, one line per idea
   const trustSignals = [
-    { icon: Shield, text: "UKAS accredited laboratories only" },
-    { icon: Shield, text: "CQC regulated providers" },
-    { icon: CreditCard, text: "No payments taken on this site" },
+    { icon: Shield, text: "UKAS Accredited Laboratories Only" },
+    { icon: Shield, text: "CQC Regulated Providers" },
+    { icon: CreditCard, text: "No Payments Taken On This Site" },
     { icon: UserX, text: "No GP Referral Needed" },
-    { icon: Eye, text: "Independent comparison" }
+    { icon: Eye, text: "Independent Comparison" }
   ];
 
   return (
