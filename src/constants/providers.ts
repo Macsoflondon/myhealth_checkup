@@ -113,12 +113,12 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
  * These are the primary partners displayed prominently on the site
  */
 export const providers: Provider[] = [
+  PROVIDER_DETAILS['goodbody-clinic'],
   PROVIDER_DETAILS['medichecks'],
   PROVIDER_DETAILS['thriva'],
   PROVIDER_DETAILS['randox'],
   PROVIDER_DETAILS['london-medical-laboratory'],
   PROVIDER_DETAILS['lola-health'],
-  PROVIDER_DETAILS['goodbody-clinic'],
 ];
 
 export function getProviderLogo(providerId: string): string {
