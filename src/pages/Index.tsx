@@ -8,6 +8,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import Hero from "@/components/sections/Hero";
 import MissionSection from "@/components/sections/MissionSection";
 import PartnersGrid from "@/components/sections/PartnersGrid";
+import GoodbodyFeatureSection from "@/components/sections/GoodbodyFeatureSection";
 
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import JourneySimplified from "@/components/sections/JourneySimplified";
@@ -104,7 +105,10 @@ const Index = () => {
         {/* 2. Mission Section - Your Health is Your Greatest Asset */}
         <MissionSection />
         
-        {/* 3. Our Trusted Partners */}
+        {/* 3a. Featured Partner - Goodbody Clinic */}
+        <GoodbodyFeatureSection />
+        
+        {/* 3b. Our Trusted Partners */}
         <PartnersGrid />
         
         {/* 4. Your Health Journey Simplified */}
