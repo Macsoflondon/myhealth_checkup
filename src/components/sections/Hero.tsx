@@ -99,8 +99,7 @@ const Hero = () => {
           <div className="max-w-4xl mx-auto text-center">
             {/* Headline - Clear promise in plain language */}
             <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
-              <span className="text-brand-navy block">Compare the UK's leading private health test providers -</span>
-              <span className="text-brand-pink block mt-1 sm:mt-2">All in one place!</span>
+              <span className="text-brand-navy block">Compare the UK's leading private health test providers - <span className="text-brand-pink">All in one place!</span></span>
             </h1>
 
             {/* Mission text block with turquoise left border */}
