@@ -50,12 +50,12 @@ const Header = ({
             {/* Top row: Logo + Navigation controls */}
             <div className="py-1.5 sm:py-2 flex items-center justify-between">
               {/* Logo - positioned at far left edge with mobile-first sizing */}
-              <Link to="/" className="flex items-center flex-shrink-0 -ml-2 sm:-ml-4" style={{ overflow: 'visible' }}>
+              <Link to="/" className="flex items-center flex-shrink-0 -ml-4 sm:-ml-6" style={{ overflow: 'visible' }}>
                 <AnimatedLogo className="h-16 xs:h-20 sm:h-24" />
               </Link>
 
               {/* Navigation controls - positioned at far right edge */}
-              <nav className="flex items-center gap-0.5 xs:gap-1 -mr-1 sm:-mr-2" aria-label="User controls">
+              <nav className="flex items-center gap-0.5 xs:gap-1 -mr-4 sm:-mr-6" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu isMobile />
                 <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
@@ -86,7 +86,7 @@ const Header = ({
           <div className="container mx-auto px-4 lg:px-8 xl:px-12">
             <div className="relative flex items-center justify-between py-3 lg:py-4">
               {/* Left: Logo - positioned at far left edge */}
-              <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 -ml-8 lg:-ml-12 xl:-ml-16" style={{ overflow: 'visible' }}>
+              <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 -ml-12 lg:-ml-16 xl:-ml-20" style={{ overflow: 'visible' }}>
                 <AnimatedLogo className="h-32 lg:h-40 xl:h-48" />
               </Link>
 
@@ -100,7 +100,7 @@ const Header = ({
               </div>
 
               {/* Right: Controls - positioned at far right edge */}
-              <nav className="flex items-center gap-3 -mr-4 lg:-mr-8 xl:-mr-12" aria-label="User controls">
+              <nav className="flex items-center gap-3 -mr-8 lg:-mr-12 xl:-mr-16" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu />
               </nav>
