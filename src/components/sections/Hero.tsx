@@ -106,7 +106,7 @@ const Hero = () => {
             <div className="max-w-3xl mx-auto text-left mb-4 sm:mb-6 md:mb-8">
               <div className="border-l-4 border-brand-turquoise pl-4 sm:pl-6 space-y-3 sm:space-y-4 text-gray-800 font-sans text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
                 <p className="font-bold">
-                  At myhealth <span className="text-brand-turquoise">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+                  At myhealth <span className="text-brand-pink">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
                 </p>
                 <p>
                   Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
