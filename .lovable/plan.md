@@ -1,24 +1,29 @@
 
 
-# Add Brand Tagline Video Below Partners Section
+## Centre-Align the Bottom Homepage Sections on Mobile
 
-## What will change
+The bottom sections of the homepage (Find a Clinic, Stats, Start Your Journey, and Here to Help) currently use left-aligned text and layouts on mobile, creating an inconsistent feel. This plan centres everything on mobile to match the rest of the page.
 
-The uploaded video (`Your_health._Your_choice._One_trusted_platform!_1.mp4`) will be added below the "Our Trusted Partners" carousel section, positioned slightly off-centre to the right.
+### Changes
 
-## Implementation
+**1. FindClinicSection.tsx -- Centre the left column on mobile**
 
-1. **Copy the uploaded video** into `src/assets/` as `brand-tagline-video.mp4` (replacing the existing file if the content is different, or using a new name if needed).
+- **Heading**: Remove `text-left [&>h2]:text-left` from the SectionHeading so it defaults to centred on mobile. Add `lg:text-left lg:[&>h2]:text-left` to keep it left-aligned on desktop only.
+- **Description paragraph**: Add `text-center lg:text-left` so it centres on mobile.
+- **Stats row**: Add `justify-center lg:justify-start` to centre the three stats (200+, 7, UK-wide) on mobile.
+- **CTA buttons**: Add `items-center lg:items-start` and `justify-center` so buttons centre on mobile. Also add `text-center` to ensure button text is centred within each button.
 
-2. **Update the BrandVideoSection component** (or create a new placement) to render the video below the PartnersGrid in the homepage layout. The video will be:
-   - Wrapped in a container with right-offset alignment (e.g. `ml-auto` or `mr-4` with a max-width constraint) so it sits slightly to the right
-   - Auto-playing, looped, muted, inline (matching the existing video pattern)
-   - Responsive with rounded corners
+**2. HereToHelp.tsx -- Centre the left column on mobile**
 
-3. **Adjust the Index.tsx layout** to move `BrandVideoSection` directly after `PartnersGrid` (it currently sits after `FeaturedPublications`), placing it in the correct visual position beneath the partners carousel.
+- **Badge ("Here to Help")**: Change `flex` to `flex justify-center lg:justify-start` so the badge centres on mobile.
+- **Heading**: Remove `text-left [&>h2]:text-left` from SectionHeading, add `lg:text-left lg:[&>h2]:text-left` for desktop only.
+- **Description paragraph**: Add `text-center lg:text-left` to centre on mobile.
 
-## Technical Details
+**3. Button text centring (both sections)**
 
-- **File**: Copy `user-uploads://Your_health._Your_choice._One_trusted_platform!_1.mp4` to `src/assets/brand-tagline-video.mp4`
-- **Component**: Update `src/components/sections/BrandVideoSection.tsx` to offset the video container to the right using `ml-auto` with a constrained max-width (e.g. `max-w-2xl`) and slight right padding
-- **Layout**: In `src/pages/Index.tsx`, reorder so `BrandVideoSection` renders immediately after `PartnersGrid` instead of its current position after `FeaturedPublications`
+- Add `text-center justify-center items-center` to all Button className strings to ensure wording is always centred within the buttons. This applies to both FindClinicSection and the Start Your Journey card buttons.
+
+### Technical Detail
+
+All changes are Tailwind class adjustments only -- no structural or logic changes. The `lg:` breakpoint prefix ensures desktop keeps its current two-column left/right layout while mobile stacks everything centred.
+
