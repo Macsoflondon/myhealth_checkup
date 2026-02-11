@@ -33,7 +33,7 @@ const HereToHelp = () => {
             {/* Left Column - Heading & Description */}
             <div>
               {/* Badge */}
-              <div className="flex mb-4 sm:mb-5">
+              <div className="flex justify-center lg:justify-start mb-4 sm:mb-5">
                 <div className="inline-flex items-center gap-2 text-[#e70d69]">
                   <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span className="text-xs sm:text-sm font-semibold">Here to Help</span>
@@ -43,10 +43,10 @@ const HereToHelp = () => {
               <SectionHeading
                 title="You're Never Alone on Your"
                 gradientText="Health Journey"
-                className="text-left [&>h2]:text-left"
+                className="lg:text-left lg:[&>h2]:text-left"
               />
 
-              <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4">
+              <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4 text-center lg:text-left mx-auto lg:mx-0">
                 Whether you're testing for the first time or monitoring an ongoing condition, we're here to support you every step of the way.
               </p>
             </div>

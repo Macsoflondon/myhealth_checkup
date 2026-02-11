@@ -20,15 +20,15 @@ const FindClinicSection = () => {
             <SectionHeading
               title="Find a Clinic"
               gradientText="Near You"
-              className="text-left [&>h2]:text-left"
+              className="lg:text-left lg:[&>h2]:text-left"
             />
 
-            <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-lg">
+            <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-6 sm:mb-8 max-w-lg text-center lg:text-left mx-auto lg:mx-0">
               With over 200 partner clinic locations across the UK, getting a blood test has never been more convenient. Whether you prefer a home kit or in-clinic appointment, we've got you covered.
             </p>
 
             {/* Stats Row */}
-            <div className="flex gap-6 sm:gap-8 mb-6 sm:mb-8">
+            <div className="flex gap-6 sm:gap-8 mb-6 sm:mb-8 justify-center lg:justify-start">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <p className="text-2xl sm:text-3xl font-heading font-bold text-[#081129]">{stat.value}</p>
@@ -38,11 +38,11 @@ const FindClinicSection = () => {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center lg:items-start">
               <Button
                 asChild
                 size="lg"
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 text-center justify-center items-center"
               >
                 <Link to="/find-clinic">
                   Find your nearest clinic
@@ -51,7 +51,7 @@ const FindClinicSection = () => {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 text-center justify-center items-center"
               >
                 <Link to="/find-clinic">
                   Browse all clinic locations
@@ -86,7 +86,7 @@ const FindClinicSection = () => {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-lg"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-lg text-center justify-center items-center"
               >
                 <Link to="/compare">
                   Compare tests
@@ -95,7 +95,7 @@ const FindClinicSection = () => {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-lg"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-lg text-center justify-center items-center"
               >
                 <Link to="/assisted-test-finder">
                   Take the health quiz
