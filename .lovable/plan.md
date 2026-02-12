@@ -1,38 +1,31 @@
 
 
-## Replace Breadcrumbs with Home and Back Icon Buttons
+## Fix the "More" Dropdown Closing Prematurely on Mobile
 
-### What changes
+### The Problem
 
-Every page currently shows a breadcrumb trail (e.g. "Home > Compare Tests > Hormone Tests") and a text-based "Back to Home" link. All of that will be removed and replaced with **two small square icon buttons side by side, aligned to the right**, positioned in the same spot (below the hero section). The floating circular buttons on the right edge of the screen will also be removed.
+When you tap "More" in the navigation toolbar and the dropdown appears, trying to tap on any item inside it causes the entire dropdown to close before you can make a selection. This forces you to reopen it repeatedly.
 
-The buttons will be:
-- **Home** (house icon) -- navigates to `/`
-- **Back** (left arrow icon) -- navigates to the previous page
+### Root Cause
 
-Styling: turquoise (`#22c0d4`) background, turning pink (`#e70d69`) on hover, white icons, rounded-lg (square with rounded corners, not circles).
+The dropdown is closing because touch/click events inside the More dropdown are bubbling up to a document-level click listener in the navigation component. On mobile, this race condition means the dropdown closes before the item click registers. Additionally, there is a mobile backdrop overlay behind the dropdown that can intercept taps.
 
----
+### The Fix
 
-### 1. Rewrite `PageBreadcrumb` component
+**1. Stop click events from escaping the More dropdown (`MoreDropdownMenu.tsx`)**
 
-The file `src/components/common/PageBreadcrumb.tsx` will be rewritten to render two square icon buttons (Home + Back) aligned to the right instead of the breadcrumb trail and text back link. Since PageBreadcrumb is already used in ~30 pages in the correct position (below the hero), all those pages will automatically get the new buttons without any per-page edits.
+Add `onClick` and `onTouchStart` event handlers on the dropdown container that call `stopPropagation()`. This prevents any interaction inside the dropdown from reaching the document-level close handler, so the dropdown stays open while you browse.
 
-The component will keep its existing props interface so nothing breaks, but the rendered output will change to just the two icon buttons in a right-aligned row.
+**2. Prevent the mobile backdrop from intercepting dropdown taps (`NavigationMenu.tsx`)**
 
-### 2. Remove floating `PageNavButtons` from `App.tsx`
-
-The global floating `PageNavButtons` component (the circular buttons fixed to the right side of the screen) will be removed from `App.tsx` since the inline buttons in `PageBreadcrumb` now serve the same purpose in the correct position.
-
-### 3. No changes to `BackToTop`
-
-The scroll-to-top button at the bottom-right remains as-is with its turquoise-to-pink colour scheme.
-
----
+Add `pointer-events-none` to the backdrop when a dropdown is active, then use `pointer-events-auto` only on click areas outside the dropdown. Alternatively, raise the dropdown's parent wrapper z-index above the backdrop so taps hit the dropdown first, not the backdrop behind it.
 
 ### Technical Detail
 
-- **Edit `src/components/common/PageBreadcrumb.tsx`**: Replace the breadcrumb trail and text back button with a `flex justify-end` container holding two `40x40` square buttons (`rounded-lg`, `bg-[#22c0d4]`, `hover:bg-[#e70d69]`, white icons). Home uses a `Link` to `/`, Back uses `useNavigate(-1)`.
-- **Edit `src/App.tsx`**: Remove the `PageNavButtons` import and its `<PageNavButtons />` usage from the router tree.
-- **No page-level files need editing** -- all ~30 pages already render `PageBreadcrumb` in the right spot.
+- **`src/components/header/MoreDropdownMenu.tsx`**: Add `onClick={(e) => e.stopPropagation()}` and `onTouchStart={(e) => e.stopPropagation()}` to the root container `div` so no events leak to the parent document click handler.
+- **`src/components/header/NavigationMenu.tsx`**: Ensure the `.nav-item-wrapper` for the More button has a z-index higher than the backdrop (`z-[99]` or `z-[100]`) so the dropdown receives taps directly on mobile. Also update the `handleClickOutside` to add a small delay or check for touch events to avoid the race condition.
+
+### Result
+
+The More dropdown will stay open while you browse sections and items. It will only close when you either tap the X button, tap outside the dropdown, or tap a final page link to navigate.
 
