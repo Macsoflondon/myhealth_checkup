@@ -74,6 +74,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   const handleItemClick = () => {
     onClose?.();
     onItemClick?.();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const hasResults = (filteredTests && filteredTests.length > 0) || 
