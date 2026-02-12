@@ -141,7 +141,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   };
 
   const renderMoreButton = () => (
-    <div className="relative nav-item-wrapper">
+    <div className="relative nav-item-wrapper" style={{ zIndex: 100 }}>
       <button
         type="button"
         aria-haspopup="menu"

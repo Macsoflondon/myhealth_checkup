@@ -48,6 +48,8 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
       ref={containerRef}
       role="menu"
       aria-label="More options dropdown menu"
+      onClick={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
       className={`dropdown-content absolute top-full right-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[320px] overflow-y-auto ${
         isMobile ? 'max-h-[60vh]' : 'max-h-[75vh]'
       }`}
