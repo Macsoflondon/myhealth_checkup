@@ -40,6 +40,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
     // Navigate after a short delay to ensure the dropdown has closed
     setTimeout(() => {
       navigate(path);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 10);
   };
 
