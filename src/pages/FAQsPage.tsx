@@ -363,33 +363,6 @@ const FAQsPage = () => {
           </div>
         </HeroSection>
 
-        {/* Popular Questions */}
-        {debouncedSearch === '' && <div className="container mx-auto px-4 sm:py-12 py-[10px]">
-            <div className="bg-[hsl(var(--section-dark))] rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl">
-              <SectionHeading 
-                title="Popular" 
-                gradientText="Questions" 
-                className="mb-4 sm:mb-6"
-                titleClassName="text-white"
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {popularQuestions.map((faq, idx) => <Card key={idx} className="border-white/20 transition-all duration-300 cursor-pointer group bg-[#081129]">
-                    <CardHeader className="p-4 sm:p-6 bg-white">
-                      <Badge className="mb-2 sm:mb-3 text-white border-primary/30 w-fit text-xs sm:text-sm bg-[#081129]">
-                        {faq.category}
-                      </Badge>
-                      <CardTitle className="text-base sm:text-lg transition-colors text-[#081129]">
-                        {faq.q}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 sm:p-6 pt-0 bg-white">
-                      <p className="line-clamp-3 px-[10px] font-semibold text-base text-white">{faq.a}</p>
-                    </CardContent>
-                  </Card>)}
-              </div>
-            </div>
-          </div>}
-
         {/* FAQ Categories */}
         <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">
           {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
