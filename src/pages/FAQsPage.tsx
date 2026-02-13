@@ -363,6 +363,10 @@ const FAQsPage = () => {
           </div>
         </HeroSection>
 
+        <div className="container mx-auto px-4 pt-4">
+          <PageBreadcrumb />
+        </div>
+
         {/* FAQ Categories */}
         <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">
           {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
