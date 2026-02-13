@@ -346,8 +346,7 @@ const FAQsPage = () => {
       
       <main className="flex-grow bg-background">
         <HeroSection
-          title="Frequently Asked"
-          accent="Questions"
+          title="Frequently Asked Questions"
           subtitle="Find answers to common questions about health testing and our platform"
         >
           {/* Search Bar */}
