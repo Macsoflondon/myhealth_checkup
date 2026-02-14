@@ -12,7 +12,7 @@ const BrandVideoSection = () => {
             muted
             playsInline
             preload="auto"
-            className="w-full sm:w-[55%] sm:flex-shrink-0 h-auto rounded-lg sm:rounded-xl sm:scale-110 sm:origin-top-left sm:-translate-x-[1cm]"
+            className="w-full sm:w-[40%] sm:flex-shrink-0 h-auto rounded-lg sm:rounded-xl sm:scale-110 sm:origin-top-left sm:-translate-x-[1cm]"
             aria-label="GoodBody Clinic – Your health. Your choice. One trusted platform!"
           >
             <source src={goodbodyVideo} type="video/mp4" />
@@ -24,7 +24,7 @@ const BrandVideoSection = () => {
             muted
             playsInline
             preload="auto"
-            className="w-full sm:w-[35%] h-auto rounded-lg sm:rounded-xl sm:mt-[2.5cm]"
+            className="w-full sm:w-[50%] h-auto rounded-lg sm:rounded-xl sm:mt-[2.5cm]"
             aria-label="Medichecks – Your health. Your choice. One trusted platform!"
           >
             <source src={medichecksVideo} type="video/mp4" />
