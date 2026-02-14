@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 import medichecksVideo from "@/assets/medichecks-animation.mp4";
+import goodbodyVideo from "@/assets/goodbody-animation.mp4";
 
 const PartnerShowcaseGrid = () => {
   return (
@@ -31,6 +32,16 @@ const PartnerShowcaseGrid = () => {
               >
                 View Goodbody tests
               </Link>
+            </div>
+            <div className="lg:w-[45%] min-h-[200px] lg:min-h-0 bg-[#081129] flex items-center justify-center">
+              <video
+                src={goodbodyVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
 
