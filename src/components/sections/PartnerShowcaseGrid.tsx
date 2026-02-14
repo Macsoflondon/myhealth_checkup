@@ -21,11 +21,17 @@ const PartnerShowcaseGrid = () => {
                 className="h-[200px] w-auto object-contain mb-0 self-start"
                 loading="lazy"
               />
-              <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
+              <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-2">
                 Know more.<br />Live Better.
               </h3>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-5">
-                Goodbody Clinics provide comprehensive private health checks at affordable prices. Visit one of over 200 nationwide locations, or opt for their convenient home testing service. CQC regulated, with exclusively UKAS-accredited laboratories. Featuring over 60 different blood and wellness tests with a comprehensive GP review of your results.
+              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
+                GoodBody Clinics, provide comprehensive private health checks at affordable prices.
+              </p>
+              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
+                Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and we only exclusively utilise UKAS-accredited laboratory for our analysis.
+              </p>
+              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-4">
+                Providing you with a comprehensive GP review of your results. They offer a blend of clinical precision and convenient high-street accessibility. featuring over 60 different blood and wellness tests for you to choose from.
               </p>
               <Link
                 to="/provider/goodbody-clinic"
