@@ -1,12 +1,11 @@
 import { useRef } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import Fade from "embla-carousel-fade";
 
 export const FeaturedPublications = () => {
   const autoplayPlugin = useRef(
     Autoplay({
-      delay: 5000,
+      delay: 3000,
       stopOnInteraction: false,
       stopOnMouseEnter: true
     })
@@ -31,48 +30,45 @@ export const FeaturedPublications = () => {
     { name: "VOGUE", url: "https://www.vogue.co.uk" }
   ];
 
-  // Group publications into sets of 4 for 2x2 display per slide
-  const groupedPublications = [];
-  for (let i = 0; i < publications.length; i += 4) {
-    groupedPublications.push(publications.slice(i, i + 4));
-  }
-
   return (
-    <section className="bg-brand-navy">
-      {/* Top gradient divider */}
-      <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+    <section className="bg-brand-navy relative overflow-hidden">
+      {/* Decorative gradient line */}
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       
-      <div className="py-8 md:py-12">
+      <div className="py-10 md:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-center text-xl md:text-2xl font-semibold text-white/60 uppercase tracking-wider mb-6 md:mb-8">
+          {/* Section label */}
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+              As Seen In
+            </span>
+            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          </div>
+          
+          <h3 className="text-center text-lg sm:text-xl md:text-2xl font-heading font-bold text-white mb-8 md:mb-10">
             Our Partners Have Featured In
           </h3>
           
+          {/* Scrolling ticker style */}
           <Carousel
             opts={{ align: "start", loop: true }}
-            plugins={[autoplayPlugin.current, Fade()]}
-            className="w-full max-w-4xl mx-auto"
+            plugins={[autoplayPlugin.current]}
+            className="w-full max-w-5xl mx-auto"
           >
-            <CarouselContent>
-              {groupedPublications.map((group, index) => (
-                <CarouselItem key={index} className="basis-full">
-                  <div className="grid grid-cols-2 gap-3 md:gap-4 lg:gap-5">
-                    {group.map((publication) => (
-                      <div 
-                        key={publication.name} 
-                        className="flex items-center justify-center"
-                      >
-                        <a 
-                          href={publication.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-white/40 text-center transition-all duration-800 hover:scale-105 hover:text-brand-pink cursor-pointer block"
-                        >
-                          {publication.name}
-                        </a>
-                      </div>
-                    ))}
-                  </div>
+            <CarouselContent className="-ml-4">
+              {publications.map((publication) => (
+                <CarouselItem key={publication.name} className="basis-1/2 sm:basis-1/3 md:basis-1/4 pl-4">
+                  <a
+                    href={publication.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center h-20 sm:h-24 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-3"
+                  >
+                    <span className="text-sm sm:text-base md:text-lg font-bold text-white/50 group-hover:text-brand-pink transition-colors duration-300 text-center leading-tight">
+                      {publication.name}
+                    </span>
+                  </a>
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -80,8 +76,8 @@ export const FeaturedPublications = () => {
         </div>
       </div>
       
-      {/* Bottom gradient divider */}
-      <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      {/* Bottom gradient line */}
+      <div className="h-[3px] bg-gradient-to-r from-brand-pink via-brand-turquoise to-brand-pink" />
     </section>
   );
 };
