@@ -113,6 +113,8 @@ const categories: CategoryCard[] = [
 const TopConcernsSection = () => {
   return (
     <section className="py-16 md:py-24 bg-background">
+      {/* Top gradient divider */}
+      <div className="h-1 w-full bg-gradient-to-r from-[hsl(187,72%,48%)] to-[hsl(335,89%,48%)] -mt-16 mb-16" />
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
