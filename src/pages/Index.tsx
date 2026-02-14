@@ -13,13 +13,13 @@ import StatsHighlight from "@/components/sections/StatsHighlight";
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import BrandVideoSection from "@/components/sections/BrandVideoSection";
+import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import MostPopularTestsSection from "@/components/sections/MostPopularTestsSection";
 import TopConcernsSection from "@/components/sections/TopConcernsSection";
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
-import FindClinicSection from "@/components/sections/FindClinicSection";
+
 import HereToHelp from "@/components/sections/HereToHelp";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 
@@ -117,8 +117,8 @@ const Index = () => {
         {/* 8. Why Choose Us */}
         <WhyChooseUs />
         
-        {/* 9. Brand Video */}
-        <BrandVideoSection />
+        {/* 9. Partner Showcase Grid */}
+        <PartnerShowcaseGrid />
         
         {/* 10. Featured Publications */}
         <FeaturedPublications />
@@ -135,8 +135,6 @@ const Index = () => {
         {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
         
-        {/* 15. Find Clinic */}
-        <FindClinicSection />
         
         {/* 16. Here to Help */}
         <HereToHelp />
