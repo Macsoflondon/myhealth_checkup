@@ -47,29 +47,32 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Top-Right: Take Control CTA Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md py-3 px-6 lg:py-4 lg:px-8 flex flex-col items-center justify-center text-center">
-            <h3 className="font-heading text-lg lg:text-xl font-bold text-white mb-2">
-              Take Control of Your Health
+          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center md:text-left">
+            <span className="inline-block self-center md:self-start bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
+              Start Your Journey Today
+            </span>
+            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
+              Take Control of Your Health Today
             </h3>
-            <p className="text-xs text-white/60 leading-relaxed mb-4">
-              Compare accredited health tests from trusted UK providers.
+            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-6">
+              Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
-            <div className="flex flex-col sm:flex-row gap-2 justify-center mb-3">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">
               <Link
                 to="/compare"
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-xs px-5 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
               >
                 Compare tests
               </Link>
               <Link
                 to="/assisted-test-finder"
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-xs px-5 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
               >
                 Take the health quiz
               </Link>
             </div>
-            <div className="flex flex-wrap gap-x-3 justify-center text-[10px] text-white/40">
-              <span>✓ UKAS Accredited</span>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center md:justify-start text-xs text-white/50">
+              <span>✓ UKAS Accredited Labs</span>
               <span>✓ CQC Regulated</span>
               <span>✓ Free to Compare</span>
             </div>
