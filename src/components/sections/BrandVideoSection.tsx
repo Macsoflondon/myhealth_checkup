@@ -5,7 +5,7 @@ const BrandVideoSection = () => {
   return (
     <section className="w-full bg-brand-navy py-5 sm:py-8 md:py-12">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-[3cm] max-w-4xl mx-auto sm:items-start">
           <video
             autoPlay
             loop
@@ -24,7 +24,7 @@ const BrandVideoSection = () => {
             muted
             playsInline
             preload="auto"
-            className="w-full h-auto rounded-lg sm:rounded-xl"
+            className="w-full h-auto rounded-lg sm:rounded-xl sm:mt-[1.5cm]"
             aria-label="Medichecks – Your health. Your choice. One trusted platform!"
           >
             <source src={medichecksVideo} type="video/mp4" />
