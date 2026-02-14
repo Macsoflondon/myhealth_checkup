@@ -1,6 +1,6 @@
 // Hero component - focused on speed, reassurance, and trust
 import { Button } from "@/components/ui/button";
-import { Shield, CreditCard, Eye, Search, Loader2, UserX } from "lucide-react";
+import { CreditCard, Eye, Search, Loader2, UserX, Shield } from "lucide-react";
 import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -102,30 +102,7 @@ const Hero = () => {
               <span className="text-brand-navy block">Compare the UK's leading private health test providers - <span className="text-brand-pink">All in one place!</span></span>
             </h1>
 
-            {/* Mission text block with turquoise left border */}
-            <div className="max-w-3xl mx-auto text-left mb-4 sm:mb-6 md:mb-8">
-              <div className="border-l-4 border-brand-turquoise pl-4 sm:pl-6 space-y-3 sm:space-y-4 text-brand-navy font-sans text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed">
-                <p className="font-bold">
-                  At myhealth <span className="text-brand-pink">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
-                </p>
-                <p>
-                  Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
-                </p>
-                <p>
-                  We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
-                </p>
-              </div>
-            </div>
-
-            {/* Prices | Biomarkers | Turnaround Times */}
-            <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-3 mb-4 sm:mb-6 md:mb-8">
-              {["Prices", "Biomarkers", "Turnaround Times"].map((item, index) => (
-                <div key={index} className="flex items-center gap-2 sm:gap-2.5 text-sm sm:text-base text-brand-navy">
-                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-brand-turquoise flex-shrink-0" />
-                  <span className="font-sans font-semibold">{item}</span>
-                </div>
-              ))}
-            </div>
+            {/* Streamlined — mission text and badges removed, content lives in MissionSection */}
             
             {/* Primary & Secondary CTAs - Immediate action path */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">
