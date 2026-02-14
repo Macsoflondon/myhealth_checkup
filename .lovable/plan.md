@@ -1,25 +1,31 @@
 
 
-# Update Goodbody Card Text and Tighten Slogan Spacing
+# Make All White-Background Sections Pure Clinical White
 
 ## What will change
 
-1. The slogan "Know more. Live Better." will move closer to the logo by removing remaining margin
-2. The description paragraph will be replaced with the full version from the screenshot, split into three distinct paragraphs
+All homepage sections that currently have subtle tinted backgrounds (bluish, greenish, or greyish) will be changed to pure `#ffffff` white for a clean, clinical look.
 
-## Updated description text (from the screenshot)
+## Sections affected
 
-**Paragraph 1:** "GoodBody Clinics, provide comprehensive private health checks at affordable prices."
+1. **JourneySimplified** ("Your Health Journey Simplified") - currently has a 3% navy tint (`bg-[hsl(224,67%,10%,0.03)]`), will become `bg-white`
+2. **WhyChooseUs** - currently has a light turquoise tint (`bg-[hsl(187,72%,97%)]`), will become `bg-white`
+3. **PartnerShowcaseGrid** ("Our Featured Partners") - currently has a light blue-green tint (`bg-[#f0fafb]`), will become `bg-white`
+4. **HowItWorks** - currently `bg-gray-50` (slight grey), will become `bg-white`
+5. **AccreditationCards** - currently `bg-background` (which resolves to white via CSS variable, but will be made explicitly `bg-white` for consistency)
 
-**Paragraph 2:** "Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and we only exclusively utilise UKAS-accredited laboratory for our analysis."
+## Sections already pure white (no changes needed)
 
-**Paragraph 3:** "Providing you with a comprehensive GP review of your results. They offer a blend of clinical precision and convenient high-street accessibility. featuring over 60 different blood and wellness tests for you to choose from."
+- MissionSection (`bg-white`)
+- TrustBadgesSection (`bg-white`)
 
 ## Technical details
 
-**File:** `src/components/sections/PartnerShowcaseGrid.tsx`
+**Files to edit (5 files, one line each):**
 
-1. **Tighten slogan spacing**: Reduce the heading's `mb-3` to `mb-2` to bring it closer to the logo
-2. **Replace the single `<p>` tag** (currently one condensed paragraph) with three separate `<p>` tags containing the full text from the screenshot
-3. **Reduce paragraph bottom margin** from `mb-5` to `mb-4` to help fit the expanded content within the card
+1. `src/components/sections/JourneySimplified.tsx` line 27: change `bg-[hsl(224,67%,10%,0.03)]` to `bg-white`
+2. `src/components/sections/WhyChooseUs.tsx` line 14: change `bg-[hsl(187,72%,97%)]` to `bg-white`
+3. `src/components/sections/PartnerShowcaseGrid.tsx` line 10: change `bg-[#f0fafb]` to `bg-white`
+4. `src/components/sections/HowItWorks.tsx` line 4: change `bg-gray-50` to `bg-white`
+5. `src/components/sections/AccreditationCards.tsx` line 32: change `bg-background` to `bg-white`
 
