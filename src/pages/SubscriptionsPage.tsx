@@ -6,6 +6,7 @@ import Subscriptions from "@/components/Subscriptions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Star } from "lucide-react";
 import HeroSection from "@/components/sections/HeroSection";
+import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 
 const SubscriptionsPage = () => {
   const benefits = [
@@ -28,9 +29,13 @@ const SubscriptionsPage = () => {
       <Header />
       <main className="flex-grow">
         <HeroSection
-          title="Health Subscription Plans"
-          subtitle="Take the guesswork out of health monitoring with our convenient subscription plans. Regular testing, expert guidance, and peace of mind."
+          title="Health Subscription"
+          accent="Plans"
+          subtitle="Take the guesswork out of health monitoring with our convenient subscription plans."
         />
+        <div className="container mx-auto px-4 pt-4">
+          <PageBreadcrumb />
+        </div>
 
         <Subscriptions />
 
@@ -86,17 +91,14 @@ const SubscriptionsPage = () => {
                   <h3 className="text-xl font-semibold mb-3">Can I cancel anytime?</h3>
                   <p className="text-gray-600">Yes, you can cancel your subscription at any time. There are no long-term commitments or cancellation fees.</p>
                 </div>
-                
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="text-xl font-semibold mb-3">What if I miss a test?</h3>
                   <p className="text-gray-600">No problem! You can reschedule your test for up to 3 months after your scheduled date without any additional cost.</p>
                 </div>
-                
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="text-xl font-semibold mb-3">Can I add extra tests?</h3>
                   <p className="text-gray-600">Absolutely! Subscribers get a 15% discount on all additional tests and can easily add them to their next appointment.</p>
                 </div>
-                
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="text-xl font-semibold mb-3">How do I manage my subscription?</h3>
                   <p className="text-gray-600">Everything is managed through your personal dashboard where you can schedule tests, view results, and update your plan.</p>
