@@ -3,9 +3,12 @@ import medichecksVideo from "@/assets/medichecks-animation.mp4";
 
 const BrandVideoSection = () => {
   return (
-    <section className="w-full bg-brand-navy py-8 sm:py-10 md:py-14 overflow-hidden">
+    <section className="w-full bg-brand-navy py-8 sm:py-12 md:py-16 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-16 max-w-5xl mx-auto sm:items-start sm:ml-[5%] sm:mr-auto">
+        <p className="text-center text-xs sm:text-sm uppercase tracking-[0.2em] text-white/60 font-heading mb-6 sm:mb-10">
+          Our Featured Partners
+        </p>
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 max-w-5xl mx-auto sm:items-start sm:ml-[5%] sm:mr-auto">
           <video
             autoPlay
             loop
