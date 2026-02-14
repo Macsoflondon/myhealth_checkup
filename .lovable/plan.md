@@ -1,104 +1,75 @@
 
+# Redesign: Merge Bottom Homepage Sections into a 4-Panel Grid Layout
 
-# Standardise Hero Sections and Audit Home/Back Buttons Across All Pages
+## What Changes
 
-## Problem Summary
+The screenshot shows a visually striking **2x2 grid layout** that combines provider feature cards, the CTA card, the Find a Clinic section, and provider spotlight content into a single cohesive section. This replaces three separate sections currently on the homepage.
 
-There are currently **three different hero/heading patterns** used across the site, with no consistency. Additionally, several pages are missing the Home and Back navigation buttons entirely.
+## Sections Being Replaced
 
-### Current Hero Patterns Found
+The following existing sections will be **merged into one new component**:
 
-1. **HeroSection component** (navy background, white text, PageHeading + subtitle) -- used on ~25 pages (FAQs, Contact, Compare, Cancer Screening, health category pages, etc.)
-2. **Inline PageHeading** with custom styling on a light or mixed background -- used on About Us, All Providers, Dashboard, etc.
-3. **PageHeading inside a container** with Badge label, light grey background -- used on legal/policy pages (Terms, Cookie Policy, Accessibility, etc.)
-4. **No hero at all** -- Sitemap, How It Works (uses its own component), and others
+1. **BrandVideoSection** (featured partners videos -- currently section 9)
+2. **FindClinicSection** (find a clinic + CTA card -- currently section 15)
 
-### Home/Back Button Audit
+These two sections will be removed from the homepage and replaced with a single new `PartnerShowcaseGrid` component.
 
-- `PageBreadcrumb` (renders the Home and Back icon buttons) is used on ~28 pages
-- `PageNavButtons` (a fixed floating version) exists but is **never imported or used** anywhere
-- **Pages missing Home/Back buttons entirely**: Terms and Conditions, Cookie Policy, Accessibility, Sitemap, Modern Slavery, Subscriptions, and several others
+## New Layout: 4-Panel Grid
 
----
+The new section uses a **2-column, 2-row grid** on desktop (stacking to single column on mobile):
 
-## Plan
+### Top Row
+- **Top-Left: Goodbody Clinics Feature Card** -- Light grey/white card with "Know more. Live Better." heading, descriptive text about Goodbody's services (200+ locations, CQC regulated, UKAS accredited labs, 60+ tests, GP review included), and the Goodbody looping video on the right side of the card
+- **Top-Right: "Take Control" CTA Card** -- Navy background card (kept from current FindClinicSection) with "Start Your Journey Today" badge, headline, subtitle, two branded CTAs (Compare tests / Take the health quiz), and trust points
 
-### 1. Make HeroSection More Compact
+### Bottom Row
+- **Bottom-Left: Find a Clinic Card** -- Light grey/white card with "Find a Clinic Near You" heading (turquoise accent), descriptive paragraph, stats row (200+ Clinic Locations, 7 Partner Networks, UK-wide Coverage), and two branded CTAs
+- **Bottom-Right: Medichecks Feature Card** -- White card with "Know More, Live Better" heading, descriptive text about Medichecks' services (home kits, nationwide clinics, UKAS accredited, GP reviewed results), and the Medichecks looping video on the right side with the Medichecks logo
 
-Reduce the `HeroSection` component's vertical padding by approximately 3-4 lines worth of space. The current padding is `pt-10 pb-8` (mobile) up to `pt-16 pb-14` (desktop). This will be reduced to approximately `pt-6 pb-4` (mobile) up to `pt-10 pb-8` (desktop). The subtitle text size will also be reduced slightly for a tighter presentation.
+## Design Specifications
 
-### 2. Standardise All Pages to Use HeroSection
+- **Grid gap**: Consistent spacing between all 4 panels (gap-6 on mobile, gap-8 on desktop)
+- **Card styling**: Rounded corners (rounded-2xl), subtle shadows, consistent padding
+- **Provider cards**: Feature text on the left (~55%) and video/media on the right (~45%)
+- **Button pairs**: Turquoise + Pink with colour-swap hover, no icons, matching existing button standards
+- **Mobile behaviour**: Cards stack vertically in a single column, full-width
+- **Background**: Light section background to contrast with the navy CTA card
+- **Typography**: Montserrat headings, sans-serif body text, brand colours only
 
-Every non-homepage page will be updated to use the shared `HeroSection` component with the navy (#081129) background and white text. This creates a uniform branded banner across the entire site.
+## Content for Provider Cards
 
-**Pages requiring conversion from inline PageHeading to HeroSection:**
-- AboutUsPage (currently custom navy layout with separate PageHeading)
-- AllProvidersPage (currently inline PageHeading in a container)
-- Dashboard (inline PageHeading)
-- TermsConditionsPage (Badge + PageHeading on light bg)
-- CookiePolicyPage (Badge + PageHeading on light bg)
-- AccessibilityPage (Badge + PageHeading on light bg)
-- SitemapPage (no hero at all)
-- HowItWorksPage (no hero, uses own component)
-- ModernSlaveryPage
-- AffiliateDisclosurePage
-- PrivacyPolicyPage
-- FairTradingPolicyPage
-- HowWeRankPage
+**Goodbody card text** (based on screenshot, refined for brand voice):
+- Heading: "Know more. Live Better."
+- Body: Goodbody Clinics provide comprehensive private health checks at affordable prices. Visit one of over 200 nationwide locations, or opt for their convenient home testing service. CQC regulated, with exclusively UKAS-accredited laboratories. Featuring over 60 different blood and wellness tests with a comprehensive GP review of your results.
 
-**Pages already using HeroSection (will benefit from the compact sizing automatically):**
-- FAQsPage, ContactPage, CompareTests, FindClinicPage, CancerScreeningPage, CancerComparisonPage, HealthBlogPage, LocationsPage, plus all health category pages (Thyroid, Heart, Gut, Diabetes, Vitamins, Men's Health, Women's Health, Fertility, Wellness, Conditions, At-Home Tests, Sports Performance, Hormones, etc.)
-
-### 3. Ensure Home/Back Buttons on Every Page
-
-Add `PageBreadcrumb` to every non-homepage page that currently lacks it. This will be placed directly below the hero section inside the main content container.
-
-**Pages needing PageBreadcrumb added:**
-- TermsConditionsPage
-- CookiePolicyPage
-- AccessibilityPage
-- SitemapPage
-- SubscriptionsPage
-- ConditionsPage
-- Any other pages found missing during implementation
-
-### 4. Clean Up Unused Component
-
-The `PageNavButtons` component (fixed floating version) is never used anywhere. It will be removed to reduce codebase clutter.
-
----
+**Medichecks card text** (based on screenshot, refined for brand voice):
+- Heading: "Know More, Live Better"
+- Body: Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy. Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners. Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.
 
 ## Technical Details
 
-### HeroSection Updated Padding (compact)
-```
-Before: pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14
-After:  pt-6  pb-4  sm:pt-8  sm:pb-6  md:pt-10 md:pb-8  lg:pt-10 lg:pb-8
-```
-
-Subtitle text will reduce from `text-lg sm:text-xl md:text-2xl` to `text-base sm:text-lg md:text-xl` and bottom margin tightened.
-
-### Standardised Page Structure
-Every internal page will follow this pattern:
-```
-<Header />
-<HeroSection title="Page Title" accent="Accent Text" subtitle="One-line description" />
-<div className="container mx-auto px-4 pt-4">
-  <PageBreadcrumb />
-</div>
-{/* Page content */}
-<Footer />
-```
+### Files to Create
+- `src/components/sections/PartnerShowcaseGrid.tsx` -- new 4-panel grid component
 
 ### Files to Modify
-- `src/components/sections/HeroSection.tsx` -- reduce padding
-- ~15 pages converted to use HeroSection
-- ~6 pages to add missing PageBreadcrumb
-- `src/components/common/PageNavButtons.tsx` -- delete (unused)
+- `src/pages/Index.tsx` -- replace BrandVideoSection and FindClinicSection imports with new PartnerShowcaseGrid, placed where BrandVideoSection currently sits (section 9 position)
 
-### Estimated Scope
-- 1 component update (HeroSection sizing)
-- ~15 page refactors (hero standardisation)
-- ~6 page additions (Home/Back buttons)
-- 1 file deletion (PageNavButtons)
+### Files No Longer Needed on Homepage
+- `BrandVideoSection` and `FindClinicSection` will no longer be rendered on the homepage (the component files are kept since they may be used elsewhere, but removed from Index.tsx)
 
+### Assets Reused
+- `src/assets/goodbody-animation.mp4` -- Goodbody looping video
+- `src/assets/medichecks-animation.mp4` -- Medichecks looping video
+- Provider logos from `PROVIDER_LOGOS` constants
+
+### Responsive Breakpoints
+- Mobile (< 768px): Single column stack, all 4 cards full-width
+- Tablet (768px+): 2x2 grid begins
+- Desktop (1024px+): Full 2x2 grid with optimal spacing
+
+### Button Links
+- "Compare tests" links to `/compare`
+- "Take the health quiz" links to `/assisted-test-finder`
+- "Find your nearest clinic" links to `/find-clinic`
+- "Browse all clinic locations" links to `/find-clinic`
+- Provider cards link to `/provider/goodbody-clinic` and `/provider/medichecks` respectively
