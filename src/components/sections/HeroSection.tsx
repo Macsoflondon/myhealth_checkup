@@ -12,7 +12,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ title, accent, subtitle, chil
   return (
     <section className="bg-[#081129] pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           <PageHeading 
             title={title} 
             accent={accent}
