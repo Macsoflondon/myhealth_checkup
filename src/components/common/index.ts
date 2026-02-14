@@ -18,7 +18,7 @@ export { ResponsiveImage, HeroBackground } from "./ResponsiveImage";
 export { SaveProviderButton } from "./SaveProviderButton";
 export { default as ScrollFadeIn } from "./ScrollFadeIn";
 export { ScrollToTop } from "./ScrollToTop";
-export { default as StickyCtaBar } from "./StickyCtaBar";
+
 export { default as TestBreadcrumb } from "./TestBreadcrumb";
 
 // Re-exports from root (pending physical move)

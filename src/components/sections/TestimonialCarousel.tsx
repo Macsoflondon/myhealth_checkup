@@ -4,33 +4,45 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "Finally, a site that lets me compare tests without having to visit ten different provider websites. Saved me hours.",
+    quote: "I compared five different thyroid panels in under two minutes. Prices, biomarkers, turnaround — all in one place. I wish I had found this sooner.",
     name: "Sarah T.",
     detail: "London",
+    context: "Used: Blood Test Comparison",
     stars: 5,
   },
   {
-    quote: "I was overwhelmed by choices for a thyroid test. This platform laid out prices, biomarkers, and turnaround times side by side. Brilliant.",
+    quote: "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality.",
     name: "James R.",
     detail: "Manchester",
+    context: "Used: Cancer Screening Tests",
     stars: 5,
   },
   {
-    quote: "Completely free and no sign-up required — that's what convinced me it was genuinely independent.",
+    quote: "The health quiz narrowed down exactly which blood test matched my concerns. No account required, no pressure — just clear information.",
     name: "Priya K.",
     detail: "Birmingham",
+    context: "Used: Health Quiz",
     stars: 5,
   },
   {
-    quote: "I appreciated that every provider listed is UKAS accredited. It gave me real confidence in my choice.",
+    quote: "Other sites buried the total cost behind add-ons. Here, the pricing was upfront and honest. That transparency earned my trust.",
     name: "David M.",
     detail: "Edinburgh",
+    context: "Used: Full Body MOT Comparison",
     stars: 5,
   },
   {
-    quote: "The health quiz pointed me to exactly the right blood test for my symptoms. I booked the same day.",
+    quote: "As a first-timer, I had no idea where to start. The side-by-side comparison made it simple to understand what each test actually covers.",
     name: "Emma L.",
     detail: "Bristol",
+    context: "Used: Hormone Panel Comparison",
+    stars: 5,
+  },
+  {
+    quote: "Completely free, no sign-up, and genuinely independent. I have recommended it to everyone in my family.",
+    name: "Rachel H.",
+    detail: "Cardiff",
+    context: "Used: Vitamin Testing",
     stars: 5,
   },
 ];
@@ -76,6 +88,11 @@ const TestimonialCarousel = () => {
                       {t.name}
                     </p>
                     <p className="text-muted-foreground text-xs">{t.detail}</p>
+                    {t.context && (
+                      <span className="inline-block mt-1.5 text-[10px] font-medium tracking-wide uppercase text-[hsl(187,72%,48%)] bg-[hsl(187,72%,48%)]/10 rounded-full px-2.5 py-0.5">
+                        {t.context}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

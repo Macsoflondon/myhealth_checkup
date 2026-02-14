@@ -13,7 +13,13 @@ const BrandTicker = () => {
 
   return (
     <section className="bg-[hsl(224,67%,10%)] py-3 sm:py-4 overflow-hidden select-none">
-      <div className="relative flex">
+      <div
+        className="relative flex"
+        style={{
+          maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        }}
+      >
         <div className="flex animate-ticker whitespace-nowrap">
           {items.map((word, i) => (
             <span key={i} className="flex items-center">
