@@ -44,7 +44,7 @@ export const FeaturedPublications = () => {
       
       <div className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-center text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6 md:mb-8">
+          <h3 className="text-center text-xl md:text-2xl font-semibold text-gray-500 uppercase tracking-wider mb-6 md:mb-8">
             Our Partners Have Featured In
           </h3>
           
