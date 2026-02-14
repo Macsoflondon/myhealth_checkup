@@ -3,6 +3,7 @@ import { PROVIDER_LOGOS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 import medichecksVideo from "@/assets/medichecks-animation.mp4";
 import goodbodyVideo from "@/assets/goodbody-animation.mp4";
+import goodbodyLogo from "@/assets/goodbody-logo-new.png";
 
 const PartnerShowcaseGrid = () => {
   return (
@@ -15,9 +16,9 @@ const PartnerShowcaseGrid = () => {
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
             <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-[55%]">
               <img
-                src={PROVIDER_LOGOS["goodbody-clinic"]}
+                src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
-                className="h-10 w-auto object-contain mb-4 self-start"
+                className="h-[200px] w-auto object-contain mb-4 self-start"
                 loading="lazy"
               />
               <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
