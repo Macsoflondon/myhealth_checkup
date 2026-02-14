@@ -9,7 +9,7 @@ import Hero from "@/components/sections/Hero";
 import BrandTicker from "@/components/sections/BrandTicker";
 import MissionSection from "@/components/sections/MissionSection";
 import StatsHighlight from "@/components/sections/StatsHighlight";
-import GoodbodyFeatureSection from "@/components/sections/GoodbodyFeatureSection";
+
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
@@ -108,10 +108,7 @@ const Index = () => {
         {/* 4. Stats Highlight */}
         <StatsHighlight />
         
-        {/* 5. Goodbody Feature */}
-        <GoodbodyFeatureSection />
-        
-        {/* 6. Partners Grid */}
+        {/* 5. Partners Grid */}
         <PartnersGrid />
         
         {/* 7. Journey Simplified */}
