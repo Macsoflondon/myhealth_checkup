@@ -47,17 +47,17 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Top-Right: Take Control CTA Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-4 lg:p-5 flex flex-col items-center text-center max-w-[75%] mx-auto md:max-w-none">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-4 lg:p-5 flex flex-col items-center text-center max-w-[75%] mx-auto">
             <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-1.5">
               Start Your Journey Today
             </span>
             <h3 className="font-heading text-lg lg:text-xl font-bold text-white mb-1">
               Take Control of Your Health Today
             </h3>
-            <p className="text-sm text-white/70 leading-relaxed mb-2">
+            <p className="text-sm text-white/70 leading-relaxed mb-16">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-2 mt-1">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-2 mt-8">
               <Link
                 to="/compare"
                 className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
