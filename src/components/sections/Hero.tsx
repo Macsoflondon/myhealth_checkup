@@ -98,8 +98,8 @@ const Hero = () => {
         <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Headline - Clear promise in plain language */}
-            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
-              <span className="text-brand-navy block">Compare the UK's leading private health test providers - <span className="text-brand-pink">All in one place!</span></span>
+            <h1 className="text-[0.85rem] xs:text-[1.05rem] sm:text-2xl md:text-3xl lg:text-[2.65rem] xl:text-5xl font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
+              <span className="text-brand-navy block">Compare the UK's leading private health test providers - <span className="text-brand-pink whitespace-nowrap">All in one place!</span></span>
             </h1>
 
             {/* Streamlined — mission text and badges removed, content lives in MissionSection */}
