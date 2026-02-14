@@ -1,19 +1,16 @@
 
 
-# Add New Medichecks Video
+# Fix Medichecks Video Display
 
 ## What will change
 
-The uploaded video (Medichecks_video-2.mp4) will be added to the right half of the Medichecks card (bottom-right), restoring the split text/video layout that was just removed but with the new video file.
+The video is currently cropped because `object-cover` forces it to fill the container, cutting off parts of the video. The fix will change the video fitting so the full video is visible within the card.
 
 ## Technical details
 
-1. **Copy the uploaded video** to `src/assets/medichecks-animation.mp4` (replacing the old one)
-2. **File:** `src/components/sections/PartnerShowcaseGrid.tsx`
-   - Re-add the `import medichecksVideo from "@/assets/medichecks-animation.mp4"` import
-   - Change the card container back to `flex flex-col lg:flex-row`
-   - Add `lg:w-[55%]` back to the text div
-   - Re-add the `lg:w-[45%]` video container with the `<video>` element (autoPlay, loop, muted, playsInline, object-cover, full height)
+**File:** `src/components/sections/PartnerShowcaseGrid.tsx`
 
-The result will be the same split layout as before, but with the new video file.
+1. **Change video object-fit** (line 144): Switch from `object-cover` to `object-contain` so the entire video is visible without cropping
+2. **Add a background colour** to the video container (line 137): Add `bg-[#081129]` (or a neutral colour matching the video's background) so any letterboxing looks intentional rather than leaving white gaps
+3. **Add vertical centering** to the video container: Add `flex items-center justify-center` so the video sits centred within its space
 
