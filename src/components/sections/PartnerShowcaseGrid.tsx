@@ -81,29 +81,31 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Left: Find a Clinic Card */}
-          <div className="bg-white rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
-            <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
+            <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
+              Find Your Clinic
+            </span>
+            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
               Find a Clinic <span className="text-[#22c0d4]">Near You</span>
             </h3>
-            <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-6">
+            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-6">
               Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health screenings. Walk in or book online.
             </p>
             <div className="grid grid-cols-3 gap-3 mb-6">
               <div className="text-center">
                 <p className="font-heading text-lg lg:text-xl font-bold text-[#22c0d4]">200+</p>
-                <p className="text-xs text-[#081129]/60">Clinic Locations</p>
+                <p className="text-xs text-white/60">Clinic Locations</p>
               </div>
               <div className="text-center">
                 <p className="font-heading text-lg lg:text-xl font-bold text-[#22c0d4]">7</p>
-                <p className="text-xs text-[#081129]/60">Partner Networks</p>
+                <p className="text-xs text-white/60">Partner Networks</p>
               </div>
               <div className="text-center">
                 <p className="font-heading text-lg lg:text-xl font-bold text-[#22c0d4]">UK-wide</p>
-                <p className="text-xs text-[#081129]/60">Coverage</p>
+                <p className="text-xs text-white/60">Coverage</p>
               </div>
             </div>
-            <div className="mt-6"></div>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
               <Link
                 to="/find-clinic"
                 className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
@@ -116,6 +118,11 @@ const PartnerShowcaseGrid = () => {
               >
                 Browse all clinic locations
               </Link>
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center text-xs text-white/50">
+              <span>✓ CQC Regulated</span>
+              <span>✓ 200+ Locations</span>
+              <span>✓ Walk-in Available</span>
             </div>
           </div>
 
