@@ -1,75 +1,25 @@
 
-# Redesign: Merge Bottom Homepage Sections into a 4-Panel Grid Layout
 
-## What Changes
+## Fix the CTA Card: Proper Size Reduction and Spacing
 
-The screenshot shows a visually striking **2x2 grid layout** that combines provider feature cards, the CTA card, the Find a Clinic section, and provider spotlight content into a single cohesive section. This replaces three separate sections currently on the homepage.
+Apologies for not following your instructions correctly. Here is exactly what will change:
 
-## Sections Being Replaced
+### 1. Reduce the container size by 25%
 
-The following existing sections will be **merged into one new component**:
+The current container uses `max-w-[75%]` on mobile only (desktop reverts to full). This will be changed to apply **across all breakpoints** so the navy card is genuinely 75% of its grid cell width:
 
-1. **BrandVideoSection** (featured partners videos -- currently section 9)
-2. **FindClinicSection** (find a clinic + CTA card -- currently section 15)
+- Change: `max-w-[75%] mx-auto md:max-w-none` to `max-w-[75%] mx-auto`
+- This means on desktop too, the navy card will be 75% the width of its grid column, visibly smaller than the adjacent cards
 
-These two sections will be removed from the homepage and replaced with a single new `PartnerShowcaseGrid` component.
+### 2. Add a clear gap of 5-6 lines between the text and the buttons
 
-## New Layout: 4-Panel Grid
+Currently the gap between the description paragraph and the buttons is only `mb-2` on the paragraph and `mt-1` on the button group -- almost no space at all. This will be changed to `mb-16 mt-8` (approximately 5-6 lines of vertical whitespace) to create the visible separation you asked for.
 
-The new section uses a **2-column, 2-row grid** on desktop (stacking to single column on mobile):
+### Technical Changes
 
-### Top Row
-- **Top-Left: Goodbody Clinics Feature Card** -- Light grey/white card with "Know more. Live Better." heading, descriptive text about Goodbody's services (200+ locations, CQC regulated, UKAS accredited labs, 60+ tests, GP review included), and the Goodbody looping video on the right side of the card
-- **Top-Right: "Take Control" CTA Card** -- Navy background card (kept from current FindClinicSection) with "Start Your Journey Today" badge, headline, subtitle, two branded CTAs (Compare tests / Take the health quiz), and trust points
+**File:** `src/components/sections/PartnerShowcaseGrid.tsx`
 
-### Bottom Row
-- **Bottom-Left: Find a Clinic Card** -- Light grey/white card with "Find a Clinic Near You" heading (turquoise accent), descriptive paragraph, stats row (200+ Clinic Locations, 7 Partner Networks, UK-wide Coverage), and two branded CTAs
-- **Bottom-Right: Medichecks Feature Card** -- White card with "Know More, Live Better" heading, descriptive text about Medichecks' services (home kits, nationwide clinics, UKAS accredited, GP reviewed results), and the Medichecks looping video on the right side with the Medichecks logo
+- Line 50: Change `max-w-[75%] mx-auto md:max-w-none` to `max-w-[75%] mx-auto` (apply 75% width at all screen sizes)
+- Line 57: Change `mb-2` to `mb-16` on the paragraph (push buttons far down)
+- Line 60: Change `mt-1` to `mt-8` on the button container (add extra top spacing)
 
-## Design Specifications
-
-- **Grid gap**: Consistent spacing between all 4 panels (gap-6 on mobile, gap-8 on desktop)
-- **Card styling**: Rounded corners (rounded-2xl), subtle shadows, consistent padding
-- **Provider cards**: Feature text on the left (~55%) and video/media on the right (~45%)
-- **Button pairs**: Turquoise + Pink with colour-swap hover, no icons, matching existing button standards
-- **Mobile behaviour**: Cards stack vertically in a single column, full-width
-- **Background**: Light section background to contrast with the navy CTA card
-- **Typography**: Montserrat headings, sans-serif body text, brand colours only
-
-## Content for Provider Cards
-
-**Goodbody card text** (based on screenshot, refined for brand voice):
-- Heading: "Know more. Live Better."
-- Body: Goodbody Clinics provide comprehensive private health checks at affordable prices. Visit one of over 200 nationwide locations, or opt for their convenient home testing service. CQC regulated, with exclusively UKAS-accredited laboratories. Featuring over 60 different blood and wellness tests with a comprehensive GP review of your results.
-
-**Medichecks card text** (based on screenshot, refined for brand voice):
-- Heading: "Know More, Live Better"
-- Body: Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy. Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners. Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.
-
-## Technical Details
-
-### Files to Create
-- `src/components/sections/PartnerShowcaseGrid.tsx` -- new 4-panel grid component
-
-### Files to Modify
-- `src/pages/Index.tsx` -- replace BrandVideoSection and FindClinicSection imports with new PartnerShowcaseGrid, placed where BrandVideoSection currently sits (section 9 position)
-
-### Files No Longer Needed on Homepage
-- `BrandVideoSection` and `FindClinicSection` will no longer be rendered on the homepage (the component files are kept since they may be used elsewhere, but removed from Index.tsx)
-
-### Assets Reused
-- `src/assets/goodbody-animation.mp4` -- Goodbody looping video
-- `src/assets/medichecks-animation.mp4` -- Medichecks looping video
-- Provider logos from `PROVIDER_LOGOS` constants
-
-### Responsive Breakpoints
-- Mobile (< 768px): Single column stack, all 4 cards full-width
-- Tablet (768px+): 2x2 grid begins
-- Desktop (1024px+): Full 2x2 grid with optimal spacing
-
-### Button Links
-- "Compare tests" links to `/compare`
-- "Take the health quiz" links to `/assisted-test-finder`
-- "Find your nearest clinic" links to `/find-clinic`
-- "Browse all clinic locations" links to `/find-clinic`
-- Provider cards link to `/provider/goodbody-clinic` and `/provider/medichecks` respectively
