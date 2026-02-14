@@ -30,6 +30,16 @@ const BrandTicker = () => {
             </span>
           ))}
         </div>
+        <div className="flex animate-ticker whitespace-nowrap" aria-hidden="true">
+          {items.map((word, i) => (
+            <span key={i} className="flex items-center">
+              <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
+                {word}
+              </span>
+              <span className="text-[hsl(187,72%,48%)] text-lg">•</span>
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
