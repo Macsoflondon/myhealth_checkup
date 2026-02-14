@@ -38,13 +38,13 @@ export const FeaturedPublications = () => {
   }
 
   return (
-    <section className="bg-[#F5F7FA]">
+    <section className="bg-brand-navy">
       {/* Top gradient divider */}
       <div className="h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       
       <div className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-center text-xl md:text-2xl font-semibold text-gray-500 uppercase tracking-wider mb-6 md:mb-8">
+          <h3 className="text-center text-xl md:text-2xl font-semibold text-white/60 uppercase tracking-wider mb-6 md:mb-8">
             Our Partners Have Featured In
           </h3>
           
@@ -66,7 +66,7 @@ export const FeaturedPublications = () => {
                           href={publication.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-400 text-center transition-all duration-800 hover:scale-105 hover:text-[#e70d69] cursor-pointer block"
+                          className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-white/40 text-center transition-all duration-800 hover:scale-105 hover:text-brand-pink cursor-pointer block"
                         >
                           {publication.name}
                         </a>
