@@ -22,7 +22,7 @@ import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 import FindClinicSection from "@/components/sections/FindClinicSection";
 import HereToHelp from "@/components/sections/HereToHelp";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
-import StickyCtaBar from "@/components/common/StickyCtaBar";
+
 
 const Index = () => {
   usePerformanceOptimization();
@@ -147,8 +147,6 @@ const Index = () => {
         {/* 17. Trust Platform Section */}
         <TrustPlatformSection />
         
-        {/* Sticky CTA Bar */}
-        <StickyCtaBar showAfter={600} />
       </MainLayout>
     </ErrorBoundary>
   );
