@@ -18,7 +18,7 @@ const PartnerShowcaseGrid = () => {
               <img
                 src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
-                className="h-[200px] w-auto object-contain mb-4 self-start"
+                className="h-[200px] w-auto object-contain mb-1 self-start"
                 loading="lazy"
               />
               <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
