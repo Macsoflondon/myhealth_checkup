@@ -81,11 +81,11 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Left: Find a Clinic Card */}
-          <div className="bg-white rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center md:text-left">
+          <div className="bg-white rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
             <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
               Find a Clinic <span className="text-[#22c0d4]">Near You</span>
             </h3>
-            <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-5">
+            <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-24">
               Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health screenings. Walk in or book online.
             </p>
             <div className="grid grid-cols-3 gap-3 mb-6">
@@ -102,7 +102,7 @@ const PartnerShowcaseGrid = () => {
                 <p className="text-xs text-[#081129]/60">Coverage</p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 to="/find-clinic"
                 className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
