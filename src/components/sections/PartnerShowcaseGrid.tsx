@@ -33,19 +33,6 @@ const PartnerShowcaseGrid = () => {
                 View Goodbody tests
               </Link>
             </div>
-            <div className="lg:w-[45%] flex items-center justify-center p-4 lg:p-0">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="w-full h-auto rounded-xl lg:rounded-none lg:rounded-r-2xl"
-                aria-label="GoodBody Clinic promotional animation"
-              >
-                <source src={goodbodyVideo} type="video/mp4" />
-              </video>
-            </div>
           </div>
 
           {/* Top-Right: Take Control CTA Card */}
