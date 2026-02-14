@@ -1,46 +1,104 @@
 
 
-# Replace Brand Video Section with Goodbody and Medichecks Animations
+# Standardise Hero Sections and Audit Home/Back Buttons Across All Pages
 
-## What changes
+## Problem Summary
 
-The current single brand video section (section 9) will be replaced with two provider-specific animations displayed side by side. The standalone Goodbody logo section (section 5) will be removed since Goodbody is now featured in the video section.
+There are currently **three different hero/heading patterns** used across the site, with no consistency. Additionally, several pages are missing the Home and Back navigation buttons entirely.
 
-## Steps
+### Current Hero Patterns Found
 
-### 1. Add the two uploaded videos to the project
+1. **HeroSection component** (navy background, white text, PageHeading + subtitle) -- used on ~25 pages (FAQs, Contact, Compare, Cancer Screening, health category pages, etc.)
+2. **Inline PageHeading** with custom styling on a light or mixed background -- used on About Us, All Providers, Dashboard, etc.
+3. **PageHeading inside a container** with Badge label, light grey background -- used on legal/policy pages (Terms, Cookie Policy, Accessibility, etc.)
+4. **No hero at all** -- Sitemap, How It Works (uses its own component), and others
 
-Copy both uploaded video files into `src/assets/`:
-- `Your_health._Your_choice._One_trusted_platform!_3.mp4` as `goodbody-animation.mp4`
-- `Your_health._Your_choice._One_trusted_platform!_4.mp4` as `medichecks-animation.mp4`
+### Home/Back Button Audit
 
-### 2. Update BrandVideoSection to show two videos side by side
+- `PageBreadcrumb` (renders the Home and Back icon buttons) is used on ~28 pages
+- `PageNavButtons` (a fixed floating version) exists but is **never imported or used** anywhere
+- **Pages missing Home/Back buttons entirely**: Terms and Conditions, Cookie Policy, Accessibility, Sitemap, Modern Slavery, Subscriptions, and several others
 
-Rewrite `src/components/sections/BrandVideoSection.tsx` to display two looping, muted, autoplay videos in a two-column grid layout:
-- Left: Goodbody animation
-- Right: Medichecks animation
-- On mobile, the videos stack vertically
-- Both retain the navy background and rounded corners styling
+---
 
-### 3. Remove GoodbodyFeatureSection from the homepage
+## Plan
 
-Edit `src/pages/Index.tsx`:
-- Remove the `GoodbodyFeatureSection` import and its usage (section 5)
-- The section order shifts: Stats Highlight is now followed directly by Partners Grid
+### 1. Make HeroSection More Compact
 
-### 4. Clean up exports
+Reduce the `HeroSection` component's vertical padding by approximately 3-4 lines worth of space. The current padding is `pt-10 pb-8` (mobile) up to `pt-16 pb-14` (desktop). This will be reduced to approximately `pt-6 pb-4` (mobile) up to `pt-10 pb-8` (desktop). The subtitle text size will also be reduced slightly for a tighter presentation.
 
-Remove `GoodbodyFeatureSection` from `src/components/sections/index.ts` if it is listed there.
+### 2. Standardise All Pages to Use HeroSection
 
-## Technical details
+Every non-homepage page will be updated to use the shared `HeroSection` component with the navy (#081129) background and white text. This creates a uniform branded banner across the entire site.
 
-| Action | File | Detail |
-|--------|------|--------|
-| Copy | `src/assets/goodbody-animation.mp4` | Uploaded video 3 |
-| Copy | `src/assets/medichecks-animation.mp4` | Uploaded video 4 |
-| Edit | `src/components/sections/BrandVideoSection.tsx` | Two-column video grid |
-| Edit | `src/pages/Index.tsx` | Remove GoodbodyFeatureSection |
-| Optional | `src/components/sections/index.ts` | Remove unused export |
+**Pages requiring conversion from inline PageHeading to HeroSection:**
+- AboutUsPage (currently custom navy layout with separate PageHeading)
+- AllProvidersPage (currently inline PageHeading in a container)
+- Dashboard (inline PageHeading)
+- TermsConditionsPage (Badge + PageHeading on light bg)
+- CookiePolicyPage (Badge + PageHeading on light bg)
+- AccessibilityPage (Badge + PageHeading on light bg)
+- SitemapPage (no hero at all)
+- HowItWorksPage (no hero, uses own component)
+- ModernSlaveryPage
+- AffiliateDisclosurePage
+- PrivacyPolicyPage
+- FairTradingPolicyPage
+- HowWeRankPage
 
-No new dependencies required.
+**Pages already using HeroSection (will benefit from the compact sizing automatically):**
+- FAQsPage, ContactPage, CompareTests, FindClinicPage, CancerScreeningPage, CancerComparisonPage, HealthBlogPage, LocationsPage, plus all health category pages (Thyroid, Heart, Gut, Diabetes, Vitamins, Men's Health, Women's Health, Fertility, Wellness, Conditions, At-Home Tests, Sports Performance, Hormones, etc.)
+
+### 3. Ensure Home/Back Buttons on Every Page
+
+Add `PageBreadcrumb` to every non-homepage page that currently lacks it. This will be placed directly below the hero section inside the main content container.
+
+**Pages needing PageBreadcrumb added:**
+- TermsConditionsPage
+- CookiePolicyPage
+- AccessibilityPage
+- SitemapPage
+- SubscriptionsPage
+- ConditionsPage
+- Any other pages found missing during implementation
+
+### 4. Clean Up Unused Component
+
+The `PageNavButtons` component (fixed floating version) is never used anywhere. It will be removed to reduce codebase clutter.
+
+---
+
+## Technical Details
+
+### HeroSection Updated Padding (compact)
+```
+Before: pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14
+After:  pt-6  pb-4  sm:pt-8  sm:pb-6  md:pt-10 md:pb-8  lg:pt-10 lg:pb-8
+```
+
+Subtitle text will reduce from `text-lg sm:text-xl md:text-2xl` to `text-base sm:text-lg md:text-xl` and bottom margin tightened.
+
+### Standardised Page Structure
+Every internal page will follow this pattern:
+```
+<Header />
+<HeroSection title="Page Title" accent="Accent Text" subtitle="One-line description" />
+<div className="container mx-auto px-4 pt-4">
+  <PageBreadcrumb />
+</div>
+{/* Page content */}
+<Footer />
+```
+
+### Files to Modify
+- `src/components/sections/HeroSection.tsx` -- reduce padding
+- ~15 pages converted to use HeroSection
+- ~6 pages to add missing PageBreadcrumb
+- `src/components/common/PageNavButtons.tsx` -- delete (unused)
+
+### Estimated Scope
+- 1 component update (HeroSection sizing)
+- ~15 page refactors (hero standardisation)
+- ~6 page additions (Home/Back buttons)
+- 1 file deletion (PageNavButtons)
 
