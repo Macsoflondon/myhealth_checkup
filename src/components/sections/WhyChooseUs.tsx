@@ -11,7 +11,7 @@ const comparisons = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="py-10 sm:py-12 md:py-16 bg-[hsl(187,72%,97%)]">
+    <section className="py-10 sm:py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="text-center mb-8 sm:mb-10">
           <SectionHeading title="Why" gradientText="myhealth checkup?" />

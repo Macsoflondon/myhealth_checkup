@@ -1,7 +1,7 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
 import { Card } from "@/components/ui/card";
 const HowItWorks = () => {
-  return <section className="bg-gray-50 py-12 md:py-16">
+  return <section className="bg-white py-12 md:py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">
