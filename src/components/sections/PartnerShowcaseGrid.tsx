@@ -47,17 +47,17 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Top-Right: Take Control CTA Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center md:text-left">
-            <span className="inline-block self-center md:self-start bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col items-center text-center">
+            <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-2">
               Start Your Journey Today
             </span>
-            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
+            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-2">
               Take Control of Your Health Today
             </h3>
-            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-6">
+            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-auto">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-6">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-3 mt-4">
               <Link
                 to="/compare"
                 className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
@@ -71,7 +71,7 @@ const PartnerShowcaseGrid = () => {
                 Take the health quiz
               </Link>
             </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center md:justify-start text-xs text-white/50">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center text-xs text-white/50">
               <span>✓ UKAS Accredited Labs</span>
               <span>✓ CQC Regulated</span>
               <span>✓ Free to Compare</span>
