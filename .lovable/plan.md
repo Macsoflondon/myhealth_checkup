@@ -1,23 +1,23 @@
 
 
-## Align CTA Card Header and Tighten Spacing
+## Centre Content in CTA Card and Reduce Height
 
-Three changes to the navy "Take Control" CTA card in `src/components/sections/PartnerShowcaseGrid.tsx`:
+Two changes to the navy "Take Control" CTA card:
 
-### 1. Match the top padding to the adjacent cards
-The Goodbody card next to it uses `p-6 lg:p-8` padding, but the CTA card only uses `p-4 lg:p-5`. This will be changed to `p-6 lg:p-8` so the heading lines up horizontally with the Goodbody heading.
+### 1. Reduce the card height by 4 lines
+- Change the text-to-buttons gap from `mb-8` to `mb-4` on the paragraph
+- Remove the `mb-2` after the buttons (change to `mb-0`)
+- Reduce the badge margin from `mb-1.5` to `mb-1`
 
-### 2. Reduce the gap between text and buttons to ~3 lines
-Currently the paragraph has `mb-16` and the button group has `mt-8` -- far too much space. This will be reduced to `mb-8` on the paragraph and `mt-0` on the buttons, giving roughly 3 lines of whitespace.
-
-### 3. Shrink the container height by 3-4 lines
-Reduce the bottom padding and tighten the spacing after the buttons. The trust points margin will be reduced from `mb-2` to `mb-1` on the button group, and the overall container padding stays consistent but the reduced internal gaps will naturally shrink the card height by 3-4 lines.
+### 2. Vertically centre all content within the card
+- Add `justify-center` to the card's flex container so all content sits in the vertical middle of the card, rather than being pushed to the top
 
 ### Technical Changes
 
 **File:** `src/components/sections/PartnerShowcaseGrid.tsx`
 
-- Line 50: Change padding from `p-4 lg:p-5` to `p-6 lg:p-8` (align header with adjacent cards)
-- Line 57: Change `mb-16` to `mb-8` (reduce text-to-buttons gap to ~3 lines)
-- Line 60: Change `mt-8` to `mt-0` (remove extra top margin on buttons)
+- Line 50: Add `justify-center` to the card div (change `flex flex-col items-center text-center` to `flex flex-col items-center justify-center text-center`)
+- Line 51: Change badge `mb-1.5` to `mb-1`
+- Line 57: Change paragraph `mb-8` to `mb-4`
+- Line 60: Change button group `mb-2` to `mb-0`
 
