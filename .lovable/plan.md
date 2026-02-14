@@ -1,135 +1,49 @@
 
 
-# Homepage Aesthetic Improvements Inspired by Healthy Metal
+# Cleanup, Ticker Polish, and Testimonial Update
 
-After reviewing healthy-metal.com and comparing it against the current myhealth checkup homepage, here are the key design techniques worth adopting -- all while preserving your existing content, brand colours, and information architecture.
+## 1. Delete StickyCtaBar Component
 
-## What Healthy Metal Does Well (Relevant to Us)
+Remove the unused file `src/components/common/StickyCtaBar.tsx`. It is no longer imported anywhere after the previous edit.
 
-1. **Scrolling keyword ticker** -- a continuously scrolling horizontal strip of brand keywords that reinforces the value proposition
-2. **Bold stat callouts** -- large percentage/number stats with short supporting text, displayed in a clean grid
-3. **Stronger visual rhythm** -- alternating full-width coloured bands create clear section separation
-4. **Testimonial carousel with category tabs** -- tabbed review carousel sorted by theme
-5. **Expert endorsement section** -- authority quotes with photos, name, and credentials
-6. **Comparison table** -- side-by-side "us vs others" to reinforce differentiation
-7. **Cleaner FAQ accordion** -- inline expandable FAQ near the bottom of the page
+## 2. Adjust Brand Ticker Scrolling Speed and Styling
 
-## Proposed Improvements (7 Changes)
+Current animation runs at 25 seconds per cycle. Changes:
 
-### 1. Add a Scrolling Brand Ticker Below the Hero Video
+- **Slow the animation** from 25s to 35s for a calmer, more professional scroll pace
+- **Add hover-to-pause** so users can read keywords more easily
+- **Add a subtle fade effect** on both edges using CSS gradient masks, giving the ticker a polished "window" appearance rather than hard-cut edges
 
-A horizontally auto-scrolling strip of brand keywords, similar to Healthy Metal's "CALM - RELAXATION - SLEEP" ticker. Ours would read:
+Files affected:
+- `src/index.css` -- update the `.animate-ticker` duration to 35s, add hover pause rule
+- `src/components/sections/BrandTicker.tsx` -- add gradient mask CSS classes to the container
 
-**Blood Tests - Cancer Screening - Hormone Checks - Vitamin Testing - Heart Health - Thyroid - Full Body MOTs**
+## 3. Update Testimonial Carousel Quotes
 
-- Navy (#081129) background, white text, turquoise dot separators
-- CSS-only infinite scroll animation (no JavaScript)
-- Sits between the hero video and the hero content section
+Replace the current five testimonials with more specific, platform-focused quotes that reflect real user scenarios without making medical claims. Each quote will reference a concrete feature of the platform (comparison tools, accreditation transparency, pricing clarity, quiz functionality, no sign-up requirement). The testimonials will also include a short context line (e.g. "Used: Thyroid Comparison") to add credibility.
 
-### 2. Add a Stats Highlight Section
+Updated testimonials:
 
-A new section with large, bold numbers that build trust at a glance -- inspired by Healthy Metal's "95% Experienced better sleep" grid. For myhealth checkup:
+| Name | Location | Context | Quote |
+|------|----------|---------|-------|
+| Sarah T. | London | Used: Blood Test Comparison | "I compared five different thyroid panels in under two minutes. Prices, biomarkers, turnaround -- all in one place. I wish I had found this sooner." |
+| James R. | Manchester | Used: Cancer Screening Tests | "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality." |
+| Priya K. | Birmingham | Used: Health Quiz | "The health quiz narrowed down exactly which blood test matched my concerns. No account required, no pressure -- just clear information." |
+| David M. | Edinburgh | Used: Full Body MOT Comparison | "Other sites buried the total cost behind add-ons. Here, the pricing was upfront and honest. That transparency earned my trust." |
+| Emma L. | Bristol | Used: Hormone Panel Comparison | "As a first-timer, I had no idea where to start. The side-by-side comparison made it simple to understand what each test actually covers." |
+| Rachel H. | Cardiff | Used: Vitamin Testing | "Completely free, no sign-up, and genuinely independent. I have recommended it to everyone in my family." |
 
-| Stat | Label |
-|------|-------|
-| 200+ | Tests compared |
-| 7 | Trusted providers |
-| 100% | UKAS accredited labs |
-| Free | No cost to compare |
+File affected:
+- `src/components/sections/TestimonialCarousel.tsx` -- replace the testimonials array with the updated content above, add a `context` field rendered as a small badge or label beneath each reviewer's name
 
-- Four columns on desktop, two on mobile
-- Large navy stat number, smaller grey label beneath
-- White background with subtle turquoise top border
-- Placed after the Mission Section heading banner
+## Technical Summary
 
-### 3. Add a "Why myhealth checkup?" Comparison Strip
+| Action | File | Type |
+|--------|------|------|
+| Delete | `src/components/common/StickyCtaBar.tsx` | Remove |
+| Edit | `src/index.css` | Speed + hover pause |
+| Edit | `src/components/sections/BrandTicker.tsx` | Gradient edge masks |
+| Edit | `src/components/sections/TestimonialCarousel.tsx` | New testimonials + context label |
 
-A simple two-column comparison section (inspired by Healthy Metal's "vs Other brands" table) showing:
-
-| myhealth checkup | Other comparison sites |
-|---|---|
-| UKAS accredited labs only | Mixed lab standards |
-| CQC regulated providers | Unverified providers |
-| No payments taken on our site | Payment intermediaries |
-| Fully independent rankings | Pay-to-rank listings |
-| Free to use, no registration | Account walls and upsells |
-
-- Styled as a clean card with turquoise checkmarks for "us" and grey crosses for "others"
-- Placed after the Journey Simplified section
-
-### 4. Improve Section Separation with Full-Width Colour Banding
-
-Currently several sections run together on white backgrounds. Healthy Metal uses alternating background colours to create strong visual rhythm. Changes:
-
-- **JourneySimplified**: Change from `bg-white` to a light navy tint (`bg-[#081129]/[0.03]`) for subtle alternation
-- **TopConcernsSection**: Add a top gradient divider (turquoise-to-pink) like the Mission Section already uses
-- **FindClinicSection**: Add a subtle light turquoise background (`bg-[#f0fafb]`) instead of plain white
-- These are CSS-only changes to existing section wrappers
-
-### 5. Add a Testimonial/Review Highlights Section
-
-A new carousel section showing curated user or provider quotes, similar to Healthy Metal's review carousel. Content would feature brief trust-building quotes from the platform's value proposition (not medical claims):
-
-- Card-based carousel with auto-play
-- Each card shows a quote, reviewer name, and a star rating
-- Navy background section with white cards
-- Placed before the "Here to Help" section
-
-### 6. Streamline the Hero Content Card
-
-The current hero has a lot of content stacked vertically (headline, mission text, comparison badges, CTAs, search bar, popular searches). Taking cues from Healthy Metal's cleaner hero layout:
-
-- Move the mission text block out of the hero (it already exists in the MissionSection below)
-- Remove the "Prices | Biomarkers | Turnaround Times" badges from the hero (they duplicate the trust signals bar)
-- This makes the hero tighter: **Headline -> CTAs -> Search bar -> Popular searches -> Trust signals**
-
-### 7. Add an Expert/Authority Quote Section
-
-A new section featuring quotes from healthcare professionals or industry publications about the importance of health screening, styled like Healthy Metal's expert endorsement area:
-
-- 2-3 quotes from published health guidance (NHS, NICE, or medical journals -- publicly available statements)
-- Card layout with quote text, source name, and credentials
-- Light background with turquoise accent borders
-- Placed after FeaturedPublications
-
----
-
-## Technical Details
-
-### New Components to Create
-- `src/components/sections/BrandTicker.tsx` -- CSS-only infinite scroll ticker
-- `src/components/sections/StatsHighlight.tsx` -- Four-stat grid
-- `src/components/sections/WhyChooseUs.tsx` -- Comparison table card
-- `src/components/sections/TestimonialCarousel.tsx` -- Review card carousel
-- `src/components/sections/ExpertQuotes.tsx` -- Authority quote cards
-
-### Existing Components to Modify
-- `src/components/sections/Hero.tsx` -- Remove mission text block and comparison badges
-- `src/components/sections/JourneySimplified.tsx` -- Background colour change
-- `src/components/sections/TopConcernsSection.tsx` -- Add top gradient divider
-- `src/components/sections/FindClinicSection.tsx` -- Background colour change
-- `src/pages/Index.tsx` -- Add new sections to the page layout
-
-### Dependencies
-- No new packages needed. The testimonial carousel reuses the existing `embla-carousel-react` and `embla-carousel-autoplay` already installed.
-
-### Updated Homepage Section Order
-1. Hero (streamlined)
-2. Brand Ticker (new)
-3. Mission Section heading banner
-4. Stats Highlight (new)
-5. Goodbody Feature
-6. Partners Grid
-7. Journey Simplified (new background)
-8. Why Choose Us comparison (new)
-9. Brand Video
-10. Featured Publications
-11. Expert Quotes (new)
-12. Most Popular Tests
-13. Top Concerns (with divider)
-14. Testimonial Carousel (new)
-15. Find Clinic (new background)
-16. Here to Help
-17. Trust Platform Section
-18. Sticky CTA Bar
+No new dependencies required.
 
