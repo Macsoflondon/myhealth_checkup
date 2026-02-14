@@ -5,7 +5,7 @@ const BrandVideoSection = () => {
   return (
     <section className="w-full bg-brand-navy py-8 sm:py-12 md:py-16 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6">
-        <p className="text-center text-sm sm:text-lg uppercase tracking-[0.2em] text-white/60 font-heading mb-6 sm:mb-10">
+        <p className="text-center text-base sm:text-2xl uppercase tracking-[0.2em] text-white/60 font-heading mb-6 sm:mb-10">
           Our Featured Partners of the Month
         </p>
         <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 max-w-5xl mx-auto sm:items-start sm:ml-[5%] sm:mr-auto">
