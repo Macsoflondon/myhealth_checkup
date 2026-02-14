@@ -3,20 +3,20 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import PrivacyPolicy from '@/components/compliance/PrivacyPolicy';
+import HeroSection from '@/components/sections/HeroSection';
 
 const PrivacyPolicyPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-gray-50">
+        <HeroSection
+          title="Privacy"
+          accent="Policy"
+          subtitle="How we collect, use, and protect your personal data in compliance with UK GDPR."
+        />
         <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb 
-            segments={[
-              { label: "Home", href: "/" },
-              { label: "Privacy Policy" }
-            ]}
-            backLabel="Back to Home"
-          />
+          <PageBreadcrumb />
         </div>
         <PrivacyPolicy />
       </main>

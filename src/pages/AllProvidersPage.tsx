@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
-import PageHeading from "@/components/ui/page-heading";
 import { SectionHeading } from "@/components/ui/section-heading";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
+import HeroSection from "@/components/sections/HeroSection";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +25,6 @@ import {
   Shield, 
   ChevronRight,
   Building2,
-  BarChart3
 } from "lucide-react";
 
 interface ProviderStats {
@@ -74,7 +73,6 @@ export default function AllProvidersPage() {
     },
   });
 
-  // Only show providers that have actual tests in the database
   const allProviders = getAllProviders();
   const providers = providerStats 
     ? allProviders.filter(p => (providerStats[p.id]?.test_count || 0) > 0)
@@ -98,42 +96,32 @@ export default function AllProvidersPage() {
         />
       </Helmet>
 
+      <HeroSection
+        title="Our Trusted"
+        accent="Providers"
+        subtitle="Browse blood tests and health screenings from UKAS-accredited laboratories and CQC-registered clinics."
+      />
+
       <div className="container mx-auto px-4 py-8">
-        <PageBreadcrumb 
-          segments={[
-            { label: "Home", href: "/" },
-            { label: "Providers" }
-          ]}
-          backLabel="Back to Home"
-        />
-        {/* Hero Section */}
-        <div className="text-center mb-10">
-          <PageHeading
-            title="Our Trusted Providers"
-            accent="Compare UK's Leading Health Test Labs"
-          />
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Browse blood tests and health screenings from UKAS-accredited laboratories and CQC-registered clinics
-          </p>
-          
-          {/* Summary Stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-8">
-            <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
-              <Building2 className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-foreground">{providers.length} Providers</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-secondary/50 rounded-full">
-              <TestTube2 className="h-5 w-5 text-secondary-foreground" />
-              <span className="font-semibold text-foreground">
-                {isLoading ? <Skeleton className="h-4 w-12 inline-block" /> : `${totalTests} Tests`}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-accent/50 rounded-full">
-              <Shield className="h-5 w-5 text-accent-foreground" />
-              <span className="font-semibold text-foreground">
-                {isLoading ? <Skeleton className="h-4 w-16 inline-block" /> : `${allCategories.length} Categories`}
-              </span>
-            </div>
+        <PageBreadcrumb />
+
+        {/* Summary Stats */}
+        <div className="flex flex-wrap justify-center gap-6 mb-10">
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
+            <Building2 className="h-5 w-5 text-primary" />
+            <span className="font-semibold text-foreground">{providers.length} Providers</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-secondary/50 rounded-full">
+            <TestTube2 className="h-5 w-5 text-secondary-foreground" />
+            <span className="font-semibold text-foreground">
+              {isLoading ? <Skeleton className="h-4 w-12 inline-block" /> : `${totalTests} Tests`}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-accent/50 rounded-full">
+            <Shield className="h-5 w-5 text-accent-foreground" />
+            <span className="font-semibold text-foreground">
+              {isLoading ? <Skeleton className="h-4 w-16 inline-block" /> : `${allCategories.length} Categories`}
+            </span>
           </div>
         </div>
 
@@ -182,31 +170,21 @@ export default function AllProvidersPage() {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  {/* Stats */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-muted/50 rounded-lg p-3 text-center">
                       <div className="text-2xl font-bold text-primary">
-                        {isLoading ? (
-                          <Skeleton className="h-8 w-12 mx-auto" />
-                        ) : (
-                          stats?.test_count || 0
-                        )}
+                        {isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : stats?.test_count || 0}
                       </div>
                       <div className="text-xs text-muted-foreground">Tests Available</div>
                     </div>
                     <div className="bg-muted/50 rounded-lg p-3 text-center">
                       <div className="text-2xl font-bold text-[hsl(var(--chart-2))]">
-                        {isLoading ? (
-                          <Skeleton className="h-8 w-12 mx-auto" />
-                        ) : (
-                          stats?.categories.length || 0
-                        )}
+                        {isLoading ? <Skeleton className="h-8 w-12 mx-auto" /> : stats?.categories.length || 0}
                       </div>
                       <div className="text-xs text-muted-foreground">Categories</div>
                     </div>
                   </div>
 
-                  {/* Quick Info */}
                   <div className="space-y-2 text-sm">
                     {turnaround && (
                       <div className="flex items-center gap-2 text-muted-foreground">
@@ -222,7 +200,6 @@ export default function AllProvidersPage() {
                     )}
                   </div>
 
-                  {/* Actions */}
                   <div className="flex gap-3 pt-2">
                     {catalogRoute ? (
                       <Button asChild className="flex-1 group-hover:bg-primary">
@@ -254,7 +231,6 @@ export default function AllProvidersPage() {
           })}
         </div>
 
-        {/* Trust Banner */}
         <ScrollFadeIn delay={200}>
           <div className="mt-12 p-6 bg-muted/30 rounded-xl text-center">
             <SectionHeading 

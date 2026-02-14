@@ -4,10 +4,11 @@ import Footer from "@/components/layout/Footer";
 import FounderStory from "@/components/FounderStory";
 import PartnerShowcase from "@/components/PartnerShowcase";
 import TrustBadgesSection from "@/components/TrustBadgesSection";
-import PageHeading from "@/components/ui/page-heading";
 import { SectionHeading } from "@/components/ui/section-heading";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
+import HeroSection from "@/components/sections/HeroSection";
 import { Shield, Users, Award, Heart } from "lucide-react";
+
 const AboutUsPage = () => {
   const values = [{
     icon: <Shield className="h-8 w-8 text-health-600" />,
@@ -26,6 +27,7 @@ const AboutUsPage = () => {
     title: "Health Empowerment",
     description: "Empowering individuals to take control of their health through knowledge and early detection."
   }];
+
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>About Us - myhealth checkup</title>
@@ -33,44 +35,17 @@ const AboutUsPage = () => {
       </Helmet>
       
       <Header />
-      <main className="flex-grow bg-[#081120]">
+      <main className="flex-grow bg-[#081129]">
+        <HeroSection
+          title="About"
+          accent="myhealth checkup"
+          subtitle="Your health is your greatest asset. We rigorously screen every provider we feature to ensure you only see the UK's most reputable health testing options."
+        />
         <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb 
-            segments={[
-              { label: "Home", href: "/" },
-              { label: "About Us" }
-            ]}
-            backLabel="Back to Home"
-            className="[&_a]:text-gray-300 [&_a:hover]:text-white [&_span]:text-gray-300 [&_button]:text-[#22c0d4]"
-          />
-        </div>
-        <TrustBadgesSection />
-        
-        <div className="bg-gradient-to-br from-health-50 to-wellness-50 py-0 bg-[#081120]">
-          <div className="container mx-auto px-4 bg-[#081129]">
-            <div className="text-center py-8">
-              <PageHeading 
-                title="About" 
-                accent="myhealth checkup" 
-                className="[&_span]:text-white"
-              />
-            </div>
-          </div>
+          <PageBreadcrumb />
         </div>
 
-        <section className="my-0 py-0 bg-[#081129]">
-          <div className="container mx-auto px-4 my-0 py-[20px] bg-[#081129]">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-lg text-gray-600 space-y-6">
-                <p className="text-white my-0 py-0 text-left font-light text-base">
-                  <strong>Your Health Is Your Greatest Asset</strong> and it deserves the best care.
-                  At myhealth checkup, we rigorously screen every provider we feature, ensuring you only see the UK's most reputable health and wellness testing options. From routine blood tests to advanced wellness panels, our partners meet the highest standards of quality, working with UKAS-accredited laboratories, CQC-regulated clinics, and ISO 15189-certified facilities.
-                </p>
-                
-              </div>
-            </div>
-          </div>
-        </section>
+        <TrustBadgesSection />
 
         <section className="bg-[#081129] py-0">
           <div className="container mx-auto px-4 my-[10px]">

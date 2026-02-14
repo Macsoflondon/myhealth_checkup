@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
+import HeroSection from "@/components/sections/HeroSection";
 
 const HowItWorksPage = () => {
   return <div className="min-h-screen flex flex-col">
@@ -14,14 +15,13 @@ const HowItWorksPage = () => {
       
       <Header />
       <main className="flex-grow">
+        <HeroSection
+          title="How It"
+          accent="Works"
+          subtitle="Our simple process makes health testing convenient and accessible. From choosing your test to getting results in 48 hours."
+        />
         <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb 
-            segments={[
-              { label: "Home", href: "/" },
-              { label: "How It Works" }
-            ]}
-            backLabel="Back to Home"
-          />
+          <PageBreadcrumb />
         </div>
         
         <HowItWorks />
@@ -45,7 +45,7 @@ const HowItWorksPage = () => {
                 
                 <div className="border-l-4 border-health-500 pl-6">
                   <h3 className="text-xl font-semibold mb-2 text-[#081120]">How long do results take?</h3>
-                  <p className="text-gray-600">Most results are available within 24-48 hours, with some specialized tests taking up to 5 working days.</p>
+                  <p className="text-gray-600">Most results are available within 24-48 hours, with some specialised tests taking up to 5 working days.</p>
                 </div>
                 
                 <div className="border-l-4 border-health-500 pl-6">

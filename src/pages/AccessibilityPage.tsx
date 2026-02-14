@@ -2,29 +2,26 @@ import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
-import PageHeading from '@/components/ui/page-heading';
+import HeroSection from '@/components/sections/HeroSection';
+import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 
 const AccessibilityPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-muted/30">
+        <HeroSection
+          title="Accessibility"
+          accent="Statement"
+          subtitle="We're committed to ensuring our website is accessible to everyone, regardless of ability or technology used."
+        />
+        <div className="container mx-auto px-4 pt-4">
+          <PageBreadcrumb />
+        </div>
+
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge className="mb-4">WCAG 2.1 AA Compliant</Badge>
-              <PageHeading 
-                title="Accessibility" 
-                accent="Statement" 
-              />
-              <p className="text-xl text-muted-foreground mt-6">
-                We're committed to ensuring our website is accessible to everyone, 
-                regardless of ability or technology used.
-              </p>
-            </div>
-
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <Card>
                 <CardHeader>
@@ -35,7 +32,7 @@ const AccessibilityPage = () => {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
-                    <li>• High contrast color schemes</li>
+                    <li>• High contrast colour schemes</li>
                     <li>• Scalable text up to 200%</li>
                     <li>• Alt text for all images</li>
                     <li>• Screen reader compatibility</li>
