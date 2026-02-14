@@ -56,7 +56,7 @@ const PartnerShowcaseGrid = () => {
             <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
               Take Control of Your Health Today
             </h3>
-            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-8">
+            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-20">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
