@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
+import medichecksVideo from "@/assets/medichecks-animation.mp4";
 
 const PartnerShowcaseGrid = () => {
   return (
@@ -112,8 +113,8 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Right: Medichecks Feature Card */}
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-            <div className="p-6 lg:p-8 flex flex-col justify-center">
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
+            <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-[55%]">
               <img
                 src={PROVIDER_LOGOS["medichecks"]}
                 alt="Medichecks logo"
@@ -132,6 +133,16 @@ const PartnerShowcaseGrid = () => {
               >
                 View Medichecks tests
               </Link>
+            </div>
+            <div className="lg:w-[45%] min-h-[200px] lg:min-h-0">
+              <video
+                src={medichecksVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
