@@ -47,7 +47,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Top-Right: Take Control CTA Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md py-5 px-6 lg:py-6 lg:px-8 flex flex-col items-center justify-center text-center">
+          <div className="bg-[#081129] rounded-2xl shadow-md py-3 px-6 lg:py-4 lg:px-8 flex flex-col items-center justify-center text-center">
             <h3 className="font-heading text-lg lg:text-xl font-bold text-white mb-2">
               Take Control of Your Health
             </h3>
