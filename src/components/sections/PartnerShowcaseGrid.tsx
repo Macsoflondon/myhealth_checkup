@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import goodbodyVideo from "@/assets/goodbody-animation.mp4";
-import medichecksVideo from "@/assets/medichecks-animation.mp4";
+import medichecksNewVideo from "@/assets/medichecks-video-new.mp4";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 
@@ -120,40 +120,18 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Right: Medichecks Feature Card */}
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
-            <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-[55%]">
-              <img
-                src={PROVIDER_LOGOS["medichecks"]}
-                alt="Medichecks logo"
-                className="h-10 w-auto object-contain mb-4 self-start"
-                loading="lazy"
-              />
-              <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
-                Know More, Live Better
-              </h3>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-5">
-                Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy. Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with results including a clear GP reviewed report.
-              </p>
-              <Link
-                to="/provider/medichecks"
-                className="inline-block self-start bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap"
-              >
-                View Medichecks tests
-              </Link>
-            </div>
-            <div className="lg:w-[45%] flex items-center justify-center p-4 lg:p-0">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="w-full h-auto rounded-xl lg:rounded-none lg:rounded-r-2xl"
-                aria-label="Medichecks promotional animation"
-              >
-                <source src={medichecksVideo} type="video/mp4" />
-              </video>
-            </div>
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex items-center justify-center">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover rounded-2xl"
+              aria-label="Medichecks promotional video"
+            >
+              <source src={medichecksNewVideo} type="video/mp4" />
+            </video>
           </div>
 
         </div>
