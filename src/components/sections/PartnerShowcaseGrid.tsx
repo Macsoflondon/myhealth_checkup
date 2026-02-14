@@ -102,7 +102,7 @@ const PartnerShowcaseGrid = () => {
                 <p className="text-xs text-[#081129]/60">Coverage</p>
               </div>
             </div>
-            <div className="flex-grow"></div>
+            <div className="mt-6"></div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 to="/find-clinic"
