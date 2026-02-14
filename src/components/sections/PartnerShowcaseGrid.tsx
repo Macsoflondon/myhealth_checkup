@@ -141,14 +141,14 @@ const PartnerShowcaseGrid = () => {
                 View Medichecks tests
               </Link>
             </div>
-            <div className="lg:w-[45%] flex items-center justify-center p-4 lg:p-0">
+          <div className="lg:w-[45%]">
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
                 preload="auto"
-                className="w-full h-auto rounded-xl lg:rounded-none lg:rounded-r-2xl"
+                className="w-full h-full object-cover rounded-xl lg:rounded-none lg:rounded-r-2xl"
                 aria-label="Medichecks promotional animation"
               >
                 <source src={medichecksVideo} type="video/mp4" />
