@@ -26,7 +26,7 @@ const AccreditationCards = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-background">
+    <section className="py-12 sm:py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-4xl mx-auto">
           {accreditations.map((item, index) => (

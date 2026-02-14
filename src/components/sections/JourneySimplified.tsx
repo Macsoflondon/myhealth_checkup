@@ -24,7 +24,7 @@ const JourneySimplified = () => {
   ];
 
   return (
-    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-[hsl(224,67%,10%,0.03)]">
+    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
           <SectionHeading 
