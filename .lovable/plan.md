@@ -1,32 +1,19 @@
 
 
-# Place Partner Video Next to Goodbody Card
+# Shrink the Partner Showcase Grid Section
 
-## What you want
+## What is changing
 
-Take the first video from the "Featured Partners of the Month" section (the one at `/videos/partner-video.mp4`) and put it into the empty space next to the Goodbody card in the Partner Showcase Grid.
-
-## New layout
-
-```text
-+-------------------------+-------------------------------+
-| Goodbody (white card)   | Partner Video (looping)       |
-+-------------------------+-------------------------------+
-| Find a Clinic (navy)    | Take Control (navy)           |
-+-------------------------+-------------------------------+
-```
+The entire "Our Featured Partners" grid section is too large. The grid container (Goodbody card + video + bottom cards) will be reduced from `max-w-7xl` (~1280px) to `max-w-5xl` (~1024px) — roughly a 20% reduction in overall width. Additionally, card padding will be tightened and the Goodbody logo will be scaled down.
 
 ## Changes
 
-**1. `src/components/sections/PartnerShowcaseGrid.tsx`**
+**In `src/components/sections/PartnerShowcaseGrid.tsx`:**
 
-- Replace the empty placeholder `<div className="hidden md:block" />` with a navy-background card containing the looping partner video (`/videos/partner-video.mp4`)
-- The video card will use `rounded-2xl`, autoPlay, loop, muted, playsInline to match the existing style
-- No new imports needed since the video is served from the public folder
+- Reduce grid container from `max-w-7xl` to `max-w-5xl`
+- Reduce Goodbody logo height from `h-[200px]` to `h-[140px]`
+- Reduce card padding from `p-6 lg:p-8` to `p-5 lg:p-6` on all cards
+- Reduce section vertical padding from `py-12 sm:py-16 md:py-20` to `py-8 sm:py-12 md:py-14`
 
-**2. `src/components/sections/BrandVideoSection.tsx`**
-
-- Remove the first (left) video element that references `/videos/partner-video.mp4`, since it is moving into the grid
-- Keep the second Medichecks video in place
-- Update layout classes so the remaining single video is centred
+This shrinks the whole section proportionally — Goodbody card, video, and the two bottom cards — without breaking the 2-column grid layout.
 
