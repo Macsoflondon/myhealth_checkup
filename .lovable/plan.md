@@ -1,26 +1,32 @@
 
 
-# Fix Partner Showcase Grid Layout — Add Empty Slot Next to Goodbody
+# Place Partner Video Next to Goodbody Card
 
-## The issue
+## What you want
 
-The current card order (Goodbody, Find a Clinic, Take Control) places Find a Clinic next to Goodbody on row 1. You want it on row 2 instead.
+Take the first video from the "Featured Partners of the Month" section (the one at `/videos/partner-video.mp4`) and put it into the empty space next to the Goodbody card in the Partner Showcase Grid.
 
-## Desired layout
+## New layout
 
 ```text
 +-------------------------+-------------------------------+
-| Goodbody (white)        | (empty)                       |
+| Goodbody (white card)   | Partner Video (looping)       |
 +-------------------------+-------------------------------+
 | Find a Clinic (navy)    | Take Control (navy)           |
 +-------------------------+-------------------------------+
 ```
 
-## Fix
+## Changes
 
-**In `src/components/sections/PartnerShowcaseGrid.tsx`:**
+**1. `src/components/sections/PartnerShowcaseGrid.tsx`**
 
-- Add a hidden empty placeholder `<div>` after the Goodbody card (visible only on `md:` and up) to occupy the top-right grid cell
-- This pushes "Find a Clinic" and "Take Control" down to row 2 together
-- No other changes needed — card order stays the same
+- Replace the empty placeholder `<div className="hidden md:block" />` with a navy-background card containing the looping partner video (`/videos/partner-video.mp4`)
+- The video card will use `rounded-2xl`, autoPlay, loop, muted, playsInline to match the existing style
+- No new imports needed since the video is served from the public folder
+
+**2. `src/components/sections/BrandVideoSection.tsx`**
+
+- Remove the first (left) video element that references `/videos/partner-video.mp4`, since it is moving into the grid
+- Keep the second Medichecks video in place
+- Update layout classes so the remaining single video is centred
 
