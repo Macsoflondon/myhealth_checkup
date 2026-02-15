@@ -1,4 +1,3 @@
-import partnerVideo from "@/assets/new-partner-video.mp4";
 import medichecksVideo from "@/assets/medichecks-animation.mp4";
 
 const BrandVideoSection = () => {
@@ -18,7 +17,7 @@ const BrandVideoSection = () => {
             className="w-full sm:w-[50%] sm:flex-shrink-0 h-auto rounded-lg sm:rounded-xl sm:-translate-y-4"
             aria-label="Featured partner – Your health. Your choice. One trusted platform!"
           >
-            <source src={partnerVideo} type="video/mp4" />
+            <source src="/videos/partner-video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <video

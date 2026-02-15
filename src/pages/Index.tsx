@@ -9,6 +9,7 @@ import Hero from "@/components/sections/Hero";
 import BrandTicker from "@/components/sections/BrandTicker";
 import MissionSection from "@/components/sections/MissionSection";
 import StatsHighlight from "@/components/sections/StatsHighlight";
+import BrandVideoSection from "@/components/sections/BrandVideoSection";
 
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
@@ -107,6 +108,9 @@ const Index = () => {
         
         {/* 4. Stats Highlight */}
         <StatsHighlight />
+        
+        {/* 4b. Featured Partners Videos */}
+        <BrandVideoSection />
         
         {/* 5. Partners Grid */}
         <PartnersGrid />
