@@ -1,20 +1,22 @@
 
 
-# Centre the Mission Banner Text
+# Replace GoodBody Video with Uploaded Video
 
 ## What will change
 
-The navy banner text ("Your health is your greatest asset!") will be vertically centred with more balanced padding and kept on a single line.
+The GoodBody animation video (left/first video) in the "Featured Partners of the Month" section will be removed and replaced with your uploaded video.
 
 ## Details
 
-**File: `src/components/sections/MissionSection.tsx`**
+**File: `src/components/sections/BrandVideoSection.tsx`**
 
-### 1. Increase and balance vertical padding (line 26)
-- Change `py-3 sm:py-4 md:py-6 lg:py-8` to `py-6 sm:py-8 md:py-10 lg:py-12` so the text sits comfortably in the middle of the navy band with equal space above and below.
+### 1. Replace the video import (line 1)
+- Remove `import goodbodyVideo from "@/assets/goodbody-animation.mp4"`
+- Add `import partnerVideo from "user-uploads://Untitled_Mobile_Video_1.mp4"`
 
-### 2. Keep text on one line (line 28)
-- Add `whitespace-nowrap` to the `h2` element so the heading never wraps to a second line on any screen size.
+### 2. Update the video source (line 21)
+- Change the `src` from `goodbodyVideo` to `partnerVideo`
+- Update the `aria-label` to reflect the new video content
 
-These two small tweaks give the banner a more balanced, centred feel while keeping the gradient dividers and all existing styling intact.
+Everything else (the Medichecks video, layout, styling, and autoplay behaviour) stays exactly as it is.
 
