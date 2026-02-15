@@ -1,21 +1,20 @@
 
 
-# Update Partners Carousel Card Styling
+# Remove Gap Between Gradient Divider and Stats
 
 ## What will change
 
-The "Our Trusted" heading text will be white, and each logo card will get a turquoise border.
+The empty space between the multicoloured gradient divider (at the bottom of the Mission Section) and the "200+" stats will be eliminated. The turquoise border on the stats section will also be removed.
 
 ## Details
 
-**File: `src/components/sections/PartnersGrid.tsx`**
+### 1. Remove bottom padding from MissionSection (`src/components/sections/MissionSection.tsx`, line 20)
+- Change `pb-6 sm:pb-8 md:pb-10 lg:pb-14` to `pb-0` so nothing sits below the gradient divider
+- Also remove the bottom margin on the divider wrapper (`mb-5 sm:mb-6 md:mb-8 lg:mb-12` on line 22) since there is no content below it
 
-### 1. Heading text
-- `titleClassName="text-white"` is already applied -- no change needed here.
+### 2. Strip turquoise border and reduce top padding on StatsHighlight (`src/components/sections/StatsHighlight.tsx`, line 10)
+- Remove `border-t-4 border-primary` (the turquoise line)
+- Change `pt-4` to `pt-2` (and similar for sm/md) so the stats sit just a few lines below the gradient divider
 
-### 2. Card borders (line ~34)
-- Change `border border-white/20` to `border-2 border-[#22c0d4]` so each card has a solid turquoise border at all times
-- Keep the existing hover effects (glow, scale, lift)
-
-One small, targeted change that gives the cards a sharp turquoise outline consistent with the brand palette.
+This keeps the multicoloured gradient divider intact while closing the gap directly above the statistics.
 
