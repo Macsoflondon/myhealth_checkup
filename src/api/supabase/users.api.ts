@@ -45,7 +45,7 @@ class UsersApi {
     try {
       const { data, error } = await supabase
         .from("user_profiles")
-        .select("*")
+        .select("id, user_id, first_name, last_name, date_of_birth, gender, phone_number, address_line1, address_line2, city, postal_code, country, emergency_contact_name, emergency_contact_phone, account_status, last_login, created_at, updated_at")
         .eq("user_id", userId)
         .single();
 

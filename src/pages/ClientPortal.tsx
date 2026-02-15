@@ -70,7 +70,7 @@ export default function ClientPortal() {
       const [profileData, appointmentsData, resultsData, insightsData] = await Promise.all([
         supabase
           .from("user_profiles")
-          .select("*")
+          .select("first_name, last_name, date_of_birth, gender, phone_number")
           .eq("user_id", user?.id)
           .single(),
         supabase
