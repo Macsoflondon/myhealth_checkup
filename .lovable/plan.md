@@ -1,16 +1,14 @@
 
 
-# Move Goodbody Card and Video Closer to the Section Heading
+# Centre the StatsHighlight Section Content Vertically
 
 ## What is changing
 
-The gap between the "Our Featured Partners" heading and the top row (Goodbody card + video) will be reduced by tightening the heading's bottom margin.
+The StatsHighlight section currently has very little top padding (`pt-2`) but much more bottom padding (`pb-10` to `pb-16`), which pushes the stats text upward and close to the top border. The fix is to equalise the top and bottom padding so the content sits centred vertically within the section.
 
-## Changes
+## Change
 
-**In `src/components/sections/PartnerShowcaseGrid.tsx`:**
+**In `src/components/sections/StatsHighlight.tsx` (line 10):**
 
-- Reduce the `SectionHeading` component's `className` margin from `mb-8 sm:mb-10` to `mb-3 sm:mb-4`. This pulls the Goodbody card and video up closer to the heading by roughly five lines.
-
-No other elements are touched.
+Update the section padding from asymmetric (`pt-2 pb-10 sm:pt-2 sm:pb-12 md:pt-3 md:pb-16`) to balanced padding (`py-10 sm:py-12 md:py-16`). This gives equal space above and below the stats, centering them within the section.
 
