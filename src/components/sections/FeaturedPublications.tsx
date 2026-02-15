@@ -63,9 +63,9 @@ export const FeaturedPublications = () => {
                     href={publication.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-20 sm:h-24 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-3"
+                    className="flex items-center justify-center h-20 sm:h-24 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-3"
                   >
-                    <span className="text-sm sm:text-base md:text-lg font-bold text-white/50 group-hover:text-brand-pink transition-colors duration-300 text-center leading-tight">
+                    <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-brand-turquoise uppercase tracking-[0.25em] group-hover:text-brand-pink transition-colors duration-300 text-center leading-tight">
                       {publication.name}
                     </span>
                   </a>
