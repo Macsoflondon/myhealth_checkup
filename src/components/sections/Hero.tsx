@@ -61,28 +61,6 @@ const Hero = () => {
 
   return (
     <>
-      {/* Hero Video Section - Pulled up to sit behind toolbar */}
-      <section 
-        className="relative overflow-hidden bg-brand-navy"
-        style={{ marginTop: 'calc(-1 * var(--toolbar-height, 50px))' }}
-      >
-        <div className="relative w-full aspect-[4/5] xs:aspect-[4/3] sm:aspect-[16/10] lg:aspect-video overflow-hidden">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            preload="auto"
-            poster="/lovable-uploads/hero-image-1.png" 
-            className="absolute inset-0 w-full h-full object-cover" 
-            src="/myhealth_checkup.mp4" 
-            aria-label="myhealth checkup"
-          >
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </section>
-      
       {/* Main Hero Content - Clear promise, immediate action */}
       <section className="relative overflow-hidden py-6 sm:py-10 md:py-14 lg:py-20">
         {/* Background image */}
