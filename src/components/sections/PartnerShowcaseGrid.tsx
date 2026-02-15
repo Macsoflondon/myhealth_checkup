@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 import medichecksVideo from "@/assets/medichecks-animation.mp4";
-import goodbodyVideo from "@/assets/goodbody-animation.mp4";
+
 import goodbodyLogo from "@/assets/goodbody-logo-new.png";
 
 const PartnerShowcaseGrid = () => {
@@ -13,8 +13,8 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
 
           {/* Top-Left: Goodbody Feature Card */}
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
-            <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-[55%]">
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
+            <div className="p-6 lg:p-8 flex flex-col justify-center">
               <img
                 src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
@@ -39,16 +39,6 @@ const PartnerShowcaseGrid = () => {
               >
                 View Goodbody tests
               </Link>
-            </div>
-            <div className="lg:w-[45%] min-h-[200px] lg:min-h-0 bg-[#081129] flex items-center justify-center">
-              <video
-                src={goodbodyVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-contain"
-              />
             </div>
           </div>
 
