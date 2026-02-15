@@ -1,21 +1,27 @@
 
 
-# Replace the First Partner Video (Properly This Time)
+# Replace the Partner Video — Direct Import Approach
 
-## What will change
+## The problem so far
 
-The left/first video in the "Featured Partners of the Month" section will be properly replaced with your uploaded video file (`Untitled_Mobile_Video_1-2.mp4`).
+The previous two attempts tried to copy your uploaded video over `src/assets/partner-video.mp4`, but the file copy appears to have failed silently both times. The old video content is still playing. Only the aria-label text (invisible to you) was actually changed.
+
+## What will be done differently this time
+
+Instead of overwriting an existing file, the code will import your uploaded video directly using its upload path. This bypasses the file copy step entirely and is more reliable.
 
 ## Steps
 
-**1. Copy your uploaded video into the project**
-- Copy `user-uploads://Untitled_Mobile_Video_1-2.mp4` to `src/assets/partner-video.mp4`, overwriting the existing file completely.
+**1. Update the import in `BrandVideoSection.tsx` (line 1)**
+- Change `import partnerVideo from "@/assets/partner-video.mp4"` to import directly from the uploaded file path
 
-**2. Update the aria-label (line 19)**
-- Change the aria-label from "GoodBody Clinic..." to something more appropriate for the new video content.
+**2. Delete the old unused video files**
+- Remove `src/assets/partner-video.mp4` (the old file that failed to overwrite)
+- Remove `src/assets/goodbody-animation.mp4` (the original GoodBody video that is no longer needed)
 
-The import and source reference in `BrandVideoSection.tsx` already point to `partner-video.mp4`, so once the actual file is properly overwritten with your new upload, the correct video will display.
+**3. Verify the video plays in the preview**
+- Confirm the left/first video in the "Featured Partners" section now shows your new video content
 
-## What comes next
-Once this is done, you can upload the new Medichecks video and we will replace the second (right) video in the same way.
+## After this is done
+You mentioned you have a new Medichecks video to upload as well — we will handle that as a separate step using the same direct approach.
 
