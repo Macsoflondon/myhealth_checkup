@@ -1,39 +1,28 @@
 
-
-# Standardise "As Seen In" Labels Across the Platform
+# Add Gradient Section Divider Above the Brand Ticker
 
 ## What is changing
 
-There are two components that display an "As Featured/Seen In" label. The `FeaturedPublications` component has a polished, on-brand style while `PartnerShowcase` uses a plain grey heading. This plan brings the `PartnerShowcase` label in line with the sharp `FeaturedPublications` style.
+A gradient border/divider line will be added directly above the Brand Ticker carousel, using the same turquoise-pink-turquoise gradient pattern already used in the `FeaturedPublications` section.
 
-## The target style (from FeaturedPublications)
+## Carousel status
 
-- Turquoise text colour (`text-brand-turquoise`)
-- Small uppercase text with wide letter-spacing (`text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]`)
-- Flanked by two horizontal turquoise lines (`h-px w-8 sm:w-12 bg-brand-turquoise/40`)
-- Centred with flexbox and gap
+The Brand Ticker carousel is working correctly -- the text items ("Blood Tests", "Cancer Screening", etc.) are scrolling continuously as expected with the 35-second animation loop.
 
 ## Change
 
-**File: `src/components/PartnerShowcase.tsx` (line 28)**
+**File: `src/components/sections/BrandTicker.tsx`**
 
-Replace the plain grey `<h3>` heading:
-
-```tsx
-<h3 className="text-center text-lg text-gray-500 font-semibold mb-6">AS FEATURED IN</h3>
-```
-
-With the standardised "As Seen In" label using the same markup and classes as `FeaturedPublications`:
+Add a 3px gradient divider line at the top of the section, before the scrolling text. The gradient uses the brand colours in the sequence: turquoise (#22c0d4) to pink (#e70d69) to turquoise (#22c0d4).
 
 ```tsx
-<div className="flex items-center justify-center gap-3 mb-6">
-  <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-  <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-    As Seen In
-  </span>
-  <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-</div>
+<section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
+  {/* Gradient divider: teal > pink > teal */}
+  <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+  <div className="py-3 sm:py-4">
+    {/* existing ticker content unchanged */}
+  </div>
+</section>
 ```
 
-This also unifies the wording from "AS FEATURED IN" to "As Seen In" for consistency.
-
+This matches the exact same divider style used in `FeaturedPublications` for visual consistency across the platform.
