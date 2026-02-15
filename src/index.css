@@ -38,13 +38,13 @@
     /* Material 3 Color System with Brand Colors */
 
     /* Primary - Turquoise (Brand #22c0d4) */
-    --primary: 205 39% 37%;
+    --primary: 187 72% 48%;
     --primary-foreground: 0 0% 100%;
     --primary-container: 187 72% 90%;
     --primary-on-container: 187 72% 15%;
 
     /* Secondary - Pink (Brand #e70d69) */
-    --secondary: 351 94% 70%;
+    --secondary: 335 89% 48%;
     --secondary-foreground: 0 0% 100%;
     --secondary-container: 335 89% 93%;
     --secondary-on-container: 335 89% 15%;
@@ -85,7 +85,7 @@
     --muted: 220 15% 95%;
     --muted-foreground: 220 10% 45%;
 
-    --accent: 351 94% 70%;
+    --accent: 335 89% 48%;
     --accent-foreground: 0 0% 100%;
 
     --outline-foreground: 238 33% 15%;
