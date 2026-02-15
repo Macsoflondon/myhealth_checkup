@@ -1,4 +1,4 @@
-import goodbodyVideo from "@/assets/goodbody-animation.mp4";
+import partnerVideo from "@/assets/partner-video.mp4";
 import medichecksVideo from "@/assets/medichecks-animation.mp4";
 
 const BrandVideoSection = () => {
@@ -18,7 +18,7 @@ const BrandVideoSection = () => {
             className="w-full sm:w-[50%] sm:flex-shrink-0 h-auto rounded-lg sm:rounded-xl sm:-translate-y-4"
             aria-label="GoodBody Clinic – Your health. Your choice. One trusted platform!"
           >
-            <source src={goodbodyVideo} type="video/mp4" />
+            <source src={partnerVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <video
