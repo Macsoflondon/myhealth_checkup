@@ -1,27 +1,46 @@
 
 
-# Replace the Partner Video — Direct Import Approach
+# Swap "Take Control" and "Medichecks" Cards in Partner Showcase Grid
 
-## The problem so far
+## What you want
 
-The previous two attempts tried to copy your uploaded video over `src/assets/partner-video.mp4`, but the file copy appears to have failed silently both times. The old video content is still playing. Only the aria-label text (invisible to you) was actually changed.
+- Move the "Take Control of Your Health Today" card from its current position (top-right) to where the Medichecks card is (bottom-right), so it sits next to "Find a Clinic".
+- Remove the Medichecks card from the grid for now, but keep the code commented out so it can be restored later.
 
-## What will be done differently this time
+## Current layout
 
-Instead of overwriting an existing file, the code will import your uploaded video directly using its upload path. This bypasses the file copy step entirely and is more reliable.
+```text
++-------------------------+-------------------------------+
+| Goodbody (white)        | Take Control (navy) — MOVING  |
++-------------------------+-------------------------------+
+| Find a Clinic (navy)    | Medichecks (white) — STORING  |
++-------------------------+-------------------------------+
+```
+
+## New layout
+
+```text
++-------------------------+-------------------------------+
+| Goodbody (white)        | (empty slot removed)          |
++-------------------------+-------------------------------+
+| Find a Clinic (navy)    | Take Control (navy) — MOVED   |
++-------------------------+-------------------------------+
+```
 
 ## Steps
 
-**1. Update the import in `BrandVideoSection.tsx` (line 1)**
-- Change `import partnerVideo from "@/assets/partner-video.mp4"` to import directly from the uploaded file path
+**1. In `src/components/sections/PartnerShowcaseGrid.tsx`:**
 
-**2. Delete the old unused video files**
-- Remove `src/assets/partner-video.mp4` (the old file that failed to overwrite)
-- Remove `src/assets/goodbody-animation.mp4` (the original GoodBody video that is no longer needed)
+- Move the "Take Control" card block to the bottom-right position (after the "Find a Clinic" card)
+- Comment out the entire Medichecks card block so it can be brought back later
+- Remove the unused `medichecksVideo` and `PROVIDER_LOGOS` imports since Medichecks is being stored
 
-**3. Verify the video plays in the preview**
-- Confirm the left/first video in the "Featured Partners" section now shows your new video content
+**2. Adjust the grid layout**
 
-## After this is done
-You mentioned you have a new Medichecks video to upload as well — we will handle that as a separate step using the same direct approach.
+With only 3 cards instead of 4, the grid will naturally place:
+- Goodbody (top-left)
+- Find a Clinic (top-right or bottom-left depending on order)
+- Take Control (next to Find a Clinic)
+
+The exact card ordering in code will be: Goodbody, Find a Clinic, Take Control — giving a clean 2-column grid with Goodbody spanning or sitting top-left, and the two navy cards side by side on the bottom row.
 
