@@ -6,14 +6,13 @@ import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
 const Footer = () => {
   const { t } = useTranslation();
 
-  const categoryLinks = [
+  const healthTestLinks = [
     { name: t('footer.links.mensHealth'), link: "/tests/mens-health" },
     { name: t('footer.links.womensHealth'), link: "/tests/womens-health" },
     { name: t('footer.links.heartHealth'), link: "/tests/heart" },
     { name: t('footer.links.diabetes'), link: "/compare?category=diabetes" },
     { name: t('footer.links.thyroid'), link: "/compare?category=thyroid" },
     { name: t('footer.links.fertility'), link: "/compare?category=fertility" },
-    { name: t('footer.links.cookiePolicy'), link: "/cookies" },
   ];
 
   const companyLinks = [
@@ -26,162 +25,90 @@ const Footer = () => {
     { name: t('footer.links.contact'), link: "/contact" },
   ];
 
+  const legalLinks = [
+    { name: "Privacy Policy", link: "/privacy-policy" },
+    { name: "Terms & Conditions", link: "/terms" },
+    { name: t('footer.links.cookiePolicy'), link: "/cookies" },
+    { name: "Accessibility", link: "/accessibility" },
+    { name: "Modern Slavery", link: "/modern-slavery" },
+    { name: "Affiliate Disclosure", link: "/affiliate-disclosure" },
+  ];
+
   return (
     <footer>
-      {/* ========== Main Footer - Navy Background ========== */}
-      <div className="bg-[#081129] pt-10 sm:pt-12 pb-6 sm:pb-8">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-[auto_auto_1fr_auto] gap-6 sm:gap-8 lg:gap-12">
+      {/* ========== Top Gradient Divider ========== */}
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-            {/* Column 1 - Category Links */}
-            <div>
-              <ul className="space-y-3 sm:space-y-3.5">
-                {categoryLinks.map((item, index) => (
-                  <li key={index}>
-                    <Link to={item.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm font-sans">
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* ========== Main Footer ========== */}
+      <div className="bg-brand-navy relative overflow-hidden pt-12 sm:pt-14 pb-8 sm:pb-10">
+        {/* Decorative glow orbs */}
+        <div className="absolute top-20 left-10 w-64 h-64 bg-brand-turquoise/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-48 h-48 bg-brand-pink/5 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Column 2 - Company Links */}
-            <div>
-              <ul className="space-y-3 sm:space-y-3.5">
-                {companyLinks.map((item, index) => (
-                  <li key={index}>
-                    <Link to={item.link} className="text-white hover:text-[#e70d69] transition-colors text-xs sm:text-sm font-sans">
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* 4-Column Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+            <FooterColumn title="Health Tests" links={healthTestLinks} />
+            <FooterColumn title="Company" links={companyLinks} />
+            <FooterColumn title="Legal" links={legalLinks} />
+            <ConnectColumn />
+          </div>
 
-            {/* Column 3 - Social + Disclaimer + Company Info */}
-            <div className="col-span-2 lg:col-span-1">
-              {/* Follow Us + Social Icons */}
-              <div className="flex items-center gap-5 sm:gap-6 mb-6 sm:mb-8">
-                <span className="text-[#22c0d4] font-heading font-bold text-xl sm:text-2xl whitespace-nowrap">Follow Us</span>
-                <div className="flex gap-4 sm:gap-5 items-end">
-                  {/* Instagram */}
-                  <a
-                    href="https://www.instagram.com/myhealthcheckup_uk"
-                    className="hover:opacity-80 transition-opacity"
-                    aria-label="Follow us on Instagram"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg width="54" height="54" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#ig-grad)" />
-                      <rect x="12" y="12" width="24" height="24" rx="6" stroke="white" strokeWidth="2" fill="none"/>
-                      <circle cx="24" cy="24" r="6" stroke="white" strokeWidth="2" fill="none"/>
-                      <circle cx="32" cy="16" r="2" fill="white"/>
-                      <defs>
-                        <linearGradient id="ig-grad" x1="4" y1="44" x2="44" y2="4" gradientUnits="userSpaceOnUse">
-                          <stop stopColor="#FD5"/>
-                          <stop offset="0.5" stopColor="#E4405F"/>
-                          <stop offset="1" stopColor="#833AB4"/>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </a>
-
-                  {/* Facebook */}
-                  <a
-                    href="https://www.facebook.com/myhealthcheckupuk"
-                    className="hover:opacity-80 transition-opacity"
-                    aria-label="Follow us on Facebook"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg width="54" height="54" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="24" cy="24" r="20" fill="#1877F2"/>
-                      <path d="M26.5 25.5H30L31 21.5H26.5V19.5C26.5 18.47 26.5 17.5 28.5 17.5H31V14.14C30.652 14.097 29.284 14 27.842 14C24.834 14 22.5 16.082 22.5 19.5V21.5H19V25.5H22.5V34H26.5V25.5Z" fill="white"/>
-                    </svg>
-                  </a>
-
-                  {/* TikTok */}
-                  <a
-                    href="https://www.tiktok.com/@myhealthcheckup"
-                    className="hover:opacity-80 transition-opacity"
-                    aria-label="Follow us on TikTok"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <svg width="54" height="54" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="24" cy="24" r="20" fill="#081129" stroke="white" strokeWidth="1.5"/>
-                      <path d="M31 18.5C31 18.5 30 22 27 22V29C27 31.761 24.761 34 22 34C19.239 34 17 31.761 17 29C17 26.239 19.239 24 22 24V27C20.895 27 20 27.895 20 29C20 30.105 20.895 31 22 31C23.105 31 24 30.105 24 29V14H27C27 16.485 29.015 18.5 31 18.5Z" fill="white"/>
-                      <path d="M30 17.5C30 17.5 29 21 26 21V28C26 30.761 23.761 33 21 33C18.239 33 16 30.761 16 28C16 25.239 18.239 23 21 23V26C19.895 26 19 26.895 19 28C19 29.105 19.895 30 21 30C22.105 30 23 29.105 23 28V13H26C26 15.485 28.015 17.5 30 17.5Z" fill="#E4405F" fillOpacity="0.6"/>
-                      <path d="M32 19.5C32 19.5 31 23 28 23V30C28 32.761 25.761 35 23 35C20.239 35 18 32.761 18 30C18 27.239 20.239 25 23 25V28C21.895 28 21 28.895 21 30C21 31.105 21.895 32 23 32C24.105 32 25 31.105 25 30V15H28C28 17.485 30.015 19.5 32 19.5Z" fill="#22c0d4" fillOpacity="0.6"/>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              {/* Disclaimer */}
-              <p className="text-xs sm:text-sm leading-relaxed mb-5">
-                <span className="font-semibold text-[#e70d69]">Important:</span>{" "}
-                <span className="text-white/80">
-                  MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
-                </span>
-              </p>
-
-              {/* Company Info */}
-              <p className="text-xs sm:text-sm text-white/90 font-sans mb-1.5">
-                MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
-              </p>
-              <p className="text-[10px] sm:text-xs text-white/50">Company No. 16589056</p>
-            </div>
-
-            {/* Column 4 - Compliance Badges */}
-            <div className="col-span-2 lg:col-span-1">
-              <div className="flex flex-row lg:flex-col gap-4 sm:gap-5 items-start">
-                <img src={complianceBadges} alt="ICO Registered, Companies House, UK GDPR compliance badges" className="h-20 sm:h-24 w-auto object-contain" />
-                <ComplianceBadge image={cyberEssentialsLogo} label="Cyber Essentials" isCyberEssentials />
-              </div>
-            </div>
+          {/* ========== Disclaimer Row ========== */}
+          <div className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center">
+            <p className="text-xs sm:text-sm leading-relaxed mb-2">
+              <span className="font-semibold text-brand-pink">Important:</span>{" "}
+              <span className="text-white/80">
+                MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
+              </span>
+            </p>
+            <p className="text-xs sm:text-sm text-white/90 font-sans">
+              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
+            </p>
+            <p className="text-[10px] sm:text-xs text-white/50 mt-1">Company No. 16589056</p>
           </div>
         </div>
       </div>
 
       {/* ========== Copyright Line ========== */}
-      <div className="bg-[#081129] pb-4">
+      <div className="bg-brand-navy pb-4 pt-2">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs sm:text-sm text-[#e70d69] font-sans">
+          <p className="text-center text-xs sm:text-sm text-brand-pink font-sans">
             © 2026 myhealth checkup. All rights reserved.{" "}
-            <Link to="/accessibility" className="text-[#e70d69] hover:text-white transition-colors underline-offset-2 hover:underline">
-              Accessibility
-            </Link>
+            <Link to="/privacy-policy" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Privacy</Link>
+            {" | "}
+            <Link to="/terms" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Terms</Link>
+            {" | "}
+            <Link to="/accessibility" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Accessibility</Link>
           </p>
         </div>
       </div>
 
       {/* ========== Pink Divider Line ========== */}
-      <div className="h-[2px] bg-[#e70d69]" />
+      <div className="h-[2px] bg-brand-pink" />
 
-      {/* ========== Brand Bar - Dark with Logo ========== */}
+      {/* ========== Brand Bar ========== */}
       <div className="bg-[#060d20] py-5 sm:py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center gap-3 sm:gap-4">
-            {/* Heart Logo */}
-            <img
-              src="/lovable-uploads/myhealth-logo-bg-pink.png"
-              alt="myhealth checkup"
-              className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg"
-            />
-            {/* Brand Name */}
-            <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
-              <span className="text-white">my</span>
-              <span className="text-[#22c0d4]">health</span>
-            </span>
-            <span className="font-heading text-base sm:text-lg md:text-xl text-[#22c0d4] -ml-2 sm:-ml-3">
-              checkup
-            </span>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+            {/* Logo + Brand Name */}
+            <div className="flex items-center gap-3">
+              <img
+                src="/lovable-uploads/myhealth-logo-bg-pink.png"
+                alt="myhealth checkup"
+                className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg"
+              />
+              <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
+                <span className="text-white">my</span>
+                <span className="text-brand-turquoise">health</span>
+              </span>
+              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2">
+                checkup
+              </span>
+            </div>
             {/* Slogan */}
-            <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white ml-2 sm:ml-3">
-              Your <span className="text-[#e70d69]">health!</span> Your <span className="text-[#e70d69]">choice!</span> One <span className="text-[#22c0d4]">trusted</span> platform!
+            <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
+              Your <span className="text-brand-pink">health!</span> Your <span className="text-brand-pink">choice!</span> One <span className="text-brand-turquoise">trusted</span> platform!
             </p>
           </div>
         </div>
@@ -190,35 +117,80 @@ const Footer = () => {
   );
 };
 
-/** Compliance badge component — larger, more detailed to match reference */
-const ComplianceBadge = ({
-  image,
-  label,
-  innerLabel,
-  isCyberEssentials,
-}: {
-  image?: string;
-  label: string;
-  innerLabel?: string;
-  isCyberEssentials?: boolean;
-}) => (
-  <div className="flex flex-col items-center text-center space-y-1.5">
-    <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex flex-col items-center justify-center p-2 shadow-lg ${
-      isCyberEssentials ? 'bg-[#081129]' : 'bg-white'
-    }`}>
-      {image ? (
-        <div className="flex flex-col items-center justify-center h-full gap-1">
-          <img src={image} alt={label} className="w-14 h-14 sm:w-16 sm:h-16 object-contain" />
-          {innerLabel && (
-            <span className="text-[#081129] text-[7px] sm:text-[8px] font-bold uppercase tracking-wider leading-none">
-              {innerLabel}
-            </span>
-          )}
-        </div>
-      ) : null}
+/* ========== Footer Column Component ========== */
+const FooterColumn = ({ title, links }: { title: string; links: { name: string; link: string }[] }) => (
+  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
+    {/* Column heading with flanking lines */}
+    <div className="flex items-center gap-2 mb-4">
+      <div className="h-px flex-1 bg-brand-turquoise/30" />
+      <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
+        {title}
+      </span>
+      <div className="h-px flex-1 bg-brand-turquoise/30" />
     </div>
-    <span className="text-white/70 text-[9px] sm:text-[10px] font-medium">{label}</span>
+    <ul className="space-y-2.5">
+      {links.map((item, i) => (
+        <li key={i}>
+          <Link
+            to={item.link}
+            className="text-white/80 hover:text-brand-pink transition-colors text-xs sm:text-sm font-sans"
+          >
+            {item.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
   </div>
+);
+
+/* ========== Connect Column Component ========== */
+const ConnectColumn = () => (
+  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5 col-span-2 lg:col-span-1">
+    {/* Heading */}
+    <div className="flex items-center gap-2 mb-4">
+      <div className="h-px flex-1 bg-brand-turquoise/30" />
+      <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+        Connect
+      </span>
+      <div className="h-px flex-1 bg-brand-turquoise/30" />
+    </div>
+
+    {/* Social Icons */}
+    <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Follow Us</p>
+    <div className="flex gap-3 mb-5">
+      <SocialIcon href="https://www.instagram.com/myhealthcheckup_uk" label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" fill="none"/><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="none"/><circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/></svg>
+      </SocialIcon>
+      <SocialIcon href="https://www.facebook.com/myhealthcheckupuk" label="Facebook">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+      </SocialIcon>
+      <SocialIcon href="https://www.tiktok.com/@myhealthcheckup" label="TikTok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+      </SocialIcon>
+    </div>
+
+    {/* Compliance Badges */}
+    <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Compliance</p>
+    <div className="flex gap-3 items-start">
+      <img src={complianceBadges} alt="ICO Registered, Companies House, UK GDPR compliance badges" className="h-16 sm:h-20 w-auto object-contain" />
+      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
+        <img src={cyberEssentialsLogo} alt="Cyber Essentials" className="w-full h-full object-contain" />
+      </div>
+    </div>
+  </div>
+);
+
+/* ========== Social Icon Wrapper ========== */
+const SocialIcon = ({ href, label, children }: { href: string; label: string; children: React.ReactNode }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Follow us on ${label}`}
+    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all text-white"
+  >
+    {children}
+  </a>
 );
 
 export default Footer;
