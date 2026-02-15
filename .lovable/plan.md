@@ -1,28 +1,21 @@
 
-# Add Gradient Section Divider Above the Brand Ticker
+
+# Reduce Header Tagline Section Height
 
 ## What is changing
 
-A gradient border/divider line will be added directly above the Brand Ticker carousel, using the same turquoise-pink-turquoise gradient pattern already used in the `FeaturedPublications` section.
+The header section containing the "Your Health. Your Choice. One Trusted Platform!" tagline will be made more compact by reducing vertical padding and spacing.
 
-## Carousel status
+## Changes
 
-The Brand Ticker carousel is working correctly -- the text items ("Blood Tests", "Cancer Screening", etc.) are scrolling continuously as expected with the 35-second animation loop.
+**File: `src/components/layout/Header.tsx`**
 
-## Change
+### Desktop (line 87)
+- Reduce the main header row vertical padding from `py-3 lg:py-4` to `py-1 lg:py-2` to trim the overall height.
 
-**File: `src/components/sections/BrandTicker.tsx`**
+### Mobile (lines 51, 66)
+- Reduce the top row padding from `py-1.5 sm:py-2` to `py-1 sm:py-1.5`
+- Reduce the bottom tagline row padding from `pb-2 sm:pb-3` to `pb-1 sm:pb-1.5`
 
-Add a 3px gradient divider line at the top of the section, before the scrolling text. The gradient uses the brand colours in the sequence: turquoise (#22c0d4) to pink (#e70d69) to turquoise (#22c0d4).
+These changes will reduce the header section by roughly four lines of vertical space across all viewports while keeping the tagline text, logo, and controls fully intact.
 
-```tsx
-<section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
-  {/* Gradient divider: teal > pink > teal */}
-  <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-  <div className="py-3 sm:py-4">
-    {/* existing ticker content unchanged */}
-  </div>
-</section>
-```
-
-This matches the exact same divider style used in `FeaturedPublications` for visual consistency across the platform.
