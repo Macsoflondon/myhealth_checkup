@@ -8,7 +8,7 @@ const PartnerShowcaseGrid = () => {
     <section className="w-full py-8 sm:py-12 md:py-14 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading title="Our Featured" gradientText="Partners" className="mb-8 sm:mb-10" titleClassName="text-white" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-center">
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
@@ -28,7 +28,7 @@ const PartnerShowcaseGrid = () => {
               <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
                 Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and only exclusively utilise UKAS-accredited laboratories for our analysis.
               </p>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-4">
+              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-3">
                 Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
               </p>
               <Link
@@ -48,7 +48,7 @@ const PartnerShowcaseGrid = () => {
               muted
               playsInline
               preload="auto"
-              className="w-full h-full object-cover rounded-2xl"
+              className="max-h-[400px] w-auto object-contain rounded-2xl"
               aria-label="Featured partner of the month"
             >
               <source src="/videos/partner-video.mp4" type="video/mp4" />
