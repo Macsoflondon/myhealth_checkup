@@ -16,7 +16,7 @@ import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
-import MostPopularTestsSection from "@/components/sections/MostPopularTestsSection";
+
 import TopConcernsSection from "@/components/sections/TopConcernsSection";
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 
@@ -126,8 +126,6 @@ const Index = () => {
         {/* 11. Expert Quotes */}
         <ExpertQuotes />
         
-        {/* 12. Most Popular Tests */}
-        <MostPopularTestsSection />
         
         {/* 13. Top Concerns (with divider) */}
         <TopConcernsSection />
