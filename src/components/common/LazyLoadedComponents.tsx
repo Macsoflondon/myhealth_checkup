@@ -1,6 +1,6 @@
 import { lazy, Suspense, ComponentType } from "react";
 import { Loader2 } from "lucide-react";
-import { ErrorBoundary } from "./common/ErrorBoundary";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 // Loading component
 const LoadingSpinner = ({
@@ -27,16 +27,16 @@ export function withLazyLoading<P extends object>(Component: ComponentType<P>, l
 }
 
 // Lazy-loaded components for better code splitting
-export const LazyTestCategories = lazy(() => import("./sections/TestCategories"));
-export const LazyFeaturedProviders = lazy(() => import("./sections/FeaturedProviders"));
-export const LazyMostPopularTests = lazy(() => import("./MostPopularTests"));
-export const LazyHealthBenefitsInfographic = lazy(() => import("./HealthBenefitsInfographic"));
-export const LazyFounderStory = lazy(() => import("./FounderStory"));
-export const LazyPartnerShowcase = lazy(() => import("./PartnerShowcase"));
-export const LazyClinicMap = lazy(() => import("./ClinicMap"));
-export const LazyHealthResources = lazy(() => import("./HealthResources"));
-export const LazyHowItWorks = lazy(() => import("./sections/HowItWorks"));
-export const LazyMediaSpotlight = lazy(() => import("./MediaSpotlight"));
+export const LazyTestCategories = lazy(() => import("../sections/TestCategories"));
+export const LazyFeaturedProviders = lazy(() => import("../sections/FeaturedProviders"));
+export const LazyMostPopularTests = lazy(() => import("../tests/MostPopularTests"));
+export const LazyHealthBenefitsInfographic = lazy(() => import("../sections/HealthBenefitsInfographic"));
+export const LazyFounderStory = lazy(() => import("../sections/FounderStory"));
+export const LazyPartnerShowcase = lazy(() => import("../sections/PartnerShowcase"));
+export const LazyClinicMap = lazy(() => import("../clinic/ClinicMap"));
+export const LazyHealthResources = lazy(() => import("../sections/HealthResources"));
+export const LazyHowItWorks = lazy(() => import("../sections/HowItWorks"));
+export const LazyMediaSpotlight = lazy(() => import("../sections/MediaSpotlight"));
 
 // Wrapped components with loading states
 export const TestCategories = () => <ErrorBoundary>

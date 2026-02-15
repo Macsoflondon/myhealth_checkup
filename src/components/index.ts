@@ -40,7 +40,7 @@ export { default as TrustPlatformSection } from "./sections/TrustPlatformSection
 export { FeaturedPublications } from "./sections/FeaturedPublications";
 
 // Provider components
-export { ProviderLogo } from "./ProviderLogo";
+export { ProviderLogo } from "./providers/ProviderLogo";
 
 // Compare components (via barrel)
 export * from "./compare";
