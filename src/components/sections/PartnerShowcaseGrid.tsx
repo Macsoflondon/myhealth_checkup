@@ -12,24 +12,18 @@ const PartnerShowcaseGrid = () => {
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-            <div className="p-5 lg:p-6 flex flex-col justify-center">
+          <div className="p-4 lg:p-5 flex flex-col justify-center">
               <img
                 src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
-                className="h-[140px] w-auto object-contain -mb-4 self-start"
+                className="h-[100px] w-auto object-contain -mb-4 self-start"
                 loading="lazy"
               />
               <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-2">
                 Know more.<br />Live Better.
               </h3>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
-                GoodBody Clinics, provide comprehensive private health checks at affordable prices.
-              </p>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
-                Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and only exclusively utilise UKAS-accredited laboratories for our analysis.
-              </p>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-4">
-                Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
+              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-3">
+                GoodBody Clinics provide comprehensive private health checks at affordable prices across 200+ nationwide locations or via home testing. CQC regulated, UKAS-accredited labs, with GP-reviewed results and over 60 blood and wellness tests to choose from.
               </p>
               <Link
                 to="/provider/goodbody-clinic"
@@ -41,14 +35,14 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Partner Video next to Goodbody */}
-          <div className="hidden md:flex bg-[#081129] rounded-2xl overflow-hidden items-center justify-center">
+          <div className="hidden md:flex bg-[#081129] rounded-2xl overflow-hidden items-start">
             <video
               autoPlay
               loop
               muted
               playsInline
               preload="auto"
-              className="w-full h-full object-cover rounded-2xl"
+              className="w-full h-1/2 object-cover rounded-2xl"
               aria-label="Featured partner of the month"
             >
               <source src="/videos/partner-video.mp4" type="video/mp4" />
