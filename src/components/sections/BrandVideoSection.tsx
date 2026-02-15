@@ -1,4 +1,4 @@
-import partnerVideo from "@/assets/partner-video.mp4";
+import partnerVideo from "@/assets/new-partner-video.mp4";
 import medichecksVideo from "@/assets/medichecks-animation.mp4";
 
 const BrandVideoSection = () => {
