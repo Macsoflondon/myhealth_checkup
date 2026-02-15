@@ -48,7 +48,7 @@ const PartnerShowcaseGrid = () => {
               muted
               playsInline
               preload="auto"
-              className="max-h-[400px] w-auto object-contain rounded-2xl"
+              className="w-full h-full object-cover"
               aria-label="Featured partner of the month"
             >
               <source src="/videos/partner-video.mp4" type="video/mp4" />
