@@ -12,7 +12,10 @@ const BrandTicker = () => {
   const items = [...keywords, ...keywords, ...keywords];
 
   return (
-    <section className="bg-[hsl(224,67%,10%)] py-3 sm:py-4 overflow-hidden select-none">
+    <section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
+      {/* Gradient divider: teal > pink > teal */}
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      <div className="py-3 sm:py-4">
       <div
         className="relative flex"
         style={{
@@ -40,6 +43,7 @@ const BrandTicker = () => {
             </span>
           ))}
         </div>
+      </div>
       </div>
     </section>
   );
