@@ -1,17 +1,16 @@
 
-
-# Match Video Height to Goodbody Card
+# Crop the Partner Video from Top and Bottom
 
 ## What is changing
 
-The partner video next to the Goodbody card will be sized to match the full height of the Goodbody card, so both columns appear equal.
+The partner video next to the Goodbody card will be cropped from the top and bottom using CSS `overflow-hidden` on the container and `object-cover` on the video. This trims roughly two lines of content from the top and bottom edges without touching the Goodbody card.
 
 ## Changes
 
 **In `src/components/sections/PartnerShowcaseGrid.tsx`:**
 
-1. **Remove `items-center` from the grid container** — revert to the default `items-stretch` so both columns match height.
-2. **Update the video element** — change from `max-h-[400px] w-auto object-contain` to `w-full h-full object-cover` so the video fills the entire container, matching the card height.
+1. **Video container** (the `div` wrapping the video): ensure it has `overflow-hidden` and a constrained height so the video overflows and gets clipped.
+2. **Video element**: change from `max-h-[400px] w-auto object-contain` to `w-full h-full object-cover`. This makes the video fill the container and crop equally from top and bottom rather than shrinking to fit.
+3. The `rounded-2xl` stays on the container to keep rounded corners on the cropped result.
 
-This gives a clean side-by-side layout where the video column is exactly the same height as the Goodbody card.
-
+The Goodbody card is not touched at all.
