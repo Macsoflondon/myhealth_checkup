@@ -17,9 +17,9 @@ const MissionSection = () => {
   ];
 
   return (
-    <section className="pt-0 pb-6 sm:pb-8 md:pb-10 lg:pb-14 bg-white">
+    <section className="pt-0 pb-0 bg-white">
       {/* Navy banner heading with gradient dividers */}
-      <div className="mb-5 sm:mb-6 md:mb-8 lg:mb-12">
+      <div>
         {/* Top gradient divider */}
         <div className="h-0.5 sm:h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         
