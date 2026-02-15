@@ -7,26 +7,14 @@ const BrandVideoSection = () => {
         <p className="text-center text-base sm:text-2xl uppercase tracking-[0.2em] text-white/60 font-heading mb-6 sm:mb-10">
           Our Featured Partners of the Month
         </p>
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 max-w-5xl mx-auto sm:items-start sm:ml-[5%] sm:mr-auto">
+        <div className="flex justify-center max-w-2xl mx-auto">
           <video
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            className="w-full sm:w-[50%] sm:flex-shrink-0 h-auto rounded-lg sm:rounded-xl sm:-translate-y-4"
-            aria-label="Featured partner – Your health. Your choice. One trusted platform!"
-          >
-            <source src="/videos/partner-video.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="w-full sm:w-[45%] h-auto rounded-lg sm:rounded-xl sm:mt-8"
+            className="w-full h-auto rounded-lg sm:rounded-xl"
             aria-label="Medichecks – Your health. Your choice. One trusted platform!"
           >
             <source src={medichecksVideo} type="video/mp4" />
