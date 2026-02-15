@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 const PartnersGrid = () => {
   const plugin = useRef(Autoplay({
     delay: 2000,
+    playOnInit: true,
     stopOnInteraction: false,
     stopOnMouseEnter: true
   }));
