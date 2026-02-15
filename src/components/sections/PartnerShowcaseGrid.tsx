@@ -5,18 +5,18 @@ import goodbodyLogo from "@/assets/goodbody-logo-new.png";
 
 const PartnerShowcaseGrid = () => {
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20 bg-[#081129]">
+    <section className="w-full py-8 sm:py-12 md:py-14 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading title="Our Featured" gradientText="Partners" className="mb-8 sm:mb-10" titleClassName="text-white" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-            <div className="p-6 lg:p-8 flex flex-col justify-center">
+            <div className="p-5 lg:p-6 flex flex-col justify-center">
               <img
                 src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
-                className="h-[200px] w-auto object-contain -mb-4 self-start"
+                className="h-[140px] w-auto object-contain -mb-4 self-start"
                 loading="lazy"
               />
               <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-2">
@@ -56,7 +56,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Left: Find a Clinic Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col justify-center text-center items-center">
             <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
               Find Your Clinic
             </span>
@@ -102,7 +102,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Right: Take Control CTA Card (moved from top-right) */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col justify-center text-center items-center">
             <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
               Start Your Journey Today
             </span>
