@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { PROVIDER_LOGOS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
-import medichecksVideo from "@/assets/medichecks-animation.mp4";
 
 import goodbodyLogo from "@/assets/goodbody-logo-new.png";
 
@@ -39,38 +37,6 @@ const PartnerShowcaseGrid = () => {
               >
                 View Goodbody tests
               </Link>
-            </div>
-          </div>
-
-          {/* Top-Right: Take Control CTA Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
-            <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
-              Start Your Journey Today
-            </span>
-            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
-              Take Control of Your Health Today
-            </h3>
-            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-20">
-              Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-              <Link
-                to="/compare"
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-              >
-                Compare tests
-              </Link>
-              <Link
-                to="/assisted-test-finder"
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-              >
-                Take the health quiz
-              </Link>
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center text-xs text-white/50">
-              <span>✓ UKAS Accredited Labs</span>
-              <span>✓ CQC Regulated</span>
-              <span>✓ Free to Compare</span>
             </div>
           </div>
 
@@ -120,7 +86,39 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
-          {/* Bottom-Right: Medichecks Feature Card */}
+          {/* Bottom-Right: Take Control CTA Card (moved from top-right) */}
+          <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
+            <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
+              Start Your Journey Today
+            </span>
+            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
+              Take Control of Your Health Today
+            </h3>
+            <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-20">
+              Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+              <Link
+                to="/compare"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+              >
+                Compare tests
+              </Link>
+              <Link
+                to="/assisted-test-finder"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+              >
+                Take the health quiz
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center text-xs text-white/50">
+              <span>✓ UKAS Accredited Labs</span>
+              <span>✓ CQC Regulated</span>
+              <span>✓ Free to Compare</span>
+            </div>
+          </div>
+
+          {/* STORED: Medichecks Feature Card — uncomment to restore
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
             <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-[55%]">
               <img
@@ -153,6 +151,7 @@ const PartnerShowcaseGrid = () => {
               />
             </div>
           </div>
+          */}
 
         </div>
       </div>
