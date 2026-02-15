@@ -16,7 +16,7 @@ const BrandVideoSection = () => {
             playsInline
             preload="auto"
             className="w-full sm:w-[50%] sm:flex-shrink-0 h-auto rounded-lg sm:rounded-xl sm:-translate-y-4"
-            aria-label="GoodBody Clinic – Your health. Your choice. One trusted platform!"
+            aria-label="Featured partner – Your health. Your choice. One trusted platform!"
           >
             <source src={partnerVideo} type="video/mp4" />
             Your browser does not support the video tag.
