@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import SimilarTestsSection from "@/components/SimilarTestsSection";
+import SimilarTestsSection from "@/components/tests/SimilarTestsSection";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";

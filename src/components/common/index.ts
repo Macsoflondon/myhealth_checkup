@@ -4,6 +4,7 @@
  */
 
 export { default as BackToTop } from "./BackToTop";
+export { default as BrandTypography } from "./BrandTypography";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { FastLazyImage } from "./FastLazyImage";
 export { LazyImage } from "./LazyImage";
@@ -18,8 +19,5 @@ export { ResponsiveImage, HeroBackground } from "./ResponsiveImage";
 export { SaveProviderButton } from "./SaveProviderButton";
 export { default as ScrollFadeIn } from "./ScrollFadeIn";
 export { ScrollToTop } from "./ScrollToTop";
-
 export { default as TestBreadcrumb } from "./TestBreadcrumb";
-
-// Re-exports from root (pending physical move)
-export { default as UKASBanner } from "../UKASBanner";
+export { default as UKASBanner } from "../compliance/UKASBanner";
