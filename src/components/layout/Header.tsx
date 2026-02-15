@@ -48,7 +48,7 @@ const Header = ({
       <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md border-b-2 border-[#e70d69]", className)}>
           <div className="container mx-auto px-3 sm:px-4">
             {/* Top row: Logo + Navigation controls */}
-            <div className="py-1.5 sm:py-2 flex items-center justify-between">
+            <div className="py-1 sm:py-1.5 flex items-center justify-between">
               {/* Logo - positioned at far left edge with mobile-first sizing */}
               <Link to="/" className="flex items-center flex-shrink-0 -ml-4 sm:-ml-6" style={{ overflow: 'visible' }}>
                 <AnimatedLogo className="h-16 xs:h-20 sm:h-24" />
@@ -63,7 +63,7 @@ const Header = ({
             </div>
 
             {/* Bottom row: Tagline - full width, centred */}
-            <div className="pb-2 sm:pb-3 flex justify-center">
+            <div className="pb-1 sm:pb-1.5 flex justify-center">
               <p className="text-[10px] xs:text-xs sm:text-sm font-bold tracking-wide text-center whitespace-nowrap">
                 <span className="text-[#22c0d4]">Your Health.</span>{" "}
                 <span className="text-[#e70d69]">Your Choice.</span>{" "}
@@ -84,7 +84,7 @@ const Header = ({
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
         <div className="bg-[#081129]">
           <div className="container mx-auto px-4 lg:px-8 xl:px-12">
-            <div className="relative flex items-center justify-between py-3 lg:py-4">
+            <div className="relative flex items-center justify-between py-1 lg:py-2">
               {/* Left: Logo - positioned at far left edge */}
               <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 -ml-12 lg:-ml-16 xl:-ml-20" style={{ overflow: 'visible' }}>
                 <AnimatedLogo className="h-32 lg:h-40 xl:h-48" />
