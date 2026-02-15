@@ -34,7 +34,7 @@ const PartnersGrid = () => {
                 <CarouselItem key={`${provider.id}-${index}`} className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
                   <Link to={`/provider/${provider.id}`} className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
                                w-full h-32 sm:h-40 
-                               border border-white/20 
+                               border-2 border-[#22c0d4] 
                                transition-all duration-300 ease-out
                                hover:shadow-lg hover:shadow-[#22c0d4]/20 
                                hover:-translate-y-1 hover:scale-105
