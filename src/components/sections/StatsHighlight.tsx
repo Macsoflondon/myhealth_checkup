@@ -7,15 +7,15 @@ const stats = [
 
 const StatsHighlight = () => {
   return (
-    <section className="py-6 sm:py-8 md:py-10 bg-background">
+    <section className="py-6 sm:py-8 md:py-10 bg-brand-navy">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 max-w-5xl mx-auto">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <p className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[hsl(224,67%,10%)] mb-1 sm:mb-2">
+              <p className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-1 sm:mb-2">
                 {stat.value}
               </p>
-              <p className="text-sm sm:text-base text-muted-foreground font-sans">
+              <p className="text-sm sm:text-base text-white/70 font-sans">
                 {stat.label}
               </p>
             </div>
