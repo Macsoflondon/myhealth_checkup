@@ -23,7 +23,7 @@ const BrandTicker = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
-          <div className="flex animate-ticker whitespace-nowrap">
+          <div className="flex animate-ticker whitespace-nowrap w-max min-w-full">
             {items.map((word, i) => (
               <span key={`a-${i}`} className="flex items-center">
                 <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
