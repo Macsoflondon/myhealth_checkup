@@ -118,7 +118,7 @@ const AccessibilityPage = () => {
                   please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> accessibility@myhealthhub.co.uk</p>
+                  <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
                   <p><strong>Phone:</strong> 0800 123 4567</p>
                   <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
                 </div>

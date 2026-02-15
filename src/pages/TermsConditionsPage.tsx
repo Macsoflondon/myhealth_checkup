@@ -128,7 +128,7 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <p className="mb-4">For questions about these Terms & Conditions, please contact us:</p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> legal@myhealthhub.co.uk</p>
+                  <p><strong>Email:</strong> legal@myhealthcheckup.co.uk</p>
                   <p><strong>Phone:</strong> 0800 123 4567</p>
                   <p><strong>Address:</strong> myhealth checkup, 123 Health Street, London, SW1A 1AA</p>
                   <p><strong>Company Registration:</strong> 12345678 (England & Wales)</p>
