@@ -7,7 +7,7 @@ const PartnerShowcaseGrid = () => {
   return (
     <section className="w-full py-8 sm:py-12 md:py-14 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6">
-        <SectionHeading title="Our Featured" gradientText="Partners" className="mb-1 sm:mb-2" titleClassName="text-white" />
+        <SectionHeading title="Our Featured" gradientText="Partners" className="mb-0" titleClassName="text-white" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-center">
 
           {/* Top-Left: Goodbody Feature Card */}
