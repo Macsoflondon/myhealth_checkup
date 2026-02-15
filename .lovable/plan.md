@@ -1,15 +1,23 @@
 
-# Remove "Most Popular Tests from Our Providers" from the Homepage
+# Sharpen the Top Concerns Category Cards
 
 ## What will change
-The "Most Popular Tests from Our Providers" section will be removed from the homepage. A standalone page for this content already exists at `/popular-tests`, so no new page is needed.
+
+The category cards in the "Top Concerns" section will get a sharp, polished look with dark blue borders, a subtle glow effect, and dark blue text instead of grey.
 
 ## Details
 
-**File: `src/pages/Index.tsx`**
-- Remove the import of `MostPopularTestsSection`
-- Remove the `<MostPopularTestsSection />` render block (lines 128-130)
+**File: `src/components/sections/TopConcernsSection.tsx`**
 
-The existing dedicated page at `/popular-tests` (powered by `MostPopularTestsPage.tsx`) will continue to work as normal, and is already linked from the site navigation.
+### 1. Card container (line 143)
+- Change `border border-border` to `border-2 border-[#081129]`
+- Add a subtle navy glow on hover: `hover:shadow-[0_0_20px_rgba(8,17,41,0.15)]`
+- Keep existing hover and transition effects
 
-No other files need to change. The `MostPopularTestsSection` component file itself will be kept in case it is used elsewhere or needed in future.
+### 2. Card title (line 148)
+- Change `text-foreground` to `text-[#081129]` for explicit dark blue
+
+### 3. Card description (line 151)
+- Change `text-muted-foreground` to `text-[#081129]` so the grey body text becomes dark blue
+
+These changes apply to all 12 category cards consistently.
