@@ -40,8 +40,20 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
-          {/* Empty placeholder to keep Goodbody alone on row 1 */}
-          <div className="hidden md:block" />
+          {/* Partner Video next to Goodbody */}
+          <div className="hidden md:flex bg-[#081129] rounded-2xl overflow-hidden items-center justify-center">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover rounded-2xl"
+              aria-label="Featured partner of the month"
+            >
+              <source src="/videos/partner-video.mp4" type="video/mp4" />
+            </video>
+          </div>
 
           {/* Bottom-Left: Find a Clinic Card */}
           <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
