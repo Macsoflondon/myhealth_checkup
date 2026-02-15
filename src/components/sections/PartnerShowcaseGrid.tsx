@@ -8,7 +8,7 @@ const PartnerShowcaseGrid = () => {
     <section className="w-full py-8 sm:py-12 md:py-14 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading title="Our Featured" gradientText="Partners" className="mb-8 sm:mb-10" titleClassName="text-white" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
@@ -48,7 +48,7 @@ const PartnerShowcaseGrid = () => {
               muted
               playsInline
               preload="auto"
-              className="max-h-[400px] w-auto object-contain rounded-2xl"
+              className="w-full h-full object-cover rounded-2xl"
               aria-label="Featured partner of the month"
             >
               <source src="/videos/partner-video.mp4" type="video/mp4" />
