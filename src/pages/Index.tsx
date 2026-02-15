@@ -8,7 +8,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 import Hero from "@/components/sections/Hero";
 import BrandTicker from "@/components/sections/BrandTicker";
 import MissionSection from "@/components/sections/MissionSection";
-import StatsHighlight from "@/components/sections/StatsHighlight";
+
 
 
 import PartnersGrid from "@/components/sections/PartnersGrid";
@@ -106,8 +106,6 @@ const Index = () => {
         {/* 3. Mission Section */}
         <MissionSection />
         
-        {/* 4. Stats Highlight */}
-        <StatsHighlight />
         
         
         {/* 5. Partners Grid */}
