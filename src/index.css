@@ -865,7 +865,13 @@
 }
 
 .animate-ticker {
-  animation: ticker 35s linear infinite;
+  animation: ticker 55s linear infinite;
+}
+
+@media (min-width: 640px) {
+  .animate-ticker {
+    animation: ticker 35s linear infinite;
+  }
 }
 
 .animate-ticker:hover {
