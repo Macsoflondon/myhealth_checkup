@@ -1,23 +1,21 @@
 
-# Make the Partners Carousel Section Dark Blue
+
+# Update Partners Carousel Card Styling
 
 ## What will change
 
-The "Our Trusted Partners" carousel section will get a dark blue background with updated text and card styling to match.
+The "Our Trusted" heading text will be white, and each logo card will get a turquoise border.
 
 ## Details
 
 **File: `src/components/sections/PartnersGrid.tsx`**
 
-### 1. Section background (line 17)
-- Change `bg-muted/30` to `bg-[#081129]`
+### 1. Heading text
+- `titleClassName="text-white"` is already applied -- no change needed here.
 
-### 2. Heading text (lines 19-23)
-- Add `titleClassName="text-white"` to the `SectionHeading` so "Our Trusted" displays in white against the dark background
+### 2. Card borders (line ~34)
+- Change `border border-white/20` to `border-2 border-[#22c0d4]` so each card has a solid turquoise border at all times
+- Keep the existing hover effects (glow, scale, lift)
 
-### 3. Carousel card styling (line 34)
-- Change `bg-background` to `bg-white` so the logo cards remain visible
-- Update `border-border/50` to `border-white/20` for a subtle border on dark background
-- Update hover shadow from `hover:shadow-primary/10` to `hover:shadow-[#22c0d4]/20` for a turquoise glow
+One small, targeted change that gives the cards a sharp turquoise outline consistent with the brand palette.
 
-These changes keep the carousel logos clearly visible on white cards while giving the section a bold navy backdrop consistent with the rest of the homepage design rhythm.
