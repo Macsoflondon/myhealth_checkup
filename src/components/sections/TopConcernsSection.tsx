@@ -142,8 +142,8 @@ const TopConcernsSection = () => {
                 to={category.link}
                 className="group p-6 bg-card rounded-xl border-2 border-[#081129] hover:shadow-[0_0_20px_rgba(8,17,41,0.15)] hover:border-primary/30 transition-all duration-300"
               >
-                <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <IconComponent className={`w-6 h-6 ${category.colorClass}`} />
+                <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 group-hover:-translate-y-1 transition-all duration-300">
+                  <IconComponent className={`w-6 h-6 ${category.colorClass} transition-colors duration-300`} />
                 </div>
                 <h3 className="font-semibold text-[#081129] mb-2 group-hover:text-primary transition-colors">
                   {category.title}
