@@ -7,9 +7,9 @@ import goodbodyLogo from "@/assets/goodbody-logo-new.png";
 
 const PartnerShowcaseGrid = () => {
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20 bg-white">
+    <section className="w-full py-12 sm:py-16 md:py-20 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6">
-        <SectionHeading title="Our Featured" gradientText="Partners" className="mb-8 sm:mb-10" />
+        <SectionHeading title="Our Featured" gradientText="Partners" className="mb-8 sm:mb-10" titleClassName="text-white" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
 
           {/* Top-Left: Goodbody Feature Card */}
