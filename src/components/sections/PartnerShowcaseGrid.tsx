@@ -40,6 +40,9 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
+          {/* Empty placeholder to keep Goodbody alone on row 1 */}
+          <div className="hidden md:block" />
+
           {/* Bottom-Left: Find a Clinic Card */}
           <div className="bg-[#081129] rounded-2xl shadow-md p-6 lg:p-8 flex flex-col justify-center text-center items-center">
             <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
