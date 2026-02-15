@@ -14,12 +14,13 @@ const PartnersGrid = () => {
 
   // Duplicate providers for seamless infinite loop effect
   const duplicatedProviders = [...providers, ...providers];
-  return <section className="py-8 sm:py-12 md:py-16 bg-muted/30">
+  return <section className="py-8 sm:py-12 md:py-16 bg-[#081129]">
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeading 
           title="Our Trusted" 
           gradientText="Partners" 
           className="mb-8 sm:mb-10"
+          titleClassName="text-white"
         />
         
         <Carousel opts={{
@@ -31,13 +32,13 @@ const PartnersGrid = () => {
               const isGoodbody = provider.id === 'goodbody-clinic';
               return (
                 <CarouselItem key={`${provider.id}-${index}`} className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
-                  <Link to={`/provider/${provider.id}`} className="group bg-background rounded-xl p-6 sm:p-8 flex items-center justify-center 
+                  <Link to={`/provider/${provider.id}`} className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
                                w-full h-32 sm:h-40 
-                               border border-border/50 
+                               border border-white/20 
                                transition-all duration-300 ease-out
-                               hover:shadow-lg hover:shadow-primary/10 
+                               hover:shadow-lg hover:shadow-[#22c0d4]/20 
                                hover:-translate-y-1 hover:scale-105
-                               hover:border-primary/30">
+                               hover:border-[#22c0d4]/30">
                     <img 
                       src={provider.logo} 
                       alt={`${provider.name} logo`} 
