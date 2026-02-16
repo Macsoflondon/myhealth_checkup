@@ -1,85 +1,33 @@
 
+## Restyle "Our Featured Partners of the Month" Section
 
-# Footer Redesign -- Align with Platform Design System
+The goal is to make the `PartnerShowcaseGrid` header area match the `TrustPlatformSection` visual style from the screenshot. This means adopting:
 
-## Current Issues
+1. **The "WHY TRUST US"-style label** -- a small uppercase turquoise label flanked by horizontal lines
+2. **The sharp two-part heading** -- white leading text + gradient accent text on one line
+3. **Subtitle text** -- a muted white description line beneath the heading
+4. **Decorative half-circle background elements** -- large, semi-transparent turquoise/pink circles clipped at the edges
 
-1. **No column headings** -- link groups lack context; other sections use turquoise uppercase labels with flanking lines
-2. **No glassmorphism styling** -- the footer uses plain navy whereas the sections immediately above it (Trust Platform, Featured Publications) use bg-white/5 cards with backdrop-blur and turquoise/pink accent borders
-3. **Missing legal links** -- Privacy Policy, Terms and Conditions, Modern Slavery Statement, and Affiliate Disclosure pages exist but are not linked from the footer
-4. **Social icons are oversized** (54x54px SVGs) and visually heavy compared to the refined card-based style elsewhere
-5. **Brand bar at the bottom** is cramped on mobile -- logo, brand name, and slogan all on one flex row
-6. **Cookie Policy** is listed under category links (health topics) instead of with legal/company links
+### Changes (single file: `src/components/sections/PartnerShowcaseGrid.tsx`)
 
-## Design Approach
+**Header redesign:**
+- Replace the current `SectionHeading` with a custom header block matching `TrustPlatformSection`:
+  - Add a turquoise uppercase label with flanking lines (e.g. "FEATURED PARTNERS")
+  - Two-part heading: "Our Featured Partners of" in white + "the Month" in gradient
+  - Add a subtitle line in white/60 opacity
+- Add spacing/margin below the header to match the Trust section's rhythm
 
-Apply the same visual language used in TrustPlatformSection and FeaturedPublications:
+**Background decorations:**
+- Add `relative overflow-hidden` to the section wrapper (already has navy bg)
+- Insert two absolutely-positioned decorative half-circles:
+  - A large turquoise/5 circle on the left, translated 50% off-screen
+  - A smaller pink/5 circle on the upper-right, translated partially off-screen
+- Add the bottom gradient line (turquoise-via-pink-to-turquoise) matching the Trust section
 
-- **Navy background** (#081129) with subtle decorative glow orbs (turquoise/pink at 5% opacity)
-- **Top gradient divider** -- 3px gradient line (turquoise-to-pink) separating footer from content, matching FeaturedPublications
-- **Column headings** -- turquoise uppercase tracking-wide labels with flanking line dividers (same pattern as "As Seen In", "Why Trust Us")
-- **Glassmorphism link groups** -- each column wrapped in bg-white/5 backdrop-blur-sm rounded-2xl cards with border-white/10
-- **Smaller, uniform social icons** -- 36x36px with bg-white/10 circular containers and hover:bg-white/20 transition
-- **Four-column grid** restructured: Health Tests | Company | Legal | Connect
-- **Brand bar** stacked vertically on mobile for readability
+### Technical Details
 
-## New Column Structure
-
-```text
-+------------------+------------------+------------------+------------------+
-| HEALTH TESTS     | COMPANY          | LEGAL            | CONNECT          |
-|                  |                  |                  |                  |
-| Men's Health     | About Us         | Privacy Policy   | Follow Us        |
-| Women's Health   | How It Works     | Terms & Conds    | [IG] [FB] [TT]   |
-| Heart Health     | Our Providers    | Cookie Policy    |                  |
-| Diabetes         | Clinic Locations | Accessibility    | Compliance       |
-| Thyroid          | FAQs             | Modern Slavery   | [ICO/CH badge]   |
-| Fertility        | Blog             | Affiliate Disc.  | [Cyber Ess.]     |
-|                  | Contact          |                  |                  |
-+------------------+------------------+------------------+------------------+
-| Disclaimer + Company Info centred across full width                       |
-+------------------+------------------+------------------+------------------+
-| Copyright + Brand Bar                                                    |
-+---------------------------------------------------------------------------+
-```
-
-## Technical Changes
-
-**Single file modified:** `src/components/layout/Footer.tsx`
-
-### Step 1 -- Restructure link arrays
-- Move Cookie Policy from `categoryLinks` to a new `legalLinks` array
-- Add Privacy Policy (/privacy), Terms (/terms), Modern Slavery (/modern-slavery-statement), Affiliate Disclosure (/affiliate-disclosure) to `legalLinks`
-
-### Step 2 -- Add glassmorphism column wrapper
-- Each link group wrapped in a card: `bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-5 sm:p-6`
-- Column heading styled as: `text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] mb-4`
-
-### Step 3 -- Top gradient divider
-- Add `h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise` above the main footer section
-
-### Step 4 -- Decorative glow orbs
-- Add two absolute-positioned blur circles (turquoise/5 and pink/5) matching TrustPlatformSection pattern
-
-### Step 5 -- Redesign social icons
-- Reduce to 36x36px
-- Wrap each in a `w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all` container
-- Keep SVGs but simplified and smaller
-
-### Step 6 -- Connect column
-- Social icons and compliance badges grouped together in the rightmost column
-- Compliance badges remain the same assets but placed inside the glassmorphism card
-
-### Step 7 -- Disclaimer row
-- Full-width centred row below the 4-column grid
-- `bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4` card
-- Important disclaimer in pink, company info in white/80
-
-### Step 8 -- Brand bar
-- Stack logo + brand name on one line, slogan on a second line on mobile
-- Use `flex-col sm:flex-row` for responsive layout
-
-### Step 9 -- Copyright line
-- Keep pink (#e70d69) styling, add additional legal quick links (Privacy | Terms | Accessibility)
-
-No new files created. No new dependencies. Existing compliance badge assets reused.
+- Remove the `SectionHeading` import since we will use a bespoke header matching the Trust section pattern
+- Copy the exact decorative element markup from `TrustPlatformSection` (the `absolute` divs with `bg-brand-turquoise/5` and `bg-brand-pink/5`)
+- Copy the bottom gradient line (`h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise`)
+- Wrap the container content in `relative` so it layers above the decorative circles
+- Keep all card content and grid layout unchanged
