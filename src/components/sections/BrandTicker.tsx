@@ -23,7 +23,13 @@ const BrandTicker = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
-          <div className="animate-ticker flex shrink-0 whitespace-nowrap">
+          {/* First copy */}
+          <div
+            className="flex shrink-0 whitespace-nowrap"
+            style={{
+              animation: "brand-ticker-scroll 35s linear infinite",
+            }}
+          >
             {items.map((word, i) => (
               <span key={`a-${i}`} className="flex items-center">
                 <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
@@ -33,7 +39,14 @@ const BrandTicker = () => {
               </span>
             ))}
           </div>
-          <div className="animate-ticker flex shrink-0 whitespace-nowrap" aria-hidden="true">
+          {/* Second copy for seamless loop */}
+          <div
+            className="flex shrink-0 whitespace-nowrap"
+            aria-hidden="true"
+            style={{
+              animation: "brand-ticker-scroll 35s linear infinite",
+            }}
+          >
             {items.map((word, i) => (
               <span key={`b-${i}`} className="flex items-center">
                 <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
@@ -45,6 +58,14 @@ const BrandTicker = () => {
           </div>
         </div>
       </div>
+
+      {/* Inline keyframes to guarantee animation works */}
+      <style>{`
+        @keyframes brand-ticker-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
     </section>
   );
 };
