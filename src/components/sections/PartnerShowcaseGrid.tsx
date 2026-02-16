@@ -152,7 +152,7 @@ const PartnerShowcaseGrid = () => {
                 Your Health Today
               </span>
             </h2>
-            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-8 max-w-md">
+            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-14 max-w-md">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
             <div className="mt-auto flex flex-col items-center">
