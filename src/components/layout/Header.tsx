@@ -45,7 +45,9 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md border-b-2 border-[#e70d69]", className)}>
+      <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
+          {/* Top gradient divider */}
+          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
           <div className="container mx-auto px-3 sm:px-4">
             {/* Top row: Logo + Navigation controls */}
             <div className="py-0.5 flex items-center justify-between">
@@ -78,7 +80,7 @@ const Header = ({
       </ErrorBoundary>;
   }
   // Toolbar always sticky
-  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-2 border-y-2 border-[#e70d69] shadow-sm", styles.toolbar);
+  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-2 shadow-sm", styles.toolbar);
   return <ErrorBoundary>
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
         {/* Main header bar - Logo, Search, User Controls, and Hero Image */}
@@ -108,12 +110,13 @@ const Header = ({
           </div>
         </div>
 
-        {/* Bottom row - Navigation Menu (Toolbar) - Sticky */}
+        {/* Top gradient divider for toolbar */}
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         <div 
           className={cn(
             toolbarClasses, 
             "sticky top-0 z-50 transition-all duration-300",
-            isToolbarSticky && "shadow-lg border-b-2 border-[#e70d69] animate-fade-in"
+            isToolbarSticky && "shadow-lg animate-fade-in"
           )} 
           style={{ overflow: 'visible' }}
         >
@@ -121,6 +124,8 @@ const Header = ({
             <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
           </div>
         </div>
+        {/* Bottom gradient divider for toolbar */}
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </header>
     </ErrorBoundary>;
 };
