@@ -31,26 +31,26 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 
           {/* Top Row: Goodbody + Video — matched heights */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-h-[420px]">
             {/* Goodbody Feature Card */}
             <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-              <div className="pt-5 px-5 pb-3 lg:pt-6 lg:px-6 lg:pb-3 flex flex-col">
+              <div className="pt-4 px-5 pb-3 lg:pt-5 lg:px-6 lg:pb-3 flex flex-col">
                 <img
                   src={goodbodyLogo}
                   alt="GoodBody Clinic logo"
-                  className="h-[140px] w-auto object-contain -mb-4 self-center"
+                  className="h-[90px] w-auto object-contain mb-0 self-center"
                   loading="lazy"
                 />
-                <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-2">
+                <h3 className="font-heading text-lg lg:text-xl font-bold text-[#081129] mb-1.5">
                   Know more.<br />Live Better.
                 </h3>
-                <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
+                <p className="text-xs lg:text-sm text-[#081129]/70 leading-relaxed mb-1.5">
                   GoodBody Clinics, provide comprehensive private health checks at affordable prices.
                 </p>
-                <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-2">
+                <p className="text-xs lg:text-sm text-[#081129]/70 leading-relaxed mb-1.5">
                   Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and only exclusively utilise UKAS-accredited laboratories for our analysis.
                 </p>
-                <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-1">
+                <p className="text-xs lg:text-sm text-[#081129]/70 leading-relaxed mb-1">
                   Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
                 </p>
                 <div className="flex justify-center pt-2 pb-0">
@@ -182,30 +182,7 @@ const PartnerShowcaseGrid = () => {
           </div>
           </div>
 
-          {/* STORED: Medichecks Feature Card — uncomment to restore
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
-            <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-[55%]">
-              <img
-                src={PROVIDER_LOGOS["medichecks"]}
-                alt="Medichecks logo"
-                className="h-10 w-auto object-contain mb-4 self-start"
-                loading="lazy"
-              />
-              <h3 className="font-heading text-xl lg:text-2xl font-bold text-[#081129] mb-3">
-                Know More, Live Better
-              </h3>
-              <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-5">
-                Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.
-              </p>
-              <Link
-                to="/provider/medichecks"
-                className="inline-block self-start bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap"
-              >
-                View Medichecks tests
-              </Link>
-            </div>
-          </div>
-          */}
+
 
         </div>
       </div>
