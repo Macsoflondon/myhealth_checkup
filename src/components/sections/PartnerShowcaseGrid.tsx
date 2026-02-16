@@ -99,7 +99,7 @@ const PartnerShowcaseGrid = () => {
                 Near You
               </span>
             </h2>
-            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-8 max-w-md">
+            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-2 max-w-md">
               Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health screenings. Walk in or book online.
             </p>
             <div className="grid grid-cols-3 gap-4 mb-8">
