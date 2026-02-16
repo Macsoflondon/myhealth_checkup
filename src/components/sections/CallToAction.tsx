@@ -17,6 +17,12 @@ const CallToAction = ({ className }: CallToActionProps) => {
       <div className="absolute bottom-0 right-0 w-72 h-72 bg-brand-pink/5 rounded-full translate-x-1/3 translate-y-1/3" />
       <div className="absolute top-1/2 right-0 w-44 h-44 bg-brand-turquoise/5 rounded-full translate-x-1/2" />
       <div className="absolute bottom-0 left-1/4 w-36 h-36 bg-brand-pink/5 rounded-full translate-y-1/2" />
+      <div className="absolute top-[20%] left-[30%] w-52 h-52 bg-brand-turquoise/[0.04] rounded-full" />
+      <div className="absolute top-0 right-[40%] w-48 h-48 bg-brand-pink/[0.03] rounded-full -translate-y-1/3" />
+      <div className="absolute bottom-[20%] left-[10%] w-56 h-56 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute top-[40%] right-[15%] w-40 h-40 bg-brand-pink/[0.04] rounded-full" />
+      <div className="absolute bottom-0 right-[55%] w-44 h-44 bg-brand-turquoise/[0.04] rounded-full translate-y-1/2" />
+      <div className="absolute top-[10%] left-[55%] w-60 h-60 bg-brand-pink/[0.03] rounded-full" />
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-5xl mx-auto text-center">

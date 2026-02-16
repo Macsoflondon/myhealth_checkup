@@ -62,6 +62,12 @@ const TestimonialCarousel = () => {
       <div className="absolute top-0 right-1/4 w-32 h-32 bg-brand-pink/5 rounded-full -translate-y-1/3" />
       <div className="absolute bottom-1/4 left-[15%] w-44 h-44 bg-brand-turquoise/5 rounded-full" />
       <div className="absolute top-[40%] left-0 w-36 h-36 bg-brand-pink/5 rounded-full -translate-x-1/2" />
+      <div className="absolute top-[15%] left-[35%] w-52 h-52 bg-brand-turquoise/[0.04] rounded-full" />
+      <div className="absolute bottom-[10%] right-[25%] w-48 h-48 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute top-[60%] left-[50%] w-56 h-56 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute top-0 left-[45%] w-44 h-44 bg-brand-pink/[0.04] rounded-full -translate-y-1/2" />
+      <div className="absolute bottom-0 right-[45%] w-60 h-60 bg-brand-turquoise/[0.04] rounded-full translate-y-1/3" />
+      <div className="absolute top-[30%] right-[10%] w-40 h-40 bg-brand-pink/[0.03] rounded-full" />
       
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
         {/* Section label */}
