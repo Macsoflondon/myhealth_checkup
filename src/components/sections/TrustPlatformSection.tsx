@@ -43,6 +43,20 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
       <div className="absolute bottom-0 left-[45%] w-44 h-44 bg-brand-pink/[0.04] rounded-full translate-y-1/2" />
       <div className="absolute top-0 right-[15%] w-60 h-60 bg-brand-turquoise/[0.04] rounded-full -translate-y-1/3" />
       <div className="absolute top-[70%] right-[5%] w-40 h-40 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute top-[5%] left-[5%] w-52 h-52 bg-brand-turquoise/[0.04] rounded-full -translate-x-1/3" />
+      <div className="absolute bottom-[5%] right-[10%] w-48 h-48 bg-brand-pink/[0.04] rounded-full translate-y-1/4" />
+      <div className="absolute top-[45%] left-[40%] w-56 h-56 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute bottom-[35%] right-[55%] w-44 h-44 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute top-[80%] left-[20%] w-60 h-60 bg-brand-turquoise/[0.04] rounded-full translate-y-1/3" />
+      <div className="absolute top-[15%] right-[25%] w-40 h-40 bg-brand-pink/[0.04] rounded-full" />
+      <div className="absolute bottom-[50%] left-[70%] w-52 h-52 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute top-[90%] right-[35%] w-36 h-36 bg-brand-pink/[0.03] rounded-full translate-y-1/4" />
+      <div className="absolute bottom-[60%] left-[15%] w-48 h-48 bg-brand-turquoise/[0.04] rounded-full" />
+      <div className="absolute top-[25%] right-[70%] w-56 h-56 bg-brand-pink/[0.04] rounded-full" />
+      <div className="absolute bottom-[15%] left-[55%] w-44 h-44 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute top-[55%] right-[45%] w-60 h-60 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute bottom-[45%] left-[85%] w-40 h-40 bg-brand-turquoise/[0.04] rounded-full translate-x-1/3" />
+      <div className="absolute top-[40%] left-[10%] w-52 h-52 bg-brand-pink/[0.04] rounded-full" />
       
       <div className="container mx-auto px-4 sm:px-6 relative">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">

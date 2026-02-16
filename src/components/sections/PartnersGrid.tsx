@@ -45,6 +45,20 @@ const PartnersGrid = () => {
       <div className="absolute top-0 right-[55%] w-60 h-60 bg-brand-turquoise/[0.04] rounded-full -translate-y-1/3" />
       <div className="absolute bottom-0 left-[50%] w-44 h-44 bg-brand-pink/[0.04] rounded-full translate-y-1/3" />
       <div className="absolute top-[45%] left-[5%] w-36 h-36 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute top-[5%] left-[70%] w-52 h-52 bg-brand-pink/[0.04] rounded-full" />
+      <div className="absolute bottom-[5%] right-[10%] w-48 h-48 bg-brand-turquoise/[0.03] rounded-full translate-y-1/4" />
+      <div className="absolute top-[50%] left-[40%] w-56 h-56 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute top-[75%] right-[30%] w-44 h-44 bg-brand-turquoise/[0.04] rounded-full" />
+      <div className="absolute bottom-[40%] left-[60%] w-40 h-40 bg-brand-pink/[0.04] rounded-full" />
+      <div className="absolute top-[10%] left-[10%] w-60 h-60 bg-brand-turquoise/[0.03] rounded-full -translate-x-1/3" />
+      <div className="absolute bottom-[60%] right-[50%] w-36 h-36 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute top-[85%] left-[20%] w-52 h-52 bg-brand-turquoise/[0.04] rounded-full translate-y-1/3" />
+      <div className="absolute top-[30%] right-[65%] w-48 h-48 bg-brand-pink/[0.04] rounded-full" />
+      <div className="absolute bottom-[15%] left-[75%] w-44 h-44 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute top-[65%] right-[5%] w-56 h-56 bg-brand-pink/[0.03] rounded-full translate-x-1/4" />
+      <div className="absolute bottom-[30%] left-[45%] w-40 h-40 bg-brand-turquoise/[0.04] rounded-full" />
+      <div className="absolute top-[40%] right-[20%] w-60 h-60 bg-brand-pink/[0.03] rounded-full" />
+      <div className="absolute bottom-[50%] left-[85%] w-36 h-36 bg-brand-turquoise/[0.03] rounded-full" />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
         <SectionHeading 
