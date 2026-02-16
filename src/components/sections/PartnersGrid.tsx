@@ -3,7 +3,7 @@ import { providers } from "@/constants/providers";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
-import { SectionHeading } from "@/components/ui/section-heading";
+
 
 const PartnersGrid = () => {
   const plugin = useRef(Autoplay({
@@ -24,12 +24,9 @@ const PartnersGrid = () => {
       <div className="absolute top-0 left-1/3 w-36 h-36 bg-brand-turquoise/5 rounded-full -translate-y-1/2" />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
-        <SectionHeading 
-          title="Our Trusted" 
-          gradientText="Partners" 
-          className="mb-8 sm:mb-10"
-          titleClassName="text-white"
-        />
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-8 sm:mb-10 text-brand-turquoise">
+          Our Trusted Partners
+        </h2>
         
         <Carousel opts={{
         align: "start",

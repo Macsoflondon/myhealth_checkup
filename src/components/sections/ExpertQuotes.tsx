@@ -1,4 +1,3 @@
-import { SectionHeading } from "@/components/ui/section-heading";
 import { Quote } from "lucide-react";
 
 const quotes = [
@@ -27,7 +26,9 @@ const ExpertQuotes = () => {
     <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-white to-[hsl(187,72%,97%)]">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="text-center mb-10 sm:mb-12">
-          <SectionHeading title="Backed by" gradientText="Expert Guidance" />
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center text-brand-pink">
+            Backed by Expert Guidance
+          </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto mt-3">
             Our platform standards are informed by the UK's leading health authorities.
           </p>
