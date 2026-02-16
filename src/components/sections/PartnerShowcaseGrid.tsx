@@ -80,6 +80,9 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
+          {/* Bottom Row: Find Clinic + Take Control — matched heights */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+
           {/* Bottom-Left: Find a Clinic Card */}
           <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
             {/* Section label */}
@@ -152,7 +155,7 @@ const PartnerShowcaseGrid = () => {
                 Your Health Today
               </span>
             </h2>
-            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-14 max-w-md">
+            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-8 max-w-md">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
             <div className="mt-auto flex flex-col items-center">
@@ -177,6 +180,7 @@ const PartnerShowcaseGrid = () => {
               </div>
             </div>
           </div>
+          </div>
 
           {/* STORED: Medichecks Feature Card — uncomment to restore
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col lg:flex-row">
@@ -191,7 +195,7 @@ const PartnerShowcaseGrid = () => {
                 Know More, Live Better
               </h3>
               <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-5">
-                Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy. Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with results including a clear GP reviewed report.
+                Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.
               </p>
               <Link
                 to="/provider/medichecks"
@@ -199,16 +203,6 @@ const PartnerShowcaseGrid = () => {
               >
                 View Medichecks tests
               </Link>
-            </div>
-            <div className="lg:w-[45%] min-h-[200px] lg:min-h-0 bg-[#081129] flex items-center justify-center">
-              <video
-                src={medichecksVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-contain"
-              />
             </div>
           </div>
           */}
