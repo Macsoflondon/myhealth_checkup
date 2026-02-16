@@ -1,18 +1,9 @@
+## Increase Vertical Gap Between Top and Bottom Rows in Partner Showcase Grid
 
-
-## Enlarge the Goodbody Card
-
-Add vertical space below the "View Goodbody tests" button to make the card taller by approximately five lines.
+Add 6 lines vertical gap between the bottom of the Goodbody card rand the top row (Find Your Clinic / Start Your Journey Today).
 
 ### What will change
 
-- In the button container inside the Goodbody card, increase the bottom padding from `pb-0` to `pb-20` (roughly five lines of space).
-- Increase the `max-h-[420px]` constraint on the top row to `max-h-[500px]` so the card and video can both grow to accommodate the extra space.
+Adding roughly double the current spacing between the top row (Goodbody card + video) and the top row (Find a Clinic + Take Control).
 
-### Technical details
-
-**File:** `src/components/sections/PartnerShowcaseGrid.tsx`
-
-1. Change the top row grid container from `max-h-[420px]` to `max-h-[500px]`.
-2. Change the button wrapper `div` from `pb-0` to `pb-20`.
-
+No other cards, padding, or content will be modified.
