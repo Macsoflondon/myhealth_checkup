@@ -13,12 +13,26 @@ const PartnersGrid = () => {
     let animationId: number;
     let position = 0;
     const speed = 0.4;
-    const cardWidth = 260; // matches inline style width
-    const setWidth = cardWidth * providers.length;
+
+    // Measure actual rendered width of one full set of providers
+    const measureSetWidth = () => {
+      const children = track.children;
+      if (!children.length) return 0;
+      let total = 0;
+      for (let i = 0; i < providers.length && i < children.length; i++) {
+        total += (children[i] as HTMLElement).offsetWidth;
+      }
+      return total;
+    };
+
+    let setWidth = measureSetWidth();
 
     const animate = () => {
+      if (!setWidth) {
+        setWidth = measureSetWidth();
+      }
       position -= speed;
-      if (Math.abs(position) >= setWidth) {
+      if (setWidth > 0 && Math.abs(position) >= setWidth) {
         position += setWidth;
       }
       track.style.transform = `translateX(${position}px)`;
