@@ -1,21 +1,38 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { providers } from "@/constants/providers";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const PartnersGrid = () => {
-  const plugin = useRef(Autoplay({
-    delay: 2000,
-    playOnInit: true,
-    stopOnInteraction: false,
-    stopOnMouseEnter: true
-  }));
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  // Duplicate providers for seamless infinite loop effect
-  const duplicatedProviders = [...providers, ...providers];
-  return <section className="py-8 sm:py-12 md:py-16 bg-[#081129] relative overflow-hidden">
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let animationId: number;
+    let position = 0;
+    const speed = 0.4;
+
+    const animate = () => {
+      position -= speed;
+      const firstChild = track.firstElementChild as HTMLElement | null;
+      if (firstChild && Math.abs(position) >= firstChild.offsetWidth) {
+        position += firstChild.offsetWidth;
+      }
+      track.style.transform = `translateX(${position}px)`;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  // Quadruple for seamless loop
+  const items = [...providers, ...providers, ...providers, ...providers];
+
+  return (
+    <section className="py-8 sm:py-12 md:py-16 bg-[#081129] relative overflow-hidden">
       {/* Decorative half-circles */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-brand-turquoise/5 rounded-full translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-pink/5 rounded-full -translate-x-1/3 translate-y-1/3" />
@@ -30,23 +47,29 @@ const PartnersGrid = () => {
           className="mb-8 sm:mb-10"
           titleClassName="text-white"
         />
-        
-        <Carousel opts={{
-        align: "start",
-        loop: true
-      }} plugins={[plugin.current]} className="w-full max-w-5xl mx-auto">
-          <CarouselContent className="-ml-4">
-            {duplicatedProviders.map((provider, index) => {
+
+        <div
+          className="relative overflow-hidden max-w-5xl mx-auto"
+          style={{
+            maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+          }}
+        >
+          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+            {items.map((provider, index) => {
               const isGoodbody = provider.id === 'goodbody-clinic';
               return (
-                <CarouselItem key={`${provider.id}-${index}`} className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
-                  <Link to={`/provider/${provider.id}`} className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
-                               w-full h-32 sm:h-40 
-                               border-2 border-[#22c0d4] 
-                               transition-all duration-300 ease-out
-                               hover:shadow-lg hover:shadow-[#22c0d4]/20 
-                               hover:-translate-y-1 hover:scale-105
-                               hover:border-[#22c0d4]/30">
+                <div key={`${provider.id}-${index}`} className="shrink-0 px-3 sm:px-4" style={{ width: "260px" }}>
+                  <Link
+                    to={`/provider/${provider.id}`}
+                    className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
+                      w-full h-32 sm:h-40 
+                      border-2 border-[#22c0d4] 
+                      transition-all duration-300 ease-out
+                      hover:shadow-lg hover:shadow-[#22c0d4]/20 
+                      hover:-translate-y-1 hover:scale-105
+                      hover:border-[#22c0d4]/30"
+                  >
                     <img 
                       src={provider.logo} 
                       alt={`${provider.name} logo`} 
@@ -56,12 +79,14 @@ const PartnersGrid = () => {
                       loading="lazy" 
                     />
                   </Link>
-                </CarouselItem>
+                </div>
               );
             })}
-          </CarouselContent>
-        </Carousel>
+          </div>
+        </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default PartnersGrid;
