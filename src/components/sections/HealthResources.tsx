@@ -18,8 +18,14 @@ const HealthResources = () => {
     readTime: "6 min read",
     link: "/resources/screening-by-age"
   }];
-  return <section className="py-16 bg-[#081129]">
-      <div className="container mx-auto px-4">
+  return <section className="py-16 bg-[#081129] relative overflow-hidden">
+      {/* Decorative half-circles */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-turquoise/5 rounded-full translate-x-1/3 -translate-y-1/3" />
+      <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-pink/5 rounded-full -translate-x-1/3 translate-y-1/3" />
+      <div className="absolute top-1/2 left-0 w-40 h-40 bg-brand-turquoise/5 rounded-full -translate-x-1/2" />
+      <div className="absolute bottom-0 right-1/4 w-36 h-36 bg-brand-pink/5 rounded-full translate-y-1/2" />
+
+      <div className="container mx-auto px-4 relative">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-[#e70d69] text-center">
             Health Resources Hub
