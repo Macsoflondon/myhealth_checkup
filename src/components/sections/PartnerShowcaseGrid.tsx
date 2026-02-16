@@ -1,13 +1,34 @@
 import { Link } from "react-router-dom";
-import { SectionHeading } from "@/components/ui/section-heading";
 
 import goodbodyLogo from "@/assets/goodbody-logo-new.png";
 
 const PartnerShowcaseGrid = () => {
   return (
-    <section className="w-full py-8 sm:py-12 md:py-14 bg-[#081129]">
-      <div className="container mx-auto px-4 sm:px-6">
-        <SectionHeading title="Our Featured Partners of" gradientText="the Month" className="!mb-0" titleClassName="text-white" />
+    <section className="w-full py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-1/2 left-0 w-72 h-72 bg-brand-turquoise/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/4 right-0 w-48 h-48 bg-brand-pink/5 rounded-full translate-x-1/3" />
+
+      <div className="container mx-auto px-4 sm:px-6 relative">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+              Featured Partners
+            </span>
+            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          </div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+            <span className="text-white">Our Featured Partners of </span>
+            <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+              the Month
+            </span>
+          </h2>
+          <p className="text-white/60 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+            Handpicked providers delivering trusted, accredited health testing across the UK.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-center">
 
           {/* Top-Left: Goodbody Feature Card */}
@@ -170,6 +191,9 @@ const PartnerShowcaseGrid = () => {
 
         </div>
       </div>
+
+      {/* Bottom gradient line */}
+      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
 };
