@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import logoTurquoise from "@/assets/logo-turquoise.png";
-import logoPink from "@/assets/logo-pink.png";
+import logo1 from "@/assets/logo-1.svg";
+import logo2 from "@/assets/logo-2.svg";
+import logo3 from "@/assets/logo-3.svg";
 
 interface AnimatedLogoProps {
   className?: string;
   mobileClassName?: string;
 }
 
-const logos = [
-  { src: logoTurquoise, glowClass: "logo-glow-turquoise" },
-  { src: logoPink, glowClass: "logo-glow-pink" },
-];
+const logos = [logo1, logo2, logo3];
 
 export const AnimatedLogo = ({ className, mobileClassName }: AnimatedLogoProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,23 +19,19 @@ export const AnimatedLogo = ({ className, mobileClassName }: AnimatedLogoProps) 
     const interval = setInterval(() => {
       setIsTransitioning(true);
       
-      // Wait for fade out, then switch logo
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % logos.length);
         setIsTransitioning(false);
-      }, 500); // Half of the transition duration
-    }, 30000); // 30 seconds
+      }, 500);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const currentLogo = logos[currentIndex];
-
   return (
     <div className={cn("relative", className, mobileClassName)}>
-      {/* Logo image */}
       <img
-        src={currentLogo.src}
+        src={logos[currentIndex]}
         alt="myhealth checkup"
         className={cn(
           "relative z-10 h-full w-auto object-contain transition-opacity duration-1000",
