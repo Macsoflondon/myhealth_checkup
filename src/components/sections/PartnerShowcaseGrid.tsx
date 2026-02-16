@@ -28,7 +28,7 @@ const PartnerShowcaseGrid = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
