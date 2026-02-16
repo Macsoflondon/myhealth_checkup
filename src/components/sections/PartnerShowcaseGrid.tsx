@@ -13,9 +13,17 @@ const PartnerShowcaseGrid = () => {
       <div className="absolute top-[15%] right-1/4 w-40 h-40 bg-brand-turquoise/5 rounded-full" />
       <div className="absolute bottom-1/4 left-[10%] w-48 h-48 bg-brand-pink/5 rounded-full -translate-x-1/2" />
       <div className="absolute top-[60%] right-[5%] w-36 h-36 bg-brand-turquoise/5 rounded-full translate-x-1/2" />
+      {/* Additional decorative half-circles */}
+      <div className="absolute top-[40%] left-[20%] w-64 h-64 bg-brand-turquoise/[0.03] rounded-full -translate-x-1/2" />
+      <div className="absolute bottom-[15%] right-[15%] w-52 h-52 bg-brand-pink/[0.04] rounded-full translate-x-1/3" />
+      <div className="absolute top-[10%] left-[45%] w-44 h-44 bg-brand-turquoise/[0.04] rounded-full -translate-y-1/3" />
+      <div className="absolute bottom-[40%] left-0 w-60 h-60 bg-brand-pink/[0.03] rounded-full -translate-x-2/3" />
+      <div className="absolute top-[70%] right-[30%] w-36 h-36 bg-brand-turquoise/[0.03] rounded-full" />
+      <div className="absolute bottom-0 left-[30%] w-48 h-48 bg-brand-pink/[0.04] rounded-full translate-y-1/2" />
+      <div className="absolute top-0 right-[45%] w-40 h-40 bg-brand-turquoise/[0.03] rounded-full -translate-y-1/2" />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <div className="text-center mb-3 sm:mb-4 md:mb-5">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
             <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
