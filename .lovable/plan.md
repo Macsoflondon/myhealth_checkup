@@ -1,19 +1,12 @@
 
 
-## Remove Text from Goodbody Card
+## Reduce Bottom Padding on Goodbody Card
 
-Remove the two longer paragraphs from the Goodbody feature card, keeping only the first short paragraph ("GoodBody Clinics, provide comprehensive private health checks at affordable prices.").
+Currently the card wrapper has `p-5 lg:p-6` padding, and the button container has `pb-2`. To bring the card bottom closer to the button (ending roughly 3 lines below it):
 
-### What will be removed
-- "Visit one of over 200 nationwide locations, or opt for their convenient home testing service..." paragraph
-- "Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests..." paragraph
+### Change
+- On line 54, change the button container's `pb-2` to `pb-0`
+- On line 35, reduce the card's bottom padding by changing `p-5 lg:p-6` to `pt-5 px-5 pb-3 lg:pt-6 lg:px-6 lg:pb-3`
 
-### What stays
-- Logo
-- "Know more. Live Better." heading
-- First paragraph ("GoodBody Clinics, provide comprehensive private health checks at affordable prices.")
-- "View Goodbody tests" button
-
-### Technical detail
-Delete lines 48-53 in `src/components/sections/PartnerShowcaseGrid.tsx` and adjust the bottom margin on the remaining paragraph from `mb-2` to `mb-3` for proper spacing before the button.
+This keeps the top and side padding intact while trimming the bottom so the card ends just a small gap below the button.
 
