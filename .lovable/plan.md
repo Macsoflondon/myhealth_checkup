@@ -1,33 +1,47 @@
 
-## Restyle "Our Featured Partners of the Month" Section
+## Add Decorative Half-Circles to All Navy Sections
 
-The goal is to make the `PartnerShowcaseGrid` header area match the `TrustPlatformSection` visual style from the screenshot. This means adopting:
+Scatter semi-transparent turquoise and pink half-circles across every dark blue section on the homepage to break up the solid navy backgrounds. Sections that already have circles will get additional ones for more visual texture.
 
-1. **The "WHY TRUST US"-style label** -- a small uppercase turquoise label flanked by horizontal lines
-2. **The sharp two-part heading** -- white leading text + gradient accent text on one line
-3. **Subtitle text** -- a muted white description line beneath the heading
-4. **Decorative half-circle background elements** -- large, semi-transparent turquoise/pink circles clipped at the edges
+### What Changes
 
-### Changes (single file: `src/components/sections/PartnerShowcaseGrid.tsx`)
+Each navy section gets a set of absolutely-positioned, partially off-screen circles (creating the "half-circle" effect). Every section gets a unique arrangement so they don't all look identical.
 
-**Header redesign:**
-- Replace the current `SectionHeading` with a custom header block matching `TrustPlatformSection`:
-  - Add a turquoise uppercase label with flanking lines (e.g. "FEATURED PARTNERS")
-  - Two-part heading: "Our Featured Partners of" in white + "the Month" in gradient
-  - Add a subtitle line in white/60 opacity
-- Add spacing/margin below the header to match the Trust section's rhythm
+### Section-by-Section Breakdown
 
-**Background decorations:**
-- Add `relative overflow-hidden` to the section wrapper (already has navy bg)
-- Insert two absolutely-positioned decorative half-circles:
-  - A large turquoise/5 circle on the left, translated 50% off-screen
-  - A smaller pink/5 circle on the upper-right, translated partially off-screen
-- Add the bottom gradient line (turquoise-via-pink-to-turquoise) matching the Trust section
+**1. PartnersGrid (Our Trusted Partners carousel)**
+- Currently: no decorative elements, no `relative overflow-hidden`
+- Add: `relative overflow-hidden` to section wrapper
+- Add: 3 circles -- large turquoise top-right, medium pink bottom-left, small turquoise bottom-right
+
+**2. PartnerShowcaseGrid (Featured Partners of the Month)**
+- Currently: 2 circles (left-centre turquoise, upper-right pink)
+- Add: 2 more -- medium turquoise bottom-right corner, small pink top-left corner
+
+**3. FeaturedPublications (As Seen In)**
+- Currently: no decorative elements (already has `relative overflow-hidden`)
+- Add: 3 circles -- large pink bottom-left, medium turquoise top-right, small turquoise centre-left
+
+**4. TestimonialCarousel**
+- Currently: 2 circles (top-left turquoise, bottom-right pink)
+- Add: 2 more -- medium turquoise right-centre, small pink top-right
+
+**5. TrustPlatformSection**
+- Currently: 2 circles (left-centre turquoise, upper-right pink)
+- Add: 2 more -- medium pink bottom-left, small turquoise bottom-right
+
+**6. MissionSection (navy banner)**
+- This is a thin banner, not a full section -- skip adding circles here as they would be clipped by the narrow height and look odd.
 
 ### Technical Details
 
-- Remove the `SectionHeading` import since we will use a bespoke header matching the Trust section pattern
-- Copy the exact decorative element markup from `TrustPlatformSection` (the `absolute` divs with `bg-brand-turquoise/5` and `bg-brand-pink/5`)
-- Copy the bottom gradient line (`h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise`)
-- Wrap the container content in `relative` so it layers above the decorative circles
-- Keep all card content and grid layout unchanged
+- All circles use `absolute` positioning with `rounded-full` and partial `translate` values to push them off-screen (creating the half-circle effect)
+- Opacity kept at 5% (`bg-brand-turquoise/5` or `bg-brand-pink/5`) to remain subtle
+- Sizes vary between `w-32 h-32` (small), `w-56 h-56` (medium), and `w-72 h-72` / `w-96 h-96` (large)
+- Parent sections need `relative overflow-hidden` if not already set
+- Files to edit:
+  - `src/components/sections/PartnersGrid.tsx`
+  - `src/components/sections/PartnerShowcaseGrid.tsx`
+  - `src/components/sections/FeaturedPublications.tsx`
+  - `src/components/sections/TestimonialCarousel.tsx`
+  - `src/components/sections/TrustPlatformSection.tsx`
