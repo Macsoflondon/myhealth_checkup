@@ -1,26 +1,18 @@
 
 
-## Reduce spacing in "Find a Clinic Near You" card
+## Enlarge the Goodbody Card
 
-Decrease the gap between the description text and the buttons in the "Find a Clinic Near You" card by two lines. No other card will be touched.
+Add vertical space below the "View Goodbody tests" button to make the card taller by approximately five lines.
 
 ### What will change
 
-In `src/components/sections/PartnerShowcaseGrid.tsx`, change the bottom margin of the description paragraph in the "Find a Clinic Near You" card from `mb-8` to `mb-2`.
+- In the button container inside the Goodbody card, increase the bottom padding from `pb-0` to `pb-20` (roughly five lines of space).
+- Increase the `max-h-[420px]` constraint on the top row to `max-h-[500px]` so the card and video can both grow to accommodate the extra space.
 
-### Technical detail
+### Technical details
 
 **File:** `src/components/sections/PartnerShowcaseGrid.tsx`
 
-Current (line ~113):
-```tsx
-<p className="text-base lg:text-lg text-white/70 leading-relaxed mb-8 max-w-md">
-```
-
-Updated:
-```tsx
-<p className="text-base lg:text-lg text-white/70 leading-relaxed mb-2 max-w-md">
-```
-
-Only this one class change. Nothing else is modified.
+1. Change the top row grid container from `max-h-[420px]` to `max-h-[500px]`.
+2. Change the button wrapper `div` from `pb-0` to `pb-20`.
 
