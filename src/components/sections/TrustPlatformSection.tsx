@@ -1,5 +1,6 @@
 import { Eye, Stethoscope, BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 interface TrustPlatformSectionProps {
   className?: string;
@@ -48,8 +49,11 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
           
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3 text-brand-turquoise">
-            Trusted Health Comparison Platform
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+            <span className="text-white">Trusted Health </span>
+            <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+              Comparison Platform
+            </span>
           </h2>
           <p className="text-white/60 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Built on principles of transparency, clinical accuracy, and unwavering quality standards.

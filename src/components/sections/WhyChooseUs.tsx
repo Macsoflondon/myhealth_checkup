@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react";
-
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const comparisons = [
   { us: "UKAS accredited labs only", them: "Mixed lab standards" },
@@ -14,9 +14,7 @@ const WhyChooseUs = () => {
     <section className="py-10 sm:py-12 md:py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center text-brand-pink">
-            Why myhealth checkup?
-          </h2>
+          <SectionHeading title="Why" gradientText="myhealth checkup?" />
         </div>
 
         <div className="max-w-3xl mx-auto bg-card rounded-2xl border border-border overflow-hidden shadow-md">

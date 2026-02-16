@@ -53,9 +53,9 @@ export const FeaturedPublications = () => {
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
           
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-8 md:mb-10 text-brand-turquoise">
+          <h3 className="text-center text-lg sm:text-xl md:text-2xl font-heading font-bold text-white mb-8 md:mb-10">
             Our Partners Have Featured In
-          </h2>
+          </h3>
           
           {/* Scrolling ticker style */}
           <Carousel

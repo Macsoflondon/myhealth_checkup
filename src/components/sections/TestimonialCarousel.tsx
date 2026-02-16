@@ -73,8 +73,11 @@ const TestimonialCarousel = () => {
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
         </div>
         
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-10 sm:mb-12 text-brand-turquoise">
-          What Our Users Say
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-10 sm:mb-12">
+          <span className="text-white">What Our </span>
+          <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+            Users Say
+          </span>
         </h2>
 
         <div className="overflow-hidden" ref={emblaRef}>

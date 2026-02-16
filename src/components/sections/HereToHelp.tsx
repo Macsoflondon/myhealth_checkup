@@ -1,6 +1,6 @@
 import { BookOpen, HelpCircle, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { SectionHeading } from "@/components/ui/section-heading";
 
 const HereToHelp = () => {
   const resources = [
@@ -40,9 +40,11 @@ const HereToHelp = () => {
                 <span className="text-brand-pink text-xs font-semibold uppercase tracking-wider">Here to Help</span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center lg:text-left text-brand-pink">
-                You're Never Alone on Your Health Journey
-              </h2>
+              <SectionHeading
+                title="You're Never Alone on Your"
+                gradientText="Health Journey"
+                className="lg:text-left lg:[&>h2]:text-left"
+              />
 
               <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4 text-center lg:text-left mx-auto lg:mx-0">
                 Whether you're testing for the first time or monitoring an ongoing condition, we're here to support you every step of the way.
