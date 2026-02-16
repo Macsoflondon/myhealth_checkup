@@ -73,9 +73,12 @@ export const FeaturedPublications = () => {
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
           
-          <h3 className="text-center text-lg sm:text-xl md:text-2xl font-heading font-bold text-white mb-8 md:mb-10">
-            Our Partners Have Featured In
-          </h3>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-8 md:mb-10">
+            <span className="text-white">Our Partners Have </span>
+            <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+              Featured In
+            </span>
+          </h2>
           
           {/* Scrolling ticker style */}
           <Carousel

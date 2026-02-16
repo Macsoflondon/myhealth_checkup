@@ -107,12 +107,20 @@ const PartnerShowcaseGrid = () => {
 
           {/* Bottom-Left: Find a Clinic Card */}
           <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col justify-center text-center items-center">
-            <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
-              Find Your Clinic
-            </span>
-            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
-              Find a Clinic <span className="text-[#22c0d4]">Near You</span>
-            </h3>
+            {/* Section label */}
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+              <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+                Find Your Clinic
+              </span>
+              <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            </div>
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+              <span className="text-white">Find a Clinic </span>
+              <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+                Near You
+              </span>
+            </h2>
             <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-6">
               Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health screenings. Walk in or book online.
             </p>
@@ -153,12 +161,20 @@ const PartnerShowcaseGrid = () => {
 
           {/* Bottom-Right: Take Control CTA Card (moved from top-right) */}
           <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col justify-center text-center items-center">
-            <span className="inline-block bg-[#22c0d4]/15 text-[#22c0d4] text-xs font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full mb-4">
-              Start Your Journey Today
-            </span>
-            <h3 className="font-heading text-xl lg:text-2xl font-bold text-white mb-3">
-              Take Control of Your Health Today
-            </h3>
+            {/* Section label */}
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+              <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+                Start Your Journey Today
+              </span>
+              <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            </div>
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+              <span className="text-white">Take Control of </span>
+              <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+                Your Health Today
+              </span>
+            </h2>
             <p className="text-sm lg:text-base text-white/70 leading-relaxed mb-20">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
