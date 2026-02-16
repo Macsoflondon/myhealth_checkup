@@ -13,12 +13,13 @@ const PartnersGrid = () => {
     let animationId: number;
     let position = 0;
     const speed = 0.4;
+    const cardWidth = 260; // matches inline style width
+    const setWidth = cardWidth * providers.length;
 
     const animate = () => {
       position -= speed;
-      const firstChild = track.firstElementChild as HTMLElement | null;
-      if (firstChild && Math.abs(position) >= firstChild.offsetWidth) {
-        position += firstChild.offsetWidth;
+      if (Math.abs(position) >= setWidth) {
+        position += setWidth;
       }
       track.style.transform = `translateX(${position}px)`;
       animationId = requestAnimationFrame(animate);
