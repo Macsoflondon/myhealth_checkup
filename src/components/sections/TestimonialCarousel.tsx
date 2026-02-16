@@ -1,5 +1,4 @@
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import { useRef, useEffect } from "react";
 import { Star, Quote } from "lucide-react";
 
 const testimonials = [
@@ -47,11 +46,35 @@ const testimonials = [
   },
 ];
 
+const CARD_WIDTH = 340;
+
 const TestimonialCarousel = () => {
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: "start" },
-    [Autoplay({ delay: 4500, stopOnInteraction: false })]
-  );
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // Quadruple for seamless loop
+  const items = [...testimonials, ...testimonials, ...testimonials, ...testimonials];
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let animationId: number;
+    let position = 0;
+    const speed = 0.35;
+    const setWidth = CARD_WIDTH * testimonials.length;
+
+    const animate = () => {
+      position -= speed;
+      if (Math.abs(position) >= setWidth) {
+        position += setWidth;
+      }
+      track.style.transform = `translateX(${position}px)`;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
 
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
@@ -100,12 +123,19 @@ const TestimonialCarousel = () => {
           </span>
         </h2>
 
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4 sm:gap-6">
-            {testimonials.map((t, i) => (
+        <div
+          className="relative overflow-hidden"
+          style={{
+            maskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
+          }}
+        >
+          <div ref={trackRef} className="flex will-change-transform">
+            {items.map((t, i) => (
               <div
                 key={i}
-                className="flex-[0_0_85%] sm:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0"
+                className="shrink-0 px-3"
+                style={{ width: `${CARD_WIDTH}px` }}
               >
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 sm:p-6 h-full flex flex-col hover:border-brand-turquoise/30 transition-all duration-300">
                   {/* Quote icon */}
@@ -121,7 +151,7 @@ const TestimonialCarousel = () => {
                     ))}
                   </div>
                   
-                  <p className="text-white/80 font-sans text-sm sm:text-base leading-relaxed flex-1 mb-4">
+                  <p className="text-white/80 font-sans text-sm sm:text-base leading-relaxed flex-1 mb-4 whitespace-normal">
                     "{t.quote}"
                   </p>
                   

@@ -1,15 +1,7 @@
-import { useRef } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
+import { useRef, useEffect } from "react";
 
 export const FeaturedPublications = () => {
-  const autoplayPlugin = useRef(
-    Autoplay({
-      delay: 3000,
-      stopOnInteraction: false,
-      stopOnMouseEnter: true
-    })
-  );
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const publications = [
     { name: "Bloomberg", url: "https://www.bloomberg.com" },
@@ -30,6 +22,31 @@ export const FeaturedPublications = () => {
     { name: "VOGUE", url: "https://www.vogue.co.uk" }
   ];
 
+  // Quadruple for seamless loop
+  const items = [...publications, ...publications, ...publications, ...publications];
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let animationId: number;
+    let position = 0;
+    const speed = 0.4;
+
+    const animate = () => {
+      position -= speed;
+      const firstChild = track.firstElementChild as HTMLElement | null;
+      if (firstChild && Math.abs(position) >= firstChild.offsetWidth * publications.length) {
+        position += firstChild.offsetWidth * publications.length;
+      }
+      track.style.transform = `translateX(${position}px)`;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [publications.length]);
+
   return (
     <section className="bg-brand-navy relative overflow-hidden">
       {/* Decorative half-circles */}
@@ -44,6 +61,7 @@ export const FeaturedPublications = () => {
       <div className="absolute top-0 left-[55%] w-40 h-40 bg-brand-turquoise/[0.04] rounded-full -translate-y-1/2" />
       <div className="absolute bottom-0 left-[15%] w-48 h-48 bg-brand-pink/[0.04] rounded-full translate-y-1/3" />
       <div className="absolute top-[35%] right-[5%] w-60 h-60 bg-brand-turquoise/[0.03] rounded-full translate-x-1/3" />
+      {/* Extra decorative circles */}
       <div className="absolute top-[5%] left-[10%] w-52 h-52 bg-brand-pink/[0.04] rounded-full -translate-x-1/3" />
       <div className="absolute bottom-[5%] right-[40%] w-48 h-48 bg-brand-turquoise/[0.04] rounded-full translate-y-1/4" />
       <div className="absolute top-[45%] left-[30%] w-56 h-56 bg-brand-pink/[0.03] rounded-full" />
@@ -80,29 +98,31 @@ export const FeaturedPublications = () => {
             </span>
           </h2>
           
-          {/* Scrolling ticker style */}
-          <Carousel
-            opts={{ align: "start", loop: true }}
-            plugins={[autoplayPlugin.current]}
-            className="w-full max-w-5xl mx-auto"
+          {/* Smooth continuous scroll */}
+          <div
+            className="relative overflow-hidden max-w-5xl mx-auto"
+            style={{
+              maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            }}
           >
-            <CarouselContent className="-ml-4">
-              {publications.map((publication) => (
-                <CarouselItem key={publication.name} className="basis-1/2 sm:basis-1/3 md:basis-1/4 pl-4">
+            <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+              {items.map((publication, index) => (
+                <div key={`${publication.name}-${index}`} className="shrink-0 px-2 sm:px-3" style={{ width: "220px" }}>
                   <a
                     href={publication.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center h-20 sm:h-24 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-3"
                   >
-                    <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-brand-turquoise uppercase tracking-[0.25em] group-hover:text-brand-pink transition-colors duration-300 text-center leading-tight">
+                    <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-brand-turquoise uppercase tracking-[0.25em] group-hover:text-brand-pink transition-colors duration-300 text-center leading-tight whitespace-normal">
                       {publication.name}
                     </span>
                   </a>
-                </CarouselItem>
+                </div>
               ))}
-            </CarouselContent>
-          </Carousel>
+            </div>
+          </div>
         </div>
       </div>
       
