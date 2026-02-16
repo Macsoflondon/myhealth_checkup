@@ -32,7 +32,7 @@ const PartnerShowcaseGrid = () => {
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-            <div className="p-5 lg:p-6 flex flex-col justify-center">
+            <div className="p-5 lg:p-6 flex flex-col flex-grow">
               <img
                 src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
@@ -51,13 +51,14 @@ const PartnerShowcaseGrid = () => {
               <p className="text-sm lg:text-base text-[#081129]/70 leading-relaxed mb-3">
                 Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
               </p>
-              <div className="flex-grow" />
-              <Link
-                to="/provider/goodbody-clinic"
-                className="inline-block self-center bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap mb-6"
-              >
-                View Goodbody tests
-              </Link>
+              <div className="mt-auto flex justify-center pb-2">
+                <Link
+                  to="/provider/goodbody-clinic"
+                  className="inline-block bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap"
+                >
+                  View Goodbody tests
+                </Link>
+              </div>
             </div>
           </div>
 
