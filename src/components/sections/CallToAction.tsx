@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SectionHeading } from "@/components/ui/section-heading";
 
 interface CallToActionProps {
   className?: string;
@@ -20,12 +19,9 @@ const CallToAction = ({ className }: CallToActionProps) => {
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-5xl mx-auto text-center">
-          <SectionHeading 
-            title="Take Control of" 
-            gradientText="Your Health Today" 
-            className="mb-6"
-            titleClassName="text-white"
-          />
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-6 text-brand-turquoise">
+            Take Control of Your Health Today
+          </h2>
           <p className="text-xl mb-8 text-white/90 my-0 py-0">
             Join thousands of customers who've discovered health insights that made a difference.
           </p>

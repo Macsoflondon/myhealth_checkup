@@ -21,7 +21,7 @@ const TrustBadgesSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           
-          <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3 text-[#081129]">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3 text-brand-pink">
             Trusted Health Comparison Platform
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto font-medium">

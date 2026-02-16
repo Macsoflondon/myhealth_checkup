@@ -118,14 +118,8 @@ const TopConcernsSection = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 leading-tight">
-            <span className="text-[#081129]">Comprehensive Care for Your </span>
-            <span 
-              className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent"
-              style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-            >
-              Top Concerns
-            </span>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 text-brand-pink">
+            Comprehensive Care for Your Top Concerns
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Explore our clinically curated categories to find the right test for your health needs.
