@@ -77,7 +77,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Left: Find a Clinic Card */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col justify-center text-center items-center">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
             {/* Section label */}
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
@@ -109,7 +109,8 @@ const PartnerShowcaseGrid = () => {
                 <p className="text-xs sm:text-sm text-white/60">Coverage</p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+            <div className="flex-grow" />
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full">
               <Link
                 to="/find-clinic"
                 className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
@@ -131,7 +132,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom-Right: Take Control CTA Card (moved from top-right) */}
-          <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col justify-center text-center items-center">
+          <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
             {/* Section label */}
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
@@ -146,10 +147,11 @@ const PartnerShowcaseGrid = () => {
                 Your Health Today
               </span>
             </h2>
-            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-24 max-w-md">
+            <p className="text-base lg:text-lg text-white/70 leading-relaxed mb-8 max-w-md">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in minutes.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+            <div className="flex-grow" />
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full">
               <Link
                 to="/compare"
                 className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
