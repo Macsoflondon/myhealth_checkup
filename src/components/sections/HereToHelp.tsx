@@ -38,6 +38,7 @@ const HereToHelp = () => {
               <div className="flex items-center gap-2 mb-4 justify-center lg:justify-start">
                 <div className="h-px w-6 bg-brand-pink" />
                 <span className="text-brand-pink text-xs font-semibold uppercase tracking-wider">Here to Help</span>
+                <div className="h-px w-6 bg-brand-pink" />
               </div>
 
               <SectionHeading
@@ -57,8 +58,12 @@ const HereToHelp = () => {
                 <Link
                   key={index}
                   to={resource.link}
-                  className="flex items-start gap-4 sm:gap-5 bg-gray-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30"
+                  className="relative flex items-start gap-4 sm:gap-5 bg-gray-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
                 >
+                  {/* Top accent line */}
+                  <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
+                    resource.accent === 'brand-turquoise' ? 'bg-brand-turquoise' : 'bg-brand-pink'
+                  }`} />
                   <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 ${
                     resource.accent === 'brand-turquoise' 
                       ? 'bg-brand-turquoise/10 group-hover:bg-brand-turquoise' 
