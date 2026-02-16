@@ -11,8 +11,14 @@ interface CallToActionProps {
 const CallToAction = ({ className }: CallToActionProps) => {
   const navigate = useNavigate();
   
-  return <section className={cn("py-16 bg-[#081129]", className)}>
-      <div className="container mx-auto px-4">
+  return <section className={cn("py-16 bg-[#081129] relative overflow-hidden", className)}>
+      {/* Decorative half-circles */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-brand-turquoise/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-brand-pink/5 rounded-full translate-x-1/3 translate-y-1/3" />
+      <div className="absolute top-1/2 right-0 w-44 h-44 bg-brand-turquoise/5 rounded-full translate-x-1/2" />
+      <div className="absolute bottom-0 left-1/4 w-36 h-36 bg-brand-pink/5 rounded-full translate-y-1/2" />
+
+      <div className="container mx-auto px-4 relative">
         <div className="max-w-5xl mx-auto text-center">
           <SectionHeading 
             title="Take Control of" 
