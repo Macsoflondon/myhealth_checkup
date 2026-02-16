@@ -1,207 +1,250 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, RotateCcw } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Shield, Loader2, ExternalLink } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
-type Step = 'welcome' | 'gender' | 'concerns' | 'results';
+type Step =
+  | 'welcome'
+  | 'who'
+  | 'gender'
+  | 'age'
+  | 'goal'
+  | 'concerns'
+  | 'symptoms'
+  | 'preferences'
+  | 'loading'
+  | 'results';
 
-interface GenderOption {
-  id: string;
-  label: string;
+interface QuizAnswers {
+  who: string;
+  gender: string;
+  ageRange: string;
+  goal: string;
+  concerns: string[];
+  symptoms: string[];
+  sampleMethod: string;
+  budget: string;
+  speed: string;
 }
 
-interface ConcernOption {
-  id: string;
-  label: string;
+interface Recommendation {
+  testId: string;
+  testName: string;
+  provider: string;
+  price: number;
+  biomarkers: number;
+  url: string | null;
+  badge: string;
+  reasons: string[];
+  caveat?: string;
 }
 
-const genderOptions: GenderOption[] = [
+interface AIResults {
+  recommendations: Recommendation[];
+  disclaimer: string;
+}
+
+const TOTAL_STEPS = 7;
+
+const stepOrder: Step[] = ['who', 'gender', 'age', 'goal', 'concerns', 'symptoms', 'preferences'];
+
+const whoOptions = [
+  { id: 'just-me', label: 'Just me' },
+  { id: 'someone-else', label: 'Someone else' },
+  { id: 'my-family', label: 'My family' },
+];
+
+const genderOptions = [
   { id: 'male', label: 'Male' },
   { id: 'female', label: 'Female' },
-  { id: 'neither', label: 'Neither' },
-  { id: 'prefer-not-to-say', label: 'Prefer not to say' }
+  { id: 'non-binary', label: 'Non-binary' },
+  { id: 'prefer-not-to-say', label: 'Prefer not to say' },
 ];
 
-const concernOptions: ConcernOption[] = [
+const ageOptions = [
+  { id: 'under-30', label: 'Under 30' },
+  { id: '30-39', label: '30–39' },
+  { id: '40-49', label: '40–49' },
+  { id: '50-59', label: '50–59' },
+  { id: '60-plus', label: '60+' },
+];
+
+const goalOptions = [
   { id: 'general-health', label: 'General health check' },
-  { id: 'hormones', label: 'Hormones' },
+  { id: 'specific-symptoms', label: 'Investigate specific symptoms' },
+  { id: 'preventive', label: 'Preventive screening' },
+  { id: 'monitor-condition', label: 'Monitor existing condition' },
+  { id: 'fitness-performance', label: 'Fitness & performance optimisation' },
+];
+
+const concernOptions = [
+  { id: 'fatigue', label: 'Fatigue or low energy' },
+  { id: 'hormones', label: 'Hormonal changes' },
+  { id: 'heart', label: 'Heart & cholesterol' },
   { id: 'thyroid', label: 'Thyroid' },
   { id: 'fertility', label: 'Fertility' },
-  { id: 'nutrition', label: 'Nutrition' },
-  { id: 'fitness', label: 'Fitness' },
-  { id: 'bowel', label: 'Bowel' },
-  { id: 'prostate', label: 'Prostate' }
+  { id: 'vitamins', label: 'Vitamin deficiencies' },
+  { id: 'digestive', label: 'Digestive issues' },
+  { id: 'weight', label: 'Weight management' },
+  { id: 'sexual-health', label: 'Sexual health' },
+  { id: 'cancer-screening', label: 'Cancer screening' },
+  { id: 'liver', label: 'Liver health' },
+  { id: 'diabetes', label: 'Diabetes risk' },
+  { id: 'bone-joint', label: 'Bone & joint health' },
+  { id: 'allergies', label: 'Allergies' },
+  { id: 'none', label: 'None — just a general check' },
 ];
 
-// Mock test data based on concerns
-const getRecommendedTests = (concerns: string[], gender: string) => {
-  const allTests = [
-    {
-      id: 'psa-test',
-      name: 'PSA (Prostate Specific Antigen) Blood Test',
-      category: 'Small test, big insights',
-      description: 'Are you over 50, over 45 and of black ethnicity, or have a strong family history of prostate cancer? Our PSA Blood Test...',
-      price: '£45.00',
-      turnaround: 'Results estimated in 2 working days',
-      biomarkers: '1 biomarkers',
-      collection: 'Finger-prick or Venous collection',
-      rating: 4.8,
-      reviews: 217,
-      relevantFor: ['prostate', 'general-health']
-    },
-    {
-      id: 'optimal-health',
-      name: 'Optimal Health Blood Test',
-      category: 'Longevity called. It wants your blood',
-      description: 'Unlock a deeper understanding of your health with our most comprehensive panel covering 59 biomarkers',
-      price: '£249.00',
-      turnaround: 'Results estimated in 4 working days',
-      biomarkers: '59 biomarkers',
-      collection: 'Venous collection',
-      rating: 4.9,
-      reviews: 1542,
-      relevantFor: ['general-health', 'fitness', 'nutrition']
-    },
-    {
-      id: 'fertility-test',
-      name: 'Male Fertility Sperm Test',
-      category: 'Get the answers you\'ve been looking for',
-      description: 'Are you planning to have children and want to make sure your sperm and hormone levels are normal? Perhaps you and your...',
-      price: '£209.00',
-      turnaround: 'Results estimated in 2 working days',
-      biomarkers: '23 biomarkers',
-      collection: 'Finger-prick or Venous collection',
-      rating: 5.0,
-      reviews: 1,
-      relevantFor: ['fertility']
-    },
-    {
-      id: 'lifestyle-test',
-      name: 'Health and Lifestyle Blood Test',
-      category: 'Healthy habits start here',
-      description: 'Do you want to know whether you are at risk of common lifestyle-related conditions? Perhaps you\'re already taking steps to...',
-      price: '£89.00',
-      turnaround: 'Results estimated in 3 working days',
-      biomarkers: '19 biomarkers',
-      collection: 'Finger-prick or Venous collection',
-      rating: 4.7,
-      reviews: 892,
-      relevantFor: ['general-health', 'fitness', 'nutrition']
-    },
-    {
-      id: 'thyroid-test',
-      name: 'Advanced Thyroid Function Blood Test',
-      category: 'Get the answers you\'ve been looking for',
-      description: 'Are you experiencing symptoms like fatigue, weight changes, or mood swings? Our comprehensive thyroid test...',
-      price: '£99.00',
-      turnaround: 'Results estimated in 3 working days',
-      biomarkers: '10 biomarkers',
-      collection: 'Finger-prick or Venous collection',
-      rating: 4.8,
-      reviews: 634,
-      relevantFor: ['thyroid', 'hormones']
-    },
-    {
-      id: 'hormone-test',
-      name: 'Male Hormone Blood Test',
-      category: 'Hormonal balance check',
-      description: 'Check your testosterone, cortisol, and other key hormones that affect energy, mood, and overall wellbeing...',
-      price: '£129.00',
-      turnaround: 'Results estimated in 3 working days',
-      biomarkers: '8 biomarkers',
-      collection: 'Finger-prick or Venous collection',
-      rating: 4.6,
-      reviews: 423,
-      relevantFor: ['hormones', 'fitness']
-    }
-  ];
+const symptomOptions = [
+  { id: 'tiredness', label: 'Unexplained tiredness' },
+  { id: 'brain-fog', label: 'Brain fog or poor concentration' },
+  { id: 'hair-skin', label: 'Hair loss or skin changes' },
+  { id: 'irregular-periods', label: 'Irregular periods' },
+  { id: 'joint-pain', label: 'Joint pain or stiffness' },
+  { id: 'frequent-infections', label: 'Frequent infections' },
+  { id: 'mood-anxiety', label: 'Mood changes or anxiety' },
+  { id: 'sleep-problems', label: 'Sleep problems' },
+  { id: 'family-history', label: 'Family history of chronic disease' },
+  { id: 'none', label: 'None of the above' },
+];
 
-  // Filter tests based on selected concerns
-  const relevantTests = allTests.filter(test => 
-    concerns.some(concern => test.relevantFor.includes(concern))
-  );
+const sampleMethodOptions = [
+  { id: 'home-kit', label: 'Home test kit' },
+  { id: 'clinic-visit', label: 'Clinic visit' },
+  { id: 'either', label: 'Either is fine' },
+];
 
-  // If no specific matches, return general health tests
-  if (relevantTests.length === 0) {
-    return allTests.filter(test => test.relevantFor.includes('general-health')).slice(0, 4);
-  }
+const budgetOptions = [
+  { id: 'under-50', label: 'Under £50' },
+  { id: '50-100', label: '£50–£100' },
+  { id: '100-200', label: '£100–£200' },
+  { id: '200-500', label: '£200–£500' },
+  { id: 'no-preference', label: 'No preference' },
+];
 
-  // Return up to 4 most relevant tests
-  return relevantTests.slice(0, 4);
+const speedOptions = [
+  { id: 'asap', label: 'As fast as possible' },
+  { id: 'within-week', label: 'Within a week' },
+  { id: 'no-rush', label: 'No rush' },
+];
+
+const providerNames: Record<string, string> = {
+  medichecks: 'Medichecks',
+  goodbody: 'Goodbody Clinic',
+  thriva: 'Thriva',
+  randox: 'Randox Health',
+  'lola-health': 'Lola Health',
+  lml: 'London Medical Laboratory',
 };
 
 export const AssistedTestFinder = () => {
   const [currentStep, setCurrentStep] = useState<Step>('welcome');
-  const [selectedGender, setSelectedGender] = useState<string>('');
-  const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<QuizAnswers>({
+    who: '',
+    gender: '',
+    ageRange: '',
+    goal: '',
+    concerns: [],
+    symptoms: [],
+    sampleMethod: '',
+    budget: '',
+    speed: '',
+  });
+  const [results, setResults] = useState<AIResults | null>(null);
   const navigate = useNavigate();
 
-  const handleGetStarted = () => {
-    setCurrentStep('gender');
-  };
+  const currentStepIndex = stepOrder.indexOf(currentStep as any);
+  const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   const handleBack = () => {
-    if (currentStep === 'results') {
-      setCurrentStep('concerns');
-    } else if (currentStep === 'concerns') {
-      setCurrentStep('gender');
-    } else if (currentStep === 'gender') {
-      setCurrentStep('welcome');
+    if (currentStep === 'results' || currentStep === 'loading') {
+      setCurrentStep('preferences');
+      return;
     }
+    const idx = stepOrder.indexOf(currentStep as any);
+    if (idx > 0) setCurrentStep(stepOrder[idx - 1]);
+    else if (idx === 0) setCurrentStep('welcome');
   };
 
   const handleRestart = () => {
     setCurrentStep('welcome');
-    setSelectedGender('');
-    setSelectedConcerns([]);
+    setAnswers({ who: '', gender: '', ageRange: '', goal: '', concerns: [], symptoms: [], sampleMethod: '', budget: '', speed: '' });
+    setResults(null);
   };
 
-  const handleGenderSelect = (gender: string) => {
-    setSelectedGender(gender);
-    setCurrentStep('concerns');
-  };
-
-  const handleConcernSelect = (concernId: string) => {
-    setSelectedConcerns(prev => {
-      if (prev.includes(concernId)) {
-        return prev.filter(id => id !== concernId);
+  const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
+    setAnswers(prev => ({ ...prev, [field]: value }));
+    if (autoAdvance) {
+      const idx = stepOrder.indexOf(currentStep as any);
+      if (idx < stepOrder.length - 1) {
+        setCurrentStep(stepOrder[idx + 1]);
       }
-      return [...prev, concernId];
-    });
-  };
-
-  const handleContinue = () => {
-    setCurrentStep('results');
-  };
-
-  const handleSelectTest = (testId: string) => {
-    navigate(`/compare?test=${testId}`);
-  };
-
-  const handleViewAllTests = () => {
-    if (selectedConcerns.length > 0) {
-      const primaryConcern = selectedConcerns[0];
-      navigate(`/compare?category=${primaryConcern}`);
-    } else {
-      navigate('/compare');
     }
   };
 
-  // Navigation controls component
+  const handleMultiSelect = (field: 'concerns' | 'symptoms', value: string) => {
+    setAnswers(prev => {
+      const current = prev[field];
+      if (value === 'none') return { ...prev, [field]: ['none'] };
+      const filtered = current.filter(v => v !== 'none');
+      if (filtered.includes(value)) return { ...prev, [field]: filtered.filter(v => v !== value) };
+      return { ...prev, [field]: [...filtered, value] };
+    });
+  };
+
+  const handleNext = () => {
+    const idx = stepOrder.indexOf(currentStep as any);
+    if (idx < stepOrder.length - 1) {
+      setCurrentStep(stepOrder[idx + 1]);
+    }
+  };
+
+  const handleSubmitQuiz = async () => {
+    setCurrentStep('loading');
+    try {
+      const { data, error } = await supabase.functions.invoke('quiz-recommendations', {
+        body: answers,
+      });
+
+      if (error) {
+        console.error('Quiz error:', error);
+        toast.error('Failed to generate recommendations. Please try again.');
+        setCurrentStep('preferences');
+        return;
+      }
+
+      if (data?.error) {
+        toast.error(data.error);
+        setCurrentStep('preferences');
+        return;
+      }
+
+      setResults(data as AIResults);
+      setCurrentStep('results');
+    } catch (e) {
+      console.error('Quiz error:', e);
+      toast.error('Something went wrong. Please try again.');
+      setCurrentStep('preferences');
+    }
+  };
+
   const NavigationControls = () => (
     <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
-      <Button 
-        onClick={handleBack} 
-        variant="outline" 
-        className="flex items-center gap-2 px-6 py-3 rounded-full border-gray-300"
+      <Button
+        onClick={handleBack}
+        variant="outline"
+        className="flex items-center gap-2 px-6 py-3 rounded-full border-muted-foreground/30"
       >
         <ArrowLeft className="w-4 h-4" />
         Back
       </Button>
-      <Button 
-        onClick={handleRestart} 
-        variant="outline" 
-        className="flex items-center gap-2 px-6 py-3 rounded-full border-pink-300 text-pink-600"
+      <Button
+        onClick={handleRestart}
+        variant="outline"
+        className="flex items-center gap-2 px-6 py-3 rounded-full border-secondary/40 text-secondary"
       >
         <RotateCcw className="w-4 h-4" />
         Restart
@@ -209,169 +252,346 @@ export const AssistedTestFinder = () => {
     </div>
   );
 
+  const ProgressHeader = () => (
+    <div className="max-w-2xl mx-auto px-6 pt-4 pb-2">
+      <div className="flex justify-between items-center mb-2 text-sm text-muted-foreground">
+        <span>Step {currentStepIndex + 1} of {TOTAL_STEPS}</span>
+        <span>{progressPercent}%</span>
+      </div>
+      <Progress value={progressPercent} className="h-2 bg-muted" />
+    </div>
+  );
+
+  const OptionCard = ({
+    label,
+    selected,
+    onClick,
+  }: {
+    label: string;
+    selected: boolean;
+    onClick: () => void;
+  }) => (
+    <button
+      onClick={onClick}
+      className={`w-full px-6 py-4 text-left text-lg font-medium rounded-2xl border-2 transition-all duration-200 ${
+        selected
+          ? 'bg-secondary text-secondary-foreground border-secondary'
+          : 'bg-card text-card-foreground border-border hover:border-secondary/50 hover:shadow-md'
+      }`}
+    >
+      {label}
+    </button>
+  );
+
+  // === WELCOME ===
   if (currentStep === 'welcome') {
     return (
-      <div className="bg-gradient-to-b from-pink-100 to-white min-h-[80vh]">
+      <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
-            <h1 className="text-5xl font-bold text-gray-900 mb-8">
-              Let's find you a test!
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-primary" />
+              </div>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-montserrat">
+              Find the Right Health Test for You
             </h1>
-            <Button 
-              onClick={handleGetStarted} 
-              className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-12 py-4 text-lg font-medium rounded-full transition-colors"
-            >
-              Get started
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (currentStep === 'gender') {
-    return (
-      <div className="bg-gradient-to-b from-pink-100 to-white min-h-[80vh]">
-        <NavigationControls />
-        <div className="flex items-center justify-center min-h-[60vh] p-4">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              How would you describe your gender?
-            </h1>
-            <p className="text-gray-600 mb-12 text-lg">
-              Your answer will help us find the right test for you.
+            <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
+              Answer a few questions about your health goals and we'll recommend the most relevant tests from trusted UK providers.
             </p>
-            
-            <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto">
-              {genderOptions.slice(0, 3).map(option => (
-                <Button 
-                  key={option.id} 
-                  onClick={() => handleGenderSelect(option.id)} 
-                  className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-4 text-lg font-medium rounded-full min-w-[180px] transition-colors"
-                >
-                  {option.label}
-                </Button>
-              ))}
-            </div>
-            
-            <div className="mt-4 flex justify-center">
-              <Button 
-                onClick={() => handleGenderSelect('prefer-not-to-say')} 
-                className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-4 text-lg font-medium rounded-full min-w-[180px] transition-colors"
-              >
-                Prefer not to say
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (currentStep === 'concerns') {
-    return (
-      <div className="bg-gradient-to-b from-pink-100 to-white min-h-[80vh]">
-        <NavigationControls />
-        <div className="flex items-center justify-center min-h-[60vh] p-4">
-          <div className="text-center max-w-5xl mx-auto">
-            <h1 className="text-4xl font-bold text-gray-900 mb-12">
-              Do you have any health concerns or areas of interest?
-            </h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-              {concernOptions.map(option => (
-                <Button 
-                  key={option.id} 
-                  onClick={() => handleConcernSelect(option.id)} 
-                  variant={selectedConcerns.includes(option.id) ? 'default' : 'outline'} 
-                  className={`px-6 py-4 text-lg font-medium rounded-full transition-colors ${
-                    selectedConcerns.includes(option.id) 
-                      ? 'bg-[#E91E63] hover:bg-[#C2185B] text-white border-[#E91E63]' 
-                      : 'border-[#E91E63] text-[#E91E63] hover:bg-[#E91E63] hover:text-white'
-                  }`}
-                >
-                  {option.label}
-                </Button>
-              ))}
-            </div>
-            
-            <Button 
-              onClick={handleContinue} 
-              className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-12 py-4 text-lg font-medium rounded-full transition-colors disabled:opacity-50" 
-              disabled={selectedConcerns.length === 0}
+            <Button
+              onClick={() => setCurrentStep('who')}
+              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
             >
-              Continue
+              Start Quiz
             </Button>
+            <p className="text-sm text-muted-foreground mt-6">
+              🔒 Your answers are not stored. This tool does not provide medical advice.
+            </p>
           </div>
         </div>
       </div>
     );
   }
 
-  if (currentStep === 'results') {
-    const recommendedTests = getRecommendedTests(selectedConcerns, selectedGender);
-
+  // === LOADING ===
+  if (currentStep === 'loading') {
     return (
-      <div className="bg-gradient-to-b from-pink-100 to-white bg-white min-h-[80vh]">
+      <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
+        <div className="flex items-center justify-center min-h-[80vh] p-4">
+          <div className="text-center max-w-md mx-auto">
+            <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-6" />
+            <h2 className="text-2xl font-bold text-foreground mb-3 font-montserrat">
+              Analysing your answers…
+            </h2>
+            <p className="text-muted-foreground">
+              We're matching your profile against tests from 6 trusted UK providers to find the best options for you.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // === RESULTS ===
+  if (currentStep === 'results' && results) {
+    return (
+      <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
         <NavigationControls />
-        <div className="max-w-6xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Recommended for you ({recommendedTests.length})
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 font-montserrat">
+              Your Recommended Tests
             </h1>
+            <p className="text-muted-foreground">Based on your answers, here are the tests we think suit you best.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {recommendedTests.map(test => (
-              <div key={test.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-                <div className="bg-[#1a365d] text-white p-4 text-center">
-                  <h3 className="text-sm font-medium">{test.category}</h3>
-                </div>
-                
-                <div className="p-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-3">{test.name}</h4>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">{test.description}</p>
-                  
-                  <div className="space-y-2 mb-4">
-                    <p className="text-sm text-gray-600">{test.turnaround}</p>
-                    <p className="text-sm text-gray-600">{test.biomarkers}</p>
-                    
-                    {/* Star Rating */}
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className="text-yellow-400 text-sm">★</span>
-                      ))}
-                      <span className="text-sm text-gray-600 ml-1">({test.reviews})</span>
-                    </div>
-                  </div>
-                  
-                  <div className="text-2xl font-bold text-gray-900 mb-2">{test.price}</div>
-                  <p className="text-sm text-gray-500 mb-4">{test.collection}</p>
-                  
-                  <Button 
-                    onClick={() => handleSelectTest(test.id)} 
-                    variant="outline" 
-                    className="w-full py-3 text-[#081129] border-gray-300 hover:bg-gray-50"
+          <div className="space-y-6 mb-8">
+            {results.recommendations.map((rec, i) => (
+              <div
+                key={rec.testId}
+                className={`rounded-2xl border-2 p-6 bg-card ${
+                  i === 0 ? 'border-primary shadow-lg' : 'border-border'
+                }`}
+              >
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <span
+                    className={`text-xs font-bold uppercase px-3 py-1 rounded-full ${
+                      rec.badge === 'Best Match'
+                        ? 'bg-primary/10 text-primary'
+                        : rec.badge === 'Best Value'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-blue-100 text-blue-700'
+                    }`}
                   >
-                    Select test
-                  </Button>
+                    {rec.badge}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {providerNames[rec.provider] || rec.provider}
+                  </span>
                 </div>
+
+                <h3 className="text-xl font-bold text-foreground mb-2">{rec.testName}</h3>
+
+                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
+                  <span className="font-semibold text-foreground text-lg">£{rec.price?.toFixed(2)}</span>
+                  {rec.biomarkers > 0 && <span>{rec.biomarkers} biomarkers</span>}
+                </div>
+
+                <div className="space-y-1 mb-4">
+                  {rec.reasons.map((reason, j) => (
+                    <p key={j} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <span className="text-primary mt-0.5">✓</span>
+                      {reason}
+                    </p>
+                  ))}
+                </div>
+
+                {rec.caveat && (
+                  <p className="text-xs text-muted-foreground italic mb-4">{rec.caveat}</p>
+                )}
+
+                {rec.url && (
+                  <a
+                    href={rec.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                  >
+                    View test details <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
               </div>
             ))}
           </div>
 
-          <div className="text-center">
-            <Button 
-              onClick={handleViewAllTests} 
-              className="bg-[#E91E63] hover:bg-[#C2185B] text-white px-8 py-3 text-lg font-medium rounded-full"
+          <div className="text-center space-y-4">
+            <Button
+              onClick={() => {
+                const ids = results.recommendations.map(r => r.testId).join(',');
+                navigate(`/compare?tests=${ids}`);
+              }}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-medium rounded-full"
             >
-              View all tests
+              Compare These Tests
             </Button>
+
+            <div>
+              <button onClick={handleRestart} className="text-sm text-muted-foreground hover:text-foreground underline">
+                Change my answers
+              </button>
+            </div>
+
+            <p className="text-xs text-muted-foreground max-w-lg mx-auto mt-6">
+              {results.disclaimer || 'This tool provides general guidance only. It is not a medical diagnosis. Consult your GP for personalised medical advice.'}
+            </p>
           </div>
         </div>
       </div>
     );
   }
 
-  return null;
+  // === QUIZ STEPS ===
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 'who':
+        return (
+          <StepLayout title="Who is this test for?">
+            <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
+              {whoOptions.map(o => (
+                <OptionCard key={o.id} label={o.label} selected={answers.who === o.id} onClick={() => handleSingleSelect('who', o.id)} />
+              ))}
+            </div>
+          </StepLayout>
+        );
+
+      case 'gender':
+        return (
+          <StepLayout title="How would you describe your gender?" subtitle="Some tests are gender-specific, so this helps us filter accurately.">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
+              {genderOptions.map(o => (
+                <OptionCard key={o.id} label={o.label} selected={answers.gender === o.id} onClick={() => handleSingleSelect('gender', o.id)} />
+              ))}
+            </div>
+          </StepLayout>
+        );
+
+      case 'age':
+        return (
+          <StepLayout title="What is your age range?" subtitle="Age-appropriate screening varies. This helps us prioritise the right tests.">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto">
+              {ageOptions.map(o => (
+                <OptionCard key={o.id} label={o.label} selected={answers.ageRange === o.id} onClick={() => handleSingleSelect('ageRange', o.id)} />
+              ))}
+            </div>
+          </StepLayout>
+        );
+
+      case 'goal':
+        return (
+          <StepLayout title="What's your main health goal?">
+            <div className="grid grid-cols-1 gap-3 max-w-md mx-auto">
+              {goalOptions.map(o => (
+                <OptionCard key={o.id} label={o.label} selected={answers.goal === o.id} onClick={() => handleSingleSelect('goal', o.id)} />
+              ))}
+            </div>
+          </StepLayout>
+        );
+
+      case 'concerns':
+        return (
+          <StepLayout title="Do you have any specific areas of concern?" subtitle="Select all that apply.">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-w-3xl mx-auto">
+              {concernOptions.map(o => (
+                <OptionCard key={o.id} label={o.label} selected={answers.concerns.includes(o.id)} onClick={() => handleMultiSelect('concerns', o.id)} />
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Button
+                onClick={handleNext}
+                disabled={answers.concerns.length === 0}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-3 text-lg rounded-full disabled:opacity-40"
+              >
+                Next
+              </Button>
+            </div>
+          </StepLayout>
+        );
+
+      case 'symptoms':
+        return (
+          <StepLayout title="Are you experiencing any of these?" subtitle="Optional — select any that apply, or skip.">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+              {symptomOptions.map(o => (
+                <OptionCard key={o.id} label={o.label} selected={answers.symptoms.includes(o.id)} onClick={() => handleMultiSelect('symptoms', o.id)} />
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Button
+                onClick={handleNext}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-3 text-lg rounded-full"
+              >
+                {answers.symptoms.length === 0 ? 'Skip' : 'Next'}
+              </Button>
+            </div>
+          </StepLayout>
+        );
+
+      case 'preferences':
+        return (
+          <StepLayout title="Your practical preferences">
+            <div className="max-w-lg mx-auto space-y-8">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3">Sample collection method</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {sampleMethodOptions.map(o => (
+                    <OptionCard key={o.id} label={o.label} selected={answers.sampleMethod === o.id} onClick={() => handleSingleSelect('sampleMethod', o.id, false)} />
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3">Budget</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {budgetOptions.map(o => (
+                    <OptionCard key={o.id} label={o.label} selected={answers.budget === o.id} onClick={() => handleSingleSelect('budget', o.id, false)} />
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3">How quickly do you need results?</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {speedOptions.map(o => (
+                    <OptionCard key={o.id} label={o.label} selected={answers.speed === o.id} onClick={() => handleSingleSelect('speed', o.id, false)} />
+                  ))}
+                </div>
+              </div>
+
+              <div className="text-center pt-4">
+                <Button
+                  onClick={handleSubmitQuiz}
+                  disabled={!answers.sampleMethod || !answers.budget || !answers.speed}
+                  className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full disabled:opacity-40"
+                >
+                  Get My Recommendations
+                </Button>
+              </div>
+            </div>
+          </StepLayout>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
+      <NavigationControls />
+      <ProgressHeader />
+      <div className="p-4 pb-16">{renderStepContent()}</div>
+    </div>
+  );
 };
+
+function StepLayout({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="max-w-5xl mx-auto pt-4">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h1>
+        {subtitle && <p className="text-muted-foreground mt-2 text-lg">{subtitle}</p>}
+      </div>
+      {children}
+    </div>
+  );
+}

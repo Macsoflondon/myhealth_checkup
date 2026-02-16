@@ -110,3 +110,8 @@ verify_jwt = false
 # Requires authentication - Users must be logged in
 [functions.blood-test-analysis]
 verify_jwt = false
+
+# Quiz Recommendations - AI-powered test recommendations based on health quiz
+# Public access - No authentication required (quiz is anonymous)
+[functions.quiz-recommendations]
+verify_jwt = false
