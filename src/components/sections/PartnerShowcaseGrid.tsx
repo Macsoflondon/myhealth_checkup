@@ -28,11 +28,11 @@ const PartnerShowcaseGrid = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto items-start">
 
           {/* Top-Left: Goodbody Feature Card */}
           <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-            <div className="pt-5 px-5 pb-3 lg:pt-6 lg:px-6 lg:pb-3 flex flex-col flex-grow">
+            <div className="pt-5 px-5 pb-3 lg:pt-6 lg:px-6 lg:pb-3 flex flex-col">
               <img
                 src={goodbodyLogo}
                 alt="GoodBody Clinic logo"
