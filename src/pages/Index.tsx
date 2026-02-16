@@ -108,11 +108,11 @@ const Index = () => {
         
         
         
-        {/* 5. Partners Grid */}
-        <PartnersGrid />
-        
-        {/* 7. Journey Simplified */}
+        {/* 5. Journey Simplified */}
         <JourneySimplified />
+        
+        {/* 6. Partners Grid */}
+        <PartnersGrid />
         
         {/* 8. Why Choose Us */}
         <WhyChooseUs />
