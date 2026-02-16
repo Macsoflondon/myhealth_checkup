@@ -9,7 +9,7 @@ const keywords = [
 ];
 
 const BrandTicker = () => {
-  const items = [...keywords, ...keywords, ...keywords];
+  const items = [...keywords, ...keywords];
 
   return (
     <section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
@@ -23,7 +23,7 @@ const BrandTicker = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
-          <div className="flex animate-ticker whitespace-nowrap w-max min-w-full">
+          <div className="animate-ticker flex shrink-0 whitespace-nowrap">
             {items.map((word, i) => (
               <span key={`a-${i}`} className="flex items-center">
                 <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
@@ -32,6 +32,8 @@ const BrandTicker = () => {
                 <span className="text-brand-turquoise text-lg">•</span>
               </span>
             ))}
+          </div>
+          <div className="animate-ticker flex shrink-0 whitespace-nowrap" aria-hidden="true">
             {items.map((word, i) => (
               <span key={`b-${i}`} className="flex items-center">
                 <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
