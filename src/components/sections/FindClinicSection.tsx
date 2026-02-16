@@ -13,7 +13,7 @@ const FindClinicSection = () => {
   return (
     <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-[hsl(187,72%,97%)] to-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 max-w-6xl mx-auto items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-w-[1400px] mx-auto items-center">
           
           {/* Left Column - Find a Clinic */}
           <div>
