@@ -286,7 +286,7 @@ export const AssistedTestFinder = () => {
   // === WELCOME ===
   if (currentStep === 'welcome') {
     return (
-      <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
+      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
             <div className="flex justify-center mb-6">
@@ -318,7 +318,7 @@ export const AssistedTestFinder = () => {
   // === LOADING ===
   if (currentStep === 'loading') {
     return (
-      <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
+      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-md mx-auto">
             <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-6" />
@@ -337,7 +337,7 @@ export const AssistedTestFinder = () => {
   // === RESULTS ===
   if (currentStep === 'results' && results) {
     return (
-      <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
+      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
         <NavigationControls />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
@@ -568,7 +568,7 @@ export const AssistedTestFinder = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-secondary/10 to-background min-h-[80vh]">
+    <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
       <NavigationControls />
       <ProgressHeader />
       <div className="p-4 pb-16">{renderStepContent()}</div>
