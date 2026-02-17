@@ -14,6 +14,7 @@ import MissionSection from "@/components/sections/MissionSection";
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import BloodTestingExplainer from "@/components/sections/BloodTestingExplainer";
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
@@ -116,6 +117,9 @@ const Index = () => {
         
         {/* 8. Why Choose Us */}
         <WhyChooseUs />
+        
+        {/* Blood Testing Explainer */}
+        <BloodTestingExplainer />
         
         {/* 9. Partner Showcase Grid */}
         <PartnerShowcaseGrid />
