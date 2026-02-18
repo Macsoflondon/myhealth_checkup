@@ -31,26 +31,26 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
 
           {/* Row 1: GoodBody — Text left, Video right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-center mb-14">
-            <div className="space-y-7 text-center md:text-left">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-16">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-stretch mb-14">
+            <div className="space-y-8 text-center md:text-left flex flex-col">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
                 <div>
-                  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
+                  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em] mb-2">
                     Trusted UK Provider
                   </p>
-                  <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
+                  <h2 className="font-heading text-4xl sm:text-5xl font-bold text-white leading-tight">
                     Know more.<br />Live Better.
                   </h2>
                 </div>
-                <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-72 w-auto mx-auto md:mx-0 flex-shrink-0" />
+                <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-56 w-auto mx-auto md:mx-0 flex-shrink-0" />
               </div>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-base sm:text-lg font-sans font-medium leading-relaxed">
                 GoodBody Clinics, provide comprehensive private health checks at affordable prices.
               </p>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-base sm:text-lg font-sans font-medium leading-relaxed">
                 Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and only exclusively utilise UKAS-accredited laboratories for our analysis.
               </p>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-base sm:text-lg font-sans font-medium leading-relaxed">
                 Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
               </p>
               <div className="flex justify-center md:justify-start">
@@ -62,16 +62,21 @@ const PartnerShowcaseGrid = () => {
                 </Link>
               </div>
             </div>
-            <div className="relative overflow-hidden rounded-xl">
+            <div className="relative overflow-hidden rounded-xl flex items-center">
               <video
                 src="/videos/goodbody-promo.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full object-cover aspect-[16/8] scale-110"
+                className="w-full object-cover aspect-[16/10]"
               />
             </div>
+          </div>
+
+          {/* Divider between provider rows */}
+          <div className="md:col-span-2 flex justify-center">
+            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
           </div>
 
           {/* Row 2: Medichecks — Video left, Text right */}
