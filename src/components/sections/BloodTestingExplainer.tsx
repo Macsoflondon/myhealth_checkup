@@ -7,6 +7,7 @@ const BloodTestingExplainer = () => {
         {/* Row 1: Text left, Video right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-20">
           <div className="space-y-5">
+            <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-12 w-auto" />
             <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
               Trusted UK Provider
             </p>
@@ -54,6 +55,7 @@ const BloodTestingExplainer = () => {
             />
           </div>
           <div className="space-y-5 md:order-2">
+            <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-12 w-auto" />
             <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
               Trusted UK Provider
             </p>
