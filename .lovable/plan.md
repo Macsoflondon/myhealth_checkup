@@ -1,51 +1,53 @@
-## GoodBody Row 1 -- Gap, Position, and Slogan Fix
+
+## GoodBody and Medichecks Row Fixes
 
 ### What changes
 
-All changes in `src/components/sections/PartnerShowcaseGrid.tsx`, Row 1 only.
+All changes in `src/components/sections/PartnerShowcaseGrid.tsx`.
 
-**1. Increase the gap between text column and video column**
+**1. Widen the gap between text column and video column (Row 1)**
 
-On line 34, change the grid gap from `gap-8 lg:gap-12` to `gap-12 lg:gap-20`. This adds roughly 2cm+ of horizontal space between the text block and the video on desktop.
+The current gap classes `gap-12 lg:gap-20` sit on the same grid that also controls the outer layout gap. The issue is the outer container on line 31 also has `gap-12 lg:gap-16`, which may be conflicting. To guarantee at least 2cm (~5rem) of horizontal separation between the two columns, change the Row 1 grid gap to `gap-16 lg:gap-24`.
 
-**2. Move both text and video down from the header**
+**2. Fix the slogan to display on two lines correctly**
 
-Change `pt-12` on line 35 to `pt-20` to push the text column down further. Also add `pt-20` to the video container on line 65 so both columns drop equally from the header above.
+The slogan currently reads `Know more.<br />Live Better.` on line 42. The `<br />` is already there, but the text before it ("Know more.") may be wrapping "more." to a second line due to the container width. To force "Know more." to stay on one line, add `whitespace-nowrap` to the heading so each line before and after the `<br />` stays intact.
 
-**3. Fix the slogan line break**
+Result:
+- Line 1: **Know more.**
+- Line 2: **Live Better.**
 
-On line 42, the slogan reads `Know more.<br />Live Better.` which forces "more." onto one line and "Live Better." onto the next. force "more." back onto the same line. as "Know"  so it reads as:
+**3. Remove "Trusted UK Provider" from both rows**
 
- **Know more.**  
-**Live Better.**
+- Delete the `<p>` tag on lines 38-40 (GoodBody row) containing "Trusted UK Provider".
+- Delete the `<p>` tag on lines 97-99 (Medichecks row) containing "Trusted UK Provider".
 
 ### Technical detail
 
-**Line 34** -- widen column gap:
-
+**Line 34** -- widen column gap further:
 ```
-- gap-8 lg:gap-12
-+ gap-12 lg:gap-20
-```
-
-**Line 35** -- push text down:
-
-```
-- pt-12
-+ pt-20
+- gap-12 lg:gap-20
++ gap-16 lg:gap-24
 ```
 
-**Line 42** -- single-line slogan:
-
+**Lines 38-40** -- remove GoodBody "Trusted UK Provider":
 ```
-- Know more.<br />Live Better.
-+  Know more.
-Live Better. 
+DELETE:
+  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em] mb-2">
+    Trusted UK Provider
+  </p>
 ```
 
-**Line 65** -- push video down to match:
-
+**Line 41** -- add whitespace-nowrap to heading:
 ```
-- <div className="relative rounded-xl flex items-stretch">
-+ <div className="relative rounded-xl flex items-stretch pt-20">
+- <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">
++ <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
+```
+
+**Lines 97-99** -- remove Medichecks "Trusted UK Provider":
+```
+DELETE:
+  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
+    Trusted UK Provider
+  </p>
 ```
