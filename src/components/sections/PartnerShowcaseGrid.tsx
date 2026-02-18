@@ -31,15 +31,15 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
 
           {/* Row 1: GoodBody — Text left, Video right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-stretch mb-14">
-            <div className="pt-20 space-y-6 text-center md:text-left flex flex-col">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch mb-14">
+            <div className="pt-20 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
               <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
+                <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-56 w-auto mx-auto md:mx-0 flex-shrink-0" />
                 <div>
                   <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
                     Know more.<br />Live Better.
                   </h2>
                 </div>
-                <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-56 w-auto mx-auto md:mx-0 flex-shrink-0" />
               </div>
               <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 GoodBody Clinics, provide comprehensive private health checks at affordable prices.
@@ -59,7 +59,7 @@ const PartnerShowcaseGrid = () => {
                 </Link>
               </div>
             </div>
-            <div className="relative rounded-xl flex items-stretch pt-20">
+            <div className="relative rounded-xl flex items-stretch pt-20 md:-mr-4">
               <video
                 src="/videos/goodbody-promo.mp4"
                 autoPlay
