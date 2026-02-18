@@ -31,25 +31,31 @@ const ProviderTestCatalogPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const provider = detailedProviders.find(p => p.id.toLowerCase() === providerId?.toLowerCase());
+  const provider = detailedProviders.find(p => {
+    const lowerId = p.id.toLowerCase();
+    const lowerProviderId = providerId?.toLowerCase() || '';
+    return lowerId === lowerProviderId || lowerId.startsWith(lowerProviderId + '-');
+  });
   
+  const resolvedProviderId = provider?.id || providerId;
+
   useEffect(() => {
-    if (providerId) {
+    if (resolvedProviderId) {
       fetchProviderTests();
     }
-  }, [providerId]);
+  }, [resolvedProviderId]);
   
   useEffect(() => {
     filterTests();
   }, [tests, searchTerm, selectedCategory]);
   
   const fetchProviderTests = async () => {
-    if (!providerId) return;
+    if (!resolvedProviderId) return;
     
     try {
       setLoading(true);
       
-      const { data, error } = await providersApi.getProviderCatalog(providerId);
+      const { data, error } = await providersApi.getProviderCatalog(resolvedProviderId);
       
       if (error) {
         logger.error('Fetch error:', error);
