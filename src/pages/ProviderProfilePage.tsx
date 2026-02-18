@@ -82,7 +82,7 @@ const ProviderProfilePage = () => {
           name="description" 
           content={`Compare ${provider.name} blood tests and health screening. ${provider.accreditation ? provider.accreditation + '. ' : ''}Read reviews, view prices, and book online.`} 
         />
-        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${providerId}`} />
+        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
       </Helmet>
 
       <Header />
@@ -146,12 +146,12 @@ const ProviderProfilePage = () => {
                   <Button
                     size="lg"
                     asChild
-                    className="min-h-[48px] w-full sm:w-auto text-white"
+                    className="min-h-[48px] w-full sm:w-auto text-white inline-flex items-center"
                     style={brand ? { backgroundColor: brand.primary, color: '#fff' } : undefined}
                   >
-                    <a href={websiteUrl} {...externalLinkProps}>
-                      Visit Website
-                      <ExternalLink className="w-4 h-4 ml-2" />
+                    <a href={websiteUrl} {...externalLinkProps} className="inline-flex items-center gap-2">
+                      <ExternalLink className="w-4 h-4 flex-shrink-0" />
+                      <span>Visit Website</span>
                     </a>
                   </Button>
                 )}
@@ -159,12 +159,12 @@ const ProviderProfilePage = () => {
                   variant="outline"
                   size="lg"
                   asChild
-                  className="min-h-[48px] w-full sm:w-auto"
+                  className="min-h-[48px] w-full sm:w-auto inline-flex items-center"
                   style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
                 >
-                  <Link to={`/provider/${providerId}/tests`}>
-                    <TestTube className="w-4 h-4 mr-2" />
-                    Browse Available Tests
+                  <Link to={`/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
+                    <TestTube className="w-4 h-4 flex-shrink-0" />
+                    <span>Browse Available Tests</span>
                   </Link>
                 </Button>
               </div>
