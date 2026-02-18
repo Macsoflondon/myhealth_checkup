@@ -7,13 +7,17 @@ const BloodTestingExplainer = () => {
         {/* Row 1: Text left, Video right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-20">
           <div className="space-y-5 text-center md:text-left">
-            <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-12 w-auto mx-auto md:mx-0" />
-            <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
-              Trusted UK Provider
-            </p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--brand-navy))] leading-tight">
-              Know more.<br />Live Better.
-            </h2>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+              <div>
+                <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
+                  Trusted UK Provider
+                </p>
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--brand-navy))] leading-tight">
+                  Know more.<br />Live Better.
+                </h2>
+              </div>
+              <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-36 w-auto mx-auto md:mx-0 flex-shrink-0" />
+            </div>
             <p className="text-muted-foreground font-sans leading-relaxed">
               GoodBody Clinics, provide comprehensive private health checks at affordable prices.
             </p>
@@ -57,13 +61,17 @@ const BloodTestingExplainer = () => {
             />
           </div>
           <div className="space-y-5 md:order-2 text-center md:text-left">
-            <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-12 w-auto mx-auto md:mx-0" />
-            <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
-              Trusted UK Provider
-            </p>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--brand-navy))] leading-tight">
-              Medichecks
-            </h2>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+              <div>
+                <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
+                  Trusted UK Provider
+                </p>
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--brand-navy))] leading-tight">
+                  Medichecks
+                </h2>
+              </div>
+              <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-36 w-auto mx-auto md:mx-0 flex-shrink-0" />
+            </div>
             <p className="text-muted-foreground font-sans leading-relaxed">
               Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.
             </p>
