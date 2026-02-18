@@ -1,53 +1,78 @@
 
-## GoodBody and Medichecks Row Fixes
+## Restyle Medichecks Row to Match GoodBody Layout
 
 ### What changes
 
-All changes in `src/components/sections/PartnerShowcaseGrid.tsx`.
+All changes in `src/components/sections/PartnerShowcaseGrid.tsx`, Row 2 (lines 79-121).
 
-**1. Widen the gap between text column and video column (Row 1)**
+**1. Mirror Row 1 layout structure onto Row 2**
 
-The current gap classes `gap-12 lg:gap-20` sit on the same grid that also controls the outer layout gap. The issue is the outer container on line 31 also has `gap-12 lg:gap-16`, which may be conflicting. To guarantee at least 2cm (~5rem) of horizontal separation between the two columns, change the Row 1 grid gap to `gap-16 lg:gap-24`.
+Rewrite Row 2 to match Row 1's pattern: video on the left (order-1), text on the right (order-2), both with `pt-20`, `items-stretch`, and the same text styling (white, `text-sm sm:text-base`, `font-medium`).
 
-**2. Fix the slogan to display on two lines correctly**
+**2. Increase the column gap beyond Row 1**
 
-The slogan currently reads `Know more.<br />Live Better.` on line 42. The `<br />` is already there, but the text before it ("Know more.") may be wrapping "more." to a second line due to the container width. To force "Know more." to stay on one line, add `whitespace-nowrap` to the heading so each line before and after the `<br />` stays intact.
+Row 1 uses `gap-16 lg:gap-24`. Row 2 needs an extra ~3cm (~4.5rem) on top of that. Set Row 2 gap to `gap-20 lg:gap-32` (5rem / 8rem), which adds roughly 3cm more than Row 1 at large breakpoints.
 
-Result:
-- Line 1: **Know more.**
-- Line 2: **Live Better.**
+**3. Replace "Medichecks" heading with "Unlock the Ultimate You."**
 
-**3. Remove "Trusted UK Provider" from both rows**
+On line 94-96, replace the heading text from `Medichecks` to `Unlock the Ultimate You.` displayed over two lines:
+- Line 1: **Unlock the**
+- Line 2: **Ultimate You.**
 
-- Delete the `<p>` tag on lines 38-40 (GoodBody row) containing "Trusted UK Provider".
-- Delete the `<p>` tag on lines 97-99 (Medichecks row) containing "Trusted UK Provider".
+Size matched to Row 1 heading: `text-2xl sm:text-3xl`, with `whitespace-nowrap`.
+
+**4. Keep logo but remove the old heading next to it**
+
+The Medichecks logo stays in the same position (next to the new slogan), at `h-56` to match GoodBody's logo size.
 
 ### Technical detail
 
-**Line 34** -- widen column gap further:
+**Line 80** -- update grid container classes:
 ```
-- gap-12 lg:gap-20
-+ gap-16 lg:gap-24
-```
-
-**Lines 38-40** -- remove GoodBody "Trusted UK Provider":
-```
-DELETE:
-  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em] mb-2">
-    Trusted UK Provider
-  </p>
+- <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8">
++ <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-32 items-stretch mb-14">
 ```
 
-**Line 41** -- add whitespace-nowrap to heading:
+**Line 81** -- add pt-20 to video container:
 ```
-- <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">
-+ <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
+- <div className="relative md:order-1">
++ <div className="relative md:order-1 rounded-xl flex items-stretch pt-20">
 ```
 
-**Lines 97-99** -- remove Medichecks "Trusted UK Provider":
+**Line 88** -- update video classes to match Row 1:
 ```
-DELETE:
-  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
-    Trusted UK Provider
-  </p>
+- className="rounded-xl w-full object-contain aspect-video"
++ className="w-full object-contain rounded-xl"
+```
+
+**Line 91** -- update text container:
+```
+- <div className="space-y-5 md:order-2 text-center md:text-left">
++ <div className="pt-20 space-y-6 md:order-2 text-center md:text-left flex flex-col">
+```
+
+**Lines 92-98** -- update heading/logo block:
+```
+- <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+-   <div>
+-     <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
+-       Medichecks
+-     </h2>
+-   </div>
+-   <img ... className="h-36 ..." />
+- </div>
++ <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
++   <div>
++     <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
++       Unlock the<br />Ultimate You.
++     </h2>
++   </div>
++   <img ... className="h-56 ..." />
++ </div>
+```
+
+**Lines 100-111** -- update paragraph text styling to match Row 1:
+```
+- text-white/70 font-sans leading-relaxed
++ text-white text-sm sm:text-base font-sans font-medium leading-relaxed
 ```
