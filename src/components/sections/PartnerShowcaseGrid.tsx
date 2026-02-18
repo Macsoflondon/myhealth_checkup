@@ -31,14 +31,11 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
 
           {/* Row 1: GoodBody — Text left, Video right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-stretch mb-14">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-stretch mb-14">
             <div className="pt-20 space-y-6 text-center md:text-left flex flex-col">
               <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
                 <div>
-                  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em] mb-2">
-                    Trusted UK Provider
-                  </p>
-                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">
+                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
                     Know more.<br />Live Better.
                   </h2>
                 </div>
@@ -94,9 +91,6 @@ const PartnerShowcaseGrid = () => {
             <div className="space-y-5 md:order-2 text-center md:text-left">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                 <div>
-                  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
-                    Trusted UK Provider
-                  </p>
                   <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
                     Medichecks
                   </h2>
