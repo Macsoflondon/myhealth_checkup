@@ -1,36 +1,51 @@
 
 
-## Update BloodTestingExplainer Row 2 with Medichecks Content and Video
+## Reposition and Enlarge Provider Logos in BloodTestingExplainer
 
-Replace the second row's image and text with Medichecks-specific content and the uploaded video.
+Move each provider logo out of the text column and position it at the heading level on the far right of its row. Enlarge logos to 3x their current size.
 
 ### What changes
 
-**Row 1 stays the same** -- "What can blood testing do for me?" content is unchanged.
+**Row 1 (GoodBody):**
+- Remove the logo from inside the text `<div>`
+- Add a wrapper around the heading area that uses `flex justify-between items-start` so the heading sits left and the logo sits far right
+- Enlarge the logo from `h-12` to `h-36` (3x)
 
-**Row 2 updates (image left, text right):**
-- Replace the label with "Trusted UK Provider"
-- Replace the heading with "Medichecks"
-- Replace the body text with the four paragraphs provided
-- Change the CTA button text to "View Medichecks tests" and link it to `/medichecks`
-- Replace the `<img>` element and the ResultsCard overlay with a `<video>` element playing `Medichecks_video-3.mp4`
-- Remove the `healthResults` image import (no longer needed)
-- Remove the `ResultsCard` component (no longer needed)
+**Row 2 (Medichecks):**
+- Same treatment -- logo removed from text flow, placed at heading level on the far right
+- Enlarge from `h-12` to `h-36` (3x)
 
-### Asset handling
-
-- Copy `Medichecks_video-3.mp4` to `public/videos/medichecks-promo.mp4`
-- Copy `Medichecks_video-4.mp4` to `public/videos/medichecks-promo-2.mp4` (spare)
-- Video will autoplay, loop, muted, playsInline (matching existing video patterns)
+On mobile (single column), the logo will appear centred above the heading since the flex container will stack or the logo will use `mx-auto` on small screens.
 
 ### Technical details
 
-**Modified file: `src/components/sections/BloodTestingExplainer.tsx`**
-- Remove `healthResults` import and the `ResultsCard` component
-- Replace Row 2 `<img>` + `<ResultsCard />` with a `<video>` element sourced from `/videos/medichecks-promo.mp4`
-- Update Row 2 label to "Trusted UK Provider"
-- Update Row 2 heading to "Medichecks"
-- Update Row 2 body copy with the user-provided four paragraphs
-- Update Row 2 CTA to "View Medichecks tests" linking to `/medichecks`
-- Row 1 remains untouched
+**File: `src/components/sections/BloodTestingExplainer.tsx`**
+
+For each row, the current structure:
+```
+<div class="space-y-5 ...">
+  <img logo h-12 />
+  <p>Trusted UK Provider</p>
+  <h2>Heading</h2>
+  ...
+</div>
+```
+
+Becomes:
+```
+<div class="space-y-5 ...">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+    <div>
+      <p>Trusted UK Provider</p>
+      <h2>Heading</h2>
+    </div>
+    <img logo h-36 flex-shrink-0 />
+  </div>
+  ...paragraphs and CTA unchanged...
+</div>
+```
+
+- Logo class changes from `h-12 w-auto mx-auto md:mx-0` to `h-36 w-auto mx-auto md:mx-0 flex-shrink-0`
+- On mobile the logo appears centred above the header text (via column flex direction)
+- On desktop the logo sits far right at the same vertical level as the heading
 
