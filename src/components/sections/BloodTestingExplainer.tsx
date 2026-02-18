@@ -24,7 +24,7 @@ const BloodTestingExplainer = () => {
               Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
             </p>
             <Link
-              to="/provider/goodbody-clinic"
+              to="/providers/goodbody-clinic"
               className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
             >
               View GoodBody tests
@@ -75,7 +75,7 @@ const BloodTestingExplainer = () => {
               Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.
             </p>
             <Link
-              to="/medichecks"
+              to="/providers/medichecks"
               className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
             >
               View Medichecks tests
