@@ -77,36 +77,36 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Row 2: Medichecks — Video left, Text right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8">
-            <div className="relative md:order-1">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-32 items-stretch mb-14">
+            <div className="relative md:order-1 rounded-xl flex items-stretch pt-20">
               <video
                 src="/videos/medichecks-promo.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="rounded-xl w-full object-contain aspect-video"
+                className="w-full object-contain rounded-xl"
               />
             </div>
-            <div className="space-y-5 md:order-2 text-center md:text-left">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+            <div className="pt-20 space-y-6 md:order-2 text-center md:text-left flex flex-col">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
                 <div>
-                  <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
-                    Medichecks
+                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
+                    Unlock the<br />Ultimate You.
                   </h2>
                 </div>
-                <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-36 w-auto mx-auto md:mx-0 flex-shrink-0" />
+                <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-56 w-auto mx-auto md:mx-0 flex-shrink-0" />
               </div>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.
               </p>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Choose from convenient at home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners.
               </p>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.
               </p>
-              <p className="text-white/70 font-sans leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.
               </p>
               <div className="flex justify-center md:justify-start">
