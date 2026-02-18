@@ -1,79 +1,63 @@
 
 
-## Move BloodTestingExplainer Rows into PartnerShowcaseGrid and Remove Old Section
+## GoodBody Row 1 Polish -- Spacing, Video, and Text Improvements
 
-### Summary
+### What changes
 
-Remove the standalone BloodTestingExplainer section from the homepage entirely. Replace the top row of PartnerShowcaseGrid (the white GoodBody card + partner video) with the two provider rows (GoodBody and Medichecks), adapted for the navy background. Keep the bottom two cards (Find a Clinic and Take Control) as they are.
+All changes are in `src/components/sections/PartnerShowcaseGrid.tsx`, Row 1 (GoodBody) only.
 
-### Changes
+**1. Add spacing between heading text and logo**
+- Change the `gap-4` on the flex container (line 36) to `gap-16` to create generous separation between the "Know more. Live Better." heading block and the GoodBody logo on desktop.
 
-**1. PartnerShowcaseGrid.tsx -- replace top row with both provider rows**
+**2. Vertically centre the heading text against the logo**
+- Change `md:items-start` to `md:items-center` on the flex container so "Know more. Live Better." sits at the vertical midpoint of the logo rather than top-aligned.
 
-Remove the current "Top Row" block (lines 33-81: the white GoodBody card and partner-video) and insert two new rows in its place:
+**3. Video: crop top/bottom slightly and enlarge**
+- Wrap the video in an `overflow-hidden` container with negative vertical margins or use `object-cover` with a taller fixed aspect ratio to trim a small amount from the top and bottom.
+- Change the video from `object-contain aspect-video` to `object-cover aspect-[16/8]` (wider crop ratio trims top and bottom edges) and scale the container up with `scale-110` on the video element itself so the visible content is larger without losing meaningful content. The `overflow-hidden` on the parent ensures the cropped edges are hidden cleanly.
 
-- **Row 1 (GoodBody):** Text left, video right. Two-column grid, same as BloodTestingExplainer but restyled for navy background.
-- **Row 2 (Medichecks):** Video left, text right. Same alternating layout.
+**4. Brighten GoodBody text**
+- The "Trusted UK Provider" label is already turquoise. The heading "Know more. Live Better." is already `text-white`. The paragraph text is `text-white/70`. No changes needed for heading brightness -- it is already bright white.
+- If the paragraphs feel dim, they can stay at `text-white/70` as this is the established pattern.
 
-Styling adaptations for navy background:
-- All paragraph text changes from `text-muted-foreground` to `text-white/70`
-- Headings change from `text-[hsl(var(--brand-navy))]` to `text-white`
-- CTA buttons change from navy-outlined to turquoise filled (`bg-[#22c0d4] hover:bg-[#e70d69] text-white`), with text updated to "View GoodBody profile" and "View Medichecks profile"
-- GoodBody logo enlarged from `h-36` to `h-72` (doubled again)
-- Medichecks logo stays at `h-36` (no size change requested for Medichecks)
-- Videos change from `object-cover aspect-[4/3]` to `object-contain` with a taller aspect ratio (`aspect-video` or `aspect-[16/9]`) so they are not cropped
+**5. Add vertical breathing room**
+- Increase `space-y-5` on the text column (line 35) to `space-y-7` so paragraphs are not cramped.
+- Add `mb-12` or increase `mb-8` to `mb-14` on the row container (line 34) to give more space between Row 1 and Row 2.
 
-**2. Remove BloodTestingExplainer from homepage**
-
-- Delete the `<BloodTestingExplainer />` usage from `Index.tsx`
-- Remove its import
-
-**3. Optionally delete BloodTestingExplainer.tsx**
-
-The component file can be deleted since it will no longer be used anywhere.
+**6. CTA link verification**
+- The link already points to `/providers/goodbody-clinic` (line 58) which is correct.
 
 ### Technical details
 
 **File: `src/components/sections/PartnerShowcaseGrid.tsx`**
 
-- Remove the `goodbodyLogo` import (no longer needed)
-- Remove lines 33-81 (the old top row with white card and partner video)
-- Insert two new grid rows before the bottom row:
-
-Row 1 structure:
+Line 34 -- increase bottom margin:
 ```
-<div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8">
-  <div class="space-y-5 text-center md:text-left">
-    <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-      <div>
-        <p class="text-brand-turquoise ...">Trusted UK Provider</p>
-        <h2 class="... text-white">Know more. Live Better.</h2>
-      </div>
-      <img goodbody logo h-72 />
-    </div>
-    <p class="text-white/70 ...">...</p>
-    <Link to="/providers/goodbody-clinic">View GoodBody profile</Link>
-  </div>
-  <video src="/videos/goodbody-promo.mp4" class="rounded-xl w-full object-contain aspect-video" />
-</div>
+- className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8"
++ className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-center mb-14"
 ```
 
-Row 2 structure (video left, text right):
+Line 35 -- increase paragraph spacing:
 ```
-<div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center">
-  <video src="/videos/medichecks-promo.mp4" class="rounded-xl w-full object-contain aspect-video md:order-1" />
-  <div class="space-y-5 md:order-2 text-center md:text-left">
-    ...same pattern, text-white, h-36 logo...
-    <Link to="/providers/medichecks">View Medichecks profile</Link>
-  </div>
-</div>
+- className="space-y-5 text-center md:text-left"
++ className="space-y-7 text-center md:text-left"
 ```
 
-**File: `src/pages/Index.tsx`**
+Line 36 -- widen gap and vertically centre:
+```
+- className="flex flex-col md:flex-row md:justify-between md:items-start gap-4"
++ className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-16"
+```
 
-- Remove `import BloodTestingExplainer` (line 17)
-- Remove `<BloodTestingExplainer />` usage
+Lines 65-74 -- video container with crop and scale:
+```
+- <div className="relative">
+-   <video ... className="rounded-xl w-full object-contain aspect-video" />
+- </div>
++ <div className="relative overflow-hidden rounded-xl">
++   <video ... className="w-full object-cover aspect-[16/8] scale-110" />
++ </div>
+```
 
-**File: `src/components/sections/BloodTestingExplainer.tsx`**
+This trims the top and bottom edges of the video while scaling it up, and the `overflow-hidden` on the parent keeps the crop clean within rounded corners.
 
-- Delete this file
