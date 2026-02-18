@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 
-import goodbodyLogo from "@/assets/goodbody-logo-new.png";
+
 
 const PartnerShowcaseGrid = () => {
   return (
@@ -30,53 +30,94 @@ const PartnerShowcaseGrid = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
 
-          {/* Top Row: Goodbody + Video — matched heights */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-h-[500px]">
-            {/* Goodbody Feature Card */}
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col">
-              <div className="pt-4 px-5 pb-3 lg:pt-5 lg:px-6 lg:pb-3 flex flex-col">
-                <img
-                  src={goodbodyLogo}
-                  alt="GoodBody Clinic logo"
-                  className="h-[90px] w-auto object-contain mb-0 self-center"
-                  loading="lazy"
-                />
-                <h3 className="font-heading text-lg lg:text-xl font-bold text-[#081129] mb-1.5">
-                  Know more.<br />Live Better.
-                </h3>
-                <p className="text-xs lg:text-sm text-[#081129]/70 leading-relaxed mb-1.5">
-                  GoodBody Clinics, provide comprehensive private health checks at affordable prices.
-                </p>
-                <p className="text-xs lg:text-sm text-[#081129]/70 leading-relaxed mb-1.5">
-                  Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and only exclusively utilise UKAS-accredited laboratories for our analysis.
-                </p>
-                <p className="text-xs lg:text-sm text-[#081129]/70 leading-relaxed mb-1">
-                  Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
-                </p>
-                <div className="flex justify-center pt-2 pb-20">
-                  <Link
-                    to="/providers/goodbody-clinic"
-                    className="inline-block bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors duration-200 whitespace-nowrap"
-                  >
-                    View Goodbody tests
-                  </Link>
+          {/* Row 1: GoodBody — Text left, Video right */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8">
+            <div className="space-y-5 text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                <div>
+                  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
+                    Trusted UK Provider
+                  </p>
+                  <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
+                    Know more.<br />Live Better.
+                  </h2>
                 </div>
+                <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-72 w-auto mx-auto md:mx-0 flex-shrink-0" />
+              </div>
+              <p className="text-white/70 font-sans leading-relaxed">
+                GoodBody Clinics, provide comprehensive private health checks at affordable prices.
+              </p>
+              <p className="text-white/70 font-sans leading-relaxed">
+                Visit one of over 200 nationwide locations, or opt for their convenient home testing service. GoodBody Clinics has got you covered, Regulated by the CQC and only exclusively utilise UKAS-accredited laboratories for our analysis.
+              </p>
+              <p className="text-white/70 font-sans leading-relaxed">
+                Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
+              </p>
+              <div className="flex justify-center md:justify-start">
+                <Link
+                  to="/providers/goodbody-clinic"
+                  className="inline-block bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+                >
+                  View GoodBody profile
+                </Link>
               </div>
             </div>
-
-            {/* Partner Video */}
-            <div className="hidden md:flex bg-[#081129] rounded-2xl overflow-hidden items-center justify-center">
+            <div className="relative">
               <video
+                src="/videos/goodbody-promo.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                preload="auto"
-                className="w-full h-full object-cover"
-                aria-label="Featured partner of the month"
-              >
-                <source src="/videos/partner-video.mp4" type="video/mp4" />
-              </video>
+                className="rounded-xl w-full object-contain aspect-video"
+              />
+            </div>
+          </div>
+
+          {/* Row 2: Medichecks — Video left, Text right */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8">
+            <div className="relative md:order-1">
+              <video
+                src="/videos/medichecks-promo.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="rounded-xl w-full object-contain aspect-video"
+              />
+            </div>
+            <div className="space-y-5 md:order-2 text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                <div>
+                  <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
+                    Trusted UK Provider
+                  </p>
+                  <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
+                    Medichecks
+                  </h2>
+                </div>
+                <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-36 w-auto mx-auto md:mx-0 flex-shrink-0" />
+              </div>
+              <p className="text-white/70 font-sans leading-relaxed">
+                Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.
+              </p>
+              <p className="text-white/70 font-sans leading-relaxed">
+                Choose from convenient at home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners.
+              </p>
+              <p className="text-white/70 font-sans leading-relaxed">
+                Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.
+              </p>
+              <p className="text-white/70 font-sans leading-relaxed">
+                Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.
+              </p>
+              <div className="flex justify-center md:justify-start">
+                <Link
+                  to="/providers/medichecks"
+                  className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+                >
+                  View Medichecks profile
+                </Link>
+              </div>
             </div>
           </div>
 
