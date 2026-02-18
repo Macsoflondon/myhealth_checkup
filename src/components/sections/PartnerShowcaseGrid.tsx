@@ -77,15 +77,15 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Row 2: Medichecks — Video left, Text right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-32 items-stretch mb-14">
-            <div className="relative md:order-1 rounded-xl flex items-stretch pt-20">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-stretch mb-14">
+            <div className="relative md:order-1 rounded-xl flex items-stretch pt-20 md:-ml-4">
               <video
                 src="/videos/medichecks-promo.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full object-contain rounded-xl"
+                className="w-full object-cover rounded-xl min-h-[500px]"
               />
             </div>
             <div className="pt-20 space-y-6 md:order-2 text-center md:text-left flex flex-col">
