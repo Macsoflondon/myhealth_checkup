@@ -31,9 +31,9 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
 
           {/* Row 1: GoodBody — Text left, Video right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center mb-8">
-            <div className="space-y-5 text-center md:text-left">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-center mb-14">
+            <div className="space-y-7 text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 md:gap-16">
                 <div>
                   <p className="text-brand-turquoise uppercase text-xs font-semibold tracking-[0.25em]">
                     Trusted UK Provider
@@ -62,14 +62,14 @@ const PartnerShowcaseGrid = () => {
                 </Link>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative overflow-hidden rounded-xl">
               <video
                 src="/videos/goodbody-promo.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="rounded-xl w-full object-contain aspect-video"
+                className="w-full object-cover aspect-[16/8] scale-110"
               />
             </div>
           </div>
