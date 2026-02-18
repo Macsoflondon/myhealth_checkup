@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { getBranding } from "@/data/providerBranding";
 
 const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
@@ -81,67 +82,85 @@ const FeaturedProviders = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProviderData.map(provider => (
-            <Card key={provider.id} className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-2">
-                    <ProviderLogo provider={provider.name} className="w-full h-full object-contain" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-lg font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
-                      <SaveProviderButton
-                        isSaved={isProviderSaved(provider.id)}
-                        onToggle={() => toggleSaveProvider(provider.id, provider.name)}
-                      />
+          {featuredProviderData.map(provider => {
+            const brand = getBranding(provider.name);
+            return (
+              <Card
+                key={provider.id}
+                className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200 overflow-hidden"
+                style={{ borderTop: brand ? `4px solid ${brand.primary}` : undefined }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-2">
+                      <ProviderLogo provider={provider.name} className="w-full h-full object-contain" />
                     </div>
-                    <div className="flex items-center space-x-1.5">
-                      <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                      <span className="font-semibold text-gray-900">{provider.rating}</span>
-                      <span className="text-sm text-gray-500">({provider.reviews})</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="text-lg font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
+                        <SaveProviderButton
+                          isSaved={isProviderSaved(provider.id)}
+                          onToggle={() => toggleSaveProvider(provider.id, provider.name)}
+                        />
+                      </div>
+                      <div className="flex items-center space-x-1.5">
+                        <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
+                        <span className="font-semibold text-gray-900">{provider.rating}</span>
+                        <span className="text-sm text-gray-500">({provider.reviews})</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                  {provider.description}
-                </p>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    {provider.description}
+                  </p>
 
-                <div className="flex items-center text-sm text-gray-500 mb-4">
-                  <MapPin className="w-4 h-4 mr-1.5 flex-shrink-0" />
-                  <span className="truncate">{provider.location}</span>
-                </div>
+                  <div className="flex items-center text-sm text-gray-500 mb-4">
+                    <MapPin className="w-4 h-4 mr-1.5 flex-shrink-0" />
+                    <span className="truncate">{provider.location}</span>
+                  </div>
 
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {provider.tags.slice(0, 3).map((tag, tagIndex) => (
-                    <Badge key={tagIndex} variant="secondary" className="text-xs bg-gray-100 text-gray-700 hover:bg-gray-200">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {provider.tags.slice(0, 3).map((tag, tagIndex) => (
+                      <Badge
+                        key={tagIndex}
+                        variant="secondary"
+                        className="text-xs hover:opacity-80"
+                        style={brand ? {
+                          backgroundColor: brand.primaryLight,
+                          color: brand.primary,
+                        } : undefined}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
 
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Button 
-                    variant="default" 
-                    size="sm" 
-                    className="flex-1 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white"
-                    asChild
-                  >
-                    <Link to={`/provider/${provider.id.toLowerCase()}`}>
-                      View Profile
-                    </Link>
-                  </Button>
-                  <Button variant="ghost" size="sm" className="flex-shrink-0 min-h-[40px]" asChild>
-                    <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
-                      Visit Website
-                      <ExternalLink className="w-3 h-3 ml-1" />
-                    </a>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="flex-1 text-white"
+                      style={brand ? {
+                        backgroundColor: brand.primary,
+                      } : undefined}
+                      asChild
+                    >
+                      <Link to={`/provider/${provider.id.toLowerCase()}`}>
+                        View Profile
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" className="flex-shrink-0 min-h-[40px]" asChild>
+                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
+                        Visit Website
+                        <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

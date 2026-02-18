@@ -10,6 +10,7 @@ import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, A
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
+import { getBranding } from "@/data/providerBranding";
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
@@ -41,6 +42,8 @@ const ProviderProfilePage = () => {
       </div>
     );
   }
+
+  const brand = getBranding(provider.name);
 
   const getProviderRating = (name: string) => {
     const ratings: Record<string, { rating: number; reviews: string }> = {
@@ -95,25 +98,37 @@ const ProviderProfilePage = () => {
           </Button>
         </div>
 
-        {/* Hero Section */}
-        <div className="bg-card rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8 border">
+        {/* Hero Section — branded gradient when available */}
+        <div
+          className="rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8 border"
+          style={brand ? {
+            background: `linear-gradient(135deg, ${brand.accent}, ${brand.primary})`,
+          } : undefined}
+        >
           <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
-            <div className="w-20 h-20 md:w-24 md:h-24 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div
+              className="w-20 h-20 md:w-24 md:h-24 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: brand ? 'rgba(255,255,255,0.95)' : 'hsl(var(--primary) / 0.1)' }}
+            >
               <ProviderLogo provider={provider.name} className="w-14 h-14 md:w-16 md:h-16" />
             </div>
             
             <div className="flex-1 w-full">
-              <PageHeading 
-                title={provider.name} 
-                centered={false}
-                className="text-2xl md:text-3xl lg:text-4xl mb-2"
-              />
+              <h1
+                className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1"
+                style={{ color: brand ? '#ffffff' : 'hsl(var(--foreground))' }}
+              >
+                {provider.name}
+              </h1>
+              {brand && (
+                <p className="text-white/80 text-sm md:text-base italic mb-2">{brand.tagline}</p>
+              )}
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                  <span className="font-semibold text-foreground text-sm md:text-base">{ratingData.rating}</span>
-                  <span className="text-muted-foreground text-sm md:text-base">({ratingData.reviews} reviews)</span>
+                  <span className="font-semibold text-sm md:text-base" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>{ratingData.rating}</span>
+                  <span className="text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.7)' : 'hsl(var(--muted-foreground))' }}>({ratingData.reviews} reviews)</span>
                 </div>
                 
                 {provider.accreditation && (
@@ -124,18 +139,29 @@ const ProviderProfilePage = () => {
                 )}
               </div>
               
-              <p className="text-muted-foreground text-base md:text-lg mb-6">{provider.description}</p>
+              <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
               
               <div className="flex flex-col sm:flex-row gap-3">
                 {websiteUrl && (
-                  <Button size="lg" asChild className="min-h-[48px] w-full sm:w-auto bg-primary hover:bg-primary/90">
+                  <Button
+                    size="lg"
+                    asChild
+                    className="min-h-[48px] w-full sm:w-auto text-white"
+                    style={brand ? { backgroundColor: brand.primary, color: '#fff' } : undefined}
+                  >
                     <a href={websiteUrl} {...externalLinkProps}>
                       Visit Website
                       <ExternalLink className="w-4 h-4 ml-2" />
                     </a>
                   </Button>
                 )}
-                <Button variant="outline" size="lg" asChild className="min-h-[48px] w-full sm:w-auto border-secondary text-secondary hover:bg-secondary hover:text-white">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  asChild
+                  className="min-h-[48px] w-full sm:w-auto"
+                  style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
+                >
                   <Link to={`/provider/${providerId}/tests`}>
                     <TestTube className="w-4 h-4 mr-2" />
                     Browse Available Tests
@@ -146,10 +172,19 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        {/* Trust Signals Banner */}
-        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 md:p-6 mb-6 md:mb-8">
+        {/* Trust Signals Banner — tinted with provider colour */}
+        <div
+          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border"
+          style={brand ? {
+            backgroundColor: brand.primaryLight,
+            borderColor: `${brand.primary}33`,
+          } : {
+            backgroundColor: 'hsl(var(--primary) / 0.05)',
+            borderColor: 'hsl(var(--primary) / 0.2)',
+          }}
+        >
           <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-primary" />
+            <Shield className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
             Trust & Accreditation
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -164,7 +199,7 @@ const ProviderProfilePage = () => {
             )}
             {provider.clinics && (
               <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-                <Building2 className="w-5 h-5 text-primary flex-shrink-0" />
+                <Building2 className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                 <div>
                   <p className="text-sm font-medium">CQC Registered</p>
                   <p className="text-xs text-muted-foreground">Regulated clinics</p>
@@ -179,7 +214,7 @@ const ProviderProfilePage = () => {
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-              <Clock className="w-5 h-5 text-secondary flex-shrink-0" />
+              <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--secondary))' }} />
               <div>
                 <p className="text-sm font-medium">{provider.turnaroundTime || '2-5 days'}</p>
                 <p className="text-xs text-muted-foreground">Results turnaround</p>
@@ -194,7 +229,7 @@ const ProviderProfilePage = () => {
             <Card>
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Phone className="w-5 h-5 text-primary" />
+                  <Phone className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                   Contact Information
                 </CardTitle>
               </CardHeader>
@@ -205,7 +240,8 @@ const ProviderProfilePage = () => {
                     <a 
                       href={websiteUrl || provider.website} 
                       {...externalLinkProps}
-                      className="text-primary hover:underline text-sm md:text-base break-all touch-manipulation"
+                      className="hover:underline text-sm md:text-base break-all touch-manipulation"
+                      style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}
                     >
                       {provider.website.replace('https://', '').replace('http://', '')}
                     </a>
@@ -246,7 +282,7 @@ const ProviderProfilePage = () => {
             <Card className="mt-4">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <TestTube className="w-5 h-5 text-primary" />
+                  <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                   Test Categories
                 </CardTitle>
               </CardHeader>
@@ -260,7 +296,11 @@ const ProviderProfilePage = () => {
                     >
                       <Badge 
                         variant="outline" 
-                        className="hover:bg-primary hover:text-white transition-colors cursor-pointer"
+                        className="transition-colors cursor-pointer"
+                        style={brand ? {
+                          borderColor: brand.primary,
+                          color: brand.primary,
+                        } : undefined}
                       >
                         {category}
                       </Badge>
@@ -277,7 +317,7 @@ const ProviderProfilePage = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Award className="w-5 h-5 text-primary" />
+                  <Award className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                   Accreditations & Quality
                 </CardTitle>
               </CardHeader>
@@ -316,7 +356,7 @@ const ProviderProfilePage = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-primary" />
+                  <Users className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                   Service Information
                 </CardTitle>
               </CardHeader>
@@ -351,7 +391,7 @@ const ProviderProfilePage = () => {
               </CardContent>
             </Card>
 
-            {/* Key Features */}
+            {/* Key Features — tinted with provider accent */}
             <Card>
               <CardHeader>
                 <CardTitle>Why Choose {provider.name}?</CardTitle>
@@ -359,40 +399,58 @@ const ProviderProfilePage = () => {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
                   {provider.accreditation && (
-                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                      <Shield className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <div
+                      className="flex items-center gap-3 p-3 rounded-lg"
+                      style={{ backgroundColor: brand ? brand.primaryLight : '#f0fdf4' }}
+                    >
+                      <Shield className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.primary : '#16a34a' }} />
                       <span className="text-sm font-medium">Fully Accredited Labs</span>
                     </div>
                   )}
                   
                   {provider.clinics && (
-                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                      <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                    <div
+                      className="flex items-center gap-3 p-3 rounded-lg"
+                      style={{ backgroundColor: brand ? brand.accentLight : '#eff6ff' }}
+                    >
+                      <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.accent : '#2563eb' }} />
                       <span className="text-sm font-medium">Multiple Locations</span>
                     </div>
                   )}
                   
                   {provider.phone && (
-                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                      <Phone className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                    <div
+                      className="flex items-center gap-3 p-3 rounded-lg"
+                      style={{ backgroundColor: brand ? brand.primaryLight : '#faf5ff' }}
+                    >
+                      <Phone className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.primary : '#9333ea' }} />
                       <span className="text-sm font-medium">Phone Support</span>
                     </div>
                   )}
                   
                   {provider.email && (
-                    <div className="flex items-center gap-3 p-3 bg-pink-50 rounded-lg">
-                      <Mail className="w-5 h-5 text-pink-600 flex-shrink-0" />
+                    <div
+                      className="flex items-center gap-3 p-3 rounded-lg"
+                      style={{ backgroundColor: brand ? brand.accentLight : '#fdf2f8' }}
+                    >
+                      <Mail className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.accent : '#db2777' }} />
                       <span className="text-sm font-medium">Email Support</span>
                     </div>
                   )}
                   
-                  <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                    <Award className="w-5 h-5 text-orange-600 flex-shrink-0" />
+                  <div
+                    className="flex items-center gap-3 p-3 rounded-lg"
+                    style={{ backgroundColor: brand ? brand.primaryLight : '#fff7ed' }}
+                  >
+                    <Award className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.primary : '#ea580c' }} />
                     <span className="text-sm font-medium">Doctor Reviewed Results</span>
                   </div>
                   
-                  <div className="flex items-center gap-3 p-3 bg-teal-50 rounded-lg">
-                    <Clock className="w-5 h-5 text-teal-600 flex-shrink-0" />
+                  <div
+                    className="flex items-center gap-3 p-3 rounded-lg"
+                    style={{ backgroundColor: brand ? brand.accentLight : '#f0fdfa' }}
+                  >
+                    <Clock className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.accent : '#0d9488' }} />
                     <span className="text-sm font-medium">Fast Turnaround</span>
                   </div>
                 </div>
