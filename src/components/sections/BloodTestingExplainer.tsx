@@ -6,8 +6,8 @@ const BloodTestingExplainer = () => {
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         {/* Row 1: Text left, Video right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-12 md:mb-20">
-          <div className="space-y-5">
-            <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-12 w-auto" />
+          <div className="space-y-5 text-center md:text-left">
+            <img src="/lovable-uploads/provider-goodbody-new-v3.png" alt="GoodBody Clinic logo" className="h-12 w-auto mx-auto md:mx-0" />
             <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
               Trusted UK Provider
             </p>
@@ -23,12 +23,14 @@ const BloodTestingExplainer = () => {
             <p className="text-muted-foreground font-sans leading-relaxed">
               Providing you with a comprehensive GP review of your results and featuring over 60 different blood and wellness tests for you to choose from. They offer a blend of clinical precision and convenient high-street accessibility.
             </p>
-            <Link
-              to="/providers/goodbody-clinic"
-              className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
-            >
-              View GoodBody tests
-            </Link>
+            <div className="flex justify-center md:justify-start">
+              <Link
+                to="/providers/goodbody-clinic"
+                className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
+              >
+                View GoodBody tests
+              </Link>
+            </div>
           </div>
           <div className="relative">
             <video
@@ -54,8 +56,8 @@ const BloodTestingExplainer = () => {
               className="rounded-xl shadow-md w-full object-cover aspect-[4/3]"
             />
           </div>
-          <div className="space-y-5 md:order-2">
-            <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-12 w-auto" />
+          <div className="space-y-5 md:order-2 text-center md:text-left">
+            <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks logo" className="h-12 w-auto mx-auto md:mx-0" />
             <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
               Trusted UK Provider
             </p>
@@ -74,12 +76,14 @@ const BloodTestingExplainer = () => {
             <p className="text-muted-foreground font-sans leading-relaxed">
               Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.
             </p>
-            <Link
-              to="/providers/medichecks"
-              className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
-            >
-              View Medichecks tests
-            </Link>
+            <div className="flex justify-center md:justify-start">
+              <Link
+                to="/providers/medichecks"
+                className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
+              >
+                View Medichecks tests
+              </Link>
+            </div>
           </div>
         </div>
       </div>
