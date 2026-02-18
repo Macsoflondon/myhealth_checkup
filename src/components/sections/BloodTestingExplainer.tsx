@@ -1,19 +1,5 @@
 import { Link } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
-import healthResults from "@/assets/health-results.jpg";
-
-const ResultsCard = () => (
-  <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 bg-white rounded-xl shadow-lg p-4 w-56">
-    <p className="text-xs font-semibold text-[hsl(var(--brand-navy))] mb-1">Testosterone</p>
-    <p className="text-lg font-bold text-[hsl(var(--brand-navy))]">18.2 <span className="text-xs font-normal text-muted-foreground">nmol/L</span></p>
-    <div className="mt-2 h-2 rounded-full bg-gradient-to-r from-[hsl(var(--brand-turquoise))] via-green-400 to-[hsl(var(--brand-pink))]" />
-    <div className="flex justify-between mt-1">
-      <span className="text-[10px] text-muted-foreground">Low</span>
-      <span className="text-[10px] font-semibold text-green-600">Normal</span>
-      <span className="text-[10px] text-muted-foreground">High</span>
-    </div>
-  </div>
-);
 
 const BloodTestingExplainer = () => {
   return (
@@ -51,29 +37,39 @@ const BloodTestingExplainer = () => {
         {/* Row 2: Image left, Text right (reversed on desktop) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="relative md:order-1">
-            <img
-              src={healthResults}
-              alt="Woman reviewing her health test results on a tablet"
+            <video
+              src="/videos/medichecks-promo.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
               className="rounded-xl shadow-md w-full object-cover aspect-[4/3]"
-              loading="lazy"
             />
-            <ResultsCard />
           </div>
           <div className="space-y-5 md:order-2">
             <p className="text-[hsl(var(--brand-turquoise))] uppercase text-xs font-semibold tracking-[0.25em]">
-              Quick, simple, secure
+              Trusted UK Provider
             </p>
             <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[hsl(var(--brand-navy))] leading-tight">
-              How does it work?
+              Medichecks
             </h2>
             <p className="text-muted-foreground font-sans leading-relaxed">
-              Choose from hundreds of accredited tests, collect your sample at home or visit a nearby clinic, and receive your results securely online — often within days. We compare trusted UK providers so you can find the right test at the right price, with full transparency on what's included.
+              Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.
+            </p>
+            <p className="text-muted-foreground font-sans leading-relaxed">
+              Choose from convenient at home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners.
+            </p>
+            <p className="text-muted-foreground font-sans leading-relaxed">
+              Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.
+            </p>
+            <p className="text-muted-foreground font-sans leading-relaxed">
+              Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.
             </p>
             <Link
-              to="/how-it-works"
+              to="/medichecks"
               className="inline-block border-2 border-[hsl(var(--brand-navy))] text-[hsl(var(--brand-navy))] font-semibold px-8 py-3 rounded-lg hover:bg-[hsl(var(--brand-turquoise))] hover:border-[hsl(var(--brand-turquoise))] hover:text-white transition-all duration-300"
             >
-              Learn more
+              View Medichecks tests
             </Link>
           </div>
         </div>
