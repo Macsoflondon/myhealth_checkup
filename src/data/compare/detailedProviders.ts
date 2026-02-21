@@ -248,6 +248,21 @@ export const detailedProviders = [
     description: "Specialized intolerance and wellness testing using hair samples"
   },
   {
+    id: "london-medical-laboratory",
+    name: "London Medical Laboratory",
+    website: "https://www.londonmedicallaboratory.com",
+    phone: "020 7183 7065",
+    email: "info@londonmedicallaboratory.com",
+    accreditation: "UKAS accredited laboratory (ISO 15189)",
+    coreServices: "Comprehensive blood testing, health screening, hormones, vitamins, allergy testing, fertility",
+    tests: "100+ blood tests including health MOTs, hormone profiles, vitamin panels",
+    sampleCollection: "Clinic-based venous blood draw and partner locations across the UK",
+    turnaroundTime: "24-72 hours",
+    customerReviews: "4.4/5 (Trustpilot)",
+    keyDifferentiators: "UKAS ISO 15189 accredited, fast turnaround, comprehensive test menu, professional laboratory services",
+    description: "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation. London Medical Laboratory provides reliable diagnostic testing with fast turnaround times and expert analysis."
+  },
+  {
     id: "london-laboratory",
     name: "London Laboratory",
     website: "https://www.londonlaboratory.co.uk",

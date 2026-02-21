@@ -49,7 +49,7 @@ const FeaturedProviders = () => {
     tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
     website: "randoxhealth.com"
   }, {
-    id: "londonmedicallab",
+    id: "london-medical-laboratory",
     name: "London Medical Laboratory",
     rating: 4.4,
     reviews: "892",
@@ -58,7 +58,7 @@ const FeaturedProviders = () => {
     tags: ["UKAS Accredited", "Professional Lab", "Comprehensive Testing", "ISO 15189"],
     website: "londonmedicallaboratory.com"
   }, {
-    id: "lola",
+    id: "lola-health",
     name: "Lola Health",
     rating: 4.3,
     reviews: "567",
