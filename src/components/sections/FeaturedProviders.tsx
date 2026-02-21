@@ -151,9 +151,9 @@ const FeaturedProviders = () => {
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" className="flex-shrink-0 min-h-[40px]" asChild>
-                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
-                        Visit Website
-                        <ExternalLink className="w-3 h-3 ml-1" />
+                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap">
+                        <span>Visit Website</span>
+                        <ExternalLink className="w-3 h-3 flex-shrink-0" />
                       </a>
                     </Button>
                   </div>
