@@ -56,7 +56,7 @@ export const detailedProviders = [
     tests: "150+ tests available",
     sampleCollection: "Home kits, clinic visits, home nurse",
     turnaroundTime: "2-5 days",
-    customerReviews: "4.6/5 (Trustpilot)",
+    customerReviews: "4.2/5 (Trustpilot, 320+ reviews)",
     keyDifferentiators: "Multiple sample collection options, doctor-reviewed results",
     description: "Comprehensive blood testing with flexible collection options"
   },
@@ -68,7 +68,7 @@ export const detailedProviders = [
     tests: "400+ tests available",
     sampleCollection: "Spire hospitals, clinics",
     turnaroundTime: "1-3 days",
-    customerReviews: "4.8/5 (Trustpilot)",
+    customerReviews: "4.6/5 (Trustpilot, 200+ reviews)",
     keyDifferentiators: "Access to Spire hospitals, free GP referrals, VIP service",
     description: "Premium testing through Spire hospital network"
   },
@@ -80,7 +80,7 @@ export const detailedProviders = [
     tests: "General health and vitamin tests",
     sampleCollection: "In-store clinics",
     turnaroundTime: "2-3 days",
-    customerReviews: "4.4/5 (Trustpilot)",
+    customerReviews: "4.9/5 (Trustpilot, 10,500+ reviews)",
     keyDifferentiators: "Nationwide presence, accessible locations, competitive pricing",
     appointments: "2,000+ appointments/week",
     description: "Convenient high-street health testing services"
@@ -93,7 +93,7 @@ export const detailedProviders = [
     tests: "Health assessments and diagnostics",
     sampleCollection: "Clinics",
     turnaroundTime: "Varies",
-    customerReviews: "4.3/5 (Trustpilot)",
+    customerReviews: "4.4/5 (Trustpilot, 39,400+ reviews)",
     keyDifferentiators: "Established healthcare provider, comprehensive health services",
     description: "Major healthcare provider with comprehensive diagnostic services"
   },
@@ -105,7 +105,7 @@ export const detailedProviders = [
     tests: "Pathology Direct blood tests and diagnostics",
     sampleCollection: "Nuffield hospitals",
     turnaroundTime: "1-3 days",
-    customerReviews: "4.5/5 (Trustpilot)",
+    customerReviews: "3.4/5 (Trustpilot, 3,000+ reviews)",
     keyDifferentiators: "Self-pay service, wide range of tests, hospital network",
     description: "Hospital network offering direct-pay pathology services"
   },
@@ -120,7 +120,7 @@ export const detailedProviders = [
     tests: "100+ tests available",
     sampleCollection: "Clinics, home visits",
     turnaroundTime: "1-2 days",
-    customerReviews: "4.6/5 (Trustpilot)",
+    customerReviews: "4.5/5 (Trustpilot, 14 reviews)",
     keyDifferentiators: "Same-day appointments, home visit options, competitive pricing",
     description: "Fast turnaround London-based testing service"
   },
@@ -135,7 +135,7 @@ export const detailedProviders = [
     tests: "Wellness and nutrition tests",
     sampleCollection: "Clinics, home visits",
     turnaroundTime: "2-4 days",
-    customerReviews: "4.7/5 (Trustpilot)",
+    customerReviews: "Not yet rated on Trustpilot",
     keyDifferentiators: "Specialized in wellness and longevity, personalized health packages",
     description: "Wellness-focused health testing and optimization"
   },
@@ -150,7 +150,7 @@ export const detailedProviders = [
     tests: "TRT and men's health testing",
     sampleCollection: "Home kits and partner clinics",
     turnaroundTime: "2-4 days",
-    customerReviews: "4.7/5 (Trustpilot)",
+    customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
     keyDifferentiators: "Subscription-based TRT, physician-led support, repeat blood testing for optimisation",
     description: "Specialized men's health and TRT monitoring"
   },
@@ -165,7 +165,7 @@ export const detailedProviders = [
     tests: "HRT and menopause testing",
     sampleCollection: "Home kits",
     turnaroundTime: "2-3 days",
-    customerReviews: "4.6/5 (Trustpilot)",
+    customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
     keyDifferentiators: "Menopause support tools, app tracking, ongoing HRT monitoring, future integration",
     description: "Women's hormone health and menopause support"
   },
@@ -180,7 +180,7 @@ export const detailedProviders = [
     tests: "100+ comprehensive biomarker panels",
     sampleCollection: "Clinic-based via practitioner referral",
     turnaroundTime: "5-7 days",
-    customerReviews: "4.7/5 (Clinic/Practitioner Reviews)",
+    customerReviews: "Not yet rated on Trustpilot (practitioner-only service)",
     keyDifferentiators: "Comprehensive biomarker panels (100+), used by integrative practitioners, practitioner-only access",
     description: "Advanced functional medicine testing for practitioners"
   },
@@ -231,7 +231,7 @@ export const detailedProviders = [
     tests: "Health check panels and rapid testing",
     sampleCollection: "In-clinic (London) and home kits",
     turnaroundTime: "Same-day to 24 hours",
-    customerReviews: "4.8/5 (Trustpilot)",
+    customerReviews: "4.8/5 (Trustpilot, 3,300+ reviews)",
     keyDifferentiators: "Ultra-fast turnaround, central London clinics, real-time booking",
     description: "Walk-in clinics with rapid results, many available same day"
   },
@@ -243,7 +243,7 @@ export const detailedProviders = [
     tests: "Intolerance and DNA wellness testing",
     sampleCollection: "Hair samples (home-based)",
     turnaroundTime: "7-10 days",
-    customerReviews: "4.5/5 (Trustpilot)",
+    customerReviews: "4.1/5 (Trustpilot, 10,900+ reviews)",
     keyDifferentiators: "Non-invasive sample method, high demand for food & environmental intolerance testing",
     description: "Specialized intolerance and wellness testing using hair samples"
   },
@@ -270,7 +270,7 @@ export const detailedProviders = [
     tests: "Comprehensive health, hormone and allergy testing",
     sampleCollection: "In-clinic (Harley Street) and home kits",
     turnaroundTime: "1-3 days",
-    customerReviews: "4.7/5 (Trustpilot)",
+    customerReviews: "Not yet independently rated on Trustpilot",
     keyDifferentiators: "Central London clinic, fast turnaround, wide test menu, premium location",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
     description: "Professional medical laboratory services with comprehensive testing capabilities"
@@ -288,7 +288,7 @@ export const detailedProviders = [
     tests: "3,000+ diagnostic tests available - one of the UK's most comprehensive test menus",
     sampleCollection: "Venous blood draw at TDL clinics, GP surgeries, hospitals, home visits available",
     turnaroundTime: "Same day to 2 working days (routine), specialist tests may take longer",
-    customerReviews: "4.8/5 (based on healthcare professional reviews)",
+    customerReviews: "1.9/5 (Trustpilot, 22 reviews)",
     keyDifferentiators: "UK's largest independent pathology provider, 40+ years experience, same-day results for many tests, used by NHS and private hospitals, comprehensive test menu including rare and specialist tests",
     parentCompany: "Sonic Healthcare (Global)",
     description: "The Doctors Laboratory (TDL) is the UK's largest independent pathology provider, processing over 15 million tests annually. With UKAS accreditation and CQC registration, TDL provides gold-standard diagnostics used by NHS trusts, private hospitals, and leading healthcare providers. Their Wimpole Street clinic offers direct patient access to over 3,000 tests with many results available same day."
