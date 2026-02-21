@@ -1,128 +1,79 @@
 
 
-## Brand-Tailored Provider Profiles
+## Merge Provider Pages and Fix Pricing
 
-### Scope
+### Problem Summary
 
-Update both the FeaturedProviders cards (at `/trusted-providers`) and the individual ProviderProfilePage (at `/provider/:id`) to reflect each provider's actual website branding. This means each card and profile page will have its own colour scheme, button styling, and visual identity based on what the provider actually uses on their own site.
-
-### Provider branding extracted from websites
-
-| Provider | Primary Colour | Accent/CTA | Text Style | Feel |
-|---|---|---|---|---|
-| Medichecks | Dark navy `#1C1C3A` | Hot pink `#E0005A` | White, clean sans-serif | Modern, clinical |
-| GoodBody Clinic | Teal `#009B8D` | Dark navy `#1A2B4A` | White on teal, warm | Professional, accessible |
-| Thriva | Deep purple `#3D1152` | Pink/coral `#E85D75` | White, rounded modern | Warm, friendly |
-| Randox Health | Royal blue `#2D4BA0` | White/gold | White serif-inspired | Premium, clinical |
-| Lola Health | Coral/salmon `#E8604C` | Dark teal `#1B4B5A` | Dark on light, modern | Friendly, wellness |
-| London Medical Lab | Medical blue `#1565C0` | Purple `#6A1B9A` | White on blue, professional | Clinical, authoritative |
+1. **Two separate pages for the same thing**: `/providers` (AllProvidersPage) and `/trusted-providers` (TrustedProvidersPage/FeaturedProviders) both list the same 6 providers but with different card styles and layouts.
+2. **"Browse Available Tests" goes to the wrong page**: The provider profile's "Browse Available Tests" button links to `/provider/:id/tests` (ProviderTestCatalogPage -- a dark-themed, generic page), while each provider also has a dedicated, better-styled catalog at `/providers/medichecks`, `/providers/goodbody-clinic`, etc.
+3. **Medichecks pricing missing**: 58 out of 75 Medichecks tests have no price in the database. The card shows "View on provider site" instead of a price. This is a data gap from the scraper not capturing prices for those tests.
+4. **Icon/text alignment on buttons**: Some buttons have icons stacking above text instead of sitting inline.
 
 ---
 
-### Part 1: FeaturedProviders Cards
+### Plan
 
-**File**: `src/components/sections/FeaturedProviders.tsx`
+#### Step 1: Merge the two pages -- keep "Trusted UK Providers" as the single destination
 
-Currently all 6 cards use identical white cards with grey borders and the same turquoise "View Profile" button. The plan is to give each card a branded top accent bar and branded "View Profile" button colour.
+- **Redirect `/providers` to `/trusted-providers`**: Change the `/providers` route to render a `<Navigate to="/trusted-providers" replace />` redirect instead of `AllProvidersPage`.
+- Keep the FeaturedProviders card style (branded top border, provider logo, ratings, tags) as the canonical look.
+- The page title remains "Trusted UK Providers".
 
-**Changes per card:**
+#### Step 2: Fix "Browse Available Tests" routing on provider profile pages
 
-1. Add a `brandColors` map in the component that maps each provider ID to `{ accent, buttonBg, buttonHover, borderColor }`.
+- In `ProviderProfilePage.tsx`, change the "Browse Available Tests" link from `/provider/${provider.id}/tests` (generic ProviderTestCatalogPage) to the correct provider-specific catalog route:
+  - Medichecks -> `/providers/medichecks`
+  - GoodBody -> `/providers/goodbody-clinic`
+  - Thriva -> `/providers/thriva`
+  - Randox -> `/providers/randox`
+  - Lola Health -> `/providers/lola-health`
+  - London Medical Lab -> `/providers/london-medical-laboratory`
+- Use a lookup map (same as `PROVIDER_CATALOG_ROUTES` from AllProvidersPage) to resolve the correct route.
 
-2. Apply a 4px coloured top border to each card using the provider's primary colour:
-   - Medichecks: pink `#E0005A` top border
-   - GoodBody: teal `#009B8D` top border
-   - Thriva: purple `#3D1152` top border
-   - Randox: blue `#2D4BA0` top border
-   - Lola Health: coral `#E8604C` top border
-   - London Medical Lab: blue `#1565C0` top border
+#### Step 3: Fix Medichecks pricing
 
-3. Change each "View Profile" button background to match the provider's primary brand colour instead of the generic platform pink.
+- The database has 58 Medichecks tests with NULL prices. The scraper needs to be re-run to capture these, but in the meantime:
+  - Update the `formatPrice` function in `MedichecksTestsCatalogPage.tsx` to show "Price on request" as a link to the provider's test URL (already partially done), but also add a visual distinction so it does not look like a bug.
+  - More importantly, trigger a scraper refresh or manually update the prices for popular tests. This is a data issue, not a code issue -- the code already handles null prices. The scraper (`run-all-scrapers` edge function) should be re-triggered to pull current prices.
 
-4. Update badge/tag styling per provider to use a lighter tint of their brand colour for the background.
+#### Step 4: Verify all button destinations and icon alignment
 
----
-
-### Part 2: ProviderProfilePage
-
-**File**: `src/pages/ProviderProfilePage.tsx`
-
-Currently the profile page uses a generic layout with the platform's primary colour for buttons and accents. The plan is to add a branded hero banner and buttons per provider.
-
-**Changes:**
-
-1. Create a `providerBranding` map (could live in a shared file like `src/data/providerBranding.ts`) containing:
-   - `primaryColor` (hex)
-   - `accentColor` (hex)
-   - `heroGradient` (CSS gradient string using their colours)
-   - `tagline` (from their website, e.g. "Unlock the Ultimate You" for Medichecks)
-
-2. **Hero section** (lines 98-147): Replace the generic white card with a gradient banner using the provider's brand colours as the background. Provider name and description rendered as white text on the branded gradient.
-
-3. **CTA buttons**: "Visit Website" and "Browse Available Tests" buttons styled with the provider's primary colour instead of the platform default.
-
-4. **Trust signals banner** (lines 149-189): Tint the background with a light version of the provider's primary colour instead of generic `primary/5`.
-
-5. **"Why Choose" section** (lines 354-398): Tint the feature cards with a light wash of the provider's accent colour.
+- Audit every button across FeaturedProviders cards, AllProvidersPage cards, ProviderProfilePage, and provider catalog pages to ensure:
+  - Icons use `inline-flex items-center gap-2` with `flex-shrink-0` on the icon and `<span>` around the text
+  - All "View Profile" buttons link to `/provider/{id}`
+  - All "Browse Tests" / "Browse Available Tests" buttons link to the correct provider-specific catalog
+  - All "Visit Website" buttons open the correct external URL
+  - All "Book" / external buttons open the provider's test-specific URL
 
 ---
 
-### New shared file
+### Technical Details
 
-**File**: `src/data/providerBranding.ts`
+**Files to modify:**
 
-A single source of truth mapping provider IDs to brand data:
+| File | Change |
+|---|---|
+| `src/routes/featureRoutes.tsx` | Replace `AllProvidersPage` import with a `Navigate` redirect from `/providers` to `/trusted-providers` |
+| `src/pages/ProviderProfilePage.tsx` | Add `PROVIDER_CATALOG_ROUTES` map; update "Browse Available Tests" link to use provider-specific route; ensure all button icons are inline |
+| `src/pages/MedichecksTestsCatalogPage.tsx` | Update `formatPrice` to show "Price on request" more clearly when price is null |
+| `src/components/sections/FeaturedProviders.tsx` | Verify "View Profile" links resolve correctly (currently uses `/provider/${provider.id.toLowerCase()}` which may not match for all providers) |
+
+**Route changes:**
 
 ```text
-medichecks:
-  primary: "#E0005A"
-  accent: "#1C1C3A"
-  tagline: "Unlock the Ultimate You"
-  gradient: "from-[#1C1C3A] to-[#E0005A]"
-
-goodbody-clinic:
-  primary: "#009B8D"
-  accent: "#1A2B4A"
-  tagline: "Know More. Live Better."
-  gradient: "from-[#009B8D] to-[#1A2B4A]"
-
-thriva:
-  primary: "#3D1152"
-  accent: "#E85D75"
-  tagline: "Know your body. Own your health."
-  gradient: "from-[#3D1152] to-[#E85D75]"
-
-randox-health:
-  primary: "#2D4BA0"
-  accent: "#FFD700"
-  tagline: "Your Health, Our Passion"
-  gradient: "from-[#2D4BA0] to-[#1a2d6b]"
-
-lola-health:
-  primary: "#E8604C"
-  accent: "#1B4B5A"
-  tagline: "Unlock Your Longevity"
-  gradient: "from-[#1B4B5A] to-[#E8604C]"
-
-london-medical-laboratory (LondonMedicalLab):
-  primary: "#1565C0"
-  accent: "#6A1B9A"
-  tagline: "Love My Life"
-  gradient: "from-[#1565C0] to-[#6A1B9A]"
+/providers         -> Redirect to /trusted-providers
+/trusted-providers -> TrustedProvidersPage (FeaturedProviders cards -- kept as-is)
+/provider/:id      -> ProviderProfilePage (individual profile)
+/providers/medichecks -> MedichecksTestsCatalogPage (test catalog)
+/providers/goodbody-clinic -> GoodbodyTestsCatalogPage
+...etc (unchanged)
 ```
 
----
+**FeaturedProviders card ID fix:**
 
-### Implementation sequence
+The FeaturedProviders cards use IDs like "Medichecks", "Goodbody", "Randox" etc. for the "View Profile" link. These need to map correctly to the provider profile route. Current link is `/provider/medichecks` which resolves via partial matching. This works but should be verified for all 6 providers.
 
-1. Create `src/data/providerBranding.ts` with the brand data map
-2. Update `FeaturedProviders.tsx` to import and apply per-card branding (border, buttons, tags)
-3. Update `ProviderProfilePage.tsx` to import and apply per-provider branding (hero, buttons, trust section)
+**Data note:**
 
-### What stays the same
-
-- The overall myhealth checkup platform chrome (header, footer, nav) stays in platform brand colours
-- The PartnerShowcaseGrid on the homepage is not affected (already has bespoke layouts for GoodBody and Medichecks)
-- Provider data in `detailedProviders.ts` is unchanged
-- Mobile-first responsive behaviour is preserved
+The Medichecks pricing gap (58/75 tests missing prices) is a database/scraper issue. The code change will improve the display for missing prices, but a scraper re-run is recommended to populate the actual prices.
 
