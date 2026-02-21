@@ -34,10 +34,7 @@ const PageHeading = ({
       <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight tracking-tight">
         <span className="text-[#081129] block mb-2">{title}</span>
         {accent && (
-          <span 
-            className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent inline-block" 
-            style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-          >
+          <span className="text-[#081129] inline-block">
             {accent}
           </span>
         )}
