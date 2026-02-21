@@ -34,13 +34,7 @@ const SectionHeading = ({
         titleClassName
       )}>
         <span>{title} </span>
-        <span 
-          className={cn(
-            "bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent",
-            gradientClassName
-          )}
-          style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-        >
+        <span className={cn(gradientClassName)}>
           {gradientText}
         </span>
       </h2>

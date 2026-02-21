@@ -53,7 +53,7 @@ const Header = ({
             <div className="py-0.5 flex items-center justify-between">
               {/* Logo - positioned at far left edge with mobile-first sizing */}
               <Link to="/" className="flex items-center flex-shrink-0 -ml-4 sm:-ml-6" style={{ overflow: 'visible' }}>
-                <AnimatedLogo className="h-12 xs:h-14 sm:h-16" />
+                <AnimatedLogo className="h-[72px] xs:h-[84px] sm:h-24" />
               </Link>
 
               {/* Navigation controls - positioned at far right edge */}
@@ -89,7 +89,7 @@ const Header = ({
             <div className="relative flex items-center justify-between py-0 lg:py-1">
               {/* Left: Logo - positioned at far left edge */}
               <Link to="/" className="flex items-center gap-2 flex-shrink-0 transition-all duration-200 hover:scale-105 -ml-12 lg:-ml-16 xl:-ml-20" style={{ overflow: 'visible' }}>
-                <AnimatedLogo className="h-24 lg:h-32 xl:h-36" />
+                <AnimatedLogo className="h-36 lg:h-48 xl:h-[216px]" />
               </Link>
 
               {/* Center: Tagline text */}

@@ -120,10 +120,7 @@ const TopConcernsSection = () => {
         <div className="text-center mb-12">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 leading-tight">
             <span className="text-[#081129]">Comprehensive Care for Your </span>
-            <span 
-              className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent"
-              style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-            >
+            <span className="text-[#081129]">
               Top Concerns
             </span>
           </h2>
