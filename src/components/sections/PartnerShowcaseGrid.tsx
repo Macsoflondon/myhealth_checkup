@@ -19,7 +19,7 @@ const PartnerShowcaseGrid = () => {
           </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
             <span className="text-white">Our Featured Partners of </span>
-            <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+            <span className="text-white">
               the Month
             </span>
           </h2>
@@ -135,7 +135,7 @@ const PartnerShowcaseGrid = () => {
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
               <span className="text-white">Find a Clinic </span>
-              <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+              <span className="text-white">
                 Near You
               </span>
             </h2>
@@ -191,7 +191,7 @@ const PartnerShowcaseGrid = () => {
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
               <span className="text-white">Take Control of </span>
-              <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+              <span className="text-white">
                 Your Health Today
               </span>
             </h2>
