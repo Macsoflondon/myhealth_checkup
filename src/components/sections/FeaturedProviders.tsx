@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, ExternalLink } from "lucide-react";
+import { Star, MapPin } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "react-router-dom";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
@@ -16,7 +16,7 @@ const FeaturedProviders = () => {
     id: "medichecks",
     name: "Medichecks",
     rating: 4.7,
-    reviews: "3,521",
+    reviews: "16,600+",
     description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
     location: "UK Wide",
     tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "UKAS Accredited"],
@@ -24,44 +24,44 @@ const FeaturedProviders = () => {
   }, {
     id: "goodbody",
     name: "Goodbody Clinic",
-    rating: 4.6,
-    reviews: "1,240",
+    rating: 4.7,
+    reviews: "3,150+",
     description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
-    location: "140+ clinics nationwide",
+    location: "UK Wide",
     tags: ["GP Follow-ups", "Wellness Profiles", "CQC Registered", "Nationwide"],
     website: "health.goodbodyclinic.com"
   }, {
     id: "thriva",
     name: "Thriva",
-    rating: 4.5,
-    reviews: "2,156",
+    rating: 4.4,
+    reviews: "2,800+",
     description: "Subscription-based home testing with digital dashboard and GP advice for ongoing health monitoring",
-    location: "Home Testing UK Wide",
+    location: "UK Wide",
     tags: ["Home Testing", "Digital Dashboard", "GP Advice", "Subscription"],
     website: "thriva.co"
   }, {
     id: "randox",
     name: "Randox Health",
-    rating: 4.8,
-    reviews: "1,847",
+    rating: 4.6,
+    reviews: "26,100+",
     description: "Global diagnostics company offering comprehensive health checks with UKAS accredited and FDA approved testing",
-    location: "London, Liverpool, Belfast",
+    location: "UK Wide",
     tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
     website: "randoxhealth.com"
   }, {
     id: "london-medical-laboratory",
     name: "London Medical Laboratory",
-    rating: 4.4,
-    reviews: "892",
+    rating: 4.5,
+    reviews: "3,250+",
     description: "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation",
-    location: "London & Partners",
+    location: "UK Wide",
     tags: ["UKAS Accredited", "Professional Lab", "Comprehensive Testing", "ISO 15189"],
     website: "londonmedicallaboratory.com"
   }, {
     id: "lola-health",
     name: "Lola Health",
-    rating: 4.3,
-    reviews: "567",
+    rating: 4.5,
+    reviews: "143",
     description: "Modern health testing platform focused on women's health and wellness with innovative approaches",
     location: "UK Wide",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
@@ -81,7 +81,7 @@ const FeaturedProviders = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featuredProviderData.map(provider => {
             const brand = getBranding(provider.name);
             return (
@@ -90,14 +90,14 @@ const FeaturedProviders = () => {
                 className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200 overflow-hidden"
                 style={{ borderTop: brand ? `4px solid ${brand.primary}` : undefined }}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-2">
+                <CardContent className="p-8">
+                  <div className="flex items-start gap-5 mb-5">
+                    <div className="w-24 h-24 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-3">
                       <ProviderLogo provider={provider.name} className="w-full h-full object-contain" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-lg font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
+                        <h3 className="text-xl font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
                         <SaveProviderButton
                           isSaved={isProviderSaved(provider.id)}
                           onToggle={() => toggleSaveProvider(provider.id, provider.name)}
@@ -111,11 +111,11 @@ const FeaturedProviders = () => {
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                  <p className="text-sm text-gray-600 mb-5">
                     {provider.description}
                   </p>
 
-                  <div className="flex items-center text-sm text-gray-500 mb-4">
+                  <div className="flex items-center text-sm text-gray-500 mb-5">
                     <MapPin className="w-4 h-4 mr-1.5 flex-shrink-0" />
                     <span className="truncate">{provider.location}</span>
                   </div>
@@ -136,7 +136,7 @@ const FeaturedProviders = () => {
                     ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex flex-row gap-2">
                     <Button 
                       variant="default" 
                       size="sm" 
@@ -150,10 +150,9 @@ const FeaturedProviders = () => {
                         View Profile
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="sm" className="flex-shrink-0 min-h-[40px]" asChild>
-                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                        <span>Visit Website</span>
-                        <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                    <Button variant="outline" size="sm" className="flex-1" asChild>
+                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
+                        Visit Website
                       </a>
                     </Button>
                   </div>
