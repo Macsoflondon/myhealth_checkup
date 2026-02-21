@@ -13,7 +13,7 @@ const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
   const featuredProviderData = [{
-    id: "Medichecks",
+    id: "medichecks",
     name: "Medichecks",
     rating: 4.7,
     reviews: "3,521",
@@ -22,7 +22,7 @@ const FeaturedProviders = () => {
     tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "UKAS Accredited"],
     website: "medichecks.com"
   }, {
-    id: "Goodbody",
+    id: "goodbody",
     name: "Goodbody Clinic",
     rating: 4.6,
     reviews: "1,240",
@@ -31,7 +31,7 @@ const FeaturedProviders = () => {
     tags: ["GP Follow-ups", "Wellness Profiles", "CQC Registered", "Nationwide"],
     website: "health.goodbodyclinic.com"
   }, {
-    id: "Thriva",
+    id: "thriva",
     name: "Thriva",
     rating: 4.5,
     reviews: "2,156",
@@ -40,7 +40,7 @@ const FeaturedProviders = () => {
     tags: ["Home Testing", "Digital Dashboard", "GP Advice", "Subscription"],
     website: "thriva.co"
   }, {
-    id: "Randox",
+    id: "randox",
     name: "Randox Health",
     rating: 4.8,
     reviews: "1,847",
@@ -49,7 +49,7 @@ const FeaturedProviders = () => {
     tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
     website: "randoxhealth.com"
   }, {
-    id: "LondonMedicalLab",
+    id: "londonmedicallab",
     name: "London Medical Laboratory",
     rating: 4.4,
     reviews: "892",
@@ -58,7 +58,7 @@ const FeaturedProviders = () => {
     tags: ["UKAS Accredited", "Professional Lab", "Comprehensive Testing", "ISO 15189"],
     website: "londonmedicallaboratory.com"
   }, {
-    id: "Lola",
+    id: "lola",
     name: "Lola Health",
     rating: 4.3,
     reviews: "567",
