@@ -46,7 +46,7 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
           
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
             <span className="text-white">Trusted Health </span>
-            <span className="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent">
+            <span className="text-white">
               Comparison Platform
             </span>
           </h2>
