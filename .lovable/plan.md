@@ -1,69 +1,40 @@
 
 
-## Remove Gradient Text from Headings and Enlarge Header Logo
+## Add Badge and Increase Hero Headline Size
 
-### What's changing
+### Gradient heading verification
+All turquoise-to-pink gradient headings have been successfully removed from every section. No remaining instances found anywhere in the codebase.
 
-1. **Remove turquoise-to-pink gradient from all H1 and H2 headings** -- the gradient words will match the rest of the title (white on dark backgrounds, navy on light backgrounds)
-2. **Slogans stay untouched** -- the "Your Health. Your Choice. One Trusted Platform!" tagline in the header keeps its turquoise/pink/white colouring
-3. **Header logo increased by 50%** on both mobile and desktop
+### Changes to Hero.tsx
 
----
+**1. Add "UK's #1 Health Test Comparison Platform" badge**
+- Place above the H1 headline
+- Styled as a pill/capsule badge: white background, pink (#e70d69) border, pink text, rounded-full
+- Include a sparkle icon (Sparkles from lucide-react) in turquoise to the left of the text
+- Centred above the headline with a small bottom margin
 
-### 1. Core heading components (2 files)
+**2. Increase headline font size**
+- Current sizes: `text-[0.85rem] xs:text-[1.05rem] sm:text-xl md:text-[1.7rem] lg:text-[2.5rem] xl:text-[2.75rem]`
+- New sizes (roughly 40-50% larger to match the reference image): `text-[1.1rem] xs:text-[1.35rem] sm:text-2xl md:text-[2.2rem] lg:text-[3.25rem] xl:text-[3.75rem]`
+- This brings the headline much closer to the large, bold style shown in the reference screenshot
 
-**`src/components/ui/page-heading.tsx`** (H1)
-- Remove the gradient styling from the `accent` span
-- Render the accent text in the same colour as the title (`text-[#081129]`)
-- On dark backgrounds, pages already override with `[&_span]:text-white` (e.g. HeroSection), so it will inherit correctly
+### Technical details
 
-**`src/components/ui/section-heading.tsx`** (H2)
-- Remove the gradient styling from the `gradientText` span
-- Render it in the same colour as the `title` text
-- Since SectionHeading is used on both light backgrounds (navy text) and dark backgrounds (white text), add an optional `dark` prop or simply inherit colour from the parent -- simplest approach is to remove the gradient classes and let the text inherit the same styling as the title
+**File**: `src/components/sections/Hero.tsx`
 
----
+Badge markup (inserted before the H1):
+```tsx
+<div className="flex justify-center mb-3 sm:mb-4">
+  <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#e70d69] rounded-full text-[#e70d69] font-semibold text-sm sm:text-base shadow-sm">
+    <Sparkles className="w-4 h-4 text-[#22c0d4]" />
+    UK's #1 Health Test Comparison Platform
+  </span>
+</div>
+```
 
-### 2. Inline gradient headings (2 files)
+H1 class update:
+- Replace existing font size classes with the larger responsive sizes listed above
 
-**`src/components/sections/MostPopularTestsSection.tsx`** (line 93-98)
-- Remove gradient classes from "Providers" span
-- Apply `text-[#081129]` to match the rest of the heading
-
-**`src/components/sections/TopConcernsSection.tsx`** (line 123-128)
-- Remove gradient classes from "Top Concerns" span
-- Apply `text-[#081129]` to match the rest of the heading
-
----
-
-### 3. Header logo 50% larger (1 file)
-
-**`src/components/layout/Header.tsx`**
-
-Current desktop logo sizes: `h-24 lg:h-32 xl:h-36`
-After 50% increase: `h-36 lg:h-48 xl:h-[54px]` -- converting: h-24 = 96px to 144px (h-36), h-32 = 128px to 192px (h-48), h-36 = 144px to 216px (h-[216px])
-
-Current mobile logo sizes: `h-12 xs:h-14 sm:h-16`
-After 50% increase: `h-[72px] xs:h-[84px] sm:h-24` -- converting: h-12 = 48px to 72px, h-14 = 56px to 84px, h-16 = 64px to 96px (h-24)
-
----
-
-### Not touched (slogans)
-
-These gradient/coloured slogans remain exactly as they are:
-- Header tagline: "Your Health." (turquoise) / "Your Choice." (pink) / "One Trusted Platform!" (white)
-- MissionSection banner: "Your health is your greatest asset!"
-- Any other decorative slogan text
-
----
-
-### Files modified
-
-| File | Change |
-|---|---|
-| `src/components/ui/page-heading.tsx` | Remove gradient from accent text |
-| `src/components/ui/section-heading.tsx` | Remove gradient from gradientText |
-| `src/components/sections/MostPopularTestsSection.tsx` | Remove inline gradient from "Providers" |
-| `src/components/sections/TopConcernsSection.tsx` | Remove inline gradient from "Top Concerns" |
-| `src/components/layout/Header.tsx` | Increase logo height classes by 50% |
+Import change:
+- Add `Sparkles` to the lucide-react import
 
