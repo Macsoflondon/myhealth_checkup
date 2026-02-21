@@ -12,6 +12,15 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getBranding } from "@/data/providerBranding";
 
+const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
+  'goodbody-clinic': '/providers/goodbody-clinic',
+  'medichecks': '/providers/medichecks',
+  'thriva': '/providers/thriva',
+  'randox-health': '/providers/randox',
+  'lola-health': '/providers/lola-health',
+  'london-medical-laboratory': '/providers/london-medical-laboratory',
+};
+
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
   
@@ -162,7 +171,7 @@ const ProviderProfilePage = () => {
                   className="min-h-[48px] w-full sm:w-auto inline-flex items-center"
                   style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
                 >
-                  <Link to={`/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
+                  <Link to={PROVIDER_CATALOG_ROUTES[provider.id] || `/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
                     <TestTube className="w-4 h-4 flex-shrink-0" />
                     <span>Browse Available Tests</span>
                   </Link>

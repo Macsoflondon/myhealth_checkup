@@ -137,7 +137,7 @@ const MedichecksTestsCatalogPage = () => {
 
   const formatPrice = (price: number | null, url: string | null) => {
     if (!price) {
-      return { text: 'View on provider site', isLink: true, url };
+      return { text: 'Price on request', isLink: true, url };
     }
     return { text: `£${price.toFixed(2)}`, isLink: false, url: null };
   };
@@ -293,9 +293,10 @@ const MedichecksTestsCatalogPage = () => {
                                 href={priceInfo.url} 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="text-lg font-semibold text-primary hover:underline flex items-center gap-1"
+                                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary hover:underline"
                               >
-                                {priceInfo.text}
+                                <ExternalLink className="h-3.5 w-3.5 flex-shrink-0" />
+                                <span>{priceInfo.text}</span>
                               </a>
                             );
                           }
