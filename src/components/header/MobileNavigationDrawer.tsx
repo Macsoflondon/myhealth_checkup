@@ -392,8 +392,8 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         <div 
                           className={cn(
                             "overflow-hidden transition-all duration-300 ease-out",
-                            expandedSections.has(item.name) 
-                              ? "max-h-[500px] opacity-100" 
+                          expandedSections.has(item.name) 
+                              ? "max-h-[800px] opacity-100" 
                               : "max-h-0 opacity-0"
                           )}
                         >
@@ -479,7 +479,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                       className={cn(
                         "overflow-hidden transition-all duration-300 ease-out",
                         expandedSections.has(section.title) 
-                          ? "max-h-[400px] opacity-100" 
+                          ? "max-h-[800px] opacity-100" 
                           : "max-h-0 opacity-0"
                       )}
                     >

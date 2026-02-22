@@ -18,37 +18,6 @@ export function usePerformanceOptimization() {
       }
       const isMobile = isMobileRef.current;
       
-      // Preload critical images (smaller versions for mobile)
-      const criticalImages = [
-        '/lovable-uploads/5cc87ed3-fbf6-4b5c-8010-c4232a260a13.png',
-        '/lovable-uploads/a4949588-cff7-48ae-ba93-d0040f1dd838.png'
-      ];
-
-      criticalImages.forEach(src => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = src;
-        if (isMobile) {
-          link.media = '(max-width: 768px)';
-        }
-        document.head.appendChild(link);
-      });
-
-      // Preload critical CSS and fonts
-      const criticalResources = [
-        { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap', as: 'style' }
-      ];
-
-      criticalResources.forEach(({ href, as }) => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = as;
-        link.href = href;
-        link.crossOrigin = 'anonymous';
-        document.head.appendChild(link);
-      });
-
       // Enable resource hints for better performance
       const dnsPreconnects = ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
       dnsPreconnects.forEach(href => {

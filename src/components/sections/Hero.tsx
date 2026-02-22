@@ -69,6 +69,9 @@ const Hero = () => {
           alt=""
           aria-hidden="true"
           loading="eager"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         {/* White overlay for readability */}
@@ -83,7 +86,7 @@ const Hero = () => {
               </span>
             </div>
             {/* Headline - Clear promise in plain language */}
-            <h1 className="max-w-3xl lg:max-w-5xl mx-auto text-[1.1rem] xs:text-[1.35rem] sm:text-2xl md:text-[2.2rem] lg:text-[2.75rem] xl:text-[3.25rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
+            <h1 className="max-w-[320px] sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.05rem] xs:text-[1.35rem] sm:text-2xl md:text-[2.2rem] lg:text-[2.5rem] xl:text-[2.75rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="text-brand-navy">Compare the UK's leading private</span>
               <br />
               <span className="text-brand-navy">health test providers - </span>
