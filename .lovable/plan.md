@@ -1,40 +1,43 @@
 
 
-## Fix Hero Headline Line Breaks
+## Complete Platform Optimisation
 
-### Problem
-The headline is wrapping awkwardly at the current font sizes, causing "private" to drop onto its own line, creating 4 lines instead of the intended 3.
+### 1. Hero Headline Font Size Refinement
+**File**: `src/components/sections/Hero.tsx`
+- Reduce desktop sizes: `lg:text-[2.5rem] xl:text-[2.75rem]` (from current `lg:text-[2.75rem] xl:text-[3.25rem]`)
+- Reduce mobile base size: `text-[1.05rem]` (from `text-[1.1rem]`)
+- Add `max-w-[320px] sm:max-w-none` to the H1 for controlled mobile wrapping
 
-### Solution
-Restructure the H1 into 3 explicit lines with `<br />` tags:
+### 2. CLS (Layout Shift) Fix
+**File**: `src/components/sections/Hero.tsx`
+- Add `width={1920} height={1080} fetchpriority="high"` to the hero background image
 
-- **Line 1**: "Compare the UK's leading private" (navy)
-- **Line 2**: "health test providers -" (navy)
-- **Line 3**: "All in one place!" (pink)
+### 3. Wasted Preloads Cleanup
+**File**: `index.html`
+- Remove the two unused `hero-bg-pink-tubes` preload links (lines 45-46)
 
-### Changes in `src/components/sections/Hero.tsx`
+**File**: `src/hooks/usePerformanceOptimization.ts`
+- Remove unused Inter font preload
+- Remove two unused image preloads
 
-Replace the current H1 content:
-```tsx
-<span className="text-brand-navy">Compare the UK's leading private</span>
-<br />
-<span className="text-brand-navy">health test providers - </span><span className="text-brand-pink">All in one place!</span>
-```
+### 4. Deprecated Meta Tag
+**File**: `index.html` - Change `apple-mobile-web-app-capable` to `mobile-web-app-capable`
+**File**: `src/pages/Index.tsx` - Same fix in Helmet
 
-With:
-```tsx
-<span className="text-brand-navy">Compare the UK's leading private</span>
-<br />
-<span className="text-brand-navy">health test providers - </span>
-<br />
-<span className="text-brand-pink">All in one place!</span>
-```
+### 5. Mobile Navigation Drawer Fix
+**File**: `src/components/header/MobileNavigationDrawer.tsx`
+- Increase `max-h-[500px]` to `max-h-[800px]` on primary nav dropdowns
+- Increase `max-h-[400px]` to `max-h-[800px]` on "More" section dropdowns
 
-Also slightly reduce the largest font sizes to prevent "Compare the UK's leading private" from wrapping on standard desktop widths. Adjust from `lg:text-[3.25rem] xl:text-[3.75rem]` down to `lg:text-[2.75rem] xl:text-[3.25rem]` so the first line fits comfortably on one line.
+---
 
-### File modified
+### Files Changed
 
-| File | Change |
+| File | Changes |
 |---|---|
-| `src/components/sections/Hero.tsx` | Add `<br />` before "All in one place!", reduce lg/xl font sizes slightly |
+| `src/components/sections/Hero.tsx` | Reduce lg/xl font sizes, add mobile max-w, add image dimensions |
+| `index.html` | Remove 2 unused preloads, fix deprecated meta tag |
+| `src/hooks/usePerformanceOptimization.ts` | Remove unused font and image preloads |
+| `src/pages/Index.tsx` | Fix deprecated meta tag |
+| `src/components/header/MobileNavigationDrawer.tsx` | Increase max-h on expandable dropdowns |
 
