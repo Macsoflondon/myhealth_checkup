@@ -97,18 +97,18 @@ const Hero = () => {
             {/* Streamlined — mission text and badges removed, content lives in MissionSection */}
             
             {/* Primary & Secondary CTAs - Immediate action path */}
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">
+            <div className="flex flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">
               <Button 
                 size="default"
                 onClick={() => navigate('/compare')}
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-md px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
                 Compare blood tests
               </Button>
               <Button 
                 size="default"
                 onClick={() => navigate('/assisted-test-finder')}
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-md px-4 sm:px-6 md:px-8 text-sm sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
                 Find the right test for you
               </Button>
