@@ -50,13 +50,13 @@ const Header = ({
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
           <div className="container mx-auto px-3 sm:px-4">
             {/* Single row: Logo + Tagline left, Nav controls right */}
-            <div className="py-1 flex items-center justify-between">
+            <div className="py-1 flex items-center justify-between gap-2">
               {/* Left: Logo + Tagline inline */}
-              <div className="flex items-center gap-1.5 flex-shrink min-w-0 -ml-4 sm:-ml-6">
+              <div className="flex items-center gap-1 flex-shrink min-w-0 -ml-3 sm:-ml-6">
                 <Link to="/" className="flex items-center flex-shrink-0" style={{ overflow: 'visible' }}>
-                  <AnimatedLogo className="h-[56px] xs:h-[64px] sm:h-20" />
+                  <AnimatedLogo className="h-[48px] xs:h-[56px] sm:h-20" />
                 </Link>
-                <p className="text-[8px] xs:text-[9px] sm:text-xs font-bold tracking-wide whitespace-nowrap leading-tight">
+                <p className="text-[6.5px] xs:text-[7.5px] sm:text-xs font-bold tracking-wide whitespace-nowrap leading-tight">
                   <span className="text-[#22c0d4]">Your </span>
                   <span className="text-[#e70d69]">health! </span>
                   <span className="text-[#22c0d4]">Your </span>
@@ -68,7 +68,7 @@ const Header = ({
               </div>
 
               {/* Right: Navigation controls */}
-              <nav className="flex items-center gap-0.5 xs:gap-1 -mr-4 sm:-mr-6 flex-shrink-0" aria-label="User controls">
+              <nav className="flex items-center gap-1 -mr-3 sm:-mr-6 flex-shrink-0" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu isMobile />
                 <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
