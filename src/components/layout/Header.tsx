@@ -45,34 +45,38 @@ const Header = ({
   }, []);
   if (isMobile) {
     return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
+      <header className={cn("sticky top-0 z-50 bg-white shadow-md", className)}>
           {/* Top gradient divider */}
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
           <div className="container mx-auto px-3 sm:px-4">
-            {/* Top row: Logo + Navigation controls */}
-            <div className="py-0.5 flex items-center justify-between">
-              {/* Logo - positioned at far left edge with mobile-first sizing */}
-              <Link to="/" className="flex items-center flex-shrink-0 -ml-4 sm:-ml-6" style={{ overflow: 'visible' }}>
-                <AnimatedLogo className="h-[72px] xs:h-[84px] sm:h-24" />
-              </Link>
+            {/* Single row: Logo + Tagline left, Nav controls right */}
+            <div className="py-1 flex items-center justify-between">
+              {/* Left: Logo + Tagline inline */}
+              <div className="flex items-center gap-1.5 flex-shrink min-w-0 -ml-4 sm:-ml-6">
+                <Link to="/" className="flex items-center flex-shrink-0" style={{ overflow: 'visible' }}>
+                  <AnimatedLogo className="h-[56px] xs:h-[64px] sm:h-20" />
+                </Link>
+                <p className="text-[8px] xs:text-[9px] sm:text-xs font-bold tracking-wide whitespace-nowrap leading-tight">
+                  <span className="text-[#22c0d4]">Your </span>
+                  <span className="text-[#e70d69]">health! </span>
+                  <span className="text-[#22c0d4]">Your </span>
+                  <span className="text-[#e70d69]">choice! </span>
+                  <span className="text-brand-navy">One </span>
+                  <span className="text-[#22c0d4]">trusted </span>
+                  <span className="text-brand-navy">platform!</span>
+                </p>
+              </div>
 
-              {/* Navigation controls - positioned at far right edge */}
-              <nav className="flex items-center gap-0.5 xs:gap-1 -mr-4 sm:-mr-6" aria-label="User controls">
+              {/* Right: Navigation controls */}
+              <nav className="flex items-center gap-0.5 xs:gap-1 -mr-4 sm:-mr-6 flex-shrink-0" aria-label="User controls">
                 <LanguageSwitcher />
                 <UserMenu isMobile />
                 <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
               </nav>
             </div>
-
-            {/* Bottom row: Tagline - full width, centred */}
-            <div className="pb-0.5 flex justify-center">
-              <p className="text-[10px] xs:text-xs sm:text-sm font-bold tracking-wide text-center whitespace-nowrap">
-                <span className="text-[#22c0d4]">Your Health.</span>{" "}
-                <span className="text-[#e70d69]">Your Choice.</span>{" "}
-                <span className="text-white">One Trusted Platform!</span>
-              </p>
-            </div>
           </div>
+          {/* Bottom gradient divider */}
+          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
           
           {/* Mobile Navigation Drawer */}
           <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
