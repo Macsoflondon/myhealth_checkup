@@ -17,9 +17,7 @@ import styles from "./Header.module.css";
 interface HeaderProps {
   className?: string;
 }
-const Header = ({
-  className
-}: HeaderProps) => {
+const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const location = useLocation();
@@ -40,12 +38,13 @@ const Header = ({
       setIsToolbarSticky(window.scrollY > 120);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   if (isMobile) {
-    return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50 bg-white shadow-md", className)}>
+    return (
+      <ErrorBoundary>
+        <header className={cn("sticky top-0 z-50 bg-white shadow-md", className)}>
           {/* Top gradient divider */}
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
           <div className="container mx-auto px-3 sm:px-4">
@@ -70,60 +69,58 @@ const Header = ({
           </div>
           {/* Bottom gradient divider */}
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-          
+
           {/* Mobile Navigation Drawer */}
           <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         </header>
-      </ErrorBoundary>;
+      </ErrorBoundary>
+    );
   }
   // Toolbar always sticky
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-2 shadow-sm", styles.toolbar);
-  return <ErrorBoundary>
-      <header className={cn("sticky top-0 z-50", className)} style={{ overflow: 'visible' }}>
+  return (
+    <ErrorBoundary>
+      <header className={cn("sticky top-0 z-50", className)} style={{ overflow: "visible" }}>
         {/* Main header bar - Logo and User Controls */}
         <div className="bg-[#081129]">
-          <div className="container mx-auto px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center py-3 lg:py-4">
-              {/* Left spacer - matches right section width */}
-              <div className="flex-1" />
-
-              {/* Center: Combined logo with tagline */}
-              <Link to="/" className="flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-105">
+          <div className="px-4 lg:px-8 xl:px-12">
+            <div className="flex items-center justify-between py-2 lg:py-3">
+              {/* Left: Combined logo with tagline */}
+              <Link to="/" className="flex items-center flex-shrink-0 transition-all duration-200 hover:scale-105">
                 <img
                   src={logoWithTagline}
                   alt="myhealth checkup - Your Health. Your Choice. One Trusted Platform!"
-                  className="h-40 lg:h-48 xl:h-56 w-auto object-contain"
+                  className="h-20 lg:h-24 xl:h-28 w-auto object-contain"
                 />
               </Link>
 
-              {/* Right: Controls centered between logo end and edge */}
-              <div className="flex-1 flex items-center justify-center">
-                <nav className="flex items-center gap-3" aria-label="User controls">
-                  <LanguageSwitcher />
-                  <UserMenu />
-                </nav>
-              </div>
+              {/* Right: Controls */}
+              <nav className="flex items-center gap-3" aria-label="User controls">
+                <LanguageSwitcher />
+                <UserMenu />
+              </nav>
             </div>
           </div>
         </div>
 
         {/* Top gradient divider for toolbar */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-        <div 
+        <div
           className={cn(
-            toolbarClasses, 
+            toolbarClasses,
             "sticky top-0 z-50 transition-all duration-300",
-            isToolbarSticky && "shadow-lg animate-fade-in"
-          )} 
-          style={{ overflow: 'visible' }}
+            isToolbarSticky && "shadow-lg animate-fade-in",
+          )}
+          style={{ overflow: "visible" }}
         >
-          <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: 'visible' }}>
+          <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: "visible" }}>
             <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
           </div>
         </div>
         {/* Bottom gradient divider for toolbar */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </header>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
 export default Header;
