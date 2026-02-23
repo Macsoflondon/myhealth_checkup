@@ -9,13 +9,16 @@ export const detailedProviders = [
     accreditation: "UKAS-accredited laboratories (ISO 15189)",
     partnerLabs: "TDL (The Doctors Laboratory), Eurofins",
     labAccreditation: "UKAS ISO 15189",
-    coreServices: "300+ blood tests: general health, hormones, vitamins, thyroid, longevity, sports performance, fertility, allergy testing",
+    coreServices:
+      "300+ blood tests: general health, hormones, vitamins, thyroid, longevity, sports performance, fertility, allergy testing",
     tests: "300+ comprehensive blood tests available",
     sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
     turnaroundTime: "2 working days (48 hours from sample receipt)",
     customerReviews: "4.7/5 (Feefo, 16,600+ reviews)",
-    keyDifferentiators: "UK's leading home blood test provider, doctor-reviewed results with personalised insights, extensive test catalogue covering 12+ health categories, flexible sample collection options",
-    description: "Medichecks is the UK's leading provider of at-home blood testing services, offering over 300 comprehensive tests across general health, hormones, vitamins, thyroid function, sports performance, and specialised panels. All tests use UKAS-accredited laboratories and include doctor-reviewed results with personalised health insights delivered through an intuitive online platform."
+    keyDifferentiators:
+      "UK's leading home blood test provider, doctor-reviewed results with personalised insights, extensive test catalogue covering 12+ health categories, flexible sample collection options",
+    description:
+      "Medichecks is the UK's leading provider of at-home blood testing services, offering over 300 comprehensive tests across general health, hormones, vitamins, thyroid function, sports performance, and specialised panels. All tests use UKAS-accredited laboratories and include doctor-reviewed results with personalised health insights delivered through an intuitive online platform.",
   },
   {
     id: "thriva",
@@ -30,7 +33,7 @@ export const detailedProviders = [
     turnaroundTime: "2 days (48 hours)",
     customerReviews: "4.4/5 (Trustpilot, 2,800+ reviews)",
     keyDifferentiators: "Subscription model, personalized health insights, app integration",
-    description: "Subscription-based home testing with digital dashboard and GP advice"
+    description: "Subscription-based home testing with digital dashboard and GP advice",
   },
   {
     id: "randox-health",
@@ -46,7 +49,7 @@ export const detailedProviders = [
     turnaroundTime: "2-5 working days",
     customerReviews: "4.6/5 (Trustpilot, 26,100+ reviews)",
     keyDifferentiators: "Comprehensive health packages, global laboratory network",
-    description: "Global diagnostics company offering comprehensive health checks"
+    description: "Global diagnostics company offering comprehensive health checks",
   },
   {
     id: "blue-horizon",
@@ -58,7 +61,7 @@ export const detailedProviders = [
     turnaroundTime: "2-5 days",
     customerReviews: "4.2/5 (Trustpilot, 320+ reviews)",
     keyDifferentiators: "Multiple sample collection options, doctor-reviewed results",
-    description: "Comprehensive blood testing with flexible collection options"
+    description: "Comprehensive blood testing with flexible collection options",
   },
   {
     id: "private-blood-tests-spire",
@@ -70,7 +73,7 @@ export const detailedProviders = [
     turnaroundTime: "1-3 days",
     customerReviews: "4.6/5 (Trustpilot, 200+ reviews)",
     keyDifferentiators: "Access to Spire hospitals, free GP referrals, VIP service",
-    description: "Premium testing through Spire hospital network"
+    description: "Premium testing through Spire hospital network",
   },
   {
     id: "superdrug-health",
@@ -83,7 +86,7 @@ export const detailedProviders = [
     customerReviews: "4.9/5 (Trustpilot, 10,500+ reviews)",
     keyDifferentiators: "Nationwide presence, accessible locations, competitive pricing",
     appointments: "2,000+ appointments/week",
-    description: "Convenient high-street health testing services"
+    description: "Convenient high-street health testing services",
   },
   {
     id: "bupa",
@@ -95,7 +98,7 @@ export const detailedProviders = [
     turnaroundTime: "Varies",
     customerReviews: "4.4/5 (Trustpilot, 39,400+ reviews)",
     keyDifferentiators: "Established healthcare provider, comprehensive health services",
-    description: "Major healthcare provider with comprehensive diagnostic services"
+    description: "Major healthcare provider with comprehensive diagnostic services",
   },
   {
     id: "nuffield-health",
@@ -107,7 +110,7 @@ export const detailedProviders = [
     turnaroundTime: "1-3 days",
     customerReviews: "3.4/5 (Trustpilot, 3,000+ reviews)",
     keyDifferentiators: "Self-pay service, wide range of tests, hospital network",
-    description: "Hospital network offering direct-pay pathology services"
+    description: "Hospital network offering direct-pay pathology services",
   },
   {
     id: "london-blood-tests",
@@ -122,7 +125,7 @@ export const detailedProviders = [
     turnaroundTime: "1-2 days",
     customerReviews: "4.5/5 (Trustpilot, 14 reviews)",
     keyDifferentiators: "Same-day appointments, home visit options, competitive pricing",
-    description: "Fast turnaround London-based testing service"
+    description: "Fast turnaround London-based testing service",
   },
   {
     id: "youth-revisited",
@@ -137,7 +140,7 @@ export const detailedProviders = [
     turnaroundTime: "2-4 days",
     customerReviews: "Not yet rated on Trustpilot",
     keyDifferentiators: "Specialized in wellness and longevity, personalized health packages",
-    description: "Wellness-focused health testing and optimization"
+    description: "Wellness-focused health testing and optimization",
   },
   {
     id: "manual-trt",
@@ -152,7 +155,7 @@ export const detailedProviders = [
     turnaroundTime: "2-4 days",
     customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
     keyDifferentiators: "Subscription-based TRT, physician-led support, repeat blood testing for optimisation",
-    description: "Specialized men's health and TRT monitoring"
+    description: "Specialized men's health and TRT monitoring",
   },
   {
     id: "manual-hrt",
@@ -167,7 +170,7 @@ export const detailedProviders = [
     turnaroundTime: "2-3 days",
     customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
     keyDifferentiators: "Menopause support tools, app tracking, ongoing HRT monitoring, future integration",
-    description: "Women's hormone health and menopause support"
+    description: "Women's hormone health and menopause support",
   },
   {
     id: "functional-dx",
@@ -181,8 +184,9 @@ export const detailedProviders = [
     sampleCollection: "Clinic-based via practitioner referral",
     turnaroundTime: "5-7 days",
     customerReviews: "Not yet rated on Trustpilot (practitioner-only service)",
-    keyDifferentiators: "Comprehensive biomarker panels (100+), used by integrative practitioners, practitioner-only access",
-    description: "Advanced functional medicine testing for practitioners"
+    keyDifferentiators:
+      "Comprehensive biomarker panels (100+), used by integrative practitioners, practitioner-only access",
+    description: "Advanced functional medicine testing for practitioners",
   },
   {
     id: "lola-health",
@@ -191,31 +195,37 @@ export const detailedProviders = [
     phone: "020 3870 3444",
     email: "hello@lolahealth.com",
     accreditation: "NHS-accredited laboratories (ISO 15189)",
-    coreServices: "70+ biomarkers across comprehensive health panels, at-home phlebotomy service, individual biomarker testing",
+    coreServices:
+      "70+ biomarkers across comprehensive health panels, at-home phlebotomy service, individual biomarker testing",
     tests: "40+ blood tests including comprehensive panels and individual biomarkers",
     sampleCollection: "Dedicated phlebotomist service for at-home venous blood collection",
     turnaroundTime: "2-4 working days",
     customerReviews: "4.7/5 (Trustpilot, 140+ reviews)",
-    keyDifferentiators: "At-home phlebotomy service (not finger-prick), doctor-reviewed results, app-powered insights, comprehensive and individual testing options",
-    description: "Modern health testing platform with at-home professional phlebotomy service, offering both comprehensive health panels (Core Health 45, Peak Insights) and individual biomarkers from £11.88. All results reviewed by doctors and delivered via app with personalized insights."
+    keyDifferentiators:
+      "At-home phlebotomy service (not finger-prick), doctor-reviewed results, app-powered insights, comprehensive and individual testing options",
+    description:
+      "Modern health testing platform with at-home professional phlebotomy service, offering both comprehensive health panels (Core Health 45, Peak Insights) and individual biomarkers from £11.88. All results reviewed by doctors and delivered via app with personalized insights.",
   },
   {
     id: "goodbody-clinic",
     name: "GoodBody Clinic",
-    website: "https://health.goodbodyclinic.com",
-    phone: "020 7099 6657",
-    email: "info@goodbodyclinic.com",
+    website: "https://goodbodyclinic.com",
+    phone: "01225 444 144",
+    email: "clinic@goodbodywellness.co.uk",
     accreditation: "CQC-registered, UKAS ISO 15189 accredited laboratories",
     labAccreditation: "UKAS ISO 15189",
     clinics: "Multiple pharmacy clinic locations across London",
-    coreServices: "Comprehensive venous blood testing: general health, hormones, fertility, vitamins, thyroid, sexual health, autoimmune, diabetes screening",
+    coreServices:
+      "Comprehensive venous blood testing: general health, hormones, fertility, vitamins, thyroid, sexual health, autoimmune, diabetes screening",
     tests: "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
     sampleCollection: "Professional venous blood draw at pharmacy clinic locations (no finger-prick)",
     turnaroundTime: "2-3 working days",
     customerReviews: "4.7/5 (Trustpilot, 3,150+ reviews)",
-    keyDifferentiators: "Professional venous blood collection, pharmacy-based clinic network, UKAS-accredited lab processing, competitive pricing, convenient London locations, walk-in and pre-booked appointments",
+    keyDifferentiators:
+      "Professional venous blood collection, pharmacy-based clinic network, UKAS-accredited lab processing, competitive pricing, convenient London locations, walk-in and pre-booked appointments",
     partnerRegulation: "GPhC-regulated pharmacy partners",
-    description: "Premium health clinic offering comprehensive venous blood testing at pharmacy locations across London. GoodBody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests."
+    description:
+      "Premium health clinic offering comprehensive venous blood testing at pharmacy locations across London. GoodBody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests.",
   },
   {
     id: "onedaytests",
@@ -233,7 +243,7 @@ export const detailedProviders = [
     turnaroundTime: "Same-day to 24 hours",
     customerReviews: "4.8/5 (Trustpilot, 3,300+ reviews)",
     keyDifferentiators: "Ultra-fast turnaround, central London clinics, real-time booking",
-    description: "Walk-in clinics with rapid results, many available same day"
+    description: "Walk-in clinics with rapid results, many available same day",
   },
   {
     id: "check-my-body-health",
@@ -245,7 +255,7 @@ export const detailedProviders = [
     turnaroundTime: "7-10 days",
     customerReviews: "4.1/5 (Trustpilot, 10,900+ reviews)",
     keyDifferentiators: "Non-invasive sample method, high demand for food & environmental intolerance testing",
-    description: "Specialized intolerance and wellness testing using hair samples"
+    description: "Specialized intolerance and wellness testing using hair samples",
   },
   {
     id: "london-medical-laboratory",
@@ -259,8 +269,10 @@ export const detailedProviders = [
     sampleCollection: "Clinic-based venous blood draw and partner locations across the UK",
     turnaroundTime: "24-72 hours",
     customerReviews: "4.5/5 (Trustpilot, 3,250+ reviews)",
-    keyDifferentiators: "UKAS ISO 15189 accredited, fast turnaround, comprehensive test menu, professional laboratory services",
-    description: "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation. London Medical Laboratory provides reliable diagnostic testing with fast turnaround times and expert analysis."
+    keyDifferentiators:
+      "UKAS ISO 15189 accredited, fast turnaround, comprehensive test menu, professional laboratory services",
+    description:
+      "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation. London Medical Laboratory provides reliable diagnostic testing with fast turnaround times and expert analysis.",
   },
   {
     id: "london-laboratory",
@@ -273,7 +285,7 @@ export const detailedProviders = [
     customerReviews: "Not yet independently rated on Trustpilot",
     keyDifferentiators: "Central London clinic, fast turnaround, wide test menu, premium location",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
-    description: "Professional medical laboratory services with comprehensive testing capabilities"
+    description: "Professional medical laboratory services with comprehensive testing capabilities",
   },
   {
     id: "the-doctors-laboratory",
@@ -284,13 +296,16 @@ export const detailedProviders = [
     accreditation: "UKAS accredited (ISO 15189), CQC-registered",
     labAccreditation: "UKAS ISO 15189:2012",
     clinics: "Wimpole Street Clinic (London W1) and nationwide collection network",
-    coreServices: "3,000+ pathology tests: clinical biochemistry, haematology, immunology, microbiology, genetics, toxicology, specialist endocrinology",
+    coreServices:
+      "3,000+ pathology tests: clinical biochemistry, haematology, immunology, microbiology, genetics, toxicology, specialist endocrinology",
     tests: "3,000+ diagnostic tests available - one of the UK's most comprehensive test menus",
     sampleCollection: "Venous blood draw at TDL clinics, GP surgeries, hospitals, home visits available",
     turnaroundTime: "Same day to 2 working days (routine), specialist tests may take longer",
     customerReviews: "1.9/5 (Trustpilot, 22 reviews)",
-    keyDifferentiators: "UK's largest independent pathology provider, 40+ years experience, same-day results for many tests, used by NHS and private hospitals, comprehensive test menu including rare and specialist tests",
+    keyDifferentiators:
+      "UK's largest independent pathology provider, 40+ years experience, same-day results for many tests, used by NHS and private hospitals, comprehensive test menu including rare and specialist tests",
     parentCompany: "Sonic Healthcare (Global)",
-    description: "The Doctors Laboratory (TDL) is the UK's largest independent pathology provider, processing over 15 million tests annually. With UKAS accreditation and CQC registration, TDL provides gold-standard diagnostics used by NHS trusts, private hospitals, and leading healthcare providers. Their Wimpole Street clinic offers direct patient access to over 3,000 tests with many results available same day."
-  }
+    description:
+      "The Doctors Laboratory (TDL) is the UK's largest independent pathology provider, processing over 15 million tests annually. With UKAS accreditation and CQC registration, TDL provides gold-standard diagnostics used by NHS trusts, private hospitals, and leading healthcare providers. Their Wimpole Street clinic offers direct patient access to over 3,000 tests with many results available same day.",
+  },
 ];
