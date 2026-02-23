@@ -83,7 +83,7 @@ const Header = ({ className }: HeaderProps) => {
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: "visible" }}>
         {/* Main header bar - Logo and User Controls */}
         <div className="bg-[#081129]">
-          <div className="px-4 lg:px-8 xl:px-12">
+          <div className="container mx-auto px-4 lg:px-8 xl:px-12">
             <div className="flex items-center justify-between py-2 lg:py-3">
               {/* Left: Combined logo with tagline */}
               <Link to="/" className="flex items-center flex-shrink-0 transition-all duration-200 hover:scale-105">
