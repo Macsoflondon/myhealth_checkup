@@ -1,40 +1,29 @@
 
 
-## Replace Logo with Combined Logo+Tagline Image
+## Fix: Centre Navigation Buttons Between Logo and Right Edge
 
-The uploaded image contains the myhealth checkup logo with the tagline ("Your health! Your choice! One trusted platform!") as a single combined graphic. This will replace the current separate AnimatedLogo + text tagline approach.
+### Problem
+The code structure is correct (three-column layout with `flex-1 | logo | flex-1`), but the logo at h-40 to h-56 (160-224px tall with proportional width) consumes most of the container width. This leaves very little space in the right `flex-1` column, so the buttons appear right-aligned even though they are technically centred in that narrow remaining space.
 
-### Changes
+### Solution
+Remove the `container` constraint on the header bar so the layout spans the full viewport width. This gives the right `flex-1` column much more room, making the centring of the buttons visually obvious.
 
-**1. Copy the new logo image into the project**
-- Copy `user-uploads://Screenshot_2026-02-22_at_12.28.53-2.png` to `src/assets/logo-with-tagline.png`
+### Changes to `src/components/layout/Header.tsx`
 
-**2. Update Mobile Header** (`src/components/layout/Header.tsx`)
-- Replace the AnimatedLogo + separate tagline `<p>` element with a single `<img>` using the new combined logo
-- Size it to fit the mobile header row: `h-[40px] xs:h-[48px] sm:h-[60px]` with `w-auto`
-- Remove the separate tagline text block (lines 59-67)
-- Keep nav controls (language, user, hamburger) on the right as-is
+**Line 85**: Remove the `container mx-auto` wrapper so the flex layout uses the full viewport width, keeping only horizontal padding for breathing room.
 
-**3. Update Desktop Header** (`src/components/layout/Header.tsx`)
-- Replace the AnimatedLogo on the left and the separate centred tagline with the single combined logo image
-- Remove the absolute-positioned tagline `<div>` (lines 99-106)
-- Size the desktop logo: `h-20 lg:h-24 xl:h-28` to fit the navy bar without excessive height
-- Adjust negative margins so the logo sits cleanly at the left edge
+Current:
+```html
+<div className="container mx-auto px-4 lg:px-8 xl:px-12">
+```
 
-**4. No changes to AnimatedLogo component itself** -- it can remain in the codebase but will no longer be imported into Header.tsx
+Change to:
+```html
+<div className="px-4 lg:px-8 xl:px-12">
+```
 
-### Responsive Sizing Summary
+This single change gives the right-side `flex-1` column the full remaining viewport width after the logo, ensuring the two buttons sit visibly centred between the logo's right edge and the browser edge.
 
-| Breakpoint | Logo Height |
-|---|---|
-| Mobile (< 640px) | 40-48px |
-| Small tablet (640px) | 60px |
-| Desktop (768px+) | 80-112px |
-
-### Files Changed
-
-| File | Change |
-|---|---|
-| `src/assets/logo-with-tagline.png` | New file (copied from upload) |
-| `src/components/layout/Header.tsx` | Replace AnimatedLogo + tagline with single combined logo image on both mobile and desktop |
-
+### No other files affected
+- Mobile header is unaffected (separate code path)
+- Navigation toolbar below remains unchanged
