@@ -83,14 +83,12 @@ const Header = ({
         {/* Main header bar - Logo and User Controls */}
         <div className="bg-[#081129]">
           <div className="container mx-auto px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center justify-between py-3 lg:py-4">
-              {/* Left spacer for centering */}
-              <nav className="flex items-center gap-3 flex-shrink-0" aria-label="User controls">
-                <div className="w-[88px] lg:w-[96px]" />
-              </nav>
+            <div className="flex items-center py-3 lg:py-4">
+              {/* Left spacer - matches right section width */}
+              <div className="flex-1" />
 
               {/* Center: Combined logo with tagline */}
-              <Link to="/" className="flex items-center justify-center flex-1 transition-all duration-200 hover:scale-105">
+              <Link to="/" className="flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-105">
                 <img
                   src={logoWithTagline}
                   alt="myhealth checkup - Your Health. Your Choice. One Trusted Platform!"
@@ -98,11 +96,13 @@ const Header = ({
                 />
               </Link>
 
-              {/* Right: Controls */}
-              <nav className="flex items-center gap-3 flex-shrink-0" aria-label="User controls">
-                <LanguageSwitcher />
-                <UserMenu />
-              </nav>
+              {/* Right: Controls centered between logo end and edge */}
+              <div className="flex-1 flex items-center justify-center">
+                <nav className="flex items-center gap-3" aria-label="User controls">
+                  <LanguageSwitcher />
+                  <UserMenu />
+                </nav>
+              </div>
             </div>
           </div>
         </div>
