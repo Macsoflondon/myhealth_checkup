@@ -62,7 +62,7 @@ const PartnerShowcaseGrid = () => {
             <div className="relative rounded-xl flex items-stretch pt-20 md:-mr-4">
               <video
                 ref={(el) => { if (el) el.playbackRate = 0.5; }}
-                src="/videos/goodbody-promo.mp4"
+                src="/videos/goodbody-promo.mp4?v=2"
                 autoPlay
                 loop
                 muted
