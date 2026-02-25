@@ -1,29 +1,42 @@
 
 
-## Fix: Centre Navigation Buttons Between Logo and Right Edge
+## Replace GoodBody Video and Slow Playback
 
-### Problem
-The code structure is correct (three-column layout with `flex-1 | logo | flex-1`), but the logo at h-40 to h-56 (160-224px tall with proportional width) consumes most of the container width. This leaves very little space in the right `flex-1` column, so the buttons appear right-aligned even though they are technically centred in that narrow remaining space.
+### Changes
 
-### Solution
-Remove the `container` constraint on the header bar so the layout spans the full viewport width. This gives the right `flex-1` column much more room, making the centring of the buttons visually obvious.
+**1. Copy the uploaded video to the public folder**
+- Copy `user-uploads://White_Beige_Aesthetic_Minimalist_Photo_Collage_Zoom_Effect_Instagram_Reel.mp4` to `public/videos/goodbody-promo.mp4` (overwriting the existing file)
 
-### Changes to `src/components/layout/Header.tsx`
+**2. Slow the video playback to 0.5x** (`src/components/sections/PartnerShowcaseGrid.tsx`, line 63-70)
+- Add a `ref` to the GoodBody `<video>` element
+- Use a `useEffect` + `onLoadedMetadata` or inline `ref` callback to set `video.playbackRate = 0.5`
 
-**Line 85**: Remove the `container mx-auto` wrapper so the flex layout uses the full viewport width, keeping only horizontal padding for breathing room.
+### Implementation Detail
 
-Current:
-```html
-<div className="container mx-auto px-4 lg:px-8 xl:px-12">
+Add `useRef` import and a ref callback on the video element:
+
+```tsx
+import { useRef, useEffect } from "react";
 ```
 
-Change to:
-```html
-<div className="px-4 lg:px-8 xl:px-12">
+On the video element (line 63-70), add a ref callback that sets playback rate:
+
+```tsx
+<video
+  ref={(el) => { if (el) el.playbackRate = 0.5; }}
+  src="/videos/goodbody-promo.mp4"
+  autoPlay
+  loop
+  muted
+  playsInline
+  className="w-full object-contain rounded-xl"
+/>
 ```
 
-This single change gives the right-side `flex-1` column the full remaining viewport width after the logo, ensuring the two buttons sit visibly centred between the logo's right edge and the browser edge.
+### Files Changed
 
-### No other files affected
-- Mobile header is unaffected (separate code path)
-- Navigation toolbar below remains unchanged
+| File | Change |
+|---|---|
+| `public/videos/goodbody-promo.mp4` | Replaced with uploaded video |
+| `src/components/sections/PartnerShowcaseGrid.tsx` | Added ref callback to set `playbackRate = 0.5` on GoodBody video |
+
