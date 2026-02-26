@@ -1,4 +1,39 @@
-{/* Main Hero Content - Clear promise, immediate action */}
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Search, Sparkles, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import heroBgImage from "@/assets/hero-bg-blood-tubes.jpg";
+
+const popularSearches = [
+  { name: "Full Blood Count", route: "/compare?search=full+blood+count" },
+  { name: "Thyroid Function", route: "/compare?search=thyroid" },
+  { name: "Vitamin D", route: "/compare?search=vitamin+d" },
+  { name: "Liver Function", route: "/compare?search=liver" },
+];
+
+const trustSignals = [
+  { icon: Shield, text: "UKAS-accredited labs" },
+  { icon: FlaskConical, text: "200+ tests available" },
+  { icon: MapPin, text: "150+ clinics nationwide" },
+  { icon: Clock, text: "Results in 3–5 days" },
+  { icon: Stethoscope, text: "No GP referral needed" },
+];
+
+const Hero = () => {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiResults, setAiResults] = useState<any>(null);
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchTerm.trim()) {
+      navigate(`/compare?search=${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
+
+  return (
+    <>
+      {/* Main Hero Content - Clear promise, immediate action */}
       <section className="relative overflow-hidden py-6 sm:py-10 md:py-14 lg:py-20">
         {/* Background image */}
         <img
@@ -24,14 +59,10 @@
             </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="max-w-[400px] sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.6rem] xs:text-[2rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
-  <span className="text-brand-navy">Compare the UK's leading</span>
-  <br />
-  <span className="text-brand-navy">private health test providers</span>
-  <br />
-  <span className="text-brand-pink">All in one place!</span>
-</h1>
-
-            {/* Streamlined — mission text and badges removed, content lives in MissionSection */}
+              <span className="block text-brand-navy">Compare the UK's leading</span>
+              <span className="block text-brand-navy">private health test providers</span>
+              <span className="block text-brand-pink">All in one place!</span>
+            </h1>
 
             {/* Primary & Secondary CTAs - Immediate action path */}
             <div className="flex flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">
@@ -141,4 +172,5 @@
     </>
   );
 };
+
 export default Hero;
