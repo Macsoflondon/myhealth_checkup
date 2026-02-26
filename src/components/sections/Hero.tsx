@@ -59,9 +59,11 @@ const Hero = () => {
             </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="max-w-[400px] sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.6rem] xs:text-[2rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
-              <span className="block text-brand-navy">Compare the UK's leading</span>
-              <span className="block text-brand-navy">private health test providers</span>
-              <span className="block text-brand-pink">All in one place!</span>
+              <span className="text-brand-navy">Compare the UK's leading</span>
+              <br />
+              <span className="text-brand-navy">private health test providers</span>
+              <br />
+              <span className="text-brand-pink">All in one place!</span>
             </h1>
 
             {/* Primary & Secondary CTAs - Immediate action path */}
