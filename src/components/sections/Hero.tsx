@@ -51,12 +51,10 @@ const Hero = () => {
         <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <div className="flex justify-center mb-3 sm:mb-4">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-[#e70d69] rounded-full text-[#e70d69] font-semibold text-sm sm:text-base shadow-sm">
-                <Sparkles className="w-4 h-4 text-[#22c0d4]" />
-                UK's #1 Health Test Comparison Platform
-              </span>
-            </div>
+            <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid rgba(34,192,212,0.3)", borderRadius: 20, padding: "6px 16px", marginBottom: 24 }}>
+            <span style={{ color: COLORS.accent, fontSize: 13, fontWeight: 600 }}>🇬🇧 UK's Leading Blood Test Comparison Platform</span>
+          </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="max-w-[400px] sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.6rem] xs:text-[2rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="block text-brand-navy">Compare the UK's leading private health test providers</span>
