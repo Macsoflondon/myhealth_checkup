@@ -172,7 +172,6 @@ const PartnerShowcaseGrid = () => {
                   <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">UK-wide</p>
                   <p className="text-xs sm:text-sm text-white">Coverage</p>
                 </div>
-              </div>
               <div className="mt-auto flex flex-col items-center">
                 <div className="flex flex-col sm:flex-row gap-2 justify-center mb-8 w-full">
                   <Link
