@@ -60,7 +60,6 @@ const Hero = () => {
             {/* Headline - Clear promise in plain language */}
             <h1 className="max-w-[400px] sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.6rem] xs:text-[2rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="block text-brand-navy">Compare the UK's leading</span>
-              <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
               <span className="block text-brand-navy">private health test providers</span>
               <span className="block text-brand-pink">All in one place!</span>
             </h1>
@@ -126,7 +125,7 @@ const Hero = () => {
 
                 {/* Popular Searches */}
                 <div className="mt-4 sm:mt-5 text-center border border-gray-400 rounded-xl p-3 sm:p-4">
-                  <p className="text-xs sm:text-sm font-bold text-foreground mb-3 sm:mb-4 uppercase tracking-[0.2em]">Popular searches</p>
+                  <p className="text-sm sm:text-base font-bold text-foreground mb-3 sm:mb-4">Popular searches:</p>
                   <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
                     {popularSearches.map((search, index) => (
                       <button
