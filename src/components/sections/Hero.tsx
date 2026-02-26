@@ -16,7 +16,6 @@ const Search = ({ className }) => (
 
 export default function HeroPreview() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [hovered, setHovered] = useState(null);
 
   const popularSearches = ["Full Blood Count", "Thyroid Function", "Vitamin D", "Liver Function"];
 
@@ -43,13 +42,13 @@ export default function HeroPreview() {
           z-index: 0;
         }
 
-        /* Floating orbs */
         .orb {
           position: absolute;
           border-radius: 50%;
           filter: blur(40px);
           opacity: 0.35;
           animation: drift 8s ease-in-out infinite alternate;
+          pointer-events: none;
         }
         .orb-1 {
           width: 300px; height: 300px;
@@ -112,29 +111,42 @@ export default function HeroPreview() {
         .headline {
           font-family: 'Playfair Display', Georgia, serif;
           font-weight: 800;
-          line-height: 1.15;
+          line-height: 1.2;
           margin-bottom: 32px;
           animation: fadeSlideUp 0.7s ease 0.15s both;
         }
 
+        /* FIX: use a smaller clamp floor so the text fits on one line at mobile */
         .headline-line {
           display: block;
-          font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+          font-size: clamp(1.35rem, 4.2vw, 4.2rem);
           color: #0a1f5c;
           letter-spacing: -0.02em;
+          white-space: nowrap;
+        }
+
+        /* On very small screens, allow wrapping but keep it controlled */
+        @media (max-width: 480px) {
+          .headline-line {
+            white-space: normal;
+            font-size: 1.35rem;
+          }
+          .headline-accent {
+            font-size: 1.5rem !important;
+          }
         }
 
         .headline-accent {
           display: block;
-          font-size: clamp(2.4rem, 5.8vw, 4.5rem);
-          background: linear-gradient(135deg, #e70d69 0%, #ff6b9d 60%, #e70d69 100%);
+          font-size: clamp(1.5rem, 4.5vw, 4.5rem);
+          background: linear-gradient(135deg, #e70d69 0%, #ff6b9d 50%, #e70d69 100%);
           background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          animation: shimmer 3s linear infinite;
+          animation: fadeSlideUp 0.7s ease 0.15s both, shimmer 3s linear infinite;
           letter-spacing: -0.02em;
-          margin-top: 2px;
+          margin-top: 4px;
         }
 
         @keyframes shimmer {
@@ -147,10 +159,14 @@ export default function HeroPreview() {
           to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Decorative underline under navy text */
-        .headline-navy-wrap {
-          position: relative;
-          display: inline-block;
+        /* Gradient divider between the two navy lines */
+        .headline-divider {
+          display: block;
+          width: 56px;
+          height: 3px;
+          background: linear-gradient(90deg, #22c0d4, #e70d69);
+          border-radius: 2px;
+          margin: 10px auto 10px;
         }
 
         /* CTAs */
@@ -287,6 +303,7 @@ export default function HeroPreview() {
           font-size: 0.875rem;
           font-weight: 500;
           cursor: pointer;
+          border: none;
           transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
           box-shadow: 0 2px 8px rgba(34,192,212,0.25);
         }
@@ -295,16 +312,6 @@ export default function HeroPreview() {
           background: linear-gradient(135deg, #e70d69, #c40a58);
           transform: translateY(-2px);
           box-shadow: 0 4px 12px rgba(231,13,105,0.3);
-        }
-
-        /* Divider line between navy lines */
-        .headline-divider {
-          display: block;
-          width: 60px;
-          height: 3px;
-          background: linear-gradient(90deg, #22c0d4, #e70d69);
-          border-radius: 2px;
-          margin: 10px auto 8px;
         }
       `}</style>
 
@@ -317,12 +324,12 @@ export default function HeroPreview() {
           {/* Badge */}
           <div>
             <span className="badge">
-              <Sparkles className="" style={{ width: 15, height: 15, color: "#22c0d4" }} />
+              <Sparkles style={{ width: 15, height: 15, color: "#22c0d4", flexShrink: 0 }} />
               UK's #1 Health Test Comparison Platform
             </span>
           </div>
 
-          {/* Headline */}
+          {/* Headline — 2 navy lines + 1 pink line */}
           <h1 className="headline">
             <span className="headline-line">Compare the UK's leading</span>
             <span className="headline-divider" />
