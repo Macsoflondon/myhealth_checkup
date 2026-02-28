@@ -53,13 +53,15 @@ const Hero = () => {
             {/* Badge */}
             <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid rgba(34,192,212,0.3)", borderRadius: 20, padding: "6px 16px", marginBottom: 24 }}>
-            <span style={{ color: COLORS.accent, fontSize: 13, fontWeight: 600 }}>🇬🇧 UK's Leading Blood Test Comparison Platform</span>
+            <span className="text-brand-turquoise text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
           </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="max-w-[400px] sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.6rem] xs:text-[2rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="block text-brand-navy">Compare the UK's leading private health test providers</span>
+              <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
               <span className="block text-brand-pink">All in one place!</span>
             </h1>
+          </div>
 
             {/* Primary & Secondary CTAs - Immediate action path */}
             <div className="flex flex-row gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-10">

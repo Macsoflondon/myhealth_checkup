@@ -79,7 +79,50 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
-          {/* Divider between provider rows */}
+          {/* Divider */}
+          <div className="md:col-span-2 flex justify-center">
+            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
+          </div>
+
+          {/* Start Your Journey Today — Full-width CTA between providers */}
+          <div className="md:col-span-2 bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center mb-14">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+              <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+                Start Your Journey Today
+              </span>
+              <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
+              <span className="text-white">Take Control of </span>
+              <span className="text-white">Your Health Today</span>
+            </h2>
+            <p className="text-base lg:text-lg text-white leading-relaxed mb-8 max-w-md">
+              Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs
+              in minutes.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full max-w-md">
+              <Link
+                to="/compare"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+              >
+                Compare tests
+              </Link>
+              <Link
+                to="/assisted-test-finder"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+              >
+                Take the health quiz
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
+              <span>✓ UKAS Accredited Labs</span>
+              <span>✓ CQC Regulated</span>
+              <span>✓ Free to Compare</span>
+            </div>
+          </div>
+
+          {/* Divider */}
           <div className="md:col-span-2 flex justify-center">
             <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
           </div>
@@ -139,11 +182,9 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
-          {/* Bottom Row: Find Clinic + Take Control — matched heights */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-            {/* Bottom-Left: Find a Clinic Card */}
+          {/* Bottom Row: Find a Clinic — Full width */}
+          <div className="md:col-span-2">
             <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
-              {/* Section label */}
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
                 <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
@@ -172,67 +213,25 @@ const PartnerShowcaseGrid = () => {
                   <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">UK-wide</p>
                   <p className="text-xs sm:text-sm text-white">Coverage</p>
                 </div>
-              <div className="mt-auto flex flex-col items-center">
-                <div className="flex flex-col sm:flex-row gap-2 justify-center mb-8 w-full">
-                  <Link
-                    to="/find-clinic"
-                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-                  >
-                    Find your nearest clinic
-                  </Link>
-                  <Link
-                    to="/find-clinic"
-                    className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-                  >
-                    Browse all clinic locations
-                  </Link>
-                </div>
-                <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
-                  <span>✓ CQC Regulated</span>
-                  <span>✓ 200+ Locations</span>
-                  <span>✓ Walk-in Available</span>
-                </div>
               </div>
-            </div>
-
-            {/* Bottom-Right: Take Control CTA Card (moved from top-right) */}
-            <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
-              {/* Section label */}
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-                <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
-                  Start Your Journey Today
-                </span>
-                <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+              <div className="flex flex-col sm:flex-row gap-2 justify-center mb-8 w-full max-w-md">
+                <Link
+                  to="/find-clinic"
+                  className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                >
+                  Find your nearest clinic
+                </Link>
+                <Link
+                  to="/find-clinic"
+                  className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                >
+                  Browse all clinic locations
+                </Link>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
-                <span className="text-white">Take Control of </span>
-                <span className="text-white">Your Health Today</span>
-              </h2>
-              <p className="text-base lg:text-lg text-white leading-relaxed mb-28 max-w-md">
-                Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs
-                in minutes.
-              </p>
-              <div className="mt-auto flex flex-col items-center">
-                <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full">
-                  <Link
-                    to="/compare"
-                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-                  >
-                    Compare tests
-                  </Link>
-                  <Link
-                    to="/assisted-test-finder"
-                    className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-                  >
-                    Take the health quiz
-                  </Link>
-                </div>
-                <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
-                  <span>✓ UKAS Accredited Labs</span>
-                  <span>✓ CQC Regulated</span>
-                  <span>✓ Free to Compare</span>
-                </div>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
+                <span>✓ CQC Regulated</span>
+                <span>✓ 200+ Locations</span>
+                <span>✓ Walk-in Available</span>
               </div>
             </div>
           </div>
