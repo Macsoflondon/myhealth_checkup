@@ -131,6 +131,12 @@ const PartnerShowcaseGrid = () => {
           <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start mb-14">
             {/* Left column: Heading + Text */}
             <div className="pt-20 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
+              {/* Logo shown on mobile only, above heading */}
+              <img
+                src="/lovable-uploads/provider-medichecks-new-v3.png"
+                alt="Medichecks logo"
+                className="h-56 w-auto mx-auto md:hidden flex-shrink-0"
+              />
               <div>
                 <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
                   Unlock the
@@ -166,10 +172,11 @@ const PartnerShowcaseGrid = () => {
             </div>
             {/* Right column: Logo + Video stacked */}
             <div className="pt-20 flex flex-col items-center gap-6 md:-mr-4">
+              {/* Logo hidden on mobile, shown on desktop */}
               <img
                 src="/lovable-uploads/provider-medichecks-new-v3.png"
                 alt="Medichecks logo"
-                className="h-56 w-auto flex-shrink-0"
+                className="h-56 w-auto flex-shrink-0 hidden md:block"
               />
               <div className="relative rounded-xl w-full">
                 <video
