@@ -75,7 +75,7 @@ export const LanguageSwitcher = () => {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="h-10 w-10 sm:h-12 sm:w-12 p-1.5 sm:p-2 text-[#22c0d4] hover:text-[#e70d69] hover:bg-[#e70d69]/10 border-2 border-[#22c0d4]/60 hover:border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+          className="h-8 w-8 sm:h-10 sm:w-10 p-1 sm:p-1.5 text-[#22c0d4] hover:text-[#e70d69] hover:bg-[#e70d69]/10 border-2 border-[#22c0d4]/60 hover:border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
           aria-label={t('language.selectLanguage')}
           disabled={isTranslating}
         >
