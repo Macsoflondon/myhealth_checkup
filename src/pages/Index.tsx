@@ -115,8 +115,8 @@ const Index = () => {
         {/* 6. Partners Grid */}
         <PartnersGrid />
         
-        {/* 8. Why Choose Us */}
-        <WhyChooseUs />
+        {/* 8. Trust Platform Section */}
+        <TrustPlatformSection />
         
         
         {/* 9. Partner Showcase Grid */}
@@ -139,8 +139,8 @@ const Index = () => {
         {/* 16. Here to Help */}
         <HereToHelp />
         
-        {/* 17. Trust Platform Section */}
-        <TrustPlatformSection />
+        {/* 17. Why Choose Us */}
+        <WhyChooseUs />
         
       </MainLayout>
     </ErrorBoundary>
