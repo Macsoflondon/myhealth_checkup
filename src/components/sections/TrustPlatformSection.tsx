@@ -83,8 +83,6 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
         </div>
       </div>
       
-      {/* Bottom gradient line */}
-      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
 };
