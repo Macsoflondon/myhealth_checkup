@@ -118,6 +118,8 @@ const Index = () => {
         {/* 8. Trust Platform Section */}
         <TrustPlatformSection />
         
+        {/* Gradient divider between two navy sections */}
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         
         {/* 9. Partner Showcase Grid */}
         <PartnerShowcaseGrid />
