@@ -13,13 +13,13 @@ import MissionSection from "@/components/sections/MissionSection";
 
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
+
 
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 
-import TopConcernsSection from "@/components/sections/TopConcernsSection";
+
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 
 import HereToHelp from "@/components/sections/HereToHelp";
@@ -131,8 +131,6 @@ const Index = () => {
         <ExpertQuotes />
         
         
-        {/* 13. Top Concerns (with divider) */}
-        <TopConcernsSection />
         
         {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
@@ -141,8 +139,6 @@ const Index = () => {
         {/* 16. Here to Help */}
         <HereToHelp />
         
-        {/* 17. Why Choose Us */}
-        <WhyChooseUs />
         
       </MainLayout>
     </ErrorBoundary>
