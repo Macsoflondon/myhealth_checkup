@@ -4,69 +4,61 @@ import { SectionHeading } from "@/components/ui/section-heading";
 const JourneySimplified = () => {
   const steps = [
     {
+      number: "01",
       icon: Search,
-      step: "1",
       title: "Tell us what you want to check",
       description: "Search by symptom, condition, or browse our comprehensive test categories to find the right test for you."
     },
     {
+      number: "02",
       icon: GitCompare,
-      step: "2",
       title: "Compare trusted tests & providers",
       description: "View side-by-side comparisons of prices, turnaround times, sample types, and what's included in each test."
     },
     {
+      number: "03",
       icon: Calendar,
-      step: "3",
       title: "Book directly with your chosen provider",
       description: "Click through to book directly with your chosen provider. No middlemen, no markup, just confidence."
     }
   ];
 
   return (
-    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white">
+    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-card">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
-          <SectionHeading 
-            title="Your Health Journey" 
-            gradientText="Simplified" 
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+          <SectionHeading
+            title="Your Health Journey"
+            gradientText="Simplified"
           />
-          <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mt-4">
+          <p className="text-muted-foreground font-sans text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4">
             Finding the right health test shouldn't be complicated. We've made it simple in three easy steps.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 md:gap-10 max-w-5xl mx-auto">
-          {steps.map((step, index) => (
-            <div 
-              key={index} 
-              className="text-center relative group animate-fade-in"
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              {/* Connector line - visible on desktop */}
-              {index < steps.length - 1 && (
-                <div className="hidden sm:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-[#22c0d4]/40 via-[#e70d69]/30 to-transparent" />
-              )}
-              
-              {/* Mobile connector - vertical line */}
-              {index < steps.length - 1 && (
-                <div className="sm:hidden absolute left-1/2 top-[90px] h-8 w-0.5 bg-gradient-to-b from-[#22c0d4]/40 to-transparent -translate-x-1/2" />
-              )}
-              
-              <div className="relative inline-flex items-center justify-center w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[#22c0d4]/15 border-2 border-[#22c0d4]/30 mb-5 sm:mb-6 transition-all duration-300 group-hover:scale-110 group-hover:border-[#22c0d4] group-hover:shadow-lg group-hover:shadow-[#22c0d4]/20">
-                <span className="text-2xl sm:text-3xl font-bold text-[#22c0d4]">
-                  {step.step}
-                </span>
+        <div className="relative max-w-5xl mx-auto">
+          {/* Connection line - desktop only */}
+          <div className="hidden lg:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            {steps.map((step) => (
+              <div key={step.number} className="relative text-center group">
+                {/* Step icon badge */}
+                <div className="relative inline-flex mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-background border-2 border-brand-turquoise flex items-center justify-center shadow-md relative z-10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand-turquoise/20">
+                    <step.icon className="w-8 h-8 text-brand-turquoise" />
+                  </div>
+                </div>
+
+                <h3 className="text-lg sm:text-xl font-heading font-semibold mb-3 text-brand-turquoise">
+                  {step.title}
+                </h3>
+                <p className="text-muted-foreground font-sans text-sm sm:text-base leading-relaxed max-w-xs mx-auto">
+                  {step.description}
+                </p>
               </div>
-              
-              <h3 className="text-lg sm:text-xl font-heading font-semibold text-[#081129] mb-2 sm:mb-3">
-                {step.title}
-              </h3>
-              <p className="text-gray-600 font-sans text-sm sm:text-base leading-relaxed max-w-xs mx-auto">
-                {step.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
