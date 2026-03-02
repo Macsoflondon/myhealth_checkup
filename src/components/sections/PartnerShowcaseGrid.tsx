@@ -136,7 +136,7 @@ const PartnerShowcaseGrid = () => {
                 loop
                 muted
                 playsInline
-                className="w-full object-cover rounded-xl min-h-[250px] max-h-[300px]"
+                className="w-full object-cover rounded-xl min-h-[250px] max-h-[400px]"
               />
             </div>
             <div className="pt-20 space-y-6 md:order-2 text-center md:text-left flex flex-col">
