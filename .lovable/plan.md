@@ -1,33 +1,20 @@
 
 
-## Swap Two Sections on Homepage
+## Remove WhyChooseUs and TopConcernsSection from Homepage
 
-Looking at `src/pages/Index.tsx`, the current order has:
+Three files to change:
 
-- **WhyChooseUs** ("Why myhealth checkup?") at position 8 — directly above PartnerShowcaseGrid
-- **TrustPlatformSection** ("Why Trust Us / Health Comparison Platform") at position 17 — near the bottom
+### 1. `src/pages/Index.tsx`
+- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
+- Remove the TopConcernsSection JSX block (lines 134-135)
+- Remove the WhyChooseUs JSX block (lines 144-145)
 
-The change is straightforward: swap their positions so TrustPlatformSection moves to where WhyChooseUs currently sits (above PartnerShowcaseGrid), and WhyChooseUs moves down to where TrustPlatformSection currently sits (near the bottom, after HereToHelp).
+### 2. `src/components/sections/WhyChooseUs.tsx`
+- Delete this file entirely
 
-### File: `src/pages/Index.tsx`
+### 3. `src/components/sections/index.ts`
+- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
+- Keep TopConcernsSection export so it remains available for future use
 
-**Before:**
-```
-WhyChooseUs          ← position 8
-PartnerShowcaseGrid
-...
-HereToHelp
-TrustPlatformSection ← position 17
-```
-
-**After:**
-```
-TrustPlatformSection ← moved up
-PartnerShowcaseGrid
-...
-HereToHelp
-WhyChooseUs          ← moved down
-```
-
-Single file change, two lines swapped.
+TopConcernsSection component file stays in the codebase untouched — available for reuse later.
 
