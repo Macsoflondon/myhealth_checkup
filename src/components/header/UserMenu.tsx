@@ -29,7 +29,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-10 w-10 sm:h-12 sm:w-12 p-1.5 sm:p-2 text-[#e70d69] hover:text-white hover:bg-white/20 border-2 border-[#e70d69]/60 hover:border-white rounded-lg transition-colors flex-shrink-0"
+              className="h-10 w-10 sm:h-12 sm:w-12 p-1.5 sm:p-2 text-[#22c0d4] hover:text-[#e70d69] hover:bg-[#e70d69]/10 border-2 border-[#22c0d4]/60 hover:border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
               aria-label="User menu"
             >
               <User className="h-5 w-5" />
@@ -62,7 +62,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-10 w-10 sm:h-12 sm:w-12 p-1.5 sm:p-2 text-[#e70d69] hover:text-white hover:bg-white/20 border-2 border-[#e70d69]/60 hover:border-white rounded-lg transition-colors flex-shrink-0"
+        className="h-10 w-10 sm:h-12 sm:w-12 p-1.5 sm:p-2 text-[#22c0d4] hover:text-[#e70d69] hover:bg-[#e70d69]/10 border-2 border-[#22c0d4]/60 hover:border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
         aria-label="Sign in"
         asChild
       >
@@ -79,7 +79,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-12 w-12 p-2 text-[#e70d69] hover:text-white hover:bg-white/20 border-2 border-[#e70d69]/60 hover:border-white rounded-lg transition-colors"
+            className="h-12 w-12 p-2 text-[#22c0d4] hover:text-[#e70d69] hover:bg-[#e70d69]/10 border-2 border-[#22c0d4]/60 hover:border-[#e70d69] rounded-lg transition-colors"
             aria-label="User menu"
           >
             <User className="h-5 w-5" />
@@ -112,7 +112,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-12 w-12 p-2 text-[#e70d69] hover:text-white hover:bg-white/20 border-2 border-[#e70d69]/60 hover:border-white rounded-lg transition-colors"
+        className="h-12 w-12 p-2 text-[#22c0d4] hover:text-[#e70d69] hover:bg-[#e70d69]/10 border-2 border-[#22c0d4]/60 hover:border-[#e70d69] rounded-lg transition-colors"
         aria-label="Sign in"
         asChild
       >
