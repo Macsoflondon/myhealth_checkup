@@ -128,31 +128,15 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Row 2: Medichecks — Video left, Text right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-stretch mb-14">
-            <div className="relative md:order-1 rounded-xl flex items-stretch pt-20 md:-ml-4">
-              <video
-                src="/videos/medichecks-promo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full object-contain rounded-xl max-h-[400px]"
-              />
-            </div>
-            <div className="pt-20 space-y-6 md:order-2 text-center md:text-left flex flex-col">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
-                <div>
-                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
-                    Unlock the
-                    <br />
-                    Ultimate You.
-                  </h2>
-                </div>
-                <img
-                  src="/lovable-uploads/provider-medichecks-new-v3.png"
-                  alt="Medichecks logo"
-                  className="h-56 w-auto mx-auto md:mx-0 flex-shrink-0"
-                />
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start mb-14">
+            {/* Left column: Heading + Text */}
+            <div className="pt-20 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
+              <div>
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
+                  Unlock the
+                  <br />
+                  Ultimate You.
+                </h2>
               </div>
               <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical
@@ -178,6 +162,24 @@ const PartnerShowcaseGrid = () => {
                 >
                   View Medichecks profile
                 </Link>
+              </div>
+            </div>
+            {/* Right column: Logo + Video stacked */}
+            <div className="pt-20 flex flex-col items-center gap-6 md:-mr-4">
+              <img
+                src="/lovable-uploads/provider-medichecks-new-v3.png"
+                alt="Medichecks logo"
+                className="h-56 w-auto flex-shrink-0"
+              />
+              <div className="relative rounded-xl w-full">
+                <video
+                  src="/videos/medichecks-promo.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full object-contain rounded-xl max-h-[400px]"
+                />
               </div>
             </div>
           </div>
