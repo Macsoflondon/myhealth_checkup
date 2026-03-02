@@ -74,7 +74,7 @@ const PartnerShowcaseGrid = () => {
                 loop
                 muted
                 playsInline
-                className="w-full object-cover rounded-xl min-h-[250px] max-h-[400px]"
+                className="w-full object-contain rounded-xl"
               />
             </div>
           </div>
