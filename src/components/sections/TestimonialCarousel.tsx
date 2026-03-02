@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import { Star, Quote } from "lucide-react";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import { PinkSwoosh } from "@/components/ui/section-heading";
 
 const testimonials = [
   {
@@ -91,6 +92,7 @@ const TestimonialCarousel = () => {
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
         </div>
         
+        <PinkSwoosh />
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-10 sm:mb-12">
           <span className="text-white">What Our </span>
           <span className="text-white">
