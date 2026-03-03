@@ -1,6 +1,6 @@
 import { Eye, Stethoscope, BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SectionHeading, PinkSwoosh } from "@/components/ui/section-heading";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 
 interface TrustPlatformSectionProps {
@@ -44,7 +44,6 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
           
-          <PinkSwoosh />
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
             <span className="text-white">Trusted Health </span>
             <span className="text-white">

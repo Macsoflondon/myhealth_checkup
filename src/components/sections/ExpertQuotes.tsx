@@ -27,6 +27,10 @@ const ExpertQuotes = () => {
     <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-white to-[hsl(187,72%,97%)]">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="text-center mb-10 sm:mb-12">
+          {/* Pink decorative swoosh */}
+          <svg className="mx-auto mb-4" width="80" height="20" viewBox="0 0 80 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 15 Q20 2 40 10 Q60 18 75 5" stroke="#e70d69" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+          </svg>
           <SectionHeading title="Backed by" gradientText="Expert Guidance" />
           <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto mt-3">
             Our platform standards are informed by the UK's leading health authorities.
