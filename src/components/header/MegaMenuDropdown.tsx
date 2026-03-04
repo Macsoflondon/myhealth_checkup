@@ -140,15 +140,15 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
               </h3>
             </div>
             {filteredPopularTests.length > 0 ? (
-              filteredPopularTests.map((test) => (
-                <Link
-                  key={test.id}
-                  to={test.url || `/compare?test=${test.id}`}
-                  className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                  onClick={handleItemClick}
-                  target={test.url ? "_blank" : undefined}
-                  rel={test.url ? "noopener noreferrer" : undefined}
-                >
+              filteredPopularTests.map((test) => {
+                const isExternal = test.url && (test.url.startsWith('http://') || test.url.startsWith('https://'));
+                const href = test.url || `/compare?test=${test.id}`;
+                const commonProps = {
+                  key: test.id,
+                  className: "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700",
+                  onClick: handleItemClick,
+                };
+                const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-500 transition-colors mb-1">
@@ -176,8 +176,17 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                       </span>
                     </div>
                   </div>
-                </Link>
-              ))
+                );
+                return isExternal ? (
+                  <a {...commonProps} href={href} target="_blank" rel="noopener noreferrer">
+                    {content}
+                  </a>
+                ) : (
+                  <Link {...commonProps} to={href}>
+                    {content}
+                  </Link>
+                );
+              })
             ) : (
               <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">
                 No tests found for "{searchQuery}"
@@ -193,13 +202,15 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
               </h3>
             </div>
             {filteredTests.length > 0 ? (
-              filteredTests.map((test) => (
-                <Link
-                  key={test.id}
-                  to={test.url || `/book/${test.id}`}
-                  className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
-                  onClick={handleItemClick}
-                >
+              filteredTests.map((test) => {
+                const isExternal = test.url && (test.url.startsWith('http://') || test.url.startsWith('https://'));
+                const href = test.url || `/book/${test.id}`;
+                const commonProps = {
+                  key: test.id,
+                  className: "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700",
+                  onClick: handleItemClick,
+                };
+                const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-500 transition-colors mb-1">
@@ -227,8 +238,17 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                       </div>
                     )}
                   </div>
-                </Link>
-              ))
+                );
+                return isExternal ? (
+                  <a {...commonProps} href={href} target="_blank" rel="noopener noreferrer">
+                    {content}
+                  </a>
+                ) : (
+                  <Link {...commonProps} to={href}>
+                    {content}
+                  </Link>
+                );
+              })
             ) : (
               <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">
                 No tests found for "{searchQuery}"
