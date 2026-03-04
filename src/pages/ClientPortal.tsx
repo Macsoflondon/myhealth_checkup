@@ -6,7 +6,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, FileText, Heart, Settings, TrendingUp, User, Bell } from "lucide-react";
+import { FileText, Heart, Settings, TrendingUp, User, Bell } from "lucide-react";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
 import { logger } from "@/lib/logger";
@@ -19,14 +19,6 @@ interface UserProfile {
   phone_number: string | null;
 }
 
-interface Appointment {
-  id: string;
-  appointment_date: string;
-  status: string;
-  provider_id: string;
-  price_paid: number | null;
-  test_master_id: string | null;
-}
 
 interface TestResult {
   id: string;
@@ -48,7 +40,7 @@ export default function ClientPortal() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  
   const [testResults, setTestResults] = useState<TestResult[]>([]);
   const [insights, setInsights] = useState<HealthInsight[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,17 +59,12 @@ export default function ClientPortal() {
       setLoading(true);
 
       // Fetch all data in parallel for 3-4x faster loading
-      const [profileData, appointmentsData, resultsData, insightsData] = await Promise.all([
+      const [profileData, resultsData, insightsData] = await Promise.all([
         supabase
           .from("user_profiles")
           .select("first_name, last_name, date_of_birth, gender, phone_number")
           .eq("user_id", user?.id)
           .single(),
-        supabase
-          .from("appointments")
-          .select("*")
-          .eq("user_id", user?.id)
-          .order("appointment_date", { ascending: false }),
         supabase
           .from("test_results")
           .select("*")
@@ -94,7 +81,7 @@ export default function ClientPortal() {
       if (profileData.error) throw profileData.error;
       setProfile(profileData.data);
 
-      if (!appointmentsData.error) setAppointments(appointmentsData.data || []);
+      
       if (!resultsData.error) setTestResults(resultsData.data || []);
       if (!insightsData.error) setInsights(insightsData.data || []);
 
@@ -166,18 +153,6 @@ export default function ClientPortal() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             <Card className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Calendar className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Appointments</p>
-                  <p className="text-2xl font-bold">{appointments.length}</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6">
-              <div className="flex items-center gap-4">
                 <div className="p-3 bg-secondary/10 rounded-lg">
                   <FileText className="h-6 w-6 text-secondary" />
                 </div>
@@ -215,42 +190,15 @@ export default function ClientPortal() {
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="appointments">Appointments</TabsTrigger>
+              
               <TabsTrigger value="results">Test Results</TabsTrigger>
               <TabsTrigger value="insights">Health Insights</TabsTrigger>
               <TabsTrigger value="profile">Profile</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
-              {/* Recent Appointments */}
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Calendar className="h-6 w-6" />
-                  Upcoming Appointments
-                </h2>
-                {appointments.slice(0, 3).length > 0 ? (
-                  <div className="space-y-4">
-                    {appointments.slice(0, 3).map((appointment) => (
-                      <div key={appointment.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div>
-                          <p className="font-semibold">{appointment.provider_id}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(appointment.appointment_date).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span className={`px-3 py-1 rounded-full text-white text-sm ${getStatusColor(appointment.status)}`}>
-                          {appointment.status}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">No upcoming appointments</p>
-                )}
-              </Card>
-
               {/* Health Insights */}
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
@@ -277,38 +225,6 @@ export default function ClientPortal() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="appointments">
-              <Card className="p-6">
-                <h2 className="text-2xl font-bold mb-4">All Appointments</h2>
-                {appointments.length > 0 ? (
-                  <div className="space-y-4">
-                    {appointments.map((appointment) => (
-                      <div key={appointment.id} className="p-4 border rounded-lg">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <p className="font-semibold text-lg">{appointment.provider_id}</p>
-                            <p className="text-muted-foreground">
-                              {new Date(appointment.appointment_date).toLocaleDateString("en-GB", {
-                                weekday: "long",
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric"
-                              })}
-                            </p>
-                          </div>
-                          <span className={`px-3 py-1 rounded-full text-white ${getStatusColor(appointment.status)}`}>
-                            {appointment.status}
-                          </span>
-                        </div>
-                        <p className="text-sm">Price: £{appointment.price_paid}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">No appointments found</p>
-                )}
-              </Card>
-            </TabsContent>
 
             <TabsContent value="results">
               <Card className="p-6">

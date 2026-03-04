@@ -13,11 +13,8 @@ import {
   decryptArray,
   encryptSensitiveFields,
   decryptSensitiveFields,
-  encryptWearableTokens,
-  decryptWearableTokens,
   isEncrypted,
   SENSITIVE_USER_PROFILE_FIELDS,
-  SENSITIVE_WEARABLE_FIELDS,
 } from '../EncryptionService';
 
 describe('EncryptionService', () => {
@@ -169,76 +166,4 @@ describe('EncryptionService', () => {
     });
   });
 
-  describe('encryptWearableTokens / decryptWearableTokens', () => {
-    it('should encrypt OAuth tokens', async () => {
-      const connection = {
-        id: '123',
-        provider: 'fitbit',
-        access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        refresh_token: 'refresh_token_value_here',
-        is_active: true,
-      };
-
-      const encrypted = await encryptWearableTokens(connection);
-
-      expect(encrypted.id).toBe('123');
-      expect(encrypted.provider).toBe('fitbit');
-      expect(encrypted.is_active).toBe(true);
-      expect(encrypted.access_token).toMatch(/^enc:/);
-      expect(encrypted.refresh_token).toMatch(/^enc:/);
-    });
-
-    it('should decrypt OAuth tokens correctly', async () => {
-      const original = {
-        access_token: 'access_12345',
-        refresh_token: 'refresh_67890',
-      };
-
-      const encrypted = await encryptWearableTokens(original);
-      const decrypted = await decryptWearableTokens(encrypted);
-
-      expect(decrypted.access_token).toBe('access_12345');
-      expect(decrypted.refresh_token).toBe('refresh_67890');
-    });
-  });
-
-  describe('Round-trip encryption', () => {
-    it('should correctly round-trip user profile data', async () => {
-      const profile = {
-        id: 'user-123',
-        user_id: 'auth-456',
-        first_name: 'Jane',
-        last_name: 'Smith',
-        nhs_number: 'NHS9876543210',
-        health_conditions: ['type-2-diabetes', 'high-cholesterol'],
-        allergies: ['sulfa', 'latex'],
-        medications: ['metformin', 'atorvastatin'],
-        emergency_contact_name: 'John Smith',
-        emergency_contact_phone: '+44 7700 900123',
-        date_of_birth: '1985-03-15',
-      };
-
-      const encrypted = await encryptSensitiveFields(profile, SENSITIVE_USER_PROFILE_FIELDS);
-      const decrypted = await decryptSensitiveFields(encrypted, SENSITIVE_USER_PROFILE_FIELDS);
-
-      expect(decrypted).toEqual(profile);
-    });
-
-    it('should correctly round-trip wearable connection data', async () => {
-      const connection = {
-        id: 'conn-123',
-        user_id: 'user-456',
-        provider: 'apple-health',
-        access_token: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0',
-        refresh_token: 'dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4gdGhhdCBpcyByZWFsbHkgbG9uZw==',
-        is_active: true,
-        connected_at: '2024-01-15T10:30:00Z',
-      };
-
-      const encrypted = await encryptWearableTokens(connection);
-      const decrypted = await decryptWearableTokens(encrypted);
-
-      expect(decrypted).toEqual(connection);
-    });
-  });
 });

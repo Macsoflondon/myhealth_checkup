@@ -29,20 +29,10 @@ export const SENSITIVE_USER_PROFILE_FIELDS = [
 ] as const;
 
 /**
- * Sensitive field definitions for wearable_connections table
- * OAuth tokens must be encrypted to prevent token theft in case of database breach
- */
-export const SENSITIVE_WEARABLE_FIELDS = [
-  'access_token',
-  'refresh_token',
-] as const;
-
-/**
- * Combined sensitive fields for backward compatibility
+ * Combined sensitive fields
  */
 export const SENSITIVE_FIELDS = [
   ...SENSITIVE_USER_PROFILE_FIELDS,
-  ...SENSITIVE_WEARABLE_FIELDS,
 ] as const;
 
 export type SensitiveField = typeof SENSITIVE_FIELDS[number];
@@ -230,24 +220,6 @@ export function isEncrypted(value: string | null | undefined): boolean {
   return typeof value === 'string' && value.startsWith('enc:');
 }
 
-/**
- * Encrypts wearable connection tokens before storage
- */
-export async function encryptWearableTokens<T extends Record<string, unknown>>(
-  data: T
-): Promise<Record<string, unknown>> {
-  return encryptSensitiveFields(data, SENSITIVE_WEARABLE_FIELDS);
-}
-
-/**
- * Decrypts wearable connection tokens after retrieval
- */
-export async function decryptWearableTokens<T extends Record<string, unknown>>(
-  data: T
-): Promise<Record<string, unknown>> {
-  return decryptSensitiveFields(data, SENSITIVE_WEARABLE_FIELDS);
-}
-
 // Export service instance
 export const encryptionService = {
   encryptField,
@@ -256,12 +228,9 @@ export const encryptionService = {
   decryptArray,
   encryptSensitiveFields,
   decryptSensitiveFields,
-  encryptWearableTokens,
-  decryptWearableTokens,
   isEncrypted,
   SENSITIVE_FIELDS,
   SENSITIVE_USER_PROFILE_FIELDS,
-  SENSITIVE_WEARABLE_FIELDS,
 };
 
 export default encryptionService;

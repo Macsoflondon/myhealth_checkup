@@ -41,81 +41,6 @@ export type Database = {
         }
         Relationships: []
       }
-      appointments: {
-        Row: {
-          appointment_date: string | null
-          appointment_type: string | null
-          booking_reference: string | null
-          clinic_id: string | null
-          created_at: string
-          id: string
-          notes: string | null
-          payment_status: string | null
-          price_paid: number | null
-          provider_id: string
-          results_available_at: string | null
-          results_expected_at: string | null
-          sample_collected_at: string | null
-          status: string
-          test_master_id: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          appointment_date?: string | null
-          appointment_type?: string | null
-          booking_reference?: string | null
-          clinic_id?: string | null
-          created_at?: string
-          id?: string
-          notes?: string | null
-          payment_status?: string | null
-          price_paid?: number | null
-          provider_id: string
-          results_available_at?: string | null
-          results_expected_at?: string | null
-          sample_collected_at?: string | null
-          status?: string
-          test_master_id?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          appointment_date?: string | null
-          appointment_type?: string | null
-          booking_reference?: string | null
-          clinic_id?: string | null
-          created_at?: string
-          id?: string
-          notes?: string | null
-          payment_status?: string | null
-          price_paid?: number | null
-          provider_id?: string
-          results_available_at?: string | null
-          results_expected_at?: string | null
-          sample_collected_at?: string | null
-          status?: string
-          test_master_id?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "appointments_clinic_id_fkey"
-            columns: ["clinic_id"]
-            isOneToOne: false
-            referencedRelation: "clinics"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "appointments_test_master_id_fkey"
-            columns: ["test_master_id"]
-            isOneToOne: false
-            referencedRelation: "tests_master"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       audit_logs: {
         Row: {
           action: string
@@ -199,13 +124,6 @@ export type Database = {
           value?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "biomarker_readings_appointment_id_fkey"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "biomarker_readings_uploaded_test_result_id_fkey"
             columns: ["uploaded_test_result_id"]
@@ -1003,13 +921,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "test_results_appointment_id_fkey"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "test_results_test_master_id_fkey"
             columns: ["test_master_id"]
             isOneToOne: false
@@ -1362,48 +1273,6 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
-      wearable_connections: {
-        Row: {
-          access_token: string | null
-          connected_at: string | null
-          created_at: string | null
-          id: string
-          is_active: boolean | null
-          last_sync_at: string | null
-          provider: string
-          refresh_token: string | null
-          token_expires_at: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          access_token?: string | null
-          connected_at?: string | null
-          created_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          last_sync_at?: string | null
-          provider: string
-          refresh_token?: string | null
-          token_expires_at?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          access_token?: string | null
-          connected_at?: string | null
-          created_at?: string | null
-          id?: string
-          is_active?: boolean | null
-          last_sync_at?: string | null
-          provider?: string
-          refresh_token?: string | null
-          token_expires_at?: string | null
-          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
