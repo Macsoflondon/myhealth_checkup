@@ -82,7 +82,7 @@ export const LanguageSwitcher = () => {
           {isTranslating ? (
             <Loader2 className="h-5 w-5 animate-spin" />
           ) : (
-            <span className="text-2xl">{currentLanguage.flag}</span>
+            <span className="text-base lg:text-lg leading-none">{currentLanguage.flag}</span>
           )}
         </Button>
       </DropdownMenuTrigger>
