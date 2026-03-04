@@ -42,7 +42,7 @@ const NotificationHistoryPage = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data, error: fetchError } = await notificationHistoryApi.getHistory();
+      const { data, error: fetchError } = await notificationHistoryApi.getHistory(user!.id);
       
       if (fetchError) throw fetchError;
       

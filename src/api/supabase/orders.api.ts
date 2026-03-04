@@ -1,5 +1,6 @@
 import { ApiResponse } from "./base";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 export interface Order {
   id: string;
@@ -53,13 +54,20 @@ class OrdersApi {
   }
 
   /**
-   * Update order status
+   * Update order status (admin-only operation)
+   * Regular users cannot update orders per RLS policy
    */
   async updateOrderStatus(
     orderId: string,
     status: string
   ): Promise<ApiResponse<Order>> {
     try {
+      const { data: isAdmin } = await supabase.rpc('is_current_user_admin');
+      if (!isAdmin) {
+        logger.warn('Non-admin user attempted to update order status');
+        return { data: null, error: new Error('Only administrators can update order status') };
+      }
+
       const { data, error } = await supabase
         .from("orders")
         .update({ status })
@@ -74,7 +82,8 @@ class OrdersApi {
   }
 
   /**
-   * Add result to order
+   * Add result to order (admin-only operation)
+   * Regular users cannot update orders per RLS policy
    */
   async addOrderResult(
     orderId: string,
@@ -82,6 +91,12 @@ class OrdersApi {
     resultDate: string
   ): Promise<ApiResponse<Order>> {
     try {
+      const { data: isAdmin } = await supabase.rpc('is_current_user_admin');
+      if (!isAdmin) {
+        logger.warn('Non-admin user attempted to add order result');
+        return { data: null, error: new Error('Only administrators can update order results') };
+      }
+
       const { data, error } = await supabase
         .from("orders")
         .update({
