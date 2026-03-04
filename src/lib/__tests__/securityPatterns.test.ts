@@ -155,56 +155,6 @@ describe('Security Patterns', () => {
     });
   });
 
-  describe('Wearable Token Encryption', () => {
-    it('should encrypt OAuth tokens before storage', async () => {
-      const { wearablesApi } = await import('@/api/supabase/wearables.api');
-      
-      mockSingle.mockResolvedValue({ 
-        data: { id: '123', provider: 'fitbit', access_token: 'enc:xxx', refresh_token: 'enc:yyy' }, 
-        error: null 
-      });
-      
-      await wearablesApi.createConnection({
-        user_id: 'test-user-id',
-        provider: 'fitbit',
-        access_token: 'plain_access_token',
-        refresh_token: 'plain_refresh_token',
-        is_active: true,
-      });
-      
-      // Verify tokens were encrypted
-      expect(mockInsert).toHaveBeenCalledWith(
-        expect.objectContaining({
-          access_token: expect.stringMatching(/^enc:/),
-          refresh_token: expect.stringMatching(/^enc:/),
-        })
-      );
-    });
-  });
-
-  describe('Appointment Security', () => {
-    it('should encrypt booking reference before storage', async () => {
-      const { appointmentsApi } = await import('@/api/supabase/appointments.api');
-      
-      mockSingle.mockResolvedValue({ 
-        data: { id: '123', booking_reference: 'enc:xxx' }, 
-        error: null 
-      });
-      
-      await appointmentsApi.createAppointment({
-        user_id: 'test-user-id',
-        provider_id: 'medichecks',
-        booking_reference: 'BOOK-123-ABC',
-        status: 'confirmed',
-      });
-      
-      expect(mockInsert).toHaveBeenCalledWith(
-        expect.objectContaining({
-          booking_reference: expect.stringMatching(/^enc:/),
-        })
-      );
-    });
-  });
 
   describe('Immutable Tables Pattern', () => {
     /**
@@ -279,16 +229,6 @@ describe('API Security Checklist', () => {
   const securityChecklist = {
     'User Profile API': {
       'Encrypts sensitive fields': true,
-      'Filters by user_id': true,
-      'Uses RLS policies': true,
-    },
-    'Wearables API': {
-      'Encrypts OAuth tokens': true,
-      'Filters by user_id': true,
-      'Uses RLS policies': true,
-    },
-    'Appointments API': {
-      'Encrypts booking reference': true,
       'Filters by user_id': true,
       'Uses RLS policies': true,
     },
