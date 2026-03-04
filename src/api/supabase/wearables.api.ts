@@ -94,6 +94,7 @@ class WearablesApi {
    */
   async updateConnection(
     id: string,
+    userId: string,
     updates: Partial<WearableConnection>
   ): Promise<ApiResponse<WearableConnection>> {
     const encryptedData = await encryptWearableTokens(updates) as typeof updates;
@@ -102,6 +103,7 @@ class WearablesApi {
       .from('wearable_connections')
       .update(encryptedData)
       .eq('id', id)
+      .eq('user_id', userId)
       .select()
       .single();
 
@@ -119,11 +121,12 @@ class WearablesApi {
    */
   async refreshTokens(
     id: string,
+    userId: string,
     accessToken: string,
     refreshToken: string,
     expiresAt: string
   ): Promise<ApiResponse<WearableConnection>> {
-    return this.updateConnection(id, {
+    return this.updateConnection(id, userId, {
       access_token: accessToken,
       refresh_token: refreshToken,
       token_expires_at: expiresAt,
@@ -134,11 +137,12 @@ class WearablesApi {
   /**
    * Delete a wearable connection
    */
-  async deleteConnection(id: string): Promise<ApiResponse<null>> {
+  async deleteConnection(id: string, userId: string): Promise<ApiResponse<null>> {
     const { error } = await supabase
       .from('wearable_connections')
       .delete()
-      .eq('id', id);
+      .eq('id', id)
+      .eq('user_id', userId);
 
     return { data: null, error };
   }
@@ -146,8 +150,8 @@ class WearablesApi {
   /**
    * Deactivate a wearable connection without deleting
    */
-  async deactivateConnection(id: string): Promise<ApiResponse<WearableConnection>> {
-    return this.updateConnection(id, { is_active: false });
+  async deactivateConnection(id: string, userId: string): Promise<ApiResponse<WearableConnection>> {
+    return this.updateConnection(id, userId, { is_active: false });
   }
 }
 

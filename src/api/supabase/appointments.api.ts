@@ -108,6 +108,7 @@ class AppointmentsApi {
    */
   async updateAppointment(
     id: string,
+    userId: string,
     updates: Partial<Appointment>
   ): Promise<ApiResponse<Appointment>> {
     const encryptedData = await encryptSensitiveFields(updates, SENSITIVE_APPOINTMENT_FIELDS) as typeof updates;
@@ -116,6 +117,7 @@ class AppointmentsApi {
       .from('appointments')
       .update(encryptedData)
       .eq('id', id)
+      .eq('user_id', userId)
       .select()
       .single();
 
@@ -155,8 +157,8 @@ class AppointmentsApi {
   /**
    * Cancel an appointment
    */
-  async cancelAppointment(id: string): Promise<ApiResponse<Appointment>> {
-    return this.updateAppointment(id, { status: 'cancelled' });
+  async cancelAppointment(id: string, userId: string): Promise<ApiResponse<Appointment>> {
+    return this.updateAppointment(id, userId, { status: 'cancelled' });
   }
 }
 

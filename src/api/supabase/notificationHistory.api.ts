@@ -19,10 +19,11 @@ export const notificationHistoryApi = {
   /**
    * Get all notification history for the current user
    */
-  async getHistory(): Promise<ApiResponse<NotificationHistory[]>> {
+  async getHistory(userId: string): Promise<ApiResponse<NotificationHistory[]>> {
     const { data, error, count } = await supabase
       .from('notification_history')
       .select('*', { count: 'exact' })
+      .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
     return { data: data as NotificationHistory[] | null, error, count };
@@ -32,6 +33,7 @@ export const notificationHistoryApi = {
    * Get notification history with pagination
    */
   async getHistoryPaginated(
+    userId: string,
     page: number = 1,
     pageSize: number = 20
   ): Promise<ApiResponse<NotificationHistory[]>> {
@@ -41,6 +43,7 @@ export const notificationHistoryApi = {
     const { data, error, count } = await supabase
       .from('notification_history')
       .select('*', { count: 'exact' })
+      .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .range(from, to);
 
@@ -51,11 +54,13 @@ export const notificationHistoryApi = {
    * Get notification history filtered by type
    */
   async getHistoryByType(
+    userId: string,
     type: 'email' | 'sms'
   ): Promise<ApiResponse<NotificationHistory[]>> {
     const { data, error, count } = await supabase
       .from('notification_history')
       .select('*', { count: 'exact' })
+      .eq('user_id', userId)
       .eq('notification_type', type)
       .order('created_at', { ascending: false });
 
@@ -66,11 +71,13 @@ export const notificationHistoryApi = {
    * Get notification history filtered by status
    */
   async getHistoryByStatus(
+    userId: string,
     status: 'sent' | 'failed' | 'pending'
   ): Promise<ApiResponse<NotificationHistory[]>> {
     const { data, error, count } = await supabase
       .from('notification_history')
       .select('*', { count: 'exact' })
+      .eq('user_id', userId)
       .eq('status', status)
       .order('created_at', { ascending: false });
 
