@@ -22,8 +22,8 @@ export const MobileMenu = ({
       className={cn(
         "lg:hidden h-9 w-9 p-1 rounded-lg transition-colors flex-shrink-0 flex items-center justify-center",
         isMenuOpen 
-          ? "bg-[#e70d69] text-white border-2 border-[#e70d69]" 
-          : "text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69]"
+          ? "bg-[#e70d69] text-white border border-[#e70d69]" 
+          : "text-[#e70d69] hover:text-white hover:bg-[#e70d69] border border-[#e70d69]"
       )}
     >
       <div className="relative h-5 w-5">

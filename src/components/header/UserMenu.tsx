@@ -29,7 +29,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-1 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+              className="h-9 w-9 p-1 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
               aria-label="User menu"
             >
               <User className="h-5 w-5" />
