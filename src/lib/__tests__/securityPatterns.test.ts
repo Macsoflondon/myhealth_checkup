@@ -20,6 +20,47 @@ const mockSingle = vi.fn();
 const mockEq = vi.fn();
 const mockFrom = vi.fn();
 
+// Helper to simulate server-side encryption/decryption locally for testing
+function mockEncrypt(value: string): string {
+  if (!value) return value;
+  return `enc:${Buffer.from(value).toString('base64')}`;
+}
+
+function mockDecrypt(value: string): string {
+  if (!value || !value.startsWith('enc:')) return value;
+  return Buffer.from(value.slice(4), 'base64').toString('utf-8');
+}
+
+const mockFunctionsInvoke = vi.fn().mockImplementation(async (_name: string, options: { body: { action: string; data: unknown; fields?: readonly string[] } }) => {
+  const { action, data, fields } = options.body;
+  
+  if (action === 'encrypt') {
+    return { data: { success: true, data: mockEncrypt(data as string) }, error: null };
+  }
+  if (action === 'decrypt') {
+    return { data: { success: true, data: mockDecrypt(data as string) }, error: null };
+  }
+  if (action === 'encryptFields') {
+    const result = { ...(data as Record<string, unknown>) };
+    for (const field of (fields || [])) {
+      if (result[field] && typeof result[field] === 'string') {
+        result[field] = mockEncrypt(result[field] as string);
+      }
+    }
+    return { data: { success: true, data: result }, error: null };
+  }
+  if (action === 'decryptFields') {
+    const result = { ...(data as Record<string, unknown>) };
+    for (const field of (fields || [])) {
+      if (result[field] && typeof result[field] === 'string' && (result[field] as string).startsWith('enc:')) {
+        result[field] = mockDecrypt(result[field] as string);
+      }
+    }
+    return { data: { success: true, data: result }, error: null };
+  }
+  return { data: { success: false, error: 'Unknown action' }, error: null };
+});
+
 vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     from: (table: string) => {
@@ -69,6 +110,9 @@ vi.mock('@/integrations/supabase/client', () => ({
           };
         },
       };
+    },
+    functions: {
+      invoke: mockFunctionsInvoke,
     },
     auth: {
       getUser: () => Promise.resolve({

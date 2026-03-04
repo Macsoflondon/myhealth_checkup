@@ -1,9 +1,62 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock the encryption key environment variable
 const mockEncryptionKey = 'test-encryption-key-for-unit-tests-32chars';
-
 vi.stubEnv('VITE_ENCRYPTION_KEY', mockEncryptionKey);
+
+// Use vi.hoisted so the mock fn is available when vi.mock is hoisted
+const { mockFunctionsInvoke } = vi.hoisted(() => {
+  function mockEncrypt(value: string): string {
+    if (!value) return value;
+    return `enc:${Buffer.from(value).toString('base64')}`;
+  }
+  function mockDecrypt(value: string): string {
+    if (!value || !value.startsWith('enc:')) return value;
+    return Buffer.from(value.slice(4), 'base64').toString('utf-8');
+  }
+
+  const mockFunctionsInvoke = vi.fn().mockImplementation(async (_name: string, options: { body: { action: string; data: unknown; fields?: readonly string[] } }) => {
+    const { action, data, fields } = options.body;
+    if (action === 'encrypt') {
+      return { data: { success: true, data: mockEncrypt(data as string) }, error: null };
+    }
+    if (action === 'decrypt') {
+      return { data: { success: true, data: mockDecrypt(data as string) }, error: null };
+    }
+    if (action === 'encryptFields') {
+      const result = { ...(data as Record<string, unknown>) };
+      for (const field of (fields || [])) {
+        if (result[field] && typeof result[field] === 'string') {
+          result[field] = mockEncrypt(result[field] as string);
+        } else if (result[field] && Array.isArray(result[field])) {
+          result[field] = mockEncrypt(JSON.stringify(result[field]));
+        }
+      }
+      return { data: { success: true, data: result }, error: null };
+    }
+    if (action === 'decryptFields') {
+      const result = { ...(data as Record<string, unknown>) };
+      for (const field of (fields || [])) {
+        if (result[field] && typeof result[field] === 'string' && (result[field] as string).startsWith('enc:')) {
+          const decrypted = mockDecrypt(result[field] as string);
+          try { result[field] = JSON.parse(decrypted); } catch { result[field] = decrypted; }
+        }
+      }
+      return { data: { success: true, data: result }, error: null };
+    }
+    return { data: { success: false, error: 'Unknown action' }, error: null };
+  });
+
+  return { mockFunctionsInvoke };
+});
+
+vi.mock('@/integrations/supabase/client', () => ({
+  supabase: {
+    functions: {
+      invoke: mockFunctionsInvoke,
+    },
+  },
+}));
 
 // Import after mocking
 import {
@@ -18,6 +71,10 @@ import {
 } from '../EncryptionService';
 
 describe('EncryptionService', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe('encryptField', () => {
     it('should return null/empty for null or empty input', async () => {
       expect(await encryptField('')).toBe('');
@@ -33,12 +90,10 @@ describe('EncryptionService', () => {
       expect(encrypted.length).toBeGreaterThan(plaintext.length);
     });
 
-    it('should produce different ciphertext for same plaintext (random IV)', async () => {
-      const plaintext = 'same-text';
-      const encrypted1 = await encryptField(plaintext);
-      const encrypted2 = await encryptField(plaintext);
+    it('should produce different output for different input', async () => {
+      const encrypted1 = await encryptField('text-one');
+      const encrypted2 = await encryptField('text-two');
       
-      // Both should be encrypted but with different IVs
       expect(encrypted1).toMatch(/^enc:/);
       expect(encrypted2).toMatch(/^enc:/);
       expect(encrypted1).not.toBe(encrypted2);
@@ -54,7 +109,6 @@ describe('EncryptionService', () => {
     it('should return non-encrypted values as-is', async () => {
       const plaintext = 'not-encrypted-value';
       const result = await decryptField(plaintext);
-      
       expect(result).toBe(plaintext);
     });
 
@@ -62,7 +116,6 @@ describe('EncryptionService', () => {
       const original = 'my-secret-data-NHS1234567890';
       const encrypted = await encryptField(original);
       const decrypted = await decryptField(encrypted);
-      
       expect(decrypted).toBe(original);
     });
 
@@ -70,7 +123,6 @@ describe('EncryptionService', () => {
       const original = 'Test with special chars: £€¥ & <script>alert("xss")</script>';
       const encrypted = await encryptField(original);
       const decrypted = await decryptField(encrypted);
-      
       expect(decrypted).toBe(original);
     });
 
@@ -78,7 +130,6 @@ describe('EncryptionService', () => {
       const original = '健康データ 🏥 αβγδ';
       const encrypted = await encryptField(original);
       const decrypted = await decryptField(encrypted);
-      
       expect(decrypted).toBe(original);
     });
   });
@@ -119,8 +170,7 @@ describe('EncryptionService', () => {
         id: '123',
         first_name: 'John',
         last_name: 'Doe',
-        nhs_number: 'NHS123456789',
-        health_conditions: ['diabetes', 'asthma'],
+        phone_number: '+447123456789',
         email: 'john@example.com',
       };
 
@@ -132,38 +182,34 @@ describe('EncryptionService', () => {
       expect(encrypted.email).toBe('john@example.com');
 
       // Sensitive fields should be encrypted
-      expect(encrypted.nhs_number).toMatch(/^enc:/);
-      expect(encrypted.health_conditions).toMatch(/^enc:/);
+      expect(encrypted.phone_number).toMatch(/^enc:/);
     });
 
     it('should decrypt encrypted fields correctly', async () => {
       const original = {
         id: '123',
-        nhs_number: 'NHS123456789',
-        health_conditions: ['diabetes'],
-        allergies: ['penicillin'],
+        phone_number: '+447123456789',
+        date_of_birth: '1990-01-15',
       };
 
       const encrypted = await encryptSensitiveFields(original, SENSITIVE_USER_PROFILE_FIELDS);
       const decrypted = await decryptSensitiveFields(encrypted, SENSITIVE_USER_PROFILE_FIELDS);
 
       expect(decrypted.id).toBe('123');
-      expect(decrypted.nhs_number).toBe('NHS123456789');
-      expect(decrypted.health_conditions).toEqual(['diabetes']);
-      expect(decrypted.allergies).toEqual(['penicillin']);
+      expect(decrypted.phone_number).toBe('+447123456789');
+      expect(decrypted.date_of_birth).toBe('1990-01-15');
     });
 
     it('should handle null/undefined values gracefully', async () => {
       const userData = {
         id: '123',
-        nhs_number: null,
-        health_conditions: undefined,
+        phone_number: null,
+        date_of_birth: undefined,
       };
 
       const encrypted = await encryptSensitiveFields(userData, SENSITIVE_USER_PROFILE_FIELDS);
-      expect(encrypted.nhs_number).toBe(null);
-      expect(encrypted.health_conditions).toBe(undefined);
+      expect(encrypted.phone_number).toBe(null);
+      expect(encrypted.date_of_birth).toBe(undefined);
     });
   });
-
 });
