@@ -97,8 +97,8 @@ const Header = ({ className }: HeaderProps) => {
                 />
               </Link>
 
-              {/* Right: Controls centered in remaining space */}
-              <div className="flex-1 flex items-center justify-center">
+              {/* Right: Controls pushed to far right */}
+              <div className="flex-1 flex items-center justify-end">
                 <nav className="flex items-center gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
