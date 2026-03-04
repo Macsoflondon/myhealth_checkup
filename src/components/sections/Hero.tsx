@@ -56,7 +56,7 @@ const Hero = () => {
             <span className="text-brand-turquoise text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
           </div>
             {/* Headline - Clear promise in plain language */}
-            <h1 className="sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.18rem] xs:text-[1.55rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-snug sm:leading-snug mb-3 sm:mb-4 md:mb-6">
+            <h1 className="sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.05rem] xs:text-[1.4rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
               <span className="block text-brand-navy">Compare the UK's leading private health test providers</span>
               <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
               <span className="block text-brand-pink">All in one place!</span>
