@@ -20,22 +20,22 @@ export const MobileMenu = ({
       aria-expanded={isMenuOpen} 
       aria-controls="mobile-menu" 
       className={cn(
-        "lg:hidden h-9 w-9 p-1.5 rounded-lg transition-colors flex-shrink-0 flex items-center justify-center",
+        "lg:hidden !h-9 !w-9 !min-h-0 !p-0 rounded-lg transition-colors flex-shrink-0 flex items-center justify-center",
         isMenuOpen 
           ? "bg-[#e70d69] text-white border-2 border-[#e70d69]" 
           : "text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69]"
       )}
     >
-      <div className="relative h-5 w-5">
+      <div className="relative h-4 w-4">
         <Menu 
           className={cn(
-            "h-5 w-5 absolute inset-0 transition-all duration-300 ease-out",
+            "h-4 w-4 absolute inset-0 transition-all duration-300 ease-out",
             isMenuOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
           )} 
         />
         <X 
           className={cn(
-            "h-5 w-5 absolute inset-0 transition-all duration-300 ease-out",
+            "h-4 w-4 absolute inset-0 transition-all duration-300 ease-out",
             isMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-0"
           )} 
         />

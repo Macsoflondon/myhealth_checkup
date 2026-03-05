@@ -29,10 +29,10 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-1.5 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+              className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
               aria-label="User menu"
             >
-              <User className="h-5 w-5" />
+              <User className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -62,12 +62,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-9 w-9 p-1.5 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+        className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
         aria-label="Sign in"
         asChild
       >
         <Link to="/auth" className="flex items-center justify-center" onClick={onItemClick}>
-          <User className="h-5 w-5" />
+          <User className="h-4 w-4" />
         </Link>
       </Button>
     );
@@ -79,10 +79,10 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 w-9 p-1.5 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+            className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
             aria-label="User menu"
           >
-            <User className="h-5 w-5" />
+            <User className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -112,12 +112,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="h-9 w-9 p-1.5 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+        className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
         aria-label="Sign in"
         asChild
       >
         <Link to="/auth" className="flex items-center justify-center">
-          <User className="h-5 w-5" />
+          <User className="h-4 w-4" />
         </Link>
       </Button>
     </div>
