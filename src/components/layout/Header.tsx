@@ -84,7 +84,7 @@ const Header = ({ className }: HeaderProps) => {
         {/* Main header bar - Logo and User Controls */}
         <div className="bg-[#081129]">
           <div className="px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center py-1 lg:py-1.5">
+            <div className="flex items-center py-0">
               {/* Left spacer for balance */}
               <div className="flex-1" />
 

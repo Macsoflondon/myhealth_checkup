@@ -31,7 +31,7 @@ const JourneySimplified = () => {
             title="Your Health Journey"
             gradientText="Simplified"
           />
-          <p className="text-muted-foreground font-sans text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4">
+          <p className="text-foreground font-sans font-medium text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4">
             Finding the right health test shouldn't be complicated. We've made it simple in three easy steps.
           </p>
         </div>
@@ -53,7 +53,7 @@ const JourneySimplified = () => {
                 <h3 className="text-lg sm:text-xl font-heading font-semibold mb-3 text-brand-turquoise">
                   {step.title}
                 </h3>
-                <p className="text-muted-foreground font-sans text-sm sm:text-base leading-relaxed max-w-xs mx-auto">
+                <p className="text-foreground font-sans font-medium text-sm sm:text-base leading-relaxed max-w-xs mx-auto">
                   {step.description}
                 </p>
               </div>

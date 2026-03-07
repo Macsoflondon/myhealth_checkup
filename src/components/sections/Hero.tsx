@@ -57,7 +57,8 @@ const Hero = () => {
           </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="sm:max-w-3xl lg:max-w-5xl mx-auto text-[1.05rem] xs:text-[1.4rem] sm:text-[2.25rem] md:text-[3.3rem] lg:text-[3.75rem] xl:text-[4.1rem] font-heading font-bold leading-tight sm:leading-snug mb-3 sm:mb-4 md:mb-6">
-              <span className="block text-brand-navy">Compare the UK's leading private health test providers</span>
+              <span className="block text-brand-navy">Compare the UK's leading</span>
+              <span className="block text-brand-navy">private health test providers</span>
               <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
               <span className="block text-brand-pink">All in one place!</span>
             </h1>
@@ -144,7 +145,7 @@ const Hero = () => {
       </section>
 
       {/* Trust Signals Bar - separate band */}
-      <section className="bg-[#f0fafb] py-4 sm:py-5 md:py-6">
+      <section className="bg-white py-4 sm:py-5 md:py-6">
         <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-4xl mx-auto">
             {/* Row 1: 3 items */}

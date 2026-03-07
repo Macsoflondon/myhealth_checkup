@@ -12,7 +12,7 @@ const PartnersGrid = () => {
 
     let animationId: number;
     let position = 0;
-    const speed = 0.4;
+    const speed = 0.8;
 
     // Measure actual rendered width of one full set of providers
     const measureSetWidth = () => {
@@ -76,6 +76,15 @@ const PartnersGrid = () => {
       <div className="absolute bottom-[50%] left-[85%] w-36 h-36 bg-brand-turquoise/[0.03] rounded-full" />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
+        {/* Section label */}
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+            Accredited & Verified
+          </span>
+          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+        </div>
+
         <SectionHeading 
           title="Our Trusted" 
           gradientText="Partners" 
