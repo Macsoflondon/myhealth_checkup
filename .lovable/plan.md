@@ -1,17 +1,20 @@
 
 
-## Investigation: Back to Top Button
+## Remove WhyChooseUs and TopConcernsSection from Homepage
 
-The `BackToTop` component **is already rendered globally** in `App.tsx` (line 42), so it should appear on every page. The component works by showing a floating button after scrolling 500px.
+Three files to change:
 
-**Why you may not see it:** The cookie consent banner sits at `fixed bottom-0 z-50` and spans the full width of the screen bottom, which covers the back-to-top button (also `z-50 bottom-8 right-8`). Once you accept/dismiss cookies, the button should appear when you scroll.
+### 1. `src/pages/Index.tsx`
+- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
+- Remove the TopConcernsSection JSX block (lines 134-135)
+- Remove the WhyChooseUs JSX block (lines 144-145)
 
-### Fix
+### 2. `src/components/sections/WhyChooseUs.tsx`
+- Delete this file entirely
 
-1. **Raise z-index** of the BackToTop button from `z-50` to `z-[60]` so it always floats above the cookie banner.
-2. **Adjust bottom offset** when cookie banner is visible — or simply rely on the higher z-index since the button is `bottom-8 right-8` (32px from edge) and won't be fully hidden, just overlapped.
+### 3. `src/components/sections/index.ts`
+- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
+- Keep TopConcernsSection export so it remains available for future use
 
-**File:** `src/components/common/BackToTop.tsx` — change `z-50` to `z-[60]` on the Button className.
-
-One line change, one file.
+TopConcernsSection component file stays in the codebase untouched — available for reuse later.
 
