@@ -6,19 +6,32 @@ const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      setIsVisible(scrollY > 500);
+    const getScrollY = () => {
+      return Math.max(
+        window.scrollY || 0,
+        window.pageYOffset || 0,
+        document.documentElement.scrollTop || 0,
+        document.body.scrollTop || 0
+      );
     };
 
+    const toggleVisibility = () => {
+      setIsVisible(getScrollY() > 300);
+    };
+
+    // Listen on multiple targets for maximum compatibility
     window.addEventListener('scroll', toggleVisibility, { passive: true });
     document.addEventListener('scroll', toggleVisibility, { passive: true });
-    // Check initial state
+    
+    // Fallback: poll scroll position for environments where events don't fire
+    const interval = setInterval(toggleVisibility, 500);
+    
     toggleVisibility();
 
     return () => {
       window.removeEventListener('scroll', toggleVisibility);
       document.removeEventListener('scroll', toggleVisibility);
+      clearInterval(interval);
     };
   }, []);
 
