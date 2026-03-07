@@ -1,20 +1,15 @@
 
 
-## Remove WhyChooseUs and TopConcernsSection from Homepage
+## Plan: Reduce Desktop Header Height
 
-Three files to change:
+The logo image currently uses `h-32 lg:h-40 xl:h-48` (128px / 160px / 192px). Reducing these by ~20-25% will trim space above and below the logo without changing the logo's aspect ratio or the button sizes.
 
-### 1. `src/pages/Index.tsx`
-- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
-- Remove the TopConcernsSection JSX block (lines 134-135)
-- Remove the WhyChooseUs JSX block (lines 144-145)
+**File:** `src/components/layout/Header.tsx` (line 96)
 
-### 2. `src/components/sections/WhyChooseUs.tsx`
-- Delete this file entirely
+Change logo heights from:
+- `h-32` → `h-28`
+- `lg:h-40` → `lg:h-34` (use arbitrary `lg:h-[136px]`)
+- `xl:h-48` → `xl:h-40`
 
-### 3. `src/components/sections/index.ts`
-- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
-- Keep TopConcernsSection export so it remains available for future use
-
-TopConcernsSection component file stays in the codebase untouched — available for reuse later.
+This removes roughly one line of space above and one below the logo, shrinking the header while keeping the logo, slogan, and buttons visually unchanged.
 
