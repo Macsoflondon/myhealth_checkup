@@ -50,7 +50,7 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
               Comparison Platform
             </span>
           </h2>
-          <p className="text-white/60 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+          <p className="text-white font-sans font-medium text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Built on principles of transparency, clinical accuracy, and unwavering quality standards.
           </p>
         </div>
@@ -75,7 +75,7 @@ const TrustPlatformSection = ({ className }: TrustPlatformSectionProps) => {
               <h3 className="text-sm sm:text-base font-heading font-semibold mb-2 text-white">
                 {feature.title}
               </h3>
-              <p className="text-xs sm:text-sm leading-relaxed text-white/60 font-sans">
+              <p className="text-xs sm:text-sm leading-relaxed text-white/90 font-sans">
                 {feature.description}
               </p>
             </div>
