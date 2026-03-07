@@ -1,46 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { createPortal } from 'react-dom';
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-      setIsVisible(scrollY > 500);
-    };
+    // Create a sentinel div at the very top of the body
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '300px';
+    sentinel.style.left = '0';
+    sentinel.style.width = '1px';
+    sentinel.style.height = '1px';
+    sentinel.style.pointerEvents = 'none';
+    sentinel.setAttribute('aria-hidden', 'true');
+    document.body.prepend(sentinel);
+    sentinelRef.current = sentinel;
 
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
-    document.addEventListener('scroll', toggleVisibility, { passive: true });
-    // Check initial state
-    toggleVisibility();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When the sentinel scrolls out of view (above viewport), show button
+        setIsVisible(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
 
     return () => {
-      window.removeEventListener('scroll', toggleVisibility);
-      document.removeEventListener('scroll', toggleVisibility);
+      observer.disconnect();
+      sentinel.remove();
     };
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
 
   return (
-    <>
-      {isVisible && (
-        <Button
-          onClick={scrollToTop}
-          className="fixed bottom-28 right-8 z-[60] h-12 w-12 rounded-full bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 animate-fade-in hover:scale-110 p-0"
-          aria-label="Back to top"
-        >
-          <ArrowUp className="h-6 w-6" />
-        </Button>
-      )}
-    </>
+    <Button
+      onClick={scrollToTop}
+      className={`fixed bottom-28 right-6 z-[60] h-12 w-12 rounded-full bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg p-0 transition-all duration-300 hover:scale-110 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+      }`}
+      aria-label="Back to top"
+    >
+      <ArrowUp className="h-6 w-6" />
+    </Button>
   );
 };
 
