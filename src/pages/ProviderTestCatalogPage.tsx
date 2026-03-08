@@ -45,7 +45,13 @@ const ProviderTestCatalogPage = () => {
     if (!resolvedProviderId) return;
     try {
       setLoading(true);
-      const { data, error } = await providersApi.getProviderCatalog(resolvedProviderId);
+      // Try with the resolved ID first, then fall back to the URL param
+      let { data, error } = await providersApi.getProviderCatalog(resolvedProviderId);
+      if ((!data || data.length === 0) && providerId && providerId !== resolvedProviderId) {
+        const fallback = await providersApi.getProviderCatalog(providerId);
+        data = fallback.data;
+        error = fallback.error;
+      }
       if (error) {
         logger.error("Fetch error:", error);
         throw error;
