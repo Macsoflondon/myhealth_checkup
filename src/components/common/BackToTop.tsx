@@ -1,45 +1,27 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { createPortal } from 'react-dom';
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Create a sentinel div at the very top of the body
-    const sentinel = document.createElement('div');
-    sentinel.style.position = 'absolute';
-    sentinel.style.top = '300px';
-    sentinel.style.left = '0';
-    sentinel.style.width = '1px';
-    sentinel.style.height = '1px';
-    sentinel.style.pointerEvents = 'none';
-    sentinel.setAttribute('aria-hidden', 'true');
-    document.body.prepend(sentinel);
-    sentinelRef.current = sentinel;
+    const handleScroll = () => {
+      setIsVisible(window.scrollY > 300);
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // When the sentinel scrolls out of view (above viewport), show button
-        setIsVisible(!entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(sentinel);
+    // Use scroll event as primary detection (works in iframes)
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Also check on mount
+    handleScroll();
 
     return () => {
-      observer.disconnect();
-      sentinel.remove();
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
   };
 
   return (
