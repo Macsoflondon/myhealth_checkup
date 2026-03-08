@@ -15,6 +15,13 @@ export interface ProviderTestData {
   scraped_at: string;
   created_at: string;
   updated_at: string;
+  sample_type?: string | null;
+  biomarker_count?: number | null;
+  biomarkers_list?: any;
+  is_popular?: boolean | null;
+  home_kit_available?: boolean | null;
+  clinic_visit_available?: boolean | null;
+  who_should_test?: string | null;
 }
 
 export interface PriceUpdate {
