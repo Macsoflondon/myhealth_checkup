@@ -41,16 +41,34 @@ const ProviderTestCatalogPage = () => {
     filterTests();
   }, [tests, searchTerm, selectedCategory]);
 
+  // Map from URL/detailed-provider IDs to actual DB provider_ids
+  const DB_PROVIDER_MAP: Record<string, string> = {
+    "randox-health": "randox",
+    "goodbody": "goodbody-clinic",
+    "tuli-health": "tuli-health",
+  };
+
   const fetchProviderTests = async () => {
     if (!resolvedProviderId) return;
     try {
       setLoading(true);
-      const { data, error } = await providersApi.getProviderCatalog(resolvedProviderId);
-      if (error) {
-        logger.error("Fetch error:", error);
-        throw error;
+      // Try multiple ID variants to find tests
+      const idsToTry = [
+        resolvedProviderId,
+        DB_PROVIDER_MAP[resolvedProviderId],
+        providerId,
+        providerId ? DB_PROVIDER_MAP[providerId] : undefined,
+      ].filter((id): id is string => !!id && id !== resolvedProviderId || id === resolvedProviderId);
+
+      let finalData: ProviderTestData[] = [];
+      for (const id of [...new Set(idsToTry)]) {
+        const { data } = await providersApi.getProviderCatalog(id);
+        if (data && data.length > 0) {
+          finalData = data;
+          break;
+        }
       }
-      setTests(data || []);
+      setTests(finalData);
     } catch (error) {
       logger.error("Error fetching tests:", error);
       setError("Failed to load tests. Please try again later.");
