@@ -16,6 +16,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Search, SlidersHorizontal, ArrowUpDown, X, TestTube2 } from "lucide-react";
+import { sortTests } from "@/components/providers/CatalogSortBar";
 import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
 import ProviderTestCard from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
