@@ -6,17 +6,10 @@ import MainLayout from "@/layouts/MainLayout";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal, ArrowUpDown, X, TestTube2 } from "lucide-react";
-import { sortTests } from "@/components/providers/CatalogSortBar";
+import { Search, SlidersHorizontal, X, TestTube2 } from "lucide-react";
+import CatalogSortBar, { sortTests, type CatalogSortOption } from "@/components/providers/CatalogSortBar";
 import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
 import ProviderTestCard from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
@@ -24,12 +17,10 @@ import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailMo
 const PROVIDER_ID = "medichecks";
 const PROVIDER_NAME = "Medichecks";
 
-type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc" | "biomarkers-desc";
-
 const MedichecksTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState<SortOption>("name-asc");
+  const [sortBy, setSortBy] = useState<CatalogSortOption>("name-asc");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTest, setSelectedTest] = useState<any>(null);
@@ -43,7 +34,6 @@ const MedichecksTestsCatalogPage = () => {
         .eq("provider_id", PROVIDER_ID)
         .eq("is_active", true)
         .order("test_name");
-
       if (error) throw error;
       return data;
     },
@@ -51,8 +41,7 @@ const MedichecksTestsCatalogPage = () => {
 
   const categories = useMemo(() => {
     if (!tests) return [];
-    const cats = [...new Set(tests.map((t) => t.category).filter(Boolean))];
-    return cats.sort() as string[];
+    return [...new Set(tests.map((t) => t.category).filter(Boolean))].sort() as string[];
   }, [tests]);
 
   const priceBounds = useMemo(() => {
@@ -63,42 +52,26 @@ const MedichecksTestsCatalogPage = () => {
 
   const filteredTests = useMemo(() => {
     if (!tests) return [];
-    
     let filtered = tests;
-    
     if (selectedCategory !== "all") {
       filtered = filtered.filter((t) => t.category === selectedCategory);
     }
-    
     if (searchTerm.trim()) {
       const search = searchTerm.toLowerCase();
-      filtered = filtered.filter((t) => 
+      filtered = filtered.filter((t) =>
         t.test_name.toLowerCase().includes(search) ||
         t.description?.toLowerCase().includes(search) ||
         t.category?.toLowerCase().includes(search)
       );
     }
-    
     filtered = filtered.filter((t) => {
       const price = t.price || 0;
       return price >= priceRange[0] && price <= priceRange[1];
     });
-    
-    filtered = [...filtered].sort((a, b) => {
-      switch (sortBy) {
-        case "name-asc": return a.test_name.localeCompare(b.test_name);
-        case "name-desc": return b.test_name.localeCompare(a.test_name);
-        case "price-asc": return (a.price || 0) - (b.price || 0);
-        case "price-desc": return (b.price || 0) - (a.price || 0);
-        case "biomarkers-desc": return (b.biomarker_count || 0) - (a.biomarker_count || 0);
-        default: return 0;
-      }
-    });
-    
-    return filtered;
+    return sortTests(filtered, sortBy);
   }, [tests, selectedCategory, searchTerm, priceRange, sortBy]);
 
-  const hasActiveFilters = searchTerm || selectedCategory !== "all" || 
+  const hasActiveFilters = searchTerm || selectedCategory !== "all" ||
     priceRange[0] > priceBounds.min || priceRange[1] < priceBounds.max;
 
   const resetFilters = () => {
@@ -112,12 +85,8 @@ const MedichecksTestsCatalogPage = () => {
     <MainLayout>
       <Helmet>
         <title>Medichecks Blood Tests | Compare Health Tests UK</title>
-        <meta
-          name="description"
-          content="Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening."
-        />
+        <meta name="description" content="Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening." />
       </Helmet>
-
       <div className="min-h-screen bg-gray-50">
         <ProviderCatalogHeader
           providerId={PROVIDER_ID}
@@ -131,60 +100,26 @@ const MedichecksTestsCatalogPage = () => {
           features={PROVIDER_FEATURES[PROVIDER_ID]}
         />
 
-        {/* Advanced Search/Filter Bar */}
+        {/* Search & Filter Bar */}
         <section className="container mx-auto px-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search tests..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+              <Input placeholder="Search tests..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
             </div>
-            <div className="flex gap-2">
-              <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
-                <SelectTrigger className="w-[180px]">
-                  <ArrowUpDown className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                  <SelectItem value="name-desc">Name (Z-A)</SelectItem>
-                  <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-                  <SelectItem value="price-desc">Price (High to Low)</SelectItem>
-                  <SelectItem value="biomarkers-desc">Most Biomarkers</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setShowFilters(!showFilters)}
-                className={showFilters ? "bg-primary text-primary-foreground" : ""}
-              >
-                <SlidersHorizontal className="h-4 w-4" />
-              </Button>
-            </div>
+            <Button variant="outline" size="icon" onClick={() => setShowFilters(!showFilters)} className={showFilters ? "bg-primary text-primary-foreground" : ""}>
+              <SlidersHorizontal className="h-4 w-4" />
+            </Button>
           </div>
-
           {showFilters && (
             <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t">
               <div className="flex-1 space-y-2">
                 <label className="text-sm font-medium">Price Range: £{priceRange[0]} - £{priceRange[1]}</label>
-                <Slider
-                  value={priceRange}
-                  min={priceBounds.min}
-                  max={priceBounds.max}
-                  step={5}
-                  onValueChange={(v) => setPriceRange(v as [number, number])}
-                  className="py-2"
-                />
+                <Slider value={priceRange} min={priceBounds.min} max={priceBounds.max} step={5} onValueChange={(v) => setPriceRange(v as [number, number])} className="py-2" />
               </div>
               {hasActiveFilters && (
                 <Button variant="ghost" size="sm" onClick={resetFilters} className="self-end">
-                  <X className="h-4 w-4 mr-1" />
-                  Reset Filters
+                  <X className="h-4 w-4 mr-1" /> Reset Filters
                 </Button>
               )}
             </div>
@@ -195,26 +130,15 @@ const MedichecksTestsCatalogPage = () => {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[...Array(6)].map((_, i) => (
-                <Card key={i}>
-                  <CardHeader><Skeleton className="h-6 w-3/4" /><Skeleton className="h-4 w-1/2 mt-2" /></CardHeader>
-                  <CardContent><Skeleton className="h-20 w-full" /><Skeleton className="h-10 w-full mt-4" /></CardContent>
-                </Card>
+                <Card key={i}><CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader><CardContent><Skeleton className="h-20 w-full" /></CardContent></Card>
               ))}
             </div>
-          ) : filteredTests && filteredTests.length > 0 ? (
+          ) : filteredTests.length > 0 ? (
             <>
-              <p className="text-gray-500 mb-6">
-                Showing {filteredTests.length} test{filteredTests.length !== 1 ? "s" : ""}
-                {selectedCategory !== "all" && ` in ${selectedCategory}`}
-              </p>
+              <CatalogSortBar sortBy={sortBy} onSortChange={setSortBy} resultCount={filteredTests.length} categoryLabel={selectedCategory} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredTests.map((test) => (
-                  <ProviderTestCard
-                    key={test.id}
-                    test={test}
-                    providerName={PROVIDER_NAME}
-                    onClick={() => setSelectedTest(test)}
-                  />
+                  <ProviderTestCard key={test.id} test={test} providerName={PROVIDER_NAME} onClick={() => setSelectedTest(test)} />
                 ))}
               </div>
             </>
@@ -222,20 +146,12 @@ const MedichecksTestsCatalogPage = () => {
             <div className="text-center py-12">
               <TestTube2 className="h-12 w-12 mx-auto text-gray-400 mb-4" />
               <h3 className="text-lg font-semibold mb-2">No tests found</h3>
-              <p className="text-gray-500">
-                {selectedCategory !== 'all' ? 'Try selecting a different category' : 'Tests from this provider will appear here soon'}
-              </p>
+              <p className="text-gray-500">{selectedCategory !== 'all' ? 'Try selecting a different category' : 'Tests from this provider will appear here soon'}</p>
             </div>
           )}
         </section>
       </div>
-
-      <ProviderTestDetailModal
-        test={selectedTest}
-        providerName={PROVIDER_NAME}
-        open={!!selectedTest}
-        onOpenChange={(open) => { if (!open) setSelectedTest(null); }}
-      />
+      <ProviderTestDetailModal test={selectedTest} providerName={PROVIDER_NAME} open={!!selectedTest} onOpenChange={(open) => { if (!open) setSelectedTest(null); }} />
     </MainLayout>
   );
 };
