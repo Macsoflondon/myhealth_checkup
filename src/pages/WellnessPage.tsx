@@ -78,22 +78,6 @@ const WellnessPage = () => {
                 Monitor key health markers and prevent potential health issues.
               </p>
             </div>
-            <div className="absolute bottom-3 right-4 sm:right-6 md:right-8 lg:right-12 flex gap-2">
-              <Link
-                to="/"
-                className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-                aria-label="Home"
-              >
-                <Home className="h-4 w-4" />
-              </Link>
-              <button
-                onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
-                className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-                aria-label="Go back"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </button>
-            </div>
           </div>
         </section>
 
