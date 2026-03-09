@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield, Home, ArrowLeft } from "lucide-react";
-import HeroSection from "@/components/sections/HeroSection";
+import PageHeading from "@/components/ui/page-heading";
 
 const wellnessCategoryCards = [
   { id: "longevity-tests", name: "Longevity Tests", count: 3, desc: "Comprehensive health markers for longevity and preventive care", icon: "⟳", accent: "#00d4c8", tag: "PREVENTIVE" },
@@ -67,47 +67,32 @@ const WellnessPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        <HeroSection
-          title="General Wellness"
-          subtitle="Monitor key health markers and prevent potential health issues."
-        >
-          <div className="flex justify-center gap-2 mt-2">
-            <Link
-              to="/"
-              className="h-9 w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-              aria-label="Home"
-            >
-              <Home className="h-4 w-4" />
-            </Link>
-            <button
-              onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
-              className="h-9 w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </button>
-          </div>
-        </HeroSection>
-
-        {/* Action Buttons Bar */}
-        <section className="bg-[#22C0D4] py-4">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/compare?category=general-health">
-                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
-                  Compare Tests
-                </Button>
+        <section className="bg-[#081129] pt-6 pb-4 sm:pt-8 sm:pb-6 md:pt-10 md:pb-8 relative">
+          <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+            <div className="max-w-5xl mx-auto text-center">
+              <PageHeading 
+                title="General Wellness"
+                className="[&_span]:text-white mb-3 sm:mb-4"
+              />
+              <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-5 tracking-wide font-sans font-medium text-white whitespace-nowrap">
+                Monitor key health markers and prevent potential health issues.
+              </p>
+            </div>
+            <div className="absolute bottom-3 right-4 sm:right-6 md:right-8 lg:right-12 flex gap-2">
+              <Link
+                to="/"
+                className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
+                aria-label="Home"
+              >
+                <Home className="h-4 w-4" />
               </Link>
-              <Link to="/cancer-biomarkers">
-                <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
-                  Biomarker Guide
-                </Button>
-              </Link>
-              <Link to="/find-clinic">
-                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
-                  Find Clinic
-                </Button>
-              </Link>
+              <button
+                onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
+                className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </section>
