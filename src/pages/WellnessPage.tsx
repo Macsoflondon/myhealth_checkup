@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield } from "lucide-react";
+import { Heart, Activity, Shield, Home, ArrowLeft } from "lucide-react";
 import HeroSection from "@/components/sections/HeroSection";
 
 const wellnessCategoryCards = [
@@ -38,6 +37,7 @@ const tagColors: Record<string, string> = {
 };
 
 const WellnessPage = () => {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState<string | null>(null);
   const [filter, setFilter] = useState("ALL");
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
@@ -67,14 +67,27 @@ const WellnessPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        <PageBreadcrumb 
-          segments={[{ label: "Home", href: "/" }, { label: "Wellness" }]} 
-          backLabel="Back"
-        />
         <HeroSection
           title="General Wellness"
-          subtitle="Comprehensive wellness and lifestyle health tests to optimize your wellbeing. Monitor key health markers and prevent potential health issues."
-        />
+          subtitle="Monitor key health markers and prevent potential health issues."
+        >
+          <div className="flex justify-center gap-2 mt-2">
+            <Link
+              to="/"
+              className="h-9 w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
+              aria-label="Home"
+            >
+              <Home className="h-4 w-4" />
+            </Link>
+            <button
+              onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
+              className="h-9 w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          </div>
+        </HeroSection>
 
         {/* Action Buttons Bar */}
         <section className="bg-[#22C0D4] py-4">
@@ -99,40 +112,32 @@ const WellnessPage = () => {
           </div>
         </section>
 
-        {/* Benefits Section */}
-        <section className="py-16 bg-muted/30">
+        {/* Benefits Section - Condensed */}
+        <section className="py-6 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-12">
-                Why Choose Wellness Testing?
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <h2 className="text-xl font-bold text-foreground mb-4">Why Choose Wellness Testing?</h2>
+              <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Shield className="h-8 w-8 text-white" />
+                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Shield className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Early Detection</h3>
-                  <p className="text-muted-foreground">
-                    Identify potential health issues before they become serious problems
-                  </p>
+                  <h3 className="text-sm font-semibold mb-1">Early Detection</h3>
+                  <p className="text-xs text-muted-foreground">Identify issues before they become serious</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Activity className="h-8 w-8 text-white" />
+                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Activity className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Optimize Performance</h3>
-                  <p className="text-muted-foreground">
-                    Monitor key biomarkers to enhance your physical and mental performance
-                  </p>
+                  <h3 className="text-sm font-semibold mb-1">Optimize Performance</h3>
+                  <p className="text-xs text-muted-foreground">Monitor biomarkers to enhance wellbeing</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Heart className="h-8 w-8 text-white" />
+                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Heart className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
-                  <p className="text-muted-foreground">
-                    Regular monitoring gives you confidence in your health status
-                  </p>
+                  <h3 className="text-sm font-semibold mb-1">Peace of Mind</h3>
+                  <p className="text-xs text-muted-foreground">Confidence in your health status</p>
                 </div>
               </div>
             </div>
