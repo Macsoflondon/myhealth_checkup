@@ -212,7 +212,7 @@ const WellnessPage = () => {
                     textTransform: "uppercase" as const,
                   }}
                 >
-                  14 Test Categories
+                  General Wellness
                 </span>
               </div>
               <h2
