@@ -19,12 +19,14 @@ import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
 import { contentRoutes } from "./contentRoutes";
 import { featureRoutes } from "./featureRoutes";
+import TestCategoriesPage from "@/pages/TestCategoriesPage";
 
 export function AppRoutes() {
   return (
     <Routes>
       {/* Home */}
       <Route path="/" element={<Index />} />
+      <Route path="/test-categories" element={<TestCategoriesPage />} />
       
       {/* Admin Routes - Protected with server-side role verification */}
       <Route path="/admin/clinic-upload" element={<AdminRoute><AdminClinicUploadPage /></AdminRoute>} />
