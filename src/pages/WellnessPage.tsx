@@ -447,6 +447,60 @@ const WellnessPage = () => {
             </div>
           </div>
         </section>
+        {/* Bottom CTA Section */}
+        <div style={{ marginTop: "80px" }}>
+          {/* Tricolour divider */}
+          <div
+            style={{
+              display: "flex",
+              height: "4px",
+              marginBottom: "60px",
+            }}
+          >
+            <div style={{ flex: 1, background: "#e91e8c" }}></div>
+            <div style={{ flex: 1, background: "#00d4c8" }}></div>
+            <div style={{ flex: 1, background: "#ff4d6d" }}></div>
+          </div>
+          {/* CTA Content */}
+          <div
+            style={{
+              background: "#0a1120",
+              padding: "60px 40px",
+              textAlign: "center" as const,
+              borderRadius: "12px",
+            }}
+          >
+            <h2
+              style={{
+                color: "#ffffff",
+                fontSize: "32px",
+                fontWeight: "600",
+                marginBottom: "24px",
+                fontFamily: "DM Sans, sans-serif",
+              }}
+            >
+              Find the Right Health Test for You
+            </h2>
+            <button
+              style={{
+                background: "linear-gradient(135deg, #e91e8c 0%, #ff4d6d 100%)",
+                color: "#ffffff",
+                border: "none",
+                padding: "14px 32px",
+                fontSize: "16px",
+                fontWeight: "600",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontFamily: "DM Sans, sans-serif",
+                transition: "transform 0.2s ease",
+              }}
+              onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.transform = "translateY(-2px)")}
+              onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.transform = "translateY(0)")}
+            >
+              Start Your Quiz →
+            </button>
+          </div>
+        </div>
       </main>
       
       <Footer />
