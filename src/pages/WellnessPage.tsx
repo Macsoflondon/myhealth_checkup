@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield } from "lucide-react";
+import { Heart, Activity, Shield, Home, ArrowLeft } from "lucide-react";
 import HeroSection from "@/components/sections/HeroSection";
 
 const wellnessCategoryCards = [
