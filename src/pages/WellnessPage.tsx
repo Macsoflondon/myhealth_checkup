@@ -395,7 +395,7 @@ const WellnessPage = () => {
                     <p
                       style={{
                         fontSize: 14,
-                        color: "rgba(255,255,255,0.65)",
+                        color: "rgba(255,255,255,0.9)",
                         margin: "0 0 24px",
                         lineHeight: 1.6,
                       }}
