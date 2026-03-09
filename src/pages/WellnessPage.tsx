@@ -164,24 +164,8 @@ const WellnessPage = () => {
 
           <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
             {/* Header */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, position: "relative" }}>
-              {/* Nav buttons - right aligned, parallel with pill */}
-              <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", display: "flex", gap: 8 }}>
-                <Link
-                  to="/"
-                  className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-                  aria-label="Home"
-                >
-                  <Home className="h-4 w-4" />
-                </Link>
-                <button
-                  onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
-                  className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-                  aria-label="Go back"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </button>
-              </div>
+            {/* General Wellness pill row with nav buttons */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative", marginBottom: 24 }}>
               <div
                 style={{
                   display: "inline-flex",
@@ -191,7 +175,6 @@ const WellnessPage = () => {
                   border: "1px solid rgba(233,30,140,0.25)",
                   borderRadius: 100,
                   padding: "6px 18px",
-                  marginBottom: 24,
                 }}
               >
                 <span
@@ -216,6 +199,27 @@ const WellnessPage = () => {
                   General Wellness
                 </span>
               </div>
+              {/* Nav buttons - right aligned, parallel with pill */}
+              <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", display: "flex", gap: 8 }}>
+                <Link
+                  to="/"
+                  className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
+                  aria-label="Home"
+                >
+                  <Home className="h-4 w-4" />
+                </Link>
+                <button
+                  onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
+                  className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
+                  aria-label="Go back"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Heading and subtext */}
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
               <h2
                 style={{
                   fontSize: "clamp(32px, 4vw, 52px)",
