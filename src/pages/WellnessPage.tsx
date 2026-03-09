@@ -448,57 +448,76 @@ const WellnessPage = () => {
           </div>
         </section>
         {/* Bottom CTA Section */}
-        <div style={{ marginTop: "80px" }}>
-          {/* Tricolour divider */}
+        <div style={{ marginTop: "80px", padding: "0 40px" }}>
+          {/* CTA Content with tricolour border */}
           <div
             style={{
-              display: "flex",
-              height: "4px",
-              marginBottom: "60px",
+              background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
+              padding: "3px",
+              borderRadius: "16px",
             }}
           >
-            <div style={{ flex: 1, background: "#e91e8c" }}></div>
-            <div style={{ flex: 1, background: "#00d4c8" }}></div>
-            <div style={{ flex: 1, background: "#ff4d6d" }}></div>
-          </div>
-          {/* CTA Content */}
-          <div
-            style={{
-              background: "#0a1120",
-              padding: "60px 40px",
-              textAlign: "center" as const,
-              borderRadius: "12px",
-            }}
-          >
-            <h2
+            <div
               style={{
-                color: "#ffffff",
-                fontSize: "32px",
-                fontWeight: "600",
-                marginBottom: "24px",
-                fontFamily: "DM Sans, sans-serif",
+                background: "#0a1120",
+                padding: "40px 48px",
+                borderRadius: "13px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "32px",
+                flexWrap: "wrap" as const,
               }}
             >
-              Find the Right Health Test for You
-            </h2>
-            <button
-              style={{
-                background: "linear-gradient(135deg, #e91e8c 0%, #ff4d6d 100%)",
-                color: "#ffffff",
-                border: "none",
-                padding: "14px 32px",
-                fontSize: "16px",
-                fontWeight: "600",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontFamily: "DM Sans, sans-serif",
-                transition: "transform 0.2s ease",
-              }}
-              onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.transform = "translateY(-2px)")}
-              onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.transform = "translateY(0)")}
-            >
-              Start Your Quiz →
-            </button>
+              <div>
+                <p
+                  style={{
+                    color: "#22c0d4",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase" as const,
+                    marginBottom: "8px",
+                    fontFamily: "DM Sans, sans-serif",
+                  }}
+                >
+                  Not Sure Where to Start?
+                </p>
+                <h2
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "28px",
+                    fontWeight: "700",
+                    margin: 0,
+                    fontFamily: "DM Sans, sans-serif",
+                  }}
+                >
+                  Find the Right Health Test for You
+                </h2>
+              </div>
+              <Link
+                to="/quiz"
+                style={{
+                  background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
+                  color: "#ffffff",
+                  border: "none",
+                  padding: "16px 36px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontFamily: "DM Sans, sans-serif",
+                  transition: "transform 0.2s ease",
+                  textDecoration: "none",
+                  whiteSpace: "nowrap" as const,
+                  display: "inline-block",
+                }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")}
+              >
+                Start Your Quiz →
+              </Link>
+            </div>
           </div>
         </div>
       </main>
