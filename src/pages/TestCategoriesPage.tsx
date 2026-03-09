@@ -74,7 +74,7 @@ const TestCategoriesPage = () => {
           fontFamily: "'Montserrat', 'DM Sans', 'Segoe UI', sans-serif",
           background: "linear-gradient(160deg, #060b18 0%, #0a1120 50%, #060b18 100%)",
           minHeight: "100vh",
-          padding: "72px 40px",
+          padding: "40px 16px",
           position: "relative",
           overflow: "hidden",
         }}
