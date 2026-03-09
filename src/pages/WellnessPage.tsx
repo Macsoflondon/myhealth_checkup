@@ -371,7 +371,7 @@ const WellnessPage = () => {
                         >
                           {cat.tag}
                         </span>
-                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontWeight: 500 }}>
+                        <span style={{ fontSize: 12, color: "#ffffff", fontWeight: 500 }}>
                           {cat.count} {cat.count === 1 ? "test" : "tests"}
                         </span>
                       </div>
