@@ -1,20 +1,23 @@
 
 
-## Remove WhyChooseUs and TopConcernsSection from Homepage
+## Plan: Create Standalone Test Categories Page
 
-Three files to change:
+Create a new page component `src/pages/TestCategoriesPage.tsx` that renders the test categories grid as a full standalone page (not just a homepage section). This page will reuse the existing category data and card design from `TestCategories.tsx`, wrapped in the standard page layout with a hero header, breadcrumbs, and proper routing.
 
-### 1. `src/pages/Index.tsx`
-- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
-- Remove the TopConcernsSection JSX block (lines 134-135)
-- Remove the WhyChooseUs JSX block (lines 144-145)
+### Changes
 
-### 2. `src/components/sections/WhyChooseUs.tsx`
-- Delete this file entirely
+**1. Create `src/pages/TestCategoriesPage.tsx`**
+- Full-page version with a hero/header section (navy background, heading, subtitle)
+- Breadcrumb navigation (Home > Test Categories)
+- The same 9-category card grid from the existing section component
+- SEO meta tags via `react-helmet-async`
+- Uses the same `CategoryCard` component pattern and category data
 
-### 3. `src/components/sections/index.ts`
-- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
-- Keep TopConcernsSection export so it remains available for future use
+**2. Add route in `src/App.tsx`**
+- Add route: `/test-categories` → `TestCategoriesPage`
 
-TopConcernsSection component file stays in the codebase untouched — available for reuse later.
+### Notes
+- File will be `.tsx` (not `.jsx`) to match the project's TypeScript convention
+- Reuses the existing card design and category data inline (same as the section component)
+- Page-level layout includes breadcrumbs and proper spacing, unlike the section version which is embedded in the homepage
 
