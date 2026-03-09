@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
+import BrandTicker from "@/components/sections/BrandTicker";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -30,6 +31,7 @@ export const MainLayout = ({
 }: MainLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
+      <BrandTicker />
       {!hideUKASBanner && <UKASBanner />}
       {!hideHeader && <Header />}
       <main className={mainClassName}>
