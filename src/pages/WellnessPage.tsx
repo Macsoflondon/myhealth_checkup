@@ -67,19 +67,6 @@ const WellnessPage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        <section className="bg-[#081129] pt-6 pb-4 sm:pt-8 sm:pb-6 md:pt-10 md:pb-8 relative">
-          <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-            <div className="max-w-5xl mx-auto text-center">
-              <PageHeading 
-                title="General Wellness"
-                className="[&_span]:text-white mb-3 sm:mb-4"
-              />
-              <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-5 tracking-wide font-sans font-medium text-white whitespace-nowrap">
-                Monitor key health markers and prevent potential health issues.
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* Benefits Section - Condensed */}
         <section className="py-6 bg-muted/30">
