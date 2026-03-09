@@ -478,6 +478,15 @@ const WellnessPage = () => {
           </div>
         </div>
 
+        {/* Tricolour divider */}
+        <div
+          style={{
+            height: 3,
+            background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
+            margin: "0 40px",
+          }}
+        />
+
         {/* Benefits Section - Condensed */}
         <section className="py-6 bg-muted/30">
           <div className="container mx-auto px-4">
