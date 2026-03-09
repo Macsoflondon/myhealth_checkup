@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
+import BrandTicker from "@/components/sections/BrandTicker";
 
 interface MainLayoutProps {
   children: ReactNode;
