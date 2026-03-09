@@ -18,15 +18,7 @@ interface RandoxProduct {
   test_type: 'clinic' | 'home';
 }
 
-// Updated category pages - Randox restructured to /en-GB/ paths (verified Feb 2026)
-const categoryPages = [
-  'https://randoxhealth.com/en-GB/male-health',
-  'https://randoxhealth.com/en-GB/female-health',
-  'https://randoxhealth.com/en-GB/health-at-home',
-  'https://randoxhealth.com/en-GB/clinic-tests',
-];
-
-// Known working product URLs - verified on live Randox site Feb 2026
+// Known working product URLs - verified on live Randox site March 2026
 const knownProductUrls = [
   // Clinic tests
   'https://randoxhealth.com/en-GB/product/clinic/discovery-health-check',
@@ -71,27 +63,36 @@ const biomarkerPatterns = [
   'Omega-3', 'Omega-6', 'ApoB', 'ApoA1', 'Lp(a)', 'Lipoprotein', 'sdLDL',
 ];
 
-function extractProductUrls(html: string): string[] {
-  const urls: string[] = [];
-  
-  // Updated patterns for new /en-GB/product/ structure
-  const linkPatterns = [
-    /href="(\/en-GB\/product\/(?:clinic|home)\/[^"#?]+)"/gi,
-    /href="(https:\/\/randoxhealth\.com\/en-GB\/product\/(?:clinic|home)\/[^"#?]+)"/gi,
-  ];
-  
-  for (const pattern of linkPatterns) {
-    let match;
-    while ((match = pattern.exec(html)) !== null) {
-      let url = match[1];
-      if (url.startsWith('/')) {
-        url = `https://randoxhealth.com${url}`;
-      }
-      urls.push(url);
-    }
-  }
-  
-  return [...new Set(urls)];
+// Garbage test names that should never be stored
+const GARBAGE_NAMES = [
+  'product not found',
+  'randox health',
+  "we'll be back soon",
+  "we'll be back soon!",
+  'page not found',
+  '404',
+  'error',
+  'maintenance',
+];
+
+/**
+ * Strip soft hyphens (U+00AD / \xAD) and other invisible characters from text.
+ * This prevents duplicate entries caused by HTML soft-hyphen rendering.
+ */
+function cleanTitle(raw: string): string {
+  return raw
+    .replace(/\u00AD/g, '')   // soft hyphen
+    .replace(/\u200B/g, '')   // zero-width space
+    .replace(/\u200C/g, '')   // zero-width non-joiner
+    .replace(/\u200D/g, '')   // zero-width joiner
+    .replace(/\uFEFF/g, '')   // BOM / zero-width no-break space
+    .replace(/\s+/g, ' ')     // collapse whitespace
+    .trim();
+}
+
+function isGarbageName(name: string): boolean {
+  const lower = name.toLowerCase().trim();
+  return GARBAGE_NAMES.some(g => lower === g || lower.includes(g));
 }
 
 function extractTitle(html: string): string {
@@ -105,11 +106,13 @@ function extractTitle(html: string): string {
   for (const pattern of patterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
-      return match[1].trim()
-        .replace(/\s*[\|\-]\s*Randox.*$/i, '')
-        .replace(/&amp;/g, '&')
-        .replace(/&#39;/g, "'")
-        .trim();
+      const title = cleanTitle(
+        match[1]
+          .replace(/\s*[\|\-]\s*Randox.*$/i, '')
+          .replace(/&amp;/g, '&')
+          .replace(/&#39;/g, "'")
+      );
+      if (title && !isGarbageName(title)) return title;
     }
   }
   
@@ -127,7 +130,7 @@ function extractDescription(html: string): string | null {
   for (const pattern of patterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
-      return match[1].trim().substring(0, 500);
+      return cleanTitle(match[1]).substring(0, 500);
     }
   }
   
@@ -145,24 +148,21 @@ function extractPrice(html: string): { current: number | null; original: number 
       try {
         const jsonContent = script.replace(/<script[^>]*>|<\/script>/gi, '');
         const data = JSON.parse(jsonContent);
-        if (data.offers?.price) {
-          current = parseFloat(data.offers.price);
-        }
+        if (data.offers?.price) current = parseFloat(data.offers.price);
         if (data['@graph']) {
           for (const item of data['@graph']) {
-            if (item.offers?.price) {
-              current = parseFloat(item.offers.price);
-              break;
-            }
+            if (item.offers?.price) { current = parseFloat(item.offers.price); break; }
           }
         }
       } catch { }
     }
   }
   
-  // Fallback patterns for prices displayed on page
+  // Fallback: look for £ prices in page content
   if (current === null) {
+    // Match "Total: £257.00" or "£257.00" patterns
     const pricePatterns = [
+      /Total:\s*£(\d+(?:,\d{3})*(?:\.\d{2})?)/i,
       /class="[^"]*price[^"]*"[^>]*>[\s\S]*?£(\d+(?:,\d{3})*(?:\.\d{2})?)/i,
       />\s*£(\d+(?:,\d{3})*(?:\.\d{2})?)\s*</i,
       /£(\d+(?:,\d{3})*(?:\.\d{2})?)/,
@@ -172,7 +172,7 @@ function extractPrice(html: string): { current: number | null; original: number 
       const match = html.match(pattern);
       if (match && match[1]) {
         current = parseFloat(match[1].replace(',', ''));
-        if (current > 0 && current < 5000) break;
+        if (current > 0 && current < 10000) break;
         current = null;
       }
     }
@@ -200,8 +200,6 @@ function extractImageUrl(html: string): string | null {
   const patterns = [
     /property="og:image"\s+content="([^"]+)"/i,
     /content="([^"]+)"\s+property="og:image"/i,
-    /<img[^>]+class="[^"]*product[^"]*"[^>]+src="([^"]+)"/i,
-    /<img[^>]+class="[^"]*hero[^"]*"[^>]+src="([^"]+)"/i,
     /src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
   ];
   
@@ -230,10 +228,7 @@ function extractBiomarkersList(html: string): string[] | null {
   let searchText = html;
   for (const pattern of sectionPatterns) {
     const match = html.match(pattern);
-    if (match) {
-      searchText = match[0];
-      break;
-    }
+    if (match) { searchText = match[0]; break; }
   }
   
   for (const biomarker of biomarkerPatterns) {
@@ -248,14 +243,22 @@ function extractBiomarkersList(html: string): string[] | null {
 }
 
 function extractBiomarkerCount(html: string, biomarkersList: string[] | null): number | null {
-  if (biomarkersList && biomarkersList.length > 0) return biomarkersList.length;
-  
-  const patterns = [/(\d+)\s*biomarkers?/i, /(\d+)\s*tests?\s+included/i];
-  for (const pattern of patterns) {
+  // First check for explicit biomarker count in page text (e.g., "up to 150 biomarkers")
+  const countPatterns = [
+    /up\s+to\s+(\d+)\s*biomarkers?/i,
+    /(\d+)\s*biomarkers?/i,
+    /(\d+)\s*tests?\s+included/i,
+    /(\d+)\s*data\s+points/i,
+  ];
+  for (const pattern of countPatterns) {
     const match = html.match(pattern);
-    if (match) return parseInt(match[1], 10);
+    if (match) {
+      const count = parseInt(match[1], 10);
+      if (count > 0 && count <= 500) return count;
+    }
   }
   
+  if (biomarkersList && biomarkersList.length > 0) return biomarkersList.length;
   return null;
 }
 
@@ -265,20 +268,20 @@ function determineCategory(title: string, description: string, url: string): str
   const categoryMap: Record<string, string[]> = {
     'Thyroid': ['thyroid', 'tsh', 't3', 't4'],
     'Hormones': ['hormone', 'testosterone', 'oestrogen', 'progesterone', 'dhea', 'cortisol', 'quickdraw'],
-    'Vitamins & Minerals': ['vitamin', 'mineral', 'iron', 'ferritin', 'b12', 'folate'],
+    'Vitamins & Minerals': ['vitamin', 'mineral', 'iron', 'ferritin', 'b12', 'folate', 'haemochromatosis'],
     'Heart Health': ['heart', 'cholesterol', 'cardiovascular', 'lipid'],
     'Diabetes': ['diabetes', 'hba1c', 'glucose', 'insulin'],
     'Liver Health': ['liver', 'hepatic'],
     'Kidney Health': ['kidney', 'renal'],
-    "Men's Health": ['men', 'male', 'everyman', 'prostate', 'psa'],
-    "Women's Health": ['women', 'female', 'everywoman', 'menopause', 'amh'],
-    'Fertility': ['fertility', 'amh', 'ovarian'],
+    "Men's Health": ['everyman', 'prostate', 'psa'],
+    "Women's Health": ['everywoman', 'menopause', 'amh'],
+    'Fertility': ['fertility'],
     'Sports & Fitness': ['sport', 'fitness', 'performance', 'athlete'],
-    'General Health': ['essential', 'premium', 'signature', 'comprehensive', 'discovery', 'general'],
     'Gut Health': ['gut', 'microbiome', 'coeliac', 'celiac'],
-    'Sexual Health': ['sti', 'sexual'],
-    'Genetic Testing': ['dna', 'genetic', 'haemochromatosis'],
+    'Sexual Health': ['sti', 'sexual', 'confidante'],
+    'Genetic Testing': ['dna', 'genetic'],
     'Allergy & Sensitivity': ['allergy', 'sensitivity', 'food sensitivity'],
+    'General Health': ['essential', 'premium', 'signature', 'comprehensive', 'discovery', 'general'],
   };
   
   for (const [category, keywords] of Object.entries(categoryMap)) {
@@ -307,6 +310,48 @@ async function fetchWithDelay(url: string, delay: number = 1500): Promise<string
   return response.text();
 }
 
+/**
+ * Try to discover additional product URLs using Firecrawl map API
+ */
+async function discoverUrlsWithFirecrawl(firecrawlApiKey: string): Promise<string[]> {
+  try {
+    console.log('Discovering Randox product URLs via Firecrawl map...');
+    const response = await fetch('https://api.firecrawl.dev/v1/map', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${firecrawlApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: 'https://randoxhealth.com/en-GB',
+        search: 'product',
+        limit: 200,
+        includeSubdomains: false,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error(`Firecrawl map error: ${response.status}`);
+      return [];
+    }
+
+    const data = await response.json();
+    const links: string[] = data.links || [];
+    
+    // Filter to only product pages
+    const productLinks = links.filter((url: string) => 
+      url.includes('/en-GB/product/') && 
+      (url.includes('/clinic/') || url.includes('/home/'))
+    );
+    
+    console.log(`Firecrawl discovered ${productLinks.length} product URLs`);
+    return productLinks;
+  } catch (error) {
+    console.error('Firecrawl discovery failed:', error.message);
+    return [];
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -315,9 +360,10 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    console.log('Starting Randox Health scraper with updated /en-GB/product/ URL structure...');
+    console.log('Starting Randox Health scraper v2 with cleanup...');
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: 'randox',
@@ -326,22 +372,96 @@ Deno.serve(async (req) => {
       next_scrape: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     }, { onConflict: 'provider_id' });
 
-    const allProductUrls = new Set<string>(knownProductUrls);
-    
-    console.log('Discovering products from category pages...');
-    for (const categoryUrl of categoryPages) {
-      try {
-        const html = await fetchWithDelay(categoryUrl, 2000);
-        const urls = extractProductUrls(html);
-        urls.forEach(url => allProductUrls.add(url));
-        console.log(`Found ${urls.length} products from ${categoryUrl}`);
-      } catch (error) {
-        console.error(`Failed to fetch category ${categoryUrl}:`, error.message);
+    // ═══════════════════════════════════════════════════════════
+    // STEP 1: CLEANUP - Remove garbage and duplicate entries
+    // ═══════════════════════════════════════════════════════════
+    console.log('Step 1: Cleaning up garbage and duplicate entries...');
+
+    // 1a. Deactivate entries with garbage names
+    const { data: allTests } = await supabase
+      .from('provider_tests')
+      .select('id, test_name')
+      .eq('provider_id', 'randox')
+      .eq('is_active', true);
+
+    let deactivatedCount = 0;
+    if (allTests) {
+      for (const test of allTests) {
+        const cleaned = cleanTitle(test.test_name);
+        const hasInvisibleChars = cleaned !== test.test_name;
+        const isGarbage = isGarbageName(test.test_name) || isGarbageName(cleaned);
+
+        if (isGarbage) {
+          // Deactivate garbage entries
+          await supabase.from('provider_tests')
+            .update({ is_active: false, updated_at: new Date().toISOString() })
+            .eq('id', test.id);
+          deactivatedCount++;
+          console.log(`Deactivated garbage: "${test.test_name}"`);
+        } else if (hasInvisibleChars) {
+          // This is a soft-hyphen duplicate - check if clean version exists
+          const cleanName = cleaned;
+          const cleanVersion = allTests.find(t => 
+            t.id !== test.id && cleanTitle(t.test_name) === cleanName && t.test_name === cleanName
+          );
+          
+          if (cleanVersion) {
+            // Clean version exists, deactivate this duplicate
+            await supabase.from('provider_tests')
+              .update({ is_active: false, updated_at: new Date().toISOString() })
+              .eq('id', test.id);
+            deactivatedCount++;
+            console.log(`Deactivated soft-hyphen duplicate: "${test.test_name}" (clean version: "${cleanVersion.test_name}")`);
+          } else {
+            // No clean version exists - clean the name on this entry instead
+            await supabase.from('provider_tests')
+              .update({ test_name: cleanName, updated_at: new Date().toISOString() })
+              .eq('id', test.id);
+            console.log(`Cleaned title: "${test.test_name}" → "${cleanName}"`);
+          }
+        }
       }
     }
+    console.log(`Cleanup complete: deactivated ${deactivatedCount} entries`);
 
-    console.log(`Total unique product URLs: ${allProductUrls.size}`);
+    // 1b. Deactivate entries with old broken URLs (www.randoxhealth.com/test/ pattern)
+    const { data: oldUrlTests } = await supabase
+      .from('provider_tests')
+      .select('id, test_name, url')
+      .eq('provider_id', 'randox')
+      .eq('is_active', true)
+      .like('url', '%www.randoxhealth.com/test/%');
 
+    let oldUrlDeactivated = 0;
+    if (oldUrlTests) {
+      for (const test of oldUrlTests) {
+        await supabase.from('provider_tests')
+          .update({ is_active: false, updated_at: new Date().toISOString() })
+          .eq('id', test.id);
+        oldUrlDeactivated++;
+        console.log(`Deactivated old URL entry: "${test.test_name}" (${test.url})`);
+      }
+    }
+    console.log(`Deactivated ${oldUrlDeactivated} entries with broken old URLs`);
+
+    // ═══════════════════════════════════════════════════════════
+    // STEP 2: DISCOVER product URLs
+    // ═══════════════════════════════════════════════════════════
+    console.log('Step 2: Discovering product URLs...');
+    const allProductUrls = new Set<string>(knownProductUrls);
+
+    // Try Firecrawl discovery if available
+    if (firecrawlApiKey) {
+      const firecrawlUrls = await discoverUrlsWithFirecrawl(firecrawlApiKey);
+      firecrawlUrls.forEach(url => allProductUrls.add(url));
+    }
+
+    console.log(`Total unique product URLs to scrape: ${allProductUrls.size}`);
+
+    // ═══════════════════════════════════════════════════════════
+    // STEP 3: SCRAPE each product page
+    // ═══════════════════════════════════════════════════════════
+    console.log('Step 3: Scraping product pages...');
     const scrapedProducts: RandoxProduct[] = [];
     const productUrls = Array.from(allProductUrls).slice(0, 50);
     
@@ -352,7 +472,7 @@ Deno.serve(async (req) => {
         
         const title = extractTitle(html);
         if (!title) {
-          console.log(`No title found for ${url}, skipping`);
+          console.log(`No valid title for ${url}, skipping`);
           continue;
         }
         
@@ -364,6 +484,12 @@ Deno.serve(async (req) => {
         const category = determineCategory(title, description || '', url);
         const testType = determineTestType(url);
         
+        // Skip if we already scraped a test with this exact name
+        if (scrapedProducts.some(p => p.test_name === title)) {
+          console.log(`Duplicate title "${title}", skipping`);
+          continue;
+        }
+
         scrapedProducts.push({
           test_name: title,
           price,
@@ -377,7 +503,7 @@ Deno.serve(async (req) => {
           test_type: testType,
         });
         
-        console.log(`Scraped: ${title} - £${price} - ${testType} test`);
+        console.log(`Scraped: ${title} - £${price} - ${biomarkerCount || '?'} biomarkers - ${testType}`);
       } catch (error) {
         console.error(`Failed to scrape ${url}:`, error.message);
       }
@@ -385,9 +511,13 @@ Deno.serve(async (req) => {
 
     console.log(`Successfully scraped ${scrapedProducts.length} products`);
 
+    // ═══════════════════════════════════════════════════════════
+    // STEP 4: UPSERT scraped products into database
+    // ═══════════════════════════════════════════════════════════
+    console.log('Step 4: Upserting products...');
     let upsertedCount = 0;
     for (const product of scrapedProducts) {
-      // Use test_name lookup to match unique constraint
+      // Look for existing entry by cleaned test_name
       const { data: existing } = await supabase
         .from('provider_tests')
         .select('id')
@@ -414,6 +544,7 @@ Deno.serve(async (req) => {
         url_verified_at: new Date().toISOString(),
         home_kit_available: product.test_type === 'home',
         clinic_visit_available: product.test_type === 'clinic',
+        sample_type: product.test_type === 'home' ? 'Finger-prick' : 'Venous',
       };
 
       let error;
@@ -439,16 +570,25 @@ Deno.serve(async (req) => {
       error_message: null
     }).eq('provider_id', 'randox');
 
-    console.log(`Randox scraper completed. Upserted ${upsertedCount} tests.`);
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        provider: 'randox',
+    const summary = {
+      success: true,
+      provider: 'randox',
+      cleanup: {
+        garbageDeactivated: deactivatedCount,
+        oldUrlDeactivated: oldUrlDeactivated,
+      },
+      scraping: {
+        urlsDiscovered: allProductUrls.size,
         testsScraped: scrapedProducts.length,
         testsUpserted: upsertedCount,
-        timestamp: new Date().toISOString()
-      }),
+      },
+      timestamp: new Date().toISOString(),
+    };
+
+    console.log('Randox scraper v2 completed:', JSON.stringify(summary));
+
+    return new Response(
+      JSON.stringify(summary),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     );
 
