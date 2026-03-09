@@ -74,7 +74,7 @@ const TestCategoriesPage = () => {
           fontFamily: "'Montserrat', 'DM Sans', 'Segoe UI', sans-serif",
           background: "linear-gradient(160deg, #060b18 0%, #0a1120 50%, #060b18 100%)",
           minHeight: "100vh",
-          padding: "72px 40px",
+          padding: "40px 16px",
           position: "relative",
           overflow: "hidden",
         }}
@@ -239,7 +239,7 @@ const TestCategoriesPage = () => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
               gap: 20,
             }}
           >
@@ -410,7 +410,7 @@ const TestCategoriesPage = () => {
           <div
             style={{
               marginTop: 72,
-              padding: "40px 48px",
+              padding: "32px 20px",
               borderRadius: 24,
               background: "linear-gradient(135deg, rgba(233,30,140,0.08), rgba(0,212,200,0.08))",
               border: "1px solid rgba(255,255,255,0.08)",
