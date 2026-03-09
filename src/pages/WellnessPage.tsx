@@ -37,6 +37,7 @@ const tagColors: Record<string, string> = {
 };
 
 const WellnessPage = () => {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState<string | null>(null);
   const [filter, setFilter] = useState("ALL");
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
