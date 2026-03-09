@@ -55,7 +55,7 @@ const Header = ({ className }: HeaderProps) => {
                 <img
                   src={logoWithTagline}
                   alt="myhealth checkup - Your health! Your choice! One trusted platform!"
-                  className="h-[200px] xs:h-[220px] sm:h-[240px] w-auto object-contain"
+                  className="h-[130px] xs:h-[140px] sm:h-[150px] w-auto object-contain"
                 />
               </Link>
 
