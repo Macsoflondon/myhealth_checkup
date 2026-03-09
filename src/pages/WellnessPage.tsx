@@ -139,52 +139,321 @@ const WellnessPage = () => {
           </div>
         </section>
 
-        {/* Category Grid */}
-        <section className="py-16 bg-[#081129]">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold mb-4 text-[#22c0d4]">
-                  Browse Tests by Category
-                </h2>
-                <p className="text-lg text-white">
-                  Choose from our comprehensive range of wellness testing categories
-                </p>
+        {/* Tricolor divider */}
+        <div className="h-[3px] bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]" />
+
+        {/* Browse Tests by Category */}
+        <section
+          style={{
+            fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
+            background: "#ffffff",
+            padding: "72px 40px",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          {/* Background grid */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)",
+              backgroundSize: "40px 40px",
+              pointerEvents: "none",
+            }}
+          />
+          {/* Ambient glow orbs */}
+          <div
+            style={{
+              position: "absolute",
+              top: "-10%",
+              left: "-5%",
+              width: 500,
+              height: 500,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "10%",
+              right: "-5%",
+              width: 400,
+              height: 400,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+
+          <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "rgba(233,30,140,0.1)",
+                  border: "1px solid rgba(233,30,140,0.25)",
+                  borderRadius: 100,
+                  padding: "6px 18px",
+                  marginBottom: 24,
+                }}
+              >
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: "#e91e8c",
+                    display: "inline-block",
+                    boxShadow: "0 0 8px #e91e8c",
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    color: "#e91e8c",
+                    textTransform: "uppercase" as const,
+                  }}
+                >
+                  14 Test Categories
+                </span>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {wellnessCategories.map(category => {
-                const IconComponent = category.icon;
-                return <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className={`w-3 h-3 rounded-full ${category.colorClass}`} style={{
-                        backgroundColor: category.colorHex
-                      }} />
-                          <CardTitle className="text-xl leading-tight text-health-heading">
-                            {category.name}
-                          </CardTitle>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          {category.testCount} {category.testCount === 1 ? 'test' : 'tests'}
-                        </p>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <CardDescription className="text-sm text-muted-foreground mb-4">
-                          {category.description}
-                        </CardDescription>
-                        <Link to={`/compare?category=${category.id}`}>
-                          <Button className="w-full transition-colors" style={{
-                        backgroundColor: category.colorHex,
-                        color: 'white'
-                      }}>
-                            View Tests
-                          </Button>
-                        </Link>
-                      </CardContent>
-                    </Card>;
+              <h2
+                style={{
+                  fontSize: "clamp(32px, 4vw, 52px)",
+                  fontWeight: 800,
+                  color: "#060b18",
+                  margin: "0 0 16px",
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.1,
+                }}
+              >
+                Browse Tests by{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #00d4c8, #e91e8c)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  Category
+                </span>
+              </h2>
+              <p
+                style={{
+                  fontSize: 17,
+                  color: "#060b18",
+                  margin: "0 auto 48px",
+                  maxWidth: 520,
+                  lineHeight: 1.6,
+                }}
+              >
+                Choose from our comprehensive range of clinically validated wellness testing categories
+              </p>
+            </div>
+
+            {/* Filter pills */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap" as const,
+                gap: 8,
+                justifyContent: "center",
+                marginBottom: 56,
+              }}
+            >
+              {tags.map((tag) => {
+                const active = filter === tag;
+                const isHoveredTag = hoveredTag === tag;
+                const color = tag === "ALL" ? "#00d4c8" : tagColors[tag];
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => setFilter(tag)}
+                    onMouseEnter={() => setHoveredTag(tag)}
+                    onMouseLeave={() => setHoveredTag(null)}
+                    style={{
+                      padding: "7px 20px",
+                      borderRadius: 100,
+                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(6,11,24,0.12)",
+                      background: active || isHoveredTag ? `${color}18` : "rgba(6,11,24,0.03)",
+                      color: active || isHoveredTag ? color : "#060b18",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      letterSpacing: "0.1em",
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      outline: "none",
+                    }}
+                  >
+                    {tag}
+                  </button>
+                );
               })}
-              </div>
+            </div>
+
+            {/* Cards grid */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                gap: 20,
+              }}
+            >
+              {filtered.map((cat, i) => {
+                const isHov = hovered === cat.id;
+                return (
+                  <Link
+                    key={cat.id}
+                    to={`/compare?category=${cat.id}`}
+                    onMouseEnter={() => setHovered(cat.id)}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{
+                      position: "relative",
+                      background: "#0a1120",
+                      border: isHov ? `1px solid ${cat.accent}50` : "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: 20,
+                      padding: "28px 28px 24px",
+                      cursor: "pointer",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      transform: isHov ? "translateY(-4px)" : "translateY(0)",
+                      boxShadow: isHov
+                        ? `0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px ${cat.accent}20, inset 0 1px 0 rgba(255,255,255,0.08)`
+                        : "0 4px 20px rgba(0,0,0,0.2)",
+                      backdropFilter: "blur(12px)",
+                      overflow: "hidden",
+                      textDecoration: "none",
+                      display: "block",
+                    }}
+                  >
+                    {/* Accent glow on hover */}
+                    {isHov && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          height: 1,
+                          background: `linear-gradient(90deg, transparent, ${cat.accent}80, transparent)`,
+                        }}
+                      />
+                    )}
+
+                    {/* Top row */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        marginBottom: 20,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: 14,
+                          background: `${cat.accent}15`,
+                          border: `1px solid ${cat.accent}30`,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 22,
+                          color: cat.accent,
+                          transition: "all 0.3s ease",
+                          transform: isHov ? "scale(1.05)" : "scale(1)",
+                        }}
+                      >
+                        {cat.icon}
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: 6 }}>
+                        <span
+                          style={{
+                            fontSize: 10,
+                            fontWeight: 700,
+                            letterSpacing: "0.12em",
+                            color: tagColors[cat.tag],
+                            background: `${tagColors[cat.tag]}15`,
+                            padding: "3px 10px",
+                            borderRadius: 100,
+                            border: `1px solid ${tagColors[cat.tag]}30`,
+                          }}
+                        >
+                          {cat.tag}
+                        </span>
+                        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontWeight: 500 }}>
+                          {cat.count} {cat.count === 1 ? "test" : "tests"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Name */}
+                    <h3
+                      style={{
+                        fontSize: 20,
+                        fontWeight: 700,
+                        color: "#fff",
+                        margin: "0 0 10px",
+                        letterSpacing: "-0.02em",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {cat.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p
+                      style={{
+                        fontSize: 14,
+                        color: "rgba(255,255,255,0.65)",
+                        margin: "0 0 24px",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {cat.desc}
+                    </p>
+
+                    {/* CTA */}
+                    <div
+                      style={{
+                        width: "100%",
+                        padding: "12px 0",
+                        borderRadius: 12,
+                        border: `1px solid ${cat.accent}40`,
+                        background: isHov ? `linear-gradient(135deg, ${cat.accent}25, ${cat.accent}10)` : "transparent",
+                        color: isHov ? cat.accent : "rgba(255,255,255,0.4)",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        transition: "all 0.3s ease",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                      }}
+                    >
+                      View Tests
+                      <span
+                        style={{
+                          display: "inline-block",
+                          transition: "transform 0.3s ease",
+                          transform: isHov ? "translateX(4px)" : "translateX(0)",
+                        }}
+                      >
+                        →
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
