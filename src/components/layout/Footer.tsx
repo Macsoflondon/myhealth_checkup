@@ -146,7 +146,7 @@ const FooterColumn = ({ title, links }: { title: string; links: { name: string; 
 
 /* ========== Connect Column Component ========== */
 const ConnectColumn = () => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5 col-span-2 lg:col-span-1">
+  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
     {/* Heading */}
     <div className="flex items-center gap-2 mb-4">
       <div className="h-px flex-1 bg-brand-turquoise/30" />
