@@ -9,7 +9,7 @@ import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 const SitemapPage = () => {
   const siteStructure = [{
     title: "Main Pages",
-    links: [{ name: "Home", path: "/" }, { name: "Compare Tests", path: "/compare" }, { name: "Intelligent Search", path: "/search" }, { name: "How It Works", path: "/how-it-works" }, { name: "About Us", path: "/about" }]
+    links: [{ name: "Home", path: "/" }, { name: "Compare Tests", path: "/compare" }, { name: "Test Categories", path: "/test-categories" }, { name: "Intelligent Search", path: "/search" }, { name: "How It Works", path: "/how-it-works" }, { name: "About Us", path: "/about" }]
   }, {
     title: "Health Testing Services",
     links: [{ name: "Cancer Screening", path: "/tests/cancer" }, { name: "Diabetes Testing", path: "/tests/diabetes" }, { name: "Heart Health", path: "/tests/heart" }, { name: "Vitamin Deficiency", path: "/tests/vitamins" }, { name: "Gut Health", path: "/tests/gut" }, { name: "Men's Health", path: "/tests/mens-health" }, { name: "Women's Health", path: "/tests/womens-health" }]

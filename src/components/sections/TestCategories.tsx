@@ -169,7 +169,7 @@ const TestCategories = (): JSX.Element => {
         {/* CTA Button */}
         <div className="text-center mt-8 sm:mt-12 md:mt-16 px-4">
           <Button variant="default" size="lg" asChild className="bg-[#22c0d4] hover:bg-[#e70d69] text-white border-0 px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base font-semibold shadow-lg transition-colors duration-300 w-full sm:w-auto">
-            <Link to="/compare">
+            <Link to="/test-categories">
               View All Tests
             </Link>
           </Button>
