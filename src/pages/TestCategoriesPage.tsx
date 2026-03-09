@@ -410,7 +410,7 @@ const TestCategoriesPage = () => {
           <div
             style={{
               marginTop: 72,
-              padding: "40px 48px",
+              padding: "32px 20px",
               borderRadius: 24,
               background: "linear-gradient(135deg, rgba(233,30,140,0.08), rgba(0,212,200,0.08))",
               border: "1px solid rgba(255,255,255,0.08)",
