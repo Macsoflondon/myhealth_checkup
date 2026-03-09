@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import UKASBanner from "@/components/UKASBanner";
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield } from "lucide-react";
 import HeroSection from "@/components/sections/HeroSection";
-import { wellnessCategories } from "@/data/wellnessCategories";
+
+const wellnessCategoryCards = [
+  { id: "longevity-tests", name: "Longevity Tests", count: 3, desc: "Comprehensive health markers for longevity and preventive care", icon: "⟳", accent: "#00d4c8", tag: "PREVENTIVE" },
+  { id: "iron-tests", name: "Iron Tests", count: 2, desc: "Iron levels, ferritin, and anaemia screening", icon: "◈", accent: "#e91e8c", tag: "ESSENTIAL" },
+  { id: "heart-health", name: "Heart Health", count: 2, desc: "Cardiovascular risk assessment and heart health monitoring", icon: "♡", accent: "#ff4d6d", tag: "CRITICAL" },
+  { id: "energy-tests", name: "Energy Tests", count: 3, desc: "Fatigue, tiredness, and energy level testing", icon: "◎", accent: "#f0a500", tag: "WELLNESS" },
+  { id: "nutrition-tests", name: "Nutrition Tests", count: 2, desc: "Vitamin levels and nutritional deficiency screening", icon: "◇", accent: "#00c896", tag: "WELLNESS" },
+  { id: "allergy-testing", name: "Allergy Tests", count: 1, desc: "Allergy screening and immune response testing", icon: "◉", accent: "#ff7043", tag: "IMMUNE" },
+  { id: "sexual-health", name: "Sexual Health", count: 2, desc: "Comprehensive sexual health and hormone screening", icon: "⬡", accent: "#9b59b6", tag: "SPECIALIST" },
+  { id: "gp-monitoring", name: "GP Monitoring", count: 4, desc: "Routine health checks and general practitioner monitoring", icon: "⊕", accent: "#00b4d8", tag: "ROUTINE" },
+  { id: "antibody-tests", name: "Antibody Tests", count: 2, desc: "Antibody screening and autoimmune disease detection", icon: "⋈", accent: "#e91e8c", tag: "IMMUNE" },
+  { id: "infection-tests", name: "Infection Tests", count: 2, desc: "Infectious disease screening and pathogen detection", icon: "⬟", accent: "#5b9bd5", tag: "SPECIALIST" },
+  { id: "immunity-tests", name: "Immunity Tests", count: 2, desc: "Immune system function and defense assessment", icon: "◬", accent: "#f0b429", tag: "IMMUNE" },
+  { id: "autoimmunity-tests", name: "Autoimmunity", count: 2, desc: "Autoimmune condition screening and monitoring", icon: "◑", accent: "#e91e8c", tag: "SPECIALIST" },
+  { id: "liver-health", name: "Liver Health", count: 2, desc: "Liver function testing and hepatic health monitoring", icon: "⬢", accent: "#ff5c5c", tag: "ORGAN" },
+  { id: "kidney-health", name: "Kidney Health", count: 1, desc: "Kidney function assessment and renal health screening", icon: "◐", accent: "#00d4c8", tag: "ORGAN" },
+];
+
+const tagColors: Record<string, string> = {
+  PREVENTIVE: "#00d4c8",
+  ESSENTIAL: "#e91e8c",
+  CRITICAL: "#ff4d6d",
+  WELLNESS: "#00c896",
+  IMMUNE: "#9b59b6",
+  SPECIALIST: "#5b9bd5",
+  ROUTINE: "#00b4d8",
+  ORGAN: "#ff7043",
+};
+
 const WellnessPage = () => {
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [filter, setFilter] = useState("ALL");
+  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
+
+  const tags = ["ALL", ...Array.from(new Set(wellnessCategoryCards.map((c) => c.tag)))];
+  const filtered = filter === "ALL" ? wellnessCategoryCards : wellnessCategoryCards.filter((c) => c.tag === filter);
   return <>
       <Helmet>
         <title>Wellness Blood Tests | Comprehensive Health Screening | myhealth checkup - Your health. Your choice. One trusted platform!</title>
