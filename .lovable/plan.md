@@ -1,20 +1,24 @@
 
 
-## Remove WhyChooseUs and TopConcernsSection from Homepage
+## Plan: Add Ticker Above Header and Enlarge Logo
 
-Three files to change:
+### 1. Add BrandTicker copy above the header
 
-### 1. `src/pages/Index.tsx`
-- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
-- Remove the TopConcernsSection JSX block (lines 134-135)
-- Remove the WhyChooseUs JSX block (lines 144-145)
+Place the `BrandTicker` component in `MainLayout.tsx` directly above the `Header`, so it renders at the very top of every page (above the UKAS banner and header). No style changes to the ticker itself.
 
-### 2. `src/components/sections/WhyChooseUs.tsx`
-- Delete this file entirely
+**File: `src/layouts/MainLayout.tsx`**
+- Import `BrandTicker`
+- Render `<BrandTicker />` as the first element inside the wrapper div, before `UKASBanner` and `Header`
 
-### 3. `src/components/sections/index.ts`
-- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
-- Keep TopConcernsSection export so it remains available for future use
+### 2. Increase logo size ~3x in the header
 
-TopConcernsSection component file stays in the codebase untouched — available for reuse later.
+Current desktop logo: `h-20 lg:h-24 xl:h-28` (~80-112px)
+New desktop logo: `h-48 lg:h-56 xl:h-64` (~192-256px) — approximately 3x larger
+
+Current mobile logo: `h-[92px]`
+New mobile logo: `h-[200px] xs:h-[220px] sm:h-[240px]` — approximately 2.5-3x larger
+
+**File: `src/components/layout/Header.tsx`**
+- Update the `className` on both mobile and desktop `<img>` tags to use the larger height values
+- Logo remains centred (already centred via flex layout)
 
