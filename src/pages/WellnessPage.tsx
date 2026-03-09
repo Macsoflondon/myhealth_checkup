@@ -477,6 +477,38 @@ const WellnessPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Benefits Section - Condensed */}
+        <section className="py-6 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-xl font-bold text-foreground mb-4">Why Choose Wellness Testing?</h2>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Shield className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="text-sm font-semibold mb-1">Early Detection</h3>
+                  <p className="text-xs text-muted-foreground">Identify issues before they become serious</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Activity className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="text-sm font-semibold mb-1">Optimize Performance</h3>
+                  <p className="text-xs text-muted-foreground">Monitor biomarkers to enhance wellbeing</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Heart className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="text-sm font-semibold mb-1">Peace of Mind</h3>
+                  <p className="text-xs text-muted-foreground">Confidence in your health status</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       
       <Footer />
