@@ -68,7 +68,7 @@ const Hero = () => {
             <div className="max-w-3xl mx-auto text-left mb-6 sm:mb-8 md:mb-10">
               <div className="border-l-4 border-brand-turquoise pl-4 sm:pl-5 mb-4">
                 <p className="text-sm sm:text-base md:text-lg font-bold text-brand-navy">
-                  At myhealth <span className="text-brand-turquoise">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
+                  At myhealth <span className="text-brand-turquoise font-extrabold">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
                 </p>
               </div>
               <p className="text-sm sm:text-base text-brand-navy/80 mb-3 pl-5 sm:pl-6">
