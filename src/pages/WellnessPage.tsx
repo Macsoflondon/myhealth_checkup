@@ -448,7 +448,7 @@ const WellnessPage = () => {
           </div>
         </section>
         {/* Bottom CTA Section */}
-        <div style={{ marginTop: "80px", padding: "0 40px" }}>
+        <div style={{ marginTop: "32px", marginBottom: "48px", padding: "0 40px" }}>
           {/* CTA Content with tricolour border */}
           <div
             style={{
