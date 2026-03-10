@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { cn } from "@/lib/utils";
 import {
@@ -105,6 +106,22 @@ const GoodbodyTestGallery = () => {
 
   return (
     <div className="md:col-span-2 mt-6 mb-4">
+      {/* Banner: Logo + Slogan aligned with tabs */}
+      <div className="flex items-center justify-center gap-6 sm:gap-10 mb-4">
+        <div className="bg-white rounded-lg p-3 sm:p-4 flex items-center justify-center" style={{ maxHeight: "120px" }}>
+          <img
+            src="/lovable-uploads/provider-goodbody-new-v3.png"
+            alt="Goodbody Clinic"
+            className="h-16 sm:h-20 md:h-24 w-auto object-contain"
+          />
+        </div>
+        <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight">
+          Know more.
+          <br />
+          Live Better.
+        </h2>
+      </div>
+
       {/* Tab Navigation */}
       <nav className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 mb-2" aria-label="Goodbody test categories">
         {TABS.map((tab) => (
@@ -123,7 +140,7 @@ const GoodbodyTestGallery = () => {
         ))}
         <button
           onClick={() => setAboutOpen(true)}
-          className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white/50 hover:text-white/80 flex items-center gap-1"
+          className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
         >
           <Info className="h-3.5 w-3.5" />
           About
@@ -133,6 +150,16 @@ const GoodbodyTestGallery = () => {
       {/* Inline Gallery */}
       <div className="flex items-start justify-center pt-1">
         <HoverExpand_001 images={getTestsForTab()} onTestClick={handleInlineImageClick} />
+      </div>
+
+      {/* View Profile Button */}
+      <div className="flex justify-center mt-4">
+        <Link
+          to="/providers/goodbody-clinic"
+          className="inline-block bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+        >
+          View Goodbody Profile
+        </Link>
       </div>
 
       {/* ===== Enlarged Gallery Modal ===== */}
