@@ -96,6 +96,7 @@ const GoodbodyTestGallery = () => {
 
   const handleGalleryTestClick = async (image: GalleryImage) => {
     setSelectedImage(image);
+    setGalleryOpen(false);
     setTestLoading(true);
     setTestDetailOpen(true);
 
