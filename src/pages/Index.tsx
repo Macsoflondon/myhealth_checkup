@@ -103,6 +103,8 @@ const Index = () => {
         {/* 1. Hero (streamlined) */}
         <Hero />
         
+        {/* 2. Test Category Ticker */}
+        <TestCategoryTicker />
         
         {/* 3. Mission Section */}
         <MissionSection />
