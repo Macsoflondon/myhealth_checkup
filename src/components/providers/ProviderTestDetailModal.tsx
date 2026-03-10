@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { X, Clock, TestTube2, ExternalLink } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
+import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
 import type { ProviderTestCardData } from "./ProviderTestCard";
 
 interface ProviderTestDetailModalProps {
@@ -97,9 +98,14 @@ export default function ProviderTestDetailModal({
   const brandColor = branding?.primary || "#22c0d4";
   const accreditations = getAccreditations(test.provider_id);
   const tagline = getProviderTagline(test.provider_id);
-  const biomarkers = parseBiomarkersList(test.biomarkers_list);
-  const sampleBadges = getSampleBadges(test.sample_type);
-  const turnaround = formatTurnaround(test.provider_id);
+
+  // For Goodbody, prioritize static curated data over database data
+  const isGoodbody = test.provider_id.toLowerCase().includes("goodbody");
+  const goodbodyStatic = isGoodbody ? getGoodbodyTestByName(test.test_name) : undefined;
+
+  const biomarkers = goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
+  const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
+  const turnaround = goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -114,22 +120,22 @@ export default function ProviderTestDetailModal({
           </button>
 
           <p className="text-sm text-white/80 mb-1">
-            {providerName} · {test.category || "General Health"}
+            {providerName} · {goodbodyStatic?.category || test.category || "General Health"}
           </p>
           <DialogTitle className="text-2xl font-bold text-white mb-3">
-            {test.test_name}
+            {goodbodyStatic?.name || test.test_name}
           </DialogTitle>
 
           <div className="flex flex-wrap gap-2">
-            {test.price && (
+            {(goodbodyStatic?.price ?? test.price) != null && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
-                £{test.price.toFixed(0)}
+                £{(goodbodyStatic?.price ?? test.price!).toFixed(0)}
               </span>
             )}
-            {test.biomarker_count && test.biomarker_count > 0 && (
+            {(biomarkers.length > 0 || (test.biomarker_count && test.biomarker_count > 0)) && (
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
                 <TestTube2 className="w-3.5 h-3.5" />
-                {test.biomarker_count} biomarkers
+                {biomarkers.length || test.biomarker_count} biomarkers
               </span>
             )}
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
@@ -142,8 +148,8 @@ export default function ProviderTestDetailModal({
         {/* Body */}
         <div className="p-6 space-y-6">
           {/* Description */}
-          {test.description && (
-            <p className="text-base text-gray-700 leading-relaxed">{test.description}</p>
+          {(goodbodyStatic?.description || test.description) && (
+            <p className="text-base text-gray-700 leading-relaxed">{goodbodyStatic?.description || test.description}</p>
           )}
 
           {/* Collection method */}
