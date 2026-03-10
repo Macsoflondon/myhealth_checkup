@@ -223,19 +223,21 @@ const HoverExpand_001 = ({
                 onClick={() => setActiveImage(index)}
                 onHoverStart={() => setActiveImage(index)}
               >
+                <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
                 <AnimatePresence>
                   {isActive && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute flex h-full w-full flex-col items-end justify-end p-4 z-10"
+                      className="absolute bottom-3 right-3 z-10"
                     >
-                      <p className="text-right text-xs font-bold text-brand-navy">{image.code}</p>
+                      <span className="inline-block bg-white/80 backdrop-blur-sm rounded-md px-2.5 py-1 text-xs font-bold text-brand-navy shadow-sm">
+                        {image.code}
+                      </span>
                     </motion.div>
                   )}
                 </AnimatePresence>
-                <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
               </motion.div>
             );
           })}
