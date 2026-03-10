@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
+import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 
 const PartnerShowcaseGrid = () => {
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20 bg-white relative overflow-hidden">
+    <section className="w-full py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
+      <NavyDecorativeCircles />
+
       <div className="container mx-auto px-4 sm:px-6 relative">
         <div className="text-center mb-3 sm:mb-4 md:mb-5">
           <div className="flex items-center justify-center gap-3 mb-3">
@@ -13,10 +16,11 @@ const PartnerShowcaseGrid = () => {
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3 text-brand-navy">
-            Our Featured Partners of the Month
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+            <span className="text-white">Our Featured Partners of </span>
+            <span className="text-white">the Month</span>
           </h2>
-          <p className="text-brand-navy/70 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+          <p className="text-white font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Handpicked providers delivering trusted, accredited health testing across the UK.
           </p>
         </div>
@@ -31,7 +35,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Start Your Journey Today — Full-width CTA between providers */}
-          <div className="md:col-span-2 bg-brand-navy rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center mb-14">
+          <div className="md:col-span-2 bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center mb-14">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
               <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
@@ -39,8 +43,9 @@ const PartnerShowcaseGrid = () => {
               </span>
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 text-white">
-              Take Control of Your Health Today
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
+              <span className="text-white">Take Control of </span>
+              <span className="text-white">Your Health Today</span>
             </h2>
             <p className="text-base lg:text-lg text-white leading-relaxed mb-8 max-w-md">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs
@@ -49,13 +54,13 @@ const PartnerShowcaseGrid = () => {
             <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full max-w-md">
               <Link
                 to="/compare"
-                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
               >
                 Compare tests
               </Link>
               <Link
                 to="/assisted-test-finder"
-                className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
               >
                 Take the health quiz
               </Link>
@@ -83,33 +88,33 @@ const PartnerShowcaseGrid = () => {
                 className="h-56 w-auto mx-auto md:hidden flex-shrink-0"
               />
               <div>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-brand-navy leading-tight whitespace-nowrap">
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
                   Unlock the
                   <br />
                   Ultimate You.
                 </h2>
               </div>
-              <p className="text-brand-navy text-sm sm:text-base font-sans font-medium leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical
                 accuracy.
               </p>
-              <p className="text-brand-navy text-sm sm:text-base font-sans font-medium leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Choose from convenient at home testing kits or attend a nationwide network of partner clinics. All
                 samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated
                 clinical partners.
               </p>
-              <p className="text-brand-navy text-sm sm:text-base font-sans font-medium leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Results include a clear GP reviewed report, helping you understand your biomarkers and take informed
                 next steps.
               </p>
-              <p className="text-brand-navy text-sm sm:text-base font-sans font-medium leading-relaxed">
+              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
                 Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness
                 tests across hormones, nutrition, heart health, and preventative screening.
               </p>
               <div className="flex justify-center md:justify-start">
                 <Link
                   to="/providers/medichecks"
-                  className="inline-block bg-brand-pink hover:bg-brand-turquoise text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+                  className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
                 >
                   View Medichecks profile
                 </Link>
@@ -138,7 +143,7 @@ const PartnerShowcaseGrid = () => {
 
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2">
-            <div className="bg-brand-navy rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
+            <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
                 <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
@@ -146,8 +151,9 @@ const PartnerShowcaseGrid = () => {
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 text-white">
-                Find a Clinic Near You
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
+                <span className="text-white">Find a Clinic </span>
+                <span className="text-white">Near You</span>
               </h2>
               <p className="text-base lg:text-lg text-white leading-relaxed mb-8 max-w-md">
                 Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health
@@ -155,28 +161,28 @@ const PartnerShowcaseGrid = () => {
               </p>
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center">
-                  <p className="font-heading text-xl lg:text-2xl font-bold text-brand-turquoise">200+</p>
+                  <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">200+</p>
                   <p className="text-xs sm:text-sm text-white">Clinic Locations</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-heading text-xl lg:text-2xl font-bold text-brand-turquoise">7</p>
+                  <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">7</p>
                   <p className="text-xs sm:text-sm text-white">Partner Networks</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-heading text-xl lg:text-2xl font-bold text-brand-turquoise">UK-wide</p>
+                  <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">UK-wide</p>
                   <p className="text-xs sm:text-sm text-white">Coverage</p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-2 justify-center mb-8 w-full max-w-md">
                 <Link
                   to="/find-clinic"
-                  className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                  className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
                 >
                   Find your nearest clinic
                 </Link>
                 <Link
                   to="/find-clinic"
-                  className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                  className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
                 >
                   Browse all clinic locations
                 </Link>
