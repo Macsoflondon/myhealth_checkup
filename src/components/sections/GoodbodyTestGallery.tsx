@@ -194,14 +194,14 @@ const GoodbodyTestGallery = () => {
           ) : (() => {
             const staticSlug = selectedImage ? testNameToSlug(selectedImage.code) : "";
             const staticData = staticSlug ? getGoodbodyTestBySlug(staticSlug) : null;
-            const testName = testData?.test_name || selectedImage?.code || "Test";
-            const category = testData?.category || staticData?.category || activeTab;
-            const price = testData?.price ?? staticData?.price ?? null;
-            const biomarkerCount = testData?.biomarker_count || staticData?.biomarkers?.length || null;
+            const testName = staticData?.name || selectedImage?.code || "Test";
+            const category = staticData?.category || testData?.category || activeTab;
+            const price = staticData?.price ?? testData?.price ?? null;
+            const biomarkerCount = staticData?.biomarkers?.length || testData?.biomarker_count || null;
             const turnaround = staticData?.turnaround || "3–5 working days";
-            const description = testData?.description || staticData?.description || null;
+            const description = staticData?.description || testData?.description || null;
             const sampleType = staticData?.sampleType || "Venous blood sample";
-            const biomarkers = testData?.biomarkers_list || staticData?.biomarkers || [];
+            const biomarkers = staticData?.biomarkers || [];
             const bookUrl = testData?.url || staticData?.goodbodyUrl || "https://www.goodbodyclinic.com";
             const BRAND_COLOR = "#009B8D";
 
