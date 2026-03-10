@@ -168,7 +168,7 @@ const GoodbodyTestGallery = () => {
       {/* View Profile Button */}
       <div className="flex justify-center mt-4">
         <Link
-          to="/providers/goodbody-clinic"
+          to="/trusted-providers"
           className="inline-block bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
         >
           View Goodbody Profile
