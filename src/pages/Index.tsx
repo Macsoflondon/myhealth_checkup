@@ -19,7 +19,6 @@ import JourneySimplified from "@/components/sections/JourneySimplified";
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
-import TestProductFilmstrip from "@/components/sections/TestProductFilmstrip";
 import CallToAction from "@/components/sections/CallToAction";
 
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
@@ -137,13 +136,10 @@ const Index = () => {
         {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
         
-        {/* 15. Test Product Filmstrip */}
-        <TestProductFilmstrip />
-        
-        {/* 16. Call to Action */}
+        {/* 15. Call to Action */}
         <CallToAction />
         
-        {/* 17. Here to Help */}
+        {/* 16. Here to Help */}
         <HereToHelp />
         
         
