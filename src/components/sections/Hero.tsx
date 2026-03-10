@@ -67,14 +67,14 @@ const Hero = () => {
             {/* Mission text block */}
             <div className="max-w-3xl mx-auto text-left mb-6 sm:mb-8 md:mb-10">
               <div className="border-l-4 border-brand-turquoise pl-4 sm:pl-5 mb-4">
-                <p className="text-sm sm:text-base md:text-lg font-bold text-brand-navy">
+                <p className="text-sm sm:text-base md:text-lg font-semibold text-brand-navy">
                   At myhealth <span className="text-brand-turquoise font-black">checkup</span>, we believe everyone deserves access to transparent, trustworthy health information.
                 </p>
               </div>
-              <p className="text-sm sm:text-base text-brand-navy/80 mb-3 pl-5 sm:pl-6">
+              <p className="text-sm sm:text-base font-semibold text-brand-navy mb-3 pl-5 sm:pl-6">
                 Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
               </p>
-              <p className="text-sm sm:text-base text-brand-navy/80 pl-5 sm:pl-6">
+              <p className="text-sm sm:text-base font-semibold text-brand-navy pl-5 sm:pl-6">
                 We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
               </p>
             </div>
