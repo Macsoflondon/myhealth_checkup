@@ -1,10 +1,7 @@
 // Self-contained hover-expand gallery component
-// Dependencies: framer-motion, clsx, tailwind-merge, Tailwind CSS
-
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Clock, FlaskConical } from "lucide-react";
 
 export interface GalleryImageData {
   src: string;
@@ -37,7 +34,6 @@ const useBreakpoint = () => {
       else if (width < 1280) setBreakpoint("largeTablet");
       else setBreakpoint("desktop");
     };
-
     window.addEventListener("resize", checkBreakpoint);
     return () => window.removeEventListener("resize", checkBreakpoint);
   }, []);
@@ -51,7 +47,7 @@ const HoverExpand_001 = ({
   images,
   className,
   onTestClick,
-  getOverlayData,
+  getOverlayData: _getOverlayData,
 }: {
   images: GalleryImageData[];
   className?: string;
@@ -89,6 +85,10 @@ const HoverExpand_001 = ({
     }
   }, [mobilePage, totalMobilePages]);
 
+  // 4x ratio: expanded = 4 * collapsed
+  // For N images with 1 active: expandedWidth + (N-1)*collapsedWidth = 100%
+  // expandedWidth = 4 * collapsedWidth => 4c + (N-1)c = 100 => c = 100/(N+3)
+
   const config = {
     mobile: {
       layout: "list" as const,
@@ -99,8 +99,6 @@ const HoverExpand_001 = ({
     smallTablet: {
       layout: "horizontal" as const,
       numVisible: 6,
-      expandedPercent: 40,
-      collapsedPercent: 12,
       height: "min(36rem, 67vh)",
       gap: "gap-1.5",
       padding: "px-0",
@@ -108,8 +106,6 @@ const HoverExpand_001 = ({
     largeTablet: {
       layout: "horizontal" as const,
       numVisible: 8,
-      expandedPercent: 35,
-      collapsedPercent: 9,
       height: "min(42rem, 75vh)",
       gap: "gap-1.5",
       padding: "px-0",
@@ -117,8 +113,6 @@ const HoverExpand_001 = ({
     desktop: {
       layout: "horizontal" as const,
       numVisible: images.length,
-      expandedWidth: "27rem",
-      collapsedWidth: "4.2rem",
       height: "min(28rem, 42vh)",
       gap: "gap-1",
       padding: "px-0",
@@ -146,43 +140,27 @@ const HoverExpand_001 = ({
             transition={{ duration: 0.25 }}
             className="flex flex-col gap-4 w-full"
           >
-            {mobileImages.map((image, index) => {
-              const overlay = getOverlayData?.(image);
-              return (
-                <motion.div
-                  key={`${mobilePage}-${index}`}
-                  initial={{ opacity: 0, translateY: 10 }}
-                  animate={{ opacity: 1, translateY: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="relative w-full overflow-hidden rounded-2xl bg-white cursor-pointer"
-                  style={{ aspectRatio: "3 / 4" }}
-                  onClick={() => {
-                    if (onTestClick) onTestClick(image);
-                    else setActiveImage(index);
-                  }}
-                >
-                  <img src={image.src} className="w-full h-full object-contain p-2" alt={image.alt} />
-                  {/* Overlay info at bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4">
-                    <p className="text-sm font-bold text-white mb-1">{image.code}</p>
-                    {overlay && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {overlay.price != null && (
-                          <span className="text-xs font-semibold text-white bg-white/20 px-2 py-0.5 rounded-full">
-                            £{overlay.price}
-                          </span>
-                        )}
-                        {overlay.biomarkerCount != null && (
-                          <span className="text-xs text-white bg-white/20 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
-                            <FlaskConical className="h-3 w-3" /> {overlay.biomarkerCount}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
+            {mobileImages.map((image, index) => (
+              <motion.div
+                key={`${mobilePage}-${index}`}
+                initial={{ opacity: 0, translateY: 10 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="relative w-full overflow-hidden rounded-2xl bg-white cursor-pointer"
+                style={{ aspectRatio: "3 / 4" }}
+                onClick={() => {
+                  if (onTestClick) onTestClick(image);
+                  else setActiveImage(index);
+                }}
+              >
+                <img src={image.src} className="w-full h-full object-contain p-2" alt={image.alt} />
+                <div className="absolute bottom-4 right-4">
+                  <span className="inline-block bg-white/85 backdrop-blur-sm rounded-md px-3 py-1.5 text-xs font-bold text-brand-navy shadow-sm">
+                    {image.code}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </AnimatePresence>
 
@@ -202,9 +180,7 @@ const HoverExpand_001 = ({
                   onClick={() => setMobilePage(i)}
                   className={cn(
                     "w-2 h-2 rounded-full transition-all duration-300",
-                    mobilePage === i
-                      ? "bg-foreground w-6"
-                      : "bg-muted-foreground/30"
+                    mobilePage === i ? "bg-foreground w-6" : "bg-muted-foreground/30"
                   )}
                 />
               ))}
@@ -222,6 +198,11 @@ const HoverExpand_001 = ({
     );
   }
 
+  // Calculate 4x ratio widths
+  const n = Math.min(images.length, config.numVisible);
+  const collapsedPercent = 100 / (n + 3); // c = 100/(N+3)
+  const expandedPercent = 4 * collapsedPercent;
+
   return (
     <motion.div
       initial={{ opacity: 0, translateY: 20 }}
@@ -238,18 +219,8 @@ const HoverExpand_001 = ({
         <div className={cn("flex w-full items-center justify-center", config.gap)}>
           {images.slice(0, config.numVisible).map((image, index) => {
             const isActive = activeImage === index;
-            const overlay = getOverlayData?.(image);
-
-            const width =
-              "expandedWidth" in config
-                ? isActive
-                  ? config.expandedWidth
-                  : config.collapsedWidth
-                : isActive
-                  ? `${config.expandedPercent}%`
-                  : `${config.collapsedPercent}%`;
-
-            const initialWidth = "expandedWidth" in config ? config.collapsedWidth : `${config.collapsedPercent}%`;
+            const width = isActive ? `${expandedPercent}%` : `${collapsedPercent}%`;
+            const initialWidth = `${collapsedPercent}%`;
 
             return (
               <motion.div
@@ -267,35 +238,22 @@ const HoverExpand_001 = ({
                 }}
                 onHoverStart={() => setActiveImage(index)}
               >
-                <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
+                <img
+                  src={image.src}
+                  className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`}
+                  alt={image.alt}
+                />
                 <AnimatePresence>
                   {isActive && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4 z-10"
+                      className="absolute bottom-4 right-4 z-10"
                     >
-                      <p className="text-sm font-bold text-white mb-1.5">{image.code}</p>
-                      {overlay && (
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {overlay.price != null && (
-                            <span className="text-xs font-bold text-white bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full">
-                              £{overlay.price}
-                            </span>
-                          )}
-                          {overlay.biomarkerCount != null && (
-                            <span className="text-xs text-white bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full inline-flex items-center gap-1">
-                              <FlaskConical className="h-3 w-3" /> {overlay.biomarkerCount} biomarkers
-                            </span>
-                          )}
-                          {overlay.turnaround && (
-                            <span className="text-xs text-white bg-white/25 backdrop-blur-sm px-2.5 py-1 rounded-full inline-flex items-center gap-1">
-                              <Clock className="h-3 w-3" /> {overlay.turnaround}
-                            </span>
-                          )}
-                        </div>
-                      )}
+                      <span className="inline-block bg-white/85 backdrop-blur-sm rounded-md px-3 py-1.5 text-xs font-bold text-brand-navy shadow-sm mt-8">
+                        {image.code}
+                      </span>
                     </motion.div>
                   )}
                 </AnimatePresence>
