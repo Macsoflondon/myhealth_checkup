@@ -375,11 +375,11 @@ const TestCategoriesPage = () => {
                       width: "100%",
                       padding: "12px 0",
                       borderRadius: 12,
-                      border: `1px solid ${cat.accent}40`,
+                      border: `1px solid ${isHov ? cat.accent : 'rgba(255,255,255,0.6)'}`,
                       background: isHov
                         ? `linear-gradient(135deg, ${cat.accent}25, ${cat.accent}10)`
                         : "transparent",
-                      color: isHov ? cat.accent : "rgba(255,255,255,0.4)",
+                      color: isHov ? cat.accent : "rgba(255,255,255,0.85)",
                       fontSize: 13,
                       fontWeight: 700,
                       letterSpacing: "0.06em",
