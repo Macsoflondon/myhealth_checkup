@@ -20,7 +20,7 @@ const PartnerShowcaseGrid = () => {
             <span className="text-white">Our Featured Partners of </span>
             <span className="text-white">the Month</span>
           </h2>
-          <p className="text-white/60 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
+          <p className="text-white font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Handpicked providers delivering trusted, accredited health testing across the UK.
           </p>
         </div>
