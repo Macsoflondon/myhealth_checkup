@@ -20,15 +20,10 @@ const useBreakpoint = () => {
   useEffect(() => {
     const checkBreakpoint = () => {
       const width = window.innerWidth;
-      if (width < 768) {
-        setBreakpoint("mobile");
-      } else if (width < 900) {
-        setBreakpoint("smallTablet");
-      } else if (width < 1280) {
-        setBreakpoint("largeTablet");
-      } else {
-        setBreakpoint("desktop");
-      }
+      if (width < 768) setBreakpoint("mobile");
+      else if (width < 900) setBreakpoint("smallTablet");
+      else if (width < 1280) setBreakpoint("largeTablet");
+      else setBreakpoint("desktop");
     };
 
     window.addEventListener("resize", checkBreakpoint);
@@ -78,7 +73,6 @@ const HoverExpand_001 = ({
     }
   }, [mobilePage, totalMobilePages]);
 
-  // Responsive configuration based on breakpoint
   const config = {
     mobile: {
       layout: "list" as const,
@@ -116,7 +110,6 @@ const HoverExpand_001 = ({
     },
   }[breakpoint];
 
-  // Mobile: Vertical list layout with pagination
   if (config.layout === "list") {
     return (
       <motion.div
@@ -147,16 +140,15 @@ const HoverExpand_001 = ({
                 style={{ height: config.height }}
                 onClick={() => setActiveImage(index)}
               >
-                <img src={image.src} className={`size-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
+                <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-sm font-bold" style={{ color: '#081129' }}>{image.code}</p>
+                  <p className="text-sm font-bold text-brand-navy">{image.code}</p>
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>
 
-        {/* Pagination dots & controls */}
         {totalMobilePages > 1 && (
           <div className="flex items-center justify-center gap-3 mt-6 pb-4">
             <button
@@ -193,7 +185,6 @@ const HoverExpand_001 = ({
     );
   }
 
-  // Horizontal layout for tablets and desktop
   return (
     <motion.div
       initial={{ opacity: 0, translateY: 20 }}
@@ -211,7 +202,6 @@ const HoverExpand_001 = ({
           {images.slice(0, config.numVisible).map((image, index) => {
             const isActive = activeImage === index;
 
-            // Desktop uses fixed widths, tablets use percentages
             const width =
               "expandedWidth" in config
                 ? isActive
@@ -241,11 +231,11 @@ const HoverExpand_001 = ({
                       exit={{ opacity: 0 }}
                       className="absolute flex h-full w-full flex-col items-end justify-end p-4"
                     >
-                      <p className="text-left text-xs font-bold" style={{ color: '#081129' }}>{image.code}</p>
+                      <p className="text-left text-xs font-bold text-brand-navy">{image.code}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
-                <img src={image.src} className={`size-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
+                <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
               </motion.div>
             );
           })}
