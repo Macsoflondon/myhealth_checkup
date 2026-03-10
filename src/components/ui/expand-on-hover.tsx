@@ -94,55 +94,73 @@ const MobileCarousel = ({
     >
       {/* Scroll container */}
       <div className="relative">
+        {/* Left edge fade */}
+        <div
+          className="absolute left-0 top-0 bottom-2 w-10 z-10 pointer-events-none transition-opacity duration-300"
+          style={{
+            background: "linear-gradient(to right, hsl(var(--background)), transparent)",
+            opacity: activeIndex > 0 ? 1 : 0,
+          }}
+        />
+        {/* Right edge fade */}
+        <div
+          className="absolute right-0 top-0 bottom-2 w-10 z-10 pointer-events-none transition-opacity duration-300"
+          style={{
+            background: "linear-gradient(to left, hsl(var(--background)), transparent)",
+            opacity: activeIndex < images.length - 1 ? 1 : 0,
+          }}
+        />
+
         {/* Left arrow */}
         <button
           onClick={goPrev}
           disabled={activeIndex === 0}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-20 transition-opacity"
+          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-background/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-0 transition-opacity"
           aria-label="Previous"
         >
-          <ChevronLeft className="h-4 w-4 text-foreground" />
+          <ChevronLeft className="h-3.5 w-3.5 text-foreground" />
         </button>
 
         {/* Right arrow */}
         <button
           onClick={goNext}
           disabled={activeIndex >= images.length - 1}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-20 transition-opacity"
+          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-background/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-0 transition-opacity"
           aria-label="Next"
         >
-          <ChevronRight className="h-4 w-4 text-foreground" />
+          <ChevronRight className="h-3.5 w-3.5 text-foreground" />
         </button>
 
         {/* Horizontal scrollable strip */}
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory px-10 pb-2 no-scrollbar"
+          className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory px-8 pb-2"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
             WebkitOverflowScrolling: "touch",
           }}
         >
+          <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
           {images.map((image, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25, delay: index * 0.03 }}
-              className="relative shrink-0 snap-start overflow-hidden rounded-xl bg-white cursor-pointer shadow-sm border border-border/30 hover:shadow-md transition-shadow"
-              style={{ width: cardWidth, height: 220 }}
+              transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.3) }}
+              className="relative shrink-0 snap-start overflow-hidden rounded-xl bg-white cursor-pointer shadow-sm border border-border/30 active:scale-[0.97] transition-all"
+              style={{ width: `min(${cardWidth}px, 48vw)`, height: 200 }}
               onClick={() => onTestClick?.(image)}
             >
               <img
                 src={image.src}
-                className="w-full h-[170px] object-contain p-2"
+                className="w-full h-[150px] object-contain p-1.5"
                 alt={image.alt}
                 loading="lazy"
               />
-              <div className="px-2 pb-2 pt-0.5">
-                <p className="text-[11px] font-bold text-brand-navy leading-tight truncate text-center">
+              <div className="px-1.5 pb-1.5 pt-0.5">
+                <p className="text-[10px] font-bold text-brand-navy leading-tight truncate text-center">
                   {image.code}
                 </p>
               </div>
