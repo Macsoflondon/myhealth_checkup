@@ -230,7 +230,7 @@ const HoverExpand_001 = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute bottom-3 right-3 z-10"
+                      className="absolute bottom-6 right-4 z-10"
                     >
                       <span className="inline-block bg-white/80 backdrop-blur-sm rounded-md px-2.5 py-1 text-xs font-bold text-brand-navy shadow-sm">
                         {image.code}
