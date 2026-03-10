@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { cn } from "@/lib/utils";
 import {
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2 } from "lucide-react";
+import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2, Droplet, Clock } from "lucide-react";
 import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 
 const TABS = ["General Health", "Hormone & Fertility", "Cancer Screening"] as const;
@@ -182,123 +183,143 @@ const GoodbodyTestGallery = () => {
         </DialogContent>
       </Dialog>
 
-      {/* ===== Test Detail Modal ===== */}
+      {/* ===== Test Detail Modal (Reference card style) ===== */}
       <Dialog open={testDetailOpen} onOpenChange={setTestDetailOpen}>
-        <DialogContent className="max-w-lg bg-background border border-border">
+        <DialogContent className="max-w-lg p-0 overflow-hidden border-0 rounded-2xl">
           {testLoading ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
               <Loader2 className="h-8 w-8 animate-spin text-brand-turquoise" />
               <p className="text-sm text-muted-foreground">Loading test details…</p>
             </div>
-          ) : testData ? (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-xl font-heading text-foreground">
-                  {testData.test_name}
-                </DialogTitle>
-                <DialogDescription className="text-muted-foreground">
-                  Goodbody Clinic
-                </DialogDescription>
-              </DialogHeader>
+          ) : (() => {
+            const staticSlug = selectedImage ? testNameToSlug(selectedImage.code) : "";
+            const staticData = staticSlug ? getGoodbodyTestBySlug(staticSlug) : null;
+            const testName = testData?.test_name || selectedImage?.code || "Test";
+            const category = testData?.category || staticData?.category || activeTab;
+            const price = testData?.price ?? staticData?.price ?? null;
+            const biomarkerCount = testData?.biomarker_count || staticData?.biomarkers?.length || null;
+            const turnaround = staticData?.turnaround || "3–5 working days";
+            const description = testData?.description || staticData?.description || null;
+            const sampleType = staticData?.sampleType || "Venous blood sample";
+            const biomarkers = testData?.biomarkers_list || staticData?.biomarkers || [];
+            const bookUrl = testData?.url || staticData?.goodbodyUrl || "https://www.goodbodyclinic.com";
+            const BRAND_COLOR = "#009B8D";
 
-              {selectedImage && (
-                <div className="w-full bg-white rounded-lg p-4 flex items-center justify-center" style={{ maxHeight: "200px" }}>
-                  <img
-                    src={selectedImage.src}
-                    alt={testData.test_name}
-                    className="max-h-[180px] object-contain"
-                  />
-                </div>
-              )}
+            return (
+              <>
+                <DialogHeader className="sr-only">
+                  <DialogTitle>{testName}</DialogTitle>
+                  <DialogDescription>Goodbody Clinic test details</DialogDescription>
+                </DialogHeader>
 
-              <div className="space-y-4">
-                {/* Price */}
-                <div className="flex items-center gap-3">
-                  {testData.price != null && (
-                    <span className="text-2xl font-bold text-foreground">
-                      £{testData.price.toFixed(2)}
-                    </span>
-                  )}
-                  {testData.original_price != null && testData.original_price > (testData.price || 0) && (
-                    <span className="text-sm line-through text-muted-foreground">
-                      £{testData.original_price.toFixed(2)}
-                    </span>
-                  )}
-                  {testData.discount_percentage != null && testData.discount_percentage > 0 && (
-                    <Badge variant="secondary" className="text-xs">
-                      {testData.discount_percentage}% off
-                    </Badge>
-                  )}
-                </div>
-
-                {/* Description */}
-                {testData.description && (
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {testData.description}
-                  </p>
-                )}
-
-                {/* Biomarker count */}
-                {testData.biomarker_count != null && testData.biomarker_count > 0 && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <FlaskConical className="h-4 w-4 text-brand-turquoise" />
-                    <span>{testData.biomarker_count} biomarkers tested</span>
-                  </div>
-                )}
-
-                {/* Biomarker pills */}
-                {testData.biomarkers_list && testData.biomarkers_list.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {testData.biomarkers_list.slice(0, 12).map((b) => (
-                      <Badge key={b} variant="outline" className="text-xs font-normal">
-                        {b}
-                      </Badge>
-                    ))}
-                    {testData.biomarkers_list.length > 12 && (
-                      <Badge variant="outline" className="text-xs font-normal">
-                        +{testData.biomarkers_list.length - 12} more
-                      </Badge>
+                {/* Colored Header Banner */}
+                <div className="px-6 pt-6 pb-5 text-white" style={{ backgroundColor: BRAND_COLOR }}>
+                  <p className="text-sm opacity-80 mb-1">Goodbody Clinic · {category}</p>
+                  <h3 className="text-xl sm:text-2xl font-bold font-heading mb-3">{testName}</h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {price != null && (
+                      <span className="inline-flex items-center bg-black/20 text-white text-sm font-bold px-3 py-1 rounded-full">
+                        £{price}
+                      </span>
                     )}
+                    {biomarkerCount != null && biomarkerCount > 0 && (
+                      <span className="inline-flex items-center gap-1 bg-black/20 text-white text-sm px-3 py-1 rounded-full">
+                        🧬 {biomarkerCount} biomarkers
+                      </span>
+                    )}
+                    <span className="inline-flex items-center gap-1 bg-black/20 text-white text-sm px-3 py-1 rounded-full">
+                      <Clock className="h-3.5 w-3.5" /> {turnaround}
+                    </span>
                   </div>
-                )}
-
-                {/* Book Now */}
-                {testData.url && (
-                  <Button asChild className="w-full bg-brand-turquoise hover:bg-brand-turquoise/90 text-white">
-                    <a href={testData.url} target="_blank" rel="noopener noreferrer">
-                      Book This Test
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="py-12 text-center">
-              <DialogHeader>
-                <DialogTitle className="text-lg font-heading text-foreground">
-                  {selectedImage?.code || "Test"}
-                </DialogTitle>
-                <DialogDescription className="text-muted-foreground">
-                  Goodbody Clinic
-                </DialogDescription>
-              </DialogHeader>
-              {selectedImage && (
-                <div className="w-full bg-white rounded-lg p-4 flex items-center justify-center my-4" style={{ maxHeight: "200px" }}>
-                  <img src={selectedImage.src} alt={selectedImage.alt} className="max-h-[180px] object-contain" />
                 </div>
-              )}
-              <p className="text-sm text-muted-foreground">
-                Details not available. Please visit Goodbody Clinic's website for more information.
-              </p>
-              <Button asChild className="mt-4 bg-brand-turquoise hover:bg-brand-turquoise/90 text-white">
-                <a href="https://www.goodbodyclinic.com" target="_blank" rel="noopener noreferrer">
-                  Visit Goodbody Clinic
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            </div>
-          )}
+
+                {/* White Body */}
+                <div className="px-6 py-5 space-y-5 max-h-[55vh] overflow-y-auto">
+                  {/* Description */}
+                  {description && (
+                    <p className="text-sm sm:text-base text-foreground leading-relaxed">{description}</p>
+                  )}
+
+                  {/* Collection Method */}
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-2">Collection Method</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {sampleType.toLowerCase().includes("venous") && (
+                        <span className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-100">
+                          <Droplet className="h-3.5 w-3.5" /> Venous
+                        </span>
+                      )}
+                      {sampleType.toLowerCase().includes("finger") && (
+                        <span className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-orange-50 text-orange-600 border border-orange-100">
+                          <Droplet className="h-3.5 w-3.5" /> Finger-prick
+                        </span>
+                      )}
+                      {!sampleType.toLowerCase().includes("venous") && !sampleType.toLowerCase().includes("finger") && (
+                        <span className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-100">
+                          <Droplet className="h-3.5 w-3.5" /> {sampleType}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Biomarkers */}
+                  {biomarkers.length > 0 && (
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-2">Biomarkers Included</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {biomarkers.map((b) => (
+                          <span key={b} className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
+                            {b}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Provider Info Card */}
+                  <div className="rounded-xl p-4 flex items-start gap-3" style={{ backgroundColor: `${BRAND_COLOR}10` }}>
+                    <div className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ backgroundColor: BRAND_COLOR }}>
+                      G
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm" style={{ color: BRAND_COLOR }}>Goodbody Clinic</p>
+                      <p className="text-xs text-muted-foreground">Private health testing with 200+ clinics nationwide</p>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {["200+ Clinics", "GP Report Included", "CQC Registered"].map((badge) => (
+                          <span key={badge} className="text-[10px] font-semibold px-2 py-0.5 rounded border" style={{ color: BRAND_COLOR, borderColor: BRAND_COLOR }}>
+                            {badge}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={bookUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 inline-flex items-center justify-center gap-2 text-white font-semibold py-3 px-6 rounded-xl text-sm transition-colors duration-200 hover:opacity-90"
+                      style={{ backgroundColor: BRAND_COLOR }}
+                    >
+                      Book with Goodbody Clinic →
+                    </a>
+                    <Link
+                      to={`/compare?test=${encodeURIComponent(testName)}`}
+                      className="inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl text-sm border border-gray-200 text-foreground hover:bg-gray-50 transition-colors"
+                    >
+                      + Compare
+                    </Link>
+                  </div>
+
+                  <p className="text-[11px] text-center text-muted-foreground">
+                    You'll be taken to Goodbody Clinic's website to complete your booking.
+                  </p>
+                </div>
+              </>
+            );
+          })()}
         </DialogContent>
       </Dialog>
 
