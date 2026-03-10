@@ -225,7 +225,13 @@ const HoverExpand_001 = ({
                 initial={{ width: initialWidth, height: "20rem" }}
                 animate={{ width, height: config.height }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                onClick={() => setActiveImage(index)}
+                onClick={() => {
+                  if (isActive && onTestClick) {
+                    onTestClick(image);
+                  } else {
+                    setActiveImage(index);
+                  }
+                }}
                 onHoverStart={() => setActiveImage(index)}
               >
                 <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
