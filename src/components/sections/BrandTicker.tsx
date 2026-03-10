@@ -35,7 +35,6 @@ const BrandTicker = () => {
 
   return (
     <section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       <div className="py-3 sm:py-4">
         <div
           className="relative overflow-hidden"
@@ -59,6 +58,7 @@ const BrandTicker = () => {
           </div>
         </div>
       </div>
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
 };
