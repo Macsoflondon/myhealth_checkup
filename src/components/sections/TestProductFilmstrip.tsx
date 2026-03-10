@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 
 const TEST_PRODUCTS = [
   { src: "/images/tests/advanced-well-man.png", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
-  { src: "/images/tests/advanced-well-woman.png", alt: "Advanced Well Woman Blood Test", code: "Advanced Well Woman", objectFit: "contain" },
   { src: "/images/tests/premium-complete-blood-test.png", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain" },
   { src: "/images/tests/early-cancer-screening.png", alt: "Early Cancer Screening Test", code: "Cancer Screening", objectFit: "contain" },
   { src: "/images/tests/female-hormone-fertility.png", alt: "Female Hormone & Fertility Test", code: "Hormone & Fertility", objectFit: "contain" },
