@@ -2,6 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface GalleryImageData {
   src: string;
@@ -41,7 +42,149 @@ const useBreakpoint = () => {
   return breakpoint;
 };
 
-const MOBILE_PAGE_SIZE = 5;
+/* ─── Mobile horizontal carousel ─── */
+const MobileCarousel = ({
+  images,
+  onTestClick,
+  className,
+}: {
+  images: GalleryImageData[];
+  onTestClick?: (image: GalleryImageData) => void;
+  className?: string;
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const cardWidth = 180; // px per card
+  const gap = 12;
+
+  const scrollToIndex = useCallback(
+    (idx: number) => {
+      if (!scrollRef.current) return;
+      const target = idx * (cardWidth + gap);
+      scrollRef.current.scrollTo({ left: target, behavior: "smooth" });
+    },
+    [cardWidth, gap]
+  );
+
+  const handleScroll = useCallback(() => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const idx = Math.round(scrollLeft / (cardWidth + gap));
+    setActiveIndex(Math.min(idx, images.length - 1));
+  }, [cardWidth, gap, images.length]);
+
+  const goNext = () => {
+    const next = Math.min(activeIndex + 1, images.length - 1);
+    setActiveIndex(next);
+    scrollToIndex(next);
+  };
+
+  const goPrev = () => {
+    const prev = Math.max(activeIndex - 1, 0);
+    setActiveIndex(prev);
+    scrollToIndex(prev);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, translateY: 16 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ duration: 0.3, delay: 0.3 }}
+      className={cn("relative w-full", className)}
+    >
+      {/* Scroll container */}
+      <div className="relative">
+        {/* Left arrow */}
+        <button
+          onClick={goPrev}
+          disabled={activeIndex === 0}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-20 transition-opacity"
+          aria-label="Previous"
+        >
+          <ChevronLeft className="h-4 w-4 text-foreground" />
+        </button>
+
+        {/* Right arrow */}
+        <button
+          onClick={goNext}
+          disabled={activeIndex >= images.length - 1}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-20 transition-opacity"
+          aria-label="Next"
+        >
+          <ChevronRight className="h-4 w-4 text-foreground" />
+        </button>
+
+        {/* Horizontal scrollable strip */}
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory px-10 pb-2 no-scrollbar"
+          style={{
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {images.map((image, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.25, delay: index * 0.03 }}
+              className="relative shrink-0 snap-start overflow-hidden rounded-xl bg-white cursor-pointer shadow-sm border border-border/30 hover:shadow-md transition-shadow"
+              style={{ width: cardWidth, height: 220 }}
+              onClick={() => onTestClick?.(image)}
+            >
+              <img
+                src={image.src}
+                className="w-full h-[170px] object-contain p-2"
+                alt={image.alt}
+                loading="lazy"
+              />
+              <div className="px-2 pb-2 pt-0.5">
+                <p className="text-[11px] font-bold text-brand-navy leading-tight truncate text-center">
+                  {image.code}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dot indicators — always visible */}
+      <div className="flex items-center justify-center gap-1.5 mt-3 pb-1">
+        {images.map((_, i) => {
+          // Group dots: show nearby dots, collapse distant ones
+          const distance = Math.abs(i - activeIndex);
+          if (distance > 4 && i !== 0 && i !== images.length - 1) return null;
+          return (
+            <button
+              key={i}
+              onClick={() => {
+                setActiveIndex(i);
+                scrollToIndex(i);
+              }}
+              className={cn(
+                "rounded-full transition-all duration-300",
+                i === activeIndex
+                  ? "w-5 h-2 bg-brand-turquoise"
+                  : distance <= 2
+                    ? "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                    : "w-1.5 h-1.5 bg-muted-foreground/20"
+              )}
+              aria-label={`Go to test ${i + 1}`}
+            />
+          );
+        })}
+      </div>
+
+      {/* Swipe hint text */}
+      <p className="text-[10px] text-center text-muted-foreground/60 mt-0.5">
+        Swipe or tap arrows to browse • {images.length} tests
+      </p>
+    </motion.div>
+  );
+};
 
 const HoverExpand_001 = ({
   images,
@@ -55,45 +198,11 @@ const HoverExpand_001 = ({
   getOverlayData?: (image: GalleryImageData) => OverlayData;
 }) => {
   const [activeImage, setActiveImage] = useState<number | null>(1);
-  const [mobilePage, setMobilePage] = useState(0);
   const breakpoint = useBreakpoint();
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  const totalMobilePages = Math.ceil(images.length / MOBILE_PAGE_SIZE);
-  const mobileImages = images.slice(
-    mobilePage * MOBILE_PAGE_SIZE,
-    (mobilePage + 1) * MOBILE_PAGE_SIZE
-  );
-
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchEndX.current = e.touches[0].clientX;
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  }, []);
-
-  const handleTouchEnd = useCallback(() => {
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 60;
-    if (diff > threshold && mobilePage < totalMobilePages - 1) {
-      setMobilePage((p) => p + 1);
-    } else if (diff < -threshold && mobilePage > 0) {
-      setMobilePage((p) => p - 1);
-    }
-  }, [mobilePage, totalMobilePages]);
-
-  // 4x ratio: expanded = 4 * collapsed
-  // For N images with 1 active: expandedWidth + (N-1)*collapsedWidth = 100%
-  // expandedWidth = 4 * collapsedWidth => 4c + (N-1)c = 100 => c = 100/(N+3)
 
   const config = {
     mobile: {
-      layout: "list" as const,
-      numVisible: MOBILE_PAGE_SIZE,
-      height: "min(20rem, 40vh)",
+      layout: "carousel" as const,
       padding: "px-0",
     },
     smallTablet: {
@@ -120,87 +229,20 @@ const HoverExpand_001 = ({
     },
   }[breakpoint];
 
-  if (config.layout === "list") {
+  // Mobile: compact horizontal carousel
+  if (config.layout === "carousel") {
     return (
-      <motion.div
-        initial={{ opacity: 0, translateY: 20 }}
-        animate={{ opacity: 1, translateY: 0 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
-        className={cn("relative w-full", config.padding, className)}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={mobilePage}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.25 }}
-            className="flex flex-col gap-4 w-full"
-          >
-            {mobileImages.map((image, index) => (
-              <motion.div
-                key={`${mobilePage}-${index}`}
-                initial={{ opacity: 0, translateY: 10 }}
-                animate={{ opacity: 1, translateY: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="relative w-full overflow-hidden rounded-2xl bg-white cursor-pointer"
-                style={{ aspectRatio: "3 / 4" }}
-                onClick={() => {
-                  if (onTestClick) onTestClick(image);
-                  else setActiveImage(index);
-                }}
-              >
-                <img src={image.src} className="w-full h-full object-contain p-2" alt={image.alt} />
-                <div className="absolute bottom-4 right-4">
-                  <span className="inline-block bg-white/85 backdrop-blur-sm rounded-md px-3 py-1.5 text-xs font-bold text-brand-navy shadow-sm">
-                    {image.code}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {totalMobilePages > 1 && (
-          <div className="flex items-center justify-center gap-3 mt-6 pb-4">
-            <button
-              onClick={() => setMobilePage((p) => Math.max(0, p - 1))}
-              disabled={mobilePage === 0}
-              className="text-xs font-medium text-muted-foreground disabled:opacity-30 transition-opacity px-2 py-1"
-            >
-              ← Prev
-            </button>
-            <div className="flex gap-2">
-              {Array.from({ length: totalMobilePages }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setMobilePage(i)}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
-                    mobilePage === i ? "bg-foreground w-6" : "bg-muted-foreground/30"
-                  )}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() => setMobilePage((p) => Math.min(totalMobilePages - 1, p + 1))}
-              disabled={mobilePage === totalMobilePages - 1}
-              className="text-xs font-medium text-muted-foreground disabled:opacity-30 transition-opacity px-2 py-1"
-            >
-              Next →
-            </button>
-          </div>
-        )}
-      </motion.div>
+      <MobileCarousel
+        images={images}
+        onTestClick={onTestClick}
+        className={className}
+      />
     );
   }
 
-  // Calculate 4x ratio widths
+  // Desktop/tablet: 4x ratio hover-expand
   const n = Math.min(images.length, config.numVisible);
-  const collapsedPercent = 100 / (n + 3); // c = 100/(N+3)
+  const collapsedPercent = 100 / (n + 3);
   const expandedPercent = 4 * collapsedPercent;
 
   return (
