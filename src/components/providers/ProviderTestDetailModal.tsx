@@ -242,6 +242,15 @@ export default function ProviderTestDetailModal({
                 Book with {providerName} →
               </Button>
             )}
+            <Button
+              variant="outline"
+              className="h-12 text-base font-semibold border-gray-200 hover:bg-gray-50"
+              asChild
+            >
+              <Link to={`/compare?test=${encodeURIComponent(test.test_name)}`}>
+                + Compare
+              </Link>
+            </Button>
           </div>
 
           {test.url && (
