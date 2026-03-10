@@ -123,7 +123,7 @@ const GoodbodyTestGallery = () => {
               className="h-20 sm:h-24 md:h-28 w-auto object-contain"
             />
           </div>
-          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-brand-navy leading-tight">
             Know more.
             <br />
             Live Better.
