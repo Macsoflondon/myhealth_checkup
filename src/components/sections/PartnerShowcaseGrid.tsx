@@ -1,5 +1,16 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import { ProviderFilmstrip, ProviderFilmstripImage } from "@/components/ui/provider-filmstrip";
+import { PROVIDER_LOGOS } from "@/constants/providers";
+
+const providerFilmstripImages: ProviderFilmstripImage[] = [
+  { src: PROVIDER_LOGOS['goodbody-clinic'], alt: "GoodBody Clinic logo", label: "GoodBody Clinic", link: "/providers/goodbody-clinic", objectFit: "contain" },
+  { src: PROVIDER_LOGOS['medichecks'], alt: "Medichecks logo", label: "Medichecks", link: "/providers/medichecks", objectFit: "contain" },
+  { src: PROVIDER_LOGOS['randox'], alt: "Randox Health logo", label: "Randox Health", link: "/providers/randox", objectFit: "contain" },
+  { src: PROVIDER_LOGOS['thriva'], alt: "Thriva logo", label: "Thriva", link: "/providers/thriva", objectFit: "contain" },
+  { src: PROVIDER_LOGOS['london-medical-laboratory'], alt: "London Medical Laboratory logo", label: "London Medical Lab", link: "/providers/london-medical-laboratory", objectFit: "contain" },
+  { src: PROVIDER_LOGOS['lola-health'], alt: "Lola Health logo", label: "Lola Health", link: "/providers/lola-health", objectFit: "contain" },
+];
 
 const PartnerShowcaseGrid = () => {
   return (
@@ -22,6 +33,11 @@ const PartnerShowcaseGrid = () => {
           <p className="text-white/60 font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Handpicked providers delivering trusted, accredited health testing across the UK.
           </p>
+        </div>
+
+        {/* Provider Filmstrip Gallery */}
+        <div className="mb-12 sm:mb-16">
+          <ProviderFilmstrip images={providerFilmstripImages} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
