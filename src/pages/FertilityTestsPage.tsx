@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Star, Shield, Activity, Heart } from 'lucide-react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import UKASBanner from '@/components/UKASBanner';
+
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -165,7 +165,7 @@ const FertilityTestsPage = () => {
       </Helmet>
       
       <div className="min-h-screen bg-[#081129]">
-        <UKASBanner />
+        
         <div className="min-h-screen bg-white">
           <Header />
           

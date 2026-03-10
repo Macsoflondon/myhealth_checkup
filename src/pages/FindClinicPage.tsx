@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import UKASBanner from "@/components/UKASBanner";
+
 import ClinicFinder from "@/components/ClinicFinder";
 import { MapPin, Shield, Clock, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -73,7 +73,7 @@ const FindClinicPage = () => {
         </script>
       </Helmet>
 
-      <UKASBanner />
+      
       <Header />
 
       <main className="min-h-screen bg-background">

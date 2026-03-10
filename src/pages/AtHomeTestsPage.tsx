@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import UKASBanner from '@/components/UKASBanner';
+
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import HeroSection from '@/components/sections/HeroSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -54,7 +54,7 @@ const AtHomeTestsPage = () => {
       </Helmet>
       
       <div className="min-h-screen flex flex-col">
-        <UKASBanner />
+        
         <Header />
         
         <main className="flex-1 bg-background">

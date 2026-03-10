@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MostPopularTests from '@/components/MostPopularTests';
-import UKASBanner from '@/components/UKASBanner';
+
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 
 const MostPopularTestsPage = () => {
@@ -25,7 +25,7 @@ const MostPopularTestsPage = () => {
         <meta name="twitter:description" content="Discover our most popular health tests, trusted by thousands of customers." />
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <UKASBanner />
+        
         <Header />
         <main className="flex-1 bg-[#081129]">
           <PageBreadcrumb 

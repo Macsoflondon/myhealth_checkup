@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import UKASBanner from "@/components/UKASBanner";
+
 import { ProviderLogo } from "@/components/ProviderLogo";
 import { useClinicsData } from "@/hooks/useClinicsData";
 import { useGeocoding } from "@/hooks/useGeocoding";
@@ -207,7 +207,7 @@ const LocationsPage = () => {
         />
       </Helmet>
 
-      <UKASBanner />
+      
       <Header />
 
       <main className="min-h-screen bg-background">

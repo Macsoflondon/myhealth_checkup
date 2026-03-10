@@ -1,19 +1,15 @@
 /**
  * Shared layout component for consistent page structure
- * Includes: UKASBanner, Header, main content area, Footer, CookieConsent
+ * Includes: Header (with BrandTicker), main content area, Footer, CookieConsent
  */
 
 import { ReactNode } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import UKASBanner from "@/components/UKASBanner";
 import CookieConsent from "@/components/compliance/CookieConsent";
-import BrandTicker from "@/components/sections/BrandTicker";
 
 interface MainLayoutProps {
   children: ReactNode;
-  /** Optional: Hide the UKAS banner */
-  hideUKASBanner?: boolean;
   /** Optional: Hide the header */
   hideHeader?: boolean;
   /** Optional: Hide the footer */
@@ -24,15 +20,12 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ 
   children, 
-  hideUKASBanner = false,
   hideHeader = false,
   hideFooter = false,
   mainClassName = "flex-1"
 }: MainLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col bg-[hsl(224,67%,10%)]">
-      <BrandTicker />
-      {!hideUKASBanner && <UKASBanner />}
       {!hideHeader && <Header />}
       <main className={mainClassName}>
         {children}

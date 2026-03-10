@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
-import UKASBanner from "@/components/UKASBanner";
+
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import HeroSection from "@/components/sections/HeroSection";
 import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
@@ -139,8 +139,7 @@ const CategoryLandingPage: React.FC = () => {
           </script>
         </Helmet>
 
-        <UKASBanner />
-        <MainLayout hideUKASBanner hideHeader hideFooter>
+        <MainLayout hideHeader hideFooter>
           {/* Hero Section */}
           <HeroSection
             title={content.heroTitle}
