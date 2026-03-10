@@ -787,9 +787,25 @@ export const testNameToSlug = (testName: string): string => {
 };
 
 /**
- * Get test details by database test name
+ * Get test details by database test name (fuzzy match)
  */
 export const getGoodbodyTestByName = (testName: string): GoodbodyTestDetail | undefined => {
+  // Try exact slug match first
   const slug = testNameToSlug(testName);
-  return goodbodyTestDetails[slug];
+  if (goodbodyTestDetails[slug]) return goodbodyTestDetails[slug];
+
+  // Try matching by checking if the database name starts with any static test name
+  const nameLower = testName.toLowerCase();
+  for (const [key, detail] of Object.entries(goodbodyTestDetails)) {
+    const detailNameLower = detail.name.toLowerCase();
+    if (
+      nameLower.startsWith(detailNameLower) ||
+      nameLower.includes(detailNameLower + " blood test") ||
+      slug.startsWith(key)
+    ) {
+      return detail;
+    }
+  }
+
+  return undefined;
 };
