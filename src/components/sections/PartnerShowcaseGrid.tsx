@@ -80,6 +80,9 @@ const PartnerShowcaseGrid = () => {
             </div>
           </div>
 
+          {/* GoodBody Test Gallery */}
+          <GoodbodyTestGallery />
+
           {/* Divider */}
           <div className="md:col-span-2 flex justify-center">
             <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
