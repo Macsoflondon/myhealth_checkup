@@ -1,20 +1,16 @@
 
 
-## Remove WhyChooseUs and TopConcernsSection from Homepage
+## Reduce spacing between tab buttons and filmstrip gallery
 
-Three files to change:
+The gap between the tabs and the image containers comes from two sources:
 
-### 1. `src/pages/Index.tsx`
-- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
-- Remove the TopConcernsSection JSX block (lines 134-135)
-- Remove the WhyChooseUs JSX block (lines 144-145)
+1. **The content wrapper** (`h-[80vh] flex items-center justify-center`) vertically centers the gallery in 80% of the viewport, pushing it away from the tabs.
+2. **The header padding** (`pb-2`) adds minor bottom spacing.
 
-### 2. `src/components/sections/WhyChooseUs.tsx`
-- Delete this file entirely
+### Changes
 
-### 3. `src/components/sections/index.ts`
-- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
-- Keep TopConcernsSection export so it remains available for future use
+**`src/pages/GoodbodyClinicPage.tsx`** (line 90):
+- Change the content wrapper from `h-[80vh] flex items-center justify-center` to `h-[80vh] flex items-start justify-center pt-4` — this top-aligns the gallery with minimal padding instead of centering it vertically, reducing the perceived gap by roughly 75%.
 
-TopConcernsSection component file stays in the codebase untouched — available for reuse later.
+This single change will pull the filmstrip gallery much closer to the tab navigation while preserving the full-height container for the hover-expand animation.
 
