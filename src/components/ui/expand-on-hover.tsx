@@ -239,7 +239,7 @@ const HoverExpand_001 = ({
     },
     desktop: {
       layout: "horizontal" as const,
-      numVisible: images.length,
+      numVisible: Math.min(images.length, 8),
       height: "min(28rem, 42vh)",
       gap: "gap-1",
       padding: "px-0",
