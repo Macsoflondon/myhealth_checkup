@@ -82,9 +82,12 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   // All navigation items for single row layout
   const allNavItems = primaryNavigationItems.filter(item => item.name !== "How It Works");
 
+  const highlightedItems = ["Fertility", "Cancer Screening"];
+
   const renderNavItem = (item: typeof primaryNavigationItems[0]) => {
     // Check if this is the "Most Popular Tests" item
     const isPopularTests = item.name === "Most Popular Tests";
+    const hasAccent = highlightedItems.includes(item.name);
     
     return (
       <div 
@@ -97,7 +100,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             type="button"
             aria-haspopup="menu"
             aria-expanded={activeDropdown === item.name}
-            className={`group relative text-xs md:text-sm lg:text-[0.8rem] xl:text-sm font-semibold transition-all duration-300 px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+            className={`group relative text-xs md:text-sm lg:text-[0.8rem] xl:text-sm font-semibold transition-all duration-300 px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 ${
+              hasAccent
+                ? "after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-turquoise"
+                : "hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150"
+            } ${
               (item as any).highlighted 
                 ? "text-brand-pink bg-transparent"
                 : "text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5"
