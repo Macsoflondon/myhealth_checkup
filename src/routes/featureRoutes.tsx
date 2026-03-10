@@ -20,6 +20,7 @@ import RandoxTestsCatalogPage from "@/pages/RandoxTestsCatalogPage";
 import LolaHealthTestsCatalogPage from "@/pages/LolaHealthTestsCatalogPage";
 import LondonMedicalLabTestsCatalogPage from "@/pages/LondonMedicalLabTestsCatalogPage";
 import BloodTestAnalysisPage from "@/pages/BloodTestAnalysisPage";
+import GoodbodyClinicPage from "@/pages/GoodbodyClinicPage";
 
 export const featureRoutes = (
   <>
