@@ -35,6 +35,11 @@ const PartnerShowcaseGrid = () => {
           </p>
         </div>
 
+        {/* Provider Filmstrip Gallery */}
+        <div className="mb-12 sm:mb-16">
+          <ProviderFilmstrip images={providerFilmstripImages} />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
           {/* Row 1: GoodBody — Text left, Video right */}
           <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-28 items-stretch mb-14">
