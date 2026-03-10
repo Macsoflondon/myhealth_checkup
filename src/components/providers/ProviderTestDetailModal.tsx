@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, Clock, TestTube2, ExternalLink } from "lucide-react";
