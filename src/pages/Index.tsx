@@ -7,6 +7,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 // Sections
 import Hero from "@/components/sections/Hero";
 import BrandTicker from "@/components/sections/BrandTicker";
+import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import MissionSection from "@/components/sections/MissionSection";
 
 
