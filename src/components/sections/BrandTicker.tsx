@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 
 const promos = [
-  { provider: "GoodBody", text: "March into Wellness – exclusive 5% off on everything" },
-  { provider: "Medichecks", text: "20% off selected women's tests with code SHH20" },
-  { provider: "Lola Health", text: "£20 off with code Mar20" },
+  { provider: "GoodBody", text: "March into Wellness – exclusive 5% off on everything", color: "#0bb77e" },
+  { provider: "Medichecks", text: "20% off selected women's tests with code SHH20", color: "#e70d68" },
+  { provider: "Lola Health", text: "£20 off with code Mar20", color: "#fa757e" },
 ];
 
 const BrandTicker = () => {
@@ -46,7 +46,7 @@ const BrandTicker = () => {
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((promo, i) => (
               <span key={i} className="flex items-center shrink-0">
-                <span className="text-brand-turquoise font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
+                <span className="font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5" style={{ color: promo.color }}>
                   {promo.provider}:
                 </span>
                 <span className="text-white font-body text-xs sm:text-sm md:text-base px-1">
