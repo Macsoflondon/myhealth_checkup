@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2 } from "lucide-react";
+import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2, Droplet, Clock } from "lucide-react";
 import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 
 const TABS = ["General Health", "Hormone & Fertility", "Cancer Screening"] as const;
