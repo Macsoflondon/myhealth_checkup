@@ -46,7 +46,7 @@ const BrandTicker = () => {
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((promo, i) => (
               <span key={i} className="flex items-center shrink-0">
-                <span className="text-brand-turquoise font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
+                <span className="font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5" style={{ color: promo.color }}>
                   {promo.provider}:
                 </span>
                 <span className="text-white font-body text-xs sm:text-sm md:text-base px-1">
