@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2 } from "lucide-react";
+import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 
 const TABS = ["General Health", "Hormone & Fertility", "Cancer Screening"] as const;
 type Tab = typeof TABS[number];
 
-const GENERAL_HEALTH_TESTS = [
+type GalleryImage = { src: string; alt: string; code: string; objectFit?: string };
+
+const GENERAL_HEALTH_TESTS: GalleryImage[] = [
   { src: "/images/tests/advanced-well-man.png", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
   { src: "/images/tests/general-health-blood-test.png", alt: "General Health Blood Test", code: "General Health", objectFit: "contain" },
   { src: "/images/tests/premium-complete-blood-test.png", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain" },
@@ -28,7 +41,7 @@ const GENERAL_HEALTH_TESTS = [
   { src: "/images/tests/blood-group-blood-test.png", alt: "Blood Group Blood Test", code: "Blood Group", objectFit: "contain" },
 ];
 
-const HORMONE_FERTILITY_TESTS = [
+const HORMONE_FERTILITY_TESTS: GalleryImage[] = [
   { src: "/images/tests/female-hormone-fertility.png", alt: "Female Hormone & Fertility Test", code: "Female Hormone & Fertility", objectFit: "contain" },
   { src: "/images/tests/testosterone-blood-test.png", alt: "Testosterone Blood Test", code: "Testosterone", objectFit: "contain" },
   { src: "/images/tests/thyroid-function-blood-test.png", alt: "Thyroid Function Blood Test", code: "Thyroid Function", objectFit: "contain" },
@@ -43,7 +56,7 @@ const HORMONE_FERTILITY_TESTS = [
   { src: "/images/tests/prenatalsafe-complete-plus-nipt.png", alt: "PrenatalSAFE Complete Plus NIPT Blood Test", code: "PrenatalSAFE Complete Plus", objectFit: "contain" },
 ];
 
-const CANCER_SCREENING_TESTS = [
+const CANCER_SCREENING_TESTS: GalleryImage[] = [
   { src: "/images/tests/early-cancer-screening.png", alt: "Early Cancer Screening Test", code: "TruCheck™ Early Cancer Screening", objectFit: "contain" },
   { src: "/images/tests/episwitch-pse.png", alt: "EpiSwitch PSE Prostate Test", code: "EpiSwitch® PSE Prostate", objectFit: "contain" },
   { src: "/images/tests/guardant-reveal.png", alt: "Guardant Reveal MRD & Therapy Response Monitoring", code: "Guardant Reveal™", objectFit: "contain" },
@@ -54,8 +67,16 @@ const CANCER_SCREENING_TESTS = [
   { src: "/images/tests/bowel-cancer-stool-test.png", alt: "Bowel Cancer Stool Test", code: "Bowel Cancer Stool Test", objectFit: "contain" },
 ];
 
+const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-new-v4.png";
+
 const GoodbodyTestGallery = () => {
   const [activeTab, setActiveTab] = useState<Tab>("General Health");
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [testDetailOpen, setTestDetailOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [testData, setTestData] = useState<TestData | null>(null);
+  const [testLoading, setTestLoading] = useState(false);
 
   const getTestsForTab = () => {
     switch (activeTab) {
@@ -64,6 +85,22 @@ const GoodbodyTestGallery = () => {
       case "Cancer Screening": return CANCER_SCREENING_TESTS;
       default: return [];
     }
+  };
+
+  const handleInlineImageClick = (image: GalleryImage) => {
+    setSelectedImage(image);
+    setGalleryOpen(true);
+  };
+
+  const handleGalleryTestClick = async (image: GalleryImage) => {
+    setSelectedImage(image);
+    setTestLoading(true);
+    setTestDetailOpen(true);
+
+    const slug = generateTestSlug(image.code);
+    const data = await findTestByIdOrSlug('goodbody-clinic', slug);
+    setTestData(data);
+    setTestLoading(false);
   };
 
   return (
@@ -84,12 +121,207 @@ const GoodbodyTestGallery = () => {
             {tab}
           </button>
         ))}
+        <button
+          onClick={() => setAboutOpen(true)}
+          className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white/50 hover:text-white/80 flex items-center gap-1"
+        >
+          <Info className="h-3.5 w-3.5" />
+          About
+        </button>
       </nav>
 
-      {/* Gallery */}
+      {/* Inline Gallery */}
       <div className="flex items-start justify-center pt-1">
-        <HoverExpand_001 images={getTestsForTab()} />
+        <HoverExpand_001 images={getTestsForTab()} onTestClick={handleInlineImageClick} />
       </div>
+
+      {/* ===== Enlarged Gallery Modal ===== */}
+      <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
+        <DialogContent className="max-w-[95vw] w-full bg-brand-navy/95 backdrop-blur-md border-white/10 p-4 sm:p-8">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Goodbody Clinic Tests — {activeTab}</DialogTitle>
+            <DialogDescription>Browse tests in the {activeTab} category</DialogDescription>
+          </DialogHeader>
+          <div className="w-full" style={{ height: "min(84vh, 50rem)" }}>
+            <HoverExpand_001
+              images={getTestsForTab()}
+              onTestClick={handleGalleryTestClick}
+              className="h-full"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ===== Test Detail Modal ===== */}
+      <Dialog open={testDetailOpen} onOpenChange={setTestDetailOpen}>
+        <DialogContent className="max-w-lg bg-background border border-border">
+          {testLoading ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
+              <Loader2 className="h-8 w-8 animate-spin text-brand-turquoise" />
+              <p className="text-sm text-muted-foreground">Loading test details…</p>
+            </div>
+          ) : testData ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl font-heading text-foreground">
+                  {testData.test_name}
+                </DialogTitle>
+                <DialogDescription className="text-muted-foreground">
+                  Goodbody Clinic
+                </DialogDescription>
+              </DialogHeader>
+
+              {selectedImage && (
+                <div className="w-full bg-white rounded-lg p-4 flex items-center justify-center" style={{ maxHeight: "200px" }}>
+                  <img
+                    src={selectedImage.src}
+                    alt={testData.test_name}
+                    className="max-h-[180px] object-contain"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-4">
+                {/* Price */}
+                <div className="flex items-center gap-3">
+                  {testData.price != null && (
+                    <span className="text-2xl font-bold text-foreground">
+                      £{testData.price.toFixed(2)}
+                    </span>
+                  )}
+                  {testData.original_price != null && testData.original_price > (testData.price || 0) && (
+                    <span className="text-sm line-through text-muted-foreground">
+                      £{testData.original_price.toFixed(2)}
+                    </span>
+                  )}
+                  {testData.discount_percentage != null && testData.discount_percentage > 0 && (
+                    <Badge variant="secondary" className="text-xs">
+                      {testData.discount_percentage}% off
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Description */}
+                {testData.description && (
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {testData.description}
+                  </p>
+                )}
+
+                {/* Biomarker count */}
+                {testData.biomarker_count != null && testData.biomarker_count > 0 && (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <FlaskConical className="h-4 w-4 text-brand-turquoise" />
+                    <span>{testData.biomarker_count} biomarkers tested</span>
+                  </div>
+                )}
+
+                {/* Biomarker pills */}
+                {testData.biomarkers_list && testData.biomarkers_list.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {testData.biomarkers_list.slice(0, 12).map((b) => (
+                      <Badge key={b} variant="outline" className="text-xs font-normal">
+                        {b}
+                      </Badge>
+                    ))}
+                    {testData.biomarkers_list.length > 12 && (
+                      <Badge variant="outline" className="text-xs font-normal">
+                        +{testData.biomarkers_list.length - 12} more
+                      </Badge>
+                    )}
+                  </div>
+                )}
+
+                {/* Book Now */}
+                {testData.url && (
+                  <Button asChild className="w-full bg-brand-turquoise hover:bg-brand-turquoise/90 text-white">
+                    <a href={testData.url} target="_blank" rel="noopener noreferrer">
+                      Book This Test
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="py-12 text-center">
+              <DialogHeader>
+                <DialogTitle className="text-lg font-heading text-foreground">
+                  {selectedImage?.code || "Test"}
+                </DialogTitle>
+                <DialogDescription className="text-muted-foreground">
+                  Goodbody Clinic
+                </DialogDescription>
+              </DialogHeader>
+              {selectedImage && (
+                <div className="w-full bg-white rounded-lg p-4 flex items-center justify-center my-4" style={{ maxHeight: "200px" }}>
+                  <img src={selectedImage.src} alt={selectedImage.alt} className="max-h-[180px] object-contain" />
+                </div>
+              )}
+              <p className="text-sm text-muted-foreground">
+                Details not available. Please visit Goodbody Clinic's website for more information.
+              </p>
+              <Button asChild className="mt-4 bg-brand-turquoise hover:bg-brand-turquoise/90 text-white">
+                <a href="https://www.goodbodyclinic.com" target="_blank" rel="noopener noreferrer">
+                  Visit Goodbody Clinic
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* ===== About Modal ===== */}
+      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
+        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-[#f8f6f3] border-border">
+          <DialogHeader>
+            <div className="flex items-center gap-4 mb-2">
+              <img src={GOODBODY_LOGO} alt="Goodbody Clinic" className="h-12 w-auto object-contain" />
+              <div>
+                <DialogTitle className="text-2xl font-heading text-[#3d3529]">
+                  Goodbody Clinic
+                </DialogTitle>
+                <DialogDescription className="text-[#6b6459]">
+                  Private Blood Tests &amp; Cancer Screening UK
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="space-y-8 text-[#4a443b] font-sans leading-relaxed">
+            <section>
+              <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Our Mission</h3>
+              <p>You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.</p>
+            </section>
+
+            <section>
+              <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Who We Are</h3>
+              <p>Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,400 reviews.</p>
+            </section>
+
+            <section>
+              <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Our Services</h3>
+              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
+            </section>
+
+            <section>
+              <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Get in Touch</h3>
+              <div className="space-y-2">
+                <a href="mailto:clinic@goodbodywellness.co.uk" className="flex items-center gap-2 text-[#4a443b] hover:text-[#3d3529] transition-colors">
+                  <Mail className="h-4 w-4 text-[#9b958a]" />
+                  clinic@goodbodywellness.co.uk
+                </a>
+                <a href="tel:01225444144" className="flex items-center gap-2 text-[#4a443b] hover:text-[#3d3529] transition-colors">
+                  <Phone className="h-4 w-4 text-[#9b958a]" />
+                  01225 444 144
+                </a>
+              </div>
+              <p className="mt-3 text-sm text-[#6b6459]">Test at home, at one of 200+ nationwide clinics, or with a nurse visit. No GP referral needed for most tests.</p>
+            </section>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
