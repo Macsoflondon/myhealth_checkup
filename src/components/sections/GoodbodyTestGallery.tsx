@@ -134,7 +134,7 @@ const GoodbodyTestGallery = () => {
         <nav className="flex items-center gap-3 sm:gap-5 md:gap-7 flex-wrap" aria-label="Goodbody test categories">
           <button
             onClick={() => setAboutOpen(true)}
-            className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
+            className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-brand-navy font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
           >
             <Info className="h-3.5 w-3.5" />
             About
