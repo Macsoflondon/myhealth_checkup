@@ -136,8 +136,13 @@ const Index = () => {
         {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
         
+        {/* 15. Test Product Filmstrip */}
+        <TestProductFilmstrip />
         
-        {/* 16. Here to Help */}
+        {/* 16. Call to Action */}
+        <CallToAction />
+        
+        {/* 17. Here to Help */}
         <HereToHelp />
         
         
