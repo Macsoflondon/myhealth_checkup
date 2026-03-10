@@ -106,46 +106,49 @@ const GoodbodyTestGallery = () => {
 
   return (
     <div className="md:col-span-2 mt-6 mb-4">
-      {/* Banner: Logo + Slogan aligned with tabs */}
-      <div className="flex items-center justify-center gap-6 sm:gap-10 mb-4">
-        <div className="bg-white rounded-lg p-3 sm:p-4 flex items-center justify-center" style={{ maxHeight: "120px" }}>
-          <img
-            src="/lovable-uploads/provider-goodbody-new-v3.png"
-            alt="Goodbody Clinic"
-            className="h-16 sm:h-20 md:h-24 w-auto object-contain"
-          />
+      {/* Banner + Tab Navigation — logo/slogan left, tabs inline */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 mb-4">
+        {/* Logo + Slogan */}
+        <div className="flex items-center gap-4 sm:gap-6 shrink-0">
+          <div className="bg-white rounded-lg p-2.5 sm:p-3 flex items-center justify-center" style={{ maxHeight: "80px" }}>
+            <img
+              src="/lovable-uploads/provider-goodbody-new-v3.png"
+              alt="Goodbody Clinic"
+              className="h-10 sm:h-12 md:h-14 w-auto object-contain"
+            />
+          </div>
+          <h2 className="font-heading text-base sm:text-lg md:text-xl font-bold text-white leading-tight">
+            Know more.
+            <br />
+            Live Better.
+          </h2>
         </div>
-        <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight">
-          Know more.
-          <br />
-          Live Better.
-        </h2>
-      </div>
 
-      {/* Tab Navigation */}
-      <nav className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 mb-2" aria-label="Goodbody test categories">
-        {TABS.map((tab) => (
+        {/* Tab Navigation — About first, then category tabs */}
+        <nav className="flex items-center gap-3 sm:gap-5 md:gap-7 flex-wrap" aria-label="Goodbody test categories">
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={cn(
-              "text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1",
-              activeTab === tab
-                ? "text-white font-bold border-b-2 border-brand-turquoise"
-                : "text-white/50 hover:text-white/80"
-            )}
+            onClick={() => setAboutOpen(true)}
+            className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
           >
-            {tab}
+            <Info className="h-3.5 w-3.5" />
+            About
           </button>
-        ))}
-        <button
-          onClick={() => setAboutOpen(true)}
-          className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
-        >
-          <Info className="h-3.5 w-3.5" />
-          About
-        </button>
-      </nav>
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={cn(
+                "text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1",
+                activeTab === tab
+                  ? "text-white font-bold border-b-2 border-brand-turquoise"
+                  : "text-white/50 hover:text-white/80"
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
+      </div>
 
       {/* Inline Gallery */}
       <div className="flex items-start justify-center pt-1">
