@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { cn } from "@/lib/utils";
 import {
