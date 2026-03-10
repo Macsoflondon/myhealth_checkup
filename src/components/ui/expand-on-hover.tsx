@@ -103,7 +103,7 @@ const HoverExpand_001 = ({
       numVisible: images.length,
       expandedWidth: "27rem",
       collapsedWidth: "4.2rem",
-      height: "min(55rem, 85vh)",
+      height: "min(42rem, 65vh)",
       gap: "gap-1",
       padding: "px-0",
       maxWidth: "max-w-[1800px]",
