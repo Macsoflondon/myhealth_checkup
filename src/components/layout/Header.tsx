@@ -12,6 +12,7 @@ import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
+import BrandTicker from "../sections/BrandTicker";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
