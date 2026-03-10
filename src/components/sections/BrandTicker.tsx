@@ -31,7 +31,7 @@ const BrandTicker = () => {
     return () => cancelAnimationFrame(animationId);
   }, []);
 
-  const items = [...keywords, ...keywords, ...keywords, ...keywords];
+  const items = [...promos, ...promos, ...promos, ...promos, ...promos, ...promos];
 
   return (
     <section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
@@ -45,12 +45,15 @@ const BrandTicker = () => {
           }}
         >
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
-            {items.map((word, i) => (
+            {items.map((promo, i) => (
               <span key={i} className="flex items-center shrink-0">
-                <span className="text-white font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
-                  {word}
+                <span className="text-brand-turquoise font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5">
+                  {promo.provider}:
                 </span>
-                <span className="text-brand-turquoise text-lg">•</span>
+                <span className="text-white font-body text-xs sm:text-sm md:text-base px-1">
+                  {promo.text}
+                </span>
+                <span className="text-brand-pink text-lg px-3 sm:px-5">•</span>
               </span>
             ))}
           </div>
