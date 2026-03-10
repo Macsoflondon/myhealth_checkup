@@ -1,20 +1,35 @@
 
 
-## Remove WhyChooseUs and TopConcernsSection from Homepage
+## Mission Banner Text Update
 
-Three files to change:
+**What to change:**
+- Update `src/components/sections/MissionSection.tsx`
+- Change the mission banner text from multi-colored to uniform navy #081129
+- Apply semi-bold (font-semibold) weight
+- Change banner background from navy to white to ensure text visibility
 
-### 1. `src/pages/Index.tsx`
-- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
-- Remove the TopConcernsSection JSX block (lines 134-135)
-- Remove the WhyChooseUs JSX block (lines 144-145)
+**Current code:**
+```tsx
+<div className="bg-brand-navy py-6 sm:py-8 md:py-10 lg:py-12">
+  <h2 className="text-center text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-heading font-bold whitespace-nowrap">
+    <span className="text-white">Your </span>
+    <span className="text-brand-turquoise">health</span>
+    <span className="text-white"> is your greatest </span>
+    <span className="text-brand-pink">asset</span>
+    <span className="text-white">!</span>
+  </h2>
+</div>
+```
 
-### 2. `src/components/sections/WhyChooseUs.tsx`
-- Delete this file entirely
+**New styling:**
+- Background: Change `bg-brand-navy` to `bg-white`
+- Text: All spans use `text-[#081129]`
+- Weight: Change `font-bold` to `font-semibold`
+- Keep gradient dividers above and below for visual consistency
 
-### 3. `src/components/sections/index.ts`
-- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
-- Keep TopConcernsSection export so it remains available for future use
-
-TopConcernsSection component file stays in the codebase untouched — available for reuse later.
+**Technical notes:**
+- Uses existing brand color #081129 from the defined palette
+- Maintains responsive font sizing
+- Preserves the gradient dividers as visual separators
+- Single line layout maintained with `whitespace-nowrap`
 
