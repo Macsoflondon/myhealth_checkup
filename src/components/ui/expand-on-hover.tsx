@@ -261,7 +261,7 @@ const HoverExpand_001 = ({
   // Desktop/tablet: 4x ratio hover-expand
   const n = Math.min(images.length, config.numVisible);
   const collapsedPercent = 100 / (n + 3);
-  const expandedPercent = 4 * collapsedPercent;
+  const expandedPercent = 5 * collapsedPercent;
 
   return (
     <motion.div
