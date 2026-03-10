@@ -30,7 +30,7 @@ export const MainLayout = ({
   mainClassName = "flex-1"
 }: MainLayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[hsl(224,67%,10%)]">
       <BrandTicker />
       {!hideUKASBanner && <UKASBanner />}
       {!hideHeader && <Header />}
