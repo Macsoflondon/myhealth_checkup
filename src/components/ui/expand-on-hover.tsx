@@ -136,11 +136,11 @@ const HoverExpand_001 = ({
                 initial={{ opacity: 0, translateY: 10 }}
                 animate={{ opacity: 1, translateY: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="relative w-full overflow-hidden rounded-2xl"
-                style={{ height: config.height }}
+                className="relative w-full overflow-hidden rounded-2xl bg-white"
+                style={{ aspectRatio: "3 / 4" }}
                 onClick={() => setActiveImage(index)}
               >
-                <img src={image.src} className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`} alt={image.alt} />
+                <img src={image.src} className="w-full h-full object-contain p-2" alt={image.alt} />
                 <div className="absolute bottom-4 left-4 right-4">
                   <p className="text-sm font-bold text-brand-navy">{image.code}</p>
                 </div>
