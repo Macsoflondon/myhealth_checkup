@@ -120,10 +120,10 @@ export default function ProviderTestDetailModal({
           </button>
 
           <p className="text-sm text-white/80 mb-1">
-            {providerName} · {test.category || "General Health"}
+            {providerName} · {goodbodyStatic?.category || test.category || "General Health"}
           </p>
           <DialogTitle className="text-2xl font-bold text-white mb-3">
-            {test.test_name}
+            {goodbodyStatic?.name || test.test_name}
           </DialogTitle>
 
           <div className="flex flex-wrap gap-2">
