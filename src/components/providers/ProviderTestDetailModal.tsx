@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, Clock, TestTube2, ExternalLink } from "lucide-react";
@@ -241,6 +242,15 @@ export default function ProviderTestDetailModal({
                 Book with {providerName} →
               </Button>
             )}
+            <Button
+              variant="outline"
+              className="h-12 text-base font-semibold border-gray-200 hover:bg-gray-50"
+              asChild
+            >
+              <Link to={`/compare?test=${encodeURIComponent(test.test_name)}`}>
+                + Compare
+              </Link>
+            </Button>
           </div>
 
           {test.url && (
