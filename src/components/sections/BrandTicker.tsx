@@ -34,7 +34,7 @@ const BrandTicker = () => {
   const items = [...promos, ...promos, ...promos, ...promos, ...promos, ...promos];
 
   return (
-    <section className="bg-[hsl(224,67%,10%)] overflow-hidden select-none">
+    <section className="bg-brand-navy overflow-hidden select-none sticky top-0 z-50">
       <div className="pt-0 pb-1.5 sm:pb-2">
         <div
           className="relative overflow-hidden"
