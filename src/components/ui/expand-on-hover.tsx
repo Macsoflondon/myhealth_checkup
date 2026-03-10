@@ -140,7 +140,10 @@ const HoverExpand_001 = ({
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 className="relative w-full overflow-hidden rounded-2xl bg-white"
                 style={{ aspectRatio: "3 / 4" }}
-                onClick={() => setActiveImage(index)}
+                onClick={() => {
+                  if (onTestClick) onTestClick(image);
+                  else setActiveImage(index);
+                }}
               >
                 <img src={image.src} className="w-full h-full object-contain p-2" alt={image.alt} />
                 <div className="absolute bottom-4 left-4 right-4">
