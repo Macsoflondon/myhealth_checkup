@@ -73,7 +73,6 @@ const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-new-v4.png";
 
 const GoodbodyTestGallery = () => {
   const [activeTab, setActiveTab] = useState<Tab>("General Health");
-  const [galleryOpen, setGalleryOpen] = useState(false);
   const [testDetailOpen, setTestDetailOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
@@ -89,14 +88,8 @@ const GoodbodyTestGallery = () => {
     }
   };
 
-  const handleInlineImageClick = (image: GalleryImage) => {
+  const handleTestClick = async (image: GalleryImage) => {
     setSelectedImage(image);
-    setGalleryOpen(true);
-  };
-
-  const handleGalleryTestClick = async (image: GalleryImage) => {
-    setSelectedImage(image);
-    setGalleryOpen(false);
     setTestLoading(true);
     setTestDetailOpen(true);
 
@@ -104,6 +97,17 @@ const GoodbodyTestGallery = () => {
     const data = await findTestByIdOrSlug('goodbody-clinic', slug);
     setTestData(data);
     setTestLoading(false);
+  };
+
+  // Build overlay data for the gallery
+  const getOverlayData = (image: GalleryImage) => {
+    const slug = testNameToSlug(image.code);
+    const staticData = getGoodbodyTestBySlug(slug);
+    return {
+      price: staticData?.price ?? null,
+      biomarkerCount: staticData?.biomarkers?.length ?? null,
+      turnaround: staticData?.turnaround ?? null,
+    };
   };
 
   return (
@@ -152,9 +156,13 @@ const GoodbodyTestGallery = () => {
         </nav>
       </div>
 
-      {/* Inline Gallery */}
+      {/* Inline Gallery — click directly opens detail modal */}
       <div className="flex items-start justify-center pt-1">
-        <HoverExpand_001 images={getTestsForTab()} onTestClick={handleInlineImageClick} />
+        <HoverExpand_001
+          images={getTestsForTab()}
+          onTestClick={handleTestClick}
+          getOverlayData={getOverlayData}
+        />
       </div>
 
       {/* View Profile Button */}
@@ -166,23 +174,6 @@ const GoodbodyTestGallery = () => {
           View Goodbody Profile
         </Link>
       </div>
-
-      {/* ===== Enlarged Gallery Modal ===== */}
-      <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
-        <DialogContent className="max-w-[95vw] w-full bg-brand-navy/95 backdrop-blur-md border-white/10 p-4 sm:p-8">
-          <DialogHeader className="sr-only">
-            <DialogTitle>Goodbody Clinic Tests — {activeTab}</DialogTitle>
-            <DialogDescription>Browse tests in the {activeTab} category</DialogDescription>
-          </DialogHeader>
-          <div className="w-full" style={{ height: "min(84vh, 50rem)" }}>
-            <HoverExpand_001
-              images={getTestsForTab()}
-              onTestClick={handleGalleryTestClick}
-              className="h-full"
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* ===== Test Detail Modal (Reference card style) ===== */}
       <Dialog open={testDetailOpen} onOpenChange={setTestDetailOpen}>
