@@ -28,9 +28,11 @@ const TestProductFilmstrip = ({ className }: TestProductFilmstripProps) => {
         <SectionHeading
           title="Explore Our"
           gradientText="Test Range"
-          description="Browse health tests from trusted, accredited providers — compare and find the right one for you."
-          className="mb-10"
+          className="mb-4"
         />
+        <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+          Browse health tests from trusted, accredited providers — compare and find the right one for you.
+        </p>
         <HoverExpand_001 images={TEST_PRODUCTS} />
       </div>
     </section>
