@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 
 const PartnerShowcaseGrid = () => {
   return (
@@ -78,6 +79,9 @@ const PartnerShowcaseGrid = () => {
               />
             </div>
           </div>
+
+          {/* GoodBody Test Gallery */}
+          <GoodbodyTestGallery />
 
           {/* Divider */}
           <div className="md:col-span-2 flex justify-center">
