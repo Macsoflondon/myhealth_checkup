@@ -40,6 +40,7 @@ export const featureRoutes = (
     <Route path="/providers" element={<Navigate to="/trusted-providers" replace />} />
     <Route path="/providers/compare" element={<ProviderComparisonPage />} />
     <Route path="/providers/goodbody-clinic" element={<GoodbodyTestsCatalogPage />} />
+    <Route path="/goodbody-clinic" element={<GoodbodyClinicPage />} />
     <Route path="/providers/medichecks" element={<MedichecksTestsCatalogPage />} />
     <Route path="/medichecks/mens-health" element={<MedichecksMensHealthPage />} />
     <Route path="/providers/thriva" element={<ThrivaTestsCatalogPage />} />
