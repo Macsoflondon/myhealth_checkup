@@ -33,7 +33,7 @@ const useBreakpoint = () => {
   return breakpoint;
 };
 
-const MOBILE_PAGE_SIZE = 10;
+const MOBILE_PAGE_SIZE = 5;
 
 const HoverExpand_001 = ({
   images,
