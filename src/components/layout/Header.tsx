@@ -45,36 +45,38 @@ const Header = ({ className }: HeaderProps) => {
   if (isMobile) {
     return (
       <ErrorBoundary>
-        <BrandTicker />
-        <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
-          {/* Top gradient divider */}
-          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-          <div className="container mx-auto px-3 sm:px-4">
-            {/* Single row: Logo left, Nav controls right */}
-            <div className="py-0.5 flex items-center justify-between gap-1.5">
-              {/* Left: Combined logo with tagline */}
-              <Link to="/" className="flex items-center flex-shrink min-w-0">
-                <img
-                  src={logoWithTagline}
-                  alt="myhealth checkup - Your health! Your choice! One trusted platform!"
-                  className="h-[130px] xs:h-[140px] sm:h-[150px] w-auto object-contain"
-                />
-              </Link>
+        <div className={cn("sticky top-0 z-50", className)}>
+          <BrandTicker />
+          <header className="bg-[#081129] shadow-md">
+            {/* Top gradient divider */}
+            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+            <div className="container mx-auto px-3 sm:px-4">
+              {/* Single row: Logo left, Nav controls right */}
+              <div className="py-0.5 flex items-center justify-between gap-1.5">
+                {/* Left: Combined logo with tagline */}
+                <Link to="/" className="flex items-center flex-shrink min-w-0">
+                  <img
+                    src={logoWithTagline}
+                    alt="myhealth checkup - Your health! Your choice! One trusted platform!"
+                    className="h-[130px] xs:h-[140px] sm:h-[150px] w-auto object-contain"
+                  />
+                </Link>
 
-              {/* Right: Navigation controls */}
-              <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
-                <LanguageSwitcher />
-                <UserMenu isMobile />
-                <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-              </nav>
+                {/* Right: Navigation controls */}
+                <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
+                  <LanguageSwitcher />
+                  <UserMenu isMobile />
+                  <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+                </nav>
+              </div>
             </div>
-          </div>
-          {/* Bottom gradient divider */}
-          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+            {/* Bottom gradient divider */}
+            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-          {/* Mobile Navigation Drawer */}
-          <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-        </header>
+            {/* Mobile Navigation Drawer */}
+            <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+          </header>
+        </div>
       </ErrorBoundary>
     );
   }
