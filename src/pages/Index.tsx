@@ -126,8 +126,6 @@ const Index = () => {
         {/* 9. Partner Showcase Grid */}
         <PartnerShowcaseGrid />
         
-        {/* 10. Featured Publications */}
-        <FeaturedPublications />
         
         {/* 11. Expert Quotes */}
         <ExpertQuotes />
