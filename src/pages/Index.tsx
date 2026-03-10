@@ -17,7 +17,7 @@ import JourneySimplified from "@/components/sections/JourneySimplified";
 
 
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
-import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
+
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import TestProductFilmstrip from "@/components/sections/TestProductFilmstrip";
 import CallToAction from "@/components/sections/CallToAction";
