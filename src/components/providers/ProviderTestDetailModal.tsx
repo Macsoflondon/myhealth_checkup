@@ -127,15 +127,15 @@ export default function ProviderTestDetailModal({
           </DialogTitle>
 
           <div className="flex flex-wrap gap-2">
-            {test.price && (
+            {(goodbodyStatic?.price ?? test.price) != null && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
-                £{test.price.toFixed(0)}
+                £{(goodbodyStatic?.price ?? test.price!).toFixed(0)}
               </span>
             )}
-            {test.biomarker_count && test.biomarker_count > 0 && (
+            {(biomarkers.length > 0 || (test.biomarker_count && test.biomarker_count > 0)) && (
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
                 <TestTube2 className="w-3.5 h-3.5" />
-                {test.biomarker_count} biomarkers
+                {biomarkers.length || test.biomarker_count} biomarkers
               </span>
             )}
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
@@ -148,8 +148,8 @@ export default function ProviderTestDetailModal({
         {/* Body */}
         <div className="p-6 space-y-6">
           {/* Description */}
-          {test.description && (
-            <p className="text-base text-gray-700 leading-relaxed">{test.description}</p>
+          {(goodbodyStatic?.description || test.description) && (
+            <p className="text-base text-gray-700 leading-relaxed">{goodbodyStatic?.description || test.description}</p>
           )}
 
           {/* Collection method */}
