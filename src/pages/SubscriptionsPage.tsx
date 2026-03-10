@@ -25,7 +25,7 @@ const SubscriptionsPage = () => {
         <meta name="description" content="Choose from our flexible health subscription plans. Regular testing and monitoring for ongoing health insights with significant savings." />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow">
         <HeroSection

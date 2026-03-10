@@ -207,7 +207,7 @@ const CancerBiomarkersReferencePage = () => {
         <link rel="canonical" href="https://myhealthcheckup.co.uk/cancer-biomarkers-reference" />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       
       <main className="min-h-screen bg-background">

@@ -63,7 +63,7 @@ const WellnessPage = () => {
         <meta name="twitter:description" content="Comprehensive wellness blood tests for optimal health monitoring" />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       
       <main className="min-h-screen bg-background">

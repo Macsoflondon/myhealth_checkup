@@ -163,8 +163,7 @@ const CompareTests = () => {
           <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
         </Helmet>
 
-        <UKASBanner />
-        <MainLayout hideUKASBanner hideHeader hideFooter>
+        <MainLayout hideHeader hideFooter>
           <HeroSection
             title={effectiveCategory && effectiveCategory !== "all" 
               ? `Compare ${getCategoryDisplayName(effectiveCategory)}`

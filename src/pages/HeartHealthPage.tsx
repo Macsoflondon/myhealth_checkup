@@ -129,7 +129,7 @@ const HeartHealthPage = () => {
         <meta name="twitter:description" content="Professional heart health testing with fast results" />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow bg-background">
         <div className="container mx-auto px-4 pt-4">

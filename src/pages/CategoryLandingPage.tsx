@@ -139,8 +139,7 @@ const CategoryLandingPage: React.FC = () => {
           </script>
         </Helmet>
 
-        <UKASBanner />
-        <MainLayout hideUKASBanner hideHeader hideFooter>
+        <MainLayout hideHeader hideFooter>
           {/* Hero Section */}
           <HeroSection
             title={content.heroTitle}

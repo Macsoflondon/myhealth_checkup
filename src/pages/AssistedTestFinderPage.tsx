@@ -25,7 +25,7 @@ const AssistedTestFinderPage = () => {
       </Helmet>
       
       <div className="min-h-screen bg-gray-50">
-        <UKASBanner />
+        
         <Header />
         <main className="flex-1">
           <AssistedTestFinder />

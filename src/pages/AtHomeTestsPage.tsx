@@ -54,7 +54,7 @@ const AtHomeTestsPage = () => {
       </Helmet>
       
       <div className="min-h-screen flex flex-col">
-        <UKASBanner />
+        
         <Header />
         
         <main className="flex-1 bg-background">

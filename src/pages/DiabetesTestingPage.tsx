@@ -47,7 +47,7 @@ const DiabetesTestingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow">
         <div className="container mx-auto px-4 pt-4">

@@ -68,7 +68,7 @@ const PartnersPage = () => {
     icon: Award
   }];
   return <div className="min-h-screen flex flex-col">
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow">
         <HeroSection

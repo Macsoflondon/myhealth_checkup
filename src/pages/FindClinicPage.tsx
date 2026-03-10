@@ -73,7 +73,7 @@ const FindClinicPage = () => {
         </script>
       </Helmet>
 
-      <UKASBanner />
+      
       <Header />
 
       <main className="min-h-screen bg-background">

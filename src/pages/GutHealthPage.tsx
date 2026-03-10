@@ -41,7 +41,7 @@ const GutHealthPage = () => {
         <title>Gut Health & Microbiome Testing | Compare UK Providers | myhealth checkup</title>
         <meta name="description" content="Compare gut health tests from top UK providers. Microbiome analysis, food intolerance testing, and digestive health screening from £89." />
       </Helmet>
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow">
         <PageBreadcrumb 

@@ -118,7 +118,7 @@ export default function CancerComparisonPage() {
         />
       </Helmet>
 
-      <UKASBanner />
+      
       <Header />
 
       {/* Disclaimer Banner */}

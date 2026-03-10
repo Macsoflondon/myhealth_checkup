@@ -341,7 +341,7 @@ const FAQsPage = () => {
         </script>
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       
       <main className="flex-grow bg-background">

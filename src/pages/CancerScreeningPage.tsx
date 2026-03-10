@@ -132,7 +132,7 @@ const CancerScreeningPage = () => {
         <meta name="twitter:description" content="Professional cancer screening with fast results" />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       
       <main className="min-h-screen bg-background">

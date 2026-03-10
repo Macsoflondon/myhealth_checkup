@@ -101,7 +101,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow bg-muted/30">
         <PageBreadcrumb 

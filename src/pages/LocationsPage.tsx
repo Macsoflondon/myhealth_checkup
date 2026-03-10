@@ -207,7 +207,7 @@ const LocationsPage = () => {
         />
       </Helmet>
 
-      <UKASBanner />
+      
       <Header />
 
       <main className="min-h-screen bg-background">

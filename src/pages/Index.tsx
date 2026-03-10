@@ -64,7 +64,7 @@ const Index = () => {
 
   return (
     <ErrorBoundary>
-      <MainLayout hideUKASBanner>
+      <MainLayout>
         <Helmet>
           <title>myhealth checkup - Compare Trusted Private Health Tests Across the UK</title>
           <meta name="description" content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use." />

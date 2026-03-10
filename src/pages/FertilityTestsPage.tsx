@@ -165,7 +165,7 @@ const FertilityTestsPage = () => {
       </Helmet>
       
       <div className="min-h-screen bg-[#081129]">
-        <UKASBanner />
+        
         <div className="min-h-screen bg-white">
           <Header />
           

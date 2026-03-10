@@ -135,7 +135,7 @@ const SportsPerformancePage = () => {
         <meta name="twitter:description" content="Optimise fitness and athletic performance with comprehensive blood tests from trusted UK providers." />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       
       <main className="min-h-screen bg-background">

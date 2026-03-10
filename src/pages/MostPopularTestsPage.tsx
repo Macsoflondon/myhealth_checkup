@@ -25,7 +25,7 @@ const MostPopularTestsPage = () => {
         <meta name="twitter:description" content="Discover our most popular health tests, trusted by thousands of customers." />
       </Helmet>
       <div className="min-h-screen flex flex-col">
-        <UKASBanner />
+        
         <Header />
         <main className="flex-1 bg-[#081129]">
           <PageBreadcrumb 

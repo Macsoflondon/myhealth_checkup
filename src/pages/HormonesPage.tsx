@@ -187,7 +187,7 @@ const HormonesPage = () => {
         <meta name="twitter:description" content="Professional hormone testing with fast results" />
       </Helmet>
       
-      <UKASBanner />
+      
       <Header />
       <main className="flex-grow bg-background">
         <PageBreadcrumb 
