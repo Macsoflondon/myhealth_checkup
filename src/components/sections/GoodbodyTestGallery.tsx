@@ -144,10 +144,10 @@ const GoodbodyTestGallery = () => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1",
+                "text-xs sm:text-sm md:text-base font-sans font-bold text-white transition-all duration-200 pb-1 border-b-2",
                 activeTab === tab
-                  ? "text-white font-bold border-b-2 border-brand-turquoise"
-                  : "text-white/50 hover:text-white/80"
+                  ? "border-brand-turquoise"
+                  : "border-transparent hover:border-white/40"
               )}
             >
               {tab}
