@@ -110,14 +110,14 @@ const GoodbodyTestGallery = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 mb-4">
         {/* Logo + Slogan */}
         <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-          <div className="bg-white rounded-lg p-2.5 sm:p-3 flex items-center justify-center" style={{ maxHeight: "80px" }}>
+          <div className="bg-white rounded-lg p-4 sm:p-5 flex items-center justify-center" style={{ maxHeight: "320px" }}>
             <img
               src="/lovable-uploads/provider-goodbody-new-v3.png"
               alt="Goodbody Clinic"
-              className="h-10 sm:h-12 md:h-14 w-auto object-contain"
+              className="h-40 sm:h-48 md:h-56 w-auto object-contain"
             />
           </div>
-          <h2 className="font-heading text-base sm:text-lg md:text-xl font-bold text-white leading-tight">
+          <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight">
             Know more.
             <br />
             Live Better.
