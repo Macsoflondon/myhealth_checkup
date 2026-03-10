@@ -60,7 +60,7 @@ const GoodbodyClinicPage = () => {
 
       <div className="min-h-screen bg-[#f8f6f3]">
         {/* Page Header */}
-        <div className="container mx-auto px-4 pt-10 pb-2">
+        <div className="container mx-auto px-4 pt-10 pb-0">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#3d3529] mb-1">
             Goodbody Clinic
           </h1>
