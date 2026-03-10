@@ -87,7 +87,7 @@ const GoodbodyClinicPage = () => {
 
         {/* Content Area */}
         {activeTab !== "About" ? (
-          <div className="h-[80vh] flex items-start justify-center pt-1 px-4">
+          <div className="flex items-start justify-center pt-1 pb-8 px-4">
             <HoverExpand_001 images={getTestsForTab()} />
           </div>
         ) : (

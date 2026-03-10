@@ -103,7 +103,7 @@ const HoverExpand_001 = ({
       numVisible: images.length,
       expandedWidth: "27rem",
       collapsedWidth: "4.2rem",
-      height: "min(55rem, 85vh)",
+      height: "min(28rem, 42vh)",
       gap: "gap-1",
       padding: "px-0",
       maxWidth: "max-w-[1800px]",
@@ -230,11 +230,9 @@ const HoverExpand_001 = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute bottom-3 right-3 z-10"
+                      className="absolute bottom-4 right-4 z-10"
                     >
-                      <span className="inline-block bg-white/80 backdrop-blur-sm rounded-md px-2.5 py-1 text-xs font-bold text-brand-navy shadow-sm">
-                        {image.code}
-                      </span>
+                      <span className="inline-block bg-white/85 backdrop-blur-sm rounded-md px-3 py-1.5 text-xs font-bold text-brand-navy shadow-sm">{image.code}</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
