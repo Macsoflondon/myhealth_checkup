@@ -1,5 +1,5 @@
-// Provider filmstrip gallery — hover-expand carousel adapted for health provider showcase
-// Adapted from the expand-on-hover pattern with myhealth checkup branding
+// Provider filmstrip gallery — hover-expand carousel for health provider showcase
+// Adapted from HoverExpand_001 pattern with myhealth checkup branding
 
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useRef, useCallback, useEffect } from "react";
@@ -39,7 +39,7 @@ const useBreakpoint = () => {
   return breakpoint;
 };
 
-const MOBILE_PAGE_SIZE = 4;
+const MOBILE_PAGE_SIZE = 10;
 
 export function ProviderFilmstrip({
   images,
@@ -79,43 +79,6 @@ export function ProviderFilmstrip({
     }
   }, [mobilePage, totalMobilePages]);
 
-  const config = {
-    mobile: {
-      layout: "list" as const,
-      numVisible: MOBILE_PAGE_SIZE,
-      height: "min(16rem, 35vh)",
-      padding: "px-2",
-    },
-    smallTablet: {
-      layout: "horizontal" as const,
-      numVisible: Math.min(images.length, 5),
-      expandedPercent: 38,
-      collapsedPercent: 15,
-      height: "min(22rem, 40vh)",
-      gap: "gap-2",
-      padding: "px-0",
-    },
-    largeTablet: {
-      layout: "horizontal" as const,
-      numVisible: Math.min(images.length, 6),
-      expandedPercent: 32,
-      collapsedPercent: 13,
-      height: "min(26rem, 45vh)",
-      gap: "gap-2",
-      padding: "px-0",
-    },
-    desktop: {
-      layout: "horizontal" as const,
-      numVisible: images.length,
-      expandedWidth: "20rem",
-      collapsedWidth: "5rem",
-      height: "min(28rem, 50vh)",
-      gap: "gap-1.5",
-      padding: "px-0",
-      maxWidth: "max-w-[1200px]",
-    },
-  }[breakpoint];
-
   const renderImageWrapper = (child: React.ReactNode, link?: string) => {
     if (link) {
       return (
@@ -127,13 +90,50 @@ export function ProviderFilmstrip({
     return <>{child}</>;
   };
 
-  // Mobile: vertical list with pagination
+  const config = {
+    mobile: {
+      layout: "list" as const,
+      numVisible: MOBILE_PAGE_SIZE,
+      height: "min(20rem, 40vh)",
+      padding: "px-0",
+    },
+    smallTablet: {
+      layout: "horizontal" as const,
+      numVisible: 6,
+      expandedPercent: 40,
+      collapsedPercent: 12,
+      height: "min(24rem, 45vh)",
+      gap: "gap-1.5",
+      padding: "px-0",
+    },
+    largeTablet: {
+      layout: "horizontal" as const,
+      numVisible: 8,
+      expandedPercent: 35,
+      collapsedPercent: 9,
+      height: "min(28rem, 50vh)",
+      gap: "gap-1.5",
+      padding: "px-0",
+    },
+    desktop: {
+      layout: "horizontal" as const,
+      numVisible: images.length,
+      expandedWidth: "18rem",
+      collapsedWidth: "2.8rem",
+      height: "min(36.875rem, 60vh)",
+      gap: "gap-1",
+      padding: "px-0",
+      maxWidth: "max-w-[1400px]",
+    },
+  }[breakpoint];
+
+  // Mobile: Vertical list layout with pagination
   if (config.layout === "list") {
     return (
       <motion.div
         initial={{ opacity: 0, translateY: 20 }}
         animate={{ opacity: 1, translateY: 0 }}
-        transition={{ duration: 0.3, delay: 0.3 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
         className={cn("relative w-full", config.padding, className)}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -146,7 +146,7 @@ export function ProviderFilmstrip({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -40 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-2 gap-3 w-full"
+            className="flex flex-col gap-4 w-full"
           >
             {mobileImages.map((image, index) => (
               <motion.div
@@ -154,20 +154,21 @@ export function ProviderFilmstrip({
                 initial={{ opacity: 0, translateY: 10 }}
                 animate={{ opacity: 1, translateY: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="relative w-full overflow-hidden rounded-xl bg-white border-2 border-brand-turquoise/20"
+                className="relative w-full overflow-hidden rounded-2xl"
                 style={{ height: config.height }}
+                onClick={() => setActiveImage(index)}
               >
                 {renderImageWrapper(
-                  <div className="size-full flex items-center justify-center p-4">
+                  <>
                     <img
                       src={image.src}
-                      className={`max-h-full max-w-full ${image.objectFit === "cover" ? "object-cover" : "object-contain"}`}
+                      className={`size-full ${image.objectFit === "contain" ? "object-contain" : "object-cover"}`}
                       alt={image.alt}
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brand-navy/80 to-transparent p-3">
-                      <p className="text-xs font-semibold text-white text-center">{image.label}</p>
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <p className="text-sm font-bold text-brand-navy">{image.label}</p>
                     </div>
-                  </div>,
+                  </>,
                   image.link
                 )}
               </motion.div>
@@ -176,11 +177,11 @@ export function ProviderFilmstrip({
         </AnimatePresence>
 
         {totalMobilePages > 1 && (
-          <div className="flex items-center justify-center gap-3 mt-5">
+          <div className="flex items-center justify-center gap-3 mt-6 pb-4">
             <button
               onClick={() => setMobilePage((p) => Math.max(0, p - 1))}
               disabled={mobilePage === 0}
-              className="text-xs font-medium text-white/60 disabled:opacity-30 transition-opacity px-2 py-1"
+              className="text-xs font-medium text-muted-foreground disabled:opacity-30 transition-opacity px-2 py-1"
             >
               ← Prev
             </button>
@@ -191,7 +192,7 @@ export function ProviderFilmstrip({
                   onClick={() => setMobilePage(i)}
                   className={cn(
                     "w-2 h-2 rounded-full transition-all duration-300",
-                    mobilePage === i ? "bg-brand-turquoise w-6" : "bg-white/30"
+                    mobilePage === i ? "bg-foreground w-6" : "bg-muted-foreground/30"
                   )}
                 />
               ))}
@@ -199,7 +200,7 @@ export function ProviderFilmstrip({
             <button
               onClick={() => setMobilePage((p) => Math.min(totalMobilePages - 1, p + 1))}
               disabled={mobilePage === totalMobilePages - 1}
-              className="text-xs font-medium text-white/60 disabled:opacity-30 transition-opacity px-2 py-1"
+              className="text-xs font-medium text-muted-foreground disabled:opacity-30 transition-opacity px-2 py-1"
             >
               Next →
             </button>
@@ -214,7 +215,7 @@ export function ProviderFilmstrip({
     <motion.div
       initial={{ opacity: 0, translateY: 20 }}
       animate={{ opacity: 1, translateY: 0 }}
-      transition={{ duration: 0.3, delay: 0.3 }}
+      transition={{ duration: 0.3, delay: 0.5 }}
       className={cn("relative w-full", config.padding, className)}
     >
       <motion.div
@@ -242,31 +243,29 @@ export function ProviderFilmstrip({
             return (
               <motion.div
                 key={index}
-                className="relative cursor-pointer overflow-hidden rounded-2xl bg-white border-2 border-brand-turquoise/20 hover:border-brand-turquoise/50 transition-colors"
-                initial={{ width: initialWidth, height: "16rem" }}
+                className="relative cursor-pointer overflow-hidden rounded-3xl"
+                initial={{ width: initialWidth, height: "20rem" }}
                 animate={{ width, height: config.height }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 onClick={() => setActiveImage(index)}
                 onHoverStart={() => setActiveImage(index)}
               >
                 {renderImageWrapper(
                   <>
-                    <div className="size-full flex items-center justify-center p-4">
-                      <img
-                        src={image.src}
-                        className={`max-h-full max-w-full ${image.objectFit === "cover" ? "object-cover" : "object-contain"}`}
-                        alt={image.alt}
-                      />
-                    </div>
+                    <img
+                      src={image.src}
+                      className={`size-full ${image.objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                      alt={image.alt}
+                    />
                     <AnimatePresence>
                       {isActive && (
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-brand-navy/90 to-transparent p-4"
+                          className="absolute flex h-full w-full flex-col items-end justify-end p-4"
                         >
-                          <p className="text-sm font-bold text-white text-center">{image.label}</p>
+                          <p className="text-left text-xs font-bold text-brand-navy">{image.label}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
