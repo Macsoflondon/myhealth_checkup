@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
-import UKASBanner from "@/components/UKASBanner";
+
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";

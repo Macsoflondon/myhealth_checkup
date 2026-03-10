@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { AssistedTestFinder } from '@/components/AssistedTestFinder';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import UKASBanner from '@/components/UKASBanner';
+
 
 const AssistedTestFinderPage = () => {
   return (

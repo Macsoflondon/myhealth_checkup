@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Shield, Activity, Heart, Target, Microscope, AlertCircle, Plus, Minus, ExternalLink, BookOpen } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import UKASBanner from '@/components/UKASBanner';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

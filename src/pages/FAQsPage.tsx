@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import UKASBanner from '@/components/UKASBanner';
+
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import PageHeading from '@/components/ui/page-heading';
 import { SectionHeading } from '@/components/ui/section-heading';
