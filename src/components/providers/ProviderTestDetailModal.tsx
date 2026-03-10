@@ -98,9 +98,14 @@ export default function ProviderTestDetailModal({
   const brandColor = branding?.primary || "#22c0d4";
   const accreditations = getAccreditations(test.provider_id);
   const tagline = getProviderTagline(test.provider_id);
-  const biomarkers = parseBiomarkersList(test.biomarkers_list);
-  const sampleBadges = getSampleBadges(test.sample_type);
-  const turnaround = formatTurnaround(test.provider_id);
+
+  // For Goodbody, prioritize static curated data over database data
+  const isGoodbody = test.provider_id.toLowerCase().includes("goodbody");
+  const goodbodyStatic = isGoodbody ? getGoodbodyTestByName(test.test_name) : undefined;
+
+  const biomarkers = goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
+  const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
+  const turnaround = goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
