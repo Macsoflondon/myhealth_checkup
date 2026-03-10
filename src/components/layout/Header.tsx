@@ -45,6 +45,7 @@ const Header = ({ className }: HeaderProps) => {
   if (isMobile) {
     return (
       <ErrorBoundary>
+        <BrandTicker />
         <header className={cn("sticky top-0 z-50 bg-[#081129] shadow-md", className)}>
           {/* Top gradient divider */}
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
