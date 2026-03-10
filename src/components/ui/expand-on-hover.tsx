@@ -38,9 +38,11 @@ const MOBILE_PAGE_SIZE = 5;
 const HoverExpand_001 = ({
   images,
   className,
+  onTestClick,
 }: {
   images: { src: string; alt: string; code: string; objectFit?: string }[];
   className?: string;
+  onTestClick?: (image: { src: string; alt: string; code: string; objectFit?: string }) => void;
 }) => {
   const [activeImage, setActiveImage] = useState<number | null>(1);
   const [mobilePage, setMobilePage] = useState(0);
