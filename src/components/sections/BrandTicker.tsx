@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "March into Wellness – exclusive 5% off on everything" },
-  { provider: "Medichecks", text: "20% off women's tests with code SHH20" },
+  { provider: "Medichecks", text: "20% off selected women's tests with code SHH20" },
   { provider: "Lola Health", text: "£20 off with code Mar20" },
 ];
 
