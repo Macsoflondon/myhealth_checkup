@@ -23,10 +23,14 @@ const MissionSection = () => {
         {/* Top gradient divider */}
         <div className="h-0.5 sm:h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         
-        <div className="bg-white py-6 sm:py-8 md:py-10 lg:py-12">
+        <div className="bg-brand-navy py-6 sm:py-8 md:py-10 lg:py-12">
           <div className="container mx-auto px-3 sm:px-4">
-            <h2 className="text-center text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-heading font-semibold text-brand-navy whitespace-nowrap">
-              Your health is your greatest asset!
+            <h2 className="text-center text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-heading font-bold whitespace-nowrap">
+              <span className="text-white">Your </span>
+              <span className="text-brand-turquoise">health</span>
+              <span className="text-white"> is your greatest </span>
+              <span className="text-brand-pink">asset</span>
+              <span className="text-white">!</span>
             </h2>
           </div>
         </div>
