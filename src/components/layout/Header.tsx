@@ -82,6 +82,7 @@ const Header = ({ className }: HeaderProps) => {
   const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-2 shadow-sm", styles.toolbar);
   return (
     <ErrorBoundary>
+      <BrandTicker />
       <header className={cn("sticky top-0 z-50", className)} style={{ overflow: "visible" }}>
         {/* Main header bar - Logo and User Controls */}
         <div className="bg-[#081129]">
