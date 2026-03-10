@@ -85,7 +85,7 @@ const HoverExpand_001 = ({
       numVisible: 6,
       expandedPercent: 40,
       collapsedPercent: 12,
-      height: "min(24rem, 45vh)",
+      height: "min(36rem, 67vh)",
       gap: "gap-1.5",
       padding: "px-0",
     },
@@ -94,19 +94,19 @@ const HoverExpand_001 = ({
       numVisible: 8,
       expandedPercent: 35,
       collapsedPercent: 9,
-      height: "min(28rem, 50vh)",
+      height: "min(42rem, 75vh)",
       gap: "gap-1.5",
       padding: "px-0",
     },
     desktop: {
       layout: "horizontal" as const,
       numVisible: images.length,
-      expandedWidth: "18rem",
-      collapsedWidth: "2.8rem",
-      height: "min(36.875rem, 60vh)",
+      expandedWidth: "27rem",
+      collapsedWidth: "4.2rem",
+      height: "min(55rem, 85vh)",
       gap: "gap-1",
       padding: "px-0",
-      maxWidth: "max-w-[1400px]",
+      maxWidth: "max-w-[1800px]",
     },
   }[breakpoint];
 
@@ -229,9 +229,9 @@ const HoverExpand_001 = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute flex h-full w-full flex-col items-end justify-end p-4"
+                      className="absolute flex h-full w-full flex-col items-end justify-end p-4 z-10"
                     >
-                      <p className="text-left text-xs font-bold text-brand-navy">{image.code}</p>
+                      <p className="text-right text-xs font-bold text-brand-navy">{image.code}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
