@@ -20,6 +20,7 @@ import RandoxTestsCatalogPage from "@/pages/RandoxTestsCatalogPage";
 import LolaHealthTestsCatalogPage from "@/pages/LolaHealthTestsCatalogPage";
 import LondonMedicalLabTestsCatalogPage from "@/pages/LondonMedicalLabTestsCatalogPage";
 import BloodTestAnalysisPage from "@/pages/BloodTestAnalysisPage";
+import GoodbodyClinicPage from "@/pages/GoodbodyClinicPage";
 
 export const featureRoutes = (
   <>
@@ -39,6 +40,7 @@ export const featureRoutes = (
     <Route path="/providers" element={<Navigate to="/trusted-providers" replace />} />
     <Route path="/providers/compare" element={<ProviderComparisonPage />} />
     <Route path="/providers/goodbody-clinic" element={<GoodbodyTestsCatalogPage />} />
+    <Route path="/goodbody-clinic" element={<GoodbodyClinicPage />} />
     <Route path="/providers/medichecks" element={<MedichecksTestsCatalogPage />} />
     <Route path="/medichecks/mens-health" element={<MedichecksMensHealthPage />} />
     <Route path="/providers/thriva" element={<ThrivaTestsCatalogPage />} />
