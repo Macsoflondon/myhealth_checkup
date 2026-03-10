@@ -123,7 +123,7 @@ const GoodbodyTestGallery = () => {
               className="h-20 sm:h-24 md:h-28 w-auto object-contain"
             />
           </div>
-          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-brand-navy leading-tight">
             Know more.
             <br />
             Live Better.
@@ -134,7 +134,7 @@ const GoodbodyTestGallery = () => {
         <nav className="flex items-center gap-3 sm:gap-5 md:gap-7 flex-wrap" aria-label="Goodbody test categories">
           <button
             onClick={() => setAboutOpen(true)}
-            className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
+            className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-brand-navy font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
           >
             <Info className="h-3.5 w-3.5" />
             About
@@ -144,7 +144,7 @@ const GoodbodyTestGallery = () => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "text-xs sm:text-sm md:text-base font-sans font-bold text-white transition-all duration-200 pb-1 border-b-2",
+                "text-xs sm:text-sm md:text-base font-sans font-bold text-brand-navy transition-all duration-200 pb-1 border-b-2",
                 activeTab === tab
                   ? "border-brand-turquoise"
                   : "border-transparent hover:border-white/40"
