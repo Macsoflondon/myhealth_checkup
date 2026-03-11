@@ -213,7 +213,7 @@ const BrandTypography = () => {
             <h3 className="text-2xl font-heading font-bold text-[#1a1b34] mb-4">
               Real Results That Matter
             </h3>
-            <blockquote className="border-l-4 border-[#FA6980] pl-6 mb-4">
+            <blockquote className="border-l-4 border-[#e70d69] pl-6 mb-4">
               <p className="text-xl font-elegant italic text-gray-700 leading-relaxed mb-3">
                 "I feel like a completely different person. My energy is back, I've lost the weight, and my mind is sharp again."
               </p>
