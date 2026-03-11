@@ -121,7 +121,7 @@ const PartnerShowcaseGrid = () => {
               </div>
             </div>
             {/* Right column: Logo + Video stacked */}
-            <div className="pt-20 flex flex-col items-center gap-6 md:-mr-4">
+            <div className="pt-4 flex flex-col items-center gap-6 md:-mr-4">
               {/* Logo hidden on mobile, shown on desktop */}
               <img
                 src="/lovable-uploads/provider-medichecks-new-v3.png"
