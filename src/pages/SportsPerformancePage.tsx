@@ -149,22 +149,6 @@ const SportsPerformancePage = () => {
           subtitle="Optimise your athletic performance with comprehensive biomarker analysis. Monitor bodybuilding markers, nutrition, recovery, and fitness biomarkers from trusted UK laboratories."
         />
 
-        {/* Action Buttons Bar */}
-        <section className="bg-[#22C0D4] py-4">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold" onClick={() => navigate('/compare?category=fitness-health')}>
-                Compare Tests
-              </Button>
-              <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold" onClick={() => navigate('/cancer-biomarkers')}>
-                Biomarker Guide
-              </Button>
-              <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold" onClick={() => navigate('/find-clinic')}>
-                Find Clinic
-              </Button>
-            </div>
-          </div>
-        </section>
 
         {/* Categories Section - Moved to top */}
         <section className="py-16">
