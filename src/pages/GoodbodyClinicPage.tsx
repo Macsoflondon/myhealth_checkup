@@ -38,8 +38,8 @@ const AboutSection = () => (
         </section>
 
         <section>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#3d3529] mb-4">Who We Are</h2>
-          <p className="text-[#4a443b] font-sans leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-4">Who We Are</h2>
+          <p className="text-foreground font-sans leading-relaxed">
             Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home with nurse visits and easy-to-use home test kits. Rated Excellent on Trustpilot with over 3,400 reviews. We're part of Goodbody Wellness Group, a recognised distributor and retailer of accredited wellness products and diagnostic services across the UK and Europe. Every test is carried out by qualified healthcare professionals using accredited laboratory analysis, with results typically back within 3–5 working days.
           </p>
         </section>
