@@ -78,9 +78,9 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Row 2: Medichecks — Video left, Text right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start mb-14">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start mb-6">
             {/* Left column: Heading + Text */}
-            <div className="pt-20 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
+            <div className="pt-4 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
               {/* Logo shown on mobile only, above heading */}
               <img
                 src="/lovable-uploads/provider-medichecks-new-v3.png"
@@ -121,7 +121,7 @@ const PartnerShowcaseGrid = () => {
               </div>
             </div>
             {/* Right column: Logo + Video stacked */}
-            <div className="pt-20 flex flex-col items-center gap-6 md:-mr-4">
+            <div className="pt-4 flex flex-col items-center gap-6 md:-mr-4">
               {/* Logo hidden on mobile, shown on desktop */}
               <img
                 src="/lovable-uploads/provider-medichecks-new-v3.png"
