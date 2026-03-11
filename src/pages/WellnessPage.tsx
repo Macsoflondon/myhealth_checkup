@@ -71,7 +71,6 @@ const WellnessPage = () => {
         {/* Browse Tests by Category */}
         <section
           style={{
-            fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
             background: "#ffffff",
             padding: "72px 40px",
             position: "relative",
