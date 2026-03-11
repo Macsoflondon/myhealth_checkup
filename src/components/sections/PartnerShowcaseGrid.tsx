@@ -78,7 +78,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Row 2: Medichecks — Video left, Text right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start mb-6">
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
             {/* Left column: Heading + Text */}
             <div className="pt-4 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
               {/* Logo shown on mobile only, above heading */}
