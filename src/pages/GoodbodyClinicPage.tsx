@@ -12,12 +12,12 @@ const GoodbodyClinicPage = () => {
         <meta name="description" content="Explore Goodbody Clinic's range of private blood tests, hormone panels, and cancer screening. UKAS accredited, CQC regulated. Results in 3-5 working days." />
       </Helmet>
 
-      <div className="min-h-screen bg-[#f8f6f3]">
+      <div className="min-h-screen bg-white">
         <div className="container mx-auto px-4 pt-10 pb-0">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#3d3529] mb-1">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-1">
             Goodbody Clinic
           </h1>
-          <div className="h-px bg-[#d4cfc7] w-full max-w-2xl mb-6" />
+          <div className="h-px bg-gray-200 w-full max-w-2xl mb-6" />
         </div>
 
         <AboutSection />
