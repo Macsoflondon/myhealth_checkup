@@ -129,9 +129,9 @@ const BrandTypography = () => {
       </Card>
 
       {/* EB Garamond - Elegant Accents */}
-      <Card className="mb-8 border-2 border-[#1a1b34]">
+      <Card className="mb-8 border-2 border-[#081129]">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#1a1b34]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#081129]">
             EB Garamond — Elegant Accents
           </CardTitle>
           <CardDescription className="text-base">
