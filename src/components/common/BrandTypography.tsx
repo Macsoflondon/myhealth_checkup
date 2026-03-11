@@ -210,7 +210,7 @@ const BrandTypography = () => {
 
           {/* Example 2: Testimonial Card */}
           <div className="border-2 border-gray-200 p-6 rounded-lg">
-            <h3 className="text-2xl font-heading font-bold text-[#1a1b34] mb-4">
+            <h3 className="text-2xl font-heading font-bold text-[#081129] mb-4">
               Real Results That Matter
             </h3>
             <blockquote className="border-l-4 border-[#e70d69] pl-6 mb-4">
