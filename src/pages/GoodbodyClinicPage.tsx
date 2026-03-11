@@ -31,8 +31,8 @@ const AboutSection = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
       <div className="md:col-span-2 space-y-10">
         <section>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#3d3529] mb-4">Our Mission</h2>
-          <p className="text-[#4a443b] font-sans leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-4">Our Mission</h2>
+          <p className="text-foreground font-sans leading-relaxed">
             You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times. Whether you've got a family history that concerns you, symptoms your GP hasn't been able to explain, or you simply want a comprehensive health MOT, we make it straightforward to get tested, get answers, and take control of your health.
           </p>
         </section>
