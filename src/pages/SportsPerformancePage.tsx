@@ -64,17 +64,17 @@ const SportsPerformancePage = () => {
     icon: Trophy,
     title: "Peak Performance",
     description: "Monitor biomarkers crucial for athletic excellence and competitive advantage",
-    color: "#FA6980"
+    color: "#e70d69"
   }, {
     icon: Activity,
     title: "Recovery Optimization",
     description: "Track markers that impact recovery, injury prevention, and training adaptation",
-    color: "#22C0D4"
+    color: "#22c0d4"
   }, {
     icon: TrendingUp,
     title: "Competitive Edge",
     description: "Data-driven insights to optimize training, nutrition, and performance outcomes",
-    color: "#E70D69"
+    color: "#e70d69"
   }];
   const testimonials = [{
     name: "James Patterson",
