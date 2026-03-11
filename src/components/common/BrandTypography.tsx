@@ -254,7 +254,7 @@ const BrandTypography = () => {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <h4 className="text-xl font-heading font-bold text-[#3A5F85] mb-3">Montserrat</h4>
+              <h4 className="text-xl font-heading font-bold text-[#22c0d4] mb-3">Montserrat</h4>
               <ul className="text-sm space-y-1 text-white/80">
                 <li>✓ All headings (H1-H6)</li>
                 <li>✓ Statistics & numbers</li>
