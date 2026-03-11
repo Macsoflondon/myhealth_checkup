@@ -543,7 +543,7 @@ const SportsPerformancePage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {testimonials.map((testimonial, index) => (
-                <Card key={index} className="border-2 hover:border-[#FA6980] transition-all duration-300 hover:shadow-xl">
+                <Card key={index} className="border-2 hover:border-[#e70d69] transition-all duration-300 hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-center gap-4 mb-4">
                       <div className="text-4xl">{testimonial.image}</div>
@@ -554,7 +554,7 @@ const SportsPerformancePage = () => {
                     </div>
                     <div className="flex gap-1 mb-3">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-[#FA6980] text-[#FA6980]" />
+                        <Star key={i} className="w-4 h-4 fill-[#e70d69] text-[#e70d69]" />
                       ))}
                     </div>
                   </CardHeader>
