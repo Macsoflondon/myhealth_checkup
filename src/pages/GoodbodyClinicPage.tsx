@@ -45,8 +45,8 @@ const AboutSection = () => (
         </section>
 
         <section>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#3d3529] mb-4">Our Services</h2>
-          <p className="text-[#4a443b] font-sans leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-4">Our Services</h2>
+          <p className="text-foreground font-sans leading-relaxed">
             We offer one of the most comprehensive ranges of private health tests available in the UK. From our Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers — including liver, kidney, thyroid, cholesterol, diabetes, hormones, vitamins, and minerals. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours, or the EpiSwitch® PSE test detects prostate cancer with 94% accuracy. We also offer Full Body MRI Scans, Guardant Reveal™ liquid biopsy monitoring, hormone and fertility panels, food intolerance testing, cardiac risk assessments, and much more. No GP referral is needed for most tests.
           </p>
         </section>
