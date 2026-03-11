@@ -435,7 +435,7 @@ const SportsPerformancePage = () => {
             </div>
             
             {loading ? <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FA6980] mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#e70d69] mx-auto"></div>
                 <p className="mt-4 text-muted-foreground">Loading available tests...</p>
               </div> : tests.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                 {tests.map(test => <Card key={test.id} className="hover:shadow-xl transition-all duration-300 border-2 hover:border-[#FA6980]">
