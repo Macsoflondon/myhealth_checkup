@@ -52,8 +52,8 @@ const AboutSection = () => (
         </section>
 
         <section>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#3d3529] mb-4">What's New</h2>
-          <p className="text-[#4a443b] font-sans leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-4">What's New</h2>
+          <p className="text-foreground font-sans leading-relaxed">
             We're making advanced diagnostics more accessible than ever. Our Guardant360® and Guardant Reveal™ liquid biopsy tests provide cutting-edge cancer monitoring for patients in remission. We've also partnered with Splitit, Dopple, and Clearpay so you can spread the cost of your tests with interest-free instalments, because we believe health testing should be available to everyone. With home testing kits, nationwide clinic appointments, or nurse home visits, there's no reason to put off getting the answers you need.
           </p>
         </section>
