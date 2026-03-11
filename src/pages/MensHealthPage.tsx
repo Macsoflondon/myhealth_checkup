@@ -159,28 +159,6 @@ const MensHealthPage = () => {
         subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
       />
 
-        {/* Action Buttons Bar */}
-        <section className="bg-[#22C0D4] py-4">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/compare?category=mens-health">
-                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
-                  Compare Tests
-                </Button>
-              </Link>
-              <Link to="/cancer-biomarkers">
-                <Button size="lg" variant="outline" className="border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold">
-                  Biomarker Guide
-                </Button>
-              </Link>
-              <Link to="/find-clinic">
-                <Button size="lg" className="bg-[#081129] text-white hover:bg-[#081129]/90 font-semibold">
-                  Find Clinic
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
 
         {/* Benefits Section */}
         <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/5 bg-white">
