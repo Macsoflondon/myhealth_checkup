@@ -196,9 +196,9 @@ const BrandTypography = () => {
         </CardHeader>
         <CardContent className="space-y-8">
           {/* Example 1: Hero Section */}
-          <div className="bg-[#1a1b34] p-8 rounded-lg text-white">
+          <div className="bg-[#081129] p-8 rounded-lg text-white">
             <h2 className="text-4xl font-heading font-bold mb-4">
-              It's time to feel like <span className="text-[#3A5F85]">yourself again</span>
+              It's time to feel like <span className="text-[#22c0d4]">yourself again</span>
             </h2>
             <p className="text-xl font-elegant italic mb-6 text-white/90">
               Your health is your greatest asset. Take control with confidence.
