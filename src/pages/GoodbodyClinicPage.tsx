@@ -72,8 +72,8 @@ const AboutSection = () => (
               </ul>
             </div>
             <div>
-              <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-3">Women's Health</h3>
-              <ul className="space-y-1.5 text-[#6b6459] font-sans">
+              <h3 className="text-xl font-heading font-bold text-[#081129] mb-3">Women's Health</h3>
+              <ul className="space-y-1.5 text-muted-foreground font-sans">
                 <li>• Advanced Well Woman Blood Test (51 biomarkers)</li>
                 <li>• Female Hormone & Fertility Panel</li>
                 <li>• Anti-Mullerian Hormone (AMH) Fertility Test</li>
