@@ -114,20 +114,15 @@ const GoodbodyTestGallery = () => {
     <div className="md:col-span-2 mt-6 mb-4">
       {/* Banner + Tab Navigation — logo/slogan left, tabs inline */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 mb-4">
-        {/* Logo + Slogan */}
+        {/* Logo */}
         <div className="flex items-center gap-4 sm:gap-6 shrink-0">
           <div className="bg-white rounded-lg p-3 sm:p-4 flex items-center justify-center" style={{ maxHeight: "160px" }}>
             <img
-              src="/lovable-uploads/provider-goodbody-new-v3.png"
+              src={GOODBODY_LOGO}
               alt="Goodbody Clinic"
               className="h-20 sm:h-24 md:h-28 w-auto object-contain"
             />
           </div>
-          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight">
-            Know more.
-            <br />
-            Live Better.
-          </h2>
         </div>
 
         {/* Tab Navigation — About first, then category tabs */}
