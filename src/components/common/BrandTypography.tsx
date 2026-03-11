@@ -23,9 +23,9 @@ const BrandTypography = () => {
       </div>
 
       {/* Montserrat - Headings */}
-      <Card className="mb-8 border-2 border-[#3A5F85]">
+      <Card className="mb-8 border-2 border-[#22c0d4]">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#3A5F85]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#22c0d4]">
             Montserrat — Headlines & Impact
           </CardTitle>
           <CardDescription className="text-base">
