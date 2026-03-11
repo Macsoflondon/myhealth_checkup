@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "March into Wellness – exclusive 5% off on everything", color: "#0bb77e" },
@@ -6,32 +6,66 @@ const promos = [
   { provider: "Lola Health", text: "£20 off with code Mar20", color: "#fa757e" },
 ];
 
+const SETS = 6;
+
 const BrandTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef(0);
+  const singleSetWidthRef = useRef(0);
+
+  const measureSetWidth = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return 0;
+    const promoCount = promos.length;
+    let width = 0;
+    for (let i = 0; i < promoCount && i < track.children.length; i++) {
+      width += (track.children[i] as HTMLElement).offsetWidth;
+    }
+    return width;
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
+    // Measure after fonts load
+    const measure = () => {
+      singleSetWidthRef.current = measureSetWidth();
+    };
+
+    measure();
+    // Re-measure after fonts are ready
+    document.fonts?.ready?.then(measure);
+
     let animationId: number;
-    let position = 0;
-    const speed = 0.5; // pixels per frame
+    const speed = 0.5;
 
     const animate = () => {
-      position -= speed;
-      const firstChild = track.firstElementChild as HTMLElement | null;
-      if (firstChild && Math.abs(position) >= firstChild.offsetWidth) {
-        position += firstChild.offsetWidth;
+      positionRef.current -= speed;
+      const setWidth = singleSetWidthRef.current;
+
+      // Seamless reset: when we've scrolled one full set, jump back by one set width
+      if (setWidth > 0 && Math.abs(positionRef.current) >= setWidth) {
+        positionRef.current += setWidth;
       }
-      track.style.transform = `translateX(${position}px)`;
+
+      track.style.transform = `translateX(${positionRef.current}px)`;
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
 
-  const items = [...promos, ...promos, ...promos, ...promos, ...promos, ...promos];
+    // Re-measure on resize
+    const onResize = () => measure();
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [measureSetWidth]);
+
+  const items = Array.from({ length: SETS }, () => promos).flat();
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none">
