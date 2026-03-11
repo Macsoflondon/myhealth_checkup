@@ -34,7 +34,7 @@ const BrandTypography = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <h2 className="text-5xl font-heading font-bold text-[#1a1b34] mb-2">
+            <h2 className="text-5xl font-heading font-bold text-[#081129] mb-2">
               Hero Headline
             </h2>
             <p className="text-sm text-gray-500">font-heading font-bold text-5xl</p>
