@@ -225,7 +225,7 @@ export default function SportsTestRecommendationEngine() {
           <Button
             onClick={streamRecommendations}
             disabled={isLoading || !athleteType || !trainingGoals}
-            className="w-full bg-[#FA6980] hover:bg-[#E70D69] text-white"
+            className="w-full bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
             size="lg"
           >
             {isLoading ? (
