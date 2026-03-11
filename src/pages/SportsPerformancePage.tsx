@@ -502,11 +502,11 @@ const SportsPerformancePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {performanceMarkers.map((marker, index) => {
               const IconComponent = marker.icon;
-              return <Card key={index} className="border-2 hover:border-[#FA6980] transition-all duration-300 hover:shadow-xl">
+              return <Card key={index} className="border-2 hover:border-[#e70d69] transition-all duration-300 hover:shadow-xl">
                     <CardHeader>
                       <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-lg bg-[#FA6980]/10 flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-7 h-7 text-[#FA6980]" />
+                        <div className="w-14 h-14 rounded-lg bg-[#e70d69]/10 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-7 h-7 text-[#e70d69]" />
                         </div>
                         <div className="flex-1">
                           <CardTitle className="text-xl mb-2">{marker.title}</CardTitle>
