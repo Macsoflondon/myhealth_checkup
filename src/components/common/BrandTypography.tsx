@@ -237,7 +237,7 @@ const BrandTypography = () => {
               <div className="text-sm font-sans text-gray-600">Average rating</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl font-heading font-bold text-[#1a1b34] mb-2">10k+</div>
+              <div className="text-4xl font-heading font-bold text-[#081129] mb-2">10k+</div>
               <div className="text-sm font-sans text-gray-600">Tests completed</div>
             </div>
           </div>
