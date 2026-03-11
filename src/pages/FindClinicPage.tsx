@@ -84,15 +84,15 @@ const FindClinicPage = () => {
           {/* Stats Badges */}
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-[#FA6980]">7</span>
+              <span className="font-bold text-[#e70d69]">7</span>
               <span className="text-white ml-2">Trusted Providers</span>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-[#22C0D4]">150+</span>
+              <span className="font-bold text-[#22c0d4]">150+</span>
               <span className="text-white ml-2">Clinic Locations</span>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-[#FA6980]">UKAS</span>
+              <span className="font-bold text-[#e70d69]">UKAS</span>
               <span className="text-white ml-2">Accredited Labs</span>
             </div>
           </div>
