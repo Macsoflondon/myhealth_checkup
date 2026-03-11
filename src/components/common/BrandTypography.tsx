@@ -55,7 +55,7 @@ const BrandTypography = () => {
           </div>
           
           <div>
-            <h5 className="text-2xl font-heading font-medium text-[#1a1b34] mb-2">
+            <h5 className="text-2xl font-heading font-medium text-[#081129] mb-2">
               Card Title
             </h5>
             <p className="text-sm text-gray-500">font-heading font-medium text-2xl</p>
