@@ -1,40 +1,20 @@
 
 
-## Plan: Fix BackToTop Button Visibility
+## Remove WhyChooseUs and TopConcernsSection from Homepage
 
-### Problem
-The BackToTop button exists in the DOM but is invisible. The root cause is a CSS class conflict: the `Button` component passes all classes through `cn()` (which uses `tailwind-merge`). The button's base class `-translate-y-1/2` and conditional classes `translate-x-0` / `translate-x-4` are being merged with the Button component's internal styles, causing the transform to break.
+Three files to change:
 
-### Solution
-Replace the `Button` component in `BackToTop.tsx` with a plain `<button>` element. This avoids the `tailwind-merge` issue entirely and removes the unnecessary ripple effect wrapper. The same visual styles (turquoise bg, pink hover, rounded, shadow) will be applied directly.
+### 1. `src/pages/Index.tsx`
+- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
+- Remove the TopConcernsSection JSX block (lines 134-135)
+- Remove the WhyChooseUs JSX block (lines 144-145)
 
-### File: `src/components/common/BackToTop.tsx`
+### 2. `src/components/sections/WhyChooseUs.tsx`
+- Delete this file entirely
 
-Replace the `Button` import and usage with a plain `<button>`:
+### 3. `src/components/sections/index.ts`
+- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
+- Keep TopConcernsSection export so it remains available for future use
 
-```tsx
-const BackToTop = () => {
-  // ... same state/effect logic ...
-
-  return (
-    <button
-      onClick={scrollToTop}
-      className={`fixed top-1/2 -translate-y-1/2 right-6 z-[60] h-12 w-12 rounded-full bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 ${
-        isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}
-      aria-label="Back to top"
-    >
-      <ArrowUp className="h-6 w-6" />
-    </button>
-  );
-};
-```
-
-Key changes:
-- Use plain `<button>` instead of `<Button>` to bypass `tailwind-merge` conflicts
-- Remove `translate-x-0` / `translate-x-4` toggle (unnecessary, opacity alone handles show/hide)
-- Add `flex items-center justify-center` for icon centering
-- Remove `p-0` (no longer needed without Button's default padding)
-
-This is a single-file, ~5-line change.
+TopConcernsSection component file stays in the codebase untouched — available for reuse later.
 
