@@ -33,7 +33,7 @@ const healthConditions = [
     description: 'Comprehensive thyroid function testing for hypo/hyperthyroidism',
     icon: Activity,
     path: '/thyroid',
-    colorHex: '#3A5F85'
+    colorHex: '#22c0d4'
   },
   {
     id: 'liver',

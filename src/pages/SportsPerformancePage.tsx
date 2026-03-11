@@ -64,17 +64,17 @@ const SportsPerformancePage = () => {
     icon: Trophy,
     title: "Peak Performance",
     description: "Monitor biomarkers crucial for athletic excellence and competitive advantage",
-    color: "#FA6980"
+    color: "#e70d69"
   }, {
     icon: Activity,
     title: "Recovery Optimization",
     description: "Track markers that impact recovery, injury prevention, and training adaptation",
-    color: "#22C0D4"
+    color: "#22c0d4"
   }, {
     icon: TrendingUp,
     title: "Competitive Edge",
     description: "Data-driven insights to optimize training, nutrition, and performance outcomes",
-    color: "#E70D69"
+    color: "#e70d69"
   }];
   const testimonials = [{
     name: "James Patterson",
@@ -435,14 +435,14 @@ const SportsPerformancePage = () => {
             </div>
             
             {loading ? <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FA6980] mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#e70d69] mx-auto"></div>
                 <p className="mt-4 text-muted-foreground">Loading available tests...</p>
               </div> : tests.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                {tests.map(test => <Card key={test.id} className="hover:shadow-xl transition-all duration-300 border-2 hover:border-[#FA6980]">
+                {tests.map(test => <Card key={test.id} className="hover:shadow-xl transition-all duration-300 border-2 hover:border-[#e70d69]">
                     <CardHeader>
                       <div className="flex justify-between items-start mb-2">
                         <Badge variant="secondary">{test.category}</Badge>
-                        {test.price && <span className="text-2xl font-bold text-[#FA6980]">
+                        {test.price && <span className="text-2xl font-bold text-[#e70d69]">
                             £{test.price}
                           </span>}
                       </div>
@@ -462,7 +462,7 @@ const SportsPerformancePage = () => {
                           <span>2-5 working days</span>
                         </div>
                       </div>
-                      <Button className="w-full bg-[#FA6980] hover:bg-[#E70D69] text-white" onClick={() => navigate('/compare?category=fitness-health')}>
+                      <Button className="w-full bg-[#e70d69] hover:bg-[#e70d69]/90 text-white" onClick={() => navigate('/compare?category=fitness-health')}>
                         Compare Prices
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -502,11 +502,11 @@ const SportsPerformancePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {performanceMarkers.map((marker, index) => {
               const IconComponent = marker.icon;
-              return <Card key={index} className="border-2 hover:border-[#FA6980] transition-all duration-300 hover:shadow-xl">
+              return <Card key={index} className="border-2 hover:border-[#e70d69] transition-all duration-300 hover:shadow-xl">
                     <CardHeader>
                       <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-lg bg-[#FA6980]/10 flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-7 h-7 text-[#FA6980]" />
+                        <div className="w-14 h-14 rounded-lg bg-[#e70d69]/10 flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-7 h-7 text-[#e70d69]" />
                         </div>
                         <div className="flex-1">
                           <CardTitle className="text-xl mb-2">{marker.title}</CardTitle>
@@ -543,7 +543,7 @@ const SportsPerformancePage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {testimonials.map((testimonial, index) => (
-                <Card key={index} className="border-2 hover:border-[#FA6980] transition-all duration-300 hover:shadow-xl">
+                <Card key={index} className="border-2 hover:border-[#e70d69] transition-all duration-300 hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-center gap-4 mb-4">
                       <div className="text-4xl">{testimonial.image}</div>
@@ -554,7 +554,7 @@ const SportsPerformancePage = () => {
                     </div>
                     <div className="flex gap-1 mb-3">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-[#FA6980] text-[#FA6980]" />
+                        <Star key={i} className="w-4 h-4 fill-[#e70d69] text-[#e70d69]" />
                       ))}
                     </div>
                   </CardHeader>
@@ -568,7 +568,7 @@ const SportsPerformancePage = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-[#FA6980] to-[#FFFFFF] ext-white bg-white">
+        <section className="py-16 bg-gradient-to-br from-[#e70d69] to-white">
           <div className="container mx-auto px-4 text-center">
             <SectionHeading 
               title="Ready to Optimise" 

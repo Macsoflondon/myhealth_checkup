@@ -136,11 +136,11 @@ export default function SportsTestRecommendationEngine() {
 
   return (
     <div className="space-y-6">
-      <Card className="border-2 border-[#FA6980]/20">
+      <Card className="border-2 border-[#e70d69]/20">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-[#FA6980]/10 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#FA6980]" />
+            <div className="w-12 h-12 rounded-lg bg-[#e70d69]/10 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-[#e70d69]" />
             </div>
             <div>
               <CardTitle className="text-2xl">AI-Powered Test Recommendations</CardTitle>
@@ -225,7 +225,7 @@ export default function SportsTestRecommendationEngine() {
           <Button
             onClick={streamRecommendations}
             disabled={isLoading || !athleteType || !trainingGoals}
-            className="w-full bg-[#FA6980] hover:bg-[#E70D69] text-white"
+            className="w-full bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
             size="lg"
           >
             {isLoading ? (
@@ -244,10 +244,10 @@ export default function SportsTestRecommendationEngine() {
       </Card>
 
       {recommendations && (
-        <Card className="border-2 border-[#22C0D4]/20">
+        <Card className="border-2 border-[#22c0d4]/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[#22C0D4]" />
+              <Sparkles className="w-5 h-5 text-[#22c0d4]" />
               Your Personalized Recommendations
             </CardTitle>
           </CardHeader>

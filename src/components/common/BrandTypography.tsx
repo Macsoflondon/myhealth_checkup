@@ -14,7 +14,7 @@ const BrandTypography = () => {
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-heading font-bold text-[#1a1b34] mb-4">
+        <h1 className="text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-4">
           myhealth checkup Typography System
         </h1>
         <p className="text-xl text-gray-600 font-elegant italic">
@@ -23,9 +23,9 @@ const BrandTypography = () => {
       </div>
 
       {/* Montserrat - Headings */}
-      <Card className="mb-8 border-2 border-[#3A5F85]">
+      <Card className="mb-8 border-2 border-[#22c0d4]">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#3A5F85]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#22c0d4]">
             Montserrat — Headlines & Impact
           </CardTitle>
           <CardDescription className="text-base">
@@ -34,35 +34,35 @@ const BrandTypography = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <h2 className="text-5xl font-heading font-bold text-[#1a1b34] mb-2">
+            <h2 className="text-5xl font-heading font-bold text-[#081129] mb-2">
               Hero Headline
             </h2>
             <p className="text-sm text-gray-500">font-heading font-bold text-5xl</p>
           </div>
           
           <div>
-            <h3 className="text-4xl font-heading font-bold text-[#1a1b34] mb-2">
+            <h3 className="text-4xl font-heading font-bold text-[#081129] mb-2">
               Section Heading
             </h3>
             <p className="text-sm text-gray-500">font-heading font-bold text-4xl</p>
           </div>
           
           <div>
-            <h4 className="text-3xl font-heading font-semibold text-[#1a1b34] mb-2">
+            <h4 className="text-3xl font-heading font-semibold text-[#081129] mb-2">
               Subsection Heading
             </h4>
             <p className="text-sm text-gray-500">font-heading font-semibold text-3xl</p>
           </div>
           
           <div>
-            <h5 className="text-2xl font-heading font-medium text-[#1a1b34] mb-2">
+            <h5 className="text-2xl font-heading font-medium text-[#081129] mb-2">
               Card Title
             </h5>
             <p className="text-sm text-gray-500">font-heading font-medium text-2xl</p>
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
-            <h6 className="font-heading font-semibold text-[#1a1b34] mb-2">Usage Guidelines:</h6>
+            <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
             <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
               <li>Use for all H1-H6 heading elements</li>
               <li>Weights: 400 (regular), 500 (medium), 600 (semibold), 700 (bold), 800 (extrabold)</li>
@@ -75,9 +75,9 @@ const BrandTypography = () => {
       </Card>
 
       {/* Lato - Body Text */}
-      <Card className="mb-8 border-2 border-[#FA6980]">
+      <Card className="mb-8 border-2 border-[#e70d69]">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#FA6980]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#e70d69]">
             Lato — Body Text & Clarity
           </CardTitle>
           <CardDescription className="text-base">
@@ -116,7 +116,7 @@ const BrandTypography = () => {
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
-            <h6 className="font-heading font-semibold text-[#1a1b34] mb-2">Usage Guidelines:</h6>
+            <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
             <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
               <li>Default font for all body content</li>
               <li>Weights: 300 (light), 400 (regular), 500 (medium), 700 (bold)</li>
@@ -129,9 +129,9 @@ const BrandTypography = () => {
       </Card>
 
       {/* EB Garamond - Elegant Accents */}
-      <Card className="mb-8 border-2 border-[#1a1b34]">
+      <Card className="mb-8 border-2 border-[#081129]">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#1a1b34]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#081129]">
             EB Garamond — Elegant Accents
           </CardTitle>
           <CardDescription className="text-base">
@@ -154,7 +154,7 @@ const BrandTypography = () => {
           </div>
           
           <div>
-            <blockquote className="border-l-4 border-[#3A5F85] pl-6 py-2">
+            <blockquote className="border-l-4 border-[#22c0d4] pl-6 py-2">
               <p className="text-lg font-elegant italic text-gray-700 leading-relaxed mb-2">
                 "The test revealed issues I never knew existed. Within months, I felt like a completely different person."
               </p>
@@ -171,7 +171,7 @@ const BrandTypography = () => {
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
-            <h6 className="font-heading font-semibold text-[#1a1b34] mb-2">Usage Guidelines:</h6>
+            <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
             <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
               <li>Use sparingly for maximum impact</li>
               <li>Perfect for customer testimonials and quotes</li>
@@ -187,7 +187,7 @@ const BrandTypography = () => {
       {/* Example Combinations */}
       <Card className="mb-8 bg-gradient-to-br from-gray-50 to-white">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#1a1b34]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#081129]">
             Typography in Action
           </CardTitle>
           <CardDescription className="text-base">
@@ -196,9 +196,9 @@ const BrandTypography = () => {
         </CardHeader>
         <CardContent className="space-y-8">
           {/* Example 1: Hero Section */}
-          <div className="bg-[#1a1b34] p-8 rounded-lg text-white">
+          <div className="bg-[#081129] p-8 rounded-lg text-white">
             <h2 className="text-4xl font-heading font-bold mb-4">
-              It's time to feel like <span className="text-[#3A5F85]">yourself again</span>
+              It's time to feel like <span className="text-[#22c0d4]">yourself again</span>
             </h2>
             <p className="text-xl font-elegant italic mb-6 text-white/90">
               Your health is your greatest asset. Take control with confidence.
@@ -210,10 +210,10 @@ const BrandTypography = () => {
 
           {/* Example 2: Testimonial Card */}
           <div className="border-2 border-gray-200 p-6 rounded-lg">
-            <h3 className="text-2xl font-heading font-bold text-[#1a1b34] mb-4">
+            <h3 className="text-2xl font-heading font-bold text-[#081129] mb-4">
               Real Results That Matter
             </h3>
-            <blockquote className="border-l-4 border-[#FA6980] pl-6 mb-4">
+            <blockquote className="border-l-4 border-[#e70d69] pl-6 mb-4">
               <p className="text-xl font-elegant italic text-gray-700 leading-relaxed mb-3">
                 "I feel like a completely different person. My energy is back, I've lost the weight, and my mind is sharp again."
               </p>
@@ -229,15 +229,15 @@ const BrandTypography = () => {
           {/* Example 3: Stats Section */}
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl font-heading font-bold text-[#3A5F85] mb-2">93%</div>
+              <div className="text-4xl font-heading font-bold text-[#22c0d4] mb-2">93%</div>
               <div className="text-sm font-sans text-gray-600">Improved quality of life</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl font-heading font-bold text-[#FA6980] mb-2">4.8/5</div>
+              <div className="text-4xl font-heading font-bold text-[#e70d69] mb-2">4.8/5</div>
               <div className="text-sm font-sans text-gray-600">Average rating</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-sm">
-              <div className="text-4xl font-heading font-bold text-[#1a1b34] mb-2">10k+</div>
+              <div className="text-4xl font-heading font-bold text-[#081129] mb-2">10k+</div>
               <div className="text-sm font-sans text-gray-600">Tests completed</div>
             </div>
           </div>
@@ -245,7 +245,7 @@ const BrandTypography = () => {
       </Card>
 
       {/* Quick Reference */}
-      <Card className="bg-[#1a1b34] text-white">
+      <Card className="bg-[#081129] text-white">
         <CardHeader>
           <CardTitle className="text-3xl font-heading font-bold text-white">
             Quick Reference Guide
@@ -254,7 +254,7 @@ const BrandTypography = () => {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <h4 className="text-xl font-heading font-bold text-[#3A5F85] mb-3">Montserrat</h4>
+              <h4 className="text-xl font-heading font-bold text-[#22c0d4] mb-3">Montserrat</h4>
               <ul className="text-sm space-y-1 text-white/80">
                 <li>✓ All headings (H1-H6)</li>
                 <li>✓ Statistics & numbers</li>
@@ -264,7 +264,7 @@ const BrandTypography = () => {
               </ul>
             </div>
             <div>
-              <h4 className="text-xl font-heading font-bold text-[#FA6980] mb-3">Lato</h4>
+              <h4 className="text-xl font-heading font-bold text-[#e70d69] mb-3">Lato</h4>
               <ul className="text-sm space-y-1 text-white/80">
                 <li>✓ Body paragraphs</li>
                 <li>✓ Descriptions</li>

@@ -84,15 +84,15 @@ const FindClinicPage = () => {
           {/* Stats Badges */}
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-[#FA6980]">7</span>
+              <span className="font-bold text-[#e70d69]">7</span>
               <span className="text-white ml-2">Trusted Providers</span>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-[#22C0D4]">150+</span>
+              <span className="font-bold text-[#22c0d4]">150+</span>
               <span className="text-white ml-2">Clinic Locations</span>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-[#FA6980]">UKAS</span>
+              <span className="font-bold text-[#e70d69]">UKAS</span>
               <span className="text-white ml-2">Accredited Labs</span>
             </div>
           </div>
@@ -107,8 +107,8 @@ const FindClinicPage = () => {
                 return (
                   <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-14 h-14 rounded-full bg-[#FA6980]/10 flex items-center justify-center mx-auto mb-4">
-                        <IconComponent className="w-7 h-7 text-[#FA6980]" />
+                      <div className="w-14 h-14 rounded-full bg-[#e70d69]/10 flex items-center justify-center mx-auto mb-4">
+                        <IconComponent className="w-7 h-7 text-[#e70d69]" />
                       </div>
                       <h3 className="font-bold text-lg mb-2">{benefit.title}</h3>
                       <p className="text-sm text-muted-foreground">{benefit.description}</p>

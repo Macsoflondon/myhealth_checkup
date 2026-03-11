@@ -71,7 +71,6 @@ const WellnessPage = () => {
         {/* Browse Tests by Category */}
         <section
           style={{
-            fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
             background: "#ffffff",
             padding: "72px 40px",
             position: "relative",
@@ -435,7 +434,6 @@ const WellnessPage = () => {
                     letterSpacing: "0.12em",
                     textTransform: "uppercase" as const,
                     marginBottom: "8px",
-                    fontFamily: "DM Sans, sans-serif",
                   }}
                 >
                   Not Sure Where to Start?
@@ -446,7 +444,6 @@ const WellnessPage = () => {
                     fontSize: "28px",
                     fontWeight: "700",
                     margin: 0,
-                    fontFamily: "DM Sans, sans-serif",
                   }}
                 >
                   Find the Right Health Test for You
@@ -463,7 +460,6 @@ const WellnessPage = () => {
                   fontWeight: "600",
                   borderRadius: "10px",
                   cursor: "pointer",
-                  fontFamily: "DM Sans, sans-serif",
                   transition: "transform 0.2s ease",
                   textDecoration: "none",
                   whiteSpace: "nowrap" as const,
