@@ -48,7 +48,7 @@ const BrandTypography = () => {
           </div>
           
           <div>
-            <h4 className="text-3xl font-heading font-semibold text-[#1a1b34] mb-2">
+            <h4 className="text-3xl font-heading font-semibold text-[#081129] mb-2">
               Subsection Heading
             </h4>
             <p className="text-sm text-gray-500">font-heading font-semibold text-3xl</p>
