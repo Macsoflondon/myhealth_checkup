@@ -14,7 +14,7 @@ const BrandTypography = () => {
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-heading font-bold text-[#1a1b34] mb-4">
+        <h1 className="text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-4">
           myhealth checkup Typography System
         </h1>
         <p className="text-xl text-gray-600 font-elegant italic">

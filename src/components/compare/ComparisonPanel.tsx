@@ -246,18 +246,27 @@ export const ComparisonPanel = ({
                   </td>
                   {tests.map((test) => (
                     <td key={test.id} className="py-6 px-4 text-center">
-                      <Button
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
-                        asChild
-                      >
-                        <a 
-                          href={test.url || "#"} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
+                      {test.url ? (
+                        <Button
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
+                          asChild
                         >
-                          Order Now
-                        </a>
-                      </Button>
+                          <a 
+                            href={test.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            Order Now
+                          </a>
+                        </Button>
+                      ) : (
+                        <Button
+                          className="bg-muted text-muted-foreground font-medium px-6"
+                          disabled
+                        >
+                          Unavailable
+                        </Button>
+                      )}
                     </td>
                   ))}
                 </tr>

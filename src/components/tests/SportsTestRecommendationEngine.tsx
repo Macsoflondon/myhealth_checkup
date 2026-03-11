@@ -244,10 +244,10 @@ export default function SportsTestRecommendationEngine() {
       </Card>
 
       {recommendations && (
-        <Card className="border-2 border-[#22C0D4]/20">
+        <Card className="border-2 border-[#22c0d4]/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[#22C0D4]" />
+              <Sparkles className="w-5 h-5 text-[#22c0d4]" />
               Your Personalized Recommendations
             </CardTitle>
           </CardHeader>

@@ -568,7 +568,7 @@ const SportsPerformancePage = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-[#FA6980] to-[#FFFFFF] ext-white bg-white">
+        <section className="py-16 bg-gradient-to-br from-[#e70d69] to-white">
           <div className="container mx-auto px-4 text-center">
             <SectionHeading 
               title="Ready to Optimise" 

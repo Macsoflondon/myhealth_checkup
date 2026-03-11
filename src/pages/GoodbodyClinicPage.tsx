@@ -116,7 +116,7 @@ const AboutSection = () => (
       </div>
 
       <div className="flex items-start justify-center">
-        <div className="bg-[#f0ede8] rounded-lg p-10 flex items-center justify-center sticky top-32">
+        <div className="bg-gray-50 rounded-lg p-10 flex items-center justify-center sticky top-32">
           <img
             src={GOODBODY_LOGO}
             alt="Goodbody Clinic logo"

@@ -460,7 +460,6 @@ const WellnessPage = () => {
                   fontWeight: "600",
                   borderRadius: "10px",
                   cursor: "pointer",
-                  fontFamily: "DM Sans, sans-serif",
                   transition: "transform 0.2s ease",
                   textDecoration: "none",
                   whiteSpace: "nowrap" as const,

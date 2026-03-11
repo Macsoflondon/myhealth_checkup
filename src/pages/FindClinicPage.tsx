@@ -107,8 +107,8 @@ const FindClinicPage = () => {
                 return (
                   <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-14 h-14 rounded-full bg-[#FA6980]/10 flex items-center justify-center mx-auto mb-4">
-                        <IconComponent className="w-7 h-7 text-[#FA6980]" />
+                      <div className="w-14 h-14 rounded-full bg-[#e70d69]/10 flex items-center justify-center mx-auto mb-4">
+                        <IconComponent className="w-7 h-7 text-[#e70d69]" />
                       </div>
                       <h3 className="font-bold text-lg mb-2">{benefit.title}</h3>
                       <p className="text-sm text-muted-foreground">{benefit.description}</p>
