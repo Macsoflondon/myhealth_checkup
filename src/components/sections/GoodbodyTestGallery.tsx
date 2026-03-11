@@ -116,11 +116,11 @@ const GoodbodyTestGallery = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 mb-4">
         {/* Logo */}
         <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-          <div className="bg-white rounded-lg p-3 sm:p-4 flex items-center justify-center" style={{ maxHeight: "160px" }}>
+          <div className="bg-white rounded-lg p-3 sm:p-4 flex items-center justify-center" style={{ maxHeight: "320px" }}>
             <img
               src={GOODBODY_LOGO}
               alt="Goodbody Clinic"
-              className="h-20 sm:h-24 md:h-28 w-auto object-contain"
+              className="h-40 sm:h-48 md:h-56 w-auto object-contain"
             />
           </div>
         </div>
