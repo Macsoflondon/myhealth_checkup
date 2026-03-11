@@ -87,7 +87,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
       role="menu"
       aria-label={`${itemName} dropdown menu`}
       className={`dropdown-content absolute top-full left-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[320px] max-w-[90vw] overflow-y-auto ${
-        isMobile ? 'sm:max-w-[400px] max-h-[60vh]' : 'sm:min-w-[540px] sm:max-w-[640px] max-h-[75vh]'
+        isMobile ? 'sm:max-w-[400px] max-h-[90vh]' : 'sm:min-w-[540px] sm:max-w-[640px] max-h-[90vh]'
       }`}
       style={{ 
         boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
