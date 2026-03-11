@@ -109,7 +109,7 @@ const AboutSection = () => (
               01225 444 144
             </a>
           </div>
-          <p className="mt-4 text-[#6b6459] font-sans leading-relaxed">
+          <p className="mt-4 text-muted-foreground font-sans leading-relaxed">
             Test at home, at one of 200+ nationwide clinics, or with a nurse visit. No GP referral needed for most tests.
           </p>
         </section>
