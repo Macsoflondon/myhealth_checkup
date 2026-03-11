@@ -100,7 +100,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             type="button"
             aria-haspopup="menu"
             aria-expanded={activeDropdown === item.name}
-            className={`group relative text-xs md:text-sm lg:text-[0.8rem] xl:text-sm font-semibold transition-all duration-300 px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 ${
+            className={`group relative text-sm md:text-base lg:text-base xl:text-lg font-semibold transition-all duration-300 px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-md whitespace-nowrap inline-flex items-center gap-1 ${
               hasAccent
                 ? "after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-turquoise"
                 : "hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150"
