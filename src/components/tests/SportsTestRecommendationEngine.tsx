@@ -136,11 +136,11 @@ export default function SportsTestRecommendationEngine() {
 
   return (
     <div className="space-y-6">
-      <Card className="border-2 border-[#FA6980]/20">
+      <Card className="border-2 border-[#e70d69]/20">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-lg bg-[#FA6980]/10 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#FA6980]" />
+            <div className="w-12 h-12 rounded-lg bg-[#e70d69]/10 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-[#e70d69]" />
             </div>
             <div>
               <CardTitle className="text-2xl">AI-Powered Test Recommendations</CardTitle>
