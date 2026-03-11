@@ -82,7 +82,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   // All navigation items for single row layout
   const allNavItems = primaryNavigationItems.filter(item => item.name !== "How It Works");
 
-  const highlightedItems = ["Fertility", "Cancer Screening"];
+  const highlightedItems: string[] = [];
 
   const renderNavItem = (item: typeof primaryNavigationItems[0]) => {
     // Check if this is the "Most Popular Tests" item
