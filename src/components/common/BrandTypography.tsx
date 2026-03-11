@@ -187,7 +187,7 @@ const BrandTypography = () => {
       {/* Example Combinations */}
       <Card className="mb-8 bg-gradient-to-br from-gray-50 to-white">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#1a1b34]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#081129]">
             Typography in Action
           </CardTitle>
           <CardDescription className="text-base">
