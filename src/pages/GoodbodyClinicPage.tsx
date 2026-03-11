@@ -104,8 +104,8 @@ const AboutSection = () => (
               <Mail className="h-5 w-5 text-muted-foreground" />
               clinic@goodbodywellness.co.uk
             </a>
-            <a href="tel:01225444144" className="flex items-center gap-3 text-[#4a443b] hover:text-[#3d3529] transition-colors font-sans">
-              <Phone className="h-5 w-5 text-[#9b958a]" />
+            <a href="tel:01225444144" className="flex items-center gap-3 text-foreground hover:text-[#081129] transition-colors font-sans">
+              <Phone className="h-5 w-5 text-muted-foreground" />
               01225 444 144
             </a>
           </div>
