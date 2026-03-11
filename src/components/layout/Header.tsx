@@ -80,8 +80,11 @@ const Header = ({ className }: HeaderProps) => {
       </ErrorBoundary>
     );
   }
-  // Toolbar always sticky
-  const toolbarClasses = cn("bg-white my-0 mx-0 px-0 py-2 shadow-sm", styles.toolbar);
+  // Toolbar with glassmorphism
+  const toolbarClasses = cn(
+    "bg-white/70 backdrop-blur-xl border-b border-white/20 my-0 mx-0 px-0 py-2 shadow-[0_4px_30px_rgba(0,0,0,0.08)]",
+    styles.toolbar
+  );
   return (
     <ErrorBoundary>
       <div className={cn("sticky top-0 z-50", className)} style={{ overflow: "visible" }}>
