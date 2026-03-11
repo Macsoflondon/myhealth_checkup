@@ -462,7 +462,7 @@ const SportsPerformancePage = () => {
                           <span>2-5 working days</span>
                         </div>
                       </div>
-                      <Button className="w-full bg-[#FA6980] hover:bg-[#E70D69] text-white" onClick={() => navigate('/compare?category=fitness-health')}>
+                      <Button className="w-full bg-[#e70d69] hover:bg-[#e70d69]/90 text-white" onClick={() => navigate('/compare?category=fitness-health')}>
                         Compare Prices
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
