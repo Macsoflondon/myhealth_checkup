@@ -59,11 +59,11 @@ const AboutSection = () => (
         </section>
 
         <section>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#3d3529] mb-6">Our Tests</h2>
+          <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-6">Our Tests</h2>
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-3">Cancer Screening</h3>
-              <ul className="space-y-1.5 text-[#6b6459] font-sans">
+              <h3 className="text-xl font-heading font-bold text-[#081129] mb-3">Cancer Screening</h3>
+              <ul className="space-y-1.5 text-muted-foreground font-sans">
                 <li>• TruCheck™ Early Cancer Screening (70 cancer types)</li>
                 <li>• EpiSwitch® PSE Prostate Cancer Test (94% accuracy)</li>
                 <li>• Guardant Reveal™ Liquid Biopsy Monitoring</li>
