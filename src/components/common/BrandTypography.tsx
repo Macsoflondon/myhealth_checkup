@@ -264,7 +264,7 @@ const BrandTypography = () => {
               </ul>
             </div>
             <div>
-              <h4 className="text-xl font-heading font-bold text-[#FA6980] mb-3">Lato</h4>
+              <h4 className="text-xl font-heading font-bold text-[#e70d69] mb-3">Lato</h4>
               <ul className="text-sm space-y-1 text-white/80">
                 <li>✓ Body paragraphs</li>
                 <li>✓ Descriptions</li>
