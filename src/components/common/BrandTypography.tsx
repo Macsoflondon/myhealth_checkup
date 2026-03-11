@@ -245,7 +245,7 @@ const BrandTypography = () => {
       </Card>
 
       {/* Quick Reference */}
-      <Card className="bg-[#1a1b34] text-white">
+      <Card className="bg-[#081129] text-white">
         <CardHeader>
           <CardTitle className="text-3xl font-heading font-bold text-white">
             Quick Reference Guide
