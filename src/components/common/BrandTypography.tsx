@@ -75,9 +75,9 @@ const BrandTypography = () => {
       </Card>
 
       {/* Lato - Body Text */}
-      <Card className="mb-8 border-2 border-[#FA6980]">
+      <Card className="mb-8 border-2 border-[#e70d69]">
         <CardHeader>
-          <CardTitle className="text-3xl font-heading font-bold text-[#FA6980]">
+          <CardTitle className="text-3xl font-heading font-bold text-[#e70d69]">
             Lato — Body Text & Clarity
           </CardTitle>
           <CardDescription className="text-base">
