@@ -116,7 +116,7 @@ const BrandTypography = () => {
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
-            <h6 className="font-heading font-semibold text-[#1a1b34] mb-2">Usage Guidelines:</h6>
+            <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
             <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
               <li>Default font for all body content</li>
               <li>Weights: 300 (light), 400 (regular), 500 (medium), 700 (bold)</li>
