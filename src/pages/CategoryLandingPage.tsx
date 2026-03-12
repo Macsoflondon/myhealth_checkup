@@ -115,14 +115,25 @@ const CategoryLandingPage: React.FC = () => {
           <meta name="description" content={content.metaDescription} />
           <meta name="keywords" content={content.keywords.join(", ")} />
           <link rel="canonical" href={`https://myhealthcheckup.co.uk/tests/${content.slug}`} />
+          <meta name="robots" content="index, follow" />
           
           {/* Open Graph */}
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="myhealth checkup" />
           <meta property="og:title" content={content.title} />
           <meta property="og:description" content={content.metaDescription} />
-          <meta property="og:type" content="website" />
           <meta property="og:url" content={`https://myhealthcheckup.co.uk/tests/${content.slug}`} />
+          <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta property="og:locale" content="en_GB" />
           
-          {/* Structured Data */}
+          {/* Twitter Card */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@myhealthcheckup" />
+          <meta name="twitter:title" content={content.title} />
+          <meta name="twitter:description" content={content.metaDescription} />
+          <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          
+          {/* JSON-LD Structured Data */}
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
@@ -130,10 +141,23 @@ const CategoryLandingPage: React.FC = () => {
               "name": content.heroTitle,
               "description": content.metaDescription,
               "url": `https://myhealthcheckup.co.uk/tests/${content.slug}`,
+              "isPartOf": {
+                "@type": "WebSite",
+                "name": "myhealth checkup",
+                "url": "https://myhealthcheckup.co.uk"
+              },
               "mainEntity": {
                 "@type": "MedicalTest",
                 "name": content.name,
                 "description": content.introduction
+              },
+              "breadcrumb": {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
+                  { "@type": "ListItem", "position": 2, "name": "Tests", "item": "https://myhealthcheckup.co.uk/test-categories" },
+                  { "@type": "ListItem", "position": 3, "name": content.name, "item": `https://myhealthcheckup.co.uk/tests/${content.slug}` }
+                ]
               }
             })}
           </script>

@@ -229,6 +229,46 @@ export default function EnhancedComparePage() {
       <Helmet>
         <title>Compare Blood Tests & Cancer Screening | myhealth checkup</title>
         <meta name="description" content="Compare blood tests and cancer screening from 7 trusted UK providers. View prices, biomarkers, turnaround times, and additional costs side-by-side." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content="Compare Blood Tests & Cancer Screening | myhealth checkup" />
+        <meta property="og:description" content="Compare blood tests and cancer screening from 7 trusted UK providers. View prices, biomarkers, turnaround times, and additional costs side-by-side." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/compare" />
+        <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+        <meta property="og:locale" content="en_GB" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@myhealthcheckup" />
+        <meta name="twitter:title" content="Compare Blood Tests & Cancer Screening | myhealth checkup" />
+        <meta name="twitter:description" content="Compare blood tests from 7 trusted UK providers. Real-time prices, biomarkers, and turnaround times." />
+        <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+
+        {/* JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Compare Blood Tests & Cancer Screening",
+            "description": "Compare blood tests and cancer screening from 7 trusted UK providers. View prices, biomarkers, turnaround times, and additional costs side-by-side.",
+            "url": "https://myhealthcheckup.co.uk/compare",
+            "isPartOf": {
+              "@type": "WebSite",
+              "name": "myhealth checkup",
+              "url": "https://myhealthcheckup.co.uk"
+            },
+            "mainEntity": {
+              "@type": "ItemList",
+              "name": "UK Health Test Comparison",
+              "description": "Compare private blood tests from UKAS-accredited providers",
+              "numberOfItems": tests.length
+            }
+          })}
+        </script>
       </Helmet>
 
       <Header />
