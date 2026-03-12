@@ -56,6 +56,46 @@ export const CATEGORY_SEARCH_TERMS: Record<string, string[]> = {
   'Cancer Screening': ['cancer', 'screening', 'tumour', 'psa', 'cea', 'ca125', 'oncology'],
 };
 
+/**
+ * Maps URL slugs to the actual category values stored in the provider_tests table.
+ * Multiple DB values may map to a single slug (e.g. "Hormones" and "Hormone Tests" → "hormones").
+ */
+export const SLUG_TO_DB_CATEGORIES: Record<string, string[]> = {
+  'hormones': ['Hormones', 'Hormone Tests', 'Hormone', 'Reproductive Hormones'],
+  'thyroid': ['Thyroid', 'Thyroid Tests'],
+  'vitamins': ['Vitamins & Minerals', 'Vitamin & Mineral Tests', 'Vitamins'],
+  'diabetes': ['Diabetes', 'Diabetes Testing'],
+  'heart-health': ['Heart Health', 'Cardiovascular Health'],
+  'liver': ['Liver Function', 'Liver Health'],
+  'liver-health': ['Liver Function', 'Liver Health'],
+  'kidney-health': ['Kidney Function', 'Kidney Health'],
+  'cancer-screening': ['Cancer Screening'],
+  'fertility': ['Fertility', 'Fertility Testing'],
+  'general-health': ['General Health', 'Health Screening', 'Wellness'],
+  'allergy-testing': ['Allergy', 'Allergy Testing', 'Allergy & Sensitivity'],
+  'sports-performance-tests': ['Sports Performance', 'Sports & Fitness'],
+  'mens-health': ["Men's Health", 'Mens Health'],
+  'womens-health': ["Women's Health", 'Womens Health'],
+  'sexual-health': ['Sexual Health'],
+  'weight-loss-tests': ['Weight Management'],
+  'longevity-tests': ['General Health', 'Health Screening', 'Wellness'],
+  'blood-tests': ['Haematology', 'Blood Count'],
+  'iron-tests': ['Iron Status', 'Iron & Anaemia'],
+  'energy-tests': ['Fatigue', 'Fatigue & Energy'],
+  'immunity-tests': ['Immunology'],
+  'infection-tests': ['Sexual Health'],
+  'gut-health': ['Gut Health', 'Digestive Health'],
+  'inflammation': ['Inflammation'],
+};
+
+/**
+ * Resolves a URL slug to the matching DB category values.
+ * Returns undefined if no mapping exists (caller should fall back to ilike).
+ */
+export function getDbCategoriesForSlug(slug: string): string[] | undefined {
+  return SLUG_TO_DB_CATEGORIES[slug.toLowerCase()];
+}
+
 export function getCategoryColor(categoryId: string): string {
   return CATEGORY_COLORS[categoryId] || 'bg-gray-400 text-white';
 }

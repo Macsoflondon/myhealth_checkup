@@ -34,11 +34,22 @@ const SimilarTestsSection = ({
   useEffect(() => {
     const fetchSimilarTests = async () => {
       try {
-        const { data, error } = await supabase
+        // Resolve slug to DB categories if needed
+        const { getDbCategoriesForSlug } = await import('@/constants/categories');
+        const dbCategories = getDbCategoriesForSlug(category);
+        
+        let query = supabase
           .from('provider_tests')
           .select('id, test_name, provider_id, price, category, biomarker_count, provider_test_id')
-          .eq('is_active', true)
-          .ilike('category', `%${category}%`)
+          .eq('is_active', true);
+        
+        if (dbCategories && dbCategories.length > 0) {
+          query = query.in('category', dbCategories);
+        } else {
+          query = query.ilike('category', `%${category}%`);
+        }
+        
+        const { data, error } = await query
           .neq('provider_id', currentProvider || '')
           .order('price', { ascending: true })
           .limit(4);

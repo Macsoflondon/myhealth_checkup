@@ -22,7 +22,7 @@ import { EnhancedComparisonTable } from '@/components/compare/EnhancedComparison
 import { SaveComparisonDialog } from '@/components/compare/SaveComparisonDialog';
 import { SavedComparisonsList } from '@/components/compare/SavedComparisonsList';
 import { ProviderLogo } from '@/components/ProviderLogo';
-import { compareCategories } from '@/constants/categories';
+import { compareCategories, getDbCategoriesForSlug } from '@/constants/categories';
 import { useSavedProviders } from '@/hooks/useSavedProviders';
 import { cn } from '@/lib/utils';
 import type { EnhancedTestData, SortOption, SavedComparison } from '@/types/comparison';
@@ -79,7 +79,14 @@ export default function EnhancedComparePage() {
         .eq('is_active', true);
 
       if (category && category !== 'all') {
-        query = query.ilike('category', `%${category}%`);
+        const dbCategories = getDbCategoriesForSlug(category);
+        if (dbCategories && dbCategories.length > 0) {
+          query = query.in('category', dbCategories);
+        } else {
+          // Fallback: convert slug to space-separated words for ilike
+          const searchable = category.replace(/-/g, ' ').replace(/tests?$/i, '').trim();
+          query = query.ilike('category', `%${searchable}%`);
+        }
       }
 
       if (selectedProviders.length > 0) {
