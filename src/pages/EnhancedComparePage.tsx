@@ -79,7 +79,14 @@ export default function EnhancedComparePage() {
         .eq('is_active', true);
 
       if (category && category !== 'all') {
-        query = query.ilike('category', `%${category}%`);
+        const dbCategories = getDbCategoriesForSlug(category);
+        if (dbCategories && dbCategories.length > 0) {
+          query = query.in('category', dbCategories);
+        } else {
+          // Fallback: convert slug to space-separated words for ilike
+          const searchable = category.replace(/-/g, ' ').replace(/tests?$/i, '').trim();
+          query = query.ilike('category', `%${searchable}%`);
+        }
       }
 
       if (selectedProviders.length > 0) {
