@@ -22,7 +22,7 @@ import { EnhancedComparisonTable } from '@/components/compare/EnhancedComparison
 import { SaveComparisonDialog } from '@/components/compare/SaveComparisonDialog';
 import { SavedComparisonsList } from '@/components/compare/SavedComparisonsList';
 import { ProviderLogo } from '@/components/ProviderLogo';
-import { compareCategories } from '@/constants/categories';
+import { compareCategories, getDbCategoriesForSlug } from '@/constants/categories';
 import { useSavedProviders } from '@/hooks/useSavedProviders';
 import { cn } from '@/lib/utils';
 import type { EnhancedTestData, SortOption, SavedComparison } from '@/types/comparison';
