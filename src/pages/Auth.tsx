@@ -43,13 +43,18 @@ const Auth = () => {
   const navigate = useNavigate();
   const passwordStrength = validatePassword(password);
 
-  // Load saved email if "Remember Me" was checked previously
+  // Clear any stale lockout data and load saved email on mount
   useEffect(() => {
+    // Clear lockout counter so previous failed attempts don't block login
+    try { localStorage.removeItem('login_attempts'); } catch {}
+    recordSuccessfulLogin(); // resets lockout state in the hook
+
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
       setEmail(savedEmail);
       setRememberMe(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
