@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 const categories = [
   "Cancer Screening",
@@ -12,35 +12,71 @@ const categories = [
   "Comprehensive Blood Panels",
   "Thyroid Function",
   "Longevity Tests",
+  "Fitness & Performance",
   "Iron & Anaemia",
 ];
 
+const SETS = 8;
+
 const TestCategoryTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef(0);
+  const singleSetWidthRef = useRef(0);
+
+  const measureSetWidth = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return 0;
+    let width = 0;
+    for (let i = 0; i < categories.length && i < track.children.length; i++) {
+      width += (track.children[i] as HTMLElement).getBoundingClientRect().width;
+    }
+    return width;
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    let animationId: number;
-    let position = 0;
-    const speed = 0.4;
+    const measure = () => {
+      singleSetWidthRef.current = measureSetWidth();
+    };
 
-    const animate = () => {
-      position -= speed;
-      const firstChild = track.firstElementChild as HTMLElement | null;
-      if (firstChild && Math.abs(position) >= firstChild.offsetWidth) {
-        position += firstChild.offsetWidth;
+    measure();
+    document.fonts?.ready?.then(measure);
+
+    let animationId: number;
+    let lastTime = 0;
+    const pxPerMs = 0.04;
+
+    const animate = (timestamp: number) => {
+      if (lastTime === 0) lastTime = timestamp;
+      const delta = timestamp - lastTime;
+      lastTime = timestamp;
+
+      const clampedDelta = Math.min(delta, 50);
+      positionRef.current -= pxPerMs * clampedDelta;
+
+      const setWidth = singleSetWidthRef.current;
+      if (setWidth > 0 && Math.abs(positionRef.current) >= setWidth) {
+        positionRef.current += setWidth;
       }
-      track.style.transform = `translateX(${position}px)`;
+
+      track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
 
-  const items = [...categories, ...categories, ...categories, ...categories, ...categories, ...categories];
+    const onResize = () => measure();
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [measureSetWidth]);
+
+  const items = Array.from({ length: SETS }, () => categories).flat();
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none">
@@ -52,7 +88,11 @@ const TestCategoryTicker = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
-          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+          <div
+            ref={trackRef}
+            className="flex whitespace-nowrap"
+            style={{ willChange: "transform", backfaceVisibility: "hidden" }}
+          >
             {items.map((cat, i) => (
               <span key={i} className="flex items-center shrink-0">
                 <span className="font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-white">
