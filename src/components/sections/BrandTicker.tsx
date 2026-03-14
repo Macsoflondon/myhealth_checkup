@@ -6,7 +6,8 @@ const promos = [
   { provider: "Lola Health", text: "£20 off with code Mar20", color: "#fa757e" },
 ];
 
-const SETS = 6;
+// Use enough sets so there's always content visible during reset
+const SETS = 8;
 
 const BrandTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -19,7 +20,7 @@ const BrandTicker = () => {
     const promoCount = promos.length;
     let width = 0;
     for (let i = 0; i < promoCount && i < track.children.length; i++) {
-      width += (track.children[i] as HTMLElement).offsetWidth;
+      width += (track.children[i] as HTMLElement).getBoundingClientRect().width;
     }
     return width;
   }, []);
@@ -28,34 +29,39 @@ const BrandTicker = () => {
     const track = trackRef.current;
     if (!track) return;
 
-    // Measure after fonts load
     const measure = () => {
       singleSetWidthRef.current = measureSetWidth();
     };
 
     measure();
-    // Re-measure after fonts are ready
     document.fonts?.ready?.then(measure);
 
     let animationId: number;
-    const speed = 0.5;
+    let lastTime = 0;
+    // pixels per millisecond for frame-rate independent movement
+    const pxPerMs = 0.04;
 
-    const animate = () => {
-      positionRef.current -= speed;
+    const animate = (timestamp: number) => {
+      if (lastTime === 0) lastTime = timestamp;
+      const delta = timestamp - lastTime;
+      lastTime = timestamp;
+
+      // Cap delta to avoid jumps on tab refocus
+      const clampedDelta = Math.min(delta, 50);
+      positionRef.current -= pxPerMs * clampedDelta;
+
       const setWidth = singleSetWidthRef.current;
-
-      // Seamless reset: when we've scrolled one full set, jump back by one set width
       if (setWidth > 0 && Math.abs(positionRef.current) >= setWidth) {
         positionRef.current += setWidth;
       }
 
-      track.style.transform = `translateX(${positionRef.current}px)`;
+      // Use translate3d for GPU compositing — no layout/paint, just composite
+      track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
 
-    // Re-measure on resize
     const onResize = () => measure();
     window.addEventListener("resize", onResize);
 
@@ -77,7 +83,11 @@ const BrandTicker = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
-          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+          <div
+            ref={trackRef}
+            className="flex whitespace-nowrap"
+            style={{ willChange: "transform", backfaceVisibility: "hidden" }}
+          >
             {items.map((promo, i) => (
               <span key={i} className="flex items-center shrink-0">
                 <span className="font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5" style={{ color: promo.color }}>
