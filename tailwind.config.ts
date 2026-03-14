@@ -74,6 +74,8 @@ export default {
     			]
     		},
     		colors: {
+    			/* Pearl white - 92% opaque pearl white used globally instead of pure white */
+    			white: 'hsl(220 5% 97%)',
     			border: 'hsl(var(--border))',
     			input: 'hsl(var(--input))',
     			ring: 'hsl(var(--ring))',
