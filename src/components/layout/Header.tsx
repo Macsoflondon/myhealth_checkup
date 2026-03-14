@@ -82,7 +82,7 @@ const Header = ({ className }: HeaderProps) => {
   }
   // Toolbar with glassmorphism
   const toolbarClasses = cn(
-    "bg-white/70 backdrop-blur-xl border-b border-white/20 my-0 mx-0 px-0 py-2 shadow-[0_4px_30px_rgba(0,0,0,0.08)]",
+    "bg-white/85 backdrop-blur-2xl border-b border-white/30 my-0 mx-0 px-0 py-2 shadow-[0_4px_30px_rgba(0,0,0,0.06)]",
     styles.toolbar
   );
   return (
