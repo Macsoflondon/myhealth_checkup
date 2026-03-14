@@ -65,9 +65,9 @@
 
     /* Error */
     --error: 0 72% 42%;
-    --error-foreground: 0 0% 100%;
+    --error-foreground: 220 10% 95%;
     --error-container: 0 100% 93%;
-    --background: 0 0% 100%;
+    --background: 220 5% 97%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
