@@ -59,8 +59,8 @@
     --tertiary-on-container: 224 67% 5%;
 
     /* Surface */
-    --surface: 0 0% 100%;
-    --surface-variant: 0 0% 96%;
+    --surface: 220 5% 97%;
+    --surface-variant: 220 5% 95%;
     --surface-tint: 186 82% 97%;
 
     /* Error */
