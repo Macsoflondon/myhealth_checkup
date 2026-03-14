@@ -1,27 +1,20 @@
 
 
-## Why It Still Looks Wrong
+## Remove WhyChooseUs and TopConcernsSection from Homepage
 
-I found the root cause. There are **two problems**:
+Three files to change:
 
-1. **Desktop toolbar**: The current `bg-white/85` (85% opacity) still has visible transparency. For "mostly solid white" you need ~95% opacity so it reads as white with just a hint of depth.
+### 1. `src/pages/Index.tsx`
+- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
+- Remove the TopConcernsSection JSX block (lines 134-135)
+- Remove the WhyChooseUs JSX block (lines 144-145)
 
-2. **Mobile**: The mobile header has **no toolbar at all** -- it returns early with just the navy (`#081129`) header bar. There is no navigation toolbar rendered on mobile, so there's nothing to make "pearl white."
+### 2. `src/components/sections/WhyChooseUs.tsx`
+- Delete this file entirely
 
-## Plan
+### 3. `src/components/sections/index.ts`
+- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
+- Keep TopConcernsSection export so it remains available for future use
 
-### 1. Desktop toolbar -- increase opacity to near-solid white
-In `src/components/layout/Header.tsx` line 85, change the toolbar classes:
-- `bg-white/85` → `bg-white/95` (near-solid white, subtle depth)
-- Keep `backdrop-blur-2xl` for the slight glass effect behind the 5% transparency
-- Add `-webkit-backdrop-filter: blur(40px)` via inline style for Safari compatibility
-
-### 2. Mobile header -- no changes needed (or clarify)
-The mobile view currently shows a navy header with the logo and menu button. There is no separate navigation toolbar on mobile (navigation is in the drawer). If you want the mobile header background changed from navy to white as well, that would be a separate change -- but that would be a significant design departure from the current brand look.
-
-### 3. Update knowledge memory
-Update `navigation-toolbar` memory to reflect `bg-white/95` instead of `bg-white/70`.
-
-**Files to edit:**
-- `src/components/layout/Header.tsx` (line 85: change opacity class)
+TopConcernsSection component file stays in the codebase untouched — available for reuse later.
 
