@@ -57,8 +57,8 @@ const Hero = () => {
           </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="mx-auto text-[1.25rem] xs:text-[1.5rem] sm:text-[2rem] md:text-[2.75rem] lg:text-[3.5rem] xl:text-[4rem] font-heading font-bold tracking-tight leading-[1.1] sm:leading-[1.15] mb-3 sm:mb-4 md:mb-6">
-              <span className="block text-brand-navy">Compare the UK's leading</span>
-              <span className="block text-brand-navy">private health test providers</span>
+              <span className="block text-brand-navy xl:whitespace-nowrap">Compare the UK's leading</span>
+              <span className="block text-brand-navy xl:whitespace-nowrap">private health test providers</span>
               <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
               <span className="block text-brand-pink">All in one place!</span>
             </h1>
