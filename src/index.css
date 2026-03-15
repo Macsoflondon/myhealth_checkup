@@ -39,13 +39,13 @@
 
     /* Primary - Turquoise (Brand #22c0d4) */
     --primary: 187 72% 48%;
-    --primary-foreground: 220 10% 95%;
+    --primary-foreground: 0 0% 100%;
     --primary-container: 187 72% 90%;
     --primary-on-container: 187 72% 15%;
 
     /* Secondary - Pink (Brand #e70d69) */
     --secondary: 335 89% 48%;
-    --secondary-foreground: 220 10% 95%;
+    --secondary-foreground: 0 0% 100%;
     --secondary-container: 335 89% 93%;
     --secondary-on-container: 335 89% 15%;
 
@@ -54,7 +54,7 @@
 
     /* Tertiary - Navy (Brand #081129) */
     --tertiary: 224 67% 10%;
-    --tertiary-foreground: 220 10% 95%;
+    --tertiary-foreground: 0 0% 100%;
     --tertiary-container: 224 67% 90%;
     --tertiary-on-container: 224 67% 5%;
 
@@ -65,7 +65,7 @@
 
     /* Error */
     --error: 0 72% 42%;
-    --error-foreground: 220 10% 95%;
+    --error-foreground: 0 0% 100%;
     --error-container: 0 100% 93%;
     --background: 220 5% 97%;
     --foreground: 222.2 84% 4.9%;
@@ -77,16 +77,16 @@
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 187 72% 48%;
-    --primary-foreground: 220 10% 95%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 335 89% 48%;
-    --secondary-foreground: 220 10% 95%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 95%;
     --muted-foreground: 220 10% 45%;
 
     --accent: 335 89% 48%;
-    --accent-foreground: 220 10% 95%;
+    --accent-foreground: 0 0% 100%;
 
     --outline-foreground: 238 33% 15%;
     --ghost-foreground: 238 33% 15%;
@@ -123,7 +123,7 @@
     --glass-shadow: 0 8px 32px hsl(211 80% 8% / 0.1);
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 220 10% 95%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -134,7 +134,7 @@
     --sidebar-background: 220 5% 97%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 220 10% 95%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
