@@ -1,15 +1,20 @@
 
 
-## Fix Toolbar Background to Bright Pearl White
+## Remove WhyChooseUs and TopConcernsSection from Homepage
 
-**Problem**: The navigation toolbar currently uses `bg-white/[0.92]` (92% opacity pearl white with transparency), which can appear inconsistent depending on what's behind it.
+Three files to change:
 
-**Solution**: Change the toolbar background to a fixed, fully opaque bright pearl white — no transparency, just the solid pearl color.
+### 1. `src/pages/Index.tsx`
+- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
+- Remove the TopConcernsSection JSX block (lines 134-135)
+- Remove the WhyChooseUs JSX block (lines 144-145)
 
-**Change** in `src/components/layout/Header.tsx` (line ~86):
-- Replace `bg-white/[0.92] backdrop-blur-2xl border-b border-white/30` with `bg-[hsl(220,5%,97%)] border-b border-gray-200/30`
-- Remove `backdrop-blur-2xl` since we're going fully opaque — no need for blur
-- Keep the shadow and other styling intact
+### 2. `src/components/sections/WhyChooseUs.tsx`
+- Delete this file entirely
 
-This gives the toolbar a clean, solid pearl white background that's consistent regardless of scroll position or content behind it.
+### 3. `src/components/sections/index.ts`
+- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
+- Keep TopConcernsSection export so it remains available for future use
+
+TopConcernsSection component file stays in the codebase untouched — available for reuse later.
 
