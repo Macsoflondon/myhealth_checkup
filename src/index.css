@@ -65,7 +65,7 @@
 
     /* Error */
     --error: 0 72% 42%;
-    --error-foreground: 220 10% 95%;
+    --error-foreground: 0 0% 100%;
     --error-container: 0 100% 93%;
     --background: 220 5% 97%;
     --foreground: 222.2 84% 4.9%;
@@ -77,16 +77,16 @@
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 187 72% 48%;
-    --primary-foreground: 220 10% 95%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 335 89% 48%;
-    --secondary-foreground: 220 10% 95%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 95%;
     --muted-foreground: 220 10% 45%;
 
     --accent: 335 89% 48%;
-    --accent-foreground: 220 10% 95%;
+    --accent-foreground: 0 0% 100%;
 
     --outline-foreground: 238 33% 15%;
     --ghost-foreground: 238 33% 15%;
