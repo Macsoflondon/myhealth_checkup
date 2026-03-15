@@ -52,8 +52,8 @@ const Hero = () => {
           <div className="max-w-6xl mx-auto text-center">
             {/* Badge */}
             <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid rgba(34,192,212,0.3)", borderRadius: 20, padding: "6px 16px", marginBottom: 24 }}>
-            <span className="text-brand-turquoise text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid hsl(224, 67%, 10%)", borderRadius: 20, padding: "6px 16px", marginBottom: 24 }}>
+            <span className="text-brand-navy text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
           </div>
             {/* Headline - Clear promise in plain language */}
             <h1 className="mx-auto text-[1.25rem] xs:text-[1.5rem] sm:text-[2rem] md:text-[2.75rem] lg:text-[3.5rem] xl:text-[4rem] font-heading font-bold tracking-tight leading-[1.1] sm:leading-[1.15] mb-3 sm:mb-4 md:mb-6">
