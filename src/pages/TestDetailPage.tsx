@@ -90,7 +90,7 @@ const TestDetailPage = () => {
 
         if (similarTests && similarTests.length > 0) {
           const providerOptions: ProviderTestOption[] = similarTests.map(t => {
-            const provRating = providerRatings[t.provider_id] || { rating: 4.5, reviews: "500+" };
+            const provRating = getProviderRating(t.provider_id);
             return {
               id: t.id,
               providerId: t.provider_id,
