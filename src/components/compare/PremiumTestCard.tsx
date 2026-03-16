@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import type { CompareTestData } from "@/services/CompareService";
 import { getCategoryTagline } from "@/utils/categoryTaglines";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+import { getProviderRating } from "@/constants/providerRatings";
 
 interface PremiumTestCardProps {
   test: CompareTestData;

@@ -169,7 +169,7 @@ const TestDetailPage = () => {
     );
   }
 
-  const currentProviderRating = providerRatings[providerId?.toLowerCase() || ''] || { rating: 4.5, reviews: "500+" };
+  const currentProviderRating = getProviderRating(providerId || '');
   const bookingUrl = test.url ? buildProviderBookingUrl(test.url, providerId || '', test.test_name) : null;
 
   return (

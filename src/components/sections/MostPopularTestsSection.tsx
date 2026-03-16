@@ -92,7 +92,7 @@ const MostPopularTestsSection = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             {popularTests?.slice(0, 12).map((test) => {
-              const { rating, reviewCount } = getTestRating(test.provider_id, test.test_name);
+              const { rating, reviewCount } = getTestRating(test.provider_id);
               const logoPath = providerLogos[test.provider_id];
               
               return (
