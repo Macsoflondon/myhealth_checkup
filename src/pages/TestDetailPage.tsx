@@ -101,7 +101,7 @@ const TestDetailPage = () => {
               biomarkerCount: t.biomarker_count || undefined,
               url: t.url || undefined,
               rating: provRating.rating,
-              reviews: provRating.reviews
+              reviews: provRating.reviewsFormatted
             };
           });
           setOtherProviders(providerOptions);
