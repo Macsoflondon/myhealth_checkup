@@ -4,7 +4,7 @@ import { Quote } from "lucide-react";
 const quotes = [
   {
     quote:
-      "Early detection through routine blood testing can significantly improve outcomes for conditions such as diabetes, cardiovascular disease, and thyroid disorders.",
+      "Early detection of cardiovascular and metabolic risk factors through health checks (including blood tests) can help identify conditions such as diabetes and cardiovascular disease earlier and improve long-term outcomes.",
     source: "NHS Health Check Programme",
     credential: "Public Health England",
   },
