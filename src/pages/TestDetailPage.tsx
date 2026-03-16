@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
@@ -51,15 +52,7 @@ const TestDetailPage = () => {
     p.id.toLowerCase().startsWith(providerId?.toLowerCase() + '-')
   );
 
-  const providerRatings: Record<string, { rating: number; reviews: string }> = {
-    "medichecks": { rating: 4.7, reviews: "3,521" },
-    "goodbody-clinic": { rating: 4.6, reviews: "1,240" },
-    "thriva": { rating: 4.5, reviews: "2,156" },
-    "randox-health": { rating: 4.8, reviews: "1,847" },
-    "london-medical-laboratory": { rating: 4.4, reviews: "892" },
-    "lola-health": { rating: 4.3, reviews: "567" },
-    "the-doctors-laboratory": { rating: 4.8, reviews: "2,234" }
-  };
+  // Provider ratings now imported from shared constants
 
   useEffect(() => {
     if (testId) {
@@ -97,7 +90,7 @@ const TestDetailPage = () => {
 
         if (similarTests && similarTests.length > 0) {
           const providerOptions: ProviderTestOption[] = similarTests.map(t => {
-            const provRating = providerRatings[t.provider_id] || { rating: 4.5, reviews: "500+" };
+            const provRating = getProviderRating(t.provider_id);
             return {
               id: t.id,
               providerId: t.provider_id,
@@ -108,7 +101,7 @@ const TestDetailPage = () => {
               biomarkerCount: t.biomarker_count || undefined,
               url: t.url || undefined,
               rating: provRating.rating,
-              reviews: provRating.reviews
+              reviews: provRating.reviewsFormatted
             };
           });
           setOtherProviders(providerOptions);
@@ -176,7 +169,7 @@ const TestDetailPage = () => {
     );
   }
 
-  const currentProviderRating = providerRatings[providerId?.toLowerCase() || ''] || { rating: 4.5, reviews: "500+" };
+  const currentProviderRating = getProviderRating(providerId || '');
   const bookingUrl = test.url ? buildProviderBookingUrl(test.url, providerId || '', test.test_name) : null;
 
   return (
@@ -336,7 +329,7 @@ const TestDetailPage = () => {
                     biomarkerCount: test.biomarker_count || undefined,
                     url: test.url || undefined,
                     rating: currentProviderRating.rating,
-                    reviews: currentProviderRating.reviews
+                    reviews: currentProviderRating.reviewsFormatted
                   },
                   ...otherProviders
                 ]}
