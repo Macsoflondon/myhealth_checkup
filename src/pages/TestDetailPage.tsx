@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
