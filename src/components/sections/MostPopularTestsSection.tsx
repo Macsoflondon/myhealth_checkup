@@ -15,35 +15,11 @@ const providerLogos: Record<string, string> = {
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
 };
 
-// Provider-based ratings for consistency
-const providerRatings: Record<string, number> = {
-  'medichecks': 4.7,
-  'goodbody-clinic': 4.8,
-  'goodbody': 4.8,
-  'lola-health': 4.6,
-  'thriva': 4.5,
-  'randox': 4.6,
-  'london-medical-laboratory': 4.4,
-};
+import { getProviderRating } from "@/constants/providerRatings";
 
-const baseReviewCounts: Record<string, number> = {
-  'medichecks': 800,
-  'goodbody-clinic': 400,
-  'goodbody': 400,
-  'lola-health': 250,
-  'thriva': 300,
-  'randox': 200,
-  'london-medical-laboratory': 100,
-};
-
-const getTestRating = (providerId: string, testName: string): { rating: number; reviewCount: number } => {
-  const normalizedProvider = providerId?.toLowerCase() || '';
-  const rating = providerRatings[normalizedProvider] || 4.5;
-  const baseReviews = baseReviewCounts[normalizedProvider] || 150;
-  // Use test name hash for consistent review count per test
-  const testHash = testName.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const reviewCount = baseReviews + (testHash % 200);
-  return { rating, reviewCount };
+const getTestRating = (providerId: string): { rating: number; reviewCount: number } => {
+  const data = getProviderRating(providerId);
+  return { rating: data.rating, reviewCount: data.reviews };
 };
 
 const StarRating = ({ rating, reviewCount }: { rating: number; reviewCount: number }) => {

@@ -51,15 +51,7 @@ const TestDetailPage = () => {
     p.id.toLowerCase().startsWith(providerId?.toLowerCase() + '-')
   );
 
-  const providerRatings: Record<string, { rating: number; reviews: string }> = {
-    "medichecks": { rating: 4.7, reviews: "3,521" },
-    "goodbody-clinic": { rating: 4.6, reviews: "1,240" },
-    "thriva": { rating: 4.5, reviews: "2,156" },
-    "randox-health": { rating: 4.8, reviews: "1,847" },
-    "london-medical-laboratory": { rating: 4.4, reviews: "892" },
-    "lola-health": { rating: 4.3, reviews: "567" },
-    "the-doctors-laboratory": { rating: 4.8, reviews: "2,234" }
-  };
+  // Provider ratings now imported from shared constants
 
   useEffect(() => {
     if (testId) {

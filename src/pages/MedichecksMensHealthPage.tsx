@@ -136,8 +136,8 @@ const MedichecksMensHealthPage = () => {
                           : "Finger-prick collection"
                       }
                       slug={generateTestSlug(test.test_name)}
-                      rating={4.5}
-                      reviewCount={Math.floor(Math.random() * 200) + 50}
+                      rating={4.0}
+                      reviewCount={950}
                     />
                   ))}
                 </div>

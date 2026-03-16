@@ -54,21 +54,8 @@ const ProviderProfilePage = () => {
 
   const brand = getBranding(provider.name);
 
-  const getProviderRating = (name: string) => {
-    const ratings: Record<string, { rating: number; reviews: string }> = {
-      "Medichecks": { rating: 4.7, reviews: "3,521" },
-      "GoodBody Clinic": { rating: 4.6, reviews: "1,240" },
-      "Thriva": { rating: 4.5, reviews: "2,156" },
-      "Randox Health": { rating: 4.8, reviews: "1,847" },
-      "London Medical Laboratory": { rating: 4.4, reviews: "892" },
-      "Lola Health": { rating: 4.3, reviews: "567" },
-      "Tuli Health": { rating: 4.5, reviews: "1,123" },
-      "The Doctors Laboratory": { rating: 4.8, reviews: "2,234" }
-    };
-    return ratings[name] || { rating: 4.5, reviews: "500+" };
-  };
-
-  const ratingData = getProviderRating(provider.name);
+  const providerRatingData = getProviderRating(provider.name);
+  const ratingData = { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted };
   const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
 
   // Test categories offered by this provider
