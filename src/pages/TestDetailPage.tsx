@@ -329,7 +329,7 @@ const TestDetailPage = () => {
                     biomarkerCount: test.biomarker_count || undefined,
                     url: test.url || undefined,
                     rating: currentProviderRating.rating,
-                    reviews: currentProviderRating.reviews
+                    reviews: currentProviderRating.reviewsFormatted
                   },
                   ...otherProviders
                 ]}
