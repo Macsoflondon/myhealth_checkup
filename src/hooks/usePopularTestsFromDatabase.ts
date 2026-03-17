@@ -77,7 +77,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
