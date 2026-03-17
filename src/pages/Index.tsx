@@ -109,7 +109,8 @@ const Index = () => {
         {/* 3. Mission Section */}
         <MissionSection />
         
-        
+        {/* 4. Most Popular Tests */}
+        <MostPopularTestsSection />
         
         {/* 5. Journey Simplified */}
         <JourneySimplified />
