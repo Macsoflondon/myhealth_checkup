@@ -241,7 +241,7 @@ export function EnhancedTestCard({
 
           <Button 
             className="flex-1"
-            onClick={onBookNow || (() => window.open(url, "_blank"))}
+            onClick={onBookNow || (() => window.open(url, "_blank", "noopener,noreferrer"))}
           >
             Book Now - £{price.toFixed(2)}
           </Button>

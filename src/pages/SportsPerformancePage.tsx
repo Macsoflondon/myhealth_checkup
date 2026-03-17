@@ -359,7 +359,7 @@ onClick={() => window.open(test.url, '_blank', 'noopener,noreferrer')}
                     
                     <Button 
                       className="w-full bg-brand-turquoise hover:bg-brand-turquoise/90 text-white"
-                      onClick={() => window.open(test.url, '_blank')}
+                      onClick={() => window.open(test.url, '_blank', 'noopener,noreferrer')}
                     >
                       Book Now
                     </Button>
