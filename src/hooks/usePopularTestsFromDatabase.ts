@@ -25,6 +25,17 @@ const providerDisplayNames: Record<string, string> = {
   'london-medical-laboratory': 'London Medical Laboratory'
 };
 
+/** Extract clean biomarker names from the biomarkers_list JSON field */
+function parseMarkers(raw: unknown): string[] {
+  if (!raw || !Array.isArray(raw)) return [];
+  // Filter to clean, short biomarker names (skip descriptions, headers, noise)
+  return (raw as string[])
+    .filter((m) => typeof m === 'string' && m.length > 1 && m.length < 50)
+    .filter((m) => !/^\d+\s*Biomarkers/i.test(m))
+    .filter((m) => !/cholesterol levels|ensure that|dedicated home/i.test(m))
+    .slice(0, 8);
+}
+
 /**
  * Fetches the most popular tests from all providers
  * Prioritizes tests marked as is_popular=true, ordered by popularity_rank
