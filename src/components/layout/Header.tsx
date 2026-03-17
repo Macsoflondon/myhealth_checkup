@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,8 @@ interface HeaderProps {
 const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
+  const [tickerHeight, setTickerHeight] = useState(0);
+  const brandTickerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const isMobile = useIsMobile();
 
@@ -35,13 +37,26 @@ const Header = ({ className }: HeaderProps) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Toolbar becomes sticky after scrolling past ~120px (header height)
       setIsToolbarSticky(window.scrollY > 120);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Measure BrandTicker height for sticky toolbar offset (desktop only)
+  useEffect(() => {
+    if (isMobile || !brandTickerRef.current) return;
+    const measure = () => {
+      if (brandTickerRef.current) {
+        setTickerHeight(brandTickerRef.current.getBoundingClientRect().height);
+      }
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(brandTickerRef.current);
+    return () => observer.disconnect();
+  }, [isMobile]);
   if (isMobile) {
     return (
       <ErrorBoundary>
