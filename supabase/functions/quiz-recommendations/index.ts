@@ -39,8 +39,44 @@ serve(async (req) => {
   }
 
   try {
-    const { who, gender, ageRange, goal, concerns, symptoms, sampleMethod, budget, speed } =
-      await req.json();
+    const body = await req.json();
+
+    // ── Input validation & sanitisation ──
+    const MAX_STR = 100;
+    const MAX_ARRAY = 10;
+    const VALID_WHO = ["myself", "partner", "family-member", "other"];
+    const VALID_GENDER = ["male", "female", "other", "prefer-not-to-say"];
+    const VALID_AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"];
+    const VALID_GOALS = [
+      "general-health", "preventive-screening", "specific-concern",
+      "fitness-performance", "hormonal-balance", "weight-management", "other"
+    ];
+    const VALID_SAMPLE = ["no-preference", "home-kit", "clinic-visit"];
+    const VALID_BUDGET = ["no-preference", "under-50", "50-100", "100-200", "200-500"];
+    const VALID_SPEED = ["no-preference", "fastest", "standard"];
+
+    function sanitize(val: unknown, maxLen = MAX_STR): string {
+      if (typeof val !== "string") return "";
+      return val.slice(0, maxLen).replace(/[\x00-\x1F\x7F]/g, "").trim();
+    }
+    function validateEnum(val: unknown, allowed: string[]): string {
+      const s = sanitize(val);
+      return allowed.includes(s) ? s : allowed[0];
+    }
+    function sanitizeArray(val: unknown, maxItems = MAX_ARRAY): string[] {
+      if (!Array.isArray(val)) return [];
+      return val.slice(0, maxItems).map(v => sanitize(v)).filter(Boolean);
+    }
+
+    const who = validateEnum(body.who, VALID_WHO);
+    const gender = validateEnum(body.gender, VALID_GENDER);
+    const ageRange = validateEnum(body.ageRange, VALID_AGE_RANGES);
+    const goal = validateEnum(body.goal, VALID_GOALS);
+    const concerns = sanitizeArray(body.concerns);
+    const symptoms = sanitizeArray(body.symptoms);
+    const sampleMethod = validateEnum(body.sampleMethod, VALID_SAMPLE);
+    const budget = validateEnum(body.budget, VALID_BUDGET);
+    const speed = validateEnum(body.speed, VALID_SPEED);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;

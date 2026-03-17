@@ -1,6 +1,5 @@
 import React from "react";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -8,9 +7,12 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
-import { PremiumTestCard } from "./PremiumTestCard";
+import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import type { CompareTestData } from "@/services/CompareService";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
+import { getProviderRating } from "@/constants/providerRatings";
+import { getCategoryPinColor } from "@/data/categoryColors";
+import { getBranding } from "@/data/providerBranding";
 
 interface RecommendedTestsCarouselProps {
   tests: CompareTestData[];
@@ -18,6 +20,18 @@ interface RecommendedTestsCarouselProps {
   onSelectTest?: (test: CompareTestData) => void;
   selectedTestIds?: string[];
   isLoading?: boolean;
+}
+
+/** Map a DB category string to the categoryColors ID format */
+function resolveCategoryColor(category: string): string {
+  const pinColor = getCategoryPinColor(
+    category.toLowerCase().replace(/['\s]+/g, "-").replace(/&/g, "")
+  );
+  if (pinColor !== "#6b7280") return pinColor;
+
+  // Fallback: use provider branding primary colour
+  const brand = getBranding(category);
+  return brand?.primary || "#e70d69";
 }
 
 export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> = ({
@@ -80,20 +94,42 @@ export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> =
         className="w-full"
       >
         <CarouselContent className="-ml-4">
-          {tests.map((test) => (
-            <CarouselItem
-              key={test.id}
-              className="pl-4 basis-auto"
-            >
-              <PremiumTestCard
-                test={test}
-                onSelect={onSelectTest}
-                isSelected={selectedTestIds.includes(test.id)}
-              />
-            </CarouselItem>
-          ))}
+          {tests.map((test) => {
+            const providerRating = getProviderRating(test.provider);
+            const catColor = resolveCategoryColor(test.category || category || "general-health");
+            const brandColor = getBranding(test.provider)?.primary;
+            const accentColor = brandColor || catColor;
+
+            return (
+              <CarouselItem key={test.id} className="pl-4 basis-auto">
+                <UnifiedTestCard
+                  category={test.category || category || "Health"}
+                  categoryColor={accentColor}
+                  name={test.name}
+                  description={
+                    test.description ||
+                    "Comprehensive health screening for better insights into your wellbeing."
+                  }
+                  biomarkers={test.biomarkerCount || 0}
+                  results={test.features?.turnaround || "2-5 working days"}
+                  collection={test.features?.collection || "Home kit"}
+                  rating={providerRating.rating}
+                  reviews={providerRating.reviews}
+                  price={test.price}
+                  provider={test.provider}
+                  url={test.url}
+                  ctaLabel={
+                    selectedTestIds.includes(test.id) ? "Selected" : "Compare"
+                  }
+                  onCtaClick={
+                    onSelectTest ? () => onSelectTest(test) : undefined
+                  }
+                />
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
-        
+
         {/* Navigation buttons - visible on larger screens */}
         <div className="hidden md:block">
           <CarouselPrevious className="left-0 -translate-x-1/2 bg-background border-border shadow-lg" />

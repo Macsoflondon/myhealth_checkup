@@ -19,7 +19,7 @@ export { GroupedTestsTable } from "./GroupedTestsTable";
 export { LivePriceBadge } from "./LivePriceBadge";
 export { ModernCompareTable } from "./ModernCompareTable";
 export { default as OrderAction } from "./OrderAction";
-export { PremiumTestCard } from "./PremiumTestCard";
+// PremiumTestCard deprecated — use UnifiedTestCard via RecommendedTestsCarousel
 export { ProviderComparisonTable } from "./ProviderComparisonTable";
 export { ProviderDataStatus } from "./ProviderDataStatus";
 export { default as ProviderHeader } from "./ProviderHeader";
