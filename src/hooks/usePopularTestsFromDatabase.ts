@@ -49,7 +49,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Get tests marked as popular, ordered by popularity_rank
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list, description')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
