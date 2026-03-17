@@ -70,6 +70,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined,
           markers: parseMarkers(test.biomarkers_list),
+          description: test.description || undefined,
         }));
       }
 
