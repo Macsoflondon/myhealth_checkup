@@ -114,6 +114,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             sample_type: test.sample_type || 'Blood sample',
             url: test.url || '',
             markers: parseMarkers(test.biomarkers_list),
+            description: test.description || undefined,
           });
         }
       }
