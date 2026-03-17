@@ -20,21 +20,7 @@ const MostPopularTests = () => {
   const currentYear = new Date().getFullYear();
   const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
 
-  // Map database tests to TestCard format
-  const mappedTests: TestCardProps[] = (popularTests || []).map((test: PopularTest) => ({
-    id: test.id,
-    category: test.category || 'Comprehensive Health Panel',
-    name: test.test_name,
-    provider: test.provider_name,
-    description: `Comprehensive health screening covering essential health markers. ${test.sample_type || 'Blood sample'} collection available.`,
-    price: `£${test.price?.toFixed(2) || '0.00'}`,
-    turnaround: test.turnaround_time || 'Results in 2-4 working days',
-    biomarkers: test.biomarker_count || 0,
-    rating: 4.7,
-    reviews: Math.floor(Math.random() * 1000) + 500,
-    collection: test.sample_type || 'Blood sample',
-    url: test.url
-  }));
+  // No mapping needed — we render UnifiedTestCard directly from popularTests
 
   return (
     <>
