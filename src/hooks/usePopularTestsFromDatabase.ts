@@ -45,7 +45,6 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         .limit(limit);
 
       if (!popularError && popularData && popularData.length > 0) {
-        // Return popular tests in database order (already mixed by popularity_rank)
         return popularData.map(test => ({
           id: test.id,
           test_name: test.test_name,
@@ -57,7 +56,8 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           turnaround_time: 'Results in 2-4 days',
           sample_type: test.sample_type || 'Blood sample',
           url: test.url || '',
-          popularity_rank: test.popularity_rank || undefined
+          popularity_rank: test.popularity_rank || undefined,
+          markers: parseMarkers(test.biomarkers_list),
         }));
       }
 
