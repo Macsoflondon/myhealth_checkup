@@ -99,7 +99,8 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             category: test.category || 'General Health',
             turnaround_time: 'Results in 2-4 days',
             sample_type: test.sample_type || 'Blood sample',
-            url: test.url || ''
+            url: test.url || '',
+            markers: parseMarkers(test.biomarkers_list),
           });
         }
       }
