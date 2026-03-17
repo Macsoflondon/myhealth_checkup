@@ -108,7 +108,7 @@ const Header = ({ className }: HeaderProps) => {
       </div>
 
       {/* Logo section scrolls normally */}
-      <header className={className} style={{ overflow: "visible" }}>
+      <header className={className}>
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-4 lg:px-8 xl:px-12">
             <div className="flex items-center py-0">
@@ -134,30 +134,30 @@ const Header = ({ className }: HeaderProps) => {
             </div>
           </div>
         </div>
-
-        {/* Toolbar sticks below BrandTicker when scrolling */}
-        <div
-          className="sticky z-40"
-          style={{ top: tickerHeight, overflow: "visible" }}
-        >
-          {/* Top gradient divider for toolbar */}
-          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-          <div
-            className={cn(
-              toolbarClasses,
-              "transition-all duration-300",
-              isToolbarSticky && "shadow-lg animate-fade-in",
-            )}
-            style={{ overflow: "visible" }}
-          >
-            <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: "visible" }}>
-              <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
-            </div>
-          </div>
-          {/* Bottom gradient divider for toolbar */}
-          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-        </div>
       </header>
+
+      {/* Toolbar sticks below BrandTicker independently */}
+      <div
+        className="sticky z-40"
+        style={{ top: tickerHeight }}
+      >
+        {/* Top gradient divider for toolbar */}
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div
+          className={cn(
+            toolbarClasses,
+            "transition-all duration-300",
+            isToolbarSticky && "shadow-lg animate-fade-in",
+          )}
+          style={{ overflow: "visible" }}
+        >
+          <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: "visible" }}>
+            <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
+          </div>
+        </div>
+        {/* Bottom gradient divider for toolbar */}
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      </div>
     </ErrorBoundary>
   );
 };
