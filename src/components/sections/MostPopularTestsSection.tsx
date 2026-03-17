@@ -64,7 +64,7 @@ const MostPopularTestsSection = () => {
                   category={test.category || "Health"}
                   categoryColor={branding?.primary || "#e70d69"}
                   name={cleanName}
-                  description={`Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`}
+                  description={test.description || `Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`}
                   biomarkers={test.biomarker_count || 0}
                   results={test.turnaround_time || "2–5 working days"}
                   collection={test.sample_type || "Blood sample"}
