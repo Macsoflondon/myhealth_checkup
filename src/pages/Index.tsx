@@ -6,6 +6,7 @@ import { useMobileOptimization } from "@/hooks/useMobileOptimization";
 
 // Sections
 import Hero from "@/components/sections/Hero";
+import MostPopularTestsSection from "@/components/sections/MostPopularTestsSection";
 
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import MissionSection from "@/components/sections/MissionSection";
@@ -108,7 +109,8 @@ const Index = () => {
         {/* 3. Mission Section */}
         <MissionSection />
         
-        
+        {/* 4. Most Popular Tests */}
+        <MostPopularTestsSection />
         
         {/* 5. Journey Simplified */}
         <JourneySimplified />
