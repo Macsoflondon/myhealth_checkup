@@ -326,7 +326,7 @@ const Dashboard = () => {
                         {order.result_url && (
                           <Button 
                             className="flex items-center gap-2 text-xs sm:text-sm w-full sm:w-auto"
-                            onClick={() => window.open(order.result_url || '#')}
+                            onClick={() => window.open(order.result_url || '#', '_blank', 'noopener,noreferrer')}
                           >
                             <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
                             View Results
