@@ -13,6 +13,7 @@ export interface PopularTest {
   sample_type: string;
   url: string;
   popularity_rank?: number;
+  markers?: string[];
 }
 
 const providerDisplayNames: Record<string, string> = {
