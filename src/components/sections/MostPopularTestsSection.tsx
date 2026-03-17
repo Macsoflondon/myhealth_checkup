@@ -74,6 +74,7 @@ const MostPopularTestsSection = () => {
                   provider={test.provider_name}
                   url={test.url || undefined}
                   ctaLabel={test.url ? "View test" : "Compare"}
+                  markers={test.markers}
                 />
               );
             })}

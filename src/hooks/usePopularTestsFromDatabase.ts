@@ -13,6 +13,7 @@ export interface PopularTest {
   sample_type: string;
   url: string;
   popularity_rank?: number;
+  markers?: string[];
 }
 
 const providerDisplayNames: Record<string, string> = {
@@ -23,6 +24,17 @@ const providerDisplayNames: Record<string, string> = {
   'randox': 'Randox Health',
   'london-medical-laboratory': 'London Medical Laboratory'
 };
+
+/** Extract clean biomarker names from the biomarkers_list JSON field */
+function parseMarkers(raw: unknown): string[] {
+  if (!raw || !Array.isArray(raw)) return [];
+  // Filter to clean, short biomarker names (skip descriptions, headers, noise)
+  return (raw as string[])
+    .filter((m) => typeof m === 'string' && m.length > 1 && m.length < 50)
+    .filter((m) => !/^\d+\s*Biomarkers/i.test(m))
+    .filter((m) => !/cholesterol levels|ensure that|dedicated home/i.test(m))
+    .slice(0, 8);
+}
 
 /**
  * Fetches the most popular tests from all providers
@@ -36,7 +48,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Get tests marked as popular, ordered by popularity_rank
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
@@ -44,7 +56,6 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         .limit(limit);
 
       if (!popularError && popularData && popularData.length > 0) {
-        // Return popular tests in database order (already mixed by popularity_rank)
         return popularData.map(test => ({
           id: test.id,
           test_name: test.test_name,
@@ -56,14 +67,15 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           turnaround_time: 'Results in 2-4 days',
           sample_type: test.sample_type || 'Blood sample',
           url: test.url || '',
-          popularity_rank: test.popularity_rank || undefined
+          popularity_rank: test.popularity_rank || undefined,
+          markers: parseMarkers(test.biomarkers_list),
         }));
       }
 
       // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -98,7 +110,8 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             category: test.category || 'General Health',
             turnaround_time: 'Results in 2-4 days',
             sample_type: test.sample_type || 'Blood sample',
-            url: test.url || ''
+            url: test.url || '',
+            markers: parseMarkers(test.biomarkers_list),
           });
         }
       }
