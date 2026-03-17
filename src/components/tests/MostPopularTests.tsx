@@ -1,98 +1,18 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate, Link } from 'react-router-dom';
-import { Star, TrendingUp, Award, Users, Facebook, Instagram, Loader2 } from 'lucide-react';
+import { TrendingUp, Award, Users, Facebook, Instagram, Loader2 } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import PageHeading from '@/components/ui/page-heading';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { usePopularTestsFromDatabase, PopularTest } from '@/hooks/usePopularTestsFromDatabase';
-import { formatBiomarkerCount } from '@/utils/formatBiomarkers';
+import { UnifiedTestCard } from '@/components/cards/UnifiedTestCard';
+import { getProviderRating } from '@/constants/providerRatings';
+import { getBranding } from '@/data/providerBranding';
 import cqcLogo from "@/assets/compliance/cqc-logo.png";
 import icoLogo from "@/assets/compliance/ico-logo.png";
 
 const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
-
-interface TestCardProps {
-  id: string;
-  category: string;
-  name: string;
-  provider: string;
-  description: string;
-  price: string;
-  turnaround: string;
-  biomarkers: number;
-  rating: number;
-  reviews: number;
-  collection: string;
-  url?: string;
-}
-
-const TestCard = ({
-  id,
-  category,
-  name,
-  provider,
-  description,
-  price,
-  turnaround,
-  biomarkers,
-  rating,
-  reviews,
-  collection,
-  url
-}: TestCardProps) => {
-  const navigate = useNavigate();
-  
-  const handleSelectTest = () => {
-    if (url) {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    } else {
-      navigate(`/compare?test=${id}`);
-    }
-  };
-  
-  return (
-    <Card className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 h-full flex flex-col">
-      <div className="bg-[#1a365d] text-white p-5 sm:p-6 md:p-8 text-center">
-        <h3 className="text-xs sm:text-sm font-medium">{category}</h3>
-        <p className="text-xs text-white/70 mt-1">{provider}</p>
-      </div>
-      
-      <CardContent className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col">
-        <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{name}</h4>
-        <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-3 flex-1">{description}</p>
-        
-        <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
-          <p className="text-xs sm:text-sm text-gray-600">{turnaround}</p>
-          <p className="text-xs sm:text-sm text-gray-600">{formatBiomarkerCount(biomarkers)}</p>
-          
-          {/* Star Rating */}
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
-              />
-            ))}
-            <span className="text-xs sm:text-sm text-gray-600 ml-1">({reviews})</span>
-          </div>
-        </div>
-        
-        <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1.5 sm:mb-2">{price}</div>
-        <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">{collection}</p>
-        
-        <Button 
-          onClick={handleSelectTest} 
-          variant="outline" 
-          className="w-full py-2.5 sm:py-3 text-sm sm:text-base text-[#081129] border-gray-300 hover:bg-gray-50 mt-auto"
-        >
-          {url ? 'View on provider site' : 'Select test'}
-        </Button>
-      </CardContent>
-    </Card>
-  );
-};
 
 const MostPopularTests = () => {
   const navigate = useNavigate();
@@ -100,21 +20,7 @@ const MostPopularTests = () => {
   const currentYear = new Date().getFullYear();
   const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
 
-  // Map database tests to TestCard format
-  const mappedTests: TestCardProps[] = (popularTests || []).map((test: PopularTest) => ({
-    id: test.id,
-    category: test.category || 'Comprehensive Health Panel',
-    name: test.test_name,
-    provider: test.provider_name,
-    description: `Comprehensive health screening covering essential health markers. ${test.sample_type || 'Blood sample'} collection available.`,
-    price: `£${test.price?.toFixed(2) || '0.00'}`,
-    turnaround: test.turnaround_time || 'Results in 2-4 working days',
-    biomarkers: test.biomarker_count || 0,
-    rating: 4.7,
-    reviews: Math.floor(Math.random() * 1000) + 500,
-    collection: test.sample_type || 'Blood sample',
-    url: test.url
-  }));
+  // No mapping needed — we render UnifiedTestCard directly from popularTests
 
   return (
     <>
@@ -210,8 +116,35 @@ const MostPopularTests = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-              {mappedTests.map(test => <TestCard key={test.id} {...test} />)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 justify-items-center">
+              {(popularTests || []).map((test) => {
+                const providerData = getProviderRating(test.provider_id);
+                const branding = getBranding(test.provider_id);
+                const cleanName = test.test_name
+                  .replace(/\s*[-–|].*$/, '')
+                  .replace(/\s+Blood Test$/i, '')
+                  .replace(/\s+for Enhanced Health$/i, '')
+                  .replace(/\s*\| Book Online today$/i, '');
+
+                return (
+                  <UnifiedTestCard
+                    key={test.id}
+                    category={test.category || "Health"}
+                    categoryColor={branding?.primary || "#e70d69"}
+                    name={cleanName}
+                    description={`Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`}
+                    biomarkers={test.biomarker_count || 0}
+                    results={test.turnaround_time || "2–5 working days"}
+                    collection={test.sample_type || "Blood sample"}
+                    rating={providerData.rating}
+                    reviews={providerData.reviews}
+                    price={test.price}
+                    provider={test.provider_name}
+                    url={test.url || undefined}
+                    ctaLabel={test.url ? "View test" : "Compare"}
+                  />
+                );
+              })}
             </div>
           )}
 
