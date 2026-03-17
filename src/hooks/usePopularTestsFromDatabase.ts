@@ -14,6 +14,7 @@ export interface PopularTest {
   url: string;
   popularity_rank?: number;
   markers?: string[];
+  description?: string;
 }
 
 const providerDisplayNames: Record<string, string> = {
@@ -48,7 +49,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Get tests marked as popular, ordered by popularity_rank
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list, description')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
@@ -69,13 +70,14 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined,
           markers: parseMarkers(test.biomarkers_list),
+          description: test.description || undefined,
         }));
       }
 
       // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -112,6 +114,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             sample_type: test.sample_type || 'Blood sample',
             url: test.url || '',
             markers: parseMarkers(test.biomarkers_list),
+            description: test.description || undefined,
           });
         }
       }
