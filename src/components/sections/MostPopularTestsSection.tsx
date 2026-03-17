@@ -1,52 +1,10 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, TestTube2, Clock, Droplets, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Use local provider logos that exist in the project
-const providerLogos: Record<string, string> = {
-  'medichecks': '/lovable-uploads/provider-medichecks-new-v3.png',
-  'lola-health': '/lovable-uploads/provider-lola-health.png',
-  'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v4.png',
-  'goodbody': '/lovable-uploads/provider-goodbody-new-v4.png',
-  'thriva': '/lovable-uploads/provider-thriva.png',
-  'randox': '/lovable-uploads/provider-randox.png',
-  'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
-};
-
+import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { getProviderRating } from "@/constants/providerRatings";
-
-const getTestRating = (providerId: string): { rating: number; reviewCount: number } => {
-  const data = getProviderRating(providerId);
-  return { rating: data.rating, reviewCount: data.reviews };
-};
-
-const StarRating = ({ rating, reviewCount }: { rating: number; reviewCount: number }) => {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  
-  return (
-    <div className="flex items-center gap-1.5">
-      <div className="flex items-center">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={`w-3.5 h-3.5 ${
-              i < fullStars
-                ? 'fill-amber-400 text-amber-400'
-                : i === fullStars && hasHalfStar
-                ? 'fill-amber-400/50 text-amber-400'
-                : 'fill-muted text-muted'
-            }`}
-          />
-        ))}
-      </div>
-      <span className="text-sm font-medium text-foreground">{rating.toFixed(1)}</span>
-      <span className="text-sm text-muted-foreground">({reviewCount.toLocaleString()})</span>
-    </div>
-  );
-};
+import { getBranding } from "@/data/providerBranding";
 
 const MostPopularTestsSection = () => {
   const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
