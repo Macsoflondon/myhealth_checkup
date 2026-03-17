@@ -48,101 +48,33 @@ const MostPopularTestsSection = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12 justify-items-center">
             {popularTests?.slice(0, 12).map((test) => {
-              const { rating, reviewCount } = getTestRating(test.provider_id);
-              const logoPath = providerLogos[test.provider_id];
+              const providerData = getProviderRating(test.provider_id);
+              const branding = getBranding(test.provider_id);
+              const cleanName = test.test_name
+                .replace(/\s*[-–|].*$/, '')
+                .replace(/\s+Blood Test$/i, '')
+                .replace(/\s+for Enhanced Health$/i, '')
+                .replace(/\s*\| Book Online today$/i, '');
               
               return (
-                <div
+                <UnifiedTestCard
                   key={test.id}
-                  className="group bg-[#e70d69]/5 rounded-xl border-2 border-[#e70d69]/30 hover:border-[#e70d69] hover:shadow-lg hover:shadow-[#e70d69]/20 transition-all duration-300 overflow-hidden flex flex-col"
-                >
-                  {/* Provider Logo */}
-                  <div className="p-4 pb-0">
-                    <div className="flex items-center justify-between mb-3">
-                      {logoPath ? (
-                        <img
-                          src={logoPath}
-                          alt={test.provider_name}
-                          className="h-7 w-auto object-contain max-w-[120px]"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
-                          {test.provider_name}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-4 pt-0 flex-1 flex flex-col">
-                    <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors min-h-[48px]">
-                      {test.test_name
-                        .replace(/\s*[-–|].*$/, '')
-                        .replace(/\s+Blood Test$/i, '')
-                        .replace(/\s+for Enhanced Health$/i, '')
-                        .replace(/\s*\| Book Online today$/i, '')}
-                    </h3>
-
-                    {/* Star Rating */}
-                    <div className="mb-3">
-                      <StarRating rating={rating} reviewCount={reviewCount} />
-                    </div>
-
-                    {/* Test Details */}
-                    <div className="space-y-2 mb-4 text-sm text-muted-foreground">
-                      {test.biomarker_count > 0 && (
-                        <div className="flex items-center gap-2">
-                          <TestTube2 className="w-4 h-4 text-primary" />
-                          <span>{test.biomarker_count} biomarkers</span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-primary" />
-                        <span>{test.turnaround_time}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Droplets className="w-4 h-4 text-primary" />
-                        <span>{test.sample_type}</span>
-                      </div>
-                    </div>
-
-                    {/* Price and CTA */}
-                    <div className="mt-auto pt-4 border-t border-border">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-2xl font-bold text-foreground">
-                          £{test.price.toFixed(2)}
-                        </span>
-                      </div>
-                        {test.url ? (
-                          <a
-                            href={test.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block w-full"
-                          >
-                            <Button
-                              size="sm"
-                              className="w-full bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
-                            >
-                              View test
-                            </Button>
-                          </a>
-                        ) : (
-                          <Link to={`/test/${test.id}`} className="block w-full">
-                            <Button
-                              size="sm"
-                              className="w-full bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
-                            >
-                              View test
-                            </Button>
-                          </Link>
-                        )}
-                    </div>
-                  </div>
-                </div>
+                  category={test.category || "Health"}
+                  categoryColor={branding?.primary || "#e70d69"}
+                  name={cleanName}
+                  description={test.description || `Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`}
+                  biomarkers={test.biomarker_count || 0}
+                  results={test.turnaround_time || "2–5 working days"}
+                  collection={test.sample_type || "Blood sample"}
+                  rating={providerData.rating}
+                  reviews={providerData.reviews}
+                  price={test.price}
+                  provider={test.provider_name}
+                  url={test.url || undefined}
+                  ctaLabel={test.url ? "View test" : "Compare"}
+                />
               );
             })}
           </div>
