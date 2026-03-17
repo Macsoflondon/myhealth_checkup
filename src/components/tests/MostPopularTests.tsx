@@ -116,8 +116,35 @@ const MostPopularTests = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-              {mappedTests.map(test => <TestCard key={test.id} {...test} />)}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 justify-items-center">
+              {(popularTests || []).map((test) => {
+                const providerData = getProviderRating(test.provider_id);
+                const branding = getBranding(test.provider_id);
+                const cleanName = test.test_name
+                  .replace(/\s*[-–|].*$/, '')
+                  .replace(/\s+Blood Test$/i, '')
+                  .replace(/\s+for Enhanced Health$/i, '')
+                  .replace(/\s*\| Book Online today$/i, '');
+
+                return (
+                  <UnifiedTestCard
+                    key={test.id}
+                    category={test.category || "Health"}
+                    categoryColor={branding?.primary || "#e70d69"}
+                    name={cleanName}
+                    description={`Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`}
+                    biomarkers={test.biomarker_count || 0}
+                    results={test.turnaround_time || "2–5 working days"}
+                    collection={test.sample_type || "Blood sample"}
+                    rating={providerData.rating}
+                    reviews={providerData.reviews}
+                    price={test.price}
+                    provider={test.provider_name}
+                    url={test.url || undefined}
+                    ctaLabel={test.url ? "View test" : "Compare"}
+                  />
+                );
+              })}
             </div>
           )}
 
