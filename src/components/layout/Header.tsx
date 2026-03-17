@@ -102,36 +102,44 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      <div className={cn("sticky top-0 z-50", className)} style={{ overflow: "visible" }}>
+      {/* BrandTicker stays sticky at top */}
+      <div ref={brandTickerRef} className={cn("sticky top-0 z-50", className)}>
         <BrandTicker />
-        <header style={{ overflow: "visible" }}>
-          {/* Main header bar - Logo and User Controls */}
-          <div className="bg-[#081129]">
-            <div className="px-4 lg:px-8 xl:px-12">
-              <div className="flex items-center py-0">
-                {/* Left spacer for balance */}
-                <div className="flex-1" />
+      </div>
 
-                {/* Center: Combined logo with tagline - doubled size */}
-                <Link to="/" className="flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-105">
-                  <img
-                    src={logoWithTagline}
-                    alt="myhealth checkup - Your Health. Your Choice. One Trusted Platform!"
-                    className="h-40 lg:h-44 xl:h-48 w-auto object-contain"
-                  />
-                </Link>
+      {/* Logo section scrolls normally */}
+      <header className={className} style={{ overflow: "visible" }}>
+        <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
+          <div className="px-4 lg:px-8 xl:px-12">
+            <div className="flex items-center py-0">
+              {/* Left spacer for balance */}
+              <div className="flex-1" />
 
-                {/* Right: Controls pushed to far right */}
-                <div className="flex-1 flex items-center justify-end">
-                  <nav className="flex items-center gap-3" aria-label="User controls">
-                    <LanguageSwitcher />
-                    <UserMenu />
-                  </nav>
-                </div>
+              {/* Center: Combined logo with tagline */}
+              <Link to="/" className="flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-105">
+                <img
+                  src={logoWithTagline}
+                  alt="myhealth checkup - Your Health. Your Choice. One Trusted Platform!"
+                  className="h-40 lg:h-44 xl:h-48 w-auto object-contain"
+                />
+              </Link>
+
+              {/* Right: Controls pushed to far right */}
+              <div className="flex-1 flex items-center justify-end">
+                <nav className="flex items-center gap-3" aria-label="User controls">
+                  <LanguageSwitcher />
+                  <UserMenu />
+                </nav>
               </div>
             </div>
           </div>
+        </div>
 
+        {/* Toolbar sticks below BrandTicker when scrolling */}
+        <div
+          className="sticky z-40"
+          style={{ top: tickerHeight, overflow: "visible" }}
+        >
           {/* Top gradient divider for toolbar */}
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
           <div
@@ -148,8 +156,8 @@ const Header = ({ className }: HeaderProps) => {
           </div>
           {/* Bottom gradient divider for toolbar */}
           <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-        </header>
-      </div>
+        </div>
+      </header>
     </ErrorBoundary>
   );
 };
