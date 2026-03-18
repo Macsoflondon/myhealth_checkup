@@ -1,18 +1,13 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigate, Link } from 'react-router-dom';
-import { TrendingUp, Award, Users, Facebook, Instagram, Loader2 } from 'lucide-react';
-import { useTranslation } from "react-i18next";
+import { useNavigate } from 'react-router-dom';
+import { TrendingUp, Award, Users, Loader2 } from 'lucide-react';
 import PageHeading from '@/components/ui/page-heading';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { usePopularTestsFromDatabase, PopularTest } from '@/hooks/usePopularTestsFromDatabase';
 import { UnifiedTestCard } from '@/components/cards/UnifiedTestCard';
 import { getProviderRating } from '@/constants/providerRatings';
 import { getBranding } from '@/data/providerBranding';
-import cqcLogo from "@/assets/compliance/cqc-logo.png";
-import icoLogo from "@/assets/compliance/ico-logo.png";
-
-const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 
 const MostPopularTests = () => {
   const navigate = useNavigate();
