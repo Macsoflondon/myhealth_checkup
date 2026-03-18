@@ -18,15 +18,15 @@ const MostPopularTests = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[#081129] py-16">
+      <section className="bg-background py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <PageHeading 
               title="Most Popular" 
               accent="Tests" 
-              className="[&_span]:text-white mb-6"
+              className="mb-6"
             />
-            <p className="text-xl text-white max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
               Check out our best-selling tests from all providers, trusted by thousands of people across the UK for comprehensive health screening.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
