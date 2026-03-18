@@ -18,15 +18,15 @@ const MostPopularTests = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-[#081129] py-16">
+      <section className="bg-background py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <PageHeading 
               title="Most Popular" 
               accent="Tests" 
-              className="[&_span]:text-white mb-6"
+              className="mb-6"
             />
-            <p className="text-xl text-white max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
               Check out our best-selling tests from all providers, trusted by thousands of people across the UK for comprehensive health screening.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -84,11 +84,11 @@ const MostPopularTests = () => {
       </section>
 
       {/* Tests Section - Unified with Footer */}
-      <section className="bg-[#081129] py-8 sm:py-12 md:py-16">
+      <section className="bg-background py-8 sm:py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
 
           <div className="flex justify-end mb-4 sm:mb-6">
-            <select className="px-3 sm:px-4 md:px-14 py-2 border border-gray-500 rounded-md text-xs sm:text-sm bg-[#e70d69] text-white hover:border-gray-400">
+            <select className="px-3 sm:px-4 md:px-14 py-2 border border-border rounded-md text-xs sm:text-sm bg-background text-foreground hover:border-muted-foreground">
               <option>Biomarkers, high to low</option>
               <option>Price, high to low</option>
               <option>Price, low to high</option>
@@ -98,13 +98,13 @@ const MostPopularTests = () => {
 
           {isLoading ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="w-8 h-8 animate-spin text-[#22c0d4]" />
-              <span className="ml-3 text-white">Loading popular tests...</span>
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <span className="ml-3 text-foreground">Loading popular tests...</span>
             </div>
           ) : error ? (
             <div className="text-center py-16">
-              <p className="text-white mb-4">Unable to load tests. Please try again.</p>
-              <Button onClick={() => window.location.reload()} variant="outline" className="text-white border-white">
+              <p className="text-foreground mb-4">Unable to load tests. Please try again.</p>
+              <Button onClick={() => window.location.reload()} variant="outline">
                 Retry
               </Button>
             </div>
