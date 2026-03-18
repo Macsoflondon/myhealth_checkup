@@ -67,6 +67,10 @@ export interface UnifiedTestCardProps {
   ctaLabel?: string;
   /** Click handler for CTA */
   onCtaClick?: () => void;
+  /** Whether this card is selected for comparison */
+  compareSelected?: boolean;
+  /** Toggle comparison selection */
+  onCompareToggle?: () => void;
   /** Additional className */
   className?: string;
 }
