@@ -77,7 +77,7 @@ export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> =
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-bold text-foreground">
-            Recommended {displayName} Tests
+            Recommended {displayName}{displayName.toLowerCase().endsWith('tests') ? '' : ' Tests'}
           </h2>
         </div>
         <p className="text-sm text-muted-foreground hidden sm:block">
