@@ -1,584 +1,167 @@
-import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { Zap, Activity, TrendingUp } from "lucide-react";
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { fitnessHealthCategories, bodybuildingTests, athleteTests, performanceOptimizationTests } from "@/data/fitnessHealthCategories";
-import { Trophy, Activity, TrendingUp, ArrowRight, Clock, Beaker, Star, Heart, Zap, ExternalLink, Check } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
-import HeroSection from "@/components/sections/HeroSection";
-import { SectionHeading } from "@/components/ui/section-heading";
-import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
-interface TestData {
-  id: string;
-  test_name: string;
-  provider_id: string;
-  price: number | null;
-  category: string;
-  biomarkers: any;
-}
-const SportsPerformancePage = () => {
-  const navigate = useNavigate();
-  const [tests, setTests] = useState<TestData[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchSportsTests = async () => {
-      try {
-        const {
-          data,
-          error
-        } = await supabase.from('tests_master').select('id, test_name, category, biomarkers').or('category.ilike.%sport%,category.ilike.%performance%,category.ilike.%fitness%').eq('is_active', true).limit(6);
-        if (error) throw error;
+const fitnessTests: CategoryTestItem[] = [
+  {
+    id: "sports-performance-randox",
+    popular: false,
+    badge: "Sports Performance",
+    badgeColor: "#22c0d4",
+    provider: "Randox Health",
+    priceNum: 129,
+    price: "£129",
+    turnaround: "2–5 days",
+    turnaroundDays: 5,
+    biomarkerCount: 10,
+    rating: 4.6,
+    reviews: 445,
+    title: "Sports Performance",
+    desc: "Comprehensive sports blood panel covering key performance and recovery markers.",
+    biomarkers: ["Testosterone", "Cortisol", "Iron"],
+    tag: "General",
+    collection: "Clinic Visit",
+  },
+  {
+    id: "ultimate-performance",
+    popular: true,
+    badge: "Sports Performance",
+    badgeColor: "#22c0d4",
+    provider: "Medichecks",
+    priceNum: 169,
+    price: "£169",
+    turnaround: "2–5 days",
+    turnaroundDays: 5,
+    biomarkerCount: 14,
+    rating: 4.8,
+    reviews: 1890,
+    title: "Ultimate Performance",
+    desc: "Advanced full-panel analysis for serious athletes seeking data-driven performance gains.",
+    biomarkers: ["Full Blood Count", "Testosterone", "Thyroid"],
+    tag: "General",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "bodybuilder-profile",
+    popular: false,
+    badge: "Bodybuilding",
+    badgeColor: "#8B5CF6",
+    provider: "London Medical Laboratory",
+    priceNum: 155,
+    price: "£155",
+    turnaround: "4 hours",
+    turnaroundDays: 1,
+    biomarkerCount: 21,
+    rating: 4.9,
+    reviews: 760,
+    title: "Bodybuilder Profile",
+    desc: "Monitors hormones, liver and kidney function, lipid balance, and red blood cell production.",
+    biomarkers: ["Testosterone", "Free Testosterone", "Albumin"],
+    tag: "Bodybuilding",
+    collection: "Clinic Visit",
+  },
+  {
+    id: "male-cyclist-test",
+    popular: false,
+    badge: "Cycling",
+    badgeColor: "#22c0d4",
+    provider: "Sports Blood Tests",
+    priceNum: 129,
+    price: "£129",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 18,
+    rating: 4.7,
+    reviews: 320,
+    title: "Blood Test for Male Cyclists",
+    desc: "Unlock your cycling potential with accurate insights into performance and recovery.",
+    biomarkers: ["VO2 Markers", "Iron", "Cortisol"],
+    tag: "Cycling",
+    collection: "Finger Prick",
+  },
+  {
+    id: "male-runner-test",
+    popular: false,
+    badge: "Running",
+    badgeColor: "#22c0d4",
+    provider: "Sports Blood Tests",
+    priceNum: 129,
+    price: "£129",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 18,
+    rating: 4.6,
+    reviews: 290,
+    title: "Blood Test for Male Runners",
+    desc: "Achieving peak performance requires a deep understanding of your body's unique markers.",
+    biomarkers: ["Iron", "Ferritin", "Cortisol"],
+    tag: "Running",
+    collection: "Finger Prick",
+  },
+  {
+    id: "male-weightlifter-test",
+    popular: false,
+    badge: "Weightlifting",
+    badgeColor: "#22c0d4",
+    provider: "Sports Blood Tests",
+    priceNum: 125,
+    price: "£125",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 17,
+    rating: 4.5,
+    reviews: 210,
+    title: "Blood Test for Male Weightlifters",
+    desc: "Track key biomarkers affecting strength, recovery, and hormones.",
+    biomarkers: ["Testosterone", "Cortisol", "Creatine Kinase"],
+    tag: "Weightlifting",
+    collection: "Finger Prick",
+  },
+  {
+    id: "goodbody-sports-fitness",
+    popular: false,
+    badge: "Sports Performance",
+    badgeColor: "#22c0d4",
+    provider: "Good Body Clinic",
+    priceNum: 99,
+    price: "£99",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 11,
+    rating: 4.7,
+    reviews: 340,
+    title: "Sports and Fitness Blood Test",
+    desc: "Comprehensive sports blood test checking key hormones and proteins for performance and fitness.",
+    biomarkers: ["Testosterone", "DHEA-S", "Cortisol"],
+    tag: "General",
+    collection: "Finger Prick / Clinic",
+  },
+];
 
-        // Fetch provider mapping for these tests
-        if (data) {
-          const testIds = data.map(t => t.id);
-          const {
-            data: mappings
-          } = await supabase.from('provider_test_mapping').select('test_master_id, provider_id, current_price').in('test_master_id', testIds).eq('availability_status', 'available');
-          const testsWithProviders = data.map(test => {
-            const mapping = mappings?.find(m => m.test_master_id === test.id);
-            return {
-              ...test,
-              provider_id: mapping?.provider_id || 'Unknown',
-              price: mapping?.current_price || null
-            };
-          });
-          setTests(testsWithProviders);
-        }
-      } catch (error) {
-        console.error('Error fetching sports tests:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSportsTests();
-  }, []);
-  const benefits = [{
-    icon: Trophy,
-    title: "Peak Performance",
-    description: "Monitor biomarkers crucial for athletic excellence and competitive advantage",
-    color: "#e70d69"
-  }, {
-    icon: Activity,
-    title: "Recovery Optimization",
-    description: "Track markers that impact recovery, injury prevention, and training adaptation",
-    color: "#22c0d4"
-  }, {
-    icon: TrendingUp,
-    title: "Competitive Edge",
-    description: "Data-driven insights to optimize training, nutrition, and performance outcomes",
-    color: "#e70d69"
-  }];
-  const testimonials = [{
-    name: "James Patterson",
-    sport: "Marathon Runner",
-    rating: 5,
-    quote: "The vitamin D and iron deficiency results explained why my training had plateaued. Within 8 weeks of supplementation, I knocked 12 minutes off my personal best.",
-    image: "👤"
-  }, {
-    name: "Sarah Chen",
-    sport: "CrossFit Athlete",
-    rating: 5,
-    quote: "Discovering my testosterone levels were low was a game-changer. My recovery improved dramatically, and I'm now competing at a national level.",
-    image: "👤"
-  }, {
-    name: "Marcus Thompson",
-    sport: "Professional Cyclist",
-    rating: 5,
-    quote: "Regular performance testing has become essential to my training regime. The insights help me optimise nutrition and avoid overtraining.",
-    image: "👤"
-  }];
-  const performanceMarkers = [{
-    icon: Heart,
-    title: "Cardiovascular Markers",
-    biomarkers: ["Haemoglobin", "Ferritin", "Cholesterol"],
-    description: "Essential for oxygen transport, endurance capacity, and cardiovascular health during intense training."
-  }, {
-    icon: Zap,
-    title: "Energy & Metabolism",
-    biomarkers: ["Vitamin B12", "Vitamin D", "Thyroid (TSH, T3, T4)"],
-    description: "Critical for energy production, metabolic efficiency, and optimal recovery between training sessions."
-  }, {
-    icon: Activity,
-    title: "Recovery & Inflammation",
-    biomarkers: ["CRP", "Cortisol", "Testosterone"],
-    description: "Monitor inflammation levels, stress response, and hormonal balance for optimal recovery and muscle adaptation."
-  }, {
-    icon: TrendingUp,
-    title: "Performance Optimisation",
-    biomarkers: ["Magnesium", "Calcium", "Creatine Kinase"],
-    description: "Track electrolyte balance and muscle damage markers to prevent injury and enhance athletic performance."
-  }];
-  return <>
-      <Helmet>
-        <title>Fitness Health Blood Tests | Athletic & Bodybuilding Testing | myhealth checkup</title>
-        <meta name="description" content="Optimise your fitness and athletic performance with comprehensive health blood tests. Monitor bodybuilding biomarkers, nutrition status, and recovery markers from trusted UK providers. Compare prices and book today." />
-        <meta name="keywords" content="fitness health tests, bodybuilding blood tests, athletic blood tests, fitness biomarkers, bodybuilder profile, sports nutrition testing, endurance testing, recovery markers, athlete health screening, UK fitness tests" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/sports-performance" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="Fitness Health Blood Tests | Bodybuilding & Athletic Testing" />
-        <meta property="og:description" content="Monitor fitness biomarkers, nutrition, and recovery with fitness health blood tests from trusted UK providers." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/sports-performance" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Fitness Health Blood Tests | Bodybuilding & Athletic Testing" />
-        <meta name="twitter:description" content="Optimise fitness and athletic performance with comprehensive blood tests from trusted UK providers." />
-      </Helmet>
-      
-      
-      <Header />
-      
-      <main className="min-h-screen bg-background">
-        <PageBreadcrumb 
-          segments={[{ label: "Home", href: "/" }, { label: "Fitness Health" }]} 
-          backLabel="Back"
-        />
+const SportsPerformancePage = () => (
+  <CategoryPageLayout
+    seoTitle="Fitness & Sports Performance Blood Tests | myhealth checkup"
+    seoDescription="Optimise your fitness and athletic performance with comprehensive health blood tests. Monitor bodybuilding biomarkers, nutrition status, and recovery markers from trusted UK providers."
+    seoKeywords="fitness health tests, bodybuilding blood tests, athletic blood tests, fitness biomarkers, sports nutrition testing, recovery markers"
+    canonicalUrl="https://myhealthcheckup.co.uk/sports-performance"
+    headline="Fitness Health Blood Tests"
+    subtitle="Optimise your athletic performance with comprehensive biomarker analysis — nutrition, recovery, and fitness markers from trusted UK labs."
+    searchPlaceholder="Search by sport or goal — e.g. 'marathon', 'muscle recovery'"
+    trustStats={[
+      { value: "62,000+", label: "Tests Compared" },
+      { value: "4.7★", label: "Average Rating" },
+      { value: "6", label: "Trusted Providers" },
+    ]}
+    filters={["All", "Bodybuilding", "Cycling", "Running", "Weightlifting", "General"]}
+    tests={fitnessTests}
+    benefitsTitle="Why Choose Fitness Health Testing?"
+    benefits={[
+      { icon: Zap, title: "Peak Performance", description: "Monitor biomarkers crucial for competitive advantage" },
+      { icon: Activity, title: "Recovery Optimisation", description: "Track markers that impact recovery and adaptation" },
+      { icon: TrendingUp, title: "Competitive Edge", description: "Data-driven insights to optimise training outcomes" },
+    ]}
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Fitness Health" }]}
+    compareUrl="/compare?category=fitness-health"
+  />
+);
 
-        <HeroSection
-          title="Fitness Health Blood Tests"
-          subtitle="Optimise your athletic performance with comprehensive biomarker analysis. Monitor bodybuilding markers, nutrition, recovery, and fitness biomarkers from trusted UK laboratories."
-        />
-
-
-        {/* Categories Section - Moved to top */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Fitness Health" 
-                gradientText="Categories" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Explore specialized testing categories designed for athletes and fitness enthusiasts
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
-              {fitnessHealthCategories.map(category => {
-              const IconComponent = category.icon;
-              return <Card key={category.id} className="hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-brand-pink group" onClick={() => navigate(category.link)}>
-                    <CardHeader>
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-3" style={{
-                    backgroundColor: `${category.color}20`
-                  }}>
-                        <IconComponent className="w-6 h-6" style={{
-                      color: category.color
-                    }} />
-                      </div>
-                      <CardTitle className="text-lg group-hover:text-brand-pink transition-colors">
-                        {category.name}
-                      </CardTitle>
-                      <CardDescription>{category.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Badge className="mb-4 bg-brand-pink text-white">
-                        {category.testCount} Tests Available
-                      </Badge>
-                      <Button variant="ghost" className="w-full group-hover:bg-brand-pink group-hover:text-white transition-colors">
-                        View Tests
-                      </Button>
-                    </CardContent>
-                  </Card>;
-            })}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Bodybuilding Profile Tests */}
-        <section className="py-16 bg-gradient-to-b from-muted/30 to-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Bodybuilding" 
-                gradientText="Profile Tests" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Comprehensive blood panels designed specifically for bodybuilders, strength athletes, and fitness enthusiasts
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {bodybuildingTests.map((test) => (
-                <Card key={test.id} className="border-2 hover:border-brand-pink transition-all duration-300 hover:shadow-xl overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-brand-navy to-brand-navy/90 text-white">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <Badge className="bg-brand-pink text-white mb-2">Bodybuilding</Badge>
-                        <CardTitle className="text-2xl text-white">{test.name}</CardTitle>
-                        <CardDescription className="text-white/80">{test.provider}</CardDescription>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-3xl font-bold text-brand-turquoise">£{test.price}</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <p className="text-muted-foreground mb-4 line-clamp-3">{test.description}</p>
-                    
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Beaker className="w-4 h-4 text-brand-pink" />
-                        <span className="font-medium">{test.biomarkerCount} Biomarkers</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Clock className="w-4 h-4 text-brand-turquoise" />
-                        <span>{test.turnaroundTime}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="mb-4">
-                      <p className="text-sm font-medium mb-2">Key Biomarkers:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {test.biomarkers.slice(0, 6).map((biomarker, i) => (
-                          <Badge key={i} variant="secondary" className="text-xs">
-                            {biomarker}
-                          </Badge>
-                        ))}
-                        {test.biomarkers.length > 6 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{test.biomarkers.length - 6} more
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="mb-4 space-y-1">
-                      <p className="text-sm font-medium">Ideal for:</p>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        {test.whoShouldTest.slice(0, 2).map((item, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <Check className="w-4 h-4 text-brand-turquoise mt-0.5 flex-shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {test.features.phlebotomyIncluded && (
-                        <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                          Phlebotomy Included
-                        </Badge>
-                      )}
-                      {test.features.clinicVisitAvailable && (
-                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                          Clinic Visit
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <Button 
-                      className="w-full bg-brand-pink hover:bg-brand-pink/90 text-white"
-onClick={() => window.open(test.url, '_blank', 'noopener,noreferrer')}
-                    >
-                      Book Now
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Athlete Performance Tests from Sports Blood Tests (Edge) */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Athlete Performance" 
-                gradientText="Blood Tests" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Sport-specific blood tests from Sports Blood Tests (Edge) with sports doctor review and NHS lab analysis
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {athleteTests.map((test) => (
-                <Card key={test.id} className="border-2 hover:border-[#22C0D4] transition-all duration-300 hover:shadow-xl overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-[#22C0D4] to-[#22C0D4]/90 text-white">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <Badge className="bg-white/20 text-white mb-2">{test.category.charAt(0).toUpperCase() + test.category.slice(1)}</Badge>
-                        <CardTitle className="text-xl text-white">{test.name}</CardTitle>
-                        <CardDescription className="text-white/80">{test.provider}</CardDescription>
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      {test.subscriptionPrice && (
-                        <div className="text-sm text-white/80">Subscribe & save: <span className="font-bold text-white">£{test.subscriptionPrice}</span></div>
-                      )}
-                      <span className="text-2xl font-bold text-white">£{test.price}</span>
-                      <span className="text-sm text-white/80 ml-1">one-time</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <p className="text-muted-foreground mb-4 text-sm line-clamp-3">{test.description}</p>
-                    
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Beaker className="w-4 h-4 text-[#22C0D4]" />
-                        <span className="font-medium">{test.biomarkerCount} Biomarkers</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Clock className="w-4 h-4 text-[#E70D69]" />
-                        <span>{test.turnaroundTime}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {test.features.sportsDoctorReview && (
-                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
-                          Sports Doctor Review
-                        </Badge>
-                      )}
-                      {test.features.nhsLabAnalysis && (
-                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                          NHS Lab Analysis
-                        </Badge>
-                      )}
-                      {test.features.homeKitAvailable && (
-                        <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                          Home Kit
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <Button 
-                      className="w-full bg-brand-turquoise hover:bg-brand-turquoise/90 text-white"
-                      onClick={() => window.open(test.url, '_blank', 'noopener,noreferrer')}
-                    >
-                      Book Now
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Why Choose Fitness" 
-                gradientText="Health Testing?" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Gain the competitive edge with data-driven insights into your athletic health
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {benefits.map((benefit, index) => <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
-                  <CardHeader>
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-brand-pink shadow-lg">
-                      <benefit.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <CardTitle className="text-xl">{benefit.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{benefit.description}</p>
-                  </CardContent>
-                </Card>)}
-            </div>
-          </div>
-        </section>
-
-        {/* AI Recommendation Engine Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Personalized Test" 
-                gradientText="Recommendations" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Get AI-powered test suggestions tailored to your sport, training goals, and experience level
-              </p>
-            </div>
-            
-            <div className="max-w-5xl mx-auto">
-              <SportsTestRecommendationEngine />
-            </div>
-          </div>
-        </section>
-
-        {/* Available Tests Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Featured Fitness" 
-                gradientText="Health Tests" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Compare prices from trusted UK providers and book your test today
-              </p>
-            </div>
-            
-            {loading ? <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#e70d69] mx-auto"></div>
-                <p className="mt-4 text-muted-foreground">Loading available tests...</p>
-              </div> : tests.length > 0 ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-                {tests.map(test => <Card key={test.id} className="hover:shadow-xl transition-all duration-300 border-2 hover:border-[#e70d69]">
-                    <CardHeader>
-                      <div className="flex justify-between items-start mb-2">
-                        <Badge variant="secondary">{test.category}</Badge>
-                        {test.price && <span className="text-2xl font-bold text-[#e70d69]">
-                            £{test.price}
-                          </span>}
-                      </div>
-                      <CardTitle className="text-xl">{test.test_name}</CardTitle>
-                      <CardDescription className="capitalize">{test.provider_id.replace(/-/g, ' ')}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3 mb-4">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Beaker className="w-4 h-4" />
-                          <span>
-                            {test.biomarkers && typeof test.biomarkers === 'object' ? Object.keys(test.biomarkers).length : 'Multiple'} Biomarkers
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Clock className="w-4 h-4" />
-                          <span>2-5 working days</span>
-                        </div>
-                      </div>
-                      <Button className="w-full bg-[#e70d69] hover:bg-[#e70d69]/90 text-white" onClick={() => navigate('/compare?category=fitness-health')}>
-                        Compare Prices
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </CardContent>
-                  </Card>)}
-              </div> : <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">No fitness health tests found at the moment.</p>
-                <Button onClick={() => navigate('/compare')}>
-                  Browse All Tests
-                </Button>
-              </div>}
-
-            <div className="text-center mt-12">
-              <Button size="lg" variant="outline" onClick={() => navigate('/compare?category=fitness-health')}>
-                View All Fitness Health Tests
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Performance Optimization Section */}
-        <section className="py-16 bg-[#081129]">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12 bg-[#081129]">
-              <SectionHeading 
-                title="Key Biomarkers for" 
-                gradientText="Athletic Performance" 
-                className="mb-4"
-                titleClassName="text-white"
-              />
-              <p className="text-lg max-w-3xl mx-auto font-normal text-white">
-                Understanding your biomarkers enables data-driven decisions to enhance training, recovery, and competitive performance
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {performanceMarkers.map((marker, index) => {
-              const IconComponent = marker.icon;
-              return <Card key={index} className="border-2 hover:border-[#e70d69] transition-all duration-300 hover:shadow-xl">
-                    <CardHeader>
-                      <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-lg bg-[#e70d69]/10 flex items-center justify-center flex-shrink-0">
-                          <IconComponent className="w-7 h-7 text-[#e70d69]" />
-                        </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-xl mb-2">{marker.title}</CardTitle>
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            {marker.biomarkers.map((biomarker, i) => <Badge key={i} variant="secondary" className="text-xs">
-                                {biomarker}
-                              </Badge>)}
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-[#081129]">{marker.description}</p>
-                    </CardContent>
-                  </Card>;
-            })}
-            </div>
-          </div>
-        </section>
-
-        {/* Athlete Testimonials Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <SectionHeading 
-                title="Trusted by Athletes" 
-                gradientText="Across the UK" 
-                className="mb-4"
-              />
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Hear from athletes who've optimised their performance with blood test insights
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="border-2 hover:border-[#e70d69] transition-all duration-300 hover:shadow-xl">
-                  <CardHeader>
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="text-4xl">{testimonial.image}</div>
-                      <div>
-                        <CardTitle className="text-lg">{testimonial.name}</CardTitle>
-                        <CardDescription>{testimonial.sport}</CardDescription>
-                      </div>
-                    </div>
-                    <div className="flex gap-1 mb-3">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-[#e70d69] text-[#e70d69]" />
-                      ))}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground italic">"{testimonial.quote}"</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <CategoryPageBottom
-          benefitsTitle="Why Choose Fitness Health Testing?"
-          benefits={[
-            { icon: Trophy, title: "Peak Performance", description: "Monitor biomarkers crucial for athletic excellence" },
-            { icon: Activity, title: "Recovery Optimisation", description: "Track markers that impact recovery and injury prevention" },
-            { icon: TrendingUp, title: "Competitive Edge", description: "Data-driven insights to optimise training and nutrition" },
-          ]}
-        />
-      </main>
-      
-      <Footer />
-    </>;
-};
 export default SportsPerformancePage;
