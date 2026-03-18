@@ -38,6 +38,8 @@ export const categoryTaglines: Record<string, string> = {
   "kidney-health": "Keep your kidneys healthy",
   "weight-loss-tests": "Support your weight management goals",
   "popular-tests": "Our most requested health tests",
+  "vitamins": "Optimise your vitamin and mineral levels",
+  "vitamin-mineral": "Optimise your vitamin and mineral levels",
   default: "Take control of your health",
 };
 
