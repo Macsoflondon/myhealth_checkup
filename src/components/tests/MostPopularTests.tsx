@@ -1,23 +1,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigate, Link } from 'react-router-dom';
-import { TrendingUp, Award, Users, Facebook, Instagram, Loader2 } from 'lucide-react';
-import { useTranslation } from "react-i18next";
+import { useNavigate } from 'react-router-dom';
+import { TrendingUp, Award, Users, Loader2 } from 'lucide-react';
 import PageHeading from '@/components/ui/page-heading';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { usePopularTestsFromDatabase, PopularTest } from '@/hooks/usePopularTestsFromDatabase';
 import { UnifiedTestCard } from '@/components/cards/UnifiedTestCard';
 import { getProviderRating } from '@/constants/providerRatings';
 import { getBranding } from '@/data/providerBranding';
-import cqcLogo from "@/assets/compliance/cqc-logo.png";
-import icoLogo from "@/assets/compliance/ico-logo.png";
-
-const gdprLogo = "/lovable-uploads/b41794bb-1baf-49ff-8691-e808992ec800.png";
 
 const MostPopularTests = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
   const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
 
   // No mapping needed — we render UnifiedTestCard directly from popularTests
@@ -155,120 +148,6 @@ const MostPopularTests = () => {
             </Button>
           </div>
 
-          {/* Footer Content - Integrated */}
-          <div className="border-t border-gray-700 pt-12">
-            {/* Navigation Links Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              {/* Services Column */}
-              <div>
-                <h3 id="footer-services" className="font-semibold text-lg mb-4 text-white">{t('footer.categories')}</h3>
-                <ul className="space-y-2" aria-labelledby="footer-services">
-                  <li className="py-0"><Link to="/tests/mens-health" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.mensHealth')}</Link></li>
-                  <li className="py-0"><Link to="/tests/womens-health" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.womensHealth')}</Link></li>
-                  <li className="py-0"><Link to="/tests/heart" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.heartHealth')}</Link></li>
-                  <li className="py-0"><Link to="/compare?category=diabetes" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.diabetes')}</Link></li>
-                  <li className="py-0"><Link to="/compare?category=thyroid" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.thyroid')}</Link></li>
-                  <li className="py-0"><Link to="/compare?category=fertility" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.fertility')}</Link></li>
-                </ul>
-              </div>
-
-              {/* Quick Links and Legal Side by Side */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Quick Links Column */}
-                <div>
-                  <h3 id="footer-info" className="font-semibold text-lg mb-4 text-white">{t('footer.quickLinks')}</h3>
-                  <ul className="space-y-2" aria-labelledby="footer-info">
-                    <li><Link to="/how-it-works" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.howItWorks')}</Link></li>
-                    <li><Link to="/faqs" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.faqs')}</Link></li>
-                    <li><Link to="/blog" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.blog')}</Link></li>
-                    <li><Link to="/contact" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.contact')}</Link></li>
-                  </ul>
-                </div>
-
-                {/* Legal Column */}
-                <div>
-                  <h3 id="footer-company" className="font-semibold text-lg mb-4 text-white">{t('footer.legal')}</h3>
-                  <ul className="space-y-2" aria-labelledby="footer-company">
-                    <li><Link to="/about" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.aboutUs')}</Link></li>
-                    <li><Link to="/privacy-policy" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.privacyPolicy')}</Link></li>
-                    <li><Link to="/terms" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.termsConditions')}</Link></li>
-                    <li><Link to="/fair-trading" className="text-white hover:text-[#e70d69] transition-colors text-sm">Fair Trading Policy</Link></li>
-                    <li><Link to="/how-we-rank" className="text-white hover:text-[#e70d69] transition-colors text-sm">How We Rank</Link></li>
-                    <li><Link to="/partners" className="text-white hover:text-[#e70d69] transition-colors text-sm">{t('footer.links.partners')}</Link></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Social Media and Quality Assurance */}
-            <div className="border-t border-gray-700 pt-8">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
-                {/* Social Media - Left */}
-                <div className="flex space-x-6">
-                  <a href="https://www.facebook.com/myhealthcheckupuk" className="hover:opacity-75 transition-opacity" aria-label="Follow us on Facebook" target="_blank" rel="noopener noreferrer">
-                    <Facebook size={40} style={{ color: '#1877F2' }} />
-                    <span className="sr-only">Facebook</span>
-                  </a>
-                  <a href="https://www.Instagram.com/myhealthcheckup_uk" className="hover:opacity-75 transition-opacity" aria-label="Follow us on Instagram" target="_blank" rel="noopener noreferrer">
-                    <Instagram size={40} style={{ color: '#E4405F' }} />
-                    <span className="sr-only">Instagram</span>
-                  </a>
-                </div>
-                
-                {/* Quality Assurance Logos - Right */}
-                <div className="flex gap-6 items-center">
-                  <div className="flex flex-col items-center text-center space-y-2 py-[10px]">
-                    <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
-                      <img src={cqcLogo} alt="Care Quality Commission" className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-white text-xs font-medium">Care Quality Commission</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center text-center space-y-2">
-                    <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
-                      <img src={gdprLogo} alt="EU GDPR Compliant" className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-white text-xs font-medium">EU GDPR Compliant</span>
-                  </div>
-                  
-                  <div className="flex flex-col items-center text-center space-y-2">
-                    <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center p-1 shadow-md">
-                      <img src={icoLogo} alt="ICO Registered" className="w-full h-full object-contain" />
-                    </div>
-                    <span className="text-white text-xs font-medium">ICO Registered</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Logo and Disclaimer */}
-              <div className="mb-6">
-                <Link to="/" className="inline-flex items-center gap-2 mb-4">
-                  <div className="h-8 w-8 flex items-center justify-center">
-                    <img src="/lovable-uploads/myhealth-logo-turquoise.png" alt="myhealth checkup Logo" className="h-8 w-8 rounded-lg" />
-                  </div>
-                  <span className="text-lg font-bold">
-                    <span className="text-[#e70d69]">myhealth</span> <span className="text-[#22c0d4]">checkup</span>
-                  </span>
-                </Link>
-                <p className="mb-2 text-xs font-light text-white max-w-2xl">MYHEALTHCHECKUP LTD is the UK's only health service comparison platform dedicated to CQC‑regulated and UKAS‑accredited providers.</p>
-                <p className="text-xs font-light text-white">Company No. 16589056</p>
-              </div>
-            </div>
-
-            {/* Copyright and Additional Links */}
-            <div className="border-t border-gray-700 pt-6 mt-8">
-              <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-center text-sm text-white">
-                <p className="font-normal text-[#e70d69]">
-                  {t('footer.copyright')}
-                </p>
-                <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-                  <Link to="/accessibility" className="hover:text-[#e70d69] transition-colors">{t('footer.links.accessibility')}</Link>
-                  <Link to="/sitemap" className="hover:text-[#e70d69] transition-colors">{t('footer.links.sitemap')}</Link>
-                  <Link to="/cookies" className="hover:text-[#e70d69] transition-colors">{t('footer.links.cookiePolicy')}</Link>
-                </nav>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </>
