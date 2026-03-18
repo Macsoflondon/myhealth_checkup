@@ -94,6 +94,8 @@ export function UnifiedTestCard({
   url,
   ctaLabel = "Compare",
   onCtaClick,
+  compareSelected,
+  onCompareToggle,
   className,
 }: UnifiedTestCardProps) {
   const [expanded, setExpanded] = useState(false);
