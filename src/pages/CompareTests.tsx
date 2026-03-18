@@ -19,10 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Filter, TrendingUp, Clock, Sparkles } from "lucide-react";
+import { Loader2, Filter, TrendingUp } from "lucide-react";
 import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import HeroSection from "@/components/sections/HeroSection";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
@@ -163,31 +162,13 @@ const CompareTests = () => {
           <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
         </Helmet>
 
-        <MainLayout hideHeader hideFooter>
-          <HeroSection
-            title={effectiveCategory && effectiveCategory !== "all" 
-              ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
-              : "Compare Private Blood Tests"}
-            subtitle="Transparent pricing and inclusions from trusted UK providers"
-          >
-            {/* Quick Stats */}
-            <div className="flex flex-wrap gap-3 justify-center mt-6">
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <TrendingUp className="h-4 w-4 text-accent" />
-                <span className="text-sm font-medium text-white">{memoizedStats.testCount}+ Tests</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <Clock className="h-4 w-4 text-accent" />
-                <span className="text-sm font-medium text-white">Live Prices</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <Sparkles className="h-4 w-4 text-green-400" />
-                <span className="text-sm font-medium text-white">UKAS Accredited</span>
-              </div>
-            </div>
-          </HeroSection>
-
+        <MainLayout>
           <div className="max-w-7xl mx-auto px-6 py-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-montserrat mb-6">
+              {effectiveCategory && effectiveCategory !== "all" 
+                ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
+                : "Compare Private Blood Tests"}
+            </h1>
             <PageBreadcrumb 
               segments={[
                 { label: "Home", href: "/" },
