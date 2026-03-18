@@ -139,7 +139,7 @@ export function UnifiedTestCard({
           {onCompareToggle && (
             <button
               onClick={(e) => { e.stopPropagation(); onCompareToggle(); }}
-              className="flex-shrink-0 w-[18px] h-[18px] rounded flex items-center justify-center cursor-pointer transition-all duration-150 border-0 p-0"
+              className="flex-shrink-0 w-[18px] h-[18px] rounded flex items-center justify-center cursor-pointer transition-all duration-150 p-0"
               style={{
                 border: `1.5px solid ${compareSelected ? "hsl(var(--brand-turquoise))" : "rgba(255,255,255,0.25)"}`,
                 background: compareSelected ? "hsl(var(--brand-turquoise))" : "transparent",
