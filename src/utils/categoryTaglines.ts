@@ -87,6 +87,8 @@ export const categoryDisplayNames: Record<string, string> = {
   "kidney-health": "Kidney Health",
   "weight-loss-tests": "Weight Loss Tests",
   "popular-tests": "Popular Tests",
+  "vitamins": "Vitamin and Mineral Tests",
+  "vitamin-mineral": "Vitamin and Mineral Tests",
 };
 
 export function getCategoryDisplayName(category: string): string {

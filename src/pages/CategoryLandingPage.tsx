@@ -163,44 +163,12 @@ const CategoryLandingPage: React.FC = () => {
           </script>
         </Helmet>
 
-        <MainLayout hideHeader hideFooter>
-          {/* Hero Section */}
-          <HeroSection
-            title={content.heroTitle}
-            subtitle={content.heroSubtitle}
-          >
-            <div className="flex flex-wrap gap-3 justify-center mt-6">
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <TrendingUp className="h-4 w-4 text-accent" />
-                <span className="text-sm font-medium text-white">
-                  {providerTests.length}+ Tests Available
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <Clock className="h-4 w-4 text-accent" />
-                <span className="text-sm font-medium text-white">Live Prices</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white/10 rounded-full px-4 py-2">
-                <Shield className="h-4 w-4 text-green-400" />
-                <span className="text-sm font-medium text-white">UKAS Accredited</span>
-              </div>
-            </div>
-            
-            <div className="mt-6">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-white gap-2"
-                asChild
-              >
-                <Link to={`/compare?category=${content.slug}`}>
-                  Compare {content.name}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </HeroSection>
-
+        <MainLayout>
           <div className="max-w-7xl mx-auto px-6 py-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-montserrat mb-2">
+              {content.heroTitle}
+            </h1>
+            <p className="text-muted-foreground text-lg mb-6">{content.heroSubtitle}</p>
             {/* Breadcrumb */}
             <PageBreadcrumb 
               segments={[
