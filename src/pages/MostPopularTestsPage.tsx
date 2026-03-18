@@ -28,7 +28,7 @@ const MostPopularTestsPage = () => {
       <div className="min-h-screen flex flex-col">
         
         <Header />
-        <main className="flex-1 bg-[#081129]">
+        <main className="flex-1 bg-background">
           <PageBreadcrumb 
             segments={[{ label: "Home", href: "/" }, { label: "Popular Tests" }]} 
             backLabel="Back"

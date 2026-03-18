@@ -103,8 +103,8 @@ const MostPopularTests = () => {
             </div>
           ) : error ? (
             <div className="text-center py-16">
-              <p className="text-white mb-4">Unable to load tests. Please try again.</p>
-              <Button onClick={() => window.location.reload()} variant="outline" className="text-white border-white">
+              <p className="text-foreground mb-4">Unable to load tests. Please try again.</p>
+              <Button onClick={() => window.location.reload()} variant="outline">
                 Retry
               </Button>
             </div>
