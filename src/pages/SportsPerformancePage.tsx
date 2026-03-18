@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
 import HeroSection from "@/components/sections/HeroSection";
 import { SectionHeading } from "@/components/ui/section-heading";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 interface TestData {
   id: string;
   test_name: string;
@@ -567,28 +568,14 @@ onClick={() => window.open(test.url, '_blank', 'noopener,noreferrer')}
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-[#e70d69] to-white">
-          <div className="container mx-auto px-4 text-center">
-            <SectionHeading 
-              title="Ready to Optimise" 
-              gradientText="Your Fitness?" 
-              className="mb-4"
-            />
-            <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90 text-[#081129]">
-              Compare fitness health tests from trusted UK providers and take control of your athletic health today.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" onClick={() => navigate('/compare?category=fitness-health')}>
-                Compare Tests Now
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20" onClick={() => navigate('/contact')}>
-                Get Expert Advice
-              </Button>
-            </div>
-          </div>
-        </section>
+        <CategoryPageBottom
+          benefitsTitle="Why Choose Fitness Health Testing?"
+          benefits={[
+            { icon: Trophy, title: "Peak Performance", description: "Monitor biomarkers crucial for athletic excellence" },
+            { icon: Activity, title: "Recovery Optimisation", description: "Track markers that impact recovery and injury prevention" },
+            { icon: TrendingUp, title: "Competitive Edge", description: "Data-driven insights to optimise training and nutrition" },
+          ]}
+        />
       </main>
       
       <Footer />

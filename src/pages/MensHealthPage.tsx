@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Shield, Heart, Activity, Users, Zap, TestTube2, Target, Stethoscope } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/section-heading';
+import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 const mensHealthTests = [{
   id: "premium-complete-blood",
   name: "Premium Complete Blood Test",
@@ -348,49 +349,14 @@ const MensHealthPage = () => {
           </div>
         </section>
 
-        {/* Bottom CTA Section */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <ScrollFadeIn>
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                  Ready to Optimise Your Health?
-                </h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Compare men's health tests from trusted UK providers or find a clinic near you
-                </p>
-                <TooltipProvider>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/compare?category=mens-health" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-primary text-primary-foreground hover:bg-health-heading">
-                            Browse All Men's Health Tests
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Compare prices from 7+ trusted UK providers</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                            Find a Clinic
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>150+ clinics nationwide with instant availability</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                </TooltipProvider>
-              </div>
-            </ScrollFadeIn>
-          </div>
-        </section>
+        <CategoryPageBottom
+          benefitsTitle="Why Choose Men's Health Testing?"
+          benefits={[
+            { icon: Shield, title: "Early Detection", description: "Identify potential health issues before symptoms develop" },
+            { icon: Activity, title: "Optimise Performance", description: "Maximise energy, strength, and overall male vitality" },
+            { icon: Users, title: "Preventive Care", description: "Take control of your health with proactive screening" },
+          ]}
+        />
     </MainLayout>
   );
 };

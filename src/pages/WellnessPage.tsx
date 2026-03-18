@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield, Home, ArrowLeft } from "lucide-react";
 import PageHeading from "@/components/ui/page-heading";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 
 const wellnessCategoryCards = [
   { id: "longevity-tests", name: "Longevity Tests", count: 3, desc: "Comprehensive health markers for longevity and preventive care", icon: "⟳", accent: "#00d4c8", tag: "PREVENTIVE" },
@@ -403,117 +404,14 @@ const WellnessPage = () => {
             </div>
           </div>
         </section>
-        {/* Bottom CTA Section */}
-        <div style={{ marginTop: "32px", marginBottom: "48px", padding: "0 40px" }}>
-          {/* CTA Content with tricolour border */}
-          <div
-            style={{
-              background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
-              padding: "3px",
-              borderRadius: "16px",
-            }}
-          >
-            <div
-              style={{
-                background: "#0a1120",
-                padding: "40px 48px",
-                borderRadius: "13px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "32px",
-                flexWrap: "wrap" as const,
-              }}
-            >
-              <div>
-                <p
-                  style={{
-                    color: "#22c0d4",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase" as const,
-                    marginBottom: "8px",
-                  }}
-                >
-                  Not Sure Where to Start?
-                </p>
-                <h2
-                  style={{
-                    color: "#ffffff",
-                    fontSize: "28px",
-                    fontWeight: "700",
-                    margin: 0,
-                  }}
-                >
-                  Find the Right Health Test for You
-                </h2>
-              </div>
-              <Link
-                to="/quiz"
-                style={{
-                  background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
-                  color: "#ffffff",
-                  border: "none",
-                  padding: "16px 36px",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  transition: "transform 0.2s ease",
-                  textDecoration: "none",
-                  whiteSpace: "nowrap" as const,
-                  display: "inline-block",
-                }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")}
-              >
-                Start Your Quiz →
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Tricolour divider */}
-        <div
-          style={{
-            height: 3,
-            background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
-            margin: "0 40px",
-          }}
+        <CategoryPageBottom
+          benefitsTitle="Why Choose Wellness Testing?"
+          benefits={[
+            { icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
+            { icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
+            { icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
+          ]}
         />
-
-        {/* Benefits Section - Condensed */}
-        <section style={{ background: "#081129", padding: "32px 0" }}>
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 style={{ fontSize: 20, fontWeight: 700, color: "#ffffff", marginBottom: 16 }}>Why Choose Wellness Testing?</h2>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
-                    <Shield className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", marginBottom: 4 }}>Early Detection</h3>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>Identify issues before they become serious</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
-                    <Activity className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", marginBottom: 4 }}>Optimize Performance</h3>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>Monitor biomarkers to enhance wellbeing</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
-                    <Heart className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", marginBottom: 4 }}>Peace of Mind</h3>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>Confidence in your health status</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
       
       <Footer />

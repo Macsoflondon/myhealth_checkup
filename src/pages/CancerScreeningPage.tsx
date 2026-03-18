@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Users, Heart, Target, Activity, AlertTriangle, Microscope } from "lucide-react";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 const cancerScreeningTests = [
   {
     id: "bowel-cancer",
@@ -314,6 +315,14 @@ const CancerScreeningPage = () => {
             </div>
           </div>
         </section>
+        <CategoryPageBottom
+          benefitsTitle="Why Choose Cancer Screening?"
+          benefits={[
+            { icon: Shield, title: "Early Detection", description: "Catch cancer early when treatment is most effective" },
+            { icon: Heart, title: "Peace of Mind", description: "Regular screening provides reassurance about your health" },
+            { icon: Users, title: "Expert Care", description: "Results reviewed by qualified healthcare professionals" },
+          ]}
+        />
       </main>
       
       <Footer />

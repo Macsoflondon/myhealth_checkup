@@ -3,8 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MostPopularTests from '@/components/MostPopularTests';
-
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
+import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
+import { Star, TrendingUp, Shield } from 'lucide-react';
 
 const MostPopularTestsPage = () => {
   return (
@@ -33,6 +34,14 @@ const MostPopularTestsPage = () => {
             backLabel="Back"
           />
           <MostPopularTests />
+          <CategoryPageBottom
+            benefitsTitle="Why Choose Our Most Popular Tests?"
+            benefits={[
+              { icon: Star, title: "Trusted by Thousands", description: "Our highest-rated tests chosen by customers across the UK" },
+              { icon: TrendingUp, title: "Comprehensive Insights", description: "Thorough biomarker panels for a complete health picture" },
+              { icon: Shield, title: "Accredited Labs", description: "All tests processed by UKAS-accredited laboratories" },
+            ]}
+          />
         </main>
         <Footer />
       </div>
