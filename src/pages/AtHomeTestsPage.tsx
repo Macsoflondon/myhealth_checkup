@@ -195,31 +195,14 @@ const AtHomeTestsPage = () => {
             </div>
           </section>
 
-          {/* CTA Section */}
-          <section className="py-12 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                  Ready to Test from Home?
-                </h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Compare at-home tests from trusted UK providers
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/compare?collection=home">
-                    <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white">
-                      Browse All At-Home Tests
-                    </Button>
-                  </Link>
-                  <Link to="/find-clinic">
-                    <Button size="lg" variant="outline" className="border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4]/10">
-                      Prefer a Clinic Visit?
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
+          <CategoryPageBottom
+            benefitsTitle="Why Choose At-Home Testing?"
+            benefits={[
+              { icon: Home, title: "Convenient", description: "Test from home — no clinic visit required" },
+              { icon: Clock, title: "Fast Results", description: "Results typically available within 24-48 hours" },
+              { icon: Shield, title: "UKAS Accredited", description: "All samples analysed in accredited laboratories" },
+            ]}
+          />
         </main>
         
         <Footer />
