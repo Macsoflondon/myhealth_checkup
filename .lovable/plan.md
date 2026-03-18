@@ -1,20 +1,22 @@
 
 
-## Remove WhyChooseUs and TopConcernsSection from Homepage
+## Change Popular Tests Page Background to Pearl White
 
-Three files to change:
+The page currently has `bg-[#081129]` (navy) on the hero section (line 21), the main content area (MostPopularTestsPage line 31), and the tests grid section (line 87). These need to switch to the site's standard pearl white background.
 
-### 1. `src/pages/Index.tsx`
-- Remove `import WhyChooseUs` (line 16) and `import TopConcernsSection` (line 22)
-- Remove the TopConcernsSection JSX block (lines 134-135)
-- Remove the WhyChooseUs JSX block (lines 144-145)
+### Changes
 
-### 2. `src/components/sections/WhyChooseUs.tsx`
-- Delete this file entirely
+**1. `src/pages/MostPopularTestsPage.tsx`**
+- Line 31: Change `bg-[#081129]` to `bg-background` on the `<main>` element
 
-### 3. `src/components/sections/index.ts`
-- Remove the WhyChooseUs export (no line exists currently, but clean up if present)
-- Keep TopConcernsSection export so it remains available for future use
+**2. `src/components/tests/MostPopularTests.tsx`**
+- Line 21 (Hero section): Change `bg-[#081129]` to `bg-background`
+- Lines 24-31: Update text colors from `text-white` to `text-foreground` / `text-muted-foreground` so they're readable on a light background
+- Line 87 (Tests section): Change `bg-[#081129]` to `bg-background`
+- Line 91: Update the sort dropdown styling from navy/white to light theme colors
+- Lines 102-103: Update loading spinner text from `text-white` to `text-foreground`
+- Lines 106-109: Update error state text from `text-white` to `text-foreground`
+- Line 146: Keep the CTA button as-is (pink)
 
-TopConcernsSection component file stays in the codebase untouched — available for reuse later.
+**Will NOT touch:** The `UnifiedTestCard` components or their grid layout.
 
