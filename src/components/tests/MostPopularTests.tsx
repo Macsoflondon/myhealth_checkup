@@ -11,8 +11,7 @@ import { getBranding } from '@/data/providerBranding';
 
 const MostPopularTests = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
+  const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
   const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
 
   // No mapping needed — we render UnifiedTestCard directly from popularTests
