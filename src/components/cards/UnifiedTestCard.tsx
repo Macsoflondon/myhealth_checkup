@@ -67,6 +67,10 @@ export interface UnifiedTestCardProps {
   ctaLabel?: string;
   /** Click handler for CTA */
   onCtaClick?: () => void;
+  /** Whether this card is selected for comparison */
+  compareSelected?: boolean;
+  /** Toggle comparison selection */
+  onCompareToggle?: () => void;
   /** Additional className */
   className?: string;
 }
@@ -90,6 +94,8 @@ export function UnifiedTestCard({
   url,
   ctaLabel = "Compare",
   onCtaClick,
+  compareSelected,
+  onCompareToggle,
   className,
 }: UnifiedTestCardProps) {
   const [expanded, setExpanded] = useState(false);
@@ -113,21 +119,39 @@ export function UnifiedTestCard({
       )}
       style={{
         background: "linear-gradient(160deg, hsl(var(--navy) / 0.95) 0%, hsl(var(--navy)) 100%)",
-        border: `1px solid ${hovered ? categoryColor + "66" : "hsl(var(--navy) / 0.6)"}`,
+        border: `1px solid ${compareSelected ? "hsl(var(--brand-turquoise))" : hovered ? categoryColor + "66" : "hsl(var(--navy) / 0.6)"}`,
         borderRadius: 20,
         transition: "border-color 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease",
         transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hovered
-          ? `0 20px 60px rgba(0,0,0,0.25), 0 0 0 1px ${categoryColor}33`
-          : "0 8px 32px rgba(0,0,0,0.15)",
+        boxShadow: compareSelected
+          ? "0 0 0 1px hsl(var(--brand-turquoise) / 0.4), 0 8px 32px hsl(var(--brand-turquoise) / 0.15)"
+          : hovered
+            ? `0 20px 60px rgba(0,0,0,0.25), 0 0 0 1px ${categoryColor}33`
+            : "0 8px 32px rgba(0,0,0,0.15)",
       }}
     >
       {/* Top accent bar */}
       <div className="h-1 w-full" style={{ backgroundColor: categoryColor }} />
 
       <div className="p-5 sm:p-6 flex flex-col flex-1">
-        {/* Category + Badge */}
+        {/* Compare checkbox + Category + Badge */}
         <div className="flex items-center gap-2 mb-3">
+          {onCompareToggle && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onCompareToggle(); }}
+              className="flex-shrink-0 w-[18px] h-[18px] rounded flex items-center justify-center cursor-pointer transition-all duration-150 border-0 p-0"
+              style={{
+                border: `1.5px solid ${compareSelected ? "hsl(var(--brand-turquoise))" : "rgba(255,255,255,0.25)"}`,
+                background: compareSelected ? "hsl(var(--brand-turquoise))" : "transparent",
+                color: "hsl(var(--navy))",
+                fontSize: 11,
+                fontWeight: 900,
+              }}
+              aria-label={compareSelected ? "Remove from comparison" : "Add to comparison"}
+            >
+              {compareSelected ? "✓" : ""}
+            </button>
+          )}
           <span
             className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide text-white"
             style={{ backgroundColor: categoryColor }}
