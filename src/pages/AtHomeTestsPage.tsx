@@ -1,215 +1,147 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { Home, Clock, Shield } from "lucide-react";
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
-import HeroSection from '@/components/sections/HeroSection';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Home, Clock, Shield, CheckCircle, Droplets, TestTube2 } from 'lucide-react';
-import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
-
-const atHomeTestCategories = [
+const atHomeTests: CategoryTestItem[] = [
   {
-    id: 'finger-prick',
-    name: 'Finger Prick Tests',
-    description: 'Simple self-collection tests with just a few drops of blood',
-    icon: Droplets,
-    testCount: 45,
-    colorHex: '#e70d69'
+    id: "finger-prick-basic",
+    popular: true,
+    badge: "Finger Prick",
+    badgeColor: "#e70d69",
+    provider: "Medichecks",
+    priceNum: 49,
+    price: "£49",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 10,
+    rating: 4.8,
+    reviews: 1240,
+    title: "Essential Health Check",
+    desc: "Quick finger prick test covering key health markers including cholesterol, liver function, and vitamins.",
+    biomarkers: ["Full Blood Count", "Cholesterol", "Liver Function"],
+    tag: "Finger Prick",
+    collection: "Finger Prick",
   },
   {
-    id: 'saliva',
-    name: 'Saliva Tests',
-    description: 'Non-invasive hormone and wellness testing',
-    icon: TestTube2,
-    testCount: 12,
-    colorHex: '#22c0d4'
+    id: "finger-prick-advanced",
+    popular: false,
+    badge: "Finger Prick",
+    badgeColor: "#e70d69",
+    provider: "Thriva",
+    priceNum: 89,
+    price: "£89",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 18,
+    rating: 4.7,
+    reviews: 890,
+    title: "Advanced Wellness Blood Test",
+    desc: "Comprehensive finger prick test analysing vitamins, hormones, and organ function markers.",
+    biomarkers: ["Vitamin D", "Thyroid Function", "Iron"],
+    tag: "Finger Prick",
+    collection: "Finger Prick",
   },
   {
-    id: 'urine',
-    name: 'Urine Tests',
-    description: 'Convenient sample collection for various health markers',
-    icon: TestTube2,
-    testCount: 8,
-    colorHex: '#3A5F85'
-  }
+    id: "saliva-cortisol",
+    popular: false,
+    badge: "Saliva Test",
+    badgeColor: "#22c0d4",
+    provider: "Medichecks",
+    priceNum: 69,
+    price: "£69",
+    turnaround: "3–5 days",
+    turnaroundDays: 5,
+    biomarkerCount: 4,
+    rating: 4.6,
+    reviews: 420,
+    title: "Cortisol Stress Test",
+    desc: "Non-invasive saliva test measuring cortisol levels throughout the day to assess stress and adrenal function.",
+    biomarkers: ["Cortisol AM", "Cortisol PM", "DHEA"],
+    tag: "Saliva",
+    collection: "Saliva",
+  },
+  {
+    id: "saliva-hormones",
+    popular: true,
+    badge: "Saliva Test",
+    badgeColor: "#22c0d4",
+    provider: "Goodbody",
+    priceNum: 99,
+    price: "£99",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 6,
+    rating: 4.9,
+    reviews: 678,
+    title: "Hormone Balance Saliva Test",
+    desc: "Complete hormone panel via saliva collection — oestrogen, progesterone, testosterone, and cortisol.",
+    biomarkers: ["Oestradiol", "Progesterone", "Testosterone"],
+    tag: "Saliva",
+    collection: "Saliva",
+  },
+  {
+    id: "urine-metabolic",
+    popular: false,
+    badge: "Urine Test",
+    badgeColor: "#3A5F85",
+    provider: "Randox Health",
+    priceNum: 79,
+    price: "£79",
+    turnaround: "3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 8,
+    rating: 4.5,
+    reviews: 310,
+    title: "Metabolic Urine Screen",
+    desc: "Convenient urine collection test for kidney function, glucose, and metabolic health markers.",
+    biomarkers: ["Creatinine", "Glucose", "Protein"],
+    tag: "Urine",
+    collection: "Urine",
+  },
+  {
+    id: "finger-prick-diabetes",
+    popular: false,
+    badge: "Finger Prick",
+    badgeColor: "#e70d69",
+    provider: "Lola Health",
+    priceNum: 59,
+    price: "£59",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 5,
+    rating: 4.7,
+    reviews: 540,
+    title: "Diabetes Risk Check",
+    desc: "At-home finger prick blood test for HbA1c, fasting glucose, and insulin resistance markers.",
+    biomarkers: ["HbA1c", "Fasting Glucose", "Insulin"],
+    tag: "Finger Prick",
+    collection: "Finger Prick",
+  },
 ];
 
-const AtHomeTestsPage = () => {
-  return (
-    <>
-      <Helmet>
-        <title>At-Home Health Tests | Convenient Home Testing Kits | myhealth checkup</title>
-        <meta name="description" content="Convenient at-home health testing kits with professional lab analysis and fast results. Finger prick, saliva, and urine tests delivered to your door." />
-        <meta name="keywords" content="at home blood test, home testing kit, finger prick test, health test at home, private blood test UK" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/at-home-tests" />
-        
-        <meta property="og:title" content="At-Home Health Tests | myhealth checkup" />
-        <meta property="og:description" content="Convenient at-home health testing kits with professional lab analysis." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/at-home-tests" />
-      </Helmet>
-      
-      <div className="min-h-screen flex flex-col">
-        
-        <Header />
-        
-        <main className="flex-1 bg-background">
-          <PageBreadcrumb 
-            segments={[{ label: "Home", href: "/" }, { label: "At-Home Tests" }]} 
-            backLabel="Back"
-          />
-          <HeroSection
-            title="At-Home Health Tests"
-            subtitle="Take control of your health with our convenient at-home testing kits. Professional lab analysis with results delivered securely online."
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full mb-6">
-              <Home className="h-5 w-5 text-[#22c0d4]" />
-              <span className="text-white text-sm font-medium">Test from the comfort of home</span>
-            </div>
-          </HeroSection>
-
-
-          {/* Benefits */}
-          <section className="py-12 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="max-w-5xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <Home className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 text-[#081129]">Convenient</h3>
-                    <p className="text-muted-foreground">
-                      Test from home - no clinic visit required. Kits delivered to your door.
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <Clock className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 text-[#081129]">Fast Results</h3>
-                    <p className="text-muted-foreground">
-                      Results typically available within 24-48 hours of lab receipt.
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <Shield className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2 text-[#081129]">UKAS Accredited</h3>
-                    <p className="text-muted-foreground">
-                      All samples analysed in UKAS-accredited laboratories.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Test Categories */}
-          <section className="py-16 bg-gray-50">
-            <div className="container mx-auto px-4">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                    Browse by Sample Type
-                  </h2>
-                  <p className="text-lg text-muted-foreground">
-                    Choose the collection method that suits you best
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {atHomeTestCategories.map(category => {
-                    const IconComponent = category.icon;
-                    return (
-                      <Card key={category.id} className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div 
-                              className="w-10 h-10 rounded-full flex items-center justify-center"
-                              style={{ backgroundColor: `${category.colorHex}20` }}
-                            >
-                              <IconComponent className="h-5 w-5" style={{ color: category.colorHex }} />
-                            </div>
-                            <CardTitle className="text-xl leading-tight text-[#081129]">
-                              {category.name}
-                            </CardTitle>
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            {category.testCount} tests available
-                          </p>
-                        </CardHeader>
-                        <CardContent className="pt-0">
-                          <CardDescription className="text-sm text-muted-foreground mb-4">
-                            {category.description}
-                          </CardDescription>
-                          <Link to={`/compare?sample=${category.id}`}>
-                            <Button 
-                              className="w-full text-white transition-colors"
-                              style={{ backgroundColor: category.colorHex }}
-                            >
-                              View Tests
-                            </Button>
-                          </Link>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* How It Works */}
-          <section className="py-16 bg-[#081129]">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold mb-4 text-white">
-                    How At-Home Testing Works
-                  </h2>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  {[
-                    { step: '1', title: 'Order Online', desc: 'Choose your test and have it delivered' },
-                    { step: '2', title: 'Collect Sample', desc: 'Follow simple instructions at home' },
-                    { step: '3', title: 'Post Back', desc: 'Use the prepaid return envelope' },
-                    { step: '4', title: 'Get Results', desc: 'View results online within 48 hours' }
-                  ].map((item, index) => (
-                    <div key={index} className="text-center">
-                      <div className="w-12 h-12 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-lg">
-                        {item.step}
-                      </div>
-                      <h3 className="text-lg font-semibold mb-2 text-white">{item.title}</h3>
-                      <p className="text-white/70 text-sm">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <CategoryPageBottom
-            benefitsTitle="Why Choose At-Home Testing?"
-            benefits={[
-              { icon: Home, title: "Convenient", description: "Test from home — no clinic visit required" },
-              { icon: Clock, title: "Fast Results", description: "Results typically available within 24-48 hours" },
-              { icon: Shield, title: "UKAS Accredited", description: "All samples analysed in accredited laboratories" },
-            ]}
-          />
-        </main>
-        
-        <Footer />
-      </div>
-    </>
-  );
-};
+const AtHomeTestsPage = () => (
+  <CategoryPageLayout
+    seoTitle="At-Home Health Tests | Convenient Home Testing Kits | myhealth checkup"
+    seoDescription="Convenient at-home health testing kits with professional lab analysis and fast results. Finger prick, saliva, and urine tests delivered to your door."
+    seoKeywords="at home blood test, home testing kit, finger prick test, health test at home, private blood test UK"
+    canonicalUrl="https://myhealthcheckup.co.uk/at-home-tests"
+    headline="At-Home Health Tests"
+    subtitle="Take control of your health with convenient at-home testing kits. Professional lab analysis with results delivered securely online."
+    searchPlaceholder="Search by symptom or test — e.g. 'vitamin D', 'thyroid'"
+    trustStats={[
+      { value: "45,000+", label: "Tests Compared" },
+      { value: "4.7★", label: "Average Rating" },
+      { value: "6", label: "Trusted Providers" },
+    ]}
+    filters={["All", "Finger Prick", "Saliva", "Urine"]}
+    tests={atHomeTests}
+    benefitsTitle="Why Choose At-Home Testing?"
+    benefits={[
+      { icon: Home, title: "Convenient", description: "Test from home — no clinic visit required" },
+      { icon: Clock, title: "Fast Results", description: "Results typically available within 24-48 hours" },
+      { icon: Shield, title: "UKAS Accredited", description: "All samples analysed in accredited laboratories" },
+    ]}
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "At-Home Tests" }]}
+  />
+);
 
 export default AtHomeTestsPage;
