@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, Filter, TrendingUp, Clock, Sparkles } from "lucide-react";
+import { Loader2, Filter, TrendingUp } from "lucide-react";
 import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import HeroSection from "@/components/sections/HeroSection";
