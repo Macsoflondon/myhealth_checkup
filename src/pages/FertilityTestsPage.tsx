@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Star, Shield, Activity, Heart } from 'lucide-react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';

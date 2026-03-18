@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SportsTestRecommendationEngine from "@/components/SportsTestRecommendationEngine";
 import HeroSection from "@/components/sections/HeroSection";
 import { SectionHeading } from "@/components/ui/section-heading";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 interface TestData {
   id: string;
   test_name: string;

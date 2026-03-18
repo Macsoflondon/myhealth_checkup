@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Home, Clock, Shield, CheckCircle, Droplets, TestTube2 } from 'lucide-react';
+import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 
 const atHomeTestCategories = [
   {

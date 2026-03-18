@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield, Home, ArrowLeft } from "lucide-react";
 import PageHeading from "@/components/ui/page-heading";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 
 const wellnessCategoryCards = [
   { id: "longevity-tests", name: "Longevity Tests", count: 3, desc: "Comprehensive health markers for longevity and preventive care", icon: "⟳", accent: "#00d4c8", tag: "PREVENTIVE" },

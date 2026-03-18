@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Heart, Shield, Activity, Users, Baby, Flower2, Stethoscope, Target, Moon } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/section-heading';
+import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 const getCategoryColor = (category: string) => {
   const colorMap: {
     [key: string]: string;

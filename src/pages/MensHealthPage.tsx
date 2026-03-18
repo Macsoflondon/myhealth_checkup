@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Shield, Heart, Activity, Users, Zap, TestTube2, Target, Stethoscope } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/section-heading';
+import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 const mensHealthTests = [{
   id: "premium-complete-blood",
   name: "Premium Complete Blood Test",

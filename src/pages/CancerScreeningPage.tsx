@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Shield, Clock, Users, Heart, Target, Activity, AlertTriangle, Microscope } from "lucide-react";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 const cancerScreeningTests = [
   {
     id: "bowel-cancer",
