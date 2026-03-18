@@ -314,6 +314,14 @@ const CancerScreeningPage = () => {
             </div>
           </div>
         </section>
+        <CategoryPageBottom
+          benefitsTitle="Why Choose Cancer Screening?"
+          benefits={[
+            { icon: Shield, title: "Early Detection", description: "Catch cancer early when treatment is most effective" },
+            { icon: Heart, title: "Peace of Mind", description: "Regular screening provides reassurance about your health" },
+            { icon: Users, title: "Expert Care", description: "Results reviewed by qualified healthcare professionals" },
+          ]}
+        />
       </main>
       
       <Footer />
