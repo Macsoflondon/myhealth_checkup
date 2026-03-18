@@ -23,7 +23,6 @@ import { Loader2, Filter, TrendingUp } from "lucide-react";
 import { providers } from "@/constants/providers";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
-import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
 

@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
 import { Button } from "@/components/ui/button";
