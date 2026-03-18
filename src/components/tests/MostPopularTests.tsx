@@ -84,11 +84,11 @@ const MostPopularTests = () => {
       </section>
 
       {/* Tests Section - Unified with Footer */}
-      <section className="bg-[#081129] py-8 sm:py-12 md:py-16">
+      <section className="bg-background py-8 sm:py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6">
 
           <div className="flex justify-end mb-4 sm:mb-6">
-            <select className="px-3 sm:px-4 md:px-14 py-2 border border-gray-500 rounded-md text-xs sm:text-sm bg-[#e70d69] text-white hover:border-gray-400">
+            <select className="px-3 sm:px-4 md:px-14 py-2 border border-border rounded-md text-xs sm:text-sm bg-background text-foreground hover:border-muted-foreground">
               <option>Biomarkers, high to low</option>
               <option>Price, high to low</option>
               <option>Price, low to high</option>
