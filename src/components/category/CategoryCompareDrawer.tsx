@@ -26,6 +26,8 @@ export function CategoryCompareDrawer({
 }: CategoryCompareDrawerProps) {
   if (selected.length === 0) return null;
 
+  const compareLink = `${compareUrl}${compareUrl.includes("?") ? "&" : "?"}tests=${selected.map((s) => s.id).join(",")}`;
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-[hsl(var(--navy))] border-t-2 border-brand-turquoise shadow-[0_-8px_40px_rgba(0,200,200,0.15)]">
       <div className="container mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
@@ -74,7 +76,7 @@ export function CategoryCompareDrawer({
             size="sm"
             className="text-xs font-bold text-white bg-gradient-to-r from-brand-turquoise to-brand-pink hover:opacity-90 border-0"
           >
-            <Link to={compareUrl}>Compare Now →</Link>
+            <Link to={compareLink}>Compare Now →</Link>
           </Button>
         </div>
       </div>
