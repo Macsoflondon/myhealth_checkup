@@ -165,7 +165,6 @@ export const MobileMegaMenu = ({ onItemClick, className = "" }: MobileMegaMenuPr
                         </div>
                         <div className="flex items-center gap-2 text-sm text-gray-500">
                           <span>{test.provider}</span>
-                          <span className="font-medium text-primary">£{test.price}</span>
                         </div>
                       </Link>
                     );

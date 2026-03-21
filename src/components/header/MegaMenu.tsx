@@ -186,7 +186,6 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                             </div>
                             <div className="flex items-center gap-2 mt-1">
                               <span className="text-sm text-gray-500">{test.provider}</span>
-                              <span className="text-sm font-medium text-primary">£{test.price}</span>
                             </div>
                           </div>
                         </Link>

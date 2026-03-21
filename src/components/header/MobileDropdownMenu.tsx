@@ -181,9 +181,6 @@ export const MobileDropdownMenu = ({
                         <span className="text-lg text-foreground group-hover:text-primary">
                           {test.name}
                         </span>
-                        <span className="text-lg font-medium text-primary">
-                          £{test.price}
-                        </span>
                       </Link>
                     ))}
                     <Link
