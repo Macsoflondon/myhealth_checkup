@@ -232,7 +232,7 @@ export function UnifiedTestCard({
         <div className="flex items-center justify-between mb-4 mt-2">
           <StarRating rating={rating} reviews={reviews} />
           <div className="flex-shrink-0 ml-3">
-            <ProviderLogo provider={provider} className="h-6 w-auto max-w-[80px] object-contain brightness-0 invert opacity-60" />
+            <ProviderLogo provider={provider} className="h-6 w-auto max-w-[80px] object-contain" />
           </div>
         </div>
 
