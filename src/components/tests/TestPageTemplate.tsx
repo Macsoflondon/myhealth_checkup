@@ -109,12 +109,12 @@ const TestPageTemplate = ({
             </Card>
 
             {/* Why Choose This Test */}
-            <Card>
+            <Card className="bg-[#081129] border-[#081129]">
               <CardHeader>
-                <CardTitle className="font-medium text-[#081129]">{data.whyChooseTitle || 'Why Choose This Test?'}</CardTitle>
+                <CardTitle className="font-medium text-white">{data.whyChooseTitle || 'Why Choose This Test?'}</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-muted-foreground">
+                <ul className="space-y-2 text-white/70">
                   {data.whyChooseItems.map((item, index) => <li key={index}>• {item}</li>)}
                 </ul>
               </CardContent>
