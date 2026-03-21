@@ -163,7 +163,7 @@ const CompareTests = () => {
         </Helmet>
 
         <MainLayout>
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-6 py-8 bg-white rounded-lg">
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-montserrat mb-6">
               {effectiveCategory && effectiveCategory !== "all" 
                 ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
