@@ -1,0 +1,1 @@
+UPDATE public.provider_tests SET test_name = 'Cholesterol Blood Test' WHERE id = '9e13e9a2-4bfb-46ae-8037-1d6ee17e835f';
