@@ -29,24 +29,24 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
 
   const getPriceIndicator = (price: number) => {
     if (price === lowestPrice) {
-      return { icon: TrendingDown, color: "text-green-600", label: "Lowest", bg: "bg-green-50" };
+      return { icon: TrendingDown, color: "text-[#22c0d4]", label: "Lowest", bg: "bg-[#22c0d4]/10" };
     }
     if (price === highestPrice) {
-      return { icon: TrendingUp, color: "text-amber-600", label: "Highest", bg: "bg-amber-50" };
+      return { icon: TrendingUp, color: "text-[#e70d69]", label: "Highest", bg: "bg-[#e70d69]/10" };
     }
-    return { icon: Minus, color: "text-muted-foreground", label: "Mid-range", bg: "bg-muted/50" };
+    return { icon: Minus, color: "text-white/60", label: "Mid-range", bg: "bg-white/5" };
   };
 
   return (
-    <Card className="mt-6 border-primary/20">
+    <Card className="mt-6 bg-[#081129] border-[#081129]">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle className="flex items-center justify-between text-white">
           <span className="flex items-center gap-2">
-            <Award className="w-5 h-5 text-primary" />
+            <Award className="w-5 h-5 text-[#22c0d4]" />
             Price Comparison
           </span>
           {savingsPercentage > 0 && (
-            <Badge variant="secondary" className="bg-green-100 text-green-800">
+            <Badge variant="secondary" className="bg-[#22c0d4]/20 text-[#22c0d4]">
               Save up to {savingsPercentage}%
             </Badge>
           )}
@@ -54,18 +54,18 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
       </CardHeader>
       <CardContent>
         {/* Price Summary */}
-        <div className="grid grid-cols-3 gap-3 mb-4 p-3 bg-muted/30 rounded-lg">
+        <div className="grid grid-cols-3 gap-3 mb-4 p-3 bg-white/5 rounded-lg">
           <div className="text-center">
-            <p className="text-xs text-muted-foreground">Lowest</p>
-            <p className="font-bold text-green-600">£{lowestPrice}</p>
+            <p className="text-xs text-white/50">Lowest</p>
+            <p className="font-bold text-[#22c0d4]">£{lowestPrice}</p>
           </div>
-          <div className="text-center border-x border-border">
-            <p className="text-xs text-muted-foreground">Average</p>
-            <p className="font-bold text-foreground">£{averagePrice.toFixed(0)}</p>
+          <div className="text-center border-x border-white/10">
+            <p className="text-xs text-white/50">Average</p>
+            <p className="font-bold text-white">£{averagePrice.toFixed(0)}</p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-muted-foreground">Highest</p>
-            <p className="font-bold text-amber-600">£{highestPrice}</p>
+            <p className="text-xs text-white/50">Highest</p>
+            <p className="font-bold text-[#e70d69]">£{highestPrice}</p>
           </div>
         </div>
 
@@ -80,25 +80,25 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
               <div 
                 key={provider.name}
                 className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
-                  isLowest ? 'border-green-200 bg-green-50/50' : 'border-border hover:bg-accent/50'
+                  isLowest ? 'border-[#22c0d4]/40 bg-[#22c0d4]/10' : 'border-white/10 hover:bg-white/5'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    isLowest ? 'bg-green-600 text-white' : 'bg-muted text-muted-foreground'
+                    isLowest ? 'bg-[#22c0d4] text-white' : 'bg-white/10 text-white/60'
                   }`}>
                     {index + 1}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{provider.name}</span>
+                      <span className="font-medium text-white">{provider.name}</span>
                       {isLowest && (
-                        <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
+                        <Badge variant="secondary" className="text-xs bg-[#22c0d4]/20 text-[#22c0d4]">
                           Best Value
                         </Badge>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
+                    <div className="flex items-center gap-3 text-xs text-white/50 mt-0.5">
                       <span>{provider.biomarkers} biomarkers</span>
                       <span>•</span>
                       <span>{provider.turnaround}</span>
@@ -110,17 +110,17 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
                   <div className="text-right">
                     <div className="flex items-center gap-1">
                       <IconComponent className={`w-4 h-4 ${indicator.color}`} />
-                      <span className={`font-bold ${isLowest ? 'text-green-600' : 'text-foreground'}`}>
+                      <span className={`font-bold ${isLowest ? 'text-[#22c0d4]' : 'text-white'}`}>
                         £{provider.price}
                       </span>
                     </div>
                     {!isLowest && (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-white/40">
                         +£{provider.price - lowestPrice} more
                       </span>
                     )}
                   </div>
-                  <Button size="sm" variant={isLowest ? "default" : "outline"} asChild>
+                  <Button size="sm" className={isLowest ? "bg-[#22c0d4] hover:bg-[#e70d69] text-white" : "bg-white/10 hover:bg-white/20 text-white border-white/20"} asChild>
                     <a href={provider.bookingUrl} target="_blank" rel="noopener noreferrer">
                       Book
                       <ExternalLink className="w-3 h-3 ml-1" />
@@ -133,8 +133,8 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
         </div>
 
         {/* CTA */}
-        <div className="mt-4 pt-4 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center">
+        <div className="mt-4 pt-4 border-t border-white/10">
+          <p className="text-xs text-white/40 text-center">
             Prices shown are for standard home test kits. Clinic visit costs may vary.
           </p>
         </div>

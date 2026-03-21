@@ -34,7 +34,6 @@ const SimilarTestsSection = ({
   useEffect(() => {
     const fetchSimilarTests = async () => {
       try {
-        // Resolve slug to DB categories if needed
         const { getDbCategoriesForSlug } = await import('@/constants/categories');
         const dbCategories = getDbCategoriesForSlug(category);
         
@@ -56,7 +55,6 @@ const SimilarTestsSection = ({
 
         if (error) throw error;
         
-        // Filter out the current test if name matches
         const filtered = data?.filter(
           test => test.test_name.toLowerCase() !== currentTestName?.toLowerCase()
         ) || [];
@@ -81,11 +79,9 @@ const SimilarTestsSection = ({
   };
 
   const getTestSlug = (test: SimilarTest) => {
-    // Use provider_test_id if available, otherwise fall back to generated slug
     if (test.provider_test_id) {
       return test.provider_test_id;
     }
-    // For GoodBody which uses id instead of provider_test_id
     if (test.provider_id === 'goodbody-clinic' || test.provider_id === 'goodbody') {
       return test.id;
     }
@@ -93,15 +89,15 @@ const SimilarTestsSection = ({
   };
 
   return (
-    <Card className="mt-6">
+    <Card className="mt-6 bg-[#081129] border-[#081129]">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <FlaskConical className="w-5 h-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-white">
+          <FlaskConical className="w-5 h-5 text-[#22c0d4]" />
           Compare Similar Tests
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground mb-4">
+        <p className="text-sm text-white/60 mb-4">
           Compare this test with similar options from other trusted providers.
         </p>
         
@@ -112,16 +108,16 @@ const SimilarTestsSection = ({
               to={`${getProviderRoute(test.provider_id)}/${getTestSlug(test)}`}
               className="block"
             >
-              <div className="border rounded-lg p-3 hover:border-primary hover:bg-accent/50 transition-colors">
+              <div className="border border-white/10 rounded-lg p-3 hover:border-[#22c0d4]/40 hover:bg-white/5 transition-colors">
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-sm truncate">{test.test_name}</h4>
+                    <h4 className="font-medium text-sm truncate text-white">{test.test_name}</h4>
                     <div className="flex items-center gap-2 mt-1">
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs bg-white/10 text-white/70">
                         {formatProviderName(test.provider_id)}
                       </Badge>
                       {test.biomarker_count && (
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-white/50">
                           {test.biomarker_count} biomarkers
                         </span>
                       )}
@@ -129,9 +125,9 @@ const SimilarTestsSection = ({
                   </div>
                   <div className="text-right shrink-0">
                     {test.price ? (
-                      <span className="font-bold text-primary">£{test.price}</span>
+                      <span className="font-bold text-[#22c0d4]">£{test.price}</span>
                     ) : (
-                      <span className="text-sm text-muted-foreground">Price TBC</span>
+                      <span className="text-sm text-white/50">Price TBC</span>
                     )}
                   </div>
                 </div>
@@ -140,7 +136,7 @@ const SimilarTestsSection = ({
           ))}
         </div>
 
-        <Button variant="outline" size="sm" className="w-full mt-4" asChild>
+        <Button variant="outline" size="sm" className="w-full mt-4 border-white/20 text-white hover:bg-white/10" asChild>
           <Link to={`/compare?category=${encodeURIComponent(category)}`}>
             View All {category} Tests
           </Link>
