@@ -8,7 +8,7 @@ const GoodbodyClinicPage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>Goodbody Clinic | Private Blood Tests & Cancer Screening UK</title>
+        <title>Goodbody Clinic | myhealth checkup</title>
         <meta name="description" content="Explore Goodbody Clinic's range of private blood tests, hormone panels, and cancer screening. UKAS accredited, CQC regulated. Results in 3-5 working days." />
       </Helmet>
 
