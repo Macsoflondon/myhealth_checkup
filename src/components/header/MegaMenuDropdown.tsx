@@ -170,11 +170,6 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                         )}
                       </div>
                     </div>
-                    <div className="ml-3 flex-shrink-0">
-                      <span className="text-sm font-bold text-pink-600 dark:text-pink-500">
-                        £{test.price?.toFixed(2) || '0.00'}
-                      </span>
-                    </div>
                   </div>
                 );
                 return isExternal ? (
