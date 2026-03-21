@@ -52,16 +52,16 @@ const TestPageTemplate = ({
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="mb-6 bg-[t] my-0 py-[20px] bg-[#081129] rounded-lg">
-              <div className="flex items-start justify-between gap-4 mb-4 py-0 bg-[#081129] mx-[20px]">
+            <div className="mb-6 my-0 py-[20px] bg-white rounded-lg border border-border">
+              <div className="flex items-start justify-between gap-4 mb-4 py-0 mx-[20px]">
                 <PageHeading 
                   title={data.title} 
                   centered={false}
-                  className="text-2xl sm:text-3xl [&_span]:text-white"
+                  className="text-2xl sm:text-3xl [&_span]:text-[#081129]"
                 />
               </div>
               
-              <p className="text-xl mb-6 text-white mx-[20px] my-0 font-normal">
+              <p className="text-xl mb-6 text-[#081129] mx-[20px] my-0 font-normal">
                 {data.description}
               </p>
             </div>
