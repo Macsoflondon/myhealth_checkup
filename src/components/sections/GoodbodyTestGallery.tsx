@@ -324,7 +324,7 @@ const GoodbodyTestGallery = () => {
                   Goodbody Clinic
                 </DialogTitle>
                 <DialogDescription className="text-[#6b6459]">
-                  Private Blood Tests &amp; Cancer Screening UK
+                  Goodbody Clinic
                 </DialogDescription>
               </div>
             </div>
