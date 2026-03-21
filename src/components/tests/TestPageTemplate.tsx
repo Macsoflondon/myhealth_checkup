@@ -67,31 +67,31 @@ const TestPageTemplate = ({
             </div>
 
             {/* Test Information */}
-            <Card className="mb-6">
+            <Card className="mb-6 bg-[#081129] border-[#081129]">
               <CardHeader>
-                <CardTitle>What's Included</CardTitle>
+                <CardTitle className="text-white">What's Included</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4 text-[#081129] font-normal">
+                <p className="mb-4 text-white/80 font-normal">
                   This comprehensive test analyzes key biomarkers that give you 
                   insight into your health status.
                 </p>
                 
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   {data.biomarkerSections.map((section, index) => <div key={index} className="space-y-2">
-                      <h4 className="font-semibold">{section.title}</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
+                      <h4 className="font-semibold text-white">{section.title}</h4>
+                      <ul className="text-sm text-white/70 space-y-1">
                         {section.markers.map((marker, markerIndex) => <li key={markerIndex}>• {marker}</li>)}
                       </ul>
                     </div>)}
                 </div>
 
                 {/* Highlights section */}
-                {data.highlights && data.highlights.map((highlight, index) => <div key={index} className={`p-4 rounded-lg mb-4 ${highlight.bgColor || 'bg-accent/10'}`}>
-                    <h4 className={`font-semibold mb-2 ${highlight.textColor || 'text-foreground'}`}>
+                {data.highlights && data.highlights.map((highlight, index) => <div key={index} className={`p-4 rounded-lg mb-4 bg-white/10`}>
+                    <h4 className="font-semibold mb-2 text-white">
                       {highlight.title}
                     </h4>
-                    <ul className={`text-sm space-y-1 ${highlight.textColor || 'text-muted-foreground'}`}>
+                    <ul className="text-sm space-y-1 text-white/70">
                       {highlight.items.map((item, itemIndex) => <li key={itemIndex}>• {item}</li>)}
                     </ul>
                   </div>)}
@@ -99,9 +99,9 @@ const TestPageTemplate = ({
                 <div className="grid md:grid-cols-3 gap-4">
                   {data.featureBadges.map((badge, index) => {
                   const IconComponent = badge.icon;
-                  return <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-[#081129]">
-                        <IconComponent className="w-5 h-5 text-primary" />
-                        <span className="text-sm font-medium text-white">{badge.label}</span>
+                  return <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-white">
+                        <IconComponent className="w-5 h-5 text-[#22c0d4]" />
+                        <span className="text-sm font-medium text-[#081129]">{badge.label}</span>
                       </div>;
                 })}
                 </div>
