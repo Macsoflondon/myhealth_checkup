@@ -1,38 +1,34 @@
 
 
-## Invert Color Scheme on TestPageTemplate
+## Plan: Fix Sports Performance Category Page
 
-The General Health test page (and all pages using `TestPageTemplate`) currently has a white/light background with white Card boxes and a navy header block. The request is to invert: **white background → white (stays), white boxes → dark navy, dark text → white**.
+The user has 4 requests for the `/sports-performance` page (and the shared `CategoryPageLayout` used by all category pages):
 
-### Changes
+### 1. White backgrounds for test category sections
+- The cards grid section in `CategoryPageLayout.tsx` (line 185) uses `bg-muted/30` — change to `bg-white`
+- The `CategoryHero` uses `bg-background` which is fine (already light)
 
-**1. `src/components/tests/TestPageTemplate.tsx`**
+### 2. Buttons: turquoise idle → pink on hover, white text
+- The CTA button inside `UnifiedTestCard.tsx` (line 247-264) currently uses `categoryColor` with opacity change on hover — change hover to pink `#e70d69`
+- The Search button in `CategoryHero.tsx` (line 57-62) uses turquoise but has navy text — change text to white and add pink hover
+- The "Start Your Quiz" button in `CategoryPageBottom.tsx` already uses pink gradient — keep as-is
 
-- **Line 29**: Keep `bg-background` (white) — already correct
-- **Lines 55-67** (Header block): Change `bg-[#081129]` to `bg-white`, text from `text-white` to `text-[#081129]`, add a subtle border
-- **Lines 70-109** ("What's Included" Card): Add `bg-[#081129]` background, white text throughout — CardTitle, paragraph, section headings, marker list items, highlight sections
-- **Line 102** (Feature badges): Change from `bg-[#081129]` to `bg-white` with navy text (inverting)
-- **Lines 112-121** ("Why Choose" Card): Add `bg-[#081129]`, white CardTitle and list text
+### 3. Text colors: white or dark blue
+- Review text in the sections and ensure all visible text on light backgrounds is dark blue `#081129`, and text on dark backgrounds is white. The current implementation mostly follows this already.
 
-**2. `src/components/compare/ProviderComparisonSidebar.tsx`**
+### 4. Make test cards clickable — open a detail modal
+This is the biggest change. Currently `UnifiedTestCard` has no click handler for the whole card. The category pages use static test data (not from DB), so we can't use the existing `ProviderTestDetailModal` directly (it expects `ProviderTestCardData` with DB fields).
 
-- **Line 12** (Card): Add `bg-[#081129]` with white text
-- Provider sub-cards (line 17): Dark navy borders, white text for names/prices
-- CardTitle (line 14): White text
-- Button styling adjustments for visibility on dark background
+**Approach:** Add an `onClick` prop to `UnifiedTestCard` and wire it up in `CategoryPageLayout` to open a simple detail modal showing the test's biomarkers, description, provider, price, and a CTA link.
 
-**3. `src/components/compare/ProviderPriceComparison.tsx`**
+### Files to modify:
+1. **`src/components/cards/UnifiedTestCard.tsx`** — Add whole-card click handler, change button hover to pink
+2. **`src/components/category/CategoryPageLayout.tsx`** — Change section background to white, add state for selected test + detail modal
+3. **`src/components/category/CategoryHero.tsx`** — Button text color to white, hover to pink
+4. **New: `src/components/category/CategoryTestDetailModal.tsx`** — Simple modal showing test details (name, description, biomarkers list, provider, price, collection method, turnaround, and CTA)
 
-- **Line 41** (Card): Add `bg-[#081129]` background
-- CardTitle, price summary labels, provider names → white text
-- Price summary grid background → darker navy variant
-- Provider rows → adjusted borders/backgrounds for dark context
-
-**4. `src/components/tests/SimilarTestsSection.tsx`**
-
-- **Line 96** (Card): Add `bg-[#081129]` background
-- CardTitle, description text, test names, provider badges → white/light text
-- Inner bordered cards → navy-tinted borders with white text
-
-All changes are CSS class swaps — no structural or data changes.
+### Technical details:
+- The detail modal will use the existing `Dialog` component from shadcn
+- Card click opens modal; CTA button inside card still works independently (compare/external link)
+- Modal will show all biomarker names, full description, and a "Book Now" or "View Test" button linking to the provider URL if available
 
