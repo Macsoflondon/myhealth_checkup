@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Navigation, Search, Filter, Loader2, X } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+
 import { useToast } from "@/hooks/use-toast";
 
 // Fix Leaflet default icon
@@ -43,9 +43,9 @@ interface Clinic {
 const DEFAULT_CENTER: [number, number] = [51.5074, -0.1278]; // London
 const DEFAULT_ZOOM = 6;
 
-// Haversine distance formula
+// Haversine distance formula (returns miles)
 function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371; // Earth's radius in km
+  const R = 3958.8; // Earth's radius in miles
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLon = (lon2 - lon1) * Math.PI / 180;
   const a = 
@@ -96,20 +96,24 @@ const ClinicFinder = () => {
   const loadClinics = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("clinics")
-        .select("id, name, full_address, postal_code, latitude, longitude, provider_id, access_note")
-        .not("latitude", "is", null)
-        .not("longitude", "is", null)
-        .order("name");
+      // Load from local JSON as primary source (complete dataset)
+      const response = await fetch("/clinics_master.json");
+      if (!response.ok) throw new Error("Failed to load clinics data");
+      const jsonClinics = await response.json();
 
-      if (error) throw error;
-
-      const normalizedClinics = (data || []).map(clinic => ({
-        ...clinic,
-        latitude: Number(clinic.latitude),
-        longitude: Number(clinic.longitude),
-      }));
+      // Normalize and filter out entries without coordinates
+      const normalizedClinics: Clinic[] = jsonClinics
+        .filter((c: any) => c.latitude && c.longitude)
+        .map((clinic: any, index: number) => ({
+          id: `clinic-${index}`,
+          name: clinic.name,
+          full_address: clinic.full_address || "",
+          postal_code: clinic.postal_code || "",
+          latitude: Number(clinic.latitude),
+          longitude: Number(clinic.longitude),
+          provider_id: clinic.provider_id || undefined,
+          access_note: clinic.access_note || undefined,
+        }));
 
       setClinics(normalizedClinics);
     } catch (error) {
