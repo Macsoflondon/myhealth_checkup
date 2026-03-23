@@ -14,9 +14,9 @@ const popularSearches = [
 const trustSignals = [
   { icon: Shield, text: "UKAS-accredited labs" },
   { icon: FlaskConical, text: "200+ tests available" },
-  { icon: MapPin, text: "200+ clinics nationwide" },
+  { icon: MapPin, text: "150+ clinics nationwide" },
   { icon: Clock, text: "Results in 3–5 days" },
-  { icon: Stethoscope, text: "No GP referral needed*" },
+  { icon: Stethoscope, text: "No GP referral needed" },
 ];
 
 const Hero = () => {
@@ -47,35 +47,33 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         {/* White overlay for readability */}
-        <div className="absolute inset-0 bg-white/[0.65] z-[1]" />
+        <div className="absolute inset-0 bg-[#e70d69]/[0.12] z-[1]" />
         <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-6xl mx-auto text-center">
             {/* Badge */}
             <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid hsl(224, 67%, 10%)", borderRadius: 20, padding: "6px 16px", marginBottom: 24 }}>
-            <span className="text-brand-navy text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
+          <div className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-5 py-1.5 mb-6">
+            <span className="text-white text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
           </div>
-            {/* Headline - Clear promise in plain language */}
-            <h1 className="mx-auto text-center text-[1.25rem] xs:text-[1.5rem] sm:text-[2rem] md:text-[2.75rem] lg:text-[3.5rem] xl:text-[4rem] font-heading font-bold tracking-tight leading-[1.1] sm:leading-[1.15] mb-3 sm:mb-4 md:mb-6">
+            {/* Headline */}
+            <h1 className="mx-auto text-center text-[1.25rem] xs:text-[1.5rem] sm:text-[2rem] md:text-[2.75rem] lg:text-[3.5rem] xl:text-[4rem] font-heading font-bold tracking-tight leading-[1.1] sm:leading-[1.15] mb-2 sm:mb-3 md:mb-4">
               <span className="block text-brand-navy xl:whitespace-nowrap">Compare the UK's leading</span>
               <span className="block text-brand-navy xl:whitespace-nowrap">private health test providers</span>
-              <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
-              <span className="block text-brand-pink">All in one place!</span>
+              <span className="block text-brand-pink mt-1">— All in one place!</span>
             </h1>
+            <span className="block mx-auto mb-4 sm:mb-6 w-16 sm:w-20 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
           </div>
 
             {/* Mission text block */}
-            <div className="max-w-3xl mx-auto text-left mb-6 sm:mb-8 md:mb-10">
-              <div className="border-l-4 border-brand-turquoise pl-4 sm:pl-5 mb-4">
-                <p className="text-sm sm:text-base md:text-lg font-semibold text-brand-navy">
-                  At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information.
-                </p>
-              </div>
-              <p className="text-sm sm:text-base font-semibold text-brand-navy mb-3 pl-5 sm:pl-6">
+            <div className="max-w-3xl mx-auto text-left mb-6 sm:mb-8 md:mb-10 border-l-4 border-brand-turquoise pl-4 sm:pl-5 space-y-3">
+              <p className="text-sm sm:text-base md:text-lg font-semibold text-brand-navy">
+                At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health information.
+              </p>
+              <p className="text-sm sm:text-base font-semibold text-brand-navy">
                 Our mission is to empower you to take control of your health by making it simple to compare private health tests from accredited UK providers.
               </p>
-              <p className="text-sm sm:text-base font-semibold text-brand-navy pl-5 sm:pl-6">
-                We only feature providers that meet rigorous quality standards, including UKAS accreditation and CQC regulation.
+              <p className="text-sm sm:text-base font-semibold text-brand-navy">
+                We only feature providers that meet rigorous quality standards, including being fully regulated by the Care Quality Commission (CQC) &amp; using only laboratories accredited by the United Kingdom Accreditation Service (UKAS).
               </p>
             </div>
 
@@ -84,22 +82,29 @@ const Hero = () => {
               <Button
                 size="default"
                 onClick={() => navigate("/compare")}
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold rounded-full shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
-                Compare blood tests
+                Compare Blood Tests
+              </Button>
+              <Button
+                size="default"
+                onClick={() => navigate("/find-a-clinic")}
+                className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold rounded-full shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+              >
+                Find a Clinic
               </Button>
               <Button
                 size="default"
                 onClick={() => navigate("/assisted-test-finder")}
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold rounded-full shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
-                Find the right test for you
+                Find the Right Test for You
               </Button>
             </div>
 
             {/* Search Bar - Clean white card */}
             <div className="max-w-4xl mx-auto mb-6 sm:mb-8 md:mb-10">
-              <div className="bg-background rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl border border-gray-400">
+              <div className="bg-background rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-sm">
                 <div className="relative">
                   <Search className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-brand-turquoise w-5 h-5 sm:w-6 sm:h-6" />
                   <input
@@ -108,7 +113,7 @@ const Hero = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-4 sm:py-5 text-base sm:text-lg border border-gray-400 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-brand-turquoise focus:border-brand-turquoise focus:outline-none text-brand-navy bg-background placeholder:text-[#22c0d4]"
+                    className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-4 sm:py-5 text-base sm:text-lg border border-border rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-brand-turquoise focus:border-brand-turquoise focus:outline-none text-brand-navy bg-background placeholder:text-brand-turquoise"
                   />
                   {isAnalyzing && (
                     <Loader2 className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2 w-5 h-5 sm:w-6 sm:h-6 animate-spin text-brand-turquoise" />
@@ -131,7 +136,7 @@ const Hero = () => {
                     )}
                     <Button
                       onClick={() => navigate("/compare")}
-                      className="w-full mt-3 bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
+                      className="w-full mt-3 bg-brand-turquoise hover:bg-brand-pink text-white transition-colors duration-300"
                     >
                       View available tests
                     </Button>
@@ -139,14 +144,14 @@ const Hero = () => {
                 )}
 
                 {/* Popular Searches */}
-                <div className="mt-4 sm:mt-5 text-center border border-gray-400 rounded-xl p-3 sm:p-4">
-                  <p className="text-sm sm:text-base font-bold text-foreground mb-3 sm:mb-4">Popular searches:</p>
+                <div className="mt-4 sm:mt-5 text-center bg-muted/40 rounded-xl p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm font-bold text-foreground mb-3 sm:mb-4 uppercase tracking-wider">Popular Searches</p>
                   <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
                     {popularSearches.map((search, index) => (
                       <button
                         key={index}
                         onClick={() => navigate(search.route)}
-                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-white bg-[#22c0d4] hover:bg-[#e70d69] rounded-full border border-gray-400 transition-colors duration-300"
+                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-white bg-brand-turquoise hover:bg-brand-pink rounded-full transition-colors duration-300"
                       >
                         {search.name}
                       </button>
