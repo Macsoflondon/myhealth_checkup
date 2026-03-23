@@ -52,16 +52,16 @@ const Hero = () => {
           <div className="max-w-6xl mx-auto text-center">
             {/* Badge */}
             <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", position: "relative" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid hsl(224, 67%, 10%)", borderRadius: 20, padding: "6px 16px", marginBottom: 24 }}>
-            <span className="text-brand-navy text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
+          <div className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-5 py-1.5 mb-6">
+            <span className="text-white text-[13px] font-semibold">🇬🇧 UK's Leading Blood Test Comparison Platform</span>
           </div>
-            {/* Headline - Clear promise in plain language */}
-            <h1 className="mx-auto text-center text-[1.25rem] xs:text-[1.5rem] sm:text-[2rem] md:text-[2.75rem] lg:text-[3.5rem] xl:text-[4rem] font-heading font-bold tracking-tight leading-[1.1] sm:leading-[1.15] mb-3 sm:mb-4 md:mb-6">
+            {/* Headline */}
+            <h1 className="mx-auto text-center text-[1.25rem] xs:text-[1.5rem] sm:text-[2rem] md:text-[2.75rem] lg:text-[3.5rem] xl:text-[4rem] font-heading font-bold tracking-tight leading-[1.1] sm:leading-[1.15] mb-2 sm:mb-3 md:mb-4">
               <span className="block text-brand-navy xl:whitespace-nowrap">Compare the UK's leading</span>
               <span className="block text-brand-navy xl:whitespace-nowrap">private health test providers</span>
-              <span className="block mx-auto my-2 sm:my-3 w-12 sm:w-16 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
-              <span className="block text-brand-pink">All in one place!</span>
+              <span className="block text-brand-pink mt-1">— All in one place!</span>
             </h1>
+            <span className="block mx-auto mb-4 sm:mb-6 w-16 sm:w-20 h-[3px] bg-brand-turquoise rounded-full" aria-hidden="true" />
           </div>
 
             {/* Mission text block */}
