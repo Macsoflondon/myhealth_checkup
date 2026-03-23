@@ -47,7 +47,7 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         {/* White overlay for readability */}
-        <div className="absolute inset-0 bg-white/[0.65] z-[1]" />
+        <div className="absolute inset-0 bg-[#e70d69]/[0.12] z-[1]" />
         <div className="relative z-10 container mx-auto px-3 sm:px-4 md:px-6 lg:px-12">
           <div className="max-w-6xl mx-auto text-center">
             {/* Badge */}
