@@ -43,9 +43,9 @@ interface Clinic {
 const DEFAULT_CENTER: [number, number] = [51.5074, -0.1278]; // London
 const DEFAULT_ZOOM = 6;
 
-// Haversine distance formula
+// Haversine distance formula (returns miles)
 function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371; // Earth's radius in km
+  const R = 3958.8; // Earth's radius in miles
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLon = (lon2 - lon1) * Math.PI / 180;
   const a = 
