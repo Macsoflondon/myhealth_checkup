@@ -10,7 +10,7 @@
     "name": "London Medical Laboratory - Putney",
     "full_address": "262 Upper Richmond Rd, London",
     "postal_code": "SW15 6TQ",
-    "latitude": 51.460,
+    "latitude": 51.46,
     "longitude": -0.214
   },
   {
@@ -32,7 +32,7 @@
     "full_address": "Britannia Pharmacy, London",
     "postal_code": "E14 3BT",
     "latitude": 51.4951,
-    "longitude": -0.0180
+    "longitude": -0.018
   },
   {
     "name": "Tower Bridge Wellness Pharmacy",
@@ -89,5 +89,2595 @@
     "postal_code": "E8 4HU",
     "latitude": 51.5394,
     "longitude": -0.0726
+  },
+  {
+    "name": "Sculptic Clinic",
+    "full_address": "10 Nugents Entry, Enniskillen",
+    "postal_code": "BT74 7DF",
+    "latitude": 54.344643,
+    "longitude": -7.637342
+  },
+  {
+    "name": "Glow Medspa",
+    "full_address": "Unit 2, 57 Harbour Road, Inverness",
+    "postal_code": "IV1 1UF",
+    "latitude": 57.485032,
+    "longitude": -4.207307
+  },
+  {
+    "name": "Superdrug Nurse Clinic Bath",
+    "full_address": "30-32 Westgate Street, Bath",
+    "postal_code": "BA1 1EL",
+    "latitude": 51.381562,
+    "longitude": -2.361027
+  },
+  {
+    "name": "Tuli Health - McQueen's Pharmacy",
+    "full_address": "3 Maplehurst Cl, Dartford",
+    "postal_code": "DA2 7WX",
+    "latitude": 51.434229,
+    "longitude": 0.177143
+  },
+  {
+    "name": "Tuli Health - Swinford Pharmacy",
+    "full_address": "154 Hagley Road, Oldswinford, Stourbridge",
+    "postal_code": "DY8 2JH",
+    "latitude": 52.447484,
+    "longitude": -2.140756
+  },
+  {
+    "name": "Tuli Health - Everest Oldham",
+    "full_address": "57 Manchester Road, Oldham",
+    "postal_code": "OL8 4LN",
+    "latitude": 53.528704,
+    "longitude": -2.134551
+  },
+  {
+    "name": "Tuli Health - Everest Nelson",
+    "full_address": "96 Every Street, Nelson",
+    "postal_code": "BB9 7LS",
+    "latitude": 53.837547,
+    "longitude": -2.217345
+  },
+  {
+    "name": "Tuli Health - Everest Darwin",
+    "full_address": "21, Cemetery Road",
+    "postal_code": "BB3 2LZ",
+    "latitude": 53.679041,
+    "longitude": -2.457688
+  },
+  {
+    "name": "Tuli Health - Wellbeing Pharmacy - Oxford",
+    "full_address": "190 Abingdon Road, Oxford",
+    "postal_code": "OX1 4RA",
+    "latitude": 51.739676,
+    "longitude": -1.253804
+  },
+  {
+    "name": "Tuli Health - Nikkiz Beauty & Aesthetics",
+    "full_address": "16 Mallard Way, Pride Park, Derby",
+    "postal_code": "DE24 8GX",
+    "latitude": 52.911307,
+    "longitude": -1.45372
+  },
+  {
+    "name": "Tuli Health - Yorkshire Blood Clinic",
+    "full_address": "118 Queens Road, Halifax",
+    "postal_code": "HX1 3XY",
+    "latitude": 53.719819,
+    "longitude": -1.881691
+  },
+  {
+    "name": "LN Aesthetics Skin & Health Clinic",
+    "full_address": "261 High Street, Walton, Felixstowe",
+    "postal_code": "IP11 9DU",
+    "latitude": 51.972041,
+    "longitude": 1.339068
+  },
+  {
+    "name": "FirstSight Southampton",
+    "full_address": "Hampshire Wellbeing Centre, Utilita Bowl, Botley Road, Southampton",
+    "postal_code": "SO30 3XH",
+    "latitude": 50.924767,
+    "longitude": -1.320772
+  },
+  {
+    "name": "Bruntsfield Pharmacy &Travel And Health Clinic",
+    "full_address": "129 Bruntsfield Place, Edinburgh",
+    "postal_code": "EH10 4EQ",
+    "latitude": 55.936739,
+    "longitude": -3.207184
+  },
+  {
+    "name": "Medical Weight Care",
+    "full_address": "Suite 4.07, Windsor House, Cornwall Road, Harrogate",
+    "postal_code": "HG1 2PW",
+    "latitude": 53.992917,
+    "longitude": -1.550978
+  },
+  {
+    "name": "Medical Weight Care",
+    "full_address": "Within Yarm Podiatry and Physiotherapy, 89a High Street, Yarm",
+    "postal_code": "TS15 9BG",
+    "latitude": 54.509412,
+    "longitude": -1.354972
+  },
+  {
+    "name": "Elite Health & Urgent Care",
+    "full_address": "2 North Street, Hailsham",
+    "postal_code": "BN27 1DQ",
+    "latitude": 50.862498,
+    "longitude": 0.257523
+  },
+  {
+    "name": "Ardcroft Medical Clinic",
+    "full_address": "21 Main Street, Bothwell",
+    "postal_code": "G71 8RD",
+    "latitude": 55.802358,
+    "longitude": -4.067028
+  },
+  {
+    "name": "Ultrasound Direct Heathrow",
+    "full_address": "10 Station Road, Ashford",
+    "postal_code": "TW15 2RY",
+    "latitude": 51.43574,
+    "longitude": -0.467314
+  },
+  {
+    "name": "Sheer Nutrition",
+    "full_address": "The Epione Clinic, 30 New Canal Street, Salisbury",
+    "postal_code": "SP1 2AQ",
+    "latitude": 51.068607,
+    "longitude": -1.795667
+  },
+  {
+    "name": "Inuvi Clinic",
+    "full_address": "18 Wimpole Street, London",
+    "postal_code": "W1G 8GD",
+    "latitude": 51.518234,
+    "longitude": -0.147996
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy",
+    "full_address": "167-169 High Road, Chadwell Heath, London",
+    "postal_code": "RM6 6NL",
+    "latitude": 51.572164,
+    "longitude": 0.13801
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy",
+    "full_address": "414-416 Green Lane, London",
+    "postal_code": "IG3 9JX",
+    "latitude": 51.560709,
+    "longitude": 0.098561
+  },
+  {
+    "name": "Tuli Health - Paster Pharmacy",
+    "full_address": "212 Preston Road, Wembley, London",
+    "postal_code": "HA9 8PB",
+    "latitude": 51.571129,
+    "longitude": -0.294567
+  },
+  {
+    "name": "Tuli Health - Everest Pharmacy",
+    "full_address": "178 Stockport road, Manchester",
+    "postal_code": "M13 9AB",
+    "latitude": 53.465692,
+    "longitude": -2.215842
+  },
+  {
+    "name": "Tuli Health - Rifaray Pharmacy and Clinic",
+    "full_address": "River House,1 Maidstone Road, Sidcup",
+    "postal_code": "DA14 5RH",
+    "latitude": 51.418106,
+    "longitude": 0.121161
+  },
+  {
+    "name": "Tuli Health - Caxton Pharmacy",
+    "full_address": "3 Widmore Road, Bromley",
+    "postal_code": "BR1 1RL",
+    "latitude": 51.406192,
+    "longitude": 0.016105
+  },
+  {
+    "name": "Tuli Health - Fairlee Pharmacy",
+    "full_address": "26 Queenstown Road, London",
+    "postal_code": "SW8 3RX",
+    "latitude": 51.466912,
+    "longitude": -0.150233
+  },
+  {
+    "name": "Tuli Health - British Chemist",
+    "full_address": "381 Church Lane, London",
+    "postal_code": "NW9 8JB",
+    "latitude": 51.579191,
+    "longitude": -0.263017
+  },
+  {
+    "name": "Tuli Health - Zenith Pharmacy",
+    "full_address": "9-9A Birchfield Road, Birmingham",
+    "postal_code": "B19 1SU",
+    "latitude": 52.503497,
+    "longitude": -1.899524
+  },
+  {
+    "name": "Tuli Health - Ham Parade Pharmacy & Travel Clinic",
+    "full_address": "305 Richmond Rd, Kingston upon Thames",
+    "postal_code": "KT2 5QU",
+    "latitude": 51.43077,
+    "longitude": -0.307366
+  },
+  {
+    "name": "Luanne Naturopathic Nutrition & Phlebotomy",
+    "full_address": "The Paddock, Shangton Road, Tur Langton",
+    "postal_code": "LE8 0PN",
+    "latitude": 52.54556,
+    "longitude": -0.946563
+  },
+  {
+    "name": "Ultrasound Direct Lincoln",
+    "full_address": "The Lawn, 2 Ingleman Place, Union Rd, Lincoln",
+    "postal_code": "LN1 3BU",
+    "latitude": 53.235173,
+    "longitude": -0.543884
+  },
+  {
+    "name": "Ultrasound Direct Norwich",
+    "full_address": "17 St Georges Street, Norwich",
+    "postal_code": "NR3 1AB",
+    "latitude": 52.632727,
+    "longitude": 1.294224
+  },
+  {
+    "name": "Enhance Cosmetic Solutions",
+    "full_address": "2 Oak Barn Close, Cranfield",
+    "postal_code": "MK43 0TW",
+    "latitude": 52.069299,
+    "longitude": -0.608831
+  },
+  {
+    "name": "Nourish to Soar",
+    "full_address": "Gotham Chambers, Hammett Square, Tiverton",
+    "postal_code": "EX16 6LR",
+    "latitude": 50.9022,
+    "longitude": -3.487589
+  },
+  {
+    "name": "#HEALTH",
+    "full_address": "18 South Road, Liverpool",
+    "postal_code": "L22 5PQ",
+    "latitude": 53.473823,
+    "longitude": -3.027933
+  },
+  {
+    "name": "Get A Drip - Kensington",
+    "full_address": "214 Kensington High Street, London",
+    "postal_code": "W8 7RG",
+    "latitude": 51.500005,
+    "longitude": -0.197017
+  },
+  {
+    "name": "Tuli Health -Cornwell's Chemists - Holmcrofty",
+    "full_address": "Holmcroft Road, Stafford",
+    "postal_code": "ST16 1JG",
+    "latitude": 52.822474,
+    "longitude": -2.132087
+  },
+  {
+    "name": "Tuli Health -Cornwell's Chemists - Silverdale",
+    "full_address": "5 The Parade, Silverdale",
+    "postal_code": "ST5 6LQ",
+    "latitude": 53.01611,
+    "longitude": -2.268236
+  },
+  {
+    "name": "Tuli Health - Cornwell's Chemists - Abbey Hulton",
+    "full_address": "1375 Leek Road, Abbey Hulton",
+    "postal_code": "ST2 8BW",
+    "latitude": 53.033862,
+    "longitude": -2.145217
+  },
+  {
+    "name": "Tuli Health - Cornwell's Chemists - Newcastle-under-Lyme",
+    "full_address": "9-11 High Street, Newcastle-under-Lyme",
+    "postal_code": "ST5 1RB",
+    "latitude": 53.012165,
+    "longitude": -2.228967
+  },
+  {
+    "name": "House Of Health UK",
+    "full_address": "90 Pope Street, Birmingham",
+    "postal_code": "B1 3BH",
+    "latitude": 52.485674,
+    "longitude": -1.916631
+  },
+  {
+    "name": "Renuluxe Health",
+    "full_address": "Cybor House, Suite 3, 1 Tapton House Road, Sheffield",
+    "postal_code": "S10 5BY",
+    "latitude": 53.377544,
+    "longitude": -1.508072
+  },
+  {
+    "name": "Fallon Aesthetics Limited",
+    "full_address": "94 Northampton Road, Higham Ferrers",
+    "postal_code": "NN10 8AN",
+    "latitude": 52.302177,
+    "longitude": -0.600273
+  },
+  {
+    "name": "IV Health Care Limited",
+    "full_address": "Unit A, 4 Terrace Road, Bournemouth",
+    "postal_code": "BH2 5NP",
+    "latitude": 50.719554,
+    "longitude": -1.881218
+  },
+  {
+    "name": "Bioma Ltd - Manchester",
+    "full_address": "Manchester Victoria Station, Todd Street, Manchester",
+    "postal_code": "M3 1WY",
+    "latitude": 53.487861,
+    "longitude": -2.242222
+  },
+  {
+    "name": "Tuli Health - Cornwell's Chemist (Wolstanton)",
+    "full_address": "117-119 High Street, Wolstanton, Newcastle-under-Lyme",
+    "postal_code": "ST5 0EP",
+    "latitude": 53.032159,
+    "longitude": -2.218308
+  },
+  {
+    "name": "Tuli Health - Heald Green Pharmacy",
+    "full_address": "208 Finney Lane,Heald Green, Cheadle, Stockport",
+    "postal_code": "SK8 3QE",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "name": "Tuli Health - First Contact Pharmacy",
+    "full_address": "3 Webb's Court, Buckhurst Ave, Sevenoaks",
+    "postal_code": "TN13 1LZ",
+    "latitude": 51.270677,
+    "longitude": 0.194578
+  },
+  {
+    "name": "Tuli Health - Medina Chemist",
+    "full_address": "89 Victoria Rd, Netherfield, Nottingham",
+    "postal_code": "NG4 2NN",
+    "latitude": 52.963409,
+    "longitude": -1.076618
+  },
+  {
+    "name": "Tuli Health - Ways Pharmacy (Beeston)",
+    "full_address": "24 Chilwell Rd, Beeston, Nottingham",
+    "postal_code": "NG9 1EJ",
+    "latitude": 52.924914,
+    "longitude": -1.218035
+  },
+  {
+    "name": "Tuli Health - Burwash Pharmacy",
+    "full_address": "9 Burwash Rd, Hove",
+    "postal_code": "BN3 8GP",
+    "latitude": 50.851569,
+    "longitude": -0.18748
+  },
+  {
+    "name": "Tuli Health - Manchester Chemist",
+    "full_address": "Unit 11, 20-22 Mary Street, Cheetham Hill, Manchester",
+    "postal_code": "M3 1DZ",
+    "latitude": 53.490999,
+    "longitude": -2.250409
+  },
+  {
+    "name": "Tuli Health - Polaris Pharmacy",
+    "full_address": "39 Wulfstan Way, Cambridge",
+    "postal_code": "CB1 8RE",
+    "latitude": 52.180533,
+    "longitude": 0.153013
+  },
+  {
+    "name": "Tuli Health - Perfection Skin Clinic & Wellbeing Centre",
+    "full_address": "11 Merchants Court, St Georges Street, Norwich",
+    "postal_code": "NR3 1AB",
+    "latitude": 52.632727,
+    "longitude": 1.294224
+  },
+  {
+    "name": "Tuli Health - Jephson Pharmacy",
+    "full_address": "Barrett Way, Wroughton, Swindon",
+    "postal_code": "SN4 9LW",
+    "latitude": 51.524176,
+    "longitude": -1.791562
+  },
+  {
+    "name": "Tuli Health - Abington Pharmacy",
+    "full_address": "51F Beech Avenue, Northampton",
+    "postal_code": "NN3 2JG",
+    "latitude": 52.253277,
+    "longitude": -0.865876
+  },
+  {
+    "name": "Tuli Health - Exmouth Health and Travel Clinic",
+    "full_address": "Unit 10, Harpford Units, Liverton Business Park, Exmouth",
+    "postal_code": "EX8 2NU",
+    "latitude": 50.633238,
+    "longitude": -3.376151
+  },
+  {
+    "name": "Tuli Health - Pavilion Pharmacy",
+    "full_address": "9 Brighton Terrace, London",
+    "postal_code": "SW9 8DJ",
+    "latitude": 51.461634,
+    "longitude": -0.116371
+  },
+  {
+    "name": "Tuli Health - Pharmacy Exprezz",
+    "full_address": "183a King Street, Great Yarmouth",
+    "postal_code": "NR30 1LS",
+    "latitude": 52.607331,
+    "longitude": 1.726792
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy Woodford Green",
+    "full_address": "429-431 High Road, Woodford Green",
+    "postal_code": "IG8 0XE",
+    "latitude": 51.610131,
+    "longitude": 0.021821
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy Upminster",
+    "full_address": "36 Corbets Tey Road, Upminster",
+    "postal_code": "RM14 2AD",
+    "latitude": 51.553475,
+    "longitude": 0.247315
+  },
+  {
+    "name": "Tuli Health - Britannia Pharmacy Ilford",
+    "full_address": "21-23 Horns Road, Ilford",
+    "postal_code": "IG2 6BN",
+    "latitude": 51.576822,
+    "longitude": 0.083023
+  },
+  {
+    "name": "Baby I Love You - Carlisle",
+    "full_address": "Riverside View, Wawick Road, Carlisle",
+    "postal_code": "CA1 2BS",
+    "latitude": 54.894644,
+    "longitude": -2.908668
+  },
+  {
+    "name": "HEAL Labs",
+    "full_address": "Elstree Aerodrome, Hogg Lane, The Hub, Elstree",
+    "postal_code": "WD6 3AW",
+    "latitude": 51.654256,
+    "longitude": -0.323975
+  },
+  {
+    "name": "VB Health Ltd",
+    "full_address": "10-11 ,County End Business Park, Jackson Street, Springhead, Oldham",
+    "postal_code": "OL4 4TZ",
+    "latitude": 53.537784,
+    "longitude": -2.068643
+  },
+  {
+    "name": "Revive Wellness",
+    "full_address": "12 Moorland Rise, Meltham, Holmfirth",
+    "postal_code": "HD9 5NA",
+    "latitude": 53.591172,
+    "longitude": -1.858419
+  },
+  {
+    "name": "AEGA Health",
+    "full_address": "Plot 5 Boundary Lane, South Hykeham, Lincoln",
+    "postal_code": "LN6 9NQ",
+    "latitude": 53.17586,
+    "longitude": -0.61415
+  },
+  {
+    "name": "Lady A Clinic Ltd",
+    "full_address": "31 Beresford Terrace, Ayr",
+    "postal_code": "KA7 2EU",
+    "latitude": 55.456555,
+    "longitude": -4.629023
+  },
+  {
+    "name": "The Drip Company",
+    "full_address": "6 Market Street, Guildford",
+    "postal_code": "GU1 4LB",
+    "latitude": 51.236188,
+    "longitude": -0.57275
+  },
+  {
+    "name": "The Aesthetics Nurse",
+    "full_address": "505 Main Street, Coatbridge",
+    "postal_code": "ML5 3RX",
+    "latitude": 55.861175,
+    "longitude": -4.004172
+  },
+  {
+    "name": "Aesthetic Attraction Ltd",
+    "full_address": "44 Queen Street, Lossiemouth, Moray",
+    "postal_code": "IV31 6PN",
+    "latitude": 57.722525,
+    "longitude": -3.283616
+  },
+  {
+    "name": "222 Healthcare Services Ltd",
+    "full_address": "2nd Floor, Stokenchurch Medical Centre, High Wycombe",
+    "postal_code": "HP14 3SX",
+    "latitude": 51.660508,
+    "longitude": -0.904206
+  },
+  {
+    "name": "The Medical Hub",
+    "full_address": "22-24, Queens Drive, Liverpool",
+    "postal_code": "L15 7NE",
+    "latitude": 53.404589,
+    "longitude": -2.900137
+  },
+  {
+    "name": "Mediskin",
+    "full_address": "Based in Alchemy Health and Wellbeing, 11-14 St Bryde Street,The Village, East Kilbride",
+    "postal_code": "G74 4HQ",
+    "latitude": 55.766318,
+    "longitude": -4.173823
+  },
+  {
+    "name": "Get A Drip - Kings Road",
+    "full_address": "309 Kings Road, London",
+    "postal_code": "SW3 5EP",
+    "latitude": 51.484875,
+    "longitude": -0.174598
+  },
+  {
+    "name": "Ultrasound Direct - London Harley Street",
+    "full_address": "10 Harley Street, London",
+    "postal_code": "W1G 9PF",
+    "latitude": 51.517393,
+    "longitude": -0.145984
+  },
+  {
+    "name": "Ultrasound Direct - London City",
+    "full_address": "28 Queen Street, London",
+    "postal_code": "EC4R 1BB",
+    "latitude": 51.511949,
+    "longitude": -0.093054
+  },
+  {
+    "name": "Clinic Sese - Clinic Sese at The Spencer Private Hospital",
+    "full_address": "Ramsgate Road, Margate",
+    "postal_code": "CT9 4BG",
+    "latitude": 51.377184,
+    "longitude": 1.387952
+  },
+  {
+    "name": "Ultrasound Direct - London Canary Wharf",
+    "full_address": "4 Beatty House, Admirals Way, London",
+    "postal_code": "E14 9UF",
+    "latitude": 51.501663,
+    "longitude": -0.020964
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Brent Cross",
+    "full_address": "Unit D04/D06, Brent Cross Shopping Centre, London",
+    "postal_code": "NW4 3FP",
+    "latitude": 51.576419,
+    "longitude": -0.223766
+  },
+  {
+    "name": "The Berkshire Clinic",
+    "full_address": "130 Wharfedale Road, Winnersh, Berkshire",
+    "postal_code": "RG41 5RB",
+    "latitude": 51.436628,
+    "longitude": -0.889791
+  },
+  {
+    "name": "My Specialist GP",
+    "full_address": "Crown House, Crown Road, Marlow, Buckinghamshire",
+    "postal_code": "SL7 3HL",
+    "latitude": 51.572539,
+    "longitude": -0.777366
+  },
+  {
+    "name": "Tuli Health - Pharmalite Pharmacy",
+    "full_address": "296 Cavendish Rd, London",
+    "postal_code": "SW12 0PL",
+    "latitude": 51.444088,
+    "longitude": -0.145082
+  },
+  {
+    "name": "Tuli Health - Dollmeads Pharmacy",
+    "full_address": "53 Chamberlayne Road, London",
+    "postal_code": "NW10 3ND",
+    "latitude": 51.533842,
+    "longitude": -0.21862
+  },
+  {
+    "name": "Tuli Health - Mottingham Pharmacy",
+    "full_address": "71-73 Mottingham Rd, London",
+    "postal_code": "SE9 4QZ",
+    "latitude": 51.43698,
+    "longitude": 0.044396
+  },
+  {
+    "name": "Tuli Health - Sidhu's Pharmacy",
+    "full_address": "369 High Street, West Bromwich",
+    "postal_code": "B70 9QL",
+    "latitude": 52.522779,
+    "longitude": -2.000791
+  },
+  {
+    "name": "Tuli Health - Keencare Pharmacy Victoria",
+    "full_address": "6 Lower Belgrave Street, London",
+    "postal_code": "SW1W 0LJ",
+    "latitude": 51.496397,
+    "longitude": -0.147225
+  },
+  {
+    "name": "Tuli Health - Carter's Chemist",
+    "full_address": "30 Carter's Grn, West Bromwich",
+    "postal_code": "B70 9LW",
+    "latitude": 52.523857,
+    "longitude": -2.00396
+  },
+  {
+    "name": "Ultrasound Direct - London Wimbledon",
+    "full_address": "235a The Broadway, Wimbledon, London",
+    "postal_code": "SW19 1SD",
+    "latitude": 51.419245,
+    "longitude": -0.194874
+  },
+  {
+    "name": "ProAesthetics",
+    "full_address": "85 Melton Road, West Bridgford, Nottingham",
+    "postal_code": "NG2 6EN",
+    "latitude": 52.9275,
+    "longitude": -1.129582
+  },
+  {
+    "name": "Ultrasound Direct - Croydon",
+    "full_address": "The Old Coach House, 2 Wellesley Court Road, Croydon",
+    "postal_code": "CR0 1LE",
+    "latitude": 51.375399,
+    "longitude": -0.096694
+  },
+  {
+    "name": "Ultrasound Direct - London Finchley",
+    "full_address": "Suite 4, Grove Lodge, 287 Regents Park Road, Finchley",
+    "postal_code": "N3 3JY",
+    "latitude": 51.598676,
+    "longitude": -0.197298
+  },
+  {
+    "name": "Ultrasound Direct - London South East",
+    "full_address": "146 Eltham Hill, Eltham, London",
+    "postal_code": "SE9 5DY",
+    "latitude": 51.451188,
+    "longitude": 0.04801
+  },
+  {
+    "name": "Ultrasound Direct - London East",
+    "full_address": "Lily House, 11 The Shrubberies, George Lane, South Woodford",
+    "postal_code": "E18 1BD",
+    "latitude": 51.594432,
+    "longitude": 0.02482
+  },
+  {
+    "name": "Ultrasound Direct - London Chiswick",
+    "full_address": "251-253 Chiswick High Road, Chiswick, London",
+    "postal_code": "W4 4PU",
+    "latitude": 51.492225,
+    "longitude": -0.261846
+  },
+  {
+    "name": "Regener8 Healthcare",
+    "full_address": "42 Hewell Road, Barnt Green",
+    "postal_code": "B45 8NF",
+    "latitude": 52.360004,
+    "longitude": -1.99102
+  },
+  {
+    "name": "Tuli Health - Styvechale Pharmacy",
+    "full_address": "84 Baginton Road, Coventry",
+    "postal_code": "CV3 6FQ",
+    "latitude": 52.384723,
+    "longitude": -1.514626
+  },
+  {
+    "name": "Tuli Health - Keencare Pharmacy Harrow",
+    "full_address": "18 College Road, Harrow",
+    "postal_code": "HA1 1BE",
+    "latitude": 51.58023,
+    "longitude": -0.335996
+  },
+  {
+    "name": "Tuli Health - Metro Pharmacy",
+    "full_address": "11 Leeming Road, Borehamwood",
+    "postal_code": "WD6 4EB",
+    "latitude": 51.667829,
+    "longitude": -0.282593
+  },
+  {
+    "name": "Tuli Health - Hodgetts Chemist",
+    "full_address": "79 Abbey Road, London",
+    "postal_code": "NW8 0AE",
+    "latitude": 51.537534,
+    "longitude": -0.184373
+  },
+  {
+    "name": "Tuli Health - Chana Chemist Southall",
+    "full_address": "52 South Road, London",
+    "postal_code": "UB1 1RQ",
+    "latitude": 51.509246,
+    "longitude": -0.377204
+  },
+  {
+    "name": "Tuli Health - Kingsland Pharmacy",
+    "full_address": "406 Kingsland Road, London",
+    "postal_code": "E8 4AA",
+    "latitude": 51.541525,
+    "longitude": -0.075939
+  },
+  {
+    "name": "Tuli Health - Kanari Pharmacy",
+    "full_address": "682-684 Fulham Road, London",
+    "postal_code": "SW6 5SA",
+    "latitude": 51.474821,
+    "longitude": -0.206693
+  },
+  {
+    "name": "Tuli Health - Chana Chemist High Street",
+    "full_address": "33 High Street, London",
+    "postal_code": "UB1 3HA",
+    "latitude": 51.511224,
+    "longitude": -0.373964
+  },
+  {
+    "name": "Tuli Health - Northfield Pharmacy",
+    "full_address": "30 Northfield Avenue, London",
+    "postal_code": "W13 9RL",
+    "latitude": 51.504634,
+    "longitude": -0.319227
+  },
+  {
+    "name": "Tuli Health - Gills Pharmacy",
+    "full_address": "31-33 King Street, London",
+    "postal_code": "UB2 4DG",
+    "latitude": 51.501304,
+    "longitude": -0.382328
+  },
+  {
+    "name": "Tuli Health - Pyramid Acton",
+    "full_address": "1 Crown Street, London",
+    "postal_code": "W3 8SA",
+    "latitude": 51.507392,
+    "longitude": -0.273777
+  },
+  {
+    "name": "Tuli Health - Vantage Chemist Reading",
+    "full_address": "231 Shinfield Rd, Reading",
+    "postal_code": "RG2 8HD",
+    "latitude": 51.427006,
+    "longitude": -0.946264
+  },
+  {
+    "name": "Pulse Clinic",
+    "full_address": "15 Glasgow Road, Paisley",
+    "postal_code": "PA1 3QS",
+    "latitude": 55.847251,
+    "longitude": -4.415028
+  },
+  {
+    "name": "Image Orkney Ltd",
+    "full_address": "11a/b Albert Street, Kirkwall",
+    "postal_code": "KW15 1HP",
+    "latitude": 58.983494,
+    "longitude": -2.958035
+  },
+  {
+    "name": "The Royal Buckinghamshire Hospital",
+    "full_address": "Buckingham Road, Aylesbury",
+    "postal_code": "HP19 9AB",
+    "latitude": 51.820729,
+    "longitude": -0.815895
+  },
+  {
+    "name": "Medical Room",
+    "full_address": "1-5 Portpool Lane, London",
+    "postal_code": "EC1N 7UU",
+    "latitude": 51.52093,
+    "longitude": -0.11234
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Liverpool Parker Street",
+    "full_address": "11-17 Parker Street, Liverpool",
+    "postal_code": "L1 1DJ",
+    "latitude": 53.405416,
+    "longitude": -2.982376
+  },
+  {
+    "name": "Rejuvenate Clinic",
+    "full_address": "The Lodge,4 York Place,Perth",
+    "postal_code": "PH2 8EP",
+    "latitude": 56.395513,
+    "longitude": -3.436829
+  },
+  {
+    "name": "Aquamarine Medicals And Healthcare Clinic",
+    "full_address": "1 Emma Place Ope, Stonehouse, Plymouth",
+    "postal_code": "PL1 3FD",
+    "latitude": 50.367447,
+    "longitude": -4.161515
+  },
+  {
+    "name": "Tuli Health - Ways Pharmacy",
+    "full_address": "77 Southampton Row, London",
+    "postal_code": "WC1B 4ET",
+    "latitude": 51.520263,
+    "longitude": -0.12289
+  },
+  {
+    "name": "Tuli Health - Churchills Pharmacy",
+    "full_address": "202 Chiswick High Road, London",
+    "postal_code": "W4 1PD",
+    "latitude": 51.4928,
+    "longitude": -0.25818
+  },
+  {
+    "name": "Tuli Health - Pharmacentre Pharmacy",
+    "full_address": "149 Edgware Rd, Tyburnia, London",
+    "postal_code": "W2 2HU",
+    "latitude": 51.517313,
+    "longitude": -0.166641
+  },
+  {
+    "name": "Tuli Health - Hornsey Pharmacy",
+    "full_address": "84 Hornsey Road, London",
+    "postal_code": "N7 7NN",
+    "latitude": 51.556096,
+    "longitude": -0.110956
+  },
+  {
+    "name": "Tuli Health - Warwick Pharmacy",
+    "full_address": "34- 36 Warwick Way, Pimlico, London",
+    "postal_code": "SW1V 1RY",
+    "latitude": 51.491892,
+    "longitude": -0.140479
+  },
+  {
+    "name": "Tuli Health - Dolphins Pharmacy",
+    "full_address": "9-11 Broadway, London",
+    "postal_code": "SW1H 0AZ",
+    "latitude": 51.498828,
+    "longitude": -0.133814
+  },
+  {
+    "name": "Tuli Health - Harleys Pharmacy",
+    "full_address": "35/37 Old Brompton Road, London",
+    "postal_code": "SW7 3HZ",
+    "latitude": 51.493551,
+    "longitude": -0.174525
+  },
+  {
+    "name": "Harley 104 Clinic",
+    "full_address": "104 Harley Street, London",
+    "postal_code": "W1G 7JD",
+    "latitude": 51.521315,
+    "longitude": -0.147785
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Bristol Gallagher",
+    "full_address": "Unit E1, Gallagher Retail Park, Bristol",
+    "postal_code": "BS30 7DA",
+    "latitude": 51.444848,
+    "longitude": -2.498065
+  },
+  {
+    "name": "My Vital Metrics",
+    "full_address": "Salisbury House, 29 Finsbury Circus, London",
+    "postal_code": "EC2M 5QQ",
+    "latitude": 51.517228,
+    "longitude": -0.087572
+  },
+  {
+    "name": "Petersfield Community Hospital",
+    "full_address": "Swan Street, Petersfield",
+    "postal_code": "GU32 3LB",
+    "latitude": 51.003879,
+    "longitude": -0.942382
+  },
+  {
+    "name": "Fareham Community Hospital",
+    "full_address": "233A Brook Ln, Sarisbury Green, Southampton",
+    "postal_code": "SO31 7DQ",
+    "latitude": 50.870907,
+    "longitude": -1.273959
+  },
+  {
+    "name": "Gosport War Memorial Hospital",
+    "full_address": "Bury Rd, Gosport",
+    "postal_code": "PO12 3PW",
+    "latitude": 50.793051,
+    "longitude": -1.148069
+  },
+  {
+    "name": "St Mary's Community Health Campus",
+    "full_address": "Milton Rd, Milton, Portsmouth",
+    "postal_code": "PO3 6AD",
+    "latitude": 50.800122,
+    "longitude": -1.063932
+  },
+  {
+    "name": "Kube Medical",
+    "full_address": "Nexus Business Centre, Darby Close, Swindon",
+    "postal_code": "SN2 2PN",
+    "latitude": 51.573411,
+    "longitude": -1.811378
+  },
+  {
+    "name": "Pro Sports Medicine",
+    "full_address": "Unit 18 Lambourne Crescent, Cardiff Business Park, Llanishen, Cardiff",
+    "postal_code": "CF14 5GF",
+    "latitude": 51.522615,
+    "longitude": -3.191498
+  },
+  {
+    "name": "LMB Bloods",
+    "full_address": "6 Haslett Avenue West, Crawley, West Sussex",
+    "postal_code": "RH10 1HS",
+    "latitude": 51.113853,
+    "longitude": -0.188939
+  },
+  {
+    "name": "Laura Spence Aesthetics",
+    "full_address": "Unit A, Elder House, Sealand Road, Chester",
+    "postal_code": "CH1 4RL",
+    "latitude": 53.194828,
+    "longitude": -2.922725
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Luton",
+    "full_address": "69-73 The Arndale Centre, Luton",
+    "postal_code": "LU1 2TJ",
+    "latitude": 51.879559,
+    "longitude": -0.41526
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Ellesmere Coliseum",
+    "full_address": "Unit R5, The Coliseum Retail Park, Ellesmere Port",
+    "postal_code": "CH65 9HD",
+    "latitude": 53.264708,
+    "longitude": -2.886131
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Plymouth Drakes Circus",
+    "full_address": "Units 12 & 13 Drakes Circus Shopping Centre, Plymouth",
+    "postal_code": "PL1 1EA",
+    "latitude": 50.372508,
+    "longitude": -4.137794
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Streatham Hill",
+    "full_address": "Unit 3, 142 - 170 Streatham Hill, London",
+    "postal_code": "SW2 4RS",
+    "latitude": 51.43985,
+    "longitude": -0.126261
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Glasgow Braehead",
+    "full_address": "Unit 42/42A, Braehead Shopping Centre, Glasgow",
+    "postal_code": "G51 4BP",
+    "latitude": 55.876062,
+    "longitude": -4.36521
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Newport Retail Park",
+    "full_address": "Unit 14 Newport Retail Park, Spytty Road, Newport",
+    "postal_code": "NP19 4QQ",
+    "latitude": 51.577505,
+    "longitude": -2.944092
+  },
+  {
+    "name": "Serenity Aesthetics Studio",
+    "full_address": "1 Prince Road, Kenfig Hill, Bridgend",
+    "postal_code": "CF33 6ED",
+    "latitude": 51.534232,
+    "longitude": -3.677579
+  },
+  {
+    "name": "The Clinic by La Ross",
+    "full_address": "Unit 10a Centre Court, Sir Thomas Longley Road, Rochester, Kent",
+    "postal_code": "ME2 4BQ",
+    "latitude": 51.394829,
+    "longitude": 0.515778
+  },
+  {
+    "name": "Superdrug Nurse Clinic - Rushden Lakes",
+    "full_address": "Unit C4, Rushden Lakes Shopping Centre, Rushden",
+    "postal_code": "NN10 6FH",
+    "latitude": 52.300696,
+    "longitude": -0.621864
+  },
+  {
+    "name": "Skin Excellence Clinics Ltd - Plymouth",
+    "full_address": "First Floor, 4 The Crescent, Plymouth",
+    "postal_code": "PL1 3AB",
+    "latitude": 50.368111,
+    "longitude": -4.147019
+  },
+  {
+    "name": "Stemax Consult Healthcare Services Ltd",
+    "full_address": "Unit F, Old Stratford Business Park, Falcon Drive, Old Stratford",
+    "postal_code": "MK19 6FG",
+    "latitude": 52.066276,
+    "longitude": -0.867174
+  },
+  {
+    "name": "Skin Excellence Clinics Ltd - Horrington",
+    "full_address": "Cheese Yard West, Horrington, Nr Wells",
+    "postal_code": "BA5 3ED",
+    "latitude": 51.226082,
+    "longitude": -2.613845
+  },
+  {
+    "name": "Sweeneys Pharmacy",
+    "full_address": "52 High Street, Holywood, County Down",
+    "postal_code": "BT18 9AE",
+    "latitude": 54.641164,
+    "longitude": -5.835128
+  },
+  {
+    "name": "Central Clinic",
+    "full_address": "21 Orchard Street, Swansea",
+    "postal_code": "SA1 5AT",
+    "latitude": 51.622831,
+    "longitude": -3.943604
+  },
+  {
+    "name": "Neath Port Talbot Hospital",
+    "full_address": "Phlebotomy Department, Baglan Way, Port Talbot",
+    "postal_code": "SA12 7BX",
+    "latitude": 51.599217,
+    "longitude": -3.800367
+  },
+  {
+    "name": "Morriston Hospital",
+    "full_address": "Heol Maes Eglwys, Morriston",
+    "postal_code": "SA6 6NL",
+    "latitude": 51.684657,
+    "longitude": -3.935273
+  },
+  {
+    "name": "Gorseinon Hospital",
+    "full_address": "Brynawel Road, Gorseinon, Swansea",
+    "postal_code": "SA4 4UU",
+    "latitude": 51.672124,
+    "longitude": -4.048025
+  },
+  {
+    "name": "Port Talbot Resource Centre",
+    "full_address": "Moor Road, Baglan Industrial Estate, Port Talbot",
+    "postal_code": "SA12 7BJ",
+    "latitude": 51.6061,
+    "longitude": -3.809478
+  },
+  {
+    "name": "Summerhill Health",
+    "full_address": "6 Broomfield Lane, Hale, Altrincham",
+    "postal_code": "WA15 9AQ",
+    "latitude": 53.379059,
+    "longitude": -2.346261
+  },
+  {
+    "name": "Ghosh Medical Group - Chester",
+    "full_address": "5 Greenfield Lane, Chester",
+    "postal_code": "CH2 2PA",
+    "latitude": 53.208351,
+    "longitude": -2.860982
+  },
+  {
+    "name": "The Castle Clinic",
+    "full_address": "67 Castle Boulevard, Nottingham",
+    "postal_code": "NG7 1FD",
+    "latitude": 52.948194,
+    "longitude": -1.154513
+  },
+  {
+    "name": "Jacqui Mac Aesthetics",
+    "full_address": "58 The Grove, Ilkley",
+    "postal_code": "LS29 9PA",
+    "latitude": 53.924776,
+    "longitude": -1.827513
+  },
+  {
+    "name": "Superdrug Nurse Clinic Sheffield Crystal Peaks",
+    "full_address": "Unit 12/13 Crystal Peaks Shopping Centre, Sheffield",
+    "postal_code": "S20 7PQ",
+    "latitude": 53.342113,
+    "longitude": -1.350369
+  },
+  {
+    "name": "Superdrug Nurse Clinic Balham",
+    "full_address": "176 Balham High Road, Balham, London",
+    "postal_code": "SW12 9BW",
+    "latitude": 51.444456,
+    "longitude": -0.152421
+  },
+  {
+    "name": "Total Health West Berkshire",
+    "full_address": "Lower Barn, Lower Henwick Farm, Thatcham",
+    "postal_code": "RG18 3AP",
+    "latitude": 51.409579,
+    "longitude": -1.286404
+  },
+  {
+    "name": "Louise Taylor Phlebotomy - Glasgow",
+    "full_address": "5 La Belle Place, Glasgow",
+    "postal_code": "G3 7LH",
+    "latitude": 55.866603,
+    "longitude": -4.279748
+  },
+  {
+    "name": "Phlebotomy Services Ltd",
+    "full_address": "The Brickyard Unit 1, Queens Road, Kenilworth",
+    "postal_code": "CV8 1JQ",
+    "latitude": 52.339681,
+    "longitude": -1.577849
+  },
+  {
+    "name": "AC Medical Services",
+    "full_address": "The Corner House, Rectory Road",
+    "postal_code": null,
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "name": "Ultrasound Direct - Bedford",
+    "full_address": "1a Princeton Court, The Pilgrim Centre, Brickhill Drive, Bedford",
+    "postal_code": "MK41 7PZ",
+    "latitude": 52.150112,
+    "longitude": -0.458967
+  },
+  {
+    "name": "Ultrasound Direct - Milton Keynes",
+    "full_address": "The Old Coach House, 2a New Street, Stony Stratford",
+    "postal_code": "MK11 1BW",
+    "latitude": 52.057324,
+    "longitude": -0.851793
+  },
+  {
+    "name": "Reach Pharmacy Bearsden",
+    "full_address": "55-57 Milngavie Road, Bearsden, Glasgow",
+    "postal_code": "G61 2DW",
+    "latitude": 55.915431,
+    "longitude": -4.321613
+  },
+  {
+    "name": "Bexhill Community Diagnostic Centre",
+    "full_address": "16 Beeching Road, Bexhill On Sea",
+    "postal_code": "TN39 3LJ",
+    "latitude": 50.841955,
+    "longitude": 0.464225
+  },
+  {
+    "name": "Woodfield Clinic Ltd",
+    "full_address": "Health Hub Professionals NI, 1 Hyde Business Park, Pennyburn Industrial Estate, Derry",
+    "postal_code": "BT48 0LU",
+    "latitude": 55.013548,
+    "longitude": -7.32409
+  },
+  {
+    "name": "Ultrasound Direct - Prestwich",
+    "full_address": "552 Bury New Road, Prestwich, Manchester",
+    "postal_code": "M25 3BD",
+    "latitude": 53.536461,
+    "longitude": -2.287297
+  },
+  {
+    "name": "Ultrasound Direct - Warrington",
+    "full_address": "718 Knutsford Road, Warrington",
+    "postal_code": "WA4 1JR",
+    "latitude": 53.379478,
+    "longitude": -2.561984
+  },
+  {
+    "name": "Ultrasound Direct - Liverpool",
+    "full_address": "88 Rodney Street, Rodney House, Liverpool",
+    "postal_code": "L1 9AR",
+    "latitude": 53.39974,
+    "longitude": -2.974093
+  },
+  {
+    "name": "Ultrasound Direct - Chester",
+    "full_address": "Bank House, 47B Hoole Road, Chester",
+    "postal_code": "CH2 3NH",
+    "latitude": 53.19936,
+    "longitude": -2.878497
+  },
+  {
+    "name": "Ultrasound Direct - Barrow In Furness",
+    "full_address": "234-236 Dalton Road, Barrow-in-Furness",
+    "postal_code": "LA14 1PH",
+    "latitude": 54.114925,
+    "longitude": -3.227144
+  },
+  {
+    "name": "Ultrasound Direct - Alderley Edge",
+    "full_address": "12 George Street, Alderley Edge",
+    "postal_code": "SK9 7EJ",
+    "latitude": 53.30037,
+    "longitude": -2.237064
+  },
+  {
+    "name": "Ultrasound Direct - Blackpool",
+    "full_address": "Moor Park Health and Leisure Centre, 1st Floor Suite, Bristol Avenue, Blackpool",
+    "postal_code": "FY2 0JG",
+    "latitude": 53.849569,
+    "longitude": -3.033498
+  },
+  {
+    "name": "Ultrasound Direct - Lancaster",
+    "full_address": "Dacrelands, Aldren lane, Skerton, Lancaster",
+    "postal_code": "LA1 2DU",
+    "latitude": 54.059593,
+    "longitude": -2.799766
+  },
+  {
+    "name": "Ultrasound Direct - Preston",
+    "full_address": "25 Winckley Square, Preston",
+    "postal_code": "PR1 3JJ",
+    "latitude": 53.755738,
+    "longitude": -2.702555
+  },
+  {
+    "name": "Ultrasound Direct - Bolton",
+    "full_address": "548 Chorley Old Road, Bolton",
+    "postal_code": "BL1 6AB",
+    "latitude": 53.588954,
+    "longitude": -2.461745
+  },
+  {
+    "name": "Ultrasound Direct - Manchester",
+    "full_address": "26 Davyhulme Road East, Stretford, Manchester",
+    "postal_code": "M32 0DW",
+    "latitude": 53.451139,
+    "longitude": -2.303362
+  },
+  {
+    "name": "Haswell Aesthetics Medical Ltd",
+    "full_address": "Unit 20 Langham Barns Business Centre, Colchester, Essex",
+    "postal_code": "CO4 5ZS",
+    "latitude": 51.941641,
+    "longitude": 0.929109
+  },
+  {
+    "name": "La Rose Clinic",
+    "full_address": "3a Lion Court, 13-25 Procter Street, London",
+    "postal_code": "WC1V 6NY",
+    "latitude": 51.518447,
+    "longitude": -0.119563
+  },
+  {
+    "name": "KRevive Ltd",
+    "full_address": "Unit 11 Earlstrees Court , Earlstrees Road, Corby",
+    "postal_code": "NN17 4AX",
+    "latitude": 52.507798,
+    "longitude": -0.691353
+  },
+  {
+    "name": "Ultrasound Direct Aberdeen",
+    "full_address": "486 George Street, Aberdeen",
+    "postal_code": "AB25 3XH",
+    "latitude": 57.154631,
+    "longitude": -2.106408
+  },
+  {
+    "name": "Ultrasound Direct Livingston",
+    "full_address": "Bloom Farm, Mains Street, Livingston",
+    "postal_code": "EH54 7AF",
+    "latitude": 55.885832,
+    "longitude": -3.538692
+  },
+  {
+    "name": "Ultrasound Direct Glasgow",
+    "full_address": "40 Berkeley Street, Glasgow",
+    "postal_code": "G3 7DW",
+    "latitude": 55.865539,
+    "longitude": -4.272685
+  },
+  {
+    "name": "Ultrasound Direct Edinburgh",
+    "full_address": "7-9 North St David Street, Edinburgh",
+    "postal_code": "EH2 1AW",
+    "latitude": 55.955309,
+    "longitude": -3.194469
+  },
+  {
+    "name": "Ultrasound Direct Stirling",
+    "full_address": "Stirling, Business Centre, Unit 3, Wellgreen Place, Stirling",
+    "postal_code": "FK8 2DZ",
+    "latitude": 56.114293,
+    "longitude": -3.934854
+  },
+  {
+    "name": "Clearer Clinics - Milton Keynes",
+    "full_address": "Suite 205, Milton Keynes, Business Centre, Foxhunter Drive, Linford Wood, Milton Keynes",
+    "postal_code": "MK14 6GD",
+    "latitude": 52.059631,
+    "longitude": -0.763455
+  },
+  {
+    "name": "Clearer Clinics - Arlesey",
+    "full_address": "Waterloo Farm Wellness, Stotfold Road, Arlesey",
+    "postal_code": "SG15 6XP",
+    "latitude": 52.025453,
+    "longitude": -0.250356
+  },
+  {
+    "name": "Clearer Clinics - Hitchin",
+    "full_address": "The Pond Farmhouse, Charlton Road, Preston Village, Hitchin",
+    "postal_code": "SG4 7TS",
+    "latitude": 51.910676,
+    "longitude": -0.292377
+  },
+  {
+    "name": "Ultrasound Direct Dundee",
+    "full_address": "Forte Clinic, Redmyre Gardens, Dundee",
+    "postal_code": "DD4 7UL",
+    "latitude": 56.469141,
+    "longitude": -2.923243
+  },
+  {
+    "name": "Get A Drip - Westfield White City",
+    "full_address": "Ground floor Kiosk 2210, Westfield London Shopping Centre, Ariel Way, Shepherd's Bush, London",
+    "postal_code": "W12 7GF",
+    "latitude": 51.507459,
+    "longitude": -0.222272
+  },
+  {
+    "name": "Get A Drip - Shoreditch Boxpark",
+    "full_address": "Ground floor Unit 4 and 5, Boxpark, Bethnal Green Rd, Shoreditch, London",
+    "postal_code": "E1 6GY",
+    "latitude": 51.523456,
+    "longitude": -0.076312
+  },
+  {
+    "name": "Get A Drip - Canary Wharf",
+    "full_address": "2nd floor Unit R 1 300,Cabot Place,Canary Wharf,London",
+    "postal_code": "E14 4QT",
+    "latitude": 51.505088,
+    "longitude": -0.020931
+  },
+  {
+    "name": "Rejuven8 Skin Clinic",
+    "full_address": "1126 Stratford Road, Hall Green, Birmingham",
+    "postal_code": "B28 8AE",
+    "latitude": 52.438912,
+    "longitude": -1.847698
+  },
+  {
+    "name": "Royal Sussex County Hospital (Brighton)",
+    "full_address": "Outpatients Department, Eastern Rd, Brighton",
+    "postal_code": "BN2 5BE",
+    "latitude": 50.819462,
+    "longitude": -0.118149
+  },
+  {
+    "name": "Superdrug Nurse Clinic Meadowhall",
+    "full_address": "32 High Street, Meadowhall Shopping Centre, Sheffield",
+    "postal_code": "S9 1EW",
+    "latitude": 53.41275,
+    "longitude": -1.406463
+  },
+  {
+    "name": "The Dental Wellness Centre",
+    "full_address": "101 Aylestone Road,Leicester",
+    "postal_code": "LE2 7LN",
+    "latitude": 52.623109,
+    "longitude": -1.135183
+  },
+  {
+    "name": "Glenfield Hospital",
+    "full_address": "Out-Patients Blood Room, Groby Road, Leicester",
+    "postal_code": "LE3 9QP",
+    "latitude": 52.65438,
+    "longitude": -1.180011
+  },
+  {
+    "name": "Leicester General Hospital",
+    "full_address": "Out-Patients Blood Room, Gwendolen Road, Leicester",
+    "postal_code": "LE5 4PW",
+    "latitude": 52.629944,
+    "longitude": -1.081755
+  },
+  {
+    "name": "Emcare Travel Clinic",
+    "full_address": "2/1 Atlantic House, 45 Hope Street, Glasgow",
+    "postal_code": "G2 6AE",
+    "latitude": 55.859635,
+    "longitude": -4.25946
+  },
+  {
+    "name": "Alchemy By Effect Doctors",
+    "full_address": "Danesfield House, Marlow Road, Medmenham, Marlow",
+    "postal_code": "SL7 2EY",
+    "latitude": 51.551994,
+    "longitude": -0.828687
+  },
+  {
+    "name": "The Independent Nurse",
+    "full_address": "The Greenway Business Centre, Doncaster Road, Bristol",
+    "postal_code": "BS10 5PY",
+    "latitude": 51.500078,
+    "longitude": -2.608027
+  },
+  {
+    "name": "Skipton General Hospital (Aire Unit)",
+    "full_address": "Keighley Road, Skipton",
+    "postal_code": "BD23 2RJ",
+    "latitude": 53.955708,
+    "longitude": -2.019017
+  },
+  {
+    "name": "Keighley Health Centre",
+    "full_address": "Oakworth Road, Keighle",
+    "postal_code": "BD21 1SA",
+    "latitude": 53.863842,
+    "longitude": -1.914481
+  },
+  {
+    "name": "Bioma Ltd",
+    "full_address": "333 Broadway, Bexleyheath, Kent",
+    "postal_code": "DA6 8DT",
+    "latitude": 51.458057,
+    "longitude": 0.132831
+  },
+  {
+    "name": "Channel View Medical Group",
+    "full_address": "3 Carlton Place, Teignmouth",
+    "postal_code": "TQ14 8AB",
+    "latitude": 50.545587,
+    "longitude": -3.496476
+  },
+  {
+    "name": "Channel View Medical Group",
+    "full_address": "Riverside Surgery, Albion Street, Shaldon",
+    "postal_code": "TQ14 0DF",
+    "latitude": 50.54087,
+    "longitude": -3.507984
+  },
+  {
+    "name": "Infiniti Healthcare",
+    "full_address": "3 Woodsy Close, Cardiff Gate Business Park, Cardiff",
+    "postal_code": "CF23 8RW",
+    "latitude": 51.540922,
+    "longitude": -3.138969
+  },
+  {
+    "name": "Ultrasound Direct Leicester",
+    "full_address": "28 Hall Croft, Shepshed, Loughborough",
+    "postal_code": "LE12 9AN",
+    "latitude": 52.772996,
+    "longitude": -1.29081
+  },
+  {
+    "name": "East Midlands laser and Cosmetic Clinic Ltd",
+    "full_address": "62 Commercial Gate, Mansfield",
+    "postal_code": "NG18 1EU",
+    "latitude": 53.139701,
+    "longitude": -1.197326
+  },
+  {
+    "name": "Beechwood House Healthcare Ltd",
+    "full_address": "7 Summerfield Rd, Wolverhampton",
+    "postal_code": "WV1 4PR",
+    "latitude": 52.586218,
+    "longitude": -2.139356
+  },
+  {
+    "name": "Palm Springs Aesthetics",
+    "full_address": "Mill Farm Industrial Est, Lisvane, Cardiff",
+    "postal_code": "CF14 0SH",
+    "latitude": 51.53967,
+    "longitude": -3.160265
+  },
+  {
+    "name": "All Health Matters",
+    "full_address": "Castle Hous, Orchard Close Mews, Orchard Street , Canterbury",
+    "postal_code": "CT2 8AP",
+    "latitude": 51.282297,
+    "longitude": 1.071415
+  },
+  {
+    "name": "Richmond Nursing",
+    "full_address": "Delta Lakes Enterprise Centre, Delta Lakes, Llanelli",
+    "postal_code": "SA15 2DR",
+    "latitude": 51.665923,
+    "longitude": -4.154397
+  },
+  {
+    "name": "Kings Mill Hospital",
+    "full_address": "Out-Patients Department, Clinic 3, Phlebotomy Room, Mansfield Road, Sutton in Ashfield, Nottinghamshire",
+    "postal_code": "NG17 4JL",
+    "latitude": 53.134573,
+    "longitude": -1.233579
+  },
+  {
+    "name": "AB10 Clinic",
+    "full_address": "108 Holburn Street, Aberdeen",
+    "postal_code": "AB10 6BY",
+    "latitude": 57.140584,
+    "longitude": -2.113654
+  },
+  {
+    "name": "Superdrug Nurse Clinic Basildon Mayflower",
+    "full_address": "Unit 2a Gardiners Link, Basildon",
+    "postal_code": "SS14 3HZ",
+    "latitude": 51.590813,
+    "longitude": 0.480003
+  },
+  {
+    "name": "Superdrug Nurse Clinic Oxford Street",
+    "full_address": "44 Oxford Street, Manchester",
+    "postal_code": "M1 5EJ",
+    "latitude": 53.47587,
+    "longitude": -2.242546
+  },
+  {
+    "name": "Zenith Cosmetic Clinic",
+    "full_address": "6 Clinton Terrace, The Park, Nottingham",
+    "postal_code": "NG7 1LY",
+    "latitude": 52.954986,
+    "longitude": -1.164146
+  },
+  {
+    "name": "Superdrug Nurse Clinic York",
+    "full_address": "17 Market Street, York",
+    "postal_code": "YO1 8SL",
+    "latitude": 53.958715,
+    "longitude": -1.081958
+  },
+  {
+    "name": "Vitalize Omagh Ltd",
+    "full_address": "28 Gortin Road, Omagh, Co. Tyrone",
+    "postal_code": "BT79 7HX",
+    "latitude": 54.613752,
+    "longitude": -7.300492
+  },
+  {
+    "name": "Face Medical Clinic",
+    "full_address": "15 Hornby Street, Heywood",
+    "postal_code": "OL10 1AA",
+    "latitude": 53.59213,
+    "longitude": -2.216683
+  },
+  {
+    "name": "The Independent Health And Wellbeing Group",
+    "full_address": "Low Barn, Sheepway, Portbury, Bristol",
+    "postal_code": "BS20 7TF",
+    "latitude": 51.479971,
+    "longitude": -2.729671
+  },
+  {
+    "name": "The Health Suite",
+    "full_address": "624a Uppingham Road, Leicester",
+    "postal_code": "LE7 9QB",
+    "latitude": 52.631691,
+    "longitude": -1.050203
+  },
+  {
+    "name": "Elegant Clinic",
+    "full_address": "38 Haven road, Canford Cliffs, Poole",
+    "postal_code": "BH13 7LP",
+    "latitude": 50.705541,
+    "longitude": -1.921514
+  },
+  {
+    "name": "Dears Health & Beauty Travel Clinic",
+    "full_address": "223 High Street, Burntisland",
+    "postal_code": "KY3 9AE",
+    "latitude": 56.059503,
+    "longitude": -3.232827
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Newton Mearns",
+    "full_address": "124 Ayr Road, Newton Mearns",
+    "postal_code": "G77 6EG",
+    "latitude": 55.780329,
+    "longitude": -4.319328
+  },
+  {
+    "name": "Health First Surrey",
+    "full_address": "30 Anyards Road, Cobham",
+    "postal_code": "KT11 2LA",
+    "latitude": 51.33068,
+    "longitude": -0.410558
+  },
+  {
+    "name": "Effect Doctors",
+    "full_address": "11 Greek Street London",
+    "postal_code": "W1D 4DJ",
+    "latitude": 51.514402,
+    "longitude": -0.130914
+  },
+  {
+    "name": "Leigh Infirmary",
+    "full_address": "The Phlebotomy Department ,The Avenue ,Leigh ,Lancashire",
+    "postal_code": "WN7 1HS",
+    "latitude": 53.504428,
+    "longitude": -2.512253
+  },
+  {
+    "name": "Norwich Community Hospital",
+    "full_address": "Out-Patients Department ,Bowthorpe Road ,Norwich",
+    "postal_code": "NR2 3TU",
+    "latitude": 52.633947,
+    "longitude": 1.262489
+  },
+  {
+    "name": "Dorset County Hospital",
+    "full_address": "The Outpatients Assessment Centre ,South Walks House, Charles Street ,Dorchester ,Dorset",
+    "postal_code": "DT1 1EE",
+    "latitude": 50.713052,
+    "longitude": -2.436483
+  },
+  {
+    "name": "Pinderfields Hospital",
+    "full_address": "Pathology Reception ,Aberford Road ,Wakefield ,West Yorkshire",
+    "postal_code": "WF1 4DG",
+    "latitude": 53.692434,
+    "longitude": -1.488558
+  },
+  {
+    "name": "Kingston Hospital",
+    "full_address": "Phlebotomy Department ,Out-Patients Department ,Galsworthy Road ,Kingston Upon Thames",
+    "postal_code": "KT2 7QB",
+    "latitude": 51.414826,
+    "longitude": -0.282602
+  },
+  {
+    "name": "Queens Medical Centre",
+    "full_address": "Phlebotomy Department ,Derby Road ,Nottingham",
+    "postal_code": "NG7 2UH",
+    "latitude": 52.94382,
+    "longitude": -1.185953
+  },
+  {
+    "name": "Royal Lancaster Infirmary",
+    "full_address": "Blood Room ,Out-Patients Department ,Ashton Road ,Lancaster",
+    "postal_code": "LA1 4RP",
+    "latitude": 54.042736,
+    "longitude": -2.799228
+  },
+  {
+    "name": "Doncaster Royal Infirmary",
+    "full_address": "Out-Patients Department ,Phlebotomy ,Armthorpe Road ,Doncaster ,South Yorkshire",
+    "postal_code": "DN2 5LT",
+    "latitude": 53.530805,
+    "longitude": -1.108942
+  },
+  {
+    "name": "Whiston Hospital",
+    "full_address": "Out-Patients Department ,Blood Room ,Warrington Road ,Prescot ,Merseyside",
+    "postal_code": "L35 5DR",
+    "latitude": 53.420485,
+    "longitude": -2.784953
+  },
+  {
+    "name": "Bedford General Hospital",
+    "full_address": "Gilbert Hitchcock House ,North Wing Hospital ,Kimbolton Road ,Bedford",
+    "postal_code": "MK40 2AW",
+    "latitude": 52.142549,
+    "longitude": -0.458906
+  },
+  {
+    "name": "Airedale General Hospital",
+    "full_address": "Out-Patients Phlebotomy Department ,Skipton Road ,Steeton ,Keighley",
+    "postal_code": "BD20 6TD",
+    "latitude": 53.897957,
+    "longitude": -1.962729
+  },
+  {
+    "name": "William Harvey Hospital",
+    "full_address": "Phlebotomy Department ,Kennington Road ,Willesborough ,Ashford",
+    "postal_code": "TN24 0LZ",
+    "latitude": 51.14149,
+    "longitude": 0.91624
+  },
+  {
+    "name": "Southampton General Hospital",
+    "full_address": "Out-Patients Phlebotomy Department ,Tremona Road ,Shirley ,Southampton",
+    "postal_code": "SO16 6YD",
+    "latitude": 50.933011,
+    "longitude": -1.435095
+  },
+  {
+    "name": "Singleton Hospital",
+    "full_address": "Pathology Department ,Sketty Lane ,Swansea",
+    "postal_code": "SA2 8QA",
+    "latitude": 51.609039,
+    "longitude": -3.984797
+  },
+  {
+    "name": "Princess Royal Hospital",
+    "full_address": "Phlebotomy Department ,Lewes Road ,Haywards Heath ,West Sussex",
+    "postal_code": "RH16 4EX",
+    "latitude": 50.99109,
+    "longitude": -0.090256
+  },
+  {
+    "name": "Queen Alexandra Hospital",
+    "full_address": "Blood Taking Room ,Phlebotomy Department, Ground Floor ,Southwick Hill Road ,Cosham ,Portsmouth",
+    "postal_code": "PO6 3LY",
+    "latitude": 50.850287,
+    "longitude": -1.069917
+  },
+  {
+    "name": "Eastbourne District General Hospital",
+    "full_address": "Out-Patients Phlebotomy Department ,Kings Drive ,Eastbourne ,East Sussex",
+    "postal_code": "BN21 2UD",
+    "latitude": 50.786964,
+    "longitude": 0.271136
+  },
+  {
+    "name": "Ramsay Duchy Hospital",
+    "full_address": "Out-Patients Department ,Penventinnie Lane ,Treliske ,Truro ,Cornwall",
+    "postal_code": "TR1 3UP",
+    "latitude": 50.267924,
+    "longitude": -5.093613
+  },
+  {
+    "name": "The Foscote Hospital",
+    "full_address": "Out-Patients Department ,2 Foscote Rise ,Banbury ,Oxfordshire",
+    "postal_code": "OX16 9XP",
+    "latitude": 52.053348,
+    "longitude": -1.330978
+  },
+  {
+    "name": "St Mary's Hospital",
+    "full_address": "Blood Testing Department, Outpatients Diagnostics and Imaging ,Newport ,Isle of Wight",
+    "postal_code": "PO30 5TG",
+    "latitude": 50.710832,
+    "longitude": -1.301363
+  },
+  {
+    "name": "Rivers Private Hospital",
+    "full_address": "Pathology Department ,High Wych Road ,Sawbridgeworth ,Hertfordshire",
+    "postal_code": "CM21 0HH",
+    "latitude": 51.807103,
+    "longitude": 0.130484
+  },
+  {
+    "name": "Spire St Anthony's Hospital",
+    "full_address": "Out-Patients Department ,801 London Road ,North Cheam ,Sutton",
+    "postal_code": "SM3 9DW",
+    "latitude": 51.37992,
+    "longitude": -0.220794
+  },
+  {
+    "name": "Salisbury District Hospital",
+    "full_address": "Out-Patients Department ,Salisbury ,Wiltshire",
+    "postal_code": "SP2 8BJ",
+    "latitude": 51.04394,
+    "longitude": -1.789814
+  },
+  {
+    "name": "Newington Pharmacy",
+    "full_address": "46-50 Clerk Street ,Edinburgh",
+    "postal_code": "EH8 9JB",
+    "latitude": 55.942017,
+    "longitude": -3.181699
+  },
+  {
+    "name": "Norfolk and Norwich University Hospital",
+    "full_address": "Colney Lane ,Norwich",
+    "postal_code": "NR4 7UY",
+    "latitude": 52.617567,
+    "longitude": 1.221195
+  },
+  {
+    "name": "Pall Mall Medical Manchester",
+    "full_address": "61 King Street ,Manchester",
+    "postal_code": "M2 4PD",
+    "latitude": 53.481082,
+    "longitude": -2.243148
+  },
+  {
+    "name": "Pall Mall Medical Liverpool",
+    "full_address": "5 St. Pauls Square ,Liverpool",
+    "postal_code": "L3 9SJ",
+    "latitude": 53.410175,
+    "longitude": -2.993798
+  },
+  {
+    "name": "Sutton Medical Consulting Centre",
+    "full_address": "233 Tamworth Road ,Sutton Coldfield",
+    "postal_code": "B75 6DX",
+    "latitude": 52.57737,
+    "longitude": -1.806681
+  },
+  {
+    "name": "Pall Mall Medical",
+    "full_address": "Newton-Le-Willows ,1 Belvedere Road ,Newton-le-Willows",
+    "postal_code": "WA12 0JJ",
+    "latitude": 53.457188,
+    "longitude": -2.638385
+  },
+  {
+    "name": "Superdrug Nurse Clinic Bristol",
+    "full_address": "Superdrug ,39/43 Broadmead ,Bristol",
+    "postal_code": "BS1 3EU",
+    "latitude": 51.457738,
+    "longitude": -2.588263
+  },
+  {
+    "name": "Superdrug Nurse Clinic Shepherds Bush",
+    "full_address": "92-94 Uxbridge Road ,Shepherds Bush ,London",
+    "postal_code": "W12 8LR",
+    "latitude": 51.504822,
+    "longitude": -0.220948
+  },
+  {
+    "name": "Superdrug Nurse Clinic Glasgow",
+    "full_address": "Superdrug ,167 Sauchiehall St ,Glasgow",
+    "postal_code": "G2 3ER",
+    "latitude": 55.864862,
+    "longitude": -4.259636
+  },
+  {
+    "name": "Hillsborough Private Clinic",
+    "full_address": "2 Main Street ,Hillsborough ,Co Down",
+    "postal_code": "BT26 6AE",
+    "latitude": 54.462001,
+    "longitude": -6.083725
+  },
+  {
+    "name": "Superdrug Nurse Clinic Edinburgh",
+    "full_address": "83 Princes Street ,Edinburgh",
+    "postal_code": "EH2 2ER",
+    "latitude": 55.952003,
+    "longitude": -3.198162
+  },
+  {
+    "name": "Superdrug Nurse Clinic Doncaster",
+    "full_address": "17-19 Frenchgate Centre ,Doncaster",
+    "postal_code": "DN1 1PZ",
+    "latitude": 53.524214,
+    "longitude": -1.13691
+  },
+  {
+    "name": "Superdrug Nurse Clinic Buchanan Galleries",
+    "full_address": "Unit 7 ,Level 3 Buchanan Galleries ,Glasgow",
+    "postal_code": "G1 2GF",
+    "latitude": 55.863846,
+    "longitude": -4.251378
+  },
+  {
+    "name": "Superdrug Nurse Clinic Birmingham",
+    "full_address": "Victoria House  ,22 Union Street ,Birmingham",
+    "postal_code": "B2 4SW",
+    "latitude": 52.479419,
+    "longitude": -1.896634
+  },
+  {
+    "name": "Superdrug Nurse Clinic Fosse Park",
+    "full_address": "Leicester Fosse Park ,5b Fosse Park S ,Leicester",
+    "postal_code": "LE19 1HX",
+    "latitude": 52.597063,
+    "longitude": -1.17922
+  },
+  {
+    "name": "Superdrug Nurse Clinic Chichester",
+    "full_address": "80 East Street ,Chichester",
+    "postal_code": "PO19 1HA",
+    "latitude": 50.836279,
+    "longitude": -0.778439
+  },
+  {
+    "name": "Superdrug Nurse Clinic Metro Centre",
+    "full_address": "Unit 68, Cameron Walk ,Gateshead",
+    "postal_code": "NE11 9YR",
+    "latitude": 54.956426,
+    "longitude": -1.668546
+  },
+  {
+    "name": "Ultima Vitality",
+    "full_address": "718a Wilmslow Road ,Manchester",
+    "postal_code": "M20 2DW",
+    "latitude": 53.417582,
+    "longitude": -2.231743
+  },
+  {
+    "name": "Lyca Health Canary Wharf",
+    "full_address": "1 West Ferry Circus ,Canary Wharf ,London",
+    "postal_code": "E14 4HD",
+    "latitude": 51.505921,
+    "longitude": -0.025535
+  },
+  {
+    "name": "SuperDrug Nurse Clinic Guildford",
+    "full_address": "101 High Street ,Guildford ,Surrey",
+    "postal_code": "GU1 3DP",
+    "latitude": 51.235753,
+    "longitude": -0.573208
+  },
+  {
+    "name": "TrailMed Ltd",
+    "full_address": "Fosse House ,Fosse Way ,Syston ,Leicestershire",
+    "postal_code": "LE7 1NL",
+    "latitude": 52.69822,
+    "longitude": -1.085919
+  },
+  {
+    "name": "Boundaries Surgery",
+    "full_address": "17 Winchester Road ,Four Marks ,Alton",
+    "postal_code": "GU34 5HG",
+    "latitude": 51.112125,
+    "longitude": -1.042672
+  },
+  {
+    "name": "Tracey Bell Clinic Kensington",
+    "full_address": "Kensington Road ,Douglas ,Isle of Man",
+    "postal_code": "IM1 3PE",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "name": "Superdrug Nurse Clinic",
+    "full_address": "91-92 The Mall ,Stratford Shopping Centre ,Stratford ,London",
+    "postal_code": "E15 1XQ",
+    "latitude": 51.541949,
+    "longitude": 0.001378
+  },
+  {
+    "name": "Superdrug Nurse Clinic Inverness",
+    "full_address": "Unit 5a, Inverness Retail Park, Inverness",
+    "postal_code": "IV2 7GD",
+    "latitude": 57.481366,
+    "longitude": -4.177343
+  },
+  {
+    "name": "Superdrug Nurse Clinic Bangor",
+    "full_address": "Unit 6, The Menai Centre ,Garth Road ,Bangor ,North Wales",
+    "postal_code": "LL57 1DN",
+    "latitude": 53.227788,
+    "longitude": -4.125508
+  },
+  {
+    "name": "Superdrug Nurse Clinic Norwich",
+    "full_address": "12 St Stephens Street ,Norwich",
+    "postal_code": "NR1 3SA",
+    "latitude": 52.625734,
+    "longitude": 1.292443
+  },
+  {
+    "name": "Superdrug Nurse Clinic Cardiff",
+    "full_address": "Queens West, Queens Street ,Cardiff",
+    "postal_code": "CF10 2AQ",
+    "latitude": 51.481928,
+    "longitude": -3.177951
+  },
+  {
+    "name": "Superdrug Nurse Clinic Brighton",
+    "full_address": "78 Western Road ,Brighton",
+    "postal_code": "BN1 2HA",
+    "latitude": 50.824246,
+    "longitude": -0.14962
+  },
+  {
+    "name": "Superdrug Nurse Clinic The Strand",
+    "full_address": "49-50 The Strand ,London",
+    "postal_code": "WC2N 5LL",
+    "latitude": 51.508924,
+    "longitude": -0.124077
+  },
+  {
+    "name": "Superdrug Nurse Clinic White Rose Shopping Centre",
+    "full_address": "5a Lower Level White Rose Shopping Centre ,Leeds",
+    "postal_code": "LS11 8LL",
+    "latitude": 53.75787,
+    "longitude": -1.574143
+  },
+  {
+    "name": "Superdrug Nurse Clinic Milton Keynes",
+    "full_address": "Unit 4, Midsummer Arcade ,Milton Keynes",
+    "postal_code": "MK9 3BB",
+    "latitude": 52.042609,
+    "longitude": -0.756445
+  },
+  {
+    "name": "Leicester Royal Infirmary",
+    "full_address": "University Hospitals Of Leicester NHS Trust ,Out-Patients Blood Room ,Infirmary Square ,Leicester ,Leicestershire",
+    "postal_code": "LE1 5WW",
+    "latitude": 52.6268,
+    "longitude": -1.135953
+  },
+  {
+    "name": "The Bridge Clinic",
+    "full_address": "156 - 160 Bridge Road ,Maidenhead ,Berkshire",
+    "postal_code": "SL6 8DG",
+    "latitude": 51.523388,
+    "longitude": -0.704406
+  },
+  {
+    "name": "KIMS Hospital",
+    "full_address": "Newham Court Way ,Weavering ,Maidstone ,Kent",
+    "postal_code": "ME14 5FT",
+    "latitude": 51.286548,
+    "longitude": 0.556738
+  },
+  {
+    "name": "Kent & Canterbury Hospital",
+    "full_address": "Outpatients Pathology Department ,Ethelbert Road ,Canterbury ,Kent",
+    "postal_code": "CT1 3NG",
+    "latitude": 51.266593,
+    "longitude": 1.087113
+  },
+  {
+    "name": "Queen Elizabeth The Queen Mother Hospital",
+    "full_address": "Outpatients Pathology Departments ,St Peters Road ,Margate ,Kent",
+    "postal_code": "CT9 4AN",
+    "latitude": 51.378059,
+    "longitude": 1.389411
+  },
+  {
+    "name": "Buckland Hospital",
+    "full_address": "Coombe Valley Road ,Dover ,Kent",
+    "postal_code": "CT17 0HD",
+    "latitude": 51.132061,
+    "longitude": 1.292412
+  },
+  {
+    "name": "Royal Victoria Hospital",
+    "full_address": "Radnor Park Road ,Folkestone ,Kent",
+    "postal_code": "CT19 5BN",
+    "latitude": 51.086144,
+    "longitude": 1.171551
+  },
+  {
+    "name": "Wexham Park Hospital",
+    "full_address": "Outpatients Department ,Wexham Street ,Slough",
+    "postal_code": "SL2 4HL",
+    "latitude": 51.532009,
+    "longitude": -0.573974
+  },
+  {
+    "name": "Birmingham Treatment Centre",
+    "full_address": "City Hospital ,Dudley Road ,Birmingham",
+    "postal_code": "B18 7QH",
+    "latitude": 52.488642,
+    "longitude": -1.932501
+  },
+  {
+    "name": "Sandwell Hospital",
+    "full_address": "Lyndon ,West Bromwich",
+    "postal_code": "B71 4HJ",
+    "latitude": 52.528091,
+    "longitude": -1.988866
+  },
+  {
+    "name": "The Scan Clinic",
+    "full_address": "635a Cranbrook Road ,Ilford",
+    "postal_code": "IG2 6SX",
+    "latitude": 51.578332,
+    "longitude": 0.070853
+  },
+  {
+    "name": "Sundridge Medical Practice",
+    "full_address": "84 London Lane ,Bromley ,Kent",
+    "postal_code": "BR1 4HE",
+    "latitude": 51.414677,
+    "longitude": 0.014767
+  },
+  {
+    "name": "Cosmopolitan Medical",
+    "full_address": "80 King Street ,Maidstone ,Kent",
+    "postal_code": "ME14 1BH",
+    "latitude": 51.273271,
+    "longitude": 0.528258
+  },
+  {
+    "name": "JA Medical",
+    "full_address": "Orpington Health & Wellbeing Centre ,Level 1, 19 Homefield Rise ,Orpington",
+    "postal_code": "BR6 0FE",
+    "latitude": 51.37541,
+    "longitude": 0.101067
+  },
+  {
+    "name": "Jura Health ltd",
+    "full_address": "Office 8, Friarton House ,Friarton Road ,Perth",
+    "postal_code": "PH2 8BB",
+    "latitude": 56.381091,
+    "longitude": -3.429937
+  },
+  {
+    "name": "Arndale House",
+    "full_address": "The Mall ,Luton",
+    "postal_code": "LU1 2LJ",
+    "latitude": 51.879462,
+    "longitude": -0.41275
+  },
+  {
+    "name": "Highcliffe Medical Centre",
+    "full_address": "248 Lymington Road ,Highcliffe ,Christchurch",
+    "postal_code": "BH23 5ET",
+    "latitude": 50.741222,
+    "longitude": -1.701831
+  },
+  {
+    "name": "Biomechanix Clinic",
+    "full_address": "Wyken Medical Centre ,Brixham Drive ,Coventry ,West Midlands",
+    "postal_code": "CV2 3LB",
+    "latitude": 52.425447,
+    "longitude": -1.470004
+  },
+  {
+    "name": "Ultrasound Direct Belfast",
+    "full_address": "Ground Floor ,438 Lisburn Road ,Belfast",
+    "postal_code": "BT9 6GR",
+    "latitude": 54.570844,
+    "longitude": -5.962236
+  },
+  {
+    "name": "Conquest Hospital",
+    "full_address": "Pathology Department ,The Ridge ,St Leonards-on-Sea ,East Sussex",
+    "postal_code": "TN37 7PT",
+    "latitude": 50.88769,
+    "longitude": 0.561978
+  },
+  {
+    "name": "University Hospitals of Plymouth",
+    "full_address": "Derriford Hospital ,Derriford Road ,Crownhill ,Plymouth",
+    "postal_code": "PL6 8DH",
+    "latitude": 50.416707,
+    "longitude": -4.113712
+  },
+  {
+    "name": "Ultrasound Direct Peterborough",
+    "full_address": "Fidelity House ,Fengate ,Peterborough",
+    "postal_code": "PE1 5XG",
+    "latitude": 52.574426,
+    "longitude": -0.209498
+  },
+  {
+    "name": "Ultrasound Direct Leeds",
+    "full_address": "Suite 10, Regent Business Centre ,Pavilion Business Park ,Royds Hall Road ,Leeds",
+    "postal_code": "LS12 6AJ",
+    "latitude": 53.7792,
+    "longitude": -1.589998
+  },
+  {
+    "name": "Fairfield's Clinic",
+    "full_address": "6b Crooks Barn Lane, Stockton-on-Tees",
+    "postal_code": "TS20 1LW",
+    "latitude": 54.597374,
+    "longitude": -1.310371
+  },
+  {
+    "name": "Rejuvence Clinic",
+    "full_address": "Ground Floor Commercial Unit, Block E, 30 Indescon Square, Lincoln Plaza ,London",
+    "postal_code": "E14 9DR",
+    "latitude": 51.498178,
+    "longitude": -0.02015
+  },
+  {
+    "name": "Superdrug Nurse Clinic Denton",
+    "full_address": "Unit 16B Crown Point North ,Worthington Way ,Denton",
+    "postal_code": "M34 3LF",
+    "latitude": 53.456602,
+    "longitude": -2.114249
+  },
+  {
+    "name": "Superdrug Nurse Clinic Leeds",
+    "full_address": "Unit 5a Crown Point Shopping Park ,Junction Street ,Leeds",
+    "postal_code": "LS10 1ET",
+    "latitude": 53.788782,
+    "longitude": -1.54053
+  },
+  {
+    "name": "Superdrug Nurse Clinic Liverpool",
+    "full_address": "Unit 4a New Mersey Shopping Park ,Speke Road ,Liverpool",
+    "postal_code": "L24 8QB",
+    "latitude": 53.35073,
+    "longitude": -2.879307
+  },
+  {
+    "name": "Superdrug Nurse Clinic Staines",
+    "full_address": "Elmsleigh Centre, Unit 26 ,Staines",
+    "postal_code": "TW18 4QB",
+    "latitude": 51.433483,
+    "longitude": -0.509801
+  },
+  {
+    "name": "Ghosh Medical Group",
+    "full_address": "Rodney Street (opposite number 2), Liverpool",
+    "postal_code": "L1 9ED",
+    "latitude": 53.403699,
+    "longitude": -2.972529
+  },
+  {
+    "name": "Superdrug Nurse Clinic Basingstoke",
+    "full_address": "Hampstead House ,10-12 Hampstead House ,The Walks Shopping Centre ,Basingstoke",
+    "postal_code": "RG21 7LG",
+    "latitude": 51.26577,
+    "longitude": -1.087899
+  },
+  {
+    "name": "Reach Pharmacy - Argyle St",
+    "full_address": "1094 Argyle Street ,Glasgow",
+    "postal_code": "G3 8LY",
+    "latitude": 55.864692,
+    "longitude": -4.283487
+  },
+  {
+    "name": "Superdrug Nurse Clinic Birmingham Fort",
+    "full_address": "The Fort Shopping Park ,Unit 6 D/E ,Birmingham",
+    "postal_code": "B24 9FP",
+    "latitude": 52.508731,
+    "longitude": -1.823705
+  },
+  {
+    "name": "Superdrug Nurse Clinic Colchester",
+    "full_address": "22-24 High Street ,Colchester",
+    "postal_code": "CO1 1DB",
+    "latitude": 51.889447,
+    "longitude": 0.8984
+  },
+  {
+    "name": "Superdrug Nurse Clinic Mearns Cross",
+    "full_address": "Unit 1, The Avenue at Mearns ,Newton Mearns ,Glasgow",
+    "postal_code": "G77 6EY",
+    "latitude": 55.772917,
+    "longitude": -4.333876
+  },
+  {
+    "name": "Ultrasound Direct Derby",
+    "full_address": "34 Charnwood Street ,Derby",
+    "postal_code": "DE1 2GU",
+    "latitude": 52.915728,
+    "longitude": -1.475258
+  },
+  {
+    "name": "Ultrasound Direct Bury St Edmunds",
+    "full_address": "Abbotsgate House, Hollow Road ,Bury St Edmunds ,Suffolk",
+    "postal_code": "IP32 7FA",
+    "latitude": 52.25408,
+    "longitude": 0.731421
+  },
+  {
+    "name": "Ultrasound Direct Hereford",
+    "full_address": "Hereford Centre for Natural Health ,Eastholme Avenue ,Belmont ,Hereford ,Herefordshire",
+    "postal_code": "HR2 7XT",
+    "latitude": 52.041261,
+    "longitude": -2.739492
+  },
+  {
+    "name": "Ultrasound Direct Kettering",
+    "full_address": "3 Meadow Road, Kettering Northamptonshire",
+    "postal_code": "NN16 8TL",
+    "latitude": 52.398384,
+    "longitude": -0.730425
+  },
+  {
+    "name": "Ultrasound Direct Newcastle",
+    "full_address": "Osborne Clinic ,22 Osborne Avenue ,Jesmond ,Newcastle upon Tyne",
+    "postal_code": "NE2 1JQ",
+    "latitude": 54.988025,
+    "longitude": -1.603652
+  },
+  {
+    "name": "Ultrasound Direct Nottingham",
+    "full_address": "52 Rectory Road ,West Bridgford ,Nottingham",
+    "postal_code": "NG2 6FF",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "name": "Ultrasound Direct Stockton",
+    "full_address": "11 Silver Street ,Oriel House ,Stockton on Tees",
+    "postal_code": "TS18 1SW",
+    "latitude": 54.565162,
+    "longitude": -1.31147
+  },
+  {
+    "name": "Ultrasound Direct Sunderland",
+    "full_address": "191-193 Chester Road ,Sunderland",
+    "postal_code": "SR4 7JA",
+    "latitude": 54.901334,
+    "longitude": -1.404976
+  },
+  {
+    "name": "Superdrug Nurse Clinic Wakefield",
+    "full_address": "Unit G27 Trinity Walk ,Wakefield ,West Yorkshire",
+    "postal_code": "WF1 1QU",
+    "latitude": 53.684838,
+    "longitude": -1.494676
+  },
+  {
+    "name": "Skin-Logic Clinic",
+    "full_address": "97 Wallasey village ,Wallasey village ,Wallasey",
+    "postal_code": "CH45 3LE",
+    "latitude": 53.422717,
+    "longitude": -3.064516
+  },
+  {
+    "name": "Superdrug Nurse Clinic Bradford Broadway",
+    "full_address": "MSU21 Level 10 Charles Street Mall ,Bradford Broadway",
+    "postal_code": "BD1 1JR",
+    "latitude": 53.793918,
+    "longitude": -1.748672
+  },
+  {
+    "name": "Superdrug nurse clinic Merrion Centre",
+    "full_address": "5A Merrion Centre ,Leeds",
+    "postal_code": "LS2 8NG",
+    "latitude": 53.80163,
+    "longitude": -1.544049
+  },
+  {
+    "name": "Superdrug nurse clinic Fargate",
+    "full_address": "33-35 Fargate ,Sheffield",
+    "postal_code": "S1 2HD",
+    "latitude": 53.381548,
+    "longitude": -1.468969
+  },
+  {
+    "name": "Ultrasound Direct Hull",
+    "full_address": "252-254 Spring Bank West ,Chiropractic Clinic ,Hull",
+    "postal_code": "HU5 3RU",
+    "latitude": 53.751775,
+    "longitude": -0.361449
+  },
+  {
+    "name": "Superdrug Nurse Clinic Durham",
+    "full_address": "Unit G Arnison Shopping Centre ,Durham",
+    "postal_code": "DH1 5GB",
+    "latitude": 54.806797,
+    "longitude": -1.581574
+  },
+  {
+    "name": "Superdrug Nurse Clinic Preston Deepdale",
+    "full_address": "Unit H1A1 Deepdale Shopping Centre ,Preston ,Lancashire",
+    "postal_code": "PR1 6QY",
+    "latitude": 53.773431,
+    "longitude": -2.678391
+  },
+  {
+    "name": "Superdrug Nurse Clinic Hammersmith",
+    "full_address": "65-69 King Street ,Exchange Shopping Centre ,Hammersmith ,London",
+    "postal_code": "W6 9HX",
+    "latitude": 51.491849,
+    "longitude": -0.228325
+  },
+  {
+    "name": "Superdrug Nurse Clinic Rugby Elliots Field",
+    "full_address": "Unit 8 Elliots Field Shopping Park ,Rugby",
+    "postal_code": "CV21 1SR",
+    "latitude": 52.388304,
+    "longitude": -1.260028
+  },
+  {
+    "name": "Weymouth Community Hospital",
+    "full_address": "3 Melcombe Avenue ,Weymouth ,Dorset",
+    "postal_code": "DT4 7TB",
+    "latitude": 50.621025,
+    "longitude": -2.451009
+  },
+  {
+    "name": "Ultrasound Direct Worcester",
+    "full_address": "Ultrasound Direct Worcester ,Barbourne Health Centre ,44 Droitwich Road ,Worcester",
+    "postal_code": "WR3 7LH",
+    "latitude": 52.208752,
+    "longitude": -2.224953
+  },
+  {
+    "name": "Tracey Bell Clinic Castletown",
+    "full_address": "12 Malew Street ,Castletown ,Isle of Man",
+    "postal_code": "IM9 1AB",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "name": "Tracey Bell Clinic Ramsey",
+    "full_address": "3 West Quay ,Ramsey ,Isle of Man",
+    "postal_code": "IM8 1DW",
+    "latitude": null,
+    "longitude": null
+  },
+  {
+    "name": "Superdrug Nurse Clinic Gateshead Team Valley",
+    "full_address": "Unit 7.2A Retail World Team Valley ,Gateshead",
+    "postal_code": "NE11 0BD",
+    "latitude": 54.923762,
+    "longitude": -1.619385
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Drylaw",
+    "full_address": "645 Ferry Road ,Edinburgh",
+    "postal_code": "EH4 2TX",
+    "latitude": 55.96718,
+    "longitude": -3.246005
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Easter Road",
+    "full_address": "92-96 Easter Road ,Edinburgh",
+    "postal_code": "EH7 5RQ",
+    "latitude": 55.958557,
+    "longitude": -3.171552
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic Oxgangs",
+    "full_address": "6-8 Oxgangs Broadway ,Edinburgh",
+    "postal_code": "EH13 9LQ",
+    "latitude": 55.905651,
+    "longitude": -3.222436
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Kelty",
+    "full_address": "60 Main St, Kelty ,Edinburgh",
+    "postal_code": "KY4 0AE",
+    "latitude": 56.134212,
+    "longitude": -3.380949
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Glenrothes",
+    "full_address": "3 Glamis Centre ,Glenrothes",
+    "postal_code": "KY7 4RH",
+    "latitude": 56.182573,
+    "longitude": -3.163273
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Dunfermline",
+    "full_address": "85 High Street ,Dunfermline",
+    "postal_code": "KY12 7DR",
+    "latitude": 56.071355,
+    "longitude": -3.46013
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Lochgelly",
+    "full_address": "67 Bank Street ,Lochgelly",
+    "postal_code": "KY5 9QN",
+    "latitude": 56.1287,
+    "longitude": -3.309496
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Lochore",
+    "full_address": "60 Lochleven Road ,Lochore",
+    "postal_code": "KY5 8DA",
+    "latitude": 56.156127,
+    "longitude": -3.321827
+  },
+  {
+    "name": "Travel Health Ltd",
+    "full_address": "Building B, Arena Business Centre, Watchmoor Park, Riverside Way, Surrey",
+    "postal_code": "GU15 3YL",
+    "latitude": 51.326425,
+    "longitude": -0.76192
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic - Ballingry",
+    "full_address": "12 Benarty Square ,Ballingry",
+    "postal_code": "KY5 8NR",
+    "latitude": 56.164571,
+    "longitude": -3.325338
+  },
+  {
+    "name": "Reach Pharmacy",
+    "full_address": "2 Old Gartloch Road ,Gartcosh ,Glasgow",
+    "postal_code": "G69 8EU",
+    "latitude": 55.888276,
+    "longitude": -4.083381
+  },
+  {
+    "name": "Superdrug Nurse Clinic Aberdeen",
+    "full_address": "Superdrug E1 ,St Nicholas Centre ,Aberdeen",
+    "postal_code": "AB10 1HW",
+    "latitude": 57.147766,
+    "longitude": -2.098009
+  },
+  {
+    "name": "YPCHealth",
+    "full_address": "1, Skipton Road ,Ilkley, Leeds",
+    "postal_code": "LS29 9EH",
+    "latitude": 53.925944,
+    "longitude": -1.827051
+  },
+  {
+    "name": "Makewell Clinic (ECG Training)",
+    "full_address": "The Gatehouse ,Bradwell Abbey ,Alston Drive ,Milton Keynes",
+    "postal_code": "MK13 9AP",
+    "latitude": 52.047227,
+    "longitude": -0.795076
+  },
+  {
+    "name": "AB Clinical",
+    "full_address": "Cheshire Beauty and Wellbeing ,Alder Lane ,Burtonwood ,Warrington",
+    "postal_code": "WA5 4BN",
+    "latitude": 53.424041,
+    "longitude": -2.622449
+  },
+  {
+    "name": "Hill Medical Skin & Health",
+    "full_address": "119 Ecclesall Road South ,Sheffield",
+    "postal_code": "S11 9PJ",
+    "latitude": 53.355099,
+    "longitude": -1.512386
+  },
+  {
+    "name": "Superdrug Nurse Clinic Northumberland St",
+    "full_address": "46-52 Northumberland Street ,Newcastle-upon-Tyne",
+    "postal_code": "NE1 7DF",
+    "latitude": 54.97585,
+    "longitude": -1.612411
+  },
+  {
+    "name": "Aeternum Aesthetics",
+    "full_address": "40 Market Street ,Ashby de la Zouch ,Leicestershire",
+    "postal_code": "LE65 1AN",
+    "latitude": 52.747136,
+    "longitude": -1.470881
+  },
+  {
+    "name": "Medical Aesthetics and Healthcare UK",
+    "full_address": "28 Woodfield Terrace ,Tiryberth ,Hengoed ,Caerphilly",
+    "postal_code": "CF82 8AH",
+    "latitude": 51.66198,
+    "longitude": -3.230675
+  },
+  {
+    "name": "Shujo Aesthetics",
+    "full_address": "Unit 14, iCentre ,Howard Way ,Newport Pagnell ,Milton Keynes ,Buckinghamshire",
+    "postal_code": "MK16 9PY",
+    "latitude": 52.079603,
+    "longitude": -0.70354
+  },
+  {
+    "name": "The Phlebotomy Centre",
+    "full_address": "Ground Floor Vantage House ,Crown Street ,Bolton",
+    "postal_code": "BL1 2RU",
+    "latitude": 53.579994,
+    "longitude": -2.427377
+  },
+  {
+    "name": "Dears Pharmacy & Travel Clinic Markinch",
+    "full_address": "53 High St ,Markinch ,Fife",
+    "postal_code": "KY7 6DQ",
+    "latitude": 56.202646,
+    "longitude": -3.132288
+  },
+  {
+    "name": "Longfield Polyclinic",
+    "full_address": "Tuppence House ,Brickfield Farm ,Main Road ,Longfield",
+    "postal_code": "DA3 7PJ",
+    "latitude": 51.395996,
+    "longitude": 0.311095
+  },
+  {
+    "name": "Sevenoaks Medical Centre",
+    "full_address": "Beadle House ,Sevenoaks",
+    "postal_code": "TN13 2JD",
+    "latitude": 51.278997,
+    "longitude": 0.177654
+  },
+  {
+    "name": "Life Fit Wellness Limited",
+    "full_address": "Falkirk Business Hub ,Weir Street ,Falkirk",
+    "postal_code": "FK1 1RA",
+    "latitude": 56.001517,
+    "longitude": -3.781573
+  },
+  {
+    "name": "Dermoperfection Medical Skin Clinic",
+    "full_address": "Unit 56, The Mailbox, Birmingham",
+    "postal_code": "B1 1RE",
+    "latitude": 52.476189,
+    "longitude": -1.904179
+  },
+  {
+    "name": "Addenbrooke's Hospital",
+    "full_address": "Outpatients Department, Hills Road, Cambridge, Cambridgeshire",
+    "postal_code": "CB2 0QQ",
+    "latitude": 52.175003,
+    "longitude": 0.14065
   }
 ]
