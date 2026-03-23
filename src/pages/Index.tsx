@@ -27,6 +27,7 @@ import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -34,19 +35,23 @@ const Index = () => {
     description:
       "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
     url: "https://myhealthcheckup.co.uk",
-    socialmedia: [
-      "https://www.facebook.com/myhealthcheckup",
+    sameAs: [
+      "https://www.facebook.com/myhealthcheckupuk",
       "https://www.twitter.com/myhealthcheckup",
-      "https://www.instagram.com/myhealthcheckup",
+      "https://www.instagram.com/myhealthcheckup_uk",
     ],
     address: {
       "@type": "PostalAddress",
       addressCountry: "United Kingdom",
     },
+    // FIX 1: audience @type is now a valid Schema.org type, with clean fields only
     audience: {
       "@type": "Audience",
-      audienceType: "Health-conscious adults aged 30-60",
-      geographicArea: "United Kingdom",
+      audienceType: "Health-conscious adults aged 25-65",
+      geographicArea: {
+        "@type": "Country",
+        name: "United Kingdom",
+      },
     },
     offers: {
       "@type": "AggregateOffer",
@@ -55,6 +60,7 @@ const Index = () => {
       highPrice: "299",
       offerCount: "100+",
     },
+    // FIX 2: @type is now the valid Schema.org type "OpeningHoursSpecification"
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
