@@ -427,13 +427,6 @@
     "longitude": -2.218308
   },
   {
-    "name": "Tuli Health - Heald Green Pharmacy",
-    "full_address": "208 Finney Lane,Heald Green, Cheadle, Stockport",
-    "postal_code": "SK8 3QE",
-    "latitude": null,
-    "longitude": null
-  },
-  {
     "name": "Tuli Health - First Contact Pharmacy",
     "full_address": "3 Webb's Court, Buckhurst Ave, Sevenoaks",
     "postal_code": "TN13 1LZ",
@@ -1225,13 +1218,6 @@
     "longitude": -1.577849
   },
   {
-    "name": "AC Medical Services",
-    "full_address": "The Corner House, Rectory Road",
-    "postal_code": null,
-    "latitude": null,
-    "longitude": null
-  },
-  {
     "name": "Ultrasound Direct - Bedford",
     "full_address": "1a Princeton Court, The Pilgrim Centre, Brickhill Drive, Bedford",
     "postal_code": "MK41 7PZ",
@@ -2016,13 +2002,6 @@
     "longitude": -1.042672
   },
   {
-    "name": "Tracey Bell Clinic Kensington",
-    "full_address": "Kensington Road ,Douglas ,Isle of Man",
-    "postal_code": "IM1 3PE",
-    "latitude": null,
-    "longitude": null
-  },
-  {
     "name": "Superdrug Nurse Clinic",
     "full_address": "91-92 The Mall ,Stratford Shopping Centre ,Stratford ,London",
     "postal_code": "E15 1XQ",
@@ -2366,13 +2345,6 @@
     "longitude": -1.603652
   },
   {
-    "name": "Ultrasound Direct Nottingham",
-    "full_address": "52 Rectory Road ,West Bridgford ,Nottingham",
-    "postal_code": "NG2 6FF",
-    "latitude": null,
-    "longitude": null
-  },
-  {
     "name": "Ultrasound Direct Stockton",
     "full_address": "11 Silver Street ,Oriel House ,Stockton on Tees",
     "postal_code": "TS18 1SW",
@@ -2469,20 +2441,6 @@
     "postal_code": "WR3 7LH",
     "latitude": 52.208752,
     "longitude": -2.224953
-  },
-  {
-    "name": "Tracey Bell Clinic Castletown",
-    "full_address": "12 Malew Street ,Castletown ,Isle of Man",
-    "postal_code": "IM9 1AB",
-    "latitude": null,
-    "longitude": null
-  },
-  {
-    "name": "Tracey Bell Clinic Ramsey",
-    "full_address": "3 West Quay ,Ramsey ,Isle of Man",
-    "postal_code": "IM8 1DW",
-    "latitude": null,
-    "longitude": null
   },
   {
     "name": "Superdrug Nurse Clinic Gateshead Team Valley",
