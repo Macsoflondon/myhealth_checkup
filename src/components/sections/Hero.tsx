@@ -104,7 +104,7 @@ const Hero = () => {
 
             {/* Search Bar - Clean white card */}
             <div className="max-w-4xl mx-auto mb-6 sm:mb-8 md:mb-10">
-              <div className="bg-background rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl border border-gray-400">
+              <div className="bg-background rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-sm">
                 <div className="relative">
                   <Search className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-brand-turquoise w-5 h-5 sm:w-6 sm:h-6" />
                   <input
