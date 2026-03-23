@@ -1,34 +1,25 @@
 
 
-## Plan: Fix Sports Performance Category Page
+## Plan: Rebuild Hero Section to Match Reference Image
 
-The user has 4 requests for the `/sports-performance` page (and the shared `CategoryPageLayout` used by all category pages):
+### Changes to `src/components/sections/Hero.tsx`
 
-### 1. White backgrounds for test category sections
-- The cards grid section in `CategoryPageLayout.tsx` (line 185) uses `bg-muted/30` — change to `bg-white`
-- The `CategoryHero` uses `bg-background` which is fine (already light)
+**1. Background overlay**: Change from white `bg-white/[0.65]` to pink `bg-pink-200/60` or `bg-[#e70d69]/15` to match the pink-tinted background in the image.
 
-### 2. Buttons: turquoise idle → pink on hover, white text
-- The CTA button inside `UnifiedTestCard.tsx` (line 247-264) currently uses `categoryColor` with opacity change on hover — change hover to pink `#e70d69`
-- The Search button in `CategoryHero.tsx` (line 57-62) uses turquoise but has navy text — change text to white and add pink hover
-- The "Start Your Quiz" button in `CategoryPageBottom.tsx` already uses pink gradient — keep as-is
+**2. Badge**: Change from navy-bordered pill with navy text to a turquoise-filled pill with white text. Remove the border, use `bg-brand-turquoise` background.
 
-### 3. Text colors: white or dark blue
-- Review text in the sections and ensure all visible text on light backgrounds is dark blue `#081129`, and text on dark backgrounds is white. The current implementation mostly follows this already.
+**3. Headline layout**: Currently 3 blocks + divider line. Change to 2-line flow: "Compare the UK's leading private health test providers" on lines 1-2, then a dash/hyphen before "All in one place!" in pink. Remove the separate turquoise divider line. Add a small turquoise underline below the full headline instead.
 
-### 4. Make test cards clickable — open a detail modal
-This is the biggest change. Currently `UnifiedTestCard` has no click handler for the whole card. The category pages use static test data (not from DB), so we can't use the existing `ProviderTestDetailModal` directly (it expects `ProviderTestCardData` with DB fields).
+**4. Mission text**: Update the third paragraph to match the image text: "We only feature providers that meet rigorous quality standards, including being fully regulated by the Care Quality Commission (CQC) & using only laboratories accredited by the United Kingdom Accreditation Service (UKAS)." — all three paragraphs get the turquoise left border (currently only the first does).
 
-**Approach:** Add an `onClick` prop to `UnifiedTestCard` and wire it up in `CategoryPageLayout` to open a simple detail modal showing the test's biomarkers, description, provider, price, and a CTA link.
+**5. Three CTA buttons**: Add a middle "Find a Clinic" button (pink bg, links to `/find-a-clinic` or similar). Reorder: "Compare Blood Tests" (turquoise), "Find a Clinic" (pink), "Find the Right Test for You" (turquoise). All with white text, rounded-full pill shape.
 
-### Files to modify:
-1. **`src/components/cards/UnifiedTestCard.tsx`** — Add whole-card click handler, change button hover to pink
-2. **`src/components/category/CategoryPageLayout.tsx`** — Change section background to white, add state for selected test + detail modal
-3. **`src/components/category/CategoryHero.tsx`** — Button text color to white, hover to pink
-4. **New: `src/components/category/CategoryTestDetailModal.tsx`** — Simple modal showing test details (name, description, biomarkers list, provider, price, collection method, turnaround, and CTA)
+**6. Search card**: Remove the outer `border border-gray-400` and `shadow-xl` — make it cleaner/flatter white card. Remove border from the popular searches inner box too, keep it as a subtle gray background area.
 
-### Technical details:
-- The detail modal will use the existing `Dialog` component from shadcn
-- Card click opens modal; CTA button inside card still works independently (compare/external link)
-- Modal will show all biomarker names, full description, and a "Book Now" or "View Test" button linking to the provider URL if available
+**7. Popular searches label**: Change "Popular searches:" to "POPULAR SEARCHES" (uppercase, centered).
+
+**8. Trust signals**: Update "200+ clinics nationwide" to "150+ clinics nationwide". Remove asterisk from "No GP referral needed".
+
+### Files modified
+- `src/components/sections/Hero.tsx` — all changes in this single file
 
