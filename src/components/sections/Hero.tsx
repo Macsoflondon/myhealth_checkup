@@ -144,14 +144,14 @@ const Hero = () => {
                 )}
 
                 {/* Popular Searches */}
-                <div className="mt-4 sm:mt-5 text-center border border-gray-400 rounded-xl p-3 sm:p-4">
-                  <p className="text-sm sm:text-base font-bold text-foreground mb-3 sm:mb-4">Popular searches:</p>
+                <div className="mt-4 sm:mt-5 text-center bg-muted/40 rounded-xl p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm font-bold text-foreground mb-3 sm:mb-4 uppercase tracking-wider">Popular Searches</p>
                   <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
                     {popularSearches.map((search, index) => (
                       <button
                         key={index}
                         onClick={() => navigate(search.route)}
-                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-white bg-[#22c0d4] hover:bg-[#e70d69] rounded-full border border-gray-400 transition-colors duration-300"
+                        className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base text-white bg-brand-turquoise hover:bg-brand-pink rounded-full transition-colors duration-300"
                       >
                         {search.name}
                       </button>
