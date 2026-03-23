@@ -96,20 +96,24 @@ const ClinicFinder = () => {
   const loadClinics = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("clinics")
-        .select("id, name, full_address, postal_code, latitude, longitude, provider_id, access_note")
-        .not("latitude", "is", null)
-        .not("longitude", "is", null)
-        .order("name");
+      // Load from local JSON as primary source (complete dataset)
+      const response = await fetch("/clinics_master.json");
+      if (!response.ok) throw new Error("Failed to load clinics data");
+      const jsonClinics = await response.json();
 
-      if (error) throw error;
-
-      const normalizedClinics = (data || []).map(clinic => ({
-        ...clinic,
-        latitude: Number(clinic.latitude),
-        longitude: Number(clinic.longitude),
-      }));
+      // Normalize and filter out entries without coordinates
+      const normalizedClinics: Clinic[] = jsonClinics
+        .filter((c: any) => c.latitude && c.longitude)
+        .map((clinic: any, index: number) => ({
+          id: `clinic-${index}`,
+          name: clinic.name,
+          full_address: clinic.full_address || "",
+          postal_code: clinic.postal_code || "",
+          latitude: Number(clinic.latitude),
+          longitude: Number(clinic.longitude),
+          provider_id: clinic.provider_id || undefined,
+          access_note: clinic.access_note || undefined,
+        }));
 
       setClinics(normalizedClinics);
     } catch (error) {
