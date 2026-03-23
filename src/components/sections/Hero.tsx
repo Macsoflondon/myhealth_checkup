@@ -136,7 +136,7 @@ const Hero = () => {
                     )}
                     <Button
                       onClick={() => navigate("/compare")}
-                      className="w-full mt-3 bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
+                      className="w-full mt-3 bg-brand-turquoise hover:bg-brand-pink text-white transition-colors duration-300"
                     >
                       View available tests
                     </Button>
