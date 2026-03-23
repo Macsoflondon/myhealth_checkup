@@ -82,16 +82,23 @@ const Hero = () => {
               <Button
                 size="default"
                 onClick={() => navigate("/compare")}
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold rounded-full shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
-                Compare blood tests
+                Compare Blood Tests
+              </Button>
+              <Button
+                size="default"
+                onClick={() => navigate("/find-a-clinic")}
+                className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold rounded-full shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+              >
+                Find a Clinic
               </Button>
               <Button
                 size="default"
                 onClick={() => navigate("/assisted-test-finder")}
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
+                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold rounded-full shadow-md px-3 sm:px-6 md:px-8 text-xs sm:text-base h-10 sm:h-11 md:h-12 transition-colors duration-300"
               >
-                Find the right test for you
+                Find the Right Test for You
               </Button>
             </div>
 
