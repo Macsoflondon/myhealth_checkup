@@ -405,6 +405,19 @@ const Auth = () => {
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
             </div>
+
+            {/* Subtle admin access */}
+            {!isSignUp && (
+              <div className="text-center mt-6 pt-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => navigate("/admin/login")}
+                  className="text-gray-300 hover:text-gray-400 text-[10px] transition-colors"
+                >
+                  Admin
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </main>

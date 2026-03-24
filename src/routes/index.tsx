@@ -14,6 +14,7 @@ import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
 import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
 import AdminScraperDashboardPage from "@/pages/AdminScraperDashboardPage";
 import { AdminRoute } from "@/components/auth/AdminRoute";
+import AdminAuth from "@/pages/AdminAuth";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
@@ -27,6 +28,9 @@ export function AppRoutes() {
       {/* Home */}
       <Route path="/" element={<Index />} />
       <Route path="/test-categories" element={<TestCategoriesPage />} />
+      
+      {/* Admin Auth */}
+      <Route path="/admin/login" element={<AdminAuth />} />
       
       {/* Admin Routes - Protected with server-side role verification */}
       <Route path="/admin/clinic-upload" element={<AdminRoute><AdminClinicUploadPage /></AdminRoute>} />
