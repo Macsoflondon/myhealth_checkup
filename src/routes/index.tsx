@@ -29,6 +29,9 @@ export function AppRoutes() {
       <Route path="/" element={<Index />} />
       <Route path="/test-categories" element={<TestCategoriesPage />} />
       
+      {/* Admin Auth */}
+      <Route path="/admin/login" element={<AdminAuth />} />
+      
       {/* Admin Routes - Protected with server-side role verification */}
       <Route path="/admin/clinic-upload" element={<AdminRoute><AdminClinicUploadPage /></AdminRoute>} />
       <Route path="/admin/clinic-scraper" element={<AdminRoute><AdminClinicScraperPage /></AdminRoute>} />
