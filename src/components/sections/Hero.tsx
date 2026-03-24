@@ -59,13 +59,13 @@ const Hero = () => {
                 </span>
               </div>
 
-              {/* Headline - large, lighter weight */}
+              {/* Headline - bold, matching reference image */}
               <h1 className="text-center font-heading tracking-tight leading-[1.1] mb-2 text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem]">
-                <span className="text-[hsl(var(--navy))] font-medium">Compare the UK's leading private</span>
+                <span className="text-[hsl(var(--navy))] font-bold">Compare the UK's leading private</span>
                 <br />
-                <span className="text-[hsl(var(--navy))] font-medium">health test providers </span>
-                <span className="text-[hsl(var(--navy))] font-medium">- </span>
-                <span className="text-[hsl(var(--secondary))] font-medium">All in one place!</span>
+                <span className="text-[hsl(var(--navy))] font-bold">health test providers</span>
+                <span className="text-[hsl(var(--navy))] font-bold"> - </span>
+                <span className="text-[hsl(var(--secondary))] font-bold italic">All in one place!</span>
               </h1>
 
               {/* Short gradient underline - turquoise to pink */}
