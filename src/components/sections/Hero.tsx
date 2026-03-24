@@ -50,22 +50,22 @@ const Hero = () => {
         {/* Content */}
         <div className="relative z-10 pt-10 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="max-w-[960px] mx-auto">
+            <div className="max-w-[1240px] mx-auto">
 
               {/* Badge - small turquoise pill */}
               <div className="text-center mb-5 sm:mb-7">
-                <span className="inline-flex items-center gap-1.5 bg-[hsl(var(--primary))] rounded-full px-4 py-1.5 text-white text-xs sm:text-sm font-medium tracking-wide">
+                <span className="inline-flex items-center gap-1.5 bg-brand-turquoise rounded-full px-4 py-1.5 text-white text-xs sm:text-sm font-medium tracking-wide">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
 
-              {/* Headline - bold, matching reference image */}
-              <h1 className="text-center font-heading tracking-tight leading-[1.1] mb-2 text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4rem] xl:text-[4.5rem]">
-                <span className="text-[hsl(var(--navy))] font-bold">Compare the UK's leading private</span>
-                <br />
-                <span className="text-[hsl(var(--navy))] font-bold">health test providers</span>
-                <span className="text-[hsl(var(--navy))] font-bold"> - </span>
-                <span className="text-[hsl(var(--secondary))] font-bold italic">All in one place!</span>
+              {/* Headline - fixed two-line layout on desktop to match reference */}
+              <h1 className="text-center font-heading tracking-[-0.03em] leading-[1.06] mb-2 text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] 2xl:text-[4.8rem]">
+                <span className="block text-brand-navy font-black lg:whitespace-nowrap">Compare the UK's leading private</span>
+                <span className="block text-brand-navy font-black lg:whitespace-nowrap">
+                  health test providers <span className="text-brand-navy font-black">- </span>
+                  <span className="text-brand-pink font-black italic">All in one place!</span>
+                </span>
               </h1>
 
               {/* Short gradient underline - turquoise to pink */}
