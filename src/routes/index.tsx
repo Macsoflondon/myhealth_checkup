@@ -14,6 +14,7 @@ import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
 import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
 import AdminScraperDashboardPage from "@/pages/AdminScraperDashboardPage";
 import { AdminRoute } from "@/components/auth/AdminRoute";
+import AdminAuth from "@/pages/AdminAuth";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
