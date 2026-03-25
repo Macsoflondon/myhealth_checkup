@@ -127,33 +127,46 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
   const touchEndX = useRef<number>(0);
+  const touchEndY = useRef<number>(0);
   const isDragging = useRef<boolean>(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
-    isDragging.current = true;
+    touchEndX.current = e.touches[0].clientX;
+    touchEndY.current = e.touches[0].clientY;
+    isDragging.current = false;
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging.current) return;
     touchEndX.current = e.touches[0].clientX;
+    touchEndY.current = e.touches[0].clientY;
+
+    const deltaX = Math.abs(touchEndX.current - touchStartX.current);
+    const deltaY = Math.abs(touchEndY.current - touchStartY.current);
+
+    if (deltaX > 6 || deltaY > 6) {
+      isDragging.current = true;
+    }
   }, []);
 
   const handleTouchEnd = useCallback(() => {
-    if (!isDragging.current) return;
-    
     const swipeDistanceX = touchStartX.current - touchEndX.current;
-    const swipeDistanceY = Math.abs(touchStartY.current - (touchEndX.current ? touchEndX.current : touchStartY.current));
+    const swipeDistanceY = Math.abs(touchStartY.current - touchEndY.current);
     const minSwipeDistance = 80;
-    
-    if (swipeDistanceX > minSwipeDistance && swipeDistanceX > swipeDistanceY) {
+
+    if (
+      isDragging.current &&
+      swipeDistanceX > minSwipeDistance &&
+      swipeDistanceX > swipeDistanceY
+    ) {
       onClose();
     }
-    
+
     isDragging.current = false;
     touchEndX.current = 0;
+    touchEndY.current = 0;
   }, [onClose]);
 
   const toggleSection = useCallback((sectionName: string) => {
@@ -237,7 +250,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
   }, [searchQuery]);
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
+    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent 
         side="left" 
         className="w-[88vw] max-w-[420px] p-0 bg-white border-r border-gray-200"
