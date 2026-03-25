@@ -60,9 +60,11 @@ const Hero = () => {
 
               {/* Headline - fixed two-line layout on desktop to match reference */}
               <h1 className="text-center font-heading tracking-[-0.03em] leading-[1.06] mb-2 text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] 2xl:text-[4.8rem]">
-                <span className="block text-brand-navy lg:whitespace-nowrap">Compare the UK's leading private</span>
-                <span className="block text-brand-navy lg:whitespace-nowrap">
-                  health test providers <span className="text-brand-navy">- </span>
+                <span className="block text-brand-navy font-bold lg:whitespace-nowrap">
+                  Compare the UK's leading private
+                </span>
+                <span className="block text-brand-navy font-bold lg:whitespace-nowrap">
+                  health test providers <span className="text-brand-navy font-bold">- </span>
                   <span className="text-brand-pink">All in one place!</span>
                 </span>
               </h1>
