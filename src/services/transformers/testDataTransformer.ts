@@ -1,6 +1,5 @@
 import { CompareTestData, LiveTestData } from "@/types";
-import { PROVIDER_LOGOS, PROVIDER_NAMES } from "@/constants/providers";
-import { providerService } from "../ProviderService";
+import { PROVIDER_LOGOS, PROVIDER_NAMES, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
 
 /**
  * Transform raw test data from database into CompareTestData format

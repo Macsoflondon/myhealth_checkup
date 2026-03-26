@@ -26,7 +26,7 @@ export function useUserLocation() {
         setLoading(false);
       },
       (err) => {
-        console.log('Geolocation error:', err);
+        logger.warn('Geolocation error:', err);
         setError('Unable to get your location');
         setLocation(MAP_CONFIG.DEFAULT_CENTER); // Fallback to London
         setLoading(false);
