@@ -72,8 +72,8 @@ const Header = ({ className }: HeaderProps) => {
                 {/* Left: Combined logo with tagline */}
                 <Link to="/" className="flex items-center flex-shrink min-w-0">
                   <img
-                    src={logoWithTagline}
-                    alt="myhealth checkup - Your health! Your choice! One trusted platform!"
+                    src={mobileHeaderLogo}
+                    alt="myhealth checkup - Your Health. Your Choice. One Trusted Platform!"
                     className="h-[130px] xs:h-[140px] sm:h-[150px] w-auto object-contain"
                   />
                 </Link>
