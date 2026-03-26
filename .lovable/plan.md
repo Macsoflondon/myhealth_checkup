@@ -1,143 +1,162 @@
 
 
-# Comprehensive Codebase Audit & Mobile Responsiveness Report
+# Codebase Architecture Audit — Detailed Report
 
-## Part 1: Architecture & Organization Audit
+## 1. Surviving Shim/Re-export Files (Still Present)
 
-### A. Redundant Re-export Files (Low severity, easy fix)
+Four root-level components still exist solely to re-export from subdirectories. The previous cleanup missed them:
 
-Five files in `src/components/` root exist solely to re-export from subdirectories:
-- `ClinicFinder.tsx` → re-exports `./clinic/ClinicFinder`
-- `TestPageTemplate.tsx` → re-exports `./tests/TestPageTemplate`
-- `MostPopularTests.tsx` → re-exports `./tests/MostPopularTests`
-- `Enhanced3StepProcess.tsx` → re-exports `./sections/Enhanced3StepProcess`
-- `ProviderLogo.tsx` → re-exports `./providers/ProviderLogo`
-- `SimilarTestsSection.tsx` → re-exports `./tests/SimilarTestsSection`
-- `SportsTestRecommendationEngine.tsx` → re-exports `./tests/SportsTestRecommendationEngine`
-- `Subscriptions.tsx` → re-exports `./sections/Subscriptions`
+| File | Re-exports |
+|------|-----------|
+| `src/components/FounderStory.tsx` | `./sections/FounderStory` |
+| `src/components/PartnerShowcase.tsx` | `./sections/PartnerShowcase` |
+| `src/components/TrustBadgesSection.tsx` | `./sections/TrustBadgesSection` |
+| `src/components/UKASBanner.tsx` | `./compliance/UKASBanner` |
 
-**Recommendation**: Update all consumers to import directly from the subdirectory, then delete these shim files. They add indirection without value.
+**Consumer**: `AboutUsPage.tsx` imports all three section shims from root. Fix the import path there, then delete all four files.
 
----
-
-### B. Duplicate Image Components (Medium severity)
-
-`src/components/common/` has five image-related components:
-- `LazyImage.tsx`
-- `FastLazyImage.tsx`
-- `OptimizedImage.tsx`
-- `OptimizedLazyImage.tsx`
-- `ResponsiveImage.tsx`
-
-**Recommendation**: Consolidate into one or two components (e.g., `OptimizedImage` with lazy/responsive props). Audit usage across the codebase and migrate consumers.
+**Step**: Update `AboutUsPage.tsx` imports to point at `@/components/sections/FounderStory`, `@/components/sections/PartnerShowcase`, `@/components/sections/TrustBadgesSection`, and `@/components/compliance/UKASBanner`. Delete the four shim files.
 
 ---
 
-### C. Duplicate/Overlapping Hooks (Medium severity)
+## 2. Dead Code — `LiveProviderService.ts` (409 lines, zero imports)
 
-- `use-mobile.tsx` and `useMobileOptimization.ts` both detect mobile viewport — overlapping concern.
-- `useOfflineQueue.ts` and `useOfflineSync.ts` likely overlap with `OfflineSyncManager` service.
-- `useOptimizedImage.ts` and `useFastImageOptimization.ts` — likely redundant given the image component proliferation.
-- `useRealtimeConnection.ts`, `useRealtimeEvents.ts`, `useRealtimeSync.ts`, `useRealtimePriceUpdates.ts` — four realtime hooks that could be consolidated.
+`src/services/LiveProviderService.ts` is imported nowhere except `src/services/index.ts` barrel. It defines its own `ProviderTestData` interface (duplicating `ProviderDataService.ts`), hardcodes provider names, and is never called. 409 lines of dead weight.
 
-**Recommendation**: Merge `use-mobile` and `useMobileOptimization` into one canonical hook. Audit realtime hooks for shared logic and extract a base hook.
+**Step**: Remove from `services/index.ts` barrel, delete the file.
 
 ---
 
-### D. Service Layer Organization (Low severity)
+## 3. Dead Code — `EnhancedTestCard.tsx` & `OfflineSyncExample.tsx`
 
-`src/services/` has good separation (Cache, Compare, Provider, Offline, etc.), but some naming is redundant:
-- `ProviderDataService.ts` vs `ProviderService.ts` — should be one service or clearly differentiated (e.g., one for API calls, one for transformations).
-- `OfflineStorageService.ts` vs `OfflineSyncManager.ts` — storage vs sync is a valid split, but verify they aren't duplicating logic.
+- `src/components/enhanced/EnhancedTestCard.tsx` — zero imports anywhere.
+- `src/components/examples/OfflineSyncExample.tsx` — zero imports anywhere.
 
----
+Both directories contain only these single unused files.
 
-### E. Page Count & Granularity (Low severity)
-
-87 page files in `src/pages/`. Many provider-specific pages follow a pattern:
-- `MedichecksTestDetailPage`, `RandoxTestDetailPage`, `ThrivaTestDetailPage`, `LolaHealthTestDetailPage`, `LondonMedicalLabTestDetailPage`, `GoodbodyTestDetailPage`
-- Corresponding catalog pages for each provider.
-
-**Recommendation**: These should use a single generic `ProviderTestDetailPage` with route params, powered by the existing `ProviderTestDetailTemplate`. Same for catalog pages. This would eliminate ~10 nearly identical page files.
+**Step**: Delete both files and both directories.
 
 ---
 
-### F. `App.css` is Legacy (Trivial)
+## 4. Dual Hero Components — `Hero.tsx` vs `HeroSection.tsx`
 
-`src/App.css` contains Vite boilerplate (logo spin animation, `.read-the-docs` class). None of this is used.
+Two completely separate hero components exist:
+- `Hero.tsx` (184 lines) — the homepage hero with search bar, background image, trust signals.
+- `HeroSection.tsx` (31 lines) — a reusable dark-navy section header used by ~29 pages.
 
-**Recommendation**: Delete `App.css` entirely.
+The naming collision is confusing. `HeroSection` is really a `PageHeader` or `PageBanner`. It has nothing to do with the homepage hero.
 
----
-
-### G. Error Boundary Duplication (Low severity)
-
-- `src/components/common/ErrorBoundary.tsx`
-- `src/components/ErrorBoundaries/RouteErrorBoundary.tsx`
-- `src/components/ErrorBoundaries/ServiceErrorBoundary.tsx`
-
-**Recommendation**: Move all error boundaries under one directory (`common/` or `ErrorBoundaries/`), not both.
+**Step**: Rename `HeroSection.tsx` → `PageBanner.tsx` (or `SectionHero.tsx`). Update all 29 consumer imports. This eliminates the naming confusion without changing any functionality.
 
 ---
 
-### H. `BrandTypography.tsx` Duplicated
+## 5. Provider Detail Page Wrappers — Still Redundant
 
-Exists at both `src/components/BrandTypography.tsx` and `src/components/common/BrandTypography.tsx`.
+The previous cleanup created a generic `ProviderTestDetailPage.tsx`, but 6 wrapper files still exist that do nothing but pass a `providerId` string:
 
-**Recommendation**: Remove the root-level duplicate.
+```
+GoodbodyTestDetailPage.tsx   → <ProviderTestDetailPage providerId="goodbody-clinic" />
+MedichecksTestDetailPage.tsx → <ProviderTestDetailPage providerId="medichecks" />
+ThrivaTestDetailPage.tsx     → <ProviderTestDetailPage providerId="thriva" />
+RandoxTestDetailPage.tsx     → <ProviderTestDetailPage providerId="randox" />
+LolaHealthTestDetailPage.tsx → <ProviderTestDetailPage providerId="lola-health" />
+LondonMedicalLabTestDetailPage.tsx → <ProviderTestDetailPage providerId="london-medical-laboratory" />
+```
 
----
+These are 3-line files. The route config in `testRoutes.tsx` should inline the `providerId` prop directly:
 
-## Part 2: Mobile Responsiveness Audit
+```tsx
+<Route path="/medichecks/:testId" element={<ProviderTestDetailPage providerId="medichecks" />} />
+```
 
-### A. Header (Already good, minor issues)
-
-The Header component has distinct mobile/desktop renders via `useIsMobile()`. The mobile drawer has been fixed for swipe vs tap detection. No major issues remaining.
-
-**Minor**: The mobile logo height classes (`h-[130px] xs:h-[140px] sm:h-[150px]`) are quite tall for small devices. Consider reducing to `h-[100px]` base for screens under 375px.
-
-### B. Hero Section
-
-Currently uses responsive text sizes and spacing. The search card and CTA buttons use `w-full sm:w-auto` which is correct for mobile.
-
-**Minor**: The headline uses `lg:whitespace-nowrap` which is fine for desktop, but verify text doesn't overflow on tablets (768-1024px range). The `text-[2rem]` mobile base size could be slightly reduced for very small screens (320px).
-
-### C. Navigation Toolbar
-
-Desktop toolbar uses `flex-wrap justify-center` for navigation items — good. The sticky behavior with `tickerHeight` offset is desktop-only. Mobile gets the hamburger drawer. This is clean.
-
-### D. Touch Targets
-
-Mobile menu buttons appear small (`gap-1`). Minimum touch target should be 44x44px per WCAG guidelines.
-
-**Recommendation**: Audit all interactive elements in the mobile header for minimum 44px touch targets.
-
-### E. `App.css` Interference
-
-The `#root` rule sets `max-width: 1280px`, `margin: 0 auto`, and `padding: 2rem`. This constrains the full-width layout and adds unwanted padding on mobile.
-
-**Critical**: This is likely causing layout issues. The `padding: 2rem` adds 32px on all sides on mobile, and the `max-width: 1280px` prevents full-bleed sections. This must be removed.
+**Step**: Update `testRoutes.tsx` to import `ProviderTestDetailPage` once and inline the prop for all 6 routes. Delete the 6 wrapper files.
 
 ---
 
-## Part 3: Prioritized Action Steps
+## 6. Provider Catalog Pages — Same Pattern, Not Yet Consolidated
 
-| Priority | Task | Impact | Effort |
-|----------|------|--------|--------|
-| 1 | Delete `App.css` or remove `#root` constraints | High — fixes mobile padding/width | 5 min |
-| 2 | Consolidate 5 image components into 1-2 | Medium — reduces maintenance | 1-2 hr |
-| 3 | Merge `use-mobile` + `useMobileOptimization` | Medium — eliminates confusion | 30 min |
-| 4 | Delete 8 root-level re-export shim files | Low — cleaner imports | 30 min |
-| 5 | Consolidate provider detail/catalog pages into generic routes | Medium — removes ~10 files | 1-2 hr |
-| 6 | Delete legacy `App.css` boilerplate | Trivial — cleanup | 5 min |
-| 7 | Consolidate error boundaries into one directory | Low — organization | 15 min |
-| 8 | Remove duplicate `BrandTypography.tsx` | Trivial — cleanup | 5 min |
-| 9 | Audit mobile touch targets for 44px minimum | Medium — accessibility | 30 min |
-| 10 | Consolidate 4 realtime hooks into base + specific hooks | Low — reduces duplication | 1 hr |
+Six catalog pages follow an identical template pattern but weren't consolidated:
+- `GoodbodyTestsCatalogPage.tsx`
+- `MedichecksTestsCatalogPage.tsx`
+- `ThrivaTestsCatalogPage.tsx`
+- `RandoxTestsCatalogPage.tsx`
+- `LolaHealthTestsCatalogPage.tsx`
+- `LondonMedicalLabTestsCatalogPage.tsx`
+
+**Step**: Create a generic `ProviderTestsCatalogPage.tsx` (like the detail page pattern), update `featureRoutes.tsx` to inline the `providerId`, delete the 6 files.
 
 ---
 
-## Summary
+## 7. Duplicate Route Definitions
 
-The codebase is functional and well-structured at a high level (routes split by category, services separated, layouts extracted). The main issues are **duplication** (image components, hooks, re-export shims, provider pages) and one **critical CSS issue** (`App.css` `#root` padding constraining mobile layout). The architecture follows sound patterns — the cleanup is about consolidation, not restructuring.
+`testRoutes.tsx` has duplicate paths for the same pages:
+- `/tests/mens-health` and `/mens-health` both render `MensHealthPage`
+- `/tests/womens-health` and `/womens-health` both render `WomensHealthPage`
+
+One should be a `<Navigate>` redirect to the other, not a separate mount.
+
+**Step**: Pick the canonical path (e.g., `/tests/mens-health`), redirect the other with `<Navigate to="/tests/mens-health" replace />`.
+
+---
+
+## 8. Service Layer Overlap — `ProviderService` vs `ProviderDataService`
+
+- `ProviderService.ts` (84 lines) — thin wrapper around `constants/providers.ts`. Just calls `getProviderLogo()`, `getProviderName()`, etc. A class that wraps pure functions adds no value.
+- `ProviderDataService.ts` (403 lines) — actual Supabase queries for `provider_tests` table with caching, pagination, search.
+
+These serve completely different purposes but the naming suggests overlap.
+
+**Step**: Either delete `ProviderService.ts` and have consumers call `constants/providers.ts` directly (they already can), or rename it to `ProviderMetadataService.ts` to clarify the distinction.
+
+---
+
+## 9. Offline Stack — Overbuilt for Current Usage
+
+Four files form an offline sync stack:
+- `OfflineStorageService.ts` (373 lines) — IndexedDB with localStorage fallback
+- `OfflineSyncManager.ts` (205 lines) — sync orchestration
+- `useOfflineQueue.ts` (70 lines) — in-memory queue for realtime
+- `useOfflineSync.ts` (173 lines) — hook wrapping OfflineSyncManager
+
+Plus `ConnectionManager.ts`, `ConflictResolver.ts`, `RealtimeSyncIndicator`, `OfflineSyncIndicator`, `OptimisticUpdateIndicator`.
+
+This is ~1000 lines of infrastructure. Check whether any of it is actually triggered in production — the app is a comparison/discovery site, not a collaborative editor. If offline-first isn't a real requirement, this entire layer can be removed.
+
+**Step**: Search for actual usage of `useOfflineSync` and `useRealtimeSync` in page/component code. If they're only used in the example component (which is dead code), remove the entire offline stack.
+
+---
+
+## 10. `data/` vs `constants/` Boundary Blur
+
+- `src/data/` contains test data arrays (`medichecksTests.ts`, `goodbodyTests.ts`, `blogArticles.ts`, `categoryColors.ts`, etc.)
+- `src/constants/` contains `categories.ts`, `providers.ts`, `providerRatings.ts`, etc.
+
+Both hold static data. The split feels arbitrary — `categoryColors` is in `data/`, `categories` is in `constants/`. `providerBranding` is in `data/`, `providers` is in `constants/`.
+
+**Step**: Move all static provider/category configuration into `constants/`. Reserve `data/` only for large dataset arrays (test listings). Or merge them entirely into `constants/`.
+
+---
+
+## 11. `i18n/` and `locales/` — Likely Incomplete
+
+Both directories exist. If internationalization isn't actively used, these add confusion.
+
+**Step**: Verify if any component imports from `i18n/` or `locales/`. If not, remove them.
+
+---
+
+## Priority Order
+
+| # | Task | Files affected | Impact |
+|---|------|---------------|--------|
+| 1 | Delete dead code: `LiveProviderService`, `EnhancedTestCard`, `OfflineSyncExample` | 3 files (~450 lines) | Reduces confusion |
+| 2 | Delete 4 remaining shim re-export files | 4 files + 1 consumer update | Clean imports |
+| 3 | Inline 6 provider detail wrappers into routes | 6 files deleted, 1 route file updated | -18 lines of wrappers |
+| 4 | Consolidate 6 catalog pages into generic | 6 files deleted, 1 new file, 1 route update | -~300 lines |
+| 5 | Rename `HeroSection` → `PageBanner` | 1 rename + 29 import updates | Eliminates naming confusion |
+| 6 | Fix duplicate routes (mens-health, womens-health) | 1 file | Correct routing |
+| 7 | Delete or rename `ProviderService.ts` | 1 file + consumer updates | Clearer service boundaries |
+| 8 | Audit offline stack usage, remove if unused | ~8 files (~1000 lines) | Major dead code removal |
+| 9 | Merge `data/` config into `constants/` | ~5 file moves | Clearer boundaries |
+| 10 | Check `i18n/`/`locales/` usage | 2 directories | Remove if unused |
 
