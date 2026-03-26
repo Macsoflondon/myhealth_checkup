@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 import {
   Form,
   FormControl,
@@ -76,7 +77,7 @@ const ContactPage = () => {
     try {
       // TODO: Implement server-side edge function for contact form submission
       // For now, show success message (form data is validated)
-      console.log('Contact form submitted:', {
+      logger.info('Contact form submitted:', {
         ...data,
         // Never log sensitive data in production
         email: data.email.substring(0, 3) + '***',

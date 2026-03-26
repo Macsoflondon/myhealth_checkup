@@ -4,6 +4,7 @@
 
 import { useState, useCallback } from 'react';
 import { MAP_CONFIG } from '@/constants/config';
+import { logger } from '@/lib/logger';
 
 export function useUserLocation() {
   const [location, setLocation] = useState<[number, number]>(MAP_CONFIG.DEFAULT_CENTER);
@@ -26,7 +27,7 @@ export function useUserLocation() {
         setLoading(false);
       },
       (err) => {
-        console.log('Geolocation error:', err);
+        logger.warn('Geolocation error:', err);
         setError('Unable to get your location');
         setLocation(MAP_CONFIG.DEFAULT_CENTER); // Fallback to London
         setLoading(false);
