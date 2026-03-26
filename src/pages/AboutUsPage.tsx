@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import FounderStory from "@/components/FounderStory";
-import PartnerShowcase from "@/components/PartnerShowcase";
-import TrustBadgesSection from "@/components/TrustBadgesSection";
+import FounderStory from "@/components/sections/FounderStory";
+import PartnerShowcase from "@/components/sections/PartnerShowcase";
+import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
 import { SectionHeading } from "@/components/ui/section-heading";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import PageBanner from "@/components/sections/PageBanner";

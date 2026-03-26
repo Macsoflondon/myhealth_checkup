@@ -69,7 +69,7 @@ interface ProviderTestsCatalogPageProps {
 }
 
 const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps) => {
-  const config = PROVIDER_CONFIGS[providerId];
+  const config = PROVIDER_CONFIGS[providerId] ?? PROVIDER_CONFIGS["medichecks"]!;
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedTest, setSelectedTest] = useState<any>(null);
   const [sortBy, setSortBy] = useState<CatalogSortOption>("name-asc");
