@@ -21,15 +21,10 @@ import VitaminDTestPage from "@/pages/VitaminDTestPage";
 import IronProfileTestPage from "@/pages/IronProfileTestPage";
 import LipidProfileTestPage from "@/pages/LipidProfileTestPage";
 import WellWomanTestPage from "@/pages/WellWomanTestPage";
-import LolaHealthTestDetailPage from "@/pages/LolaHealthTestDetailPage";
-import GoodbodyTestDetailPage from "@/pages/GoodbodyTestDetailPage";
-import MedichecksTestDetailPage from "@/pages/MedichecksTestDetailPage";
-import ThrivaTestDetailPage from "@/pages/ThrivaTestDetailPage";
-import RandoxTestDetailPage from "@/pages/RandoxTestDetailPage";
-import LondonMedicalLabTestDetailPage from "@/pages/LondonMedicalLabTestDetailPage";
 import FemaleHormonesTestPage from "@/pages/FemaleHormonesTestPage";
 import ProviderRedirect from "@/components/routing/ProviderRedirect";
 import CategoryLandingPage from "@/pages/CategoryLandingPage";
+import ProviderTestDetailPage from "@/pages/ProviderTestDetailPage";
 
 export const testRoutes = (
   <>
@@ -55,8 +50,8 @@ export const testRoutes = (
     <Route path="/sports-performance" element={<SportsPerformancePage />} />
     <Route path="/thyroid" element={<ThyroidPage />} />
     <Route path="/hormones" element={<HormonesPage />} />
-    <Route path="/mens-health" element={<MensHealthPage />} />
-    <Route path="/womens-health" element={<WomensHealthPage />} />
+    <Route path="/mens-health" element={<Navigate to="/tests/mens-health" replace />} />
+    <Route path="/womens-health" element={<Navigate to="/tests/womens-health" replace />} />
     
     {/* Specific Test Pages */}
     <Route path="/test/general-health" element={<GeneralHealthTestPage />} />
@@ -67,14 +62,14 @@ export const testRoutes = (
     <Route path="/test/well-woman" element={<WellWomanTestPage />} />
     <Route path="/test/female-hormones" element={<FemaleHormonesTestPage />} />
     
-    {/* Provider Test Detail Pages - Primary routes match database provider_id */}
-    <Route path="/lola-health/:testId" element={<LolaHealthTestDetailPage />} />
-    <Route path="/goodbody-clinic/:testId" element={<GoodbodyTestDetailPage />} />
-    <Route path="/goodbody/:testId" element={<GoodbodyTestDetailPage />} />
-    <Route path="/medichecks/:testId" element={<MedichecksTestDetailPage />} />
-    <Route path="/thriva/:testId" element={<ThrivaTestDetailPage />} />
-    <Route path="/randox/:testId" element={<RandoxTestDetailPage />} />
-    <Route path="/london-medical-laboratory/:testId" element={<LondonMedicalLabTestDetailPage />} />
+    {/* Provider Test Detail Pages - inline providerId */}
+    <Route path="/lola-health/:testId" element={<ProviderTestDetailPage providerId="lola-health" />} />
+    <Route path="/goodbody-clinic/:testId" element={<ProviderTestDetailPage providerId="goodbody-clinic" />} />
+    <Route path="/goodbody/:testId" element={<ProviderTestDetailPage providerId="goodbody-clinic" />} />
+    <Route path="/medichecks/:testId" element={<ProviderTestDetailPage providerId="medichecks" />} />
+    <Route path="/thriva/:testId" element={<ProviderTestDetailPage providerId="thriva" />} />
+    <Route path="/randox/:testId" element={<ProviderTestDetailPage providerId="randox" />} />
+    <Route path="/london-medical-laboratory/:testId" element={<ProviderTestDetailPage providerId="london-medical-laboratory" />} />
     
     {/* Provider route aliases/redirects for cleaner URLs */}
     <Route path="/randox-health/:testId" element={<ProviderRedirect from="randox-health" to="randox" />} />
