@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/HeroSection';
 import PageHeading from '@/components/ui/page-heading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -71,7 +71,7 @@ const PartnersPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <HeroSection
+        <PageBanner
           title="Our Healthcare"
           accent="Partners"
           subtitle="We partner with the UK's most trusted and accredited healthcare providers to bring you reliable, high-quality health testing services."

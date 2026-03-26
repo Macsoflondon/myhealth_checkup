@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -60,7 +60,7 @@ const DiabetesTestingPage = () => {
             backLabel="Back to Compare"
           />
         </div>
-        <HeroSection
+        <PageBanner
           title="Diabetes Testing & Monitoring"
           subtitle="Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults aged 30-60 looking to manage their metabolic health proactively."
         />

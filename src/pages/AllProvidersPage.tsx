@@ -5,7 +5,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { SectionHeading } from "@/components/ui/section-heading";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -96,7 +96,7 @@ export default function AllProvidersPage() {
         />
       </Helmet>
 
-      <HeroSection
+      <PageBanner
         title="Our Trusted"
         accent="Providers"
         subtitle="Browse blood tests and health screenings from UKAS-accredited laboratories and CQC-registered clinics."

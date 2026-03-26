@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -194,7 +194,7 @@ const HormonesPage = () => {
           segments={[{ label: "Home", href: "/" }, { label: "Hormone Tests" }]} 
           backLabel="Back"
         />
-        <HeroSection
+        <PageBanner
           title="Hormone Blood Tests"
           subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimize your health with professional hormone analysis and personalized insights."
         />

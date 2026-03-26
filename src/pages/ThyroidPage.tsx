@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -115,7 +115,7 @@ const ThyroidPage = () => {
             backLabel="Back to Compare"
           />
         </div>
-        <HeroSection
+        <PageBanner
           title="Thyroid Blood Tests"
           subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimizing treatment."
         />

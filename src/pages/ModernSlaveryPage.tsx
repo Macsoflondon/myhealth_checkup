@@ -3,14 +3,14 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ModernSlaveryStatement from '@/components/compliance/ModernSlaveryStatement';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/HeroSection';
 
 const ModernSlaveryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-gray-50">
-        <HeroSection
+        <PageBanner
           title="Modern Slavery"
           accent="Statement"
           subtitle="Our commitment to preventing modern slavery and human trafficking in our operations and supply chain."

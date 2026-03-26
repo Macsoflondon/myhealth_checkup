@@ -3,14 +3,14 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import AffiliateDisclosure from '@/components/compliance/AffiliateDisclosure';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/HeroSection';
 
 const AffiliateDisclosurePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-gray-50">
-        <HeroSection
+        <PageBanner
           title="Affiliate"
           accent="Disclosure"
           subtitle="Full transparency about our commercial relationships and how we fund our platform."

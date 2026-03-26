@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/HeroSection';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -80,7 +80,7 @@ const ConditionsPage = () => {
         <Header />
         
         <main className="flex-1 bg-background">
-          <HeroSection
+          <PageBanner
             title="Health Conditions"
             accent="Testing"
             subtitle="Specialised testing for specific health conditions and symptoms. Get answers and take control of your health."
@@ -97,7 +97,7 @@ const ConditionsPage = () => {
                 </Button>
               </Link>
             </div>
-          </HeroSection>
+          </PageBanner>
 
           <div className="container mx-auto px-4 pt-4">
             <PageBreadcrumb />

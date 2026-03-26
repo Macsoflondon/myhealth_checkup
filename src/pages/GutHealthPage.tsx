@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/HeroSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -48,7 +48,7 @@ const GutHealthPage = () => {
           segments={[{ label: "Home", href: "/" }, { label: "Gut Health" }]} 
           backLabel="Back"
         />
-        <HeroSection
+        <PageBanner
           title="Gut Health & Microbiome Testing"
           subtitle="Discover the secrets of your gut microbiome. Advanced testing for digestive health, food intolerances, and gut-brain connection for UK adults aged 30-60."
         >
@@ -61,7 +61,7 @@ const GutHealthPage = () => {
               Learn More
             </Button>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         {/* Gut Health Impact */}
         <section className="py-16 bg-white">
