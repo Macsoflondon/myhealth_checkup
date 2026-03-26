@@ -1,3 +1,5 @@
+import { FilmstripGallery } from "@/components/gallery/FilmstripGallery";
+
 const partnerShowcaseGrid = {
   id: "editorial-01",
   title: "Hormone & Fertility",
@@ -223,3 +225,13 @@ const partnerShowcaseGrid = {
     },
   ],
 };
+
+export default function PartnerShowcaseGrid() {
+  return (
+    <section className="py-8 sm:py-12 bg-[#081129]">
+      <div className="container mx-auto px-4">
+        <FilmstripGallery images={partnerShowcaseGrid.images} />
+      </div>
+    </section>
+  );
+}
