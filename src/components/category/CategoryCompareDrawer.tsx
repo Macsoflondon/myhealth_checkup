@@ -30,12 +30,12 @@ export function CategoryCompareDrawer({
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-[hsl(var(--navy))] border-t-2 border-brand-turquoise shadow-[0_-8px_40px_rgba(0,200,200,0.15)]">
-      <div className="container mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
+      <div className="container mx-auto px-4 py-3 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
         <span className="text-xs font-bold tracking-wider uppercase text-brand-turquoise whitespace-nowrap">
           Comparing {selected.length}/{maxItems}
         </span>
 
-        <div className="flex gap-2 flex-wrap flex-1">
+        <div className="flex gap-2 flex-wrap flex-1 w-full sm:w-auto">
           {selected.map((item) => (
             <div
               key={item.id}
@@ -45,7 +45,7 @@ export function CategoryCompareDrawer({
                 borderColor: (item.badgeColor || "#22c0d4") + "60",
               }}
             >
-              <span className="text-xs font-semibold text-white truncate max-w-[140px]">
+              <span className="text-xs font-semibold text-white truncate max-w-[100px] sm:max-w-[140px]">
                 {item.title}
               </span>
               <span className="text-xs font-bold text-brand-turquoise">
@@ -62,19 +62,19 @@ export function CategoryCompareDrawer({
           ))}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <Button
             variant="outline"
             size="sm"
             onClick={onClear}
-            className="text-xs border-white/20 text-white/60 bg-transparent hover:bg-white/10"
+            className="text-xs border-white/20 text-white/60 bg-transparent hover:bg-white/10 flex-1 sm:flex-initial"
           >
             Clear
           </Button>
           <Button
             asChild
             size="sm"
-            className="text-xs font-bold text-white bg-gradient-to-r from-brand-turquoise to-brand-pink hover:opacity-90 border-0"
+            className="text-xs font-bold text-white bg-gradient-to-r from-brand-turquoise to-brand-pink hover:opacity-90 border-0 flex-1 sm:flex-initial"
           >
             <Link to={compareLink}>Compare Now →</Link>
           </Button>
