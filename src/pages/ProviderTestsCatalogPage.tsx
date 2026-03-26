@@ -99,7 +99,7 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
     return sortTests(filtered, sortBy);
   }, [tests, selectedCategory, sortBy]);
 
-  if (!config) return null;
+  
 
   return (
     <MainLayout>
