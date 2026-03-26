@@ -46,14 +46,14 @@ export class TestDataTransformer {
    * Estimate turnaround time based on provider
    */
   private static estimateTurnaround(providerId: string): string {
-    return providerService.estimateTurnaround(providerId);
+    return PROVIDER_TURNAROUND_TIMES[providerId] || '3-5 days';
   }
 
   /**
    * Get collection method based on provider
    */
   private static getCollectionMethod(providerId: string): string {
-    return providerService.getCollectionMethod(providerId);
+    return PROVIDER_COLLECTION_METHODS[providerId] || 'Varies';
   }
 
   /**

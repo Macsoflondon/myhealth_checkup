@@ -1,6 +1,6 @@
 // Barrel export for services
 export { CompareService } from "./CompareService";
-export { providerService } from "./ProviderService";
+
 export { CacheService, cacheService } from "./CacheService";
 export { LiveDataService } from "./LiveDataService";
 export { ProviderDataService } from "./ProviderDataService";
