@@ -12,11 +12,6 @@ const navigationCategories = [
     isStatic: true 
   },
   { 
-    name: "Most popular tests", 
-    path: "/popular-tests",
-    isStatic: true 
-  },
-  { 
     name: "At-home tests", 
     path: "/at-home-tests",
     isStatic: true 
