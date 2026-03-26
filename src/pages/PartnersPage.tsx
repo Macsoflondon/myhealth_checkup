@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBanner from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import PageHeading from '@/components/ui/page-heading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

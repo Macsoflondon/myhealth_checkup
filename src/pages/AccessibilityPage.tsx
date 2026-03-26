@@ -3,7 +3,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
-import PageBanner from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 
 const AccessibilityPage = () => {

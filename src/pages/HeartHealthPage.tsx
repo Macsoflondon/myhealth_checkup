@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import PageBanner from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

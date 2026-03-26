@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBanner from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

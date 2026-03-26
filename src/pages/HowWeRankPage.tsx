@@ -3,7 +3,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import HowWeRank from '@/components/compliance/HowWeRank';
-import PageBanner from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 
 const HowWeRankPage = () => {
   return (
