@@ -1,4 +1,4 @@
-import FilmstripGallery from "@/components/gallery/FilmstripGallery";
+import { FilmstripGallery } from "@/components/gallery/FilmstripGallery";
 
 const partnerShowcaseGrid = {
   id: "editorial-01",
