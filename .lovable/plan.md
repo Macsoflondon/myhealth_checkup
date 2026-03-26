@@ -1,57 +1,143 @@
 
-Rebuild the homepage hero as an exact screenshot-driven implementation, not a loose approximation.
 
-1. Replace the hero background asset
-- Update `src/components/sections/Hero.tsx` to use the newly uploaded blood-tube image instead of the current bundled asset.
-- During implementation, copy the uploaded file into `src/assets/` and import that exact file so the background matches the screenshot.
+# Comprehensive Codebase Audit & Mobile Responsiveness Report
 
-2. Rebuild the hero container to match the screenshot structure
-- Keep the hero as a full-width section with the image covering the entire area.
-- Add the soft pink wash over the image plus a subtle dotted pattern overlay across the full hero area, because the screenshot clearly has both.
-- Tighten the vertical spacing so the badge, heading, underline, text block, CTAs, and search card stack at the same density as the screenshot.
+## Part 1: Architecture & Organization Audit
 
-3. Match the badge exactly
-- Use a centered turquoise pill with white text.
-- Match its smaller scale, softer shadow, and lighter visual weight from the screenshot rather than the current heavier badge treatment.
+### A. Redundant Re-export Files (Low severity, easy fix)
 
-4. Rebuild the headline to match the screenshot line-for-line
-- Set the heading to a lighter weight and larger scale with the exact two-line wrapping seen in the screenshot.
-- Keep the navy main text and pink “All in one place!” accent inline on the second line.
-- Adjust max width and line-height so the break lands like the screenshot, not the current version.
+Five files in `src/components/` root exist solely to re-export from subdirectories:
+- `ClinicFinder.tsx` → re-exports `./clinic/ClinicFinder`
+- `TestPageTemplate.tsx` → re-exports `./tests/TestPageTemplate`
+- `MostPopularTests.tsx` → re-exports `./tests/MostPopularTests`
+- `Enhanced3StepProcess.tsx` → re-exports `./sections/Enhanced3StepProcess`
+- `ProviderLogo.tsx` → re-exports `./providers/ProviderLogo`
+- `SimilarTestsSection.tsx` → re-exports `./tests/SimilarTestsSection`
+- `SportsTestRecommendationEngine.tsx` → re-exports `./tests/SportsTestRecommendationEngine`
+- `Subscriptions.tsx` → re-exports `./sections/Subscriptions`
 
-5. Match the underline and mission copy block
-- Replace the current simple underline with the short centered turquoise-to-pink gradient stroke shown in the screenshot.
-- Keep the left turquoise vertical rule on the mission copy, but adjust its height, thickness, spacing, and paragraph widths to match the screenshot.
-- Use the same darker navy text tone and heavier paragraph styling as shown.
+**Recommendation**: Update all consumers to import directly from the subdirectory, then delete these shim files. They add indirection without value.
 
-6. Match CTA buttons exactly
-- Use three centered pill buttons with the screenshot’s widths, heights, spacing, corner radius, and white text.
-- Keep turquoise / pink / turquoise fills in the same order.
-- Ensure hover states still turn pink where appropriate, but the default visual must prioritize screenshot fidelity.
+---
 
-7. Rebuild the search card to screenshot proportions
-- Increase the card width and rounded corners so it looks like the large floating white panel in the screenshot.
-- Make the top search input taller, with the pale turquoise border, larger left icon, and lighter placeholder styling.
-- Restyle the inner popular-searches panel with the same inset card look, uppercase heading, and centered turquoise pills.
+### B. Duplicate Image Components (Medium severity)
 
-8. Match the trust signals bar directly below
-- Keep it as a separate white strip immediately under the hero card.
-- Lay out the five trust items in two centered rows exactly like the screenshot, with small turquoise icons and compact navy text.
-- Preserve the values shown in the screenshot, including “200+ tests available” and “150+ clinics nationwide”.
+`src/components/common/` has five image-related components:
+- `LazyImage.tsx`
+- `FastLazyImage.tsx`
+- `OptimizedImage.tsx`
+- `OptimizedLazyImage.tsx`
+- `ResponsiveImage.tsx`
 
-9. Align homepage integration with the screenshot
-- Update `src/pages/Index.tsx` so the preloaded hero image points to the new uploaded asset instead of the old `/lovable-uploads/hero-bg-pink-tubes.webp` reference.
-- Verify spacing between `Hero`, `TestCategoryTicker`, and `MissionSection` so the transition matches the screenshot: white trust bar, navy ticker, then navy mission block.
+**Recommendation**: Consolidate into one or two components (e.g., `OptimizedImage` with lazy/responsive props). Audit usage across the codebase and migrate consumers.
 
-10. Important surrounding cleanup
-- Confirm `src/App.css` is not affecting layout in practice; if it is wired in later, its `#root` max-width would break full-width hero rendering and should be removed during implementation.
-- Keep all work limited to the hero-related homepage files unless exact screenshot matching requires a tiny spacing adjustment in adjacent sections.
+---
 
-Files to update
-- `src/components/sections/Hero.tsx`
-- `src/pages/Index.tsx`
-- Possibly adjacent homepage section spacing only if needed for exact match
+### C. Duplicate/Overlapping Hooks (Medium severity)
 
-Technical notes
-- The current Hero already has the right content pieces, but the screenshot mismatch comes from composition: wrong image source, missing dotted overlay, incorrect headline weight/width, incorrect spacing rhythm, insufficiently accurate search-card proportions, and trust-bar alignment.
-- The rebuild should be screenshot-first: structure and sizing should be driven by the uploaded reference, not by existing component defaults.
+- `use-mobile.tsx` and `useMobileOptimization.ts` both detect mobile viewport — overlapping concern.
+- `useOfflineQueue.ts` and `useOfflineSync.ts` likely overlap with `OfflineSyncManager` service.
+- `useOptimizedImage.ts` and `useFastImageOptimization.ts` — likely redundant given the image component proliferation.
+- `useRealtimeConnection.ts`, `useRealtimeEvents.ts`, `useRealtimeSync.ts`, `useRealtimePriceUpdates.ts` — four realtime hooks that could be consolidated.
+
+**Recommendation**: Merge `use-mobile` and `useMobileOptimization` into one canonical hook. Audit realtime hooks for shared logic and extract a base hook.
+
+---
+
+### D. Service Layer Organization (Low severity)
+
+`src/services/` has good separation (Cache, Compare, Provider, Offline, etc.), but some naming is redundant:
+- `ProviderDataService.ts` vs `ProviderService.ts` — should be one service or clearly differentiated (e.g., one for API calls, one for transformations).
+- `OfflineStorageService.ts` vs `OfflineSyncManager.ts` — storage vs sync is a valid split, but verify they aren't duplicating logic.
+
+---
+
+### E. Page Count & Granularity (Low severity)
+
+87 page files in `src/pages/`. Many provider-specific pages follow a pattern:
+- `MedichecksTestDetailPage`, `RandoxTestDetailPage`, `ThrivaTestDetailPage`, `LolaHealthTestDetailPage`, `LondonMedicalLabTestDetailPage`, `GoodbodyTestDetailPage`
+- Corresponding catalog pages for each provider.
+
+**Recommendation**: These should use a single generic `ProviderTestDetailPage` with route params, powered by the existing `ProviderTestDetailTemplate`. Same for catalog pages. This would eliminate ~10 nearly identical page files.
+
+---
+
+### F. `App.css` is Legacy (Trivial)
+
+`src/App.css` contains Vite boilerplate (logo spin animation, `.read-the-docs` class). None of this is used.
+
+**Recommendation**: Delete `App.css` entirely.
+
+---
+
+### G. Error Boundary Duplication (Low severity)
+
+- `src/components/common/ErrorBoundary.tsx`
+- `src/components/ErrorBoundaries/RouteErrorBoundary.tsx`
+- `src/components/ErrorBoundaries/ServiceErrorBoundary.tsx`
+
+**Recommendation**: Move all error boundaries under one directory (`common/` or `ErrorBoundaries/`), not both.
+
+---
+
+### H. `BrandTypography.tsx` Duplicated
+
+Exists at both `src/components/BrandTypography.tsx` and `src/components/common/BrandTypography.tsx`.
+
+**Recommendation**: Remove the root-level duplicate.
+
+---
+
+## Part 2: Mobile Responsiveness Audit
+
+### A. Header (Already good, minor issues)
+
+The Header component has distinct mobile/desktop renders via `useIsMobile()`. The mobile drawer has been fixed for swipe vs tap detection. No major issues remaining.
+
+**Minor**: The mobile logo height classes (`h-[130px] xs:h-[140px] sm:h-[150px]`) are quite tall for small devices. Consider reducing to `h-[100px]` base for screens under 375px.
+
+### B. Hero Section
+
+Currently uses responsive text sizes and spacing. The search card and CTA buttons use `w-full sm:w-auto` which is correct for mobile.
+
+**Minor**: The headline uses `lg:whitespace-nowrap` which is fine for desktop, but verify text doesn't overflow on tablets (768-1024px range). The `text-[2rem]` mobile base size could be slightly reduced for very small screens (320px).
+
+### C. Navigation Toolbar
+
+Desktop toolbar uses `flex-wrap justify-center` for navigation items — good. The sticky behavior with `tickerHeight` offset is desktop-only. Mobile gets the hamburger drawer. This is clean.
+
+### D. Touch Targets
+
+Mobile menu buttons appear small (`gap-1`). Minimum touch target should be 44x44px per WCAG guidelines.
+
+**Recommendation**: Audit all interactive elements in the mobile header for minimum 44px touch targets.
+
+### E. `App.css` Interference
+
+The `#root` rule sets `max-width: 1280px`, `margin: 0 auto`, and `padding: 2rem`. This constrains the full-width layout and adds unwanted padding on mobile.
+
+**Critical**: This is likely causing layout issues. The `padding: 2rem` adds 32px on all sides on mobile, and the `max-width: 1280px` prevents full-bleed sections. This must be removed.
+
+---
+
+## Part 3: Prioritized Action Steps
+
+| Priority | Task | Impact | Effort |
+|----------|------|--------|--------|
+| 1 | Delete `App.css` or remove `#root` constraints | High — fixes mobile padding/width | 5 min |
+| 2 | Consolidate 5 image components into 1-2 | Medium — reduces maintenance | 1-2 hr |
+| 3 | Merge `use-mobile` + `useMobileOptimization` | Medium — eliminates confusion | 30 min |
+| 4 | Delete 8 root-level re-export shim files | Low — cleaner imports | 30 min |
+| 5 | Consolidate provider detail/catalog pages into generic routes | Medium — removes ~10 files | 1-2 hr |
+| 6 | Delete legacy `App.css` boilerplate | Trivial — cleanup | 5 min |
+| 7 | Consolidate error boundaries into one directory | Low — organization | 15 min |
+| 8 | Remove duplicate `BrandTypography.tsx` | Trivial — cleanup | 5 min |
+| 9 | Audit mobile touch targets for 44px minimum | Medium — accessibility | 30 min |
+| 10 | Consolidate 4 realtime hooks into base + specific hooks | Low — reduces duplication | 1 hr |
+
+---
+
+## Summary
+
+The codebase is functional and well-structured at a high level (routes split by category, services separated, layouts extracted). The main issues are **duplication** (image components, hooks, re-export shims, provider pages) and one **critical CSS issue** (`App.css` `#root` padding constraining mobile layout). The architecture follows sound patterns — the cleanup is about consolidation, not restructuring.
+
