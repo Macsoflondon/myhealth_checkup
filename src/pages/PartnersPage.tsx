@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -68,7 +69,9 @@ const PartnersPage = () => {
     icon: Award
   }];
   return <div className="min-h-screen flex flex-col">
-      
+      <Helmet>
+        <title>Our Partners | myhealth checkup</title>
+      </Helmet>
       <Header />
       <main className="flex-grow">
         <PageBanner

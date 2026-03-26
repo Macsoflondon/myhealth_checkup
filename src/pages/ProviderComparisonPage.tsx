@@ -179,7 +179,7 @@ export default function ProviderComparisonPage() {
   return (
     <MainLayout>
       <Helmet>
-        <title>Compare Health Test Providers | Side-by-Side Comparison | myhealth checkup</title>
+        <title>Compare Providers | myhealth checkup</title>
         <meta 
           name="description" 
           content="Compare UK health test providers side-by-side. View prices, test offerings, turnaround times, and collection methods from leading laboratories."

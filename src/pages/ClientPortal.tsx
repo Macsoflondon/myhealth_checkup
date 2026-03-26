@@ -131,7 +131,7 @@ export default function ClientPortal() {
   return (
     <>
       <Helmet>
-        <title>Your Health Portal | MyHealth Checkup</title>
+        <title>Health Portal | myhealth checkup</title>
         <meta name="description" content="Access your test results, appointments, and health insights" />
       </Helmet>
 

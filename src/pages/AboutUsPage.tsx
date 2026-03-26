@@ -30,7 +30,7 @@ const AboutUsPage = () => {
 
   return <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>About Us - myhealth checkup</title>
+        <title>About Us | myhealth checkup</title>
         <meta name="description" content="Learn about myhealth checkup's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
       </Helmet>
       

@@ -73,7 +73,7 @@ const Index = () => {
     <ErrorBoundary>
       <MainLayout>
         <Helmet>
-          <title>myhealth checkup - Compare Trusted Private Health Tests Across the UK</title>
+          <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
             content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use."
@@ -88,7 +88,7 @@ const Index = () => {
 
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
-          <meta property="og:title" content="myhealth checkup - Compare Trusted Private Health Tests" />
+          <meta property="og:title" content="myhealth checkup | Compare UK Health Tests" />
           <meta
             property="og:description"
             content="Compare private health tests from accredited UK providers. Real-time prices, expert reviews, and transparent comparisons."
@@ -99,7 +99,7 @@ const Index = () => {
 
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" content="@myhealthcheckup" />
-          <meta name="twitter:title" content="myhealth checkup - Compare Trusted Private Health Tests" />
+          <meta name="twitter:title" content="myhealth checkup | Compare UK Health Tests" />
           <meta
             name="twitter:description"
             content="Compare private blood tests, health screenings & wellness services. Real-time prices from accredited providers."

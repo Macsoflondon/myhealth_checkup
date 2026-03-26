@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -19,6 +20,9 @@ const NotFound = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Page Not Found | myhealth checkup</title>
+      </Helmet>
       <Header />
       <div className="min-h-[70vh] flex items-center justify-center bg-gray-50">
         <div className="text-center px-4">

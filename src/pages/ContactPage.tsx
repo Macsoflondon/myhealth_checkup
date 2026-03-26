@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -102,7 +103,9 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      
+      <Helmet>
+        <title>Contact Us | myhealth checkup</title>
+      </Helmet>
       <Header />
       <main className="flex-grow bg-muted/30">
         <PageBreadcrumb 

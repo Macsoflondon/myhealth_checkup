@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -47,7 +48,9 @@ const DiabetesTestingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      
+      <Helmet>
+        <title>Diabetes Testing | myhealth checkup</title>
+      </Helmet>
       <Header />
       <main className="flex-grow">
         <div className="container mx-auto px-4 pt-4">
