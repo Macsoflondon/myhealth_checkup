@@ -1,4 +1,4 @@
-import TestPageTemplate from "@/components/TestPageTemplate";
+import TestPageTemplate from "@/components/tests/TestPageTemplate";
 import { TestPageData } from "@/types/TestPageTypes";
 import { Heart, Clock, Shield } from "lucide-react";
 
