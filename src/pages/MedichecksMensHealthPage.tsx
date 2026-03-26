@@ -76,7 +76,7 @@ const MedichecksMensHealthPage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>Men's Health Checks and Blood Tests | Medichecks | myhealth checkup</title>
+        <title>Men's Health | Medichecks | myhealth checkup</title>
         <meta
           name="description"
           content="Support your wellbeing with our Men's Health blood test collection. Check testosterone, prostate health, fertility and more with home test kits or clinic appointments."

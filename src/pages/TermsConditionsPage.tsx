@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +9,9 @@ import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 const TermsConditionsPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Terms & Conditions | myhealth checkup</title>
+      </Helmet>
       <Header />
       <main className="flex-grow bg-muted/30">
         <PageBanner

@@ -84,7 +84,7 @@ const MedichecksTestsCatalogPage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>Medichecks Blood Tests | Compare Health Tests UK</title>
+        <title>Medichecks Tests | myhealth checkup</title>
         <meta name="description" content="Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening." />
       </Helmet>
       <div className="min-h-screen bg-gray-50">

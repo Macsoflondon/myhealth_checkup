@@ -9,7 +9,7 @@ import PageBanner from "@/components/sections/PageBanner";
 const HowItWorksPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>How It Works - myhealth checkup</title>
+        <title>How It Works | myhealth checkup</title>
         <meta name="description" content="Learn how our simple 4-step process makes health testing convenient and accessible. From choosing your test to getting results in 48 hours." />
       </Helmet>
       

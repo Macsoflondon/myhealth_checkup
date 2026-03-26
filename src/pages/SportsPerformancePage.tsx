@@ -139,7 +139,7 @@ const fitnessTests: CategoryTestItem[] = [
 
 const SportsPerformancePage = () => (
   <CategoryPageLayout
-    seoTitle="Fitness & Sports Performance Blood Tests | myhealth checkup"
+    seoTitle="Sports Performance Tests | myhealth checkup"
     seoDescription="Optimise your fitness and athletic performance with comprehensive health blood tests. Monitor bodybuilding biomarkers, nutrition status, and recovery markers from trusted UK providers."
     seoKeywords="fitness health tests, bodybuilding blood tests, athletic blood tests, fitness biomarkers, sports nutrition testing, recovery markers"
     canonicalUrl="https://myhealthcheckup.co.uk/sports-performance"

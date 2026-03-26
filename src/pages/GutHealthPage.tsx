@@ -38,7 +38,7 @@ const GutHealthPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Gut Health & Microbiome Testing | Compare UK Providers | myhealth checkup</title>
+        <title>Gut Health Tests | myhealth checkup</title>
         <meta name="description" content="Compare gut health tests from top UK providers. Microbiome analysis, food intolerance testing, and digestive health screening from £89." />
       </Helmet>
       

@@ -200,7 +200,7 @@ const LocationsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Clinic Locations | Find Blood Test Clinics Near You | myhealth checkup</title>
+        <title>Clinic Locations | myhealth checkup</title>
         <meta
           name="description"
           content="Find trusted blood test clinic locations across the UK. Search by postcode, filter by area or provider, and book your appointment today."

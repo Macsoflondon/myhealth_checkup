@@ -8,7 +8,7 @@ const RecommendationsPage = () => {
   return (
     <>
       <Helmet>
-        <title>AI Health Recommendations - Personalised Wellness Test Suggestions | myhealth checkup</title>
+        <title>Health Recommendations | myhealth checkup</title>
         <meta 
           name="description" 
           content="Get personalized health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers based on your wellness goals and health interests." 
@@ -17,14 +17,14 @@ const RecommendationsPage = () => {
         <link rel="canonical" href="https://myhealthcheckup.co.uk/recommendations" />
         
         {/* Open Graph tags */}
-        <meta property="og:title" content="AI Health Recommendations - Personalized Wellness Test Suggestions" />
+        <meta property="og:title" content="Health Recommendations | myhealth checkup" />
         <meta property="og:description" content="Get personalized health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/recommendations" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AI Health Recommendations - Personalized Wellness Test Suggestions" />
+        <meta name="twitter:title" content="Health Recommendations | myhealth checkup" />
         <meta name="twitter:description" content="Get personalized health test recommendations from our AI-powered wellness assistant." />
         
         {/* Structured Data */}

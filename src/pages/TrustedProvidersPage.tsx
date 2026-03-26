@@ -8,7 +8,7 @@ const TrustedProvidersPage = () => {
   return (
     <>
       <Helmet>
-        <title>Trusted UK Health Test Providers | Quality Assured Testing Services</title>
+        <title>Trusted Providers | myhealth checkup</title>
         <meta 
           name="description" 
           content="Discover our network of trusted, accredited UK health test providers. UKAS certified labs, CQC registered clinics, and award-winning testing services." 
@@ -17,14 +17,14 @@ const TrustedProvidersPage = () => {
         <link rel="canonical" href="https://myhealthcheckup.co.uk/trusted-providers" />
         
         {/* Open Graph tags */}
-        <meta property="og:title" content="Trusted UK Health Test Providers | Quality Assured Testing Services" />
+        <meta property="og:title" content="Trusted Providers | myhealth checkup" />
         <meta property="og:description" content="Discover our network of trusted, accredited UK health test providers. UKAS certified labs and award-winning testing services." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/trusted-providers" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Trusted UK Health Test Providers" />
+        <meta name="twitter:title" content="Trusted Providers | myhealth checkup" />
         <meta name="twitter:description" content="Discover our network of trusted, accredited UK health test providers." />
         
         {/* Structured Data */}
