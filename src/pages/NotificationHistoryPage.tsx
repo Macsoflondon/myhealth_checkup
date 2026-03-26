@@ -97,6 +97,9 @@ const NotificationHistoryPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Notifications | myhealth checkup</title>
+      </Helmet>
       <Header />
       
       <main className="flex-1 container mx-auto px-4 py-8 max-w-7xl">
