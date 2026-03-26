@@ -13,6 +13,7 @@ import AdminTestUploadPage from "@/pages/AdminTestUploadPage";
 import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
 import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
 import AdminScraperDashboardPage from "@/pages/AdminScraperDashboardPage";
+import AdminTestDashboardPage from "@/pages/AdminTestDashboardPage";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import AdminAuth from "@/pages/AdminAuth";
 import { authRoutes } from "./authRoutes";
@@ -40,6 +41,7 @@ export function AppRoutes() {
       <Route path="/admin/data-refresh" element={<AdminRoute><AdminDataRefreshPage /></AdminRoute>} />
       <Route path="/admin/scrapers" element={<AdminRoute><AdminScraperDashboardPage /></AdminRoute>} />
       <Route path="/admin/test-mapper" element={<AdminRoute><AdminTestMapperPage /></AdminRoute>} />
+      <Route path="/admin/test-dashboard" element={<AdminTestDashboardPage />} />
       
       {/* Feature Routes */}
       {featureRoutes}
