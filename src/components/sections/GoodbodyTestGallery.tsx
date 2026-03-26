@@ -47,18 +47,18 @@ const GENERAL_HEALTH_TESTS: GalleryImage[] = [
 ];
 
 const HORMONE_FERTILITY_TESTS: GalleryImage[] = [
-  { src: "/images/female-hormone-fertility.png", alt: "Goodbody Female Hormone & Fertility Blood Test kit box", code: "Female Hormone & Fertility", objectFit: "contain" },
-  { src: "/images/prenatalsafe-5-nipt.png", alt: "Goodbody PrenatalSAFE 5 NIPT Blood Test kit box", code: "PrenatalSAFE 5 NIPT", objectFit: "contain" },
-  { src: "/images/testosterone-blood-test.png", alt: "Goodbody Testosterone Blood Test kit box", code: "Testosterone", objectFit: "contain" },
-  { src: "/images/thyroid-function-blood-test.png", alt: "Goodbody Thyroid Function Blood Test kit box", code: "Thyroid Function", objectFit: "contain" },
-  { src: "/images/pregnancy-blood-test.png", alt: "Goodbody Pregnancy Blood Test kit box", code: "Pregnancy", objectFit: "contain" },
-  { src: "/images/anti-mullerian-hormone.png", alt: "Goodbody Anti-Mullerian Hormone Blood Test kit box", code: "Anti-Mullerian Hormone", objectFit: "contain" },
-  { src: "/images/prenatalsafe-complete-plus-nipt.png", alt: "Goodbody PrenatalSAFE Complete Plus NIPT Blood Test kit box", code: "PrenatalSAFE Complete Plus NIPT", objectFit: "contain" },
-  { src: "/images/male-hormone-fertility.png", alt: "Goodbody Male Hormone and Fertility Blood Test kit box", code: "Male Hormone & Fertility", objectFit: "contain" },
-  { src: "/images/prenatalsafe-3-nipt.png", alt: "Goodbody PrenatalSAFE 3 NIPT Blood Test kit box", code: "PrenatalSAFE 3 NIPT", objectFit: "contain" },
-  { src: "/images/cortisol-stress-blood-test.png", alt: "Goodbody Cortisol Stress Blood Test kit box", code: "Cortisol Stress", objectFit: "contain" },
-  { src: "/images/prenatalsafe-karyo-plus-nipt.png", alt: "Goodbody PrenatalSAFE Karyo Plus NIPT Blood Test kit box", code: "PrenatalSAFE Karyo Plus NIPT", objectFit: "contain" },
-  { src: "/images/thyroid-blood-test.png", alt: "Goodbody Thyroid Blood Test kit box", code: "Thyroid", objectFit: "contain" },
+  { src: "/images/tests/female-hormone-fertility.png", alt: "Female Hormone & Fertility Test", code: "Female Hormone & Fertility", objectFit: "contain" },
+  { src: "/images/tests/testosterone-blood-test.png", alt: "Testosterone Blood Test", code: "Testosterone", objectFit: "contain" },
+  { src: "/images/tests/thyroid-function-blood-test.png", alt: "Thyroid Function Blood Test", code: "Thyroid Function", objectFit: "contain" },
+  { src: "/images/tests/pregnancy-blood-test.png", alt: "Pregnancy Blood Test", code: "Pregnancy", objectFit: "contain" },
+  { src: "/images/tests/male-hormone-fertility-blood-test.png", alt: "Male Hormone & Fertility Blood Test", code: "Male Hormone & Fertility", objectFit: "contain" },
+  { src: "/images/tests/anti-mullerian-hormone-blood-test.png", alt: "Anti-Mullerian Hormone Blood Test", code: "Anti-Mullerian Hormone", objectFit: "contain" },
+  { src: "/images/tests/cortisol-stress-blood-test.png", alt: "Cortisol Stress Blood Test", code: "Cortisol Stress", objectFit: "contain" },
+  { src: "/images/tests/prenatalsafe-3-nipt.png", alt: "PrenatalSAFE 3 NIPT Blood Test", code: "PrenatalSAFE 3 NIPT", objectFit: "contain" },
+  { src: "/images/tests/thyroid-blood-test.png", alt: "Thyroid Blood Test", code: "Thyroid", objectFit: "contain" },
+  { src: "/images/tests/prenatalsafe-5-nipt.png", alt: "PrenatalSAFE 5 NIPT Blood Test", code: "PrenatalSAFE 5 NIPT", objectFit: "contain" },
+  { src: "/images/tests/prenatalsafe-karyo-plus-nipt.png", alt: "PrenatalSAFE Karyo Plus NIPT Blood Test", code: "PrenatalSAFE Karyo Plus", objectFit: "contain" },
+  { src: "/images/tests/prenatalsafe-complete-plus-nipt.png", alt: "PrenatalSAFE Complete Plus NIPT Blood Test", code: "PrenatalSAFE Complete Plus", objectFit: "contain" },
 ];
 
 const CANCER_SCREENING_TESTS: GalleryImage[] = [
@@ -75,7 +75,7 @@ const CANCER_SCREENING_TESTS: GalleryImage[] = [
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.png";
 
 const GoodbodyTestGallery = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("Hormone & Fertility");
+  const [activeTab, setActiveTab] = useState<Tab>("General Health");
   const [testDetailOpen, setTestDetailOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);

@@ -12,16 +12,16 @@ const PartnerShowcaseGrid = () => {
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
             <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-              Hormone & Fertility
+              Featured Partners
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
-            <span className="text-white">Hormone & </span>
-            <span className="text-white">Fertility</span>
+            <span className="text-white">Our Featured Partners of </span>
+            <span className="text-white">the Month</span>
           </h2>
           <p className="text-white font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
-            Goodbody blood test kits for targeted health insights.
+            Handpicked providers delivering trusted, accredited health testing across the UK.
           </p>
         </div>
 
