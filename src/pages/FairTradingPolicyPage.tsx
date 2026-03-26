@@ -3,14 +3,14 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import FairTradingPolicy from '@/components/compliance/FairTradingPolicy';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 
 const FairTradingPolicyPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-gray-50">
-        <HeroSection
+        <PageBanner
           title="Fair Trading"
           accent="Policy"
           subtitle="Our commitment to fair, transparent, and ethical trading practices."

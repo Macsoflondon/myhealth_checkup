@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -67,7 +67,7 @@ const VitaminDeficiencyPage = () => {
           segments={[{ label: "Home", href: "/" }, { label: "Vitamin Deficiency" }]} 
           backLabel="Back"
         />
-        <HeroSection
+        <PageBanner
           title="Vitamin & Mineral Testing"
           subtitle="Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. Essential testing for health-conscious UK adults aged 30-60."
         >
@@ -80,7 +80,7 @@ const VitaminDeficiencyPage = () => {
               Symptoms Checker
             </Button>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         {/* Common Deficiencies */}
         

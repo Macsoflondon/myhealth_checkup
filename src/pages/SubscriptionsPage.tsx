@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import Subscriptions from "@/components/sections/Subscriptions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Star } from "lucide-react";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 
 const SubscriptionsPage = () => {
@@ -28,7 +28,7 @@ const SubscriptionsPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <HeroSection
+        <PageBanner
           title="Health Subscription"
           accent="Plans"
           subtitle="Take the guesswork out of health monitoring with our convenient subscription plans."

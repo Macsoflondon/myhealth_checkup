@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -142,7 +142,7 @@ const HeartHealthPage = () => {
             backLabel="Back to Compare"
           />
         </div>
-        <HeroSection
+        <PageBanner
           title="Heart Health Blood Tests"
           subtitle="Comprehensive heart health screening for UK adults aged 30-60. Monitor your cardiovascular risk and take proactive steps towards a healthier heart."
         />

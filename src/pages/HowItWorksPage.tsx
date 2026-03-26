@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Enhanced3StepProcess from "@/components/sections/Enhanced3StepProcess";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 
 const HowItWorksPage = () => {
   return <div className="min-h-screen flex flex-col">
@@ -15,7 +15,7 @@ const HowItWorksPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <HeroSection
+        <PageBanner
           title="How It"
           accent="Works"
           subtitle="Our simple process makes health testing convenient and accessible. From choosing your test to getting results in 48 hours."

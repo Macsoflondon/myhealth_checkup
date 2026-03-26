@@ -19,7 +19,7 @@ import { CANCER_TYPES, CANCER_SEARCH_TERMS, getCancerTypeById } from '@/data/com
 import { supabase } from '@/integrations/supabase/client';
 import { getProviderLogo as getProviderLogoFn, PROVIDER_DETAILS } from '@/constants/providers';
 import { EnhancedTestData } from '@/types/comparison';
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 
 const CANCER_TYPE_ICONS: Record<string, React.ElementType> = {
   all: Shield,
@@ -125,7 +125,7 @@ export default function CancerComparisonPage() {
       <CancerScreeningDisclaimer variant="banner" />
 
       <main className="min-h-screen bg-background">
-        <HeroSection
+        <PageBanner
           title="Compare Cancer Screening Tests"
           subtitle="Compare cancer screening blood tests from trusted UK providers. Find the right test for prostate, ovarian, bowel, and other cancer markers."
         >
@@ -142,7 +142,7 @@ export default function CancerComparisonPage() {
               Biomarkers Reference Guide
             </Link>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         {/* Cancer Type Tabs */}
         <section className="border-b bg-muted/30">

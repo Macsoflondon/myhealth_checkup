@@ -10,20 +10,12 @@ export { useNavigationData } from "./useNavigationData";
 export { useDraggable } from "./useDraggable";
 
 // Realtime hooks
-export { useRealtimeSync } from "./useRealtimeSync";
-export { useRealtimeConnection } from "./useRealtimeConnection";
-export { useRealtimeEvents } from "./useRealtimeEvents";
 export { useRealtimePriceUpdates } from "./useRealtimePriceUpdates";
 export { useCategoryRealtimeStatus } from "./useCategoryRealtimeStatus";
-
-// Offline hooks
-export { useOfflineQueue } from "./useOfflineQueue";
-export { useOfflineSync } from "./useOfflineSync";
 
 // Performance hooks
 export { usePerformanceOptimization } from "./usePerformanceOptimization";
 export { useMobileOptimization } from "./use-mobile";
-export { useOptimisticUpdate } from "./useOptimisticUpdate";
 
 // UI hooks
 export { useIsMobile } from "./use-mobile";
@@ -32,8 +24,6 @@ export { useScrollDirection } from "./useScrollDirection";
 export { useRipple } from "./useRipple";
 
 // Data sync hooks
-export { useBloodTestsSync } from "./useBloodTestsSync";
-export { useCancerScreeningSync } from "./useCancerScreeningSync";
 export { useClinicTests } from "./useClinicTests";
 export { useProviderTestCounts } from "./useProviderTestCounts";
 export { useSavedProviders } from "./useSavedProviders";

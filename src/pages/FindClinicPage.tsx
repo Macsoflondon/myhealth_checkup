@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import ClinicFinder from "@/components/clinic/ClinicFinder";
 import { MapPin, Shield, Clock, Award } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const FindClinicPage = () => {
@@ -77,7 +77,7 @@ const FindClinicPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <HeroSection
+        <PageBanner
           title="Find Your Nearest Blood Test Clinic"
           subtitle="Search over 150 UKAS-accredited clinic locations across the UK. Enter your postcode to find convenient testing facilities near you."
         >
@@ -96,7 +96,7 @@ const FindClinicPage = () => {
               <span className="text-white ml-2">Accredited Labs</span>
             </div>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         {/* Benefits Section */}
         <section className="py-12 bg-muted/30">

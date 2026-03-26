@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Clock, ArrowRight, ExternalLink } from 'lucide-react';
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 import { blogArticles, getCategories, filterByCategory } from '@/data/blogArticles';
 import { ProviderLogo } from '@/components/providers/ProviderLogo';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -43,7 +43,7 @@ const HealthBlogPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <HeroSection
+        <PageBanner
           title="Health Resources"
           subtitle="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults aged 30-60."
         />

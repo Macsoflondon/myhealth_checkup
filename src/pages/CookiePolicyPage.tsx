@@ -3,7 +3,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 
 const CookiePolicyPage = () => {
@@ -11,7 +11,7 @@ const CookiePolicyPage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow bg-muted/30">
-        <HeroSection
+        <PageBanner
           title="Cookie"
           accent="Policy"
           subtitle="This Cookie Policy explains how myhealthcheckup Ltd uses cookies and similar technologies."

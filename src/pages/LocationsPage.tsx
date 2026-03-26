@@ -24,7 +24,7 @@ import { filterAndSortClinics } from "@/utils/clinicFilters";
 import { DISTANCE_CONFIG } from "@/constants/config";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 
 // Fix leaflet default icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -211,7 +211,7 @@ const LocationsPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <HeroSection
+        <PageBanner
           title="Our Clinic Locations"
           subtitle="We have hundreds of locations across the UK, providing convenient, local appointments for customers just like you."
         >
@@ -235,7 +235,7 @@ const LocationsPage = () => {
               <span className="text-xs text-white/70">(4.8)</span>
             </div>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         {/* Map Section */}
         <div className="bg-muted/30 py-8">

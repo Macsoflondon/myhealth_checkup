@@ -12,7 +12,7 @@ import {
   Info, Users, Clock, Beaker, BookOpen, ExternalLink 
 } from "lucide-react";
 import { CancerScreeningDisclaimer } from "@/components/compliance/CancerScreeningDisclaimer";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 
 const biomarkerData = [
   {
@@ -211,7 +211,7 @@ const CancerBiomarkersReferencePage = () => {
       <Header />
       
       <main className="min-h-screen bg-background">
-        <HeroSection
+        <PageBanner
           title="Cancer Biomarkers Reference Library"
           subtitle="A comprehensive guide to understanding tumour markers, what they measure, and their role in cancer screening and monitoring."
         >
@@ -227,7 +227,7 @@ const CancerBiomarkersReferencePage = () => {
               <Link to="/cancer-screening">View Cancer Screening</Link>
             </Button>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         {/* Disclaimer */}
         <div className="container mx-auto px-4 py-6">

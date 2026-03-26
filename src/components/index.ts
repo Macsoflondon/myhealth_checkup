@@ -12,9 +12,6 @@ export { LazySection } from "./common/LazySection";
 export { default as ScrollFadeIn } from "./common/ScrollFadeIn";
 export { default as TestBreadcrumb } from "./common/TestBreadcrumb";
 export { SaveProviderButton } from "./common/SaveProviderButton";
-export { OfflineSyncIndicator } from "./common/OfflineSyncIndicator";
-export { OptimisticUpdateIndicator } from "./common/OptimisticUpdateIndicator";
-export { RealtimeSyncIndicator } from "./common/RealtimeSyncIndicator";
 
 // Section components
 export { default as Hero } from "./sections/Hero";

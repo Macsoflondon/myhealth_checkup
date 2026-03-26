@@ -1,11 +1,10 @@
 /**
  * Section components barrel export
- * Import like: import { Hero, TestCategories } from '@/components/sections';
  */
 
 // Hero components
 export { default as Hero } from "./Hero";
-export { default as HeroSection } from "./HeroSection";
+export { default as PageBanner } from "./PageBanner";
 
 // Content sections
 export { default as AccreditationCards } from "./AccreditationCards";

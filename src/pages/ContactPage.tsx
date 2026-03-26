@@ -3,7 +3,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
-import HeroSection from '@/components/sections/HeroSection';
+import PageBanner from '@/components/sections/PageBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -108,7 +108,7 @@ const ContactPage = () => {
           segments={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} 
           backLabel="Back"
         />
-        <HeroSection 
+        <PageBanner 
           title="Contact" 
           accent="Us"
           subtitle="We're here to help with any questions about health testing or our platform"

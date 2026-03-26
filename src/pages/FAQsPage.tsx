@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Mail, Phone, TrendingUp, Shield, FileCheck, ChevronRight, ArrowUp, AlertCircle } from 'lucide-react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import HeroSection from "@/components/sections/HeroSection";
+import PageBanner from "@/components/sections/PageBanner";
 const FAQsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -345,7 +345,7 @@ const FAQsPage = () => {
       <Header />
       
       <main className="flex-grow bg-background">
-        <HeroSection
+        <PageBanner
           title="Frequently Asked Questions"
           subtitle="Find answers to common questions about health testing and our platform"
         >
@@ -360,7 +360,7 @@ const FAQsPage = () => {
                 </Button>}
             </div>
           </div>
-        </HeroSection>
+        </PageBanner>
 
         <div className="container mx-auto px-4 pt-4">
           <PageBreadcrumb />
