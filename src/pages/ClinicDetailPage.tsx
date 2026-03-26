@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { ProviderLogo } from "@/components/ProviderLogo";
+import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { useClinicsData } from "@/hooks/useClinicsData";
 import { useClinicTests } from "@/hooks/useClinicTests";
 import { providers } from "@/constants/providers";

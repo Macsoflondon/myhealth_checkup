@@ -3,4 +3,4 @@
  */
 
 export { default as ClinicFinder } from './ClinicFinder';
-export { default as ClinicMap } from './ClinicMap';
+

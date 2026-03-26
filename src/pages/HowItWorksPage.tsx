@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HowItWorks from "@/components/sections/HowItWorks";
-import Enhanced3StepProcess from "@/components/Enhanced3StepProcess";
+import Enhanced3StepProcess from "@/components/sections/Enhanced3StepProcess";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import HeroSection from "@/components/sections/HeroSection";
 

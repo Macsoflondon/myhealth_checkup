@@ -21,7 +21,7 @@ import { useEnhancedComparison } from '@/hooks/useEnhancedComparison';
 import { EnhancedComparisonTable } from '@/components/compare/EnhancedComparisonTable';
 import { SaveComparisonDialog } from '@/components/compare/SaveComparisonDialog';
 import { SavedComparisonsList } from '@/components/compare/SavedComparisonsList';
-import { ProviderLogo } from '@/components/ProviderLogo';
+import { ProviderLogo } from '@/components/providers/ProviderLogo';
 import { compareCategories, getDbCategoriesForSlug } from '@/constants/categories';
 import { useSavedProviders } from '@/hooks/useSavedProviders';
 import { cn } from '@/lib/utils';

@@ -33,7 +33,7 @@ export const LazyMostPopularTests = lazy(() => import("../tests/MostPopularTests
 export const LazyHealthBenefitsInfographic = lazy(() => import("../sections/HealthBenefitsInfographic"));
 export const LazyFounderStory = lazy(() => import("../sections/FounderStory"));
 export const LazyPartnerShowcase = lazy(() => import("../sections/PartnerShowcase"));
-export const LazyClinicMap = lazy(() => import("../clinic/ClinicMap"));
+export const LazyClinicMap = lazy(() => import("../clinic/ClinicFinder"));
 export const LazyHealthResources = lazy(() => import("../sections/HealthResources"));
 export const LazyHowItWorks = lazy(() => import("../sections/HowItWorks"));
 export const LazyMediaSpotlight = lazy(() => import("../sections/MediaSpotlight"));

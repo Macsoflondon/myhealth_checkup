@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
-import Subscriptions from "@/components/Subscriptions";
+import Subscriptions from "@/components/sections/Subscriptions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Star } from "lucide-react";
 import HeroSection from "@/components/sections/HeroSection";

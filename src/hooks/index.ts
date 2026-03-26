@@ -22,9 +22,7 @@ export { useOfflineSync } from "./useOfflineSync";
 
 // Performance hooks
 export { usePerformanceOptimization } from "./usePerformanceOptimization";
-export { useMobileOptimization } from "./useMobileOptimization";
-export { useOptimizedImage } from "./useOptimizedImage";
-export { useFastImageOptimization } from "./useFastImageOptimization";
+export { useMobileOptimization } from "./use-mobile";
 export { useOptimisticUpdate } from "./useOptimisticUpdate";
 
 // UI hooks

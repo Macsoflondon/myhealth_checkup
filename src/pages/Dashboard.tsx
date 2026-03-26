@@ -11,7 +11,7 @@ import { useDashboardData } from "@/hooks/queries/useDashboardData";
 import ProfileSettings from "@/components/dashboard/ProfileSettings";
 import { useDraggable } from "@/hooks";
 import { cn } from "@/lib/utils";
-import { ProviderLogo } from "@/components/ProviderLogo";
+import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {

@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
-import { useMobileOptimization } from "@/hooks/useMobileOptimization";
+import { useMobileOptimization } from "@/hooks/use-mobile";
 
 // Sections
 import Hero from "@/components/sections/Hero";
