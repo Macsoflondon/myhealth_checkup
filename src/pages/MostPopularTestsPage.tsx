@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import MostPopularTests from '@/components/MostPopularTests';
+import MostPopularTests from '@/components/tests/MostPopularTests';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 import { Star, TrendingUp, Shield } from 'lucide-react';

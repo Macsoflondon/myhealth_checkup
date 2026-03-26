@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Clock, ArrowRight, ExternalLink } from 'lucide-react';
 import HeroSection from "@/components/sections/HeroSection";
 import { blogArticles, getCategories, filterByCategory } from '@/data/blogArticles';
-import { ProviderLogo } from '@/components/ProviderLogo';
+import { ProviderLogo } from '@/components/providers/ProviderLogo';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CategoryBadge } from '@/components/ui/category-badge';
 
