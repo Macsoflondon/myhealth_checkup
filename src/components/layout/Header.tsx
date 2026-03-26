@@ -4,7 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
 import logoWithTagline from "@/assets/logo-with-tagline.png";
-const mobileHeaderLogo = "/lovable-uploads/hero-image-2.png";
+const mobileHeaderLogo = "/lovable-uploads/myhealth-checkup-mobile-logo.png";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
