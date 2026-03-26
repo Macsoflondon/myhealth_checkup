@@ -24,8 +24,6 @@ export { useScrollDirection } from "./useScrollDirection";
 export { useRipple } from "./useRipple";
 
 // Data sync hooks
-export { useBloodTestsSync } from "./useBloodTestsSync";
-export { useCancerScreeningSync } from "./useCancerScreeningSync";
 export { useClinicTests } from "./useClinicTests";
 export { useProviderTestCounts } from "./useProviderTestCounts";
 export { useSavedProviders } from "./useSavedProviders";
