@@ -1,27 +1,36 @@
 
 
-# Add "Vitamin & Nutrition" Tab to GoodBody Gallery
+# Fix Goodbody Gallery — Mobile Layout & Tab Navigation
 
-## File: `src/components/sections/GoodbodyTestGallery.tsx`
+## Issues identified from screenshot (448px viewport)
 
-### Changes
+1. **Tab navigation wraps awkwardly** — With 5 items (About + 4 category tabs), they wrap into uneven rows. Adding "Vitamin & Nutrition" makes this worse.
+2. **Logo takes excessive vertical space** — The logo block (h-40/h-48) pushes tabs far down, and the side-by-side layout breaks on small screens.
+3. **Broken test images** — Cards show `?` placeholder icons, meaning `/images/tests/` assets are missing or paths are wrong. This is an asset availability issue, not a code bug.
+4. **Gallery counter mismatch** — Shows "23 tests" regardless of active tab because it reads from the full images array at render time.
 
-1. **Update TABS array** (line 18) — insert "Vitamin & Nutrition" between "Hormone & Fertility" and "Cancer Screening":
-   ```ts
-   const TABS = ["General Health", "Hormone & Fertility", "Vitamin & Nutrition", "Cancer Screening"] as const;
-   ```
+## Plan
 
-2. **Create new `VITAMIN_NUTRITION_TESTS` array** — placed after `HORMONE_FERTILITY_TESTS` (after line 62). Populate with the vitamin/nutrition-related tests currently in `GENERAL_HEALTH_TESTS` plus relevant additions:
-   - Vitamins Blood Test (`/images/tests/vitamins-blood-test.png`)
-   - Advanced Vitamins Blood Test (`/images/tests/advanced-vitamins-blood-test.png`)
-   - Iron Blood Test (`/images/tests/iron-blood-test.png`)
-   - Tiredness and Fatigue Blood Test (`/images/tests/tiredness-fatigue-blood-test.png`)
-   - Anaemia Blood Test (`/images/tests/anaemia-blood-test.png`)
+### 1. Make tab navigation horizontally scrollable on mobile
+**File: `src/components/sections/GoodbodyTestGallery.tsx`**
 
-3. **Update `getTestsForTab` switch** (line 85-92) — add the new case:
-   ```ts
-   case "Vitamin & Nutrition": return VITAMIN_NUTRITION_TESTS;
-   ```
+Replace the `flex-wrap` nav with a horizontally scrollable container on mobile:
+- Use `overflow-x-auto` with hidden scrollbar on the `<nav>` element
+- Remove `flex-wrap`, add `whitespace-nowrap` so tabs stay single-line
+- Add `scrollbar-hide` styling (same pattern used in `MobileCarousel`)
 
-No other files affected. The tab type is inferred from the `TABS` const assertion.
+### 2. Reduce logo size on mobile
+- Change logo height from `h-40` to `h-24 sm:h-40 md:h-48` 
+- Reduce padding from `p-3 sm:p-4` to `p-2 sm:p-3`
+- Center the logo on mobile, side-by-side on `sm+`
+
+### 3. Stack logo above tabs on mobile
+- Keep `flex-col` on mobile (already present), but ensure tabs take full width below the logo
+- On `sm+`, keep the current side-by-side layout
+
+### 4. Verify image paths exist
+- Check whether `/images/tests/` directory exists in `public/` — if not, the broken images are an asset issue to flag separately
+
+## Files modified
+- `src/components/sections/GoodbodyTestGallery.tsx` — tab nav + logo sizing
 
