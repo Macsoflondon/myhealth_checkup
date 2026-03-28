@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2, Droplet, Clock } from "lucide-react";
 import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 
-const TABS = ["General Health", "Hormone & Fertility", "Cancer Screening"] as const;
+const TABS = ["General Health", "Hormone & Fertility", "Vitamin & Nutrition", "Cancer Screening"] as const;
 type Tab = typeof TABS[number];
 
 type GalleryImage = { src: string; alt: string; code: string; objectFit?: string };
@@ -61,6 +61,14 @@ const HORMONE_FERTILITY_TESTS: GalleryImage[] = [
   { src: "/images/tests/prenatalsafe-complete-plus-nipt.png", alt: "PrenatalSAFE Complete Plus NIPT Blood Test", code: "PrenatalSAFE Complete Plus", objectFit: "contain" },
 ];
 
+const VITAMIN_NUTRITION_TESTS: GalleryImage[] = [
+  { src: "/images/tests/vitamins-blood-test.png", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain" },
+  { src: "/images/tests/advanced-vitamins-blood-test.png", alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain" },
+  { src: "/images/tests/iron-blood-test.png", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain" },
+  { src: "/images/tests/tiredness-fatigue-blood-test.png", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain" },
+  { src: "/images/tests/anaemia-blood-test.png", alt: "Anaemia Blood Test", code: "Anaemia", objectFit: "contain" },
+];
+
 const CANCER_SCREENING_TESTS: GalleryImage[] = [
   { src: "/images/tests/early-cancer-screening.png", alt: "Early Cancer Screening Test", code: "TruCheck™ Early Cancer Screening", objectFit: "contain" },
   { src: "/images/tests/episwitch-pse.png", alt: "EpiSwitch PSE Prostate Test", code: "EpiSwitch® PSE Prostate", objectFit: "contain" },
@@ -86,6 +94,7 @@ const GoodbodyTestGallery = () => {
     switch (activeTab) {
       case "General Health": return GENERAL_HEALTH_TESTS;
       case "Hormone & Fertility": return HORMONE_FERTILITY_TESTS;
+      case "Vitamin & Nutrition": return VITAMIN_NUTRITION_TESTS;
       case "Cancer Screening": return CANCER_SCREENING_TESTS;
       default: return [];
     }
