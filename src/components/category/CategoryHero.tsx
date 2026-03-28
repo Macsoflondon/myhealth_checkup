@@ -24,13 +24,13 @@ export function CategoryHero({
   onSearchChange,
 }: CategoryHeroProps) {
   return (
-    <section className="bg-background border-b border-border/50 py-8 sm:py-10 md:py-12 px-4 text-center relative overflow-hidden">
+    <section className="bg-background border-b border-border/50 py-10 sm:py-12 px-4 text-center relative overflow-hidden">
       {/* Subtle decorative glows */}
       <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-turquoise/5 pointer-events-none" />
       <div className="absolute -bottom-10 -left-10 w-52 h-52 rounded-full bg-brand-pink/4 pointer-events-none" />
 
       <div className="max-w-[700px] mx-auto relative">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-extrabold leading-tight mb-3 text-[hsl(var(--navy))] tracking-tight font-heading">
+        <h1 className="text-3xl sm:text-4xl md:text-[42px] font-extrabold leading-tight mb-3 text-[hsl(var(--navy))] tracking-tight font-heading">
           {headline}
         </h1>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-7 max-w-xl mx-auto">
@@ -38,7 +38,7 @@ export function CategoryHero({
         </p>
 
         {/* Search bar */}
-        <div className="flex items-center bg-muted/50 border border-border rounded-xl px-3 sm:px-4 py-1 max-w-[560px] mx-auto mb-7 shadow-sm">
+        <div className="flex items-center bg-muted/50 border border-border rounded-xl px-4 py-1 max-w-[560px] mx-auto mb-7 shadow-sm">
           <Search className="h-4 w-4 text-muted-foreground/50 mr-2 flex-shrink-0" />
           <input
             value={search}

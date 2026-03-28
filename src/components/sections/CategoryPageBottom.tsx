@@ -32,9 +32,10 @@ const CategoryPageBottom = ({
           }}
         >
           <div
-            className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:gap-8 p-6 sm:p-8 md:px-9"
+            className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8"
             style={{
               background: "#0a1120",
+              padding: "32px 36px",
               borderRadius: "13px",
             }}
           >
@@ -52,9 +53,9 @@ const CategoryPageBottom = ({
                 Not Sure Where to Start?
               </p>
               <h2
-                className="text-xl sm:text-2xl md:text-[28px]"
                 style={{
                   color: "#ffffff",
+                  fontSize: "clamp(22px, 3vw, 28px)",
                   fontWeight: 700,
                   margin: 0,
                 }}
@@ -64,13 +65,13 @@ const CategoryPageBottom = ({
             </div>
             <Link
               to={quizLink}
-              className="inline-block whitespace-nowrap text-center w-full sm:w-auto"
+              className="inline-block whitespace-nowrap text-center"
               style={{
                 background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
                 color: "#ffffff",
                 border: "none",
-                padding: "14px 28px",
-                fontSize: "15px",
+                padding: "16px 36px",
+                fontSize: "16px",
                 fontWeight: 600,
                 borderRadius: "10px",
                 cursor: "pointer",

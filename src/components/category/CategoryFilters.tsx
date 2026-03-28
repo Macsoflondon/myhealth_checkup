@@ -22,13 +22,13 @@ export function CategoryFilters({
   return (
     <div className="mb-5">
       {/* Filter + sort row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-        <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 sm:flex-wrap -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+        <div className="flex flex-wrap gap-2">
           {filters.map((f) => (
             <button
               key={f}
               onClick={() => onFilterChange(f)}
-              className={`px-4 py-2 sm:py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border whitespace-nowrap flex-shrink-0 ${
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border ${
                 activeFilter === f
                   ? "bg-brand-turquoise text-[hsl(var(--navy))] border-brand-turquoise shadow-[0_0_12px_rgba(34,192,212,0.25)]"
                   : "bg-background text-muted-foreground border-border hover:border-brand-turquoise/50"
@@ -42,7 +42,7 @@ export function CategoryFilters({
         <select
           value={sort}
           onChange={(e) => onSortChange(e.target.value)}
-          className="bg-background border border-border rounded-lg px-3 py-2.5 sm:py-2 text-xs font-semibold text-foreground cursor-pointer outline-none w-full sm:w-auto"
+          className="bg-background border border-border rounded-lg px-3 py-2 text-xs font-semibold text-foreground cursor-pointer outline-none"
         >
           <option value="popular">Most Popular</option>
           <option value="rating">Highest Rated</option>
