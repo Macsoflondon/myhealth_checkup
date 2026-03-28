@@ -196,7 +196,7 @@ export class LiveDataService {
     const names: Record<string, string> = {
       'medichecks': 'Medichecks',
       'london-medical-laboratory': 'London Medical Laboratory',
-      'goodbody': 'Goodbody Clinic',
+      'goodbody': 'GOODBODY',
     };
     return names[providerId] || providerId;
   }
