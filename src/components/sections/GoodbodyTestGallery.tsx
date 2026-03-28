@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2, Droplet, Clock } from "lucide-react";
 import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 
-const TABS = ["General Health", "Hormone & Fertility", "Vitamin & Nutrition", "Cancer Screening"] as const;
+const TABS = ["General Health", "Hormone & Fertility", "Vitamin and Mineral Tests", "Cancer Screening"] as const;
 type Tab = typeof TABS[number];
 
 type GalleryImage = { src: string; alt: string; code: string; objectFit?: string };
@@ -97,7 +97,7 @@ const GoodbodyTestGallery = () => {
     switch (activeTab) {
       case "General Health": return GENERAL_HEALTH_TESTS;
       case "Hormone & Fertility": return HORMONE_FERTILITY_TESTS;
-      case "Vitamin & Nutrition": return VITAMIN_NUTRITION_TESTS;
+      case "Vitamin and Mineral Tests": return VITAMIN_NUTRITION_TESTS;
       case "Cancer Screening": return CANCER_SCREENING_TESTS;
       default: return [];
     }
