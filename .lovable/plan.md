@@ -1,36 +1,50 @@
 
 
-# Fix Goodbody Gallery — Mobile Layout & Tab Navigation
+# Full Provider Scrape & Cross-Match Plan
 
-## Issues identified from screenshot (448px viewport)
+## Current State
 
-1. **Tab navigation wraps awkwardly** — With 5 items (About + 4 category tabs), they wrap into uneven rows. Adding "Vitamin & Nutrition" makes this worse.
-2. **Logo takes excessive vertical space** — The logo block (h-40/h-48) pushes tabs far down, and the side-by-side layout breaks on small screens.
-3. **Broken test images** — Cards show `?` placeholder icons, meaning `/images/tests/` assets are missing or paths are wrong. This is an asset availability issue, not a code bug.
-4. **Gallery counter mismatch** — Shows "23 tests" regardless of active tab because it reads from the full images array at render time.
+The scraping infrastructure is already built and deployed. Six provider scrapers exist as Supabase Edge Functions, orchestrated by `run-all-scrapers`:
 
-## Plan
+| Provider | Scraper | Method |
+|----------|---------|--------|
+| Medichecks | `medichecks-scraper` | Live HTML scraping (Shopify collections + product pages) |
+| Goodbody | `goodbody-scraper` | Live HTML scraping (Shopify collections) |
+| Randox Health | `randox-scraper` | Live HTML scraping (known product URLs) |
+| Lola Health | `lola-health-scraper` | Live HTML scraping (Shopify collections) |
+| London Medical Lab | `scrape-london-lab` | Live HTML scraping |
+| Thriva | `thriva-scraper` | **Hardcoded data only** (not actual scraping) |
 
-### 1. Make tab navigation horizontally scrollable on mobile
-**File: `src/components/sections/GoodbodyTestGallery.tsx`**
+All scrapers upsert results into the `provider_tests` table. The AI test mapper at `/admin/test-mapper` then semantically maps provider tests to the 109-test master catalogue (`tests_master`).
 
-Replace the `flex-wrap` nav with a horizontally scrollable container on mobile:
-- Use `overflow-x-auto` with hidden scrollbar on the `<nav>` element
-- Remove `flex-wrap`, add `whitespace-nowrap` so tabs stay single-line
-- Add `scrollbar-hide` styling (same pattern used in `MobileCarousel`)
+## Execution Plan
 
-### 2. Reduce logo size on mobile
-- Change logo height from `h-40` to `h-24 sm:h-40 md:h-48` 
-- Reduce padding from `p-3 sm:p-4` to `p-2 sm:p-3`
-- Center the logo on mobile, side-by-side on `sm+`
+### Step 1: Trigger the full scraping run
+Invoke the `run-all-scrapers` edge function. This will sequentially call all 6 scrapers with a 2-second delay between each. Results are upserted into `provider_tests` with updated pricing, biomarkers, descriptions, image URLs, and sample types. An admin email notification is sent upon completion.
 
-### 3. Stack logo above tabs on mobile
-- Keep `flex-col` on mobile (already present), but ensure tabs take full width below the logo
-- On `sm+`, keep the current side-by-side layout
+### Step 2: Upgrade Thriva scraper from hardcoded to live
+The current Thriva scraper uses a static array of ~15 tests with fixed prices. It needs to be rewritten to scrape `thriva.co` live, matching the pattern used by Medichecks and Goodbody (Shopify product page parsing). This ensures Thriva pricing stays current.
 
-### 4. Verify image paths exist
-- Check whether `/images/tests/` directory exists in `public/` — if not, the broken images are an asset issue to flag separately
+### Step 3: Run AI test mapper for cross-matching
+After scraping completes, trigger the AI test mapper to semantically match any new or unmapped provider tests against the master catalogue. This populates the `provider_test_mapping` table used by comparison views.
 
-## Files modified
-- `src/components/sections/GoodbodyTestGallery.tsx` — tab nav + logo sizing
+### Step 4: Verify data in admin dashboard
+Check the Admin Test Dashboard (`/admin/test-dashboard`) to confirm updated prices, biomarker counts, and provider coverage across all 6 providers.
+
+## What gets updated
+- **Pricing**: Current prices extracted from provider product pages
+- **Biomarkers**: Biomarker lists and counts parsed from product descriptions and structured data
+- **Test info**: Descriptions, sample types, image URLs, categories
+- **URLs**: Verified product links with `url_verified` timestamps
+- **Availability**: Active/inactive status based on whether products still exist
+
+## Files to modify
+- `supabase/functions/thriva-scraper/index.ts` — rewrite from hardcoded to live scraping
+
+## Files unchanged (just invoked)
+- `supabase/functions/run-all-scrapers/index.ts` — triggers all scrapers
+- `supabase/functions/ai-test-mapper/index.ts` — cross-matches to master catalogue
+
+## Important note
+Clinic location data is managed separately via `clinics_master.json` and the clinic scraper functions. The provider test scrape does not affect clinic data. If clinic locations also need updating, that is a separate operation using the clinic-specific scrapers.
 
