@@ -125,23 +125,26 @@ const GoodbodyTestGallery = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
       {/* Banner + Tab Navigation — logo/slogan left, tabs inline */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 mb-4">
-        {/* Logo */}
-        <div className="flex items-center gap-4 sm:gap-6 shrink-0">
-          <div className="bg-white rounded-lg p-3 sm:p-4 flex items-center justify-center" style={{ maxHeight: "320px" }}>
+      <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-8 mb-4">
+        {/* Logo — compact on mobile */}
+        <div className="shrink-0">
+          <div className="bg-white rounded-lg p-2 sm:p-4 flex items-center justify-center">
             <img
               src={GOODBODY_LOGO}
-              alt="Goodbody Clinic"
-              className="h-40 sm:h-48 md:h-56 w-auto object-contain"
+              alt="GOODBODY"
+              className="h-24 sm:h-40 md:h-48 w-auto object-contain"
             />
           </div>
         </div>
 
-        {/* Tab Navigation — About first, then category tabs */}
-        <nav className="flex items-center gap-3 sm:gap-5 md:gap-7 flex-wrap" aria-label="Goodbody test categories">
+        {/* Tab Navigation — horizontally scrollable on mobile */}
+        <nav
+          className="flex items-center gap-3 sm:gap-5 md:gap-7 w-full sm:w-auto overflow-x-auto scrollbar-hide pb-2 sm:pb-0 sm:flex-wrap"
+          aria-label="Goodbody test categories"
+        >
           <button
             onClick={() => setAboutOpen(true)}
-            className="text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
+            className="whitespace-nowrap text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
           >
             <Info className="h-3.5 w-3.5" />
             About
@@ -151,7 +154,7 @@ const GoodbodyTestGallery = () => {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "text-xs sm:text-sm md:text-base font-sans font-bold text-white transition-all duration-200 pb-1 border-b-2 border-brand-turquoise",
+                "whitespace-nowrap text-xs sm:text-sm md:text-base font-sans font-bold text-white transition-all duration-200 pb-1 border-b-2 border-brand-turquoise",
                 activeTab === tab
                   ? "opacity-100"
                   : "opacity-70 hover:opacity-100"
