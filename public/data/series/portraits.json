@@ -1,0 +1,90 @@
+{
+  "id": "portraits-01",
+  "title": "Cancer Screening",
+  "slug": "portraits",
+  "description": "Goodbody cancer screening and early detection tests",
+  "featured": false,
+  "images": [
+    {
+      "id": "portraits-001",
+      "src": "/images/tests/goodbody-logo.jpg",
+      "alt": "Goodbody Diagnostics logo",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Goodbody Diagnostics", "profession": "Provider" },
+      "metadata": { "title": "Goodbody Diagnostics", "year": "", "description": "Trusted UK provider of advanced cancer screening and diagnostic tests.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-002",
+      "src": "/images/tests/lung-cancer-screening.png",
+      "alt": "Goodbody Lung Cancer Screening Blood Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Lung Cancer Screening", "profession": "Blood Test" },
+      "metadata": { "title": "Lung Cancer Screening Blood Test", "year": "", "description": "A blood test to screen for early signs of lung cancer.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-003",
+      "src": "/images/tests/episwitch-pse-v2.png",
+      "alt": "Goodbody EpiSwitch PSE Blood Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "EpiSwitch PSE", "profession": "Blood Test" },
+      "metadata": { "title": "EpiSwitch PSE Blood Test", "year": "", "description": "An advanced epigenetic blood test for prostate cancer risk assessment.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-004",
+      "src": "/images/tests/hpv-cervical-cancer-screening.png",
+      "alt": "Goodbody HPV & Cervical Cancer Screening kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "HPV & Cervical Cancer", "profession": "Screening" },
+      "metadata": { "title": "HPV & Cervical Cancer Screening", "year": "", "description": "At-home screening for HPV and cervical cancer risk.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-005",
+      "src": "/images/tests/early-cancer-screening.png",
+      "alt": "Goodbody Early Cancer Screening Blood Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Early Cancer Screening", "profession": "Blood Test" },
+      "metadata": { "title": "Early Cancer Screening Blood Test", "year": "", "description": "A multi-cancer early detection blood test.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-006",
+      "src": "/images/tests/guardant-360-cdx.png",
+      "alt": "Goodbody Guardant 360 CDx Blood Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Guardant 360 CDx", "profession": "Blood Test" },
+      "metadata": { "title": "Guardant 360 CDx Blood Test", "year": "", "description": "Comprehensive liquid biopsy for advanced cancer genomic profiling.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-007",
+      "src": "/images/tests/prostate-psa-blood-test.png",
+      "alt": "Goodbody Prostate PSA Blood Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Prostate PSA", "profession": "Blood Test" },
+      "metadata": { "title": "Prostate PSA Blood Test", "year": "", "description": "Measure your PSA levels for prostate health monitoring.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-008",
+      "src": "/images/tests/guardant-reveal.png",
+      "alt": "Goodbody Guardant Reveal Blood Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Guardant Reveal", "profession": "Blood Test" },
+      "metadata": { "title": "Guardant Reveal Blood Test", "year": "", "description": "Liquid biopsy test for detecting minimal residual disease after cancer treatment.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    },
+    {
+      "id": "portraits-009",
+      "src": "/images/tests/bowel-cancer-stool-test.png",
+      "alt": "Goodbody Bowel Cancer Stool Test kit box",
+      "aspectRatio": 0.8,
+      "objectFit": "contain",
+      "caption": { "subject": "Bowel Cancer", "profession": "Stool Test" },
+      "metadata": { "title": "Bowel Cancer Stool Test", "year": "", "description": "A non-invasive stool test to screen for bowel cancer.", "location": "", "photographer": "", "photographerUrl": "", "pexelsUrl": "", "series": "portraits" }
+    }
+  ]
+}
