@@ -22,7 +22,7 @@ interface ProviderCatalogConfig {
 const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
   "goodbody-clinic": {
     providerId: "goodbody-clinic",
-    providerName: "Goodbody Clinic",
+    providerName: "GOODBODY",
     tagline: "Premium private blood testing with in-clinic phlebotomy",
     metaTitle: "Goodbody Clinic Blood Tests | Compare Health Tests UK",
     metaDescription: "Browse all Goodbody Clinic blood tests. Compare prices, biomarkers, and book your private health screening at clinic locations across the UK.",

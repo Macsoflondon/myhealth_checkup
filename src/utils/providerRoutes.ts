@@ -25,8 +25,8 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
 
 // Provider display names
 export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
-  'goodbody-clinic': 'GoodBody Clinic',
-  'goodbody': 'GoodBody Clinic',
+  'goodbody-clinic': 'GOODBODY',
+  'goodbody': 'GOODBODY',
   'lola-health': 'Lola Health',
   'london-medical-laboratory': 'London Medical Laboratory',
   'medichecks': 'Medichecks',

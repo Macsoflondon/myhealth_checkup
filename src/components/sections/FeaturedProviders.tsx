@@ -23,7 +23,7 @@ const FeaturedProviders = () => {
     website: "medichecks.com"
   }, {
     id: "goodbody",
-    name: "Goodbody Clinic",
+    name: "GOODBODY",
     rating: 4.7,
     reviews: "3,150+",
     description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
