@@ -9,7 +9,7 @@ const partnerShowcaseGrid = {
   images: [
     {
       id: "editorial-004",
-      src: "/images/female-hormone-fertility.png",
+      src: "/images/tests/female-hormone-fertility.png",
       alt: "Goodbody Female Hormone & Fertility Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -27,7 +27,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-011",
-      src: "/images/prenatalsafe-5-nipt.png",
+      src: "/images/tests/prenatalsafe-5-nipt.png",
       alt: "Goodbody PrenatalSAFE 5 NIPT Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -45,7 +45,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-012",
-      src: "/images/testosterone-blood-test.png",
+      src: "/images/tests/testosterone-blood-test.png",
       alt: "Goodbody Testosterone Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -63,7 +63,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-005",
-      src: "/images/thyroid-function-blood-test.png",
+      src: "/images/tests/thyroid-function-blood-test.png",
       alt: "Goodbody Thyroid Function Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -81,7 +81,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-014",
-      src: "/images/pregnancy-blood-test.png",
+      src: "/images/tests/pregnancy-blood-test.png",
       alt: "Goodbody Pregnancy Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -99,7 +99,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-008",
-      src: "/images/anti-mullerian-hormone.png",
+      src: "/images/tests/anti-mullerian-hormone.png",
       alt: "Goodbody Anti-Mullerian Hormone Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -117,7 +117,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-009",
-      src: "/images/prenatalsafe-complete-plus-nipt.png",
+      src: "/images/tests/prenatalsafe-complete-plus-nipt.png",
       alt: "Goodbody PrenatalSAFE Complete Plus NIPT Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -135,7 +135,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-007",
-      src: "/images/male-hormone-fertility.png",
+      src: "/images/tests/male-hormone-fertility.png",
       alt: "Goodbody Male Hormone and Fertility Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -153,7 +153,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-013",
-      src: "/images/prenatalsafe-3-nipt.png",
+      src: "/images/tests/prenatalsafe-3-nipt.png",
       alt: "Goodbody PrenatalSAFE 3 NIPT Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -171,7 +171,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-001",
-      src: "/images/cortisol-stress-blood-test.png",
+      src: "/images/tests/cortisol-stress-blood-test.png",
       alt: "Goodbody Cortisol Stress Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -189,7 +189,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-010",
-      src: "/images/prenatalsafe-karyo-plus-nipt.png",
+      src: "/images/tests/prenatalsafe-karyo-plus-nipt.png",
       alt: "Goodbody PrenatalSAFE Karyo Plus NIPT Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
@@ -207,7 +207,7 @@ const partnerShowcaseGrid = {
     },
     {
       id: "editorial-006",
-      src: "/images/thyroid-blood-test.png",
+      src: "/images/tests/thyroid-blood-test.png",
       alt: "Goodbody Thyroid Blood Test kit box",
       aspectRatio: 0.8,
       objectFit: "contain",
