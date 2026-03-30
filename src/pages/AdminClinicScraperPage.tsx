@@ -70,13 +70,13 @@ const AdminClinicScraperPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen flex flex-col bg-[#081129]">
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Clinic Scraper Manager</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-4xl font-bold mb-2 text-white">Clinic Scraper Manager</h1>
+          <p className="text-white/70">
             Automatically scrape clinic locations from all provider websites
           </p>
         </div>

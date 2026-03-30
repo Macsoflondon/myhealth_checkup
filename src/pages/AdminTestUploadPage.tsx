@@ -114,7 +114,7 @@ const AdminTestUploadPage: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-[#081129]">
         <Header />
         <main className="flex-grow container mx-auto px-4 py-8">
           <Card className="max-w-2xl mx-auto">
