@@ -140,14 +140,14 @@ const AdminScraperDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#081129]">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold">Scraper Dashboard</h1>
-              <p className="text-muted-foreground">Manage and monitor provider data scrapers</p>
+              <h1 className="text-2xl font-bold text-white">Scraper Dashboard</h1>
+              <p className="text-white/70">Manage and monitor provider data scrapers</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={fetchJobs} disabled={isLoadingJobs}>

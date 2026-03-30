@@ -96,15 +96,16 @@ export default function AdminTestMapperPage() {
     : 0;
 
   return (
+    <div className="min-h-screen bg-[#081129]">
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-2">
+            <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
               <Zap className="h-8 w-8 text-primary" />
               AI Test Mapper - Day 1 Launch Blitz
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-white/70">
               Automatically map 192 unmapped provider tests to master tests using OpenAI GPT-5 semantic analysis
             </p>
           </div>
@@ -350,6 +351,7 @@ export default function AdminTestMapperPage() {
           </>
         )}
       </div>
+    </div>
     </div>
   );
 }

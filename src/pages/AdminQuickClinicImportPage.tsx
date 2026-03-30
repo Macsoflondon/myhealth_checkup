@@ -69,13 +69,13 @@ const AdminQuickClinicImportPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen flex flex-col bg-[#081129]">
       <Header />
       
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Quick Clinic Import</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-4xl font-bold mb-2 text-white">Quick Clinic Import</h1>
+          <p className="text-white/70">
             Day 2 Sprint Solution: Import pre-collected clinic data to reach 150+ clinic target
           </p>
         </div>
