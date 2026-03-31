@@ -4,6 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
 import logoWithTagline from "@/assets/logo-with-tagline.png";
+import mobileLogo from "@/assets/myhealth-mobile-logo.png";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
