@@ -4,6 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
 import logoWithTagline from "@/assets/logo-with-tagline.png";
+import mobileLogo from "@/assets/myhealth-mobile-logo.png";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
@@ -71,9 +72,9 @@ const Header = ({ className }: HeaderProps) => {
                 {/* Left: Combined logo with tagline */}
                 <Link to="/" className="flex items-center flex-shrink min-w-0">
                   <img
-                    src={logoWithTagline}
-                    alt="myhealth checkup - Your health! Your choice! One trusted platform!"
-                    className="h-[130px] xs:h-[140px] sm:h-[150px] w-auto object-contain"
+                    src={mobileLogo}
+                    alt="myhealth checkup - Your health. Your choice. One trusted platform."
+                    className="h-[100px] xs:h-[110px] sm:h-[120px] w-auto object-contain"
                   />
                 </Link>
 
