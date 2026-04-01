@@ -52,7 +52,7 @@ export type Database = {
           record_id: string | null
           table_name: string
           user_agent: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           action: string
@@ -64,7 +64,7 @@ export type Database = {
           record_id?: string | null
           table_name: string
           user_agent?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           action?: string
@@ -76,7 +76,7 @@ export type Database = {
           record_id?: string | null
           table_name?: string
           user_agent?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
