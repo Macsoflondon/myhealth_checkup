@@ -141,7 +141,7 @@ const IntelligentSearch = () => {
       </div>
 
       {/* Popular Searches */}
-      {!searchTerm && !results.length && <div className="mb-8">
+      {!searchTerm && !results.length && <div className="mb-8 border-2 border-[hsl(var(--navy))] rounded-lg p-4">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="h-5 w-5 text-health-600" />
             <h2 className="text-lg font-semibold text-[#081129]">Popular Searches</h2>
