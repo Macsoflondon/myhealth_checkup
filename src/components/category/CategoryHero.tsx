@@ -66,7 +66,7 @@ export function CategoryHero({
         <div className="flex justify-center gap-8 sm:gap-10 flex-wrap">
           {trustStats.map((stat, i) => (
             <div key={i} className="text-center">
-              <div className="text-lg sm:text-xl font-extrabold text-[hsl(var(--navy))] tracking-tight">
+              <div className="text-lg sm:text-xl font-extrabold text-[hsl(var(--navy))] tracking-tight text-primary-foreground">
                 {stat.value}
               </div>
               <div className="tracking-wide text-primary-foreground text-lg font-normal">
