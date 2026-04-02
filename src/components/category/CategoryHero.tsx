@@ -33,7 +33,7 @@ export function CategoryHero({
         <h1 className="text-3xl sm:text-4xl leading-tight mb-3 text-[hsl(var(--navy))] tracking-tight text-primary-foreground font-sans font-bold md:text-4xl">
           {headline}
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-7 max-w-xl mx-auto">
+        <p className="text-sm sm:text-base leading-relaxed mb-7 max-w-xl mx-auto text-primary-foreground">
           {subtitle}
         </p>
 
