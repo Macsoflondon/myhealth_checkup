@@ -43,6 +43,7 @@ const App = () => {
               <BackToTop />
               
               <AppRoutes />
+              <PageBreadcrumb />
             </BrowserRouter>
           </TooltipProvider>
         </HelmetProvider>
