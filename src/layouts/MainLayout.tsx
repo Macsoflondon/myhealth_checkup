@@ -33,6 +33,7 @@ export const MainLayout = ({
       </main>
       {!hideFooter && <Footer />}
       <CookieConsent />
+      <PageBreadcrumb />
     </div>
   );
 };
