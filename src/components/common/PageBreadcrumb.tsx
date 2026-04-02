@@ -21,7 +21,7 @@ const PageBreadcrumb = ({ className = "" }: PageBreadcrumbProps) => {
 
   return (
     <div
-      className={`fixed bottom-6 left-6 z-50 flex items-center gap-0 rounded-full shadow-2xl overflow-hidden ${className}`}
+      className={`fixed bottom-3 left-3 z-50 flex items-center gap-0 rounded-full shadow-2xl overflow-hidden ${className}`}
       style={{
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
