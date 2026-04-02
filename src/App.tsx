@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ScrollToTop } from "./components/common/ScrollToTop";
+import PageBreadcrumb from "./components/common/PageBreadcrumb";
 import BackToTop from "./components/common/BackToTop";
 
 import { AppRoutes } from "./routes";
@@ -42,6 +43,7 @@ const App = () => {
               <BackToTop />
               
               <AppRoutes />
+              <PageBreadcrumb />
             </BrowserRouter>
           </TooltipProvider>
         </HelmetProvider>
