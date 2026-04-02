@@ -123,7 +123,7 @@ const Hero = () => {
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-12 sm:pl-14 pr-4 py-4 sm:py-5 text-base sm:text-lg rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))] focus:outline-none text-[hsl(var(--navy))] bg-white placeholder:text-[hsl(var(--primary))]/50 border-2 border-primary"
+                      className="w-full pl-12 sm:pl-14 pr-4 py-4 sm:py-5 text-base sm:text-lg rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-[hsl(var(--primary))] focus:border-[hsl(var(--primary))] focus:outline-none text-[hsl(var(--navy))] bg-white placeholder:text-[hsl(var(--primary))]/50 border-2 border-primary font-semibold"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
