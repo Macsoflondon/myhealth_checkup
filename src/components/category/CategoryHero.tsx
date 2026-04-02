@@ -44,7 +44,7 @@ export function CategoryHero({
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={searchPlaceholder}
-            className="border-none bg-transparent text-sm text-foreground flex-1 outline-none py-2 placeholder:text-muted-foreground/60"
+            className="border-none bg-transparent text-sm flex-1 outline-none py-2 text-primary-foreground"
           />
           {search && (
             <button
