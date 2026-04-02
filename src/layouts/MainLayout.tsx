@@ -7,7 +7,6 @@ import { ReactNode } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -33,7 +32,6 @@ export const MainLayout = ({
       </main>
       {!hideFooter && <Footer />}
       <CookieConsent />
-      <PageBreadcrumb />
     </div>
   );
 };
