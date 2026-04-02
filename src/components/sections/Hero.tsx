@@ -8,6 +8,8 @@ const popularSearches = [
   { name: "Thyroid Function", route: "/compare?search=thyroid" },
   { name: "Vitamin D", route: "/compare?search=vitamin+d" },
   { name: "Liver Function", route: "/compare?search=liver" },
+  { name: "Advanced Well Woman", route: "/compare?search=advanced+well+woman" },
+  { name: "Advanced Well Man", route: "/compare?search=advanced+well+man" },
 ];
 
 const trustSignals = [
