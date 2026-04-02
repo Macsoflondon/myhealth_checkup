@@ -24,7 +24,7 @@ export function CategoryHero({
   onSearchChange,
 }: CategoryHeroProps) {
   return (
-    <section className="bg-background border-b border-border/50 py-10 sm:py-12 px-4 text-center relative overflow-hidden">
+    <section className="border-b border-border/50 py-10 sm:py-12 px-4 text-center relative overflow-hidden bg-tertiary">
       {/* Subtle decorative glows */}
       <div className="absolute -top-16 -right-16 w-72 h-72 rounded-full bg-brand-turquoise/5 pointer-events-none" />
       <div className="absolute -bottom-10 -left-10 w-52 h-52 rounded-full bg-brand-pink/4 pointer-events-none" />
