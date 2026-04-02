@@ -69,7 +69,7 @@ export function CategoryHero({
               <div className="text-lg sm:text-xl font-extrabold text-[hsl(var(--navy))] tracking-tight">
                 {stat.value}
               </div>
-              <div className="text-[11px] text-muted-foreground tracking-wide">
+              <div className="text-[11px] tracking-wide text-primary-foreground">
                 {stat.label}
               </div>
             </div>
