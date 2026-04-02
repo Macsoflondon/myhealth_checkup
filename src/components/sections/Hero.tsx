@@ -53,7 +53,7 @@ const Hero = () => {
             <div className="max-w-[1240px] mx-auto">
               {/* Badge - small turquoise pill */}
               <div className="text-center mb-5 sm:mb-7">
-                <span className="inline-flex items-center gap-1.5 bg-brand-turquoise rounded-full px-4 py-1.5 text-white text-xs sm:text-sm font-medium tracking-wide">
+                <span className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-6 sm:px-8 py-2.5 sm:py-3 text-white text-sm sm:text-lg font-semibold tracking-wide">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
