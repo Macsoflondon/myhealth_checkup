@@ -24,6 +24,10 @@ import GoalDetailPage from "@/pages/GoalDetailPage";
 export const featureRoutes = (
   <>
     <Route path="/compare" element={<CompareTests />} />
+    <Route path="/compare/symptoms" element={<CompareBySymptomPage />} />
+    <Route path="/compare/symptoms/:symptomSlug" element={<SymptomDetailPage />} />
+    <Route path="/compare/goals" element={<CompareByGoalPage />} />
+    <Route path="/compare/goals/:goalSlug" element={<GoalDetailPage />} />
     <Route path="/search" element={<IntelligentSearchPage />} />
     <Route path="/recommendations" element={<RecommendationsPage />} />
     <Route path="/reviews" element={<ReviewSystem />} />
