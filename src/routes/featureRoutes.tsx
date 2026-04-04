@@ -16,6 +16,10 @@ import MedichecksTestsCatalogPage from "@/pages/MedichecksTestsCatalogPage";
 import MedichecksMensHealthPage from "@/pages/MedichecksMensHealthPage";
 import BloodTestAnalysisPage from "@/pages/BloodTestAnalysisPage";
 import GoodbodyClinicPage from "@/pages/GoodbodyClinicPage";
+import CompareBySymptomPage from "@/pages/CompareBySymptomPage";
+import CompareByGoalPage from "@/pages/CompareByGoalPage";
+import SymptomDetailPage from "@/pages/SymptomDetailPage";
+import GoalDetailPage from "@/pages/GoalDetailPage";
 
 export const featureRoutes = (
   <>
