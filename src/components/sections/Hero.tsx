@@ -1,7 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
-import heroBgImage from "@/assets/hero-bg-tubes.jpeg";
+import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope, ChevronLeft, ChevronRight } from "lucide-react";
+
+import heroEmpowered from "@/assets/hero/hero-empowered-results.jpg";
+import heroClinic from "@/assets/hero/hero-clinic-ease.jpg";
+import heroHomeKit from "@/assets/hero/hero-home-kit.jpg";
+import heroActive from "@/assets/hero/hero-active-lifestyle.jpg";
+import heroCompare from "@/assets/hero/hero-compare-decide.jpg";
+
+const heroSlides = [
+  {
+    image: heroEmpowered,
+    headline: "Your Results. Your Control.",
+    subline: "Review your health test results with confidence — anytime, anywhere.",
+  },
+  {
+    image: heroClinic,
+    headline: "150+ Clinics Nationwide",
+    subline: "Walk in, get tested, and take the guesswork out of your health.",
+  },
+  {
+    image: heroHomeKit,
+    headline: "Test From Home",
+    subline: "Professional-grade at-home blood test kits delivered to your door.",
+  },
+  {
+    image: heroActive,
+    headline: "Live With Confidence",
+    subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
+  },
+  {
+    image: heroCompare,
+    headline: "Compare. Decide. Act.",
+    subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
+  },
+];
 
 const popularSearches = [
   { name: "Full Blood Count", route: "/compare?search=full+blood+count" },
@@ -23,7 +56,23 @@ const trustSignals = [
 const Hero = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isAnalyzing] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  }, []);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused, nextSlide]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim()) {
@@ -31,64 +80,98 @@ const Hero = () => {
     }
   };
 
+  const slide = heroSlides[currentSlide];
+
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background image - full cover */}
-        <img
-          src={heroBgImage}
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          width={1920}
-          height={1080}
-          fetchPriority="high"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        />
-        {/* Pink wash overlay */}
-        <div className="absolute inset-0 bg-[#f0b8cc]/65 z-[1]" />
+      <section
+        className="relative overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Background images with crossfade */}
+        {heroSlides.map((s, i) => (
+          <img
+            key={i}
+            src={s.image}
+            alt=""
+            aria-hidden="true"
+            loading={i === 0 ? "eager" : "lazy"}
+            width={1920}
+            height={1080}
+            fetchPriority={i === 0 ? "high" : undefined}
+            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
+              i === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
+
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
+
+        {/* Carousel arrows */}
+        <button
+          onClick={prevSlide}
+          aria-label="Previous slide"
+          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full p-2 sm:p-3 transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+        <button
+          onClick={nextSlide}
+          aria-label="Next slide"
+          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full p-2 sm:p-3 transition-colors"
+        >
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
 
         {/* Content */}
         <div className="relative z-10 pt-10 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
-              {/* Badge - small turquoise pill */}
+              {/* Badge */}
               <div className="text-center mb-5 sm:mb-7">
                 <span className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-6 sm:px-8 py-2.5 sm:py-3 text-white text-sm sm:text-lg font-semibold tracking-wide border-secondary">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
 
-              {/* Headline - fixed two-line layout on desktop to match reference */}
-              <h1 className="text-center font-heading tracking-[-0.03em] leading-[1.06] mb-2 text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] 2xl:text-[4.8rem]">
-                <span className="block text-white font-bold lg:whitespace-nowrap">Stop guessing!</span>
-                <span className="block text-white font-bold lg:whitespace-nowrap">
-                  Take control of your health <span className="text-white font-bold">- </span>
-                  <span className="text-brand-pink font-bold">Today!</span>
-                </span>
-              </h1>
+              {/* Dynamic headline with crossfade */}
+              <div className="text-center mb-2 min-h-[120px] sm:min-h-[140px] flex flex-col items-center justify-center">
+                <h1
+                  key={currentSlide}
+                  className="text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
+                >
+                  {slide.headline}
+                </h1>
+                <p
+                  key={`sub-${currentSlide}`}
+                  className="mt-3 text-base sm:text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto animate-fade-in"
+                >
+                  {slide.subline}
+                </p>
+              </div>
 
-              {/* Short gradient underline - turquoise to pink */}
+              {/* Gradient underline */}
               <div className="flex justify-center mt-3 mb-6 sm:mb-8">
                 <span className="block w-16 sm:w-20 h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
               </div>
 
-              {/* Mission text - left aligned with turquoise left border */}
-              <div className="max-w-[780px] mx-auto text-left mb-6 sm:mb-8 border-l-[4px] border-[hsl(var(--primary))] pl-5 sm:pl-6 space-y-4">
-                <p className="text-[0.95rem] sm:text-base md:text-lg font-bold text-[hsl(var(--navy))] leading-relaxed">
-                  At myhealth checkup, we believe everyone deserves access to transparent, trustworthy health
-                  information.
-                </p>
-                <p className="text-[0.95rem] sm:text-base md:text-lg font-bold text-[hsl(var(--navy))] leading-relaxed">
-                  Our mission is to empower you to take control of your health by making it simple to compare private
-                  health tests from accredited UK providers.
-                </p>
-                <p className="text-[0.95rem] sm:text-base md:text-lg font-bold text-[hsl(var(--navy))] leading-relaxed">
-                  We only feature providers that meet rigorous quality standards, including being fully regulated by the
-                  Care Quality Commission (CQC) &amp; using only laboratories accredited by the United Kingdom
-                  Accreditation Service (UKAS).
-                </p>
+              {/* Dot indicators */}
+              <div className="flex justify-center gap-2 mb-6 sm:mb-8">
+                {heroSlides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentSlide(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                      i === currentSlide
+                        ? "bg-brand-turquoise w-7"
+                        : "bg-white/40 hover:bg-white/60"
+                    }`}
+                  />
+                ))}
               </div>
 
               {/* Three CTA buttons */}
@@ -113,10 +196,9 @@ const Hero = () => {
                 </button>
               </div>
 
-              {/* Search card - large white panel */}
+              {/* Search card */}
               <div className="max-w-[780px] mx-auto">
                 <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-primary border-2 shadow-xl">
-                  {/* Search input */}
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[hsl(var(--primary))]/40 w-5 h-5 sm:w-6 sm:h-6 font-bold" />
                     <input
@@ -132,7 +214,6 @@ const Hero = () => {
                     )}
                   </div>
 
-                  {/* Popular searches inset */}
                   <div className="mt-4 sm:mt-5 bg-gray-50 rounded-xl p-4 sm:p-5 text-center">
                     <p className="text-xs sm:text-sm font-bold text-[hsl(var(--navy))] mb-3 uppercase tracking-[0.15em]">
                       Popular Searches
@@ -156,7 +237,7 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Trust Signals Bar - white strip */}
+      {/* Trust Signals Bar */}
       <section className="bg-white py-3 sm:py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-3xl mx-auto">
