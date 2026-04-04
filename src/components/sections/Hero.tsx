@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
 
 import heroEmpowered from "@/assets/hero/hero-empowered-results.jpg";
 import heroClinic from "@/assets/hero/hero-clinic-ease.jpg";
@@ -58,21 +58,15 @@ const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   }, []);
 
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-  }, []);
-
   useEffect(() => {
-    if (isPaused) return;
     const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
+  }, [nextSlide]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchTerm.trim()) {
@@ -84,13 +78,7 @@ const Hero = () => {
 
   return (
     <>
-      {/* Hero Section */}
-      <section
-        className="relative overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        {/* Background images with crossfade */}
+      <section className="relative overflow-hidden">
         {heroSlides.map((s, i) => (
           <img
             key={i}
@@ -107,13 +95,36 @@ const Hero = () => {
           />
         ))}
 
-        {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
 
+        <div className="relative z-10 pt-10 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+            <div className="max-w-[1240px] mx-auto">
+              <div className="text-center mb-5 sm:mb-7">
+                <span className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-6 sm:px-8 py-2.5 sm:py-3 text-white text-sm sm:text-lg font-semibold tracking-wide border-secondary">
+                  🇬🇧 UK's Leading Blood Test Comparison Platform
+                </span>
+              </div>
 
+              <div className="text-center mb-2 min-h-[120px] sm:min-h-[140px] flex flex-col items-center justify-center">
+                <h1
+                  key={currentSlide}
+                  className="text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
+                >
+                  {slide.headline}
+                </h1>
+                <p
+                  key={`sub-${currentSlide}`}
+                  className="mt-3 text-base sm:text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto animate-fade-in"
+                >
+                  {slide.subline}
+                </p>
+              </div>
 
+              <div className="flex justify-center mt-3 mb-6 sm:mb-8">
+                <span className="block w-16 sm:w-20 h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
+              </div>
 
-              {/* Three CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-7 sm:mb-9">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
@@ -135,7 +146,6 @@ const Hero = () => {
                 </button>
               </div>
 
-              {/* Search card */}
               <div className="max-w-[780px] mx-auto">
                 <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-primary border-2 shadow-xl">
                   <div className="relative">
@@ -176,7 +186,6 @@ const Hero = () => {
         </div>
       </section>
 
-      {/* Trust Signals Bar */}
       <section className="bg-white py-3 sm:py-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-3xl mx-auto">
