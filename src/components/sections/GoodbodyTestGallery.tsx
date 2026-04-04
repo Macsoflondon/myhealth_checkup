@@ -91,7 +91,7 @@ const GoodbodyTestGallery = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [testData, setTestData] = useState<TestData | null>(null);
-  const [testLoading, setTestLoading] = useState(false);
+  
 
   const getTestsForTab = () => {
     switch (activeTab) {
@@ -103,15 +103,15 @@ const GoodbodyTestGallery = () => {
     }
   };
 
-  const handleTestClick = async (image: GalleryImage) => {
+  const handleTestClick = (image: GalleryImage) => {
     setSelectedImage(image);
-    setTestLoading(true);
     setTestDetailOpen(true);
 
+    // Load DB data in background (non-blocking) — static data shows instantly
     const slug = generateTestSlug(image.code);
-    const data = await findTestByIdOrSlug('goodbody-clinic', slug);
-    setTestData(data);
-    setTestLoading(false);
+    findTestByIdOrSlug('goodbody-clinic', slug).then(data => {
+      setTestData(data);
+    });
   };
 
   // Build overlay data for the gallery
@@ -191,12 +191,7 @@ const GoodbodyTestGallery = () => {
       {/* ===== Test Detail Modal (Reference card style) ===== */}
       <Dialog open={testDetailOpen} onOpenChange={setTestDetailOpen}>
         <DialogContent className="max-w-lg p-0 overflow-hidden border-0 rounded-2xl">
-          {testLoading ? (
-            <div className="flex flex-col items-center justify-center py-16 gap-3">
-              <Loader2 className="h-8 w-8 animate-spin text-brand-turquoise" />
-              <p className="text-sm text-muted-foreground">Loading test details…</p>
-            </div>
-          ) : (() => {
+          {(() => {
             const staticSlug = selectedImage ? testNameToSlug(selectedImage.code) : "";
             const staticData = staticSlug ? getGoodbodyTestBySlug(staticSlug) : null;
             const testName = staticData?.name || selectedImage?.code || "Test";
