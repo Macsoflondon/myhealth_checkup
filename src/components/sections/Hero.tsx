@@ -2,25 +2,37 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
 
-import heroVitamins from "@/assets/hero/hero-vitamins-test.png";
-import heroTiredness from "@/assets/hero/hero-tiredness-test.png";
-import heroIron from "@/assets/hero/hero-iron-test.png";
+import heroEmpowered from "@/assets/hero/hero-empowered-results.jpg";
+import heroClinic from "@/assets/hero/hero-clinic-ease.jpg";
+import heroHomeKit from "@/assets/hero/hero-home-kit.jpg";
+import heroActive from "@/assets/hero/hero-active-lifestyle.jpg";
+import heroCompare from "@/assets/hero/hero-compare-decide.jpg";
 
 const heroSlides = [
   {
-    image: heroVitamins,
-    headline: "Advanced Vitamins Blood Test",
-    subline: "Comprehensive vitamin and mineral screening — compare prices from accredited UK providers.",
+    image: heroEmpowered,
+    headline: "Your Results. Your Control.",
+    subline: "Review your health test results with confidence — anytime, anywhere.",
   },
   {
-    image: heroTiredness,
-    headline: "Tiredness & Fatigue Blood Test",
-    subline: "Feeling run down? Find the right test to uncover what's causing your fatigue.",
+    image: heroClinic,
+    headline: "150+ Clinics Nationwide",
+    subline: "Walk in, get tested, and take the guesswork out of your health.",
   },
   {
-    image: heroIron,
-    headline: "Iron Blood Test",
-    subline: "Check your iron levels with trusted, UKAS-accredited home test kits.",
+    image: heroHomeKit,
+    headline: "Test From Home",
+    subline: "Professional-grade at-home blood test kits delivered to your door.",
+  },
+  {
+    image: heroActive,
+    headline: "Live With Confidence",
+    subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
+  },
+  {
+    image: heroCompare,
+    headline: "Compare. Decide. Act.",
+    subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
   },
 ];
 
