@@ -177,22 +177,22 @@ const Hero = () => {
               {/* Three CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-7 sm:mb-9">
                 <button
-                  onClick={() => navigate("/compare")}
-                  className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
-                >
-                  Compare Blood Tests
-                </button>
-                <button
-                  onClick={() => navigate("/find-a-clinic")}
-                  className="bg-[hsl(var(--secondary))] hover:bg-[hsl(var(--primary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
-                >
-                  Find a Clinic
-                </button>
-                <button
                   onClick={() => navigate("/assisted-test-finder")}
                   className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
                 >
-                  Find the Right Test for You
+                  Find your test
+                </button>
+                <button
+                  onClick={() => navigate("/compare?view=symptoms")}
+                  className="bg-[hsl(var(--secondary))] hover:bg-[hsl(var(--primary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
+                >
+                  Compare by symptom
+                </button>
+                <button
+                  onClick={() => navigate("/compare?view=goals")}
+                  className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
+                >
+                  Compare by goal
                 </button>
               </div>
 
