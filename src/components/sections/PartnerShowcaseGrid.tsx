@@ -51,18 +51,24 @@ const PartnerShowcaseGrid = () => {
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs
               in minutes.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full max-w-md">
-              <Link
-                to="/compare"
-                className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
-              >
-                Compare tests
-              </Link>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full max-w-lg">
               <Link
                 to="/assisted-test-finder"
-                className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
               >
-                Take the health quiz
+                Find your test
+              </Link>
+              <Link
+                to="/compare/symptoms"
+                className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+              >
+                Compare by symptom
+              </Link>
+              <Link
+                to="/compare/goals"
+                className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+              >
+                Compare by goal
               </Link>
             </div>
             <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
