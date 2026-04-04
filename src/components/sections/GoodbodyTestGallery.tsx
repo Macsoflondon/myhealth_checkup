@@ -91,7 +91,7 @@ const GoodbodyTestGallery = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [testData, setTestData] = useState<TestData | null>(null);
-  const [testLoading, setTestLoading] = useState(false);
+  
 
   const getTestsForTab = () => {
     switch (activeTab) {
