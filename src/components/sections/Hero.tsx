@@ -110,69 +110,8 @@ const Hero = () => {
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
 
-        {/* Carousel arrows */}
-        <button
-          onClick={prevSlide}
-          aria-label="Previous slide"
-          className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full p-2 sm:p-3 transition-colors"
-        >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
-        <button
-          onClick={nextSlide}
-          aria-label="Next slide"
-          className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-full p-2 sm:p-3 transition-colors"
-        >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
 
-        {/* Content */}
-        <div className="relative z-10 pt-10 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="max-w-[1240px] mx-auto">
-              {/* Badge */}
-              <div className="text-center mb-5 sm:mb-7">
-                <span className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-6 sm:px-8 py-2.5 sm:py-3 text-white text-sm sm:text-lg font-semibold tracking-wide border-secondary">
-                  🇬🇧 UK's Leading Blood Test Comparison Platform
-                </span>
-              </div>
 
-              {/* Dynamic headline with crossfade */}
-              <div className="text-center mb-2 min-h-[120px] sm:min-h-[140px] flex flex-col items-center justify-center">
-                <h1
-                  key={currentSlide}
-                  className="text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
-                >
-                  {slide.headline}
-                </h1>
-                <p
-                  key={`sub-${currentSlide}`}
-                  className="mt-3 text-base sm:text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto animate-fade-in"
-                >
-                  {slide.subline}
-                </p>
-              </div>
-
-              {/* Gradient underline */}
-              <div className="flex justify-center mt-3 mb-6 sm:mb-8">
-                <span className="block w-16 sm:w-20 h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
-              </div>
-
-              {/* Dot indicators */}
-              <div className="flex justify-center gap-2 mb-6 sm:mb-8">
-                {heroSlides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentSlide(i)}
-                    aria-label={`Go to slide ${i + 1}`}
-                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                      i === currentSlide
-                        ? "bg-brand-turquoise w-7"
-                        : "bg-white/40 hover:bg-white/60"
-                    }`}
-                  />
-                ))}
-              </div>
 
               {/* Three CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-7 sm:mb-9">
