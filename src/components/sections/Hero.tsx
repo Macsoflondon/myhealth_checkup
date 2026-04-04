@@ -133,13 +133,13 @@ const Hero = () => {
                   Find your test
                 </button>
                 <button
-                  onClick={() => navigate("/compare?view=symptoms")}
+                  onClick={() => navigate("/compare/symptoms")}
                   className="bg-[hsl(var(--secondary))] hover:bg-[hsl(var(--primary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
                 >
                   Compare by symptom
                 </button>
                 <button
-                  onClick={() => navigate("/compare?view=goals")}
+                  onClick={() => navigate("/compare/goals")}
                   className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
                 >
                   Compare by goal
