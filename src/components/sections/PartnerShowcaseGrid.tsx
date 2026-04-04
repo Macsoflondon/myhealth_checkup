@@ -38,7 +38,7 @@ const PartnerShowcaseGrid = () => {
       </div>
 
       {/* Start Your Journey Today — Full-width CTA */}
-      <div className="w-full bg-white py-12 sm:py-16">
+      <div className="w-full bg-white py-12 sm:py-16 border-y border-brand-turquoise/20 shadow-[0_0_30px_-5px_rgba(34,192,212,0.15)]">
         <div className="max-w-3xl mx-auto px-4 flex flex-col text-center items-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
