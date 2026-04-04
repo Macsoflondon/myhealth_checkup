@@ -103,15 +103,15 @@ const GoodbodyTestGallery = () => {
     }
   };
 
-  const handleTestClick = async (image: GalleryImage) => {
+  const handleTestClick = (image: GalleryImage) => {
     setSelectedImage(image);
-    setTestLoading(true);
     setTestDetailOpen(true);
 
+    // Load DB data in background (non-blocking) — static data shows instantly
     const slug = generateTestSlug(image.code);
-    const data = await findTestByIdOrSlug('goodbody-clinic', slug);
-    setTestData(data);
-    setTestLoading(false);
+    findTestByIdOrSlug('goodbody-clinic', slug).then(data => {
+      setTestData(data);
+    });
   };
 
   // Build overlay data for the gallery
