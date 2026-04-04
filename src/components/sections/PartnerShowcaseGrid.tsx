@@ -35,7 +35,7 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Start Your Journey Today — Full-width CTA between providers */}
-          <div className="md:col-span-2 bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center mb-14">
+          <div className="md:col-span-2 bg-white rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center mb-14">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
               <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
@@ -43,11 +43,10 @@ const PartnerShowcaseGrid = () => {
               </span>
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
-              <span className="text-white">Take Control of </span>
-              <span className="text-white">Your Health Today</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 text-[#081129]">
+              Take Control of Your Health Today
             </h2>
-            <p className="text-base lg:text-lg text-white leading-relaxed mb-8 max-w-md">
+            <p className="text-base lg:text-lg text-[#081129]/70 leading-relaxed mb-8 max-w-md">
               Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs
               in minutes.
             </p>
@@ -71,7 +70,7 @@ const PartnerShowcaseGrid = () => {
                 Compare by goal
               </Link>
             </div>
-            <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
+            <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-[#081129]/60">
               <span>✓ UKAS Accredited Labs</span>
               <span>✓ CQC Regulated</span>
               <span>✓ Free to Compare</span>
