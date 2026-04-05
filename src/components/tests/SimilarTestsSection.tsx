@@ -136,7 +136,7 @@ const SimilarTestsSection = ({
           ))}
         </div>
 
-        <Button variant="outline" size="sm" className="w-full mt-4 border-white/20 text-white hover:bg-white/10" asChild>
+        <Button variant="outline" size="sm" className="w-full mt-4 border-[#081129]/20 text-[#081129] hover:bg-[#081129]/10" asChild>
           <Link to={`/compare?category=${encodeURIComponent(category)}`}>
             View All {category} Tests
           </Link>
