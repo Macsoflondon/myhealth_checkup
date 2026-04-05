@@ -113,6 +113,14 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: 'Comprehensive diagnostic testing services',
     accreditations: ['UKAS'],
   },
+  'clinilabs': {
+    id: 'clinilabs',
+    name: 'Clinilabs',
+    logo: PROVIDER_LOGOS['clinilabs'],
+    website: PROVIDER_WEBSITES['clinilabs'],
+    description: 'In-clinic blood testing and diagnostics',
+    accreditations: ['UKAS'],
+  },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
