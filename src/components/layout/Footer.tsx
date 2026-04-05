@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
+import myhealthLogo from "@/assets/myhealth-logo.png";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -95,7 +96,7 @@ const Footer = () => {
             {/* Logo + Brand Name */}
             <div className="flex items-center gap-3">
               <img
-                src="/lovable-uploads/051b1724-a6f4-4bdf-a3da-e598ceff4e59.png"
+                src={myhealthLogo}
                 alt="myhealth checkup"
                 className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg"
               />
