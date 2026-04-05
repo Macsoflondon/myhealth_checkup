@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://myhealthcheckup.co.uk/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/test-categories</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/search</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/how-it-works</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/find-clinic</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/symptom</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/goal</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Category pages -->
+  <url><loc>https://myhealthcheckup.co.uk/category/blood-tests</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/hormones</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/thyroid</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/vitamins</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/diabetes</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/heart-health</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/liver</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/kidney-health</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/cancer-screening</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/fertility</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/general-health</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/allergy-testing</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/mens-health</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/womens-health</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/sports-performance-tests</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/weight-loss-tests</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/category/longevity-tests</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Goal pages -->
+  <url><loc>https://myhealthcheckup.co.uk/compare/goal/longevity</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/goal/performance</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/goal/weight-loss</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/goal/preventative-health</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Symptom pages -->
+  <url><loc>https://myhealthcheckup.co.uk/compare/symptom/fatigue</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/symptom/low-mood</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/symptom/hair-loss</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/symptom/weight-gain</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/compare/symptom/low-libido</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Test pages -->
+  <url><loc>https://myhealthcheckup.co.uk/tests/cancer</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/diabetes</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/heart</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/vitamins</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/gut</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/mens-health</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/womens-health</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/thyroid</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/hormones</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/tests/fertility</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Info & legal -->
+  <url><loc>https://myhealthcheckup.co.uk/faqs</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/blog</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/contact</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/partners</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/cookies</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/accessibility</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/how-we-rank</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/sitemap</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+</urlset>
