@@ -21,6 +21,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
   'london-health-company': '/placeholder.svg',
   'medical-diagnosis': '/placeholder.svg',
+  'clinilabs': '/placeholder.svg',
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
