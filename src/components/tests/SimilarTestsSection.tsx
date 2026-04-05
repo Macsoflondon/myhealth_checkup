@@ -108,16 +108,16 @@ const SimilarTestsSection = ({
               to={`${getProviderRoute(test.provider_id)}/${getTestSlug(test)}`}
               className="block"
             >
-              <div className="border border-white/10 rounded-lg p-3 hover:border-[#22c0d4]/40 hover:bg-white/5 transition-colors">
+              <div className="border border-[#081129]/20 rounded-lg p-3 hover:border-[#22c0d4]/40 hover:bg-[#081129]/5 transition-colors">
                 <div className="flex justify-between items-start gap-2">
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-sm truncate text-white">{test.test_name}</h4>
+                    <h4 className="font-medium text-sm truncate text-[#081129]">{test.test_name}</h4>
                     <div className="flex items-center gap-2 mt-1">
-                      <Badge variant="secondary" className="text-xs bg-white/10 text-white/70">
+                      <Badge variant="secondary" className="text-xs bg-[#081129]/10 text-[#081129]/70">
                         {formatProviderName(test.provider_id)}
                       </Badge>
                       {test.biomarker_count && (
-                        <span className="text-xs text-white/50">
+                        <span className="text-xs text-[#081129]/50">
                           {test.biomarker_count} biomarkers
                         </span>
                       )}
@@ -127,7 +127,7 @@ const SimilarTestsSection = ({
                     {test.price ? (
                       <span className="font-bold text-[#22c0d4]">£{test.price}</span>
                     ) : (
-                      <span className="text-sm text-white/50">Price TBC</span>
+                      <span className="text-sm text-[#081129]/50">Price TBC</span>
                     )}
                   </div>
                 </div>
