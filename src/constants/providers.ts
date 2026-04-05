@@ -33,6 +33,7 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'goodbody-clinic': 'GoodBody Clinic',
   'london-health-company': 'London Health Company',
   'medical-diagnosis': 'Medical Diagnosis',
+  'clinilabs': 'Clinilabs',
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
