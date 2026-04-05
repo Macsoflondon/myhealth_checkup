@@ -195,7 +195,9 @@ const GoodbodyTestGallery = () => {
   const resolveGalleryImages = (images: GalleryImage[]) =>
     images.map((image) => {
       const backendImageUrl = findBackendImageForGalleryItem(image, providerImageTests);
-      return backendImageUrl ? { ...image, src: backendImageUrl } : image;
+      return backendImageUrl
+        ? { ...image, src: backendImageUrl, fallbackSrc: image.src }
+        : image;
     });
 
   const getTestsForTab = () => {
