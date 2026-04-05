@@ -144,6 +144,7 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'randox': 'Venous (clinic)',
   'london-health-company': 'Finger-prick (home)',
   'medical-diagnosis': 'Venous (clinic)',
+  'clinilabs': 'Venous (clinic)',
 };
 
 /**
