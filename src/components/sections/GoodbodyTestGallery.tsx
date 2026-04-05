@@ -443,7 +443,7 @@ const GoodbodyTestGallery = () => {
                   Goodbody Clinic
                 </DialogTitle>
                 <DialogDescription className="text-[#6b6459]">
-                  Goodbody Clinic
+                  ​
                 </DialogDescription>
               </div>
             </div>
