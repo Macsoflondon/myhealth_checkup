@@ -385,16 +385,6 @@ export default function ProviderTestDetailTemplate({
             </div>
           </div>
 
-          {/* Product Image */}
-          {test.image_url && (
-            <div className="mb-6">
-              <img 
-                src={test.image_url} 
-                alt={test.test_name}
-                className="rounded-lg max-w-xs h-auto"
-              />
-            </div>
-          )}
 
           {/* Test Header */}
           <h1 className="text-4xl font-bold mb-4">{test.test_name}</h1>
