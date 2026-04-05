@@ -13,6 +13,7 @@ const heroSlides = [
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
+    objectPosition: "center 30%",
   },
   {
     image: heroClinic,
@@ -23,6 +24,7 @@ const heroSlides = [
     image: heroHomeKit,
     headline: "Test From Home",
     subline: "Professional-grade at-home blood test kits delivered to your door.",
+    objectPosition: "30% 35%",
   },
   {
     image: heroActive,
@@ -89,6 +91,7 @@ const Hero = () => {
             width={1920}
             height={1080}
             fetchPriority={i === 0 ? "high" : undefined}
+            style={{ objectPosition: s.objectPosition }}
             className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}
