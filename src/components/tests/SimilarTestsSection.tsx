@@ -97,7 +97,7 @@ const SimilarTestsSection = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-white/60 mb-4">
+        <p className="text-sm text-[#081129]/60 mb-4">
           Compare this test with similar options from other trusted providers.
         </p>
         
