@@ -80,6 +80,24 @@ const ProviderProfilePage = () => {
           content={`Compare ${provider.name} blood tests and health screening. ${provider.accreditation ? provider.accreditation + '. ' : ''}Read reviews, view prices, and book online.`} 
         />
         <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalOrganization",
+          "name": provider.name,
+          "description": `Compare ${provider.name} blood tests and health screening.`,
+          "url": `https://myhealthcheckup.co.uk/provider/${provider.id}`,
+          ...(websiteUrl ? { "sameAs": websiteUrl } : {}),
+          ...(provider.accreditation ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": provider.accreditation } } : {}),
+          ...(providerRatingData.rating ? { "aggregateRating": { "@type": "AggregateRating", "ratingValue": providerRatingData.rating, "bestRating": 5, "ratingCount": providerRatingData.reviews } } : {}),
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
+              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://myhealthcheckup.co.uk/compare" },
+              { "@type": "ListItem", "position": 3, "name": provider.name }
+            ]
+          }
+        })}</script>
       </Helmet>
 
       <Header />
