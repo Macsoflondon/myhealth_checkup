@@ -96,7 +96,7 @@ const Footer = () => {
             {/* Logo + Brand Name */}
             <div className="flex items-center gap-3">
               <img
-                src="/lovable-uploads/051b1724-a6f4-4bdf-a3da-e598ceff4e59.png"
+                src={myhealthLogo}
                 alt="myhealth checkup"
                 className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg"
               />
