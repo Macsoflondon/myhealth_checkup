@@ -9,6 +9,7 @@ export interface GalleryImageData {
   alt: string;
   code: string;
   objectFit?: string;
+  fallbackSrc?: string;
 }
 
 export interface OverlayData {
