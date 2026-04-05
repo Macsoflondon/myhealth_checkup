@@ -1,0 +1,29 @@
+
+ALTER TABLE provider_tests DROP CONSTRAINT provider_tests_valid_provider_id;
+ALTER TABLE provider_tests ADD CONSTRAINT provider_tests_valid_provider_id CHECK (provider_id = ANY (ARRAY['medichecks','thriva','randox','london-medical-laboratory','lola-health','goodbody-clinic','tuli-health','london-health-company','medical-diagnosis','clinilabs']));
+
+INSERT INTO provider_tests (provider_id, test_name, price, sample_type, biomarkers_list, biomarker_count, url, category, is_active) VALUES
+('clinilabs', 'ABO Type (Blood Grouping)', 89.00, 'Venous blood draw', '[{"value":"ABO type"},{"value":"Rh factor"}]', 2, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Albumin', 35.00, 'Venous blood draw', '[{"value":"Albumin"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Accutane (Isotretinoin) Treatment Blood Test', 95.00, 'Venous blood draw', '[{"value":"FBC + Differential"},{"value":"Liver Function"},{"value":"Kidney Function"},{"value":"Lipid Profile"},{"value":"Calcium"}]', 38, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Advanced Liver Function Blood Test', 69.00, 'Venous blood draw', '[{"value":"FBC + Differential"},{"value":"ALT"},{"value":"Bilirubin (Total)"},{"value":"Albumin"},{"value":"Total protein"},{"value":"ALP"},{"value":"AST"},{"value":"GGT"},{"value":"Globulin"}]', 23, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Advanced Female Fertility Check', 199.00, 'Venous blood draw', '[{"value":"FBC"},{"value":"Testosterone"},{"value":"DHEA-S"},{"value":"Oestradiol"},{"value":"Prolactin"},{"value":"LH"},{"value":"FSH"},{"value":"AMH"},{"value":"Cortisol"},{"value":"Progesterone"},{"value":"SHBG"},{"value":"Free Testosterone"},{"value":"Iron Profile"},{"value":"HbA1c"},{"value":"Thyroid Function"},{"value":"Magnesium"},{"value":"Liver Function"},{"value":"Kidney Function"},{"value":"Vitamin B12"},{"value":"Vitamin D"},{"value":"Folate"}]', 51, 'https://www.clinilabs.co.uk', 'Fertility', true),
+('clinilabs', 'Alanine Aminotransferase (ALT)', 35.00, 'Venous blood draw', '[{"value":"ALT"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Advanced Thyroid Function Blood Test', 89.00, 'Venous blood draw', '[{"value":"CRP"},{"value":"Vitamin B12"},{"value":"Vitamin D"},{"value":"Folate"},{"value":"Ferritin"},{"value":"Free T4"},{"value":"Free T3"},{"value":"Thyroglobulin Antibody"},{"value":"TPO Antibodies"},{"value":"TSH"}]', 10, 'https://www.clinilabs.co.uk', 'Thyroid', true),
+('clinilabs', 'ALEX Allergy Test (300 Allergens)', 399.00, 'Venous blood draw', '[{"value":"Total IgE"},{"value":"300 Individual Allergens"}]', 300, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Alkaline Phosphatase (ALP)', 35.00, 'Venous blood draw', '[{"value":"ALP"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Alpha-Fetoprotein (AFP)', 45.00, 'Venous blood draw', '[{"value":"AFP"}]', 1, 'https://www.clinilabs.co.uk', 'Cancer Screening', true),
+('clinilabs', 'Advanced Cholesterol Test', 35.00, 'Venous blood draw', '[{"value":"Non-HDL Cholesterol"},{"value":"HDL/Cholesterol Ratio"},{"value":"LDL Cholesterol"},{"value":"Cholesterol"},{"value":"HDL Cholesterol"},{"value":"Triglycerides"}]', 6, 'https://www.clinilabs.co.uk', 'Heart Health', true),
+('clinilabs', 'Apolipoprotein B (APO B)', 45.00, 'Venous blood draw', '[{"value":"Apolipoprotein B"}]', 1, 'https://www.clinilabs.co.uk', 'Heart Health', true),
+('clinilabs', 'Bilirubin (Direct)', 35.00, 'Venous blood draw', '[{"value":"Bilirubin (Direct)"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'B12 (Active) & RCF', 105.00, 'Venous blood draw', '[{"value":"Vitamin B12 (Active)"},{"value":"Folate (RBC)"}]', 2, 'https://www.clinilabs.co.uk', 'Vitamin and Mineral Tests', true),
+('clinilabs', 'Apolipoprotein A1 (APO A1)', 45.00, 'Venous blood draw', '[{"value":"Apolipoprotein A1"}]', 1, 'https://www.clinilabs.co.uk', 'Heart Health', true),
+('clinilabs', 'Bilirubin (Total)', 25.00, 'Venous blood draw', '[{"value":"Bilirubin (Total)"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Advanced Kidney (Renal) Function Blood Test', 79.00, 'Venous blood draw', '[{"value":"Urea"},{"value":"Sodium"},{"value":"Chloride"},{"value":"Bicarbonate"},{"value":"Creatinine"},{"value":"eGFR"},{"value":"Potassium"}]', 7, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Aspartate Aminotransferase (AST)', 35.00, 'Venous blood draw', '[{"value":"AST"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Advanced Female Hormone', 95.00, 'Venous blood draw', '[{"value":"Free T4"},{"value":"TSH"},{"value":"Free T3"},{"value":"TPO Antibodies"},{"value":"Thyroglobulin Antibody"},{"value":"Oestradiol"},{"value":"Free Testosterone"},{"value":"Testosterone"},{"value":"SHBG"},{"value":"Prolactin"},{"value":"LH"},{"value":"FSH"},{"value":"Free Androgen Index"}]', 13, 'https://www.clinilabs.co.uk', 'Hormones', true),
+('clinilabs', 'Advanced Diabetes Test', 55.00, 'Venous blood draw', '[{"value":"Glucose"},{"value":"HbA1c"}]', 2, 'https://www.clinilabs.co.uk', 'Diabetes', true),
+('clinilabs', 'Bicarbonate', 35.00, 'Venous blood draw', '[{"value":"Bicarbonate"}]', 1, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'BhCG (Quantitative)', 49.00, 'Venous blood draw', '[{"value":"Beta-hCG"}]', 1, 'https://www.clinilabs.co.uk', 'Women''s Health', true),
+('clinilabs', 'Bone Markers', 90.00, 'Venous blood draw', '[{"value":"Calcium"},{"value":"Corrected Calcium"},{"value":"Phosphate"},{"value":"Vitamin D"}]', 4, 'https://www.clinilabs.co.uk', 'General Health', true),
+('clinilabs', 'Anti Mullerian Hormone (AMH)', 55.00, 'Venous blood draw', '[{"value":"AMH"}]', 1, 'https://www.clinilabs.co.uk', 'Fertility', true);

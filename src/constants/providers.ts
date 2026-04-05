@@ -21,6 +21,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
   'london-health-company': '/placeholder.svg',
   'medical-diagnosis': '/placeholder.svg',
+  'clinilabs': '/placeholder.svg',
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
@@ -32,6 +33,7 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'goodbody-clinic': 'GoodBody Clinic',
   'london-health-company': 'London Health Company',
   'medical-diagnosis': 'Medical Diagnosis',
+  'clinilabs': 'Clinilabs',
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
@@ -43,6 +45,7 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'goodbody-clinic': 'https://goodbodyclinic.com',
   'london-health-company': 'https://londonhealthcompany.co.uk',
   'medical-diagnosis': 'https://www.medical-diagnosis.co.uk',
+  'clinilabs': 'https://www.clinilabs.co.uk',
 };
 
 export const PROVIDER_DETAILS: Record<string, Provider> = {
@@ -110,6 +113,14 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: 'Comprehensive diagnostic testing services',
     accreditations: ['UKAS'],
   },
+  'clinilabs': {
+    id: 'clinilabs',
+    name: 'Clinilabs',
+    logo: PROVIDER_LOGOS['clinilabs'],
+    website: PROVIDER_WEBSITES['clinilabs'],
+    description: 'In-clinic blood testing and diagnostics',
+    accreditations: ['UKAS'],
+  },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
@@ -121,6 +132,7 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   'randox': '2-4 days',
   'london-health-company': '2-5 days',
   'medical-diagnosis': '1-3 days',
+  'clinilabs': '1-3 days',
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
@@ -132,6 +144,7 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'randox': 'Venous (clinic)',
   'london-health-company': 'Finger-prick (home)',
   'medical-diagnosis': 'Venous (clinic)',
+  'clinilabs': 'Venous (clinic)',
 };
 
 /**
@@ -147,6 +160,7 @@ export const providers: Provider[] = [
   PROVIDER_DETAILS['lola-health'],
   PROVIDER_DETAILS['london-health-company'],
   PROVIDER_DETAILS['medical-diagnosis'],
+  PROVIDER_DETAILS['clinilabs'],
 ];
 
 export function getProviderLogo(providerId: string): string {
