@@ -43,6 +43,20 @@ const HealthBlogPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Health Blog | myhealth checkup</title>
+        <meta name="description" content="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/health-resources" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "name": "myhealth checkup Health Blog",
+          "description": "Expert insights, health tips, and the latest research on preventive healthcare.",
+          "url": "https://myhealthcheckup.co.uk/health-resources",
+          "publisher": {
+            "@type": "Organization",
+            "name": "MYHEALTHCHECKUP LTD",
+            "url": "https://myhealthcheckup.co.uk"
+          }
+        })}</script>
       </Helmet>
       <Header />
       <main className="flex-grow">

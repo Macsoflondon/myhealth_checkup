@@ -24,6 +24,21 @@ const MostPopularTestsPage = () => {
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Most Popular Tests | myhealth checkup" />
         <meta name="twitter:description" content="Discover our most popular health tests, trusted by thousands of customers." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Most Popular Health Tests",
+          "description": "Discover our most popular health tests, trusted by thousands of customers.",
+          "url": "https://myhealthcheckup.co.uk/popular-tests",
+          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
+              { "@type": "ListItem", "position": 2, "name": "Popular Tests" }
+            ]
+          }
+        })}</script>
       </Helmet>
       <div className="min-h-screen flex flex-col">
         
