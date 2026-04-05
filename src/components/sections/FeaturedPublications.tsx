@@ -5,22 +5,22 @@ export const FeaturedPublications = () => {
   const trackRef = useRef<HTMLDivElement>(null);
 
   const publications = [
-    { name: "Bloomberg", url: "https://www.bloomberg.com" },
-    { name: "The Guardian", url: "https://www.theguardian.com" },
-    { name: "Cosmopolitan", url: "https://www.cosmopolitan.com" },
-    { name: "TechCrunch", url: "https://www.techcrunch.com" },
-    { name: "The Mirror", url: "https://www.mirror.co.uk" },
-    { name: "Metro", url: "https://metro.co.uk" },
-    { name: "Daily Mail", url: "https://www.dailymail.co.uk" },
-    { name: "Daily Express", url: "https://www.express.co.uk" },
+    { name: "Bloomberg", url: "https://www.bloomberg.com", logo: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Bloomberg_logo-2556aaa618.svg" },
+    { name: "The Guardian", url: "https://www.theguardian.com", logo: "https://upload.wikimedia.org/wikipedia/commons/0/0e/The_Guardian_2018.svg" },
+    { name: "Cosmopolitan", url: "https://www.cosmopolitan.com", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Cosmopolitan_logo.svg" },
+    { name: "TechCrunch", url: "https://www.techcrunch.com", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/TechCrunch_logo.svg" },
+    { name: "The Mirror", url: "https://www.mirror.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Daily_Mirror_logo.svg" },
+    { name: "Metro", url: "https://metro.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Metro_UK_logo.svg" },
+    { name: "Daily Mail", url: "https://www.dailymail.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Daily_Mail_masthead.svg" },
+    { name: "Daily Express", url: "https://www.express.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/8/84/Daily_Express_masthead.svg" },
     { name: "London Daily News", url: "https://www.londondaily.news" },
-    { name: "The Independent", url: "https://www.independent.co.uk" },
-    { name: "BBC", url: "https://www.bbc.co.uk" },
-    { name: "The Mail on Sunday", url: "https://www.mailonsunday.co.uk" },
+    { name: "The Independent", url: "https://www.independent.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1a/The_Independent_%28bd%29_%282019-10-31%29.svg" },
+    { name: "BBC", url: "https://www.bbc.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/4/41/BBC_Logo_2021.svg" },
+    { name: "The Mail on Sunday", url: "https://www.mailonsunday.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/3/33/Daily_Mail_masthead.svg" },
     { name: "Healthista", url: "https://www.healthista.com" },
     { name: "woman&home", url: "https://www.womanandhome.com" },
-    { name: "Men's Health", url: "https://www.menshealth.com" },
-    { name: "VOGUE", url: "https://www.vogue.co.uk" }
+    { name: "Men's Health", url: "https://www.menshealth.com", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Men%27s_Health.svg" },
+    { name: "VOGUE", url: "https://www.vogue.co.uk", logo: "https://upload.wikimedia.org/wikipedia/commons/7/7f/VOGUE_LOGO.svg" }
   ];
 
   // Quadruple for seamless loop
