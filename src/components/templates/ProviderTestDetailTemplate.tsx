@@ -66,7 +66,7 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
   const navigate = useNavigate();
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12 bg-primary-foreground">
+    <div className="min-h-screen bg-white py-12">
       <div className="container mx-auto px-4 max-w-5xl">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
