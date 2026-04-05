@@ -41,6 +41,8 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
   'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
   'goodbody-clinic': 'https://goodbodyclinic.com',
+  'london-health-company': 'https://londonhealthcompany.co.uk',
+  'medical-diagnosis': 'https://www.medical-diagnosis.co.uk',
 };
 
 export const PROVIDER_DETAILS: Record<string, Provider> = {
