@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
+import myhealthLogo from "@/assets/myhealth-logo.png";
 
 const Footer = () => {
   const { t } = useTranslation();
