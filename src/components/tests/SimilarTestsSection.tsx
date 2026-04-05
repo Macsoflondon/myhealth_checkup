@@ -89,9 +89,9 @@ const SimilarTestsSection = ({
   };
 
   return (
-    <Card className="mt-6 bg-[#081129] border-[#081129]">
+    <Card className="mt-6 bg-white border-[#081129]">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
+        <CardTitle className="flex items-center gap-2 text-[#081129]">
           <FlaskConical className="w-5 h-5 text-[#22c0d4]" />
           Compare Similar Tests
         </CardTitle>
