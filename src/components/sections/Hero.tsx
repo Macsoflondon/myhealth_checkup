@@ -13,6 +13,7 @@ const heroSlides = [
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
+    objectPosition: "center 30%",
   },
   {
     image: heroClinic,
@@ -23,6 +24,7 @@ const heroSlides = [
     image: heroHomeKit,
     headline: "Test From Home",
     subline: "Professional-grade at-home blood test kits delivered to your door.",
+    objectPosition: "30% 35%",
   },
   {
     image: heroActive,
