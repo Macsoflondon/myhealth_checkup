@@ -95,11 +95,6 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
             {/* Logo + Brand Name */}
             <div className="flex items-center gap-3">
-              <img
-                src={myhealthLogo}
-                alt="myhealth checkup"
-                className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg"
-              />
               <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
                 <span className="text-white">my</span>
                 <span className="text-brand-turquoise text-primary-foreground">health</span>
