@@ -308,6 +308,11 @@ const HoverExpand_001 = ({
                   src={image.src}
                   className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`}
                   alt={image.alt}
+                  onError={(event) => {
+                    if (image.fallbackSrc && event.currentTarget.getAttribute("src") !== image.fallbackSrc) {
+                      event.currentTarget.src = image.fallbackSrc;
+                    }
+                  }}
                 />
                 <AnimatePresence>
                   {isActive && (
