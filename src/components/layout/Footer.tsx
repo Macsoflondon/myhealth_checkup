@@ -101,7 +101,7 @@ const Footer = () => {
               />
               <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
                 <span className="text-white">my</span>
-                <span className="text-brand-turquoise">health</span>
+                <span className="text-brand-turquoise text-primary-foreground">health</span>
               </span>
               <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2">
                 checkup
