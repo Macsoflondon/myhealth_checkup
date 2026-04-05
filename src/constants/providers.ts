@@ -132,6 +132,7 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   'randox': '2-4 days',
   'london-health-company': '2-5 days',
   'medical-diagnosis': '1-3 days',
+  'clinilabs': '1-3 days',
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
