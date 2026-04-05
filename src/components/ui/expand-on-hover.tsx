@@ -159,6 +159,11 @@ const MobileCarousel = ({
                 className="w-full h-[150px] object-contain p-1.5"
                 alt={image.alt}
                 loading="lazy"
+                onError={(event) => {
+                  if (image.fallbackSrc && event.currentTarget.getAttribute("src") !== image.fallbackSrc) {
+                    event.currentTarget.src = image.fallbackSrc;
+                  }
+                }}
               />
               <div className="px-1.5 pb-1.5 pt-0.5">
                 <p className="text-[10px] font-bold text-brand-navy leading-tight truncate text-center">
