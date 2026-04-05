@@ -145,6 +145,8 @@ export const providers: Provider[] = [
   PROVIDER_DETAILS['randox'],
   PROVIDER_DETAILS['london-medical-laboratory'],
   PROVIDER_DETAILS['lola-health'],
+  PROVIDER_DETAILS['london-health-company'],
+  PROVIDER_DETAILS['medical-diagnosis'],
 ];
 
 export function getProviderLogo(providerId: string): string {
