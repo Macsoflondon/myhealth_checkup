@@ -130,6 +130,8 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'thriva': 'Finger-prick (home)',
   'london-medical-laboratory': 'Venous (clinic)',
   'randox': 'Venous (clinic)',
+  'london-health-company': 'Finger-prick (home)',
+  'medical-diagnosis': 'Venous (clinic)',
 };
 
 /**
