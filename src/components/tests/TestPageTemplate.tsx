@@ -26,7 +26,7 @@ const TestPageTemplate = ({
     bookingUrl: p.bookingUrl || p.url
   }));
 
-  return <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-white">
       <Helmet>
         <title>{data.metaTitle}</title>
         <meta name="description" content={data.metaDescription} />
