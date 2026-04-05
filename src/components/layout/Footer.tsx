@@ -103,7 +103,7 @@ const Footer = () => {
                 <span className="text-white">my</span>
                 <span className="text-brand-turquoise text-primary-foreground">health</span>
               </span>
-              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2">
+              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise text-primary-foreground -ml-2">
                 checkup
               </span>
             </div>
@@ -124,7 +124,7 @@ const FooterColumn = ({ title, links }: { title: string; links: { name: string; 
     {/* Column heading with flanking lines */}
     <div className="flex items-center gap-2 mb-4">
       <div className="h-px flex-1 bg-brand-turquoise/30" />
-      <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
+      <span className="text-brand-turquoise text-primary-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
         {title}
       </span>
       <div className="h-px flex-1 bg-brand-turquoise/30" />
@@ -150,7 +150,7 @@ const ConnectColumn = () => (
     {/* Heading */}
     <div className="flex items-center gap-2 mb-4">
       <div className="h-px flex-1 bg-brand-turquoise/30" />
-      <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+      <span className="text-brand-turquoise text-primary-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
         Connect
       </span>
       <div className="h-px flex-1 bg-brand-turquoise/30" />
