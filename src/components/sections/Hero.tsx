@@ -191,8 +191,8 @@ const Hero = () => {
           <div className="max-w-3xl mx-auto">
             <div className="flex flex-wrap justify-center gap-x-5 sm:gap-x-7 gap-y-2 mb-1.5">
               {trustSignals.slice(0, 3).map((signal, index) => (
-                <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm text-[hsl(var(--navy))]">
-                  <signal.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[hsl(var(--primary))] flex-shrink-0" />
+                <div key={index} className="flex items-center gap-1.5 text-sm sm:text-base text-[hsl(var(--navy))]">
+                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[hsl(var(--primary))] flex-shrink-0" />
                   <span className="font-semibold">{signal.text}</span>
                 </div>
               ))}
