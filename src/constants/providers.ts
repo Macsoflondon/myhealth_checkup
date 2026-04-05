@@ -30,6 +30,8 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'london-medical-laboratory': 'London Medical Laboratory',
   'lola-health': 'Lola Health',
   'goodbody-clinic': 'GoodBody Clinic',
+  'london-health-company': 'London Health Company',
+  'medical-diagnosis': 'Medical Diagnosis',
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
