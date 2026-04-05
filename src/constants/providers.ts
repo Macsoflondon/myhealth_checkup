@@ -19,6 +19,8 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
+  'london-health-company': '/placeholder.svg',
+  'medical-diagnosis': '/placeholder.svg',
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
@@ -28,6 +30,8 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'london-medical-laboratory': 'London Medical Laboratory',
   'lola-health': 'Lola Health',
   'goodbody-clinic': 'GoodBody Clinic',
+  'london-health-company': 'London Health Company',
+  'medical-diagnosis': 'Medical Diagnosis',
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
@@ -37,6 +41,8 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
   'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
   'goodbody-clinic': 'https://goodbodyclinic.com',
+  'london-health-company': 'https://londonhealthcompany.co.uk',
+  'medical-diagnosis': 'https://www.medical-diagnosis.co.uk',
 };
 
 export const PROVIDER_DETAILS: Record<string, Provider> = {
@@ -88,6 +94,22 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: 'Advanced health screening',
     accreditations: ['UKAS', 'ISO 15189'],
   },
+  'london-health-company': {
+    id: 'london-health-company',
+    name: 'London Health Company',
+    logo: PROVIDER_LOGOS['london-health-company'],
+    website: PROVIDER_WEBSITES['london-health-company'],
+    description: 'At-home blood test kits with lab analysis',
+    accreditations: ['UKAS'],
+  },
+  'medical-diagnosis': {
+    id: 'medical-diagnosis',
+    name: 'Medical Diagnosis',
+    logo: PROVIDER_LOGOS['medical-diagnosis'],
+    website: PROVIDER_WEBSITES['medical-diagnosis'],
+    description: 'Comprehensive diagnostic testing services',
+    accreditations: ['UKAS'],
+  },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
@@ -97,6 +119,8 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   'thriva': '2-5 days',
   'london-medical-laboratory': '24-72 hours',
   'randox': '2-4 days',
+  'london-health-company': '2-5 days',
+  'medical-diagnosis': '1-3 days',
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
@@ -106,6 +130,8 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'thriva': 'Finger-prick (home)',
   'london-medical-laboratory': 'Venous (clinic)',
   'randox': 'Venous (clinic)',
+  'london-health-company': 'Finger-prick (home)',
+  'medical-diagnosis': 'Venous (clinic)',
 };
 
 /**
@@ -119,6 +145,8 @@ export const providers: Provider[] = [
   PROVIDER_DETAILS['randox'],
   PROVIDER_DETAILS['london-medical-laboratory'],
   PROVIDER_DETAILS['lola-health'],
+  PROVIDER_DETAILS['london-health-company'],
+  PROVIDER_DETAILS['medical-diagnosis'],
 ];
 
 export function getProviderLogo(providerId: string): string {
