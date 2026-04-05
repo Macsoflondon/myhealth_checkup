@@ -124,7 +124,7 @@ const FooterColumn = ({ title, links }: { title: string; links: { name: string; 
     {/* Column heading with flanking lines */}
     <div className="flex items-center gap-2 mb-4">
       <div className="h-px flex-1 bg-brand-turquoise/30" />
-      <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
+      <span className="text-brand-turquoise text-primary-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
         {title}
       </span>
       <div className="h-px flex-1 bg-brand-turquoise/30" />
