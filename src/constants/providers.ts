@@ -160,6 +160,7 @@ export const providers: Provider[] = [
   PROVIDER_DETAILS['lola-health'],
   PROVIDER_DETAILS['london-health-company'],
   PROVIDER_DETAILS['medical-diagnosis'],
+  PROVIDER_DETAILS['clinilabs'],
 ];
 
 export function getProviderLogo(providerId: string): string {
