@@ -94,6 +94,22 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: 'Advanced health screening',
     accreditations: ['UKAS', 'ISO 15189'],
   },
+  'london-health-company': {
+    id: 'london-health-company',
+    name: 'London Health Company',
+    logo: PROVIDER_LOGOS['london-health-company'],
+    website: PROVIDER_WEBSITES['london-health-company'],
+    description: 'At-home blood test kits with lab analysis',
+    accreditations: ['UKAS'],
+  },
+  'medical-diagnosis': {
+    id: 'medical-diagnosis',
+    name: 'Medical Diagnosis',
+    logo: PROVIDER_LOGOS['medical-diagnosis'],
+    website: PROVIDER_WEBSITES['medical-diagnosis'],
+    description: 'Comprehensive diagnostic testing services',
+    accreditations: ['UKAS'],
+  },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
