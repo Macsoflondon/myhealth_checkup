@@ -19,6 +19,8 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
   'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
+  'london-health-company': '/placeholder.svg',
+  'medical-diagnosis': '/placeholder.svg',
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
