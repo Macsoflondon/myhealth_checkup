@@ -103,7 +103,7 @@ const Footer = () => {
                 <span className="text-white">my</span>
                 <span className="text-brand-turquoise text-primary-foreground">health</span>
               </span>
-              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2">
+              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise text-primary-foreground -ml-2">
                 checkup
               </span>
             </div>
