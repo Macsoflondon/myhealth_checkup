@@ -52,7 +52,7 @@ interface ProviderTestDetailTemplateProps {
 
 // Loading skeleton component
 const LoadingSkeleton = () => (
-  <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12 bg-primary-foreground">
+  <div className="min-h-screen bg-white py-12">
     <div className="container mx-auto px-4 max-w-5xl">
       <Skeleton className="h-8 w-32 mb-8" />
       <Skeleton className="h-12 w-3/4 mb-4" />
