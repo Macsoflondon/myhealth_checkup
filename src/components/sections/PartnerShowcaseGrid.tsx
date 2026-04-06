@@ -128,37 +128,37 @@ const PartnerShowcaseGrid = () => {
 
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2">
-            <div className="bg-[#081129] rounded-2xl shadow-md p-8 lg:p-10 flex flex-col text-center items-center">
-              <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col text-center items-center">
+              <div className="flex items-center justify-center gap-3 mb-2">
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
                 <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
                   Find Your Clinic
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-2">
                 <span className="text-white">Find a Clinic </span>
                 <span className="text-white">Near You</span>
               </h2>
-              <p className="text-base lg:text-lg text-white leading-relaxed mb-8 max-w-md">
+              <p className="text-base lg:text-lg text-white leading-relaxed mb-5 max-w-md">
                 Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health
                 screenings. Walk in or book online.
               </p>
-              <div className="grid grid-cols-3 gap-4 mb-8">
+              <div className="grid grid-cols-3 gap-3 mb-5">
                 <div className="text-center">
-                  <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">200+</p>
+                  <p className="font-heading text-base lg:text-lg font-bold text-[#22c0d4]">200+</p>
                   <p className="text-xs sm:text-sm text-white">Clinic Locations</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">7</p>
+                  <p className="font-heading text-base lg:text-lg font-bold text-[#22c0d4]">7</p>
                   <p className="text-xs sm:text-sm text-white">Partner Networks</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-heading text-xl lg:text-2xl font-bold text-[#22c0d4]">UK-wide</p>
+                  <p className="font-heading text-base lg:text-lg font-bold text-[#22c0d4]">UK-wide</p>
                   <p className="text-xs sm:text-sm text-white">Coverage</p>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-2 justify-center mb-8 w-full max-w-md">
+              <div className="flex flex-col sm:flex-row gap-2 justify-center mb-5 w-full max-w-md">
                 <Link
                   to="/find-clinic"
                   className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
