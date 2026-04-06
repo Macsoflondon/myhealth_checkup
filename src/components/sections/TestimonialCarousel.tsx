@@ -13,7 +13,7 @@ const testimonials = [
   {
     quote: "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality.",
     name: "Tiago L.",
-    detail: "Manchester",
+    detail: "Blood Tests Comparison",
     context: "Cancer Screening Tests",
     stars: 5,
   },
