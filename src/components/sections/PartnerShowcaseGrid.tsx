@@ -84,25 +84,26 @@ const PartnerShowcaseGrid = () => {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 
           {/* Divider */}
           <div className="md:col-span-2 flex justify-center">
             <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
           </div>
 
-          {/* Row 2: Medichecks — Logo + Video */}
-          <div className="md:col-span-2 mt-6 mb-4">
-            <div className="flex justify-center mb-4">
-              <img
-                src="/lovable-uploads/provider-medichecks-new-v3.png"
-                alt="Medichecks logo"
-                className="h-48 sm:h-40 md:h-48 w-auto object-contain"
-              />
-            </div>
+          {/* Row 2: Medichecks — Logo beside Video */}
+          <div className="md:col-span-2 mt-2 mb-2">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              {/* Logo */}
+              <div className="flex-shrink-0">
+                <img
+                  src="/lovable-uploads/provider-medichecks-new-v3.png"
+                  alt="Medichecks logo"
+                  className="h-36 sm:h-32 md:h-40 w-auto object-contain"
+                />
+              </div>
 
-            {/* Video */}
-            <div className="flex items-start justify-center pt-1">
+              {/* Video */}
               <div className="relative rounded-xl w-full max-w-2xl">
                 <video
                   src="/videos/medichecks-promo.mp4"
@@ -115,8 +116,8 @@ const PartnerShowcaseGrid = () => {
               </div>
             </div>
 
-            {/* CTA below video */}
-            <div className="flex justify-center mt-6">
+            {/* CTA below */}
+            <div className="flex justify-center mt-3">
               <Link
                 to="/provider/medichecks"
                 className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
