@@ -14,7 +14,7 @@ const testimonials = [
     quote: "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality.",
     name: "Tiago L.",
     detail: "London",
-    context: "Cancer Screening Tests",
+    context: "Blood Tests Comparison",
     stars: 5,
   },
   {
