@@ -3,7 +3,8 @@ import { useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
-import logoWithTagline from "@/assets/logo-with-tagline.png";
+import mainLogo from "@/assets/myhealth-logo.png";
+import headerTagline from "@/assets/header-tagline.png";
 import mobileLogo from "@/assets/myhealth-mobile-logo.png";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
@@ -116,11 +117,16 @@ const Header = ({ className }: HeaderProps) => {
               {/* Left spacer for balance */}
               <div className="flex-1" />
 
-              {/* Center: Combined logo with tagline */}
-              <Link to="/" className="flex items-center justify-center flex-shrink-0 transition-all duration-200 hover:scale-105">
+              {/* Center: Logo + Tagline side by side */}
+              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-3 transition-all duration-200 hover:scale-105">
                 <img
-                  src={logoWithTagline}
-                  alt="myhealth checkup - Your Health. Your Choice. One Trusted Platform!"
+                  src={mainLogo}
+                  alt="myhealth checkup"
+                  className="h-28 lg:h-32 xl:h-36 w-auto object-contain"
+                />
+                <img
+                  src={headerTagline}
+                  alt="Your Health. Your Choice. One Trusted Platform!"
                   className="h-28 lg:h-32 xl:h-36 w-auto object-contain"
                 />
               </Link>
