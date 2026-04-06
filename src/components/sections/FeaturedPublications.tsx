@@ -84,12 +84,12 @@ export const FeaturedPublications = () => {
           >
             <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
               {items.map((publication, index) => (
-                <div key={`${publication.name}-${index}`} className="shrink-0 px-2 sm:px-3" style={{ width: "440px" }}>
+                <div key={`${publication.name}-${index}`} className="shrink-0 px-2 sm:px-3" style={{ width: "330px" }}>
                   <a
                     href={publication.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-48 sm:h-56 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-4"
+                    className="flex items-center justify-center h-36 sm:h-42 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-4"
                   >
                     {publication.logo ? (
                       <img
