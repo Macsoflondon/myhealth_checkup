@@ -20,7 +20,8 @@ export const FeaturedPublications = () => {
     { name: "Marketing Week", url: "https://www.marketingweek.com", logo: "/images/logos/marketing-week.png" },
     { name: "woman&home", url: "https://www.womanandhome.com", logo: "/images/logos/woman-and-home.png" },
     { name: "Men's Health", url: "https://www.menshealth.com", logo: "/images/logos/mens-health.png" },
-    { name: "VOGUE", url: "https://www.vogue.co.uk", logo: "/images/logos/vogue.png" }
+    { name: "VOGUE", url: "https://www.vogue.co.uk", logo: "/images/logos/vogue.png" },
+    { name: "Healthista", url: "https://www.healthista.com", logo: "/images/logos/healthista.png" }
   ];
 
   // Quadruple for seamless loop
