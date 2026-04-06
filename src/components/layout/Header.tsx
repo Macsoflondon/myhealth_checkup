@@ -118,16 +118,16 @@ const Header = ({ className }: HeaderProps) => {
               <div className="flex-1" />
 
               {/* Center: Logo + Tagline side by side */}
-              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-3 transition-all duration-200 hover:scale-105">
+              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-4 transition-all duration-200 hover:scale-105">
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-28 lg:h-32 xl:h-36 w-auto object-contain"
+                  className="h-[5.25rem] lg:h-24 xl:h-[6.75rem] w-auto object-contain"
                 />
                 <img
                   src={headerTagline}
                   alt="Your Health. Your Choice. One Trusted Platform!"
-                  className="h-28 lg:h-32 xl:h-36 w-auto object-contain"
+                  className="h-[5.25rem] lg:h-24 xl:h-[6.75rem] w-auto object-contain"
                 />
               </Link>
 
