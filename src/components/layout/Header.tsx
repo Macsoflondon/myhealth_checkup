@@ -127,7 +127,7 @@ const Header = ({ className }: HeaderProps) => {
                 <img
                   src={headerTagline}
                   alt="Your Health. Your Choice. One Trusted Platform!"
-                  className="h-[5rem] lg:h-[6rem] xl:h-[7rem] w-auto object-contain"
+                  className="h-[5rem] lg:h-[6rem] xl:h-[7rem] w-auto object-contain max-w-[50vw]"
                 />
               </Link>
 
