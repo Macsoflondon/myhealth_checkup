@@ -69,7 +69,7 @@ const Header = ({ className }: HeaderProps) => {
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
             <div className="container mx-auto px-3 sm:px-4">
               {/* Single row: Logo left, Nav controls right */}
-              <div className="py-0.5 flex items-center justify-between gap-1.5">
+              <div className="py-4 flex items-center justify-between gap-1.5">
                 {/* Left: Combined logo with tagline */}
                 <Link to="/" className="flex items-center flex-shrink min-w-0">
                   <img
