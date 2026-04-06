@@ -83,5 +83,8 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   if (key.includes("randox")) return providerBranding.randox;
   if (key.includes("london")) return providerBranding.londonmedicallab;
   if (key.includes("lola")) return providerBranding.lola;
+  if (key.includes("clinilabs")) return providerBranding.clinilabs;
+  if (key.includes("london health")) return providerBranding.londonhealthcompany;
+  if (key.includes("medical diagnosis")) return providerBranding.medicaldiagnosis;
   return null;
 }
