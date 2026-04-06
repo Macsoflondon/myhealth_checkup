@@ -101,58 +101,34 @@ const PartnerShowcaseGrid = () => {
             <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
           </div>
 
-          {/* Row 2: Medichecks — Video left, Text right */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
-            {/* Left column: Heading + Text */}
-            <div className="pt-4 space-y-6 text-center md:text-left flex flex-col md:-ml-4">
-              {/* Logo shown on mobile only, above heading */}
-              <img
-                src="/lovable-uploads/provider-medichecks-new-v3.png"
-                alt="Medichecks logo"
-                className="h-56 w-auto mx-auto md:hidden flex-shrink-0"
-              />
-              <div>
-                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight whitespace-nowrap">
-                  Unlock the
-                  <br />
-                  Ultimate You.
-                </h2>
+          {/* Row 2: Medichecks — Logo + About button + Video */}
+          <div className="md:col-span-2 mt-6 mb-4">
+            {/* Logo + About nav row */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-8 mb-4">
+              <div className="shrink-0">
+                <div className="bg-white rounded-lg p-2 sm:p-4 flex items-center justify-center">
+                  <img
+                    src="/lovable-uploads/provider-medichecks-new-v3.png"
+                    alt="Medichecks logo"
+                    className="h-48 sm:h-40 md:h-48 w-auto object-contain"
+                  />
+                </div>
               </div>
-              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
-                Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical
-                accuracy.
-              </p>
-              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
-                Choose from convenient at home testing kits or attend a nationwide network of partner clinics. All
-                samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated
-                clinical partners.
-              </p>
-              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
-                Results include a clear GP reviewed report, helping you understand your biomarkers and take informed
-                next steps.
-              </p>
-              <p className="text-white text-sm sm:text-base font-sans font-medium leading-relaxed">
-                Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness
-                tests across hormones, nutrition, heart health, and preventative screening.
-              </p>
-              <div className="flex justify-center md:justify-start">
-                <Link
-                  to="/providers/medichecks"
-                  className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+
+              <nav className="flex items-center gap-3 sm:gap-5 md:gap-7" aria-label="Medichecks actions">
+                <button
+                  onClick={() => setMedichecksAboutOpen(true)}
+                  className="whitespace-nowrap text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
                 >
-                  View Medichecks profile
-                </Link>
-              </div>
+                  <Info className="h-3.5 w-3.5" />
+                  About
+                </button>
+              </nav>
             </div>
-            {/* Right column: Logo + Video stacked */}
-            <div className="pt-4 flex flex-col items-center gap-6 md:-mr-4">
-              {/* Logo hidden on mobile, shown on desktop */}
-              <img
-                src="/lovable-uploads/provider-medichecks-new-v3.png"
-                alt="Medichecks logo"
-                className="h-56 w-auto flex-shrink-0 hidden md:block"
-              />
-              <div className="relative rounded-xl w-full">
+
+            {/* Video */}
+            <div className="flex items-start justify-center pt-1">
+              <div className="relative rounded-xl w-full max-w-2xl">
                 <video
                   src="/videos/medichecks-promo.mp4"
                   autoPlay
@@ -163,7 +139,80 @@ const PartnerShowcaseGrid = () => {
                 />
               </div>
             </div>
+
+            {/* CTA below video */}
+            <div className="flex justify-center mt-6">
+              <Link
+                to="/providers/medichecks"
+                className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+              >
+                View Medichecks profile
+              </Link>
+            </div>
           </div>
+
+          {/* Medichecks About Modal */}
+          <Dialog open={medichecksAboutOpen} onOpenChange={setMedichecksAboutOpen}>
+            <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-[#f8f6f3] border-border">
+              <DialogHeader>
+                <div className="flex items-center gap-4 mb-2">
+                  <img src="/lovable-uploads/provider-medichecks-new-v3.png" alt="Medichecks" className="h-12 w-auto object-contain" />
+                  <div>
+                    <DialogTitle className="text-2xl font-heading text-[#3d3529]">
+                      Medichecks
+                    </DialogTitle>
+                    <DialogDescription className="text-[#6b6459]">
+                      ​
+                    </DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              <div className="space-y-8 text-[#4a443b] font-sans leading-relaxed">
+                <section>
+                  <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Unlock the Ultimate You</h3>
+                  <p>Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.</p>
+                </section>
+
+                <section>
+                  <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">How It Works</h3>
+                  <p>Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners.</p>
+                </section>
+
+                <section>
+                  <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Your Results</h3>
+                  <p>Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.</p>
+                </section>
+
+                <section>
+                  <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Our Services</h3>
+                  <p>Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.</p>
+                </section>
+
+                {/* Video in modal */}
+                <div className="relative rounded-xl w-full">
+                  <video
+                    src="/videos/medichecks-promo.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full object-contain rounded-xl max-h-[300px]"
+                  />
+                </div>
+
+                <div className="flex justify-center">
+                  <Link
+                    to="/providers/medichecks"
+                    className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
+                    onClick={() => setMedichecksAboutOpen(false)}
+                  >
+                    View Medichecks profile
+                  </Link>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2">
