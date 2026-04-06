@@ -246,7 +246,7 @@ const GoodbodyTestGallery = () => {
             <img
               src={GOODBODY_LOGO}
               alt="GOODBODY"
-              className="h-24 sm:h-40 md:h-48 w-auto object-contain"
+              className="h-48 sm:h-40 md:h-48 w-auto object-contain"
             />
           </div>
         </div>
