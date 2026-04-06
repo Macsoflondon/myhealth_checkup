@@ -99,7 +99,7 @@ const PartnerShowcaseGrid = () => {
                 <img
                   src="/lovable-uploads/provider-medichecks-new-v3.png"
                   alt="Medichecks logo"
-                  className="h-36 sm:h-32 md:h-40 w-auto object-contain"
+                  className="h-48 sm:h-44 md:h-52 w-auto object-contain"
                 />
               </div>
 
