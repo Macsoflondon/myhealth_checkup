@@ -117,7 +117,7 @@ const PartnerShowcaseGrid = () => {
             </div>
 
             {/* CTA below */}
-            <div className="flex justify-center mt-3">
+            <div className="flex justify-center mt-7">
               <Link
                 to="/provider/medichecks"
                 className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
