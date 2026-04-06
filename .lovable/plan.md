@@ -1,29 +1,35 @@
 
 
-## Plan: Enlarge Header Tagline to Match Logo Height
+## Plan: Add Medichecks "About" Card in Featured Partners Section
 
-### What's happening now
-The desktop header uses a single combined image (`src/assets/logo-with-tagline.png`) that contains both the myhealth checkup logo and the tagline. The tagline text within that image is significantly smaller than the logo, making it hard to read.
+### Current State
+- GoodBody has a logo + "About" button that opens a modal with mission/services/contact info
+- Medichecks section currently shows the logo, then "Unlock the Ultimate You" heading and descriptive paragraphs spread across a two-column layout with video
+- No "About" card or button exists for Medichecks
 
-### Approach
-Split the header into **two separate images side by side**: the existing logo and the uploaded tagline banner. This gives independent size control so the tagline can match the logo height.
+### What Will Change
 
-### Steps
+**File: `src/components/sections/PartnerShowcaseGrid.tsx`**
 
-1. **Copy the uploaded tagline image** into `src/assets/header-tagline.png`
+Restructure the Medichecks area (lines 93-155) to match the GoodBody pattern:
 
-2. **Update `Header.tsx` (desktop only, lines 119-126)**:
-   - Import the new tagline image alongside the existing logo
-   - Replace the single `<img>` with two images in a flex row:
-     - Left: the myhealth checkup logo (`myhealth-logo.png` or `logo-turquoise.png`) at the current height (h-28 lg:h-32 xl:h-36)
-     - Right: the uploaded tagline image at the **same height** classes (h-28 lg:h-32 xl:h-36)
-   - Both wrapped in the existing `<Link to="/">` container
+1. **Logo + About button row** — Show the Medichecks logo (same size as now) with an "About" button next to it, styled identically to GoodBody's About button (white text, turquoise border-bottom, Info icon)
 
-3. **No changes to mobile** — the mobile header uses `mobileLogo` separately and is untouched.
+2. **About dialog/modal** — Create a Dialog (same pattern as GoodBody's About modal in GoodbodyTestGallery.tsx) containing:
+   - Medichecks logo + title in the header
+   - "Unlock the Ultimate You" as a section heading
+   - All four descriptive paragraphs currently in the two-column layout moved into the modal
+   - "View Medichecks profile" button at the bottom
+   - Video embed inside the modal
 
-4. **No other changes** — nav, toolbar, sticky behaviour, colours all remain as-is.
+3. **Keep the video and "View Medichecks profile" button** in the main section as well, but consolidate the text content into the About card
 
-### Files Modified
-- `src/assets/header-tagline.png` (new — copied from upload)
-- `src/components/layout/Header.tsx` (desktop logo section only)
+4. **No changes** to any other section, page, or component
+
+### Technical Details
+- Import `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription` from `@/components/ui/dialog`
+- Import `Info` icon from `lucide-react`
+- Add `aboutOpen` state with `useState(false)`
+- The About button sits in a nav row below the logo, mirroring GoodBody's tab bar layout
+- Modal styled with the same warm background (`bg-[#f8f6f3]`) and typography as GoodBody's About modal
 
