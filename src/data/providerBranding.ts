@@ -49,6 +49,27 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#E8604C1A",
     accentLight: "#1B4B5A12",
   },
+  clinilabs: {
+    primary: "#2E7D32",
+    accent: "#1565C0",
+    tagline: "Clinical Excellence",
+    primaryLight: "#2E7D321A",
+    accentLight: "#1565C012",
+  },
+  londonhealthcompany: {
+    primary: "#E91E9C",
+    accent: "#1A237E",
+    tagline: "Your Health Partner",
+    primaryLight: "#E91E9C1A",
+    accentLight: "#1A237E12",
+  },
+  medicaldiagnosis: {
+    primary: "#E53935",
+    accent: "#00838F",
+    tagline: "Accurate Diagnosis",
+    primaryLight: "#E539351A",
+    accentLight: "#00838F12",
+  },
 };
 
 /**
