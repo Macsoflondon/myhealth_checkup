@@ -34,6 +34,17 @@ export const ProviderLogo = ({ provider, className = "h-20 w-auto", priority = f
       return '/lovable-uploads/provider-lola-health.png';
     }
     
+    if (normalizedName.includes('clinilabs')) {
+      return '/lovable-uploads/provider-clinilabs.png';
+    }
+    
+    if (normalizedName.includes('london health')) {
+      return '/lovable-uploads/provider-london-health-company.png';
+    }
+    
+    if (normalizedName.includes('medical diagnosis')) {
+      return '/lovable-uploads/provider-medical-diagnosis.png';
+    }
     
     return null;
   };

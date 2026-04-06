@@ -66,6 +66,33 @@ const FeaturedProviders = () => {
     location: "UK Wide",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
     website: "referrals.lolahealth.com/myhealthcheckup"
+  }, {
+    id: "clinilabs",
+    name: "Clinilabs",
+    rating: 4.3,
+    reviews: "120+",
+    description: "Professional clinical laboratory services offering a wide range of diagnostic and health screening tests with accredited facilities",
+    location: "UK Wide",
+    tags: ["Clinical Lab", "Diagnostic Testing", "Accredited", "Health Screening"],
+    website: "clinilabs.com"
+  }, {
+    id: "london-health-company",
+    name: "London Health Company",
+    rating: 4.4,
+    reviews: "250+",
+    description: "Comprehensive health testing services based in London, providing accessible and affordable private blood tests and health checks",
+    location: "UK Wide",
+    tags: ["Health Checks", "Blood Tests", "Affordable", "Accessible"],
+    website: "londonhealthcompany.co.uk"
+  }, {
+    id: "medical-diagnosis",
+    name: "Medical Diagnosis",
+    rating: 4.3,
+    reviews: "180+",
+    description: "Specialist diagnostic services offering advanced blood testing and health screening with fast turnaround times",
+    location: "UK Wide",
+    tags: ["Specialist Testing", "Fast Results", "Advanced Diagnostics", "Screening"],
+    website: "medicaldiagnosis.co.uk"
   }];
 
   return (
