@@ -16,8 +16,8 @@ export const FeaturedPublications = () => {
     { name: "London Daily News", url: "https://www.londondaily.news", logo: "/images/logos/london-daily-news.png" },
     { name: "The Independent", url: "https://www.independent.co.uk", logo: "/images/logos/the-independent.png" },
     { name: "BBC", url: "https://www.bbc.co.uk", logo: "/images/logos/bbc.png" },
-    { name: "The Mail on Sunday", url: "https://www.mailonsunday.co.uk", logo: "/images/logos/mail-on-sunday.png" },
-    { name: "Healthista", url: "https://www.healthista.com", logo: "/images/logos/healthista.png" },
+    { name: "The Sunday Times", url: "https://www.thetimes.co.uk", logo: "/images/logos/sunday-times.png" },
+    { name: "Marketing Week", url: "https://www.marketingweek.com", logo: "/images/logos/marketing-week.png" },
     { name: "woman&home", url: "https://www.womanandhome.com", logo: "/images/logos/woman-and-home.png" },
     { name: "Men's Health", url: "https://www.menshealth.com", logo: "/images/logos/mens-health.png" },
     { name: "VOGUE", url: "https://www.vogue.co.uk", logo: "/images/logos/vogue.png" }
