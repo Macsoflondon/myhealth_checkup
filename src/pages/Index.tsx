@@ -118,7 +118,9 @@ const Index = () => {
         </Helmet>
 
         {/* 1. Hero (streamlined) */}
-        <Hero />
+        <div className="mt-4">
+          <Hero />
+        </div>
 
         {/* 2. Test Category Ticker */}
         <TestCategoryTicker />
