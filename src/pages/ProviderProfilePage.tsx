@@ -155,6 +155,38 @@ const ProviderProfilePage = () => {
               </div>
               
               <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
+
+              {/* Medichecks-specific expanded info */}
+              {provider.id === 'medichecks' && (
+                <div className="mt-4 mb-6 space-y-4 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Unlock the Ultimate You</h3>
+                    <p>Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>How It Works</h3>
+                    <p>Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Your Results</h3>
+                    <p>Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
+                    <p>Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.</p>
+                  </div>
+                  <div className="pt-2">
+                    <video
+                      src="/videos/medichecks-promo.mp4"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full max-w-2xl rounded-xl object-contain max-h-[300px]"
+                    />
+                  </div>
+                </div>
+              )}
               
               <div className="flex flex-col sm:flex-row gap-3">
                 {websiteUrl && (
