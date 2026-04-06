@@ -89,13 +89,13 @@ export const FeaturedPublications = () => {
                     href={publication.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-36 sm:h-42 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-4"
+                    className="flex items-center justify-center h-28 sm:h-32 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-4"
                   >
                     {publication.logo ? (
                       <img
                         src={publication.logo}
                         alt={`${publication.name} logo`}
-                        className="h-32 sm:h-40 md:h-48 w-auto max-w-[400px] object-contain"
+                        className="h-24 sm:h-28 md:h-32 w-auto max-w-[400px] object-contain"
                         style={{ filter: "brightness(0) invert(1)" }}
                         loading="lazy"
                       />
