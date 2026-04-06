@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
-import mainLogo from "@/assets/myhealth-logo.png";
+import mainLogo from "@/assets/myhealth-logo-cropped.png";
 import headerTagline from "@/assets/header-tagline.png";
 import mobileLogo from "@/assets/myhealth-mobile-logo.png";
 import { SearchBar } from "../header/SearchBar";
