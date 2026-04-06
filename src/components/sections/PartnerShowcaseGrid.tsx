@@ -106,21 +106,19 @@ const PartnerShowcaseGrid = () => {
             {/* Logo + About nav row */}
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-8 mb-4">
               <div className="shrink-0">
-                <div className="bg-white rounded-lg p-2 sm:p-4 flex items-center justify-center">
-                  <img
-                    src="/lovable-uploads/provider-medichecks-new-v3.png"
-                    alt="Medichecks logo"
-                    className="h-48 sm:h-40 md:h-48 w-auto object-contain"
-                  />
-                </div>
+                <img
+                  src="/lovable-uploads/provider-medichecks-new-v3.png"
+                  alt="Medichecks logo"
+                  className="h-48 sm:h-40 md:h-48 w-auto object-contain"
+                />
               </div>
 
               <nav className="flex items-center gap-3 sm:gap-5 md:gap-7" aria-label="Medichecks actions">
                 <button
                   onClick={() => setMedichecksAboutOpen(true)}
-                  className="whitespace-nowrap text-xs sm:text-sm md:text-base font-sans transition-all duration-200 pb-1 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-1"
+                  className="whitespace-nowrap text-xl sm:text-2xl md:text-3xl font-sans transition-all duration-200 pb-2 text-white font-bold border-b-2 border-brand-turquoise flex items-center gap-2"
                 >
-                  <Info className="h-3.5 w-3.5" />
+                  <Info className="h-6 w-6 sm:h-8 sm:w-8" />
                   About
                 </button>
               </nav>
