@@ -95,7 +95,7 @@ export const FeaturedPublications = () => {
                       <img
                         src={publication.logo}
                         alt={`${publication.name} logo`}
-                        className="h-8 sm:h-10 md:h-12 w-auto max-w-[170px] object-contain"
+                        className="h-16 sm:h-20 md:h-24 w-auto max-w-[200px] object-contain"
                         style={{ filter: "brightness(0) invert(1)" }}
                         loading="lazy"
                       />
