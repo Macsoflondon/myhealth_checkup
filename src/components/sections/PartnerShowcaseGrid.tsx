@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 
 const PartnerShowcaseGrid = () => {
+  const [medichecksAboutOpen, setMedichecksAboutOpen] = useState(false);
+
   return (
     <section className="w-full py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
