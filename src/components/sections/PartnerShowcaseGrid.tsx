@@ -1,6 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
+import { Info } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const PartnerShowcaseGrid = () => {
   return (
