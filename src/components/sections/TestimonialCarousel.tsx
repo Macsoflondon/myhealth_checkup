@@ -6,14 +6,14 @@ const testimonials = [
   {
     quote: "I compared five different thyroid panels in under two minutes. Prices, biomarkers, turnaround time and  all in the one place. I wish I had found this sooner.",
     name: "Jackie O.",
-    detail: "London",
+    detail: "NW London",
     context: "Blood Tests Comparison",
     stars: 5,
   },
   {
     quote: "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality.",
     name: "Tiago L.",
-    detail: "London",
+    detail: "NW London",
     context: "Blood Tests Comparison",
     stars: 5,
   },
