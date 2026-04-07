@@ -1,32 +1,16 @@
 
 
-## Plan: Move Medichecks Logo Beside Video and Tighten Section
+## Plan: Update Testimonial Card Styling
 
-### What Changes
+**File: `src/components/sections/TestimonialCarousel.tsx`**
 
-**File: `src/components/sections/PartnerShowcaseGrid.tsx`** (lines 94-127)
+Three changes:
 
-1. **Move logo beside video** — Replace the current stacked layout (logo on top, video below) with a side-by-side `flex` row on desktop:
-   - Left: Medichecks logo (vertically centered)
-   - Right: Video
-   - On mobile: stack vertically (logo on top, video below)
+1. **Quote icon (line 117)**: Change `text-brand-pink/40` to `text-brand-pink` — full brand pink instead of 40% opacity.
 
-2. **Tighten spacing** — Reduce vertical padding/margins around the Medichecks area:
-   - Remove `mt-6 mb-4` from the container → use `mt-2 mb-2`
-   - Remove `mb-4` from logo wrapper
-   - Reduce `pt-1` on video wrapper → remove
-   - Reduce `mt-6` on CTA → `mt-3`
-   - Reduce grid `gap-12 lg:gap-16` → `gap-6 lg:gap-8` for the overall grid in this container
+2. **Divider line (line 133)**: Change `border-gray-200` to `border-brand-pink` — the separator between quote and author becomes pink.
 
-### Layout (desktop)
-```text
-┌──────────────────────────────────────────┐
-│  [Medichecks Logo]  │  [Promo Video]     │
-│                     │                    │
-│         [View Medichecks profile]        │
-└──────────────────────────────────────────┘
-```
+3. **Category badge (line 139)**: Increase contrast by changing `text-brand-turquoise bg-brand-turquoise/10` to `text-white bg-brand-turquoise` — white text on solid turquoise background so it reads clearly.
 
-### No Other Changes
-- GoodBody section, Find a Clinic, CTA, and all other sections remain untouched.
+No other changes to layout, sizing, or content.
 
