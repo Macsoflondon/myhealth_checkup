@@ -33,7 +33,7 @@ const testimonials = [
   },
   {
     quote: "As a first-timer, I had no idea where to start. The side-by-side comparison made it simple to understand what each test actually covers.",
-    name: "Emma L.",
+    name: "Kristijan G.",
     detail: "Bristol",
     context: "Hormone Panel Comparison",
     stars: 5,
