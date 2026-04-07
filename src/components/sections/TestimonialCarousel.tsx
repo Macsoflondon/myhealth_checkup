@@ -114,7 +114,7 @@ const TestimonialCarousel = () => {
               >
                 <div className="bg-white border border-white/20 rounded-2xl p-5 sm:p-6 h-full flex flex-col hover:border-brand-turquoise/30 transition-all duration-300">
                   {/* Quote icon */}
-                  <Quote className="w-6 h-6 text-brand-pink/40 mb-3" />
+                  <Quote className="w-6 h-6 text-brand-pink mb-3" />
                   
                   {/* Stars */}
                   <div className="flex gap-0.5 mb-3">
@@ -130,13 +130,13 @@ const TestimonialCarousel = () => {
                     "{t.quote}"
                   </p>
                   
-                  <div className="pt-4 border-t border-gray-200">
+                  <div className="pt-4 border-t border-brand-pink">
                     <p className="font-heading font-semibold text-brand-navy text-sm">
                       {t.name}
                     </p>
                     <p className="text-gray-400 text-xs">{t.detail}</p>
                     {t.context && (
-                      <span className="inline-block mt-1.5 text-[10px] font-medium tracking-wide uppercase text-brand-turquoise bg-brand-turquoise/10 rounded-full px-2.5 py-0.5">
+                      <span className="inline-block mt-1.5 text-[10px] font-medium tracking-wide uppercase text-white bg-brand-turquoise rounded-full px-2.5 py-0.5">
                         {t.context}
                       </span>
                     )}
