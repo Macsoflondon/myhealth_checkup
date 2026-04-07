@@ -5,7 +5,7 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 const testimonials = [
   {
     quote: "I compared five different thyroid panels in under two minutes. Prices, biomarkers, turnaround — all in one place. I wish I had found this sooner.",
-    name: "Sarah T.",
+    name: "Jackie O.",
     detail: "London",
     context: "Blood Tests Comparison",
     stars: 5,
