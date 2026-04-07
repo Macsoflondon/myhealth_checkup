@@ -320,7 +320,7 @@ const ContactPage = () => {
                     <address className="not-italic">
                       <p className="font-medium">myhealth checkup Ltd</p>
                       <p>2/369 Clapham Road</p>
-                      <p>London, SW9 9BT</p>
+                      <p>SW London, SW9 9BT</p>
                       <p>United Kingdom</p>
                     </address>
                     <p className="text-sm mt-4 text-muted-foreground">
