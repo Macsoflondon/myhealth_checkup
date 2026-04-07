@@ -234,7 +234,7 @@ export const detailedProviders = [
     phone: "0203 633 1488",
     email: "info@onedaytests.com",
     supportHours: "Mon-Sun 8am-8pm",
-    locations: "15+ locations UK-wide (London, Birmingham, Manchester)",
+    locations: "15+ locations UK-wide (London, NW London, Manchester)",
     parentCompany: "Sussex Pathology Ltd (CQC Reg. 1-14470761199)",
     accreditation: "UKAS Medical 15189:2022 accredited (No. 29041)",
     coreServices: "Health check panels, COVID-19, cholesterol, liver and kidney tests",
