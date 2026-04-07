@@ -37,7 +37,7 @@ L.Icon.Default.mergeOptions({
 // UK regions for area filter
 const UK_REGIONS = [
   { value: "all", label: "All Areas" },
-  { value: "london", label: "London" },
+  { value: "london", label: "SW London" },
   { value: "south-east", label: "South East" },
   { value: "south-west", label: "South West" },
   { value: "east", label: "East" },
