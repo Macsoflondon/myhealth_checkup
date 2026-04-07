@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     quote: "The health quiz narrowed down exactly which blood test matched my concerns. No account required, no pressure — just clear information.",
-    name: "Priya K.",
+    name: "Italo O.",
     detail: "Birmingham",
     context: "Health Quiz",
     stars: 5,
