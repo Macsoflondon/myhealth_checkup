@@ -40,7 +40,7 @@ const testimonials = [
   },
   {
     quote: "Completely free, no sign-up, and genuinely independent. I have recommended it to everyone in my family.",
-    name: "Rachel H.",
+    name: "Liam D.",
     detail: "Cardiff",
     context: "Vitamin Testing",
     stars: 5,
