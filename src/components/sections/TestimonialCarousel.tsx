@@ -112,7 +112,7 @@ const TestimonialCarousel = () => {
                 className="shrink-0 px-3"
                 style={{ width: `${CARD_WIDTH}px` }}
               >
-                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 sm:p-6 h-full flex flex-col hover:border-brand-turquoise/30 transition-all duration-300">
+                <div className="bg-white border border-white/20 rounded-2xl p-5 sm:p-6 h-full flex flex-col hover:border-brand-turquoise/30 transition-all duration-300">
                   {/* Quote icon */}
                   <Quote className="w-6 h-6 text-brand-pink/40 mb-3" />
                   
@@ -126,15 +126,15 @@ const TestimonialCarousel = () => {
                     ))}
                   </div>
                   
-                  <p className="text-white/80 font-sans text-sm sm:text-base leading-relaxed flex-1 mb-4 whitespace-normal">
+                  <p className="text-brand-navy font-sans text-sm sm:text-base leading-relaxed flex-1 mb-4 whitespace-normal">
                     "{t.quote}"
                   </p>
                   
-                  <div className="pt-4 border-t border-white/10">
-                    <p className="font-heading font-semibold text-white text-sm">
+                  <div className="pt-4 border-t border-gray-200">
+                    <p className="font-heading font-semibold text-brand-navy text-sm">
                       {t.name}
                     </p>
-                    <p className="text-white/50 text-xs">{t.detail}</p>
+                    <p className="text-gray-400 text-xs">{t.detail}</p>
                     {t.context && (
                       <span className="inline-block mt-1.5 text-[10px] font-medium tracking-wide uppercase text-brand-turquoise bg-brand-turquoise/10 rounded-full px-2.5 py-0.5">
                         {t.context}
