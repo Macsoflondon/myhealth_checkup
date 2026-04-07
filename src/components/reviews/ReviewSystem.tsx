@@ -50,7 +50,7 @@ const ReviewSystem = () => {
     },
     {
       id: '3',
-      userName: 'Emma L.',
+      userName: 'Kristijan G.',
       rating: 5,
       date: '2024-01-08',
       testName: 'Vitamin D Test',
