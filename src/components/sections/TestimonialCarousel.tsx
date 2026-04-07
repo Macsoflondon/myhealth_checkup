@@ -27,7 +27,7 @@ const testimonials = [
   {
     quote: "Other sites buried the total cost behind add-ons. Here, the pricing was upfront and honest. That transparency earned my trust.",
     name: "Nathanial S.",
-    detail: "Edinburgh",
+    detail: "South London",
     context: "Full Body MOT Comparison",
     stars: 5,
   },
