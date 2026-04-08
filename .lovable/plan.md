@@ -1,22 +1,20 @@
 
 
-## Plan: Move "Expert Quotes" Below "Here to Help"
+## Plan: Move "Take Control of Your Health Today" Between "Here to Help" and "Expert Quotes"
 
 **File: `src/pages/Index.tsx`**
 
-Reorder the sections so that `<ExpertQuotes />` is rendered after `<HereToHelp />` instead of its current position (after `<FeaturedPublications />`).
+Reorder so `<CallToAction />` sits between `<HereToHelp />` and `<ExpertQuotes />`.
 
-Current order (relevant part):
-1. FeaturedPublications
-2. **ExpertQuotes** ← move from here
-3. TestimonialCarousel
-4. CallToAction
-5. HereToHelp
+Current order:
+1. TestimonialCarousel
+2. **CallToAction** ← move from here
+3. HereToHelp
+4. ExpertQuotes
 
 New order:
-1. FeaturedPublications
-2. TestimonialCarousel
-3. CallToAction
-4. HereToHelp
-5. **ExpertQuotes** ← to here (just above Footer)
+1. TestimonialCarousel
+2. HereToHelp
+3. **CallToAction** ← to here
+4. ExpertQuotes
 
