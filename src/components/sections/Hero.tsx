@@ -33,7 +33,7 @@ const heroSlides = [
   },
   {
     image: heroCompare,
-    headline: "Compare. Decide. Act.",
+    headline: "Compare. Book. Test.",
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
   },
 ];
