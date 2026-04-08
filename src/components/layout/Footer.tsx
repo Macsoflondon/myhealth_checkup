@@ -56,9 +56,8 @@ const Footer = () => {
               </span>
             </p>
             <p className="text-xs sm:text-sm text-white/90 font-sans">
-              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website.
+              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website. Company No. 16589056
             </p>
-            <p className="text-[10px] sm:text-xs text-white/50 mt-1">Company No. 16589056</p>
           </div>
         </div>
       </div>
