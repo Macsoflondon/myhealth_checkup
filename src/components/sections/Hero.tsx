@@ -166,7 +166,7 @@ const Hero = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 sm:mt-5 bg-gray-50 rounded-xl p-4 sm:p-5 text-center">
+                  <div className="mt-4 sm:mt-5 bg-gray-50 rounded-xl p-4 sm:p-5 text-center opacity-70">
                     <p className="text-xs sm:text-sm font-bold text-[hsl(var(--navy))] mb-3 uppercase tracking-[0.15em]">
                       Popular Searches
                     </p>
