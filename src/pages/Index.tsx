@@ -153,11 +153,11 @@ const Index = () => {
         {/* Here to Help */}
         <HereToHelp />
 
-        {/* Expert Quotes */}
-        <ExpertQuotes />
-
         {/* Call to Action */}
         <CallToAction />
+
+        {/* Expert Quotes */}
+        <ExpertQuotes />
       </MainLayout>
     </ErrorBoundary>
   );
