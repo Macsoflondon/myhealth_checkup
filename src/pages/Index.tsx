@@ -147,9 +147,6 @@ const Index = () => {
         {/* 10. Featured Publications */}
         <FeaturedPublications />
 
-        {/* 11. Expert Quotes */}
-        <ExpertQuotes />
-
         {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
 
@@ -158,6 +155,9 @@ const Index = () => {
 
         {/* 16. Here to Help */}
         <HereToHelp />
+
+        {/* 11. Expert Quotes */}
+        <ExpertQuotes />
       </MainLayout>
     </ErrorBoundary>
   );
