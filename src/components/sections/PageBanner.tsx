@@ -18,7 +18,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ title, accent, subtitle, chil
             accent={accent}
             className="[&_span]:text-white mb-3 sm:mb-4"
           />
-          <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-5 max-w-2xl mx-auto tracking-wide font-sans font-medium text-white">
+          <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-5 max-w-3xl mx-auto tracking-wide font-sans font-medium text-[#22c0d4]">
             {subtitle}
           </p>
           {children}
