@@ -150,13 +150,13 @@ const Index = () => {
         {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
 
-        {/* 15. Call to Action */}
-        <CallToAction />
-
-        {/* 16. Here to Help */}
+        {/* 15. Here to Help */}
         <HereToHelp />
 
-        {/* 11. Expert Quotes */}
+        {/* 16. Call to Action */}
+        <CallToAction />
+
+        {/* 17. Expert Quotes */}
         <ExpertQuotes />
       </MainLayout>
     </ErrorBoundary>
