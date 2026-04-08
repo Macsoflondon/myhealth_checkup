@@ -107,7 +107,7 @@ const PartnersGrid = () => {
                   <Link
                     to={`/provider/${provider.id}`}
                     className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
-                      w-full h-32 sm:h-40 
+                      w-full h-32 sm:h-40 overflow-hidden
                       border-2 border-[#22c0d4] 
                       transition-all duration-300 ease-out
                       hover:shadow-lg hover:shadow-[#22c0d4]/20 
@@ -118,7 +118,7 @@ const PartnersGrid = () => {
                       src={provider.logo} 
                       alt={`${provider.name} logo`} 
                       className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
-                        isGoodbody ? 'max-h-[130px] sm:max-h-[160px]' : 'max-h-[90px] sm:max-h-[120px]'
+                        'max-h-[90px] sm:max-h-[120px]'
                       }`} 
                       loading="lazy" 
                     />
