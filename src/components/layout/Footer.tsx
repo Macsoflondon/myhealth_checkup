@@ -77,9 +77,9 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs sm:text-sm text-brand-pink font-sans">
             © 2026 myhealth checkup. All rights reserved.{" "}
-            <Link to="/privacy-policy" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Privacy</Link>
+            <Link to="/legal" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Legal</Link>
             {" | "}
-            <Link to="/terms" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Terms</Link>
+            <Link to="/terms" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Terms &amp; Conditions</Link>
           </p>
         </div>
       </div>

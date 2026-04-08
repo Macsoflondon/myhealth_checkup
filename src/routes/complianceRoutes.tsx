@@ -7,9 +7,11 @@ import ModernSlaveryPage from "@/pages/ModernSlaveryPage";
 import AffiliateDisclosurePage from "@/pages/AffiliateDisclosurePage";
 import FairTradingPolicyPage from "@/pages/FairTradingPolicyPage";
 import HowWeRankPage from "@/pages/HowWeRankPage";
+import LegalPage from "@/pages/LegalPage";
 
 export const complianceRoutes = (
   <>
+    <Route path="/legal" element={<LegalPage />} />
     <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
     <Route path="/cookies" element={<CookiePolicyPage />} />
     <Route path="/terms" element={<TermsConditionsPage />} />
