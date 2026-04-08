@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Phone, Mail, MapPin, Globe, Loader2 } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Loader2, MessageCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -35,7 +35,7 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const providerContacts = [
+const providerContacts: { name: string; phone: string | null; liveChat?: string }[] = [
   { name: 'Medichecks', phone: '0345 060 0600' },
   { name: 'GoodBody Clinic', phone: '01225 444 144' },
   { name: 'Randox Health', phone: '028 9442 2413' },
@@ -44,7 +44,7 @@ const providerContacts = [
   { name: 'London Health Company', phone: '020 8087 0017' },
   { name: 'Medical Diagnosis', phone: '020 8830 0503' },
   { name: 'Thriva', phone: null },
-  { name: 'Lola Health', phone: null },
+  { name: 'Lola Health', phone: null, liveChat: 'https://lolahealth.com/pages/contact-us' },
 ];
 
 const ContactPage = () => {
@@ -88,6 +88,7 @@ const ContactPage = () => {
         <PageBanner title="Contact Us" subtitle="We're here to help with any questions about health testing or our platform" />
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
+            {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
               <Card className="text-[#081129]">
@@ -149,91 +150,99 @@ const ContactPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Contact Information */}
-              <div className="space-y-6">
-                {/* Provider Contact Directory */}
-                <Card className="text-[#081129]">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Phone className="h-5 w-5" />
-                      Provider Contact Numbers
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Contact our trusted providers directly for test-specific enquiries.
-                    </p>
-                    <div className="space-y-3">
-                      {providerContacts.map((provider) => (
-                        <div key={provider.name} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                          <span className="font-medium text-sm">{provider.name}</span>
-                          {provider.phone ? (
-                            <a href={`tel:${provider.phone.replace(/\s/g, '')}`} className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors">
-                              {provider.phone}
-                            </a>
-                          ) : (
-                            <span className="text-sm text-muted-foreground flex items-center gap-1">
-                              <Globe className="h-3 w-3" />
-                              Online support only
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="text-[#081129]">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Mail className="h-5 w-5" />
-                      Email Support
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div>
-                        <p className="font-medium">All Enquiries</p>
-                        <p className="text-sm text-primary">support@myhealthcheckup.co.uk</p>
+              {/* Provider Contact Directory */}
+              <Card className="text-[#081129]">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Phone className="h-5 w-5" />
+                    Provider Contact Numbers
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Contact our trusted providers directly for test-specific enquiries.
+                  </p>
+                  <div className="space-y-3">
+                    {providerContacts.map((provider) => (
+                      <div key={provider.name} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                        <span className="font-medium text-sm">{provider.name}</span>
+                        {provider.phone ? (
+                          <a href={`tel:${provider.phone.replace(/\s/g, '')}`} className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors">
+                            {provider.phone}
+                          </a>
+                        ) : provider.liveChat ? (
+                          <a href={provider.liveChat} target="_blank" rel="noopener noreferrer" className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1">
+                            <MessageCircle className="h-3 w-3" />
+                            Live Support
+                          </a>
+                        ) : (
+                          <span className="text-sm text-muted-foreground flex items-center gap-1">
+                            <Globe className="h-3 w-3" />
+                            Online support only
+                          </span>
+                        )}
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-4">Response time: Within 24 hours</p>
-                  </CardContent>
-                </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
-                <Card className="text-[#081129]">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MapPin className="h-5 w-5" />
-                      Office Address
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <address className="not-italic">
-                      <p className="font-medium">myhealth checkup Ltd</p>
-                      <p>2/369 Clapham Road</p>
-                      <p>SW London, SW9 9BT</p>
-                      <p>United Kingdom</p>
-                    </address>
-                    <p className="text-sm mt-4 text-muted-foreground">Company Registration: 16589056 (England & Wales)</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="text-[#081129]">
-                  <CardHeader>
-                    <CardTitle>Emergency Medical Situations</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="border border-destructive/30 rounded-lg p-4 bg-destructive">
-                      <p className="font-medium mb-2 text-destructive-foreground">Important Notice</p>
-                      <p className="text-sm text-destructive-foreground">
-                        If you have a medical emergency, please call 999 or visit your nearest A&E department immediately.
-                        Our service is not suitable for urgent medical situations.
-                      </p>
+            {/* Row 2: Email Support + Office Address */}
+            <div className="grid lg:grid-cols-2 gap-6 mt-6">
+              <Card className="text-[#081129]">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Mail className="h-5 w-5" />
+                    Email Support
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="font-medium">All Enquiries</p>
+                      <p className="text-sm text-primary">support@myhealthcheckup.co.uk</p>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-4">Response time: Within 24 hours</p>
+                </CardContent>
+              </Card>
+
+              <Card className="text-[#081129]">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5" />
+                    Office Address
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <address className="not-italic">
+                    <p className="font-medium">myhealth checkup Ltd</p>
+                    <p>2/369 Clapham Road</p>
+                    <p>SW London, SW9 9BT</p>
+                    <p>United Kingdom</p>
+                  </address>
+                  <p className="text-sm mt-4 text-muted-foreground">Company Registration: 16589056 (England & Wales)</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Row 3: Emergency */}
+            <div className="mt-6 max-w-[calc(50%-0.75rem)]">
+              <Card className="text-[#081129]">
+                <CardHeader>
+                  <CardTitle>Emergency Medical Situations</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="border border-destructive/30 rounded-lg p-4 bg-destructive">
+                    <p className="font-medium mb-2 text-destructive-foreground">Important Notice</p>
+                    <p className="text-sm text-destructive-foreground">
+                      If you have a medical emergency, please call 999 or visit your nearest A&E department immediately.
+                      Our service is not suitable for urgent medical situations.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
