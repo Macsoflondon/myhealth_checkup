@@ -27,14 +27,6 @@ const Footer = () => {
     { name: t('footer.links.contact'), link: "/contact" },
   ];
 
-  const legalLinks = [
-    { name: "Privacy Policy", link: "/privacy-policy" },
-    { name: "Terms & Conditions", link: "/terms" },
-    { name: t('footer.links.cookiePolicy'), link: "/cookies" },
-    
-    { name: "Modern Slavery", link: "/modern-slavery" },
-    { name: "Affiliate Disclosure", link: "/affiliate-disclosure" },
-  ];
 
   return (
     <footer>
@@ -49,10 +41,9 @@ const Footer = () => {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 4-Column Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             <FooterColumn title="Health Tests" links={healthTestLinks} />
             <FooterColumn title="Company" links={companyLinks} />
-            <FooterColumn title="Legal" links={legalLinks} />
             <ConnectColumn />
           </div>
 
