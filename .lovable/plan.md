@@ -1,45 +1,24 @@
 
-Plan: Correct the mistaken homepage section swap in `src/pages/Index.tsx`
+Summary
+- The uploaded screenshot already matches the existing dark `CallToAction` component.
+- The correct change is to insert that section between `HereToHelp` and `TrustPlatformSection` on the homepage.
 
-What went wrong
-- The wrong sections were reordered.
-- Right now, `CallToAction` is still up near the top of the lower homepage block, while `TrustPlatformSection` was moved down near the footer.
-- So the visible bottom-page sections the user meant to swap were not actually swapped.
+Implementation
+1. Update `src/pages/Index.tsx`
+   - Import `CallToAction`.
+   - Render `<CallToAction />` immediately after `<HereToHelp />`.
+   - Keep `<TrustPlatformSection />` directly after it.
 
-Exact fix
-- Edit only `src/pages/Index.tsx` around the current section block (`<CallToAction />`, `<TrustPlatformSection />`, `<ExpertQuotes />`).
-- Move `<TrustPlatformSection />` back to its earlier position above the gradient divider.
-- Leave everything else in the same relative order.
-- Swap only the two lower homepage sections so the ending sequence becomes:
+2. Leave all other sections untouched
+   - Keep `StartJourneySection` where it is now under `PartnersGrid`.
+   - Do not move `ExpertQuotes`, `FeaturedPublications`, `TestimonialCarousel`, or any upper homepage sections.
+   - Do not change any text, buttons, colours, or styling in the CTA itself unless the screenshot reveals a mismatch during implementation.
 
-```text
-TestimonialCarousel
-HereToHelp
-ExpertQuotes
-CallToAction
-Footer
-```
-
-Full relevant target order
-```text
-PartnersGrid
-TrustPlatformSection
-divider
-PartnerShowcaseGrid
-FeaturedPublications
-TestimonialCarousel
-HereToHelp
-ExpertQuotes
-CallToAction
-```
-
-Scope guardrails
-- No text edits
-- No style edits
-- No component changes
-- No route/footer/legal changes
-- Only JSX reordering in one file
-
-Verification
-- Scroll to the bottom of `/` and confirm the last three content sections before the footer are:
-  `Here to Help` → `Backed by Expert Guidance` → `Take Control of Your Health Today`
+Technical details
+- No new component is needed.
+- `src/components/sections/CallToAction.tsx` already closely matches the screenshot:
+  - navy background
+  - decorative circles
+  - white heading/subtext
+  - turquoise and pink CTA buttons
+- This should be a one-file homepage composition change unless
