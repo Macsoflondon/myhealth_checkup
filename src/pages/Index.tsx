@@ -135,8 +135,8 @@ const Index = () => {
         {/* 6. Partners Grid */}
         <PartnersGrid />
 
-        {/* Trust Platform Section */}
-        <TrustPlatformSection />
+        {/* Call to Action */}
+        <CallToAction />
 
         {/* Gradient divider between two navy sections */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
@@ -153,8 +153,8 @@ const Index = () => {
         {/* Here to Help */}
         <HereToHelp />
 
-        {/* Call to Action */}
-        <CallToAction />
+        {/* Trust Platform Section */}
+        <TrustPlatformSection />
 
         {/* Expert Quotes */}
         <ExpertQuotes />
