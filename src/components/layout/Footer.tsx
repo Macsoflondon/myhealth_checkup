@@ -27,14 +27,6 @@ const Footer = () => {
     { name: t('footer.links.contact'), link: "/contact" },
   ];
 
-  const legalLinks = [
-    { name: "Privacy Policy", link: "/privacy-policy" },
-    { name: "Terms & Conditions", link: "/terms" },
-    { name: t('footer.links.cookiePolicy'), link: "/cookies" },
-    
-    { name: "Modern Slavery", link: "/modern-slavery" },
-    { name: "Affiliate Disclosure", link: "/affiliate-disclosure" },
-  ];
 
   return (
     <footer>
