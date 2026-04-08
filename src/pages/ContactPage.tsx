@@ -233,7 +233,7 @@ const ContactPage = () => {
             </div>
 
             {/* Row 3: Emergency */}
-            <div className="mt-6 max-w-[calc(50%-0.75rem)]">
+            <div className="mt-6 w-full lg:max-w-[calc(50%-0.75rem)]">
               <Card className="text-[#081129]">
                 <CardHeader>
                   <CardTitle>Emergency Medical Situations</CardTitle>
