@@ -22,7 +22,7 @@ const Footer = () => {
     { name: "Our Providers", link: "/providers" },
     { name: "Clinic Locations", link: "/locations" },
     { name: t('footer.links.faqs'), link: "/faqs" },
-    { name: t('footer.links.blog'), link: "/blog" },
+    { name: "Health Resource Hub", link: "/blog" },
     { name: "Test Categories", link: "/test-categories" },
     { name: t('footer.links.contact'), link: "/contact" },
   ];
