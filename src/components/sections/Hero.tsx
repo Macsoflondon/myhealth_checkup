@@ -18,7 +18,7 @@ const heroSlides = [
   {
     image: heroClinic,
     headline: "200+ Clinics Nationwide",
-    subline: "Walk in, get tested, and take the guesswork out of your health.",
+    subline: "Choose a clinic, get tested, and take the guesswork out of your health.",
   },
   {
     image: heroHomeKit,
