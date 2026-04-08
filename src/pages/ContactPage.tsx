@@ -85,7 +85,7 @@ const ContactPage = () => {
       <Header />
       <main className="flex-grow bg-[#081129] md:bg-white">
         <PageBreadcrumb segments={[{ label: "Home", href: "/" }, { label: "Contact Us" }]} backLabel="Back" />
-        <PageBanner title="Contact Us" subtitle="We're here to help with any questions about health testing or our platform" />
+        <PageBanner title="You're Never Alone on Your Health Journey" subtitle="Whether you're testing for the first time or monitoring an ongoing condition, we're here to support you every step of the way." />
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
             {/* Row 1: Form + Provider Directory */}
