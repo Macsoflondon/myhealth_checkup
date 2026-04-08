@@ -4,25 +4,18 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
-// Sections
 import Hero from "@/components/sections/Hero";
-
-
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import MissionSection from "@/components/sections/MissionSection";
-
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
-
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import CallToAction from "@/components/sections/CallToAction";
-
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
-
 import HereToHelp from "@/components/sections/HereToHelp";
-import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
+import StartJourneySection from "@/components/sections/StartJourneySection";
 
 const Index = () => {
   usePerformanceOptimization();
@@ -44,7 +37,6 @@ const Index = () => {
       "@type": "PostalAddress",
       addressCountry: "United Kingdom",
     },
-    // FIX 1: audience @type is now a valid Schema.org type, with clean fields only
     audience: {
       "@type": "Audience",
       audienceType: "Health-conscious adults aged 25-65",
@@ -60,7 +52,6 @@ const Index = () => {
       highPrice: "299",
       offerCount: "100+",
     },
-    // FIX 2: @type is now the valid Schema.org type "OpeningHoursSpecification"
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -117,46 +108,23 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Helmet>
 
-        {/* 1. Hero (streamlined) */}
         <div className="mt-4">
           <Hero />
         </div>
 
-        {/* 2. Test Category Ticker */}
         <TestCategoryTicker />
-
-        {/* 3. Mission Section */}
         <MissionSection />
-
-
-        {/* 5. Journey Simplified */}
         <JourneySimplified />
-
-        {/* 6. Partners Grid */}
         <PartnersGrid />
-
-        {/* Call to Action */}
         <CallToAction />
 
-        {/* Gradient divider between two navy sections */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-        {/* Partner Showcase Grid */}
         <PartnerShowcaseGrid />
-
-        {/* Featured Publications */}
         <FeaturedPublications />
-
-        {/* Testimonial Carousel */}
         <TestimonialCarousel />
-
-        {/* Here to Help */}
         <HereToHelp />
-
-        {/* Trust Platform Section */}
-        <TrustPlatformSection />
-
-        {/* Expert Quotes */}
+        <StartJourneySection />
         <ExpertQuotes />
       </MainLayout>
     </ErrorBoundary>
