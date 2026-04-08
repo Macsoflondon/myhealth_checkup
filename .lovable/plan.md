@@ -1,20 +1,45 @@
 
+Plan: Correct the mistaken homepage section swap in `src/pages/Index.tsx`
 
-## Plan: Move "Take Control of Your Health Today" Between "Here to Help" and "Expert Quotes"
+What went wrong
+- The wrong sections were reordered.
+- Right now, `CallToAction` is still up near the top of the lower homepage block, while `TrustPlatformSection` was moved down near the footer.
+- So the visible bottom-page sections the user meant to swap were not actually swapped.
 
-**File: `src/pages/Index.tsx`**
+Exact fix
+- Edit only `src/pages/Index.tsx` around the current section block (`<CallToAction />`, `<TrustPlatformSection />`, `<ExpertQuotes />`).
+- Move `<TrustPlatformSection />` back to its earlier position above the gradient divider.
+- Leave everything else in the same relative order.
+- Swap only the two lower homepage sections so the ending sequence becomes:
 
-Reorder so `<CallToAction />` sits between `<HereToHelp />` and `<ExpertQuotes />`.
+```text
+TestimonialCarousel
+HereToHelp
+ExpertQuotes
+CallToAction
+Footer
+```
 
-Current order:
-1. TestimonialCarousel
-2. **CallToAction** ← move from here
-3. HereToHelp
-4. ExpertQuotes
+Full relevant target order
+```text
+PartnersGrid
+TrustPlatformSection
+divider
+PartnerShowcaseGrid
+FeaturedPublications
+TestimonialCarousel
+HereToHelp
+ExpertQuotes
+CallToAction
+```
 
-New order:
-1. TestimonialCarousel
-2. HereToHelp
-3. **CallToAction** ← to here
-4. ExpertQuotes
+Scope guardrails
+- No text edits
+- No style edits
+- No component changes
+- No route/footer/legal changes
+- Only JSX reordering in one file
 
+Verification
+- Scroll to the bottom of `/` and confirm the last three content sections before the footer are:
+  `Here to Help` → `Backed by Expert Guidance` → `Take Control of Your Health Today`
