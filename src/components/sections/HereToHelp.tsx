@@ -48,7 +48,7 @@ const HereToHelp = () => {
               />
 
               <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4 text-center lg:text-left mx-auto lg:mx-0">
-                Whether you're testing for the first time or monitoring an ongoing condition, we're here to support you every step of the way.
+                Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way.
               </p>
             </div>
 
