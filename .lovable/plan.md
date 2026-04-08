@@ -1,24 +1,22 @@
 
-Summary
-- The uploaded screenshot already matches the existing dark `CallToAction` component.
-- The correct change is to insert that section between `HereToHelp` and `TrustPlatformSection` on the homepage.
 
-Implementation
-1. Update `src/pages/Index.tsx`
-   - Import `CallToAction`.
-   - Render `<CallToAction />` immediately after `<HereToHelp />`.
-   - Keep `<TrustPlatformSection />` directly after it.
+## Plan: Increase Hero Section Height
 
-2. Leave all other sections untouched
-   - Keep `StartJourneySection` where it is now under `PartnersGrid`.
-   - Do not move `ExpertQuotes`, `FeaturedPublications`, `TestimonialCarousel`, or any upper homepage sections.
-   - Do not change any text, buttons, colours, or styling in the CTA itself unless the screenshot reveals a mismatch during implementation.
+The hero images fill the `<section>` container, which gets its height from the inner content padding. To make the hero taller by ~3-4 lines (~48-64px), increase the vertical padding on the content wrapper.
 
-Technical details
-- No new component is needed.
-- `src/components/sections/CallToAction.tsx` already closely matches the screenshot:
-  - navy background
-  - decorative circles
-  - white heading/subtext
-  - turquoise and pink CTA buttons
-- This should be a one-file homepage composition change unless
+### Change
+
+**File: `src/components/sections/Hero.tsx`** (line 103)
+
+Current padding:
+```
+pt-10 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10
+```
+
+New padding (increased by ~4rem total):
+```
+pt-14 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16
+```
+
+This adds roughly 3-4 extra lines of vertical space, making the hero images visibly taller across all breakpoints. No other changes needed — the images already use `absolute inset-0 w-full h-full object-cover` so they automatically fill the larger area.
+
