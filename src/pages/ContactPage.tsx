@@ -35,7 +35,7 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const providerContacts: { name: string; phone: string | null; liveChat?: string }[] = [
+const providerContacts: { name: string; phone: string | null; liveChat?: string; email?: string }[] = [
   { name: 'Medichecks', phone: '0345 060 0600' },
   { name: 'GoodBody Clinic', phone: '01225 444 144' },
   { name: 'Randox Health', phone: '028 9442 2413' },
@@ -43,8 +43,8 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string 
   { name: 'Clinilabs', phone: '020 4525 8805' },
   { name: 'London Health Company', phone: '020 8087 0017' },
   { name: 'Medical Diagnosis', phone: '020 8830 0503' },
-  { name: 'Thriva', phone: null },
   { name: 'Lola Health', phone: null, liveChat: 'https://lolahealth.com/pages/contact-us' },
+  { name: 'Thriva', phone: null, email: 'help@thriva.co' },
 ];
 
 const ContactPage = () => {
@@ -174,6 +174,11 @@ const ContactPage = () => {
                           <a href={provider.liveChat} target="_blank" rel="noopener noreferrer" className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1">
                             <MessageCircle className="h-3 w-3" />
                             Live Support
+                          </a>
+                        ) : provider.email ? (
+                          <a href={`mailto:${provider.email}`} className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1">
+                            <Mail className="h-3 w-3" />
+                            {provider.email}
                           </a>
                         ) : (
                           <span className="text-sm text-muted-foreground flex items-center gap-1">
