@@ -342,7 +342,7 @@ const HeartHealthPage = () => {
                         </Link>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>150+ clinics nationwide with instant availability</p>
+                        <p>200+ clinics nationwide with instant availability</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>
