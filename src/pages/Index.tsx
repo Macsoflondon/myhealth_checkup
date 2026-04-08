@@ -15,7 +15,7 @@ import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import CallToAction from "@/components/sections/CallToAction";
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 import HereToHelp from "@/components/sections/HereToHelp";
-import StartJourneySection from "@/components/sections/StartJourneySection";
+import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 
 const Index = () => {
   usePerformanceOptimization();
@@ -124,7 +124,7 @@ const Index = () => {
         <FeaturedPublications />
         <TestimonialCarousel />
         <HereToHelp />
-        <StartJourneySection />
+        <TrustPlatformSection />
         <ExpertQuotes />
       </MainLayout>
     </ErrorBoundary>
