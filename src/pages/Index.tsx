@@ -14,6 +14,7 @@ import { FeaturedPublications } from "@/components/sections/FeaturedPublications
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 import HereToHelp from "@/components/sections/HereToHelp";
+import CallToAction from "@/components/sections/CallToAction";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import StartJourneySection from "@/components/sections/StartJourneySection";
 
@@ -124,6 +125,7 @@ const Index = () => {
         <FeaturedPublications />
         <TestimonialCarousel />
         <HereToHelp />
+        <CallToAction />
         <TrustPlatformSection />
         <ExpertQuotes />
       </MainLayout>
