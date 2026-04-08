@@ -10,10 +10,9 @@ const AccessibilityPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-muted/30">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="Accessibility"
-          accent="Statement"
+          title="Accessibility Statement"
           subtitle="We're committed to ensuring our website is accessible to everyone, regardless of ability or technology used."
         />
         <div className="container mx-auto px-4 pt-4">
@@ -118,10 +117,9 @@ const AccessibilityPage = () => {
                   please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
-                  <p><strong>Phone:</strong> 0800 123 4567</p>
-                  <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
-                </div>
+                   <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
+                   <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
+                 </div>
               </CardContent>
             </Card>
           </div>

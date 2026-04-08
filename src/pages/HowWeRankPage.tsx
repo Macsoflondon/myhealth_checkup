@@ -9,10 +9,9 @@ const HowWeRankPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="How We"
-          accent="Rank"
+          title="How We Rank"
           subtitle="Understanding our transparent methodology for comparing and ranking health test providers."
         />
         <div className="container mx-auto px-4 pt-4">

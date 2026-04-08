@@ -13,10 +13,9 @@ const TermsConditionsPage = () => {
         <title>Terms & Conditions | myhealth checkup</title>
       </Helmet>
       <Header />
-      <main className="flex-grow bg-muted/30">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="Terms &"
-          accent="Conditions"
+          title="Terms & Conditions"
           subtitle="Please read these terms carefully before using our services."
         />
         <div className="container mx-auto px-4 pt-4">
@@ -133,9 +132,8 @@ const TermsConditionsPage = () => {
                 <p className="mb-4">For questions about these Terms & Conditions, please contact us:</p>
                 <div className="bg-muted p-4 rounded-lg">
                   <p><strong>Email:</strong> legal@myhealthcheckup.co.uk</p>
-                  <p><strong>Phone:</strong> 0800 123 4567</p>
-                  <p><strong>Address:</strong> myhealth checkup, 123 Health Street, SW London, SW1A 1AA</p>
-                  <p><strong>Company Registration:</strong> 12345678 (England & Wales)</p>
+                  <p><strong>Address:</strong> Clapham, SW London, United Kingdom</p>
+                  <p><strong>Company Registration:</strong> 16589056 (England & Wales)</p>
                 </div>
               </CardContent>
             </Card>

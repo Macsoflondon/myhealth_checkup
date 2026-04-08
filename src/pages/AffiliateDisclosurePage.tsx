@@ -9,10 +9,9 @@ const AffiliateDisclosurePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="Affiliate"
-          accent="Disclosure"
+          title="Affiliate Disclosure"
           subtitle="Full transparency about our commercial relationships and how we fund our platform."
         />
         <div className="container mx-auto px-4 pt-4">
