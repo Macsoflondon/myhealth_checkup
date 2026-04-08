@@ -31,7 +31,7 @@ const Footer = () => {
     { name: "Privacy Policy", link: "/privacy-policy" },
     { name: "Terms & Conditions", link: "/terms" },
     { name: t('footer.links.cookiePolicy'), link: "/cookies" },
-    { name: "Accessibility", link: "/accessibility" },
+    
     { name: "Modern Slavery", link: "/modern-slavery" },
     { name: "Affiliate Disclosure", link: "/affiliate-disclosure" },
   ];
@@ -80,8 +80,6 @@ const Footer = () => {
             <Link to="/privacy-policy" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Privacy</Link>
             {" | "}
             <Link to="/terms" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Terms</Link>
-            {" | "}
-            <Link to="/accessibility" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Accessibility</Link>
           </p>
         </div>
       </div>
