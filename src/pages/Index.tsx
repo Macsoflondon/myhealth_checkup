@@ -135,26 +135,26 @@ const Index = () => {
         {/* 6. Partners Grid */}
         <PartnersGrid />
 
-        {/* Call to Action */}
-        <CallToAction />
+        {/* 8. Trust Platform Section */}
+        <TrustPlatformSection />
 
-        {/* Gradient divider */}
+        {/* Gradient divider between two navy sections */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-        {/* Partner Showcase Grid */}
+        {/* 9. Partner Showcase Grid */}
         <PartnerShowcaseGrid />
 
-        {/* Featured Publications */}
+        {/* 10. Featured Publications */}
         <FeaturedPublications />
 
-        {/* Testimonial Carousel */}
+        {/* 14. Testimonial Carousel */}
         <TestimonialCarousel />
 
-        {/* Here to Help */}
+        {/* 15. Here to Help */}
         <HereToHelp />
 
-        {/* Trust Platform Section */}
-        <TrustPlatformSection />
+        {/* 16. Call to Action */}
+        <CallToAction />
 
         {/* 17. Expert Quotes */}
         <ExpertQuotes />
