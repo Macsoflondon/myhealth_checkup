@@ -1,29 +1,29 @@
 
 
-## Plan: Reorder Providers and Add Thriva Email
+## Plan: Translate "Health Resource Hub" Across All Locale Files
 
-**File: `src/pages/ContactPage.tsx`**
+Update the `"blog"` key in both `navigation` and `footer.links` sections of each locale file with the appropriate translation.
 
-### 1. Swap Lola Health above Thriva and add Thriva's support email
+### Translations
 
-Update the `providerContacts` array (lines 38-48) and its type to support an `email` field:
+| Locale | Translation |
+|--------|------------|
+| fr | Centre de Ressources Santé |
+| de | Gesundheits-Ressourcen |
+| es | Centro de Recursos de Salud |
+| it | Centro Risorse Salute |
+| pt | Centro de Recursos de Saúde |
+| nl | Gezondheidscentrum |
+| pl | Centrum Zasobów Zdrowotnych |
+| ar | مركز الموارد الصحية |
+| zh | 健康资源中心 |
+| ja | 健康リソースハブ |
 
-- Change the type to include `email?: string`
-- Move Lola Health (with `liveChat`) above Thriva
-- Add Thriva's support email: `help@thriva.co` with a `mailto:` link
-- Update the render logic to handle the new `email` field — display the email as a clickable `mailto:` link with a `Mail` icon, styled in turquoise like the other contact methods
+### Files to edit (10 files, 1-2 lines each)
 
-### Updated array order:
-1. Medichecks — phone
-2. GoodBody Clinic — phone
-3. Randox Health — phone
-4. London Medical Laboratory — phone
-5. Clinilabs — phone
-6. London Health Company — phone
-7. Medical Diagnosis — phone
-8. **Lola Health** — live chat link
-9. **Thriva** — email link (`help@thriva.co`)
+Each file gets the `"blog"` value updated in:
+- `navigation.blog` (all files)
+- `footer.links.blog` (fr, de, es, it, zh, ar, ja — the ones that have this key)
 
-### Render logic addition:
-Add a third condition in the provider list rendering: if `email` is set, render a `mailto:` link with a `Mail` icon and the email address text.
+nl, pl, pt only have `navigation.blog` based on the current file structure.
 
