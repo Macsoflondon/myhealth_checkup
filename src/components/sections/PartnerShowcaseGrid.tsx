@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
-import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
+import StartJourneySection from "@/components/sections/StartJourneySection";
 
 const PartnerShowcaseGrid = () => {
 
@@ -39,8 +39,8 @@ const PartnerShowcaseGrid = () => {
         </div>
       </div>
 
-      {/* Why Trust Us */}
-      <TrustPlatformSection embedded />
+      {/* Start Your Journey Today */}
+      <StartJourneySection />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
