@@ -1,27 +1,42 @@
 
 
-## Plan: Dark Blue Button Borders + Goodbody Logo Crop in Partners Carousel
+## Plan: Contact Us Page Overhaul
 
-### 1. Add dark navy border to all turquoise/pink buttons
+### Summary
+Six changes to `src/pages/ContactPage.tsx`:
 
-**File: `src/components/ui/button.tsx`**
+### 1. "Contact Us" on one line
+Change from `title="Contact" accent="Us"` to `title="Contact Us"` (no accent). This renders it as a single line instead of splitting across two spans.
 
-Add `border-2 border-[#081129]` to the base CVA string (line 8). This applies a dark navy border to every button variant across the platform. The base string already has shared styles, so adding the border there ensures universal coverage without changing individual variants.
+### 2. Responsive background colour
+Change the `<main>` background from `bg-muted/30` to `bg-[#081129] md:bg-white` — dark navy on mobile, white on tablet/desktop.
 
-### 2. Crop Goodbody logo whitespace in Partners carousel
+### 3. Card text colour
+Add `text-[#081129]` to all Card components on this page so text is dark navy instead of black.
 
-**File: `src/components/sections/PartnersGrid.tsx`**
+### 4. Turquoise placeholder text
+Add `placeholder:text-[#22c0d4]` class to every Input and Textarea on this page, making the placeholder text (e.g. "Enter your first name") turquoise.
 
-The Goodbody logo currently has `max-h-[130px] sm:max-h-[160px]` — larger than others to compensate for whitespace in the image. Since the image itself has excessive white padding that causes it to overflow the `h-32 sm:h-40` card, we will:
+### 5. Replace Phone Support card with Provider Contact Directory
+Remove the fake "0800 123 4567" number and hours. Replace with a list of providers and their publicly listed phone numbers:
 
-- Add `overflow-hidden` to the card container (already present via parent, but reinforce on the img)
-- Use `object-cover` instead of `object-contain` for Goodbody only, combined with a constrained height matching other logos (`max-h-[90px] sm:max-h-[120px]`) — this will crop the whitespace while keeping the logo itself the same visual size
+| Provider | Phone |
+|----------|-------|
+| Medichecks | 0345 060 0600 |
+| GoodBody Clinic | 01225 444 144 |
+| Randox Health | 028 9442 2413 |
+| London Medical Laboratory | 0207 183 6122 |
+| Clinilabs | 020 4525 8805 |
+| London Health Company | 020 8087 0017 |
+| Medical Diagnosis | 020 8830 0503 |
 
-Alternatively, a cleaner approach: keep `object-contain` but reduce the Goodbody max-height to match others (`max-h-[90px] sm:max-h-[120px]`) so it fits within the card bounds without overflow. The logo will appear slightly smaller but properly contained.
+Providers without a publicly listed phone number (Thriva, Lola Health) will show "Online support only" instead. The card title changes to "Provider Contact Numbers" with a note: "Contact our trusted providers directly for test-specific enquiries."
 
-The best approach is to keep the same container size but clip the image whitespace. We'll set the Goodbody image to the same max-height as others and ensure the card has `overflow-hidden` so nothing bleeds out.
+### 6. No other changes
+Cards remain white with their existing dark navy border. Email support, office address, and emergency cards stay as-is.
 
-**Changes:**
-- Line 109: Add `overflow-hidden` to the card Link className
-- Line 120-121: Change Goodbody sizing from `max-h-[130px] sm:max-h-[160px]` to `max-h-[90px] sm:max-h-[120px]` to match other providers
+### Technical Details
+- Single file edit: `src/pages/ContactPage.tsx`
+- No new dependencies
+- Responsive breakpoint uses `md:` prefix (768px+) matching the project's mobile-first approach
 
