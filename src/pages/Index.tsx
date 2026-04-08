@@ -125,6 +125,7 @@ const Index = () => {
         <FeaturedPublications />
         <TestimonialCarousel />
         <HereToHelp />
+        <CallToAction />
         <TrustPlatformSection />
         <ExpertQuotes />
       </MainLayout>
