@@ -1,64 +1,39 @@
 
 
-## Plan: Standardise All Legal Pages
+## Plan: Legal Hub Page + Footer Copyright Line Update
 
 ### Summary
-Apply consistent styling and correct contact information across all legal/compliance pages: Terms & Conditions, Privacy Policy, Cookie Policy, Modern Slavery, Affiliate Disclosure, Fair Trading Policy, How We Rank, and Accessibility.
+Create a new "Legal" hub page that lists all legal/compliance policies as links. Update the footer copyright line to show "Legal | Terms & Conditions" instead of "Privacy | Terms".
 
 ### Changes
 
-#### 1. Reduce PageBanner heading size (global change)
-**File: `src/components/ui/page-heading.tsx`** (line 34)
+#### 1. Create new Legal Hub page
+**New file: `src/pages/LegalPage.tsx`**
 
-Reduce the H1 sizes by roughly 25%:
-- From: `text-3xl sm:text-4xl md:text-5xl lg:text-6xl`
-- To: `text-2xl sm:text-3xl md:text-4xl lg:text-5xl`
+A clean page with PageBanner title "Legal" listing all compliance pages as clickable cards/links:
+- Privacy Policy → `/privacy-policy`
+- Terms & Conditions → `/terms`
+- Cookie Policy → `/cookies`
+- Modern Slavery Statement → `/modern-slavery`
+- Affiliate Disclosure → `/affiliate-disclosure`
+- Fair Trading Policy → `/fair-trading`
+- How We Rank → `/how-we-rank`
 
-This affects all pages using PageBanner/PageHeading — keeping it uniform.
+White background, consistent with other legal pages.
 
-#### 2. Put titles on one line + white backgrounds
+#### 2. Add route
+**File: `src/routes/complianceRoutes.tsx`**
 
-**Each legal page file** — two changes per file:
+Add: `<Route path="/legal" element={<LegalPage />} />`
 
-| Page | File | Title change | Background change |
-|------|------|-------------|-------------------|
-| Terms & Conditions | `TermsConditionsPage.tsx` | `title="Terms & Conditions"` (remove `accent`) | `bg-muted/30` → `bg-white` |
-| Privacy Policy | `PrivacyPolicyPage.tsx` | `title="Privacy Policy"` (remove `accent`) | `bg-gray-50` → `bg-white` |
-| Cookie Policy | `CookiePolicyPage.tsx` | `title="Cookie Policy"` (remove `accent`) | `bg-muted/30` → `bg-white` |
-| Modern Slavery | `ModernSlaveryPage.tsx` | `title="Modern Slavery Statement"` (remove `accent`) | `bg-gray-50` → `bg-white` |
-| Affiliate Disclosure | `AffiliateDisclosurePage.tsx` | `title="Affiliate Disclosure"` (remove `accent`) | `bg-gray-50` → `bg-white` |
-| Fair Trading | `FairTradingPolicyPage.tsx` | `title="Fair Trading Policy"` (remove `accent`) | `bg-gray-50` → `bg-white` |
-| How We Rank | `HowWeRankPage.tsx` | `title="How We Rank"` (remove `accent`) | `bg-gray-50` → `bg-white` |
-| Accessibility | `AccessibilityPage.tsx` | `title="Accessibility Statement"` (remove `accent`) | `bg-muted/30` → `bg-white` |
+#### 3. Update footer copyright line
+**File: `src/components/layout/Footer.tsx`** (lines 79-82)
 
-#### 3. Update contact information to correct details
+- Change "Privacy" link to "Legal" pointing to `/legal`
+- Change "Terms" to "Terms & Conditions" pointing to `/terms`
 
-**Terms & Conditions** (`TermsConditionsPage.tsx`, lines 134-138):
-- Email: `legal@myhealthcheckup.co.uk`
-- Remove phone number line entirely
-- Address: `Clapham, SW London, United Kingdom`
-- Company Registration: `16589056`
+Result: `© 2026 myhealth checkup. All rights reserved. Legal | Terms & Conditions`
 
-**Accessibility** (`AccessibilityPage.tsx`, lines 121-123):
-- Email: `accessibility@myhealthcheckup.co.uk` (keep as-is, appropriate for context)
-- Remove phone number line
-- Add: `Response time: We aim to respond within 2 business days` (keep)
-
-**Cookie Policy** (`CookiePolicyPage.tsx`, line 120):
-- Already shows `privacy@myhealthcheckup.co.uk` — keep as-is, appropriate
-
-**Fair Trading** (contact info is inside `FairTradingPolicy.tsx` component, section 7):
-- Already correct (Clapham, London, 07776330508, legal@myhealthcheckup.co.uk) — keep as-is
-
-**Modern Slavery, Affiliate Disclosure, How We Rank** — no contact cards to update.
-
-#### 4. Also update inner compliance component headings
-
-The compliance components (`AffiliateDisclosure.tsx`, `ModernSlaveryStatement.tsx`, `HowWeRank.tsx`, `FairTradingPolicy.tsx`) have their own `PageHeading` inside the content area, duplicating the banner title. Remove these inner `PageHeading` calls since the `PageBanner` already provides the H1 — avoids duplicate headings.
-
-### Files changed (up to 13 files)
-- `src/components/ui/page-heading.tsx` — reduce font sizes
-- 8 page files — title on one line, white background
-- 2 page files — correct contact info (Terms, Accessibility)
-- 4 compliance component files — remove duplicate inner PageHeading
+#### 4. Keep Legal column in footer grid as-is
+The Legal column with its individual links stays — the new hub page is an additional convenience from the copyright bar.
 
