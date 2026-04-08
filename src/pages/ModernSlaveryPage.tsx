@@ -9,10 +9,9 @@ const ModernSlaveryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="Modern Slavery"
-          accent="Statement"
+          title="Modern Slavery Statement"
           subtitle="Our commitment to preventing modern slavery and human trafficking in our operations and supply chain."
         />
         <div className="container mx-auto px-4 pt-4">

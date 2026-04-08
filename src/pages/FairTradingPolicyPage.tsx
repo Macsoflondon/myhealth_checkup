@@ -9,10 +9,9 @@ const FairTradingPolicyPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="Fair Trading"
-          accent="Policy"
+          title="Fair Trading Policy"
           subtitle="Our commitment to fair, transparent, and ethical trading practices."
         />
         <div className="container mx-auto px-4 pt-4">

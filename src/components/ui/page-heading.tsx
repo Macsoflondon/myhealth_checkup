@@ -31,7 +31,7 @@ const PageHeading = ({
       animate && "animate-fade-in",
       className
     )}>
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight tracking-tight">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold leading-tight tracking-tight">
         <span className="text-[#081129] block mb-2">{title}</span>
         {accent && (
           <span className="text-[#081129] inline-block">

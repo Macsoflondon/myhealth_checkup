@@ -14,10 +14,9 @@ const CookiePolicyPage = () => {
         <title>Cookie Policy | myhealth checkup</title>
       </Helmet>
       <Header />
-      <main className="flex-grow bg-muted/30">
+      <main className="flex-grow bg-white">
         <PageBanner
-          title="Cookie"
-          accent="Policy"
+          title="Cookie Policy"
           subtitle="This Cookie Policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
         />
         <div className="container mx-auto px-4 pt-4">
