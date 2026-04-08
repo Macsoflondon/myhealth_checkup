@@ -1,29 +1,13 @@
 
 
-## Plan: Translate "Health Resource Hub" Across All Locale Files
+## Plan: Contact Page Subtitle — Two Lines + Turquoise
 
-Update the `"blog"` key in both `navigation` and `footer.links` sections of each locale file with the appropriate translation.
+**File: `src/components/sections/PageBanner.tsx`** (line 21)
 
-### Translations
+Two changes to the subtitle `<p>` tag:
 
-| Locale | Translation |
-|--------|------------|
-| fr | Centre de Ressources Santé |
-| de | Gesundheits-Ressourcen |
-| es | Centro de Recursos de Salud |
-| it | Centro Risorse Salute |
-| pt | Centro de Recursos de Saúde |
-| nl | Gezondheidscentrum |
-| pl | Centrum Zasobów Zdrowotnych |
-| ar | مركز الموارد الصحية |
-| zh | 健康资源中心 |
-| ja | 健康リソースハブ |
+1. **Colour**: Change `text-white` to `text-[#22c0d4]` (brand turquoise).
+2. **Width**: Change `max-w-2xl` to `max-w-3xl` to allow the text to spread wider, fitting on two lines instead of three at desktop viewport.
 
-### Files to edit (10 files, 1-2 lines each)
-
-Each file gets the `"blog"` value updated in:
-- `navigation.blog` (all files)
-- `footer.links.blog` (fr, de, es, it, zh, ar, ja — the ones that have this key)
-
-nl, pl, pt only have `navigation.blog` based on the current file structure.
+No other files or elements affected — this only changes the subtitle paragraph in the PageBanner component.
 
