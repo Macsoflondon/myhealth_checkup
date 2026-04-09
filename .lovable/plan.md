@@ -1,26 +1,26 @@
 
 
-# Plan: Insert Batch 3 — 20 Biomarkers (Thyroid, Hormones, Minerals)
+## Plan: Single-Line Toolbar + Remove Dark Strip
 
-## Category mapping
+### Problem
+1. The navigation toolbar wraps to two lines at this viewport width because 8 items + "More" don't fit in one row
+2. A dark strip (the bottom gradient divider) appears between the toolbar and the hero image
 
-| Biomarkers | Category |
-|---|---|
-| FT4, FT3, Total T4, Total T3, TPOAb, TgAb, Thyroglobulin | Thyroid |
-| Oestradiol, Progesterone, Total Testosterone, Free Testosterone, SHBG, LH, FSH, Prolactin, DHEA-S, Cortisol | Hormones |
-| Zinc, Magnesium, Selenium | Minerals |
+### Fix 1: Force toolbar to one line
+**File: `src/components/layout/Header.tsx`** (line 162)
 
-## Change
+Change the NavigationItems className from `flex-wrap` to `flex-nowrap` so items stay on one line. The individual nav item text sizes already scale down at smaller breakpoints.
 
-**New migration: `supabase/migrations/20260409_insert_biomarkers_batch3.sql`**
+**File: `src/components/header/NavigationMenu.tsx`** (line 197)
 
-Single `INSERT INTO biomarkers_library` with 20 rows. Each row includes `biomarker_name`, `biomarker_code`, `category`, `description`, `unit_of_measurement`, `normal_range_male`, `normal_range_female`, `clinical_significance`, `related_conditions`, `lifestyle_factors`, and `interpretation_guide` (JSON with low/high/urgent/improvement keys).
+Change the desktop flex container from `flex-wrap` to `flex-nowrap` to prevent wrapping.
 
-Codes: FT4, FT3, TT4, TT3, TPOAB, TGAB, TG, E2, PROG, TT, FT, SHBG, LH, FSH, PRL, DHEAS, CORT, ZN, MG, SE.
+### Fix 2: Remove bottom gradient divider
+**File: `src/components/layout/Header.tsx`** (line 166)
 
-## Scope
+Remove the bottom gradient divider line (`<div className="h-[3px] bg-gradient-to-r ...">`) that sits between the toolbar and the hero section. The top gradient divider above the toolbar stays.
 
-- 1 migration file only
-- No component or page changes
-- Data appears automatically via existing `useBiomarkersLibrary` hook
+### Scope
+- 2 files modified: `Header.tsx`, `NavigationMenu.tsx`
+- No visual or functional changes to anything else
 
