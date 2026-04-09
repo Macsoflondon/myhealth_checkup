@@ -56,36 +56,35 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
-// Wrapper to handle React 19 strict mode Leaflet cleanup
-// Uses imperative map creation to avoid the "already initialized" error
-function SafeMapContainer({ children, className, ...props }: any) {
-  const [mounted, setMounted] = useState(false);
-  const mapRef = useRef<L.Map | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Delay mount by one tick to let strict mode's unmount happen first
-    const timer = setTimeout(() => setMounted(true), 0);
-    return () => {
-      clearTimeout(timer);
-      setMounted(false);
-      // Remove the map instance on cleanup
-      if (mapRef.current) {
-        mapRef.current.remove();
-        mapRef.current = null;
-      }
-    };
-  }, []);
-
-  if (!mounted) {
-    return <div className={className} />;
+// Error boundary specifically for Leaflet's React 19 strict mode issue
+class MapErrorBoundary extends React.Component<
+  { children: React.ReactNode; fallback?: React.ReactNode },
+  { hasError: boolean; retryCount: number }
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, retryCount: 0 };
   }
 
-  return (
-    <RMapContainer ref={mapRef} className={className} {...props}>
-      {children}
-    </RMapContainer>
-  );
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error) {
+    if (error.message === 'Map container is already initialized.' && this.state.retryCount < 3) {
+      // Leaflet strict mode issue — retry after a tick
+      setTimeout(() => {
+        this.setState(prev => ({ hasError: false, retryCount: prev.retryCount + 1 }));
+      }, 100);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || <div className="h-full w-full flex items-center justify-center bg-muted/50"><Loader2 className="w-8 h-8 animate-spin text-[#FA6980]" /></div>;
+    }
+    return this.props.children;
+  }
 }
 
 // Component to fly map to new location
