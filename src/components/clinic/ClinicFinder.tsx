@@ -62,9 +62,16 @@ function SafeMapContainer({ children, ...props }: any) {
 
   useEffect(() => {
     return () => {
-      // Clean up Leaflet's internal reference on unmount
-      if (containerRef.current) {
-        (containerRef.current as any)._leaflet_id = undefined;
+      // Clean up Leaflet's internal references on unmount
+      const el = containerRef.current;
+      if (el) {
+        // Remove _leaflet_id from the container and all children
+        delete (el as any)._leaflet_id;
+        el.querySelectorAll('[class*="leaflet"]').forEach((child) => {
+          delete (child as any)._leaflet_id;
+        });
+        // Remove all child nodes to ensure a fresh container
+        el.innerHTML = '';
       }
     };
   }, []);
