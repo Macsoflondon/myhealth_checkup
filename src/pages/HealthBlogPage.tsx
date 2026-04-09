@@ -62,11 +62,11 @@ const HealthBlogPage = () => {
       <main className="flex-grow">
         <PageBanner
           title="Health Resources"
-          subtitle="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults aged 30-60."
+          subtitle="Expert insights, evidence-based guides, and the latest research to help you make informed decisions about your health."
         />
 
         {/* Categories Filter */}
-        <section className="border-b bg-[#081129] py-4">
+        <section className="bg-[#081129] py-4">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap gap-2 justify-center">
               {categories.map((category) => (
@@ -77,8 +77,8 @@ const HealthBlogPage = () => {
                   onClick={() => setActiveCategory(category)}
                   className={
                     activeCategory === category 
-                      ? "bg-[#e70d69] hover:bg-[#e70d69]/90 text-white text-xs font-medium"
-                      : "border-white/30 text-white hover:bg-[#22c0d4] hover:text-white hover:border-[#22c0d4] text-xs font-medium"
+                      ? "bg-[#e70d69] hover:bg-[#e70d69]/90 text-white border-[#081129] border-2 text-xs font-medium"
+                      : "bg-[#22c0d4] hover:bg-[#e70d69] text-white border-[#081129] border-2 text-xs font-medium"
                   }
                 >
                   {category}
@@ -87,6 +87,7 @@ const HealthBlogPage = () => {
             </div>
           </div>
         </section>
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
         {/* Featured Articles */}
         <section className="py-16">
