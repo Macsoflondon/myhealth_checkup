@@ -379,6 +379,7 @@ const ClinicFinder = () => {
             ) : (
               <RMapContainer
                 key={`clinic-map-${mapKey}`}
+                id={`leaflet-map-${mapContainerId}-${mapKey}`}
                 center={mapCenter}
                 zoom={userLocation ? 12 : DEFAULT_ZOOM}
                 className="h-full w-full"
