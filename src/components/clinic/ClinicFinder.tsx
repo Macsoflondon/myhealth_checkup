@@ -466,7 +466,7 @@ const ClinicFinder = () => {
                     </RMarker>
                   ))}
                 </MarkerClusterGroup>
-              </RMapContainer>
+              </SafeMapContainer>
             )}
           </div>
         </Card>
