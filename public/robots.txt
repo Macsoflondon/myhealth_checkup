@@ -3,16 +3,14 @@
 User-agent: *
 Allow: /
 
-# Sitemap - Updated to correct domain
+# Sitemap
 Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
 
 # Important routes
 Allow: /compare
-Allow: /subscriptions 
 Allow: /how-it-works
 Allow: /about
-Allow: /auth
-Allow: /dashboard
+Allow: /test-categories
 
 # Googlebot specific
 User-agent: Googlebot

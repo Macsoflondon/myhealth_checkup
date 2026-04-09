@@ -41,7 +41,7 @@ export function AppRoutes() {
       <Route path="/admin/data-refresh" element={<AdminRoute><AdminDataRefreshPage /></AdminRoute>} />
       <Route path="/admin/scrapers" element={<AdminRoute><AdminScraperDashboardPage /></AdminRoute>} />
       <Route path="/admin/test-mapper" element={<AdminRoute><AdminTestMapperPage /></AdminRoute>} />
-      <Route path="/admin/test-dashboard" element={<AdminTestDashboardPage />} />
+      <Route path="/admin/test-dashboard" element={<AdminRoute><AdminTestDashboardPage /></AdminRoute>} />
       
       {/* Feature Routes */}
       {featureRoutes}
