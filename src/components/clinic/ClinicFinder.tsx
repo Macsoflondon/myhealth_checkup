@@ -418,7 +418,8 @@ const ClinicFinder = () => {
                 <Loader2 className="w-8 h-8 animate-spin text-[#FA6980]" />
               </div>
             ) : (
-              <SafeMapContainer
+              <MapErrorBoundary>
+              <RMapContainer
                 key={`clinic-map-${mapKey}`}
                 center={mapCenter}
                 zoom={userLocation ? 12 : DEFAULT_ZOOM}
@@ -475,7 +476,8 @@ const ClinicFinder = () => {
                     </RMarker>
                   ))}
                 </MarkerClusterGroup>
-              </SafeMapContainer>
+              </RMapContainer>
+              </MapErrorBoundary>
             )}
           </div>
         </Card>
