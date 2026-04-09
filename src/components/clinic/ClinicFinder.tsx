@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -56,6 +56,37 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
+// Error boundary specifically for Leaflet's React 19 strict mode issue
+class MapErrorBoundary extends React.Component<
+  { children: React.ReactNode; fallback?: React.ReactNode },
+  { hasError: boolean; retryCount: number }
+> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, retryCount: 0 };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error) {
+    if (error.message === 'Map container is already initialized.' && this.state.retryCount < 3) {
+      // Leaflet strict mode issue — retry after a tick
+      setTimeout(() => {
+        this.setState(prev => ({ hasError: false, retryCount: prev.retryCount + 1 }));
+      }, 100);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || <div className="h-full w-full flex items-center justify-center bg-muted/50"><Loader2 className="w-8 h-8 animate-spin text-[#FA6980]" /></div>;
+    }
+    return this.props.children;
+  }
+}
+
 // Component to fly map to new location
 function FlyToLocation({ center }: { center: [number, number] | null }) {
   const map = useMap();
@@ -79,9 +110,20 @@ const ClinicFinder = () => {
   const [radiusFilter, setRadiusFilter] = useState<string>("all");
   const [providerFilter, setProviderFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
-  const [mapKey, setMapKey] = useState(0); // Key to force map remount if needed
+  const [mapKey, setMapKey] = useState(() => Date.now());
   const mapInitialized = useRef(false);
+  const [mapReady, setMapReady] = useState(false);
   const { toast } = useToast();
+
+  // Defer map rendering to avoid React 19 strict mode double-init crash
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => setMapReady(true));
+    return () => {
+      cancelAnimationFrame(timer);
+      setMapReady(false);
+      setMapKey(Date.now());
+    };
+  }, []);
 
   // Load all clinics on mount
   useEffect(() => {
@@ -371,11 +413,12 @@ const ClinicFinder = () => {
         {/* Map */}
         <Card className="border-2 border-muted overflow-hidden">
           <div className="h-[600px] w-full relative">
-            {loading ? (
+            {loading || !mapReady ? (
               <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
                 <Loader2 className="w-8 h-8 animate-spin text-[#FA6980]" />
               </div>
             ) : (
+              <MapErrorBoundary>
               <RMapContainer
                 key={`clinic-map-${mapKey}`}
                 center={mapCenter}
@@ -434,6 +477,7 @@ const ClinicFinder = () => {
                   ))}
                 </MarkerClusterGroup>
               </RMapContainer>
+              </MapErrorBoundary>
             )}
           </div>
         </Card>

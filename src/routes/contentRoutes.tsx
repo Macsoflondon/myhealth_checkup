@@ -8,8 +8,8 @@ import HealthBlogPage from "@/pages/HealthBlogPage";
 import SitemapPage from "@/pages/SitemapPage";
 import ConditionsPage from "@/pages/ConditionsPage";
 import TrustedProvidersPage from "@/pages/TrustedProvidersPage";
-import SportsPerformancePage from "@/pages/SportsPerformancePage";
 import TypographyShowcasePage from "@/pages/TypographyShowcasePage";
+import { AdminRoute } from "@/components/auth/AdminRoute";
 
 export const contentRoutes = (
   <>
@@ -23,7 +23,6 @@ export const contentRoutes = (
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
-    <Route path="/sports-performance" element={<SportsPerformancePage />} />
-    <Route path="/typography-showcase" element={<TypographyShowcasePage />} />
+    <Route path="/typography-showcase" element={<AdminRoute><TypographyShowcasePage /></AdminRoute>} />
   </>
 );
