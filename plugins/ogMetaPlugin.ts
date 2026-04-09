@@ -256,6 +256,11 @@ const routeMetadata: Record<string, RouteMeta> = {
     description: 'Compare private wellness blood tests from UK providers. Comprehensive health checks for proactive wellbeing.',
     url: `${BASE_URL}/wellness`,
   },
+  '/biomarker-database': {
+    title: 'Biomarker Database | myhealth checkup',
+    description: 'Explore our comprehensive biomarker database. Search by name, code, or category to understand what each blood test marker measures and why it matters.',
+    url: `${BASE_URL}/biomarker-database`,
+  },
 };
 
 function replaceTag(html: string, regex: RegExp, replacement: string): string {
