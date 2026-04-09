@@ -382,7 +382,7 @@ const ClinicFinder = () => {
         {/* Map */}
         <Card className="border-2 border-muted overflow-hidden">
           <div className="h-[600px] w-full relative">
-            {loading ? (
+            {loading || !mapReady ? (
               <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
                 <Loader2 className="w-8 h-8 animate-spin text-[#FA6980]" />
               </div>
