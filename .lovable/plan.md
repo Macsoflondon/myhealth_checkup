@@ -1,26 +1,27 @@
 
 
-## Plan: Single-Line Toolbar + Remove Dark Strip
+# Plan: Health Resources Page — Gradient Line, Button Colours & Subtitle Rewrite
 
-### Problem
-1. The navigation toolbar wraps to two lines at this viewport width because 8 items + "More" don't fit in one row
-2. A dark strip (the bottom gradient divider) appears between the toolbar and the hero image
+## Changes (all in `src/pages/HealthBlogPage.tsx`)
 
-### Fix 1: Force toolbar to one line
-**File: `src/components/layout/Header.tsx`** (line 162)
+### 1. Replace white border with three-toned gradient line
+The categories filter section (line 69) has `border-b` which renders as a white line. Remove `border-b` and add the standard gradient divider `<div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />` after the section closing tag.
 
-Change the NavigationItems className from `flex-wrap` to `flex-nowrap` so items stay on one line. The individual nav item text sizes already scale down at smaller breakpoints.
+### 2. Category filter buttons — turquoise idle state
+Change inactive button styling (line 81) from `border-white/30 text-white` to turquoise background with white text, matching the platform button standard:
+- Inactive: `bg-[#22c0d4] hover:bg-[#e70d69] text-white border-[#081129] border-2`
+- Active: `bg-[#e70d69] hover:bg-[#e70d69]/90 text-white border-[#081129] border-2`
 
-**File: `src/components/header/NavigationMenu.tsx`** (line 197)
+### 3. Rewrite subtitle
+Change line 65 from:
+> "Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults aged 30-60."
 
-Change the desktop flex container from `flex-wrap` to `flex-nowrap` to prevent wrapping.
+To:
+> "Expert insights, evidence-based guides, and the latest research to help you make informed decisions about your health."
 
-### Fix 2: Remove bottom gradient divider
-**File: `src/components/layout/Header.tsx`** (line 166)
-
-Remove the bottom gradient divider line (`<div className="h-[3px] bg-gradient-to-r ...">`) that sits between the toolbar and the hero section. The top gradient divider above the toolbar stays.
+This removes the age restriction, keeps the tone professional and inclusive, and appeals to the core demographic without excluding anyone.
 
 ### Scope
-- 2 files modified: `Header.tsx`, `NavigationMenu.tsx`
-- No visual or functional changes to anything else
+- 1 file modified: `HealthBlogPage.tsx`
+- No structural or component changes
 
