@@ -79,8 +79,9 @@ const ClinicFinder = () => {
   const [radiusFilter, setRadiusFilter] = useState<string>("all");
   const [providerFilter, setProviderFilter] = useState<string>("all");
   const [showFilters, setShowFilters] = useState(false);
-  const [mapKey, setMapKey] = useState(0); // Key to force map remount if needed
+  const [mapKey, setMapKey] = useState(() => Date.now()); // Unique key per mount cycle
   const mapInitialized = useRef(false);
+  const mapContainerId = useId();
   const { toast } = useToast();
 
   // Load all clinics on mount
