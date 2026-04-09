@@ -84,6 +84,16 @@ const ClinicFinder = () => {
   const [mapReady, setMapReady] = useState(false);
   const { toast } = useToast();
 
+  // Defer map rendering to avoid React 19 strict mode double-init crash
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => setMapReady(true));
+    return () => {
+      cancelAnimationFrame(timer);
+      setMapReady(false);
+      setMapKey(Date.now());
+    };
+  }, []);
+
   // Load all clinics on mount
   useEffect(() => {
     loadClinics();
