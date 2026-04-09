@@ -1,4 +1,3 @@
-// Direct App entry - v3.1 cache-busted
 import { StrictMode } from "react";
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
@@ -18,6 +17,3 @@ root.render(
     </ErrorBoundary>
   </StrictMode>
 );
-
-// Signal to prerenderer that the app has mounted
-document.dispatchEvent(new Event('x-render-complete'));
