@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +10,11 @@ import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 const AccessibilityPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Accessibility | myhealth checkup</title>
+        <meta name="description" content="Our commitment to making myhealth checkup accessible to everyone. WCAG 2.1 AA compliant with screen reader support and keyboard navigation." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/accessibility" />
+      </Helmet>
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner

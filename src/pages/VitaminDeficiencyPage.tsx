@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -60,6 +61,11 @@ const VitaminDeficiencyPage = () => {
     color: "text-green-600"
   }];
   return <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Vitamin Deficiency Tests | myhealth checkup</title>
+        <meta name="description" content="Compare vitamin and mineral deficiency tests from UK providers. Test for vitamin D, B12, iron, and folate deficiencies from £39." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/tests/vitamins" />
+      </Helmet>
       
       <Header />
       <main className="flex-grow">

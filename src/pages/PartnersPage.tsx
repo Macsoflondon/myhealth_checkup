@@ -71,6 +71,8 @@ const PartnersPage = () => {
   return <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Our Partners | myhealth checkup</title>
+        <meta name="description" content="Meet our trusted UKAS-accredited healthcare partners. We work with the UK's leading providers to bring you reliable health testing services." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/partners" />
       </Helmet>
       <Header />
       <main className="flex-grow">

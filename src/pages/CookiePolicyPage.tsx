@@ -12,6 +12,8 @@ const CookiePolicyPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Cookie Policy | myhealth checkup</title>
+        <meta name="description" content="How myhealth checkup uses cookies and similar technologies. Manage your cookie preferences and understand our data practices." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/cookies" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBreadcrumb from '@/components/common/PageBreadcrumb';
@@ -8,6 +9,11 @@ import PageBanner from '@/components/sections/PageBanner';
 const ModernSlaveryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Modern Slavery Statement | myhealth checkup</title>
+        <meta name="description" content="Our commitment to preventing modern slavery and human trafficking in our operations and supply chain, in compliance with the Modern Slavery Act 2015." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/modern-slavery" />
+      </Helmet>
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner

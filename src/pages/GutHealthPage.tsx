@@ -40,6 +40,7 @@ const GutHealthPage = () => {
       <Helmet>
         <title>Gut Health Tests | myhealth checkup</title>
         <meta name="description" content="Compare gut health tests from top UK providers. Microbiome analysis, food intolerance testing, and digestive health screening from £89." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/tests/gut" />
       </Helmet>
       
       <Header />
