@@ -1,22 +1,20 @@
 
 
-## Plan: Increase Hero Section Height
+## Plan: Update "View all tests" Button to Platform Standard
 
-The hero images fill the `<section>` container, which gets its height from the inner content padding. To make the hero taller by ~3-4 lines (~48-64px), increase the vertical padding on the content wrapper.
+**File: `src/components/tests/MostPopularTests.tsx`** (line 93)
 
-### Change
+Change the button from pink-idle/turquoise-hover to turquoise-idle/pink-hover with navy border, matching the platform button standard.
 
-**File: `src/components/sections/Hero.tsx`** (line 103)
-
-Current padding:
+**From:**
 ```
-pt-10 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10
+bg-[hsl(var(--brand-pink))] hover:bg-[hsl(var(--brand-turquoise))] text-white px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-full w-full sm:w-auto
 ```
 
-New padding (increased by ~4rem total):
+**To:**
 ```
-pt-14 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16
+bg-[#22c0d4] hover:bg-[#e70d69] text-white border-2 border-[#081129] px-6 sm:px-8 py-3 sm:py-3.5 text-base sm:text-lg font-semibold rounded-xl min-h-[52px] shadow-lg transition-colors duration-300 w-full sm:w-auto
 ```
 
-This adds roughly 3-4 extra lines of vertical space, making the hero images visibly taller across all breakpoints. No other changes needed — the images already use `absolute inset-0 w-full h-full object-cover` so they automatically fill the larger area.
+This aligns with the standard: turquoise idle, pink hover, navy border, rounded-xl, min-h-[52px] touch target, font-semibold.
 
