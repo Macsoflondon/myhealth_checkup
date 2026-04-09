@@ -9,6 +9,7 @@ import SitemapPage from "@/pages/SitemapPage";
 import ConditionsPage from "@/pages/ConditionsPage";
 import TrustedProvidersPage from "@/pages/TrustedProvidersPage";
 import TypographyShowcasePage from "@/pages/TypographyShowcasePage";
+import BiomarkerDatabasePage from "@/pages/BiomarkerDatabasePage";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 
 export const contentRoutes = (
@@ -23,6 +24,7 @@ export const contentRoutes = (
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
+    <Route path="/biomarker-database" element={<BiomarkerDatabasePage />} />
     <Route path="/typography-showcase" element={<AdminRoute><TypographyShowcasePage /></AdminRoute>} />
   </>
 );
