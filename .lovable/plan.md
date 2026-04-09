@@ -1,98 +1,84 @@
 
 
-# SEO Audit Results & Prerendering Plan
+# Plan: Build-Time OG Meta Tag Injection
 
-## Part 1: SEO Audit Findings
+## Problem
 
-### Meta Descriptions
+Social media bots (Facebook, Twitter, LinkedIn) and many SEO crawlers do not execute JavaScript. Every page currently serves the same `index.html` with the homepage's OG tags. React Helmet updates them client-side, but bots never see those updates — so every shared link shows the homepage title and description regardless of the actual page.
 
-**19 of 48 pages** have meta descriptions. The following public-facing pages are missing them:
+The `vite-plugin-prerender` configured previously requires Chromium/Puppeteer in the build environment, which is unlikely to work on Lovable's build servers.
 
-- AccessibilityPage, AffiliateDisclosurePage, AtHomeTestsPage
-- CancerScreeningPage, CookiePolicyPage, DiabetesTestingPage
-- FairTradingPolicyPage, FemaleHormonesTestPage, FertilityTestsPage
-- GeneralHealthTestPage (uses TestPageTemplate — has metaDescription in data but not in its own Helmet)
-- HowWeRankPage, IntelligentSearchPage, IronProfileTestPage
-- LipidProfileTestPage, MaleHormoneTestPage, MensHealthPage
-- ModernSlaveryPage, PartnersPage, PrivacyPolicyPage
-- ProviderTestCatalogPage, ProviderTestDetailPage, SitemapPage
-- SportsPerformancePage, TermsConditionsPage, VitaminDTestPage
-- VitaminDeficiencyPage, WellWomanTestPage, WomensHealthPage
+## Solution: Custom Vite Plugin for Static OG Injection
 
-Note: TestPageTemplate-based pages (GeneralHealthTestPage, VitaminDTestPage, etc.) DO inject meta descriptions via the template — they are covered. The remaining ~20 pages genuinely lack descriptions.
+Create a lightweight custom Vite plugin that runs **after build** (no browser needed). It:
 
-### Canonical URLs
+1. Reads the built `dist/index.html`
+2. For each known route, replaces the `<title>`, `og:title`, `og:description`, `og:url`, `twitter:title`, `twitter:description`, and `meta description` tags with route-specific values
+3. Writes the modified HTML to `dist/{route}/index.html`
 
-**23 of 48 pages** have canonical URLs. Missing from 25 pages including high-traffic ones like AboutUsPage, ContactPage, HowItWorksPage, GutHealthPage, and all compliance/legal pages.
+This gives each route its own HTML file with correct OG tags baked in. When a bot visits `/about`, Lovable's static hosting serves `dist/about/index.html` with the correct metadata. React then hydrates on top — no conflict.
 
-### Structured Data (JSON-LD)
+## Changes
 
-**16 pages** have structured data. Missing from all compliance pages, most test-specific pages (handled by TestPageTemplate which does include it), and utility pages.
-
-### Summary: What needs fixing
-
-| Issue | Count | Priority |
-|-------|-------|----------|
-| Missing meta description | ~20 pages | High |
-| Missing canonical URL | ~25 pages | High |
-| Missing structured data | ~32 pages | Medium |
-
----
-
-## Part 2: Prerendering Solution
-
-### The core problem
-
-The app is a Vite + React SPA. Crawlers receive `<div id="root"></div>` with no content. `react-helmet-async` injects meta tags only after JS executes. Googlebot can render JS but with delays; social media bots (Facebook, Twitter, LinkedIn) cannot render JS at all.
-
-### Recommended approach: Vite prerender plugin
-
-Since the site is hosted on Lovable (static hosting with SPA fallback), the best approach is **build-time prerendering** using `vite-plugin-prerender`. This generates static HTML for every route at build time — no external service needed, no ongoing cost.
-
-### Implementation
-
-1. **Install `vite-plugin-prerender`** — generates static HTML files during `vite build`
-
-2. **Configure in `vite.config.ts`** — list all ~60 public routes to prerender
-
-3. **Each route gets a fully rendered HTML file** with:
-   - Correct `<title>` and `<meta name="description">`
-   - Open Graph and Twitter Card tags
-   - JSON-LD structured data
-   - Full visible content
-
-4. **How it works**: The plugin launches a headless browser during build, visits each route, waits for React to render, then saves the resulting HTML as a static file. When a crawler or user hits `/thyroid`, they get the prerendered HTML instantly. Client-side React then hydrates on top.
-
-### Changes required
+### 1. Remove `vite-plugin-prerender` (it won't run without Chromium)
 
 **File: `vite.config.ts`**
-- Add `vite-plugin-prerender` with full route list
-- Configure `renderAfterDocumentEvent` to wait for React render completion
+- Remove the `vite-plugin-prerender` import
+- Remove the entire prerender plugin block (lines 19-77)
+- Replace with the custom `ogMetaPlugin()` call
+
+### 2. Create the custom plugin
+
+**New file: `plugins/ogMetaPlugin.ts`**
+
+A Vite plugin with a `closeBundle` hook that:
+- Defines a route-to-metadata map (~55 entries) with `title`, `description`, and `url` for each route
+- Reads `dist/index.html` as a template
+- For each route, performs string replacements on the 6 meta tags (title, description, og:title, og:description, og:url, twitter:title, twitter:description)
+- Creates the directory structure and writes the file (e.g., `dist/about/index.html`)
+
+The metadata map is defined inline in the plugin — one object per route:
+```text
+{
+  '/about': {
+    title: 'About Us | myhealth checkup',
+    description: 'Learn about myhealth checkup\'s mission...',
+    url: 'https://myhealthcheckup.co.uk/about'
+  },
+  '/how-it-works': { ... },
+  ...
+}
+```
+
+### 3. Remove `x-render-complete` event from main.tsx
 
 **File: `src/main.tsx`**
-- Dispatch a custom event after React mounts so the prerenderer knows the page is ready
+- Remove the `document.dispatchEvent(new Event('x-render-complete'))` line (no longer needed without the prerender plugin)
 
-**File: `package.json`**
-- Add `vite-plugin-prerender` dependency
+### 4. Uninstall `vite-plugin-prerender`
 
-**~20 page files** (listed above)
-- Add missing `<meta name="description">` tags
-- Add missing `<link rel="canonical">` tags
-- Each gets a unique, SEO-optimised description under 160 characters
+Remove the dependency from `package.json`.
 
-### What this solves
+## What this solves
 
-- Search engines index fully rendered HTML with correct metadata
-- Social media link previews show correct titles, descriptions, and images
-- No external service dependency (Prerender.io, Cloudflare Workers)
-- Zero ongoing cost
-- Works with Lovable hosting as-is (static files served directly)
+- Facebook, LinkedIn, Twitter, WhatsApp, Slack, iMessage link previews all show the correct page title, description, and image
+- No external service needed (Prerender.io, Cloudflare Workers)
+- No Chromium/Puppeteer dependency
+- Works with Lovable static hosting as-is
+- Zero runtime cost — everything happens at build time
+- Each route gets a unique HTML file; the SPA fallback still handles dynamic routes
 
-### Scope
+## What it does NOT change
 
-- `vite.config.ts` — prerender config
-- `src/main.tsx` — render-complete event
-- `package.json` — new dependency
-- ~20 page files — add missing meta descriptions and canonical URLs
-- No visual, layout, or functionality changes
+- No visual changes
+- No component changes
+- No runtime behaviour changes
+- Pages that already have Helmet tags continue to work for client-side navigation
+
+## Scope
+
+- `plugins/ogMetaPlugin.ts` — new file (~150 lines)
+- `vite.config.ts` — swap prerender plugin for OG plugin
+- `src/main.tsx` — remove render-complete event
+- `package.json` — remove `vite-plugin-prerender`
 
