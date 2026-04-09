@@ -56,6 +56,28 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 }
 
+// Wrapper to handle React 19 strict mode Leaflet cleanup
+function SafeMapContainer({ children, ...props }: any) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    return () => {
+      // Clean up Leaflet's internal reference on unmount
+      if (containerRef.current) {
+        (containerRef.current as any)._leaflet_id = undefined;
+      }
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} style={{ height: '100%', width: '100%' }}>
+      <RMapContainer {...props}>
+        {children}
+      </RMapContainer>
+    </div>
+  );
+}
+
 // Component to fly map to new location
 function FlyToLocation({ center }: { center: [number, number] | null }) {
   const map = useMap();
