@@ -159,11 +159,9 @@ const Header = ({ className }: HeaderProps) => {
           style={{ overflow: "visible" }}
         >
           <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: "visible" }}>
-            <NavigationItems className="flex items-center gap-0 flex-wrap justify-center" />
+            <NavigationItems className="flex items-center gap-0 flex-nowrap justify-center" />
           </div>
         </div>
-        {/* Bottom gradient divider for toolbar */}
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
     </ErrorBoundary>
   );

@@ -194,7 +194,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           </div>
         ) : (
           /* Desktop/Tablet: Single row layout */
-          <div className="flex items-center justify-center gap-1 lg:gap-2 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
+          <div className="flex items-center justify-center gap-1 lg:gap-2 flex-nowrap" style={{ position: 'relative', overflow: 'visible' }}>
             {allNavItems.map(renderNavItem)}
             {renderMoreButton()}
           </div>
