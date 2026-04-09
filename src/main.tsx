@@ -18,3 +18,6 @@ root.render(
     </ErrorBoundary>
   </StrictMode>
 );
+
+// Signal to prerenderer that the app has mounted
+document.dispatchEvent(new Event('x-render-complete'));

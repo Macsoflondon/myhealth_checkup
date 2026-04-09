@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import vitePrerender from "vite-plugin-prerender";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -15,6 +16,65 @@ export default defineConfig(({ mode }) => {
       react(),
       mode === 'development' &&
       componentTagger(),
+      mode === 'production' &&
+      vitePrerender({
+        staticDir: path.join(__dirname, 'dist'),
+        routes: [
+          '/',
+          '/about',
+          '/how-it-works',
+          '/compare',
+          '/test-categories',
+          '/search',
+          '/contact',
+          '/faqs',
+          '/blog',
+          '/partners',
+          '/legal',
+          '/sitemap',
+          '/find-clinic',
+          '/at-home-tests',
+          '/most-popular',
+          '/recommendations',
+          '/tests/cancer',
+          '/tests/diabetes',
+          '/tests/heart',
+          '/tests/vitamins',
+          '/tests/gut',
+          '/tests/mens-health',
+          '/tests/womens-health',
+          '/tests/general-health',
+          '/tests/vitamin-d',
+          '/tests/iron-profile',
+          '/tests/lipid-profile',
+          '/tests/female-hormones',
+          '/tests/male-hormones',
+          '/tests/well-woman',
+          '/thyroid',
+          '/hormones',
+          '/fertility-tests',
+          '/mens-health',
+          '/womens-health',
+          '/sports-performance',
+          '/cancer-screening',
+          '/conditions',
+          '/privacy-policy',
+          '/terms',
+          '/cookies',
+          '/accessibility',
+          '/how-we-rank',
+          '/affiliate-disclosure',
+          '/fair-trading',
+          '/modern-slavery',
+          '/auth',
+          '/dashboard',
+        ],
+        renderer: {
+          renderAfterDocumentEvent: 'x-render-complete',
+          maxConcurrentRoutes: 4,
+          headless: true,
+        },
+      }),
     ].filter(Boolean),
     resolve: {
       alias: {

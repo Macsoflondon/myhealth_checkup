@@ -50,6 +50,8 @@ const DiabetesTestingPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Diabetes Testing | myhealth checkup</title>
+        <meta name="description" content="Compare diabetes screening and monitoring tests from UK providers. HbA1c, glucose tolerance, and insulin resistance testing from £45." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/tests/diabetes" />
       </Helmet>
       <Header />
       <main className="flex-grow">

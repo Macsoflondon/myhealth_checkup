@@ -73,6 +73,7 @@ const ContactPage = () => {
       <Helmet>
         <title>Contact Us | myhealth checkup</title>
         <meta name="description" content="Get in touch with myhealth checkup. We're here to help with questions about health tests, providers, and our comparison platform." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/contact" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ContactPage",
