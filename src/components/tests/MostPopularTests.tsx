@@ -90,7 +90,7 @@ const MostPopularTests = () => {
           )}
 
           <div className="text-center mt-6 sm:mt-8 mb-12 sm:mb-16">
-            <Button onClick={() => navigate('/compare')} className="bg-[hsl(var(--brand-pink))] hover:bg-[hsl(var(--brand-turquoise))] text-white px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-medium rounded-full w-full sm:w-auto">
+            <Button onClick={() => navigate('/compare')} className="bg-[#22c0d4] hover:bg-[#e70d69] text-white border-2 border-[#081129] px-6 sm:px-8 py-3 sm:py-3.5 text-base sm:text-lg font-semibold rounded-xl min-h-[52px] shadow-lg transition-colors duration-300 w-full sm:w-auto">
               View all tests
             </Button>
           </div>
