@@ -57,31 +57,34 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 // Wrapper to handle React 19 strict mode Leaflet cleanup
-function SafeMapContainer({ children, ...props }: any) {
+// Uses imperative map creation to avoid the "already initialized" error
+function SafeMapContainer({ children, className, ...props }: any) {
+  const [mounted, setMounted] = useState(false);
+  const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Delay mount by one tick to let strict mode's unmount happen first
+    const timer = setTimeout(() => setMounted(true), 0);
     return () => {
-      // Clean up Leaflet's internal references on unmount
-      const el = containerRef.current;
-      if (el) {
-        // Remove _leaflet_id from the container and all children
-        delete (el as any)._leaflet_id;
-        el.querySelectorAll('[class*="leaflet"]').forEach((child) => {
-          delete (child as any)._leaflet_id;
-        });
-        // Remove all child nodes to ensure a fresh container
-        el.innerHTML = '';
+      clearTimeout(timer);
+      setMounted(false);
+      // Remove the map instance on cleanup
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
       }
     };
   }, []);
 
+  if (!mounted) {
+    return <div className={className} />;
+  }
+
   return (
-    <div ref={containerRef} style={{ height: '100%', width: '100%' }}>
-      <RMapContainer {...props}>
-        {children}
-      </RMapContainer>
-    </div>
+    <RMapContainer ref={mapRef} className={className} {...props}>
+      {children}
+    </RMapContainer>
   );
 }
 
