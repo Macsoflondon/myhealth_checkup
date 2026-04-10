@@ -109,7 +109,7 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Helmet>
 
-        <div className="mt-4">
+        <div>
           <Hero />
         </div>
 
