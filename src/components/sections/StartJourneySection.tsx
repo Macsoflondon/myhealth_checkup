@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const StartJourneySection = () => {
   return (
-    <div className="w-full bg-white py-12 sm:py-16 border-y border-brand-turquoise/20 shadow-[0_0_30px_-5px_rgba(34,192,212,0.15)]">
+    <div className="w-full bg-white py-8 sm:py-10 border-y border-brand-turquoise/20 shadow-[0_0_30px_-5px_rgba(34,192,212,0.15)]">
       <div className="max-w-3xl mx-auto px-4 flex flex-col text-center items-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
@@ -11,7 +11,7 @@ const StartJourneySection = () => {
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
         </div>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 text-[#081129]">
+        <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 text-[#081129]">
           Take Control of Your Health Today
         </h2>
         <p className="text-base lg:text-lg text-[#081129]/70 leading-relaxed mb-8 max-w-md">

@@ -113,7 +113,7 @@ const Header = ({ className }: HeaderProps) => {
       <header className={className}>
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center py-8">
+            <div className="flex items-center py-4">
               {/* Left spacer for balance */}
               <div className="flex-1" />
 
@@ -122,12 +122,12 @@ const Header = ({ className }: HeaderProps) => {
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-[5rem] lg:h-[6rem] xl:h-[7rem] w-auto object-contain"
+                  className="h-[3.5rem] lg:h-[4rem] xl:h-[4.5rem] w-auto object-contain"
                 />
                 <img
                   src={headerTagline}
                   alt="Your Health. Your Choice. One Trusted Platform!"
-                  className="h-[5rem] lg:h-[6rem] xl:h-[7rem] w-auto object-contain max-w-[50vw]"
+                  className="h-[3.5rem] lg:h-[4rem] xl:h-[4.5rem] w-auto object-contain max-w-[50vw]"
                 />
               </Link>
 

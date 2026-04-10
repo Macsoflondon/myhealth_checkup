@@ -100,11 +100,11 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
 
-        <div className="relative z-10 pt-14 pb-10 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16">
+        <div className="relative z-10 pt-10 pb-8 sm:pt-14 sm:pb-10 md:pt-16 md:pb-10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
               <div className="text-center mb-5 sm:mb-7">
-                <span className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-6 sm:px-8 py-2.5 sm:py-3 text-white text-sm sm:text-lg font-semibold tracking-wide border-secondary">
+                <span className="inline-flex items-center gap-2 bg-brand-turquoise rounded-full px-5 sm:px-6 py-2 text-white text-sm sm:text-base font-semibold tracking-wide border-secondary">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
@@ -112,7 +112,7 @@ const Hero = () => {
               <div className="text-center mb-2 min-h-[120px] sm:min-h-[140px] flex flex-col items-center justify-center">
                 <h1
                   key={currentSlide}
-                  className="text-[2rem] sm:text-[2.8rem] md:text-[3.5rem] lg:text-[4.1rem] xl:text-[4.5rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
+                  className="text-[1.8rem] sm:text-[2.4rem] md:text-[3rem] lg:text-[3.3rem] xl:text-[3.5rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
                 >
                   {slide.headline}
                 </h1>
@@ -128,7 +128,7 @@ const Hero = () => {
                 <span className="block w-16 sm:w-20 h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-7 sm:mb-9">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-5 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
                   className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
@@ -150,7 +150,7 @@ const Hero = () => {
               </div>
 
               <div className="max-w-[780px] mx-auto">
-                <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border-primary border-2 shadow-xl">
+                <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 border-primary border-2 shadow-xl">
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[hsl(var(--primary))]/40 w-5 h-5 sm:w-6 sm:h-6 font-bold" />
                     <input

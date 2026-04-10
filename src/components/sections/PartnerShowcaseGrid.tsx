@@ -6,7 +6,7 @@ import { FeaturedPublications } from "@/components/sections/FeaturedPublications
 const PartnerShowcaseGrid = () => {
 
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
+    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
@@ -18,7 +18,7 @@ const PartnerShowcaseGrid = () => {
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold mb-3">
             <span className="text-white">Our Featured Partners of </span>
             <span className="text-white">the Month</span>
           </h2>
@@ -27,7 +27,7 @@ const PartnerShowcaseGrid = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
           {/* GoodBody Test Gallery */}
           <GoodbodyTestGallery />
 
@@ -91,7 +91,7 @@ const PartnerShowcaseGrid = () => {
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-2">
+              <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-heading font-bold mb-2">
                 <span className="text-white">Find a Clinic </span>
                 <span className="text-white">Near You</span>
               </h2>

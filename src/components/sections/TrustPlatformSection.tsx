@@ -32,11 +32,11 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
   ];
 
   return (
-    <Wrapper className={cn("py-12 sm:py-16 md:py-20 relative overflow-hidden", !embedded && "bg-brand-navy", className)}>
+    <Wrapper className={cn("py-8 sm:py-10 md:py-12 relative overflow-hidden", !embedded && "bg-brand-navy", className)}>
       {!embedded && <NavyDecorativeCircles />}
 
       <div className="container mx-auto px-4 sm:px-6 relative">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <div className="text-center mb-6 sm:mb-8">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
             <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
@@ -45,7 +45,7 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold mb-3">
             <span className="text-white">Trusted Health </span>
             <span className="text-white">Comparison Platform</span>
           </h2>
