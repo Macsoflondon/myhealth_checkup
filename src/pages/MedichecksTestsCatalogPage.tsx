@@ -87,7 +87,7 @@ const MedichecksTestsCatalogPage = () => {
         <title>Medichecks Tests | myhealth checkup</title>
         <meta name="description" content="Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening." />
       </Helmet>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[primary-on-container] bg-tertiary">
         <ProviderCatalogHeader
           providerId={PROVIDER_ID}
           providerName={PROVIDER_NAME}
