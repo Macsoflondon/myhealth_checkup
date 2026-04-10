@@ -46,7 +46,7 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
 
           {/* Row 2: Medichecks — Logo beside Video */}
-          <div className="md:col-span-2 mt-2 mb-2">
+          <div className="md:col-span-2 mt-8 mb-2 pt-4">
             <div className="flex flex-col md:flex-row items-center gap-6">
               {/* Logo */}
               <div className="flex-shrink-0">
