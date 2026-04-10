@@ -1,15 +1,15 @@
 
 
-## Add Top Padding to Medichecks Section
+## Replace NAD+ with Advanced Well Woman in General Health Gallery
 
-**File:** `src/components/sections/PartnerShowcaseGrid.tsx` (line 49)
+**File:** `src/components/sections/GoodbodyTestGallery.tsx` (line 107)
 
-Change `mt-2 mb-2` to `mt-8 mb-2 pt-4` on the Medichecks container div to add vertical breathing room above the logo/video row.
+Replace the NAD+ entry in `GENERAL_HEALTH_TESTS` with an Advanced Well Woman entry:
 
 ```
-- <div className="md:col-span-2 mt-2 mb-2">
-+ <div className="md:col-span-2 mt-8 mb-2 pt-4">
+- galleryItem({ src: "/images/tests/nad-plus-blood-test.png", alt: "NAD+ Blood Test", code: "NAD+", objectFit: "contain", matchTerms: ["nad plus", "nad blood test"] }),
++ galleryItem({ src: "/images/tests/advanced-well-woman.png", alt: "Advanced Well Woman Blood Test", code: "Advanced Well Woman", objectFit: "contain" }),
 ```
 
-This adds ~2rem top margin and ~1rem top padding, creating a visible buffer so the video doesn't sit flush against the section boundary.
+This removes the NAD+ duplicate from General Health while keeping NAD+ in Vitamin and Mineral Tests (line 150). The existing Advanced Well Woman entry at line 113 will remain — if that creates a duplicate, I can remove one; otherwise both stay as requested.
 
