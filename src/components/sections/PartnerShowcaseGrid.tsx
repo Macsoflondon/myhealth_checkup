@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import { SectionHeading } from "@/components/ui/section-heading";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 
@@ -18,10 +19,12 @@ const PartnerShowcaseGrid = () => {
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
-            <span className="text-white">Our Featured Partners of </span>
-            <span className="text-white">the Month</span>
-          </h2>
+          <SectionHeading
+            title="Our Featured Partners of"
+            gradientText="the Month"
+            titleClassName="text-white"
+            gradientClassName="bg-gradient-to-r from-brand-turquoise to-brand-pink bg-clip-text text-transparent"
+          />
           <p className="text-white font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
             Handpicked providers delivering trusted, accredited health testing across the UK.
           </p>
