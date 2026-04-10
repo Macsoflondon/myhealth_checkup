@@ -175,7 +175,7 @@ const Hero = () => {
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className="px-4 sm:px-5 py-2 text-sm text-white bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] rounded-full transition-colors duration-300 font-medium"
+                          className="px-4 sm:px-5 py-2 text-white bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] rounded-full transition-colors duration-300 font-medium text-[primary-on-container]"
                         >
                           {search.name}
                         </button>
