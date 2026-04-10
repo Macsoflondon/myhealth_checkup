@@ -107,7 +107,7 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
         <title>{config.metaTitle}</title>
         <meta name="description" content={config.metaDescription} />
       </Helmet>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[primary-on-container] bg-tertiary">
         <ProviderCatalogHeader
           providerId={config.providerId}
           providerName={config.providerName}
