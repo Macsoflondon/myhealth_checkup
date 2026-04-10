@@ -140,9 +140,9 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
             </>
           ) : (
             <div className="text-center py-12">
-              <TestTube2 className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No tests found</h3>
-              <p className="text-gray-500">
+              <TestTube2 className="h-12 w-12 mx-auto text-white/50 mb-4" />
+              <h3 className="text-lg font-semibold mb-2 text-white">No tests found</h3>
+              <p className="text-white/70">
                 {selectedCategory !== 'all' ? 'Try selecting a different category' : 'Tests from this provider will appear here soon'}
               </p>
             </div>

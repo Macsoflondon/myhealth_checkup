@@ -63,21 +63,21 @@ const ProviderCatalogHeader = ({
               />
             </div>
             <div>
-              <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground">
+              <h1 className="font-serif text-2xl md:text-3xl font-bold text-white">
                 {providerName}
               </h1>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-white/70 mt-1">
                 {tagline}
               </p>
             </div>
           </div>
           <div className="flex gap-3">
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="text-white border-white/30 hover:bg-white/10">
               <Link to="/providers">
                 ← All Providers
               </Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="text-white border-white/30 hover:bg-white/10">
               <a 
                 href={providerWebsite} 
                 target="_blank" 
@@ -94,24 +94,24 @@ const ProviderCatalogHeader = ({
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
             <TestTube2 className="h-5 w-5 text-primary" />
-            <span className="font-semibold">
+            <span className="font-semibold text-white">
               {isLoading ? <Skeleton className="h-4 w-8 inline-block" /> : testCount} Tests
             </span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-secondary/50 rounded-full">
             <Clock className="h-5 w-5 text-secondary-foreground" />
-            <span className="font-semibold">{turnaroundTime} turnaround</span>
+            <span className="font-semibold text-white">{turnaroundTime} turnaround</span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 bg-accent/50 rounded-full">
             <MapPin className="h-5 w-5 text-accent-foreground" />
-            <span className="font-semibold">{collectionMethod}</span>
+            <span className="font-semibold text-white">{collectionMethod}</span>
           </div>
         </div>
 
         {/* Feature Badges Row */}
         <div className="flex flex-wrap gap-6 mb-8 py-2">
           {features.map((feature, index) => (
-            <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div key={index} className="flex items-center gap-2 text-sm text-white/70">
               {feature.icon}
               <span>{feature.label}</span>
             </div>
@@ -121,8 +121,8 @@ const ProviderCatalogHeader = ({
         {/* Category Filter */}
         <section className="mb-2">
           <div className="flex items-center gap-2 mb-4">
-            <Filter className="h-5 w-5 text-muted-foreground" />
-            <span className="font-medium">Filter by Category</span>
+            <Filter className="h-5 w-5 text-white/70" />
+            <span className="font-medium text-white">Filter by Category</span>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button
