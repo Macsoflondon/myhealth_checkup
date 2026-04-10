@@ -10,7 +10,7 @@ import MissionSection from "@/components/sections/MissionSection";
 import PartnersGrid from "@/components/sections/PartnersGrid";
 import JourneySimplified from "@/components/sections/JourneySimplified";
 import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
-import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
+
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
 import HereToHelp from "@/components/sections/HereToHelp";
@@ -122,7 +122,6 @@ const Index = () => {
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
         <PartnerShowcaseGrid />
-        <FeaturedPublications />
         <TestimonialCarousel />
         <HereToHelp />
         <CallToAction />

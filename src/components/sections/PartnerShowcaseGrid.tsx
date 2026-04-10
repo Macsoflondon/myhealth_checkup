@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
+import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 
 const PartnerShowcaseGrid = () => {
 
@@ -38,13 +39,11 @@ const PartnerShowcaseGrid = () => {
         </div>
       </div>
 
+      {/* Featured Publications carousel between Goodbody and Medichecks */}
+      <FeaturedPublications />
+
       <div className="container mx-auto px-4 sm:px-6 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
-
-          {/* Divider */}
-          <div className="md:col-span-2 flex justify-center">
-            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
-          </div>
 
           {/* Row 2: Medichecks — Logo beside Video */}
           <div className="md:col-span-2 mt-2 mb-2">
