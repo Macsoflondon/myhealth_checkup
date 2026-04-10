@@ -15,62 +15,62 @@ function BiomarkerCard({ biomarker }: { biomarker: BiomarkerDefinition }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white border-2 border-[#081129] rounded-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-[#081129] border-2 border-[#081129] rounded-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
       <button
         onClick={() => setOpen(!open)}
         className="w-full text-left flex items-start justify-between gap-3"
       >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h3 className="font-heading font-semibold text-[#081129] text-base sm:text-lg">
+            <h3 className="font-heading font-semibold text-white text-base sm:text-lg">
               {biomarker.biomarker_name}
             </h3>
-            <Badge variant="outline" className="text-xs font-mono shrink-0 border-[#081129]">
+            <Badge className="text-xs font-mono shrink-0 bg-[#e70d69] text-white border-0">
               {biomarker.biomarker_code}
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground line-clamp-2">{biomarker.description}</p>
+          <p className="text-sm text-white/70 line-clamp-2">{biomarker.description}</p>
         </div>
         {open ? (
-          <ChevronUp className="h-5 w-5 text-muted-foreground shrink-0 mt-1" />
+          <ChevronUp className="h-5 w-5 text-white/60 shrink-0 mt-1" />
         ) : (
-          <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0 mt-1" />
+          <ChevronDown className="h-5 w-5 text-white/60 shrink-0 mt-1" />
         )}
       </button>
 
       {open && (
-        <div className="mt-4 pt-4 border-t border-[#081129]/10 space-y-3 text-sm">
+        <div className="mt-4 pt-4 border-t border-white/20 space-y-3 text-sm">
           {biomarker.unit_of_measurement && (
             <div>
-              <span className="font-medium text-[#081129]">Unit:</span>{" "}
-              <span className="text-muted-foreground">{biomarker.unit_of_measurement}</span>
+              <span className="font-medium text-white">Unit:</span>{" "}
+              <span className="text-white/70">{biomarker.unit_of_measurement}</span>
             </div>
           )}
           {(biomarker.normal_range_male || biomarker.normal_range_female) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {biomarker.normal_range_male && (
-                <div className="bg-[#081129]/5 rounded-lg p-3">
-                  <span className="font-medium text-[#081129] block text-xs uppercase tracking-wide mb-1">Male Range</span>
-                  <span className="text-muted-foreground">{biomarker.normal_range_male}</span>
+                <div className="bg-white/10 rounded-lg p-3">
+                  <span className="font-medium text-white block text-xs uppercase tracking-wide mb-1">Male Range</span>
+                  <span className="text-white/70">{biomarker.normal_range_male}</span>
                 </div>
               )}
               {biomarker.normal_range_female && (
-                <div className="bg-[#081129]/5 rounded-lg p-3">
-                  <span className="font-medium text-[#081129] block text-xs uppercase tracking-wide mb-1">Female Range</span>
-                  <span className="text-muted-foreground">{biomarker.normal_range_female}</span>
+                <div className="bg-white/10 rounded-lg p-3">
+                  <span className="font-medium text-white block text-xs uppercase tracking-wide mb-1">Female Range</span>
+                  <span className="text-white/70">{biomarker.normal_range_female}</span>
                 </div>
               )}
             </div>
           )}
           {biomarker.clinical_significance && (
             <div>
-              <span className="font-medium text-[#081129]">Clinical Significance:</span>
-              <p className="text-muted-foreground mt-1">{biomarker.clinical_significance}</p>
+              <span className="font-medium text-white">Clinical Significance:</span>
+              <p className="text-white/70 mt-1">{biomarker.clinical_significance}</p>
             </div>
           )}
           {biomarker.related_conditions && biomarker.related_conditions.length > 0 && (
             <div>
-              <span className="font-medium text-[#081129] block mb-1">Related Conditions:</span>
+              <span className="font-medium text-white block mb-1">Related Conditions:</span>
               <div className="flex flex-wrap gap-1.5">
                 {biomarker.related_conditions.map((condition) => (
                   <Badge key={condition} variant="secondary" className="text-xs">
@@ -82,10 +82,10 @@ function BiomarkerCard({ biomarker }: { biomarker: BiomarkerDefinition }) {
           )}
           {biomarker.lifestyle_factors && biomarker.lifestyle_factors.length > 0 && (
             <div>
-              <span className="font-medium text-[#081129] block mb-1">Lifestyle Factors:</span>
+              <span className="font-medium text-white block mb-1">Lifestyle Factors:</span>
               <div className="flex flex-wrap gap-1.5">
                 {biomarker.lifestyle_factors.map((factor) => (
-                  <Badge key={factor} variant="outline" className="text-xs border-[#081129]">
+                  <Badge key={factor} variant="outline" className="text-xs border-white/30 text-white">
                     {factor}
                   </Badge>
                 ))}
@@ -127,8 +127,8 @@ export default function BiomarkerDatabasePage() {
   return (
     <>
       <Helmet>
-        <title>Biomarker Database | myhealth checkup</title>
-        <meta name="description" content="Explore our comprehensive biomarker database. Search by name, code, or category to understand what each blood test marker measures and why it matters." />
+        <title>Biomarker Library | myhealth checkup</title>
+        <meta name="description" content="Explore our comprehensive biomarker library. Search by name, code, or category to understand what each blood test marker measures and why it matters." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/biomarker-database" />
       </Helmet>
 
@@ -136,7 +136,7 @@ export default function BiomarkerDatabasePage() {
 
       <PageBanner
         title="Biomarker"
-        accent="Database"
+        accent="Library"
         subtitle="Search and explore blood test biomarkers. Understand what each marker measures, normal ranges, and clinical significance."
       />
 

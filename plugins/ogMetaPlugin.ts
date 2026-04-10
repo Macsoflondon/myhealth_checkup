@@ -257,8 +257,8 @@ const routeMetadata: Record<string, RouteMeta> = {
     url: `${BASE_URL}/wellness`,
   },
   '/biomarker-database': {
-    title: 'Biomarker Database | myhealth checkup',
-    description: 'Explore our comprehensive biomarker database. Search by name, code, or category to understand what each blood test marker measures and why it matters.',
+    title: 'Biomarker Library | myhealth checkup',
+    description: 'Explore our comprehensive biomarker library. Search by name, code, or category to understand what each blood test marker measures and why it matters.',
     url: `${BASE_URL}/biomarker-database`,
   },
 };
