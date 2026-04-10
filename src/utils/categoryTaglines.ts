@@ -70,7 +70,7 @@ export const categoryDisplayNames: Record<string, string> = {
   diabetes: "Diabetes Tests",
   "sports-performance": "Sports Performance",
   "sports-performance-tests": "Sports Performance Tests",
-  "fitness-health": "Fitness Health",
+  "fitness-health": "Sports-Fitness Health",
   "at-home-tests": "At-Home Tests",
   "longevity-tests": "Longevity Tests",
   "iron-tests": "Iron Tests",

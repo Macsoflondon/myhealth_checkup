@@ -35,7 +35,7 @@ const navigationCategories = [
     categories: ["thyroid", "hormones"]
   },
   { 
-    name: "Sports/Fitness Health", 
+    name: "Sports-Fitness Health", 
     path: "/sports-performance",
     categoryId: "vitamins",
     categories: ["vitamins", "blood-tests"]

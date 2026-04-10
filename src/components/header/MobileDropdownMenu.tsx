@@ -36,7 +36,7 @@ const mobileNavigationItems = [
     testCount: 15
   },
   {
-    name: "Sports/Fitness Health",
+    name: "Sports-Fitness Health",
     path: "/sports-performance", 
     icon: "🏃",
     categories: ["vitamins", "blood-tests"],
