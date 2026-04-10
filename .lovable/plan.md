@@ -1,28 +1,16 @@
 
 
-## Biomarker Library — Restyle Cards & Rename
+## Two Quick Layout Fixes
 
-### What changes
+### 1. Add spacing above the BrandTicker promotions
+The BrandTicker currently has `pt-0` so the scrolling promos sit flush against the very top. Add top padding (`pt-1.5 sm:pt-2`) to the inner wrapper to give them breathing room.
 
-**1. Dark navy card backgrounds with white text**
-- Card outer div: `bg-[#081129]` instead of `bg-white`, text classes switch to white
-- Labels (Unit, Clinical Significance, etc.): `text-white`
-- Description and body text: `text-white/70` instead of `text-muted-foreground`
-- Range boxes: `bg-white/10` instead of `bg-[#081129]/5`, labels and values in white
-- Chevron icons: `text-white/60`
-- Border divider inside expanded card: `border-white/20`
+**File:** `src/components/sections/BrandTicker.tsx`
+- Change `pt-0 pb-1.5 sm:pb-2` → `pt-1.5 pb-1.5 sm:pt-2 sm:pb-2`
 
-**2. Biomarker code badges turn pink**
-- The `<Badge>` showing the code (e.g. CTX, CGA): `bg-[#e70d69] text-white border-0` instead of `variant="outline"`
+### 2. Remove the dark navy gap above the Hero
+In `Index.tsx`, the Hero is wrapped in `<div className="mt-4">` which exposes the navy page background between the gradient divider and the hero image. Remove that margin so the hero image sits directly against the section separator.
 
-**3. Rename "Biomarker Database" → "Biomarker Library" across the platform**
-Files to update:
-- `src/pages/BiomarkerDatabasePage.tsx` — Helmet title, meta description, canonical URL, PageBanner title/accent, search placeholder
-- `src/components/header/NavigationItems.tsx` — menu item name
-- `plugins/ogMetaPlugin.ts` — OG meta title and description
-- `src/routes/contentRoutes.tsx` — route path stays `/biomarker-database` (no URL break) but could optionally add `/biomarker-library` redirect
-
-### Technical details
-
-All changes are cosmetic class-name swaps and string replacements across 4 files. No structural or logic changes.
+**File:** `src/pages/Index.tsx`
+- Change `<div className="mt-4">` → `<div>`
 
