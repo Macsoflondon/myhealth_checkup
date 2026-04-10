@@ -1,19 +1,17 @@
 
 
-## Change Popular Search Button Text Color
-
-The selected element is a "Full Blood Count" button in the Hero's Popular Searches section. The buttons currently use `text-white`. Change to dark navy text.
+## Restore Popular Search Buttons to Standard Style
 
 **File:** `src/components/sections/Hero.tsx` (line ~178)
 
 Change the button className from:
 ```
-text-white bg-[hsl(var(--primary))] ...
+text-[#081129] bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] rounded-full transition-colors duration-300 font-medium
 ```
 to:
 ```
-text-[#081129] bg-[hsl(var(--primary))] ...
+text-white bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] rounded-full transition-colors duration-300 font-medium
 ```
 
-This applies to all popular search buttons since they share the same className in the `.map()`.
+This restores bright turquoise buttons with white text, matching the standard button interaction pattern.
 
