@@ -75,7 +75,7 @@ const BrandTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none">
-      <div className="pt-0 pb-1.5 sm:pb-2">
+      <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2">
         <div
           className="relative overflow-hidden"
           style={{
