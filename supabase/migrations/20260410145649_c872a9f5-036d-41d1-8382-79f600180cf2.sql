@@ -1,0 +1,1 @@
+UPDATE provider_tests SET is_active = false WHERE id = 'd3bb0ea4-6018-4fe3-8f3b-aaa0769a602f';
