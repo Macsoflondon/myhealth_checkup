@@ -1,27 +1,44 @@
 
 
-# Plan: Health Resources Page — Gradient Line, Button Colours & Subtitle Rewrite
+## Biomarker Database Page — Platform Style Alignment
 
-## Changes (all in `src/pages/HealthBlogPage.tsx`)
+### What needs to change
 
-### 1. Replace white border with three-toned gradient line
-The categories filter section (line 69) has `border-b` which renders as a white line. Remove `border-b` and add the standard gradient divider `<div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />` after the section closing tag.
+The current page uses a custom hero section and generic styling. It should use the shared `PageBanner` component, the standard three-tone gradient divider, platform-standard category filter buttons (turquoise idle / pink active with navy borders), and the pearl-white background with navy-bordered white cards.
 
-### 2. Category filter buttons — turquoise idle state
-Change inactive button styling (line 81) from `border-white/30 text-white` to turquoise background with white text, matching the platform button standard:
-- Inactive: `bg-[#22c0d4] hover:bg-[#e70d69] text-white border-[#081129] border-2`
-- Active: `bg-[#e70d69] hover:bg-[#e70d69]/90 text-white border-[#081129] border-2`
+### Plan
 
-### 3. Rewrite subtitle
-Change line 65 from:
-> "Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults aged 30-60."
+**1. Replace the custom hero with the `PageBanner` component**
+- Import `PageBanner` from `@/components/sections/PageBanner`
+- Use title="Biomarker Database" and subtitle text in turquoise
+- Add `Header` and `Footer` from layout components
 
-To:
-> "Expert insights, evidence-based guides, and the latest research to help you make informed decisions about your health."
+**2. Add the standard gradient divider**
+- Insert `<div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />` between the banner/filters and content area
 
-This removes the age restriction, keeps the tone professional and inclusive, and appeals to the core demographic without excluding anyone.
+**3. Restyle category filter buttons to match the blog page pattern**
+- Active state: `bg-[#e70d69]` pink with white text and navy border
+- Idle state: `bg-[#22c0d4]` turquoise with white text and navy border, hover to pink
+- Use `Button` component with `variant` toggling, or styled buttons matching the exact blog pattern
 
-### Scope
-- 1 file modified: `HealthBlogPage.tsx`
-- No structural or component changes
+**4. Update page background and card styling**
+- Page background: pearl white `bg-[hsl(220_5%_97%)]`
+- Cards: white `bg-white` with `border-2 border-[#081129]` (navy border standard)
+- Range boxes inside cards: subtle navy-alpha backgrounds instead of generic muted
+
+**5. Category group headings**
+- Use `font-heading` (Montserrat) in brand navy `text-[#081129]`
+- Count badge in turquoise
+
+**6. Wrap in Header/Footer layout**
+- Add `<Header />` and `<Footer />` to match all other pages
+
+### Technical details
+
+Single file edit: `src/pages/BiomarkerDatabasePage.tsx`
+- Add imports: `Header`, `Footer`, `PageBanner`, `Button`
+- Remove the custom hero `<section>` block
+- Replace with `<PageBanner>` + gradient divider
+- Move search/filter section out of the negative-margin overlay pattern into a standard section below the divider
+- Update all class names for cards, buttons, and backgrounds per the standards above
 
