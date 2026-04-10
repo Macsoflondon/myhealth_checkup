@@ -1,16 +1,19 @@
 
 
-## Two Quick Layout Fixes
+## Change Popular Search Button Text Color
 
-### 1. Add spacing above the BrandTicker promotions
-The BrandTicker currently has `pt-0` so the scrolling promos sit flush against the very top. Add top padding (`pt-1.5 sm:pt-2`) to the inner wrapper to give them breathing room.
+The selected element is a "Full Blood Count" button in the Hero's Popular Searches section. The buttons currently use `text-white`. Change to dark navy text.
 
-**File:** `src/components/sections/BrandTicker.tsx`
-- Change `pt-0 pb-1.5 sm:pb-2` → `pt-1.5 pb-1.5 sm:pt-2 sm:pb-2`
+**File:** `src/components/sections/Hero.tsx` (line ~178)
 
-### 2. Remove the dark navy gap above the Hero
-In `Index.tsx`, the Hero is wrapped in `<div className="mt-4">` which exposes the navy page background between the gradient divider and the hero image. Remove that margin so the hero image sits directly against the section separator.
+Change the button className from:
+```
+text-white bg-[hsl(var(--primary))] ...
+```
+to:
+```
+text-[#081129] bg-[hsl(var(--primary))] ...
+```
 
-**File:** `src/pages/Index.tsx`
-- Change `<div className="mt-4">` → `<div>`
+This applies to all popular search buttons since they share the same className in the `.map()`.
 
