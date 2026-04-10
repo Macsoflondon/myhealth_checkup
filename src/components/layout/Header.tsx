@@ -99,7 +99,7 @@ const Header = ({ className }: HeaderProps) => {
   }
   // Toolbar with glassmorphism
   const toolbarClasses = cn(
-    "bg-[hsl(220,5%,97%)] border-b border-gray-200/30 my-0 mx-0 px-0 py-2 shadow-[0_4px_30px_rgba(0,0,0,0.06)]",
+    "border-b border-gray-200/30 my-0 mx-0 px-0 py-2 shadow-[0_4px_30px_rgba(0,0,0,0.06)]",
     styles.toolbar
   );
   return (
@@ -153,7 +153,7 @@ const Header = ({ className }: HeaderProps) => {
         <div
           className={cn(
             toolbarClasses,
-            "transition-all duration-300",
+            "transition-all duration-300 bg-tertiary",
             isToolbarSticky && "shadow-lg animate-fade-in",
           )}
           style={{ overflow: "visible" }}
