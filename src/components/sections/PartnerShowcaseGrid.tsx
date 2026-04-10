@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import { SectionHeading } from "@/components/ui/section-heading";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 
