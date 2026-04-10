@@ -153,7 +153,7 @@ const Header = ({ className }: HeaderProps) => {
         <div
           className={cn(
             toolbarClasses,
-            "transition-all duration-300",
+            "transition-all duration-300 bg-tertiary",
             isToolbarSticky && "shadow-lg animate-fade-in",
           )}
           style={{ overflow: "visible" }}
