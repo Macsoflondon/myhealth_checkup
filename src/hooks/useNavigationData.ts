@@ -64,7 +64,7 @@ export const useNavigationData = () => {
           ['mens-health', 'hormones', 'fertility', 'fitness-health'].includes(cat.id)
         );
       
-      case "Fitness Health":
+      case "Sports-Fitness Health":
         return compareCategories.filter(cat => 
           ['fitness-health', 'vitamins', 'hormones', 'general-health', 'heart-health'].includes(cat.id)
         );
