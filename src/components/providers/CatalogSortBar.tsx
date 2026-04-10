@@ -47,14 +47,14 @@ export function sortTests<T extends { test_name: string; price?: number | null; 
 export default function CatalogSortBar({ sortBy, onSortChange, resultCount, categoryLabel }: CatalogSortBarProps) {
   return (
     <div className="flex items-center justify-between mb-6">
-      <p className="text-gray-500 text-sm">
+      <p className="text-white/70 text-sm">
         {resultCount} test{resultCount !== 1 ? "s" : ""} found
         {categoryLabel && categoryLabel !== "all" ? ` in ${categoryLabel}` : ""}
       </p>
       <div className="flex items-center gap-2">
         <Select value={sortBy} onValueChange={(v) => onSortChange(v as CatalogSortOption)}>
           <SelectTrigger className="w-[200px] bg-white">
-            <ArrowUpDown className="h-4 w-4 mr-2 text-gray-400" />
+            <ArrowUpDown className="h-4 w-4 mr-2 text-white/60" />
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
