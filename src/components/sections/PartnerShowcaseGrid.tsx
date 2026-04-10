@@ -6,7 +6,7 @@ import { FeaturedPublications } from "@/components/sections/FeaturedPublications
 const PartnerShowcaseGrid = () => {
 
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
+    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
 
       <div className="container mx-auto px-4 sm:px-6 relative">
@@ -27,7 +27,7 @@ const PartnerShowcaseGrid = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
           {/* GoodBody Test Gallery */}
           <GoodbodyTestGallery />
 

@@ -12,7 +12,7 @@ interface CallToActionProps {
 const CallToAction = ({ className }: CallToActionProps) => {
   const navigate = useNavigate();
   
-  return <section className={cn("py-16 bg-[#081129] relative overflow-hidden", className)}>
+  return <section className={cn("py-10 bg-[#081129] relative overflow-hidden", className)}>
       <NavyDecorativeCircles />
 
       <div className="container mx-auto px-4 relative">
@@ -23,7 +23,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
             className="mb-6"
             titleClassName="text-white"
           />
-          <p className="text-xl mb-8 text-white/90 my-0 py-0">
+          <p className="text-xl mb-5 text-white/90 my-0 py-0">
             Join thousands of customers who've discovered health insights that made a difference.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

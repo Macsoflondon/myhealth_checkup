@@ -78,7 +78,7 @@ const TestimonialCarousel = () => {
   }, []);
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-brand-navy relative overflow-hidden">
+    <section className="py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
       
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
