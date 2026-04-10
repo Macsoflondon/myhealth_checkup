@@ -45,7 +45,7 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold mb-3">
             <span className="text-white">Trusted Health </span>
             <span className="text-white">Comparison Platform</span>
           </h2>

@@ -18,7 +18,7 @@ const PartnerShowcaseGrid = () => {
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-3">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold mb-3">
             <span className="text-white">Our Featured Partners of </span>
             <span className="text-white">the Month</span>
           </h2>
@@ -91,7 +91,7 @@ const PartnerShowcaseGrid = () => {
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-2">
+              <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-heading font-bold mb-2">
                 <span className="text-white">Find a Clinic </span>
                 <span className="text-white">Near You</span>
               </h2>
