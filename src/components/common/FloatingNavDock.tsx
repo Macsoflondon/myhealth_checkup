@@ -34,7 +34,7 @@ const FloatingNavDock = () => {
     return (
       <button
         onClick={scrollToTop}
-        className={`group/btn fixed bottom-6 right-6 z-[60] w-12 h-12 rounded-full bg-[hsl(var(--navy))]/90 border-2 border-[hsl(var(--navy))] text-white shadow-lg flex items-center justify-center backdrop-blur-xl transition-all duration-500 hover:bg-[hsl(var(--brand-pink))] hover:scale-110 ${
+        className={`group/btn fixed bottom-6 right-6 z-[60] w-12 h-12 rounded-full bg-brand-turquoise border-2 border-brand-navy text-white shadow-lg flex items-center justify-center backdrop-blur-xl transition-all duration-500 hover:bg-brand-pink hover:scale-110 ${
           showTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Back to top"
