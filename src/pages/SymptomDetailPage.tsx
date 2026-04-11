@@ -2,7 +2,6 @@ import { useParams, Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import PageBanner from "@/components/sections/PageBanner";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -47,10 +46,6 @@ const SymptomDetailPage = () => {
         accent={symptom.name}
         subtitle={symptom.shortDescription}
       />
-
-      <div className="container mx-auto px-4 pt-4">
-        <PageBreadcrumb />
-      </div>
 
       {/* Clinical explanation */}
       <section className="py-10 sm:py-14">

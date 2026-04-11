@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
@@ -132,16 +131,6 @@ const HeartHealthPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb 
-            segments={[
-              { label: "Home", href: "/" },
-              { label: "Compare Tests", href: "/compare" },
-              { label: "Heart Health" }
-            ]}
-            backLabel="Back to Compare"
-          />
-        </div>
         <PageBanner
           title="Heart Health Blood Tests"
           subtitle="Comprehensive heart health screening for UK adults aged 30-60. Monitor your cardiovascular risk and take proactive steps towards a healthier heart."

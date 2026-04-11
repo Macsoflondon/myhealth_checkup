@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import MostPopularTests from '@/components/tests/MostPopularTests';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 import { Star, TrendingUp, Shield } from 'lucide-react';
 
@@ -44,10 +43,6 @@ const MostPopularTestsPage = () => {
         
         <Header />
         <main className="flex-1 bg-background">
-          <PageBreadcrumb 
-            segments={[{ label: "Home", href: "/" }, { label: "Popular Tests" }]} 
-            backLabel="Back"
-          />
           <MostPopularTests />
           <CategoryPageBottom
             benefitsTitle="Why Choose Our Most Popular Tests?"

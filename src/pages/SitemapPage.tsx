@@ -5,7 +5,6 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import PageBanner from '@/components/sections/PageBanner';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 
 const SitemapPage = () => {
   const siteStructure = [{
@@ -38,9 +37,6 @@ const SitemapPage = () => {
           accent="Map"
           subtitle="Navigate our complete site structure and find exactly what you're looking for."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
 
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">

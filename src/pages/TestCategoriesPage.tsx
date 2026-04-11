@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { wellnessCategories } from "@/data/wellnessCategories";
 
 const categories = wellnessCategories.map((wc, i) => ({
@@ -119,7 +118,6 @@ const TestCategoriesPage = () => {
 
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
           {/* Breadcrumb */}
-          <PageBreadcrumb />
 
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 16 }}>

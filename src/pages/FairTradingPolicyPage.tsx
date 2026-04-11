@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import FairTradingPolicy from '@/components/compliance/FairTradingPolicy';
 import PageBanner from '@/components/sections/PageBanner';
 
@@ -20,9 +19,6 @@ const FairTradingPolicyPage = () => {
           title="Fair Trading Policy"
           subtitle="Our commitment to fair, transparent, and ethical trading practices."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
         <FairTradingPolicy />
       </main>
       <Footer />

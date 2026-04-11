@@ -5,7 +5,6 @@ import FounderStory from "@/components/sections/FounderStory";
 import PartnerShowcase from "@/components/sections/PartnerShowcase";
 import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
 import { SectionHeading } from "@/components/ui/section-heading";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import PageBanner from "@/components/sections/PageBanner";
 import { Shield, Users, Award, Heart } from "lucide-react";
 
@@ -56,9 +55,6 @@ const AboutUsPage = () => {
           accent="myhealth checkup"
           subtitle="Your health is your greatest asset. We rigorously screen every provider we feature to ensure you only see the UK's most reputable health testing options."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
 
         <TrustBadgesSection />
 

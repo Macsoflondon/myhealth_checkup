@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
 import { Button } from "@/components/ui/button";
@@ -169,14 +168,6 @@ const CategoryLandingPage: React.FC = () => {
             </h1>
             <p className="text-muted-foreground text-lg mb-6">{content.heroSubtitle}</p>
             {/* Breadcrumb */}
-            <PageBreadcrumb 
-              segments={[
-                { label: "Home", href: "/" },
-                { label: "Tests", href: "/compare" },
-                { label: content.name }
-              ]}
-              backLabel="Back to All Tests"
-            />
 
             {/* Introduction */}
             <section className="mt-8 mb-12">

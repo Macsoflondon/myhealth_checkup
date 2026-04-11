@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
@@ -69,10 +68,6 @@ const VitaminDeficiencyPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <PageBreadcrumb 
-          segments={[{ label: "Home", href: "/" }, { label: "Vitamin Deficiency" }]} 
-          backLabel="Back"
-        />
         <PageBanner
           title="Vitamin & Mineral Testing"
           subtitle="Discover hidden vitamin deficiencies affecting your energy, immunity, and wellbeing. Essential testing for health-conscious UK adults aged 30-60."

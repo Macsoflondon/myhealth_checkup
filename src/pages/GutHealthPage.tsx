@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
@@ -45,10 +44,6 @@ const GutHealthPage = () => {
       
       <Header />
       <main className="flex-grow">
-        <PageBreadcrumb 
-          segments={[{ label: "Home", href: "/" }, { label: "Gut Health" }]} 
-          backLabel="Back"
-        />
         <PageBanner
           title="Gut Health & Microbiome Testing"
           subtitle="Discover the secrets of your gut microbiome. Advanced testing for digestive health, food intolerances, and gut-brain connection for UK adults aged 30-60."

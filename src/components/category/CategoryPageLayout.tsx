@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { CategoryHero } from "./CategoryHero";
 import { CategoryFilters } from "./CategoryFilters";
 import { CategoryCompareDrawer, CompareItem } from "./CategoryCompareDrawer";
@@ -167,10 +166,6 @@ export function CategoryPageLayout({
           className="flex-1"
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
-          <PageBreadcrumb
-            segments={breadcrumbs}
-            backLabel={breadcrumbBackLabel}
-          />
 
           <CategoryHero
             headline={headline}

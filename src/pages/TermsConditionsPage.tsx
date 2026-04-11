@@ -4,7 +4,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PageBanner from '@/components/sections/PageBanner';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 
 const TermsConditionsPage = () => {
   return (
@@ -20,9 +19,6 @@ const TermsConditionsPage = () => {
           title="Terms & Conditions"
           subtitle="Please read these terms carefully before using our services."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
 
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">

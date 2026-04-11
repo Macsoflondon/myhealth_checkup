@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import PageBanner from "@/components/sections/PageBanner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -190,10 +189,6 @@ const HormonesPage = () => {
       
       <Header />
       <main className="flex-grow bg-background">
-        <PageBreadcrumb 
-          segments={[{ label: "Home", href: "/" }, { label: "Hormone Tests" }]} 
-          backLabel="Back"
-        />
         <PageBanner
           title="Hormone Blood Tests"
           subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimize your health with professional hormone analysis and personalized insights."

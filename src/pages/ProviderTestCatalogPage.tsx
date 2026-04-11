@@ -9,7 +9,6 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import { logger } from "@/lib/logger";
 import { providersApi } from "@/api";
 import type { ProviderTestData } from "@/api/supabase/providers.api";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import ProviderTestCard from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 
@@ -115,14 +114,6 @@ const ProviderTestCatalogPage = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <PageBreadcrumb
-          segments={[
-            { label: "Home", href: "/" },
-            { label: "Providers", href: "/trusted-providers" },
-            { label: provider.name },
-          ]}
-          backLabel="Back to Providers"
-        />
 
         {/* Header */}
         <div className="mb-8 text-center">
