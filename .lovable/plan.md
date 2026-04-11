@@ -1,13 +1,51 @@
 
 
-## Plan: Increase Medichecks Logo Size in Accredited Providers Section
+## Plan: Unified Floating Navigation Dock
 
-**File:** `src/components/sections/AccreditedProvidersBar.tsx`
+**What changes:** Replace the separate `PageBreadcrumb` (bottom-left pill) and `BackToTop` (mid-right circle) with a single unified `FloatingNavDock` component. This dock combines Home, Back, and Scroll-to-Top into one cohesive, compact element anchored to the bottom-right corner of the viewport.
 
-**Change:** Add a conditional class for the Medichecks logo image to make it larger within its existing container, without changing the card dimensions.
+**Design concept:**
 
-Currently all logos share the same `max-h-full max-w-full object-contain` class inside an 80px/100px height container. The fix will add a specific scale or remove the max-height constraint for the Medichecks logo so it fills more of the card space.
+```text
+  ┌─────────────────────────────┐
+  │  On non-homepage pages:     │
+  │                             │
+  │     ╭───╮ ╭───╮ ╭───╮      │
+  │     │ ⌂ │ │ ← │ │ ↑ │      │
+  │     ╰───╯ ╰───╯ ╰───╯      │
+  │     Home   Back   Top       │
+  │                             │
+  │  On homepage:               │
+  │              ╭───╮          │
+  │              │ ↑ │          │
+  │              ╰───╯          │
+  │              Top            │
+  └─────────────────────────────┘
 
-**Implementation:**
-- On the `<img>` tag, add a conditional className that applies `scale-125` (or similar) when the provider is Medichecks, keeping the card and container unchanged.
+  Position: fixed bottom-6 right-6
+  Style: Navy pill container with glassmorphism
+  Icons: Turquoise idle → Pink hover
+  Top button: fades in after 300px scroll
+```
+
+**Visual style (matching platform aesthetic):**
+- Container: `bg-[#081129]/90` with `backdrop-blur-xl`, rounded-full, 2px navy border, subtle shadow
+- Icon buttons: 44x44px touch targets (WCAG compliant), icon-only (no text labels) for compactness
+- Icons: white by default, turquoise glow on hover with pink background transition
+- Dividers: thin `bg-white/20` vertical lines between buttons
+- The scroll-to-top button smoothly fades in/out based on scroll position
+- On homepage: only the scroll-to-top icon renders (no container pill, just the single circle)
+
+**Files to modify:**
+
+1. **Delete** `src/components/common/PageBreadcrumb.tsx` -- replaced by new component
+2. **Delete** `src/components/common/BackToTop.tsx` -- replaced by new component
+3. **Create** `src/components/common/FloatingNavDock.tsx` -- unified component with:
+   - `useLocation` to detect homepage (`/`)
+   - Scroll listener for top-button visibility
+   - Home link, Back button, Scroll-to-top button
+   - On homepage: renders only the scroll-to-top circle
+   - On all other pages: renders the full 3-button pill (with top button fading in on scroll)
+4. **Update** `src/App.tsx` -- replace `PageBreadcrumb` and `BackToTop` imports with single `FloatingNavDock`
+5. **Update** `src/components/common/index.ts` -- update barrel exports
 
