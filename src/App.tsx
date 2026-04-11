@@ -6,8 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import PageBreadcrumb from "./components/common/PageBreadcrumb";
-import BackToTop from "./components/common/BackToTop";
+import FloatingNavDock from "./components/common/FloatingNavDock";
 
 import { AppRoutes } from "./routes";
 import { SessionSecurityProvider } from "./components/security/SessionSecurityProvider";
@@ -40,10 +39,8 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
-              <BackToTop />
-              
+              <FloatingNavDock />
               <AppRoutes />
-              <PageBreadcrumb />
             </BrowserRouter>
           </TooltipProvider>
         </HelmetProvider>
