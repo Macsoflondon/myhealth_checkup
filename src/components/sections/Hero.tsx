@@ -166,7 +166,7 @@ const Hero = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 sm:mt-5 bg-gray-50 rounded-xl p-4 sm:p-5 text-center opacity-70">
+                  <div className="mt-4 sm:mt-5 bg-gray-50 rounded-xl p-4 sm:p-5 text-center">
                     <p className="text-xs sm:text-sm font-bold text-[hsl(var(--navy))] mb-3 uppercase tracking-[0.15em]">
                       Popular Searches
                     </p>
@@ -175,7 +175,7 @@ const Hero = () => {
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className="px-4 sm:px-5 py-2 text-white bg-brand-turquoise hover:bg-[hsl(var(--secondary))] border-2 border-[#081129] rounded-full transition-colors duration-300 font-medium"
+                          className="px-4 sm:px-5 py-2 text-white bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] border-2 border-[#081129] rounded-full transition-colors duration-300 font-medium"
                         >
                           {search.name}
                         </button>
