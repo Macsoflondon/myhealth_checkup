@@ -47,7 +47,7 @@ const FloatingNavDock = () => {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-[60] flex items-center gap-0 rounded-full border-2 border-[hsl(var(--navy))] bg-[hsl(var(--navy))]/90 shadow-lg overflow-visible transition-all duration-500 ease-out ${
+      className={`fixed bottom-6 right-6 z-[60] flex items-center gap-0 rounded-full border-2 border-brand-navy bg-brand-navy/90 shadow-lg overflow-visible transition-all duration-500 ease-out ${
         mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
       style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
