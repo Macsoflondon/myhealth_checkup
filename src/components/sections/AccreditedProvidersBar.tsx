@@ -30,7 +30,7 @@ const AccreditedProvidersBar = () => {
             return (
               <div
                 key={id}
-                className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10 p-6 md:p-8 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
+                className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10 p-6 md:p-8 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 bg-[secondary-on-container]"
               >
                 <div className="flex items-center justify-center h-[80px] sm:h-[100px] w-full">
                   <img
