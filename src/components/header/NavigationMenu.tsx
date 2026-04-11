@@ -122,7 +122,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             className={`group relative text-sm md:text-base lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
               (item as any).highlighted 
                 ? "text-brand-pink"
-                : "text-brand-turquoise hover:text-brand-pink"
+                : "text-brand-turquoise hover:text-brand-pink text-secondary"
             }`}
             onClick={handleItemClick}
           >
