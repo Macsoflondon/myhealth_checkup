@@ -39,12 +39,12 @@ export function CategoryHero({
 
         {/* Search bar */}
         <div className="flex items-center border border-border rounded-xl px-4 py-1 max-w-[560px] mx-auto mb-7 shadow-sm bg-primary">
-          <Search className="h-4 w-4 mr-2 flex-shrink-0 bg-primary-foreground text-primary" />
+          <Search className="h-4 w-4 mr-2 flex-shrink-0 text-white" />
           <input
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={searchPlaceholder}
-            className="border-none text-sm flex-1 outline-none py-2 bg-primary text-secondary-foreground"
+            className="border-none text-sm flex-1 outline-none py-2 bg-primary text-white placeholder:text-white/60"
           />
           {search && (
             <button
