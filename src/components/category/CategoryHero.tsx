@@ -38,7 +38,7 @@ export function CategoryHero({
         </p>
 
         {/* Search bar */}
-        <div className="flex items-center bg-muted/50 border border-border rounded-xl px-4 py-1 max-w-[560px] mx-auto mb-7 shadow-sm">
+        <div className="flex items-center border border-border rounded-xl px-4 py-1 max-w-[560px] mx-auto mb-7 shadow-sm bg-primary">
           <Search className="h-4 w-4 mr-2 flex-shrink-0 bg-primary-foreground text-primary" />
           <input
             value={search}
