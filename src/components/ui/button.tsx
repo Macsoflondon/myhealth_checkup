@@ -83,7 +83,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={asChild ? onClick : handleClick}
         {...props}
       >
-        <span className="relative z-10">{children}</span>
+        <span className="relative z-10 text-primary-foreground">{children}</span>
       </Comp>
     )
   }
