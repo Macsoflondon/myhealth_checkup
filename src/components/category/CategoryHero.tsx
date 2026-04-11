@@ -56,7 +56,7 @@ export function CategoryHero({
           )}
           <Button
             size="sm"
-            className="bg-brand-turquoise text-[hsl(var(--navy))] font-bold text-xs hover:bg-brand-turquoise/90 rounded-lg"
+            className="bg-brand-turquoise text-[hsl(var(--navy))] font-bold text-xs hover:bg-brand-turquoise/90 rounded-lg border-primary-foreground"
           >
             Search
           </Button>
