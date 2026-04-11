@@ -25,16 +25,16 @@ const FloatingNavDock = () => {
   const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate('/'));
 
   const btnBase =
-    'group/btn relative flex items-center justify-center w-12 h-12 rounded-full bg-[hsl(var(--brand-turquoise))] text-white transition-all duration-300 hover:bg-[hsl(var(--brand-pink))]';
+    'group/btn relative flex items-center justify-center w-12 h-12 rounded-full bg-brand-turquoise text-white transition-all duration-300 hover:bg-brand-pink';
 
   const labelBase =
-    'absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-[hsl(var(--navy))] text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md';
+    'absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-brand-navy text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md';
 
   if (isHome) {
     return (
       <button
         onClick={scrollToTop}
-        className={`group/btn fixed bottom-6 right-6 z-[60] w-12 h-12 rounded-full bg-[hsl(var(--navy))]/90 border-2 border-[hsl(var(--navy))] text-white shadow-lg flex items-center justify-center backdrop-blur-xl transition-all duration-500 hover:bg-[hsl(var(--brand-pink))] hover:scale-110 ${
+        className={`group/btn fixed bottom-6 right-6 z-[60] w-12 h-12 rounded-full bg-brand-turquoise border-2 border-brand-navy text-white shadow-lg flex items-center justify-center backdrop-blur-xl transition-all duration-500 hover:bg-brand-pink hover:scale-110 ${
           showTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Back to top"
@@ -47,7 +47,7 @@ const FloatingNavDock = () => {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-[60] flex items-center gap-0 rounded-full border-2 border-[hsl(var(--navy))] bg-[hsl(var(--navy))]/90 shadow-lg overflow-visible transition-all duration-500 ease-out ${
+      className={`fixed bottom-6 right-6 z-[60] flex items-center gap-0 rounded-full border-2 border-brand-navy bg-brand-navy/90 shadow-lg overflow-visible transition-all duration-500 ease-out ${
         mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
       style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
