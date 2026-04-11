@@ -68,7 +68,7 @@ const FloatingNavDock = () => {
       </button>
 
       <div
-        className={`flex items-center transition-all duration-300 ${
+        className={`flex items-center transition-all duration-300 bg-secondary ${
           showTop ? 'w-[calc(1px+3rem)] opacity-100' : 'w-0 opacity-0'
         } overflow-visible`}
       >
