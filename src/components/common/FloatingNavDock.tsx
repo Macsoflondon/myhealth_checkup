@@ -42,7 +42,7 @@ const FloatingNavDock = () => {
         aria-label="Back to top"
       >
         <span className={labelBase}>Top</span>
-        <ArrowUp className="h-5 w-5" />
+        <ArrowUp className="h-[1.35rem] w-[1.35rem]" />
       </button>
     );
   }
@@ -57,14 +57,14 @@ const FloatingNavDock = () => {
     >
       <Link to="/" className={btnBase} aria-label="Home">
         <span className={labelBase}>Home</span>
-        <Home className="h-5 w-5" />
+        <Home className="h-[1.35rem] w-[1.35rem]" />
       </Link>
 
       <div className="w-px h-6 bg-white/20" />
 
       <button onClick={goBack} className={btnBase} aria-label="Go back">
         <span className={labelBase}>Back</span>
-        <ArrowLeft className="h-5 w-5" />
+        <ArrowLeft className="h-[1.35rem] w-[1.35rem]" />
       </button>
 
       <div
@@ -75,7 +75,7 @@ const FloatingNavDock = () => {
         <div className="w-px h-6 bg-white/20 shrink-0" />
         <button onClick={scrollToTop} className={`${btnBase} shrink-0`} aria-label="Back to top">
           <span className={labelBase}>Top</span>
-          <ArrowUp className="h-5 w-5" />
+          <ArrowUp className="h-[1.35rem] w-[1.35rem]" />
         </button>
       </div>
     </div>
