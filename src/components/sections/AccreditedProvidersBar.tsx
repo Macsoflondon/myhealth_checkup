@@ -34,7 +34,7 @@ const AccreditedProvidersBar = () => {
               >
                 <div className="flex items-center justify-center h-[80px] sm:h-[100px] w-full">
                   <img
-                    src={provider.logo}
+                    src={id === 'medichecks' ? '/lovable-uploads/provider-medichecks-dark.png' : provider.logo}
                     alt={`${provider.name} logo`}
                     className="max-h-full max-w-full object-contain"
                     loading="lazy"
