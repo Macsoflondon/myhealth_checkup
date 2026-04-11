@@ -1,14 +1,13 @@
 
 
-## Update AccreditedProvidersBar: Larger Logos and Consistent Heading
+## Plan: Increase Medichecks Logo Size in Accredited Providers Section
 
-**File**: `src/components/sections/AccreditedProvidersBar.tsx`
+**File:** `src/components/sections/AccreditedProvidersBar.tsx`
 
-### Changes
+**Change:** Add a conditional class for the Medichecks logo image to make it larger within its existing container, without changing the card dimensions.
 
-1. **Logo size** — Change `h-12` to `max-h-[90px] sm:max-h-[120px]` to match the PartnersGrid carousel logos. Also increase card padding to accommodate the larger logos.
+Currently all logos share the same `max-h-full max-w-full object-contain` class inside an 80px/100px height container. The fix will add a specific scale or remove the max-height constraint for the Medichecks logo so it fills more of the card space.
 
-2. **Section heading** — Replace the small uppercase `h2` with the `SectionHeading` component (used across other sections), e.g. `<SectionHeading title="Accredited Providers" gradientText="We Compare" titleClassName="text-white" />`. This matches the heading style of "Our Trusted Partners" and other sections.
-
-3. **Section padding** — Adjust from `py-16 md:py-20` to `py-8 md:py-12` to match the compact landing page standard.
+**Implementation:**
+- On the `<img>` tag, add a conditional className that applies `scale-125` (or similar) when the provider is Medichecks, keeping the card and container unchanged.
 
