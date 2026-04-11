@@ -25,7 +25,7 @@ const FloatingNavDock = () => {
   const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate('/'));
 
   const btnBase =
-    'group/btn relative flex items-center justify-center w-12 h-12 rounded-full bg-[hsl(var(--brand-turquoise))] text-white transition-all duration-300 hover:bg-[hsl(var(--brand-pink))]';
+    'group/btn relative flex items-center justify-center w-12 h-12 rounded-full bg-brand-turquoise text-white transition-all duration-300 hover:bg-brand-pink';
 
   const labelBase =
     'absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-[hsl(var(--navy))] text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md';
