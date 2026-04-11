@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import PageHeading from '@/components/ui/page-heading';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -361,10 +360,6 @@ const FAQsPage = () => {
             </div>
           </div>
         </PageBanner>
-
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
 
         {/* FAQ Categories */}
         <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">

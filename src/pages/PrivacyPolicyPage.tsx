@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import PrivacyPolicy from '@/components/compliance/PrivacyPolicy';
 import PageBanner from '@/components/sections/PageBanner';
 
@@ -20,9 +19,6 @@ const PrivacyPolicyPage = () => {
           title="Privacy Policy"
           subtitle="How we collect, use, and protect your personal data in compliance with UK GDPR."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
         <PrivacyPolicy />
       </main>
       <Footer />

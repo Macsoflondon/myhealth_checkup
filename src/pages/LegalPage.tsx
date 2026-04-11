@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBanner from '@/components/sections/PageBanner';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Card, CardContent } from '@/components/ui/card';
 import { FileText, Shield, Cookie, Users, Handshake, Scale, Award } from 'lucide-react';
 
@@ -28,9 +27,6 @@ const LegalPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner title="Legal" subtitle="Our policies, terms, and compliance documents." />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-6">
             {legalPages.map(({ title, path, icon: Icon, description }) => (

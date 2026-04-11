@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import ScrollFadeIn from '@/components/common/ScrollFadeIn';
 import PageBanner from '@/components/sections/PageBanner';
 import { Button } from '@/components/ui/button';
@@ -55,16 +54,6 @@ const DiabetesTestingPage = () => {
       </Helmet>
       <Header />
       <main className="flex-grow">
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb 
-            segments={[
-              { label: "Home", href: "/" },
-              { label: "Compare Tests", href: "/compare" },
-              { label: "Diabetes Testing" }
-            ]}
-            backLabel="Back to Compare"
-          />
-        </div>
         <PageBanner
           title="Diabetes Testing & Monitoring"
           subtitle="Comprehensive diabetes screening and monitoring tests. Perfect for health-conscious UK adults aged 30-60 looking to manage their metabolic health proactively."

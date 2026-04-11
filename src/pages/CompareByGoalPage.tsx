@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import PageBanner from "@/components/sections/PageBanner";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
@@ -38,10 +37,6 @@ const CompareByGoalPage = () => {
         accent="Goal"
         subtitle="Know what you want to achieve? We'll show you which tests get you there."
       />
-
-      <div className="container mx-auto px-4 pt-4">
-        <PageBreadcrumb />
-      </div>
 
       <section className="py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">

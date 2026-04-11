@@ -2,7 +2,6 @@ import React, { useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { TestListCard } from "@/components/compare/TestListCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
@@ -184,16 +183,6 @@ const CompareTests = () => {
                 ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
                 : "Compare Private Blood Tests"}
             </h1>
-            <PageBreadcrumb 
-              segments={[
-                { label: "Home", href: "/" },
-                { label: "Compare Tests", href: "/compare" },
-                ...(effectiveCategory && effectiveCategory !== "all" 
-                  ? [{ label: getCategoryDisplayName(effectiveCategory) }] 
-                  : [])
-              ]}
-              backLabel="Back to Home"
-            />
             
             {/* Recommended Tests Carousel */}
             <RecommendedTestsCarousel

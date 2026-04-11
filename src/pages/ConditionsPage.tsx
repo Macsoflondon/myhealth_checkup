@@ -5,7 +5,6 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import PageBanner from '@/components/sections/PageBanner';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Droplets, Activity, Brain, Bone, Shield } from 'lucide-react';
@@ -98,10 +97,6 @@ const ConditionsPage = () => {
               </Link>
             </div>
           </PageBanner>
-
-          <div className="container mx-auto px-4 pt-4">
-            <PageBreadcrumb />
-          </div>
 
           <section className="py-16 bg-gray-50">
             <div className="container mx-auto px-4">

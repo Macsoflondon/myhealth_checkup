@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import HowWeRank from '@/components/compliance/HowWeRank';
 import PageBanner from '@/components/sections/PageBanner';
 
@@ -20,9 +19,6 @@ const HowWeRankPage = () => {
           title="How We Rank"
           subtitle="Understanding our transparent methodology for comparing and ranking health test providers."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
         <HowWeRank />
       </main>
       <Footer />

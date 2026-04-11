@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import PageBreadcrumb from '@/components/common/PageBreadcrumb';
 import AffiliateDisclosure from '@/components/compliance/AffiliateDisclosure';
 import PageBanner from '@/components/sections/PageBanner';
 
@@ -20,9 +19,6 @@ const AffiliateDisclosurePage = () => {
           title="Affiliate Disclosure"
           subtitle="Full transparency about our commercial relationships and how we fund our platform."
         />
-        <div className="container mx-auto px-4 pt-4">
-          <PageBreadcrumb />
-        </div>
         <AffiliateDisclosure />
       </main>
       <Footer />

@@ -8,7 +8,6 @@ import ProviderPriceComparison from "@/components/compare/ProviderPriceCompariso
 import TestStructuredData from "@/components/seo/TestStructuredData";
 import PageHeading from "@/components/ui/page-heading";
 import { TestPageData } from "@/types/TestPageTypes";
-import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 
 interface TestPageTemplateProps {
   data: TestPageData;
@@ -39,15 +38,6 @@ const TestPageTemplate = ({
       
       <main className="container mx-auto px-[20px] py-6">
         {/* Breadcrumb with Back Button */}
-        <PageBreadcrumb 
-          segments={[
-            { label: "Home", href: "/" },
-            { label: "Compare Tests", href: "/compare" },
-            { label: data.category, href: `/compare?category=${encodeURIComponent(data.category)}` },
-            { label: data.title }
-          ]}
-          backLabel="Back to Compare"
-        />
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
