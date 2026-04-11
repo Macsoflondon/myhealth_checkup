@@ -7,7 +7,7 @@ export { default as Footer } from "./layout/Footer";
 // Common components
 export { ErrorBoundary } from "./common/ErrorBoundary";
 export { ScrollToTop } from "./common/ScrollToTop";
-export { default as BackToTop } from "./common/BackToTop";
+export { default as FloatingNavDock } from "./common/FloatingNavDock";
 export { LazySection } from "./common/LazySection";
 export { default as ScrollFadeIn } from "./common/ScrollFadeIn";
 export { default as TestBreadcrumb } from "./common/TestBreadcrumb";
