@@ -32,12 +32,14 @@ const AccreditedProvidersBar = () => {
                 key={id}
                 className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10 p-6 md:p-8 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
               >
-                <img
-                  src={provider.logo}
-                  alt={`${provider.name} logo`}
-                  className="max-h-[90px] sm:max-h-[120px] w-auto object-contain"
-                  loading="lazy"
-                />
+                <div className="flex items-center justify-center h-[80px] sm:h-[100px] w-full">
+                  <img
+                    src={provider.logo}
+                    alt={`${provider.name} logo`}
+                    className="max-h-full max-w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
                 <span className="text-white text-sm font-medium text-center leading-tight">
                   {provider.name}
                 </span>
