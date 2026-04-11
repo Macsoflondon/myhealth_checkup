@@ -36,7 +36,7 @@ const AccreditedProvidersBar = () => {
                   <img
                     src={id === 'medichecks' ? '/lovable-uploads/provider-medichecks-dark.png' : provider.logo}
                     alt={`${provider.name} logo`}
-                    className="max-h-full max-w-full object-contain"
+                    className={`max-h-full max-w-full object-contain ${id === 'medichecks' ? 'scale-125' : ''}`}
                     loading="lazy"
                   />
                 </div>
