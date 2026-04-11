@@ -67,11 +67,9 @@ const FloatingNavDock = () => {
         <ArrowLeft className="h-[1.35rem] w-[1.35rem]" />
       </button>
 
-      <div
-        className={`flex items-center transition-all duration-300 bg-secondary ${
-          showTop ? 'w-[calc(1px+3rem)] opacity-100' : 'w-0 opacity-0'
-        } overflow-visible`}
-      >
+      <div className={`flex items-center transition-all duration-300 ${
+        showTop ? 'w-[calc(1px+3rem)] opacity-100' : 'w-0 opacity-0'
+      } overflow-visible bg-primary-foreground`}>
         <div className="w-px h-6 bg-white/20 shrink-0" />
         <button onClick={scrollToTop} className={`${btnBase} shrink-0`} aria-label="Back to top">
           <span className={labelBase}>Top</span>
