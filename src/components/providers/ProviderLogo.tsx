@@ -11,7 +11,7 @@ export const ProviderLogo = ({ provider, className = "h-20 w-auto", priority = f
     const normalizedName = providerName.toLowerCase();
     
     if (normalizedName.includes('medichecks')) {
-      return '/lovable-uploads/provider-medichecks-cropped.png';
+      return '/lovable-uploads/provider-medichecks-light.png';
     }
     
     if (normalizedName.includes('goodbody')) {
