@@ -33,7 +33,7 @@ const PartnerShowcaseGrid = () => {
 
           {/* Divider */}
           <div className="md:col-span-2 flex justify-center">
-            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent" />
+            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/70 to-transparent" />
           </div>
 
         </div>
@@ -85,11 +85,11 @@ const PartnerShowcaseGrid = () => {
           <div className="md:col-span-2">
             <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col text-center items-center">
               <div className="flex items-center justify-center gap-3 mb-2">
-                <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
                 <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
                   Find Your Clinic
                 </span>
-                <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+                <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-heading font-bold mb-2">
                 <span className="text-white">Find a Clinic </span>
