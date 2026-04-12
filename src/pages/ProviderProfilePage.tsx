@@ -147,7 +147,7 @@ const ProviderProfilePage = () => {
               </div>
               
               {(() => {
-                const structuredContent: Record<string, { mission: string; whoWeAre: string; services: string }> = {
+              const structuredContent: Record<string, { mission: string; whoWeAre: string; services: string }> = {
                   'goodbody-clinic': {
                     mission: "You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.",
                     whoWeAre: "Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,400 reviews.",
@@ -177,6 +177,76 @@ const ProviderProfilePage = () => {
                     mission: "London Medical Laboratory is committed to delivering fast, accurate diagnostic testing with clinical-grade precision. Their goal is to make professional laboratory services accessible to everyone, not just those with a GP referral.",
                     whoWeAre: "A UKAS-accredited (ISO 15189) laboratory offering over 100 blood tests with some of the fastest turnaround times in the UK — many results within 24 hours. Professional clinic-based venous blood collection with partner locations across the country. Rated 4.5/5 on Trustpilot with over 3,250 reviews.",
                     services: "Comprehensive test menu including health MOTs, hormone profiles, vitamin panels, allergy testing, and fertility assessments. All samples are processed in their own accredited laboratory with expert analysis and results delivered via online portal or email.",
+                  },
+                  'blue-horizon': {
+                    mission: "Blue Horizon exists to make professional blood testing accessible and straightforward. Their focus is on delivering reliable results with flexible collection options to fit your lifestyle.",
+                    whoWeAre: "Blue Horizon is a well-established private pathology provider offering over 150 blood tests across thyroid, fatigue, hormones, and general wellness. Tests are processed in accredited laboratories with doctor-reviewed results. Rated 4.2/5 on Trustpilot with over 320 reviews.",
+                    services: "A comprehensive range of health profiles and specialised diagnostics, with flexible sample collection via home kits, clinic visits, or home nurse appointments. Results include personalised interpretation and actionable health insights.",
+                  },
+                  'private-blood-tests-spire': {
+                    mission: "Private Blood Tests through Spire Healthcare aims to combine the accessibility of self-referral testing with the clinical standards of a leading hospital network.",
+                    whoWeAre: "Offering access to over 400 blood tests through the trusted Spire hospital network across the UK. All testing is conducted in accredited laboratory facilities with professional phlebotomy and consultant-grade reporting. Rated 4.6/5 on Trustpilot with over 200 reviews.",
+                    services: "Extensive test menu covering health screening, hormones, fatigue panels, and specialist diagnostics. Free GP referrals included with results, plus a VIP service option for priority processing and same-day appointments at Spire hospitals.",
+                  },
+                  'superdrug-health': {
+                    mission: "Superdrug Health Clinics bring convenient, affordable health testing to the high street — making preventative healthcare as easy as popping into your local store.",
+                    whoWeAre: "Part of the Superdrug retail network, Health Clinics operate nationwide offering walk-in and bookable appointments for blood testing, sexual health, and vitamin screening. Over 2,000 appointments available weekly. Rated 4.9/5 on Trustpilot with over 10,500 reviews.",
+                    services: "General health checks, sexual health screening, and vitamin tests available at in-store clinic locations. Results typically within 2–3 days with follow-up guidance. Competitive pricing and convenient high-street access across the UK.",
+                  },
+                  'bupa': {
+                    mission: "Bupa is committed to helping people live longer, healthier, happier lives — providing comprehensive diagnostics as part of an integrated healthcare offering.",
+                    whoWeAre: "One of the UK's most recognised healthcare providers, Bupa offers diagnostic testing and health assessments through its network of clinics and hospitals. With decades of clinical expertise and a broad range of services. Rated 4.4/5 on Trustpilot with over 39,400 reviews.",
+                    services: "Health assessments, diagnostic blood tests, GP consultations, and specialist referrals. Bupa provides end-to-end healthcare from screening through to treatment, with results reviewed by qualified clinicians.",
+                  },
+                  'nuffield-health': {
+                    mission: "Nuffield Health is the UK's largest healthcare charity, dedicated to making quality diagnostics available to everyone through its Pathology Direct service.",
+                    whoWeAre: "A not-for-profit healthcare organisation operating hospitals, clinics, and fitness centres across the UK. Nuffield Health's Pathology Direct service provides self-pay blood testing with clinical-grade analysis. Rated 3.4/5 on Trustpilot with over 3,000 reviews.",
+                    services: "Self-pay pathology services including comprehensive blood panels, hormone testing, and health screening. Tests conducted at Nuffield hospitals with professional phlebotomy and results reviewed by qualified pathologists.",
+                  },
+                  'london-blood-tests': {
+                    mission: "London Blood Tests provides fast, convenient private blood testing in the capital — with same-day appointments and rapid results for those who need answers quickly.",
+                    whoWeAre: "A London-based blood testing service offering over 100 tests with some of the fastest turnaround times available. Professional phlebotomy at clinic locations and home visit options. Rated 4.5/5 on Trustpilot.",
+                    services: "Health screening, hormone profiles, vitamin panels, and specialist diagnostics. Same-day appointments available with results typically within 1–2 working days. Home visit options for added convenience.",
+                  },
+                  'youth-revisited': {
+                    mission: "Youth Revisited is dedicated to helping you optimise your health and wellbeing through targeted testing and personalised wellness programmes.",
+                    whoWeAre: "A wellness-focused health testing provider specialising in nutrition, men's and women's health, and mental wellbeing assessments. Clinic and home visit options available for sample collection.",
+                    services: "Wellness, nutrition, and hormone testing with personalised health packages. Results include detailed lifestyle recommendations and optimisation guidance tailored to individual health goals.",
+                  },
+                  'manual-trt': {
+                    mission: "Manual exists to give men straightforward, clinician-led access to testosterone monitoring and hormone health — removing the barriers to proper TRT management.",
+                    whoWeAre: "A digital health platform specialising in men's health, particularly Testosterone Replacement Therapy (TRT). Physician-led support with subscription-based testing for ongoing hormone optimisation. Rated 4.3/5 on Trustpilot with over 11,200 reviews.",
+                    services: "Testosterone and men's health blood testing via home kits and partner clinics. Subscription-based TRT monitoring with repeat testing, physician consultations, and personalised treatment adjustments.",
+                  },
+                  'manual-hrt': {
+                    mission: "Manual's HRT support helps women navigate menopause and hormonal changes with clinical-grade testing and expert guidance — all from home.",
+                    whoWeAre: "Part of the Manual digital health platform, offering hormone testing and menopause support through partner brands. Home-based testing with app-powered symptom tracking and ongoing monitoring. Rated 4.3/5 on Trustpilot with over 11,200 reviews.",
+                    services: "HRT monitoring, hormone profiles, and menopause symptom tracking via home kits. Results reviewed by clinicians with personalised guidance for ongoing hormonal health management.",
+                  },
+                  'functional-dx': {
+                    mission: "Functional DX provides advanced functional blood analysis to help integrative health practitioners deliver deeper, more personalised patient care.",
+                    whoWeAre: "A practitioner-only advanced testing platform offering over 100 comprehensive biomarker panels. Used by integrative medicine professionals and functional health practitioners across the UK. Clinic-based venous blood collection via practitioner referral.",
+                    services: "Advanced functional blood testing covering metabolic health, hormonal balance, nutritional status, and inflammatory markers. Comprehensive panels with functional reference ranges designed for practitioner interpretation and clinical decision-making.",
+                  },
+                  'onedaytests': {
+                    mission: "OneDayTests was founded on the belief that waiting days for health results is unnecessary. They deliver ultra-fast diagnostics from walk-in clinics across the UK.",
+                    whoWeAre: "A rapid-results blood testing provider operating 15+ locations across London, Manchester, and other UK cities. UKAS Medical 15189:2022 accredited with CQC registration through Sussex Pathology Ltd. Rated 4.8/5 on Trustpilot with over 3,300 reviews.",
+                    services: "Health check panels, cholesterol, liver and kidney function, and rapid testing with many results available same day or within 24 hours. Walk-in and pre-booked appointments at central clinic locations with real-time online booking.",
+                  },
+                  'check-my-body-health': {
+                    mission: "Check My Body Health makes intolerance and wellness testing simple and non-invasive — helping you understand how your body reacts to foods and environmental factors.",
+                    whoWeAre: "A specialist intolerance and wellness testing provider using non-invasive hair sample analysis. Offering food sensitivity, environmental intolerance, and DNA wellness testing kits delivered to your door. Rated 4.1/5 on Trustpilot with over 10,900 reviews.",
+                    services: "Food and environmental intolerance testing, gut health analysis, nutritional deficiency screening, and DNA wellness kits. Non-invasive home-based testing with detailed results reports and dietary guidance.",
+                  },
+                  'london-laboratory': {
+                    mission: "London Laboratory delivers premium private pathology from the heart of Harley Street — combining clinical expertise with fast turnaround and a comprehensive test menu.",
+                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory based on Harley Street, London, offering comprehensive health, hormone, and allergy testing. In-clinic and home kit options with professional laboratory analysis.",
+                    services: "General health checks, vitamin panels, hormone profiles, allergy testing, and fertility assessments. In-clinic phlebotomy at the Harley Street location or home testing kits. Results typically within 1–3 working days.",
+                  },
+                  'the-doctors-laboratory': {
+                    mission: "The Doctors Laboratory (TDL) sets the gold standard for pathology in the UK — processing over 15 million tests annually with unmatched breadth and clinical rigour.",
+                    whoWeAre: "The UK's largest independent pathology provider, part of Sonic Healthcare global network. UKAS-accredited and CQC-registered with over 40 years of diagnostic experience. Operating from Wimpole Street, London, with a nationwide collection network. Processing 3,000+ test types.",
+                    services: "Over 3,000 diagnostic tests spanning clinical biochemistry, haematology, immunology, microbiology, genetics, and toxicology. Same-day results available for many routine tests. Venous blood draw at TDL clinics, GP surgeries, hospitals, and home visits.",
                   },
                 };
 
