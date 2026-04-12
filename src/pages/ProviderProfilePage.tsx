@@ -104,15 +104,6 @@ const ProviderProfilePage = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-4 md:py-8">
-        {/* Back Button */}
-        <div className="mb-4 md:mb-6">
-          <Button variant="outline" asChild className="gap-2 min-h-[44px] touch-manipulation border-secondary text-secondary hover:bg-secondary hover:text-white">
-            <Link to="/compare">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Compare Tests
-            </Link>
-          </Button>
-        </div>
 
         {/* Hero Section — branded gradient when available */}
         <div
