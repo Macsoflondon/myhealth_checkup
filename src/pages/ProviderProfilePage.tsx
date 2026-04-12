@@ -222,19 +222,6 @@ const ProviderProfilePage = () => {
               })()}
               
               <div className="flex flex-col sm:flex-row gap-3">
-                {websiteUrl && (
-                  <Button
-                    size="lg"
-                    asChild
-                    className="min-h-[48px] w-full sm:w-auto text-white inline-flex items-center"
-                    style={brand ? { backgroundColor: brand.primary, color: '#fff' } : undefined}
-                  >
-                    <a href={websiteUrl} {...externalLinkProps} className="inline-flex items-center gap-2">
-                      <ExternalLink className="w-4 h-4 flex-shrink-0" />
-                      <span>Visit Website</span>
-                    </a>
-                  </Button>
-                )}
                 <Button
                   variant="outline"
                   size="lg"
