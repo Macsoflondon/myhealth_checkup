@@ -1,17 +1,12 @@
 
 
-## Add "What sets them apart:" heading above the GoodBody mission content
+## Make GoodBody logo bigger inside its container
 
-**File:** `src/pages/ProviderProfilePage.tsx` (line 150)
+**File:** `src/pages/ProviderProfilePage.tsx` (line 120)
 
-**Change:** Insert a styled heading "What sets them apart:" at the top of the GoodBody conditional block, before the "Our Mission" section. It will use the same brand-aware color styling as the existing `<h3>` headings but slightly larger/bolder to serve as an introductory label.
+**Current:** The `ProviderLogo` inside the hero container uses `className="w-14 h-14 md:w-16 md:h-16"`.
 
-**Implementation:**
-- Inside the `<div className="space-y-4 ...">` block (line 150), add as the first child:
-```tsx
-<h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
-  What sets them apart:
-</h2>
-```
-- Everything else remains unchanged.
+**Change:** Increase the logo sizing to `className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20"` so the logo fills more of the container (which stays at `w-20 h-20 md:w-24 md:h-24`). Also add `object-contain` to the wrapper to keep aspect ratio.
+
+This enlarges the logo visually without touching the outer container dimensions.
 
