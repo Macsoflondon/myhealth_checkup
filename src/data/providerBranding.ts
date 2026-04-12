@@ -150,10 +150,6 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   if (key.includes("medical diagnosis")) return providerBranding.medicaldiagnosis;
   if (key.includes("blue horizon")) return providerBranding.bluehorizon;
   if (key.includes("spire")) return providerBranding.spire;
-  if (key.includes("superdrug")) return null;
-  if (key.includes("bupa")) return null;
-  if (key.includes("nuffield")) return null;
-  if (key.includes("check my body")) return null;
   if (key.includes("london blood")) return providerBranding.londonbloodtests;
   if (key.includes("youth revisited")) return providerBranding.youthrevisited;
   if (key.includes("manual")) return providerBranding.manual;
