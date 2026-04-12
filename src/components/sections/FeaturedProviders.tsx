@@ -28,7 +28,7 @@ const FeaturedProviders = () => {
     reviews: "3,150+",
     description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
     location: "UK Wide",
-    tags: ["GP Follow-ups", "Wellness Profiles", "CQC Registered", "Nationwide"],
+    tags: ["GP Follow-ups", "Wellness Profiles", "CQC Regulated", "Nationwide"],
     website: "health.goodbodyclinic.com"
   }, {
     id: "thriva",
