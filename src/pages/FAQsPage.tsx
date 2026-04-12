@@ -11,13 +11,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Mail, Phone, TrendingUp, Shield, FileCheck, ChevronRight, ArrowUp, AlertCircle } from 'lucide-react';
+import { Search, Mail, Phone, TrendingUp, Shield, FileCheck, ChevronRight, AlertCircle } from 'lucide-react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import PageBanner from "@/components/sections/PageBanner";
 const FAQsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [showBackToTop, setShowBackToTop] = useState(false);
 
   // Debounce search input for performance
   useEffect(() => {
@@ -26,17 +25,6 @@ const FAQsPage = () => {
     }, 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
-
-  // Show/hide back to top button
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-    };
-    window.addEventListener('scroll', handleScroll, {
-      passive: true
-    });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   const faqCategories = [{
     title: "Getting Started",
     icon: <TrendingUp className="h-5 w-5" />,
@@ -403,9 +391,6 @@ const FAQsPage = () => {
                 <Button onClick={() => setSearchQuery('')} className="bg-primary hover:bg-primary/90 min-h-[44px]">
                   Clear Search
                 </Button>
-                <Button variant="outline" onClick={scrollToTop} className="min-h-[44px]">
-                  Back to Top
-                </Button>
               </div>
             </div>}
         </div>
@@ -511,10 +496,6 @@ const FAQsPage = () => {
           </div>
         </div>
         
-        {/* Back to Top Button */}
-        {showBackToTop && <button onClick={scrollToTop} className="fixed bottom-6 right-6 z-50 bg-primary hover:bg-primary/90 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" aria-label="Scroll back to top">
-            <ArrowUp className="h-6 w-6" />
-          </button>}
       </main>
       <Footer />
     </div>;
