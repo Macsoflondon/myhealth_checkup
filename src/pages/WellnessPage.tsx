@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield, Home, ArrowLeft } from "lucide-react";
+import { Heart, Activity, Shield } from "lucide-react";
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 
@@ -38,7 +38,6 @@ const tagColors: Record<string, string> = {
 };
 
 const WellnessPage = () => {
-  const navigate = useNavigate();
   const [hovered, setHovered] = useState<string | null>(null);
   const [filter, setFilter] = useState("ALL");
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
@@ -150,23 +149,6 @@ const WellnessPage = () => {
                 >
                   General Wellness
                 </span>
-              </div>
-              {/* Nav buttons - right aligned, parallel with pill */}
-              <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", display: "flex", gap: 8 }}>
-                <Link
-                  to="/"
-                  className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-                  aria-label="Home"
-                >
-                  <Home className="h-4 w-4" />
-                </Link>
-                <button
-                  onClick={() => window.history.length > 1 ? navigate(-1) : navigate('/')}
-                  className="!h-9 !w-9 rounded-lg bg-[#22c0d4] hover:bg-[#e70d69] text-white shadow-lg transition-all duration-300 flex items-center justify-center"
-                  aria-label="Go back"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </button>
               </div>
             </div>
 
