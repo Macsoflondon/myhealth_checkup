@@ -224,7 +224,7 @@ const ProviderProfilePage = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   variant="outline"
-                  size="lg"
+                  size="providerCta"
                   asChild
                   className="min-h-[48px] w-full sm:w-auto inline-flex items-center px-[30px]"
                   style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
