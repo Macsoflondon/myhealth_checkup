@@ -25,54 +25,53 @@ const FloatingNavDock = () => {
   const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate('/'));
 
   const btnBase =
-    'group/btn relative flex items-center justify-center w-12 h-12 rounded-full bg-brand-turquoise text-white transition-all duration-300 hover:bg-brand-pink';
+    'group/btn relative flex items-center justify-center !h-9 !w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white transition-all duration-300 hover:bg-[#e70d69] hover:text-white';
 
   const labelBase =
-    'absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-brand-navy text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md';
+    'absolute right-full mr-2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-brand-navy text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md';
 
   if (isHome) {
     return (
       <button
         onClick={scrollToTop}
-        className={`group/btn fixed bottom-6 right-6 z-[60] w-12 h-12 rounded-full bg-brand-turquoise border-2 border-brand-navy text-white shadow-lg flex items-center justify-center backdrop-blur-xl transition-all duration-500 hover:bg-brand-pink hover:scale-110 ${
+        className={`group/btn fixed bottom-6 right-6 z-[60] !h-9 !w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white shadow-lg flex items-center justify-center transition-all duration-500 hover:bg-[#e70d69] hover:text-white hover:scale-110 ${
           showTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Back to top"
       >
         <span className={labelBase}>Top</span>
-        <ArrowUp className="h-[1.35rem] w-[1.35rem]" />
+        <ArrowUp className="h-4 w-4" />
       </button>
     );
   }
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-[60] flex items-center gap-0 rounded-full border-2 border-brand-navy bg-brand-navy/90 shadow-lg overflow-visible transition-all duration-500 ease-out ${
+      className={`fixed bottom-6 right-6 z-[60] flex flex-col items-center gap-2 transition-all duration-500 ease-out ${
         mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
-      style={{ backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
     >
-      <Link to="/" className={btnBase} aria-label="Home">
-        <span className={labelBase}>Home</span>
-        <Home className="h-[1.35rem] w-[1.35rem]" />
-      </Link>
-
-      <div className="w-px h-6 bg-white/20" />
-
-      <button onClick={goBack} className={btnBase} aria-label="Go back">
-        <span className={labelBase}>Back</span>
-        <ArrowLeft className="h-[1.35rem] w-[1.35rem]" />
-      </button>
-
-      <div className={`flex items-center transition-all duration-300 ${
-        showTop ? 'w-[calc(1px+3rem)] opacity-100' : 'w-0 opacity-0'
-      } overflow-visible`}>
-        <div className="w-px h-6 bg-white/20 shrink-0" />
-        <button onClick={scrollToTop} className={`${btnBase} shrink-0`} aria-label="Back to top">
+      {/* Top button - appears when scrolled */}
+      <div className={`transition-all duration-300 ${
+        showTop ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none h-0 -mb-2'
+      }`}>
+        <button onClick={scrollToTop} className={btnBase} aria-label="Back to top">
           <span className={labelBase}>Top</span>
-          <ArrowUp className="h-[1.35rem] w-[1.35rem]" />
+          <ArrowUp className="h-4 w-4" />
         </button>
       </div>
+
+      {/* Home */}
+      <Link to="/" className={btnBase} aria-label="Home">
+        <span className={labelBase}>Home</span>
+        <Home className="h-4 w-4" />
+      </Link>
+
+      {/* Back */}
+      <button onClick={goBack} className={btnBase} aria-label="Go back">
+        <span className={labelBase}>Back</span>
+        <ArrowLeft className="h-4 w-4" />
+      </button>
     </div>
   );
 };
