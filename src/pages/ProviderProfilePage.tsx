@@ -441,13 +441,6 @@ const ProviderProfilePage = () => {
                     <p className="text-muted-foreground">{provider.turnaroundTime}</p>
                   </div>
                 )}
-                
-                {provider.appointments && (
-                  <div>
-                    <p className="font-medium text-foreground">Appointment Capacity</p>
-                    <p className="text-muted-foreground">{provider.appointments}</p>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
