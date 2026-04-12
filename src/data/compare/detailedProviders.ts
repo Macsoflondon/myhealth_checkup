@@ -13,7 +13,7 @@ export const detailedProviders = [
       "300+ blood tests: general health, hormones, vitamins, thyroid, longevity, sports performance, fertility, allergy testing",
     tests: "300+ comprehensive blood tests available",
     sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
-    turnaroundTime: "2 working days (48 hours from sample receipt)",
+    turnaroundTime: "2-3 working days",
     customerReviews: "4.7/5 (Feefo, 14,000+ reviews)",
     keyDifferentiators:
       "UK's leading home blood test provider, doctor-reviewed results with personalised insights, extensive test catalogue covering 12+ health categories, flexible sample collection options",
