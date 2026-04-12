@@ -303,10 +303,165 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           {/* Contact Information */}
-          <div className="lg:col-span-1">
-            <Card>
+          <Card className="flex flex-col h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Phone className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                Contact Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 flex-1">
+              {provider.website && (
+                <div className="min-h-[44px] flex flex-col justify-center">
+                  <p className="font-medium text-foreground text-sm md:text-base mb-1">Website</p>
+                  <a 
+                    href={websiteUrl || provider.website} 
+                    {...externalLinkProps}
+                    className="hover:underline text-sm md:text-base break-all touch-manipulation"
+                    style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}
+                  >
+                    {provider.website.replace('https://', '').replace('http://', '')}
+                  </a>
+                </div>
+              )}
+              
+              {provider.phone && (
+                <div className="min-h-[44px] flex flex-col justify-center">
+                  <p className="font-medium text-foreground text-sm md:text-base mb-1">Phone</p>
+                  <a href={`tel:${provider.phone}`} className="text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation">{provider.phone}</a>
+                </div>
+              )}
+              
+              {provider.email && (
+                <div className="min-h-[44px] flex flex-col justify-center">
+                  <p className="font-medium text-foreground text-sm md:text-base mb-1">Email</p>
+                  <a href={`mailto:${provider.email}`} className="text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation">{provider.email}</a>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Service Information */}
+          <Card className="flex flex-col h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                Service Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 flex-1">
+              {provider.tests && (
+                <div>
+                  <p className="font-medium text-foreground">Available Tests</p>
+                  <p className="text-muted-foreground">{provider.tests}</p>
+                </div>
+              )}
+
+              {provider.sampleCollection && (
+                <div>
+                  <p className="font-medium text-foreground">Sample Collection</p>
+                  <p className="text-muted-foreground">{provider.sampleCollection}</p>
+                </div>
+              )}
+
+              {provider.turnaroundTime && (
+                <div>
+                  <p className="font-medium text-foreground">Results Turnaround</p>
+                  <p className="text-muted-foreground">{provider.turnaroundTime}</p>
+                </div>
+              )}
+              
+              {provider.appointments && (
+                <div>
+                  <p className="font-medium text-foreground">Appointment Capacity</p>
+                  <p className="text-muted-foreground">{provider.appointments}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Test Categories */}
+          <Card className="flex flex-col h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                Test Categories
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1">
+              <div className="flex flex-wrap gap-2">
+                {testCategories.map(category => (
+                  <Link
+                    key={category}
+                    to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
+                    className="inline-block"
+                  >
+                    <Badge 
+                      variant="outline" 
+                      className="transition-colors cursor-pointer"
+                      style={brand ? {
+                        borderColor: brand.primary,
+                        color: brand.primary,
+                      } : undefined}
+                    >
+                      {category}
+                    </Badge>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Key Features */}
+          <Card className="flex flex-col h-full">
+            <CardHeader>
+              <CardTitle>Why Choose {provider.name}?</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1">
+              <div className="grid md:grid-cols-2 gap-4">
+                {provider.accreditation && (
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Shield className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                    <span className="text-sm font-medium">Fully Accredited Labs</span>
+                  </div>
+                )}
+                
+                {provider.clinics && (
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                    <span className="text-sm font-medium">Multiple Locations</span>
+                  </div>
+                )}
+                
+                {provider.phone && (
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                    <span className="text-sm font-medium">Phone Support</span>
+                  </div>
+                )}
+                
+                {provider.email && (
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Mail className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                    <span className="text-sm font-medium">Email Support</span>
+                  </div>
+                )}
+                
+                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                  <Award className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                  <span className="text-sm font-medium">Doctor Reviewed Results</span>
+                </div>
+                
+                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                  <Clock className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                  <span className="text-sm font-medium">Fast Turnaround</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Phone className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
