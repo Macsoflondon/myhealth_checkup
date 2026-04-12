@@ -297,12 +297,6 @@ const FAQsPage = () => {
     ...category,
     faqs: category.faqs.filter(faq => debouncedSearch === '' || faq.q.toLowerCase().includes(debouncedSearch.toLowerCase()) || faq.a.toLowerCase().includes(debouncedSearch.toLowerCase()))
   })).filter(category => category.faqs.length > 0), [debouncedSearch]);
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
 
   // Generate structured data for SEO
   const structuredData = {
