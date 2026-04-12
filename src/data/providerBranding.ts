@@ -84,27 +84,6 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#00796B1A",
     accentLight: "#004D4012",
   },
-  superdrug: {
-    primary: "#1565C0",
-    accent: "#0D47A1",
-    tagline: "Health on the High Street",
-    primaryLight: "#1565C01A",
-    accentLight: "#0D47A112",
-  },
-  bupa: {
-    primary: "#005EB8",
-    accent: "#003D7A",
-    tagline: "Helping You Find Healthy",
-    primaryLight: "#005EB81A",
-    accentLight: "#003D7A12",
-  },
-  nuffield: {
-    primary: "#2E7D32",
-    accent: "#1B5E20",
-    tagline: "For a Healthier Nation",
-    primaryLight: "#2E7D321A",
-    accentLight: "#1B5E2012",
-  },
   londonbloodtests: {
     primary: "#1E88E5",
     accent: "#0D47A1",
@@ -140,13 +119,6 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#F57C001A",
     accentLight: "#E6510012",
   },
-  checkmybodyhealth: {
-    primary: "#43A047",
-    accent: "#2E7D32",
-    tagline: "Know Your Body Better",
-    primaryLight: "#43A0471A",
-    accentLight: "#2E7D3212",
-  },
   londonlaboratory: {
     primary: "#1565C0",
     accent: "#0D47A1",
@@ -178,15 +150,11 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   if (key.includes("medical diagnosis")) return providerBranding.medicaldiagnosis;
   if (key.includes("blue horizon")) return providerBranding.bluehorizon;
   if (key.includes("spire")) return providerBranding.spire;
-  if (key.includes("superdrug")) return providerBranding.superdrug;
-  if (key.includes("bupa")) return providerBranding.bupa;
-  if (key.includes("nuffield")) return providerBranding.nuffield;
   if (key.includes("london blood")) return providerBranding.londonbloodtests;
   if (key.includes("youth revisited")) return providerBranding.youthrevisited;
   if (key.includes("manual")) return providerBranding.manual;
   if (key.includes("functional dx")) return providerBranding.functionaldx;
   if (key.includes("onedaytests") || key.includes("one day")) return providerBranding.onedaytests;
-  if (key.includes("check my body")) return providerBranding.checkmybodyhealth;
   if (key.includes("doctors laboratory") || key.includes("tdl")) return providerBranding.thedoctorslaboratory;
   if (key.includes("london laboratory")) return providerBranding.londonlaboratory;
   if (key.includes("london medical")) return providerBranding.londonmedicallab;
