@@ -445,52 +445,35 @@ const ProviderProfilePage = () => {
             </Card>
 
             {/* Key Features */}
-            <Card className="flex flex-col flex-1">
-              <CardHeader>
-                <CardTitle>Why Choose {provider.name}?</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="grid md:grid-cols-2 gap-4">
-                  {provider.accreditation && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                      <Shield className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                      <span className="text-sm font-medium">Fully Accredited Labs</span>
+            {(() => {
+              const featureColor = brand?.primary || '#16a34a';
+              const featureBg = brand ? `${brand.primary}1A` : '#f0fdf4';
+              const features = [
+                { icon: Shield, label: 'Fully Accredited Labs' },
+                { icon: MapPin, label: 'Multiple Locations' },
+                { icon: Phone, label: 'Phone Support' },
+                { icon: Mail, label: 'Email Support' },
+                { icon: Award, label: 'Doctor Reviewed Results' },
+                { icon: Clock, label: 'Fast Turnaround' },
+              ];
+              return (
+                <Card className="flex flex-col flex-1">
+                  <CardHeader>
+                    <CardTitle>Why Choose {provider.name}?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {features.map(({ icon: Icon, label }) => (
+                        <div key={label} className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: featureBg }}>
+                          <Icon className="w-5 h-5 flex-shrink-0" style={{ color: featureColor }} />
+                          <span className="text-sm font-medium">{label}</span>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                  
-                  {provider.clinics && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                      <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                      <span className="text-sm font-medium">Multiple Locations</span>
-                    </div>
-                  )}
-                  
-                  {provider.phone && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                      <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                      <span className="text-sm font-medium">Phone Support</span>
-                    </div>
-                  )}
-                  
-                  {provider.email && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                      <Mail className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                      <span className="text-sm font-medium">Email Support</span>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                    <Award className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                    <span className="text-sm font-medium">Doctor Reviewed Results</span>
-                  </div>
-                  
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                    <Clock className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                    <span className="text-sm font-medium">Fast Turnaround</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </div>
         </div>
       </main>
