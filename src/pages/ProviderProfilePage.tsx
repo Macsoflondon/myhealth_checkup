@@ -250,18 +250,6 @@ const ProviderProfilePage = () => {
                         <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
                         <p>{content.services}</p>
                       </div>
-                      {provider.id === 'medichecks' && (
-                        <div className="pt-2">
-                          <video
-                            src="/videos/medichecks-promo.mp4"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="w-full max-w-2xl rounded-xl object-contain max-h-[300px]"
-                          />
-                        </div>
-                      )}
                     </div>
                   );
                 }
