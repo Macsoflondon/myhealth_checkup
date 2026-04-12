@@ -68,7 +68,8 @@ const ProviderProfilePage = () => {
     "Heart Health",
     "Diabetes",
     "Sexual Health",
-    "Fertility"
+    "Fertility",
+    "Cancer Screening"
   ];
 
   return (
