@@ -45,7 +45,7 @@ export const detailedProviders = [
     clinics: "CQC-registered clinics",
     coreServices: "Full-body health checks, cancer risk, genetic testing",
     tests: "Full-body health checks and genetic testing",
-    sampleCollection: "Clinic visits only",
+    sampleCollection: "Home finger-prick kits, clinic venous blood draw",
     turnaroundTime: "2-5 working days",
     customerReviews: "4.6/5 (Trustpilot, 26,100+ reviews)",
     keyDifferentiators: "Comprehensive health packages, global laboratory network",
