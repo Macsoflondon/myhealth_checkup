@@ -214,7 +214,7 @@ export const detailedProviders = [
     email: "clinic@goodbodywellness.co.uk",
     accreditation: "CQC-registered, UKAS ISO 15189 accredited laboratories",
     labAccreditation: "UKAS ISO 15189",
-    clinics: "Multiple pharmacy clinic locations across London",
+    clinics: "More than 200+ Clinic's nationwide",
     coreServices:
       "Comprehensive venous blood testing: general health, hormones, fertility, vitamins, thyroid, sexual health, autoimmune, diabetes screening",
     tests: "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
