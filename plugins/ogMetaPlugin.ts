@@ -248,7 +248,7 @@ const routeMetadata: Record<string, RouteMeta> = {
   },
   '/trusted-providers': {
     title: 'Trusted Providers | myhealth checkup',
-    description: 'Discover our network of trusted, accredited UK health test providers. UKAS certified labs and CQC registered clinics.',
+    description: 'Discover our network of trusted, accredited UK health test providers. UKAS certified labs and CQC regulated clinics.',
     url: `${BASE_URL}/trusted-providers`,
   },
   '/wellness': {

@@ -21,7 +21,7 @@ const getAccreditations = (providerId: string): string[] => {
     "goodbody-clinic": ["CQC", "ISO 15189"],
     "randox-health": ["UKAS", "ISO 15189", "40+ Clinics UK"],
     randox: ["UKAS", "ISO 15189", "40+ Clinics UK"],
-    thriva: ["ISO 13485", "CQC registered labs", "CE-marked"],
+    thriva: ["ISO 13485", "CQC regulated labs", "CE-marked"],
     "lola-health": ["CQC", "UKAS"],
     lola: ["CQC", "UKAS"],
     "london-medical-laboratory": ["CQC", "ISO 15189"],

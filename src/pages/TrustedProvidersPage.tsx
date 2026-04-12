@@ -11,9 +11,9 @@ const TrustedProvidersPage = () => {
         <title>Trusted Providers | myhealth checkup</title>
         <meta 
           name="description" 
-          content="Discover our network of trusted, accredited UK health test providers. UKAS certified labs, CQC registered clinics, and award-winning testing services." 
-        />
-        <meta name="keywords" content="trusted UK health providers, UKAS accredited labs, CQC registered clinics, health test providers, medical testing UK" />
+           content="Discover our network of trusted, accredited UK health test providers. UKAS certified labs, CQC regulated clinics, and award-winning testing services." 
+         />
+         <meta name="keywords" content="trusted UK health providers, UKAS accredited labs, CQC regulated clinics, health test providers, medical testing UK" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/trusted-providers" />
         
         {/* Open Graph tags */}

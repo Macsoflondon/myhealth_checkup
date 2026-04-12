@@ -103,7 +103,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: 'GoodBody Clinic Blood Test',
     features: [
       { title: 'Professional Collection', description: 'Trained phlebotomists at all locations' },
-      { title: 'UKAS Accredited', description: 'ISO 15189 & CQC registered laboratories' },
+      { title: 'UKAS Accredited', description: 'ISO 15189 & CQC regulated laboratories' },
       { title: 'Fast Results', description: '2-3 working days turnaround' },
       { title: 'Walk-In Available', description: 'Pre-booked or walk-in appointments' },
     ],
@@ -124,7 +124,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       items: [
         { bold: 'Convenient Locations:', text: 'Pharmacy clinics across the UK with flexible booking' },
         { bold: 'Professional Service:', text: 'Trained phlebotomists for comfortable venous blood draw' },
-        { bold: 'Quality Assured:', text: 'UKAS-accredited labs and CQC registered facilities' },
+        { bold: 'Quality Assured:', text: 'UKAS-accredited labs and CQC regulated facilities' },
         { bold: 'Expert Guidance:', text: 'Clear results with clinical interpretation and support' },
       ],
     },
