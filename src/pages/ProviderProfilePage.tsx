@@ -478,13 +478,6 @@ const ProviderProfilePage = () => {
                   </div>
                 </div>
 
-                {provider.keyDifferentiators && (
-                  <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                    <p className="text-sm text-muted-foreground">
-                      <strong className="text-foreground">What sets us apart</strong> {provider.keyDifferentiators}
-                    </p>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </div>
