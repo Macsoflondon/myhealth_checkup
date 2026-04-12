@@ -146,59 +146,80 @@ const ProviderProfilePage = () => {
                 )}
               </div>
               
-              {provider.id === 'goodbody-clinic' ? (
-                <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
-                  <h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
-                    What sets us apart
-                  </h2>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
-                    <p>You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Who We Are</h3>
-                    <p>Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,400 reviews.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
-                    <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
-              )}
+              {(() => {
+                const structuredContent: Record<string, { mission: string; whoWeAre: string; services: string }> = {
+                  'goodbody-clinic': {
+                    mission: "You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.",
+                    whoWeAre: "Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,400 reviews.",
+                    services: "We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.",
+                  },
+                  'medichecks': {
+                    mission: "Medichecks believe everyone deserves access to clear, reliable health information. Their mission is to make private blood testing simple, affordable, and clinically accurate — empowering you to understand your body and take proactive steps.",
+                    whoWeAre: "Established in 2002, Medichecks is the UK's leading provider of at-home blood testing, offering over 300 tests across general health, hormones, vitamins, thyroid, sports performance, and more. All samples are analysed by UKAS-accredited laboratories. Rated 4.7/5 on Feefo with over 16,600 reviews.",
+                    services: "From convenient finger-prick home kits to venous blood draws at nationwide partner clinics or home nurse visits. Every result includes a bespoke GP-reviewed report with personalised insights, delivered through the MyMedichecks online dashboard.",
+                  },
+                  'thriva': {
+                    mission: "Thriva exists to put health tracking in your hands. By making regular blood testing as routine as checking your phone, they help you spot changes early and stay on top of what matters.",
+                    whoWeAre: "Thriva is a subscription-based health testing platform offering convenient at-home finger-prick kits with doctor-reviewed results. All samples are processed in UKAS-accredited partner laboratories. Rated 4.4/5 on Trustpilot with over 2,800 reviews.",
+                    services: "Choose from a range of health tests covering heart health, liver function, diabetes risk, vitamins, and hormones. Results are delivered via the Thriva app with personalised insights and biomarker tracking over time. Subscription plans available for regular monitoring.",
+                  },
+                  'randox-health': {
+                    mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
+                    whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates state-of-the-art clinics in London, Liverpool, and Belfast, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Rated 4.6/5 on Trustpilot with over 26,100 reviews.",
+                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. All tests are conducted at modern clinic facilities with professional consultation and personalised health recommendations included.",
+                  },
+                  'lola-health': {
+                    mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no clinics, no compromise — just accurate results from the comfort of your home.",
+                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained professional visits your home to take a venous blood sample. All tests are processed in NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.7/5 on Trustpilot with over 140 reviews.",
+                    services: "Over 40 blood tests available, from comprehensive panels like Core Health 45 and Peak Insights to individual biomarkers starting from £11.88. Results are delivered via the Lola Health app with doctor-reviewed insights and health trend tracking.",
+                  },
+                  'london-medical-laboratory': {
+                    mission: "London Medical Laboratory is committed to delivering fast, accurate diagnostic testing with clinical-grade precision. Their goal is to make professional laboratory services accessible to everyone, not just those with a GP referral.",
+                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory offering over 100 blood tests with some of the fastest turnaround times in the UK — many results within 24 hours. Professional clinic-based venous blood collection with partner locations across the country. Rated 4.5/5 on Trustpilot with over 3,250 reviews.",
+                    services: "Comprehensive test menu including health MOTs, hormone profiles, vitamin panels, allergy testing, and fertility assessments. All samples are processed in their own accredited laboratory with expert analysis and results delivered via online portal or email.",
+                  },
+                };
 
-              {/* Medichecks-specific expanded info */}
-              {provider.id === 'medichecks' && (
-                <div className="mt-4 mb-6 space-y-4 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Unlock the Ultimate You</h3>
-                    <p>Medichecks provide private blood tests and health checks designed for clarity, speed, and clinical accuracy.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>How It Works</h3>
-                    <p>Choose from convenient at-home testing kits or attend a nationwide network of partner clinics. All samples are analysed by UKAS accredited laboratories, with services delivered through CQC regulated clinical partners.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Your Results</h3>
-                    <p>Results include a clear GP reviewed report, helping you understand your biomarkers and take informed next steps.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
-                    <p>Medichecks combine medical rigour with flexible access, offering a wide range of blood and wellness tests across hormones, nutrition, heart health, and preventative screening.</p>
-                  </div>
-                  <div className="pt-2">
-                    <video
-                      src="/videos/medichecks-promo.mp4"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full max-w-2xl rounded-xl object-contain max-h-[300px]"
-                    />
-                  </div>
-                </div>
-              )}
+                const content = structuredContent[provider.id];
+
+                if (content) {
+                  return (
+                    <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
+                      <h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
+                        What sets us apart
+                      </h2>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
+                        <p>{content.mission}</p>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Who We Are</h3>
+                        <p>{content.whoWeAre}</p>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
+                        <p>{content.services}</p>
+                      </div>
+                      {provider.id === 'medichecks' && (
+                        <div className="pt-2">
+                          <video
+                            src="/videos/medichecks-promo.mp4"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full max-w-2xl rounded-xl object-contain max-h-[300px]"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
+                );
+              })()}
               
               <div className="flex flex-col sm:flex-row gap-3">
                 {websiteUrl && (
