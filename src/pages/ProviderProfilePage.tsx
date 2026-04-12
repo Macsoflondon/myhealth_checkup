@@ -321,8 +321,7 @@ const ProviderProfilePage = () => {
                     <a 
                       href={websiteUrl || provider.website} 
                       {...externalLinkProps}
-                      className="hover:underline text-sm md:text-base break-all touch-manipulation"
-                      style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}
+                      className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
                     >
                       {provider.website.replace('https://', '').replace('http://', '')}
                     </a>
