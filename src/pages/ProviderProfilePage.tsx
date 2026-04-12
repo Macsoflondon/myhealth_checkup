@@ -226,7 +226,7 @@ const ProviderProfilePage = () => {
                   variant="outline"
                   size="lg"
                   asChild
-                  className="min-h-[48px] w-full sm:w-auto inline-flex items-center"
+                  className="min-h-[48px] w-full sm:w-auto inline-flex items-center px-[30px]"
                   style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
                 >
                   <Link to={PROVIDER_CATALOG_ROUTES[provider.id] || `/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
