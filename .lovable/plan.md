@@ -1,20 +1,28 @@
 
 
-## Change "View Website" link color to match "Accredited" badge
+## Unify Top/Home/Back navigation across the platform
 
-The "Accredited" badge uses `text-green-800` (green). The website link in the Contact Information card currently uses the provider's brand primary color via `style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}`.
+The FloatingNavDock in `App.tsx` already renders globally on every page with the correct behavior (Top-only on homepage, Top+Home+Back on internal pages). The issue is that some pages have their own duplicate navigation buttons that conflict or overlap.
 
-### Change in `src/pages/ProviderProfilePage.tsx`
+### Pages with duplicate navigation to remove
 
-**Line 325** — Change the website link color from brand primary to green-800 to match the "Accredited" badge:
+1. **FAQsPage.tsx** — Has its own fixed "Back to Top" button (line 515) and scroll state management (`showBackToTop`, `scrollToTop` function). Remove the button and clean up the unused state/effects/imports (`ArrowUp`, `showBackToTop`, `scrollToTop`). Also remove the inline "Back to Top" button in the search results area (line 406).
 
-```tsx
-// From:
-style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}
+2. **WellnessPage.tsx** — Has inline Home and Back buttons (lines 155-169) positioned absolutely in the hero area. Remove these buttons and clean up unused imports (`Home`, `ArrowLeft`, `navigate`).
 
-// To:
-className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
-```
+3. **BackButton.tsx** (`src/components/ui/BackButton.tsx`) — Standalone BackButton component. Not currently imported anywhere, but should be deleted to prevent future use and enforce the FloatingNavDock as the single pattern.
 
-Remove the inline `style` prop entirely so the link uses the same green as the accreditation badge.
+### What stays unchanged
+
+- **FloatingNavDock.tsx** — Already correct. Homepage: Top-only on scroll. Internal pages: Top + Home + Back stack.
+- **ScrollToTop.tsx** — This auto-scrolls on route change (different purpose), stays.
+- **AdminTestDashboardPage.tsx** — Uses ArrowUp for sort indicators, not navigation. Stays.
+
+### Summary of changes
+
+| File | Action |
+|------|--------|
+| `src/pages/FAQsPage.tsx` | Remove fixed back-to-top button, scroll state, and inline "Back to Top" button |
+| `src/pages/WellnessPage.tsx` | Remove inline Home/Back buttons from hero area |
+| `src/components/ui/BackButton.tsx` | Delete file |
 
