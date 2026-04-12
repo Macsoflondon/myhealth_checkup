@@ -240,8 +240,8 @@ const ProviderProfilePage = () => {
               <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
                 <Building2 className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                 <div>
-                  <p className="text-sm font-medium">CQC Registered</p>
-                  <p className="text-xs text-muted-foreground">Regulated clinics</p>
+                  <p className="text-sm font-medium">CQC Regulated</p>
+                  <p className="text-xs text-muted-foreground">Registered clinics</p>
                 </div>
               </div>
             )}
