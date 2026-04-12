@@ -275,7 +275,7 @@ const GoodbodyTestGallery = () => {
       </div>
 
       {/* Divider between logo and gallery */}
-      <div className="w-2/3 mx-auto h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent my-4" />
+      <div className="w-2/3 mx-auto h-px bg-gradient-to-r from-transparent via-brand-turquoise/70 to-transparent my-4" />
 
       {/* Inline Gallery — click directly opens detail modal */}
       <div className="flex items-start justify-center pt-1">
@@ -287,7 +287,7 @@ const GoodbodyTestGallery = () => {
       </div>
 
       {/* Divider between gallery and CTA */}
-      <div className="w-2/3 mx-auto h-px bg-gradient-to-r from-transparent via-brand-turquoise/30 to-transparent my-4" />
+      <div className="w-2/3 mx-auto h-px bg-gradient-to-r from-transparent via-brand-turquoise/70 to-transparent my-4" />
 
       {/* View Profile Button */}
       <div className="flex justify-center mt-8">
