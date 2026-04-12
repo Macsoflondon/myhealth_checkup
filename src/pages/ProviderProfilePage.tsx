@@ -169,9 +169,9 @@ const ProviderProfilePage = () => {
                     services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results in as little as 2 hours from sample, with professional consultation and personalised health recommendations included.",
                   },
                   'lola-health': {
-                    mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no clinics, no compromise — just accurate results from the comfort of your home.",
-                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained professional visits your home to take a venous blood sample. All tests are processed in NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.7/5 on Trustpilot with over 140 reviews.",
-                    services: "Over 40 blood tests available, from comprehensive panels like Core Health 45 and Peak Insights to individual biomarkers starting from £11.88. Results are delivered via the Lola Health app with doctor-reviewed insights and health trend tracking.",
+                    mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
+                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 155 reviews.",
+                    services: "Over 40 blood tests available, from comprehensive panels to individual biomarkers. Book a nurse visit or clinic appointment with results in 4 days. Doctor-reviewed insights delivered via the Lola Health app with health trend tracking. Tests from £120.",
                   },
                   'london-medical-laboratory': {
                     mission: "London Medical Laboratory is committed to delivering fast, accurate diagnostic testing with clinical-grade precision. Their goal is to make professional laboratory services accessible to everyone, not just those with a GP referral.",
@@ -214,9 +214,9 @@ const ProviderProfilePage = () => {
                     services: "Advanced functional blood testing covering metabolic health, hormonal balance, nutritional status, and inflammatory markers. Comprehensive panels with functional reference ranges designed for practitioner interpretation and clinical decision-making.",
                   },
                   'onedaytests': {
-                    mission: "OneDayTests was founded on the belief that waiting days for health results is unnecessary. They deliver ultra-fast diagnostics from walk-in clinics across the UK.",
-                    whoWeAre: "A rapid-results blood testing provider operating 15+ locations across London, Manchester, and other UK cities. UKAS Medical 15189:2022 accredited with CQC registration through Sussex Pathology Ltd. Rated 4.8/5 on Trustpilot with over 3,300 reviews.",
-                    services: "Health check panels, cholesterol, liver and kidney function, and rapid testing with many results available same day or within 24 hours. Walk-in and pre-booked appointments at central clinic locations with real-time online booking.",
+                    mission: "OneDayTests was founded on the belief that waiting days for health results is unnecessary. They deliver ultra-fast diagnostics from their own state-of-the-art laboratory and nationwide clinics.",
+                    whoWeAre: "A rapid-results blood testing provider operating 36 clinic locations across the UK with full-time phlebotomy staff. Own state-of-the-art laboratory where 99.2% of markers start testing within 4 hours. UKAS Medical 15189:2022 accredited with CQC registration. Trusted for 100,000+ tests and consultations per month. Rated 4.8/5 on Trustpilot with over 4,000 reviews.",
+                    services: "Health check panels, cholesterol, liver and kidney function, hormones, and rapid testing with same day or next day results on most markers. Same-day clinic appointments available. Home finger-prick test kits also offered. NHS GPs available for follow-up consultations.",
                   },
                   'london-laboratory': {
                     mission: "London Laboratory delivers premium private pathology from the heart of Harley Street — combining clinical expertise with fast turnaround and a comprehensive test menu.",
