@@ -1,24 +1,25 @@
 
 
-## Fix Goodbody Gallery Tab Text Colors
+## Make Faint Turquoise Divider Lines More Visible
 
-**Problem**: The tab navigation buttons (line 270-273) use `opacity-70` for inactive tabs, making them appear dull gray instead of bright white. There is no pink hover effect.
+**Problem**: Several decorative turquoise lines throughout the Partner Showcase area are too faint due to low opacity values (`/30` and `/40`).
 
-**File**: `src/components/sections/GoodbodyTestGallery.tsx`
+**Files and changes**:
 
-### Changes
+### 1. `src/components/sections/GoodbodyTestGallery.tsx`
+- **Line 278**: Change `via-brand-turquoise/30` to `via-brand-turquoise/70` (divider between logo and gallery)
+- **Line 290**: Change `via-brand-turquoise/30` to `via-brand-turquoise/70` (divider between gallery and CTA)
 
-**Lines 269-273** - Update the tab button classes:
-- Remove the opacity-based active/inactive logic
-- Set all tabs to bright `text-white` by default
-- Add `hover:text-brand-pink` for hover state
-- Keep the active tab indicator (border) but use pink for the active state
+### 2. `src/components/sections/PartnerShowcaseGrid.tsx`
+- **Line 15**: Change `bg-brand-turquoise/40` to `bg-brand-turquoise` (line beside "Featured Partners")
+- **Line 19**: Change `bg-brand-turquoise/40` to `bg-brand-turquoise` (line beside "Featured Partners")
+- **Line 36**: Change `via-brand-turquoise/30` to `via-brand-turquoise/70` (divider below Goodbody section)
+- **Line 88**: Change `bg-brand-turquoise/40` to `bg-brand-turquoise` (line beside "Find Your Clinic")
+- **Line 92**: Change `bg-brand-turquoise/40` to `bg-brand-turquoise` (line beside "Find Your Clinic")
 
-**Line 260** - Update the "About" button similarly:
-- Ensure `text-white` with `hover:text-brand-pink`
+### 3. `src/components/sections/FeaturedPublications.tsx`
+- **Line 63**: Change `bg-brand-turquoise/40` to `bg-brand-turquoise` (line beside "As Seen In")
+- **Line 67**: Change `bg-brand-turquoise/40` to `bg-brand-turquoise` (line beside "As Seen In")
 
-### Resulting styles
-- **Default**: `text-white` (bright, no opacity reduction)
-- **Hover**: `text-brand-pink`
-- **Active tab**: stays white with underline indicator (or pink active state)
+All faint `/30` gradient midpoints become `/70`, and all `/40` solid lines become full opacity `bg-brand-turquoise`.
 
