@@ -14,7 +14,7 @@ export const detailedProviders = [
     tests: "300+ comprehensive blood tests available",
     sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
     turnaroundTime: "2 working days (48 hours from sample receipt)",
-    customerReviews: "4.3/5 (Trustpilot, 1,345+ reviews)",
+    customerReviews: "4.7/5 (Feefo, 14,000+ reviews)",
     keyDifferentiators:
       "UK's leading home blood test provider, doctor-reviewed results with personalised insights, extensive test catalogue covering 12+ health categories, flexible sample collection options",
     description:

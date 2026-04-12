@@ -10,7 +10,7 @@ export interface ProviderRating {
 }
 
 export const PROVIDER_RATINGS: Record<string, ProviderRating> = {
-  'medichecks': { rating: 4.3, reviews: 1345, reviewsFormatted: '1,345' },
+  'medichecks': { rating: 4.7, reviews: 14000, reviewsFormatted: '14,000+' },
   'goodbody-clinic': { rating: 4.8, reviews: 3600, reviewsFormatted: '3,600+' },
   'thriva': { rating: 4.5, reviews: 3006, reviewsFormatted: '3,000+' },
   'randox': { rating: 4.7, reviews: 28456, reviewsFormatted: '28,400+' },
