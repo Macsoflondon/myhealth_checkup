@@ -1,31 +1,23 @@
 
 
-## Reshape FloatingNavDock: Square Buttons, Vertical Stack
+## GoodBody Provider Profile Page Edits
 
-**Problem**: The floating nav buttons (Home, Back, Top) are round (`rounded-full`) and laid out horizontally in a pill. The user wants them to match the header's language/login button shape (`rounded-lg`, 36x36 square) and be stacked vertically. The Top button should appear above Home when scrolled, then disappear at the top.
+### Changes needed in two files:
 
-**File**: `src/components/common/FloatingNavDock.tsx`
+**1. `src/data/compare/detailedProviders.ts` — GoodBody entry**
 
-### Changes
+- Change `accreditation` from `"CQC-registered, UKAS ISO 15189 accredited laboratories"` to `"CQC regulated"`
+- Change `sampleCollection` from `"Professional venous blood draw at pharmacy clinic locations (no finger-prick)"` to `"Professional venous blood draw at over 200+ clinics nationwide - home collection options - finger prick test"`
+- Change `keyDifferentiators` — replace `"pharmacy-based clinic network"` with `"200+ clinics nationwide"` and replace `"walk-in and pre-booked appointments"` with `"pre-booked appointments"`
 
-**Button shape**: Change `rounded-full` to `rounded-lg` on all buttons, and change `w-12 h-12` to `!h-9 !w-9` to match the header buttons (36x36px with `rounded-lg`). Add `border-2 border-[#e70d69]` and use the same color scheme as header buttons: `text-[#e70d69] hover:text-white hover:bg-[#e70d69]` with a transparent/navy background.
+**2. `src/pages/ProviderProfilePage.tsx` — "Why Choose" card and accreditation display**
 
-**Layout**: Change the container from horizontal (`flex items-center gap-0 rounded-full`) to vertical (`flex flex-col items-center gap-2 rounded-xl`). Stack order from bottom: Back, Home. When scrolled, Top appears on top of the stack.
+- **Accreditation card (line 366-368)**: For GoodBody specifically, display only `"CQC regulated"` (handled by data change above; also remove the `labAccreditation` field from GoodBody's data entry so the "Laboratory Accreditation: UKAS ISO 15189" row disappears)
+- **"Why Choose" card (lines 439-494)**: Make all 6 feature boxes use the same green background (`#f0fdf4`) and green icon color (`#16a34a`) instead of alternating between green and the brand accent/other colors. This applies to: Fully Accredited Labs, Multiple Locations, Phone Support, Email Support, Doctor Reviewed Results, Fast Turnaround.
 
-**Homepage**: Same square shape for the standalone Top button.
-
-**Tooltip labels**: Reposition from `-top-9` to side (`-left-12` or similar) since buttons are now vertical.
-
-### Resulting stack (non-home, scrolled)
-```text
- [Top]
- [Home]
- [Back]
-```
-
-When not scrolled:
-```text
- [Home]
- [Back]
-```
+### Summary of visual changes
+- Accreditation section shows only "CQC regulated", no UKAS line
+- Sample collection updated to mention 200+ clinics, home collection, finger prick
+- All 6 "Why Choose" boxes are uniform green
+- "What sets them apart" text updated: 200+ clinics, pre-booked only
 
