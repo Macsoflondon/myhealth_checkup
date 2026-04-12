@@ -25,6 +25,7 @@ const buttonVariants = cva(
         default: "h-12 px-8 py-2",
         sm: "h-9 px-3",
         lg: "h-14 px-10",
+        providerCta: "h-14",
         icon: "h-12 w-12",
       },
     },
