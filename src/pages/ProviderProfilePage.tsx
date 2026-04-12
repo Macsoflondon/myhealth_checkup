@@ -188,21 +188,6 @@ const ProviderProfilePage = () => {
                     whoWeAre: "Offering access to over 400 blood tests through the trusted Spire hospital network across the UK. All testing is conducted in accredited laboratory facilities with professional phlebotomy and consultant-grade reporting. Rated 4.6/5 on Trustpilot with over 200 reviews.",
                     services: "Extensive test menu covering health screening, hormones, fatigue panels, and specialist diagnostics. Free GP referrals included with results, plus a VIP service option for priority processing and same-day appointments at Spire hospitals.",
                   },
-                  'superdrug-health': {
-                    mission: "Superdrug Health Clinics bring convenient, affordable health testing to the high street — making preventative healthcare as easy as popping into your local store.",
-                    whoWeAre: "Part of the Superdrug retail network, Health Clinics operate nationwide offering walk-in and bookable appointments for blood testing, sexual health, and vitamin screening. Over 2,000 appointments available weekly. Rated 4.9/5 on Trustpilot with over 10,500 reviews.",
-                    services: "General health checks, sexual health screening, and vitamin tests available at in-store clinic locations. Results typically within 2–3 days with follow-up guidance. Competitive pricing and convenient high-street access across the UK.",
-                  },
-                  'bupa': {
-                    mission: "Bupa is committed to helping people live longer, healthier, happier lives — providing comprehensive diagnostics as part of an integrated healthcare offering.",
-                    whoWeAre: "One of the UK's most recognised healthcare providers, Bupa offers diagnostic testing and health assessments through its network of clinics and hospitals. With decades of clinical expertise and a broad range of services. Rated 4.4/5 on Trustpilot with over 39,400 reviews.",
-                    services: "Health assessments, diagnostic blood tests, GP consultations, and specialist referrals. Bupa provides end-to-end healthcare from screening through to treatment, with results reviewed by qualified clinicians.",
-                  },
-                  'nuffield-health': {
-                    mission: "Nuffield Health is the UK's largest healthcare charity, dedicated to making quality diagnostics available to everyone through its Pathology Direct service.",
-                    whoWeAre: "A not-for-profit healthcare organisation operating hospitals, clinics, and fitness centres across the UK. Nuffield Health's Pathology Direct service provides self-pay blood testing with clinical-grade analysis. Rated 3.4/5 on Trustpilot with over 3,000 reviews.",
-                    services: "Self-pay pathology services including comprehensive blood panels, hormone testing, and health screening. Tests conducted at Nuffield hospitals with professional phlebotomy and results reviewed by qualified pathologists.",
-                  },
                   'london-blood-tests': {
                     mission: "London Blood Tests provides fast, convenient private blood testing in the capital — with same-day appointments and rapid results for those who need answers quickly.",
                     whoWeAre: "A London-based blood testing service offering over 100 tests with some of the fastest turnaround times available. Professional phlebotomy at clinic locations and home visit options. Rated 4.5/5 on Trustpilot.",
@@ -232,11 +217,6 @@ const ProviderProfilePage = () => {
                     mission: "OneDayTests was founded on the belief that waiting days for health results is unnecessary. They deliver ultra-fast diagnostics from walk-in clinics across the UK.",
                     whoWeAre: "A rapid-results blood testing provider operating 15+ locations across London, Manchester, and other UK cities. UKAS Medical 15189:2022 accredited with CQC registration through Sussex Pathology Ltd. Rated 4.8/5 on Trustpilot with over 3,300 reviews.",
                     services: "Health check panels, cholesterol, liver and kidney function, and rapid testing with many results available same day or within 24 hours. Walk-in and pre-booked appointments at central clinic locations with real-time online booking.",
-                  },
-                  'check-my-body-health': {
-                    mission: "Check My Body Health makes intolerance and wellness testing simple and non-invasive — helping you understand how your body reacts to foods and environmental factors.",
-                    whoWeAre: "A specialist intolerance and wellness testing provider using non-invasive hair sample analysis. Offering food sensitivity, environmental intolerance, and DNA wellness testing kits delivered to your door. Rated 4.1/5 on Trustpilot with over 10,900 reviews.",
-                    services: "Food and environmental intolerance testing, gut health analysis, nutritional deficiency screening, and DNA wellness kits. Non-invasive home-based testing with detailed results reports and dietary guidance.",
                   },
                   'london-laboratory': {
                     mission: "London Laboratory delivers premium private pathology from the heart of Harley Street — combining clinical expertise with fast turnaround and a comprehensive test menu.",
