@@ -222,10 +222,10 @@ export const detailedProviders = [
     turnaroundTime: "2-3 working days",
     customerReviews: "4.7/5 (Trustpilot, 3,150+ reviews)",
     keyDifferentiators:
-      "Professional venous blood collection, pharmacy-based clinic network, UKAS-accredited lab processing, competitive pricing, convenient London locations, walk-in and pre-booked appointments",
+      "Professional venous blood collection, pharmacy-based clinic network, UKAS-accredited lab processing, competitive pricing, convenient nationwide locations, walk-in and pre-booked appointments",
     partnerRegulation: "GPhC-regulated pharmacy partners",
     description:
-      "Premium health clinic offering comprehensive venous blood testing at pharmacy locations across London. GoodBody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests.",
+      "Premium health clinic offering comprehensive venous blood testing at more than 200+ Clinic's nationwide. GoodBody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests.",
   },
   {
     id: "onedaytests",
