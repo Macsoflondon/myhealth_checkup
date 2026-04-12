@@ -70,6 +70,97 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#E539351A",
     accentLight: "#00838F12",
   },
+  bluehorizon: {
+    primary: "#1976D2",
+    accent: "#0D47A1",
+    tagline: "Your Health, Clearly Tested",
+    primaryLight: "#1976D21A",
+    accentLight: "#0D47A112",
+  },
+  spire: {
+    primary: "#00796B",
+    accent: "#004D40",
+    tagline: "Trusted Hospital Testing",
+    primaryLight: "#00796B1A",
+    accentLight: "#004D4012",
+  },
+  superdrug: {
+    primary: "#1565C0",
+    accent: "#0D47A1",
+    tagline: "Health on the High Street",
+    primaryLight: "#1565C01A",
+    accentLight: "#0D47A112",
+  },
+  bupa: {
+    primary: "#005EB8",
+    accent: "#003D7A",
+    tagline: "Helping You Find Healthy",
+    primaryLight: "#005EB81A",
+    accentLight: "#003D7A12",
+  },
+  nuffield: {
+    primary: "#2E7D32",
+    accent: "#1B5E20",
+    tagline: "For a Healthier Nation",
+    primaryLight: "#2E7D321A",
+    accentLight: "#1B5E2012",
+  },
+  londonbloodtests: {
+    primary: "#1E88E5",
+    accent: "#0D47A1",
+    tagline: "Fast Results, Central London",
+    primaryLight: "#1E88E51A",
+    accentLight: "#0D47A112",
+  },
+  youthrevisited: {
+    primary: "#7B1FA2",
+    accent: "#4A148C",
+    tagline: "Optimise Your Wellbeing",
+    primaryLight: "#7B1FA21A",
+    accentLight: "#4A148C12",
+  },
+  manual: {
+    primary: "#2196F3",
+    accent: "#0D47A1",
+    tagline: "Men's Health, Simplified",
+    primaryLight: "#2196F31A",
+    accentLight: "#0D47A112",
+  },
+  functionaldx: {
+    primary: "#00897B",
+    accent: "#004D40",
+    tagline: "Advanced Functional Testing",
+    primaryLight: "#00897B1A",
+    accentLight: "#004D4012",
+  },
+  onedaytests: {
+    primary: "#F57C00",
+    accent: "#E65100",
+    tagline: "Results When You Need Them",
+    primaryLight: "#F57C001A",
+    accentLight: "#E6510012",
+  },
+  checkmybodyhealth: {
+    primary: "#43A047",
+    accent: "#2E7D32",
+    tagline: "Know Your Body Better",
+    primaryLight: "#43A0471A",
+    accentLight: "#2E7D3212",
+  },
+  londonlaboratory: {
+    primary: "#1565C0",
+    accent: "#0D47A1",
+    tagline: "Harley Street Diagnostics",
+    primaryLight: "#1565C01A",
+    accentLight: "#0D47A112",
+  },
+  thedoctorslaboratory: {
+    primary: "#283593",
+    accent: "#1A237E",
+    tagline: "Gold Standard Pathology",
+    primaryLight: "#2835931A",
+    accentLight: "#1A237E12",
+  },
 };
 
 /**
@@ -81,10 +172,23 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   if (key.includes("goodbody")) return providerBranding.goodbody;
   if (key.includes("thriva")) return providerBranding.thriva;
   if (key.includes("randox")) return providerBranding.randox;
-  if (key.includes("london")) return providerBranding.londonmedicallab;
   if (key.includes("lola")) return providerBranding.lola;
   if (key.includes("clinilabs")) return providerBranding.clinilabs;
   if (key.includes("london health")) return providerBranding.londonhealthcompany;
   if (key.includes("medical diagnosis")) return providerBranding.medicaldiagnosis;
+  if (key.includes("blue horizon")) return providerBranding.bluehorizon;
+  if (key.includes("spire")) return providerBranding.spire;
+  if (key.includes("superdrug")) return providerBranding.superdrug;
+  if (key.includes("bupa")) return providerBranding.bupa;
+  if (key.includes("nuffield")) return providerBranding.nuffield;
+  if (key.includes("london blood")) return providerBranding.londonbloodtests;
+  if (key.includes("youth revisited")) return providerBranding.youthrevisited;
+  if (key.includes("manual")) return providerBranding.manual;
+  if (key.includes("functional dx")) return providerBranding.functionaldx;
+  if (key.includes("onedaytests") || key.includes("one day")) return providerBranding.onedaytests;
+  if (key.includes("check my body")) return providerBranding.checkmybodyhealth;
+  if (key.includes("doctors laboratory") || key.includes("tdl")) return providerBranding.thedoctorslaboratory;
+  if (key.includes("london laboratory")) return providerBranding.londonlaboratory;
+  if (key.includes("london medical")) return providerBranding.londonmedicallab;
   return null;
 }
