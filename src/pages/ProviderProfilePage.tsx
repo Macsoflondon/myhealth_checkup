@@ -146,7 +146,24 @@ const ProviderProfilePage = () => {
                 )}
               </div>
               
-              <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
+              {provider.id === 'goodbody-clinic' ? (
+                <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
+                    <p>You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Who We Are</h3>
+                    <p>Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,400 reviews.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
+                    <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
+              )}
 
               {/* Medichecks-specific expanded info */}
               {provider.id === 'medichecks' && (
