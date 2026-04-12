@@ -303,166 +303,241 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-          {/* Contact Information */}
-          <Card className="flex flex-col h-full">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Phone className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                Contact Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 flex-1">
-              {provider.website && (
-                <div className="min-h-[44px] flex flex-col justify-center">
-                  <p className="font-medium text-foreground text-sm md:text-base mb-1">Website</p>
-                  <a 
-                    href={websiteUrl || provider.website} 
-                    {...externalLinkProps}
-                    className="hover:underline text-sm md:text-base break-all touch-manipulation"
-                    style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}
-                  >
-                    {provider.website.replace('https://', '').replace('http://', '')}
-                  </a>
-                </div>
-              )}
-              
-              {provider.phone && (
-                <div className="min-h-[44px] flex flex-col justify-center">
-                  <p className="font-medium text-foreground text-sm md:text-base mb-1">Phone</p>
-                  <a href={`tel:${provider.phone}`} className="text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation">{provider.phone}</a>
-                </div>
-              )}
-              
-              {provider.email && (
-                <div className="min-h-[44px] flex flex-col justify-center">
-                  <p className="font-medium text-foreground text-sm md:text-base mb-1">Email</p>
-                  <a href={`mailto:${provider.email}`} className="text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation">{provider.email}</a>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Service Information */}
-          <Card className="flex flex-col h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                Service Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 flex-1">
-              {provider.tests && (
-                <div>
-                  <p className="font-medium text-foreground">Available Tests</p>
-                  <p className="text-muted-foreground">{provider.tests}</p>
-                </div>
-              )}
-
-              {provider.sampleCollection && (
-                <div>
-                  <p className="font-medium text-foreground">Sample Collection</p>
-                  <p className="text-muted-foreground">{provider.sampleCollection}</p>
-                </div>
-              )}
-
-              {provider.turnaroundTime && (
-                <div>
-                  <p className="font-medium text-foreground">Results Turnaround</p>
-                  <p className="text-muted-foreground">{provider.turnaroundTime}</p>
-                </div>
-              )}
-              
-              {provider.appointments && (
-                <div>
-                  <p className="font-medium text-foreground">Appointment Capacity</p>
-                  <p className="text-muted-foreground">{provider.appointments}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Test Categories */}
-          <Card className="flex flex-col h-full">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                Test Categories
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <div className="flex flex-wrap gap-2">
-                {testCategories.map(category => (
-                  <Link
-                    key={category}
-                    to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
-                    className="inline-block"
-                  >
-                    <Badge 
-                      variant="outline" 
-                      className="transition-colors cursor-pointer"
-                      style={brand ? {
-                        borderColor: brand.primary,
-                        color: brand.primary,
-                      } : undefined}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+          {/* Left column — narrow */}
+          <div className="lg:col-span-1 flex flex-col gap-4">
+            {/* Contact Information */}
+            <Card className="flex flex-col flex-1">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Phone className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                  Contact Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 flex-1">
+                {provider.website && (
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-foreground text-sm md:text-base mb-1">Website</p>
+                    <a 
+                      href={websiteUrl || provider.website} 
+                      {...externalLinkProps}
+                      className="hover:underline text-sm md:text-base break-all touch-manipulation"
+                      style={{ color: brand ? brand.primary : 'hsl(var(--primary))' }}
                     >
-                      {category}
-                    </Badge>
-                  </Link>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Key Features */}
-          <Card className="flex flex-col h-full">
-            <CardHeader>
-              <CardTitle>Why Choose {provider.name}?</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <div className="grid md:grid-cols-2 gap-4">
-                {provider.accreditation && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                    <Shield className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                    <span className="text-sm font-medium">Fully Accredited Labs</span>
-                  </div>
-                )}
-                
-                {provider.clinics && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                    <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                    <span className="text-sm font-medium">Multiple Locations</span>
+                      {provider.website.replace('https://', '').replace('http://', '')}
+                    </a>
                   </div>
                 )}
                 
                 {provider.phone && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                    <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                    <span className="text-sm font-medium">Phone Support</span>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-foreground text-sm md:text-base mb-1">Phone</p>
+                    <a href={`tel:${provider.phone}`} className="text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation">{provider.phone}</a>
                   </div>
                 )}
                 
                 {provider.email && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                    <Mail className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                    <span className="text-sm font-medium">Email Support</span>
+                  <div className="min-h-[44px] flex flex-col justify-center">
+                    <p className="font-medium text-foreground text-sm md:text-base mb-1">Email</p>
+                    <a href={`mailto:${provider.email}`} className="text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation">{provider.email}</a>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Test Categories */}
+            <Card className="flex flex-col flex-1">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                  Test Categories
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <div className="flex flex-wrap gap-2">
+                  {testCategories.map(category => (
+                    <Link
+                      key={category}
+                      to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
+                      className="inline-block"
+                    >
+                      <Badge 
+                        variant="outline" 
+                        className="transition-colors cursor-pointer"
+                        style={brand ? {
+                          borderColor: brand.primary,
+                          color: brand.primary,
+                        } : undefined}
+                      >
+                        {category}
+                      </Badge>
+                    </Link>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right column — wide */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            {/* Service Information */}
+            <Card className="flex flex-col flex-1">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                  Service Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 flex-1">
+                {provider.tests && (
+                  <div>
+                    <p className="font-medium text-foreground">Available Tests</p>
+                    <p className="text-muted-foreground">{provider.tests}</p>
+                  </div>
+                )}
+
+                {provider.sampleCollection && (
+                  <div>
+                    <p className="font-medium text-foreground">Sample Collection</p>
+                    <p className="text-muted-foreground">{provider.sampleCollection}</p>
+                  </div>
+                )}
+
+                {provider.turnaroundTime && (
+                  <div>
+                    <p className="font-medium text-foreground">Results Turnaround</p>
+                    <p className="text-muted-foreground">{provider.turnaroundTime}</p>
                   </div>
                 )}
                 
-                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                  <Award className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                  <span className="text-sm font-medium">Doctor Reviewed Results</span>
+                {provider.appointments && (
+                  <div>
+                    <p className="font-medium text-foreground">Appointment Capacity</p>
+                    <p className="text-muted-foreground">{provider.appointments}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Key Features */}
+            <Card className="flex flex-col flex-1">
+              <CardHeader>
+                <CardTitle>Why Choose {provider.name}?</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <div className="grid md:grid-cols-2 gap-4">
+                  {provider.accreditation && (
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <Shield className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                      <span className="text-sm font-medium">Fully Accredited Labs</span>
+                    </div>
+                  )}
+                  
+                  {provider.clinics && (
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                      <span className="text-sm font-medium">Multiple Locations</span>
+                    </div>
+                  )}
+                  
+                  {provider.phone && (
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                      <span className="text-sm font-medium">Phone Support</span>
+                    </div>
+                  )}
+                  
+                  {provider.email && (
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <Mail className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                      <span className="text-sm font-medium">Email Support</span>
+                    </div>
+                  )}
+                  
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Award className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                    <span className="text-sm font-medium">Doctor Reviewed Results</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Clock className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
+                    <span className="text-sm font-medium">Fast Turnaround</span>
+                  </div>
                 </div>
-                
-                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
-                  <Clock className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
-                  <span className="text-sm font-medium">Fast Turnaround</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </main>
+
+      {/* Quiz CTA Banner */}
+      <div className="mt-8 mb-12 px-4 sm:px-10">
+        <div
+          style={{
+            background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
+            padding: "3px",
+            borderRadius: "16px",
+          }}
+        >
+          <div
+            className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8"
+            style={{
+              background: "#0a1120",
+              padding: "32px 36px",
+              borderRadius: "13px",
+            }}
+          >
+            <div className="text-center sm:text-left">
+              <p
+                style={{
+                  color: "#22c0d4",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: "8px",
+                }}
+              >
+                Not Sure Where to Start?
+              </p>
+              <h2
+                style={{
+                  color: "#ffffff",
+                  fontSize: "clamp(22px, 3vw, 28px)",
+                  fontWeight: 700,
+                  margin: 0,
+                }}
+              >
+                Find the Right Health Test for You
+              </h2>
+            </div>
+            <Link
+              to="/find-test"
+              className="inline-block whitespace-nowrap text-center"
+              style={{
+                background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
+                color: "#ffffff",
+                border: "none",
+                padding: "16px 36px",
+                fontSize: "16px",
+                fontWeight: 600,
+                borderRadius: "10px",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")
+              }
+            >
+              Start Your Quiz →
+            </Link>
+          </div>
+        </div>
+      </div>
       
       <Footer />
     </div>
