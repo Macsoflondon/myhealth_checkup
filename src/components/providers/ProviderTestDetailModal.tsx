@@ -44,7 +44,7 @@ const getProviderTagline = (providerId: string): string => {
 
 const formatTurnaround = (providerId: string): string => {
   const defaults: Record<string, string> = {
-    medichecks: "2 working days",
+    medichecks: "2-3 working days",
     "goodbody-clinic": "3–5 working days",
     goodbody: "3–5 working days",
     "randox-health": "24 hours",
