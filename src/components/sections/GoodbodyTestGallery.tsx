@@ -459,7 +459,7 @@ const GoodbodyTestGallery = () => {
 
             <section>
               <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Who We Are</h3>
-              <p>Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,400 reviews.</p>
+              <p>Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing at our clinic in Bath, through over 250 partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,600+ reviews.</p>
             </section>
 
             <section>

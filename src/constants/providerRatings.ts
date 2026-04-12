@@ -11,7 +11,7 @@ export interface ProviderRating {
 
 export const PROVIDER_RATINGS: Record<string, ProviderRating> = {
   'medichecks': { rating: 4.0, reviews: 950, reviewsFormatted: '950' },
-  'goodbody-clinic': { rating: 4.8, reviews: 3400, reviewsFormatted: '3,400' },
+  'goodbody-clinic': { rating: 4.8, reviews: 3600, reviewsFormatted: '3,600+' },
   'thriva': { rating: 4.4, reviews: 2500, reviewsFormatted: '2,500' },
   'randox': { rating: 4.6, reviews: 26000, reviewsFormatted: '26,000' },
   'london-medical-laboratory': { rating: 4.1, reviews: 3266, reviewsFormatted: '3,266' },

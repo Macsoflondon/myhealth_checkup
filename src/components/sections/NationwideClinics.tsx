@@ -142,7 +142,7 @@ const NationwideClinics = () => {
                   </svg>
                 ))}
               </div>
-              <span className="text-xs text-muted-foreground">(4.8 · 3,400 reviews)</span>
+              <span className="text-xs text-muted-foreground">(4.8 · 3,600+ reviews)</span>
             </div>
           </div>
         </div>
