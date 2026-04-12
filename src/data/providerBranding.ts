@@ -119,13 +119,6 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#F57C001A",
     accentLight: "#E6510012",
   },
-  checkmybodyhealth: {
-    primary: "#43A047",
-    accent: "#2E7D32",
-    tagline: "Know Your Body Better",
-    primaryLight: "#43A0471A",
-    accentLight: "#2E7D3212",
-  },
   londonlaboratory: {
     primary: "#1565C0",
     accent: "#0D47A1",
