@@ -352,45 +352,6 @@ const ProviderProfilePage = () => {
 
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-4 md:space-y-6">
-            {/* Accreditations */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                  Accreditations & Quality
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {provider.accreditation && (
-                  <div>
-                    <p className="font-medium text-foreground">Provider Accreditation</p>
-                    <p className="text-muted-foreground">{provider.accreditation}</p>
-                  </div>
-                )}
-                
-                {provider.labAccreditation && (
-                  <div>
-                    <p className="font-medium text-foreground">Laboratory Accreditation</p>
-                    <p className="text-muted-foreground">{provider.labAccreditation}</p>
-                  </div>
-                )}
-                
-                {provider.partnerLabs && (
-                  <div>
-                    <p className="font-medium text-foreground">Partner Laboratories</p>
-                    <p className="text-muted-foreground">{provider.partnerLabs}</p>
-                  </div>
-                )}
-                
-                {provider.parentCompany && (
-                  <div>
-                    <p className="font-medium text-foreground">Parent Company</p>
-                    <p className="text-muted-foreground">{provider.parentCompany}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
             {/* Service Information */}
             <Card>
               <CardHeader>
