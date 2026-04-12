@@ -2,8 +2,8 @@ import { CheckCircle, Shield, Award, Lock } from "lucide-react";
 const TrustBadgesSection = () => {
   const badges = [{
     icon: Shield,
-    title: "CQC Registered",
-    description: "All clinics are CQC registered"
+     title: "CQC Regulated",
+    description: "All clinics are CQC regulated"
   }, {
     icon: Award,
     title: "UKAS Accredited",

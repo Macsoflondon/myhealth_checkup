@@ -396,7 +396,7 @@ const GoodbodyTestGallery = () => {
                       <p className="font-bold text-sm" style={{ color: BRAND_COLOR }}>Goodbody Clinic</p>
                       <p className="text-xs text-muted-foreground">Private health testing with 200+ clinics nationwide</p>
                       <div className="flex flex-wrap gap-1.5 mt-2">
-                        {["200+ Clinics", "GP Report Included", "CQC Registered"].map((badge) => (
+                        {["200+ Clinics", "GP Report Included", "CQC Regulated"].map((badge) => (
                           <span key={badge} className="text-[10px] font-semibold px-2 py-0.5 rounded border" style={{ color: BRAND_COLOR, borderColor: BRAND_COLOR }}>
                             {badge}
                           </span>

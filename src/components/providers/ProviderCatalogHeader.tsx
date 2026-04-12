@@ -160,7 +160,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
   'thriva': [
     { icon: <Home className="h-4 w-4 text-secondary" />, label: "Home test kits" },
     { icon: <Smartphone className="h-4 w-4 text-secondary" />, label: "App-based tracking" },
-    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Registered" },
+     { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated" },
   ],
   'randox': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Premium clinic locations" },
@@ -180,7 +180,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
   'goodbody-clinic': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic-based testing" },
     { icon: <MapPin className="h-4 w-4 text-secondary" />, label: "Locations across the UK" },
-    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Registered" },
+    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated" },
   ],
 };
 

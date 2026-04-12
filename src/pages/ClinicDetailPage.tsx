@@ -213,7 +213,7 @@ const ClinicDetailPage = () => {
                     UKAS Accredited
                   </Badge>
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800 border-blue-200">
-                    CQC Registered
+                    CQC Regulated
                   </Badge>
                   <Badge variant="secondary" className="bg-purple-100 text-purple-800 border-purple-200">
                     ISO 15189
