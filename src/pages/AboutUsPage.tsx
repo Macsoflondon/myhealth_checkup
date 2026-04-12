@@ -51,9 +51,8 @@ const AboutUsPage = () => {
       <Header />
       <main className="flex-grow bg-[#081129]">
         <PageBanner
-          title="About"
-          accent="myhealth checkup"
-          subtitle="Your health is your greatest asset. We rigorously screen every provider we feature to ensure you only see the UK's most reputable health testing options."
+          title="About myhealth checkup"
+          subtitle="Trusted health comparison platform."
         />
 
         <TrustBadgesSection />
