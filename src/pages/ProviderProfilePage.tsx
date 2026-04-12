@@ -6,7 +6,7 @@ import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, ArrowLeft, CheckCircle, TestTube, Building2 } from "lucide-react";
+import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, TestTube, Building2 } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
@@ -104,15 +104,6 @@ const ProviderProfilePage = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-4 md:py-8">
-        {/* Back Button */}
-        <div className="mb-4 md:mb-6">
-          <Button variant="outline" asChild className="gap-2 min-h-[44px] touch-manipulation border-secondary text-secondary hover:bg-secondary hover:text-white">
-            <Link to="/compare">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Compare Tests
-            </Link>
-          </Button>
-        </div>
 
         {/* Hero Section — branded gradient when available */}
         <div
