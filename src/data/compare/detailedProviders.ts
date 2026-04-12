@@ -217,7 +217,7 @@ export const detailedProviders = [
     coreServices:
       "Comprehensive venous blood testing: general health, hormones, fertility, vitamins, thyroid, sexual health, autoimmune, diabetes screening",
     tests: "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
-    sampleCollection: "Professional venous blood draw at over 200+ clinics nationwide - home collection options - finger prick test",
+    sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
     turnaroundTime: "2-3 working days",
     customerReviews: "4.7/5 (Trustpilot, 3,150+ reviews)",
     keyDifferentiators:
