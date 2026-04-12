@@ -84,27 +84,6 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#00796B1A",
     accentLight: "#004D4012",
   },
-  superdrug: {
-    primary: "#1565C0",
-    accent: "#0D47A1",
-    tagline: "Health on the High Street",
-    primaryLight: "#1565C01A",
-    accentLight: "#0D47A112",
-  },
-  bupa: {
-    primary: "#005EB8",
-    accent: "#003D7A",
-    tagline: "Helping You Find Healthy",
-    primaryLight: "#005EB81A",
-    accentLight: "#003D7A12",
-  },
-  nuffield: {
-    primary: "#2E7D32",
-    accent: "#1B5E20",
-    tagline: "For a Healthier Nation",
-    primaryLight: "#2E7D321A",
-    accentLight: "#1B5E2012",
-  },
   londonbloodtests: {
     primary: "#1E88E5",
     accent: "#0D47A1",
