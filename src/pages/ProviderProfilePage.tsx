@@ -117,7 +117,7 @@ const ProviderProfilePage = () => {
               className="w-20 h-20 md:w-24 md:h-24 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: brand ? 'rgba(255,255,255,0.95)' : 'hsl(var(--primary) / 0.1)' }}
             >
-              <ProviderLogo provider={provider.name} className="w-14 h-14 md:w-16 md:h-16" />
+              <ProviderLogo provider={provider.name} className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 object-contain" />
             </div>
             
             <div className="flex-1 w-full">
