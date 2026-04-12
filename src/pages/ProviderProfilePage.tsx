@@ -175,8 +175,8 @@ const ProviderProfilePage = () => {
                   },
                   'london-medical-laboratory': {
                     mission: "London Medical Laboratory is committed to delivering fast, accurate diagnostic testing with clinical-grade precision. Their goal is to make professional laboratory services accessible to everyone, not just those with a GP referral.",
-                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory offering over 100 blood tests with some of the fastest turnaround times in the UK — many results within 24 hours. Professional clinic-based venous blood collection with partner locations across the country. Rated 4.5/5 on Trustpilot with over 3,250 reviews.",
-                    services: "Comprehensive test menu including health MOTs, hormone profiles, vitamin panels, allergy testing, and fertility assessments. All samples are processed in their own accredited laboratory with expert analysis and results delivered via online portal or email.",
+                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory offering over 100 blood tests with next day results on most tests. At-home test kits and in-store sample collection at partner clinics across the UK. Features Humanity Age longevity analysis — interpreting blood markers in terms of biological age. Rated 4.5/5 on Trustpilot with over 3,250 reviews.",
+                    services: "Comprehensive test menu including health MOTs, hormone profiles, vitamin panels, allergy testing, fertility assessments, and longevity analysis. At-home and in-store sample collection options. Results delivered via online portal or email with expert analysis.",
                   },
                   'blue-horizon': {
                     mission: "Blue Horizon exists to make professional blood testing accessible and straightforward. Their focus is on delivering reliable results with flexible collection options to fit your lifestyle.",
