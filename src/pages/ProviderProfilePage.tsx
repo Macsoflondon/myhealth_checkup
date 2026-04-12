@@ -6,7 +6,7 @@ import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, ArrowLeft, CheckCircle, TestTube, Building2 } from "lucide-react";
+import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, TestTube, Building2 } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
