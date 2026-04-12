@@ -438,58 +438,40 @@ const ProviderProfilePage = () => {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
                   {provider.accreditation && (
-                    <div
-                      className="flex items-center gap-3 p-3 rounded-lg"
-                      style={{ backgroundColor: brand ? brand.primaryLight : '#f0fdf4' }}
-                    >
-                      <Shield className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.primary : '#16a34a' }} />
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <Shield className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
                       <span className="text-sm font-medium">Fully Accredited Labs</span>
                     </div>
                   )}
                   
                   {provider.clinics && (
-                    <div
-                      className="flex items-center gap-3 p-3 rounded-lg"
-                      style={{ backgroundColor: brand ? brand.accentLight : '#eff6ff' }}
-                    >
-                      <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.accent : '#2563eb' }} />
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
                       <span className="text-sm font-medium">Multiple Locations</span>
                     </div>
                   )}
                   
                   {provider.phone && (
-                    <div
-                      className="flex items-center gap-3 p-3 rounded-lg"
-                      style={{ backgroundColor: brand ? brand.primaryLight : '#faf5ff' }}
-                    >
-                      <Phone className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.primary : '#9333ea' }} />
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <Phone className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
                       <span className="text-sm font-medium">Phone Support</span>
                     </div>
                   )}
                   
                   {provider.email && (
-                    <div
-                      className="flex items-center gap-3 p-3 rounded-lg"
-                      style={{ backgroundColor: brand ? brand.accentLight : '#fdf2f8' }}
-                    >
-                      <Mail className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.accent : '#db2777' }} />
+                    <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                      <Mail className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
                       <span className="text-sm font-medium">Email Support</span>
                     </div>
                   )}
                   
-                  <div
-                    className="flex items-center gap-3 p-3 rounded-lg"
-                    style={{ backgroundColor: brand ? brand.primaryLight : '#fff7ed' }}
-                  >
-                    <Award className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.primary : '#ea580c' }} />
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Award className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
                     <span className="text-sm font-medium">Doctor Reviewed Results</span>
                   </div>
                   
-                  <div
-                    className="flex items-center gap-3 p-3 rounded-lg"
-                    style={{ backgroundColor: brand ? brand.accentLight : '#f0fdfa' }}
-                  >
-                    <Clock className="w-5 h-5 flex-shrink-0" style={{ color: brand ? brand.accent : '#0d9488' }} />
+                  <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: '#f0fdf4' }}>
+                    <Clock className="w-5 h-5 flex-shrink-0" style={{ color: '#16a34a' }} />
                     <span className="text-sm font-medium">Fast Turnaround</span>
                   </div>
                 </div>

@@ -212,17 +212,16 @@ export const detailedProviders = [
     website: "https://goodbodyclinic.com",
     phone: "01225 444 144",
     email: "clinic@goodbodywellness.co.uk",
-    accreditation: "CQC-registered, UKAS ISO 15189 accredited laboratories",
-    labAccreditation: "UKAS ISO 15189",
+    accreditation: "CQC regulated",
     clinics: "More than 200+ Clinic's nationwide",
     coreServices:
       "Comprehensive venous blood testing: general health, hormones, fertility, vitamins, thyroid, sexual health, autoimmune, diabetes screening",
     tests: "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
-    sampleCollection: "Professional venous blood draw at pharmacy clinic locations (no finger-prick)",
+    sampleCollection: "Professional venous blood draw at over 200+ clinics nationwide - home collection options - finger prick test",
     turnaroundTime: "2-3 working days",
     customerReviews: "4.7/5 (Trustpilot, 3,150+ reviews)",
     keyDifferentiators:
-      "Professional venous blood collection, pharmacy-based clinic network, UKAS-accredited lab processing, competitive pricing, convenient nationwide locations, walk-in and pre-booked appointments",
+      "Professional venous blood collection, 200+ clinics nationwide, UKAS-accredited lab processing, competitive pricing, convenient nationwide locations, pre-booked appointments",
     partnerRegulation: "GPhC-regulated pharmacy partners",
     description:
       "Premium health clinic offering comprehensive venous blood testing at more than 200+ Clinic's nationwide. GoodBody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests.",
