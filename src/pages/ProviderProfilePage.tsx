@@ -155,7 +155,7 @@ const ProviderProfilePage = () => {
                   },
                   'medichecks': {
                     mission: "Medichecks believe everyone deserves access to clear, reliable health information. Their mission is to empower everyone to take charge of their health with simple, personal blood checks.",
-                    whoWeAre: "Founded in 2001, Medichecks established the UK's first direct-to-consumer blood testing service, offering over 300 tests across general health, hormones, vitamins, thyroid, sports performance, and more. All samples are analysed by UKAS-accredited laboratories. Rated 4.3/5 on Trustpilot with over 1,345 reviews.",
+                    whoWeAre: "Founded in 2001, Medichecks established the UK's first direct-to-consumer blood testing service, offering over 300 tests across general health, hormones, vitamins, thyroid, sports performance, and more. All samples are analysed by UKAS-accredited laboratories. Rated 4.7/5 on Feefo with over 14,000 reviews.",
                     services: "From convenient finger-prick home kits to venous blood draws at nationwide partner clinics or home nurse visits. Every result includes a bespoke GP-reviewed report with personalised insights, delivered through the MyMedichecks online dashboard.",
                   },
                   'thriva': {
