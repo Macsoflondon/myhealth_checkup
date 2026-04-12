@@ -149,7 +149,7 @@ const ProviderProfilePage = () => {
               {provider.id === 'goodbody-clinic' ? (
                 <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
                   <h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
-                    What sets them apart:
+                    What sets us apart
                   </h2>
                   <div>
                     <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
@@ -460,7 +460,7 @@ const ProviderProfilePage = () => {
                 {provider.keyDifferentiators && (
                   <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      <strong className="text-foreground">What sets them apart:</strong> {provider.keyDifferentiators}
+                      <strong className="text-foreground">What sets us apart</strong> {provider.keyDifferentiators}
                     </p>
                   </div>
                 )}
