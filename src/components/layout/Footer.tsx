@@ -20,7 +20,7 @@ const Footer = () => {
     { name: t('footer.links.aboutUs'), link: "/about" },
     { name: t('footer.links.howItWorks'), link: "/how-it-works" },
     { name: "Our Providers", link: "/providers" },
-    { name: "Clinic Locations", link: "/locations" },
+    { name: "Find a Clinic", link: "/find-clinic" },
     { name: t('footer.links.faqs'), link: "/faqs" },
     { name: "Health Resource Hub", link: "/blog" },
     { name: "Test Categories", link: "/test-categories" },

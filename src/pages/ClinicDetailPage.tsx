@@ -115,10 +115,10 @@ const ClinicDetailPage = () => {
             <p className="text-muted-foreground mb-6">
               The clinic you're looking for doesn't exist or has been removed.
             </p>
-            <Link to="/locations">
+            <Link to="/find-clinic">
               <Button>
                 <ChevronLeft className="w-4 h-4 mr-2" />
-                Back to Locations
+                Back to Clinic Finder
               </Button>
             </Link>
           </div>
@@ -145,11 +145,11 @@ const ClinicDetailPage = () => {
         <div className="bg-muted/30 border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
             <Link
-              to="/locations"
+              to="/find-clinic"
               className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4 mr-1" />
-              Back to All Locations
+              Back to Clinic Finder
             </Link>
           </div>
         </div>

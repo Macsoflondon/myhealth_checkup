@@ -26,7 +26,6 @@ export const moreNavigationSections = [
     title: "Services",
     items: [
       { name: "Our Providers", path: "/providers" },
-      { name: "Clinic Locations", path: "/locations" },
       { name: "Find a Clinic", path: "/find-clinic" },
       { name: "Assisted Test Finder", path: "/assisted-test-finder" }
     ]
