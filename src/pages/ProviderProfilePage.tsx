@@ -325,24 +325,20 @@ const ProviderProfilePage = () => {
             Trust & Accreditation
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {provider.accreditation && (
               <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
                 <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
                 <div>
                   <p className="text-sm font-medium">Lab Accredited</p>
-                  <p className="text-xs text-muted-foreground">UKAS ISO 15189</p>
+                  <p className="text-xs text-muted-foreground">{provider.accreditation || 'UKAS ISO 15189'}</p>
                 </div>
               </div>
-            )}
-            {provider.clinics && (
               <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
                 <Building2 className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                 <div>
                   <p className="text-sm font-medium">CQC Regulated</p>
-                  <p className="text-xs text-muted-foreground">Registered clinics</p>
+                  <p className="text-xs text-muted-foreground">{provider.clinics || 'Registered clinics'}</p>
                 </div>
               </div>
-            )}
             <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
               <Star className="w-5 h-5 text-yellow-500 flex-shrink-0" />
               <div>
