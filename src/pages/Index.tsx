@@ -124,7 +124,7 @@ const Index = () => {
 
         <PartnerShowcaseGrid />
         <TestimonialCarousel />
-        <HereToHelp />
+        <ClinicAndHelpSection />
         <AccreditedProvidersBar />
         <CallToAction />
         <TrustPlatformSection />
