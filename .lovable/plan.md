@@ -1,103 +1,85 @@
 
 
-## Platform-Wide Audit and Provider Data Refresh
+## Upgrade All Provider Scrapers to Firecrawl + Enhance Admin Dashboard
 
-This is a two-part project: (1) scrape all providers for accurate, up-to-date test data, and (2) review all user-facing pages for grammatical errors.
+### Current State
 
----
+**9 providers in DB** with 403 total active tests:
+| Provider | Tests | Last Scraped | Has Scraper? |
+|---|---|---|---|
+| Medichecks | 76 | Feb 21 (stale) | Yes (Firecrawl) |
+| Randox | 69 | Apr 13 | Yes (Firecrawl) |
+| GoodBody | 68 | Apr 13 | Yes (HTML) |
+| Medical Diagnosis | 55 | Apr 5 | No |
+| Lola Health | 46 | Jan 7 (stale) | Yes (HTML) |
+| London Medical Lab | 33 | Apr 13 | Yes (Firecrawl) |
+| Clinilabs | 24 | Apr 5 | No |
+| London Health Co | 18 | Apr 5 | No |
+| Thriva | 14 | Apr 13 | Yes (HTML) |
 
-### Part 1: Provider Data Scraping and Verification
+**3 providers have no scrapers** (Medical Diagnosis, Clinilabs, London Health Company) — their data was manually uploaded.
 
-We have Firecrawl connected and existing scraper edge functions for most providers. The plan is to build a unified multi-provider scraper that uses Firecrawl to pull live data from each provider's website, then update the Supabase `provider_tests` table and static data files.
+**Admin dashboard** exists at `/admin/scrapers` but only lists 6 providers. Missing the 3 newer ones.
 
-**Providers to scrape (9 total):**
+### Plan
 
-| Provider | Existing scraper | Approach |
-|----------|-----------------|----------|
-| Medichecks | `medichecks-firecrawl` (robust) | Run existing scraper, verify output |
-| GoodBody Clinic | `goodbody-scraper` (HTML-based) | Upgrade to Firecrawl for reliability |
-| Thriva | `thriva-scraper` | Upgrade to Firecrawl |
-| Randox Health | `randox-scraper` | Upgrade to Firecrawl |
-| London Medical Laboratory | `scrape-london-lab` | Upgrade to Firecrawl |
-| Lola Health | `lola-health-scraper` | Upgrade to Firecrawl |
-| London Health Company | None | Create new Firecrawl scraper |
-| Medical Diagnosis | None | Create new Firecrawl scraper |
-| Clinilabs | None | Create new Firecrawl scraper |
+**1. Upgrade existing HTML-based scrapers to Firecrawl** (3 files)
 
-**For each provider, the scraper will extract:**
-- Test name
-- Price (GBP)
-- Biomarker count and list
-- Sample type (Finger prick / Venous draw / Saliva / Urine)
-- Turnaround time
-- Category mapping to canonical taxonomy
-- Test URL (verified)
-- Description
+- `goodbody-scraper/index.ts` — currently uses raw HTML fetch + regex. Upgrade to use Firecrawl `scrape` + `map` endpoints (same pattern as `medichecks-firecrawl`). Keep the existing category inference and biomarker extraction logic.
+- `thriva-scraper/index.ts` — currently uses raw HTML fetch. Upgrade to Firecrawl.
+- `lola-health-scraper/index.ts` — currently uses raw HTML fetch. Upgrade to Firecrawl.
 
-**Data will be stored in:**
-1. Supabase `provider_tests` table (primary source of truth)
-2. Static data files updated from DB results (`realProviderData.ts`, `goodbodyTests.ts`, `medichecksTests.ts`, `londonLaboratoryTests.ts`)
+All three will use the `FIRECRAWL_API_KEY` secret (already configured).
 
-**Verification steps after scraping:**
-- Cross-check prices against live provider sites (spot-check 5 per provider)
-- Validate all test URLs return 200
-- Confirm biomarker counts match provider claims
-- Ensure turnaround times match provider pages
-- Verify clinic location data in `clinics_master.json` against provider websites
+**2. Create new Firecrawl scrapers for 3 missing providers** (3 new files)
 
----
+- `supabase/functions/clinilabs-scraper/index.ts` — scrape clinilabs.co.uk product pages
+- `supabase/functions/medical-diagnosis-scraper/index.ts` — scrape medicaldiagnosis.co.uk
+- `supabase/functions/london-health-scraper/index.ts` — scrape londonhealthcompany.co.uk
 
-### Part 2: Grammar and Content Review
+Each scraper will follow the established pattern:
+1. Use Firecrawl `map` to discover product URLs
+2. Use Firecrawl `scrape` on each product URL
+3. Extract: test name, price, biomarker count/list, sample type, category, description, URL
+4. Upsert to `provider_tests` table using service role client
+5. Update `scraping_jobs` table with status
 
-Systematic review of all user-facing text across the platform.
+**3. Update admin dashboard** (`src/pages/AdminScraperDashboardPage.tsx`)
 
-**Pages to review (grouped by priority):**
+- Add the 3 missing providers to `PROVIDERS` array
+- Add summary stats (total tests across all providers, last full refresh time)
+- Add a "Scrape Results" expandable section per provider showing what changed (new tests, price changes, removed tests)
 
-1. **Core pages**: Index, About Us, How It Works, FAQs, Contact, Partners
-2. **Test pages**: All category landing pages (Thyroid, Hormones, Fertility, etc.), test detail pages, comparison pages
-3. **Provider pages**: Provider profiles, test catalogs
-4. **Legal/Compliance**: Privacy Policy, Terms, Cookie Policy, Accessibility, GDPR, Fair Trading
-5. **Feature pages**: Find a Clinic, Biomarker Library, Dashboard
-6. **Section components**: Hero, CTAs, Testimonials, Trust signals, Footer
+**4. Update `run-all-scrapers`** edge function
 
-**What I will check:**
-- Spelling errors
-- Grammar mistakes
-- Inconsistent capitalisation (British English standard)
-- Missing punctuation
-- Inconsistent terminology (e.g., "blood test" vs "Blood Test")
-- Incorrect provider names or data references
-- Claims that conflict with compliance rules (no outcome guarantees, no fear-based language)
+- Add the 3 new scrapers to the `SCRAPERS` array
+- Use the correct function names for upgraded scrapers
 
----
+**5. Update `supabase/config.toml`**
+
+- Add `[functions.clinilabs-scraper]`, `[functions.medical-diagnosis-scraper]`, `[functions.london-health-scraper]` with `verify_jwt = false`
+
+**6. Trigger all scrapers** after deployment to refresh stale data (Medichecks from Feb, Lola Health from Jan)
 
 ### Technical details
 
-**Edge function changes:**
-- Create a new `scrape-all-providers` edge function that orchestrates Firecrawl scraping across all 9 providers
-- Each provider gets a Firecrawl `map` call to discover product URLs, then individual `scrape` calls for each product
-- Results upserted to `provider_tests` with `onConflict: 'provider_id,test_name'`
-- Rate limiting: 500ms between Firecrawl calls to avoid quota issues
+Each scraper follows this standardised structure:
+```text
+1. FIRECRAWL_API_KEY from Deno.env.get()
+2. SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY for DB writes
+3. map() → discover product URLs
+4. scrape() each URL → extract markdown/HTML
+5. Parse: price (£), biomarkers, sample type, turnaround
+6. Category inference using keyword matching
+7. Upsert to provider_tests (ON CONFLICT provider_id + test_name)
+8. Update scraping_jobs status
+9. Return JSON summary with test count
+```
 
-**Static data file updates:**
-- After scraping, regenerate `realProviderData.ts` with verified data from all providers
-- Update `goodbodyTests.ts`, `medichecksTests.ts`, `londonLaboratoryTests.ts` to match DB
-- Update `providerRatings.ts` if review counts have changed
+### Files changed/created
 
-**Grammar fixes:**
-- Direct edits to page components (`.tsx` files)
-- Updates to data files containing test descriptions
-- Locale file (`en.json`) corrections if applicable
-
----
-
-### Execution order
-
-1. Deploy and run Firecrawl scrapers for all 9 providers
-2. Verify scraped data accuracy (spot-checks)
-3. Update static data files from verified DB data
-4. Grammar review all user-facing pages (systematic, file by file)
-5. Final verification pass
-
-This is a large undertaking that will require multiple implementation rounds. I will prioritise providers with the most traffic first (Medichecks, GoodBody, Randox) and core pages for grammar review.
+- **Modified**: `goodbody-scraper/index.ts`, `thriva-scraper/index.ts`, `lola-health-scraper/index.ts`
+- **Created**: `clinilabs-scraper/index.ts`, `medical-diagnosis-scraper/index.ts`, `london-health-scraper/index.ts`
+- **Modified**: `run-all-scrapers/index.ts`, `supabase/config.toml`
+- **Modified**: `src/pages/AdminScraperDashboardPage.tsx`
 
