@@ -52,7 +52,7 @@ const Footer = () => {
             <p className="text-xs sm:text-sm leading-relaxed mb-2">
               <span className="font-semibold text-brand-pink">Important:</span>{" "}
               <span className="text-white/80">
-                MyHealth Checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
+                myhealth checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
               </span>
             </p>
             <p className="text-xs sm:text-sm text-white/90 font-sans">
