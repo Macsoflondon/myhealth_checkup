@@ -1,13 +1,13 @@
 import { Search, Shield, CheckCircle, Award } from "lucide-react";
 import { Card } from "@/components/ui/card";
 const HowItWorks = () => {
-  return <section className="bg-white py-12 md:py-16">
+  return <section className="bg-white py-10 md:py-16">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">
             How It Works
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Four simple steps to booking your health test
           </p>
         </div>
