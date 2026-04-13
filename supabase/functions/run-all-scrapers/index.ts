@@ -9,11 +9,14 @@ const corsHeaders = {
 
 const SCRAPERS = [
   { id: 'lola-health', functionName: 'lola-health-scraper' },
-  { id: 'medichecks', functionName: 'medichecks-scraper' },
-  { id: 'goodbody', functionName: 'goodbody-scraper' },
+  { id: 'medichecks', functionName: 'medichecks-firecrawl' },
+  { id: 'goodbody-clinic', functionName: 'goodbody-scraper' },
   { id: 'thriva', functionName: 'thriva-scraper' },
   { id: 'randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', functionName: 'scrape-london-lab' },
+  { id: 'clinilabs', functionName: 'clinilabs-scraper' },
+  { id: 'medical-diagnosis', functionName: 'medical-diagnosis-scraper' },
+  { id: 'london-health-company', functionName: 'london-health-scraper' },
 ];
 
 interface ScraperResult {

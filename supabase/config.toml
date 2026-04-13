@@ -115,3 +115,15 @@ verify_jwt = false
 # Public access - No authentication required (quiz is anonymous)
 [functions.quiz-recommendations]
 verify_jwt = false
+
+# Clinilabs Scraper - Firecrawl-based scraper for clinilabs.com
+[functions.clinilabs-scraper]
+verify_jwt = false
+
+# Medical Diagnosis Scraper - Firecrawl-based scraper for medicaldiagnosis.co.uk
+[functions.medical-diagnosis-scraper]
+verify_jwt = false
+
+# London Health Company Scraper - Firecrawl-based scraper for londonhealthcompany.co.uk
+[functions.london-health-scraper]
+verify_jwt = false
