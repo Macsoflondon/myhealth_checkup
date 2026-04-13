@@ -75,7 +75,7 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={mobileLogo}
                     alt="myhealth checkup - Your health. Your choice. One trusted platform."
-                    className="h-[100px] xs:h-[110px] sm:h-[120px] w-auto object-contain"
+                    className="h-[120px] xs:h-[130px] sm:h-[140px] w-auto object-contain"
                   />
                 </Link>
 
@@ -122,12 +122,12 @@ const Header = ({ className }: HeaderProps) => {
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-[3.5rem] lg:h-[4rem] xl:h-[4.5rem] w-auto object-contain"
+                  className="h-[4.5rem] lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain"
                 />
                 <img
                   src={headerTagline}
                   alt="Your Health. Your Choice. One Trusted Platform!"
-                  className="h-[3.5rem] lg:h-[4rem] xl:h-[4.5rem] w-auto object-contain max-w-[50vw]"
+                  className="h-[4.5rem] lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain max-w-[50vw]"
                 />
               </Link>
 
