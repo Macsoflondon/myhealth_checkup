@@ -75,6 +75,9 @@ const ClinicAndHelpSection = () => {
                   <div className="h-px w-6 bg-brand-turquoise" />
                 </div>
 
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white text-center mb-4">
+                  Find a Clinic Near You
+                </h2>
 
                 <p className="text-white/80 font-sans text-sm sm:text-base text-center mb-8 max-w-md mx-auto leading-relaxed">
                   With over 200 partner clinic locations across the UK, getting a blood test has never been more convenient. Whether you prefer a home kit or in-clinic appointment, we've got you covered.
