@@ -29,7 +29,7 @@ const TrustBadgesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {badges.map((badge, index) => <div key={index} className="glass-card flex flex-col items-center text-center p-6 rounded-lg transition-colors hover:scale-105">
               <div className="w-12 h-12 bg-[hsl(var(--primary))] rounded-full flex items-center justify-center mb-3">
                 <badge.icon className="w-6 h-6 text-white" />

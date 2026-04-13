@@ -93,7 +93,7 @@ const AboutUsPage = () => {
               These core values guide everything we do and shape how we serve our community.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
               {values.map((value, index) => <div key={index} className="bg-white p-5 sm:p-8 rounded-lg shadow-md">
                   <div className="flex items-center mb-4">
                     {value.icon}

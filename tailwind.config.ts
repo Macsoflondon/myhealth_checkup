@@ -22,13 +22,13 @@ export default {
     	container: {
     		center: true,
     		padding: '2rem',
-    		screens: {
-    			sm: '640px',
-    			md: '720px',
-    			lg: '1024px',
-    			xl: '1280px',
-    			'2xl': '1400px'
-    		}
+		screens: {
+			sm: '640px',
+			md: '720px',
+			lg: '1024px',
+			xl: '1400px',
+			'2xl': '1536px'
+		}
     	},
     	extend: {
     		fontFamily: {

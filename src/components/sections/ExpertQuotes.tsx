@@ -25,7 +25,7 @@ const quotes = [
 const ExpertQuotes = () => {
   return (
     <section className="py-8 sm:py-10 md:py-12 bg-gradient-to-b from-white to-[hsl(187,72%,97%)]">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         <div className="text-center mb-6 sm:mb-8">
           {/* Pink decorative swoosh */}
           <svg className="mx-auto mb-4" width="80" height="20" viewBox="0 0 80 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@ const ExpertQuotes = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-7xl mx-auto">
           {quotes.map((q, i) => (
             <div
               key={i}
