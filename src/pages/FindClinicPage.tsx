@@ -459,7 +459,7 @@ const FindClinicPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <Card className="border-2 border-muted">
-                <CardContent className="p-8">
+                <CardContent className="p-5 sm:p-8">
                   <h2 className="text-2xl font-heading font-bold mb-4 text-brand-navy">
                     About Our Clinic Network
                   </h2>

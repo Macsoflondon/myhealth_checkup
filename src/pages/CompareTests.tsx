@@ -177,8 +177,8 @@ const CompareTests = () => {
         </Helmet>
 
         <MainLayout>
-          <div className="max-w-7xl mx-auto px-6 py-8 bg-white rounded-lg">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-montserrat mb-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 bg-white rounded-lg">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground font-montserrat mb-4 sm:mb-6">
               {effectiveCategory && effectiveCategory !== "all" 
                 ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
                 : "Compare Private Blood Tests"}
