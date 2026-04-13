@@ -69,7 +69,7 @@ const Header = ({ className }: HeaderProps) => {
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
             <div className="container mx-auto px-3 sm:px-4">
               {/* Single row: Logo left, Nav controls right */}
-              <div className="py-4 flex items-center justify-between gap-1.5">
+              <div className="py-8 flex items-center justify-between gap-1.5">
                 {/* Left: Combined logo with tagline */}
                 <Link to="/" className="flex items-center flex-shrink min-w-0">
                   <img
@@ -113,7 +113,7 @@ const Header = ({ className }: HeaderProps) => {
       <header className={className}>
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-8">
               {/* Left spacer for balance */}
               <div className="flex-1" />
 
