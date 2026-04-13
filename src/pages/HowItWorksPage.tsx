@@ -24,14 +24,14 @@ const HowItWorksPage = () => {
         <HowItWorks />
         <Enhanced3StepProcess />
         
-        <section className="py-16 bg-white">
+        <section className="py-10 sm:py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold mb-8 text-center text-[#081120]">Frequently Asked Questions</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center text-[#081120]">Frequently Asked Questions</h2>
               
               <div className="space-y-6">
-                <div className="border-l-4 border-health-500 pl-6">
-                  <h3 className="text-xl font-semibold mb-2 text-[#081120]">How accurate are the tests?</h3>
+                <div className="border-l-4 border-health-500 pl-4 sm:pl-6">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-2 text-[#081120]">How accurate are the tests?</h3>
                   <p className="text-gray-600">All our partner labs are UKAS-accredited and use the same equipment and standards as NHS laboratories, ensuring hospital-grade accuracy.</p>
                 </div>
                 
