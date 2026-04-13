@@ -1,85 +1,50 @@
 
 
-## Upgrade All Provider Scrapers to Firecrawl + Enhance Admin Dashboard
+## Extend Layout Widths — Less Compacted, More Breathing Room
 
-### Current State
+The platform currently constrains content too tightly. The Tailwind `container` maxes out at `1400px` on 2xl screens, and many sections add further inner constraints (`max-w-4xl` = 896px, `max-w-5xl` = 1024px, `max-w-6xl` = 1152px). On a 1572px viewport, this leaves large empty gutters.
 
-**9 providers in DB** with 403 total active tests:
-| Provider | Tests | Last Scraped | Has Scraper? |
-|---|---|---|---|
-| Medichecks | 76 | Feb 21 (stale) | Yes (Firecrawl) |
-| Randox | 69 | Apr 13 | Yes (Firecrawl) |
-| GoodBody | 68 | Apr 13 | Yes (HTML) |
-| Medical Diagnosis | 55 | Apr 5 | No |
-| Lola Health | 46 | Jan 7 (stale) | Yes (HTML) |
-| London Medical Lab | 33 | Apr 13 | Yes (Firecrawl) |
-| Clinilabs | 24 | Apr 5 | No |
-| London Health Co | 18 | Apr 5 | No |
-| Thriva | 14 | Apr 13 | Yes (HTML) |
+### Changes
 
-**3 providers have no scrapers** (Medical Diagnosis, Clinilabs, London Health Company) — their data was manually uploaded.
+**1. Widen the Tailwind container (tailwind.config.ts)**
+- Change `2xl` container screen from `1400px` → `1536px`
+- Change `xl` from `1280px` → `1400px`
+- This gives all `container mx-auto` sections more room automatically
 
-**Admin dashboard** exists at `/admin/scrapers` but only lists 6 providers. Missing the 3 newer ones.
+**2. Widen inner max-width caps across sections**
 
-### Plan
+These are the key bottlenecks. Each will be widened one step:
 
-**1. Upgrade existing HTML-based scrapers to Firecrawl** (3 files)
+| Current | New | Affected areas |
+|---------|-----|----------------|
+| `max-w-4xl` (896px) | `max-w-5xl` (1024px) | About Us values grid, HowItWorks FAQs, CategoryPageBottom, compliance pages, PageBanner |
+| `max-w-5xl` (1024px) | `max-w-6xl` (1152px) | TrustPlatformSection, TrustBadgesSection, Enhanced3StepProcess, PartnerShowcaseGrid inner grid, Dashboard |
+| `max-w-6xl` (1152px) | `max-w-7xl` (1280px) | ExpertQuotes, HereToHelp, HealthResources, About Us values grid (already md:grid-cols-2) |
+| `max-w-[1100px]` | `max-w-6xl` (1152px) | CategoryPageLayout card grid |
 
-- `goodbody-scraper/index.ts` — currently uses raw HTML fetch + regex. Upgrade to use Firecrawl `scrape` + `map` endpoints (same pattern as `medichecks-firecrawl`). Keep the existing category inference and biomarker extraction logic.
-- `thriva-scraper/index.ts` — currently uses raw HTML fetch. Upgrade to Firecrawl.
-- `lola-health-scraper/index.ts` — currently uses raw HTML fetch. Upgrade to Firecrawl.
+**3. Increase horizontal padding on wider screens**
+- Add `lg:px-12 xl:px-16` to sections that currently only have `px-4 sm:px-6` so content breathes on large monitors without jumping to full-bleed
 
-All three will use the `FIRECRAWL_API_KEY` secret (already configured).
+**4. Widen card grids where appropriate**
+- Category page: allow `xl:grid-cols-4` for test cards on wide screens
+- About Us values: allow `lg:grid-cols-4` instead of capping at `md:grid-cols-2`
+- Partners/provider grids: ensure they fill the wider container
 
-**2. Create new Firecrawl scrapers for 3 missing providers** (3 new files)
+### Files to modify
+- `tailwind.config.ts` — container screens
+- `src/components/sections/PageBanner.tsx` — max-w-5xl → max-w-6xl
+- `src/components/sections/Enhanced3StepProcess.tsx` — max-w-5xl → max-w-6xl
+- `src/components/sections/TrustPlatformSection.tsx` — max-w-5xl → max-w-6xl
+- `src/components/sections/TrustBadgesSection.tsx` — max-w-5xl → max-w-6xl
+- `src/components/sections/ExpertQuotes.tsx` — max-w-6xl → max-w-7xl
+- `src/components/sections/HereToHelp.tsx` — max-w-6xl → max-w-7xl
+- `src/components/sections/CategoryPageBottom.tsx` — max-w-4xl → max-w-5xl
+- `src/components/sections/PartnerShowcaseGrid.tsx` — max-w-5xl → max-w-6xl
+- `src/components/category/CategoryPageLayout.tsx` — max-w-[1100px] → max-w-6xl, add xl:grid-cols-4
+- `src/pages/AboutUsPage.tsx` — widen values grid, add lg:grid-cols-4
+- `src/pages/HowItWorksPage.tsx` — max-w-4xl → max-w-5xl
+- `src/pages/Dashboard.tsx` — max-w-5xl → max-w-6xl
+- ~10 additional section/page files with tight max-w constraints
 
-- `supabase/functions/clinilabs-scraper/index.ts` — scrape clinilabs.co.uk product pages
-- `supabase/functions/medical-diagnosis-scraper/index.ts` — scrape medicaldiagnosis.co.uk
-- `supabase/functions/london-health-scraper/index.ts` — scrape londonhealthcompany.co.uk
-
-Each scraper will follow the established pattern:
-1. Use Firecrawl `map` to discover product URLs
-2. Use Firecrawl `scrape` on each product URL
-3. Extract: test name, price, biomarker count/list, sample type, category, description, URL
-4. Upsert to `provider_tests` table using service role client
-5. Update `scraping_jobs` table with status
-
-**3. Update admin dashboard** (`src/pages/AdminScraperDashboardPage.tsx`)
-
-- Add the 3 missing providers to `PROVIDERS` array
-- Add summary stats (total tests across all providers, last full refresh time)
-- Add a "Scrape Results" expandable section per provider showing what changed (new tests, price changes, removed tests)
-
-**4. Update `run-all-scrapers`** edge function
-
-- Add the 3 new scrapers to the `SCRAPERS` array
-- Use the correct function names for upgraded scrapers
-
-**5. Update `supabase/config.toml`**
-
-- Add `[functions.clinilabs-scraper]`, `[functions.medical-diagnosis-scraper]`, `[functions.london-health-scraper]` with `verify_jwt = false`
-
-**6. Trigger all scrapers** after deployment to refresh stale data (Medichecks from Feb, Lola Health from Jan)
-
-### Technical details
-
-Each scraper follows this standardised structure:
-```text
-1. FIRECRAWL_API_KEY from Deno.env.get()
-2. SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY for DB writes
-3. map() → discover product URLs
-4. scrape() each URL → extract markdown/HTML
-5. Parse: price (£), biomarkers, sample type, turnaround
-6. Category inference using keyword matching
-7. Upsert to provider_tests (ON CONFLICT provider_id + test_name)
-8. Update scraping_jobs status
-9. Return JSON summary with test count
-```
-
-### Files changed/created
-
-- **Modified**: `goodbody-scraper/index.ts`, `thriva-scraper/index.ts`, `lola-health-scraper/index.ts`
-- **Created**: `clinilabs-scraper/index.ts`, `medical-diagnosis-scraper/index.ts`, `london-health-scraper/index.ts`
-- **Modified**: `run-all-scrapers/index.ts`, `supabase/config.toml`
-- **Modified**: `src/pages/AdminScraperDashboardPage.tsx`
+No structural or behavioural changes — purely spacing and width adjustments to let content breathe across the full viewport.
 
