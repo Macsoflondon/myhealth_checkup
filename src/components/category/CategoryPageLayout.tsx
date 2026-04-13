@@ -177,7 +177,7 @@ export function CategoryPageLayout({
           />
 
           {/* Filter + Sort + Cards */}
-          <section className="py-8 sm:py-10 px-4 bg-primary-foreground">
+          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-primary-foreground">
             <div className="max-w-6xl mx-auto">
               <CategoryFilters
                 filters={filters}
