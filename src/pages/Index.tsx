@@ -73,7 +73,7 @@ const Index = () => {
           />
           <meta
             name="keywords"
-            content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison 2024"
+            content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
           />
           <link rel="canonical" href="https://myhealthcheckup.co.uk/" />
 

@@ -71,7 +71,7 @@ const AboutUsPage = () => {
               </p>
               
               <p className="text-white text-left font-light">
-                Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals, just straightforward, clinical-grade testing with expert guidance.
+                Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals — just straightforward, clinical-grade testing with expert guidance.
               </p>
               
               <p className="text-white font-light text-base text-left">
@@ -122,16 +122,16 @@ const AboutUsPage = () => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">50,000+</div>
-                  <p className="text-white">Tests Completed</p>
+                  <div className="text-3xl font-bold text-health-600 mb-2">9</div>
+                  <p className="text-white">Accredited Providers</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">98%</div>
-                  <p className="text-white">Customer Satisfaction</p>
+                  <div className="text-3xl font-bold text-health-600 mb-2">300+</div>
+                  <p className="text-white">Tests Compared</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">24hrs</div>
-                  <p className="text-white">Average Result Time</p>
+                  <div className="text-3xl font-bold text-health-600 mb-2">377+</div>
+                  <p className="text-white">Clinic Locations</p>
                 </div>
               </div>
             </div>

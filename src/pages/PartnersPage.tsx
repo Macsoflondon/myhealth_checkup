@@ -20,35 +20,35 @@ const PartnersPage = () => {
     }, {
       name: "Thriva",
       specialty: "Subscription health monitoring",
-      accreditation: "MHRA"
+      accreditation: "UKAS"
     }, {
-      name: "Everlywell",
-      specialty: "At-home testing solutions",
-      accreditation: "CLIA"
+      name: "GoodBody Clinic",
+      specialty: "Clinic-based health screening",
+      accreditation: "CQC"
     }, {
-      name: "Forth",
-      specialty: "Hormone and fertility testing",
+      name: "Randox Health",
+      specialty: "Advanced diagnostics",
       accreditation: "UKAS"
     }]
   }, {
     name: "Specialist Partners",
     description: "Expert providers focusing on specific health areas",
     partners: [{
-      name: "Randox Health",
-      specialty: "Advanced diagnostics",
-      accreditation: "ISO 15189"
-    }, {
-      name: "Blue Horizon",
-      specialty: "Thyroid and nutrition",
-      accreditation: "UKAS"
-    }, {
       name: "London Medical Laboratory",
       specialty: "Executive health screening",
       accreditation: "CQC"
     }, {
-      name: "Better2Know",
-      specialty: "Sexual health testing",
+      name: "Lola Health",
+      specialty: "At-home blood testing",
       accreditation: "UKAS"
+    }, {
+      name: "Clinilabs",
+      specialty: "Clinical diagnostics",
+      accreditation: "ISO 15189"
+    }, {
+      name: "London Health Company",
+      specialty: "Premium health checks",
+      accreditation: "CQC"
     }]
   }];
   const accreditations = [{
@@ -203,11 +203,11 @@ const PartnersPage = () => {
                 </Card>
                 <Card className="p-6">
                   <h3 className="font-semibold mb-2">What We Offer</h3>
-                  <ul className="text-sm text-muted-foreground space-y-1 bg-[#081129]">
+                  <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• Marketing support</li>
                     <li>• Technology integration</li>
                     <li>• Customer insights</li>
-                    <li className="text-[t#ransparent] text-white">• Performance analytics</li>
+                    <li>• Performance analytics</li>
                   </ul>
                 </Card>
               </div>
