@@ -18,7 +18,7 @@ const HowItWorksPage = () => {
         <PageBanner
           title="How It"
           accent="Works"
-          subtitle="Our simple process makes health testing convenient and accessible. From choosing your test to getting results in 48 hours."
+          subtitle="Our simple process makes health testing convenient and accessible. From choosing your test to receiving your results — typically within a few days."
         />
         
         <HowItWorks />
