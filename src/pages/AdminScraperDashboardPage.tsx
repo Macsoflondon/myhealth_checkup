@@ -26,12 +26,15 @@ interface Provider {
 }
 
 const PROVIDERS: Provider[] = [
+  { id: 'medichecks', name: 'Medichecks', functionName: 'medichecks-firecrawl' },
+  { id: 'goodbody-clinic', name: 'GoodBody Clinic', functionName: 'goodbody-scraper' },
+  { id: 'randox', name: 'Randox Health', functionName: 'randox-scraper' },
   { id: 'lola-health', name: 'Lola Health', functionName: 'lola-health-scraper' },
-  { id: 'medichecks', name: 'Medichecks', functionName: 'medichecks-scraper' },
-  { id: 'goodbody-clinic', name: 'GoodBody', functionName: 'goodbody-scraper' },
   { id: 'thriva', name: 'Thriva', functionName: 'thriva-scraper' },
-  { id: 'randox', name: 'Randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', name: 'London Medical Lab', functionName: 'scrape-london-lab' },
+  { id: 'medical-diagnosis', name: 'Medical Diagnosis', functionName: 'medical-diagnosis-scraper' },
+  { id: 'clinilabs', name: 'Clinilabs', functionName: 'clinilabs-scraper' },
+  { id: 'london-health-company', name: 'London Health Company', functionName: 'london-health-scraper' },
 ];
 
 const AdminScraperDashboardPage: React.FC = () => {

@@ -1,166 +1,12 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface LolaHealthProduct {
-  test_name: string;
-  provider_id: string;
-  category: string;
-  price: number;
-  original_price: number | null;
-  discount_percentage: number | null;
-  description: string;
-  url: string;
-  provider_test_id: string;
-  is_active: boolean;
-  is_addon: boolean;
-  image_url: string | null;
-  biomarkers_list: string[] | null;
-  biomarker_count: number | null;
-  symptoms: string[] | null;
-  conditions: string[] | null;
-  who_should_test: string | null;
-  url_verified: boolean;
-  url_verified_at: string;
-}
-
-function extractProductUrls(html: string): string[] {
-  const urls: string[] = [];
-  // Match product links from collection page
-  const productLinkRegex = /href="(\/products\/[^"]+)"/g;
-  let match;
-  while ((match = productLinkRegex.exec(html)) !== null) {
-    const url = match[1];
-    // Filter out duplicates and non-test products
-    if (!urls.includes(url) && !url.includes('subscription')) {
-      urls.push(url);
-    }
-  }
-  return urls;
-}
-
-function extractTitle(html: string): string {
-  const titleMatch = html.match(/<h1[^>]*class="[^"]*product__title[^"]*"[^>]*>([^<]+)<\/h1>/i);
-  if (titleMatch) return titleMatch[1].trim();
-  
-  const h1Match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
-  return h1Match ? h1Match[1].trim() : 'Unknown Test';
-}
-
-function extractDescription(html: string): string {
-  // Look for product description
-  const descMatch = html.match(/<div[^>]*class="[^"]*product__description[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-  if (descMatch) {
-    // Strip HTML tags and clean up
-    return descMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 500);
-  }
-  return '';
-}
-
-function extractPrice(html: string): number {
-  // Look for sale price first
-  const salePriceMatch = html.match(/class="[^"]*total_custom__price_item[^"]*"[^>]*>[\s\S]*?<span[^>]*class="[^"]*money[^"]*"[^>]*>£?([\d,.]+)/i);
-  if (salePriceMatch) {
-    return parseFloat(salePriceMatch[1].replace(',', ''));
-  }
-  
-  // Fallback to regular price
-  const priceMatch = html.match(/£([\d,.]+)/);
-  return priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : 0;
-}
-
-function extractOriginalPrice(html: string): number | null {
-  // Look for compare-at price (original price before sale)
-  const compareMatch = html.match(/class="[^"]*custom__compare_at_price[^"]*"[^>]*>[\s\S]*?<span[^>]*class="[^"]*money[^"]*"[^>]*>£?([\d,.]+)/i);
-  if (compareMatch) {
-    return parseFloat(compareMatch[1].replace(',', ''));
-  }
-  return null;
-}
-
-function extractDiscount(html: string): number | null {
-  // Look for discount badge
-  const discountMatch = html.match(/(\d+)%\s*OFF/i);
-  return discountMatch ? parseInt(discountMatch[1]) : null;
-}
-
-function extractIsAddon(html: string): boolean {
-  // Check for add-on warning notice
-  return html.includes('product__notice-card--warning') || 
-         html.includes('Add-on') || 
-         html.includes('add-on') ||
-         html.includes('can only be added');
-}
-
-function extractImageUrl(html: string): string | null {
-  // Look for product image
-  const imgMatch = html.match(/<img[^>]*class="[^"]*product__media[^"]*"[^>]*src="([^"]+)"/i);
-  if (imgMatch) {
-    let url = imgMatch[1];
-    if (url.startsWith('//')) url = 'https:' + url;
-    return url;
-  }
-  
-  // Fallback - look for any product image
-  const fallbackMatch = html.match(/src="(https:\/\/[^"]*cdn\.shopify\.com[^"]*product[^"]*)"/i);
-  return fallbackMatch ? fallbackMatch[1] : null;
-}
-
-function extractBiomarkers(html: string): string[] {
-  const biomarkers: string[] = [];
-  // Match biomarker pills/buttons
-  const biomarkerRegex = /class="[^"]*biomarker[^"]*"[^>]*>([^<]+)</gi;
-  let match;
-  while ((match = biomarkerRegex.exec(html)) !== null) {
-    const name = match[1].trim();
-    if (name && !biomarkers.includes(name) && name.length < 100) {
-      biomarkers.push(name);
-    }
-  }
-  return biomarkers;
-}
-
-function extractBiomarkerCount(html: string): number | null {
-  const countMatch = html.match(/(\d+)\s*Biomarkers?\s*Tested/i);
-  return countMatch ? parseInt(countMatch[1]) : null;
-}
-
-function extractListItems(html: string, sectionId: string): string[] {
-  const items: string[] = [];
-  // Find the section content
-  const sectionRegex = new RegExp(`id="${sectionId}"[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*?)<\\/ul>`, 'i');
-  const sectionMatch = html.match(sectionRegex);
-  
-  if (sectionMatch) {
-    const listContent = sectionMatch[1];
-    const liRegex = /<li[^>]*>([^<]+)<\/li>/gi;
-    let match;
-    while ((match = liRegex.exec(listContent)) !== null) {
-      const item = match[1].trim();
-      if (item && item.length < 200) {
-        items.push(item);
-      }
-    }
-  }
-  return items;
-}
-
-function extractWhoShouldTest(html: string): string | null {
-  // Look for tester section content
-  const testerMatch = html.match(/id="tester"[^>]*>[\s\S]*?<div[^>]*class="[^"]*tabcontent[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-  if (testerMatch) {
-    return testerMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().substring(0, 1000);
-  }
-  return null;
-}
-
 function determineCategory(title: string, description: string): string {
   const text = (title + ' ' + description).toLowerCase();
-  
   if (text.match(/liver|albumin|alt|ast|alp|bilirubin|ggt/)) return 'Liver Function';
   if (text.match(/heart|cardiovascular|cholesterol|apolipoprotein|lipid/)) return 'Heart Health';
   if (text.match(/fertility|amh|antimullerian|ovarian/)) return 'Fertility';
@@ -173,188 +19,177 @@ function determineCategory(title: string, description: string): string {
   if (text.match(/inflammation|crp|esr/)) return 'Inflammation';
   if (text.match(/hormone/)) return 'Hormones';
   if (text.match(/blood count|cbc|fbc|haemoglobin|wbc|rbc/)) return 'Blood Count';
-  
+  if (text.match(/sports|fitness|performance|athlete/)) return 'Sports & Fitness';
   return 'General Health';
 }
 
-async function fetchWithDelay(url: string, delay: number = 500): Promise<string> {
-  await new Promise(resolve => setTimeout(resolve, delay));
-  
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      'Accept-Language': 'en-GB,en;q=0.5',
-    }
+async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
+  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
   });
-  
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.status}`);
-  }
-  
-  return response.text();
+  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
+  return response.json();
 }
 
-serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
+  const response = await fetch('https://api.firecrawl.dev/v1/map', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, search: 'blood test', limit: 200, includeSubdomains: false }),
+  });
+  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
+  const data = await response.json();
+  return (data.links || []).filter((l: string) => l.includes('/products/') && !l.includes('?') && !l.includes('subscription'));
+}
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    console.log("Starting enhanced Lola Health scraper...");
-
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
+    if (!firecrawlApiKey) throw new Error('FIRECRAWL_API_KEY not configured');
+
     const supabase = createClient(supabaseUrl, supabaseKey);
+    console.log('Starting Lola Health Firecrawl scraper...');
 
-    // Step 1: Fetch collection page to get all product URLs
-    const collectionUrl = "https://lolahealth.com/collections/blood-tests";
-    console.log(`Fetching collection page: ${collectionUrl}`);
-    
-    const collectionHtml = await fetchWithDelay(collectionUrl, 0);
-    const productUrls = extractProductUrls(collectionHtml);
-    
-    console.log(`Found ${productUrls.length} product URLs`);
+    await supabase.from('scraping_jobs').upsert({
+      provider_id: 'lola-health', status: 'running', last_scraped: new Date().toISOString(),
+    }, { onConflict: 'provider_id' });
 
-    const products: LolaHealthProduct[] = [];
-    let successCount = 0;
-    let errorCount = 0;
+    // Discover product URLs
+    let productUrls: string[] = [];
+    try {
+      productUrls = await firecrawlMap('https://lolahealth.com/collections/blood-tests', firecrawlApiKey);
+      console.log(`Map discovered ${productUrls.length} URLs`);
+    } catch (e) {
+      console.error('Map failed:', e.message);
+    }
 
-    // Step 2: Visit each product page and extract details
-    for (const relativeUrl of productUrls) {
-      const fullUrl = `https://lolahealth.com${relativeUrl}`;
-      const slug = relativeUrl.split('/').pop() || '';
-      
+    // Ensure we have the base collection URL for fallback
+    if (productUrls.length === 0) {
+      // Try scraping the collection page itself to find links
       try {
+        const collResult = await firecrawlScrape('https://lolahealth.com/collections/blood-tests', firecrawlApiKey);
+        if (collResult.success && collResult.data?.markdown) {
+          const urlMatches = collResult.data.markdown.matchAll(/\(https:\/\/lolahealth\.com\/products\/([^)]+)\)/g);
+          for (const m of urlMatches) {
+            productUrls.push(`https://lolahealth.com/products/${m[1]}`);
+          }
+        }
+      } catch (e) {
+        console.error('Collection scrape failed:', e.message);
+      }
+    }
+
+    productUrls = [...new Set(productUrls)];
+    console.log(`Total URLs: ${productUrls.length}`);
+
+    const products: any[] = [];
+    const biomarkerTerms = ['vitamin', 'b12', 'folate', 'iron', 'ferritin', 'calcium', 'magnesium',
+      'testosterone', 'oestradiol', 'progesterone', 'fsh', 'lh', 'cortisol', 'dhea',
+      'tsh', 't3', 't4', 'cholesterol', 'hdl', 'ldl', 'triglyceride', 'alt', 'ast',
+      'bilirubin', 'albumin', 'creatinine', 'urea', 'egfr', 'glucose', 'hba1c', 'crp',
+      'haemoglobin', 'platelet', 'psa', 'thyroid', 'shbg', 'prolactin'];
+
+    for (const url of productUrls) {
+      try {
+        const slug = url.split('/products/').pop() || '';
         console.log(`Scraping: ${slug}`);
-        const productHtml = await fetchWithDelay(fullUrl, 500);
-        
-        const title = extractTitle(productHtml);
-        const description = extractDescription(productHtml);
-        const price = extractPrice(productHtml);
-        const originalPrice = extractOriginalPrice(productHtml);
-        const discount = extractDiscount(productHtml);
-        const isAddon = extractIsAddon(productHtml);
-        const imageUrl = extractImageUrl(productHtml);
-        const biomarkers = extractBiomarkers(productHtml);
-        const biomarkerCount = extractBiomarkerCount(productHtml) || biomarkers.length;
-        const symptoms = extractListItems(productHtml, 'symptoms');
-        const conditions = extractListItems(productHtml, 'test_when');
-        const whoShouldTest = extractWhoShouldTest(productHtml);
-        const category = determineCategory(title, description);
-        
+        const result = await firecrawlScrape(url, firecrawlApiKey);
+        if (!result.success || !result.data) continue;
+
+        const markdown = result.data.markdown || '';
+        const metadata = result.data.metadata || {};
+
+        let title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
+        if (!title) {
+          const h1 = markdown.match(/^#\s+(.+)$/m);
+          title = h1 ? h1[1].trim() : '';
+        }
+        if (!title) continue;
+
+        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
+        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+
+        const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
+        const originalPrice = origMatch ? parseFloat(origMatch[1].replace(',', '')) : null;
+
+        const discountMatch = markdown.match(/(\d+)%\s*(?:OFF|off|discount)/i);
+        const discount = discountMatch ? parseInt(discountMatch[1]) : null;
+
+        const bioCountMatch = markdown.match(/(\d+)\s*(?:Biomarkers?\s*Tested|biomarkers?)/i);
+        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+
+        const biomarkers: string[] = [];
+        const lines = markdown.split('\n');
+        for (const line of lines) {
+          const clean = line.replace(/^[\s*•-]+/, '').trim();
+          if (clean.length > 2 && clean.length < 80 && biomarkerTerms.some(t => clean.toLowerCase().includes(t))) {
+            biomarkers.push(clean);
+          }
+        }
+
+        const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
+
         products.push({
           test_name: title,
           provider_id: 'lola-health',
-          category,
+          provider_test_id: slug,
+          category: determineCategory(title, metadata.description || ''),
           price,
           original_price: originalPrice,
           discount_percentage: discount,
-          description: description || `${title} blood test from Lola Health with at-home collection and doctor-reviewed results.`,
-          url: fullUrl,
-          provider_test_id: slug,
+          description: metadata.description || `${title} blood test from Lola Health.`,
+          url,
           is_active: true,
           is_addon: isAddon,
-          image_url: imageUrl,
           biomarkers_list: biomarkers.length > 0 ? biomarkers : null,
-          biomarker_count: biomarkerCount || null,
-          symptoms: symptoms.length > 0 ? symptoms : null,
-          conditions: conditions.length > 0 ? conditions : null,
-          who_should_test: whoShouldTest,
+          biomarker_count: biomarkerCount || biomarkers.length || null,
+          sample_type: 'Finger-prick',
+          home_kit_available: true,
+          clinic_visit_available: false,
+          scraped_at: new Date().toISOString(),
           url_verified: true,
           url_verified_at: new Date().toISOString(),
         });
-        
-        successCount++;
-        console.log(`✓ Scraped ${title} - £${price}${isAddon ? ' (Add-on)' : ''}${discount ? ` ${discount}% OFF` : ''}`);
-        
-      } catch (err) {
-        errorCount++;
-        console.error(`✗ Error scraping ${slug}:`, err.message);
+        console.log(`✓ ${title} - £${price ?? 'N/A'}${isAddon ? ' (Add-on)' : ''}`);
+        await new Promise(r => setTimeout(r, 500));
+      } catch (e) {
+        console.error(`✗ ${e.message}`);
       }
     }
 
-    console.log(`\nScraping complete: ${successCount} success, ${errorCount} errors`);
-
-    // Step 3: Upsert all products to database
     if (products.length > 0) {
-      const { error } = await supabase
-        .from('provider_tests')
-        .upsert(products, {
-          onConflict: 'provider_id,provider_test_id',
-          ignoreDuplicates: false
-        });
-
-      if (error) {
-        console.error("Error upserting products:", error);
-        throw error;
-      }
-
-      console.log(`Successfully updated ${products.length} products in database`);
-
-      // Update scraping job status
-      await supabase
-        .from('scraping_jobs')
-        .upsert({
-          provider_id: 'lola-health',
-          status: 'completed',
-          last_scraped: new Date().toISOString(),
-          next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(), // 12 hours
-          error_message: null,
-        }, {
-          onConflict: 'provider_id'
-        });
+      const { error } = await supabase.from('provider_tests').upsert(products, {
+        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
+      });
+      if (error) throw error;
     }
 
-    // Log summary
-    const addonCount = products.filter(p => p.is_addon).length;
-    const saleCount = products.filter(p => p.discount_percentage).length;
-    
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: `Successfully scraped ${products.length} Lola Health products`,
-        summary: {
-          total: products.length,
-          addons: addonCount,
-          onSale: saleCount,
-          errors: errorCount,
-        },
-        timestamp: new Date().toISOString(),
-      }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
-    );
+    await supabase.from('scraping_jobs').upsert({
+      provider_id: 'lola-health', status: 'completed',
+      last_scraped: new Date().toISOString(),
+      next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
+      error_message: null,
+    }, { onConflict: 'provider_id' });
+
+    return new Response(JSON.stringify({
+      success: true, message: `Scraped ${products.length} Lola Health tests via Firecrawl`,
+      testsUpdated: products.length,
+    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (error) {
-    console.error('Error in lola-health-scraper:', error);
-    
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    await supabase
-      .from('scraping_jobs')
-      .upsert({
-        provider_id: 'lola-health',
-        status: 'failed',
-        error_message: error.message,
-        last_scraped: new Date().toISOString(),
-      }, {
-        onConflict: 'provider_id'
-      });
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message,
-      }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500,
-      }
-    );
+    console.error('Lola Health scraper error:', error);
+    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+    await supabase.from('scraping_jobs').upsert({
+      provider_id: 'lola-health', status: 'failed',
+      error_message: error.message, last_scraped: new Date().toISOString(),
+    }, { onConflict: 'provider_id' });
+    return new Response(JSON.stringify({ success: false, error: error.message }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });
