@@ -13,7 +13,7 @@ import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 
 import ExpertQuotes from "@/components/sections/ExpertQuotes";
 import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
-import HereToHelp from "@/components/sections/HereToHelp";
+import ClinicAndHelpSection from "@/components/sections/ClinicAndHelpSection";
 import CallToAction from "@/components/sections/CallToAction";
 import AccreditedProvidersBar from "@/components/sections/AccreditedProvidersBar";
 import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
