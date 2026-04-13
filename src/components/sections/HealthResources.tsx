@@ -46,7 +46,7 @@ const HealthResources = () => {
       <div className="absolute top-[90%] left-[45%] w-52 h-52 bg-brand-pink/[0.03] rounded-full translate-y-1/3" />
 
       <div className="container mx-auto px-4 relative">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-[#e70d69] text-center">
             Health Resources Hub
           </h2>

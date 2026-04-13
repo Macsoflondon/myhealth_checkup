@@ -177,8 +177,8 @@ export function CategoryPageLayout({
           />
 
           {/* Filter + Sort + Cards */}
-          <section className="py-8 sm:py-10 px-4 bg-primary-foreground">
-            <div className="max-w-[1100px] mx-auto">
+          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-primary-foreground">
+            <div className="max-w-6xl mx-auto">
               <CategoryFilters
                 filters={filters}
                 activeFilter={activeFilter}
@@ -191,7 +191,7 @@ export function CategoryPageLayout({
               />
 
               {/* Cards grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
                 {filtered.map((test) => (
                   <UnifiedTestCard
                     key={test.id}

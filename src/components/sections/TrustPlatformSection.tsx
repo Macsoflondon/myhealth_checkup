@@ -35,7 +35,7 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
     <Wrapper className={cn("py-8 sm:py-10 md:py-12 relative overflow-hidden", !embedded && "bg-brand-navy", className)}>
       {!embedded && <NavyDecorativeCircles />}
 
-      <div className="container mx-auto px-4 sm:px-6 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
@@ -54,7 +54,7 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <div
               key={index}

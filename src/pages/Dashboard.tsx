@@ -64,7 +64,7 @@ const Dashboard = () => {
 
   return (
     <MainLayout mainClassName="flex-grow bg-muted/30 py-4 sm:py-6 md:py-10 px-3 sm:px-4">
-      <div className="container mx-auto max-w-5xl">
+      <div className="container mx-auto max-w-6xl">
         <PageHeading 
           title="My" 
           accent="Dashboard" 

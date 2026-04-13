@@ -103,7 +103,7 @@ const CategoryPageBottom = ({
       {/* Condensed Benefits Grid */}
       <section style={{ background: "#081129", padding: "32px 0" }}>
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto text-center">
             <h2
               style={{
                 fontSize: 20,

@@ -28,7 +28,7 @@ const Enhanced3StepProcess = (): JSX.Element | null => {
   return (
     <section className="py-10 sm:py-14 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           {steps.map((step) => (
             <div key={step.number} className="text-center">
               <div className="relative inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[hsl(var(--primary))]/10 mb-4">

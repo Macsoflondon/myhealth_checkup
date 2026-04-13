@@ -9,7 +9,7 @@ const PartnerShowcaseGrid = () => {
     <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
 
-      <div className="container mx-auto px-4 sm:px-6 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="text-center mb-3 sm:mb-4 md:mb-5">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
@@ -27,7 +27,7 @@ const PartnerShowcaseGrid = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
           {/* GoodBody Test Gallery */}
           <GoodbodyTestGallery />
 
@@ -42,8 +42,8 @@ const PartnerShowcaseGrid = () => {
       {/* Featured Publications carousel between Goodbody and Medichecks */}
       <FeaturedPublications />
 
-      <div className="container mx-auto px-4 sm:px-6 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
 
           {/* Row 2: Medichecks — Logo beside Video */}
           <div className="md:col-span-2 mt-8 mb-2 pt-4">
