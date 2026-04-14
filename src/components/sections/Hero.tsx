@@ -102,7 +102,7 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
 
-        <div className="relative z-10 pt-10 pb-8 sm:pt-14 sm:pb-10 md:pt-16 md:pb-10">
+        <div className="relative z-10 pt-14 pb-12 sm:pt-20 sm:pb-16 md:pt-24 md:pb-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
               <div className="text-center mb-5 sm:mb-7">
