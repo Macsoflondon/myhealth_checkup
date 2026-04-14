@@ -149,8 +149,8 @@ const Hero = () => {
                 </button>
               </div>
 
-              <div className="max-w-[780px] mx-auto">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)]">
+              <div className="max-w-[960px] mx-auto">
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)]">
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 w-5 h-5 sm:w-6 sm:h-6 font-bold" />
                     <input
@@ -159,7 +159,7 @@ const Hero = () => {
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-12 sm:pl-14 pr-4 py-4 sm:py-5 text-base sm:text-lg rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-white/40 focus:border-white/40 focus:outline-none text-white bg-white/15 backdrop-blur-md placeholder:text-white/60 border border-white/30 font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                      className="w-full pl-12 sm:pl-14 pr-4 py-3 sm:py-3.5 text-base sm:text-lg rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-white/40 focus:border-white/40 focus:outline-none text-white bg-white/15 backdrop-blur-md placeholder:text-white/60 border border-white/30 font-semibold shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
