@@ -169,7 +169,7 @@ const Hero = () => {
                   </div>
 
                   <div className="mt-4 sm:mt-5 bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-5 text-center border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)]">
-                    <p className="text-xs sm:text-sm font-bold text-[hsl(var(--navy))] mb-3 uppercase tracking-[0.15em]">
+                    <p className="text-xs sm:text-sm font-bold text-black mb-3 uppercase tracking-[0.15em]">
                       Popular Searches
                     </p>
                     <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
@@ -177,7 +177,7 @@ const Hero = () => {
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className="px-4 sm:px-5 py-2 text-white bg-white/15 hover:bg-white/30 backdrop-blur-md border border-white/30 rounded-full transition-all duration-300 font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)]"
+                          className="px-4 sm:px-5 py-2 text-black bg-white/15 hover:bg-white/30 backdrop-blur-md border border-black/70 rounded-full transition-all duration-300 font-medium shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)]"
                         >
                           {search.name}
                         </button>
