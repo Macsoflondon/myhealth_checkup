@@ -36,6 +36,7 @@ const heroSlides = [
     image: heroCompare,
     headline: "Compare. Book. Test.",
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
+    objectPosition: "center 25%",
   },
 ];
 
@@ -132,19 +133,19 @@ const Hero = () => {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-5 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
+                  className="bg-white/15 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border border-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)]"
                 >
                   Find your test
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-[hsl(var(--secondary))] hover:bg-[hsl(var(--primary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
+                  className="bg-white/15 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border border-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)]"
                 >
                   Compare by symptom
                 </button>
                 <button
                   onClick={() => navigate("/compare/goals")}
-                  className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-colors duration-300 w-full sm:w-auto"
+                  className="bg-white/15 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border border-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)]"
                 >
                   Compare by goal
                 </button>
