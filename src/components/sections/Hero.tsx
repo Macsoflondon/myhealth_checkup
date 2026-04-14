@@ -168,8 +168,8 @@ const Hero = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 sm:mt-5 bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-5 text-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)] border-tertiary">
-                    <p className="text-xs sm:text-sm font-bold text-black mb-3 uppercase tracking-[0.15em]">
+                  <div className="mt-4 sm:mt-5 bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-5 text-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)] border-[hsl(var(--navy))]">
+                    <p className="text-xs sm:text-sm font-bold text-white mb-3 uppercase tracking-[0.15em]">
                       Popular Searches
                     </p>
                     <div className="flex flex-nowrap gap-2 sm:gap-3 justify-center overflow-x-auto">
@@ -177,7 +177,7 @@ const Hero = () => {
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className="px-3 sm:px-4 py-1.5 bg-white/15 hover:bg-white/30 backdrop-blur-md border border-black/70 rounded-full transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] font-extrabold text-sm sm:text-base text-tertiary whitespace-nowrap"
+                          className="px-3 sm:px-4 py-1.5 bg-white/15 hover:bg-white/30 backdrop-blur-md border border-[hsl(var(--navy))] rounded-full transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] font-extrabold text-sm sm:text-base text-white whitespace-nowrap"
                         >
                           {search.name}
                         </button>
