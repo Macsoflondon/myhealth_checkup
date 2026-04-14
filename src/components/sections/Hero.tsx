@@ -168,7 +168,7 @@ const Hero = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 sm:mt-5 bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-5 text-center border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)]">
+                  <div className="mt-4 sm:mt-5 bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-5 text-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)] border-tertiary">
                     <p className="text-xs sm:text-sm font-bold text-black mb-3 uppercase tracking-[0.15em]">
                       Popular Searches
                     </p>
