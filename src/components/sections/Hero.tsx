@@ -191,25 +191,15 @@ const Hero = () => {
         </div>
       </section>
 
-      <section className="bg-white py-3 sm:py-4">
+      <section className="bg-white py-4 sm:py-5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-x-5 sm:gap-x-7 gap-y-2 mb-1.5">
-              {trustSignals.slice(0, 3).map((signal, index) => (
-                <div key={index} className="flex items-center gap-1.5 text-sm sm:text-base text-[hsl(var(--navy))]">
-                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[hsl(var(--primary))] flex-shrink-0" />
-                  <span className="font-semibold">{signal.text}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-wrap justify-center gap-x-5 sm:gap-x-7 gap-y-2">
-              {trustSignals.slice(3).map((signal, index) => (
-                <div key={index} className="flex items-center gap-1.5 text-sm sm:text-base text-[hsl(var(--navy))]">
-                  <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[hsl(var(--primary))] flex-shrink-0" />
-                  <span className="font-semibold">{signal.text}</span>
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-wrap justify-center gap-x-6 sm:gap-x-8 lg:gap-x-10 gap-y-3">
+            {trustSignals.map((signal, index) => (
+              <div key={index} className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl text-[hsl(var(--navy))]">
+                <signal.icon className="w-6 h-6 sm:w-7 sm:h-7 text-[hsl(var(--primary))] flex-shrink-0" />
+                <span className="font-semibold">{signal.text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
