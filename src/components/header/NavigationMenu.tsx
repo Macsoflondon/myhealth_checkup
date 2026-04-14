@@ -100,14 +100,14 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             type="button"
             aria-haspopup="menu"
             aria-expanded={activeDropdown === item.name}
-            className={`group relative text-sm md:text-base lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 ${
+            className={`group relative text-lg md:text-xl lg:text-xl xl:text-2xl font-bold transition-all duration-300 ease-out px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 ${
               hasAccent
                 ? "after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-turquoise"
                 : "hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150"
             } ${
               (item as any).highlighted 
                 ? "text-brand-pink"
-                : "text-brand-turquoise hover:text-brand-pink"
+                : "text-[#1a9baa] hover:text-brand-pink"
             } ${activeDropdown === item.name ? 'text-brand-pink' : ''}`}
             onClick={(e) => handleDropdownToggle(e, item.name)}
           >
@@ -119,10 +119,10 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         ) : (
           <Link
             to={item.path}
-            className={`group relative text-sm md:text-base lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+            className={`group relative text-lg md:text-xl lg:text-xl xl:text-2xl font-bold transition-all duration-300 ease-out px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
               (item as any).highlighted 
                 ? "text-brand-pink"
-                : "text-brand-turquoise hover:text-brand-pink text-secondary"
+                : "text-[#1a9baa] hover:text-brand-pink"
             }`}
             onClick={handleItemClick}
           >
@@ -153,8 +153,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         type="button"
         aria-haspopup="menu"
         aria-expanded={activeDropdown === "MORE"}
-        className={`group relative text-sm md:text-base lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-2 md:px-3 lg:px-4 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-          activeDropdown === "MORE" ? 'text-brand-pink' : 'text-brand-turquoise hover:text-brand-pink'
+        className={`group relative text-lg md:text-xl lg:text-xl xl:text-2xl font-bold transition-all duration-300 ease-out px-2 md:px-3 lg:px-4 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+          activeDropdown === "MORE" ? 'text-brand-pink' : 'text-[#1a9baa] hover:text-brand-pink'
         }`}
         onClick={(e) => handleDropdownToggle(e, "MORE")}
       >
