@@ -195,9 +195,9 @@ const Hero = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
           <div className="flex flex-nowrap justify-center gap-x-6 sm:gap-x-8 lg:gap-x-10 overflow-x-auto">
             {trustSignals.map((signal, index) => (
-              <div key={index} className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl text-[hsl(var(--navy))]">
+              <div key={index} className="flex items-center gap-2 text-base sm:text-lg md:text-xl text-[hsl(var(--navy))] whitespace-nowrap">
                 <signal.icon className="w-6 h-6 sm:w-7 sm:h-7 text-[hsl(var(--primary))] flex-shrink-0" />
-                <span className="font-semibold">{signal.text}</span>
+                <span className="font-semibold whitespace-nowrap">{signal.text}</span>
               </div>
             ))}
           </div>
