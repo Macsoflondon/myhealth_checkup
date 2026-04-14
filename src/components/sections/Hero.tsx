@@ -193,7 +193,7 @@ const Hero = () => {
 
       <section className="bg-white py-4 sm:py-5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="flex flex-wrap justify-center gap-x-6 sm:gap-x-8 lg:gap-x-10 gap-y-3">
+          <div className="flex flex-nowrap justify-center gap-x-6 sm:gap-x-8 lg:gap-x-10 overflow-x-auto">
             {trustSignals.map((signal, index) => (
               <div key={index} className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl text-[hsl(var(--navy))]">
                 <signal.icon className="w-6 h-6 sm:w-7 sm:h-7 text-[hsl(var(--primary))] flex-shrink-0" />
