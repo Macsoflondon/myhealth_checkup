@@ -92,7 +92,7 @@ const Hero = () => {
             height={1080}
             fetchPriority={i === 0 ? "high" : undefined}
             style={{ objectPosition: s.objectPosition }}
-            className={`absolute -inset-[20%] w-[140%] h-[140%] object-cover z-0 transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           />
