@@ -139,7 +139,7 @@ const Hero = () => {
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-white/15 hover:bg-white/30 backdrop-blur-md text-white font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border border-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)]"
+                  className="bg-white/15 hover:bg-white/30 backdrop-blur-md font-semibold rounded-full px-7 sm:px-9 py-3 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] text-tertiary border-tertiary"
                 >
                   Compare by symptom
                 </button>
