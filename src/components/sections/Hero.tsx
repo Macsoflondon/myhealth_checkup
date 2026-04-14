@@ -152,7 +152,7 @@ const Hero = () => {
               <div className="max-w-[780px] mx-auto">
                 <div className="bg-white/10 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)]">
                   <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[hsl(var(--primary))]/40 w-5 h-5 sm:w-6 sm:h-6 font-bold" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 w-5 h-5 sm:w-6 sm:h-6 font-bold" />
                     <input
                       type="text"
                       placeholder="Search from over 200 tests..."
