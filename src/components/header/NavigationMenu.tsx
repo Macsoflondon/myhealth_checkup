@@ -120,7 +120,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           <Link
             to={item.path}
             className={`group relative font-heading text-lg md:text-xl lg:text-xl xl:text-2xl font-bold transition-all duration-300 ease-out px-2 md:px-2.5 lg:px-3 xl:px-3.5 py-1.5 md:py-2 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-              (item as any).highlighted 
+              hasAccent || (item as any).highlighted 
                 ? "text-brand-pink"
                 : "text-[#1a9baa] hover:text-brand-pink"
             }`}
