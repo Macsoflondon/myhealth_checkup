@@ -1,16 +1,16 @@
 
 
-## Plan: Make Popular Searches Container Thinner, Narrower, and More Transparent
+## Plan: Fix Trust Signals to Single Line
 
-### Change
-Edit line 171 of `src/components/sections/Hero.tsx` to update the Popular Searches inner container:
+The trust signal items are wrapping because the text inside each item can break across two lines ("200+ tests available", "200+ clinics nationwide", etc.). 
 
-- **Thinner**: Reduce vertical padding from `p-4 sm:p-5` to `p-2.5 sm:p-3`
-- **Narrower**: Add `max-w-[90%] mx-auto` to constrain width
-- **More transparent**: Change `bg-white/10` to `bg-white/5` and reduce shadow opacity
+### Changes to `src/components/sections/Hero.tsx`
 
-Also reduce the label margin on line 172 from `mb-3` to `mb-2`.
+**Line 198**: Add `whitespace-nowrap` to each trust signal item and reduce font size by one step:
+- From: `text-lg sm:text-xl md:text-2xl`
+- To: `text-base sm:text-lg md:text-xl`
 
-### File modified
-- `src/components/sections/Hero.tsx` — lines 171-172, className updates only
+**Line 200**: Add `whitespace-nowrap` to the span text.
+
+This ensures each label stays on one line while fitting all 5 items across the row.
 
