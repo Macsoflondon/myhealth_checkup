@@ -8,7 +8,15 @@ import heroHomeKit from "@/assets/hero/hero-home-kit.jpg";
 import heroActive from "@/assets/hero/hero-active-lifestyle.jpg";
 import heroCompare from "@/assets/hero/hero-compare-decide.jpg";
 
-const heroSlides = [
+interface HeroSlide {
+  image: string;
+  headline: string;
+  subline: string;
+  objectPosition?: string;
+  zoomOut?: boolean;
+}
+
+const heroSlides: HeroSlide[] = [
   {
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
@@ -30,6 +38,8 @@ const heroSlides = [
     image: heroActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
+    objectPosition: "center 65%",
+    zoomOut: true,
   },
   {
     image: heroCompare,
