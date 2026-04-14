@@ -19,7 +19,6 @@ const heroSlides = [
     image: heroClinic,
     headline: "200+ Clinics Nationwide",
     subline: "Choose a clinic, get tested, and take the guesswork out of your health.",
-    objectPosition: "60% 30%",
   },
   {
     image: heroHomeKit,
