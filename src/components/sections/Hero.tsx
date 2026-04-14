@@ -168,9 +168,9 @@ const Hero = () => {
                     )}
                   </div>
 
-                  <div className="mt-4 sm:mt-5 bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-5 text-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)] border-[hsl(var(--navy))]">
-                    <p className="text-xs sm:text-sm font-bold text-white mb-3 uppercase tracking-[0.15em]">
-                      Popular Searches
+                    <div className="mt-4 sm:mt-5 bg-white/5 backdrop-blur-md rounded-xl p-2.5 sm:p-3 text-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.05)] border-[hsl(var(--navy))] max-w-[90%] mx-auto">
+                     <p className="text-xs sm:text-sm font-bold text-white mb-2 uppercase tracking-[0.15em]">
+                       Popular Searches
                     </p>
                     <div className="flex flex-nowrap gap-2 sm:gap-3 justify-center overflow-x-auto">
                       {popularSearches.map((search, index) => (
