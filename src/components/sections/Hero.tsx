@@ -106,7 +106,7 @@ const Hero = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
               <div className="text-center mb-5 sm:mb-7">
-                <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md rounded-full px-5 sm:px-6 py-2 text-white text-sm sm:text-base font-semibold tracking-wide border shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] border-tertiary">
+                <span className="inline-flex items-center gap-2 backdrop-blur-md rounded-full px-5 sm:px-6 py-2 text-white text-sm sm:text-base font-semibold tracking-wide border shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] border-tertiary bg-primary">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
