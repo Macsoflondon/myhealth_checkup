@@ -152,32 +152,32 @@ const Hero = () => {
               </div>
 
               <div className="max-w-[855px] mx-auto">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-[hsl(var(--navy))] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.1)]">
+                <div className="bg-white/8 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
                   <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white w-5 h-5 sm:w-6 sm:h-6 font-bold" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/70 w-4 h-4 sm:w-5 sm:h-5" />
                     <input
                       type="text"
                       placeholder="Search from over 200 tests..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-12 sm:pl-14 pr-4 py-3 sm:py-3.5 text-base rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-white/40 focus:outline-none bg-white/15 backdrop-blur-md border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] font-extrabold border-tertiary sm:text-[primary-on-container] text-white placeholder:text-white/70"
+                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base rounded-lg sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-white/10 backdrop-blur-md border border-white/15 font-semibold text-white placeholder:text-white/50"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
                     )}
                   </div>
 
-                    <div className="mt-4 sm:mt-5 bg-white/5 backdrop-blur-md rounded-xl p-2.5 sm:p-3 text-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_2px_8px_rgba(0,0,0,0.05)] border-[hsl(var(--navy))]">
-                     <p className="text-xs sm:text-sm font-bold text-white mb-2 uppercase tracking-[0.15em]">
-                       Popular Searches
-                     </p>
-                     <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+                  <div className="mt-3 sm:mt-4 bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
+                    <p className="text-[10px] sm:text-xs font-semibold text-white/60 mb-1.5 sm:mb-2 uppercase tracking-[0.15em]">
+                      Popular Searches
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
                       {popularSearches.map((search, index) => (
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className="px-3 sm:px-4 py-1.5 bg-white/15 hover:bg-white/30 backdrop-blur-md border border-[hsl(var(--navy))] rounded-full transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] font-extrabold text-sm sm:text-base text-white whitespace-nowrap"
+                          className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 rounded-full transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap"
                         >
                           {search.name}
                         </button>
