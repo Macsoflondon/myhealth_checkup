@@ -102,7 +102,7 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
 
-        <div className="relative z-10 pt-28 pb-22 sm:pt-36 sm:pb-28 md:pt-44 md:pb-32">
+        <div className="relative z-10 pt-16 pb-22 sm:pt-20 sm:pb-28 md:pt-24 md:pb-32">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
               <div className="text-center mb-5 sm:mb-7">
@@ -114,7 +114,7 @@ const Hero = () => {
               <div className="text-center mb-2 min-h-[120px] sm:min-h-[140px] flex flex-col items-center justify-center">
                 <h1
                   key={currentSlide}
-                  className="text-[1.8rem] sm:text-[2.4rem] md:text-[3rem] lg:text-[3.3rem] xl:text-[3.5rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
+                  className="text-[2.4rem] sm:text-[3rem] md:text-[3.6rem] lg:text-[4rem] xl:text-[4.2rem] font-heading font-bold tracking-[-0.03em] leading-[1.06] text-white animate-fade-in"
                 >
                   {slide.headline}
                 </h1>
