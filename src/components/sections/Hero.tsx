@@ -133,35 +133,35 @@ const Hero = () => {
               <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 justify-center items-center mb-4 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-white/20"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129]"
                 >
                   Find your test
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-white/20"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129]"
                 >
                   Compare by symptom
                 </button>
                 <button
                   onClick={() => navigate("/compare/goals")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-white/20"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129]"
                 >
                   Compare by goal
                 </button>
               </div>
 
               <div className="max-w-[855px] mx-auto">
-                <div className="bg-white/8 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-white/15 shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
+                <div className="bg-white/8 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-[#081129] shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
                   <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/70 w-4 h-4 sm:w-5 sm:h-5" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                     <input
                       type="text"
                       placeholder="Search from over 200 tests..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base rounded-lg sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-white/10 backdrop-blur-md border border-white/15 font-semibold text-white placeholder:text-white/50"
+                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base rounded-lg sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-white/10 backdrop-blur-md border border-white/15 font-semibold text-white placeholder:text-white"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
@@ -169,7 +169,7 @@ const Hero = () => {
                   </div>
 
                   <div className="mt-3 sm:mt-4 bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
-                    <p className="text-[10px] sm:text-xs font-semibold text-white/60 mb-1.5 sm:mb-2 uppercase tracking-[0.15em]">
+                    <p className="text-[10px] sm:text-xs font-semibold text-white mb-1.5 sm:mb-2 uppercase tracking-[0.15em]">
                       Popular Searches
                     </p>
                     <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
