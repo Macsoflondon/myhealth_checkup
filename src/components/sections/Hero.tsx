@@ -24,19 +24,19 @@ const heroSlides = [
     image: heroHomeKit,
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
-    objectPosition: "18% 25%",
+    objectPosition: "center 45%",
   },
   {
     image: heroActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
-    objectPosition: "center 20%",
+    objectPosition: "center 35%",
   },
   {
     image: heroCompare,
     headline: "Compare. Book. Test.",
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
-    objectPosition: "center 25%",
+    objectPosition: "center 35%",
   },
 ];
 
@@ -100,7 +100,7 @@ const Hero = () => {
           />
         ))}
 
-        <div className="absolute inset-0 bg-[#081129]/55 z-[1]" />
+        <div className="absolute inset-0 bg-[#081129]/40 z-[1]" />
 
         <div className="relative z-10 pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
