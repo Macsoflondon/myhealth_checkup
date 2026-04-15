@@ -13,30 +13,31 @@ const heroSlides = [
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
-    objectPosition: "center 45%",
+    objectPosition: "center 68%",
   },
   {
     image: heroClinic,
     headline: "200+ Clinics Nationwide",
     subline: "Choose a clinic, get tested, and take the guesswork out of your health.",
+    objectPosition: "center 38%",
   },
   {
     image: heroHomeKit,
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
-    objectPosition: "center 45%",
+    objectPosition: "center 68%",
   },
   {
     image: heroActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
-    objectPosition: "center 35%",
+    objectPosition: "center 30%",
   },
   {
     image: heroCompare,
     headline: "Compare. Book. Test.",
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
-    objectPosition: "center 35%",
+    objectPosition: "center 42%",
   },
 ];
 
