@@ -186,20 +186,16 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="bg-white py-3 sm:py-4">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="flex flex-nowrap justify-start sm:justify-center gap-x-5 sm:gap-x-7 lg:gap-x-9 overflow-x-auto scrollbar-hide pb-1">
-            {trustSignals.map((signal, index) => (
-              <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm md:text-base text-[hsl(var(--navy))] whitespace-nowrap">
-                <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[hsl(var(--primary))] flex-shrink-0" />
-                <span className="font-semibold whitespace-nowrap">{signal.text}</span>
+              <div className="mt-4 sm:mt-6 flex flex-nowrap justify-start sm:justify-center gap-x-5 sm:gap-x-7 lg:gap-x-9 overflow-x-auto scrollbar-hide pb-1">
+                {trustSignals.map((signal, index) => (
+                  <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm text-white whitespace-nowrap">
+                    <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/70 flex-shrink-0" />
+                    <span className="font-semibold whitespace-nowrap">{signal.text}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
