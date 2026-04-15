@@ -1,16 +1,15 @@
 
 
-## Plan: Fix Trust Signals to Single Line
+## Plan: Narrow the Hero Search Container
 
-The trust signal items are wrapping because the text inside each item can break across two lines ("200+ tests available", "200+ clinics nationwide", etc.). 
+**What changes**: Reduce the search/popular-searches container in the Hero section from `max-w-[1140px]` to `max-w-[855px]` (75% of current width).
 
-### Changes to `src/components/sections/Hero.tsx`
+**File**: `src/components/sections/Hero.tsx`
 
-**Line 198**: Add `whitespace-nowrap` to each trust signal item and reduce font size by one step:
-- From: `text-lg sm:text-xl md:text-2xl`
-- To: `text-base sm:text-lg md:text-xl`
+**Change**: On line ~123, update:
+```
+max-w-[1140px]  →  max-w-[855px]
+```
 
-**Line 200**: Add `whitespace-nowrap` to the span text.
-
-This ensures each label stays on one line while fitting all 5 items across the row.
+This affects the glass-style search box and the "Popular Searches" section beneath it. The headline, subline, and CTA buttons above remain at `max-w-[1240px]`.
 
