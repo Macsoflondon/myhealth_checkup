@@ -188,7 +188,7 @@ const WellnessPage = () => {
 
       <Header />
 
-      <main className="min-h-screen bg-primary-foreground">
+      <main className="min-h-screen bg-background">
         {/* Browse Tests by Category */}
         <section
           style={{
@@ -527,7 +527,7 @@ const WellnessPage = () => {
         </section>
 
         <CategoryPageBottom
-          benefitsTitle="Why should I Test?"
+          benefitsTitle=""
           benefits={[
             {
               icon: Shield,
@@ -552,5 +552,3 @@ const WellnessPage = () => {
     </>
   );
 };
-
-export default WellnessPage;
