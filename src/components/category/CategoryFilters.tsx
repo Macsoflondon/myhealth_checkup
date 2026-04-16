@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface CategoryFiltersProps {
   filters: string[];
   activeFilter: string;
@@ -7,7 +9,11 @@ interface CategoryFiltersProps {
   resultCount: number;
   searchTerm?: string;
   compareCount?: number;
+  /** Optional per-filter accent colors (hex). Falls back to turquoise. */
+  filterColors?: Record<string, string>;
 }
+
+const TURQUOISE = "#22c0d4";
 
 export function CategoryFilters({
   filters,
@@ -18,31 +24,53 @@ export function CategoryFilters({
   resultCount,
   searchTerm,
   compareCount = 0,
+  filterColors = {},
 }: CategoryFiltersProps) {
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const colorFor = (f: string) => filterColors[f] || TURQUOISE;
+
   return (
     <div className="mb-5">
       {/* Filter + sort row */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
         <div className="flex flex-wrap gap-2">
-          {filters.map((f) => (
-            <button
-              key={f}
-              onClick={() => onFilterChange(f)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border ${
-                activeFilter === f
-                  ? "bg-brand-turquoise text-[hsl(var(--navy))] border-brand-turquoise shadow-[0_0_12px_rgba(34,192,212,0.25)]"
-                  : "bg-background text-muted-foreground border-border hover:border-brand-turquoise/50"
-              }`}
-            >
-              {f}
-            </button>
-          ))}
+          {filters.map((f) => {
+            const isActive = activeFilter === f;
+            const isHover = hovered === f;
+            const color = colorFor(f);
+            const highlight = isActive || isHover;
+            return (
+              <button
+                key={f}
+                onClick={() => onFilterChange(f)}
+                onMouseEnter={() => setHovered(f)}
+                onMouseLeave={() => setHovered(null)}
+                className="px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border"
+                style={{
+                  background: highlight ? `${color}1A` : "hsl(var(--background))",
+                  color: highlight ? color : "hsl(var(--muted-foreground))",
+                  borderColor: highlight ? color : "hsl(var(--border))",
+                  boxShadow: isActive
+                    ? `0 0 12px ${color}40`
+                    : "none",
+                }}
+              >
+                {f}
+              </button>
+            );
+          })}
         </div>
 
         <select
           value={sort}
           onChange={(e) => onSortChange(e.target.value)}
-          className="bg-background border border-border rounded-lg px-3 py-2 text-xs font-semibold text-foreground cursor-pointer outline-none"
+          className="rounded-lg px-3 py-2 text-xs font-semibold cursor-pointer outline-none border-2"
+          style={{
+            background: "hsl(var(--background))",
+            color: TURQUOISE,
+            borderColor: TURQUOISE,
+          }}
         >
           <option value="popular">Most Popular</option>
           <option value="rating">Highest Rated</option>
@@ -54,7 +82,7 @@ export function CategoryFilters({
       </div>
 
       {/* Results count */}
-      <div className="text-xs text-muted-foreground">
+      <div className="text-xs font-semibold" style={{ color: TURQUOISE }}>
         {resultCount} test{resultCount !== 1 ? "s" : ""} found
         {searchTerm && (
           <span>
@@ -62,7 +90,7 @@ export function CategoryFilters({
           </span>
         )}
         {compareCount > 0 && (
-          <span className="ml-3 text-brand-turquoise font-semibold">
+          <span className="ml-3">
             · {compareCount} selected for comparison
           </span>
         )}
