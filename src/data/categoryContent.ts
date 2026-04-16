@@ -226,7 +226,7 @@ export const categoryContent: Record<string, CategoryContent> = {
     slug: "womens-health",
     title: "Women's Health Blood Tests UK | Hormone & Fertility Tests from £49 | myhealth checkup",
     metaDescription: "Compare women's health blood tests from trusted UK providers. Check hormones, fertility, menopause markers & more. Discreet home testing with fast results.",
-    heroTitle: "Women's Health Blood Tests",
+    heroTitle: "Women's Health",
     heroSubtitle: "Comprehensive testing designed for women's unique health needs at every life stage",
     introduction: "Women's health testing addresses the unique hormonal and physiological needs at every life stage, from reproductive health and fertility to perimenopause and beyond. Our platform compares women's health tests from leading UK providers, helping you understand your hormonal balance, fertility potential, and overall wellbeing with tests designed specifically for female biology.",
     benefits: [
