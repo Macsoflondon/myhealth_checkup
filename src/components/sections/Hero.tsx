@@ -139,7 +139,7 @@ const Hero = () => {
               <div className="flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129] whitespace-nowrap"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-sm"
                 >
                   Find your test
                 </button>
