@@ -418,7 +418,7 @@ const FindClinicPage = () => {
 
         {/* Clinic Cards Grid */}
         <section className="py-6 sm:py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 bg-[#060c1e]">
             <SectionHeading title="Clinic" gradientText="Locations" className="mb-5 sm:mb-6" />
 
             {displayedClinics.length === 0 && !loading ? (
