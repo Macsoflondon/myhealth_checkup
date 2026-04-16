@@ -24,24 +24,24 @@ const quotes = [
 
 const ExpertQuotes = () => {
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-gradient-to-b from-white to-[hsl(187,72%,97%)]">
+    <section className="py-4 sm:py-5 md:py-6 bg-gradient-to-b from-white to-[hsl(187,72%,97%)]">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-        <div className="text-center mb-6 sm:mb-8">
+        <div className="text-center mb-3 sm:mb-4">
           {/* Pink decorative swoosh */}
-          <svg className="mx-auto mb-4" width="80" height="20" viewBox="0 0 80 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="mx-auto mb-2" width="40" height="10" viewBox="0 0 80 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 15 Q20 2 40 10 Q60 18 75 5" stroke="#e70d69" strokeWidth="2.5" strokeLinecap="round" fill="none" />
           </svg>
           <SectionHeading title="Backed by" gradientText="Expert Guidance" />
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto mt-3">
+          <p className="text-muted-foreground text-xs sm:text-sm max-w-xl mx-auto mt-2">
             Our platform standards are informed by the UK's leading health authorities.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3 max-w-7xl mx-auto">
           {quotes.map((q, i) => (
             <div
               key={i}
-              className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100 group"
+              className="relative bg-white rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100 group"
             >
               {/* Accent top bar */}
               <div className={`absolute top-0 left-6 right-6 h-[3px] rounded-b-full ${
@@ -49,22 +49,22 @@ const ExpertQuotes = () => {
               }`} />
               
               {/* Quote icon */}
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 ${
+              <div className={`w-7 h-7 rounded-lg flex items-center justify-center mb-2 ${
                 i === 0 ? 'bg-brand-turquoise/10' : i === 1 ? 'bg-brand-pink/10' : 'bg-brand-turquoise/10'
               }`}>
-                <Quote className={`w-5 h-5 ${
+                <Quote className={`w-3.5 h-3.5 ${
                   i === 0 ? 'text-brand-turquoise' : i === 1 ? 'text-brand-pink' : 'text-brand-turquoise'
                 }`} />
               </div>
               
-              <p className="text-foreground font-sans text-sm sm:text-base leading-relaxed mb-5">
+              <p className="text-foreground font-sans text-xs sm:text-sm leading-relaxed mb-2.5">
                 "{q.quote}"
               </p>
-              <div className="pt-4 border-t border-gray-100">
-                <p className="font-heading font-semibold text-brand-navy text-sm">
+              <div className="pt-2 border-t border-gray-100">
+                <p className="font-heading font-semibold text-brand-navy text-xs">
                   {q.source}
                 </p>
-                <p className="text-muted-foreground text-xs mt-0.5">{q.credential}</p>
+                <p className="text-muted-foreground text-[10px] mt-0">{q.credential}</p>
               </div>
             </div>
           ))}
