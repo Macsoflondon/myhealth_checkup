@@ -27,7 +27,7 @@ const heroSlides = [
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 68%",
-    mobileObjectPosition: "65% center",
+    mobileObjectPosition: "25% center",
   },
   {
     image: heroActive,
