@@ -304,18 +304,54 @@ const WellnessPage = () => {
                   Category
                 </span>
               </h2>
-              <p
-                style={{
-                  fontSize: 17,
-                  color: "rgba(255,255,255,0.8)",
-                  margin: "0 auto 48px",
-                  maxWidth: 520,
-                  lineHeight: 1.6,
-                }}
-              >
-                Choose from our comprehensive range of clinically validated wellness testing categories
-              </p>
             </div>
+
+            {/* Benefits row (moved from page bottom) */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: 24,
+                maxWidth: 900,
+                margin: "0 auto 32px",
+                padding: "0 16px",
+              }}
+            >
+              {[
+                { Icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
+                { Icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
+                { Icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
+              ].map(({ Icon, title, description }) => (
+                <div key={title} style={{ textAlign: "center" }}>
+                  <div
+                    style={{
+                      width: 40,
+                      height: 40,
+                      background: "#e70d69",
+                      borderRadius: "9999px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 8px",
+                    }}
+                  >
+                    <Icon className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", marginBottom: 4 }}>{title}</h3>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0 }}>{description}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Tricolour divider */}
+            <div
+              style={{
+                height: 3,
+                background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
+                marginBottom: 40,
+                borderRadius: 2,
+              }}
+            />
 
             {/* Filter pills */}
             <div
