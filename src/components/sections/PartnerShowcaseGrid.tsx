@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
+import UKRegionMap from "@/components/sections/UKRegionMap";
 
 const PartnerShowcaseGrid = () => {
 
@@ -82,10 +83,11 @@ const PartnerShowcaseGrid = () => {
           </div>
 
           {/* Bottom Row: Find a Clinic — Full width */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 mt-10 sm:mt-14">
             <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col text-center items-center">
+              <UKRegionMap />
               <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
+                <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
                 <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
                   Find Your Clinic
                 </span>
@@ -97,7 +99,7 @@ const PartnerShowcaseGrid = () => {
               </h2>
               <p className="text-base lg:text-lg text-white leading-relaxed mb-5 max-w-md">
                 Access a nationwide network of CQC-regulated clinics offering professional venous blood draws and health
-                screenings. Walk in or book online.
+                screenings. Book online for a convenient appointment.
               </p>
               <div className="grid grid-cols-3 gap-3 mb-5">
                 <div className="text-center">
@@ -113,16 +115,16 @@ const PartnerShowcaseGrid = () => {
                   <p className="text-xs sm:text-sm text-white">Coverage</p>
                 </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-2 justify-center mb-5 w-full max-w-md">
+              <div className="flex flex-row flex-wrap gap-2 justify-center mb-5 w-full max-w-md">
                 <Link
                   to="/find-clinic"
-                  className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                  className="flex-1 min-w-0 bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
                 >
                   Find your nearest clinic
                 </Link>
                 <Link
                   to="/find-clinic"
-                  className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
+                  className="flex-1 min-w-0 bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap text-center"
                 >
                   Browse all clinic locations
                 </Link>
@@ -130,7 +132,6 @@ const PartnerShowcaseGrid = () => {
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
                 <span>✓ CQC Regulated</span>
                 <span>✓ 200+ Locations</span>
-                <span>✓ Walk-in Available</span>
               </div>
             </div>
           </div>
