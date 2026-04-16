@@ -1,20 +1,6 @@
 import { Link } from "react-router-dom";
-import { BookOpen, HelpCircle, MessageCircle, MapPin, Building2, Globe, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BookOpen, HelpCircle, MessageCircle } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
-import ukMapImage from "@/assets/uk-map-clinics.png";
-
-const stats = [
-  { value: "200+", label: "Clinic Locations" },
-  { value: "7", label: "Partner Networks" },
-  { value: "UK-wide", label: "Coverage" },
-];
-
-const trustPoints = [
-  "CQC Regulated",
-  "200+ Locations",
-  "Walk-in Available",
-];
 
 const resources = [
   {
