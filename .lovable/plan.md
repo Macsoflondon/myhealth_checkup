@@ -1,24 +1,31 @@
 
 
-## Plan: Hero Photo Adjustments and Badge Relocation
+## Plan: Edit 5 Hero Images Using AI Image Generation + Adjust Object Position
 
-**File**: `src/components/sections/Hero.tsx`
+All five changes require editing the source `.jpg` files using the Nano banana AI image generation/editing API, then replacing the assets. One also needs a CSS `objectPosition` tweak.
 
-### Changes
+### Image 1: `hero-empowered-results.jpg` — Woman with laptop
+- **Edit prompt**: Make the woman have a natural, subtle smile/grin. Make the laptop screen clearly show "myhealth checkup" text at the top with visible biomarker names listed down the left side. Keep the image photorealistic — no AI/CGI look.
 
-1. **Lighten all hero photos** — Reduce the dark overlay opacity from `bg-[#081129]/55` to `bg-[#081129]/40` (line 103).
+### Image 2: `hero-clinic-ease.jpg` — Woman with mobile phone  
+- **Edit prompt**: Make the back of the mobile phone the woman is holding solid black — the phone is facing away from the viewer so no screen content should be visible, just a plain black phone back.
 
-2. **Home kit photo** (`heroHomeKit`) — Shift `objectPosition` from `18% 25%` to `center 45%` to push the test kit higher into view above the search container (line 27).
+### Image 3: `hero-compare-decide.jpg` — Clinic scene
+- **Edit prompt**: On the turquoise back wall, write "myhealth checkup" clearly in white text. Reduce the size of the staff name badge. Make the woman's face more photorealistic and natural-looking (early thirties).
 
-3. **Laptop/results photo** (`heroEmpowered`) — Shift `objectPosition` from `center 30%` to `center 45%` to bring the laptop screen into the visible area (line 16).
+### Image 4: `hero-home-kit.jpg` — Test kit
+- **Edit prompt**: Move the test kit up and to the left so it's clearly visible in the upper-left area of the frame, not hidden behind UI elements. The kit should clearly show "myhealth checkup" branding and "Blood Test Kit" text on it. Keep photorealistic.
 
-4. **Couple walking photo** (`heroActive`) — Shift `objectPosition` from `center 20%` to `center 35%` to show faces more prominently (line 33).
+### Image 5: `hero-active-lifestyle.jpg` — Couple walking in park
+- **No image edit** — just shift `objectPosition` from `center 30%` to `center 15%` to push the image down so their heads/faces sit lower in the frame (where the red circles are in the screenshot). This gives more sky/tree canopy above their heads.
 
-5. **Compare photo** (`heroCompare`) — Shift `objectPosition` from `center 25%` to `center 35%` (line 39).
-
-6. **Move the "UK's Leading..." badge** — Relocate it from its current position above the H1 (lines 108–112) to below the popular search container and above the trust signals (after line 188). This frees up vertical space so hero images (especially the walkers) are less obscured by UI elements at the top.
+### Technical approach
+1. Use `secrets--fetch_secrets` to get the Lovable API key
+2. For images 1–4: Call the Gemini image editing API with the source image + edit prompt
+3. Save edited images back to `src/assets/hero/` replacing the originals
+4. For image 5: Update `objectPosition` in `Hero.tsx` from `center 30%` to `center 15%`
+5. QA each generated image by converting to viewable format and inspecting
 
 ### Limitation
-
-The request to black out the mobile phone screen in `heroClinic` or `heroActive` requires editing the actual image file — this cannot be done with CSS/code alone. I'd recommend editing the source `.jpg` in an image editor and re-uploading it.
+AI image editing may not perfectly render readable text on screens/walls in one pass. If the first attempt is blurry or incorrect, I'll iterate with refined prompts. Multiple passes may be needed for the laptop screen and clinic wall text.
 
