@@ -287,20 +287,13 @@ const WellnessPage = () => {
                   fontSize: "clamp(32px, 4vw, 52px)",
                   fontWeight: 800,
                   color: "#ffffff",
-                  margin: "0 0 16px",
+                  margin: "0 0 48px",
                   letterSpacing: "-0.02em",
                   lineHeight: 1.1,
                 }}
               >
                 Browse Tests by{" "}
-                <span
-                  className="text-primary-foreground"
-                  style={{
-                    background: "linear-gradient(135deg, #00d4c8, #e91e8c)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
+                <span style={{ color: "#ffffff" }}>
                   Category
                 </span>
               </h2>
