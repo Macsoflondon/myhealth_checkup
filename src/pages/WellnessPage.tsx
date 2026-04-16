@@ -556,6 +556,66 @@ const WellnessPage = () => {
           </div>
         </section>
 
+        {/* Bottom CTA Banner */}
+        <div className="mt-8 mb-12 px-4 sm:px-10">
+          <div
+            style={{
+              background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
+              padding: "3px",
+              borderRadius: "16px",
+            }}
+          >
+            <div
+              className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8"
+              style={{
+                background: "#0a1120",
+                padding: "32px 36px",
+                borderRadius: "13px",
+              }}
+            >
+              <div className="text-center sm:text-left">
+                <p
+                  style={{
+                    color: "#22c0d4",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginBottom: "8px",
+                  }}
+                >
+                  Not Sure Where to Start?
+                </p>
+                <h2
+                  style={{
+                    color: "#ffffff",
+                    fontSize: "clamp(22px, 3vw, 28px)",
+                    fontWeight: 700,
+                    margin: 0,
+                  }}
+                >
+                  Find the Right Health Test for You
+                </h2>
+              </div>
+              <Link
+                to="/quiz"
+                className="inline-block whitespace-nowrap text-center"
+                style={{
+                  background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
+                  color: "#ffffff",
+                  padding: "16px 36px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  borderRadius: "10px",
+                  textDecoration: "none",
+                }}
+              >
+                Start Your Quiz →
+              </Link>
+            </div>
+          </div>
+        </div>
+
       </main>
 
       <Footer />
