@@ -556,10 +556,12 @@ const WellnessPage = () => {
           </div>
         </section>
 
-        {/* Bottom CTA Banner */}
-        <div className="mt-8 mb-12 px-4 sm:px-10">
+        {/* Bottom CTA Banner - white buffer wrapper */}
+        <section style={{ background: "#ffffff", padding: "48px 40px" }}>
           <div
             style={{
+              maxWidth: 1280,
+              margin: "0 auto",
               background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
               padding: "3px",
               borderRadius: "16px",
