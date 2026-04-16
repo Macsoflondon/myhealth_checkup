@@ -55,7 +55,7 @@ const Footer = () => {
                 myhealth checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
               </span>
             </p>
-            <p className="text-xs sm:text-sm text-white/90 font-sans">
+            <p className="text-xs sm:text-sm font-sans text-primary-foreground">
               MYHEALTHCHECKUP LTD is the UK's leading health service comparison website. &#x200B;Company No. 16589056
             </p>
           </div>
