@@ -21,9 +21,8 @@ const CategoryPageBottom = ({
   quizLink = "/quiz",
 }: CategoryPageBottomProps) => {
   return (
-    <>
-      {/* Bottom CTA Banner */}
-      <div className="mt-8 mb-12 px-4 sm:px-10">
+    <section style={{ background: "#ffffff", padding: "48px 40px" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div
           style={{
             background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
@@ -90,59 +89,7 @@ const CategoryPageBottom = ({
           </div>
         </div>
       </div>
-
-      {/* Tricolour divider */}
-      <div
-        style={{
-          height: 3,
-          background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
-        }}
-        className="mx-4 sm:mx-10"
-      />
-
-      {/* Condensed Benefits Grid */}
-      <section style={{ background: "#081129", padding: "32px 0" }}>
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2
-              style={{
-                fontSize: 20,
-                fontWeight: 700,
-                color: "#ffffff",
-                marginBottom: 16,
-              }}
-            >
-              {benefitsTitle}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4">
-              {benefits.map((benefit, i) => {
-                const Icon = benefit.icon;
-                return (
-                  <div key={i} className="text-center">
-                    <div className="w-10 h-10 bg-[#e70d69] rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Icon className="h-5 w-5 text-white" />
-                    </div>
-                    <h3
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: "#ffffff",
-                        marginBottom: 4,
-                      }}
-                    >
-                      {benefit.title}
-                    </h3>
-                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>
-                      {benefit.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+    </section>
   );
 };
 
