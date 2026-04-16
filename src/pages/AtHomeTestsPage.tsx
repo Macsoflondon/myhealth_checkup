@@ -121,6 +121,7 @@ const atHomeTests: CategoryTestItem[] = [
 const AtHomeTestsPage = () => (
   <CategoryPageLayout
     seoTitle="At-Home Tests | myhealth checkup"
+    pillLabel="At-Home Tests"
     seoDescription="Convenient at-home health testing kits with professional lab analysis and fast results. Finger prick, saliva, and urine tests delivered to your door."
     seoKeywords="at home blood test, home testing kit, finger prick test, health test at home, private blood test UK"
     canonicalUrl="https://myhealthcheckup.co.uk/at-home-tests"

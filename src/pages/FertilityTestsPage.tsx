@@ -121,6 +121,7 @@ const fertilityTests: CategoryTestItem[] = [
 const FertilityTestsPage = () => (
   <CategoryPageLayout
     seoTitle="Fertility Tests | myhealth checkup"
+    pillLabel="Fertility & Prenatal"
     seoDescription="Non-invasive prenatal testing (NIPT), fertility screening, gender reveal, and paternity tests during pregnancy. Safe screening from 8 weeks."
     seoKeywords="NIPT, prenatal testing, gender reveal, fertility blood test, AMH test, pregnancy blood test"
     canonicalUrl="https://myhealthcheckup.co.uk/fertility-tests"

@@ -140,6 +140,7 @@ const womensHealthTests: CategoryTestItem[] = [
 const WomensHealthPage = () => (
   <CategoryPageLayout
     seoTitle="Women's Health Tests | myhealth checkup"
+    pillLabel="Women's Health"
     seoDescription="Comprehensive women's health testing including hormones, fertility, menopause, and PCOS screening from trusted UK providers. Compare prices and book today."
     seoKeywords="women's health tests, hormone test, fertility test, menopause test, PCOS test, well woman test"
     canonicalUrl="https://myhealthcheckup.co.uk/womens-health"
