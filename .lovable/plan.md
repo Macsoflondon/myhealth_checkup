@@ -1,35 +1,34 @@
 
-User approved: compact all remaining sections on `/find-clinic` with moderate shrink (py-6 sm:py-8 rhythm).
+The user wants two mobile-specific fixes in the Hero section:
 
-Need to view the page to identify exact line numbers for each section before planning edits.
+1. **Popular Searches container (mobile)**: 
+   - Show only 4 chips on mobile instead of 6 (still show all 6 on desktop)
+   - Add top spacing so chips don't sit flush against the container edge
 
-## Plan
+2. **CTA buttons "Find your test / Compare by symptom / Compare by goal"**:
+   - Must always render as 3 buttons in a single row (currently `flex-wrap` lets them wrap or stack awkwardly on mobile)
+   - Remove `flex-wrap` and tighten sizing so they fit on a single mobile row
 
-Apply moderate compaction (`py-6 sm:py-8`) to four remaining sections in `src/pages/FindClinicPage.tsx`:
+## Approach
 
-**1. Search & Filters + Map block**
-- Section padding: `py-8` → `py-6 sm:py-8`
-- Input height: `h-12` → `h-10`
-- Filter dropdowns: matching reduction
-- Map height: shrink ~20% (e.g. `h-[400px]` → `h-[340px] sm:h-[380px]`)
-- Tighten gaps between controls
+**File to edit**: `src/components/sections/Hero.tsx`
 
-**2. Clinic Cards Grid section**
-- Section padding: `py-10` → `py-6 sm:py-8`
-- SectionHeading bottom margin reduced
-- Grid gap: `gap-6` → `gap-4 sm:gap-5`
+### Fix 1 — CTA row (always 3-in-a-line)
+Current:
+```
+flex flex-row gap-2 sm:gap-3 justify-center items-center mb-4 sm:mb-6 flex-wrap
+```
+- Remove `flex-wrap`
+- Reduce mobile padding (`px-2.5 py-1.5`) and font (`text-[11px]`) so all 3 fit on a 360px viewport
+- Keep desktop sizing intact via `sm:` prefixes
 
-**3. About Our Clinic Network**
-- Section padding: `py-10` → `py-6 sm:py-8`
-- Card inner padding reduced one step
-- Heading scaled down one step
-- Body text leading tightened
+### Fix 2 — Popular Searches (4 on mobile, 6 on desktop)
+- Add a `sm:hidden` class to the last 2 chips (indexes 4, 5 → Advanced Well Woman / Advanced Well Man) so only the first 4 show on mobile
+- Add `pt-1` (small top padding) to the chips wrapper so they breathe inside the container
+- Keep the wrapper border styling already in place
 
-**4. Partnered Testing Providers**
-- Section padding: `py-10` → `py-6 sm:py-8`
-- Logo grid gap reduced
-- Heading scaled one step
+### Implementation details
+- Render chips with conditional class: `index >= 4 ? "hidden sm:inline-flex" : ""` appended
+- CTA buttons: change wrapper to `flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6` and reduce mobile button padding from `px-3 py-2 text-xs` to `px-2.5 py-1.5 text-[11px]`
 
-Headings remain substantial (not shrunk to Benefits Row tight rhythm) — section feels lighter but still anchored.
-
-**File touched:** `src/pages/FindClinicPage.tsx`
+No other files affected. No data/logic changes — purely Tailwind class adjustments.
