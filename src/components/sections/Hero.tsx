@@ -107,6 +107,12 @@ const Hero = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
 
+              <div className="text-center mb-3 sm:mb-4">
+                <span className="inline-flex items-center gap-1.5 backdrop-blur-md rounded-full px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide border shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] border-tertiary bg-primary">
+                  🇬🇧 UK's Leading Blood Test Comparison Platform
+                </span>
+              </div>
+
               <div className="text-center mb-1 sm:mb-2 min-h-[90px] sm:min-h-[120px] md:min-h-[140px] flex flex-col items-center justify-center">
                 <h1
                   key={currentSlide}
@@ -183,11 +189,6 @@ const Hero = () => {
                 </div>
               </div>
 
-              <div className="text-center mt-4 sm:mt-5">
-                <span className="inline-flex items-center gap-1.5 backdrop-blur-md rounded-full px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide border shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_4px_12px_rgba(0,0,0,0.1)] border-tertiary bg-primary">
-                  🇬🇧 UK's Leading Blood Test Comparison Platform
-                </span>
-              </div>
 
               <div className="mt-4 sm:mt-6 flex flex-nowrap justify-start sm:justify-center gap-x-5 sm:gap-x-7 lg:gap-x-9 overflow-x-auto scrollbar-hide pb-1">
                 {trustSignals.map((signal, index) => (
