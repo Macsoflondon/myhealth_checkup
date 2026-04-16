@@ -115,7 +115,7 @@ const PartnerShowcaseGrid = () => {
                   <p className="text-xs sm:text-sm text-white">Coverage</p>
                 </div>
               </div>
-              <div className="flex flex-row flex-wrap gap-2 justify-center mb-5 w-full max-w-md">
+              <div className="flex flex-row flex-nowrap gap-2 justify-center mb-5 w-full max-w-md">
                 <Link
                   to="/find-clinic"
                   className="flex-1 min-w-0 bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap text-center pt-[14px]"
