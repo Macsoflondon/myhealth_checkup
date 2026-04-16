@@ -175,7 +175,7 @@ const Hero = () => {
                   </div>
 
                   <div className="mt-3 sm:mt-4 bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
-                    <p className="text-[10px] sm:text-xs font-semibold text-white mb-1.5 sm:mb-2 uppercase tracking-[0.15em] border-primary border border-solid shadow-sm rounded-sm">
+                    <p className="text-[10px] sm:text-xs font-semibold text-white mb-1.5 sm:mb-2 uppercase tracking-[0.15em] border-primary shadow-sm rounded-sm border-0 border-none">
                       Popular Searches
                     </p>
                     <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center border-primary border border-solid rounded-sm shadow-sm">
