@@ -463,4 +463,3 @@ const WellnessPage = () => {
 };
 
 export default WellnessPage;
-```
