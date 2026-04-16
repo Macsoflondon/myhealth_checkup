@@ -156,7 +156,7 @@ const WomensHealthPage = () => (
     tests={womensHealthTests}
     benefitsTitle="Why Choose Women's Health Testing?"
     benefits={[
-      { icon: Heart, title: "Hormone Balance", description: "Early detection and prevention of women's health conditions" },
+      { icon: Heart, title: "Hormone Balance", description: "Early detection of women's health conditions" },
       { icon: Baby, title: "Fertility Planning", description: "Comprehensive fertility and reproductive health insights" },
       { icon: Users, title: "Lifelong Wellness", description: "Monitor and optimise health throughout every life stage" },
     ]}

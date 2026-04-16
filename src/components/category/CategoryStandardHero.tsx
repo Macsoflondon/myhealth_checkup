@@ -152,6 +152,8 @@ export function CategoryStandardHero({
                 style={{
                   fontSize: 14,
                   fontWeight: 600,
+                  lineHeight: 1.3,
+                  minHeight: 18,
                   color: "#ffffff",
                   marginBottom: 4,
                 }}
@@ -161,8 +163,11 @@ export function CategoryStandardHero({
               <p
                 style={{
                   fontSize: 12,
+                  lineHeight: 1.4,
+                  minHeight: 32,
+                  maxWidth: 220,
                   color: "rgba(255,255,255,0.7)",
-                  margin: 0,
+                  margin: "0 auto",
                 }}
               >
                 {description}
