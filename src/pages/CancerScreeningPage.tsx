@@ -121,6 +121,7 @@ const cancerTests: CategoryTestItem[] = [
 const CancerScreeningPage = () => (
   <CategoryPageLayout
     seoTitle="Cancer Screening | myhealth checkup"
+    pillLabel="Cancer Screening"
     seoDescription="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection."
     seoKeywords="cancer screening, prostate cancer test, bowel cancer screening, breast cancer markers, multi-cancer detection"
     canonicalUrl="https://myhealthcheckup.co.uk/tests/cancer"

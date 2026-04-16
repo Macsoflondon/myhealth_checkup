@@ -121,6 +121,7 @@ const mensHealthTests: CategoryTestItem[] = [
 const MensHealthPage = () => (
   <CategoryPageLayout
     seoTitle="Men's Health Tests | myhealth checkup"
+    pillLabel="Men's Health"
     seoDescription="Comprehensive men's health testing including testosterone, prostate PSA, erectile dysfunction, and complete male wellness screening from £45."
     seoKeywords="men's health tests, testosterone test, prostate PSA test, male hormones, erectile dysfunction test, well man test"
     canonicalUrl="https://myhealthcheckup.co.uk/mens-health"
