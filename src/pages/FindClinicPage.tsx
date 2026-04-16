@@ -338,7 +338,7 @@ const FindClinicPage = () => {
                     value={postcode}
                     onChange={(e) => setPostcode(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                    className="pr-20 h-12 rounded-lg border-border"
+                    className="pr-20 h-10 rounded-lg border-border"
                   />
                   <Button
                     onClick={handleSearch}
@@ -360,7 +360,7 @@ const FindClinicPage = () => {
                     setSelectedProvider(e.target.value);
                     updateUrlParams({ provider: e.target.value });
                   }}
-                  className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-brand-turquoise/20 focus:border-brand-turquoise transition-colors"
+                  className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-brand-turquoise/20 focus:border-brand-turquoise transition-colors"
                 >
                   {PROVIDERS.map((p) => (
                     <option key={p.value} value={p.value}>{p.label}</option>
@@ -374,7 +374,7 @@ const FindClinicPage = () => {
                 <select
                   value={radiusFilter}
                   onChange={(e) => setRadiusFilter(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-brand-turquoise/20 focus:border-brand-turquoise transition-colors"
+                  className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-brand-turquoise/20 focus:border-brand-turquoise transition-colors"
                 >
                   {RADIUS_OPTIONS.map((r) => (
                     <option key={r.value} value={r.value}>{r.label}</option>
@@ -387,7 +387,7 @@ const FindClinicPage = () => {
                 <Button
                   onClick={handleUseMyLocation}
                   variant="outline"
-                  className="border-brand-navy/20 h-12"
+                  className="border-brand-navy/20 h-10"
                   disabled={searching}
                 >
                   <Navigation className="w-4 h-4 mr-2" />
@@ -417,9 +417,9 @@ const FindClinicPage = () => {
         </section>
 
         {/* Clinic Cards Grid */}
-        <section className="py-10">
+        <section className="py-6 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <SectionHeading title="Clinic" gradientText="Locations" className="mb-8" />
+            <SectionHeading title="Clinic" gradientText="Locations" className="mb-5 sm:mb-6" />
 
             {displayedClinics.length === 0 && !loading ? (
               <div className="text-center py-12">
@@ -429,7 +429,7 @@ const FindClinicPage = () => {
                 <Button onClick={handleClearSearch} variant="outline">Clear All Filters</Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
                 {displayedClinics.map((clinic) => (
                   <ClinicCard
                     key={clinic.id}
@@ -441,7 +441,7 @@ const FindClinicPage = () => {
             )}
 
             {filteredClinics.length > 12 && (
-              <div className="mt-10 text-center">
+              <div className="mt-6 sm:mt-8 text-center">
                 <Button
                   onClick={() => setShowAll(!showAll)}
                   size="lg"
@@ -455,15 +455,15 @@ const FindClinicPage = () => {
         </section>
 
         {/* About Our Clinic Network */}
-        <section className="py-10 bg-muted/30">
+        <section className="py-6 sm:py-8 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <Card className="border-2 border-muted">
-                <CardContent className="p-5 sm:p-8">
-                  <h2 className="text-2xl font-heading font-bold mb-4 text-brand-navy">
+                <CardContent className="p-4 sm:p-6">
+                  <h2 className="text-xl sm:text-2xl font-heading font-bold mb-3 text-brand-navy">
                     About Our Clinic Network
                   </h2>
-                  <div className="space-y-4 text-muted-foreground">
+                  <div className="space-y-3 text-sm sm:text-base text-muted-foreground leading-snug">
                     <p>
                       All clinics in our network partner with UKAS-accredited laboratories, ensuring
                       the highest standards of testing accuracy and reliability. Our clinic finder
@@ -480,7 +480,7 @@ const FindClinicPage = () => {
                       website to book your appointment. You can then choose your preferred clinic
                       location during the booking process.
                     </p>
-                    <p className="text-sm border-t pt-4 mt-4">
+                    <p className="text-xs sm:text-sm border-t pt-3 mt-3">
                       <strong className="text-foreground">Disclaimer:</strong> This platform provides
                       general health information. It is not medical advice or a substitute for
                       consultation with a qualified healthcare professional. All tests are delivered,
@@ -494,14 +494,14 @@ const FindClinicPage = () => {
         </section>
 
         {/* Provider Logos */}
-        <section className="py-10">
+        <section className="py-6 sm:py-8">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <SectionHeading title="Partnered Testing" gradientText="Providers" className="mb-6" />
-              <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <SectionHeading title="Partnered Testing" gradientText="Providers" className="mb-3 sm:mb-4" />
+              <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6 max-w-2xl mx-auto">
                 Our clinic network includes locations from seven trusted UK private health testing providers
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 items-center">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 items-center">
                 {[
                   { name: "Medichecks", logo: "/lovable-uploads/provider-medichecks-new-v3.png" },
                   { name: "Thriva", logo: "/lovable-uploads/provider-thriva.png" },
