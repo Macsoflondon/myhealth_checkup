@@ -1,31 +1,37 @@
 
 
-## Plan: Edit 5 Hero Images Using AI Image Generation + Adjust Object Position
+## Issue
 
-All five changes require editing the source `.jpg` files using the Nano banana AI image generation/editing API, then replacing the assets. One also needs a CSS `objectPosition` tweak.
+The standardized `CategoryStandardHero` component already uses fixed pixel sizes (`fontSize: 14` for benefit titles, `fontSize: 12` for descriptions). The visual size difference the user perceives between categories is caused by:
 
-### Image 1: `hero-empowered-results.jpg` — Woman with laptop
-- **Edit prompt**: Make the woman have a natural, subtle smile/grin. Make the laptop screen clearly show "myhealth checkup" text at the top with visible biomarker names listed down the left side. Keep the image photorealistic — no AI/CGI look.
+1. **Variable text length** — descriptions like "Early detection and prevention of women's health conditions" (60 chars) wrap to 2 lines while "Test from home — no clinic visit required" (41 chars) fits on 1 line, making the cards appear taller/shorter and the text appear visually denser/lighter.
+2. **No fixed line clamp / minHeight** — so the benefit blocks shift height between pages.
+3. **Browser font smoothing inconsistency** — without explicit `lineHeight`, browsers compute different effective heights.
 
-### Image 2: `hero-clinic-ease.jpg` — Woman with mobile phone  
-- **Edit prompt**: Make the back of the mobile phone the woman is holding solid black — the phone is facing away from the viewer so no screen content should be visible, just a plain black phone back.
+The font sizes themselves are already identical across pages — the inconsistency is layout/wrapping, not size.
 
-### Image 3: `hero-compare-decide.jpg` — Clinic scene
-- **Edit prompt**: On the turquoise back wall, write "myhealth checkup" clearly in white text. Reduce the size of the staff name badge. Make the woman's face more photorealistic and natural-looking (early thirties).
+## Fix
 
-### Image 4: `hero-home-kit.jpg` — Test kit
-- **Edit prompt**: Move the test kit up and to the left so it's clearly visible in the upper-left area of the frame, not hidden behind UI elements. The kit should clearly show "myhealth checkup" branding and "Blood Test Kit" text on it. Keep photorealistic.
+### 1. `src/components/category/CategoryStandardHero.tsx`
+Lock benefit text rendering so every card looks identical regardless of copy length:
+- Add explicit `lineHeight: 1.3` on title and `lineHeight: 1.4` on description
+- Add `minHeight` to the description (`32px` ≈ 2 lines at 12px) so single-line and double-line cards align
+- Add `maxWidth: 220px` and `margin: 0 auto` on the description so wrap point is identical across pages
+- Set the title `minHeight: 18px` to lock baseline
 
-### Image 5: `hero-active-lifestyle.jpg` — Couple walking in park
-- **No image edit** — just shift `objectPosition` from `center 30%` to `center 15%` to push the image down so their heads/faces sit lower in the frame (where the red circles are in the screenshot). This gives more sky/tree canopy above their heads.
+### 2. Normalize benefit copy length (optional safety net)
+Trim 2 over-long descriptions so they wrap consistently within ~50 chars:
+- `WomensHealthPage.tsx` — "Early detection of women's health conditions"
+- `MensHealthPage.tsx` — "Identify health issues before symptoms develop"
+- `SportsPerformancePage.tsx` — already short, leave
+- `FertilityTestsPage.tsx` — already short, leave
+- `CancerScreeningPage.tsx` — already short, leave
+- `AtHomeTestsPage.tsx` — already short, leave
 
-### Technical approach
-1. Use `secrets--fetch_secrets` to get the Lovable API key
-2. For images 1–4: Call the Gemini image editing API with the source image + edit prompt
-3. Save edited images back to `src/assets/hero/` replacing the originals
-4. For image 5: Update `objectPosition` in `Hero.tsx` from `center 30%` to `center 15%`
-5. QA each generated image by converting to viewable format and inspecting
+This guarantees every category page hero renders at exactly the same height with identical typography.
 
-### Limitation
-AI image editing may not perfectly render readable text on screens/walls in one pass. If the first attempt is blurry or incorrect, I'll iterate with refined prompts. Multiple passes may be needed for the laptop screen and clinic wall text.
+### Files to edit
+- `src/components/category/CategoryStandardHero.tsx` (lock typography + min-heights)
+- `src/pages/WomensHealthPage.tsx` (trim 1 description)
+- `src/pages/MensHealthPage.tsx` (trim 1 description)
 
