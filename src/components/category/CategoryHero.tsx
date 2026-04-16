@@ -30,7 +30,7 @@ export function CategoryHero({
       <div className="absolute -bottom-10 -left-10 w-52 h-52 rounded-full bg-brand-pink/4 pointer-events-none" />
 
       <div className="max-w-[700px] mx-auto relative">
-        <h1 className="text-3xl sm:text-4xl leading-tight mb-3 text-[hsl(var(--navy))] tracking-tight text-primary-foreground font-sans font-bold md:text-6xl">
+        <h1 className="text-3xl sm:text-4xl leading-tight mb-3 text-[hsl(var(--navy))] tracking-tight text-primary-foreground font-sans font-bold md:text-5xl">
           {headline}
         </h1>
         <p className="text-sm sm:text-base leading-relaxed mb-7 max-w-xl mx-auto text-primary-foreground">

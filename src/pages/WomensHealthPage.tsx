@@ -143,7 +143,7 @@ const WomensHealthPage = () => (
     seoDescription="Comprehensive women's health testing including hormones, fertility, menopause, and PCOS screening from trusted UK providers. Compare prices and book today."
     seoKeywords="women's health tests, hormone test, fertility test, menopause test, PCOS test, well woman test"
     canonicalUrl="https://myhealthcheckup.co.uk/womens-health"
-    headline="Women's Health Blood Tests"
+    headline="Women's Health"
     subtitle="Comprehensive female health screening — hormones, fertility, menopause, and PCOS — designed for women's unique needs."
     searchPlaceholder="Search by symptom or test — e.g. 'irregular periods', 'menopause'"
     trustStats={[
