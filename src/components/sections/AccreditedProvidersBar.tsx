@@ -18,24 +18,24 @@ const getProviderRoute = (id: string) => {
 
 const AccreditedProvidersBar = () => {
   return (
-    <section className="py-8 md:py-12 bg-tertiary">
+    <section className="py-4 md:py-6 bg-tertiary">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="h-px w-8 bg-brand-turquoise" />
-          <span className="text-brand-turquoise text-xs font-semibold uppercase tracking-[0.25em]">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <div className="h-px w-6 bg-brand-turquoise" />
+          <span className="text-brand-turquoise text-[10px] font-semibold uppercase tracking-[0.25em]">
             Accredited & Verified
           </span>
-          <div className="h-px w-8 bg-brand-turquoise" />
+          <div className="h-px w-6 bg-brand-turquoise" />
         </div>
 
         <SectionHeading
           title="Accredited Providers"
           gradientText="We Compare"
-          className="mb-8 md:mb-10"
+          className="mb-4 md:mb-5"
           titleClassName="text-white"
         />
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3 max-w-6xl mx-auto">
           {FEATURED_PROVIDERS.map((id) => {
             const provider = PROVIDER_DETAILS[id];
             if (!provider) return null;
@@ -45,9 +45,9 @@ const AccreditedProvidersBar = () => {
               <Link
                 key={id}
                 to={getProviderRoute(id)}
-                className="flex flex-col items-center justify-center gap-3 rounded-xl bg-white/5 border border-white/10 p-6 md:p-8 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
+                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-3 md:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
               >
-                <div className="flex items-center justify-center h-[80px] sm:h-[100px] w-full">
+                <div className="flex items-center justify-center h-[40px] sm:h-[50px] w-full">
                   <img
                     src={provider.logo}
                     alt={`${provider.name} logo`}
@@ -55,10 +55,10 @@ const AccreditedProvidersBar = () => {
                     loading="lazy"
                   />
                 </div>
-                <span className="text-white text-sm font-medium text-center leading-tight">
+                <span className="text-white text-xs font-medium text-center leading-tight">
                   {provider.name}
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-primary bg-primary/15 px-2.5 py-0.5 rounded-full">
+                <span className="text-[9px] font-semibold uppercase tracking-wider text-primary bg-primary/15 px-2 py-0.5 rounded-full">
                   {badge}
                 </span>
               </Link>
