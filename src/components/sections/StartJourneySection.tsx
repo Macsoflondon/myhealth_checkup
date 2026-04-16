@@ -18,22 +18,22 @@ const StartJourneySection = () => {
           Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in
           minutes.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full max-w-lg">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8 w-full max-w-lg">
           <Link
             to="/assisted-test-finder"
-            className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight"
           >
             Find your test
           </Link>
           <Link
             to="/compare/symptoms"
-            className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+            className="min-w-0 bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight"
           >
             Compare by symptom
           </Link>
           <Link
             to="/compare/goals"
-            className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight"
           >
             Compare by goal
           </Link>
