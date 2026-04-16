@@ -26,18 +26,18 @@ const CallToAction = ({ className }: CallToActionProps) => {
           <p className="text-xl mb-5 text-white/90 my-0 py-0">
             Join thousands of customers who've discovered health insights that made a difference.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <Button 
-              size="lg" 
+              size="sm" 
               onClick={() => navigate('/assisted-test-finder')}
-              className="bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
+              className="w-full sm:w-56 bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
               Find Your Perfect Test
             </Button>
             <Button 
-              size="lg" 
+              size="sm" 
               onClick={() => navigate('/compare')}
-              className="bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
+              className="w-full sm:w-56 bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
               Browse All 300+ Tests
             </Button>
