@@ -616,7 +616,7 @@ const WellnessPage = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </section>
 
       </main>
 
