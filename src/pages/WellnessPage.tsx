@@ -1,3 +1,4 @@
+```tsx
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -44,34 +45,40 @@ const WellnessPage = () => {
 
   const tags = ["ALL", ...Array.from(new Set(wellnessCategoryCards.map((c) => c.tag)))];
   const filtered = filter === "ALL" ? wellnessCategoryCards : wellnessCategoryCards.filter((c) => c.tag === filter);
-  return <>
+
+  return (
+    <>
       <Helmet>
         <title>Wellness Tests | myhealth checkup</title>
-        <meta name="description" content="Comprehensive wellness blood tests including liver, kidney, cardiac risk, sports fitness, and stress testing. Professional health screening from £25." />
-        <meta name="keywords" content="wellness blood tests, health screening, liver test, kidney test, cardiac risk, sports fitness test, anaemia test, cortisol test" />
+        <meta
+          name="description"
+          content="Comprehensive wellness blood tests including liver, kidney, cardiac risk, sports fitness, and stress testing. Professional health screening from £25."
+        />
+        <meta
+          name="keywords"
+          content="wellness blood tests, health screening, liver test, kidney test, cardiac risk, sports fitness test, anaemia test, cortisol test"
+        />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/wellness" />
-        
+
         {/* Open Graph Tags */}
         <meta property="og:title" content="Wellness Tests | myhealth checkup" />
         <meta property="og:description" content="Comprehensive wellness blood tests for optimal health monitoring and screening" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/wellness" />
-        
+
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Wellness Tests | myhealth checkup" />
         <meta name="twitter:description" content="Comprehensive wellness blood tests for optimal health monitoring" />
       </Helmet>
-      
-      
-      <Header />
-      
-      <main className="min-h-screen bg-background">
 
+      <Header />
+
+      <main className="min-h-screen bg-background">
         {/* Browse Tests by Category */}
         <section
           style={{
-            background: "#ffffff",
+            background: "#081129",
             padding: "72px 40px",
             position: "relative",
             overflow: "hidden",
@@ -82,7 +89,8 @@ const WellnessPage = () => {
             style={{
               position: "absolute",
               inset: 0,
-              backgroundImage: "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)",
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)",
               backgroundSize: "40px 40px",
               pointerEvents: "none",
             }}
@@ -96,7 +104,8 @@ const WellnessPage = () => {
               width: 500,
               height: 500,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
@@ -108,15 +117,23 @@ const WellnessPage = () => {
               width: 400,
               height: 400,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
+              background:
+                "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
 
           <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-            {/* Header */}
-            {/* General Wellness pill row with nav buttons */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative", marginBottom: 24 }}>
+            {/* General Wellness pill row */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                marginBottom: 24,
+              }}
+            >
               <div
                 style={{
                   display: "inline-flex",
@@ -158,7 +175,7 @@ const WellnessPage = () => {
                 style={{
                   fontSize: "clamp(32px, 4vw, 52px)",
                   fontWeight: 800,
-                  color: "#060b18",
+                  color: "#ffffff",
                   margin: "0 0 16px",
                   letterSpacing: "-0.02em",
                   lineHeight: 1.1,
@@ -178,13 +195,14 @@ const WellnessPage = () => {
               <p
                 style={{
                   fontSize: 17,
-                  color: "#060b18",
+                  color: "rgba(255,255,255,0.8)",
                   margin: "0 auto 48px",
                   maxWidth: 520,
                   lineHeight: 1.6,
                 }}
               >
-                Choose from our comprehensive range of clinically validated wellness testing categories
+                Choose from our comprehensive range of clinically validated wellness
+                testing categories
               </p>
             </div>
 
@@ -211,9 +229,15 @@ const WellnessPage = () => {
                     style={{
                       padding: "7px 20px",
                       borderRadius: 100,
-                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(6,11,24,0.12)",
-                      background: active || isHoveredTag ? `${color}18` : "rgba(6,11,24,0.03)",
-                      color: active || isHoveredTag ? color : "#060b18",
+                      border:
+                        active || isHoveredTag
+                          ? `1.5px solid ${color}`
+                          : "1.5px solid rgba(255,255,255,0.4)",
+                      background:
+                        active || isHoveredTag
+                          ? `${color}18`
+                          : "rgba(6,11,24,0.3)",
+                      color: active || isHoveredTag ? color : "#ffffff",
                       fontSize: 12,
                       fontWeight: 700,
                       letterSpacing: "0.1em",
@@ -236,7 +260,7 @@ const WellnessPage = () => {
                 gap: 20,
               }}
             >
-              {filtered.map((cat, i) => {
+              {filtered.map((cat) => {
                 const isHov = hovered === cat.id;
                 return (
                   <Link
@@ -246,17 +270,20 @@ const WellnessPage = () => {
                     onMouseLeave={() => setHovered(null)}
                     style={{
                       position: "relative",
-                      background: "#0a1120",
-                      border: isHov ? `1px solid ${cat.accent}50` : "1px solid rgba(255,255,255,0.07)",
+                      background: "#ffffff", // WHITE CARD
+                      border: isHov
+                        ? `1px solid ${cat.accent}50`
+                        : "1px solid rgba(0,0,0,0.06)",
                       borderRadius: 20,
                       padding: "28px 28px 24px",
                       cursor: "pointer",
-                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      transition:
+                        "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                       transform: isHov ? "translateY(-4px)" : "translateY(0)",
                       boxShadow: isHov
-                        ? `0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px ${cat.accent}20, inset 0 1px 0 rgba(255,255,255,0.08)`
-                        : "0 4px 20px rgba(0,0,0,0.2)",
-                      backdropFilter: "blur(12px)",
+                        ? "0 18px 40px rgba(0,0,0,0.18)"
+                        : "0 4px 18px rgba(0,0,0,0.12)",
+                      backdropFilter: "none",
                       overflow: "hidden",
                       textDecoration: "none",
                       display: "block",
@@ -290,8 +317,8 @@ const WellnessPage = () => {
                           width: 48,
                           height: 48,
                           borderRadius: 14,
-                          background: `${cat.accent}15`,
-                          border: `1px solid ${cat.accent}30`,
+                          background: `${cat.accent}10`,
+                          border: `1px solid ${cat.accent}40`,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -303,7 +330,14 @@ const WellnessPage = () => {
                       >
                         {cat.icon}
                       </div>
-                      <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: 6 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column" as const,
+                          alignItems: "flex-end",
+                          gap: 6,
+                        }}
+                      >
                         <span
                           style={{
                             fontSize: 10,
@@ -318,7 +352,13 @@ const WellnessPage = () => {
                         >
                           {cat.tag}
                         </span>
-                        <span style={{ fontSize: 12, color: "#ffffff", fontWeight: 500 }}>
+                        <span
+                          style={{
+                            fontSize: 12,
+                            color: "#1b1f3b",
+                            fontWeight: 500,
+                          }}
+                        >
                           {cat.count} {cat.count === 1 ? "test" : "tests"}
                         </span>
                       </div>
@@ -329,7 +369,7 @@ const WellnessPage = () => {
                       style={{
                         fontSize: 20,
                         fontWeight: 700,
-                        color: "#fff",
+                        color: "#060b18",
                         margin: "0 0 10px",
                         letterSpacing: "-0.02em",
                         lineHeight: 1.2,
@@ -342,7 +382,7 @@ const WellnessPage = () => {
                     <p
                       style={{
                         fontSize: 14,
-                        color: "rgba(255,255,255,0.9)",
+                        color: "rgba(6,11,24,0.75)",
                         margin: "0 0 24px",
                         lineHeight: 1.6,
                       }}
@@ -356,9 +396,15 @@ const WellnessPage = () => {
                         width: "100%",
                         padding: "12px 0",
                         borderRadius: 12,
-                      border: `1px solid ${isHov ? cat.accent : 'rgba(255,255,255,0.6)'}`,
-                      background: isHov ? `linear-gradient(135deg, ${cat.accent}25, ${cat.accent}10)` : "transparent",
-                      color: isHov ? cat.accent : "rgba(255,255,255,0.85)",
+                        border: `1px solid ${
+                          isHov ? cat.accent : "rgba(6,11,24,0.12)"
+                        }`,
+                        background: isHov
+                          ? `linear-gradient(135deg, ${cat.accent}15, ${cat.accent}05)`
+                          : "rgba(6,11,24,0.02)",
+                        color: isHov
+                          ? cat.accent
+                          : "rgba(6,11,24,0.8)",
                         fontSize: 13,
                         fontWeight: 700,
                         letterSpacing: "0.06em",
@@ -374,7 +420,9 @@ const WellnessPage = () => {
                         style={{
                           display: "inline-block",
                           transition: "transform 0.3s ease",
-                          transform: isHov ? "translateX(4px)" : "translateX(0)",
+                          transform: isHov
+                            ? "translateX(4px)"
+                            : "translateX(0)",
                         }}
                       >
                         →
@@ -386,17 +434,33 @@ const WellnessPage = () => {
             </div>
           </div>
         </section>
+
         <CategoryPageBottom
-          benefitsTitle="Why Choose Wellness Testing?"
+          benefitsTitle="Why should I Test?"
           benefits={[
-            { icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
-            { icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
-            { icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
+            {
+              icon: Shield,
+              title: "Early Detection",
+              description: "Identify issues before they become serious",
+            },
+            {
+              icon: Activity,
+              title: "Optimise Performance",
+              description: "Monitor biomarkers to enhance wellbeing",
+            },
+            {
+              icon: Heart,
+              title: "Peace of Mind",
+              description: "Confidence in your health status",
+            },
           ]}
         />
       </main>
-      
+
       <Footer />
-    </>;
+    </>
+  );
 };
+
 export default WellnessPage;
+```
