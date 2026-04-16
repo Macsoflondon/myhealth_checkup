@@ -31,7 +31,7 @@ const heroSlides = [
     image: heroActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
-    objectPosition: "center 30%",
+    objectPosition: "center 15%",
   },
   {
     image: heroCompare,
