@@ -194,7 +194,7 @@ const Hero = () => {
                 {trustSignals.map((signal, index) => (
                   <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm text-white whitespace-nowrap">
                     <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/70 flex-shrink-0" />
-                    <span className="font-semibold whitespace-nowrap">{signal.text}</span>
+                    <span className="font-semibold whitespace-nowrap text-tertiary">{signal.text}</span>
                   </div>
                 ))}
               </div>
