@@ -294,6 +294,7 @@ const WellnessPage = () => {
               >
                 Browse Tests by{" "}
                 <span
+                  className="text-primary-foreground"
                   style={{
                     background: "linear-gradient(135deg, #00d4c8, #e91e8c)",
                     WebkitBackgroundClip: "text",
