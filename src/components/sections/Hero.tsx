@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroEmpowered from "@/assets/hero/hero-empowered-results.jpg";
 import heroClinic from "@/assets/hero/hero-clinic-ease.jpg";
@@ -26,6 +27,7 @@ const heroSlides = [
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 68%",
+    mobileObjectPosition: "65% center",
   },
   {
     image: heroActive,
@@ -60,6 +62,7 @@ const trustSignals = [
 
 const Hero = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -94,7 +97,7 @@ const Hero = () => {
             width={1920}
             height={1080}
             fetchPriority={i === 0 ? "high" : undefined}
-            style={{ objectPosition: s.objectPosition }}
+            style={{ objectPosition: isMobile && (s as any).mobileObjectPosition ? (s as any).mobileObjectPosition : s.objectPosition }}
             className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}
