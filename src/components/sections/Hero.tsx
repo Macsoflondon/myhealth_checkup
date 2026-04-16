@@ -158,7 +158,7 @@ const Hero = () => {
               </div>
 
               <div className="max-w-[855px] mx-auto">
-                <div className="bg-white/8 backdrop-blur-md rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-[#081129] shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
+                <div className="bg-white/8 backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border border-primary border-solid rounded-sm shadow-sm">
                   <div className="relative">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                     <input
