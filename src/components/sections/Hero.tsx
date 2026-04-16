@@ -62,6 +62,7 @@ const trustSignals = [
 
 const Hero = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
