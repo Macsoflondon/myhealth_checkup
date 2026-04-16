@@ -178,7 +178,7 @@ const Hero = () => {
                     <p className="text-[10px] sm:text-xs font-semibold text-white mb-1.5 sm:mb-2 uppercase tracking-[0.15em] border-primary border border-solid shadow-sm rounded-sm">
                       Popular Searches
                     </p>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center border-primary border border-solid rounded-sm shadow-sm">
                       {popularSearches.map((search, index) => (
                         <button
                           key={index}
