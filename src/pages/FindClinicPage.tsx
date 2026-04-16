@@ -325,9 +325,9 @@ const FindClinicPage = () => {
         </section>
 
         {/* Search & Filters */}
-        <section className="py-8">
+        <section className="py-6 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-5">
               {/* Postcode Search */}
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">Search by Postcode</label>
