@@ -91,20 +91,20 @@ const ClinicAndHelpSection = () => {
                 </div>
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6">
+                <div className="flex flex-row gap-2 sm:gap-3 justify-center mb-6 flex-wrap">
                   <Button
                     asChild
-                    size="lg"
-                    className="bg-brand-turquoise hover:bg-brand-pink text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300"
+                    size="sm"
+                    className="bg-brand-turquoise hover:bg-brand-pink text-white px-3 sm:px-5 py-2 text-xs sm:text-sm rounded-xl transition-colors duration-300 whitespace-nowrap"
                   >
                     <Link to="/find-clinic">Find your nearest clinic</Link>
                   </Button>
                   <Button
                     asChild
-                    size="lg"
-                    className="bg-brand-pink hover:bg-brand-turquoise text-white px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300"
+                    size="sm"
+                    className="bg-brand-pink hover:bg-brand-turquoise text-white px-3 sm:px-5 py-2 text-xs sm:text-sm rounded-xl transition-colors duration-300 whitespace-nowrap"
                   >
-                    <Link to="/find-clinic">Browse all clinic locations</Link>
+                    <Link to="/find-clinic">Browse all clinics</Link>
                   </Button>
                 </div>
 
