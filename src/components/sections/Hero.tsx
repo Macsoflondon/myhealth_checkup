@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroEmpowered from "@/assets/hero/hero-empowered-results.jpg";
 import heroClinic from "@/assets/hero/hero-clinic-ease.jpg";
