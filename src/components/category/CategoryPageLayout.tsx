@@ -148,6 +148,15 @@ export function CategoryPageLayout({
     badgeColor: t.badgeColor,
   }));
 
+  // Derive per-filter accent colors from each tag's first matching test badgeColor
+  const filterColors = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const t of tests) {
+      if (t.tag && !map[t.tag]) map[t.tag] = t.badgeColor;
+    }
+    return map;
+  }, [tests]);
+
   return (
     <>
       <Helmet>
@@ -183,6 +192,7 @@ export function CategoryPageLayout({
                 resultCount={filtered.length}
                 searchTerm={search || undefined}
                 compareCount={compared.length}
+                filterColors={filterColors}
               />
 
               {/* Cards grid */}
