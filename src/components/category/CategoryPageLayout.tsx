@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { CategoryHero } from "./CategoryHero";
+import { CategoryStandardHero } from "./CategoryStandardHero";
 import { CategoryFilters } from "./CategoryFilters";
 import { CategoryCompareDrawer, CompareItem } from "./CategoryCompareDrawer";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
@@ -50,6 +50,7 @@ export interface CategoryPageLayoutProps {
   seoKeywords?: string;
   canonicalUrl: string;
   /* Hero */
+  pillLabel: string;
   headline: string;
   subtitle: string;
   searchPlaceholder: string;
@@ -73,6 +74,7 @@ export function CategoryPageLayout({
   seoDescription,
   seoKeywords,
   canonicalUrl,
+  pillLabel,
   headline,
   subtitle,
   searchPlaceholder,
@@ -167,14 +169,7 @@ export function CategoryPageLayout({
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
 
-          <CategoryHero
-            headline={headline}
-            subtitle={subtitle}
-            searchPlaceholder={searchPlaceholder}
-            trustStats={trustStats}
-            search={search}
-            onSearchChange={setSearch}
-          />
+          <CategoryStandardHero pillLabel={pillLabel} benefits={benefits} />
 
           {/* Filter + Sort + Cards */}
           <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-primary-foreground">
