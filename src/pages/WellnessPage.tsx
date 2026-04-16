@@ -556,26 +556,6 @@ const WellnessPage = () => {
           </div>
         </section>
 
-        <CategoryPageBottom
-          benefitsTitle=""
-          benefits={[
-            {
-              icon: Shield,
-              title: "Early Detection",
-              description: "Identify issues before they become serious",
-            },
-            {
-              icon: Activity,
-              title: "Optimise Performance",
-              description: "Monitor biomarkers to enhance wellbeing",
-            },
-            {
-              icon: Heart,
-              title: "Peace of Mind",
-              description: "Confidence in your health status",
-            },
-          ]}
-        />
       </main>
 
       <Footer />
