@@ -85,64 +85,26 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const highlightedItems: string[] = ["Most Popular Tests"];
 
   const renderNavItem = (item: typeof primaryNavigationItems[0]) => {
-    // Check if this is the "Most Popular Tests" item
     const isPopularTests = item.name === "Most Popular Tests";
     const hasAccent = highlightedItems.includes(item.name);
-    
+
     return (
-      <div 
+      <div
         key={item.path}
         className="relative nav-item-wrapper"
         style={{ overflow: 'visible' }}
       >
-        {item.hasDropdown ? (
-          <button
-            type="button"
-            aria-haspopup="menu"
-            aria-expanded={activeDropdown === item.name}
-            className={`group relative font-heading text-sm md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 ${
-              hasAccent
-                ? "after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-brand-turquoise"
-                : "hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150"
-            } ${
-              (item as any).highlighted 
-                ? "text-brand-pink"
-                : "text-[#1a9baa] hover:text-brand-pink"
-            } ${activeDropdown === item.name ? 'text-brand-pink' : ''}`}
-            onClick={(e) => handleDropdownToggle(e, item.name)}
-          >
-            {item.name}
-            <ChevronDown className={`w-3 h-3 transition-transform ${
-              activeDropdown === item.name ? 'rotate-180' : ''
-            }`} />
-          </button>
-        ) : (
-          <Link
-            to={item.path}
-            className={`group relative font-heading text-sm md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-              hasAccent
-                ? "text-brand-pink font-bold"
-                : "text-[#1a9baa] hover:text-brand-pink"
-            }`}
-            onClick={handleItemClick}
-          >
-            {item.name}
-          </Link>
-        )}
-        
-        {/* Mega Menu Dropdown */}
-        {item.hasDropdown && activeDropdown === item.name && (
-          <MegaMenuDropdown
-            itemName={item.name}
-            itemPath={item.path}
-            popularTests={isPopularTests ? popularTestsFromDb : undefined}
-            goodbodyTests={!isPopularTests && shouldShowGoodbodyTests(item.name) ? getTestsForNavigation(item.name.toUpperCase()) : undefined}
-            categories={!isPopularTests && !shouldShowGoodbodyTests(item.name) ? getFilteredCategories(item.name) : undefined}
-            onItemClick={handleItemClick}
-            onClose={handleCloseDropdown}
-            isMobile={isMobile}
-          />
-        )}
+        <Link
+          to={item.path}
+          className={`group relative font-heading text-sm md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+            hasAccent
+              ? "text-brand-pink font-bold"
+              : "text-[#1a9baa] hover:text-brand-pink"
+          }`}
+          onClick={handleItemClick}
+        >
+          {item.name}
+        </Link>
       </div>
     );
   };
