@@ -190,18 +190,23 @@ const Hero = () => {
               </div>
 
 
-              <div className="mt-4 sm:mt-6 flex flex-nowrap justify-start sm:justify-center gap-x-5 sm:gap-x-7 lg:gap-x-9 overflow-x-auto scrollbar-hide pb-1">
-                {trustSignals.map((signal, index) => (
-                  <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm text-white whitespace-nowrap">
-                    <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white/70 flex-shrink-0" />
-                    <span className="font-semibold whitespace-nowrap text-tertiary">{signal.text}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
       </section>
+
+      <div className="bg-white py-1.5 sm:py-2 px-2 sm:px-4 border-b border-border">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-center gap-x-4 sm:gap-x-7 lg:gap-x-9 flex-nowrap">
+            {trustSignals.map((signal, index) => (
+              <div key={index} className="flex items-center gap-1.5 text-xs sm:text-sm whitespace-nowrap">
+                <signal.icon className="w-4 h-4 sm:w-5 sm:h-5 text-tertiary flex-shrink-0" />
+                <span className="font-semibold whitespace-nowrap text-tertiary">{signal.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 };
