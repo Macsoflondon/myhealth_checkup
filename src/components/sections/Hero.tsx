@@ -40,7 +40,7 @@ const heroSlides = [
     headline: "Compare. Book. Test.",
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
     objectPosition: "center 42%",
-    mobileObjectPosition: "30% center",
+    mobileObjectPosition: "58% center",
   },
 ];
 
