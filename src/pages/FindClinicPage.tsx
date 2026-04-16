@@ -303,19 +303,19 @@ const FindClinicPage = () => {
         </PageBanner>
 
         {/* Benefits Row */}
-        <section className="py-10 bg-muted/30">
+        <section className="py-4 sm:py-5 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-7xl mx-auto">
               {benefits.map((benefit, index) => {
                 const IconComponent = benefit.icon;
                 return (
-                  <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-14 h-14 rounded-full bg-brand-pink/10 flex items-center justify-center mx-auto mb-4">
-                        <IconComponent className="w-7 h-7 text-brand-pink" />
+                  <Card key={index} className="border-none shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-3 sm:p-4 text-center">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-brand-pink/10 flex items-center justify-center mx-auto mb-2">
+                        <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 text-brand-pink" />
                       </div>
-                      <h3 className="font-heading font-bold text-lg mb-2">{benefit.title}</h3>
-                      <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                      <h3 className="font-heading font-bold text-sm sm:text-base mb-1 leading-tight">{benefit.title}</h3>
+                      <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">{benefit.description}</p>
                     </CardContent>
                   </Card>
                 );
