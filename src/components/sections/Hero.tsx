@@ -132,22 +132,22 @@ const Hero = () => {
                 <span className="block w-12 sm:w-20 h-[2px] sm:h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 justify-center items-center mb-4 sm:mb-6">
+              <div className="flex flex-row gap-2 sm:gap-3 justify-center items-center mb-4 sm:mb-6 flex-wrap">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129]"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm transition-all duration-300 border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129] whitespace-nowrap"
                 >
                   Find your test
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129]"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm transition-all duration-300 border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129] whitespace-nowrap"
                 >
                   Compare by symptom
                 </button>
                 <button
                   onClick={() => navigate("/compare/goals")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-6 sm:px-9 py-2.5 sm:py-3.5 text-sm sm:text-base transition-all duration-300 w-full sm:w-auto border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129]"
+                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold rounded-full px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm transition-all duration-300 border shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_2px_8px_rgba(0,0,0,0.08)] text-white border-[#081129] whitespace-nowrap"
                 >
                   Compare by goal
                 </button>
