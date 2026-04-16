@@ -211,13 +211,3 @@ const Hero = () => {
   );
 };
 
-export default Hero;
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-};
-
-export default Hero;
