@@ -178,12 +178,12 @@ const Hero = () => {
                     <p className="text-[10px] sm:text-xs font-semibold text-white mb-1.5 sm:mb-2 uppercase tracking-[0.15em] border-primary shadow-sm rounded-sm border-0 border-none">
                       Popular Searches
                     </p>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center border-primary border border-solid rounded-sm shadow-sm">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center pt-1 border-primary border border-solid rounded-sm shadow-sm">
                       {popularSearches.map((search, index) => (
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 rounded-full transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap"
+                          className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 rounded-full transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap ${index >= 4 ? "hidden sm:inline-flex" : ""}`}
                         >
                           {search.name}
                         </button>
