@@ -14,7 +14,8 @@ const heroSlides = [
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
-    objectPosition: "center 68%",
+    objectPosition: "center 35%",
+    mobileObjectPosition: "center 30%",
   },
   {
     image: heroClinic,
