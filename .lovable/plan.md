@@ -1,34 +1,23 @@
 
-The user wants two mobile-specific fixes in the Hero section:
+The user wants the man in the "Your Results. Your Control." hero slide (heroEmpowered image) repositioned lower so he sits more centred on desktop. Currently he appears too high — head is cut at the top.
 
-1. **Popular Searches container (mobile)**: 
-   - Show only 4 chips on mobile instead of 6 (still show all 6 on desktop)
-   - Add top spacing so chips don't sit flush against the container edge
-
-2. **CTA buttons "Find your test / Compare by symptom / Compare by goal"**:
-   - Must always render as 3 buttons in a single row (currently `flex-wrap` lets them wrap or stack awkwardly on mobile)
-   - Remove `flex-wrap` and tighten sizing so they fit on a single mobile row
-
-## Approach
-
-**File to edit**: `src/components/sections/Hero.tsx`
-
-### Fix 1 — CTA row (always 3-in-a-line)
-Current:
+Looking at Hero.tsx, the slide has:
 ```
-flex flex-row gap-2 sm:gap-3 justify-center items-center mb-4 sm:mb-6 flex-wrap
+objectPosition: "center 68%"
 ```
-- Remove `flex-wrap`
-- Reduce mobile padding (`px-2.5 py-1.5`) and font (`text-[11px]`) so all 3 fit on a 360px viewport
-- Keep desktop sizing intact via `sm:` prefixes
 
-### Fix 2 — Popular Searches (4 on mobile, 6 on desktop)
-- Add a `sm:hidden` class to the last 2 chips (indexes 4, 5 → Advanced Well Woman / Advanced Well Man) so only the first 4 show on mobile
-- Add `pt-1` (small top padding) to the chips wrapper so they breathe inside the container
-- Keep the wrapper border styling already in place
+With `object-cover`, a higher percentage on the Y axis pulls the image UP (showing more of the bottom). To move the subject DOWN in the frame (showing more of his body, less head crop), we need a LOWER percentage — pull the image DOWN to reveal the top of his head.
 
-### Implementation details
-- Render chips with conditional class: `index >= 4 ? "hidden sm:inline-flex" : ""` appended
-- CTA buttons: change wrapper to `flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6` and reduce mobile button padding from `px-3 py-2 text-xs` to `px-2.5 py-1.5 text-[11px]`
+Wait — re-checking: `object-position: center 68%` means the point at 68% down the image is anchored to the center of the container. Higher % = more of the top is visible. Lower % = more of the bottom is visible.
 
-No other files affected. No data/logic changes — purely Tailwind class adjustments.
+The user says he's positioned "too high" — meaning his head is near the top of the visible frame. To move him toward the centre, we need to push him DOWN visually, which means showing MORE of the top of the source image — increase the Y % further, OR if his head is being cut off at top, decrease Y % to reveal more above.
+
+From the screenshot: his head is cut at the very top. We need to reveal more of his head (top of source image) → use a LOWER Y percentage like `center 40%` or `center 35%`.
+
+## Plan
+
+**File:** `src/components/sections/Hero.tsx`
+
+**Change:** Update the first slide (heroEmpowered) `objectPosition` from `"center 68%"` to `"center 35%"` to shift the subject down into the centre of the frame on desktop.
+
+**Mobile:** Add a `mobileObjectPosition` if needed, but the user specified desktop only — leave mobile behaviour to fall back to the same value (or add explicit mobile override `"center 30%"` if mobile composition differs). Will add `mobileObjectPosition: "center 30%"` to keep mobile sensible.
