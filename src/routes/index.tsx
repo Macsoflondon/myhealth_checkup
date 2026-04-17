@@ -26,19 +26,14 @@ const AdminTestMapperPage = lazy(() => import("@/pages/AdminTestMapperPage"));
 const AdminScraperDashboardPage = lazy(() => import("@/pages/AdminScraperDashboardPage"));
 const AdminTestDashboardPage = lazy(() => import("@/pages/AdminTestDashboardPage"));
 
-const AdminFallback = () => (
-  <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading admin…</div>
-);
-const wrapAdmin = (Component: React.ComponentType) => (
-  <AdminRoute>
-    <Suspense fallback={<AdminFallback />}>
-      <Component />
-    </Suspense>
-  </AdminRoute>
-);
-
 const PageFallback = () => (
   <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
+);
+
+const wrapAdmin = (Component: React.ComponentType) => (
+  <AdminRoute>
+    <Component />
+  </AdminRoute>
 );
 
 export function AppRoutes() {
