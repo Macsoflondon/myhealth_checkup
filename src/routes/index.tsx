@@ -37,43 +37,49 @@ const wrapAdmin = (Component: React.ComponentType) => (
   </AdminRoute>
 );
 
+const PageFallback = () => (
+  <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
+);
+
 export function AppRoutes() {
   return (
-    <Routes>
-      {/* Home */}
-      <Route path="/" element={<Index />} />
-      <Route path="/test-categories" element={<TestCategoriesPage />} />
-      
-      {/* Admin Auth */}
-      <Route path="/admin/login" element={<Suspense fallback={<AdminFallback />}><AdminAuth /></Suspense>} />
+    <Suspense fallback={<PageFallback />}>
+      <Routes>
+        {/* Home */}
+        <Route path="/" element={<Index />} />
+        <Route path="/test-categories" element={<TestCategoriesPage />} />
 
-      {/* Admin Routes - Protected with server-side role verification */}
-      <Route path="/admin/clinic-upload" element={wrapAdmin(AdminClinicUploadPage)} />
-      <Route path="/admin/clinic-scraper" element={wrapAdmin(AdminClinicScraperPage)} />
-      <Route path="/admin/quick-clinic-import" element={wrapAdmin(AdminQuickClinicImportPage)} />
-      <Route path="/admin/test-upload" element={wrapAdmin(AdminTestUploadPage)} />
-      <Route path="/admin/data-refresh" element={wrapAdmin(AdminDataRefreshPage)} />
-      <Route path="/admin/scrapers" element={wrapAdmin(AdminScraperDashboardPage)} />
-      <Route path="/admin/test-mapper" element={wrapAdmin(AdminTestMapperPage)} />
-      <Route path="/admin/test-dashboard" element={wrapAdmin(AdminTestDashboardPage)} />
-      
-      {/* Feature Routes */}
-      {featureRoutes}
-      
-      {/* Test Routes */}
-      {testRoutes}
-      
-      {/* Authentication & Dashboard Routes */}
-      {authRoutes}
-      
-      {/* Content & Information Routes */}
-      {contentRoutes}
-      
-      {/* Compliance & Legal Routes */}
-      {complianceRoutes}
-      
-      {/* 404 - Must be last */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* Admin Auth */}
+        <Route path="/admin/login" element={<AdminAuth />} />
+
+        {/* Admin Routes - Protected with server-side role verification */}
+        <Route path="/admin/clinic-upload" element={wrapAdmin(AdminClinicUploadPage)} />
+        <Route path="/admin/clinic-scraper" element={wrapAdmin(AdminClinicScraperPage)} />
+        <Route path="/admin/quick-clinic-import" element={wrapAdmin(AdminQuickClinicImportPage)} />
+        <Route path="/admin/test-upload" element={wrapAdmin(AdminTestUploadPage)} />
+        <Route path="/admin/data-refresh" element={wrapAdmin(AdminDataRefreshPage)} />
+        <Route path="/admin/scrapers" element={wrapAdmin(AdminScraperDashboardPage)} />
+        <Route path="/admin/test-mapper" element={wrapAdmin(AdminTestMapperPage)} />
+        <Route path="/admin/test-dashboard" element={wrapAdmin(AdminTestDashboardPage)} />
+
+        {/* Feature Routes */}
+        {featureRoutes}
+
+        {/* Test Routes */}
+        {testRoutes}
+
+        {/* Authentication & Dashboard Routes */}
+        {authRoutes}
+
+        {/* Content & Information Routes */}
+        {contentRoutes}
+
+        {/* Compliance & Legal Routes */}
+        {complianceRoutes}
+
+        {/* 404 - Must be last */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 }
