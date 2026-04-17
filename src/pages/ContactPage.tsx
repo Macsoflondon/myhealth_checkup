@@ -86,7 +86,7 @@ const ContactPage = () => {
       <main className="flex-grow bg-[#081129] md:bg-white">
         
         <PageBanner title="You're Never Alone on Your Health Journey" subtitle="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way." />
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-12 bg-[primary-on-container]">
           <div className="max-w-6xl mx-auto">
             {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
