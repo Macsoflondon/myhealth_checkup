@@ -77,8 +77,6 @@ const Index = () => {
           />
           <link rel="canonical" href="https://myhealthcheckup.co.uk/" />
 
-          <link rel="preload" as="image" href="/src/assets/hero-bg-tubes.jpeg" type="image/jpeg" />
-
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
           <meta property="og:title" content="myhealth checkup | Compare UK Health Tests" />

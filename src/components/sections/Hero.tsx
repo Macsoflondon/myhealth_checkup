@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-import heroEmpowered from "@/assets/hero/hero-empowered-results.jpg";
-import heroClinic from "@/assets/hero/hero-clinic-ease.jpg";
-import heroHomeKit from "@/assets/hero/hero-home-kit.jpg";
-import heroActive from "@/assets/hero/hero-active-lifestyle.jpg";
-import heroCompare from "@/assets/hero/hero-compare-decide.jpg";
+import heroEmpowered from "@/assets/hero/hero-empowered-results.webp";
+import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
+import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
+import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
+import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
 const heroSlides = [
   {

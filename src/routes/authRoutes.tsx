@@ -1,11 +1,13 @@
+import { lazy } from "react";
 import { Route } from "react-router-dom";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import Auth from "@/pages/Auth";
-import ResetPassword from "@/pages/ResetPassword";
-import Dashboard from "@/pages/Dashboard";
-import ClientPortal from "@/pages/ClientPortal";
-import HealthDashboardPage from "@/pages/HealthDashboardPage";
-import NotificationHistoryPage from "@/pages/NotificationHistoryPage";
+
+const Auth = lazy(() => import("@/pages/Auth"));
+const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const ClientPortal = lazy(() => import("@/pages/ClientPortal"));
+const HealthDashboardPage = lazy(() => import("@/pages/HealthDashboardPage"));
+const NotificationHistoryPage = lazy(() => import("@/pages/NotificationHistoryPage"));
 
 export const authRoutes = (
   <>

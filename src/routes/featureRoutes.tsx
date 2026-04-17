@@ -1,24 +1,26 @@
+import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
-import CompareTests from "@/pages/CompareTests";
-import IntelligentSearchPage from "@/pages/IntelligentSearchPage";
-import RecommendationsPage from "@/pages/RecommendationsPage";
-import ReviewSystem from "@/components/reviews/ReviewSystem";
-import AssistedTestFinderPage from "@/pages/AssistedTestFinderPage";
-import FindClinicPage from "@/pages/FindClinicPage";
-import ClinicDetailPage from "@/pages/ClinicDetailPage";
-import ProviderProfilePage from "@/pages/ProviderProfilePage";
-import ProviderTestCatalogPage from "@/pages/ProviderTestCatalogPage";
-import TestDetailPage from "@/pages/TestDetailPage";
-import ProviderComparisonPage from "@/pages/ProviderComparisonPage";
-import ProviderTestsCatalogPage from "@/pages/ProviderTestsCatalogPage";
-import MedichecksTestsCatalogPage from "@/pages/MedichecksTestsCatalogPage";
-import MedichecksMensHealthPage from "@/pages/MedichecksMensHealthPage";
-import BloodTestAnalysisPage from "@/pages/BloodTestAnalysisPage";
-import GoodbodyClinicPage from "@/pages/GoodbodyClinicPage";
-import CompareBySymptomPage from "@/pages/CompareBySymptomPage";
-import CompareByGoalPage from "@/pages/CompareByGoalPage";
-import SymptomDetailPage from "@/pages/SymptomDetailPage";
-import GoalDetailPage from "@/pages/GoalDetailPage";
+
+const CompareTests = lazy(() => import("@/pages/CompareTests"));
+const IntelligentSearchPage = lazy(() => import("@/pages/IntelligentSearchPage"));
+const RecommendationsPage = lazy(() => import("@/pages/RecommendationsPage"));
+const ReviewSystem = lazy(() => import("@/components/reviews/ReviewSystem"));
+const AssistedTestFinderPage = lazy(() => import("@/pages/AssistedTestFinderPage"));
+const FindClinicPage = lazy(() => import("@/pages/FindClinicPage"));
+const ClinicDetailPage = lazy(() => import("@/pages/ClinicDetailPage"));
+const ProviderProfilePage = lazy(() => import("@/pages/ProviderProfilePage"));
+const ProviderTestCatalogPage = lazy(() => import("@/pages/ProviderTestCatalogPage"));
+const TestDetailPage = lazy(() => import("@/pages/TestDetailPage"));
+const ProviderComparisonPage = lazy(() => import("@/pages/ProviderComparisonPage"));
+const ProviderTestsCatalogPage = lazy(() => import("@/pages/ProviderTestsCatalogPage"));
+const MedichecksTestsCatalogPage = lazy(() => import("@/pages/MedichecksTestsCatalogPage"));
+const MedichecksMensHealthPage = lazy(() => import("@/pages/MedichecksMensHealthPage"));
+const BloodTestAnalysisPage = lazy(() => import("@/pages/BloodTestAnalysisPage"));
+const GoodbodyClinicPage = lazy(() => import("@/pages/GoodbodyClinicPage"));
+const CompareBySymptomPage = lazy(() => import("@/pages/CompareBySymptomPage"));
+const CompareByGoalPage = lazy(() => import("@/pages/CompareByGoalPage"));
+const SymptomDetailPage = lazy(() => import("@/pages/SymptomDetailPage"));
+const GoalDetailPage = lazy(() => import("@/pages/GoalDetailPage"));
 
 export const featureRoutes = (
   <>
