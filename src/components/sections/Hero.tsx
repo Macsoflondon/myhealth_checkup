@@ -48,9 +48,9 @@ const heroSlides = [
 const popularSearches = [
   { name: "Full Blood Count", route: "/compare?search=full+blood+count" },
   { name: "Thyroid Function", route: "/compare?search=thyroid" },
-  { name: "Well Woman's", route: "/compare?search=well+woman" },
+  { name: "Advanced Well Woman", route: "/compare?search=well+woman" },
   { name: "Testosterone", route: "/compare?search=testosterone" },
-  { name: "Well Men's", route: "/compare?search=well+man" },
+  { name: "Advanced Well Man", route: "/compare?search=well+man" },
   { name: "Menopause Blood Test", route: "/compare?search=menopause" },
 ];
 
