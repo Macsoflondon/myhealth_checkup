@@ -184,7 +184,7 @@ const Hero = () => {
                         <button
                           key={index}
                           onClick={() => navigate(search.route)}
-                          className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 rounded-full transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap ${index >= 4 ? "hidden sm:inline-flex" : ""}`}
+                          className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] ${index >= 4 ? "hidden sm:inline-flex" : ""}`}
                         >
                           {search.name}
                         </button>
