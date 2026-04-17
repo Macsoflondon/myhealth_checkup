@@ -51,6 +51,7 @@ const popularSearches = [
   { name: "Well Woman's", route: "/compare?search=well+woman" },
   { name: "Testosterone", route: "/compare?search=testosterone" },
   { name: "Well Men's", route: "/compare?search=well+man" },
+  { name: "Menopause Blood Test", route: "/compare?search=menopause" },
 ];
 
 const trustSignals = [
