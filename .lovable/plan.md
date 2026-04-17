@@ -1,23 +1,41 @@
 
-The user wants the man in the "Your Results. Your Control." hero slide (heroEmpowered image) repositioned lower so he sits more centred on desktop. Currently he appears too high — head is cut at the top.
+Update the `popularSearches` array in `src/components/sections/Hero.tsx`.
 
-Looking at Hero.tsx, the slide has:
-```
-objectPosition: "center 68%"
-```
+**Current:**
+1. Full Blood Count
+2. Thyroid Function
+3. Vitamin D
+4. Liver Function
+5. Advanced Well Woman
+6. Advanced Well Man
 
-With `object-cover`, a higher percentage on the Y axis pulls the image UP (showing more of the bottom). To move the subject DOWN in the frame (showing more of his body, less head crop), we need a LOWER percentage — pull the image DOWN to reveal the top of his head.
+**New:**
+1. Full Blood Count
+2. Thyroid Function
+3. Well Woman's
+4. Testosterone
+5. Well Men's
+6. (drop one — keep at 6 total? User listed 3 replacements for 2 removals)
 
-Wait — re-checking: `object-position: center 68%` means the point at 68% down the image is anchored to the center of the container. Higher % = more of the top is visible. Lower % = more of the bottom is visible.
+User removes 2 (Vitamin D, Liver Function) and adds 3 (Well Woman's, Testosterone, Well Men's). Net = 7. But existing array already had "Advanced Well Woman" and "Advanced Well Man" at positions 5–6. The new "Well Woman's" / "Well Men's" likely replace those. So final list:
 
-The user says he's positioned "too high" — meaning his head is near the top of the visible frame. To move him toward the centre, we need to push him DOWN visually, which means showing MORE of the top of the source image — increase the Y % further, OR if his head is being cut off at top, decrease Y % to reveal more above.
+1. Full Blood Count
+2. Thyroid Function
+3. Well Woman's → `/compare?search=well+woman`
+4. Testosterone → `/compare?search=testosterone`
+5. Well Men's → `/compare?search=well+man`
+6. (drop — only 5 chips, or keep 6)
 
-From the screenshot: his head is cut at the very top. We need to reveal more of his head (top of source image) → use a LOWER Y percentage like `center 40%` or `center 35%`.
+Mobile shows first 4 only (per existing `index >= 4` rule), so order matters: put the 3 new prominent ones in positions 3–5.
 
-## Plan
+**Final array (5 items, clean):**
+1. Full Blood Count
+2. Thyroid Function
+3. Well Woman's
+4. Testosterone
+5. Well Men's
 
-**File:** `src/components/sections/Hero.tsx`
+Mobile (first 4): Full Blood Count, Thyroid Function, Well Woman's, Testosterone.
+Desktop: all 5.
 
-**Change:** Update the first slide (heroEmpowered) `objectPosition` from `"center 68%"` to `"center 35%"` to shift the subject down into the centre of the frame on desktop.
-
-**Mobile:** Add a `mobileObjectPosition` if needed, but the user specified desktop only — leave mobile behaviour to fall back to the same value (or add explicit mobile override `"center 30%"` if mobile composition differs). Will add `mobileObjectPosition: "center 30%"` to keep mobile sensible.
+**File:** `src/components/sections/Hero.tsx` — replace `popularSearches` array (lines ~57–64).
