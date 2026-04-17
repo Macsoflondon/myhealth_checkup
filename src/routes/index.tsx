@@ -4,24 +4,38 @@
  */
 
 import { Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Index from "@/pages/Index";
 import NotFound from "@/pages/NotFound";
-import AdminClinicUploadPage from "@/pages/AdminClinicUploadPage";
-import AdminClinicScraperPage from "@/pages/AdminClinicScraperPage";
-import AdminQuickClinicImportPage from "@/pages/AdminQuickClinicImportPage";
-import AdminTestUploadPage from "@/pages/AdminTestUploadPage";
-import AdminDataRefreshPage from "@/pages/AdminDataRefreshPage";
-import AdminTestMapperPage from "@/pages/AdminTestMapperPage";
-import AdminScraperDashboardPage from "@/pages/AdminScraperDashboardPage";
-import AdminTestDashboardPage from "@/pages/AdminTestDashboardPage";
 import { AdminRoute } from "@/components/auth/AdminRoute";
-import AdminAuth from "@/pages/AdminAuth";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
 import { contentRoutes } from "./contentRoutes";
 import { featureRoutes } from "./featureRoutes";
 import TestCategoriesPage from "@/pages/TestCategoriesPage";
+
+// Lazy-load admin pages — they're only used by admins, no need to bundle in the main chunk.
+const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
+const AdminClinicUploadPage = lazy(() => import("@/pages/AdminClinicUploadPage"));
+const AdminClinicScraperPage = lazy(() => import("@/pages/AdminClinicScraperPage"));
+const AdminQuickClinicImportPage = lazy(() => import("@/pages/AdminQuickClinicImportPage"));
+const AdminTestUploadPage = lazy(() => import("@/pages/AdminTestUploadPage"));
+const AdminDataRefreshPage = lazy(() => import("@/pages/AdminDataRefreshPage"));
+const AdminTestMapperPage = lazy(() => import("@/pages/AdminTestMapperPage"));
+const AdminScraperDashboardPage = lazy(() => import("@/pages/AdminScraperDashboardPage"));
+const AdminTestDashboardPage = lazy(() => import("@/pages/AdminTestDashboardPage"));
+
+const AdminFallback = () => (
+  <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading admin…</div>
+);
+const wrapAdmin = (Component: React.ComponentType) => (
+  <AdminRoute>
+    <Suspense fallback={<AdminFallback />}>
+      <Component />
+    </Suspense>
+  </AdminRoute>
+);
 
 export function AppRoutes() {
   return (
@@ -31,17 +45,17 @@ export function AppRoutes() {
       <Route path="/test-categories" element={<TestCategoriesPage />} />
       
       {/* Admin Auth */}
-      <Route path="/admin/login" element={<AdminAuth />} />
-      
+      <Route path="/admin/login" element={<Suspense fallback={<AdminFallback />}><AdminAuth /></Suspense>} />
+
       {/* Admin Routes - Protected with server-side role verification */}
-      <Route path="/admin/clinic-upload" element={<AdminRoute><AdminClinicUploadPage /></AdminRoute>} />
-      <Route path="/admin/clinic-scraper" element={<AdminRoute><AdminClinicScraperPage /></AdminRoute>} />
-      <Route path="/admin/quick-clinic-import" element={<AdminRoute><AdminQuickClinicImportPage /></AdminRoute>} />
-      <Route path="/admin/test-upload" element={<AdminRoute><AdminTestUploadPage /></AdminRoute>} />
-      <Route path="/admin/data-refresh" element={<AdminRoute><AdminDataRefreshPage /></AdminRoute>} />
-      <Route path="/admin/scrapers" element={<AdminRoute><AdminScraperDashboardPage /></AdminRoute>} />
-      <Route path="/admin/test-mapper" element={<AdminRoute><AdminTestMapperPage /></AdminRoute>} />
-      <Route path="/admin/test-dashboard" element={<AdminRoute><AdminTestDashboardPage /></AdminRoute>} />
+      <Route path="/admin/clinic-upload" element={wrapAdmin(AdminClinicUploadPage)} />
+      <Route path="/admin/clinic-scraper" element={wrapAdmin(AdminClinicScraperPage)} />
+      <Route path="/admin/quick-clinic-import" element={wrapAdmin(AdminQuickClinicImportPage)} />
+      <Route path="/admin/test-upload" element={wrapAdmin(AdminTestUploadPage)} />
+      <Route path="/admin/data-refresh" element={wrapAdmin(AdminDataRefreshPage)} />
+      <Route path="/admin/scrapers" element={wrapAdmin(AdminScraperDashboardPage)} />
+      <Route path="/admin/test-mapper" element={wrapAdmin(AdminTestMapperPage)} />
+      <Route path="/admin/test-dashboard" element={wrapAdmin(AdminTestDashboardPage)} />
       
       {/* Feature Routes */}
       {featureRoutes}
