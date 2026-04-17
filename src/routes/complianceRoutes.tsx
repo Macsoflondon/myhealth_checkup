@@ -1,13 +1,15 @@
+import { lazy } from "react";
 import { Route } from "react-router-dom";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import CookiePolicyPage from "@/pages/CookiePolicyPage";
-import TermsConditionsPage from "@/pages/TermsConditionsPage";
-import AccessibilityPage from "@/pages/AccessibilityPage";
-import ModernSlaveryPage from "@/pages/ModernSlaveryPage";
-import AffiliateDisclosurePage from "@/pages/AffiliateDisclosurePage";
-import FairTradingPolicyPage from "@/pages/FairTradingPolicyPage";
-import HowWeRankPage from "@/pages/HowWeRankPage";
-import LegalPage from "@/pages/LegalPage";
+
+const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
+const CookiePolicyPage = lazy(() => import("@/pages/CookiePolicyPage"));
+const TermsConditionsPage = lazy(() => import("@/pages/TermsConditionsPage"));
+const AccessibilityPage = lazy(() => import("@/pages/AccessibilityPage"));
+const ModernSlaveryPage = lazy(() => import("@/pages/ModernSlaveryPage"));
+const AffiliateDisclosurePage = lazy(() => import("@/pages/AffiliateDisclosurePage"));
+const FairTradingPolicyPage = lazy(() => import("@/pages/FairTradingPolicyPage"));
+const HowWeRankPage = lazy(() => import("@/pages/HowWeRankPage"));
+const LegalPage = lazy(() => import("@/pages/LegalPage"));
 
 export const complianceRoutes = (
   <>
