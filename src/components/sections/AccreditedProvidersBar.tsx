@@ -50,7 +50,7 @@ const AccreditedProvidersBar = () => {
                   <img
                     src={provider.logo}
                     alt={`${provider.name} logo`}
-                    className={`max-h-full max-w-full object-contain ${(id === 'medichecks' || id === 'thriva') ? 'scale-125' : ''}`}
+                    className={`max-h-full max-w-full object-contain ${(id === 'medichecks' || id === 'thriva' || id === 'goodbody-clinic') ? 'scale-125' : ''}`}
                     loading="lazy"
                   />
                 </div>
