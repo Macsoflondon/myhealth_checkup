@@ -2,7 +2,7 @@
 
 export const providerLogos: Record<string, string> = {
   "medichecks": "https://www.medichecks.com/static/version1720697605/frontend/Medichecks/default/en_GB/images/logo.svg",
-  "thriva": "https://thriva.co/images/thriva-logo.svg",
+  "thriva": "/lovable-uploads/provider-thriva.png",
   "randox": "https://www.randoxhealth.com/wp-content/themes/developer starter theme/images/logo.svg",
   "randox-health": "https://www.randoxhealth.com/wp-content/themes/developer starter theme/images/logo.svg",
   "goodbody-clinic": "https://www.goodbodyclinic.com/wp-content/uploads/2023/01/goodbody-clinic-logo.svg",
