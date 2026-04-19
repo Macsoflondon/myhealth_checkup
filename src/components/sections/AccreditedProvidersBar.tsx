@@ -39,7 +39,6 @@ const AccreditedProvidersBar = () => {
           {FEATURED_PROVIDERS.map((id) => {
             const provider = PROVIDER_DETAILS[id];
             if (!provider) return null;
-            const badge = provider.accreditations?.[0] ?? 'Accredited';
 
             return (
               <Link
@@ -57,9 +56,6 @@ const AccreditedProvidersBar = () => {
                 </div>
                 <span className="text-white text-xs font-medium text-center leading-tight">
                   {provider.name}
-                </span>
-                <span className="text-[9px] font-semibold uppercase tracking-wider text-primary bg-primary/15 px-2 py-0.5 rounded-full">
-                  {badge}
                 </span>
               </Link>
             );
