@@ -67,20 +67,20 @@ const Header = ({ className }: HeaderProps) => {
           <header className="bg-[#081129] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-            <div className="container mx-auto px-3 sm:px-4">
+            <div className="container mx-auto px-3 sm:px-4 max-w-full">
               {/* Single row: Logo left, Nav controls right */}
-              <div className="py-4 flex items-center justify-between gap-1.5">
+              <div className="py-2 flex items-center justify-between gap-1 min-w-0">
                 {/* Left: Combined logo with tagline */}
-                <Link to="/" className="flex items-center flex-shrink min-w-0">
+                <Link to="/" className="flex items-center flex-shrink min-w-0 overflow-hidden">
                   <img
                     src={mobileLogo}
-                    alt="myhealth checkup - Your health. Your choice. One trusted platform."
-                    className="h-[80px] xs:h-[90px] sm:h-[100px] w-auto object-contain"
+                    alt="myhealth checkup"
+                    className="h-[56px] xs:h-[64px] sm:h-[72px] w-auto object-contain"
                   />
                 </Link>
 
                 {/* Right: Navigation controls */}
-                <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
+                <nav className="flex items-center gap-0.5 flex-shrink-0" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu isMobile />
                   <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
