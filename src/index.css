@@ -1,10 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Merriweather&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,7 +89,8 @@
     --secondary-foreground: 0 0% 100%;
 
     --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 45%;
+    /* WCAG AA: #4A5568 (5.1:1 on white) - upgraded from 220 10% 45% (~4.4:1, borderline fail) */
+    --muted-foreground: 218 17% 35%;
 
     --accent: 335 89% 48%;
     --accent-foreground: 0 0% 100%;
