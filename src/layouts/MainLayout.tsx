@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
+import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -28,6 +29,7 @@ export const MainLayout = ({
     <div className="min-h-screen flex flex-col bg-[hsl(224,67%,10%)]">
       {!hideHeader && <Header />}
       <main className={mainClassName}>
+        <SiteBreadcrumb />
         {children}
       </main>
       {!hideFooter && <Footer />}
