@@ -29,6 +29,10 @@ const BrandTicker = () => {
     const track = trackRef.current;
     if (!track) return;
 
+    // Respect users who prefer reduced motion — pause the marquee.
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
     const measure = () => {
       singleSetWidthRef.current = measureSetWidth();
     };
