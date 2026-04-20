@@ -79,4 +79,29 @@
   <url><loc>https://myhealthcheckup.co.uk/accessibility</loc><lastmod>2026-02-01</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://myhealthcheckup.co.uk/how-we-rank</loc><lastmod>2026-03-15</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://myhealthcheckup.co.uk/sitemap</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+
+  <!-- Biomarker & cancer hubs -->
+  <url><loc>https://myhealthcheckup.co.uk/biomarker-database</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/cancer-screening</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/cancer-screening-compare</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/cancer-biomarkers-reference</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Discovery & search -->
+  <url><loc>https://myhealthcheckup.co.uk/intelligent-search</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/assisted-test-finder</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/recommendations</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/health-resource-hub</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Condition / health hub pages -->
+  <url><loc>https://myhealthcheckup.co.uk/heart-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/diabetes-testing</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/gut-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/mens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/womens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/vitamin-deficiency</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/conditions</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Provider catalogues -->
+  <url><loc>https://myhealthcheckup.co.uk/medichecks/tests</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://myhealthcheckup.co.uk/medichecks/mens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
