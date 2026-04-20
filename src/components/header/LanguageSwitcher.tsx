@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,8 +8,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { useGoogleTranslate } from '@/hooks/useGoogleTranslate';
-import { Loader2 } from 'lucide-react';
 
 // All languages with GB English as the base
 const languages = [
@@ -29,67 +27,40 @@ const languages = [
 export const LanguageSwitcher = () => {
   const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState('en');
-  const [isTranslating, setIsTranslating] = useState(false);
-  const { translateTo } = useGoogleTranslate();
 
-  // Check for existing Google Translate cookie on mount
-  useEffect(() => {
-    const cookies = document.cookie.split(';');
-    const googtrans = cookies.find(c => c.trim().startsWith('googtrans='));
-    if (googtrans) {
-      const langMatch = googtrans.match(/\/en\/([a-z-]+)/i);
-      if (langMatch) {
-        const langCode = langMatch[1].split('-')[0]; // Handle zh-CN -> zh
-        const validLang = languages.find(l => l.code === langCode);
-        if (validLang) {
-          setSelectedLang(langCode);
-        }
-      }
-    }
-  }, []);
-
-  const currentLanguage = languages.find(lang => lang.code === selectedLang) || languages[0];
+  const currentLanguage =
+    languages.find((lang) => lang.code === i18n.language) ||
+    languages.find((lang) => lang.code === i18n.language?.split('-')[0]) ||
+    languages[0];
 
   const handleLanguageChange = (languageCode: string) => {
-    if (languageCode === selectedLang) {
+    if (languageCode === i18n.language) {
       setIsOpen(false);
       return;
     }
-    
-    setIsTranslating(true);
-    setSelectedLang(languageCode);
     i18n.changeLanguage(languageCode);
+    document.documentElement.lang = languageCode === 'en' ? 'en-GB' : languageCode;
+    document.documentElement.dir = languageCode === 'ar' ? 'rtl' : 'ltr';
     setIsOpen(false);
-    
-    // Trigger Google Translate for dynamic page translation
-    // Small delay to show loading state
-    setTimeout(() => {
-      translateTo(languageCode);
-    }, 100);
   };
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
-          aria-label={t('language.selectLanguage')}
-          disabled={isTranslating}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="!h-9 !w-9 !min-h-0 !p-0 text-secondary hover:text-secondary-foreground hover:bg-secondary border-2 border-secondary rounded-lg transition-colors flex-shrink-0"
+          aria-label={t('language.selectLanguage', 'Select language')}
         >
-          {isTranslating ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <span className="text-sm leading-none">{currentLanguage.flag}</span>
-          )}
+          <span className="text-sm leading-none">{currentLanguage.flag}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 bg-white dark:bg-gray-800 z-[100] shadow-xl border-2">
+      <DropdownMenuContent align="end" className="w-56 bg-background z-[100] shadow-xl border-2">
         <div className="px-3 py-2">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Select Language</p>
-          <p className="text-[10px] text-gray-400 mt-0.5">Powered by Google Translate</p>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+            Select Language
+          </p>
         </div>
         <DropdownMenuSeparator />
         {languages.map((language) => (
@@ -97,23 +68,25 @@ export const LanguageSwitcher = () => {
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
             className={`flex items-center gap-3 cursor-pointer py-2.5 ${
-              selectedLang === language.code 
-                ? 'bg-[#22c0d4]/10 text-[#22c0d4] font-medium' 
-                : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+              currentLanguage.code === language.code
+                ? 'bg-primary/10 text-primary font-medium'
+                : 'hover:bg-muted'
             }`}
           >
             <span className="text-lg">{language.flag}</span>
             <span className="text-sm flex-1">{language.name}</span>
             {language.isBase && (
-              <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">Base</span>
+              <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                Base
+              </span>
             )}
-            {selectedLang === language.code && (
-              <span className="text-[#22c0d4]">✓</span>
+            {currentLanguage.code === language.code && (
+              <span className="text-primary">✓</span>
             )}
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
-        <div className="px-3 py-2 text-[10px] text-gray-400">
+        <div className="px-3 py-2 text-[10px] text-muted-foreground">
           Base language: British English (GB)
         </div>
       </DropdownMenuContent>
