@@ -397,6 +397,45 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          consent_ip: unknown
+          consent_user_agent: string | null
+          created_at: string
+          email: string
+          id: string
+          source: string | null
+          status: string
+          subscribed_at: string
+          unsubscribed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          consent_ip?: unknown
+          consent_user_agent?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          source?: string | null
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          consent_ip?: unknown
+          consent_user_agent?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          source?: string | null
+          status?: string
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notification_history: {
         Row: {
           created_at: string
