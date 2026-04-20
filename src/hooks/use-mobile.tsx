@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 
-const MOBILE_BREAKPOINT = 768
+// Treat tablets (<1024px) as mobile so the responsive header/drawer renders
+// instead of the desktop nav (which overflows at 768-1023px).
+const MOBILE_BREAKPOINT = 1024
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = useState<boolean>(() => {

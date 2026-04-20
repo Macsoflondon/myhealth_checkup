@@ -88,7 +88,7 @@ const Hero = () => {
 
   return (
     <>
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden max-w-[100vw]">
         {heroSlides.map((s, i) => (
           <img
             key={i}
