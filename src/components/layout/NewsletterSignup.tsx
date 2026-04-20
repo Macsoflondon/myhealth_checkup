@@ -10,9 +10,16 @@ const NewsletterSignup = () => {
   const [consent, setConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  // Honeypot — bots fill hidden fields; humans don't.
+  const [hp, setHp] = useState("");
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    // Silently drop bot submissions (honeypot tripped)
+    if (hp) {
+      setDone(true);
+      return;
+    }
     const trimmed = email.trim().toLowerCase();
     if (!EMAIL_RE.test(trimmed)) {
       toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
@@ -26,7 +33,7 @@ const NewsletterSignup = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("newsletter-subscribe", {
-        body: { email: trimmed, source: "footer", consent: true },
+        body: { email: trimmed, source: "footer", consent: true, hp },
       });
       if (error) throw error;
       if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
@@ -63,6 +70,17 @@ const NewsletterSignup = () => {
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-3" noValidate>
+          {/* Honeypot field (hidden from users, visible to bots) */}
+          <input
+            type="text"
+            name="company"
+            value={hp}
+            onChange={(e) => setHp(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute left-[-9999px] w-px h-px opacity-0 pointer-events-none"
+          />
           <label className="sr-only" htmlFor="newsletter-email">Email address</label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50" aria-hidden="true" />
