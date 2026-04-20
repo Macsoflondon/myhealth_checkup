@@ -43,6 +43,8 @@ export default defineConfig(({ mode }) => {
             'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
             'map-vendor': ['leaflet', 'react-leaflet', 'react-leaflet-cluster'],
             'chart-vendor': ['recharts'],
+            'i18n-vendor': ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
+            'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
           },
         },
       },

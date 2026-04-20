@@ -1,23 +1,28 @@
 import { Helmet } from "react-helmet-async";
+import { lazy, Suspense } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
+// Above-the-fold: eager
 import Hero from "@/components/sections/Hero";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-import MissionSection from "@/components/sections/MissionSection";
-import PartnersGrid from "@/components/sections/PartnersGrid";
-import JourneySimplified from "@/components/sections/JourneySimplified";
-import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 
-import ExpertQuotes from "@/components/sections/ExpertQuotes";
-import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
-import ClinicAndHelpSection from "@/components/sections/ClinicAndHelpSection";
-import CallToAction from "@/components/sections/CallToAction";
-import AccreditedProvidersBar from "@/components/sections/AccreditedProvidersBar";
-import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
-import StartJourneySection from "@/components/sections/StartJourneySection";
+// Below-the-fold: lazy-loaded to slim the initial bundle (audit 4.x)
+const MissionSection = lazy(() => import("@/components/sections/MissionSection"));
+const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
+const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
+const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
+const ExpertQuotes = lazy(() => import("@/components/sections/ExpertQuotes"));
+const TestimonialCarousel = lazy(() => import("@/components/sections/TestimonialCarousel"));
+const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
+const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
+const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
+const TrustPlatformSection = lazy(() => import("@/components/sections/TrustPlatformSection"));
+const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
+
+const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
 const Index = () => {
   usePerformanceOptimization();
@@ -159,20 +164,22 @@ const Index = () => {
         </div>
 
         <TestCategoryTicker />
-        <MissionSection />
-        <JourneySimplified />
-        <PartnersGrid />
-        <StartJourneySection />
+        <Suspense fallback={<SectionFallback />}>
+          <MissionSection />
+          <JourneySimplified />
+          <PartnersGrid />
+          <StartJourneySection />
 
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-        <PartnerShowcaseGrid />
-        <TestimonialCarousel />
-        <ClinicAndHelpSection />
-        <AccreditedProvidersBar />
-        <CallToAction />
-        <TrustPlatformSection />
-        <ExpertQuotes />
+          <PartnerShowcaseGrid />
+          <TestimonialCarousel />
+          <ClinicAndHelpSection />
+          <AccreditedProvidersBar />
+          <CallToAction />
+          <TrustPlatformSection />
+          <ExpertQuotes />
+        </Suspense>
       </MainLayout>
     </ErrorBoundary>
   );
