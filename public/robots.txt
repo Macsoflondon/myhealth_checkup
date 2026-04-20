@@ -1,28 +1,48 @@
+# myhealth checkup — robots.txt
 
-# Allow all bots full access
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /auth/
+Disallow: /reset-password
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /client-portal
+Disallow: /notifications
 
 # Sitemap
 Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
 
-# Important routes
-Allow: /compare
-Allow: /how-it-works
-Allow: /about
-Allow: /test-categories
-
-# Googlebot specific
+# Major search bots — explicit allow
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /dashboard
+Disallow: /client-portal
 
-# Bingbot specific
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /dashboard
+Disallow: /client-portal
 
-# Social media bots
+# Social preview crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Throttle aggressive scrapers
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
