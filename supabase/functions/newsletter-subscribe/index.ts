@@ -15,7 +15,11 @@ interface SubscribeBody {
   email?: string;
   source?: string;
   consent?: boolean;
+  hp?: string;
 }
+
+const RATE_LIMIT_MAX = 5; // max signups per IP
+const RATE_LIMIT_WINDOW_MIN = 60; // minutes
 
 serve(async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -28,6 +32,12 @@ serve(async (req: Request): Promise<Response> => {
 
   try {
     const body = (await req.json().catch(() => ({}))) as SubscribeBody;
+
+    // Honeypot — bots fill hidden fields. Pretend success and bail.
+    if (body.hp && body.hp.length > 0) {
+      return json({ ok: true, message: "Thanks — you're subscribed." });
+    }
+
     const email = (body.email ?? "").trim().toLowerCase();
     const source = (body.source ?? "footer").slice(0, 64);
     const consent = body.consent === true;
@@ -45,8 +55,28 @@ serve(async (req: Request): Promise<Response> => {
     );
 
     const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
     const ua = req.headers.get("user-agent") ?? null;
+
+    // Per-IP rate limit (sliding window via api_rate_limits)
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000).toISOString();
+    const { count: recentCount } = await supabase
+      .from("api_rate_limits")
+      .select("*", { count: "exact", head: true })
+      .eq("client_key", ip)
+      .eq("endpoint", "newsletter-subscribe")
+      .gte("window_start", windowStart);
+
+    if ((recentCount ?? 0) >= RATE_LIMIT_MAX) {
+      return json({ error: "Too many requests. Please try again later." }, 429);
+    }
+
+    await supabase.from("api_rate_limits").insert({
+      client_key: ip,
+      endpoint: "newsletter-subscribe",
+      window_start: new Date().toISOString(),
+      request_count: 1,
+    });
 
     // Upsert: re-activate if previously unsubscribed
     const { data: existing } = await supabase
