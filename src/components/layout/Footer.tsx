@@ -62,24 +62,31 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ========== Copyright Line ========== */}
+      {/* ========== Copyright + Compliance Links ========== */}
       <div className="bg-brand-navy pb-4 pt-2">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs sm:text-sm text-brand-pink font-sans">
-            © 2026 myhealth checkup. All rights reserved.{" "}
-            <Link
-              to="/legal"
-              className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline"
-            >
-              Legal
-            </Link>
-            {" | "}
-            <Link
-              to="/terms"
-              className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline"
-            >
-              Terms &amp; Conditions
-            </Link>
+          <nav
+            aria-label="Legal and compliance"
+            className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs sm:text-sm text-brand-pink font-sans mb-2"
+          >
+            <Link to="/privacy-policy" className="hover:text-white transition-colors hover:underline underline-offset-2">Privacy Policy</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/cookie-policy" className="hover:text-white transition-colors hover:underline underline-offset-2">Cookie Policy</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/terms" className="hover:text-white transition-colors hover:underline underline-offset-2">Terms &amp; Conditions</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/affiliate-disclosure" className="hover:text-white transition-colors hover:underline underline-offset-2">Affiliate Disclosure</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/fair-trading" className="hover:text-white transition-colors hover:underline underline-offset-2">Fair Trading</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/modern-slavery" className="hover:text-white transition-colors hover:underline underline-offset-2">Modern Slavery</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/accessibility" className="hover:text-white transition-colors hover:underline underline-offset-2">Accessibility</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/legal" className="hover:text-white transition-colors hover:underline underline-offset-2">Legal Hub</Link>
+          </nav>
+          <p className="text-center text-xs sm:text-sm text-brand-pink/80 font-sans">
+            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
           </p>
         </div>
       </div>
