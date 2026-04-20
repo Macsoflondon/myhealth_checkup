@@ -5,13 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
-
-interface CookiePreferences {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
-  functional: boolean;
-}
+import { broadcastConsent, type CookiePreferences } from '@/lib/consent';
 
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -28,44 +22,36 @@ const CookieConsent = () => {
     if (!consent) {
       setShowBanner(true);
     } else {
-      const saved = JSON.parse(consent);
-      setPreferences(saved);
+      try {
+        const saved = JSON.parse(consent) as CookiePreferences;
+        setPreferences(saved);
+        // Broadcast on hydration so listeners (analytics, ads) sync state.
+        broadcastConsent(saved);
+      } catch {
+        setShowBanner(true);
+      }
     }
   }, []);
 
-  const handleAcceptAll = () => {
-    const allAccepted = {
-      necessary: true,
-      analytics: true,
-      marketing: true,
-      functional: true
-    };
-    setPreferences(allAccepted);
-    localStorage.setItem('cookieConsent', JSON.stringify(allAccepted));
+  const persistAndBroadcast = (prefs: CookiePreferences) => {
+    setPreferences(prefs);
+    localStorage.setItem('cookieConsent', JSON.stringify(prefs));
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    broadcastConsent(prefs);
     setShowBanner(false);
     setShowSettings(false);
+  };
+
+  const handleAcceptAll = () => {
+    persistAndBroadcast({ necessary: true, analytics: true, marketing: true, functional: true });
   };
 
   const handleRejectAll = () => {
-    const minimal = {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      functional: false
-    };
-    setPreferences(minimal);
-    localStorage.setItem('cookieConsent', JSON.stringify(minimal));
-    localStorage.setItem('cookieConsentDate', new Date().toISOString());
-    setShowBanner(false);
-    setShowSettings(false);
+    persistAndBroadcast({ necessary: true, analytics: false, marketing: false, functional: false });
   };
 
   const handleSavePreferences = () => {
-    localStorage.setItem('cookieConsent', JSON.stringify(preferences));
-    localStorage.setItem('cookieConsentDate', new Date().toISOString());
-    setShowBanner(false);
-    setShowSettings(false);
+    persistAndBroadcast(preferences);
   };
 
   const updatePreference = (key: keyof CookiePreferences, value: boolean) => {
