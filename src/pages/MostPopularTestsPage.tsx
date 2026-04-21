@@ -155,7 +155,7 @@ const MostPopularTestsPage = () => {
     return ['All', ...unique];
   }, [tests]);
 
-  if (isLoading || isFetching && !popularTests) {
+  if (isLoading || (isFetching && !popularTests)) {
     return (
       <StatusShell>
         <LoadingSkeleton />
