@@ -29,7 +29,7 @@ export function withLazyLoading<P extends object>(Component: ComponentType<P>, l
 // Lazy-loaded components for better code splitting
 export const LazyTestCategories = lazy(() => import("../sections/TestCategories"));
 export const LazyFeaturedProviders = lazy(() => import("../sections/FeaturedProviders"));
-export const LazyMostPopularTests = lazy(() => import("../tests/MostPopularTests"));
+
 export const LazyHealthBenefitsInfographic = lazy(() => import("../sections/HealthBenefitsInfographic"));
 export const LazyFounderStory = lazy(() => import("../sections/FounderStory"));
 export const LazyPartnerShowcase = lazy(() => import("../sections/PartnerShowcase"));
@@ -47,11 +47,6 @@ export const TestCategories = () => <ErrorBoundary>
 export const FeaturedProviders = () => <ErrorBoundary>
     <Suspense fallback={<LoadingSpinner message="Loading featured providers..." />}>
       <LazyFeaturedProviders />
-    </Suspense>
-  </ErrorBoundary>;
-export const MostPopularTests = () => <ErrorBoundary>
-    <Suspense fallback={<LoadingSpinner message="Loading popular tests..." />}>
-      <LazyMostPopularTests />
     </Suspense>
   </ErrorBoundary>;
 export const HealthBenefitsInfographic = () => <ErrorBoundary>

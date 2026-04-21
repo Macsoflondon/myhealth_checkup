@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Activity, Shield } from "lucide-react";
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
+import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
 
 const wellnessCategoryCards = [
   {
@@ -189,163 +190,25 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
+        <CategoryStandardHero
+          pillLabel="General Wellness"
+          benefits={[
+            { icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
+            { icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
+            { icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
+          ]}
+        />
+
         {/* Browse Tests by Category */}
         <section
           style={{
             background: "#081129",
-            padding: "72px 40px",
+            padding: "32px 40px 72px",
             position: "relative",
             overflow: "hidden",
           }}
         >
-          {/* Background grid */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)",
-              backgroundSize: "40px 40px",
-              pointerEvents: "none",
-            }}
-          />
-          {/* Ambient glow orbs */}
-          <div
-            style={{
-              position: "absolute",
-              top: "-10%",
-              left: "-5%",
-              width: 500,
-              height: 500,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "10%",
-              right: "-5%",
-              width: 400,
-              height: 400,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-
           <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-            {/* General Wellness pill row */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-                marginBottom: 24,
-              }}
-            >
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "rgba(233,30,140,0.1)",
-                  border: "1px solid rgba(233,30,140,0.25)",
-                  borderRadius: 100,
-                  padding: "6px 18px",
-                }}
-              >
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: "#e91e8c",
-                    display: "inline-block",
-                    boxShadow: "0 0 8px #e91e8c",
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    color: "#e91e8c",
-                    textTransform: "uppercase" as const,
-                  }}
-                >
-                  General Wellness
-                </span>
-              </div>
-            </div>
-
-            {/* Heading and subtext */}
-            <div style={{ textAlign: "center", marginBottom: 16 }}>
-              <h2
-                style={{
-                  fontSize: "clamp(32px, 4vw, 52px)",
-                  fontWeight: 800,
-                  color: "#ffffff",
-                  margin: "0 0 48px",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 1.1,
-                }}
-              >
-                Browse Tests by{" "}
-                <span style={{ color: "#ffffff" }}>
-                  Category
-                </span>
-              </h2>
-            </div>
-
-            {/* Benefits row (moved from page bottom) */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-                gap: 24,
-                maxWidth: 900,
-                margin: "0 auto 32px",
-                padding: "0 16px",
-              }}
-            >
-              {[
-                { Icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
-                { Icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
-                { Icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
-              ].map(({ Icon, title, description }) => (
-                <div key={title} style={{ textAlign: "center" }}>
-                  <div
-                    style={{
-                      width: 40,
-                      height: 40,
-                      background: "#e70d69",
-                      borderRadius: "9999px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "0 auto 8px",
-                    }}
-                  >
-                    <Icon className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", marginBottom: 4 }}>{title}</h3>
-                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", margin: 0 }}>{description}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Tricolour divider */}
-            <div
-              style={{
-                height: 3,
-                background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
-                marginBottom: 40,
-                borderRadius: 2,
-              }}
-            />
-
             {/* Filter pills */}
             <div
               style={{
