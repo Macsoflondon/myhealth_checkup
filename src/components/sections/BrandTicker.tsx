@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
@@ -13,6 +13,8 @@ const BrandTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
+  const debug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
+  const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0 });
 
   const measureSetWidth = useCallback(() => {
     const track = trackRef.current;
