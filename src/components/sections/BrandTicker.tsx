@@ -104,12 +104,17 @@ const BrandTicker = () => {
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
     };
-  }, [measureSetWidth]);
+  }, [measureSetWidth, debug]);
 
   const items = Array.from({ length: SETS }, () => promos).flat();
 
   return (
-    <section className="bg-brand-navy overflow-hidden select-none">
+    <section className="bg-brand-navy overflow-hidden select-none relative">
+      {debug && (
+        <div className="absolute top-1 right-1 z-50 bg-black/80 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none">
+          BrandTicker · setW: {debugInfo.setWidth.toFixed(0)}px · tx: {debugInfo.translateX.toFixed(0)}px
+        </div>
+      )}
       <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2">
         <div
           className="relative overflow-hidden"
