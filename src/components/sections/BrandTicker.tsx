@@ -49,6 +49,7 @@ const BrandTicker = () => {
 
     let animationId: number;
     let lastTime = 0;
+    let lastDebugUpdate = 0;
     const pxPerMs = 0.04;
 
     const animate = (timestamp: number) => {
@@ -76,6 +77,13 @@ const BrandTicker = () => {
       }
 
       track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
+
+      // Throttle debug overlay to ~10fps to avoid render churn
+      if (debug && timestamp - lastDebugUpdate > 100) {
+        lastDebugUpdate = timestamp;
+        setDebugInfo({ setWidth, translateX: positionRef.current });
+      }
+
       animationId = requestAnimationFrame(animate);
     };
 
