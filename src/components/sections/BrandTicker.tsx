@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
@@ -13,6 +13,8 @@ const BrandTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
+  const debug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
+  const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0 });
 
   const measureSetWidth = useCallback(() => {
     const track = trackRef.current;
@@ -47,6 +49,7 @@ const BrandTicker = () => {
 
     let animationId: number;
     let lastTime = 0;
+    let lastDebugUpdate = 0;
     const pxPerMs = 0.04;
 
     const animate = (timestamp: number) => {
@@ -74,6 +77,13 @@ const BrandTicker = () => {
       }
 
       track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
+
+      // Throttle debug overlay to ~10fps to avoid render churn
+      if (debug && timestamp - lastDebugUpdate > 100) {
+        lastDebugUpdate = timestamp;
+        setDebugInfo({ setWidth, translateX: positionRef.current });
+      }
+
       animationId = requestAnimationFrame(animate);
     };
 
@@ -94,12 +104,17 @@ const BrandTicker = () => {
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
     };
-  }, [measureSetWidth]);
+  }, [measureSetWidth, debug]);
 
   const items = Array.from({ length: SETS }, () => promos).flat();
 
   return (
-    <section className="bg-brand-navy overflow-hidden select-none">
+    <section className="bg-brand-navy overflow-hidden select-none relative">
+      {debug && (
+        <div className="absolute top-1 right-1 z-50 bg-black/80 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none">
+          BrandTicker · setW: {debugInfo.setWidth.toFixed(0)}px · tx: {debugInfo.translateX.toFixed(0)}px
+        </div>
+      )}
       <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2">
         <div
           className="relative overflow-hidden"
