@@ -1,43 +1,54 @@
 
 
-## Enlarge the category pill (4× current size)
+## Bring Most Popular Tests + Wellness in line with the standard category pages
 
-The "Fertility & Prenatal" capsule (and the equivalent on every category page — "Wellness", "Heart Health", etc.) is rendered by `CategoryStandardHero.tsx`. One change there cascades to every category page automatically.
+Two pages are out of step with the rest of the category system. Both will be migrated to the same layout used by Fertility, Heart Health, Hormones, Thyroid, etc.
 
-### Current dimensions
-- Padding: `6px 18px`
-- Text: `11px / weight 700 / 0.12em tracking`
-- Status dot: `6 × 6px` with `8px` glow
-- Gap: `8px`
+### Problem
 
-### New dimensions (≈ 4× visual scale)
+| Page | What's wrong |
+|---|---|
+| `/popular-tests` | Uses bespoke `MostPopularTests` component. White hero, no pill, no filters, no compare drawer, no dark theme — nothing matches the rest of the category system. |
+| `/wellness` | Has its own hand-rolled pink pill with inline styles (tiny: `padding: 6px 18px`, `fontSize: 11`). Did not pick up the 4× enlargement applied to `CategoryStandardHero`. |
 
-| Property | Now | New |
-|---|---|---|
-| Padding | 6px 18px | **24px 72px** |
-| Border radius | 100 | **100** (keep capsule) |
-| Border width | 1px | **2px** |
-| Font size | 11px | **44px** |
-| Letter spacing | 0.12em | **0.14em** |
-| Status dot | 6×6 | **24×24** with 32px glow |
-| Gap | 8px | **24px** |
-| Section `marginBottom` | 40px | **56px** (extra breathing room) |
+### Fix
 
-### Mobile responsiveness
-Because the pill now contains text up to ~44px, on narrow viewports (<640px) it would overflow. I'll use Tailwind classes (`text-2xl sm:text-3xl md:text-[44px]`, `px-6 sm:px-12 md:px-[72px]`, `py-3 sm:py-5 md:py-6`) so the capsule scales fluidly:
-- 320–640px: ~24px text, padding 12px 24px
-- 640–1024px: ~30px text, padding 20px 48px
-- 1024px+: full 44px text, padding 24px 72px
+**1. WellnessPage — use the shared pill component**
 
-This keeps the 4× target on desktop while staying readable on mobile per the platform's mobile-first standard.
+Replace the hand-rolled pill block (lines ~239-281 in `WellnessPage.tsx`) with the standard `CategoryStandardHero` so it inherits the 4× sizing and stays in sync with every other page going forward. Pass `pillLabel="General Wellness"` and the existing three benefits (Early Detection / Optimise Performance / Peace of Mind).
 
-### Files to edit
-- `src/components/category/CategoryStandardHero.tsx` — convert the pill's inline styles to Tailwind classes for the responsive sizing, bump the dot, padding, font, and gap as above.
+The rest of WellnessPage (filter pills, custom card grid, hover effects) stays as-is — only the pill+benefits header block changes.
 
-No other files affected. Pages that consume this component (Fertility, Wellness, Heart Health, Hormones, Thyroid, Diabetes, Sports-Fitness, Cancer, Men's/Women's Health, etc.) update automatically.
+**2. MostPopularTestsPage — migrate to `CategoryPageLayout`**
 
-### Tip
-For instant visual tweaks like resizing, recolouring, or rewording static elements, use **Visual Edits** (pencil icon, bottom-left of chat). It's free for direct edits and faster than a prompt round-trip.
+Rebuild `MostPopularTestsPage.tsx` to use `CategoryPageLayout` exactly like `FertilityTestsPage.tsx`. This gives it:
+- Standard 4× pill: `MOST POPULAR`
+- Three benefit tiles (Trusted by Thousands / Comprehensive Insights / Accredited Labs)
+- Tricolour gradient divider
+- Dark navy filter section with sort, search, and result count
+- `UnifiedTestCard` grid (replaces the bespoke white cards)
+- Compare drawer support
+- Standard `CategoryPageBottom`
 
-Approve to apply.
+Because `CategoryPageLayout` expects a static `tests: CategoryTestItem[]`, I'll create a thin wrapper component (`MostPopularTestsCategoryView`) that:
+- Calls `usePopularTestsFromDatabase(24)` 
+- Maps each `PopularTest` → `CategoryTestItem` (price → priceNum, test_name → title, category → tag, etc.)
+- Derives the available `filters` array dynamically from the unique categories returned (e.g. `["All", "General Health", "Heart Health", "Hormones", ...]`)
+- Renders `<CategoryPageLayout>` with that data
+- Shows a loading skeleton while the query is pending and an error state on failure
+
+Delete the old `MostPopularTests.tsx` component (no longer used).
+
+### Files
+
+- **Edit** `src/pages/WellnessPage.tsx` — swap inline pill block for `<CategoryStandardHero pillLabel="General Wellness" benefits={...} />`. Remove now-redundant inline styles, ambient glow orbs, and tricolour divider (all provided by `CategoryStandardHero`). Keep the heading "Browse Tests by Category", the filter pills, and the cards grid.
+- **Rewrite** `src/pages/MostPopularTestsPage.tsx` — use `CategoryPageLayout` with a data-fetching wrapper that maps DB rows to `CategoryTestItem`.
+- **Delete** `src/components/tests/MostPopularTests.tsx` — superseded.
+
+### Result
+
+After this change:
+- The "GENERAL WELLNESS" pill on `/wellness` is identical in size, font, padding, dot, and glow to every other category page.
+- `/popular-tests` looks and behaves exactly like `/fertility-tests`, `/heart-health`, `/hormones`, etc. — same hero, same filters, same cards, same compare flow.
+- Mobile-first responsiveness is preserved (handled by `CategoryStandardHero` and `CategoryPageLayout`).
 
