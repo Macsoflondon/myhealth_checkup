@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
@@ -155,8 +155,17 @@ const WellnessPage = () => {
   const [filter, setFilter] = useState("ALL");
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
 
-  const tags = ["ALL", ...Array.from(new Set(wellnessCategoryCards.map((c) => c.tag)))];
-  const filtered = filter === "ALL" ? wellnessCategoryCards : wellnessCategoryCards.filter((c) => c.tag === filter);
+  const tags = useMemo(
+    () => ["ALL", ...Array.from(new Set(wellnessCategoryCards.map((c) => c.tag)))],
+    []
+  );
+  const filtered = useMemo(
+    () =>
+      filter === "ALL"
+        ? wellnessCategoryCards
+        : wellnessCategoryCards.filter((c) => c.tag === filter),
+    [filter]
+  );
 
   return (
     <>
