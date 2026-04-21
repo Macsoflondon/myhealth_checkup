@@ -58,7 +58,7 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
         </section>
         <CategoryPageBottom
           benefitsTitle="Why Choose Our Most Popular Tests?"
-          benefits={HERO_BENEFITS.map(({ icon, title, description }) => ({ icon, title, description }))}
+          benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
         />
       </main>
       <Footer />
