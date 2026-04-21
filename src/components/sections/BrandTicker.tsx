@@ -34,15 +34,19 @@ const BrandTicker = () => {
     if (reduceMotion) return;
 
     const measure = () => {
-      singleSetWidthRef.current = measureSetWidth();
+      const w = measureSetWidth();
+      if (w > 0) singleSetWidthRef.current = w;
     };
 
     measure();
     document.fonts?.ready?.then(measure);
 
+    // Re-measure when the track resizes (handles late layout, font swaps, container changes)
+    const ro = new ResizeObserver(() => measure());
+    ro.observe(track);
+
     let animationId: number;
     let lastTime = 0;
-    // pixels per millisecond for frame-rate independent movement
     const pxPerMs = 0.04;
 
     const animate = (timestamp: number) => {
@@ -50,7 +54,17 @@ const BrandTicker = () => {
       const delta = timestamp - lastTime;
       lastTime = timestamp;
 
-      // Cap delta to avoid jumps on tab refocus
+      // Pause when tab hidden to avoid huge deltas on resume
+      if (document.hidden) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Re-measure if we still don't have a width yet
+      if (singleSetWidthRef.current <= 0) {
+        measure();
+      }
+
       const clampedDelta = Math.min(delta, 50);
       positionRef.current -= pxPerMs * clampedDelta;
 
@@ -59,7 +73,6 @@ const BrandTicker = () => {
         positionRef.current += setWidth;
       }
 
-      // Use translate3d for GPU compositing — no layout/paint, just composite
       track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
       animationId = requestAnimationFrame(animate);
     };
@@ -69,9 +82,17 @@ const BrandTicker = () => {
     const onResize = () => measure();
     window.addEventListener("resize", onResize);
 
+    const onVisibility = () => {
+      // Reset lastTime so resuming doesn't cause a jump
+      lastTime = 0;
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      ro.disconnect();
     };
   }, [measureSetWidth]);
 

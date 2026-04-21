@@ -37,12 +37,19 @@ const TestCategoryTicker = () => {
     const track = trackRef.current;
     if (!track) return;
 
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
     const measure = () => {
-      singleSetWidthRef.current = measureSetWidth();
+      const w = measureSetWidth();
+      if (w > 0) singleSetWidthRef.current = w;
     };
 
     measure();
     document.fonts?.ready?.then(measure);
+
+    const ro = new ResizeObserver(() => measure());
+    ro.observe(track);
 
     let animationId: number;
     let lastTime = 0;
@@ -52,6 +59,15 @@ const TestCategoryTicker = () => {
       if (lastTime === 0) lastTime = timestamp;
       const delta = timestamp - lastTime;
       lastTime = timestamp;
+
+      if (document.hidden) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+
+      if (singleSetWidthRef.current <= 0) {
+        measure();
+      }
 
       const clampedDelta = Math.min(delta, 50);
       positionRef.current -= pxPerMs * clampedDelta;
@@ -70,9 +86,16 @@ const TestCategoryTicker = () => {
     const onResize = () => measure();
     window.addEventListener("resize", onResize);
 
+    const onVisibility = () => {
+      lastTime = 0;
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      ro.disconnect();
     };
   }, [measureSetWidth]);
 
