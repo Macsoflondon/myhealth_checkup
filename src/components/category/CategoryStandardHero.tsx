@@ -77,23 +77,23 @@ export function CategoryStandardHero({
 
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
         {/* Pill row */}
-        <div className="flex items-center justify-center relative mb-10 md:mb-14">
+        <div className="flex items-center justify-center relative mb-8 md:mb-10">
           <div
-            className="inline-flex items-center gap-3 sm:gap-4 md:gap-6 px-6 sm:px-12 md:px-[72px] py-3 sm:py-5 md:py-6 rounded-full max-w-full"
+            className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 px-4 sm:px-9 md:px-[54px] py-2 sm:py-4 md:py-[18px] rounded-full max-w-full"
             style={{
               background: "rgba(233,30,140,0.1)",
               border: "2px solid rgba(233,30,140,0.25)",
             }}
           >
             <span
-              className="inline-block rounded-full shrink-0 w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6"
+              className="inline-block rounded-full shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-[18px] md:h-[18px]"
               style={{
                 background: "#e91e8c",
-                boxShadow: "0 0 32px #e91e8c",
+                boxShadow: "0 0 24px #e91e8c",
               }}
             />
             <span
-              className="text-2xl sm:text-3xl md:text-[44px] font-bold uppercase leading-none truncate"
+              className="text-lg sm:text-2xl md:text-[33px] font-bold uppercase leading-none truncate"
               style={{
                 letterSpacing: "0.14em",
                 color: "#e91e8c",
