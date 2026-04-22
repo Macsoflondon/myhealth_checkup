@@ -19,7 +19,7 @@ const heroSlides = [
   },
   {
     image: heroClinic,
-    headline: "250+ Clinic Locations",
+    headline: "250+ Clinic Locations Nationwide",
     subline: "Choose a clinic, get tested, and take the guesswork out of your health.",
     objectPosition: "center 38%",
   },
@@ -57,7 +57,7 @@ const popularSearches = [
 const trustSignals = [
   { icon: Shield, text: "UKAS-accredited labs" },
   { icon: FlaskConical, text: "200+ tests available" },
-  { icon: MapPin, text: "250+ clinic locations" },
+  { icon: MapPin, text: "250+ clinic locations nationwide" },
   { icon: Clock, text: "Results in 3–5 days" },
   { icon: Stethoscope, text: "No GP referral needed" },
 ];
