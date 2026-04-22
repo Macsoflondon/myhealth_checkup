@@ -103,7 +103,7 @@ const PartnerShowcaseGrid = () => {
               </p>
               <div className="grid grid-cols-3 gap-3 mb-5">
                 <div className="text-center">
-                  <p className="font-heading text-base lg:text-lg font-bold text-[#22c0d4]">200+</p>
+                  <p className="font-heading text-base lg:text-lg font-bold text-[#22c0d4]">250+</p>
                   <p className="text-xs sm:text-sm text-white">Clinic Locations</p>
                 </div>
                 <div className="text-center">
@@ -131,7 +131,7 @@ const PartnerShowcaseGrid = () => {
               </div>
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
                 <span>✓ CQC Regulated</span>
-                <span>✓ 200+ Locations</span>
+                <span>✓ 250+ Locations</span>
               </div>
             </div>
           </div>

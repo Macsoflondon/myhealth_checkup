@@ -5,7 +5,7 @@ import { MapPin, Building2, Globe } from "lucide-react";
 
 const FindClinicSection = () => {
   const stats = [
-    { value: "200+", label: "Clinic Locations", icon: MapPin },
+    { value: "250+", label: "Clinic Locations", icon: MapPin },
     { value: "7", label: "Partner Networks", icon: Building2 },
     { value: "UK-wide", label: "Coverage", icon: Globe },
   ];
@@ -24,7 +24,7 @@ const FindClinicSection = () => {
             />
 
             <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-8 max-w-lg text-center lg:text-left mx-auto lg:mx-0">
-              With over 200 partner clinic locations across the UK, getting a blood test has never been more convenient. Whether you prefer a home kit or in-clinic appointment, we've got you covered.
+              With over 250 partner clinic locations across the UK, getting a blood test has never been more convenient. Whether you prefer a home kit or in-clinic appointment, we've got you covered.
             </p>
 
             {/* Stats Row */}
