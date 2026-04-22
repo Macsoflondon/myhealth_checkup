@@ -1,54 +1,28 @@
 
+## Shift hero clinic image down to reveal "myhealth checkup" wall logo
 
-## Bring Most Popular Tests + Wellness in line with the standard category pages
+The "250+ Clinic Locations Nationwide" slide currently uses `objectPosition: "center 38%"`, which crops the image such that the wall-mounted "myhealth checkup" logo sits behind the headline text and is obscured.
 
-Two pages are out of step with the rest of the category system. Both will be migrated to the same layout used by Fertility, Heart Health, Hormones, Thyroid, etc.
+Shifting the image's vertical focal point downward moves more of the upper portion of the photograph (where the wall logo lives) into view above the headline.
 
-### Problem
+### Change
 
-| Page | What's wrong |
-|---|---|
-| `/popular-tests` | Uses bespoke `MostPopularTests` component. White hero, no pill, no filters, no compare drawer, no dark theme — nothing matches the rest of the category system. |
-| `/wellness` | Has its own hand-rolled pink pill with inline styles (tiny: `padding: 6px 18px`, `fontSize: 11`). Did not pick up the 4× enlargement applied to `CategoryStandardHero`. |
+**File:** `src/components/sections/Hero.tsx` (line 24)
 
-### Fix
+Update the `heroClinic` slide's `objectPosition`:
 
-**1. WellnessPage — use the shared pill component**
+```ts
+// Before
+objectPosition: "center 38%",
 
-Replace the hand-rolled pill block (lines ~239-281 in `WellnessPage.tsx`) with the standard `CategoryStandardHero` so it inherits the 4× sizing and stays in sync with every other page going forward. Pass `pillLabel="General Wellness"` and the existing three benefits (Early Detection / Optimise Performance / Peace of Mind).
+// After
+objectPosition: "center 58%",
+```
 
-The rest of WellnessPage (filter pills, custom card grid, hover effects) stays as-is — only the pill+benefits header block changes.
+A ~20% downward shift on the focal point is roughly equivalent to "2 lines" of vertical movement at the current hero height, bringing the wall logo into clear view above the headline while keeping the people/clinic scene framed naturally.
 
-**2. MostPopularTestsPage — migrate to `CategoryPageLayout`**
+### Notes
 
-Rebuild `MostPopularTestsPage.tsx` to use `CategoryPageLayout` exactly like `FertilityTestsPage.tsx`. This gives it:
-- Standard 4× pill: `MOST POPULAR`
-- Three benefit tiles (Trusted by Thousands / Comprehensive Insights / Accredited Labs)
-- Tricolour gradient divider
-- Dark navy filter section with sort, search, and result count
-- `UnifiedTestCard` grid (replaces the bespoke white cards)
-- Compare drawer support
-- Standard `CategoryPageBottom`
-
-Because `CategoryPageLayout` expects a static `tests: CategoryTestItem[]`, I'll create a thin wrapper component (`MostPopularTestsCategoryView`) that:
-- Calls `usePopularTestsFromDatabase(24)` 
-- Maps each `PopularTest` → `CategoryTestItem` (price → priceNum, test_name → title, category → tag, etc.)
-- Derives the available `filters` array dynamically from the unique categories returned (e.g. `["All", "General Health", "Heart Health", "Hormones", ...]`)
-- Renders `<CategoryPageLayout>` with that data
-- Shows a loading skeleton while the query is pending and an error state on failure
-
-Delete the old `MostPopularTests.tsx` component (no longer used).
-
-### Files
-
-- **Edit** `src/pages/WellnessPage.tsx` — swap inline pill block for `<CategoryStandardHero pillLabel="General Wellness" benefits={...} />`. Remove now-redundant inline styles, ambient glow orbs, and tricolour divider (all provided by `CategoryStandardHero`). Keep the heading "Browse Tests by Category", the filter pills, and the cards grid.
-- **Rewrite** `src/pages/MostPopularTestsPage.tsx` — use `CategoryPageLayout` with a data-fetching wrapper that maps DB rows to `CategoryTestItem`.
-- **Delete** `src/components/tests/MostPopularTests.tsx` — superseded.
-
-### Result
-
-After this change:
-- The "GENERAL WELLNESS" pill on `/wellness` is identical in size, font, padding, dot, and glow to every other category page.
-- `/popular-tests` looks and behaves exactly like `/fertility-tests`, `/heart-health`, `/hormones`, etc. — same hero, same filters, same cards, same compare flow.
-- Mobile-first responsiveness is preserved (handled by `CategoryStandardHero` and `CategoryPageLayout`).
-
+- Only the second slide (`heroClinic`) is affected. The other four slides retain their existing focal points.
+- No mobile override is needed — at narrower widths the same percentage produces an equivalent shift, and the image still fills the hero area.
+- This is a static text/style attribute, so future tweaks like this can be done instantly via **Visual Edits** without spending credits.
