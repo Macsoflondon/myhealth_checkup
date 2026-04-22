@@ -130,7 +130,7 @@ const AboutUsPage = () => {
                   <p className="text-white">Tests Compared</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">377+</div>
+                  <div className="text-3xl font-bold text-health-600 mb-2">250+</div>
                   <p className="text-white">Clinic Locations</p>
                 </div>
               </div>
