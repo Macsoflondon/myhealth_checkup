@@ -1,28 +1,39 @@
 
-## Shift hero clinic image down to reveal "myhealth checkup" wall logo
 
-The "250+ Clinic Locations Nationwide" slide currently uses `objectPosition: "center 38%"`, which crops the image such that the wall-mounted "myhealth checkup" logo sits behind the headline text and is obscured.
+## Add white padding around Goodbody, Thriva and Randox logos in the Trusted Partners carousel
 
-Shifting the image's vertical focal point downward moves more of the upper portion of the photograph (where the wall logo lives) into view above the headline.
+### Problem
+In the homepage `PartnersGrid` carousel, all logos render with `max-h-[90px] sm:max-h-[120px]` inside a `h-32 sm:h-40` white card. The Medichecks asset (`provider-medichecks-light.png`) has built-in transparent padding around the wordmark, so it visually breathes inside the card. Goodbody (`provider-goodbody-new-v3.png`), Thriva (`provider-thriva.png`) and Randox (`provider-randox.png`) are tightly cropped to the artwork, so the same max-height makes them touch the card edges and look clipped.
+
+We will not re-crop the source assets. Instead we will reduce the rendered max-height for those three providers so the white card itself supplies consistent padding around the logo — matching Medichecks' visual weight.
 
 ### Change
 
-**File:** `src/components/sections/Hero.tsx` (line 24)
+**File:** `src/components/sections/PartnersGrid.tsx` (around lines 103–128)
 
-Update the `heroClinic` slide's `objectPosition`:
+Replace the single hard-coded `max-h-[90px] sm:max-h-[120px]` with a per-provider lookup that gives the tightly-cropped logos a smaller cap:
 
-```ts
-// Before
-objectPosition: "center 38%",
-
-// After
-objectPosition: "center 58%",
+```tsx
+const LOGO_SIZE: Record<string, string> = {
+  // Tightly cropped assets — render smaller so the white card pads them
+  'goodbody-clinic': 'max-h-[64px] sm:max-h-[84px]',
+  'thriva':          'max-h-[64px] sm:max-h-[84px]',
+  'randox':          'max-h-[64px] sm:max-h-[84px]',
+};
+const DEFAULT_LOGO_SIZE = 'max-h-[90px] sm:max-h-[120px]';
 ```
 
-A ~20% downward shift on the focal point is roughly equivalent to "2 lines" of vertical movement at the current hero height, bringing the wall logo into clear view above the headline while keeping the people/clinic scene framed naturally.
+Then in the map:
+```tsx
+className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
+  LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE
+}`}
+```
 
-### Notes
+Also remove the now-unused `isGoodbody` line.
 
-- Only the second slide (`heroClinic`) is affected. The other four slides retain their existing focal points.
-- No mobile override is needed — at narrower widths the same percentage produces an equivalent shift, and the image still fills the hero area.
-- This is a static text/style attribute, so future tweaks like this can be done instantly via **Visual Edits** without spending credits.
+### Result
+- Medichecks, Lola Health, London Medical Lab, London Health Company, Medical Diagnosis, Clinilabs: unchanged (`max-h-[90px]/[120px]`).
+- Goodbody, Thriva, Randox: capped at `max-h-[64px]/[84px]`, giving each ~20–28px of visible white padding on every side of the card — matching Medichecks' breathing room and stopping the apparent clipping.
+- No asset changes, no card-size changes, no carousel-logic changes.
+
