@@ -101,7 +101,12 @@ const PartnersGrid = () => {
         >
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((provider, index) => {
-              const isGoodbody = provider.id === 'goodbody-clinic';
+              const LOGO_SIZE: Record<string, string> = {
+                'goodbody-clinic': 'max-h-[64px] sm:max-h-[84px]',
+                'thriva': 'max-h-[64px] sm:max-h-[84px]',
+                'randox': 'max-h-[64px] sm:max-h-[84px]',
+              };
+              const DEFAULT_LOGO_SIZE = 'max-h-[90px] sm:max-h-[120px]';
               return (
                 <div key={`${provider.id}-${index}`} className="shrink-0 px-3 sm:px-4" style={{ width: "260px" }}>
                   <Link
@@ -118,7 +123,7 @@ const PartnersGrid = () => {
                       src={provider.logo} 
                       alt={`${provider.name} logo`} 
                       className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
-                        'max-h-[90px] sm:max-h-[120px]'
+                        LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE
                       }`} 
                       loading="lazy" 
                     />
