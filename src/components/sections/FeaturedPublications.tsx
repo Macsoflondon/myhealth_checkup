@@ -100,7 +100,7 @@ export const FeaturedPublications = () => {
                       <img
                         src={publication.logo}
                         alt={`${publication.name} logo`}
-                        className="relative z-10 h-16 sm:h-20 w-auto max-w-[180px] object-contain"
+                        className="relative z-10 h-20 sm:h-24 md:h-28 w-auto max-w-[200px] object-contain"
                         loading="lazy"
                         decoding="async"
                       />
