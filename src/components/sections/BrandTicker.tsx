@@ -15,6 +15,7 @@ const BrandTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
+  const pausedRef = useRef(false);
   const debug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
   const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0 });
 
