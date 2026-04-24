@@ -1,5 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 
+
+
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
   { provider: "Medichecks", text: "20% off all tests with code APRIL20", color: "#e70d68" },
@@ -13,6 +15,7 @@ const BrandTicker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
+  const pausedRef = useRef(false);
   const debug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
   const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0 });
 
@@ -57,8 +60,9 @@ const BrandTicker = () => {
       const delta = timestamp - lastTime;
       lastTime = timestamp;
 
-      // Pause when tab hidden to avoid huge deltas on resume
-      if (document.hidden) {
+      // Pause when tab hidden or user is hovering/touching the ticker
+      if (document.hidden || pausedRef.current) {
+        lastTime = timestamp;
         animationId = requestAnimationFrame(animate);
         return;
       }
@@ -115,13 +119,20 @@ const BrandTicker = () => {
           BrandTicker · setW: {debugInfo.setWidth.toFixed(0)}px · tx: {debugInfo.translateX.toFixed(0)}px
         </div>
       )}
-      <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2">
+      <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2 px-2 sm:px-4">
         <div
           className="relative overflow-hidden"
           style={{
             maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
+          onMouseEnter={() => { pausedRef.current = true; }}
+          onMouseLeave={() => { pausedRef.current = false; }}
+          onTouchStart={() => { pausedRef.current = true; }}
+          onTouchEnd={() => { pausedRef.current = false; }}
+          onTouchCancel={() => { pausedRef.current = false; }}
+          role="marquee"
+          aria-label="Promotional offers from health test providers. Hover or touch to pause."
         >
           <div
             ref={trackRef}
