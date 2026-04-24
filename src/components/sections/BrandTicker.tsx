@@ -136,9 +136,27 @@ const BrandTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
-      {debug && (
-        <div className="absolute top-1 right-1 z-50 bg-black/80 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none">
-          BrandTicker · setW: {debugInfo.setWidth.toFixed(0)}px · tx: {debugInfo.translateX.toFixed(0)}px
+      {/* Debug toggle — small, unobtrusive, top-right. Click to show/hide live state. */}
+      <button
+        type="button"
+        onClick={() => setDebugOn((v) => !v)}
+        className="absolute top-1 right-1 z-50 bg-black/60 hover:bg-black/80 text-white text-[9px] font-mono px-1.5 py-0.5 rounded transition-colors"
+        aria-label={debugOn ? "Hide ticker debug overlay" : "Show ticker debug overlay"}
+        aria-pressed={debugOn}
+      >
+        {debugOn ? "✕ dbg" : "dbg"}
+      </button>
+      {debugOn && (
+        <div className="absolute top-7 right-1 z-50 bg-black/85 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none space-y-0.5">
+          <div>BrandTicker</div>
+          <div>setW: {debugInfo.setWidth.toFixed(0)}px</div>
+          <div>tx: {debugInfo.translateX.toFixed(0)}px</div>
+          <div>
+            paused:{" "}
+            <span className={debugInfo.paused ? "text-red-400" : "text-green-400"}>
+              {debugInfo.paused ? "YES" : "no"}
+            </span>
+          </div>
         </div>
       )}
       <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2 px-2 sm:px-4">
@@ -148,8 +166,8 @@ const BrandTicker = () => {
             maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
-          onMouseEnter={() => { pausedRef.current = true; }}
-          onMouseLeave={() => { pausedRef.current = false; }}
+          onMouseEnter={pause}
+          onMouseLeave={resume}
           role="marquee"
           aria-label="Promotional offers from health test providers. Hover to pause."
         >
