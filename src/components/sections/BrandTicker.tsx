@@ -129,6 +129,10 @@ const BrandTicker = () => {
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
+      if (pauseTimeoutRef.current) {
+        window.clearTimeout(pauseTimeoutRef.current);
+        pauseTimeoutRef.current = null;
+      }
     };
   }, [measureSetWidth, debugOn]);
 
