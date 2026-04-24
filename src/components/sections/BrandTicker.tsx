@@ -125,18 +125,21 @@ const BrandTicker = () => {
         >
           <div
             ref={trackRef}
-            className="flex whitespace-nowrap"
+            className="flex whitespace-nowrap leading-tight"
             style={{ willChange: "transform", backfaceVisibility: "hidden" }}
           >
             {items.map((promo, i) => (
-              <span key={i} className="flex items-center shrink-0">
-                <span className="font-heading font-bold text-xs sm:text-sm md:text-base tracking-widest uppercase px-3 sm:px-5" style={{ color: promo.color }}>
+              <span key={i} className="flex items-baseline shrink-0">
+                <span
+                  className="font-heading font-bold text-[11px] sm:text-sm md:text-base tracking-wider sm:tracking-widest uppercase pl-2 pr-1.5 sm:pl-5 sm:pr-2"
+                  style={{ color: promo.color }}
+                >
                   {promo.provider}:
                 </span>
-                <span className="text-white font-body text-xs sm:text-sm md:text-base px-1">
+                <span className="text-white font-body text-[11px] sm:text-sm md:text-base pr-2 sm:pr-3">
                   {promo.text}
                 </span>
-                <span className="text-brand-pink text-lg px-3 sm:px-5">•</span>
+                <span className="text-brand-pink text-base sm:text-lg leading-none px-1.5 sm:px-3" aria-hidden="true">•</span>
               </span>
             ))}
           </div>
