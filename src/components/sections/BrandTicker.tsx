@@ -128,11 +128,8 @@ const BrandTicker = () => {
           }}
           onMouseEnter={() => { pausedRef.current = true; }}
           onMouseLeave={() => { pausedRef.current = false; }}
-          onTouchStart={() => { pausedRef.current = true; }}
-          onTouchEnd={() => { pausedRef.current = false; }}
-          onTouchCancel={() => { pausedRef.current = false; }}
           role="marquee"
-          aria-label="Promotional offers from health test providers. Hover or touch to pause."
+          aria-label="Promotional offers from health test providers. Hover to pause."
         >
           <div
             ref={trackRef}
