@@ -105,9 +105,9 @@ const BrandTicker = () => {
       track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
 
       // Throttle debug overlay to ~10fps to avoid render churn
-      if (debug && timestamp - lastDebugUpdate > 100) {
+      if (debugOn && timestamp - lastDebugUpdate > 100) {
         lastDebugUpdate = timestamp;
-        setDebugInfo({ setWidth, translateX: positionRef.current });
+        setDebugInfo({ setWidth, translateX: positionRef.current, paused: pausedRef.current });
       }
 
       animationId = requestAnimationFrame(animate);
