@@ -60,8 +60,9 @@ const BrandTicker = () => {
       const delta = timestamp - lastTime;
       lastTime = timestamp;
 
-      // Pause when tab hidden to avoid huge deltas on resume
-      if (document.hidden) {
+      // Pause when tab hidden or user is hovering/touching the ticker
+      if (document.hidden || pausedRef.current) {
+        lastTime = timestamp;
         animationId = requestAnimationFrame(animate);
         return;
       }
