@@ -16,8 +16,30 @@ const BrandTicker = () => {
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
   const pausedRef = useRef(false);
-  const debug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
-  const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0 });
+  const pauseTimeoutRef = useRef<number | null>(null);
+  const queryDebug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
+  const [debugOn, setDebugOn] = useState(queryDebug);
+  const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0, paused: false });
+
+  // Failsafe: never let the ticker stay paused longer than this.
+  const MAX_PAUSE_MS = 1500;
+
+  const pause = useCallback(() => {
+    pausedRef.current = true;
+    if (pauseTimeoutRef.current) window.clearTimeout(pauseTimeoutRef.current);
+    pauseTimeoutRef.current = window.setTimeout(() => {
+      pausedRef.current = false;
+      pauseTimeoutRef.current = null;
+    }, MAX_PAUSE_MS);
+  }, []);
+
+  const resume = useCallback(() => {
+    pausedRef.current = false;
+    if (pauseTimeoutRef.current) {
+      window.clearTimeout(pauseTimeoutRef.current);
+      pauseTimeoutRef.current = null;
+    }
+  }, []);
 
   const measureSetWidth = useCallback(() => {
     const track = trackRef.current;
