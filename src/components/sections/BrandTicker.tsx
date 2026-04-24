@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
-  { provider: "Medichecks", text: "20% off selected women's tests with code SHH20", color: "#e70d68" },
+  { provider: "Medichecks", text: "20% off all tests with code APRIL20", color: "#e70d68" },
   { provider: "Lola Health", text: "£20 off with code Mar20", color: "#fa757e" },
 ];
 
