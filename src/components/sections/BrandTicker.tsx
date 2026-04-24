@@ -50,7 +50,7 @@ const BrandTicker = () => {
     let animationId: number;
     let lastTime = 0;
     let lastDebugUpdate = 0;
-    const pxPerMs = 0.04;
+    const pxPerMs = 0.09;
 
     const animate = (timestamp: number) => {
       if (lastTime === 0) lastTime = timestamp;
