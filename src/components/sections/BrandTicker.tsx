@@ -130,7 +130,7 @@ const BrandTicker = () => {
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
     };
-  }, [measureSetWidth, debug]);
+  }, [measureSetWidth, debugOn]);
 
   const items = Array.from({ length: SETS }, () => promos).flat();
 
