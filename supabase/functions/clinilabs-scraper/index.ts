@@ -133,12 +133,14 @@ Deno.serve(async (req) => {
     let upsertedCount = 0;
     const upsertErrors: string[] = [];
 
-    // Dedupe by test_name to satisfy partial unique index (provider_id, test_name) WHERE is_active=true
-    const seenNames = new Set<string>();
+    // Dedupe by Shopify handle (slug) — guaranteed unique per product upstream.
+    // provider_test_id already encodes the slug (`clinilabs-${handle}`), so this
+    // also satisfies the (provider_id, provider_test_id) upsert conflict target.
+    const seenSlugs = new Set<string>();
     const dedupedRows = rows.filter((r) => {
-      const key = r.test_name.toLowerCase().trim();
-      if (seenNames.has(key)) return false;
-      seenNames.add(key);
+      const key = (r.provider_test_id || r.test_name).toLowerCase().trim();
+      if (seenSlugs.has(key)) return false;
+      seenSlugs.add(key);
       return true;
     });
 
