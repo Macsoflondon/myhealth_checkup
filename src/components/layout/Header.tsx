@@ -104,9 +104,9 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* BrandTicker stays sticky at top */}
-      <div ref={brandTickerRef} className={cn("sticky top-0 z-50", className)}>
-        <BrandTicker />
+      {/* PromoTracker stays sticky at top */}
+      <div ref={promoTrackerRef} className={cn("sticky top-0 z-50", className)}>
+        <PromoTracker />
       </div>
 
       {/* Logo section scrolls normally */}
