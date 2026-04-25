@@ -139,7 +139,7 @@ const PromoTracker = () => {
         pauseTimeoutRef.current = null;
       }
     };
-  }, [measureSetWidth, debugOn]);
+  }, [measureSetWidth]);
 
   const items = Array.from({ length: SETS }, () => promos).flat();
 
