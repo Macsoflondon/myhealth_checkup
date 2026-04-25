@@ -40,8 +40,10 @@ export function usePerformanceOptimization() {
     viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes');
   }, []);
 
-  // Add performance observer for Core Web Vitals
+  // Add performance observer for Core Web Vitals (dev-only — avoids
+  // long-running observers and unnecessary callback work in production)
   const observePerformance = useCallback(() => {
+    if (!import.meta.env.DEV) return;
     if ('PerformanceObserver' in window) {
       try {
         // Observe LCP

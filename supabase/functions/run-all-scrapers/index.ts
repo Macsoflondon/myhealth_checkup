@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "npm:resend@2.0.0";
+import { getErrorMessage } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -79,7 +80,7 @@ async function sendAdminNotification(
       console.log("Admin notification sent successfully");
     }
   } catch (error) {
-    console.error("Error in sendAdminNotification:", error);
+    console.error("Error in sendAdminNotification:", getErrorMessage(error));
   }
 }
 
@@ -171,11 +172,14 @@ serve(async (req) => {
 
   console.log(`[${new Date().toISOString()}] Starting scheduled scraping run for all providers`);
 
+  // Bounded concurrency: run scrapers in parallel batches to cut wall time
+  // from ~3-5 min (sequential + 2s sleeps) to ~60-90 s without overwhelming
+  // upstream providers. Each scraper is independent.
+  const CONCURRENCY = 3;
   const results: ScraperResult[] = [];
 
-  for (const scraper of SCRAPERS) {
+  async function runScraper(scraper: typeof SCRAPERS[number]): Promise<ScraperResult> {
     console.log(`[${new Date().toISOString()}] Running ${scraper.id} scraper...`);
-    
     try {
       const response = await fetch(`${supabaseUrl}/functions/v1/${scraper.functionName}`, {
         method: 'POST',
@@ -193,24 +197,25 @@ serve(async (req) => {
 
       const data = await response.json();
       console.log(`[${new Date().toISOString()}] ${scraper.id} completed: ${JSON.stringify(data)}`);
-      
-      results.push({
+      return {
         provider: scraper.id,
         success: true,
         message: data.message || 'Completed successfully',
-      });
-
-      // Small delay between scrapers to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      };
     } catch (error) {
-      console.error(`[${new Date().toISOString()}] ${scraper.id} failed:`, error);
-      results.push({
+      console.error(`[${new Date().toISOString()}] ${scraper.id} failed:`, getErrorMessage(error));
+      return {
         provider: scraper.id,
         success: false,
-        message: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Unknown error',
-      });
+        message: getErrorMessage(error),
+      };
     }
+  }
+
+  for (let i = 0; i < SCRAPERS.length; i += CONCURRENCY) {
+    const batch = SCRAPERS.slice(i, i + CONCURRENCY);
+    const batchResults = await Promise.all(batch.map(runScraper));
+    results.push(...batchResults);
   }
 
   const successCount = results.filter(r => r.success).length;

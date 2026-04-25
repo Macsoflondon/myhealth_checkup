@@ -5,15 +5,17 @@
 
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+// Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
-import NotFound from "@/pages/NotFound";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
 import { contentRoutes } from "./contentRoutes";
 import { featureRoutes } from "./featureRoutes";
-import TestCategoriesPage from "@/pages/TestCategoriesPage";
+
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const TestCategoriesPage = lazy(() => import("@/pages/TestCategoriesPage"));
 
 // Lazy-load admin pages — they're only used by admins, no need to bundle in the main chunk.
 const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
