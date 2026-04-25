@@ -20,6 +20,11 @@ const PromoTracker = () => {
   const queryDebug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
   const [debugOn, setDebugOn] = useState(queryDebug);
   const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0, paused: false });
+  // Mirror debugOn into a ref so the animation loop can read it without re-subscribing.
+  const debugOnRef = useRef(debugOn);
+  useEffect(() => {
+    debugOnRef.current = debugOn;
+  }, [debugOn]);
 
   // Failsafe: never let the ticker stay paused longer than this.
   const MAX_PAUSE_MS = 1500;
@@ -105,7 +110,7 @@ const PromoTracker = () => {
       track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
 
       // Throttle debug overlay to ~10fps to avoid render churn
-      if (debugOn && timestamp - lastDebugUpdate > 100) {
+      if (debugOnRef.current && timestamp - lastDebugUpdate > 100) {
         lastDebugUpdate = timestamp;
         setDebugInfo({ setWidth, translateX: positionRef.current, paused: pausedRef.current });
       }
@@ -134,7 +139,7 @@ const PromoTracker = () => {
         pauseTimeoutRef.current = null;
       }
     };
-  }, [measureSetWidth, debugOn]);
+  }, [measureSetWidth]);
 
   const items = Array.from({ length: SETS }, () => promos).flat();
 
@@ -145,7 +150,7 @@ const PromoTracker = () => {
         type="button"
         onClick={() => setDebugOn((v) => !v)}
         className="absolute top-1 right-1 z-50 bg-black/60 hover:bg-black/80 text-white text-[9px] font-mono px-1.5 py-0.5 rounded transition-colors"
-        aria-label={debugOn ? "Hide ticker debug overlay" : "Show ticker debug overlay"}
+        aria-label={debugOn ? "Hide promo tracker debug overlay" : "Show promo tracker debug overlay"}
         aria-pressed={debugOn}
       >
         {debugOn ? "✕ dbg" : "dbg"}
