@@ -161,16 +161,28 @@ function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): strin
   `;
 }
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+// Detect Supabase Edge Runtime (Deno Deploy) waitUntil API. Falls back to a
+// no-op shim in local/dev so the function still runs synchronously there.
+declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+const waitUntil = (p: Promise<unknown>): void => {
+  try {
+    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
+      EdgeRuntime.waitUntil(p);
+      return;
+    }
+  } catch {
+    // ignore — fall through to await-less detach
   }
+  // Best-effort detach: attach a catch so unhandled rejections don't crash the isolate.
+  p.catch((err) => console.error("[run-all-scrapers] background task error:", getErrorMessage(err)));
+};
 
+async function runBatch(runId: string): Promise<void> {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-  console.log(`[${new Date().toISOString()}] Starting scheduled scraping run for all providers`);
+  console.log(`[${new Date().toISOString()}] [${runId}] Starting scheduled scraping run for all providers`);
 
   // Bounded concurrency: run scrapers in parallel batches to cut wall time
   // from ~3-5 min (sequential + 2s sleeps) to ~60-90 s without overwhelming
@@ -179,7 +191,7 @@ serve(async (req) => {
   const results: ScraperResult[] = [];
 
   async function runScraper(scraper: typeof SCRAPERS[number]): Promise<ScraperResult> {
-    console.log(`[${new Date().toISOString()}] Running ${scraper.id} scraper...`);
+    console.log(`[${new Date().toISOString()}] [${runId}] Running ${scraper.id} scraper...`);
     try {
       const response = await fetch(`${supabaseUrl}/functions/v1/${scraper.functionName}`, {
         method: 'POST',
@@ -196,14 +208,14 @@ serve(async (req) => {
       }
 
       const data = await response.json();
-      console.log(`[${new Date().toISOString()}] ${scraper.id} completed: ${JSON.stringify(data)}`);
+      console.log(`[${new Date().toISOString()}] [${runId}] ${scraper.id} completed: ${JSON.stringify(data)}`);
       return {
         provider: scraper.id,
         success: true,
         message: data.message || 'Completed successfully',
       };
     } catch (error) {
-      console.error(`[${new Date().toISOString()}] ${scraper.id} failed:`, getErrorMessage(error));
+      console.error(`[${new Date().toISOString()}] [${runId}] ${scraper.id} failed:`, getErrorMessage(error));
       return {
         provider: scraper.id,
         success: false,
@@ -212,39 +224,56 @@ serve(async (req) => {
     }
   }
 
-  for (let i = 0; i < SCRAPERS.length; i += CONCURRENCY) {
-    const batch = SCRAPERS.slice(i, i + CONCURRENCY);
-    const batchResults = await Promise.all(batch.map(runScraper));
-    results.push(...batchResults);
+  try {
+    for (let i = 0; i < SCRAPERS.length; i += CONCURRENCY) {
+      const batch = SCRAPERS.slice(i, i + CONCURRENCY);
+      const batchResults = await Promise.all(batch.map(runScraper));
+      results.push(...batchResults);
+    }
+
+    const successCount = results.filter(r => r.success).length;
+    const allSuccess = successCount === SCRAPERS.length;
+    const summary = `Completed ${successCount}/${SCRAPERS.length} scrapers successfully`;
+
+    console.log(`[${new Date().toISOString()}] [${runId}] ${summary}`);
+
+    const emailSubject = allSuccess
+      ? `✓ Scraper Run Complete: ${successCount}/${SCRAPERS.length} succeeded`
+      : `⚠️ Scraper Run: ${SCRAPERS.length - successCount} failed`;
+
+    await sendAdminNotification(
+      supabase,
+      emailSubject,
+      generateEmailHtml(results, allSuccess)
+    );
+  } catch (err) {
+    console.error(`[${new Date().toISOString()}] [${runId}] Batch run crashed:`, getErrorMessage(err));
+  }
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
   }
 
-  const successCount = results.filter(r => r.success).length;
-  const allSuccess = successCount === SCRAPERS.length;
-  const summary = `Completed ${successCount}/${SCRAPERS.length} scrapers successfully`;
-  
-  console.log(`[${new Date().toISOString()}] ${summary}`);
+  const runId = crypto.randomUUID().slice(0, 8);
+  const startedAt = new Date().toISOString();
 
-  // Send email notification to admins
-  const emailSubject = allSuccess 
-    ? `✓ Scraper Run Complete: ${successCount}/${SCRAPERS.length} succeeded`
-    : `⚠️ Scraper Run: ${SCRAPERS.length - successCount} failed`;
-  
-  await sendAdminNotification(
-    supabase,
-    emailSubject,
-    generateEmailHtml(results, allSuccess)
-  );
+  // Fire-and-forget: detach the batch from the request so HTTP timeouts,
+  // client disconnects, or cron invoker cancellations cannot abort it.
+  waitUntil(runBatch(runId));
 
   return new Response(
     JSON.stringify({
-      success: allSuccess,
-      message: summary,
-      results,
-      timestamp: new Date().toISOString(),
+      success: true,
+      message: `Scraper batch dispatched (${SCRAPERS.length} providers). Running in background.`,
+      runId,
+      providers: SCRAPERS.map(s => s.id),
+      startedAt,
     }),
     {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
+      status: 202,
     }
   );
 });
