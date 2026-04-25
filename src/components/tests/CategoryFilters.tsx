@@ -23,7 +23,7 @@ const categoryItems: CategoryItem[] = [{
   path: '/blood-testing'
 }, {
   id: 'fertility',
-  name: 'Fertility',
+  name: 'Fertility - Prenatal',
   color: 'bg-orange-500',
   path: '/fertility-tests'
 }, {
