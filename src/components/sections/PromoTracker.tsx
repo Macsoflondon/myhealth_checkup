@@ -168,7 +168,7 @@ const PromoTracker = () => {
           </div>
         </div>
       )}
-      <div className="pt-7 pb-1.5 sm:pt-8 sm:pb-2 px-2 sm:px-4">
+      <div className="pt-4 pb-2 sm:pt-5 sm:pb-2.5 px-2 sm:px-4">
         <div
           className="relative overflow-hidden"
           style={{
@@ -177,6 +177,9 @@ const PromoTracker = () => {
           }}
           onMouseEnter={pause}
           onMouseLeave={resume}
+          onTouchStart={pause}
+          onTouchEnd={resume}
+          onTouchCancel={resume}
           role="marquee"
           aria-label="Promotional offers from health test providers. Hover to pause."
         >
