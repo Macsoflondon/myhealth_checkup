@@ -9,6 +9,7 @@ import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle }
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
+import { ScraperAlertsPanel } from "@/components/admin/ScraperAlertsPanel";
 
 interface ScrapingJob {
   id: string;
@@ -167,10 +168,12 @@ const AdminScraperDashboardPage: React.FC = () => {
 
           <LeakedPasswordProtectionStatus />
 
+          <ScraperAlertsPanel />
+
           <Alert>
             <Clock className="h-4 w-4" />
             <AlertDescription>
-              <strong>Scheduled scraping:</strong> All scrapers run automatically at 06:00 and 14:00 daily (UK time).
+              <strong>Scheduled scraping:</strong> All scrapers run automatically at 02:30 UTC daily, with a health check at 03:00 UTC that creates alerts when any provider drops below its expected test count.
             </AlertDescription>
           </Alert>
 
