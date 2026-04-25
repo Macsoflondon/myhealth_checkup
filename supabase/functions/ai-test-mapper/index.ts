@@ -31,8 +31,11 @@ const MasterTestSchema = z.object({
   category: z.string(),
   subcategory: z.string().nullable(),
   description: z.string(),
-  biomarkers: z.any(),
+  biomarkers: z.any().optional(),
 });
+
+type ProviderTestZ = z.infer<typeof ProviderTestSchema>;
+type MasterTestZ = z.infer<typeof MasterTestSchema>;
 
 const RequestBodySchema = z.object({
   dryRun: z.boolean().optional().default(true),
