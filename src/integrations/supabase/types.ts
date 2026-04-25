@@ -818,27 +818,27 @@ export type Database = {
       }
       saved_providers: {
         Row: {
-          created_at: string
           id: string
           notes: string | null
           provider_id: string
           provider_name: string
+          providers_website: string | null
           user_id: string
         }
         Insert: {
-          created_at?: string
           id?: string
           notes?: string | null
           provider_id: string
           provider_name: string
+          providers_website?: string | null
           user_id: string
         }
         Update: {
-          created_at?: string
           id?: string
           notes?: string | null
           provider_id?: string
           provider_name?: string
+          providers_website?: string | null
           user_id?: string
         }
         Relationships: []
