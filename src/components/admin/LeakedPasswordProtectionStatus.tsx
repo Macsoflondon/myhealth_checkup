@@ -62,7 +62,7 @@ export const LeakedPasswordProtectionStatus = () => {
     switch (result.status) {
       case "enabled":
         return (
-          <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+          <Badge className="bg-primary/10 text-primary border-primary/30">
             <ShieldCheck className="h-3 w-3 mr-1" /> Enabled
           </Badge>
         );
