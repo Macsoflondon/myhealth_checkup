@@ -447,6 +447,8 @@ Deno.serve(async (req) => {
         testsScraped: scrapedProducts.length,
         testsUpserted: upsertedCount,
         testsWithPrices: priceUpdateCount,
+        upsertErrors: upsertErrors.slice(0, 10),
+        upsertErrorCount: upsertErrors.length,
         timestamp: new Date().toISOString()
       }),
       {
@@ -456,7 +458,8 @@ Deno.serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in Firecrawl scraper:', error);
+    const errMsg = getErrorMessage(error);
+    console.error('Error in Firecrawl scraper:', errMsg);
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -466,15 +469,12 @@ Deno.serve(async (req) => {
       .from('scraping_jobs')
       .update({
         status: 'failed',
-        error_message: (error instanceof Error ? error.message : String(error))
+        error_message: errMsg,
       })
       .eq('provider_id', 'medichecks-firecrawl');
 
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: (error instanceof Error ? error.message : String(error))
-      }),
+      JSON.stringify({ success: false, error: errMsg }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500,
