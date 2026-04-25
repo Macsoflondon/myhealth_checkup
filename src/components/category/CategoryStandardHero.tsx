@@ -81,26 +81,33 @@ export function CategoryStandardHero({
           <div
             className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 px-4 sm:px-9 md:px-[54px] py-2 sm:py-4 md:py-[18px] rounded-full max-w-full"
             style={{
-              background: "rgba(34,192,212,0.1)",
-              border: "2px solid rgba(34,192,212,0.35)",
+              background: "rgba(231,13,105,0.1)",
+              border: "2px solid rgba(231,13,105,0.35)",
             }}
           >
             <span
               className="inline-block rounded-full shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-[18px] md:h-[18px]"
               style={{
-                background: "#22c0d4",
-                boxShadow: "0 0 24px #22c0d4",
+                background: "#e70d69",
+                boxShadow: "0 0 24px #e70d69",
               }}
             />
             <span
               className="text-lg sm:text-2xl md:text-[33px] font-bold uppercase leading-none truncate"
               style={{
                 letterSpacing: "0.14em",
-                color: "#22c0d4",
+                color: "#e70d69",
               }}
             >
               {pillLabel}
             </span>
+            <span
+              className="inline-block rounded-full shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-[18px] md:h-[18px]"
+              style={{
+                background: "#e70d69",
+                boxShadow: "0 0 24px #e70d69",
+              }}
+            />
           </div>
         </div>
 
