@@ -144,7 +144,9 @@ const PromoTracker = () => {
   const items = Array.from({ length: SETS }, () => promos).flat();
 
   return (
-    <section className="bg-brand-navy overflow-hidden select-none relative">
+    <section className="bg-brand-navy overflow-hidden select-none relative shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
+      {/* Top gradient accent for clear separation from page below */}
+      <div className="h-[2px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       {/* Debug toggle — small, unobtrusive, top-right. Click to show/hide live state. */}
       <button
         type="button"
