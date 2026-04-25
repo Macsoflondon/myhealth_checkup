@@ -119,7 +119,7 @@ serve(async (req: Request): Promise<Response> => {
           JSON.stringify({ 
             success: true, 
             message: `Test ${notificationType} email sent to ${email}`,
-            emailId: emailResponse.id
+            emailId: emailResponse.data?.id ?? null
           }),
           {
             status: 200,
