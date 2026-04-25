@@ -386,10 +386,14 @@ Deno.serve(async (req) => {
     // Step 3: Upsert to database
     let upsertedCount = 0;
     let priceUpdateCount = 0;
+    const upsertErrors: string[] = [];
     
     for (const product of scrapedProducts) {
-      const dataToUpsert: any = {
+      const providerTestId = slugFromUrl(product.url);
+
+      const dataToUpsert: Record<string, unknown> = {
         provider_id: 'medichecks',
+        provider_test_id: providerTestId,
         test_name: product.test_name,
         url: product.url,
         category: product.category,
@@ -412,11 +416,13 @@ Deno.serve(async (req) => {
       const { error } = await supabase
         .from('provider_tests')
         .upsert(dataToUpsert, {
-          onConflict: 'provider_id,test_name',
+          onConflict: 'provider_id,provider_test_id',
         });
       
       if (error) {
-        console.error(`Failed to upsert ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
+        const msg = getErrorMessage(error);
+        console.error(`Failed to upsert ${product.test_name} (${providerTestId}):`, msg);
+        upsertErrors.push(`${providerTestId}: ${msg}`);
       } else {
         upsertedCount++;
       }
