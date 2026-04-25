@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
+import { upsertProviderTests } from '../_shared/provider-upsert.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -130,32 +131,8 @@ Deno.serve(async (req) => {
       };
     });
 
-    let upsertedCount = 0;
-    const upsertErrors: string[] = [];
-
-    // Dedupe by Shopify handle (slug) — guaranteed unique per product upstream.
-    // provider_test_id already encodes the slug (`clinilabs-${handle}`), so this
-    // also satisfies the (provider_id, provider_test_id) upsert conflict target.
-    const seenSlugs = new Set<string>();
-    const dedupedRows = rows.filter((r) => {
-      const key = (r.provider_test_id || r.test_name).toLowerCase().trim();
-      if (seenSlugs.has(key)) return false;
-      seenSlugs.add(key);
-      return true;
-    });
-
-    // Batch upsert in chunks of 50 to avoid payload limits
-    for (let i = 0; i < dedupedRows.length; i += 50) {
-      const chunk = dedupedRows.slice(i, i + 50);
-      const { error } = await supabase
-        .from('provider_tests')
-        .upsert(chunk, { onConflict: 'provider_id,provider_test_id' });
-      if (error) {
-        upsertErrors.push(getErrorMessage(error));
-      } else {
-        upsertedCount += chunk.length;
-      }
-    }
+    const { upsertedCount, errors: upsertErrors, finalRowCount } =
+      await upsertProviderTests(supabase as any, PROVIDER_ID, rows, 'clinilabs-');
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID,
@@ -170,6 +147,7 @@ Deno.serve(async (req) => {
       success: true,
       provider: PROVIDER_ID,
       testsScraped: rows.length,
+      testsAfterDedupe: finalRowCount,
       testsUpserted: upsertedCount,
       upsertErrors: upsertErrors.slice(0, 5),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
