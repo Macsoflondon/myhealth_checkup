@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
+import { upsertProviderTests } from '../_shared/provider-upsert.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
