@@ -90,9 +90,9 @@ serve(async (req) => {
     });
 
     const token = authHeader.replace('Bearer ', '');
-    const { data: claimsData, error: authError } = await authSupabase.auth.getClaims(token);
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser(token);
 
-    if (authError || !claimsData?.claims) {
+    if (authError || !user) {
       console.error('Authentication error:', authError);
       return new Response(
         JSON.stringify({ error: 'Invalid authentication' }),
@@ -100,7 +100,7 @@ serve(async (req) => {
       );
     }
 
-    const userId = claimsData.claims.sub;
+    const userId = user.id;
     console.log('Authenticated user:', userId);
 
     const body = await req.json();
@@ -125,7 +125,6 @@ serve(async (req) => {
     }
 
     // Fetch available sports performance tests from database
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
