@@ -11,7 +11,7 @@ const promos = [
 // Use enough sets so there's always content visible during reset
 const SETS = 8;
 
-const BrandTicker = () => {
+const PromoTracker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
@@ -152,7 +152,7 @@ const BrandTicker = () => {
       </button>
       {debugOn && (
         <div className="absolute top-7 right-1 z-50 bg-black/85 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none space-y-0.5">
-          <div>BrandTicker</div>
+          <div>PromoTracker</div>
           <div>setW: {debugInfo.setWidth.toFixed(0)}px</div>
           <div>tx: {debugInfo.translateX.toFixed(0)}px</div>
           <div>
@@ -163,7 +163,7 @@ const BrandTicker = () => {
           </div>
         </div>
       )}
-      <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2 px-2 sm:px-4">
+      <div className="pt-7 pb-1.5 sm:pt-8 sm:pb-2 px-2 sm:px-4">
         <div
           className="relative overflow-hidden"
           style={{
@@ -183,15 +183,15 @@ const BrandTicker = () => {
             {items.map((promo, i) => (
               <span key={i} className="flex items-baseline shrink-0">
                 <span
-                  className="font-heading font-bold text-[11px] sm:text-sm md:text-base tracking-wider sm:tracking-widest uppercase pl-2 pr-1.5 sm:pl-5 sm:pr-2"
+                  className="font-heading font-bold text-sm sm:text-lg md:text-xl tracking-wider sm:tracking-widest uppercase pl-2 pr-1.5 sm:pl-5 sm:pr-2"
                   style={{ color: promo.color }}
                 >
                   {promo.provider}:
                 </span>
-                <span className="text-white font-body text-[11px] sm:text-sm md:text-base pr-2 sm:pr-3">
+                <span className="text-white font-body text-sm sm:text-lg md:text-xl pr-2 sm:pr-3">
                   {promo.text}
                 </span>
-                <span className="text-brand-pink text-base sm:text-lg leading-none px-1.5 sm:px-3" aria-hidden="true">•</span>
+                <span className="text-brand-pink text-lg sm:text-xl leading-none px-1.5 sm:px-3" aria-hidden="true">•</span>
               </span>
             ))}
           </div>
@@ -202,4 +202,4 @@ const BrandTicker = () => {
   );
 };
 
-export default BrandTicker;
+export default PromoTracker;

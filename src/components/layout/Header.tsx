@@ -14,7 +14,7 @@ import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
-import BrandTicker from "../sections/BrandTicker";
+import PromoTracker from "../sections/PromoTracker";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -24,7 +24,7 @@ const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const [tickerHeight, setTickerHeight] = useState(0);
-  const brandTickerRef = useRef<HTMLDivElement>(null);
+  const promoTrackerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const isMobile = useIsMobile();
 
@@ -46,24 +46,24 @@ const Header = ({ className }: HeaderProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Measure BrandTicker height for sticky toolbar offset (desktop only)
+  // Measure PromoTracker height for sticky toolbar offset (desktop only)
   useEffect(() => {
-    if (isMobile || !brandTickerRef.current) return;
+    if (isMobile || !promoTrackerRef.current) return;
     const measure = () => {
-      if (brandTickerRef.current) {
-        setTickerHeight(brandTickerRef.current.getBoundingClientRect().height);
+      if (promoTrackerRef.current) {
+        setTickerHeight(promoTrackerRef.current.getBoundingClientRect().height);
       }
     };
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(brandTickerRef.current);
+    observer.observe(promoTrackerRef.current);
     return () => observer.disconnect();
   }, [isMobile]);
   if (isMobile) {
     return (
       <ErrorBoundary>
         <div className={cn("sticky top-0 z-50", className)}>
-          <BrandTicker />
+          <PromoTracker />
           <header className="bg-[#081129] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
@@ -104,9 +104,9 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* BrandTicker stays sticky at top */}
-      <div ref={brandTickerRef} className={cn("sticky top-0 z-50", className)}>
-        <BrandTicker />
+      {/* PromoTracker stays sticky at top */}
+      <div ref={promoTrackerRef} className={cn("sticky top-0 z-50", className)}>
+        <PromoTracker />
       </div>
 
       {/* Logo section scrolls normally */}
@@ -143,7 +143,7 @@ const Header = ({ className }: HeaderProps) => {
         </div>
       </header>
 
-      {/* Toolbar sticks below BrandTicker independently */}
+      {/* Toolbar sticks below PromoTracker independently */}
       <div
         className="sticky z-40"
         style={{ top: tickerHeight }}
