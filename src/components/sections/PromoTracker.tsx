@@ -145,7 +145,7 @@ const PromoTracker = () => {
         type="button"
         onClick={() => setDebugOn((v) => !v)}
         className="absolute top-1 right-1 z-50 bg-black/60 hover:bg-black/80 text-white text-[9px] font-mono px-1.5 py-0.5 rounded transition-colors"
-        aria-label={debugOn ? "Hide ticker debug overlay" : "Show ticker debug overlay"}
+        aria-label={debugOn ? "Hide promo tracker debug overlay" : "Show promo tracker debug overlay"}
         aria-pressed={debugOn}
       >
         {debugOn ? "✕ dbg" : "dbg"}
