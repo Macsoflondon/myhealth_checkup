@@ -74,7 +74,7 @@ export const useNavigationData = () => {
           ['blood-tests', 'vitamins', 'hormones', 'thyroid', 'diabetes', 'heart-health', 'allergy-testing', 'general-health'].includes(cat.id)
         );
       
-      case "Fertility":
+      case "Fertility - Prenatal":
         return compareCategories.filter(cat => 
           ['fertility', 'hormones', 'womens-health', 'mens-health'].includes(cat.id)
         );
