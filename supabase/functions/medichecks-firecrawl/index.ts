@@ -1,4 +1,19 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { getErrorMessage } from '../_shared/errors.ts';
+
+// Derive a stable provider_test_id from the Medichecks product URL slug.
+// Example: https://www.medichecks.com/products/testosterone-blood-test -> "testosterone-blood-test"
+function slugFromUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split('/').filter(Boolean);
+    const idx = parts.indexOf('products');
+    const slug = idx >= 0 && parts[idx + 1] ? parts[idx + 1] : parts[parts.length - 1];
+    return (slug || url).toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 120);
+  } catch {
+    return url.toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 120);
+  }
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -299,7 +314,7 @@ Deno.serve(async (req) => {
         productUrls = [...productUrls, ...validUrls];
         console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
       } catch (error) {
-        console.error(`Failed to map ${collectionUrl}:`, (error instanceof Error ? error.message : String(error)));
+        console.error(`Failed to map ${collectionUrl}:`, getErrorMessage(error));
       }
     }
     
@@ -362,7 +377,7 @@ Deno.serve(async (req) => {
         await new Promise(resolve => setTimeout(resolve, 500));
         
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
+        console.error(`Failed to scrape ${url}:`, getErrorMessage(error));
       }
     }
 
@@ -371,10 +386,14 @@ Deno.serve(async (req) => {
     // Step 3: Upsert to database
     let upsertedCount = 0;
     let priceUpdateCount = 0;
+    const upsertErrors: string[] = [];
     
     for (const product of scrapedProducts) {
-      const dataToUpsert: any = {
+      const providerTestId = slugFromUrl(product.url);
+
+      const dataToUpsert: Record<string, unknown> = {
         provider_id: 'medichecks',
+        provider_test_id: providerTestId,
         test_name: product.test_name,
         url: product.url,
         category: product.category,
@@ -397,11 +416,13 @@ Deno.serve(async (req) => {
       const { error } = await supabase
         .from('provider_tests')
         .upsert(dataToUpsert, {
-          onConflict: 'provider_id,test_name',
+          onConflict: 'provider_id,provider_test_id',
         });
       
       if (error) {
-        console.error(`Failed to upsert ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
+        const msg = getErrorMessage(error);
+        console.error(`Failed to upsert ${product.test_name} (${providerTestId}):`, msg);
+        upsertErrors.push(`${providerTestId}: ${msg}`);
       } else {
         upsertedCount++;
       }
@@ -426,6 +447,8 @@ Deno.serve(async (req) => {
         testsScraped: scrapedProducts.length,
         testsUpserted: upsertedCount,
         testsWithPrices: priceUpdateCount,
+        upsertErrors: upsertErrors.slice(0, 10),
+        upsertErrorCount: upsertErrors.length,
         timestamp: new Date().toISOString()
       }),
       {
@@ -435,7 +458,8 @@ Deno.serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in Firecrawl scraper:', error);
+    const errMsg = getErrorMessage(error);
+    console.error('Error in Firecrawl scraper:', errMsg);
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -445,15 +469,12 @@ Deno.serve(async (req) => {
       .from('scraping_jobs')
       .update({
         status: 'failed',
-        error_message: (error instanceof Error ? error.message : String(error))
+        error_message: errMsg,
       })
       .eq('provider_id', 'medichecks-firecrawl');
 
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: (error instanceof Error ? error.message : String(error))
-      }),
+      JSON.stringify({ success: false, error: errMsg }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500,
