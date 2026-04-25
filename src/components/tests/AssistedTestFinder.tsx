@@ -85,7 +85,7 @@ const concernOptions = [
   { id: 'hormones', label: 'Hormonal changes' },
   { id: 'heart', label: 'Heart & cholesterol' },
   { id: 'thyroid', label: 'Thyroid' },
-  { id: 'fertility', label: 'Fertility' },
+  { id: 'fertility', label: 'Fertility - Prenatal' },
   { id: 'vitamins', label: 'Vitamin deficiencies' },
   { id: 'digestive', label: 'Digestive issues' },
   { id: 'weight', label: 'Weight management' },
