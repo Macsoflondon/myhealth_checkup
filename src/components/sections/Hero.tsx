@@ -60,7 +60,6 @@ const trustSignals = [
   { icon: MapPin, text: "250+ clinic locations nationwide" },
   { icon: Clock, text: "Results in 3–5 days" },
   { icon: Stethoscope, text: "No GP referral needed" },
-  { icon: Shield, text: "CQC Regulated" },
 ];
 
 const Hero = () => {
