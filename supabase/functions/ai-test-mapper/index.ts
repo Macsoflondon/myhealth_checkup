@@ -1,11 +1,44 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-service-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
+
+// Shared error helper — narrows `unknown` thrown values to a string message.
+function getErrorMessage(e: unknown): string {
+  if (e instanceof Error) return e.message;
+  if (typeof e === 'string') return e;
+  try { return JSON.stringify(e); } catch { return String(e); }
+}
+
+// Runtime schemas for DB rows — guarantees TS sees concrete types, never `unknown`.
+const ProviderTestSchema = z.object({
+  id: z.string(),
+  provider_id: z.string(),
+  test_name: z.string(),
+  category: z.string().nullable(),
+  description: z.string().nullable(),
+  price: z.number().nullable(),
+});
+
+const MasterTestSchema = z.object({
+  id: z.string(),
+  test_name: z.string(),
+  category: z.string(),
+  subcategory: z.string().nullable(),
+  description: z.string(),
+  biomarkers: z.any(),
+});
+
+const RequestBodySchema = z.object({
+  dryRun: z.boolean().optional().default(true),
+  confidenceThreshold: z.number().min(0).max(100).optional().default(75),
+  batchSize: z.number().int().min(1).max(50).optional().default(10),
+}).default({});
 
 interface ProviderTest {
   id: string;
