@@ -20,6 +20,11 @@ const PromoTracker = () => {
   const queryDebug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
   const [debugOn, setDebugOn] = useState(queryDebug);
   const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0, paused: false });
+  // Mirror debugOn into a ref so the animation loop can read it without re-subscribing.
+  const debugOnRef = useRef(debugOn);
+  useEffect(() => {
+    debugOnRef.current = debugOn;
+  }, [debugOn]);
 
   // Failsafe: never let the ticker stay paused longer than this.
   const MAX_PAUSE_MS = 1500;
