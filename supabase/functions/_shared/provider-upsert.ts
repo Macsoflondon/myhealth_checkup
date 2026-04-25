@@ -122,18 +122,55 @@ export async function upsertProviderTests(
     return { ...r, test_name: name };
   });
 
-  // 4. Chunked upsert.
+  // 4. Chunked upsert with per-row fallback. The (provider_id,test_name)
+  // partial unique can still trip if upstream renames a product (old slug now
+  // owns "Foo Test", new slug arrives also as "Foo Test") — fall back to
+  // per-row upsert so one bad row doesn't fail an entire 50-row chunk.
   let upsertedCount = 0;
   const errors: string[] = [];
+
+  async function upsertOne(row: ProviderTestRow): Promise<boolean> {
+    const { error } = await supabase
+      .from("provider_tests")
+      .upsert([row], { onConflict: "provider_id,provider_test_id" });
+    if (!error) return true;
+
+    // Last-resort name disambiguation if the active-name unique still trips.
+    const msg = getErrorMessage(error);
+    if (msg.includes("provider_tests_unique_active")) {
+      const suffix = (row.provider_test_id || "")
+        .replace(new RegExp(`^${slugPrefix}`), "")
+        .slice(0, 24);
+      const renamed = {
+        ...row,
+        test_name: `${row.test_name} [${suffix || row.provider_test_id}]`,
+      };
+      const retry = await supabase
+        .from("provider_tests")
+        .upsert([renamed], { onConflict: "provider_id,provider_test_id" });
+      if (!retry.error) return true;
+      errors.push(`row ${row.provider_test_id}: ${getErrorMessage(retry.error)}`);
+      return false;
+    }
+    errors.push(`row ${row.provider_test_id}: ${msg}`);
+    return false;
+  }
+
   for (let i = 0; i < finalRows.length; i += chunkSize) {
     const chunk = finalRows.slice(i, i + chunkSize);
     const { error } = await supabase
       .from("provider_tests")
       .upsert(chunk, { onConflict: "provider_id,provider_test_id" });
-    if (error) {
-      errors.push(getErrorMessage(error));
-    } else {
+    if (!error) {
       upsertedCount += chunk.length;
+      continue;
+    }
+    // Chunk failed — retry row-by-row so we save what we can.
+    console.warn(
+      `[provider-upsert] chunk ${i}-${i + chunk.length} failed (${getErrorMessage(error)}), falling back to per-row upsert`,
+    );
+    for (const row of chunk) {
+      if (await upsertOne(row)) upsertedCount += 1;
     }
   }
 
