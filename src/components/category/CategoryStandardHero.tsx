@@ -79,7 +79,7 @@ export function CategoryStandardHero({
         {/* Pill row */}
         <div className="flex items-center justify-center relative mb-8 md:mb-10">
           <div
-            className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 px-4 sm:px-9 md:px-[54px] py-2 sm:py-4 md:py-[18px] rounded-full max-w-full"
+            className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 px-4 sm:px-9 md:px-[54px] py-2 sm:py-4 md:py-[18px] rounded-full max-w-full border-primary-foreground"
             style={{
               background: "rgba(34,192,212,0.08)",
               border: "2px solid rgba(34,192,212,0.35)",
