@@ -110,19 +110,20 @@ serve(async (req) => {
     }
 
     // Group tests by provider for the AI prompt
-    const testsByProvider = availableTests?.reduce((acc, test) => {
-      if (!acc[test.provider_id]) {
-        acc[test.provider_id] = [];
+    const testsByProvider = (availableTests ?? []).reduce<Record<string, Array<{ name: string; price: number | null; category: string | null }>>>((acc, test: any) => {
+      const pid = test.provider_id as string;
+      if (!acc[pid]) {
+        acc[pid] = [];
       }
-      acc[test.provider_id].push({
+      acc[pid].push({
         name: test.test_name,
         price: test.price,
         category: test.category
       });
       return acc;
-    }, {}) || {};
+    }, {});
 
-    const providersInfo = {
+    const providersInfo: Record<string, string> = {
       'medichecks': 'Medichecks',
       'lola-health': 'Lola Health', 
       'goodbody-clinic': 'GoodBody Clinic'
@@ -130,7 +131,7 @@ serve(async (req) => {
 
     const testListForAI = Object.entries(testsByProvider)
       .map(([providerId, tests]) => 
-        `${providersInfo[providerId]}: ${tests.map(t => `${t.name} (${t.category})`).join(', ')}`
+        `${providersInfo[providerId] ?? providerId}: ${tests.map((t) => `${t.name} (${t.category})`).join(', ')}`
       ).join('\n');
 
     const prompt = `You are a wellness information assistant for a UK private health testing company. 
@@ -208,11 +209,11 @@ Guidelines:
       
       // Enhance recommendations with actual database pricing
       if (analysisResult.recommendedTests) {
-        analysisResult.recommendedTests = analysisResult.recommendedTests.map(rec => {
-          const dbTest = availableTests?.find(t => 
+        analysisResult.recommendedTests = analysisResult.recommendedTests.map((rec: any) => {
+          const dbTest = availableTests?.find((t: any) => 
             t.test_name.toLowerCase().includes(rec.testName.toLowerCase()) &&
             t.provider_id === rec.providerId
-          );
+          ) as any;
           
           return {
             ...rec,
