@@ -244,7 +244,7 @@ Based on this athlete's profile, recommend the most relevant blood tests to opti
   } catch (e) {
     console.error('Sports test recommendation error:', e);
     return new Response(JSON.stringify({ 
-      error: e instanceof Error ? e.message : "Unknown error occurred" 
+      error: e instanceof Error ? (e instanceof Error ? e.message : String(e)) : "Unknown error occurred" 
     }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

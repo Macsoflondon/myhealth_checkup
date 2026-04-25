@@ -366,7 +366,7 @@ async function scrapeProvider(providerId: string) {
     await supabase.from('scraping_jobs').upsert({
       provider_id: providerId,
       status: 'failed',
-      error_message: error.message,
+      error_message: (error instanceof Error ? error.message : String(error)),
       last_scraped: new Date().toISOString()
     });
 
@@ -417,7 +417,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in provider-scraper function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error instanceof Error ? error.message : String(error)) }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

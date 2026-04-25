@@ -299,7 +299,7 @@ Deno.serve(async (req) => {
         productUrls = [...productUrls, ...validUrls];
         console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
       } catch (error) {
-        console.error(`Failed to map ${collectionUrl}:`, error.message);
+        console.error(`Failed to map ${collectionUrl}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
     
@@ -362,7 +362,7 @@ Deno.serve(async (req) => {
         await new Promise(resolve => setTimeout(resolve, 500));
         
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, error.message);
+        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -401,7 +401,7 @@ Deno.serve(async (req) => {
         });
       
       if (error) {
-        console.error(`Failed to upsert ${product.test_name}:`, error.message);
+        console.error(`Failed to upsert ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
       } else {
         upsertedCount++;
       }
@@ -445,14 +445,14 @@ Deno.serve(async (req) => {
       .from('scraping_jobs')
       .update({
         status: 'failed',
-        error_message: error.message
+        error_message: (error instanceof Error ? error.message : String(error))
       })
       .eq('provider_id', 'medichecks-firecrawl');
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message
+        error: (error instanceof Error ? error.message : String(error))
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -261,7 +261,7 @@ Provide a clear recommendation with reasoning.`;
     console.error("test-recommendations error:", error);
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : "Unknown error" 
+        error: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : "Unknown error" 
       }),
       {
         status: 500,

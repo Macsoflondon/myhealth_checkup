@@ -269,7 +269,7 @@ Guidelines:
   } catch (error) {
     console.error('Error in health-ai-analysis function:', error);
     return new Response(JSON.stringify({ 
-      error: error.message,
+      error: (error instanceof Error ? error.message : String(error)),
       medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
       analysis: "Sorry, I'm unable to analyze your query at the moment. Please try again.",
       recommendedTests: [],

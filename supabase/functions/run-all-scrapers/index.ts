@@ -208,7 +208,7 @@ serve(async (req) => {
       results.push({
         provider: scraper.id,
         success: false,
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Unknown error',
       });
     }
   }

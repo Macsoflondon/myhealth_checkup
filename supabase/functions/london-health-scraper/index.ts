@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
       productUrls = await firecrawlMap(BASE_URL, firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
-      console.error('Map failed:', e.message);
+      console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
     }
 
     if (productUrls.length < 5) {
@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
           }
         }
       } catch (e) {
-        console.error('Homepage scrape failed:', e.message);
+        console.error('Homepage scrape failed:', (e instanceof Error ? e.message : String(e)));
       }
     }
 
@@ -138,7 +138,7 @@ Deno.serve(async (req) => {
         console.log(`✓ ${title} - £${price ?? 'N/A'}`);
         await new Promise(r => setTimeout(r, 500));
       } catch (e) {
-        console.error(`✗ ${e.message}`);
+        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
       }
     }
 
@@ -165,9 +165,9 @@ Deno.serve(async (req) => {
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID, status: 'failed',
-      error_message: error.message, last_scraped: new Date().toISOString(),
+      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: error.message }),
+    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });
