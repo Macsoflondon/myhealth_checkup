@@ -843,12 +843,59 @@ export type Database = {
         }
         Relationships: []
       }
+      scraper_alerts: {
+        Row: {
+          acknowledged: boolean
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          alert_type: string
+          created_at: string
+          current_count: number | null
+          expected_min: number | null
+          id: string
+          message: string
+          previous_count: number | null
+          provider_id: string
+          severity: string
+        }
+        Insert: {
+          acknowledged?: boolean
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type: string
+          created_at?: string
+          current_count?: number | null
+          expected_min?: number | null
+          id?: string
+          message: string
+          previous_count?: number | null
+          provider_id: string
+          severity?: string
+        }
+        Update: {
+          acknowledged?: boolean
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type?: string
+          created_at?: string
+          current_count?: number | null
+          expected_min?: number | null
+          id?: string
+          message?: string
+          previous_count?: number | null
+          provider_id?: string
+          severity?: string
+        }
+        Relationships: []
+      }
       scraping_jobs: {
         Row: {
           created_at: string
           error_message: string | null
+          expected_min_tests: number | null
           id: string
           last_scraped: string | null
+          last_test_count: number | null
           next_scrape: string | null
           provider_id: string
           status: string
@@ -857,8 +904,10 @@ export type Database = {
         Insert: {
           created_at?: string
           error_message?: string | null
+          expected_min_tests?: number | null
           id?: string
           last_scraped?: string | null
+          last_test_count?: number | null
           next_scrape?: string | null
           provider_id: string
           status?: string
@@ -867,8 +916,10 @@ export type Database = {
         Update: {
           created_at?: string
           error_message?: string | null
+          expected_min_tests?: number | null
           id?: string
           last_scraped?: string | null
+          last_test_count?: number | null
           next_scrape?: string | null
           provider_id?: string
           status?: string
