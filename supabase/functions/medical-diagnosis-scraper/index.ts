@@ -158,43 +158,8 @@ Deno.serve(async (req) => {
       };
     });
 
-    let upsertedCount = 0;
-    const upsertErrors: string[] = [];
-
-    // Two-stage dedupe to satisfy BOTH unique constraints on provider_tests:
-    //   1. (provider_id, provider_test_id)            — full unique
-    //   2. (provider_id, test_name) WHERE is_active   — partial unique
-    const seenSlugs = new Set<string>();
-    const slugDeduped = rows.filter((r) => {
-      const key = (r.provider_test_id || r.test_name).toLowerCase().trim();
-      if (seenSlugs.has(key)) return false;
-      seenSlugs.add(key);
-      return true;
-    });
-    const seenNames = new Set<string>();
-    const dedupedRows = slugDeduped.map((r) => {
-      let name = r.test_name;
-      let key = name.toLowerCase().trim();
-      if (seenNames.has(key)) {
-        const suffix = (r.provider_test_id || '').replace(/^meddiag-/, '').slice(0, 24);
-        name = `${r.test_name} (${suffix})`;
-        key = name.toLowerCase().trim();
-      }
-      seenNames.add(key);
-      return { ...r, test_name: name };
-    });
-
-    for (let i = 0; i < dedupedRows.length; i += 50) {
-      const chunk = dedupedRows.slice(i, i + 50);
-      const { error } = await supabase
-        .from('provider_tests')
-        .upsert(chunk, { onConflict: 'provider_id,provider_test_id' });
-      if (error) {
-        upsertErrors.push(getErrorMessage(error));
-      } else {
-        upsertedCount += chunk.length;
-      }
-    }
+    const { upsertedCount, errors: upsertErrors, finalRowCount } =
+      await upsertProviderTests(supabase as any, PROVIDER_ID, rows, 'meddiag-');
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID,
