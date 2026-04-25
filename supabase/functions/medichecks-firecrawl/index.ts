@@ -1,4 +1,19 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { getErrorMessage } from '../_shared/errors.ts';
+
+// Derive a stable provider_test_id from the Medichecks product URL slug.
+// Example: https://www.medichecks.com/products/testosterone-blood-test -> "testosterone-blood-test"
+function slugFromUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split('/').filter(Boolean);
+    const idx = parts.indexOf('products');
+    const slug = idx >= 0 && parts[idx + 1] ? parts[idx + 1] : parts[parts.length - 1];
+    return (slug || url).toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 120);
+  } catch {
+    return url.toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 120);
+  }
+}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
