@@ -24,7 +24,7 @@ const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const [tickerHeight, setTickerHeight] = useState(0);
-  const brandTickerRef = useRef<HTMLDivElement>(null);
+  const promoTrackerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const isMobile = useIsMobile();
 
