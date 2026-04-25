@@ -11,7 +11,7 @@ const promos = [
 // Use enough sets so there's always content visible during reset
 const SETS = 8;
 
-const BrandTicker = () => {
+const PromoTracker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
