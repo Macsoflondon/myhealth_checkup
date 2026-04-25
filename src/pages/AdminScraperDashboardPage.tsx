@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
 
 interface ScrapingJob {
   id: string;
@@ -163,6 +164,8 @@ const AdminScraperDashboardPage: React.FC = () => {
               </Button>
             </div>
           </div>
+
+          <LeakedPasswordProtectionStatus />
 
           <Alert>
             <Clock className="h-4 w-4" />
