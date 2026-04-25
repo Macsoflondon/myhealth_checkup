@@ -403,7 +403,20 @@ serve(async (req) => {
       );
     }
 
-    const { dryRun = true, confidenceThreshold = 75, batchSize = 10 } = await req.json();
+    let rawBody: unknown = {};
+    try {
+      rawBody = await req.json();
+    } catch {
+      rawBody = {};
+    }
+    const bodyParse = RequestBodySchema.safeParse(rawBody);
+    if (!bodyParse.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body', details: bodyParse.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const { dryRun, confidenceThreshold, batchSize } = bodyParse.data;
 
     console.log('=== AI Test Mapper Started ===');
     console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
@@ -421,15 +434,17 @@ serve(async (req) => {
       .eq('is_active', true);
 
     if (masterError) throw masterError;
+    const masterTests = z.array(MasterTestSchema).parse(masterTests_raw ?? []);
     console.log(`Loaded ${masterTests.length} master tests`);
 
     // Fetch unmapped provider tests
-    const { data: allProviderTests, error: providerError } = await supabase
+    const { data: allProviderTests_raw, error: providerError } = await supabase
       .from('provider_tests')
       .select('id, provider_id, test_name, category, description, price')
       .eq('is_active', true);
 
     if (providerError) throw providerError;
+    const allProviderTests = z.array(ProviderTestSchema).parse(allProviderTests_raw ?? []);
 
     // Filter out already mapped tests
     const { data: existingMappings } = await supabase
