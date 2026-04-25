@@ -1,6 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from "react";
-
-
+import { useEffect, useRef, useState, useMemo } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
@@ -8,111 +6,99 @@ const promos = [
   { provider: "Lola Health", text: "£20 off with code Mar20", color: "#fa757e" },
 ];
 
-// Use enough sets so there's always content visible during reset
-const SETS = 8;
+// Minimum clones needed to keep the strip visually full during wrap.
+// Aligned with the working TestCategoryTicker pattern (4x is plenty).
+const SETS = 4;
+
+// Match the slower, steadier velocity used by the working brand trackers.
+const PX_PER_MS = 0.05;
 
 const PromoTracker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
   const pausedRef = useRef(false);
-  const pauseTimeoutRef = useRef<number | null>(null);
-  const queryDebug = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debugTickers");
-  const [debugOn, setDebugOn] = useState(queryDebug);
-  const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0, paused: false });
-  // Mirror debugOn into a ref so the animation loop can read it without re-subscribing.
-  const debugOnRef = useRef(debugOn);
-  useEffect(() => {
-    debugOnRef.current = debugOn;
-  }, [debugOn]);
 
-  // Failsafe: never let the ticker stay paused longer than this.
-  const MAX_PAUSE_MS = 1500;
+  // Debug overlay is opt-in via ?debugTickers — never rendered in production UI.
+  const debug = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).has("debugTickers"),
+    []
+  );
+  const [debugInfo, setDebugInfo] = useState({ setWidth: 0, translateX: 0 });
 
-  const pause = useCallback(() => {
-    pausedRef.current = true;
-    if (pauseTimeoutRef.current) window.clearTimeout(pauseTimeoutRef.current);
-    pauseTimeoutRef.current = window.setTimeout(() => {
-      pausedRef.current = false;
-      pauseTimeoutRef.current = null;
-    }, MAX_PAUSE_MS);
-  }, []);
-
-  const resume = useCallback(() => {
-    pausedRef.current = false;
-    if (pauseTimeoutRef.current) {
-      window.clearTimeout(pauseTimeoutRef.current);
-      pauseTimeoutRef.current = null;
-    }
-  }, []);
-
-  const measureSetWidth = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return 0;
-    const promoCount = promos.length;
-    let width = 0;
-    for (let i = 0; i < promoCount && i < track.children.length; i++) {
-      width += (track.children[i] as HTMLElement).getBoundingClientRect().width;
-    }
-    return width;
-  }, []);
+  const items = useMemo(
+    () => Array.from({ length: SETS }, () => promos).flat(),
+    []
+  );
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    // Respect users who prefer reduced motion — pause the marquee.
-    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    // Respect reduced-motion users — hold the track in place.
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) return;
 
-    const measure = () => {
-      const w = measureSetWidth();
-      if (w > 0) singleSetWidthRef.current = w;
+    const measureSetWidth = () => {
+      let w = 0;
+      for (let i = 0; i < promos.length && i < track.children.length; i++) {
+        w += (track.children[i] as HTMLElement).getBoundingClientRect().width;
+      }
+      return w;
     };
 
-    measure();
-    document.fonts?.ready?.then(measure);
+    const applyMeasure = () => {
+      const w = measureSetWidth();
+      if (w > 0) {
+        const prev = singleSetWidthRef.current;
+        singleSetWidthRef.current = w;
+        // Rebase position when width changes so we never drift off-screen.
+        if (prev > 0 && Math.abs(positionRef.current) >= w) {
+          positionRef.current = positionRef.current % w;
+        }
+      }
+    };
 
-    // Re-measure when the track resizes (handles late layout, font swaps, container changes)
-    const ro = new ResizeObserver(() => measure());
+    applyMeasure();
+    document.fonts?.ready?.then(applyMeasure);
+
+    const ro = new ResizeObserver(() => applyMeasure());
     ro.observe(track);
 
-    let animationId: number;
+    let animationId = 0;
     let lastTime = 0;
     let lastDebugUpdate = 0;
-    const pxPerMs = 0.09;
 
     const animate = (timestamp: number) => {
       if (lastTime === 0) lastTime = timestamp;
       const delta = timestamp - lastTime;
       lastTime = timestamp;
 
-      // Pause when tab hidden or user is hovering/touching the ticker
       if (document.hidden || pausedRef.current) {
-        lastTime = timestamp;
         animationId = requestAnimationFrame(animate);
         return;
       }
 
-      // Re-measure if we still don't have a width yet
-      if (singleSetWidthRef.current <= 0) {
-        measure();
+      const setWidth = singleSetWidthRef.current;
+      // Don't move until we have a stable measurement — prevents off-screen drift.
+      if (setWidth <= 0) {
+        applyMeasure();
+        animationId = requestAnimationFrame(animate);
+        return;
       }
 
       const clampedDelta = Math.min(delta, 50);
-      positionRef.current -= pxPerMs * clampedDelta;
-
-      const setWidth = singleSetWidthRef.current;
-      if (setWidth > 0 && Math.abs(positionRef.current) >= setWidth) {
+      positionRef.current -= PX_PER_MS * clampedDelta;
+      if (Math.abs(positionRef.current) >= setWidth) {
         positionRef.current += setWidth;
       }
-
       track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
 
-      // Throttle debug overlay to ~10fps to avoid render churn
-      if (debugOnRef.current && timestamp - lastDebugUpdate > 100) {
+      if (debug && timestamp - lastDebugUpdate > 200) {
         lastDebugUpdate = timestamp;
-        setDebugInfo({ setWidth, translateX: positionRef.current, paused: pausedRef.current });
+        setDebugInfo({ setWidth, translateX: positionRef.current });
       }
 
       animationId = requestAnimationFrame(animate);
@@ -120,56 +106,36 @@ const PromoTracker = () => {
 
     animationId = requestAnimationFrame(animate);
 
-    const onResize = () => measure();
-    window.addEventListener("resize", onResize);
-
     const onVisibility = () => {
-      // Reset lastTime so resuming doesn't cause a jump
       lastTime = 0;
     };
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
-      if (pauseTimeoutRef.current) {
-        window.clearTimeout(pauseTimeoutRef.current);
-        pauseTimeoutRef.current = null;
-      }
     };
-  }, [measureSetWidth]);
+  }, [debug]);
 
-  const items = Array.from({ length: SETS }, () => promos).flat();
+  const pause = () => {
+    pausedRef.current = true;
+  };
+  const resume = () => {
+    pausedRef.current = false;
+  };
 
   return (
-    <section className="bg-brand-navy overflow-hidden select-none relative shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
+    <section className="bg-brand-navy overflow-hidden select-none relative">
       {/* Top gradient accent for clear separation from page below */}
       <div className="h-[2px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-      {/* Debug toggle — small, unobtrusive, top-right. Click to show/hide live state. */}
-      <button
-        type="button"
-        onClick={() => setDebugOn((v) => !v)}
-        className="absolute top-1 right-1 z-50 bg-black/60 hover:bg-black/80 text-white text-[9px] font-mono px-1.5 py-0.5 rounded transition-colors"
-        aria-label={debugOn ? "Hide promo tracker debug overlay" : "Show promo tracker debug overlay"}
-        aria-pressed={debugOn}
-      >
-        {debugOn ? "✕ dbg" : "dbg"}
-      </button>
-      {debugOn && (
-        <div className="absolute top-7 right-1 z-50 bg-black/85 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none space-y-0.5">
-          <div>PromoTracker</div>
-          <div>setW: {debugInfo.setWidth.toFixed(0)}px</div>
-          <div>tx: {debugInfo.translateX.toFixed(0)}px</div>
-          <div>
-            paused:{" "}
-            <span className={debugInfo.paused ? "text-red-400" : "text-green-400"}>
-              {debugInfo.paused ? "YES" : "no"}
-            </span>
-          </div>
+
+      {debug && (
+        <div className="absolute top-1 right-1 z-50 bg-black/85 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none">
+          PromoTracker · setW: {debugInfo.setWidth.toFixed(0)}px · tx: {debugInfo.translateX.toFixed(0)}px
         </div>
       )}
+
       <div className="pt-4 pb-2 sm:pt-5 sm:pb-2.5 px-2 sm:px-4">
         <div
           className="relative overflow-hidden"
@@ -201,12 +167,18 @@ const PromoTracker = () => {
                 <span className="text-white font-body text-sm sm:text-lg md:text-xl pr-2 sm:pr-3">
                   {promo.text}
                 </span>
-                <span className="text-brand-pink text-lg sm:text-xl leading-none px-1.5 sm:px-3" aria-hidden="true">•</span>
+                <span
+                  className="text-brand-pink text-lg sm:text-xl leading-none px-1.5 sm:px-3"
+                  aria-hidden="true"
+                >
+                  •
+                </span>
               </span>
             ))}
           </div>
         </div>
       </div>
+
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
