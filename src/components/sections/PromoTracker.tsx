@@ -163,7 +163,7 @@ const PromoTracker = () => {
           </div>
         </div>
       )}
-      <div className="pt-1.5 pb-1.5 sm:pt-2 sm:pb-2 px-2 sm:px-4">
+      <div className="pt-7 pb-1.5 sm:pt-8 sm:pb-2 px-2 sm:px-4">
         <div
           className="relative overflow-hidden"
           style={{
