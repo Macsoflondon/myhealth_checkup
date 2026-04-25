@@ -1,11 +1,47 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { z } from "https://esm.sh/zod@3.23.8";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-service-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
+
+// Shared error helper — narrows `unknown` thrown values to a string message.
+function getErrorMessage(e: unknown): string {
+  if (e instanceof Error) return e.message;
+  if (typeof e === 'string') return e;
+  try { return JSON.stringify(e); } catch { return String(e); }
+}
+
+// Runtime schemas for DB rows — guarantees TS sees concrete types, never `unknown`.
+const ProviderTestSchema = z.object({
+  id: z.string(),
+  provider_id: z.string(),
+  test_name: z.string(),
+  category: z.string().nullable(),
+  description: z.string().nullable(),
+  price: z.number().nullable(),
+});
+
+const MasterTestSchema = z.object({
+  id: z.string(),
+  test_name: z.string(),
+  category: z.string(),
+  subcategory: z.string().nullable(),
+  description: z.string(),
+  biomarkers: z.any().optional(),
+});
+
+type ProviderTestZ = z.infer<typeof ProviderTestSchema>;
+type MasterTestZ = z.infer<typeof MasterTestSchema>;
+
+const RequestBodySchema = z.object({
+  dryRun: z.boolean().optional().default(true),
+  confidenceThreshold: z.number().min(0).max(100).optional().default(75),
+  batchSize: z.number().int().min(1).max(50).optional().default(10),
+}).default({});
 
 interface ProviderTest {
   id: string;
@@ -163,8 +199,8 @@ async function callOpenAIWithRetry(
 }
 
 async function processBatch(
-  providerTests: ProviderTest[],
-  masterTests: MasterTest[],
+  providerTests: ProviderTestZ[],
+  masterTests: MasterTestZ[],
   supabase: any,
   dryRun: boolean
 ): Promise<{
@@ -370,7 +406,20 @@ serve(async (req) => {
       );
     }
 
-    const { dryRun = true, confidenceThreshold = 75, batchSize = 10 } = await req.json();
+    let rawBody: unknown = {};
+    try {
+      rawBody = await req.json();
+    } catch {
+      rawBody = {};
+    }
+    const bodyParse = RequestBodySchema.safeParse(rawBody);
+    if (!bodyParse.success) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body', details: bodyParse.error.flatten() }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    const { dryRun, confidenceThreshold, batchSize } = bodyParse.data;
 
     console.log('=== AI Test Mapper Started ===');
     console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
@@ -382,21 +431,23 @@ serve(async (req) => {
     }
 
     // Fetch all master tests
-    const { data: masterTests, error: masterError } = await supabase
+    const { data: masterTests_raw, error: masterError } = await supabase
       .from('tests_master')
       .select('id, test_name, category, subcategory, description, biomarkers')
       .eq('is_active', true);
 
     if (masterError) throw masterError;
+    const masterTests = z.array(MasterTestSchema).parse(masterTests_raw ?? []);
     console.log(`Loaded ${masterTests.length} master tests`);
 
     // Fetch unmapped provider tests
-    const { data: allProviderTests, error: providerError } = await supabase
+    const { data: allProviderTests_raw, error: providerError } = await supabase
       .from('provider_tests')
       .select('id, provider_id, test_name, category, description, price')
       .eq('is_active', true);
 
     if (providerError) throw providerError;
+    const allProviderTests = z.array(ProviderTestSchema).parse(allProviderTests_raw ?? []);
 
     // Filter out already mapped tests
     const { data: existingMappings } = await supabase
@@ -440,7 +491,7 @@ serve(async (req) => {
       const batch = unmappedTests.slice(i, i + batchSize);
       console.log(`\n--- Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(unmappedTests.length / batchSize)} ---`);
 
-      const batchResult = await processBatch(batch as ProviderTest[], masterTests as MasterTest[], supabase, dryRun);
+      const batchResult = await processBatch(batch, masterTests, supabase, dryRun);
 
       result.total_processed += batch.length;
       result.high_confidence_mapped += batchResult.mapped;
@@ -474,7 +525,7 @@ serve(async (req) => {
     console.error('AI Test Mapper error:', error);
     return new Response(
       JSON.stringify({
-        error: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Unknown error',
+        error: getErrorMessage(error),
         details: error instanceof Error ? error.stack : undefined,
       }),
       {
