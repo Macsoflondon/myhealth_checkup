@@ -152,7 +152,7 @@ const PromoTracker = () => {
       </button>
       {debugOn && (
         <div className="absolute top-7 right-1 z-50 bg-black/85 text-white text-[10px] font-mono px-2 py-1 rounded pointer-events-none space-y-0.5">
-          <div>BrandTicker</div>
+          <div>PromoTracker</div>
           <div>setW: {debugInfo.setWidth.toFixed(0)}px</div>
           <div>tx: {debugInfo.translateX.toFixed(0)}px</div>
           <div>
