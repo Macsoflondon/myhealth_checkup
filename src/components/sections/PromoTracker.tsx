@@ -144,7 +144,9 @@ const PromoTracker = () => {
   const items = Array.from({ length: SETS }, () => promos).flat();
 
   return (
-    <section className="bg-brand-navy overflow-hidden select-none relative">
+    <section className="bg-brand-navy overflow-hidden select-none relative shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
+      {/* Top gradient accent for clear separation from page below */}
+      <div className="h-[2px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       {/* Debug toggle — small, unobtrusive, top-right. Click to show/hide live state. */}
       <button
         type="button"
@@ -168,7 +170,7 @@ const PromoTracker = () => {
           </div>
         </div>
       )}
-      <div className="pt-7 pb-1.5 sm:pt-8 sm:pb-2 px-2 sm:px-4">
+      <div className="pt-4 pb-2 sm:pt-5 sm:pb-2.5 px-2 sm:px-4">
         <div
           className="relative overflow-hidden"
           style={{
@@ -177,6 +179,9 @@ const PromoTracker = () => {
           }}
           onMouseEnter={pause}
           onMouseLeave={resume}
+          onTouchStart={pause}
+          onTouchEnd={resume}
+          onTouchCancel={resume}
           role="marquee"
           aria-label="Promotional offers from health test providers. Hover to pause."
         >

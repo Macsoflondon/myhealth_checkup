@@ -1,33 +1,42 @@
-## Scope
-Keep the existing sticky ticker exactly where it is at the top of the viewport (rendered by `Header.tsx`, sticky `top-0 z-50`). No placement changes — a hard refresh resolves the earlier "Loading..." HMR state.
+## Plan
 
-Three edits only.
+Fix the top sticky PromoTracker so it is unmistakably visible and reliably animating on the homepage.
 
-### 1. Rename component `BrandTicker` → `PromoTracker`
-- Rename file: `src/components/sections/BrandTicker.tsx` → `src/components/sections/PromoTracker.tsx`
-- Rename the component inside the file (`const BrandTicker` → `const PromoTracker`, `export default PromoTracker`).
-- Update imports/usages:
-  - `src/components/layout/Header.tsx` line 17 — change import path + identifier; replace both `<BrandTicker />` usages (lines 66 and 109); update the two comments mentioning BrandTicker (lines 49, 146) and rename the ref `brandTickerRef` → `promoTrackerRef` for consistency.
-  - `src/layouts/MainLayout.tsx` line 3 — update the doc comment.
+### What I’ll change
+1. **Tighten the PromoTracker layout and visibility**
+   - Reduce the oversized top spacing added in the last edit so the promo text sits properly inside the strip.
+   - Add a more explicit visible track treatment so it does not visually blend into the navy header/hero stack.
+   - Keep the renamed `PromoTracker` label everywhere, including the debug overlay.
 
-### 2. Increase font size by 2 Tailwind steps
-Current ticker text classes (~line 167 in `BrandTicker.tsx`):
-`text-[11px] sm:text-sm md:text-base`
-Bump up two steps on the standard scale:
-`text-sm sm:text-lg md:text-xl`
-Apply to both the provider label `<span>` and the offer text `<span>`. Bullet separator bumps from `text-base sm:text-lg` to `text-lg sm:text-xl` to stay proportional.
+2. **Harden the animation behaviour**
+   - Align the PromoTracker animation loop with the more stable ticker pattern already used elsewhere.
+   - Ensure the track always has a measurable width before animating.
+   - Add touch pause/resume handling in addition to mouse hover so behaviour is consistent on touch devices.
+   - Make the reset/wrap logic more defensive so the marquee cannot appear frozen after resize/font/layout changes.
 
-### 3. Add ~1 line of top padding
-Current container padding (~line 158): `pt-1.5 pb-1.5 sm:pt-2 sm:pb-2`.
-One line at the new font size ≈ 24–28px ≈ Tailwind `pt-7`. Change to:
-`pt-7 pb-1.5 sm:pt-8 sm:pb-2`
-Bottom padding unchanged so the gradient divider hugs the text as today.
+3. **Check the sticky header stack**
+   - Verify the PromoTracker remains the first sticky element at the top of the viewport.
+   - Adjust the header/toolbar offset logic if the enlarged ticker height is pushing surrounding elements into a visually confusing state.
 
-## Files to be modified
-- `src/components/sections/BrandTicker.tsx` → renamed to `src/components/sections/PromoTracker.tsx` (rename + font-size + padding)
-- `src/components/layout/Header.tsx` (import, JSX, ref name, comments)
-- `src/layouts/MainLayout.tsx` (doc comment only)
+### Files to update
+- `src/components/sections/PromoTracker.tsx`
+- `src/components/layout/Header.tsx`
 
-## Out of scope
-- No changes to scroll/sticky behaviour, animation speed, colours, or `TestCategoryTicker`.
-- No changes to `CategoryStandardHero` or the `/wellness` page — once HMR settles after the rename, the sticky promo tracker will render at the top of every page including `/wellness`.
+## Technical details
+
+### Current findings
+- `PromoTracker` is already mounted in `Header` on both desktop and mobile.
+- The old `BrandTicker` name is gone from runtime code except for an internal plan file.
+- Session replay data shows horizontal `translateX(...)` changes, which means the marquee loop is running.
+- That points to a **visibility/layout issue more than a missing component**.
+
+### Likely root cause
+The recent styling change increased the top padding significantly, and the promo strip shares the same navy family as the surrounding header/hero. So even though the animation is running, it can read as “not working” because it is blending into the header stack or the text is sitting awkwardly inside a taller strip.
+
+### Implementation approach
+- Rebalance the strip spacing and text sizing so the content is immediately visible.
+- Add small visual separation from the header stack without changing the overall brand styling.
+- Keep the animation on `transform: translate3d(...)`, but make measurement/reflow handling more resilient.
+- Preserve reduced-motion behaviour.
+
+If you approve, I’ll apply the fixes directly and then re-check the component in the preview.
