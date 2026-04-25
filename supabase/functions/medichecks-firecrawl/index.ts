@@ -314,7 +314,7 @@ Deno.serve(async (req) => {
         productUrls = [...productUrls, ...validUrls];
         console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
       } catch (error) {
-        console.error(`Failed to map ${collectionUrl}:`, (error instanceof Error ? error.message : String(error)));
+        console.error(`Failed to map ${collectionUrl}:`, getErrorMessage(error));
       }
     }
     
@@ -377,7 +377,7 @@ Deno.serve(async (req) => {
         await new Promise(resolve => setTimeout(resolve, 500));
         
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
+        console.error(`Failed to scrape ${url}:`, getErrorMessage(error));
       }
     }
 
