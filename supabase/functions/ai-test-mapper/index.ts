@@ -199,8 +199,8 @@ async function callOpenAIWithRetry(
 }
 
 async function processBatch(
-  providerTests: ProviderTest[],
-  masterTests: MasterTest[],
+  providerTests: ProviderTestZ[],
+  masterTests: MasterTestZ[],
   supabase: any,
   dryRun: boolean
 ): Promise<{
