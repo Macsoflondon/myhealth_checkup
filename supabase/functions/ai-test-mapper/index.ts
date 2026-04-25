@@ -440,7 +440,7 @@ serve(async (req) => {
       const batch = unmappedTests.slice(i, i + batchSize);
       console.log(`\n--- Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(unmappedTests.length / batchSize)} ---`);
 
-      const batchResult = await processBatch(batch, masterTests, supabase, dryRun);
+      const batchResult = await processBatch(batch as ProviderTest[], masterTests as MasterTest[], supabase, dryRun);
 
       result.total_processed += batch.length;
       result.high_confidence_mapped += batchResult.mapped;
