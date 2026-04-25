@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import L from "leaflet";
@@ -36,9 +36,11 @@ const pinIcon = L.divIcon({
 const UKRegionMap = () => {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
-  const [mapKey] = useState(() => Date.now());
+  // New key on every mount lifecycle — guarantees Leaflet binds to a fresh node.
+  const mountKeyRef = useRef<number>(Date.now());
 
   useEffect(() => {
+    mountKeyRef.current = Date.now();
     const id = requestAnimationFrame(() => setReady(true));
     return () => {
       cancelAnimationFrame(id);
@@ -77,38 +79,41 @@ const UKRegionMap = () => {
           </div>
         ) : (
           <MapErrorBoundary>
-            <RMapContainer
-              key={`uk-region-map-${mapKey}`}
-              center={[54.5, -3.5]}
-              zoom={5}
-              scrollWheelZoom={false}
-              className="h-full w-full"
-              attributionControl={false}
-            >
-              <RTileLayer
-                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
-                attribution='&copy; OpenStreetMap &copy; CARTO'
-              />
-              {REGIONS.map((r) => (
-                <RMarker
-                  key={r.slug}
-                  position={[r.lat, r.lng]}
-                  icon={pinIcon}
-                  eventHandlers={{
-                    click: () => navigate(`/find-clinic?region=${r.slug}`),
-                  }}
-                >
-                  <RTooltip
-                    direction="top"
-                    offset={[0, -8]}
-                    opacity={1}
-                    className="uk-region-tooltip"
+            {/* The wrapping div with a key forces Leaflet to bind to a brand new
+                container on every mount, eliminating the "already initialized" race. */}
+            <div key={`uk-region-map-host-${mountKeyRef.current}`} className="h-full w-full">
+              <RMapContainer
+                center={[54.5, -3.5]}
+                zoom={5}
+                scrollWheelZoom={false}
+                className="h-full w-full"
+                attributionControl={false}
+              >
+                <RTileLayer
+                  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+                  attribution='&copy; OpenStreetMap &copy; CARTO'
+                />
+                {REGIONS.map((r) => (
+                  <RMarker
+                    key={r.slug}
+                    position={[r.lat, r.lng]}
+                    icon={pinIcon}
+                    eventHandlers={{
+                      click: () => navigate(`/find-clinic?region=${r.slug}`),
+                    }}
                   >
-                    {r.name}
-                  </RTooltip>
-                </RMarker>
-              ))}
-            </RMapContainer>
+                    <RTooltip
+                      direction="top"
+                      offset={[0, -8]}
+                      opacity={1}
+                      className="uk-region-tooltip"
+                    >
+                      {r.name}
+                    </RTooltip>
+                  </RMarker>
+                ))}
+              </RMapContainer>
+            </div>
           </MapErrorBoundary>
         )}
       </div>
