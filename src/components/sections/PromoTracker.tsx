@@ -202,4 +202,4 @@ const PromoTracker = () => {
   );
 };
 
-export default BrandTicker;
+export default PromoTracker;
