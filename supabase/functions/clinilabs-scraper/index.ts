@@ -147,6 +147,7 @@ Deno.serve(async (req) => {
       success: true,
       provider: PROVIDER_ID,
       testsScraped: rows.length,
+      testsAfterDedupe: finalRowCount,
       testsUpserted: upsertedCount,
       upsertErrors: upsertErrors.slice(0, 5),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
