@@ -160,8 +160,17 @@ Deno.serve(async (req) => {
     let upsertedCount = 0;
     const upsertErrors: string[] = [];
 
-    for (let i = 0; i < rows.length; i += 50) {
-      const chunk = rows.slice(i, i + 50);
+    // Dedupe by test_name to satisfy partial unique index (provider_id, test_name) WHERE is_active=true
+    const seenNames = new Set<string>();
+    const dedupedRows = rows.filter((r) => {
+      const key = r.test_name.toLowerCase().trim();
+      if (seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    });
+
+    for (let i = 0; i < dedupedRows.length; i += 50) {
+      const chunk = dedupedRows.slice(i, i + 50);
       const { error } = await supabase
         .from('provider_tests')
         .upsert(chunk, { onConflict: 'provider_id,provider_test_id' });
