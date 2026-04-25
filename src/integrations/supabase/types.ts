@@ -822,7 +822,7 @@ export type Database = {
           notes: string | null
           provider_id: string
           provider_name: string
-          providers_website: string | null
+          provider_website: string | null
           user_id: string
         }
         Insert: {
@@ -830,7 +830,7 @@ export type Database = {
           notes?: string | null
           provider_id: string
           provider_name: string
-          providers_website?: string | null
+          provider_website?: string | null
           user_id: string
         }
         Update: {
@@ -838,7 +838,7 @@ export type Database = {
           notes?: string | null
           provider_id?: string
           provider_name?: string
-          providers_website?: string | null
+          provider_website?: string | null
           user_id?: string
         }
         Relationships: []
