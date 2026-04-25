@@ -428,7 +428,7 @@ serve(async (req) => {
     }
 
     // Fetch all master tests
-    const { data: masterTests, error: masterError } = await supabase
+    const { data: masterTests_raw, error: masterError } = await supabase
       .from('tests_master')
       .select('id, test_name, category, subcategory, description, biomarkers')
       .eq('is_active', true);
