@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "npm:resend@2.0.0";
+import { getErrorMessage } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -79,7 +80,7 @@ async function sendAdminNotification(
       console.log("Admin notification sent successfully");
     }
   } catch (error) {
-    console.error("Error in sendAdminNotification:", error);
+    console.error("Error in sendAdminNotification:", getErrorMessage(error));
   }
 }
 
