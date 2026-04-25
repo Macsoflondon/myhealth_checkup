@@ -84,7 +84,7 @@ serve(async (req) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
       } catch (error) {
-        errors.push(`Error scraping ${testUrl.url}: ${error.message}`);
+        errors.push(`Error scraping ${testUrl.url}: ${(error instanceof Error ? error.message : String(error))}`);
         console.error(`Error scraping ${testUrl.url}:`, error);
       }
     }
@@ -145,7 +145,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message,
+        error: (error instanceof Error ? error.message : String(error)),
         fallback: 'Will use database backup data' 
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

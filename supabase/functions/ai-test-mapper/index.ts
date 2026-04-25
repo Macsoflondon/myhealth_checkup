@@ -440,7 +440,7 @@ serve(async (req) => {
       const batch = unmappedTests.slice(i, i + batchSize);
       console.log(`\n--- Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(unmappedTests.length / batchSize)} ---`);
 
-      const batchResult = await processBatch(batch, masterTests, supabase, dryRun);
+      const batchResult = await processBatch(batch as ProviderTest[], masterTests as MasterTest[], supabase, dryRun);
 
       result.total_processed += batch.length;
       result.high_confidence_mapped += batchResult.mapped;
@@ -474,7 +474,7 @@ serve(async (req) => {
     console.error('AI Test Mapper error:', error);
     return new Response(
       JSON.stringify({
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Unknown error',
         details: error instanceof Error ? error.stack : undefined,
       }),
       {

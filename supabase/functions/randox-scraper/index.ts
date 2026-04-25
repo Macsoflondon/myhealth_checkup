@@ -347,7 +347,7 @@ async function discoverUrlsWithFirecrawl(firecrawlApiKey: string): Promise<strin
     console.log(`Firecrawl discovered ${productLinks.length} product URLs`);
     return productLinks;
   } catch (error) {
-    console.error('Firecrawl discovery failed:', error.message);
+    console.error('Firecrawl discovery failed:', (error instanceof Error ? error.message : String(error)));
     return [];
   }
 }
@@ -505,7 +505,7 @@ Deno.serve(async (req) => {
         
         console.log(`Scraped: ${title} - £${price} - ${biomarkerCount || '?'} biomarkers - ${testType}`);
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, error.message);
+        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -562,7 +562,7 @@ Deno.serve(async (req) => {
       }
       
       if (!error) upsertedCount++;
-      else console.error(`Failed to upsert ${product.test_name}:`, error.message);
+      else console.error(`Failed to upsert ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
     }
 
     await supabase.from('scraping_jobs').update({
@@ -601,11 +601,11 @@ Deno.serve(async (req) => {
 
     await supabase.from('scraping_jobs').update({
       status: 'failed',
-      error_message: error.message
+      error_message: (error instanceof Error ? error.message : String(error))
     }).eq('provider_id', 'randox');
 
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }

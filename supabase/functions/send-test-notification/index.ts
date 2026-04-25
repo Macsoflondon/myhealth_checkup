@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { Resend } from "npm:resend@2.0.0";
+import { Resend } from "https://esm.sh/resend@4.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -188,10 +188,10 @@ serve(async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ 
         success: false,
-        error: error.message 
+        error: (error instanceof Error ? error.message : String(error)) 
       }),
       {
-        status: error.message.includes("RESEND_API_KEY") ? 503 : 500,
+        status: (error instanceof Error ? error.message : String(error)).includes("RESEND_API_KEY") ? 503 : 500,
         headers: { 
           "Content-Type": "application/json", 
           ...corsHeaders 

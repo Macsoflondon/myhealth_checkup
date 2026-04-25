@@ -327,7 +327,7 @@ Please provide your analysis using the suggest_analysis function with structured
     console.error("Blood test analysis error:", error);
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : "Analysis failed",
+        error: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : "Analysis failed",
         medicalDisclaimer: "This service is temporarily unavailable. Please consult a healthcare professional for interpretation of your test results."
       }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }

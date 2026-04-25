@@ -413,7 +413,7 @@ Deno.serve(async (req) => {
         urls.forEach(url => allProductUrls.add(url));
         console.log(`Found ${urls.length} products from ${categoryUrl}`);
       } catch (error) {
-        console.error(`Failed to fetch category ${categoryUrl}:`, error.message);
+        console.error(`Failed to fetch category ${categoryUrl}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -457,7 +457,7 @@ Deno.serve(async (req) => {
         
         console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, error.message);
+        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -528,7 +528,7 @@ Deno.serve(async (req) => {
       }
       
       if (error) {
-        console.error(`Failed to save ${product.test_name}:`, error.message);
+        console.error(`Failed to save ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
       } else {
         upsertedCount++;
       }
@@ -572,14 +572,14 @@ Deno.serve(async (req) => {
       .from('scraping_jobs')
       .update({
         status: 'failed',
-        error_message: error.message
+        error_message: (error instanceof Error ? error.message : String(error))
       })
       .eq('provider_id', 'medichecks');
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message
+        error: (error instanceof Error ? error.message : String(error))
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

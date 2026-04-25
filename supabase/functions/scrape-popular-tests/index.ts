@@ -448,7 +448,7 @@ Deno.serve(async (req) => {
 
   } catch (error) {
     console.error('Error in scrape-popular-tests:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to scrape popular tests';
+    const errorMessage = error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Failed to scrape popular tests';
     return new Response(
       JSON.stringify({ success: false, error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

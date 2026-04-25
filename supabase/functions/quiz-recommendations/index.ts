@@ -272,7 +272,7 @@ Based on this profile, recommend the 3 best tests. Return ONLY the JSON object.`
   } catch (e) {
     console.error("quiz-recommendations error:", e);
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
+      JSON.stringify({ error: e instanceof Error ? (e instanceof Error ? e.message : String(e)) : "Unknown error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

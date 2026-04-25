@@ -140,7 +140,7 @@ serve(async (req) => {
         if (error) {
           console.error(`Error inserting ${clinic.name}:`, error);
           errorCount++;
-          results.push({ name: clinic.name, status: 'error', error: error.message });
+          results.push({ name: clinic.name, status: 'error', error: (error instanceof Error ? error.message : String(error)) });
         } else {
           successCount++;
           results.push({ name: clinic.name, status: 'success' });
@@ -152,7 +152,7 @@ serve(async (req) => {
       } catch (error) {
         console.error(`Error processing ${clinic.name}:`, error);
         errorCount++;
-        results.push({ name: clinic.name, status: 'error', error: error.message });
+        results.push({ name: clinic.name, status: 'error', error: (error instanceof Error ? error.message : String(error)) });
       }
     }
 
@@ -171,7 +171,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in bulk-add-clinics function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error instanceof Error ? error.message : String(error)) }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

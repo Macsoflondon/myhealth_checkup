@@ -106,7 +106,7 @@ serve(async (req) => {
             provider: scraperName,
             success: false,
             count: 0,
-            error: error.message
+            error: (error instanceof Error ? error.message : String(error))
           });
         } else if (data.success) {
           console.log(`${scraperName} found ${data.count} clinics`);
@@ -152,7 +152,7 @@ serve(async (req) => {
           provider: scraperName,
           success: false,
           count: 0,
-          error: err instanceof Error ? err.message : 'Unknown error'
+          error: err instanceof Error ? (err instanceof Error ? err.message : String(err)) : 'Unknown error'
         });
       }
     }
@@ -183,7 +183,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Unknown error'
       }),
       { 
         status: 500, 
