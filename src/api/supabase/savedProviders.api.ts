@@ -22,7 +22,7 @@ class SavedProvidersApi {
         .eq("user_id", userId)
         .order("created_at", { ascending: false });
 
-      return { data: data as SavedProvider[], error };
+      return { data: data as unknown as SavedProvider[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
@@ -49,7 +49,7 @@ class SavedProvidersApi {
         .select()
         .single();
 
-      return { data: data as SavedProvider, error };
+      return { data: data as unknown as SavedProvider, error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
