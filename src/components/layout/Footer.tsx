@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
-import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
-import myhealthLogo from "@/assets/myhealth-logo.png";
+import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
+import myhealthLogo from "@/assets/myhealth-logo.webp";
 import NewsletterSignup from "@/components/layout/NewsletterSignup";
 
 const Footer = () => {
