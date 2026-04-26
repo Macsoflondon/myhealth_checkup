@@ -7,7 +7,7 @@ import { logger } from "@/lib/logger";
  * Unlike the global ErrorBoundary, this never shows a "Something went wrong"
  * card — it just renders the provided `fallback` (or nothing) so the rest of
  * the page keeps working. Use it around third-party / DOM-heavy widgets like
- * PromoTracker and Leaflet maps where a single mount failure must not blank
+ * Leaflet maps and similar where a single mount failure must not blank
  * the page.
  */
 interface Props {
