@@ -63,9 +63,7 @@ const Header = ({ className }: HeaderProps) => {
     return (
       <ErrorBoundary>
         <div className={cn("sticky top-0 z-50", className)}>
-          <SectionErrorBoundary name="PromoTracker (mobile)" fallback={<PromoTrackerFallback />}>
-            <PromoTracker />
-          </SectionErrorBoundary>
+          <PromoTicker />
           <header className="bg-[hsl(var(--brand-navy))] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
