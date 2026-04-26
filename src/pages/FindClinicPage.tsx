@@ -11,6 +11,8 @@ import PageBanner from "@/components/sections/PageBanner";
 import { SectionHeading } from "@/components/ui/section-heading";
 import ClinicMap from "@/components/clinic/ClinicMap";
 import ClinicCard from "@/components/clinic/ClinicCard";
+import { SectionErrorBoundary } from "@/components/common/SectionErrorBoundary";
+import { MapOff } from "lucide-react";
 import { useProviderTestCounts, getTestCountForProvider } from "@/hooks/useProviderTestCounts";
 import { useToast } from "@/hooks/use-toast";
 
