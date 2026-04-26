@@ -282,7 +282,7 @@ export default function AdminSecurityDiffPage() {
                         )}
                         {snap.removed_findings.length > 0 && (
                           <DiffSection
-                            icon={<Minus className="h-4 w-4 text-green-600" />}
+                            icon={<Minus className="h-4 w-4 text-primary" />}
                             label={`Resolved (${snap.removed_findings.length})`}
                             rows={snap.removed_findings}
                           />
