@@ -1,63 +1,46 @@
-# Rebuild promo carousel from scratch (CSS-driven marquee)
+## Plan
 
-## Goal
-Completely delete the existing `PromoTracker` (the JS rAF-driven marquee that has repeatedly broken) and replace it with a brand-new component using a fundamentally different approach: a **pure-CSS marquee** (Tailwind keyframes + `animation`). No `requestAnimationFrame`, no `ResizeObserver`, no manual measurement, no internal state. Same position, same providers, same text.
+Replace the current homepage ticker behaviour so both carousels move reliably in the preview and production.
 
-## Why a different approach
-The old component relied on JS-measured single-set width + per-frame `translate3d` updates. That stack has been the source of every "carousel stuck" bug because:
-- Mobile Safari throttles rAF aggressively when the page is sticky/offscreen.
-- `getBoundingClientRect` returns 0 during font swap → measurement loop never recovers cleanly.
-- Visibility/resize handlers compounded edge cases.
+### What I’ll change
 
-A CSS keyframe marquee runs on the compositor, can't "get stuck", needs zero JS, and works identically on mobile and desktop.
+1. Fix the actual freeze condition in both carousels
+   - `src/components/sections/PromoTicker.tsx`: remove the `motion-reduce:animate-none` class so the promo strip does not silently disable itself.
+   - `src/components/sections/TestCategoryTicker.tsx`: remove the early `prefers-reduced-motion` bailout that stops the animation loop entirely.
 
-## Files to delete
-1. `src/components/sections/PromoTracker.tsx` — old rAF implementation.
-2. `src/components/sections/PromoTrackerFallback.tsx` — no longer needed (new component cannot crash).
-3. `src/components/sections/__tests__/PromoTracker.test.tsx` — obsolete; replaced by new test.
+2. Keep both carousels stable after the fix
+   - Leave the current promo ticker structure in place if it’s otherwise sound.
+   - Keep the category ticker’s width measurement and wrap logic, but make sure it always starts animating when rendered.
 
-## Files to create
-1. `src/components/sections/PromoTicker.tsx` — new component:
-   - Same three promos, colours, copy:
-     - GoodBody — 5% off on all popular blood tests (#0bb77e)
-     - Medichecks — 20% off all tests with code APRIL20 (#e70d68)
-     - Lola Health — £20 off with code Mar20 (#fa757e)
-   - Renders the promo set **twice** back-to-back inside a flex track.
-   - Track animates `transform: translateX(-50%)` over ~30s linear infinite via a Tailwind keyframe `marquee`.
-   - Uses `motion-reduce:animate-none` to respect `prefers-reduced-motion`.
-   - Same navy background, top/bottom gradient dividers, edge fade mask, typography — visually identical.
-   - Pure presentational: no refs, no effects, no state.
-2. `src/components/sections/__tests__/PromoTicker.test.tsx` — smoke test:
-   - Component renders.
-   - All three provider names + promo strings present (duplicated track).
-   - Track element carries the `animate-marquee` class.
+3. Add a real browser smoke test
+   - Create a Playwright-style E2E smoke test that loads `/` on desktop and mobile viewports.
+   - Assert the promo ticker position changes over a short wait.
+   - Assert the category ticker position changes over a short wait.
+   - This replaces the false sense of safety from the current component-only smoke test, which does not prove browser motion in the live page.
 
-## Files to edit
-1. `tailwind.config.ts` — add to existing `extend`:
-   ```ts
-   keyframes: {
-     marquee: {
-       '0%':   { transform: 'translateX(0)' },
-       '100%': { transform: 'translateX(-50%)' },
-     },
-   },
-   animation: {
-     marquee: 'marquee 30s linear infinite',
-   },
-   ```
-2. `src/components/layout/Header.tsx`:
-   - Replace `PromoTracker` + `PromoTrackerFallback` imports with `PromoTicker`.
-   - Replace both `<SectionErrorBoundary … fallback={<PromoTrackerFallback />}><PromoTracker /></SectionErrorBoundary>` blocks (mobile + desktop) with plain `<PromoTicker />`.
-   - Update comment `Measure PromoTracker height` → `Measure ticker height`.
-3. `src/layouts/MainLayout.tsx` — update doc comment `Header (with PromoTracker)` → `Header (with PromoTicker)`.
-4. `src/components/common/SectionErrorBoundary.tsx` — update doc comment referencing `PromoTracker`.
+4. Verify header/mobile layout while touching this area
+   - Check that the mobile header still uses the intended mobile logo layout.
+   - Ensure the two tickers remain in the same visual positions as now.
 
-## Files intentionally untouched
-- `src/components/layout/PromoBanner.tsx` — unrelated standalone banner.
-- `src/components/sections/index.ts` — only re-exports `PromoBanner`.
-- No database / Supabase changes — promos are hard-coded; no `promos` table exists.
+### Exact problem found
 
-## Verification
-- `bun run build` to confirm a clean compile.
-- `bunx vitest run src/components/sections/__tests__/PromoTicker.test.tsx`.
-- Visual check on `/` for mobile + desktop — ticker scrolls continuously left.
+Both frozen strips are being disabled by reduced-motion logic:
+
+- The promo carousel uses `motion-reduce:animate-none` in `PromoTicker.tsx`.
+- The second carousel (`TestCategoryTicker.tsx`) exits its animation effect immediately when `window.matchMedia('(prefers-reduced-motion: reduce)')` matches.
+- The homepage also calls `useMobileOptimization()` in `src/pages/Index.tsx`, so mobile-specific behaviour is already being injected there.
+
+That means if the browser/OS is advertising reduced motion, both carousels will stop by design, which matches what you’re seeing: both are static even after refresh.
+
+### Technical details
+
+Files to update:
+- `src/components/sections/PromoTicker.tsx`
+- `src/components/sections/TestCategoryTicker.tsx`
+- add E2E test file(s), likely under a browser/e2e test path
+- possibly `package.json` if an explicit E2E script is missing
+
+Expected outcome:
+- top promo ticker moves continuously
+- second category ticker moves continuously
+- behaviour is verified in an actual browser at mobile and desktop sizes

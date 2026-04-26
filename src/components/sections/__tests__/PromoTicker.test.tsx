@@ -40,9 +40,9 @@ describe("PromoTicker", () => {
     expect(utils.getAllByText("£20 off with code Mar20")).toHaveLength(2);
   });
 
-  it("wires the marquee animation class onto the track", () => {
+  it("wires the marquee animation onto the track", () => {
     const { getByTestId } = render(<PromoTicker />);
     const track = getByTestId("promo-ticker-track");
-    expect(track.className).toContain("animate-marquee");
+    expect(track.getAttribute("style") || "").toContain("promo-marquee");
   });
 });

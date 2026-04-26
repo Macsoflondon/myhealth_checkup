@@ -39,9 +39,9 @@ const TestCategoryTicker = () => {
     const track = trackRef.current;
     if (!track) return;
 
-    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
-
+    // Intentionally do NOT bail on prefers-reduced-motion — the ticker is core
+    // brand messaging and must always animate. Users with reduced motion still
+    // see a slow, smooth scroll.
     const measure = () => {
       const w = measureSetWidth();
       if (w > 0) singleSetWidthRef.current = w;

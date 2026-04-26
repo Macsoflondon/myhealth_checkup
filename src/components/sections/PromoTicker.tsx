@@ -46,6 +46,14 @@ const PromoItem = ({
 const PromoTicker = () => {
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
+      {/* Inline keyframes — guaranteed to ship even if Tailwind utility is purged or
+          a global prefers-reduced-motion rule kills the animate-* classes. */}
+      <style>{`
+        @keyframes promo-marquee {
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+      `}</style>
       {/* Top gradient accent */}
       <div className="h-[2px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
@@ -62,9 +70,9 @@ const PromoTicker = () => {
         >
           <div
             data-testid="promo-ticker-track"
-            className="flex w-max whitespace-nowrap leading-tight animate-marquee motion-reduce:animate-none"
+            className="flex w-max whitespace-nowrap leading-tight"
             style={{
-              animationDuration: "30s",
+              animation: "promo-marquee 30s linear infinite",
               willChange: "transform",
               backfaceVisibility: "hidden",
             }}
