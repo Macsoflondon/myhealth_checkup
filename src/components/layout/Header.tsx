@@ -68,23 +68,20 @@ const Header = ({ className }: HeaderProps) => {
           <SectionErrorBoundary name="PromoTracker (mobile)" fallback={<PromoTrackerFallback />}>
             <PromoTracker />
           </SectionErrorBoundary>
-          <header className="bg-[#081129] shadow-md">
+          <header className="bg-[hsl(var(--brand-navy))] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-            <div className="container mx-auto px-3 sm:px-4 max-w-full">
-              {/* Single row: Logo left, Nav controls right */}
-              <div className="py-2 flex items-center justify-between gap-1 min-w-0">
-                {/* Left: Combined logo with tagline */}
-                <Link to="/" className="flex items-center flex-shrink min-w-0 overflow-hidden">
+            <div className="container mx-auto max-w-full px-3 sm:px-4">
+              <div className="py-4 flex items-start justify-between gap-3 min-w-0">
+                <Link to="/" className="flex min-w-0 flex-1 items-start overflow-hidden">
                   <img
                     src={mobileLogo}
                     alt="myhealth checkup"
-                    className="h-[56px] xs:h-[64px] sm:h-[72px] w-auto object-contain"
+                    className="h-[120px] xs:h-[130px] sm:h-[140px] w-auto max-w-[calc(100vw-9rem)] object-contain object-left"
                   />
                 </Link>
 
-                {/* Right: Navigation controls */}
-                <nav className="flex items-center gap-0.5 flex-shrink-0" aria-label="User controls">
+                <nav className="flex shrink-0 items-center gap-0.5 self-start pt-1" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu isMobile />
                   <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
