@@ -96,9 +96,10 @@ const Hero = () => {
             alt=""
             aria-hidden="true"
             loading={i === 0 ? "eager" : "lazy"}
+            decoding={i === 0 ? "sync" : "async"}
             width={1920}
             height={1080}
-            fetchPriority={i === 0 ? "high" : undefined}
+            fetchPriority={i === 0 ? "high" : "low"}
             style={{ objectPosition: isMobile && (s as any).mobileObjectPosition ? (s as any).mobileObjectPosition : s.objectPosition }}
             className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
               i === currentSlide ? "opacity-100" : "opacity-0"
