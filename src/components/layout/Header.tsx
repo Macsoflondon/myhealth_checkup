@@ -101,11 +101,9 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* PromoTracker stays sticky at top */}
+      {/* Promo ticker stays sticky at top */}
       <div ref={promoTrackerRef} className={cn("sticky top-0 z-50", className)}>
-        <SectionErrorBoundary name="PromoTracker (desktop)" fallback={<PromoTrackerFallback />}>
-          <PromoTracker />
-        </SectionErrorBoundary>
+        <PromoTicker />
       </div>
 
       {/* Logo section scrolls normally */}
