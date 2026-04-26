@@ -14,7 +14,9 @@ import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
+import { SectionErrorBoundary } from "../common/SectionErrorBoundary";
 import PromoTracker from "../sections/PromoTracker";
+import PromoTrackerFallback from "../sections/PromoTrackerFallback";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -63,7 +65,9 @@ const Header = ({ className }: HeaderProps) => {
     return (
       <ErrorBoundary>
         <div className={cn("sticky top-0 z-50", className)}>
-          <PromoTracker />
+          <SectionErrorBoundary name="PromoTracker (mobile)" fallback={<PromoTrackerFallback />}>
+            <PromoTracker />
+          </SectionErrorBoundary>
           <header className="bg-[#081129] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
@@ -106,7 +110,9 @@ const Header = ({ className }: HeaderProps) => {
     <ErrorBoundary>
       {/* PromoTracker stays sticky at top */}
       <div ref={promoTrackerRef} className={cn("sticky top-0 z-50", className)}>
-        <PromoTracker />
+        <SectionErrorBoundary name="PromoTracker (desktop)" fallback={<PromoTrackerFallback />}>
+          <PromoTracker />
+        </SectionErrorBoundary>
       </div>
 
       {/* Logo section scrolls normally */}
