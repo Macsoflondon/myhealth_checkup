@@ -14,9 +14,7 @@ import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
-import { SectionErrorBoundary } from "../common/SectionErrorBoundary";
-import PromoTracker from "../sections/PromoTracker";
-import PromoTrackerFallback from "../sections/PromoTrackerFallback";
+import PromoTicker from "../sections/PromoTicker";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -48,7 +46,7 @@ const Header = ({ className }: HeaderProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Measure PromoTracker height for sticky toolbar offset (desktop only)
+  // Measure ticker height for sticky toolbar offset (desktop only)
   useEffect(() => {
     if (isMobile || !promoTrackerRef.current) return;
     const measure = () => {
@@ -65,9 +63,7 @@ const Header = ({ className }: HeaderProps) => {
     return (
       <ErrorBoundary>
         <div className={cn("sticky top-0 z-50", className)}>
-          <SectionErrorBoundary name="PromoTracker (mobile)" fallback={<PromoTrackerFallback />}>
-            <PromoTracker />
-          </SectionErrorBoundary>
+          <PromoTicker />
           <header className="bg-[hsl(var(--brand-navy))] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
@@ -105,11 +101,9 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* PromoTracker stays sticky at top */}
+      {/* Promo ticker stays sticky at top */}
       <div ref={promoTrackerRef} className={cn("sticky top-0 z-50", className)}>
-        <SectionErrorBoundary name="PromoTracker (desktop)" fallback={<PromoTrackerFallback />}>
-          <PromoTracker />
-        </SectionErrorBoundary>
+        <PromoTicker />
       </div>
 
       {/* Logo section scrolls normally */}
@@ -146,7 +140,7 @@ const Header = ({ className }: HeaderProps) => {
         </div>
       </header>
 
-      {/* Toolbar sticks below PromoTracker independently */}
+      {/* Toolbar sticks below the promo ticker independently */}
       <div
         className="sticky z-40"
         style={{ top: tickerHeight }}

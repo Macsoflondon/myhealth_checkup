@@ -1,6 +1,6 @@
 /**
  * Shared layout component for consistent page structure
- * Includes: Header (with PromoTracker), main content area, Footer, CookieConsent
+ * Includes: Header (with PromoTicker), main content area, Footer, CookieConsent
  */
 
 import { ReactNode } from "react";
