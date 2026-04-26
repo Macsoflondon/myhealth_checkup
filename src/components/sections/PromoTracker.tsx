@@ -131,6 +131,7 @@ const PromoTracker = () => {
       cancelAnimationFrame(animationId);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
+      window.clearTimeout(readinessTimer);
     };
   }, [debug]);
 
