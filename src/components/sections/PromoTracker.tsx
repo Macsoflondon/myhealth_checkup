@@ -159,6 +159,9 @@ const PromoTracker = () => {
           style={{
             maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            // Reserve vertical space immediately so the strip never collapses
+            // before fonts/measurement are ready (prevents CLS / layout jank).
+            minHeight: `${STRIP_MIN_HEIGHT_MOBILE}px`,
           }}
           onMouseEnter={pause}
           onMouseLeave={resume}
@@ -168,10 +171,30 @@ const PromoTracker = () => {
           role="marquee"
           aria-label="Promotional offers from health test providers. Hover to pause."
         >
+          {/* Skeleton overlay — shown until first valid measurement.
+              Uses semi-transparent shimmer bars sized like the real items so
+              the band looks intentional on slow connections. */}
+          {!isReady && (
+            <div
+              className="absolute inset-0 flex items-center gap-6 px-4 pointer-events-none"
+              aria-hidden="true"
+            >
+              <div className="h-3 w-32 sm:h-4 sm:w-48 rounded bg-white/15 animate-pulse" />
+              <div className="h-3 w-40 sm:h-4 sm:w-56 rounded bg-white/15 animate-pulse" />
+              <div className="h-3 w-28 sm:h-4 sm:w-40 rounded bg-white/15 animate-pulse hidden sm:block" />
+              <div className="h-3 w-36 sm:h-4 sm:w-52 rounded bg-white/15 animate-pulse hidden md:block" />
+            </div>
+          )}
+
           <div
             ref={trackRef}
-            className="flex whitespace-nowrap leading-tight"
-            style={{ willChange: "transform", backfaceVisibility: "hidden" }}
+            className="flex whitespace-nowrap leading-tight transition-opacity duration-300"
+            style={{
+              willChange: "transform",
+              backfaceVisibility: "hidden",
+              opacity: isReady ? 1 : 0,
+              minHeight: `${STRIP_MIN_HEIGHT_DESKTOP}px`,
+            }}
           >
             {items.map((promo, i) => (
               <span key={i} className="flex items-baseline shrink-0">
