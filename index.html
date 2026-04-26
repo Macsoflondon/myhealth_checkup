@@ -71,6 +71,49 @@
   <meta name="twitter:title" content="myhealth checkup | Compare Trusted UK Private Blood Tests &amp; Cancer Screening Providers">
   <meta property="og:description" content="myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.">
   <meta name="twitter:description" content="myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.">
+
+  <!--
+    Static Organization + WebSite JSON-LD.
+    Lives in the HTML shell so crawlers (and LLM scrapers) get entity data
+    without executing React. Per-page schema is added at runtime via Helmet.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.myhealthcheckup.co.uk/#organization",
+        "name": "myhealth checkup",
+        "url": "https://www.myhealthcheckup.co.uk/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.myhealthcheckup.co.uk/og-image.png"
+        },
+        "description": "UK private health testing comparison marketplace. Compare blood tests, cancer screening, hormone panels, and fertility tests from regulated UK providers.",
+        "address": { "@type": "PostalAddress", "addressCountry": "GB" },
+        "sameAs": [
+          "https://twitter.com/myhealthcheckup"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.myhealthcheckup.co.uk/#website",
+        "url": "https://www.myhealthcheckup.co.uk/",
+        "name": "myhealth checkup",
+        "publisher": { "@id": "https://www.myhealthcheckup.co.uk/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.myhealthcheckup.co.uk/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
   <body>
