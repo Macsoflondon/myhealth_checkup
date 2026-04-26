@@ -11,7 +11,16 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Geographic targeting: UK only (audit 2.x). hreflang asserts en-GB
+         is the canonical localised version. x-default falls back to the same
+         URL since we do not currently serve other locales. -->
+    <link rel="alternate" hreflang="en-gb" href="https://www.myhealthcheckup.co.uk/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.myhealthcheckup.co.uk/" />
+    <meta name="geo.region" content="GB" />
+    <meta name="geo.placename" content="United Kingdom" />
 
     <!-- Open Graph / Facebook -->
     
