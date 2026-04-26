@@ -127,3 +127,9 @@ verify_jwt = false
 # London Health Company Scraper - Firecrawl-based scraper for londonhealthcompany.co.uk
 [functions.london-health-scraper]
 verify_jwt = false
+
+# IndexNow Submit - Push URL changes to Bing/Yandex/Seznam/Naver via IndexNow protocol
+# Public endpoint with in-code admin auth check (or internal=true for server-to-server calls)
+[functions.indexnow-submit]
+verify_jwt = false
+
