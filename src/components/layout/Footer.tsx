@@ -94,6 +94,10 @@ const Footer = () => {
             <span aria-hidden="true">|</span>
             <Link to="/accessibility" className="hover:text-white transition-colors hover:underline underline-offset-2">Accessibility</Link>
             <span aria-hidden="true">|</span>
+            <Link to="/about/medical-review" className="hover:text-white transition-colors hover:underline underline-offset-2">Medical Review</Link>
+            <span aria-hidden="true">|</span>
+            <Link to="/how-we-rank" className="hover:text-white transition-colors hover:underline underline-offset-2">How We Rank</Link>
+            <span aria-hidden="true">|</span>
             <Link to="/legal" className="hover:text-white transition-colors hover:underline underline-offset-2">Legal Hub</Link>
           </nav>
           <p className="text-center text-xs sm:text-sm text-brand-pink/80 font-sans">

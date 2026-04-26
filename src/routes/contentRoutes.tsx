@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 
 const HowItWorksPage = lazy(() => import("@/pages/HowItWorksPage"));
+const MedicalReviewPage = lazy(() => import("@/pages/MedicalReviewPage"));
 const AboutUsPage = lazy(() => import("@/pages/AboutUsPage"));
 const FAQsPage = lazy(() => import("@/pages/FAQsPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
@@ -17,6 +18,7 @@ const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage")
 export const contentRoutes = (
   <>
     <Route path="/how-it-works" element={<HowItWorksPage />} />
+    <Route path="/about/medical-review" element={<MedicalReviewPage />} />
     <Route path="/about" element={<AboutUsPage />} />
     <Route path="/faqs" element={<FAQsPage />} />
     <Route path="/contact" element={<ContactPage />} />
