@@ -1,6 +1,8 @@
 import React from "react";
 import { Loader2 } from "lucide-react";
 
+type MapBoundaryChildren = React.ReactNode | ((remountKey: number) => React.ReactNode);
+
 /**
  * Error boundary for Leaflet maps.
  *
@@ -10,13 +12,13 @@ import { Loader2 } from "lucide-react";
  * immediately re-throw).
  */
 class MapErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback?: React.ReactNode },
+  { children: MapBoundaryChildren; fallback?: React.ReactNode },
   { hasError: boolean; remountKey: number }
 > {
   private retryCount = 0;
   private readonly maxRetries = 2;
 
-  constructor(props: { children: React.ReactNode; fallback?: React.ReactNode }) {
+  constructor(props: { children: MapBoundaryChildren; fallback?: React.ReactNode }) {
     super(props);
     this.state = { hasError: false, remountKey: 0 };
   }
@@ -51,10 +53,16 @@ class MapErrorBoundary extends React.Component<
         )
       );
     }
+
+    const content =
+      typeof this.props.children === "function"
+        ? this.props.children(this.state.remountKey)
+        : this.props.children;
+
     return (
-      <React.Fragment key={this.state.remountKey}>
-        {this.props.children}
-      </React.Fragment>
+      <div key={`map-remount-${this.state.remountKey}`} className="contents">
+        {content}
+      </div>
     );
   }
 }
