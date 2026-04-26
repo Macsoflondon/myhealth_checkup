@@ -48,13 +48,22 @@ const Footer = () => {
             <ConnectColumn />
           </div>
 
-          {/* ========== Disclaimer Row ========== */}
-          <div className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center">
+          {/* ========== Medical Disclaimer (crawlable, server-rendered) ========== */}
+          <div
+            id="medical-disclaimer"
+            role="note"
+            aria-label="Medical disclaimer"
+            className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
+          >
             <p className="text-xs sm:text-sm leading-relaxed mb-2">
-              <span className="font-semibold text-brand-pink">Important:</span>{" "}
-              <span className="text-white/80">
-                myhealth checkup is a comparison platform. We do not provide medical services. All testing is conducted
-                by our trusted partner providers.
+              <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
+              <span className="text-white/85">
+                This site provides comparison information only and does not constitute medical advice. Consult your GP
+                for medical guidance. Clinical content reviewed by{" "}
+                <Link to="/about/medical-review" className="underline underline-offset-2 hover:text-white">
+                  Nathanial Smith, Physician Associate (HCPC PA43353)
+                </Link>
+                .
               </span>
             </p>
             <p className="text-xs sm:text-sm text-white/90 font-sans">
