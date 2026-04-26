@@ -154,14 +154,14 @@ const ProviderProfilePage = () => {
                     Accredited
                   </Badge>
                 )}
-                {provider.cqcRegistrationNumber && (
+                {(provider as { cqcRegistrationNumber?: string }).cqcRegistrationNumber && (
                   <Badge
                     variant="secondary"
                     className="gap-1 text-xs bg-blue-100 text-blue-800 font-mono"
                     title="CQC registration number — verifiable on the Care Quality Commission public register"
                   >
                     <Shield className="w-3 h-3" />
-                    CQC: {provider.cqcRegistrationNumber}
+                    CQC: {(provider as { cqcRegistrationNumber?: string }).cqcRegistrationNumber}
                   </Badge>
                 )}
               </div>
