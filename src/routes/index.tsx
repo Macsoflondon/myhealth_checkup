@@ -27,6 +27,7 @@ const AdminDataRefreshPage = lazy(() => import("@/pages/AdminDataRefreshPage"));
 const AdminTestMapperPage = lazy(() => import("@/pages/AdminTestMapperPage"));
 const AdminScraperDashboardPage = lazy(() => import("@/pages/AdminScraperDashboardPage"));
 const AdminTestDashboardPage = lazy(() => import("@/pages/AdminTestDashboardPage"));
+const AdminEncryptionStatusPage = lazy(() => import("@/pages/AdminEncryptionStatusPage"));
 
 const PageFallback = () => (
   <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
@@ -58,6 +59,7 @@ export function AppRoutes() {
         <Route path="/admin/scrapers" element={wrapAdmin(AdminScraperDashboardPage)} />
         <Route path="/admin/test-mapper" element={wrapAdmin(AdminTestMapperPage)} />
         <Route path="/admin/test-dashboard" element={wrapAdmin(AdminTestDashboardPage)} />
+        <Route path="/admin/encryption-status" element={wrapAdmin(AdminEncryptionStatusPage)} />
 
         {/* Feature Routes */}
         {featureRoutes}
