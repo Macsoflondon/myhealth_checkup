@@ -12,7 +12,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import ClinicMap from "@/components/clinic/ClinicMap";
 import ClinicCard from "@/components/clinic/ClinicCard";
 import { SectionErrorBoundary } from "@/components/common/SectionErrorBoundary";
-import { MapOff } from "lucide-react";
+import { MapPinOff } from "lucide-react";
 import { useProviderTestCounts, getTestCountForProvider } from "@/hooks/useProviderTestCounts";
 import { useToast } from "@/hooks/use-toast";
 
@@ -409,12 +409,25 @@ const FindClinicPage = () => {
             </div>
 
             {/* Map — wrapped so a Leaflet remount failure doesn't blank the page */}
-            <ClinicMap
-              clinics={filteredClinics}
-              center={mapCenter}
-              userLocation={userLocation}
-              loading={loading}
-            />
+            <SectionErrorBoundary
+              name="ClinicMap"
+              fallback={
+                <div className="bg-card rounded-xl shadow-lg overflow-hidden border border-border h-[500px] flex flex-col items-center justify-center text-center p-6 gap-3">
+                  <MapPinOff className="w-10 h-10 text-muted-foreground" aria-hidden="true" />
+                  <h3 className="font-heading font-semibold text-brand-navy">Map temporarily unavailable</h3>
+                  <p className="text-sm text-muted-foreground max-w-sm">
+                    The interactive map couldn't load. You can still browse all {filteredClinics.length} clinic locations in the list below.
+                  </p>
+                </div>
+              }
+            >
+              <ClinicMap
+                clinics={filteredClinics}
+                center={mapCenter}
+                userLocation={userLocation}
+                loading={loading}
+              />
+            </SectionErrorBoundary>
           </div>
         </section>
 
