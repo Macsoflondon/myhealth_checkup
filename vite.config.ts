@@ -45,6 +45,8 @@ export default defineConfig(({ mode }) => {
             'chart-vendor': ['recharts'],
             'i18n-vendor': ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
             'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+            'motion-vendor': ['framer-motion'],
+            'carousel-vendor': ['embla-carousel-react', 'embla-carousel-autoplay', 'embla-carousel-fade'],
           },
         },
       },
