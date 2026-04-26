@@ -927,6 +927,54 @@ export type Database = {
         }
         Relationships: []
       }
+      security_scan_snapshots: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          added_findings: Json
+          created_at: string
+          error_count: number
+          findings: Json
+          has_diff: boolean
+          id: string
+          modified_findings: Json
+          removed_findings: Json
+          scanned_at: string
+          total_findings: number
+          warn_count: number
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          added_findings?: Json
+          created_at?: string
+          error_count?: number
+          findings?: Json
+          has_diff?: boolean
+          id?: string
+          modified_findings?: Json
+          removed_findings?: Json
+          scanned_at?: string
+          total_findings?: number
+          warn_count?: number
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          added_findings?: Json
+          created_at?: string
+          error_count?: number
+          findings?: Json
+          has_diff?: boolean
+          id?: string
+          modified_findings?: Json
+          removed_findings?: Json
+          scanned_at?: string
+          total_findings?: number
+          warn_count?: number
+        }
+        Relationships: []
+      }
       test_categories: {
         Row: {
           created_at: string
