@@ -7,6 +7,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import FloatingNavDock from "./components/common/FloatingNavDock";
+import { GlobalHreflang } from "./components/seo/GlobalHreflang";
 
 import { AppRoutes } from "./routes";
 import { SessionSecurityProvider } from "./components/security/SessionSecurityProvider";
@@ -39,6 +40,7 @@ const App = () => {
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
+              <GlobalHreflang />
               <FloatingNavDock />
               <AppRoutes />
             </BrowserRouter>
