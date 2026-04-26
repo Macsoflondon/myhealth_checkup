@@ -133,3 +133,9 @@ verify_jwt = false
 [functions.indexnow-submit]
 verify_jwt = false
 
+
+# Security Scan Snapshot
+# Public access (no JWT) - called by pg_cron on a schedule and by admins from /admin/security-diff
+# Security: writes go through SUPABASE_SERVICE_ROLE_KEY internally; RLS blocks all client inserts to security_scan_snapshots
+[functions.security-scan-snapshot]
+verify_jwt = false
