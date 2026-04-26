@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom";
-const logo = "/lovable-uploads/8ac32e6c-38cb-4fbc-a56b-b3f36b7b8d57.png";
+import { Link, useLocation } from "react-router-dom";
+import logo from "@/assets/myhealth-logo.png";
 export const Logo = () => {
-  return (
-    <Link to="/" className="flex items-center gap-3" aria-label="Health & Wellness Hub Home">
-      <img src={logo} alt="myhealth checkup Logo" className="h-10 w-10 rounded-lg" />
-      <div className="flex flex-col">
-        <span className="font-bold text-lg leading-tight text-black">myhealth</span>
-        <span className="font-bold text-lg leading-tight text-cyan-500">checkup</span>
-      </div>
-      <div className="hidden md:block ml-4 text-sm text-cyan-500 font-medium">
-        Your health is your greatest asset!
-      </div>
-    </Link>
-  );
+  const location = useLocation();
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
+  return <Link to="/" onClick={handleClick} className="flex items-center">
+      
+    </Link>;
 };

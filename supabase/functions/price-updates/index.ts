@@ -29,31 +29,31 @@ serve(async (req) => {
       // This would normally come from an external API in a real app
       const seedData = [
         {
-          provider: "Tuli",
+          provider: "medichecks",
           test_id: "blood-test-1",
           price: 49.00,
           available: true
         },
         {
-          provider: "Medichecks",
+          provider: "medichecks",
           test_id: "blood-test-2",
           price: 59.00,
           available: true
         },
         {
-          provider: "Randox",
+          provider: "randox",
           test_id: "blood-test-3",
           price: 45.00,
           available: true
         },
         {
-          provider: "Tuli",
+          provider: "thriva",
           test_id: "weight-loss-1",
           price: 149.00,
           available: true
         },
         {
-          provider: "Goodbody",
+          provider: "goodbody-clinic",
           test_id: "weight-loss-2",
           price: 179.00,
           available: true
@@ -93,7 +93,7 @@ serve(async (req) => {
       status: 200,
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: (error instanceof Error ? error.message : String(error)) }), {
       headers: { "Content-Type": "application/json" },
       status: 500,
     });

@@ -1,112 +1,168 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Heart, Shield, Activity, Users } from 'lucide-react';
+import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { Heart, Baby, Users } from "lucide-react";
 
-const WomensHealthPage = () => {
-  const keyTests = [
-    {
-      name: "Cervical Screening",
-      description: "Regular cervical cancer screening for early detection",
-      ageGroup: "25-64 years",
-      frequency: "Every 3-5 years",
-      icon: <Shield className="h-6 w-6" />
-    },
-    {
-      name: "Hormone Panel",
-      description: "Comprehensive hormone testing including estrogen, progesterone",
-      ageGroup: "30+ years",
-      frequency: "As needed",
-      icon: <Activity className="h-6 w-6" />
-    },
-    {
-      name: "Breast Health Check",
-      description: "Mammography and breast cancer risk assessment",
-      ageGroup: "40+ years",
-      frequency: "Every 2-3 years",
-      icon: <Heart className="h-6 w-6" />
-    }
-  ];
+const womensHealthTests: CategoryTestItem[] = [
+  {
+    id: "premium-complete-blood-women",
+    popular: true,
+    badge: "Complete Health",
+    badgeColor: "#E91E7A",
+    provider: "Medichecks",
+    priceNum: 199,
+    price: "£199",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 7,
+    rating: 4.8,
+    reviews: 1240,
+    title: "Premium Complete Blood Test",
+    desc: "Full blood count, organ function, vitamins, and cardiovascular markers.",
+    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function"],
+    tag: "Hormones",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "advanced-well-woman",
+    popular: false,
+    badge: "Women's Wellness",
+    badgeColor: "#9B59B6",
+    provider: "Goodbody",
+    priceNum: 149,
+    price: "£149",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 6,
+    rating: 4.7,
+    reviews: 890,
+    title: "Advanced Well Woman Test",
+    desc: "Comprehensive screening including hormones, reproductive health, and cardiovascular markers.",
+    biomarkers: ["Female Hormones", "Thyroid Function", "Cholesterol Panel"],
+    tag: "Hormones",
+    collection: "Home Kit",
+  },
+  {
+    id: "menopause-blood-test",
+    popular: true,
+    badge: "Menopause",
+    badgeColor: "#C026D3",
+    provider: "Thriva",
+    priceNum: 89,
+    price: "£89",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 6,
+    rating: 4.6,
+    reviews: 542,
+    title: "Menopause Blood Test",
+    desc: "Specialised testing to assess menopausal status and hormone levels during perimenopause.",
+    biomarkers: ["FSH", "LH", "Oestradiol"],
+    tag: "Menopause",
+    collection: "Home Kit",
+  },
+  {
+    id: "female-hormones",
+    popular: false,
+    badge: "Hormone Health",
+    badgeColor: "#E91E7A",
+    provider: "Medichecks",
+    priceNum: 99,
+    price: "£99",
+    turnaround: "1–2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 7,
+    rating: 4.9,
+    reviews: 2100,
+    title: "Female Hormones Blood Test",
+    desc: "Comprehensive hormone panel including reproductive hormones and cycle regulation markers.",
+    biomarkers: ["Oestradiol", "Progesterone", "LH"],
+    tag: "Hormones",
+    collection: "Home Kit",
+  },
+  {
+    id: "amh-fertility",
+    popular: false,
+    badge: "Fertility Health",
+    badgeColor: "#10B981",
+    provider: "Lola Health",
+    priceNum: 69,
+    price: "£69",
+    turnaround: "3–5 days",
+    turnaroundDays: 5,
+    biomarkerCount: 4,
+    rating: 4.5,
+    reviews: 310,
+    title: "AMH Fertility Blood Test",
+    desc: "Anti-Müllerian Hormone testing to assess ovarian reserve and fertility potential.",
+    biomarkers: ["AMH", "FSH", "LH"],
+    tag: "Fertility",
+    collection: "Home Kit",
+  },
+  {
+    id: "pregnancy-blood-test",
+    popular: false,
+    badge: "Pregnancy",
+    badgeColor: "#EC4899",
+    provider: "Medichecks",
+    priceNum: 125,
+    price: "£125",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 8,
+    rating: 4.7,
+    reviews: 678,
+    title: "Pregnancy Blood Test",
+    desc: "Essential testing during pregnancy including iron, thyroid, and vitamin levels.",
+    biomarkers: ["Iron", "Ferritin", "Thyroid Function"],
+    tag: "Fertility",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "pcos-blood-test",
+    popular: false,
+    badge: "PCOS Health",
+    badgeColor: "#F59E0B",
+    provider: "Randox Health",
+    priceNum: 125,
+    price: "£125",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 7,
+    rating: 4.7,
+    reviews: 678,
+    title: "PCOS Blood Test",
+    desc: "Specialised testing for Polycystic Ovary Syndrome including hormones and metabolic markers.",
+    biomarkers: ["Testosterone", "SHBG", "LH"],
+    tag: "PCOS",
+    collection: "Home Kit",
+  },
+];
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Women's Health Tests | Female Health Screening | My Health Checkup</title>
-        <meta name="description" content="Comprehensive women's health testing including hormones, cervical screening, breast health, and more. Compare UK providers for female-specific health screenings." />
-      </Helmet>
-      
-      <Header />
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">Women's Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Women's Health Testing
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Comprehensive health screening designed for women's unique health needs throughout all life stages.
-              </p>
-              <Button size="lg" className="mr-4">Compare Tests</Button>
-              <Button variant="outline" size="lg">Learn More</Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Key Tests Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Essential Women's Health Tests</h2>
-              <p className="text-xl text-muted-foreground">Key screenings every woman should consider for optimal health</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {keyTests.map((test, index) => (
-                <Card key={index} className="h-full">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                      {test.icon}
-                    </div>
-                    <CardTitle>{test.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">{test.description}</p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">Recommended Age:</span>
-                        <span className="text-sm">{test.ageGroup}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">Frequency:</span>
-                        <span className="text-sm">{test.frequency}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Start Your Women's Health Journey</h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Compare providers and find the right tests for your age and health goals.
-            </p>
-            <Button size="lg">View All Women's Health Tests</Button>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-};
+const WomensHealthPage = () => (
+  <CategoryPageLayout
+    seoTitle="Women's Health Tests | myhealth checkup"
+    pillLabel="Women's Health"
+    seoDescription="Comprehensive women's health testing including hormones, fertility, menopause, and PCOS screening from trusted UK providers. Compare prices and book today."
+    seoKeywords="women's health tests, hormone test, fertility test, menopause test, PCOS test, well woman test"
+    canonicalUrl="https://myhealthcheckup.co.uk/womens-health"
+    headline="Women's Health"
+    subtitle="Comprehensive female health screening — hormones, fertility, menopause, and PCOS — designed for women's unique needs."
+    searchPlaceholder="Search by symptom or test — e.g. 'irregular periods', 'menopause'"
+    trustStats={[
+      { value: "50,000+", label: "Tests Compared" },
+      { value: "4.8★", label: "Average Rating" },
+      { value: "6", label: "Trusted Providers" },
+    ]}
+    filters={["All", "Hormones", "Fertility", "Menopause", "PCOS"]}
+    tests={womensHealthTests}
+    benefitsTitle="Why Choose Women's Health Testing?"
+    benefits={[
+      { icon: Heart, title: "Hormone Balance", description: "Early detection of women's health conditions" },
+      { icon: Baby, title: "Fertility Planning", description: "Comprehensive fertility and reproductive health insights" },
+      { icon: Users, title: "Lifelong Wellness", description: "Monitor and optimise health throughout every life stage" },
+    ]}
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Women's Health" }]}
+    compareUrl="/compare?category=womens-health"
+  />
+);
 
 export default WomensHealthPage;

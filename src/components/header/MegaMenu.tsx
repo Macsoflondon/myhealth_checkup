@@ -12,11 +12,6 @@ const navigationCategories = [
     isStatic: true 
   },
   { 
-    name: "Most popular tests", 
-    path: "/most-popular-tests",
-    isStatic: true 
-  },
-  { 
     name: "At-home tests", 
     path: "/at-home-tests",
     isStatic: true 
@@ -88,6 +83,11 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
     setActiveDropdown(null);
   };
 
+  const handleTestClick = () => {
+    setActiveDropdown(null);
+    onItemClick?.();
+  };
+
   const getTestsForCategories = (categories: string[]) => {
     const tests: any[] = [];
     categories.forEach(categoryId => {
@@ -114,13 +114,13 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
           >
             <Link
               to={item.path}
-              className="flex items-center gap-1 text-gray-700 hover:text-primary transition-colors font-medium text-sm py-2 px-1"
+              className="flex items-center gap-1 text-gray-700 hover:text-primary transition-colors font-medium text-xl py-2.5 px-2"
               onClick={onItemClick}
             >
               {item.name}
               {hasDropdown && (
                 <ChevronDown 
-                  className={`h-3 w-3 transition-transform duration-200 ${
+                  className={`h-4 w-4 transition-transform duration-200 ${
                     isActive ? 'rotate-180' : ''
                   }`} 
                 />
@@ -149,12 +149,24 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                   <div className="space-y-2">
                     {getTestsForCategories(item.categories || []).map((test, index) => {
                       const testCategoryColor = getCategoryColor(test.category);
+                      // Generate the correct provider-specific URL using centralized mapping
+                      const getTestUrl = () => {
+                        const providerSlug = test.provider?.toLowerCase().replace(/\s+/g, '-');
+                        if (providerSlug?.includes('medichecks')) return `/medichecks/${test.id}`;
+                        if (providerSlug?.includes('goodbody')) return `/goodbody-clinic/${test.id}`;
+                        if (providerSlug?.includes('lola')) return `/lola-health/${test.id}`;
+                        if (providerSlug?.includes('thriva')) return `/thriva/${test.id}`;
+                        if (providerSlug?.includes('randox')) return `/randox/${test.id}`;
+                        if (providerSlug?.includes('london')) return `/london-medical-laboratory/${test.id}`;
+                        // Fallback to compare page with category filter
+                        return `/compare?category=${test.category}`;
+                      };
                       return (
                         <Link
                           key={`${test.id}-${index}`}
-                          to={`/test/${test.id}`}
+                          to={getTestUrl()}
                           className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-colors group"
-                          onClick={onItemClick}
+                          onClick={handleTestClick}
                         >
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
@@ -163,13 +175,12 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                                   className={`w-2 h-2 rounded-full ${testCategoryColor.primary} opacity-70`}
                                 />
                               )}
-                              <span className="text-sm font-medium text-gray-800 group-hover:text-primary">
+                              <span className="text-lg font-medium text-gray-800 group-hover:text-primary">
                                 {test.name.length > 35 ? `${test.name.substring(0, 35)}...` : test.name}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-gray-500">{test.provider}</span>
-                              <span className="text-xs font-medium text-primary">£{test.price}</span>
+                              <span className="text-sm text-gray-500">{test.provider}</span>
                             </div>
                           </div>
                         </Link>
@@ -181,13 +192,13 @@ export const MegaMenu = ({ className = "", onItemClick }: MegaMenuProps) => {
                   <div className="mt-3 pt-2 border-t border-gray-100">
                     <Link
                       to={item.path}
-                      className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1 text-lg font-medium transition-colors ${
                         categoryColor ? categoryColor.text : 'text-primary'
                       } hover:opacity-80`}
-                      onClick={onItemClick}
+                      onClick={handleTestClick}
                     >
                       View all {item.name.toLowerCase()} tests
-                      <ChevronDown className="h-3 w-3 rotate-[-90deg]" />
+                      <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
                     </Link>
                   </div>
                 </div>

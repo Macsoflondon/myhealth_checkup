@@ -1,112 +1,149 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Shield, Heart, Activity, Users } from 'lucide-react';
+import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { Shield, Activity, Users } from "lucide-react";
 
-const MensHealthPage = () => {
-  const keyTests = [
-    {
-      name: "PSA Test",
-      description: "Prostate-specific antigen screening for prostate health",
-      ageGroup: "50+ years",
-      frequency: "Annually",
-      icon: <Shield className="h-6 w-6" />
-    },
-    {
-      name: "Testosterone Levels",
-      description: "Hormone testing for energy, mood, and vitality",
-      ageGroup: "30+ years",
-      frequency: "Every 2-3 years",
-      icon: <Activity className="h-6 w-6" />
-    },
-    {
-      name: "Heart Health Panel",
-      description: "Cholesterol, blood pressure, and cardiac risk assessment",
-      ageGroup: "40+ years",
-      frequency: "Every 2 years",
-      icon: <Heart className="h-6 w-6" />
-    }
-  ];
+const mensHealthTests: CategoryTestItem[] = [
+  {
+    id: "premium-complete-blood",
+    popular: true,
+    badge: "Complete Health",
+    badgeColor: "#E91E7A",
+    provider: "Medichecks",
+    priceNum: 199,
+    price: "£199",
+    turnaround: "24–48 hours",
+    turnaroundDays: 2,
+    biomarkerCount: 7,
+    rating: 4.8,
+    reviews: 1240,
+    title: "Premium Complete Blood Test",
+    desc: "Comprehensive health analysis including full blood count, organ function, vitamins, and cardiovascular markers.",
+    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function"],
+    tag: "Complete",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "advanced-well-man",
+    popular: false,
+    badge: "Men's Wellness",
+    badgeColor: "#3B82F6",
+    provider: "Goodbody",
+    priceNum: 149,
+    price: "£149",
+    turnaround: "24–48 hours",
+    turnaroundDays: 2,
+    biomarkerCount: 6,
+    rating: 4.7,
+    reviews: 890,
+    title: "Advanced Well Man Test",
+    desc: "Comprehensive men's health screening including hormones, prostate markers, and cardiovascular health.",
+    biomarkers: ["PSA", "Testosterone", "Cholesterol Panel"],
+    tag: "Wellness",
+    collection: "Home Kit",
+  },
+  {
+    id: "male-hormones",
+    popular: false,
+    badge: "Hormone Health",
+    badgeColor: "#E91E7A",
+    provider: "Thriva",
+    priceNum: 89,
+    price: "£89",
+    turnaround: "24–48 hours",
+    turnaroundDays: 2,
+    biomarkerCount: 6,
+    rating: 4.9,
+    reviews: 2100,
+    title: "Male Hormones Blood Test",
+    desc: "Comprehensive hormone panel including testosterone, SHBG, and reproductive health markers.",
+    biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG"],
+    tag: "Hormones",
+    collection: "Home Kit",
+  },
+  {
+    id: "erectile-dysfunction",
+    popular: false,
+    badge: "Sexual Health",
+    badgeColor: "#8B5CF6",
+    provider: "Medichecks",
+    priceNum: 125,
+    price: "£125",
+    turnaround: "24–48 hours",
+    turnaroundDays: 2,
+    biomarkerCount: 6,
+    rating: 4.6,
+    reviews: 542,
+    title: "Erectile Dysfunction Blood Test",
+    desc: "Specialised testing to identify underlying causes of erectile dysfunction including hormones and vascular health.",
+    biomarkers: ["Testosterone", "Prolactin", "HbA1c"],
+    tag: "Sexual Health",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "prostate-tests",
+    popular: false,
+    badge: "Prostate Health",
+    badgeColor: "#3B82F6",
+    provider: "Randox Health",
+    priceNum: 65,
+    price: "£65",
+    turnaround: "24–48 hours",
+    turnaroundDays: 2,
+    biomarkerCount: 4,
+    rating: 4.7,
+    reviews: 980,
+    title: "Prostate Tests",
+    desc: "Comprehensive prostate health screening including PSA and related markers for early detection.",
+    biomarkers: ["Total PSA", "Free PSA", "PSA Ratio"],
+    tag: "Prostate",
+    collection: "Home Kit",
+  },
+  {
+    id: "testosterone-blood",
+    popular: false,
+    badge: "Hormone Health",
+    badgeColor: "#E91E7A",
+    provider: "Lola Health",
+    priceNum: 45,
+    price: "£45",
+    turnaround: "24–48 hours",
+    turnaroundDays: 2,
+    biomarkerCount: 3,
+    rating: 4.5,
+    reviews: 310,
+    title: "Testosterone Blood Test",
+    desc: "Essential testosterone testing to assess male hormone levels and hormonal health.",
+    biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG"],
+    tag: "Hormones",
+    collection: "Home Kit",
+  },
+];
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Men's Health Tests | Comprehensive Male Health Screening | My Health Checkup</title>
-        <meta name="description" content="Comprehensive men's health testing including PSA, testosterone, heart health, and more. Compare UK providers for male-specific health screenings." />
-      </Helmet>
-      
-      <Header />
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 to-secondary/5 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4">Men's Health</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Men's Health Testing
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Comprehensive health screening tailored specifically for men's unique health needs and risk factors.
-              </p>
-              <Button size="lg" className="mr-4">Compare Tests</Button>
-              <Button variant="outline" size="lg">Learn More</Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Key Tests Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Essential Men's Health Tests</h2>
-              <p className="text-xl text-muted-foreground">Key screenings every man should consider for optimal health</p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {keyTests.map((test, index) => (
-                <Card key={index} className="h-full">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                      {test.icon}
-                    </div>
-                    <CardTitle>{test.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">{test.description}</p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">Recommended Age:</span>
-                        <span className="text-sm">{test.ageGroup}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">Frequency:</span>
-                        <span className="text-sm">{test.frequency}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Start Your Men's Health Journey</h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Compare providers and find the right tests for your age and health goals.
-            </p>
-            <Button size="lg">View All Men's Health Tests</Button>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-};
+const MensHealthPage = () => (
+  <CategoryPageLayout
+    seoTitle="Men's Health Tests | myhealth checkup"
+    pillLabel="Men's Health"
+    seoDescription="Comprehensive men's health testing including testosterone, prostate PSA, erectile dysfunction, and complete male wellness screening from £45."
+    seoKeywords="men's health tests, testosterone test, prostate PSA test, male hormones, erectile dysfunction test, well man test"
+    canonicalUrl="https://myhealthcheckup.co.uk/mens-health"
+    headline="Men's Health Blood Tests"
+    subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
+    searchPlaceholder="Search by symptom or test — e.g. 'testosterone', 'prostate'"
+    trustStats={[
+      { value: "50,000+", label: "Tests Compared" },
+      { value: "4.8★", label: "Average Rating" },
+      { value: "6", label: "Trusted Providers" },
+    ]}
+    filters={["All", "Complete", "Wellness", "Hormones", "Sexual Health", "Prostate"]}
+    tests={mensHealthTests}
+    benefitsTitle="Why Choose Men's Health Testing?"
+    benefits={[
+      { icon: Shield, title: "Early Detection", description: "Identify health issues before symptoms develop" },
+      { icon: Activity, title: "Optimise Performance", description: "Maximise energy, strength, and overall male vitality" },
+      { icon: Users, title: "Preventive Care", description: "Take control of your health with proactive screening" },
+    ]}
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Men's Health" }]}
+    compareUrl="/compare?category=mens-health"
+  />
+);
 
 export default MensHealthPage;

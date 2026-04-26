@@ -1,0 +1,1 @@
+UPDATE provider_tests SET test_name = 'Premium Complete Blood Test' WHERE id = '38d56339-a139-4a70-b222-b533cd6a59fc';

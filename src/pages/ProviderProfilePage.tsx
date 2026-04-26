@@ -1,26 +1,51 @@
 import { useParams, Link } from "react-router-dom";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, ArrowLeft } from "lucide-react";
-import { ProviderLogo } from "@/components/ProviderLogo";
+import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, TestTube, Building2 } from "lucide-react";
+import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
+import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
+import { getBranding } from "@/data/providerBranding";
+import { getProviderRating } from "@/constants/providerRatings";
+
+const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
+  'goodbody-clinic': '/providers/goodbody-clinic',
+  'medichecks': '/providers/medichecks',
+  'thriva': '/providers/thriva',
+  'randox-health': '/providers/randox',
+  'lola-health': '/providers/lola-health',
+  'london-medical-laboratory': '/providers/london-medical-laboratory',
+};
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
   
-  const provider = detailedProviders.find(p => p.id.toLowerCase() === providerId?.toLowerCase());
+  // Match provider by exact ID first, then by partial match
+  const provider = detailedProviders.find(p => {
+    const lowerId = p.id.toLowerCase();
+    const lowerProviderId = providerId?.toLowerCase() || '';
+    return lowerId === lowerProviderId || lowerId.startsWith(lowerProviderId + '-');
+  });
   
   if (!provider) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Provider Not Found</h1>
-            <p className="text-gray-600">The provider you're looking for doesn't exist.</p>
+            <PageHeading 
+              title="Provider" 
+              accent="Not Found" 
+            />
+            <p className="text-muted-foreground mb-6 mt-4">The provider you're looking for doesn't exist.</p>
+            <Button asChild>
+              <Link to="/compare">Browse All Tests</Link>
+            </Button>
           </div>
         </main>
         <Footer />
@@ -28,72 +53,243 @@ const ProviderProfilePage = () => {
     );
   }
 
-  const getProviderRating = (name: string) => {
-    const ratings: Record<string, { rating: number; reviews: string }> = {
-      "Medichecks": { rating: 4.7, reviews: "3,521" },
-      "Goodbody Clinic": { rating: 4.6, reviews: "1,240" },
-      "Thriva": { rating: 4.5, reviews: "2,156" },
-      "Randox Health": { rating: 4.8, reviews: "1,847" },
-      "London Medical Laboratory": { rating: 4.4, reviews: "892" },
-      "Lola Health": { rating: 4.3, reviews: "567" },
-      "Tuli Health": { rating: 4.5, reviews: "1,123" }
-    };
-    return ratings[name] || { rating: 4.5, reviews: "500+" };
-  };
+  const brand = getBranding(provider.name);
 
-  const ratingData = getProviderRating(provider.name);
+  const providerRatingData = getProviderRating(provider.name);
+  const ratingData = { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted };
+  const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
+
+  // Test categories offered by this provider
+  const testCategories = [
+    "General Health",
+    "Hormones",
+    "Vitamins & Minerals",
+    "Thyroid",
+    "Heart Health",
+    "Diabetes",
+    "Sexual Health",
+    "Fertility",
+    "Cancer Screening"
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{`${provider.name} Reviews & Tests | myhealth checkup`}</title>
+        <meta
+          name="description"
+          content={`${provider.name} private health tests reviewed and compared.${
+            providerRatingData.rating
+              ? ` Rated ${providerRatingData.rating}/5 from ${providerRatingData.reviews.toLocaleString()} reviews.`
+              : ""
+          } Browse the full test range, prices, accreditations and turnaround times.`.slice(0, 158)}
+        />
+        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content={`${provider.name} Reviews & Tests | myhealth checkup`} />
+        <meta property="og:description" content={`${provider.name} private health tests reviewed and compared. Browse the full test range, prices and accreditations.`} />
+        <meta property="og:url" content={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:locale" content="en_GB" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalOrganization",
+          "name": provider.name,
+          "description": `${provider.name} private health tests reviewed and compared.`,
+          "url": `https://myhealthcheckup.co.uk/provider/${provider.id}`,
+          ...(websiteUrl ? { "sameAs": websiteUrl } : {}),
+          ...(provider.accreditation ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": provider.accreditation } } : {}),
+          ...(providerRatingData.rating ? { "aggregateRating": { "@type": "AggregateRating", "ratingValue": providerRatingData.rating, "bestRating": 5, "ratingCount": providerRatingData.reviews } } : {}),
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
+              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://myhealthcheckup.co.uk/compare" },
+              { "@type": "ListItem", "position": 3, "name": provider.name }
+            ]
+          }
+        })}</script>
+      </Helmet>
+
       <Header />
       
       <main className="container mx-auto px-4 py-4 md:py-8">
-        {/* Back Button */}
-        <div className="mb-4 md:mb-6">
-          <Button variant="outline" asChild className="gap-2 min-h-[44px] touch-manipulation">
-            <Link to="/#providers">
-              <ArrowLeft className="w-4 h-4" />
-              Back to All Providers
-            </Link>
-          </Button>
-        </div>
-        {/* Hero Section */}
-        <div className="bg-white rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8">
+
+        {/* Hero Section — branded gradient when available */}
+        <div
+          className="rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8 border"
+          style={brand ? {
+            background: `linear-gradient(135deg, ${brand.accent}, ${brand.primary})`,
+          } : undefined}
+        >
           <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
-            <div className="w-20 h-20 md:w-24 md:h-24 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <ProviderLogo provider={provider.name} className="w-14 h-14 md:w-16 md:h-16" />
+            <div
+              className="w-20 h-20 md:w-24 md:h-24 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: brand ? 'rgba(255,255,255,0.95)' : 'hsl(var(--primary) / 0.1)' }}
+            >
+              <ProviderLogo provider={provider.name} className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 object-contain" />
             </div>
             
             <div className="flex-1 w-full">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{provider.name}</h1>
+              <h1
+                className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1"
+                style={{ color: brand ? '#ffffff' : 'hsl(var(--foreground))' }}
+              >
+                {provider.name}
+              </h1>
+              {brand && (
+                <p className="text-white/80 text-sm md:text-base italic mb-2">{brand.tagline}</p>
+              )}
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                  <span className="font-semibold text-gray-900 text-sm md:text-base">{ratingData.rating}</span>
-                  <span className="text-gray-500 text-sm md:text-base">({ratingData.reviews} reviews)</span>
+                  <span className="font-semibold text-sm md:text-base" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>{ratingData.rating}</span>
+                  <span className="text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.7)' : 'hsl(var(--muted-foreground))' }}>({ratingData.reviews} reviews)</span>
                 </div>
                 
                 {provider.accreditation && (
-                  <Badge variant="secondary" className="gap-1 text-xs">
+                  <Badge variant="secondary" className="gap-1 text-xs bg-green-100 text-green-800">
                     <Shield className="w-3 h-3" />
                     Accredited
                   </Badge>
                 )}
+                {(provider as { cqcRegistrationNumber?: string }).cqcRegistrationNumber && (
+                  <Badge
+                    variant="secondary"
+                    className="gap-1 text-xs bg-blue-100 text-blue-800 font-mono"
+                    title="CQC registration number — verifiable on the Care Quality Commission public register"
+                  >
+                    <Shield className="w-3 h-3" />
+                    CQC: {(provider as { cqcRegistrationNumber?: string }).cqcRegistrationNumber}
+                  </Badge>
+                )}
               </div>
               
-              <p className="text-gray-600 text-base md:text-lg mb-6">{provider.description}</p>
+              {(() => {
+              const structuredContent: Record<string, { mission: string; whoWeAre: string; services: string }> = {
+                  'goodbody-clinic': {
+                    mission: "You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.",
+                    whoWeAre: "Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing through over 200+ partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,600+ reviews.",
+                    services: "We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.",
+                  },
+                  'medichecks': {
+                    mission: "Medichecks believe everyone deserves access to clear, reliable health information. Their mission is to empower everyone to take charge of their health with simple, personal blood checks.",
+                    whoWeAre: "Founded in 2001, Medichecks established the UK's first direct-to-consumer blood testing service, offering over 300 tests across general health, hormones, vitamins, thyroid, sports performance, and more. All samples are analysed by UKAS-accredited laboratories. Rated 4.7/5 on Feefo with over 14,000 reviews.",
+                    services: "From convenient finger-prick home kits to venous blood draws at nationwide partner clinics or home nurse visits. Every result includes a bespoke GP-reviewed report with personalised insights, delivered through the MyMedichecks online dashboard.",
+                  },
+                  'thriva': {
+                    mission: "Thriva exists to put health tracking in your hands. By making regular blood testing as routine as checking your phone, they help you spot changes early and stay on top of what matters.",
+                    whoWeAre: "Thriva is a subscription-based health testing platform offering convenient at-home finger-prick kits with doctor-reviewed results. 75+ health markers available with painless home testing. All samples are processed in UKAS-accredited partner laboratories. Rated 4.5/5 on Trustpilot with over 3,000 reviews.",
+                    services: "Choose from a range of health tests covering heart health, liver function, diabetes risk, vitamins, and hormones. Results are delivered via the Thriva app with personalised insights and biomarker tracking over time. Subscription plans and the Compass annual health programme available for regular monitoring.",
+                  },
+                  'randox-health': {
+                    mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
+                    whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates 50+ clinics across the UK & Ireland, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Over 22 million tests processed to date. Rated 4.7/5 on Trustpilot with over 28,400 reviews.",
+                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results in as little as 2 hours from sample, with professional consultation and personalised health recommendations included.",
+                  },
+                  'lola-health': {
+                    mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
+                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 155 reviews.",
+                    services: "Over 40 blood tests available, from comprehensive panels to individual biomarkers. Book a nurse visit or clinic appointment with results in 4 days. Doctor-reviewed insights delivered via the Lola Health app with health trend tracking. Tests from £120.",
+                  },
+                  'london-medical-laboratory': {
+                    mission: "London Medical Laboratory is committed to delivering fast, accurate diagnostic testing with clinical-grade precision. Their goal is to make professional laboratory services accessible to everyone, not just those with a GP referral.",
+                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory offering over 100 blood tests with next day results on most tests. At-home test kits and in-store sample collection at partner clinics across the UK. Features Humanity Age longevity analysis — interpreting blood markers in terms of biological age. Rated 4.5/5 on Trustpilot with over 3,250 reviews.",
+                    services: "Comprehensive test menu including health MOTs, hormone profiles, vitamin panels, allergy testing, fertility assessments, and longevity analysis. At-home and in-store sample collection options. Results delivered via online portal or email with expert analysis.",
+                  },
+                  'blue-horizon': {
+                    mission: "Blue Horizon exists to make professional blood testing accessible and straightforward. Their focus is on delivering reliable results with flexible collection options to fit your lifestyle.",
+                    whoWeAre: "Blue Horizon is a well-established private pathology provider offering over 150 blood tests across thyroid, fatigue, hormones, and general wellness. Tests are processed in accredited laboratories with doctor-reviewed results. Rated 4.2/5 on Trustpilot with over 320 reviews.",
+                    services: "A comprehensive range of health profiles and specialised diagnostics, with flexible sample collection via home kits, clinic visits, or home nurse appointments. Results include personalised interpretation and actionable health insights.",
+                  },
+                  'private-blood-tests-spire': {
+                    mission: "Private Blood Tests through Spire Healthcare aims to combine the accessibility of self-referral testing with the clinical standards of a leading hospital network.",
+                    whoWeAre: "Offering access to over 400 blood tests through the trusted Spire hospital network across the UK. All testing is conducted in accredited laboratory facilities with professional phlebotomy and consultant-grade reporting. Rated 4.6/5 on Trustpilot with over 200 reviews.",
+                    services: "Extensive test menu covering health screening, hormones, fatigue panels, and specialist diagnostics. Free GP referrals included with results, plus a VIP service option for priority processing and same-day appointments at Spire hospitals.",
+                  },
+                  'london-blood-tests': {
+                    mission: "London Blood Tests provides fast, convenient private blood testing in the capital — with same-day appointments and rapid results for those who need answers quickly.",
+                    whoWeAre: "A London-based blood testing service offering over 100 tests with some of the fastest turnaround times available. Professional phlebotomy at clinic locations and home visit options. Rated 4.5/5 on Trustpilot.",
+                    services: "Health screening, hormone profiles, vitamin panels, and specialist diagnostics. Same-day appointments available with results typically within 1–2 working days. Home visit options for added convenience.",
+                  },
+                  'youth-revisited': {
+                    mission: "Youth Revisited is dedicated to helping you optimise your health and wellbeing through targeted testing and personalised wellness programmes.",
+                    whoWeAre: "A wellness-focused health testing provider specialising in nutrition, men's and women's health, and mental wellbeing assessments. Clinic and home visit options available for sample collection.",
+                    services: "Wellness, nutrition, and hormone testing with personalised health packages. Results include detailed lifestyle recommendations and optimisation guidance tailored to individual health goals.",
+                  },
+                  'manual-trt': {
+                    mission: "Manual exists to give men straightforward, clinician-led access to testosterone monitoring and hormone health — removing the barriers to proper TRT management.",
+                    whoWeAre: "A digital health platform specialising in men's health, particularly Testosterone Replacement Therapy (TRT). Physician-led support with subscription-based testing for ongoing hormone optimisation. Rated 4.3/5 on Trustpilot with over 11,200 reviews.",
+                    services: "Testosterone and men's health blood testing via home kits and partner clinics. Subscription-based TRT monitoring with repeat testing, physician consultations, and personalised treatment adjustments.",
+                  },
+                  'manual-hrt': {
+                    mission: "Manual's HRT support helps women navigate menopause and hormonal changes with clinical-grade testing and expert guidance — all from home.",
+                    whoWeAre: "Part of the Manual digital health platform, offering hormone testing and menopause support through partner brands. Home-based testing with app-powered symptom tracking and ongoing monitoring. Rated 4.3/5 on Trustpilot with over 11,200 reviews.",
+                    services: "HRT monitoring, hormone profiles, and menopause symptom tracking via home kits. Results reviewed by clinicians with personalised guidance for ongoing hormonal health management.",
+                  },
+                  'functional-dx': {
+                    mission: "Functional DX provides advanced functional blood analysis to help integrative health practitioners deliver deeper, more personalised patient care.",
+                    whoWeAre: "A practitioner-only advanced testing platform offering over 100 comprehensive biomarker panels. Used by integrative medicine professionals and functional health practitioners across the UK. Clinic-based venous blood collection via practitioner referral.",
+                    services: "Advanced functional blood testing covering metabolic health, hormonal balance, nutritional status, and inflammatory markers. Comprehensive panels with functional reference ranges designed for practitioner interpretation and clinical decision-making.",
+                  },
+                  'onedaytests': {
+                    mission: "OneDayTests was founded on the belief that waiting days for health results is unnecessary. They deliver ultra-fast diagnostics from their own state-of-the-art laboratory and nationwide clinics.",
+                    whoWeAre: "A rapid-results blood testing provider operating 36 clinic locations across the UK with full-time phlebotomy staff. Own state-of-the-art laboratory where 99.2% of markers start testing within 4 hours. UKAS Medical 15189:2022 accredited with CQC registration. Trusted for 100,000+ tests and consultations per month. Rated 4.8/5 on Trustpilot with over 4,000 reviews.",
+                    services: "Health check panels, cholesterol, liver and kidney function, hormones, and rapid testing with same day or next day results on most markers. Same-day clinic appointments available. Home finger-prick test kits also offered. NHS GPs available for follow-up consultations.",
+                  },
+                  'london-laboratory': {
+                    mission: "London Laboratory delivers premium private pathology from the heart of Harley Street — combining clinical expertise with fast turnaround and a comprehensive test menu.",
+                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory based on Harley Street, London, offering comprehensive health, hormone, and allergy testing. In-clinic and home kit options with professional laboratory analysis.",
+                    services: "General health checks, vitamin panels, hormone profiles, allergy testing, and fertility assessments. In-clinic phlebotomy at the Harley Street location or home testing kits. Results typically within 1–3 working days.",
+                  },
+                  'the-doctors-laboratory': {
+                    mission: "The Doctors Laboratory (TDL) sets the gold standard for pathology in the UK — processing over 15 million tests annually with unmatched breadth and clinical rigour.",
+                    whoWeAre: "The UK's largest independent pathology provider, part of Sonic Healthcare global network. UKAS-accredited and CQC-registered with over 40 years of diagnostic experience. Operating from Wimpole Street, London, with a nationwide collection network. Processing 3,000+ test types.",
+                    services: "Over 3,000 diagnostic tests spanning clinical biochemistry, haematology, immunology, microbiology, genetics, and toxicology. Same-day results available for many routine tests. Venous blood draw at TDL clinics, GP surgeries, hospitals, and home visits.",
+                  },
+                };
+
+                const content = structuredContent[provider.id];
+
+                if (content) {
+                  return (
+                    <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
+                      <h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
+                        What sets us apart
+                      </h2>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
+                        <p>{content.mission}</p>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Who We Are</h3>
+                        <p>{content.whoWeAre}</p>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
+                        <p>{content.services}</p>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
+                );
+              })()}
               
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button size="lg" asChild className="min-h-[48px] w-full sm:w-auto">
-                  <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
-                    Visit Website
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-                <Button variant="outline" size="lg" asChild className="min-h-[48px] w-full sm:w-auto">
-                  <Link to={`/provider/${providerId}/tests`}>
-                    Browse Available Tests
+                <Button
+                  variant="outline"
+                  size="providerCta"
+                  asChild
+                  className="min-h-[48px] w-full sm:w-auto inline-flex items-center px-[30px]"
+                  style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
+                >
+                  <Link to={PROVIDER_CATALOG_ROUTES[provider.id] || `/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
+                    <TestTube className="w-4 h-4 flex-shrink-0" />
+                    <span>Browse Available Tests</span>
                   </Link>
                 </Button>
               </div>
@@ -101,175 +297,263 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
+        {/* Trust Signals Banner — tinted with provider colour */}
+        <div
+          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border"
+          style={brand ? {
+            backgroundColor: brand.primaryLight,
+            borderColor: `${brand.primary}33`,
+          } : {
+            backgroundColor: 'hsl(var(--primary) / 0.05)',
+            borderColor: 'hsl(var(--primary) / 0.2)',
+          }}
+        >
+          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+            <Shield className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+            Trust & Accreditation
+          </h2>
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
+                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">Lab Accredited</p>
+                  <p className="text-xs text-muted-foreground">{provider.accreditation || 'UKAS ISO 15189'}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
+                <Building2 className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                <div>
+                  <p className="text-sm font-medium">CQC Regulated</p>
+                  <p className="text-xs text-muted-foreground">{provider.clinics || 'Registered clinics'}</p>
+                </div>
+              </div>
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
+              <Star className="w-5 h-5 text-yellow-500 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium">{ratingData.rating}/5 Rating</p>
+                <p className="text-xs text-muted-foreground">{ratingData.reviews} reviews</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
+              <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--secondary))' }} />
+              <div>
+                <p className="text-sm font-medium">{provider.turnaroundTime || '2-5 days'}</p>
+                <p className="text-xs text-muted-foreground">Results turnaround</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
-          {/* Contact Information */}
-          <div className="lg:col-span-1">
-            <Card>
+          {/* Left column — narrow */}
+          <div className="lg:col-span-1 flex flex-col gap-4">
+            {/* Contact Information */}
+            <Card className="flex flex-col flex-1">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Phone className="w-5 h-5" />
+                  <Phone className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                   Contact Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 flex-1">
                 {provider.website && (
                   <div className="min-h-[44px] flex flex-col justify-center">
-                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Website</p>
+                    <p className="font-medium text-foreground text-sm md:text-base mb-1">Website</p>
                     <a 
-                      href={`https://${provider.website}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline text-sm md:text-base break-all touch-manipulation"
+                      href={websiteUrl || provider.website} 
+                      {...externalLinkProps}
+                      className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
                     >
-                      {provider.website}
+                      {provider.website.replace('https://', '').replace('http://', '')}
                     </a>
                   </div>
                 )}
                 
                 {provider.phone && (
                   <div className="min-h-[44px] flex flex-col justify-center">
-                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Phone</p>
-                    <a href={`tel:${provider.phone}`} className="text-gray-600 text-sm md:text-base hover:underline touch-manipulation">{provider.phone}</a>
+                    <p className="font-medium text-foreground text-sm md:text-base mb-1">Phone</p>
+                    <a href={`tel:${provider.phone}`} className="text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation">{provider.phone}</a>
                   </div>
                 )}
                 
                 {provider.email && (
                   <div className="min-h-[44px] flex flex-col justify-center">
-                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Email</p>
-                    <a href={`mailto:${provider.email}`} className="text-gray-600 text-sm md:text-base break-all hover:underline touch-manipulation">{provider.email}</a>
+                    <p className="font-medium text-foreground text-sm md:text-base mb-1">Email</p>
+                    <a href={`mailto:${provider.email}`} className="text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation">{provider.email}</a>
                   </div>
                 )}
-                
-                {provider.clinics && (
-                  <div className="min-h-[44px] flex flex-col justify-center">
-                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Locations</p>
-                    <p className="text-gray-600 text-sm md:text-base">{provider.clinics}</p>
-                  </div>
-                )}
-                
-                {provider.locations && (
-                  <div className="min-h-[44px] flex flex-col justify-center">
-                    <p className="font-medium text-gray-900 text-sm md:text-base mb-1">Locations</p>
-                    <p className="text-gray-600 text-sm md:text-base">{provider.locations}</p>
-                  </div>
-                )}
+              </CardContent>
+            </Card>
+
+            {/* Test Categories */}
+            <Card className="flex flex-col flex-1">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                  Test Categories
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <div className="flex flex-wrap gap-2">
+                  {testCategories.map(category => (
+                    <Link
+                      key={category}
+                      to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
+                      className="inline-block"
+                    >
+                      <Badge 
+                        variant="outline" 
+                        className="transition-colors cursor-pointer"
+                        style={brand ? {
+                          borderColor: brand.primary,
+                          color: brand.primary,
+                        } : undefined}
+                      >
+                        {category}
+                      </Badge>
+                    </Link>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-4 md:space-y-8">
-            {/* Accreditations */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="w-5 h-5" />
-                  Accreditations & Quality
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {provider.accreditation && (
-                  <div>
-                    <p className="font-medium text-gray-900">Provider Accreditation</p>
-                    <p className="text-gray-600">{provider.accreditation}</p>
-                  </div>
-                )}
-                
-                {provider.labAccreditation && (
-                  <div>
-                    <p className="font-medium text-gray-900">Laboratory Accreditation</p>
-                    <p className="text-gray-600">{provider.labAccreditation}</p>
-                  </div>
-                )}
-                
-                {provider.partnerLabs && (
-                  <div>
-                    <p className="font-medium text-gray-900">Partner Laboratories</p>
-                    <p className="text-gray-600">{provider.partnerLabs}</p>
-                  </div>
-                )}
-                
-                {provider.parentCompany && (
-                  <div>
-                    <p className="font-medium text-gray-900">Parent Company</p>
-                    <p className="text-gray-600">{provider.parentCompany}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
+          {/* Right column — wide */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
             {/* Service Information */}
-            <Card>
+            <Card className="flex flex-col flex-1">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
+                  <Users className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
                   Service Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 flex-1">
                 {provider.tests && (
                   <div>
-                    <p className="font-medium text-gray-900">Available Tests</p>
-                    <p className="text-gray-600">{provider.tests}</p>
+                    <p className="font-medium text-foreground">Available Tests</p>
+                    <p className="text-muted-foreground">{provider.tests}</p>
                   </div>
                 )}
-                
-                {provider.appointments && (
+
+                {provider.sampleCollection && (
                   <div>
-                    <p className="font-medium text-gray-900">Appointment Capacity</p>
-                    <p className="text-gray-600">{provider.appointments}</p>
+                    <p className="font-medium text-foreground">Sample Collection</p>
+                    <p className="text-muted-foreground">{provider.sampleCollection}</p>
                   </div>
                 )}
-                
-                {provider.partnerRegulation && (
+
+                {provider.turnaroundTime && (
                   <div>
-                    <p className="font-medium text-gray-900">Partner Regulation</p>
-                    <p className="text-gray-600">{provider.partnerRegulation}</p>
+                    <p className="font-medium text-foreground">Results Turnaround</p>
+                    <p className="text-muted-foreground">{provider.turnaroundTime}</p>
                   </div>
                 )}
               </CardContent>
             </Card>
 
             {/* Key Features */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Key Features</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {provider.accreditation && (
-                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                      <Shield className="w-5 h-5 text-green-600" />
-                      <span className="text-sm font-medium">Fully Accredited</span>
+            {(() => {
+              const featureColor = brand?.primary || '#16a34a';
+              const featureBg = brand ? `${brand.primary}1A` : '#f0fdf4';
+              const features = [
+                { icon: Shield, label: 'Fully Accredited Labs' },
+                { icon: MapPin, label: 'Multiple Locations' },
+                { icon: Phone, label: 'Phone Support' },
+                { icon: Mail, label: 'Email Support' },
+                { icon: Award, label: 'Doctor Reviewed Results' },
+                { icon: Clock, label: 'Fast Turnaround' },
+              ];
+              return (
+                <Card className="flex flex-col flex-1">
+                  <CardHeader>
+                    <CardTitle>Why Choose {provider.name}?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {features.map(({ icon: Icon, label }) => (
+                        <div key={label} className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: featureBg }}>
+                          <Icon className="w-5 h-5 flex-shrink-0" style={{ color: featureColor }} />
+                          <span className="text-sm font-medium">{label}</span>
+                        </div>
+                      ))}
                     </div>
-                  )}
-                  
-                  {provider.clinics && (
-                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                      <MapPin className="w-5 h-5 text-blue-600" />
-                      <span className="text-sm font-medium">Multiple Locations</span>
-                    </div>
-                  )}
-                  
-                  {provider.phone && (
-                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                      <Phone className="w-5 h-5 text-purple-600" />
-                      <span className="text-sm font-medium">Phone Support</span>
-                    </div>
-                  )}
-                  
-                  {provider.labAccreditation && (
-                    <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
-                      <Award className="w-5 h-5 text-orange-600" />
-                      <span className="text-sm font-medium">Quality Labs</span>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </div>
         </div>
       </main>
+
+      {/* Quiz CTA Banner */}
+      <div className="mt-8 mb-12 px-4 sm:px-10">
+        <div
+          style={{
+            background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
+            padding: "3px",
+            borderRadius: "16px",
+          }}
+        >
+          <div
+            className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8"
+            style={{
+              background: "#0a1120",
+              padding: "32px 36px",
+              borderRadius: "13px",
+            }}
+          >
+            <div className="text-center sm:text-left">
+              <p
+                style={{
+                  color: "#22c0d4",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: "8px",
+                }}
+              >
+                Not Sure Where to Start?
+              </p>
+              <h2
+                style={{
+                  color: "#ffffff",
+                  fontSize: "clamp(22px, 3vw, 28px)",
+                  fontWeight: 700,
+                  margin: 0,
+                }}
+              >
+                Find the Right Health Test for You
+              </h2>
+            </div>
+            <Link
+              to="/find-test"
+              className="inline-block whitespace-nowrap text-center"
+              style={{
+                background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
+                color: "#ffffff",
+                border: "none",
+                padding: "16px 36px",
+                fontSize: "16px",
+                fontWeight: 600,
+                borderRadius: "10px",
+                cursor: "pointer",
+                transition: "transform 0.2s ease",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")
+              }
+            >
+              Start Your Quiz →
+            </Link>
+          </div>
+        </div>
+      </div>
       
       <Footer />
     </div>

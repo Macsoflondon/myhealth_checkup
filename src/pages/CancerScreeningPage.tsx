@@ -1,162 +1,153 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Shield, Clock, Users, CheckCircle, Dna, ArrowRight } from 'lucide-react';
+import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { Shield, Heart, Users } from "lucide-react";
 
-const CancerScreeningPage = () => {
-  const screeningTypes = [
-    {
-      name: "Bowel Cancer Screening",
-      description: "Advanced FIT test for early detection",
-      price: "From £89",
-      turnaround: "5-7 days",
-      biomarkers: ["Faecal Immunochemical Test", "Blood in stool detection"]
-    },
-    {
-      name: "Prostate Cancer Panel",
-      description: "Comprehensive PSA testing for men 40+",
-      price: "From £125",
-      turnaround: "3-5 days", 
-      biomarkers: ["PSA Total", "PSA Free", "PSA Ratio"]
-    },
-    {
-      name: "Cervical Cancer Screening",
-      description: "HPV testing and cytology",
-      price: "From £149",
-      turnaround: "7-10 days",
-      biomarkers: ["HPV DNA", "Cytology", "High-risk HPV types"]
-    },
-    {
-      name: "Multi-Cancer Detection",
-      description: "Blood-based early detection panel",
-      price: "From £399",
-      turnaround: "10-14 days",
-      biomarkers: ["Circulating tumor DNA", "Protein biomarkers", "50+ cancer types"]
-    }
-  ];
+const cancerTests: CategoryTestItem[] = [
+  {
+    id: "psa-prostate",
+    popular: false,
+    badge: "Prostate",
+    badgeColor: "#3B82F6",
+    provider: "Randox Health",
+    priceNum: 49,
+    price: "£49",
+    turnaround: "2 days",
+    turnaroundDays: 2,
+    biomarkerCount: 1,
+    rating: 4.7,
+    reviews: 980,
+    title: "PSA Prostate Test",
+    desc: "Prostate-specific antigen screening for early detection of prostate conditions.",
+    biomarkers: ["PSA"],
+    tag: "Prostate",
+    collection: "Home Kit",
+  },
+  {
+    id: "comprehensive-cancer",
+    popular: true,
+    badge: "Cancer Markers",
+    badgeColor: "#E91E7A",
+    provider: "Medichecks",
+    priceNum: 199,
+    price: "£199",
+    turnaround: "3–5 days",
+    turnaroundDays: 5,
+    biomarkerCount: 8,
+    rating: 4.9,
+    reviews: 1450,
+    title: "Comprehensive Cancer Screen",
+    desc: "Multi-marker panel covering the most common cancer biomarkers for early detection.",
+    biomarkers: ["PSA", "CEA", "CA-125"],
+    tag: "General",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "ca125-ovarian",
+    popular: false,
+    badge: "Ovarian",
+    badgeColor: "#EC4899",
+    provider: "Lola Health",
+    priceNum: 79,
+    price: "£79",
+    turnaround: "2–3 days",
+    turnaroundDays: 3,
+    biomarkerCount: 2,
+    rating: 4.6,
+    reviews: 420,
+    title: "CA-125 Ovarian Cancer Marker",
+    desc: "Ovarian cancer screening with CA-125 and HE4 protein markers.",
+    biomarkers: ["CA-125", "HE4"],
+    tag: "Ovarian",
+    collection: "Home Kit",
+  },
+  {
+    id: "bowel-cancer",
+    popular: false,
+    badge: "Bowel",
+    badgeColor: "#10B981",
+    provider: "Medichecks",
+    priceNum: 89,
+    price: "£89",
+    turnaround: "5–7 days",
+    turnaroundDays: 7,
+    biomarkerCount: 3,
+    rating: 4.8,
+    reviews: 760,
+    title: "Bowel Cancer Screening",
+    desc: "Advanced FIT test for early detection of colorectal cancer markers.",
+    biomarkers: ["FIT", "Blood in stool", "Haemoglobin"],
+    tag: "Bowel",
+    collection: "Home Kit",
+  },
+  {
+    id: "breast-cancer",
+    popular: false,
+    badge: "Breast",
+    badgeColor: "#EC4899",
+    provider: "Goodbody",
+    priceNum: 189,
+    price: "£189",
+    turnaround: "7–10 days",
+    turnaroundDays: 10,
+    biomarkerCount: 4,
+    rating: 4.7,
+    reviews: 340,
+    title: "Breast Cancer Markers",
+    desc: "Blood markers and genetic testing for breast cancer risk assessment.",
+    biomarkers: ["CA 15-3", "CA 27.29", "CEA"],
+    tag: "General",
+    collection: "Home Kit / Clinic",
+  },
+  {
+    id: "multi-cancer",
+    popular: false,
+    badge: "Comprehensive",
+    badgeColor: "#8B5CF6",
+    provider: "Randox Health",
+    priceNum: 399,
+    price: "£399",
+    turnaround: "10–14 days",
+    turnaroundDays: 14,
+    biomarkerCount: 12,
+    rating: 4.9,
+    reviews: 210,
+    title: "Multi-Cancer Detection",
+    desc: "Blood-based early detection panel screening for multiple cancer types simultaneously.",
+    biomarkers: ["ctDNA", "Protein biomarkers", "50+ cancer types"],
+    tag: "General",
+    collection: "Clinic Visit",
+  },
+];
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Helmet>
-        <title>Cancer Screening Tests | Early Detection & Prevention | Compare UK Providers</title>
-        <meta name="description" content="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection from top clinics." />
-      </Helmet>
-      <Header />
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-red-50 to-pink-50 py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-red-500 rounded-lg w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                <Dna className="h-8 w-8 text-white" />
-              </div>
-              <Badge className="mb-4 bg-red-100 text-red-800">Early Detection</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Cancer Screening & Early Detection
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Comprehensive cancer screening tests for early detection and peace of mind. 
-                Regular screening saves lives - start your prevention journey today.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button size="lg" className="gap-2 bg-red-500 hover:bg-red-600">
-                  <Shield className="h-5 w-5" />
-                  Compare Tests
-                </Button>
-                <Button variant="outline" size="lg" className="border-red-500 text-red-700 hover:bg-red-50">
-                  Learn More
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Key Benefits */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8 mb-16">
-              <div className="text-center">
-                <Shield className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">UKAS Accredited</h3>
-                <p className="text-muted-foreground">All tests processed in UK-regulated laboratories</p>
-              </div>
-              <div className="text-center">
-                <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Fast Results</h3>
-                <p className="text-muted-foreground">Results within 3-14 days depending on test</p>
-              </div>
-              <div className="text-center">
-                <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Expert Review</h3>
-                <p className="text-muted-foreground">All results reviewed by qualified healthcare professionals</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Screening Tests */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Available Cancer Screening Tests</h2>
-              <p className="text-xl text-muted-foreground">Choose from our range of evidence-based screening options</p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              {screeningTypes.map((test, index) => (
-                <Card key={index} className="relative">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl">{test.name}</CardTitle>
-                      <Badge variant="secondary">{test.price}</Badge>
-                    </div>
-                    <p className="text-muted-foreground">{test.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">Results in {test.turnaround}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium mb-2">Biomarkers Tested:</h4>
-                        <div className="flex flex-wrap gap-1">
-                          {test.biomarkers.map((marker, i) => (
-                            <Badge key={i} variant="outline" className="text-xs">
-                              {marker}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                      <Button className="w-full">Compare Providers</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="py-16 bg-red-50">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Start Your Cancer Prevention Journey</h2>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Early detection saves lives. Compare cancer screening tests from trusted UK providers and take control of your health.
-            </p>
-            <Button size="lg" className="gap-2 bg-red-500 hover:bg-red-600">
-              <ArrowRight className="h-5 w-5" />
-              Compare All Cancer Tests
-            </Button>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-};
+const CancerScreeningPage = () => (
+  <CategoryPageLayout
+    seoTitle="Cancer Screening | myhealth checkup"
+    pillLabel="Cancer Screening"
+    seoDescription="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection."
+    seoKeywords="cancer screening, prostate cancer test, bowel cancer screening, breast cancer markers, multi-cancer detection"
+    canonicalUrl="https://myhealthcheckup.co.uk/tests/cancer"
+    headline="Cancer Screening Tests"
+    subtitle="Comprehensive cancer screening for early detection and peace of mind. Regular screening saves lives."
+    searchPlaceholder="Search by cancer type or marker — e.g. 'PSA', 'ovarian'"
+    trustStats={[
+      { value: "28,000+", label: "Tests Compared" },
+      { value: "4.9★", label: "Average Rating" },
+      { value: "3", label: "Trusted Providers" },
+    ]}
+    filters={["All", "Prostate", "Bowel", "Ovarian", "General"]}
+    tests={cancerTests}
+    benefitsTitle="Why Choose Cancer Screening?"
+    benefits={[
+      { icon: Shield, title: "Early Detection", description: "Catch cancer early when treatment is most effective" },
+      { icon: Heart, title: "Peace of Mind", description: "Regular screening provides reassurance about your health" },
+      { icon: Users, title: "Expert Care", description: "Results reviewed by qualified healthcare professionals" },
+    ]}
+    breadcrumbs={[
+      { label: "Home", href: "/" },
+      { label: "Compare Tests", href: "/compare" },
+      { label: "Cancer Screening" },
+    ]}
+    breadcrumbBackLabel="Back to Compare"
+  />
+);
 
 export default CancerScreeningPage;

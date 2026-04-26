@@ -198,7 +198,7 @@ const providerTestData: Record<string, any[]> = {
       provider_test_id: 'rx-cancer-001'
     }
   ],
-  'goodbody': [
+  'goodbody-clinic': [
     {
       test_name: 'Essential Wellness Profile',
       description: 'Comprehensive health assessment with GP review and follow-up',
@@ -216,7 +216,7 @@ const providerTestData: Record<string, any[]> = {
       provider_test_id: 'gb-advanced-001'
     }
   ],
-  'lola': [
+  'lola-health': [
     {
       test_name: 'Women\'s Fertility Test',
       description: 'Comprehensive fertility assessment for women planning pregnancy',
@@ -232,16 +232,6 @@ const providerTestData: Record<string, any[]> = {
       category: 'Hormones',
       url: 'https://lolahealth.com/hormone-balance',
       provider_test_id: 'lola-hormone-001'
-    }
-  ],
-  'tuli': [
-    {
-      test_name: 'Health Check at Your Local Pharmacy',
-      description: 'Convenient blood testing available at 300+ local pharmacies',
-      price: 99.00,
-      category: 'General Health',
-      url: 'https://tuli.health/pharmacy-testing',
-      provider_test_id: 'tuli-pharmacy-001'
     }
   ]
 };
@@ -376,7 +366,7 @@ async function scrapeProvider(providerId: string) {
     await supabase.from('scraping_jobs').upsert({
       provider_id: providerId,
       status: 'failed',
-      error_message: error.message,
+      error_message: (error instanceof Error ? error.message : String(error)),
       last_scraped: new Date().toISOString()
     });
 
@@ -427,7 +417,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in provider-scraper function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error instanceof Error ? error.message : String(error)) }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

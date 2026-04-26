@@ -1,0 +1,590 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+interface MedichecksProduct {
+  test_name: string;
+  price: number | null;
+  original_price: number | null;
+  url: string;
+  category: string;
+  description: string | null;
+  biomarker_count: number | null;
+  biomarkers_list: string[] | null;
+  image_url: string | null;
+  sample_type: string | null;
+}
+
+// Updated category pages - Medichecks Shopify collection URLs (verified Feb 2026)
+const categoryPages = [
+  'https://www.medichecks.com/collections/best-sellers',
+  'https://www.medichecks.com/collections/all',
+  'https://www.medichecks.com/collections/mens-health',
+  'https://www.medichecks.com/collections/womens-health',
+  'https://www.medichecks.com/collections/heart-tests',
+];
+
+// Known working product URLs - verified on Medichecks site Feb 2026
+const knownProductUrls = [
+  'https://www.medichecks.com/products/ultimate-performance-blood-test',
+  'https://www.medichecks.com/products/optimal-health-blood-test',
+  'https://www.medichecks.com/products/well-woman-advanced-blood-test',
+  'https://www.medichecks.com/products/well-man-advanced-blood-test',
+  'https://www.medichecks.com/products/testosterone-blood-test',
+  'https://www.medichecks.com/products/advanced-thyroid-function-blood-test',
+  'https://www.medichecks.com/products/thyroid-function-blood-test',
+  'https://www.medichecks.com/products/cortisol-blood-test',
+  'https://www.medichecks.com/products/coeliac-blood-test',
+  'https://www.medichecks.com/products/sports-hormone-blood-test',
+];
+
+// Comprehensive biomarker keywords for extraction
+const biomarkerPatterns = [
+  // Thyroid
+  'TSH', 'T3', 'T4', 'Free T3', 'Free T4', 'FT3', 'FT4', 'Thyroid Peroxidase', 'TPO', 'Thyroglobulin',
+  // Hormones
+  'Testosterone', 'Free Testosterone', 'Oestradiol', 'Estradiol', 'Progesterone', 'LH', 'FSH', 
+  'Prolactin', 'DHEA', 'DHEA-S', 'Cortisol', 'SHBG', 'Free Androgen Index',
+  // Vitamins & Minerals
+  'Vitamin D', '25-OH', 'Vitamin B12', 'Folate', 'Ferritin', 'Iron', 'TIBC', 'Transferrin',
+  'Magnesium', 'Zinc', 'Selenium', 'Vitamin B6',
+  // Liver
+  'ALT', 'AST', 'GGT', 'ALP', 'Bilirubin', 'Albumin', 'Total Protein', 'Globulin',
+  // Kidney
+  'Creatinine', 'eGFR', 'Urea', 'Uric Acid', 'Cystatin C',
+  // Cholesterol
+  'Total Cholesterol', 'HDL', 'LDL', 'Triglycerides', 'Non-HDL', 'Cholesterol Ratio',
+  // Blood Count
+  'Haemoglobin', 'Hemoglobin', 'RBC', 'WBC', 'Platelets', 'Haematocrit', 'MCV', 'MCH', 'MCHC',
+  'Neutrophils', 'Lymphocytes', 'Monocytes', 'Eosinophils', 'Basophils',
+  // Diabetes
+  'HbA1c', 'Glucose', 'Fasting Glucose', 'Insulin', 'HOMA-IR',
+  // Inflammation
+  'CRP', 'ESR', 'hsCRP', 'Homocysteine',
+  // PSA
+  'PSA', 'Total PSA', 'Free PSA',
+  // Other
+  'Omega-3', 'Omega-6', 'ApoB', 'Lp(a)', 'Lipoprotein',
+];
+
+function extractProductUrls(html: string): string[] {
+  const urls: string[] = [];
+  
+  // Updated patterns for Shopify /products/ structure
+  const linkPatterns = [
+    /href="(\/products\/[^"?#]+)"/gi,
+    /href="(https:\/\/www\.medichecks\.com\/products\/[^"?#]+)"/gi,
+    /"url"\s*:\s*"(\/products\/[^"]+)"/gi,
+    /"url"\s*:\s*"(https:\/\/www\.medichecks\.com\/products\/[^"]+)"/gi,
+  ];
+  
+  for (const pattern of linkPatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      let url = match[1];
+      if (url.startsWith('/')) {
+        url = `https://www.medichecks.com${url}`;
+      }
+      // Filter to only product pages
+      if (url.includes('/products/') && !url.includes('/collections/')) {
+        urls.push(url);
+      }
+    }
+  }
+  
+  return [...new Set(urls)];
+}
+
+function extractTitle(html: string): string {
+  // Try multiple patterns - prioritize structured data
+  const patterns = [
+    /"name"\s*:\s*"([^"]+)"/i, // JSON-LD
+    /<h1[^>]*>([^<]+)<\/h1>/i,
+    /<title>([^|<]+)/i,
+    /property="og:title"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:title"/i,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      const title = match[1].trim()
+        .replace(/\s*\|\s*Medichecks.*$/i, '')
+        .replace(/&amp;/g, '&')
+        .replace(/&#39;/g, "'")
+        .trim();
+      if (title && title.length > 3) {
+        return title;
+      }
+    }
+  }
+  
+  return '';
+}
+
+function extractDescription(html: string): string | null {
+  const patterns = [
+    /"description"\s*:\s*"([^"]+)"/i, // JSON-LD
+    /property="og:description"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:description"/i,
+    /name="description"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+name="description"/i,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      return match[1].trim().substring(0, 500);
+    }
+  }
+  
+  return null;
+}
+
+function extractPrice(html: string): { current: number | null; original: number | null } {
+  let current: number | null = null;
+  let original: number | null = null;
+  
+  // Priority 1: Look for price in the sidebar/main content area (e.g., £45)
+  // The price appears in spans like <span class="...text-xl lg:text-2xl...">£45</span>
+  const sidebarPricePatterns = [
+    /class="[^"]*tracking-0[^"]*"[^>]*>\s*£(\d+(?:\.\d{1,2})?)/gi,
+    /class="[^"]*text-xl[^"]*"[^>]*>\s*£(\d+(?:\.\d{1,2})?)/gi,
+    /class="[^"]*font-medium[^"]*"[^>]*>\s*£(\d+(?:\.\d{1,2})?)/gi,
+  ];
+  
+  for (const pattern of sidebarPricePatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      const price = parseFloat(match[1]);
+      if (price > 0 && price < 2000) {
+        current = price;
+        break;
+      }
+    }
+    if (current) break;
+  }
+  
+  // Priority 2: JSON-LD structured data
+  if (!current) {
+    const jsonLdMatch = html.match(/"@type"\s*:\s*"Product"[\s\S]*?"offers"[\s\S]*?"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i);
+    if (jsonLdMatch && jsonLdMatch[1]) {
+      const price = parseFloat(jsonLdMatch[1]);
+      if (price > 0 && price < 2000) {
+        current = price;
+      }
+    }
+  }
+  
+  // Priority 3: Simple £ price extraction from visible content
+  if (!current) {
+    const simplePricePattern = />\s*£(\d+(?:\.\d{1,2})?)\s*</g;
+    const prices: number[] = [];
+    let match;
+    while ((match = simplePricePattern.exec(html)) !== null) {
+      const price = parseFloat(match[1]);
+      if (price > 10 && price < 2000) {
+        prices.push(price);
+      }
+    }
+    // Get the most common price (likely the main price)
+    if (prices.length > 0) {
+      const priceCount = prices.reduce((acc, p) => {
+        acc[p] = (acc[p] || 0) + 1;
+        return acc;
+      }, {} as Record<number, number>);
+      current = Object.entries(priceCount)
+        .sort((a, b) => b[1] - a[1])[0]?.[0] as unknown as number || prices[0];
+      current = Number(current);
+    }
+  }
+  
+  // Look for original/compare-at price
+  const originalPatterns = [
+    /"compareAtPrice"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
+    /"compare_at_price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
+    /class="[^"]*was[^"]*"[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
+    /<del[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
+  ];
+  
+  for (const pattern of originalPatterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      const price = parseFloat(match[1]);
+      if (price > 0 && price < 2000 && price !== current) {
+        original = price;
+        break;
+      }
+    }
+  }
+  
+  return { current, original };
+}
+
+function extractImageUrl(html: string): string | null {
+  const patterns = [
+    /"image"\s*:\s*"([^"]+)"/i, // JSON-LD
+    /property="og:image"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:image"/i,
+    /data-product-featured-image[^>]+src="([^"]+)"/i,
+    /<img[^>]+class="[^"]*product[^"]*"[^>]+src="([^"]+)"/i,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      let url = match[1];
+      if (url.startsWith('//')) {
+        url = 'https:' + url;
+      } else if (url.startsWith('/')) {
+        url = 'https://www.medichecks.com' + url;
+      }
+      return url;
+    }
+  }
+  
+  return null;
+}
+
+function extractBiomarkersList(html: string): string[] | null {
+  const biomarkers: string[] = [];
+  const lowerHtml = html.toLowerCase();
+  
+  // Try to find biomarker section
+  const biomarkerSectionPatterns = [
+    /what['']?s\s+included[\s\S]{0,3000}/i,
+    /biomarkers?\s+tested[\s\S]{0,3000}/i,
+    /<div[^>]*class="[^"]*biomarker[^"]*"[^>]*>([\s\S]*?)<\/div>/gi,
+    /included\s+in\s+this\s+test[\s\S]{0,3000}/i,
+  ];
+  
+  let searchText = html;
+  for (const pattern of biomarkerSectionPatterns) {
+    const match = html.match(pattern);
+    if (match) {
+      searchText = match[0];
+      break;
+    }
+  }
+  
+  // Match known biomarker patterns
+  for (const biomarker of biomarkerPatterns) {
+    const regex = new RegExp(`\\b${biomarker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+    if (regex.test(searchText)) {
+      const normalized = biomarker
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+      if (!biomarkers.includes(normalized)) {
+        biomarkers.push(normalized);
+      }
+    }
+  }
+  
+  return biomarkers.length > 0 ? biomarkers : null;
+}
+
+function extractBiomarkerCount(html: string, biomarkersList: string[] | null): number | null {
+  // First check if we found biomarkers in the list
+  if (biomarkersList && biomarkersList.length > 0) {
+    return biomarkersList.length;
+  }
+  
+  // Try to extract from page content
+  const patterns = [
+    /(\d+)\s*biomarkers?/i,
+    /tests?\s+(\d+)\s+biomarkers?/i,
+    /includes?\s+(\d+)\s+biomarkers?/i,
+    /measures?\s+(\d+)\s+biomarkers?/i,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      return parseInt(match[1], 10);
+    }
+  }
+  
+  return null;
+}
+
+function extractSampleType(html: string): string | null {
+  const patterns = [
+    /sample\s+type[:\s]+([^<,\.]+)/i,
+    /collection\s+method[:\s]+([^<,\.]+)/i,
+    /(finger[- ]?prick|venous|blood\s+draw)/i,
+  ];
+  
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      return match[1].trim();
+    }
+  }
+  
+  // Default for blood tests
+  return 'Finger-prick or Venous';
+}
+
+function determineCategory(title: string, description: string, url: string): string {
+  const text = `${title} ${description} ${url}`.toLowerCase();
+  
+  const categoryMap: Record<string, string[]> = {
+    'Thyroid': ['thyroid', 'tsh', 't3', 't4'],
+    'Hormones': ['hormone', 'testosterone', 'oestrogen', 'estrogen', 'progesterone', 'dhea', 'cortisol'],
+    'Vitamins & Minerals': ['vitamin', 'mineral', 'iron', 'ferritin', 'b12', 'folate', 'magnesium', 'zinc'],
+    'Heart Health': ['heart', 'cholesterol', 'cardiovascular', 'cardiac', 'lipid'],
+    'Diabetes': ['diabetes', 'hba1c', 'glucose', 'insulin', 'blood sugar'],
+    'Liver Health': ['liver', 'hepatic', 'alt', 'ast', 'bilirubin'],
+    'Kidney Health': ['kidney', 'renal', 'creatinine', 'egfr', 'urea'],
+    'Mens Health': ['men', 'male', 'prostate', 'psa', 'well man'],
+    'Womens Health': ['women', 'female', 'menopause', 'well woman', 'pcos'],
+    'Fertility': ['fertility', 'ovarian', 'amh', 'sperm', 'conception'],
+    'Sports & Fitness': ['sport', 'fitness', 'athlete', 'performance', 'muscle'],
+    'General Health': ['general', 'comprehensive', 'full body', 'health check', 'mot', 'baseline', 'essential', 'optimal'],
+    'Fatigue': ['fatigue', 'tiredness', 'energy', 'exhaustion'],
+    'Inflammation': ['inflammation', 'crp', 'esr', 'autoimmune'],
+  };
+  
+  for (const [category, keywords] of Object.entries(categoryMap)) {
+    if (keywords.some(keyword => text.includes(keyword))) {
+      return category;
+    }
+  }
+  
+  return 'General Health';
+}
+
+async function fetchWithDelay(url: string, delay: number = 1500): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, delay));
+  
+  const response = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-GB,en;q=0.9',
+      'Cache-Control': 'no-cache',
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+  
+  return response.text();
+}
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    console.log('Starting enhanced Medichecks scraper with updated URL patterns...');
+
+    // Update scraping job status
+    await supabase
+      .from('scraping_jobs')
+      .upsert({
+        provider_id: 'medichecks',
+        status: 'running',
+        last_scraped: new Date().toISOString(),
+        next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(), // 12 hours
+      }, {
+        onConflict: 'provider_id'
+      });
+
+    // Collect all product URLs
+    const allProductUrls = new Set<string>(knownProductUrls);
+    
+    // Discover products from category pages
+    console.log('Discovering products from collection pages...');
+    for (const categoryUrl of categoryPages) {
+      try {
+        const html = await fetchWithDelay(categoryUrl, 2000);
+        const urls = extractProductUrls(html);
+        urls.forEach(url => allProductUrls.add(url));
+        console.log(`Found ${urls.length} products from ${categoryUrl}`);
+      } catch (error) {
+        console.error(`Failed to fetch category ${categoryUrl}:`, (error instanceof Error ? error.message : String(error)));
+      }
+    }
+
+    console.log(`Total unique product URLs to scrape: ${allProductUrls.size}`);
+
+    // Scrape individual products - increased limit to 150 for comprehensive coverage
+    const scrapedProducts: MedichecksProduct[] = [];
+    const productUrls = Array.from(allProductUrls).slice(0, 150);
+    
+    for (const url of productUrls) {
+      try {
+        console.log(`Scraping: ${url}`);
+        const html = await fetchWithDelay(url, 1000);
+        
+        const title = extractTitle(html);
+        if (!title || title.toLowerCase() === 'medichecks' || title.length < 5) {
+          console.log(`No valid title found for ${url}, skipping`);
+          continue;
+        }
+        
+        const description = extractDescription(html);
+        const { current: price, original: originalPrice } = extractPrice(html);
+        const imageUrl = extractImageUrl(html);
+        const biomarkersList = extractBiomarkersList(html);
+        const biomarkerCount = extractBiomarkerCount(html, biomarkersList);
+        const category = determineCategory(title, description || '', url);
+        const sampleType = extractSampleType(html);
+        
+        scrapedProducts.push({
+          test_name: title,
+          price,
+          original_price: originalPrice,
+          url,
+          category,
+          description,
+          biomarker_count: biomarkerCount,
+          biomarkers_list: biomarkersList,
+          image_url: imageUrl,
+          sample_type: sampleType,
+        });
+        
+        console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
+      } catch (error) {
+        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
+      }
+    }
+
+    console.log(`Successfully scraped ${scrapedProducts.length} products`);
+
+    // Upsert to database
+    let upsertedCount = 0;
+    let priceUpdateCount = 0;
+    let reactivatedCount = 0;
+    
+    for (const product of scrapedProducts) {
+      // Look up ANY existing record (active OR inactive) to avoid insert conflicts
+      // The unique constraint provider_tests_unique_active is on (provider_id, test_name) WHERE is_active = true
+      const { data: existing } = await supabase
+        .from('provider_tests')
+        .select('id, is_active')
+        .eq('provider_id', 'medichecks')
+        .eq('test_name', product.test_name)
+        .order('is_active', { ascending: false }) // Prefer active records first
+        .limit(1)
+        .maybeSingle();
+
+      const slug = product.url.split('/products/').pop() || '';
+      
+      const dataToUpdate: Record<string, unknown> = {
+        provider_id: 'medichecks',
+        test_name: product.test_name,
+        url: product.url,
+        provider_test_id: slug,
+        category: product.category,
+        description: product.description,
+        biomarker_count: product.biomarker_count,
+        biomarkers_list: product.biomarkers_list,
+        image_url: product.image_url,
+        sample_type: product.sample_type,
+        is_active: true,
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      };
+
+      // Include price if we found one
+      if (product.price !== null) {
+        dataToUpdate.price = product.price;
+        dataToUpdate.original_price = product.original_price;
+        priceUpdateCount++;
+      }
+
+      let error;
+      if (existing) {
+        // Update existing record — this reactivates inactive records too
+        if (!existing.is_active) {
+          reactivatedCount++;
+          console.log(`Reactivating: ${product.test_name}`);
+        }
+        const result = await supabase
+          .from('provider_tests')
+          .update(dataToUpdate)
+          .eq('id', existing.id);
+        error = result.error;
+      } else {
+        // Insert new record
+        const result = await supabase
+          .from('provider_tests')
+          .insert(dataToUpdate);
+        error = result.error;
+      }
+      
+      if (error) {
+        console.error(`Failed to save ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
+      } else {
+        upsertedCount++;
+      }
+    }
+
+    // Update scraping job to completed
+    await supabase
+      .from('scraping_jobs')
+      .update({
+        status: 'completed',
+        error_message: null
+      })
+      .eq('provider_id', 'medichecks');
+
+    console.log(`Medichecks scraper completed. Upserted ${upsertedCount} tests, ${priceUpdateCount} with prices, ${reactivatedCount} reactivated.`);
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        provider: 'medichecks',
+        testsScraped: scrapedProducts.length,
+        testsUpserted: upsertedCount,
+        testsWithPrices: priceUpdateCount,
+        testsReactivated: reactivatedCount,
+        timestamp: new Date().toISOString()
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      }
+    );
+
+  } catch (error) {
+    console.error('Error in Medichecks scraper:', error);
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    await supabase
+      .from('scraping_jobs')
+      .update({
+        status: 'failed',
+        error_message: (error instanceof Error ? error.message : String(error))
+      })
+      .eq('provider_id', 'medichecks');
+
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: (error instanceof Error ? error.message : String(error))
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500,
+      }
+    );
+  }
+});

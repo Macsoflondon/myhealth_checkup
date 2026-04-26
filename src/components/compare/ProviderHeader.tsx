@@ -21,10 +21,11 @@ const ProviderHeader = ({ item }: ProviderHeaderProps) => {
           src={item.providerLogo} 
           alt={item.provider} 
           className="h-10 w-auto object-contain mb-2"
+          loading="lazy"
+          decoding="async"
         />
         <span className="font-semibold">{item.name}</span>
         <span className="text-health-600 font-bold">£{item.price.toFixed(2)}</span>
-        {/* Availability indicator */}
         {item.available === false && (
           <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
             Out of stock

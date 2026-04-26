@@ -50,11 +50,11 @@ const ReviewSystem = () => {
     },
     {
       id: '3',
-      userName: 'Emma L.',
+      userName: 'Kristijan G.',
       rating: 5,
       date: '2024-01-08',
       testName: 'Vitamin D Test',
-      provider: 'Superdrug Health',
+      provider: 'Medichecks',
       review: 'Quick and affordable. Perfect for routine monitoring. Clinic staff were professional and friendly.',
       verified: true,
       helpful: 15,

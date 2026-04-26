@@ -1,4 +1,135 @@
 project_id = "clvuioagsgfadynuvodj"
 
+# AI Test Mapper
+# Requires authentication - Uses OpenAI API to semantically match provider tests to master tests
+# Security: JWT verification, service role access for database writes
+[functions.ai-test-mapper]
+verify_jwt = false
+
+# Thriva Scraper
+[functions.thriva-scraper]
+verify_jwt = false
+
+# LML Nearest Clinics API
+# Public access (no JWT) - Users search for clinics BEFORE authentication
+# Security: IP rate limiting (10/min), maxPages limit (3), input validation
 [functions.lml-nearest]
 verify_jwt = false
+
+[functions.geocode-clinic]
+verify_jwt = true
+
+# Health AI Analysis API
+# Requires authentication - Uses OpenAI API for personalized health recommendations
+# Security: JWT verification, verified userId from token, input sanitization
+[functions.health-ai-analysis]
+verify_jwt = true
+
+# Test Recommendations API
+# Public access - Uses Lovable AI to recommend best tests from comparison
+# Security: Input validation, rate limiting via AI gateway
+[functions.test-recommendations]
+verify_jwt = false
+
+# Sports Test Recommendations API
+# Requires authentication - Uses Lovable AI for sport-specific test recommendations
+# Security: JWT verification in code, input validation, rate limiting via AI gateway
+[functions.sports-test-recommendations]
+verify_jwt = false
+
+# Send Test Notification API
+# Requires authentication - Sends test email/SMS notifications
+# Security: JWT verification, verified userId from token
+[functions.send-test-notification]
+verify_jwt = true
+
+# Provider Scrapers - Automated data collection from health test providers
+[functions.goodbody-scraper]
+verify_jwt = false
+
+[functions.medichecks-scraper]
+verify_jwt = false
+
+[functions.lola-health-scraper]
+verify_jwt = false
+
+[functions.randox-scraper]
+verify_jwt = false
+
+
+[functions.scrape-london-lab]
+verify_jwt = false
+
+[functions.provider-scraper]
+verify_jwt = false
+
+[functions.price-updates]
+verify_jwt = false
+
+[functions.price-alert-checker]
+verify_jwt = true
+
+[functions.update-provider-tests]
+verify_jwt = false
+
+[functions.bulk-add-clinics]
+verify_jwt = true
+
+# Run All Scrapers - Scheduled cron job to update all provider data
+# Security: Uses service role key internally, no public access
+[functions.run-all-scrapers]
+verify_jwt = false
+
+# Scrape All Clinics - Admin-only function to scrape clinic data
+# Security: JWT verification required, admin role check in code
+[functions.scrape-all-clinics]
+verify_jwt = false
+
+# Server-Side Encryption Service
+# Security: JWT verification, encryption key stored in secrets (never sent to client)
+[functions.encrypt-sensitive-data]
+verify_jwt = false
+
+# Admin MFA Verification Service
+# Verifies admin users have MFA enabled and verified for privileged operations
+# Security: JWT verification in code, checks AAL2 for admin operations
+[functions.verify-admin-mfa]
+verify_jwt = false
+
+# Scrape Popular Tests - Crawls provider websites for their popular/bestseller tests
+# Security: No public access, uses Firecrawl API key from connector
+[functions.scrape-popular-tests]
+verify_jwt = false
+
+# Medichecks Firecrawl Scraper - Uses Firecrawl connector for reliable scraping
+# Security: No public access, uses Firecrawl API key from connector
+[functions.medichecks-firecrawl]
+verify_jwt = false
+
+# Blood Test Analysis - AI-powered biomarker analysis using Lovable AI
+# Requires authentication - Users must be logged in
+[functions.blood-test-analysis]
+verify_jwt = false
+
+# Quiz Recommendations - AI-powered test recommendations based on health quiz
+# Public access - No authentication required (quiz is anonymous)
+[functions.quiz-recommendations]
+verify_jwt = false
+
+# Clinilabs Scraper - Firecrawl-based scraper for clinilabs.com
+[functions.clinilabs-scraper]
+verify_jwt = false
+
+# Medical Diagnosis Scraper - Firecrawl-based scraper for medicaldiagnosis.co.uk
+[functions.medical-diagnosis-scraper]
+verify_jwt = false
+
+# London Health Company Scraper - Firecrawl-based scraper for londonhealthcompany.co.uk
+[functions.london-health-scraper]
+verify_jwt = false
+
+# IndexNow Submit - Push URL changes to Bing/Yandex/Seznam/Naver via IndexNow protocol
+# Public endpoint with in-code admin auth check (or internal=true for server-to-server calls)
+[functions.indexnow-submit]
+verify_jwt = false
+

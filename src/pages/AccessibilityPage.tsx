@@ -1,26 +1,28 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { Helmet } from 'react-helmet-async';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
+import PageBanner from '@/components/sections/PageBanner';
 
 const AccessibilityPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Accessibility | myhealth checkup</title>
+        <meta name="description" content="Our commitment to making myhealth checkup accessible to everyone. WCAG 2.1 AA compliant with screen reader support and keyboard navigation." />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/accessibility" />
+      </Helmet>
       <Header />
-      <main className="flex-grow bg-muted/30">
+      <main className="flex-grow bg-white">
+        <PageBanner
+          title="Accessibility Statement"
+          subtitle="We're committed to ensuring our website is accessible to everyone, regardless of ability or technology used."
+        />
+
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge className="mb-4">WCAG 2.1 AA Compliant</Badge>
-              <h1 className="text-4xl font-bold mb-6">Accessibility Statement</h1>
-              <p className="text-xl text-muted-foreground">
-                We're committed to ensuring our website is accessible to everyone, 
-                regardless of ability or technology used.
-              </p>
-            </div>
-
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <Card>
                 <CardHeader>
@@ -31,7 +33,7 @@ const AccessibilityPage = () => {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
-                    <li>• High contrast color schemes</li>
+                    <li>• High contrast colour schemes</li>
                     <li>• Scalable text up to 200%</li>
                     <li>• Alt text for all images</li>
                     <li>• Screen reader compatibility</li>
@@ -117,10 +119,9 @@ const AccessibilityPage = () => {
                   please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> accessibility@myhealthhub.co.uk</p>
-                  <p><strong>Phone:</strong> 0800 123 4567</p>
-                  <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
-                </div>
+                   <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
+                   <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
+                 </div>
               </CardContent>
             </Card>
           </div>
