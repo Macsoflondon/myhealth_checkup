@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import L from "leaflet";
@@ -36,11 +36,8 @@ const pinIcon = L.divIcon({
 const UKRegionMap = () => {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
-  // New key on every mount lifecycle — guarantees Leaflet binds to a fresh node.
-  const mountKeyRef = useRef<number>(Date.now());
 
   useEffect(() => {
-    mountKeyRef.current = Date.now();
     const id = requestAnimationFrame(() => setReady(true));
     return () => {
       cancelAnimationFrame(id);
@@ -79,10 +76,9 @@ const UKRegionMap = () => {
           </div>
         ) : (
           <MapErrorBoundary>
-            {/* The wrapping div with a key forces Leaflet to bind to a brand new
-                container on every mount, eliminating the "already initialized" race. */}
-            <div key={`uk-region-map-host-${mountKeyRef.current}`} className="h-full w-full">
+            {(remountKey) => (
               <RMapContainer
+                key={`uk-region-map-${remountKey}`}
                 center={[54.5, -3.5]}
                 zoom={5}
                 scrollWheelZoom={false}
@@ -113,7 +109,7 @@ const UKRegionMap = () => {
                   </RMarker>
                 ))}
               </RMapContainer>
-            </div>
+            )}
           </MapErrorBoundary>
         )}
       </div>
