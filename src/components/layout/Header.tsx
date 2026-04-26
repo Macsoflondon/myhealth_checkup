@@ -46,7 +46,7 @@ const Header = ({ className }: HeaderProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Measure PromoTracker height for sticky toolbar offset (desktop only)
+  // Measure ticker height for sticky toolbar offset (desktop only)
   useEffect(() => {
     if (isMobile || !promoTrackerRef.current) return;
     const measure = () => {
