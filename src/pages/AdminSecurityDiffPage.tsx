@@ -290,7 +290,7 @@ export default function AdminSecurityDiffPage() {
                         {snap.modified_findings.length > 0 && (
                           <div>
                             <div className="flex items-center gap-2 text-sm font-semibold mb-2">
-                              <Pencil className="h-4 w-4 text-amber-600" />
+                              <Pencil className="h-4 w-4 text-muted-foreground" />
                               Modified ({snap.modified_findings.length})
                             </div>
                             <Table>
