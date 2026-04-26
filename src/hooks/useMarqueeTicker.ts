@@ -51,13 +51,16 @@ export function useMarqueeTicker(itemCount: number, speedPxPerMs = 0.04) {
     ro.observe(track);
 
     // Pause when offscreen — biggest mobile battery win
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0 }
-    );
-    io.observe(track);
+    let io: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          isVisibleRef.current = entry.isIntersecting;
+        },
+        { threshold: 0 }
+      );
+      io.observe(track);
+    }
 
     let animationId = 0;
     let lastTime = 0;
