@@ -3,17 +3,17 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 
 const TEST_PRODUCTS = [
-  { src: "/images/tests/advanced-well-man.png", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
-  { src: "/images/tests/premium-complete-blood-test.png", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain" },
-  { src: "/images/tests/early-cancer-screening.png", alt: "Early Cancer Screening Test", code: "Cancer Screening", objectFit: "contain" },
-  { src: "/images/tests/female-hormone-fertility.png", alt: "Female Hormone & Fertility Test", code: "Hormone & Fertility", objectFit: "contain" },
-  { src: "/images/tests/thyroid-blood-test.png", alt: "Thyroid Blood Test", code: "Thyroid", objectFit: "contain" },
-  { src: "/images/tests/kidney-blood-test.png", alt: "Kidney Blood Test", code: "Kidney", objectFit: "contain" },
-  { src: "/images/tests/cholesterol-blood-test.png", alt: "Cholesterol Blood Test", code: "Cholesterol", objectFit: "contain" },
-  { src: "/images/tests/liver-blood-test.png", alt: "Liver Blood Test", code: "Liver", objectFit: "contain" },
-  { src: "/images/tests/vitamins-blood-test.png", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain" },
-  { src: "/images/tests/sports-fitness-blood-test.png", alt: "Sports & Fitness Blood Test", code: "Sports & Fitness", objectFit: "contain" },
-  { src: "/images/tests/episwitch-pse.png", alt: "EpiSwitch PSE Prostate Test", code: "EpiSwitch PSE", objectFit: "contain" },
+  { src: "/images/tests/advanced-well-man.webp", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
+  { src: "/images/tests/premium-complete-blood-test.webp", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain" },
+  { src: "/images/tests/early-cancer-screening.webp", alt: "Early Cancer Screening Test", code: "Cancer Screening", objectFit: "contain" },
+  { src: "/images/tests/female-hormone-fertility.webp", alt: "Female Hormone & Fertility Test", code: "Hormone & Fertility", objectFit: "contain" },
+  { src: "/images/tests/thyroid-blood-test.webp", alt: "Thyroid Blood Test", code: "Thyroid", objectFit: "contain" },
+  { src: "/images/tests/kidney-blood-test.webp", alt: "Kidney Blood Test", code: "Kidney", objectFit: "contain" },
+  { src: "/images/tests/cholesterol-blood-test.webp", alt: "Cholesterol Blood Test", code: "Cholesterol", objectFit: "contain" },
+  { src: "/images/tests/liver-blood-test.webp", alt: "Liver Blood Test", code: "Liver", objectFit: "contain" },
+  { src: "/images/tests/vitamins-blood-test.webp", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain" },
+  { src: "/images/tests/sports-fitness-blood-test.webp", alt: "Sports & Fitness Blood Test", code: "Sports & Fitness", objectFit: "contain" },
+  { src: "/images/tests/episwitch-pse.webp", alt: "EpiSwitch PSE Prostate Test", code: "EpiSwitch PSE", objectFit: "contain" },
 ];
 
 interface TestProductFilmstripProps {
