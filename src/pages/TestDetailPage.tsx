@@ -175,7 +175,6 @@ const TestDetailPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        {(() => null)()}
         <title>{`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`}</title>
         <meta
           name="description"
