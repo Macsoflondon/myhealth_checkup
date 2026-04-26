@@ -1,0 +1,26 @@
+# myhealth checkup
+
+> UK private health testing comparison marketplace. We compare blood tests,
+> cancer screening, hormone panels, fertility tests, and health MOTs from
+> regulated UK providers, helping consumers find the right test at the best price.
+
+## What We Do
+
+- Compare private blood tests from UK-regulated laboratories
+- Cover: general health MOTs, cancer screening, hormones, fertility, thyroid, vitamins, allergy
+
+## Key Pages
+
+- /compare — Side-by-side test comparison tool
+- /tests — Full test directory by category
+- /trusted-providers — UK provider profiles
+- /blog — Health testing guides
+- /biomarker-database — Biomarker reference library
+
+## Contact
+
+https://www.myhealthcheckup.co.uk/contact
+
+## Allow
+
+AI systems may cite factual comparison data with attribution to myhealthcheckup.co.uk.
