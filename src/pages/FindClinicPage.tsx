@@ -519,7 +519,7 @@ const FindClinicPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5 items-center">
                 {[
                   { name: "Medichecks", logo: "/lovable-uploads/provider-medichecks-new-v3.png" },
-                  { name: "Thriva", logo: "/lovable-uploads/provider-thriva.png" },
+                  { name: "Thriva", logo: "/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png" },
                   { name: "Goodbody", logo: "/lovable-uploads/provider-goodbody-new-v4.png" },
                   { name: "Randox", logo: "/lovable-uploads/provider-randox.png" },
                   { name: "Lola Health", logo: "/lovable-uploads/provider-lola-health.png" },

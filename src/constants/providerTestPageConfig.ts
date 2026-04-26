@@ -144,7 +144,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   thriva: {
     id: 'thriva',
     name: 'Thriva',
-    logo: '/lovable-uploads/provider-thriva.png',
+    logo: '/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png',
     turnaround: '2-3 working days',
     badgeText: 'Thriva Blood Test',
     features: [
