@@ -145,9 +145,6 @@ const PromoTracker = () => {
           }}
           onMouseEnter={pause}
           onMouseLeave={resume}
-          onTouchStart={pause}
-          onTouchEnd={resume}
-          onTouchCancel={resume}
           role="marquee"
           aria-label="Promotional offers from health test providers. Hover to pause."
         >
