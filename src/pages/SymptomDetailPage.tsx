@@ -14,7 +14,7 @@ const SymptomDetailPage = () => {
 
   if (!symptom) return <Navigate to="/compare/symptoms" replace />;
 
-  const pageTitle = `${symptom.name} Blood Tests | myhealth checkup`;
+  const pageTitle = `Blood Test for ${symptom.name} — Compare UK Private Tests | myhealth checkup`;
   const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
 
   return (

@@ -175,12 +175,23 @@ const TestDetailPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{test.test_name} - {provider.name} | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content={`Book the ${test.test_name} from ${provider.name} for £${test.price?.toFixed(2) || 'Price on request'}. ${test.description || 'Professional health testing with fast results.'}`} 
+        {(() => null)()}
+        <title>{`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`}</title>
+        <meta
+          name="description"
+          content={`Compare the ${test.test_name} across accredited UK providers${
+            test.price != null ? ` from £${test.price.toFixed(2)}` : ""
+          }. View biomarkers, sample method, turnaround and pricing side-by-side.${
+            provider?.name ? ` Available from ${provider.name}.` : ""
+          }`.slice(0, 158)}
         />
         <link rel="canonical" href={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <meta property="og:type" content="product" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content={`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`} />
+        <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
+        <meta property="og:url" content={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <meta property="og:locale" content="en_GB" />
       </Helmet>
 
       <Header />
