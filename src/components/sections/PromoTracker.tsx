@@ -13,11 +13,21 @@ const SETS = 4;
 // Match the slower, steadier velocity used by the working brand trackers.
 const PX_PER_MS = 0.05;
 
+// Reserved strip height (matches the rendered text line-height + padding).
+// Keeps layout stable on slow connections / before fonts and measurement settle.
+const STRIP_MIN_HEIGHT_MOBILE = 44; // px
+const STRIP_MIN_HEIGHT_DESKTOP = 56; // px
+
 const PromoTracker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
   const pausedRef = useRef(false);
+
+  // True once we've measured a non-zero set width (or fonts are ready).
+  // Until then we show a skeleton and keep the marquee invisible to avoid
+  // first-paint flicker / layout jank.
+  const [isReady, setIsReady] = useState(false);
 
   // Debug overlay is opt-in via ?debugTickers — never rendered in production UI.
   const debug = useMemo(
