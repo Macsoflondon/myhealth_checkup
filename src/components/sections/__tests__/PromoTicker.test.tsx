@@ -4,9 +4,8 @@ import PromoTicker from "../PromoTicker";
 
 // jsdom doesn't ship ResizeObserver
 beforeAll(() => {
-  if (typeof globalThis.ResizeObserver === "undefined") {
-    // @ts-expect-error - test shim
-    globalThis.ResizeObserver = class {
+  if (typeof (globalThis as { ResizeObserver?: unknown }).ResizeObserver === "undefined") {
+    (globalThis as { ResizeObserver?: unknown }).ResizeObserver = class {
       observe() {}
       unobserve() {}
       disconnect() {}
