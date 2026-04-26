@@ -140,7 +140,7 @@ const Header = ({ className }: HeaderProps) => {
         </div>
       </header>
 
-      {/* Toolbar sticks below PromoTracker independently */}
+      {/* Toolbar sticks below the promo ticker independently */}
       <div
         className="sticky z-40"
         style={{ top: tickerHeight }}
