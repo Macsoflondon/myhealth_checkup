@@ -75,17 +75,27 @@ const ProviderProfilePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{provider.name} - Blood Tests & Health Screening | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content={`Compare ${provider.name} blood tests and health screening. ${provider.accreditation ? provider.accreditation + '. ' : ''}Read reviews, view prices, and book online.`} 
+        <title>{`${provider.name} Reviews & Tests | myhealth checkup`}</title>
+        <meta
+          name="description"
+          content={`${provider.name} private health tests reviewed and compared.${
+            providerRatingData.rating
+              ? ` Rated ${providerRatingData.rating}/5 from ${providerRatingData.reviews.toLocaleString()} reviews.`
+              : ""
+          } Browse the full test range, prices, accreditations and turnaround times.`.slice(0, 158)}
         />
         <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content={`${provider.name} Reviews & Tests | myhealth checkup`} />
+        <meta property="og:description" content={`${provider.name} private health tests reviewed and compared. Browse the full test range, prices and accreditations.`} />
+        <meta property="og:url" content={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "MedicalOrganization",
           "name": provider.name,
-          "description": `Compare ${provider.name} blood tests and health screening.`,
+          "description": `${provider.name} private health tests reviewed and compared.`,
           "url": `https://myhealthcheckup.co.uk/provider/${provider.id}`,
           ...(websiteUrl ? { "sameAs": websiteUrl } : {}),
           ...(provider.accreditation ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": provider.accreditation } } : {}),

@@ -14,7 +14,7 @@ const GoalDetailPage = () => {
 
   if (!goal) return <Navigate to="/compare/goals" replace />;
 
-  const pageTitle = `${goal.name} Blood Tests | myhealth checkup`;
+  const pageTitle = `Blood Test for ${goal.name} — Compare UK Private Tests | myhealth checkup`;
   const pageUrl = `https://myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
 
   return (
