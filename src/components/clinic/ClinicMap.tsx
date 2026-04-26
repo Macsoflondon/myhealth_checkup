@@ -52,8 +52,6 @@ interface ClinicMapProps {
 
 const ClinicMap = ({ clinics, center, userLocation, loading, zoom = 6 }: ClinicMapProps) => {
   const [mapReady, setMapReady] = useState(false);
-  const [mapKey] = useState(() => Date.now());
-  const mapInitialized = useRef(false);
 
   useEffect(() => {
     const timer = requestAnimationFrame(() => setMapReady(true));
@@ -71,15 +69,13 @@ const ClinicMap = ({ clinics, center, userLocation, loading, zoom = 6 }: ClinicM
         </div>
       ) : (
         <MapErrorBoundary>
+          {(remountKey) => (
           <RMapContainer
-            key={`clinic-map-${mapKey}`}
+            key={`clinic-map-${remountKey}`}
             center={center}
             zoom={userLocation ? 12 : zoom}
             className="h-full w-full"
             scrollWheelZoom={true}
-            whenReady={() => {
-              mapInitialized.current = true;
-            }}
           >
             <RTileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -128,6 +124,7 @@ const ClinicMap = ({ clinics, center, userLocation, loading, zoom = 6 }: ClinicM
               ))}
             </MarkerClusterGroup>
           </RMapContainer>
+          )}
         </MapErrorBoundary>
       )}
     </div>
