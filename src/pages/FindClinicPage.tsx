@@ -406,7 +406,7 @@ const FindClinicPage = () => {
               Showing {displayedClinics.length} of {filteredClinics.length} clinics
             </div>
 
-            {/* Map */}
+            {/* Map — wrapped so a Leaflet remount failure doesn't blank the page */}
             <ClinicMap
               clinics={filteredClinics}
               center={mapCenter}
