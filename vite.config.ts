@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { ogMetaPlugin } from "./plugins/ogMetaPlugin";
+// Touch: forces Vite dev-server restart to clear stale module graph after asset migration.
+
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
