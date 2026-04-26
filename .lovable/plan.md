@@ -1,46 +1,36 @@
-## Plan
+# Plan: Rebuild PromoTicker using the proven TestCategoryTicker engine
 
-Replace the current homepage ticker behaviour so both carousels move reliably in the preview and production.
+## Why
+The CSS-only `PromoTicker` is still not animating in the user's browser, while `TestCategoryTicker` (rAF + JS-driven `translate3d`) reliably scrolls. Easiest fix: copy the category ticker's mechanism verbatim, swap the content for the promo items.
 
-### What I’ll change
+## Changes
 
-1. Fix the actual freeze condition in both carousels
-   - `src/components/sections/PromoTicker.tsx`: remove the `motion-reduce:animate-none` class so the promo strip does not silently disable itself.
-   - `src/components/sections/TestCategoryTicker.tsx`: remove the early `prefers-reduced-motion` bailout that stops the animation loop entirely.
+### 1. Rewrite `src/components/sections/PromoTicker.tsx`
+- Delete the entire current pure-CSS implementation.
+- Reimplement using the **exact same structure** as `TestCategoryTicker.tsx`:
+  - `useRef` for `trackRef`, `positionRef`, `singleSetWidthRef`
+  - `measureSetWidth()` measures the width of one full set of promo items
+  - `requestAnimationFrame` loop with `pxPerMs = 0.04`, clamped delta, wraps at `setWidth`
+  - `ResizeObserver` + `window.resize` + `document.fonts.ready` re-measure
+  - `visibilitychange` resets `lastTime` to avoid jump after tab refocus
+  - `?debugTickers` query param shows a small overlay (label: "PromoTicker")
+- Render **8 sets** of the 3 promos (`SETS = 8`), flattened, so the track is wide enough for a smooth wrap.
+- Keep existing visual styling: navy background, top 2px gradient accent, bottom 3px gradient accent, mask fade on left/right edges, `data-testid="promo-ticker-track"` on the track for the existing E2E test.
+- Keep promo content identical:
+  - GoodBody — "5% off on all popular blood tests" — `#0bb77e`
+  - Medichecks — "20% off all tests with code APRIL20" — `#e70d68`
+  - Lola Health — "£20 off with code Mar20" — `#fa757e`
+- Keep typography (`font-heading font-bold`, white body text, pink bullet separator).
 
-2. Keep both carousels stable after the fix
-   - Leave the current promo ticker structure in place if it’s otherwise sound.
-   - Keep the category ticker’s width measurement and wrap logic, but make sure it always starts animating when rendered.
+### 2. No other files change
+- `Header.tsx` already imports `PromoTicker` — no edits needed.
+- E2E test `e2e/homepage-tickers.spec.ts` continues to work (`data-testid="promo-ticker-track"` preserved, selector untouched).
+- Update unit test `src/components/sections/__tests__/PromoTicker.test.tsx` — the inline `animation:` style assertion will no longer hold; replace it with assertions that the track exists, has the testid, and that promo items are rendered multiple times (proving the SETS duplication).
 
-3. Add a real browser smoke test
-   - Create a Playwright-style E2E smoke test that loads `/` on desktop and mobile viewports.
-   - Assert the promo ticker position changes over a short wait.
-   - Assert the category ticker position changes over a short wait.
-   - This replaces the false sense of safety from the current component-only smoke test, which does not prove browser motion in the live page.
+## Out of scope
+- No changes to `TestCategoryTicker` (it works).
+- No tailwind config changes.
+- No header/layout changes.
 
-4. Verify header/mobile layout while touching this area
-   - Check that the mobile header still uses the intended mobile logo layout.
-   - Ensure the two tickers remain in the same visual positions as now.
-
-### Exact problem found
-
-Both frozen strips are being disabled by reduced-motion logic:
-
-- The promo carousel uses `motion-reduce:animate-none` in `PromoTicker.tsx`.
-- The second carousel (`TestCategoryTicker.tsx`) exits its animation effect immediately when `window.matchMedia('(prefers-reduced-motion: reduce)')` matches.
-- The homepage also calls `useMobileOptimization()` in `src/pages/Index.tsx`, so mobile-specific behaviour is already being injected there.
-
-That means if the browser/OS is advertising reduced motion, both carousels will stop by design, which matches what you’re seeing: both are static even after refresh.
-
-### Technical details
-
-Files to update:
-- `src/components/sections/PromoTicker.tsx`
-- `src/components/sections/TestCategoryTicker.tsx`
-- add E2E test file(s), likely under a browser/e2e test path
-- possibly `package.json` if an explicit E2E script is missing
-
-Expected outcome:
-- top promo ticker moves continuously
-- second category ticker moves continuously
-- behaviour is verified in an actual browser at mobile and desktop sizes
+## Risk
+Low. The category ticker has been running reliably in the same page; cloning its engine onto identical markup is a like-for-like swap.
