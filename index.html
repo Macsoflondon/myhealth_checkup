@@ -118,6 +118,28 @@
 
   <body>
     <div id="root"></div>
+
+    <!--
+      Static, crawlable medical disclaimer + reviewer attribution.
+      Lives in the HTML shell (not the React tree) so search engines and AI
+      crawlers see it without executing JS. Hidden from sighted users since
+      the React Footer renders the full visible version on every page.
+    -->
+    <noscript>
+      <div role="note" aria-label="Medical disclaimer">
+        <p>
+          <strong>Medical disclaimer:</strong> This site provides comparison information only and does not
+          constitute medical advice. Consult your GP for medical guidance. Clinical content reviewed by
+          Nathanial Smith, Physician Associate (HCPC PA43353).
+        </p>
+      </div>
+    </noscript>
+    <p hidden id="static-medical-disclaimer" data-purpose="seo-eeat">
+      <strong>Medical disclaimer:</strong> This site provides comparison information only and does not constitute
+      medical advice. Consult your GP for medical guidance. Clinical content reviewed by Nathanial Smith,
+      Physician Associate (HCPC PA43353).
+    </p>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
