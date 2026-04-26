@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { render, cleanup, within } from "@testing-library/react";
 import PromoTicker from "../PromoTicker";
 
@@ -6,8 +6,8 @@ import PromoTicker from "../PromoTicker";
  * Smoke test for the new pure-CSS PromoTicker.
  *
  * The animation runs in CSS, so we don't drive timers — we just assert the
- * structure is correct: every promo string is rendered twice (duplicated
- * track for seamless wrap) and the track has the marquee animation class.
+ * structure: every promo string is rendered twice (duplicated track for
+ * seamless wrap) and the track has the marquee animation class.
  */
 
 describe("PromoTicker", () => {
@@ -22,8 +22,10 @@ describe("PromoTicker", () => {
 
   it("duplicates every promo so the marquee wraps seamlessly", () => {
     const { getByLabelText } = render(<PromoTicker />);
-    const strip = getByLabelText("Promotional offers from health test providers");
-    const utils = within(strip as HTMLElement);
+    const strip = getByLabelText(
+      "Promotional offers from health test providers"
+    ) as HTMLElement;
+    const utils = within(strip);
 
     expect(utils.getAllByText("GoodBody:")).toHaveLength(2);
     expect(utils.getAllByText("Medichecks:")).toHaveLength(2);
@@ -44,6 +46,3 @@ describe("PromoTicker", () => {
     expect(track.className).toContain("animate-marquee");
   });
 });
-
-// Vitest globals
-import { afterEach } from "vitest";
