@@ -9,7 +9,9 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "prerender": "node scripts/prerender.mjs",
+    "build:full": "bun run build && bun run preview --port 4173 & sleep 4 && bun run prerender; kill %1"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
