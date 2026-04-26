@@ -1430,6 +1430,13 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_admin: { Args: never; Returns: boolean }
+      lov_tables_without_policies: {
+        Args: never
+        Returns: {
+          schemaname: string
+          tablename: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
