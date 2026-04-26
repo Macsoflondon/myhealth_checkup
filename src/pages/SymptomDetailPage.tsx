@@ -1,4 +1,4 @@
-import { useParams, Navigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import PageBanner from "@/components/sections/PageBanner";
@@ -7,12 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, ArrowRight, Search } from "lucide-react";
 import { symptomPages } from "@/data/symptomPages";
+import NotFound from "@/pages/NotFound";
 
 const SymptomDetailPage = () => {
   const { symptomSlug } = useParams<{ symptomSlug: string }>();
   const symptom = symptomPages.find((s) => s.slug === symptomSlug);
 
-  if (!symptom) return <Navigate to="/compare/symptoms" replace />;
+  // Render a real 404 (with noindex + prerender-status-code) instead of a
+  // silent 200 redirect to /compare/symptoms — that pattern is a classic
+  // soft-404 and dilutes crawl budget.
+  if (!symptom) return <NotFound />;
 
   const pageTitle = `Blood Test for ${symptom.name} — Compare UK Private Tests | myhealth checkup`;
   const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
