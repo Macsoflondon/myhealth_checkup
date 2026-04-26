@@ -1,36 +1,46 @@
-# Plan: Rebuild PromoTicker using the proven TestCategoryTicker engine
+## Goal
+Add tasteful, varied scroll-triggered animations to the landing page (`src/pages/Index.tsx`) sections. No new libraries — reuse the existing `ScrollFadeIn` component and Tailwind animation utilities (`fade-in`, `scale-in`, `slide-in-right`, `hover-scale`) already defined in the project.
 
-## Why
-The CSS-only `PromoTicker` is still not animating in the user's browser, while `TestCategoryTicker` (rAF + JS-driven `translate3d`) reliably scrolls. Easiest fix: copy the category ticker's mechanism verbatim, swap the content for the promo items.
+## Approach
+Wrap each below-the-fold landing section in `ScrollFadeIn` with **staggered delays** and **varied directions/effects** so the page feels alive without being noisy. The two tickers (PromoTicker, TestCategoryTicker) are already animated and will be left alone.
 
-## Changes
+## Animation map (Index.tsx sections)
 
-### 1. Rewrite `src/components/sections/PromoTicker.tsx`
-- Delete the entire current pure-CSS implementation.
-- Reimplement using the **exact same structure** as `TestCategoryTicker.tsx`:
-  - `useRef` for `trackRef`, `positionRef`, `singleSetWidthRef`
-  - `measureSetWidth()` measures the width of one full set of promo items
-  - `requestAnimationFrame` loop with `pxPerMs = 0.04`, clamped delta, wraps at `setWidth`
-  - `ResizeObserver` + `window.resize` + `document.fonts.ready` re-measure
-  - `visibilitychange` resets `lastTime` to avoid jump after tab refocus
-  - `?debugTickers` query param shows a small overlay (label: "PromoTicker")
-- Render **8 sets** of the 3 promos (`SETS = 8`), flattened, so the track is wide enough for a smooth wrap.
-- Keep existing visual styling: navy background, top 2px gradient accent, bottom 3px gradient accent, mask fade on left/right edges, `data-testid="promo-ticker-track"` on the track for the existing E2E test.
-- Keep promo content identical:
-  - GoodBody — "5% off on all popular blood tests" — `#0bb77e`
-  - Medichecks — "20% off all tests with code APRIL20" — `#e70d68`
-  - Lola Health — "£20 off with code Mar20" — `#fa757e`
-- Keep typography (`font-heading font-bold`, white body text, pink bullet separator).
+| Section | Effect | Delay |
+|---|---|---|
+| `MissionSection` | Fade + rise | 0ms |
+| `JourneySimplified` | Fade + rise | 100ms |
+| `PartnersGrid` | Scale-in (subtle pop) | 0ms |
+| `StartJourneySection` | Fade + rise | 150ms |
+| Gradient divider | Slide-in from left (animated width) | 0ms |
+| `PartnerShowcaseGrid` | Fade + rise | 100ms |
+| `TestimonialCarousel` | Fade only (no translate — carousel already moves) | 0ms |
+| `ClinicAndHelpSection` | Fade + rise | 100ms |
+| `AccreditedProvidersBar` | Fade only | 0ms |
+| `CallToAction` | Scale-in (emphasis) | 0ms |
+| `TrustPlatformSection` | Fade + rise | 100ms |
+| `ExpertQuotes` | Fade + rise | 150ms |
 
-### 2. No other files change
-- `Header.tsx` already imports `PromoTicker` — no edits needed.
-- E2E test `e2e/homepage-tickers.spec.ts` continues to work (`data-testid="promo-ticker-track"` preserved, selector untouched).
-- Update unit test `src/components/sections/__tests__/PromoTicker.test.tsx` — the inline `animation:` style assertion will no longer hold; replace it with assertions that the track exists, has the testid, and that promo items are rendered multiple times (proving the SETS duplication).
+## Implementation details
+
+1. **Extend `ScrollFadeIn`** with an optional `variant` prop: `"rise" | "scale" | "fade"` so we can vary effects without creating multiple components. Default stays `"rise"` (current behaviour) — fully backward-compatible.
+2. **Edit `src/pages/Index.tsx`** to wrap each lazy section in `<ScrollFadeIn variant="..." delay={...}>`. Keep `Suspense` boundary intact.
+3. **Hero & TestCategoryTicker**: untouched — above-the-fold needs to render instantly; ticker already animates.
+4. **Gradient divider**: replace the static `<div>` with a small inline animated variant that scales horizontally on enter (`origin-left scale-x-0 → scale-x-100` over 800ms via the existing Tailwind transition utilities).
+5. **Performance**: `ScrollFadeIn` already uses `IntersectionObserver` and unobserves after first reveal — no perf impact on scroll.
+6. **Accessibility**: Animations are short (≤700ms) and translate distance is small (8px). No flashing. Safe for general use.
+
+## Files to edit
+- `src/components/common/ScrollFadeIn.tsx` — add `variant` prop (rise / scale / fade)
+- `src/pages/Index.tsx` — wrap sections + animate the gradient divider
 
 ## Out of scope
-- No changes to `TestCategoryTicker` (it works).
-- No tailwind config changes.
-- No header/layout changes.
+- Hero internal animations (already polished)
+- Tickers (already animated)
+- Header / Footer
+- Any other route
 
-## Risk
-Low. The category ticker has been running reliably in the same page; cloning its engine onto identical markup is a like-for-like swap.
+## Verification
+- Visual check in preview at desktop (1537×980) and a mobile viewport
+- Confirm sections fade in once on scroll and don't re-trigger
+- Confirm no layout shift / no console errors

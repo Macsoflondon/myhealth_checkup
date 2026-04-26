@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
@@ -165,20 +166,54 @@ const Index = () => {
 
         <TestCategoryTicker />
         <Suspense fallback={<SectionFallback />}>
-          <MissionSection />
-          <JourneySimplified />
-          <PartnersGrid />
-          <StartJourneySection />
+          <ScrollFadeIn variant="rise">
+            <MissionSection />
+          </ScrollFadeIn>
 
-          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+          <ScrollFadeIn variant="rise" delay={100}>
+            <JourneySimplified />
+          </ScrollFadeIn>
 
-          <PartnerShowcaseGrid />
-          <TestimonialCarousel />
-          <ClinicAndHelpSection />
-          <AccreditedProvidersBar />
-          <CallToAction />
-          <TrustPlatformSection />
-          <ExpertQuotes />
+          <ScrollFadeIn variant="scale">
+            <PartnersGrid />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="rise" delay={150}>
+            <StartJourneySection />
+          </ScrollFadeIn>
+
+          {/* Animated gradient divider — scales horizontally from the left on enter */}
+          <ScrollFadeIn variant="slide-left" className="origin-left">
+            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="rise" delay={100}>
+            <PartnerShowcaseGrid />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="fade">
+            <TestimonialCarousel />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="rise" delay={100}>
+            <ClinicAndHelpSection />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="fade">
+            <AccreditedProvidersBar />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="scale">
+            <CallToAction />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="rise" delay={100}>
+            <TrustPlatformSection />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="rise" delay={150}>
+            <ExpertQuotes />
+          </ScrollFadeIn>
         </Suspense>
       </MainLayout>
     </ErrorBoundary>
