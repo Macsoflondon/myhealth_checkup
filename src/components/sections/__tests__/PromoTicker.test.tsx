@@ -1,6 +1,18 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, beforeAll } from "vitest";
 import { render, cleanup, within } from "@testing-library/react";
 import PromoTicker from "../PromoTicker";
+
+// jsdom doesn't ship ResizeObserver
+beforeAll(() => {
+  if (typeof globalThis.ResizeObserver === "undefined") {
+    // @ts-expect-error - test shim
+    globalThis.ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
+  }
+});
 
 /**
  * Smoke test for the rAF-driven PromoTicker (cloned from TestCategoryTicker).
