@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
@@ -17,7 +17,6 @@ const PromoTracker = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
   const singleSetWidthRef = useRef(0);
-  const pausedRef = useRef(false);
 
   // Debug overlay is opt-in via ?debugTickers — never rendered in production UI.
   const debug = useMemo(
@@ -33,6 +32,18 @@ const PromoTracker = () => {
     []
   );
 
+  const measureSetWidth = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return 0;
+
+    let width = 0;
+    for (let i = 0; i < promos.length && i < track.children.length; i++) {
+      width += (track.children[i] as HTMLElement).getBoundingClientRect().width;
+    }
+
+    return width;
+  }, []);
+
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -41,30 +52,17 @@ const PromoTracker = () => {
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) return;
 
-    const measureSetWidth = () => {
-      let w = 0;
-      for (let i = 0; i < promos.length && i < track.children.length; i++) {
-        w += (track.children[i] as HTMLElement).getBoundingClientRect().width;
-      }
-      return w;
-    };
-
-    const applyMeasure = () => {
-      const w = measureSetWidth();
-      if (w > 0) {
-        const prev = singleSetWidthRef.current;
-        singleSetWidthRef.current = w;
-        // Rebase position when width changes so we never drift off-screen.
-        if (prev > 0 && Math.abs(positionRef.current) >= w) {
-          positionRef.current = positionRef.current % w;
-        }
+    const measure = () => {
+      const width = measureSetWidth();
+      if (width > 0) {
+        singleSetWidthRef.current = width;
       }
     };
 
-    applyMeasure();
-    document.fonts?.ready?.then(applyMeasure);
+    measure();
+    document.fonts?.ready?.then(measure);
 
-    const ro = new ResizeObserver(() => applyMeasure());
+    const ro = new ResizeObserver(measure);
     ro.observe(track);
 
     let animationId = 0;
@@ -76,15 +74,14 @@ const PromoTracker = () => {
       const delta = timestamp - lastTime;
       lastTime = timestamp;
 
-      if (document.hidden || pausedRef.current) {
+      if (document.hidden) {
         animationId = requestAnimationFrame(animate);
         return;
       }
 
       const setWidth = singleSetWidthRef.current;
-      // Don't move until we have a stable measurement — prevents off-screen drift.
       if (setWidth <= 0) {
-        applyMeasure();
+        measure();
         animationId = requestAnimationFrame(animate);
         return;
       }
@@ -106,24 +103,21 @@ const PromoTracker = () => {
 
     animationId = requestAnimationFrame(animate);
 
+    const onResize = () => measure();
     const onVisibility = () => {
       lastTime = 0;
     };
+
+    window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
     };
-  }, [debug]);
-
-  const pause = () => {
-    pausedRef.current = true;
-  };
-  const resume = () => {
-    pausedRef.current = false;
-  };
+  }, [debug, measureSetWidth]);
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
@@ -143,10 +137,7 @@ const PromoTracker = () => {
             maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
             WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
-          onMouseEnter={pause}
-          onMouseLeave={resume}
-          role="marquee"
-          aria-label="Promotional offers from health test providers. Hover to pause."
+          aria-label="Promotional offers from health test providers"
         >
           <div
             ref={trackRef}
