@@ -104,7 +104,7 @@ export function useMarqueeTicker(itemCount: number, speedPxPerMs = 0.04) {
       cancelAnimationFrame(animationId);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
-      io.disconnect();
+      io?.disconnect();
     };
   }, [measureSetWidth, speedPxPerMs]);
 
