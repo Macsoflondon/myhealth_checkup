@@ -14,9 +14,7 @@ import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
-import { SectionErrorBoundary } from "../common/SectionErrorBoundary";
-import PromoTracker from "../sections/PromoTracker";
-import PromoTrackerFallback from "../sections/PromoTrackerFallback";
+import PromoTicker from "../sections/PromoTicker";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
