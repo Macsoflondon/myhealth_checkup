@@ -68,11 +68,17 @@ const PromoTracker = () => {
         if (prev > 0 && Math.abs(positionRef.current) >= w) {
           positionRef.current = positionRef.current % w;
         }
+        // Mark ready once we have a valid measurement so the skeleton can fade.
+        setIsReady(true);
       }
     };
 
     applyMeasure();
     document.fonts?.ready?.then(applyMeasure);
+
+    // Failsafe: if measurement never returns >0 (e.g. hidden tab on first paint),
+    // hide the skeleton after a short timeout so users aren't left with a placeholder.
+    const readinessTimer = window.setTimeout(() => setIsReady(true), 1500);
 
     const ro = new ResizeObserver(() => applyMeasure());
     ro.observe(track);
