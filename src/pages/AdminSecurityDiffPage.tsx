@@ -101,7 +101,7 @@ export default function AdminSecurityDiffPage() {
       logger.error("Failed to load security snapshots", { message: dbErr.message });
       setError(dbErr.message);
     } else {
-      setSnapshots((data ?? []) as Snapshot[]);
+      setSnapshots((data ?? []) as unknown as Snapshot[]);
     }
     setLoading(false);
   }, []);
