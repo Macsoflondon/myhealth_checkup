@@ -22,6 +22,7 @@ const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
 const TrustPlatformSection = lazy(() => import("@/components/sections/TrustPlatformSection"));
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
+const TestHighlightsClinicFinder = lazy(() => import("@/components/sections/TestHighlightsClinicFinder"));
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
@@ -180,6 +181,10 @@ const Index = () => {
 
           <ScrollFadeIn variant="rise" delay={150}>
             <StartJourneySection />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="rise" delay={100}>
+            <TestHighlightsClinicFinder />
           </ScrollFadeIn>
 
           {/* Animated gradient divider — scales horizontally from the left on enter */}
