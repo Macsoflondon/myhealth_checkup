@@ -62,7 +62,7 @@ const Header = ({ className }: HeaderProps) => {
   if (isMobile) {
     return (
       <ErrorBoundary>
-        <div className={cn("sticky top-0 z-50", className)}>
+        <div className={cn("sticky top-0 z-50 bg-[hsl(var(--brand-navy))]", className)}>
           <PromoTicker />
           <header className="bg-[hsl(var(--brand-navy))] shadow-md">
             {/* Top gradient divider */}
