@@ -30,6 +30,7 @@ const JourneySimplified = () => {
           <SectionHeading
             title="Your Health Journey"
             gradientText="Simplified"
+            titleClassName="text-tertiary"
           />
           <p className="text-tertiary font-sans font-medium text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-snug mt-2">
             Finding the right health test shouldn't be complicated. We've made it simple in three easy steps.
