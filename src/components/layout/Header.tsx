@@ -67,7 +67,7 @@ const Header = ({ className }: HeaderProps) => {
           <header className="bg-[hsl(var(--brand-navy))] shadow-md">
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-            <div className="container mx-auto max-w-full px-3 sm:px-4">
+            <div className="container mx-auto max-w-full px-3 sm:px-4 bg-tertiary">
               <div className="py-4 flex items-start justify-between gap-6 sm:gap-8 min-w-0 bg-tertiary">
                 <Link to="/" className="flex min-w-0 flex-1 items-start overflow-hidden">
                   <img
