@@ -21,7 +21,7 @@ const StartJourneySection = () => {
         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8 w-full max-w-lg">
           <Link
             to="/assisted-test-finder"
-            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight"
+            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight pt-[18px]"
           >
             Find your test
           </Link>
@@ -33,7 +33,7 @@ const StartJourneySection = () => {
           </Link>
           <Link
             to="/compare/goals"
-            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight"
+            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight pt-[18px]"
           >
             Compare by goal
           </Link>
