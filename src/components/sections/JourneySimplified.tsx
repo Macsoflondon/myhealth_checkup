@@ -53,7 +53,7 @@ const JourneySimplified = () => {
                 <h3 className="text-base sm:text-lg font-heading font-semibold mb-1 text-brand-turquoise">
                   {step.title}
                 </h3>
-                <p className="text-foreground font-sans font-medium text-xs sm:text-sm leading-snug max-w-[260px] mx-auto">
+                <p className="text-tertiary font-sans font-medium text-xs sm:text-sm leading-snug max-w-[260px] mx-auto">
                   {step.description}
                 </p>
               </div>
