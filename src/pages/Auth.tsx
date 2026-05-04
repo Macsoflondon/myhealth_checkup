@@ -229,8 +229,8 @@ const Auth = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-          <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
+        <main className="flex-grow flex items-center justify-center py-12 px-4 bg-primary-foreground text-primary">
+          <div className="max-w-md w-full">
             <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
               Reset Password
             </h2>
@@ -290,8 +290,8 @@ const Auth = () => {
 
   return <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
+      <main className="flex-grow flex items-center justify-center py-12 px-4 bg-primary-foreground text-primary">
+        <div className="max-w-md w-full">
           <h2 className="text-2xl text-center mb-6 text-primary font-medium">
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
