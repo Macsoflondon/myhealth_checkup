@@ -46,7 +46,7 @@ interface RecommendationResult {
   }>;
 }
 
-export const RecommendationEngine = ({ 
+export const RecommendationEngine = React.memo(({ 
   tests,
   onRecommendationGenerated 
 }: RecommendationEngineProps) => {
