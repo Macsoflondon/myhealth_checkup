@@ -15,7 +15,7 @@ import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle, Lock } from "lucide-react";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
-import { AppleSignInButton } from "@/components/auth/AppleSignInButton";
+
 
 const Auth = () => {
   const {
@@ -397,7 +397,6 @@ const Auth = () => {
 
             <div className="flex flex-col gap-3">
               <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
-              <AppleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
             </div>
 
             <div className="text-center mt-4">
