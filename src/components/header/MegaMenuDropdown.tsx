@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, Search, X } from "lucide-react";
 import { getCategoryPinColor } from "@/data/categoryColors";
-import { GoodbodyTest } from "@/data/goodbodyTests";
+import type { GoodbodyTest } from "@/data/goodbodyTests";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 import { PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { formatBiomarkerCount } from "@/utils/formatBiomarkers";
