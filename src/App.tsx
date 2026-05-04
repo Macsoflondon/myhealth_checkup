@@ -28,26 +28,28 @@ const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <SessionSecurityProvider>
-        <HelmetProvider>
-          <TooltipProvider>
+      <AuthProvider>
+        <SessionSecurityProvider>
+          <HelmetProvider>
             <Helmet>
               <html lang="en" />
             </Helmet>
+            {/* Toasters intentionally kept outside TooltipProvider so toast
+                state changes don't trigger tooltip context re-renders. */}
             <Toaster />
             <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <GlobalHreflang />
-              <FloatingNavDock />
-              <AppRoutes />
-            </BrowserRouter>
-          </TooltipProvider>
-        </HelmetProvider>
-      </SessionSecurityProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+            <TooltipProvider>
+              <BrowserRouter>
+                <ScrollToTop />
+                <GlobalHreflang />
+                <FloatingNavDock />
+                <AppRoutes />
+              </BrowserRouter>
+            </TooltipProvider>
+          </HelmetProvider>
+        </SessionSecurityProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 
