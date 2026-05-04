@@ -491,4 +491,5 @@ export const RecommendationEngine = React.memo(({
       )}
     </div>
   );
-};
+});
+RecommendationEngine.displayName = "RecommendationEngine";
