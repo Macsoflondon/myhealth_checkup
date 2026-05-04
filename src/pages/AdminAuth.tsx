@@ -31,15 +31,42 @@ const AdminAuth = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // If already logged in, verify admin role and redirect
+  // If already logged in, check admin role passively.
+  // Do NOT sign the user out — they may simply be a regular user who landed here.
   useEffect(() => {
-    if (!authLoading && user) {
-      verifyAndRedirect(user.id);
-    }
+    if (authLoading || !user) return;
+    let cancelled = false;
+    (async () => {
+      setVerifyingRole(true);
+      try {
+        const { data: hasRole, error } = await supabase.rpc('has_role', {
+          _user_id: user.id,
+          _role: 'admin',
+        });
+        if (cancelled) return;
+        if (error) {
+          logger.error('Admin role check failed:', error);
+          setVerifyingRole(false);
+          return;
+        }
+        if (hasRole) {
+          navigate("/admin/test-dashboard");
+        } else {
+          // Regular user — silently send them home, keep their session intact.
+          navigate("/");
+        }
+      } catch (err) {
+        if (cancelled) return;
+        logger.error('Admin verification error:', err);
+        setVerifyingRole(false);
+      }
+    })();
+    return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading]);
 
-  const verifyAndRedirect = async (userId: string) => {
+  // Used only after a fresh credential submission in handleAdminLogin.
+  const verifyAfterLogin = async (userId: string) => {
     setVerifyingRole(true);
     try {
       const { data: hasRole, error } = await supabase.rpc('has_role', {
@@ -64,7 +91,7 @@ const AdminAuth = () => {
       }
 
       toast.success("Admin access verified!");
-      navigate("/dashboard");
+      navigate("/admin/test-dashboard");
     } catch (err) {
       logger.error('Admin verification error:', err);
       toast.error("Verification failed.");
@@ -112,7 +139,7 @@ const AdminAuth = () => {
 
       // Verify admin role server-side
       if (data.user) {
-        await verifyAndRedirect(data.user.id);
+        await verifyAfterLogin(data.user.id);
       }
     } catch (err) {
       toast.error("An unexpected error occurred.");

@@ -53,14 +53,22 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         }
       });
 
-      if (fnError) {
+      // The edge function returns 403 with a valid MFAVerificationResult body
+      // when an admin needs to set up or step-up MFA. Supabase surfaces non-2xx
+      // as fnError but still parses `data`. Treat a well-formed body as the
+      // authoritative status, even when fnError is present.
+      const looksLikeStatus =
+        data && typeof data === 'object' &&
+        'isAdmin' in data && 'hasMFA' in data && 'mfaVerified' in data;
+
+      if (looksLikeStatus) {
+        setMfaStatus(data as MFAVerificationResult);
+      } else if (fnError) {
         console.error('MFA verification error:', fnError);
         setError(fnError.message);
-        setIsLoading(false);
-        return;
+      } else {
+        setError('Unexpected response from MFA verification');
       }
-
-      setMfaStatus(data as MFAVerificationResult);
     } catch (err) {
       console.error('MFA check failed:', err);
       setError(err instanceof Error ? err.message : 'Failed to verify MFA status');

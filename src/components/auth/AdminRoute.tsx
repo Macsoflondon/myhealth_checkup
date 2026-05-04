@@ -29,9 +29,11 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
     const verifyAdminAccess = async () => {
       if (authLoading) return;
-      
+
       if (!user) {
         navigate("/auth");
         return;
@@ -43,6 +45,8 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
           _user_id: user.id,
           _role: requiredRole
         });
+
+        if (cancelled) return;
 
         if (error) {
           logger.error('Error verifying admin role:', error);
@@ -58,14 +62,16 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
 
         setIsAuthorized(true);
       } catch (error) {
+        if (cancelled) return;
         logger.error('Admin verification failed:', error);
         navigate("/");
       } finally {
-        setIsVerifying(false);
+        if (!cancelled) setIsVerifying(false);
       }
     };
 
     verifyAdminAccess();
+    return () => { cancelled = true; };
   }, [user, authLoading, navigate, requiredRole]);
 
   // Show loading state that doesn't reveal admin page structure
