@@ -96,7 +96,7 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow flex items-center justify-center py-12 px-4 bg-primary-foreground text-primary">
+        <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
           <div className="max-w-md w-full text-center">
             <p className="text-[#081129]">Verifying reset link...</p>
           </div>
@@ -109,7 +109,7 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow flex items-center justify-center py-12 px-4 bg-primary-foreground text-primary">
+      <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
         <div className="max-w-md w-full">
           <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
             Set New Password
