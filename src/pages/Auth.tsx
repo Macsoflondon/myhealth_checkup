@@ -399,7 +399,7 @@ const Auth = () => {
               <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
             </div>
 
-            <div className="text-center mt-4">
+            <div className="text-center mt-2">
               <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-[#081129] font-medium">
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
@@ -407,7 +407,7 @@ const Auth = () => {
 
             {/* Subtle admin access */}
             {!isSignUp && (
-              <div className="text-center mt-2 pt-2 border-t border-gray-100">
+              <div className="text-center mt-1 pt-1 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => navigate("/admin/login")}
