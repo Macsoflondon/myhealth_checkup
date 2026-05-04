@@ -386,7 +386,7 @@ const Auth = () => {
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
-            <div className="relative my-4">
+            <div className="relative my-4 hidden">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-muted" />
               </div>
@@ -395,7 +395,7 @@ const Auth = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="hidden flex-col gap-3">
               <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
             </div>
 
@@ -407,7 +407,7 @@ const Auth = () => {
 
             {/* Subtle admin access */}
             {!isSignUp && (
-              <div className="text-center mt-6 pt-4 border-t border-gray-100">
+              <div className="text-center mt-2 pt-2 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => navigate("/admin/login")}
