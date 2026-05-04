@@ -29,9 +29,11 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
   const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
     const verifyAdminAccess = async () => {
       if (authLoading) return;
-      
+
       if (!user) {
         navigate("/auth");
         return;
