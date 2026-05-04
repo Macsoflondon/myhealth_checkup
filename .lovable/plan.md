@@ -1,119 +1,62 @@
-# Encryption Status Admin Page
+## What's actually broken
 
-## What you'll get
+I checked the database, the auth logs, and every role-check site in the codebase. Three real bugs, ranked by impact:
 
-A new one-click admin page at **`/admin/encryption-status`** that, on load, tells you exactly:
+### Bug 1 — `/admin/login` silently signs out any non-admin who visits the page (highest impact)
 
-1. **What encrypted PII exists** in the database right now (per column, per table).
-2. **Which encryption secret** the edge function is currently using (`ENCRYPTION_KEY` vs legacy `VITE_ENCRYPTION_KEY`).
-3. **Whether a key rotation is safe** — i.e. whether you'd lose data by changing keys.
-4. A **live decryption test** — pick a sample encrypted row and confirm the current key still decrypts it.
+`src/pages/AdminAuth.tsx` runs `verifyAndRedirect` inside a `useEffect` that fires whenever a `user` session exists — not only after a fresh admin sign-in attempt. If you (or any normal user) are already logged in and navigate to `/admin/login`, the effect:
 
-Gated behind `AdminRoute` (server-verified `has_role('admin')`), same pattern as your other admin pages.
+1. Calls `has_role(user.id, 'admin')`.
+2. Sees `false`.
+3. Calls `supabase.auth.signOut()` and shows "Access denied".
 
----
+The auth logs confirm this happened to `n_boy84@yahoo.com.au` (a `user`-role account): a `/logout` immediately after their `/token` login, followed by failed re-login attempts. That is the loop / "signs me out" symptom.
 
-## Pre-confirmed findings (from my investigation)
+### Bug 2 — Admins are redirected to the wrong page after login
 
-I already ran the audit queries against your live database while planning. Current state:
+On successful admin verification, `AdminAuth` navigates to `/dashboard`, which is the regular user dashboard (`pages/Dashboard.tsx`), not an admin surface. There is no admin landing page wired up — admins have to know the `/admin/*` URLs by hand.
 
-| Table.Column | Total rows | Encrypted (`enc:`) | Plaintext | Empty/null |
-|---|---|---|---|---|
-| `user_profiles` total | **2** | — | — | — |
-| `user_profiles.phone_number` | 2 | **0** | 0 | 2 |
-| `user_profiles.address_line1` | 2 | **0** | 0 | 2 |
-| `user_profiles.address_line2` | 2 | **0** | 0 | 2 |
-| `user_profiles.postal_code` | 2 | **0** | 0 | 2 |
-| `user_profiles.emergency_contact_name` | 2 | **0** | 0 | 2 |
-| `user_profiles.emergency_contact_phone` | 2 | **0** | 0 | 2 |
-| `user_profiles.date_of_birth` | 2 | n/a (date column, can't store `enc:`) | — | 2 |
+### Bug 3 — `useAdminMFA` swallows the 403 response from `verify-admin-mfa`
 
-**Bottom line: there is zero encrypted PII in your database today.** You can safely rotate the encryption key to a freshly generated random value with no data loss. The page will display this verdict prominently.
+`supabase.functions.invoke` treats non-2xx (e.g. the 403 the edge function returns when an admin has no MFA or hasn't stepped up) as `fnError` and discards the JSON body. `useAdminMFA` then sets `error` and never populates `mfaStatus`, so `needsMFASetup` / `needsMFAVerification` stay `false` — meaning any UI that relies on those flags can hang or loop.
 
-Secrets currently configured (from `fetch_secrets`):
-- ✅ `VITE_ENCRYPTION_KEY` — legacy, leaks to client bundle if ever read by Vite
-- ❌ `ENCRYPTION_KEY` — **not yet set** (this is the one the edge function now reads after the recent refactor)
+### Also worth knowing (not bugs, but confirmed)
 
-⚠️ **Important consequence**: until you add `ENCRYPTION_KEY`, the `encrypt-sensitive-data` edge function will throw on every call because it no longer falls back to the `VITE_` variant. The status page will surface this as a hard error.
+- DB roles look correct: `support@myhealthcheckup.co.uk` has both `admin` and `user`; `n_boy84@yahoo.com.au` has `user`. The `handle_new_user_profile` trigger correctly grants `user` on signup.
+- `has_role` SECURITY DEFINER function is correct and is what every server-side check uses (`AdminRoute`, `verify-admin-mfa`, `bulk-add-clinics`, `encryption-status`, `scrape-all-clinics`, `ai-test-mapper`, `indexnow-submit`). No table-driven role checks leak into RLS recursion.
+- `useUserRole` is UI-only and is not used for authorisation — fine.
 
 ---
 
-## Implementation
+## Fix plan
 
-### 1. New edge function: `supabase/functions/encryption-status/index.ts`
+### 1. `src/pages/AdminAuth.tsx`
+- Split the "already signed-in" path from the "just submitted credentials" path.
+  - On mount, if a session exists, call `has_role`. If admin → redirect to admin landing. If not admin → **just `navigate('/')`**, do **not** sign them out and do **not** show "Access denied".
+  - Only call `signOut()` inside `handleAdminLogin` when the user-supplied admin credentials authenticate but the resulting account isn't an admin.
+- Change the post-login redirect target from `/dashboard` to an admin landing route (proposal: `/admin/test-dashboard`, since that already exists and is the most general admin surface; open to a different choice — see Question below).
 
-Read-only diagnostic endpoint. Uses service role internally; verifies caller is admin via `has_role` RPC before returning anything.
+### 2. `src/hooks/useAdminMFA.ts`
+- Stop relying on `fnError` to mean "fatal". When `fnError` is present, also try to read `data` (Supabase puts the parsed body there on 4xx for `functions.invoke`); if `data` has the `MFAVerificationResult` shape, treat it as the status, not as an error.
+- If `data` is genuinely missing, set a clear `error` so dependent UI can render a retry instead of looping.
 
-Returns JSON:
-```ts
-{
-  secrets: {
-    encryption_key_present: boolean,      // ENCRYPTION_KEY
-    legacy_vite_key_present: boolean,     // VITE_ENCRYPTION_KEY
-    keys_match: boolean | null,           // SHA-256 fingerprint comparison (never returns the key itself)
-    active_key_fingerprint: string | null // first 8 hex chars of SHA-256, for visual diff only
-  },
-  pii_audit: Array<{
-    table: string,
-    column: string,
-    total_rows: number,
-    encrypted_rows: number,
-    plaintext_rows: number,
-    null_rows: number
-  }>,
-  decryption_probe: {
-    attempted: boolean,
-    sample_table: string | null,
-    sample_column: string | null,
-    success: boolean,
-    error: string | null   // generic — never echoes ciphertext
-  },
-  rotation_safety: 'safe' | 'data_at_risk' | 'edge_function_broken',
-  generated_at: string
-}
-```
+### 3. `src/components/auth/AdminRoute.tsx` (small hardening)
+- Keep current behaviour but explicitly handle the "session expired mid-verify" case: if `user` becomes `null` while `isVerifying`, abort instead of falling through.
 
-Audited columns (matches the function's `SENSITIVE_USER_PROFILE_FIELDS`):
-- `user_profiles`: `phone_number`, `address_line1`, `address_line2`, `postal_code`, `emergency_contact_name`, `emergency_contact_phone`
+### 4. Quick edge-function audit (read-only verification, no code changes expected)
+- Confirm all seven server-side `has_role`/`user_roles` call sites use the requesting user's JWT (not the service role's `auth.uid()`, which would always be `null`). I've already grepped them; will spot-check `run-all-scrapers` and `check-leaked-password-protection` since they query `user_roles` directly rather than via the RPC.
 
-(`nhs_number`, `health_conditions`, `allergies`, `medications` are listed in the encryption function's sensitive-fields array but **don't exist as columns** — the page will note this as informational, not an error.)
-
-The decryption probe picks the first row where any sensitive column starts with `enc:`, attempts decryption, and reports success/failure. Skipped (with clear messaging) if no encrypted rows exist.
-
-**Safety**: function never returns plaintext PII, never returns ciphertext, never returns the key. Only counts and a SHA-256 fingerprint prefix.
-
-### 2. New admin page: `src/pages/AdminEncryptionStatusPage.tsx`
-
-- Uses existing layout / glassmorphism (navy + pearl) per visual identity standard.
-- Sections:
-  - **Secret status card** — green/amber/red badges for `ENCRYPTION_KEY`, `VITE_ENCRYPTION_KEY` (legacy warning), key fingerprint, match indicator.
-  - **PII audit table** — one row per audited column with encrypted/plaintext/null counts.
-  - **Decryption probe result** — pass/fail with explanation.
-  - **Rotation verdict banner** — `Safe to rotate` / `Data at risk` / `Edge function broken` with a one-paragraph explanation of why.
-  - **Refresh** button (re-invokes the edge function).
-- All numbers and verdicts come from the edge function, not from client-side queries.
-
-### 3. Route registration: `src/routes/index.tsx`
-
-Add lazy import + `wrapAdmin(AdminEncryptionStatusPage)` route at `/admin/encryption-status`.
-
-### 4. Admin nav entry (optional)
-
-If you have an admin index/menu, add a link. If not, you'll just visit the URL directly (matches how your other `/admin/*` pages work).
+### 5. Optional clean-up (only if you want)
+- De-duplicate `support@myhealthcheckup.co.uk`'s `user` row in `user_roles` so admins have exactly one role row. Harmless either way.
 
 ---
 
-## Out of scope (deliberate)
+## One decision needed from you
 
-- No key rotation logic — this page only **diagnoses**. Rotation remains a manual secret swap so you stay in control.
-- No bulk re-encryption tool — pointless until there's actual encrypted data.
-- No edits to `user_profiles` schema or RLS.
-- No changes to the existing `encrypt-sensitive-data` function.
+**Where should a verified admin land after `/admin/login`?** Options:
+1. `/admin/test-dashboard` (recommended — already exists, most general)
+2. `/admin/scrapers`
+3. A new `/admin` index page that lists every admin tool
+4. Keep `/dashboard` (not recommended — it's the user dashboard)
 
-## Files touched
-
-- `supabase/functions/encryption-status/index.ts` *(new)*
-- `src/pages/AdminEncryptionStatusPage.tsx` *(new)*
-- `src/routes/index.tsx` *(add lazy route, ~3 lines)*
-
-Approve and I'll build it.
+Tell me which and I'll implement the three fixes above in one pass.
