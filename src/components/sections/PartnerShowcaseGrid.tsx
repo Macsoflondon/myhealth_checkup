@@ -58,14 +58,16 @@ const PartnerShowcaseGrid = () => {
                 />
               </div>
 
-              {/* Video */}
+              {/* Video — deferred load to keep initial paint fast */}
               <div className="relative rounded-xl w-full max-w-2xl">
                 <video
                   src="/videos/medichecks-promo.mp4"
+                  poster="/lovable-uploads/provider-medichecks-new-v3.png"
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="none"
                   className="w-full object-contain rounded-xl max-h-[400px]"
                 />
               </div>

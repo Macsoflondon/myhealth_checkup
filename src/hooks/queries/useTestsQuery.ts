@@ -42,7 +42,7 @@ export function useTestsByCategoryQuery(category: string, options?: { enabled?: 
       return data || [];
     },
     enabled: options?.enabled !== false && !!category,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 15 * 60 * 1000, // 15 minutes — catalogue rarely changes
   });
 }
 
@@ -58,7 +58,7 @@ export function useSearchTestsQuery(query: string, options?: { enabled?: boolean
       return data || [];
     },
     enabled: options?.enabled !== false && query.length >= 2,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes — search results
   });
 }
 
@@ -74,6 +74,6 @@ export function usePopularTestsQuery(limit: number = 10, options?: { enabled?: b
       return data || [];
     },
     enabled: options?.enabled !== false,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 15 * 60 * 1000, // 15 minutes — popular tests rarely shift
   });
 }

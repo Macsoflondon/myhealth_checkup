@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,10 @@ import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
 import { MobileMenu } from "../header/MobileMenu";
-import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
+// MobileNavigationDrawer is heavy (~640 lines) — lazy-load so it doesn't bloat the initial header chunk.
+const MobileNavigationDrawer = lazy(() =>
+  import("../header/MobileNavigationDrawer").then(m => ({ default: m.MobileNavigationDrawer }))
+);
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
@@ -87,8 +90,12 @@ const Header = ({ className }: HeaderProps) => {
             {/* Bottom gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-            {/* Mobile Navigation Drawer */}
-            <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+            {/* Mobile Navigation Drawer (lazy — only loads when first opened) */}
+            {isMenuOpen && (
+              <Suspense fallback={null}>
+                <MobileNavigationDrawer isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+              </Suspense>
+            )}
           </header>
         </div>
       </ErrorBoundary>

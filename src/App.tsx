@@ -16,8 +16,8 @@ import { SessionSecurityProvider } from "./components/security/SessionSecurityPr
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      staleTime: 10 * 60 * 1000, // 10 minutes — catalogue-heavy app, data rarely changes
+      gcTime: 30 * 60 * 1000, // 30 minutes
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -28,26 +28,28 @@ const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <SessionSecurityProvider>
-        <HelmetProvider>
-          <TooltipProvider>
+      <AuthProvider>
+        <SessionSecurityProvider>
+          <HelmetProvider>
             <Helmet>
               <html lang="en" />
             </Helmet>
+            {/* Toasters intentionally kept outside TooltipProvider so toast
+                state changes don't trigger tooltip context re-renders. */}
             <Toaster />
             <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <GlobalHreflang />
-              <FloatingNavDock />
-              <AppRoutes />
-            </BrowserRouter>
-          </TooltipProvider>
-        </HelmetProvider>
-      </SessionSecurityProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+            <TooltipProvider>
+              <BrowserRouter>
+                <ScrollToTop />
+                <GlobalHreflang />
+                <FloatingNavDock />
+                <AppRoutes />
+              </BrowserRouter>
+            </TooltipProvider>
+          </HelmetProvider>
+        </SessionSecurityProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 

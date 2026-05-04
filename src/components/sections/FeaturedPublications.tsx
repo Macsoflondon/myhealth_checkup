@@ -9,7 +9,7 @@ export const FeaturedPublications = () => {
     { name: "The Guardian", url: "https://www.theguardian.com", logo: "/images/logos/the-guardian.png" },
     { name: "Cosmopolitan", url: "https://www.cosmopolitan.com", logo: "/images/logos/cosmopolitan.png" },
     { name: "TechCrunch", url: "https://www.techcrunch.com", logo: "/images/logos/techcrunch.png" },
-    { name: "The Mirror", url: "https://www.mirror.co.uk", logo: "/images/logos/mirror.png" },
+    { name: "The Mirror", url: "https://www.mirror.co.uk", logo: "/images/logos/mirror.webp" },
     { name: "Metro", url: "https://metro.co.uk", logo: "/images/logos/metro.png" },
     { name: "Daily Mail", url: "https://www.dailymail.co.uk", logo: "/images/logos/daily-mail.png" },
     { name: "Daily Express", url: "https://www.express.co.uk", logo: "/images/logos/daily-express.png" },
