@@ -139,7 +139,7 @@ const AdminAuth = () => {
 
       // Verify admin role server-side
       if (data.user) {
-        await verifyAndRedirect(data.user.id);
+        await verifyAfterLogin(data.user.id);
       }
     } catch (err) {
       toast.error("An unexpected error occurred.");
