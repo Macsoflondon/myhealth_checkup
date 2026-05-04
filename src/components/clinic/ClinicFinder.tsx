@@ -130,20 +130,53 @@ const ClinicFinder = () => {
     loadClinics();
   }, []);
 
-  // Apply filters when clinics, radius, or provider changes
-  useEffect(() => {
-    applyFilters();
+  // Derive filtered clinics — memoised so we don't re-run on unrelated re-renders
+  // and don't pay an extra render cycle from a useEffect → setState pair.
+  const memoFilteredClinics = useMemo(() => {
+    if (clinics.length === 0) return [];
+
+    let filtered: Clinic[];
+    if (userLocation) {
+      filtered = clinics.map(clinic => ({
+        ...clinic,
+        distance: calculateDistance(
+          userLocation[0],
+          userLocation[1],
+          clinic.latitude,
+          clinic.longitude
+        )
+      }));
+
+      if (radiusFilter !== "all") {
+        const maxDistance = parseInt(radiusFilter);
+        filtered = filtered.filter(c => (c.distance || 999) <= maxDistance);
+      }
+      filtered.sort((a, b) => (a.distance || 999) - (b.distance || 999));
+    } else {
+      filtered = [...clinics].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    if (providerFilter !== "all") {
+      const needle = providerFilter.toLowerCase();
+      filtered = filtered.filter(c => c.provider_id?.toLowerCase().includes(needle));
+    }
+
+    return filtered;
   }, [clinics, radiusFilter, providerFilter, userLocation]);
+
+  // Keep the existing setFilteredClinics state in sync for downstream code
+  // that still reads filteredClinics directly. Cheap because memo skips no-ops.
+  useEffect(() => {
+    setFilteredClinics(memoFilteredClinics);
+  }, [memoFilteredClinics]);
 
   const loadClinics = async () => {
     setLoading(true);
     try {
-      // Load from local JSON as primary source (complete dataset)
       const response = await fetch("/clinics_master.json");
       if (!response.ok) throw new Error("Failed to load clinics data");
       const jsonClinics = await response.json();
 
-      // Normalize and filter out entries without coordinates
       const normalizedClinics: Clinic[] = jsonClinics
         .filter((c: any) => c.latitude && c.longitude)
         .map((clinic: any, index: number) => ({
@@ -168,44 +201,6 @@ const ClinicFinder = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const applyFilters = () => {
-    let filtered = [...clinics];
-
-    // Calculate distances if user location is set
-    if (userLocation) {
-      filtered = filtered.map(clinic => ({
-        ...clinic,
-        distance: calculateDistance(
-          userLocation[0],
-          userLocation[1],
-          clinic.latitude,
-          clinic.longitude
-        )
-      }));
-
-      // Filter by radius
-      if (radiusFilter !== "all") {
-        const maxDistance = parseInt(radiusFilter);
-        filtered = filtered.filter(clinic => (clinic.distance || 999) <= maxDistance);
-      }
-
-      // Sort by distance
-      filtered.sort((a, b) => (a.distance || 999) - (b.distance || 999));
-    } else {
-      // Sort alphabetically if no user location
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    // Filter by provider
-    if (providerFilter !== "all") {
-      filtered = filtered.filter(clinic => 
-        clinic.provider_id?.toLowerCase().includes(providerFilter.toLowerCase())
-      );
-    }
-
-    setFilteredClinics(filtered);
   };
 
   const geocodePostcode = async (pc: string): Promise<{ lat: number; lon: number }> => {
