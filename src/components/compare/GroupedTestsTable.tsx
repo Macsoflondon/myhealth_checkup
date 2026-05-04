@@ -509,4 +509,6 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
   );
 };
 
-export default GroupedTestsTable;
+// Memoise the whole table — large grid that re-renders unnecessarily when
+// parent re-renders with the same props (filter chips, scroll state, etc).
+export default React.memo(GroupedTestsTable);
