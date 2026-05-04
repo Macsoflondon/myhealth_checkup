@@ -160,7 +160,7 @@ const CANCER_SCREENING_TESTS: GalleryImage[] = [
   galleryItem({ src: "/images/tests/bowel-cancer-stool-test.webp", alt: "Bowel Cancer Stool Test", code: "Bowel Cancer Stool Test", objectFit: "contain" }),
 ];
 
-const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.png";
+const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
 const GoodbodyTestGallery = () => {
   const [activeTab, setActiveTab] = useState<Tab>("General Health");
