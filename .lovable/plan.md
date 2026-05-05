@@ -1,62 +1,34 @@
-## What's actually broken
+## Goal
 
-I checked the database, the auth logs, and every role-check site in the codebase. Three real bugs, ranked by impact:
+1. Make the Hero background images visibly taller so the turquoise→pink→turquoise tricolour border (which sits at the bottom of the `TestCategoryTicker` directly below the Hero) reads as flush against the bottom of the viewport on a typical desktop page load.
+2. Diagnose and fix the bottom **Testimonials carousel** ("What Our Users Say"), which is currently not animating reliably.
 
-### Bug 1 — `/admin/login` silently signs out any non-admin who visits the page (highest impact)
-
-`src/pages/AdminAuth.tsx` runs `verifyAndRedirect` inside a `useEffect` that fires whenever a `user` session exists — not only after a fresh admin sign-in attempt. If you (or any normal user) are already logged in and navigate to `/admin/login`, the effect:
-
-1. Calls `has_role(user.id, 'admin')`.
-2. Sees `false`.
-3. Calls `supabase.auth.signOut()` and shows "Access denied".
-
-The auth logs confirm this happened to `n_boy84@yahoo.com.au` (a `user`-role account): a `/logout` immediately after their `/token` login, followed by failed re-login attempts. That is the loop / "signs me out" symptom.
-
-### Bug 2 — Admins are redirected to the wrong page after login
-
-On successful admin verification, `AdminAuth` navigates to `/dashboard`, which is the regular user dashboard (`pages/Dashboard.tsx`), not an admin surface. There is no admin landing page wired up — admins have to know the `/admin/*` URLs by hand.
-
-### Bug 3 — `useAdminMFA` swallows the 403 response from `verify-admin-mfa`
-
-`supabase.functions.invoke` treats non-2xx (e.g. the 403 the edge function returns when an admin has no MFA or hasn't stepped up) as `fnError` and discards the JSON body. `useAdminMFA` then sets `error` and never populates `mfaStatus`, so `needsMFASetup` / `needsMFAVerification` stay `false` — meaning any UI that relies on those flags can hang or loop.
-
-### Also worth knowing (not bugs, but confirmed)
-
-- DB roles look correct: `support@myhealthcheckup.co.uk` has both `admin` and `user`; `n_boy84@yahoo.com.au` has `user`. The `handle_new_user_profile` trigger correctly grants `user` on signup.
-- `has_role` SECURITY DEFINER function is correct and is what every server-side check uses (`AdminRoute`, `verify-admin-mfa`, `bulk-add-clinics`, `encryption-status`, `scrape-all-clinics`, `ai-test-mapper`, `indexnow-submit`). No table-driven role checks leak into RLS recursion.
-- `useUserRole` is UI-only and is not used for authorisation — fine.
+Scope is limited to two files. No other sections, copy, colours, or behaviours change.
 
 ---
 
-## Fix plan
+## 1. Hero — increase vertical height
 
-### 1. `src/pages/AdminAuth.tsx`
-- Split the "already signed-in" path from the "just submitted credentials" path.
-  - On mount, if a session exists, call `has_role`. If admin → redirect to admin landing. If not admin → **just `navigate('/')`**, do **not** sign them out and do **not** show "Access denied".
-  - Only call `signOut()` inside `handleAdminLogin` when the user-supplied admin credentials authenticate but the resulting account isn't an admin.
-- Change the post-login redirect target from `/dashboard` to an admin landing route (proposal: `/admin/test-dashboard`, since that already exists and is the most general admin surface; open to a different choice — see Question below).
+**File:** `src/components/sections/Hero.tsx` (lines 112 and 122)
 
-### 2. `src/hooks/useAdminMFA.ts`
-- Stop relying on `fnError` to mean "fatal". When `fnError` is present, also try to read `data` (Supabase puts the parsed body there on 4xx for `functions.invoke`); if `data` has the `MFAVerificationResult` shape, treat it as the status, not as an error.
-- If `data` is genuinely missing, set a clear `error` so dependent UI can render a retry instead of looping.
+The hero's height is driven by its inner padding plus the headline block's `min-h`. Today:
 
-### 3. `src/components/auth/AdminRoute.tsx` (small hardening)
-- Keep current behaviour but explicitly handle the "session expired mid-verify" case: if `user` becomes `null` while `isVerifying`, abort instead of falling through.
+- Outer padding: `pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28`
+- Headline min-height: `min-h-[90px] sm:min-h-[120px] md:min-h-[140px]`
 
-### 4. Quick edge-function audit (read-only verification, no code changes expected)
-- Confirm all seven server-side `has_role`/`user_roles` call sites use the requesting user's JWT (not the service role's `auth.uid()`, which would always be `null`). I've already grepped them; will spot-check `run-all-scrapers` and `check-leaked-password-protection` since they query `user_roles` directly rather than via the RPC.
+Add roughly 3–4 text-lines of vertical room (≈ 120–160px on desktop) by bumping both:
 
-### 5. Optional clean-up (only if you want)
-- De-duplicate `support@myhealthcheckup.co.uk`'s `user` row in `user_roles` so admins have exactly one role row. Harmless either way.
+- Padding → `pt-16 pb-28 sm:pt-24 sm:pb-36 md:pt-32 md:pb-44 lg:pt-36 lg:pb-52`
+- Headline min-height → `min-h-[140px] sm:min-h-[180px] md:min-h-[220px] lg:min-h-[260px]`
 
----
+This stretches the absolutely-positioned background images (which are `inset-0 w-full h-full object-cover`) along with the section, so the imagery fills the screen down to where the tricolour line of the ticker beneath it sits — appearing flush with the fold on a standard 1080p / 1161-px viewport. Mobile values are kept modest to avoid pushing the search bar off-screen on small devices.
 
-## One decision needed from you
+No changes to image sources, `objectPosition`, slide rotation logic, search bar, CTAs, or trust-signals strip.
 
-**Where should a verified admin land after `/admin/login`?** Options:
-1. `/admin/test-dashboard` (recommended — already exists, most general)
-2. `/admin/scrapers`
-3. A new `/admin` index page that lists every admin tool
-4. Keep `/dashboard` (not recommended — it's the user dashboard)
+## Files to be modified
 
-Tell me which and I'll implement the three fixes above in one pass.
+- `src/components/sections/Hero.tsx` — padding + headline min-height tweaks only.
+
+## Risks
+
+- Taller hero pushes the trust-signals strip slightly further down; acceptable, that strip stays directly under the ticker. If on smaller laptops (≈ 800px tall) the search bar feels cramped, we can dial the `lg:` padding back — easy to iterate.
