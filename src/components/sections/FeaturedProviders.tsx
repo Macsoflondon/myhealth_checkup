@@ -1,13 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin } from "lucide-react";
+import { Star, MapPin, ArrowRight, ExternalLink } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "react-router-dom";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getBranding } from "@/data/providerBranding";
+import { getProviderRoute } from "@/utils/providerRoutes";
+import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 
 const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
@@ -163,23 +165,31 @@ const FeaturedProviders = () => {
                     ))}
                   </div>
 
-                  <div className="flex flex-row gap-2">
-                    <Button 
-                      variant="default" 
-                      size="sm" 
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      variant="default"
+                      size="sm"
                       className="flex-1 text-white"
-                      style={brand ? {
-                        backgroundColor: brand.primary,
-                      } : undefined}
+                      style={brand ? { backgroundColor: brand.primary } : undefined}
                       asChild
                     >
                       <Link to={`/provider/${provider.id.toLowerCase()}`}>
                         View Profile
                       </Link>
                     </Button>
+                    <Button variant="secondary" size="sm" className="flex-1" asChild>
+                      <Link to={getProviderRoute(provider.id)}>
+                        Browse Tests
+                        <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                      </Link>
+                    </Button>
                     <Button variant="outline" size="sm" className="flex-1" asChild>
-                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
-                        Visit Website
+                      <a
+                        href={buildProviderWebsiteUrl(`https://${provider.website}`, provider.id)}
+                        {...externalLinkProps}
+                      >
+                        Visit Site
+                        <ExternalLink className="w-3.5 h-3.5 ml-1" />
                       </a>
                     </Button>
                   </div>

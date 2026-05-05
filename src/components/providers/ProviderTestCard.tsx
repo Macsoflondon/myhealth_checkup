@@ -1,5 +1,7 @@
-import { Clock, TestTube2, Star } from "lucide-react";
+import { Clock, TestTube2, Star, ExternalLink, ArrowRight } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
+import { Button } from "@/components/ui/button";
+import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 
 export interface ProviderTestCardData {
   id: string;
@@ -161,7 +163,7 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
         {/* Category badge */}
         {test.category && (
           <span
-            className="self-start inline-block px-2.5 py-1 rounded-md text-xs font-medium"
+            className="self-start inline-block px-2.5 py-1 rounded-md text-xs font-medium mb-4"
             style={{
               backgroundColor: `${brandColor}10`,
               color: brandColor,
@@ -170,6 +172,42 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
             {test.category}
           </span>
         )}
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-2 mt-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            style={{ borderColor: `${brandColor}55`, color: brandColor }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+            aria-label={`View details for ${test.test_name}`}
+          >
+            View Details
+            <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          </Button>
+          {test.url && (
+            <Button
+              size="sm"
+              className="flex-1 text-white"
+              style={{ backgroundColor: brandColor }}
+              asChild
+              onClick={(e) => e.stopPropagation()}
+            >
+              <a
+                href={buildProviderBookingUrl(test.url, test.provider_id, test.test_name)}
+                {...externalLinkProps}
+                aria-label={`Book ${test.test_name} with ${providerName}`}
+              >
+                Book Now
+                <ExternalLink className="w-3.5 h-3.5 ml-1" />
+              </a>
+            </Button>
+          )}
+        </div>
       </div>
     </article>
   );
