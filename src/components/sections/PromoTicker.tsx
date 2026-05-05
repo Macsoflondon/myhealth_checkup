@@ -20,7 +20,7 @@ const PromoTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
-      <div className="h-[2px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
       <div className="pt-4 pb-2 sm:pt-5 sm:pb-2.5">
         <div
