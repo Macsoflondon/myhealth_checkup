@@ -29,6 +29,8 @@ const heroSlides: Array<{
   subline: string;
   objectPosition: string;
   mobileObjectPosition?: string;
+  /** Optional CSS transform (mobile only) — e.g. "scale(1.15)" to tighten the crop */
+  mobileScale?: string;
   theme: SlideTheme;
 }> = [
   {
@@ -36,7 +38,9 @@ const heroSlides: Array<{
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
     objectPosition: "30% 35%",
-    mobileObjectPosition: "30% 30%",
+    // Pull subject up + slightly right on mobile, scale in to avoid empty edges
+    mobileObjectPosition: "35% 28%",
+    mobileScale: "scale(1.15)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/45 to-[#081129]/70",
       surface: 65,
@@ -48,6 +52,9 @@ const heroSlides: Array<{
     headline: "Clinics Nationwide",
     subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 58%",
+    // Centre the clinician's torso on portrait
+    mobileObjectPosition: "55% 45%",
+    mobileScale: "scale(1.1)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/65 via-[#081129]/40 to-[#081129]/70",
       surface: 55,
@@ -59,7 +66,9 @@ const heroSlides: Array<{
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 68%",
-    mobileObjectPosition: "25% center",
+    // Keep the kit visible on a narrow viewport
+    mobileObjectPosition: "30% 60%",
+    mobileScale: "scale(1.2)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/80 via-[#081129]/55 to-[#081129]/80",
       surface: 70,
@@ -71,6 +80,9 @@ const heroSlides: Array<{
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
     objectPosition: "center 15%",
+    // Lower focal point on mobile so the figure isn't cropped at the head
+    mobileObjectPosition: "center 25%",
+    mobileScale: "scale(1.1)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/50 to-[#081129]/80",
       surface: 65,
@@ -82,7 +94,8 @@ const heroSlides: Array<{
     headline: "Compare. Book. Test.",
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
     objectPosition: "center 42%",
-    mobileObjectPosition: "58% center",
+    mobileObjectPosition: "62% 45%",
+    mobileScale: "scale(1.15)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/70 via-[#081129]/45 to-[#081129]/75",
       surface: 60,
@@ -163,7 +176,11 @@ const Hero = () => {
             width={1920}
             height={1080}
             fetchPriority={i === 0 ? "high" : "low"}
-            style={{ objectPosition: isMobile && (s as any).mobileObjectPosition ? (s as any).mobileObjectPosition : s.objectPosition }}
+            style={{
+              objectPosition: isMobile && s.mobileObjectPosition ? s.mobileObjectPosition : s.objectPosition,
+              transform: isMobile && s.mobileScale ? s.mobileScale : undefined,
+              transformOrigin: "center center",
+            }}
             className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}
