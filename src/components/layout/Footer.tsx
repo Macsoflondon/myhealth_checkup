@@ -222,6 +222,10 @@ const ConnectColumn = () => (
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
         <img src={cyberEssentialsLogo} alt="Cyber Essentials" className="w-full h-full object-contain" />
       </div>
+      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white flex items-center justify-center p-1.5">
+        <img src={cqcLogo} alt="Care Quality Commission regulated" className="w-full h-full object-contain" />
+      </div>
+    </div>
     </div>
   </div>
 );
