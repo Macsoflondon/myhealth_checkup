@@ -19,7 +19,7 @@ const heroSlides = [
   },
   {
     image: heroClinic,
-    headline: "250+ Clinic Locations Nationwide",
+    headline: "Clinics Nationwide",
     subline: "Choose a clinic, get tested, and take the guesswork out of your health.",
     objectPosition: "center 58%",
   },
