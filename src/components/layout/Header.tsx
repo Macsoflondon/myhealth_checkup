@@ -122,7 +122,7 @@ const Header = ({ className }: HeaderProps) => {
               <div className="flex-1" />
 
               {/* Center: Logo + Tagline side by side */}
-              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-6 transition-all duration-200 hover:scale-105">
+              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-6 transition-all duration-200 hover:scale-105 pt-[20px]">
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
