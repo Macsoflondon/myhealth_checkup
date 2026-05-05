@@ -110,18 +110,18 @@ const BookingButton = ({
 
   return (
     <div className="space-y-3">
-      <Button 
-        size="lg" 
-        className="w-full" 
+      <Button
+        size="lg"
+        className="w-full"
         asChild
       >
-        <a 
-          href={testUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
+        <a
+          href={buildProviderBookingUrl(testUrl, providerConfig.id)}
+          {...externalLinkProps}
           className="flex items-center justify-center"
         >
           {providerConfig.ctaButtonText}
+          <ExternalLink className="w-4 h-4 ml-2" />
         </a>
       </Button>
 
