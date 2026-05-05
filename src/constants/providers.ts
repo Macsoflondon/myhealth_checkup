@@ -14,7 +14,7 @@ export interface Provider {
 
 export const PROVIDER_LOGOS: Record<string, string> = {
   'medichecks': '/lovable-uploads/provider-medichecks-light.png',
-  'thriva': '/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png',
+  'thriva': '/lovable-uploads/provider-thriva.png',
   'randox': '/lovable-uploads/provider-randox.png',
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',

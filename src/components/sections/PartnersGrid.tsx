@@ -102,7 +102,7 @@ const PartnersGrid = () => {
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((provider, index) => {
               const LOGO_SIZE: Record<string, string> = {
-                'goodbody-clinic': 'max-h-[64px] sm:max-h-[84px]',
+                'goodbody-clinic': 'max-h-[88px] sm:max-h-[112px] md:max-h-[128px]',
                 'thriva': 'max-h-[64px] sm:max-h-[84px]',
                 'randox': 'max-h-[64px] sm:max-h-[84px]',
               };
