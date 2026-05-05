@@ -109,7 +109,7 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-[#081129]/40 z-[1]" />
 
-        <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
+        <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-[100px]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
 
