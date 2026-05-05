@@ -107,14 +107,14 @@ const Hero = () => {
           />
         ))}
 
-        <div className="absolute inset-0 bg-[#081129]/40 z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/70 via-[#081129]/45 to-[#081129]/75 z-[1]" />
 
         <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
 
               <div className="text-center mb-3 sm:mb-4">
-                <span className="inline-flex items-center gap-1.5 bg-white/15 hover:bg-white/25 backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide border border-primary border-solid rounded-sm shadow-sm">
+                <span className="inline-flex items-center gap-1.5 bg-[#081129]/70 hover:bg-[#081129]/85 backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide uppercase border-2 border-primary border-solid rounded-sm shadow-md">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
@@ -122,13 +122,13 @@ const Hero = () => {
               <div className="text-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[170px] flex flex-col items-center justify-center">
                 <h1
                   key={currentSlide}
-                  className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] xl:text-[4.2rem] tracking-[-0.03em] leading-[1.08] text-white animate-fade-in font-semibold font-sans lg:text-6xl"
+                  className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] xl:text-[4.2rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans lg:text-6xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)]"
                 >
                   {slide.headline}
                 </h1>
                 <p
                   key={`sub-${currentSlide}`}
-                  className="mt-2 sm:mt-3 text-sm sm:text-lg md:text-xl text-white/85 max-w-2xl mx-auto animate-fade-in font-bold"
+                  className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-white max-w-2xl mx-auto animate-fade-in font-medium drop-shadow-[0_2px_8px_rgba(8,17,41,0.85)]"
                 >
                   {slide.subline}
                 </p>
@@ -141,26 +141,26 @@ const Hero = () => {
               <div className="flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-sm"
+                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-md"
                 >
                   Find your test
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm"
+                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid shadow-md rounded-sm"
                 >
                   Compare by symptom
                 </button>
                 <button
                   onClick={() => navigate("/compare/goals")}
-                  className="bg-white/15 hover:bg-white/25 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-sm"
+                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-md"
                 >
                   Compare by goal
                 </button>
               </div>
 
               <div className="max-w-[855px] mx-auto">
-                <div className="bg-white/8 backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border border-primary border-solid rounded-sm shadow-sm">
+                <div className="bg-[#081129]/55 backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-primary border-solid rounded-sm shadow-md">
                   <div className="relative">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                     <input
@@ -169,15 +169,15 @@ const Hero = () => {
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-white/10 backdrop-blur-md border font-semibold text-white placeholder:text-white border-primary border-solid rounded-sm shadow-sm"
+                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-[#081129]/60 backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-primary border-solid rounded-sm shadow-sm"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
                     )}
                   </div>
 
-                  <div className="mt-3 sm:mt-4 bg-white/5 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
-                    <p className="text-[10px] font-semibold mb-1.5 sm:mb-2 uppercase tracking-[0.15em] border-primary shadow-sm rounded-sm border-0 border-none sm:text-[primary-on-container] text-primary-foreground">
+                  <div className="mt-3 sm:mt-4 bg-[#081129]/40 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
+                    <p className="text-[10px] sm:text-xs font-bold mb-1.5 sm:mb-2 uppercase tracking-[0.2em] text-white">
                       Popular Searches
                     </p>
                     <div className="flex flex-col items-center gap-2 pt-1">
@@ -186,7 +186,7 @@ const Hero = () => {
                           <button
                             key={index}
                             onClick={() => navigate(search.route)}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
+                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-[#081129]/60 hover:bg-[#081129]/80 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
                           >
                             {search.name}
                           </button>
@@ -197,7 +197,7 @@ const Hero = () => {
                           <button
                             key={index + 3}
                             onClick={() => navigate(search.route)}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border transition-all duration-200 font-semibold text-xs sm:text-sm text-white/90 whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
+                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-[#081129]/60 hover:bg-[#081129]/80 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
                           >
                             {search.name}
                           </button>
