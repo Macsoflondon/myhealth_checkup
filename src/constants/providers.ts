@@ -167,6 +167,27 @@ export function getProviderLogo(providerId: string): string {
   return PROVIDER_LOGOS[providerId] || '/placeholder.svg';
 }
 
+/**
+ * Returns responsive srcSet (1x/2x/3x) for provider logos.
+ * Generated assets live in /lovable-uploads/providers/{id}@{160,320,480}.png
+ * Falls back to the original logo when no responsive set exists.
+ */
+const PROVIDERS_WITH_RESPONSIVE_LOGOS = new Set<string>([
+  'medichecks', 'thriva', 'randox', 'london-medical-laboratory',
+  'lola-health', 'goodbody-clinic', 'london-health-company',
+  'medical-diagnosis', 'clinilabs',
+]);
+
+export function getProviderLogoSrcSet(providerId: string): { src: string; srcSet?: string } {
+  const fallback = getProviderLogo(providerId);
+  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(providerId)) return { src: fallback };
+  const base = `/lovable-uploads/providers/${providerId}`;
+  return {
+    src: `${base}@160.png`,
+    srcSet: `${base}@160.png 1x, ${base}@320.png 2x, ${base}@480.png 3x`,
+  };
+}
+
 export function getProviderName(providerId: string): string {
   return PROVIDER_NAMES[providerId] || providerId;
 }

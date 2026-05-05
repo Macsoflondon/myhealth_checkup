@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { providers } from "@/constants/providers";
+import { providers, getProviderLogoSrcSet } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const PartnersGrid = () => {
@@ -119,14 +119,21 @@ const PartnersGrid = () => {
                       hover:-translate-y-1 hover:scale-105
                       hover:border-[#22c0d4]/30"
                   >
-                    <img 
-                      src={provider.logo} 
-                      alt={`${provider.name} logo`} 
-                      className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
-                        LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE
-                      }`} 
-                      loading="lazy" 
-                    />
+                    {(() => {
+                      const { src, srcSet } = getProviderLogoSrcSet(provider.id);
+                      return (
+                        <img
+                          src={src}
+                          srcSet={srcSet}
+                          alt={`${provider.name} logo`}
+                          className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
+                            LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE
+                          }`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      );
+                    })()}
                   </Link>
                 </div>
               );
