@@ -176,7 +176,7 @@ const Hero = () => {
                     )}
                   </div>
 
-                  <div className="mt-3 sm:mt-4 bg-[#081129]/40 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
+                  <div className="mt-3 sm:mt-4 bg-[#081129]/40 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-primary border-solid rounded-sm shadow-md">
                     <p className="text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.25em] text-white text-center leading-none mb-2 sm:mb-3">
                       Popular Searches
                     </p>
