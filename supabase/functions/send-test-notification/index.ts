@@ -185,16 +185,18 @@ serve(async (req: Request): Promise<Response> => {
     }
   } catch (error: any) {
     console.error("Error in send-test-notification:", error);
+    const rawMsg = error instanceof Error ? error.message : String(error);
+    const isConfigError = rawMsg.includes("RESEND_API_KEY");
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: false,
-        error: (error instanceof Error ? error.message : String(error)) 
+        error: isConfigError ? "Email service unavailable" : "Internal server error",
       }),
       {
-        status: (error instanceof Error ? error.message : String(error)).includes("RESEND_API_KEY") ? 503 : 500,
-        headers: { 
-          "Content-Type": "application/json", 
-          ...corsHeaders 
+        status: isConfigError ? 503 : 500,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders,
         },
       }
     );
