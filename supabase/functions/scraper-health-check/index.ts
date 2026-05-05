@@ -172,9 +172,8 @@ Deno.serve(async (req) => {
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (error) {
-    const errMsg = getErrorMessage(error);
-    console.error('scraper-health-check error:', errMsg);
-    return new Response(JSON.stringify({ success: false, error: errMsg }), {
+    console.error('scraper-health-check error:', getErrorMessage(error));
+    return new Response(JSON.stringify({ success: false, error: 'Internal server error' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
     });
