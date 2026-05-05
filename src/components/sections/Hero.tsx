@@ -164,7 +164,7 @@ const Hero = () => {
             height={1080}
             fetchPriority={i === 0 ? "high" : "low"}
             style={{ objectPosition: isMobile && (s as any).mobileObjectPosition ? (s as any).mobileObjectPosition : s.objectPosition }}
-            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           />
