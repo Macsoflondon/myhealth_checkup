@@ -43,9 +43,6 @@ const AccreditedProvidersBar = () => {
 
         {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-5 md:mb-6">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/60">
-            Tests from providers accredited by
-          </p>
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {ACCREDITORS.map((a, i) => (
               <div key={a.name} className="flex items-center gap-3">
