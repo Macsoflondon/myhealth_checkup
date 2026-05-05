@@ -51,7 +51,7 @@ const heroSlides: Array<{
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/65 via-[#081129]/40 to-[#081129]/70",
       surface: 55,
-      accent: "pink",
+      accent: "turquoise",
     },
   },
   {
@@ -74,7 +74,7 @@ const heroSlides: Array<{
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/50 to-[#081129]/80",
       surface: 65,
-      accent: "pink",
+      accent: "turquoise",
     },
   },
   {
