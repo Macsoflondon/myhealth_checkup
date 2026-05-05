@@ -16,6 +16,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
+import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 
 export interface ProviderTestData {
   id: string;
