@@ -71,19 +71,19 @@ const TestStructuredData = ({ data, url }: TestStructuredDataProps) => {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://myhealthcheckup.com"
+        "item": "https://myhealthcheckup.co.uk"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Compare Tests",
-        "item": "https://myhealthcheckup.com/compare"
+        "item": "https://myhealthcheckup.co.uk/compare"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": data.providers[0]?.name || "Provider",
-        "item": `https://myhealthcheckup.com/${data.providers[0]?.name?.toLowerCase().replace(/\s+/g, '-')}`
+        "item": `https://myhealthcheckup.co.uk/${data.providers[0]?.name?.toLowerCase().replace(/\s+/g, '-')}`
       },
       {
         "@type": "ListItem",
