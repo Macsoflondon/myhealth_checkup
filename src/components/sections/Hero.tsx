@@ -109,7 +109,7 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-[#081129]/40 z-[1]" />
 
-        <div className="relative z-10 pt-16 pb-28 sm:pt-24 sm:pb-36 md:pt-32 md:pb-44 lg:pt-36 lg:pb-52">
+        <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
 
@@ -119,7 +119,7 @@ const Hero = () => {
                 </span>
               </div>
 
-              <div className="text-center mb-1 sm:mb-2 min-h-[140px] sm:min-h-[180px] md:min-h-[220px] lg:min-h-[260px] flex flex-col items-center justify-center">
+              <div className="text-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[170px] flex flex-col items-center justify-center">
                 <h1
                   key={currentSlide}
                   className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] lg:text-[4rem] xl:text-[4.2rem] font-heading font-bold tracking-[-0.03em] leading-[1.08] text-white animate-fade-in"
