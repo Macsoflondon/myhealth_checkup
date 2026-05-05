@@ -71,6 +71,8 @@ export function EnhancedComparisonTable({ result, onRemoveTest, onBookTest }: En
                   <img 
                     src={test.providerLogo} 
                     alt={test.provider} 
+                    loading="lazy"
+                    decoding="async"
                     className="h-8 object-contain mb-2"
                   />
                 )}

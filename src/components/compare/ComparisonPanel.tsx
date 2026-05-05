@@ -173,6 +173,8 @@ export const ComparisonPanel = ({
                             <img 
                               src={test.providerLogo} 
                               alt={test.provider}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover"
                             />
                           ) : (
