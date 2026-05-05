@@ -132,20 +132,21 @@ const Hero = () => {
 
   const slide = heroSlides[currentSlide];
   const accentColor = ACCENT_HEX[slide.theme.accent];
+  const surfaceTransition = "background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1200ms ease";
   const surfaceStyle: React.CSSProperties = {
-    backgroundColor: `rgba(255, 255, 255, 0.15)`,
-    borderColor: accentColor,
-    transition: "background-color 700ms ease, border-color 700ms ease",
+    backgroundColor: `rgba(255, 255, 255, 0.08)`,
+    borderColor: `${accentColor}99`,
+    transition: surfaceTransition,
   };
   const chipStyle: React.CSSProperties = {
-    backgroundColor: `rgba(255, 255, 255, 0.10)`,
-    borderColor: accentColor,
-    transition: "background-color 700ms ease, border-color 700ms ease",
+    backgroundColor: `rgba(255, 255, 255, 0.05)`,
+    borderColor: `${accentColor}80`,
+    transition: surfaceTransition,
   };
   const innerCardStyle: React.CSSProperties = {
-    backgroundColor: `rgba(255, 255, 255, 0.05)`,
-    borderColor: accentColor,
-    transition: "background-color 700ms ease, border-color 700ms ease",
+    backgroundColor: `rgba(255, 255, 255, 0.03)`,
+    borderColor: `${accentColor}66`,
+    transition: surfaceTransition,
   };
 
   return (
