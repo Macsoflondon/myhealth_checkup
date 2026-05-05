@@ -46,6 +46,28 @@ Deno.serve(async (req) => {
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+    // Auth gate: accept service-role bearer (cron) or an authenticated admin user.
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const isServiceRole =
+      SERVICE_ROLE.length > 0 && authHeader === `Bearer ${SERVICE_ROLE}`;
+
+    if (!isServiceRole) {
+      if (!authHeader) return json({ error: "Unauthorized" }, 401);
+      const userClient = createClient(
+        SUPABASE_URL,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { global: { headers: { Authorization: authHeader } } },
+      );
+      const { data: { user }, error: userErr } = await userClient.auth.getUser();
+      if (userErr || !user) return json({ error: "Unauthorized" }, 401);
+      const { data: isAdmin } = await userClient.rpc("has_role", {
+        _user_id: user.id,
+        _role: "admin",
+      });
+      if (!isAdmin) return json({ error: "Admin only" }, 403);
+    }
+
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
     const findings: Finding[] = [];
@@ -188,10 +210,8 @@ Deno.serve(async (req) => {
       200,
     );
   } catch (err) {
-    return json(
-      { error: err instanceof Error ? err.message : String(err) },
-      500,
-    );
+    console.error("security-scan-snapshot error:", err);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 

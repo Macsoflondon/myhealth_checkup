@@ -256,6 +256,16 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Cron/service-role guard: only callers with the service-role key may dispatch.
+  const authHeader = req.headers.get("Authorization") ?? "";
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  if (!serviceKey || authHeader !== `Bearer ${serviceKey}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const runId = crypto.randomUUID().slice(0, 8);
   const startedAt = new Date().toISOString();
 

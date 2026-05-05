@@ -1,12 +1,17 @@
 import { useState, useCallback, useEffect } from 'react';
 
 /**
- * UK Cyber Essentials Compliance: Account Lockout Protection
- * 
- * Tracks failed login attempts and implements temporary lockout
- * to prevent brute-force attacks.
- * 
- * Default: 5 failed attempts = 15 minute lockout
+ * UX-only Account Lockout Hint
+ *
+ * SECURITY NOTE: This hook is a *user-experience* safeguard, not a security
+ * boundary. State is held in localStorage and can be reset by clearing storage
+ * or opening a private tab. Real brute-force protection is enforced by
+ * Supabase Auth's server-side rate limiting (configured in the Supabase
+ * dashboard → Auth → Rate Limiting) and CAPTCHA, both of which apply to
+ * every request regardless of client state. Do not rely on this hook for
+ * security; use it only to surface a friendly "too many attempts" message.
+ *
+ * Default: 5 failed attempts = 15 minute UX lockout
  */
 
 const MAX_ATTEMPTS = 5;
