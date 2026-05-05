@@ -9,19 +9,50 @@ import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
-const heroSlides = [
+type SlideTheme = {
+  /** Tailwind classes for the absolute scrim overlay */
+  overlay: string;
+  /** Navy surface alpha (0-100) for badge / CTA / search backgrounds */
+  surface: number;
+  /** Brand accent used for borders on this slide */
+  accent: "turquoise" | "pink";
+};
+
+const ACCENT_HEX: Record<SlideTheme["accent"], string> = {
+  turquoise: "#22c0d4",
+  pink: "#e70d69",
+};
+
+const heroSlides: Array<{
+  image: string;
+  headline: string;
+  subline: string;
+  objectPosition: string;
+  mobileObjectPosition?: string;
+  theme: SlideTheme;
+}> = [
   {
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
     objectPosition: "30% 35%",
     mobileObjectPosition: "30% 30%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/45 to-[#081129]/70",
+      surface: 65,
+      accent: "turquoise",
+    },
   },
   {
     image: heroClinic,
     headline: "Clinics Nationwide",
     subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 58%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/65 via-[#081129]/40 to-[#081129]/70",
+      surface: 55,
+      accent: "pink",
+    },
   },
   {
     image: heroHomeKit,
@@ -29,12 +60,22 @@ const heroSlides = [
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 68%",
     mobileObjectPosition: "25% center",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/80 via-[#081129]/55 to-[#081129]/80",
+      surface: 70,
+      accent: "turquoise",
+    },
   },
   {
     image: heroActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
     objectPosition: "center 15%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/50 to-[#081129]/80",
+      surface: 65,
+      accent: "pink",
+    },
   },
   {
     image: heroCompare,
@@ -42,6 +83,11 @@ const heroSlides = [
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
     objectPosition: "center 42%",
     mobileObjectPosition: "58% center",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/70 via-[#081129]/45 to-[#081129]/75",
+      surface: 60,
+      accent: "turquoise",
+    },
   },
 ];
 
