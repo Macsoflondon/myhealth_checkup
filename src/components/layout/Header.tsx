@@ -117,7 +117,7 @@ const Header = ({ className }: HeaderProps) => {
       <header className={className}>
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center py-8">
+            <div className="px-4 lg:px-8 xl:px-12 pt-0">
               {/* Left spacer for balance */}
               <div className="flex-1" />
 
