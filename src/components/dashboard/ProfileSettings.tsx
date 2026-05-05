@@ -290,6 +290,8 @@ const ProfileSettings = () => {
           )}
         </Button>
       </div>
+
+      <ChangePasswordCard />
     </div>
   );
 };
