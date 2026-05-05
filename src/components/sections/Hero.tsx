@@ -203,19 +203,22 @@ const Hero = () => {
               <div className="flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-md"
+                  style={surfaceStyle}
+                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
                 >
                   Find your test
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid shadow-md rounded-sm"
+                  style={surfaceStyle}
+                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid shadow-md rounded-sm hover:brightness-125"
                 >
                   Compare by symptom
                 </button>
                 <button
                   onClick={() => navigate("/compare/goals")}
-                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-md"
+                  style={surfaceStyle}
+                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
                 >
                   Compare by goal
                 </button>
