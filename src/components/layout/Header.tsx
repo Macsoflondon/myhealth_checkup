@@ -117,12 +117,12 @@ const Header = ({ className }: HeaderProps) => {
       <header className={className}>
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-4 lg:px-8 xl:px-12">
-            <div className="px-4 lg:px-8 xl:px-12 pt-0">
+            <div className="flex items-center py-8">
               {/* Left spacer for balance */}
               <div className="flex-1" />
 
               {/* Center: Logo + Tagline side by side */}
-              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-6 transition-all duration-200 hover:scale-105 pt-[20px]">
+              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-6 transition-all duration-200 hover:scale-105">
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
