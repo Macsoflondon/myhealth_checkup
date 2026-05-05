@@ -21,7 +21,7 @@ const MissionSection = () => {
       {/* Navy banner heading with gradient dividers */}
       <div>
         {/* Top gradient divider */}
-        <div className="h-px sm:h-0.5 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         
         <div className="bg-brand-navy py-6 sm:py-8 md:py-10 lg:py-12">
           <div className="container mx-auto px-3 sm:px-4">
@@ -36,7 +36,7 @@ const MissionSection = () => {
         </div>
         
         {/* Bottom gradient divider */}
-        <div className="h-0.5 sm:h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
 
     </section>
