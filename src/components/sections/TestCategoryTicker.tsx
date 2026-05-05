@@ -24,6 +24,7 @@ const TestCategoryTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       <div className="py-2.5 sm:py-3">
         <div
           className="relative overflow-hidden"
