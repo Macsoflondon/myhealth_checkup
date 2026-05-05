@@ -226,7 +226,6 @@ const ConnectColumn = () => (
         <img src={cqcLogo} alt="Care Quality Commission regulated" className="w-full h-full object-contain" />
       </div>
     </div>
-    </div>
   </div>
 );
 
