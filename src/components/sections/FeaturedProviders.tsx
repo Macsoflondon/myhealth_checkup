@@ -114,6 +114,7 @@ const FeaturedProviders = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featuredProviderData.map(provider => {
             const brand = getBranding(provider.name);
+            const canonical = getProviderRating(provider.id);
             return (
               <Card
                 key={provider.id}
