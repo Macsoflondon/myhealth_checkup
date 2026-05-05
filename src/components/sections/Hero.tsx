@@ -9,19 +9,50 @@ import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
-const heroSlides = [
+type SlideTheme = {
+  /** Tailwind classes for the absolute scrim overlay */
+  overlay: string;
+  /** Navy surface alpha (0-100) for badge / CTA / search backgrounds */
+  surface: number;
+  /** Brand accent used for borders on this slide */
+  accent: "turquoise" | "pink";
+};
+
+const ACCENT_HEX: Record<SlideTheme["accent"], string> = {
+  turquoise: "#22c0d4",
+  pink: "#e70d69",
+};
+
+const heroSlides: Array<{
+  image: string;
+  headline: string;
+  subline: string;
+  objectPosition: string;
+  mobileObjectPosition?: string;
+  theme: SlideTheme;
+}> = [
   {
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
     objectPosition: "30% 35%",
     mobileObjectPosition: "30% 30%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/45 to-[#081129]/70",
+      surface: 65,
+      accent: "turquoise",
+    },
   },
   {
     image: heroClinic,
     headline: "Clinics Nationwide",
     subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 58%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/65 via-[#081129]/40 to-[#081129]/70",
+      surface: 55,
+      accent: "pink",
+    },
   },
   {
     image: heroHomeKit,
@@ -29,12 +60,22 @@ const heroSlides = [
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 68%",
     mobileObjectPosition: "25% center",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/80 via-[#081129]/55 to-[#081129]/80",
+      surface: 70,
+      accent: "turquoise",
+    },
   },
   {
     image: heroActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
     objectPosition: "center 15%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/75 via-[#081129]/50 to-[#081129]/80",
+      surface: 65,
+      accent: "pink",
+    },
   },
   {
     image: heroCompare,
@@ -42,6 +83,11 @@ const heroSlides = [
     subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
     objectPosition: "center 42%",
     mobileObjectPosition: "58% center",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/70 via-[#081129]/45 to-[#081129]/75",
+      surface: 60,
+      accent: "turquoise",
+    },
   },
 ];
 
@@ -85,6 +131,22 @@ const Hero = () => {
   };
 
   const slide = heroSlides[currentSlide];
+  const accentColor = ACCENT_HEX[slide.theme.accent];
+  const surfaceStyle: React.CSSProperties = {
+    backgroundColor: `rgba(8, 17, 41, ${slide.theme.surface / 100})`,
+    borderColor: accentColor,
+    transition: "background-color 700ms ease, border-color 700ms ease",
+  };
+  const chipStyle: React.CSSProperties = {
+    backgroundColor: `rgba(8, 17, 41, ${Math.max(0, slide.theme.surface - 5) / 100})`,
+    borderColor: accentColor,
+    transition: "background-color 700ms ease, border-color 700ms ease",
+  };
+  const innerCardStyle: React.CSSProperties = {
+    backgroundColor: `rgba(8, 17, 41, ${Math.max(0, slide.theme.surface - 15) / 100})`,
+    borderColor: accentColor,
+    transition: "background-color 700ms ease, border-color 700ms ease",
+  };
 
   return (
     <>
@@ -107,14 +169,14 @@ const Hero = () => {
           />
         ))}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/70 via-[#081129]/45 to-[#081129]/75 z-[1]" />
+        <div className={`absolute inset-0 z-[1] transition-opacity duration-1000 ${slide.theme.overlay}`} />
 
         <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <div className="max-w-[1240px] mx-auto">
 
               <div className="text-center mb-3 sm:mb-4">
-                <span className="inline-flex items-center gap-1.5 bg-[#081129]/70 hover:bg-[#081129]/85 backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide uppercase border-2 border-primary border-solid rounded-sm shadow-md">
+                <span style={surfaceStyle} className="inline-flex items-center gap-1.5 backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide uppercase border-2 border-solid rounded-sm shadow-md">
                   🇬🇧 UK's Leading Blood Test Comparison Platform
                 </span>
               </div>
@@ -141,26 +203,29 @@ const Hero = () => {
               <div className="flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6">
                 <button
                   onClick={() => navigate("/assisted-test-finder")}
-                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-md"
+                  style={surfaceStyle}
+                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
                 >
                   Find your test
                 </button>
                 <button
                   onClick={() => navigate("/compare/symptoms")}
-                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid shadow-md rounded-sm"
+                  style={surfaceStyle}
+                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid shadow-md rounded-sm hover:brightness-125"
                 >
                   Compare by symptom
                 </button>
                 <button
                   onClick={() => navigate("/compare/goals")}
-                  className="bg-[#081129]/65 hover:bg-[#081129]/85 backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-primary border-solid rounded-sm shadow-md"
+                  style={surfaceStyle}
+                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
                 >
                   Compare by goal
                 </button>
               </div>
 
               <div className="max-w-[855px] mx-auto">
-                <div className="bg-[#081129]/55 backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-primary border-solid rounded-sm shadow-md">
+                <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
                   <div className="relative">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                     <input
@@ -169,14 +234,15 @@ const Hero = () => {
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-[#081129]/60 backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-primary border-solid rounded-sm shadow-sm"
+                      style={chipStyle}
+                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-solid rounded-sm shadow-sm"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
                     )}
                   </div>
 
-                  <div className="mt-3 sm:mt-4 bg-[#081129]/40 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-primary border-solid rounded-sm shadow-md">
+                  <div style={innerCardStyle} className="mt-3 sm:mt-4 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-solid rounded-sm shadow-md">
                     <p className="text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.25em] text-white text-center leading-none mb-2 sm:mb-3">
                       Popular Searches
                     </p>
@@ -186,7 +252,8 @@ const Hero = () => {
                           <button
                             key={index}
                             onClick={() => navigate(search.route)}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-[#081129]/60 hover:bg-[#081129]/80 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
+                            style={chipStyle}
+                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] hover:brightness-125"
                           >
                             {search.name}
                           </button>
@@ -197,7 +264,8 @@ const Hero = () => {
                           <button
                             key={index + 3}
                             onClick={() => navigate(search.route)}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-[#081129]/60 hover:bg-[#081129]/80 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
+                            style={chipStyle}
+                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] hover:brightness-125"
                           >
                             {search.name}
                           </button>
