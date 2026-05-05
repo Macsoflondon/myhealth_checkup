@@ -169,7 +169,7 @@ const Hero = () => {
           />
         ))}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/70 via-[#081129]/45 to-[#081129]/75 z-[1]" />
+        <div className={`absolute inset-0 z-[1] transition-opacity duration-1000 ${slide.theme.overlay}`} />
 
         <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
