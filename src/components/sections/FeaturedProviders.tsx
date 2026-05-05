@@ -136,8 +136,8 @@ const FeaturedProviders = () => {
                       </div>
                       <div className="flex items-center space-x-1.5">
                         <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                        <span className="font-semibold text-gray-900">{provider.rating}</span>
-                        <span className="text-sm text-gray-500">({provider.reviews})</span>
+                        <span className="font-semibold text-gray-900">{canonical.rating}</span>
+                        <span className="text-sm text-gray-500">({canonical.reviewsFormatted} reviews)</span>
                       </div>
                     </div>
                   </div>
