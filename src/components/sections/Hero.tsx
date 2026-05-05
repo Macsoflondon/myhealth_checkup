@@ -20,7 +20,7 @@ const heroSlides = [
   {
     image: heroClinic,
     headline: "Clinics Nationwide",
-    subline: "Choose a clinic, get tested, and take the guesswork out of your health.",
+    subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 58%",
   },
   {
