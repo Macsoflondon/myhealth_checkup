@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
-import cqcLogo from "@/assets/compliance/cqc-logo.png";
 import myhealthLogo from "@/assets/myhealth-logo.webp";
 import NewsletterSignup from "@/components/layout/NewsletterSignup";
 
@@ -221,9 +220,6 @@ const ConnectColumn = () => (
       />
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
         <img src={cyberEssentialsLogo} alt="Cyber Essentials" className="w-full h-full object-contain" />
-      </div>
-      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white flex items-center justify-center p-1.5">
-        <img src={cqcLogo} alt="Care Quality Commission regulated" className="w-full h-full object-contain" />
       </div>
     </div>
   </div>
