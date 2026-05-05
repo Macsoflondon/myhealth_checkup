@@ -171,8 +171,8 @@ export const ModernCompareTable = ({
                     </div>
                   </div>
                   
-                  <Button variant="ghost" size="icon" onClick={() => handleToggleFavorite(test.id)} className={cn("hover:bg-secondary-container", isFavorite ? "text-secondary" : "text-muted-foreground")} disabled={!user}>
-                    <Heart className={cn("h-5 w-5", isFavorite && "fill-current")} />
+                  <Button variant="ghost" size="icon" onClick={() => handleToggleFavorite(test.id)} className={cn("hover:bg-secondary-container", isFavorite ? "text-secondary" : "text-muted-foreground")} disabled={!user} aria-label={isFavorite ? `Remove ${test.name} from favourites` : `Save ${test.name} to favourites`} aria-pressed={isFavorite}>
+                    <Heart className={cn("h-5 w-5", isFavorite && "fill-current")} aria-hidden="true" />
                   </Button>
                 </div>
                 
