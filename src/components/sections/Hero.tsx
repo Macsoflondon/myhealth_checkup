@@ -57,7 +57,7 @@ const popularSearches = [
 const trustSignals = [
   { icon: Shield, text: "UKAS-accredited labs" },
   { icon: FlaskConical, text: "200+ tests available" },
-  { icon: MapPin, text: "250+ clinic locations nationwide" },
+  { icon: MapPin, text: "Clinics nationwide" },
   { icon: Clock, text: "Results in 3–5 days" },
   { icon: Stethoscope, text: "No GP referral needed" },
 ];
