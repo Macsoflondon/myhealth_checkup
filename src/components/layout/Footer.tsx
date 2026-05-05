@@ -219,7 +219,7 @@ const ConnectColumn = () => (
         className="h-16 sm:h-20 w-auto object-contain"
       />
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
-        <img src={cyberEssentialsLogo} alt="Cyber Essentials" className="w-full h-full object-contain" />
+        <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
       </div>
     </div>
   </div>

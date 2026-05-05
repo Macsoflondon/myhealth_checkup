@@ -439,7 +439,7 @@ const GoodbodyTestGallery = () => {
         <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-[#f8f6f3] border-border">
           <DialogHeader>
             <div className="flex items-center gap-4 mb-2">
-              <img src={GOODBODY_LOGO} alt="Goodbody Clinic" className="h-12 w-auto object-contain" />
+              <img src={GOODBODY_LOGO} alt="Goodbody Clinic" loading="lazy" decoding="async" className="h-12 w-auto object-contain" />
               <div>
                 <DialogTitle className="text-2xl font-heading text-[#3d3529]">
                   Goodbody Clinic
