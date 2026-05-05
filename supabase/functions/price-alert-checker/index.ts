@@ -170,7 +170,6 @@ serve(async (req) => {
             test_name: testName,
             provider: alert.provider,
             price_drop: matchingDrop.change_percentage,
-            user_email: userData.user.email,
           });
 
           console.log(`Alert sent successfully for ${testName} to ${userData.user.email}`);
@@ -196,10 +195,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in price alert checker:', error);
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: (error instanceof Error ? error.message : String(error)) 
-      }),
+      JSON.stringify({ success: false, error: 'Internal server error' }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500 
