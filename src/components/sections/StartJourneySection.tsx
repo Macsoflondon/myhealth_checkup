@@ -40,7 +40,7 @@ const StartJourneySection = () => {
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-[#081129]/60">
           <span>✓ UKAS Accredited Labs</span>
-          <span>✓ CQC Regulated</span>
+          <span>✓ CQC Regulated Providers</span>
           <span>✓ Free to Compare</span>
         </div>
       </div>

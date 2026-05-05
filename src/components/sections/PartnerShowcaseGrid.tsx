@@ -132,7 +132,7 @@ const PartnerShowcaseGrid = () => {
                 </Link>
               </div>
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-white">
-                <span>✓ CQC Regulated</span>
+                <span>✓ CQC Regulated Providers</span>
                 <span>✓ 250+ Locations</span>
               </div>
             </div>
