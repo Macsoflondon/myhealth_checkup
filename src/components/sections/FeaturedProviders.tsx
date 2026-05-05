@@ -10,6 +10,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRoute } from "@/utils/providerRoutes";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
+import { getProviderRating } from "@/constants/providerRatings";
 
 const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
@@ -113,6 +114,7 @@ const FeaturedProviders = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featuredProviderData.map(provider => {
             const brand = getBranding(provider.name);
+            const canonical = getProviderRating(provider.id);
             return (
               <Card
                 key={provider.id}
@@ -134,8 +136,8 @@ const FeaturedProviders = () => {
                       </div>
                       <div className="flex items-center space-x-1.5">
                         <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                        <span className="font-semibold text-gray-900">{provider.rating}</span>
-                        <span className="text-sm text-gray-500">({provider.reviews})</span>
+                        <span className="font-semibold text-gray-900">{canonical.rating}</span>
+                        <span className="text-sm text-gray-500">({canonical.reviewsFormatted} reviews)</span>
                       </div>
                     </div>
                   </div>
