@@ -210,10 +210,8 @@ Deno.serve(async (req) => {
       200,
     );
   } catch (err) {
-    return json(
-      { error: err instanceof Error ? err.message : String(err) },
-      500,
-    );
+    console.error("security-scan-snapshot error:", err);
+    return json({ error: "Internal server error" }, 500);
   }
 });
 
