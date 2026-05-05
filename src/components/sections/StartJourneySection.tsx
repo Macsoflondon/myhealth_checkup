@@ -27,7 +27,7 @@ const StartJourneySection = () => {
           </Link>
           <Link
             to="/compare/symptoms"
-            className="min-w-0 bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight border-2 border-primary"
+            className="min-w-0 bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight border-2 border-tertiary"
           >
             Compare by symptom
           </Link>
