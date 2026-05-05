@@ -1,26 +1,22 @@
 ## Goal
-Refine the "Popular Searches" label inside the Hero search panel for cleaner spacing, a more legible size, and consistent centring across breakpoints.
+Bring the inner "Popular Searches" card in line with the rest of the Hero panel, where every surface uses: `border-2 border-primary border-solid`, `rounded-sm`, `shadow-md`, and a `backdrop-blur-md` navy background.
 
-## Change — `src/components/sections/Hero.tsx` (lines 180–183)
+## Change — `src/components/sections/Hero.tsx` (line 179)
 
-Current:
+Current (inconsistent — soft white border, large radius, no shadow, no blur):
 ```tsx
-<p className="text-[10px] sm:text-xs font-bold mb-1.5 sm:mb-2 uppercase tracking-[0.2em] text-white">
-  Popular Searches
-</p>
-<div className="flex flex-col items-center gap-2 pt-1">
+<div className="mt-3 sm:mt-4 bg-[#081129]/40 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
 ```
 
 Replace with:
 ```tsx
-<p className="text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.25em] text-white text-center leading-none mb-2 sm:mb-3">
-  Popular Searches
-</p>
-<div className="flex flex-col items-center gap-2 sm:gap-2.5">
+<div className="mt-3 sm:mt-4 bg-[#081129]/40 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-primary border-solid rounded-sm shadow-md">
 ```
 
 ### Why
-- **Size**: `10px → 11px` mobile, adds `md:text-[13px]` so the label scales up on desktop instead of staying tiny.
-- **Spacing**: Bottom margin grows `mb-1.5/2 → mb-2/3` and chip-row gap `gap-2 → sm:gap-2.5`. Removed redundant `pt-1` (replaced by the label's bottom margin) so vertical rhythm comes from one place.
-- **Alignment**: Adds explicit `text-center` and `leading-none` to keep the label optically centred in the panel and remove inherited line-height padding that pushed it off-axis.
-- **Tracking**: Slightly tighter on mobile (`0.22em`) and looser on desktop (`0.25em`) so the wider desktop size doesn't feel cramped.
+- **Border**: `border border-white/10` → `border-2 border-primary border-solid` to match badge, CTA buttons, search wrapper, and chip buttons.
+- **Rounding**: `rounded-lg sm:rounded-xl` → `rounded-sm` so all surfaces inside the Hero share the same crisp corner radius.
+- **Shadow**: adds `shadow-md` (the standard for elevated panels in the Hero).
+- **Blur**: adds `backdrop-blur-md` so the navy tint reads consistently across all rotating background images.
+
+No other changes needed — the chips inside already use the system styling.
