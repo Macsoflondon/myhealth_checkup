@@ -177,10 +177,10 @@ const Hero = () => {
                   </div>
 
                   <div className="mt-3 sm:mt-4 bg-[#081129]/40 rounded-lg sm:rounded-xl p-2 sm:p-3 text-center border border-white/10">
-                    <p className="text-[10px] sm:text-xs font-bold mb-1.5 sm:mb-2 uppercase tracking-[0.2em] text-white">
+                    <p className="text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.25em] text-white text-center leading-none mb-2 sm:mb-3">
                       Popular Searches
                     </p>
-                    <div className="flex flex-col items-center gap-2 pt-1">
+                    <div className="flex flex-col items-center gap-2 sm:gap-2.5">
                       <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
                         {popularSearches.slice(0, 3).map((search, index) => (
                           <button
