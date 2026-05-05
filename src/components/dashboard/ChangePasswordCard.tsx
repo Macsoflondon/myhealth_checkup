@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { KeyRound, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { KeyRound, Loader2, AlertCircle, CheckCircle, Mail } from "lucide-react";
 import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthIndicator";
 import { validatePassword } from "@/lib/passwordValidation";
 
@@ -167,8 +167,8 @@ const ChangePasswordCard = () => {
             </Alert>
           )}
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2">
-            <Button type="submit" disabled={isSaving}>
+          <div className="pt-2">
+            <Button type="submit" disabled={isSaving} data-testid="update-password-btn">
               {isSaving ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -181,17 +181,25 @@ const ChangePasswordCard = () => {
                 </>
               )}
             </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={handleSendResetEmail}
-              disabled={isSendingReset || !user?.email}
-              className="text-sm"
-            >
-              {isSendingReset ? "Sending..." : "Forgot current password? Email me a reset link"}
-            </Button>
           </div>
         </form>
+
+        <div className="mt-6 pt-6 border-t">
+          <h4 className="text-sm font-semibold mb-1">Forgotten your current password?</h4>
+          <p className="text-sm text-muted-foreground mb-3">
+            We can email a secure link to {user?.email ?? "your account email"} so you can set a new password without entering your current one.
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleSendResetEmail}
+            disabled={isSendingReset || !user?.email}
+            data-testid="send-reset-email-btn"
+          >
+            <Mail className="mr-2 h-4 w-4" />
+            {isSendingReset ? "Sending..." : "Send password reset email"}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
