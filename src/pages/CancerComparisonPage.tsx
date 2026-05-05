@@ -259,6 +259,8 @@ export default function CancerComparisonPage() {
                             <img 
                               src={getProviderLogo(test.providerId)} 
                               alt={test.provider}
+                              loading="lazy"
+                              decoding="async"
                               className="h-6 object-contain"
                             />
                             <Badge variant="secondary">

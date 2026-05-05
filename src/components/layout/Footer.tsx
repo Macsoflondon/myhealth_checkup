@@ -216,6 +216,8 @@ const ConnectColumn = () => (
       <img
         src={complianceBadges}
         alt="ICO Registered, Companies House, UK GDPR compliance badges"
+        loading="lazy"
+        decoding="async"
         className="h-16 sm:h-20 w-auto object-contain"
       />
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">

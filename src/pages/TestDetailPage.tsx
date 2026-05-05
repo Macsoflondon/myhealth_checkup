@@ -394,6 +394,8 @@ const TestDetailPage = () => {
                       <img 
                         src={getProviderLogo(providerId || '')} 
                         alt={provider.name}
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 object-contain"
                       />
                       <span className="font-medium">{provider.name}</span>

@@ -364,6 +364,8 @@ export default function ProviderTestDetailTemplate({
             <img 
               src={providerConfig.logo} 
               alt={providerConfig.name} 
+              loading="lazy"
+              decoding="async"
               className="h-12 mb-4"
             />
             <div className="flex flex-wrap gap-2 mb-2">

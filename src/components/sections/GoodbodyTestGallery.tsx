@@ -245,6 +245,8 @@ const GoodbodyTestGallery = () => {
             <img
               src={GOODBODY_LOGO}
               alt="GOODBODY"
+              loading="lazy"
+              decoding="async"
               className="h-48 sm:h-40 md:h-48 w-auto object-contain"
             />
           </div>
