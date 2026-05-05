@@ -225,7 +225,7 @@ const Hero = () => {
               </div>
 
               <div className="max-w-[855px] mx-auto">
-                <div className="bg-[#081129]/55 backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-primary border-solid rounded-sm shadow-md">
+                <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
                   <div className="relative">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                     <input
@@ -234,14 +234,15 @@ const Hero = () => {
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none bg-[#081129]/60 backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-primary border-solid rounded-sm shadow-sm"
+                      style={chipStyle}
+                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-solid rounded-sm shadow-sm"
                     />
                     {isAnalyzing && (
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
                     )}
                   </div>
 
-                  <div className="mt-3 sm:mt-4 bg-[#081129]/40 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-primary border-solid rounded-sm shadow-md">
+                  <div style={innerCardStyle} className="mt-3 sm:mt-4 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-solid rounded-sm shadow-md">
                     <p className="text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.25em] text-white text-center leading-none mb-2 sm:mb-3">
                       Popular Searches
                     </p>
@@ -251,7 +252,8 @@ const Hero = () => {
                           <button
                             key={index}
                             onClick={() => navigate(search.route)}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-[#081129]/60 hover:bg-[#081129]/80 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
+                            style={chipStyle}
+                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] hover:brightness-125"
                           >
                             {search.name}
                           </button>
@@ -262,7 +264,8 @@ const Hero = () => {
                           <button
                             key={index + 3}
                             onClick={() => navigate(search.route)}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-[#081129]/60 hover:bg-[#081129]/80 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-primary border-solid shadow-sm rounded-sm pt-[8px] pb-[8px]"
+                            style={chipStyle}
+                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] hover:brightness-125"
                           >
                             {search.name}
                           </button>
