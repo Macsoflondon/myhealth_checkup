@@ -15,6 +15,7 @@ export interface PopularTest {
   popularity_rank?: number;
   markers?: string[];
   description?: string;
+  image_url?: string;
 }
 
 const providerDisplayNames: Record<string, string> = {
