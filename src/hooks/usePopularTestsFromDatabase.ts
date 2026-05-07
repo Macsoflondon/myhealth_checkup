@@ -15,6 +15,7 @@ export interface PopularTest {
   popularity_rank?: number;
   markers?: string[];
   description?: string;
+  image_url?: string;
 }
 
 const providerDisplayNames: Record<string, string> = {
@@ -49,7 +50,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Get tests marked as popular, ordered by popularity_rank
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list, description')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
@@ -71,6 +72,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           popularity_rank: test.popularity_rank || undefined,
           markers: parseMarkers(test.biomarkers_list),
           description: test.description || undefined,
+          image_url: (test as any).image_url || undefined,
         }));
       }
 

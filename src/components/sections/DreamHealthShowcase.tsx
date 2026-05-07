@@ -96,10 +96,13 @@ const DreamHealthShowcase = () => {
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
                     <img
-                      src={kitImages[i % kitImages.length]}
+                      src={t.image_url || kitImages[i % kitImages.length]}
                       alt={t.test_name}
                       loading="lazy"
-                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = kitImages[i % kitImages.length];
+                      }}
+                      className="w-full h-full object-contain p-4"
                     />
                   </div>
                   <div className="p-5 flex flex-col flex-1">
