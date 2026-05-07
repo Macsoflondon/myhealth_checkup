@@ -254,7 +254,7 @@ const FindClinicPage = () => {
         <title>Find a Blood Test Clinic Near You | myhealth checkup</title>
         <meta
           name="description"
-          content="Find UKAS-accredited blood test clinics near you. Search by postcode, filter by distance and provider. 200+ locations nationwide from trusted UK providers."
+          content="Find CQC‑regulated blood test clinics near you. Search by postcode, filter by distance and provider. 200+ locations nationwide from trusted UK providers."
         />
         <meta
           name="keywords"
