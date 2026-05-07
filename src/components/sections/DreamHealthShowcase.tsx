@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
-import healthResults from "@/assets/health-results.jpg";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
 import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
 import kitPink from "@/assets/kits/kit-pink.jpg";
@@ -8,7 +7,6 @@ import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/kit-white.jpg";
 import kitBlack from "@/assets/kits/kit-black.jpg";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
-import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
 const tiles = [
   { src: kitTurquoise, alt: "At-home blood test kit" },
