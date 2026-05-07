@@ -298,8 +298,8 @@ const FindClinicPage = () => {
               <span className="text-white ml-2">Clinic Locations</span>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-brand-pink">UKAS</span>
-              <span className="text-white ml-2">Accredited Labs</span>
+              <span className="font-bold text-brand-pink">CQC</span>
+              <span className="text-white ml-2">Regulated Clinics</span>
             </div>
           </div>
         </PageBanner>
