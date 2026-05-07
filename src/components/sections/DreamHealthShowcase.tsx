@@ -1,19 +1,24 @@
 import { useNavigate } from "react-router-dom";
-import heroEmpowered from "@/assets/hero/hero-empowered-results.webp";
-import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
-import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
-import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import healthResults from "@/assets/health-results.jpg";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
+import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
+import kitPink from "@/assets/kits/kit-pink.jpg";
+import kitNavy from "@/assets/kits/kit-navy.jpg";
+import kitWhite from "@/assets/kits/kit-white.jpg";
+import kitBlack from "@/assets/kits/kit-black.jpg";
+import kitCoral from "@/assets/kits/kit-coral.jpg";
+import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
 const tiles = [
-  { src: heroEmpowered, alt: "Reviewing health results" },
-  { src: heroClinic, alt: "Clinic appointment" },
-  { src: heroCompare, alt: "Comparing tests" },
-  { src: heroHomeKit, alt: "At-home test kit" },
-  { src: heroActive, alt: "Active lifestyle" },
-  { src: bloodTestKit, alt: "Blood test kit" },
+  { src: kitTurquoise, alt: "At-home blood test kit" },
+  { src: kitPink, alt: "Women's health test kit" },
+  { src: kitNavy, alt: "Wellness test kit" },
+  { src: bloodTestKit, alt: "Finger-prick test kit" },
+  { src: kitWhite, alt: "DNA and blood test kit" },
+  { src: kitBlack, alt: "Premium hormone test kit" },
+  { src: kitCoral, alt: "Women's health home kit" },
+  { src: heroHomeKit, alt: "Home test kit on table" },
 ];
 
 const miniCards = [
