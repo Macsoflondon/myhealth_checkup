@@ -136,22 +136,6 @@ export function UnifiedTestCard({
       <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
         {/* Compare checkbox + Category + Badge */}
         <div className="flex items-center gap-2 mb-3">
-          {onCompareToggle && (
-            <button
-              onClick={(e) => { e.stopPropagation(); onCompareToggle(); }}
-              className="flex-shrink-0 w-[18px] h-[18px] rounded flex items-center justify-center cursor-pointer transition-all duration-150 p-0"
-              style={{
-                border: `1.5px solid ${compareSelected ? "hsl(var(--brand-turquoise))" : "rgba(8,17,41,0.25)"}`,
-                background: compareSelected ? "hsl(var(--brand-turquoise))" : "transparent",
-                color: "#ffffff",
-                fontSize: 11,
-                fontWeight: 900,
-              }}
-              aria-label={compareSelected ? "Remove from comparison" : "Add to comparison"}
-            >
-              {compareSelected ? "✓" : ""}
-            </button>
-          )}
           <span
             className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide text-white"
             style={{ backgroundColor: categoryColor }}
