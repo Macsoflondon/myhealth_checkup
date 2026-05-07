@@ -203,7 +203,7 @@ const LocationsPage = () => {
         <title>Clinic Locations | myhealth checkup</title>
         <meta
           name="description"
-          content="Find trusted blood test clinic locations across the UK. Search by postcode, filter by area or provider, and book your appointment today."
+          content="Find CQC‑regulated blood test clinic locations across the UK. Search by postcode, filter by area or provider, and book your appointment today."
         />
       </Helmet>
 
