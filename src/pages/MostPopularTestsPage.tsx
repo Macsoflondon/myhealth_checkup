@@ -78,7 +78,7 @@ const LoadingSkeleton: React.FC = () => (
       <Skeleton className="h-10 w-48 rounded-md bg-white/10" />
     </div>
     {/* Card grid skeleton */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
       {Array.from({ length: 8 }).map((_, i) => (
         <Skeleton key={i} className="w-full max-w-[340px] h-[440px] rounded-2xl bg-white/10" />
       ))}
