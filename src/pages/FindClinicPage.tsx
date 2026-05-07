@@ -70,8 +70,8 @@ const benefits = [
   },
   {
     icon: Shield,
-    title: "UKAS Accredited",
-    description: "All clinics partner with UKAS-accredited laboratories",
+    title: "CQC Regulated",
+    description: "All clinics are CQC‑regulated and professional clinical facilities",
   },
   {
     icon: Clock,
