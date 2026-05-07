@@ -267,7 +267,7 @@ const FindClinicPage = () => {
         <meta property="og:url" content="https://myhealthcheckup.co.uk/find-clinic" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Find a Blood Test Clinic Near You" />
-        <meta name="twitter:description" content="Search UKAS-accredited blood test clinics by postcode. 200+ locations nationwide." />
+        <meta name="twitter:description" content="Search CQC‑regulated blood test clinics by postcode. 200+ locations nationwide." />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
