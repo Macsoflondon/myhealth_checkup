@@ -133,7 +133,7 @@ export function UnifiedTestCard({
       {/* Top accent bar */}
       <div className="h-1 w-full" style={{ backgroundColor: categoryColor }} />
 
-      <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b]">
+      <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
         {/* Compare checkbox + Category + Badge */}
         <div className="flex items-center gap-2 mb-3">
           {onCompareToggle && (
