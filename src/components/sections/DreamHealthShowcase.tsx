@@ -1,0 +1,89 @@
+import { useNavigate } from "react-router-dom";
+import heroEmpowered from "@/assets/hero/hero-empowered-results.webp";
+import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
+import heroCompare from "@/assets/hero/hero-compare-decide.webp";
+import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
+import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
+import healthResults from "@/assets/health-results.jpg";
+import bloodTestKit from "@/assets/blood-test-kit.jpg";
+
+const tiles = [
+  { src: heroEmpowered, alt: "Reviewing health results" },
+  { src: heroClinic, alt: "Clinic appointment" },
+  { src: heroCompare, alt: "Comparing tests" },
+  { src: heroHomeKit, alt: "At-home test kit" },
+  { src: heroActive, alt: "Active lifestyle" },
+  { src: bloodTestKit, alt: "Blood test kit" },
+];
+
+const miniCards = [
+  { img: healthResults, title: "My health profile", subtitle: "No tests yet" },
+  { img: heroCompare, title: "My comparisons", subtitle: "London" },
+  { img: heroHomeKit, title: "My saved kits", subtitle: "United Kingdom" },
+];
+
+const DreamHealthShowcase = () => {
+  const navigate = useNavigate();
+
+  return (
+    <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
+      {/* Filmstrip of tiles */}
+      <div className="relative">
+        <div className="flex gap-3 sm:gap-4 px-4 sm:px-6 overflow-x-auto scrollbar-hide snap-x">
+          {tiles.map((t, i) => (
+            <div
+              key={i}
+              className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md snap-start"
+            >
+              <img
+                src={t.src}
+                alt={t.alt}
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Headline + subtitle + CTA */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center mt-10 sm:mt-14">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight text-[#081129] leading-[1.05]">
+          Your health. On the perfect plan.
+        </h2>
+        <p className="mt-4 text-base sm:text-lg text-[#22c0d4] font-medium max-w-2xl mx-auto">
+          myhealth checkup is the super simple way to find a test, match a provider, and get it done.
+        </p>
+
+        <div className="mt-7 flex justify-center">
+          <button
+            onClick={() => navigate("/assisted-test-finder")}
+            className="bg-[#081129] text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg hover:bg-[#0f1d44] transition-colors"
+          >
+            Start your health journey
+          </button>
+        </div>
+
+        {/* Mini cards */}
+        <div className="mt-8 flex flex-wrap justify-center gap-3 sm:gap-4">
+          {miniCards.map((c, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 bg-white border border-black/5 shadow-sm rounded-2xl p-2 pr-5 min-w-[210px]"
+            >
+              <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0">
+                <img src={c.img} alt="" className="w-full h-full object-cover" />
+              </div>
+              <div className="text-left">
+                <p className="text-sm font-semibold text-[#081129] leading-tight">{c.title}</p>
+                <p className="text-xs text-[#081129]/50 leading-tight mt-0.5">{c.subtitle}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default DreamHealthShowcase;
