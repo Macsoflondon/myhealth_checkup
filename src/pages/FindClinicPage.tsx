@@ -385,22 +385,13 @@ const FindClinicPage = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex flex-col justify-end gap-2">
-                <Button
-                  onClick={handleUseMyLocation}
-                  variant="outline"
-                  className="border-brand-navy/20 h-10"
-                  disabled={searching}
-                >
-                  <Navigation className="w-4 h-4 mr-2" />
-                  Use My Location
-                </Button>
-                {(postcode || selectedProvider !== "all" || radiusFilter !== "all") && (
+              {(postcode || selectedProvider !== "all" || radiusFilter !== "all") && (
+                <div className="flex flex-col justify-end gap-2">
                   <Button onClick={handleClearSearch} variant="ghost" size="sm">
                     Clear All Filters
                   </Button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Results count */}
