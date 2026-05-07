@@ -286,7 +286,7 @@ const FindClinicPage = () => {
         {/* Hero Banner */}
         <PageBanner
           title="Find Your Nearest Clinic"
-          subtitle="Search over 200 UKAS-accredited blood test clinic locations across the UK. Enter your postcode to find convenient testing facilities near you."
+          subtitle="Search from over 200 CQC‑regulated clinic locations across the UK. Enter your postcode to find convenient testing facilities near you."
         >
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
