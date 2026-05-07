@@ -85,24 +85,22 @@ const CookieConsent = () => {
               <div className="flex gap-1.5 sm:gap-2 flex-wrap w-full lg:w-auto">
                 <Button
                   size="sm"
-                  variant="outline"
                   onClick={() => setShowSettings(true)}
-                  className="flex-1 lg:flex-none text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                  className="flex-1 lg:flex-none bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
                 >
                   Manage
                 </Button>
                 <Button
                   size="sm"
-                  variant="outline"
                   onClick={handleRejectAll}
-                  className="flex-1 lg:flex-none text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                  className="flex-1 lg:flex-none bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
                 >
                   Reject All
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleAcceptAll}
-                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-pink text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                  className="flex-1 lg:flex-none bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
                 >
                   Accept All
                 </Button>
