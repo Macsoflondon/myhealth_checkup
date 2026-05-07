@@ -7,6 +7,8 @@ import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/kit-white.jpg";
 import kitBlack from "@/assets/kits/kit-black.jpg";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
+import { usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const tiles = [
   { src: kitTurquoise, alt: "At-home blood test kit" },
@@ -19,53 +21,20 @@ const tiles = [
   { src: heroHomeKit, alt: "Home test kit on table" },
 ];
 
-const popularKits = [
-  {
-    img: kitTurquoise,
-    name: "Essential Health Check",
-    description: "Core wellness markers covering energy, immunity and metabolism.",
-    price: "£49",
-    provider: "Medichecks",
-  },
-  {
-    img: kitPink,
-    name: "Advanced Well Woman",
-    description: "Hormones, thyroid and iron in one female-focused panel.",
-    price: "£119",
-    provider: "Thriva",
-  },
-  {
-    img: kitNavy,
-    name: "Ultimate Performance",
-    description: "Comprehensive panel for active adults and longevity goals.",
-    price: "£179",
-    provider: "Randox",
-  },
-  {
-    img: kitBlack,
-    name: "Male Hormone Profile",
-    description: "Testosterone, SHBG and key male health biomarkers.",
-    price: "£89",
-    provider: "Forth",
-  },
-  {
-    img: kitWhite,
-    name: "Vitamin & Minerals",
-    description: "Vitamin D, B12, ferritin and folate in one finger-prick test.",
-    price: "£59",
-    provider: "Numan",
-  },
-  {
-    img: kitCoral,
-    name: "Fertility & Hormones",
-    description: "Female fertility hormones with personalised insights.",
-    price: "£99",
-    provider: "Hertility",
-  },
-];
+// Rotating image pool so each popular kit gets a visual without duplicating provider data
+const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral];
+
+const cleanName = (name: string) =>
+  name
+    .replace(/\s*[-–|].*$/, "")
+    .replace(/\s+Blood Test$/i, "")
+    .replace(/\s+for Enhanced Health$/i, "")
+    .replace(/\s*\| Book Online today$/i, "")
+    .trim();
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(6);
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
@@ -106,7 +75,7 @@ const DreamHealthShowcase = () => {
           </button>
         </div>
 
-        {/* Most popular test kit cards */}
+        {/* Most popular test kit cards — sourced from the same data as the toolbar */}
         <div className="mt-12 sm:mt-14">
           <div className="flex items-center justify-center gap-2 mb-6">
             <span className="inline-block px-3 py-1 rounded-full bg-[#081129]/5 text-[#081129] text-xs font-semibold tracking-wide uppercase">
@@ -114,43 +83,50 @@ const DreamHealthShowcase = () => {
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
-            {popularKits.map((k, i) => (
-              <article
-                key={i}
-                className="flex flex-col bg-white border border-black/5 shadow-sm hover:shadow-lg transition-shadow rounded-2xl overflow-hidden"
-              >
-                <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
-                  <img
-                    src={k.img}
-                    alt={k.name}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-5 flex flex-col flex-1">
-                  <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
-                    {k.provider}
-                  </p>
-                  <h3 className="mt-1 text-lg font-heading font-bold text-[#081129] leading-snug">
-                    {k.name}
-                  </h3>
-                  <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1">
-                    {k.description}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-xl font-bold text-[#081129]">
-                      {k.price}
-                    </span>
-                    <button
-                      onClick={() => navigate("/popular-tests")}
-                      className="text-sm font-semibold text-white bg-gradient-to-r from-[#22c0d4] to-[#e70d69] px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
-                    >
-                      View kit
-                    </button>
+            {isLoading &&
+              Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-[360px] rounded-2xl bg-black/5" />
+              ))}
+
+            {!isLoading &&
+              popularTests?.map((t, i) => (
+                <article
+                  key={t.id}
+                  className="flex flex-col bg-white border border-black/5 shadow-sm hover:shadow-lg transition-shadow rounded-2xl overflow-hidden"
+                >
+                  <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
+                    <img
+                      src={kitImages[i % kitImages.length]}
+                      alt={t.test_name}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
-              </article>
-            ))}
+                  <div className="p-5 flex flex-col flex-1">
+                    <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
+                      {t.provider_name}
+                    </p>
+                    <h3 className="mt-1 text-lg font-heading font-bold text-[#081129] leading-snug">
+                      {cleanName(t.test_name)}
+                    </h3>
+                    <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1">
+                      {t.description ||
+                        `Comprehensive screening covering ${t.biomarker_count || "key"} biomarkers. ${t.sample_type || "Blood sample"} collection.`}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="text-xl font-bold text-[#081129]">
+                        £{t.price}
+                      </span>
+                      <button
+                        onClick={() => navigate("/popular-tests")}
+                        className="text-sm font-semibold text-white bg-gradient-to-r from-[#22c0d4] to-[#e70d69] px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
+                      >
+                        View kit
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
           </div>
         </div>
       </div>
