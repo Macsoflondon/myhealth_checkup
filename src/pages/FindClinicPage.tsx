@@ -273,7 +273,7 @@ const FindClinicPage = () => {
             "@context": "https://schema.org",
             "@type": "MedicalBusiness",
             name: "myhealth checkup - Clinic Finder",
-            description: "Find UKAS-accredited blood test clinics across the UK",
+            description: "Find CQC‑regulated blood test clinics across the UK",
             url: "https://myhealthcheckup.co.uk/find-clinic",
             areaServed: { "@type": "Country", name: "United Kingdom" },
           })}
