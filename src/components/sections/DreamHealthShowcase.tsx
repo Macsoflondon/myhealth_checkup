@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
-import healthResults from "@/assets/health-results.jpg";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
 import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
 import kitPink from "@/assets/kits/kit-pink.jpg";
@@ -8,7 +7,6 @@ import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/kit-white.jpg";
 import kitBlack from "@/assets/kits/kit-black.jpg";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
-import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
 const tiles = [
   { src: kitTurquoise, alt: "At-home blood test kit" },
@@ -21,10 +19,49 @@ const tiles = [
   { src: heroHomeKit, alt: "Home test kit on table" },
 ];
 
-const miniCards = [
-  { img: healthResults, title: "My health profile", subtitle: "No tests yet" },
-  { img: heroCompare, title: "My comparisons", subtitle: "London" },
-  { img: heroHomeKit, title: "My saved kits", subtitle: "United Kingdom" },
+const popularKits = [
+  {
+    img: kitTurquoise,
+    name: "Essential Health Check",
+    description: "Core wellness markers covering energy, immunity and metabolism.",
+    price: "£49",
+    provider: "Medichecks",
+  },
+  {
+    img: kitPink,
+    name: "Advanced Well Woman",
+    description: "Hormones, thyroid and iron in one female-focused panel.",
+    price: "£119",
+    provider: "Thriva",
+  },
+  {
+    img: kitNavy,
+    name: "Ultimate Performance",
+    description: "Comprehensive panel for active adults and longevity goals.",
+    price: "£179",
+    provider: "Randox",
+  },
+  {
+    img: kitBlack,
+    name: "Male Hormone Profile",
+    description: "Testosterone, SHBG and key male health biomarkers.",
+    price: "£89",
+    provider: "Forth",
+  },
+  {
+    img: kitWhite,
+    name: "Vitamin & Minerals",
+    description: "Vitamin D, B12, ferritin and folate in one finger-prick test.",
+    price: "£59",
+    provider: "Numan",
+  },
+  {
+    img: kitCoral,
+    name: "Fertility & Hormones",
+    description: "Female fertility hormones with personalised insights.",
+    price: "£99",
+    provider: "Hertility",
+  },
 ];
 
 const DreamHealthShowcase = () => {
@@ -69,22 +106,52 @@ const DreamHealthShowcase = () => {
           </button>
         </div>
 
-        {/* Mini cards */}
-        <div className="mt-8 flex flex-wrap justify-center gap-3 sm:gap-4">
-          {miniCards.map((c, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 bg-white border border-black/5 shadow-sm rounded-2xl p-2 pr-5 min-w-[210px]"
-            >
-              <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0">
-                <img src={c.img} alt="" className="w-full h-full object-cover" />
-              </div>
-              <div className="text-left">
-                <p className="text-sm font-semibold text-[#081129] leading-tight">{c.title}</p>
-                <p className="text-xs text-[#081129]/50 leading-tight mt-0.5">{c.subtitle}</p>
-              </div>
-            </div>
-          ))}
+        {/* Most popular test kit cards */}
+        <div className="mt-12 sm:mt-14">
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <span className="inline-block px-3 py-1 rounded-full bg-[#081129]/5 text-[#081129] text-xs font-semibold tracking-wide uppercase">
+              Most popular
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
+            {popularKits.map((k, i) => (
+              <article
+                key={i}
+                className="flex flex-col bg-white border border-black/5 shadow-sm hover:shadow-lg transition-shadow rounded-2xl overflow-hidden"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
+                  <img
+                    src={k.img}
+                    alt={k.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5 flex flex-col flex-1">
+                  <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
+                    {k.provider}
+                  </p>
+                  <h3 className="mt-1 text-lg font-heading font-bold text-[#081129] leading-snug">
+                    {k.name}
+                  </h3>
+                  <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1">
+                    {k.description}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-xl font-bold text-[#081129]">
+                      {k.price}
+                    </span>
+                    <button
+                      onClick={() => navigate("/popular-tests")}
+                      className="text-sm font-semibold text-white bg-gradient-to-r from-[#22c0d4] to-[#e70d69] px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
+                    >
+                      View kit
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
