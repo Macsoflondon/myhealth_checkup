@@ -262,7 +262,7 @@ const FindClinicPage = () => {
         />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/find-clinic" />
         <meta property="og:title" content="Find a Blood Test Clinic Near You | myhealth checkup" />
-        <meta property="og:description" content="Find UKAS-accredited blood test clinics near you. 200+ locations nationwide from trusted UK providers." />
+        <meta property="og:description" content="Find CQC‑regulated blood test clinics near you. 200+ locations nationwide from trusted UK providers." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/find-clinic" />
         <meta name="twitter:card" content="summary_large_image" />
