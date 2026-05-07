@@ -70,8 +70,8 @@ const benefits = [
   },
   {
     icon: Shield,
-    title: "UKAS Accredited",
-    description: "All clinics partner with UKAS-accredited laboratories",
+    title: "CQC Regulated",
+    description: "All clinics are CQC‑regulated and professional clinical facilities",
   },
   {
     icon: Clock,
@@ -254,7 +254,7 @@ const FindClinicPage = () => {
         <title>Find a Blood Test Clinic Near You | myhealth checkup</title>
         <meta
           name="description"
-          content="Find UKAS-accredited blood test clinics near you. Search by postcode, filter by distance and provider. 200+ locations nationwide from trusted UK providers."
+          content="Find CQC‑regulated blood test clinics near you. Search by postcode, filter by distance and provider. 200+ locations nationwide from trusted UK providers."
         />
         <meta
           name="keywords"
@@ -262,18 +262,18 @@ const FindClinicPage = () => {
         />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/find-clinic" />
         <meta property="og:title" content="Find a Blood Test Clinic Near You | myhealth checkup" />
-        <meta property="og:description" content="Find UKAS-accredited blood test clinics near you. 200+ locations nationwide from trusted UK providers." />
+        <meta property="og:description" content="Find CQC‑regulated blood test clinics near you. 200+ locations nationwide from trusted UK providers." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/find-clinic" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Find a Blood Test Clinic Near You" />
-        <meta name="twitter:description" content="Search UKAS-accredited blood test clinics by postcode. 200+ locations nationwide." />
+        <meta name="twitter:description" content="Search CQC‑regulated blood test clinics by postcode. 200+ locations nationwide." />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MedicalBusiness",
             name: "myhealth checkup - Clinic Finder",
-            description: "Find UKAS-accredited blood test clinics across the UK",
+            description: "Find CQC‑regulated blood test clinics across the UK",
             url: "https://myhealthcheckup.co.uk/find-clinic",
             areaServed: { "@type": "Country", name: "United Kingdom" },
           })}
@@ -286,7 +286,7 @@ const FindClinicPage = () => {
         {/* Hero Banner */}
         <PageBanner
           title="Find Your Nearest Clinic"
-          subtitle="Search over 200 UKAS-accredited blood test clinic locations across the UK. Enter your postcode to find convenient testing facilities near you."
+          subtitle="Search from over 200 CQC‑regulated clinic locations across the UK. Enter your postcode to find convenient testing facilities near you."
         >
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
@@ -298,8 +298,8 @@ const FindClinicPage = () => {
               <span className="text-white ml-2">Clinic Locations</span>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-              <span className="font-bold text-brand-pink">UKAS</span>
-              <span className="text-white ml-2">Accredited Labs</span>
+              <span className="font-bold text-brand-pink">CQC</span>
+              <span className="text-white ml-2">Regulated Clinics</span>
             </div>
           </div>
         </PageBanner>
