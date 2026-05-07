@@ -21,10 +21,49 @@ const tiles = [
   { src: heroHomeKit, alt: "Home test kit on table" },
 ];
 
-const miniCards = [
-  { img: healthResults, title: "My health profile", subtitle: "No tests yet" },
-  { img: heroCompare, title: "My comparisons", subtitle: "London" },
-  { img: heroHomeKit, title: "My saved kits", subtitle: "United Kingdom" },
+const popularKits = [
+  {
+    img: kitTurquoise,
+    name: "Essential Health Check",
+    description: "Core wellness markers covering energy, immunity and metabolism.",
+    price: "£49",
+    provider: "Medichecks",
+  },
+  {
+    img: kitPink,
+    name: "Advanced Well Woman",
+    description: "Hormones, thyroid and iron in one female-focused panel.",
+    price: "£119",
+    provider: "Thriva",
+  },
+  {
+    img: kitNavy,
+    name: "Ultimate Performance",
+    description: "Comprehensive panel for active adults and longevity goals.",
+    price: "£179",
+    provider: "Randox",
+  },
+  {
+    img: kitBlack,
+    name: "Male Hormone Profile",
+    description: "Testosterone, SHBG and key male health biomarkers.",
+    price: "£89",
+    provider: "Forth",
+  },
+  {
+    img: kitWhite,
+    name: "Vitamin & Minerals",
+    description: "Vitamin D, B12, ferritin and folate in one finger-prick test.",
+    price: "£59",
+    provider: "Numan",
+  },
+  {
+    img: kitCoral,
+    name: "Fertility & Hormones",
+    description: "Female fertility hormones with personalised insights.",
+    price: "£99",
+    provider: "Hertility",
+  },
 ];
 
 const DreamHealthShowcase = () => {
