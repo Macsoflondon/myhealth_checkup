@@ -34,7 +34,7 @@ const cleanName = (name: string) =>
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(6);
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(18);
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
@@ -84,7 +84,7 @@ const DreamHealthShowcase = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
             {isLoading &&
-              Array.from({ length: 6 }).map((_, i) => (
+              Array.from({ length: 12 }).map((_, i) => (
                 <Skeleton key={i} className="h-[360px] rounded-2xl bg-black/5" />
               ))}
 
