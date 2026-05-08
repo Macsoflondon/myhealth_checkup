@@ -197,10 +197,6 @@ const Index = () => {
             <PartnerShowcaseGrid />
           </ScrollFadeIn>
 
-          <ScrollFadeIn variant="rise" delay={100}>
-            <DreamHealthShowcase />
-          </ScrollFadeIn>
-
           <ScrollFadeIn variant="fade">
             <TestimonialCarousel />
           </ScrollFadeIn>
