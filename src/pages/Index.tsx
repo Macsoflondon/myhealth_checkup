@@ -205,10 +205,6 @@ const Index = () => {
             <ClinicAndHelpSection />
           </ScrollFadeIn>
 
-          <ScrollFadeIn variant="fade">
-            <AccreditedProvidersBar />
-          </ScrollFadeIn>
-
           <ScrollFadeIn variant="scale">
             <CallToAction />
           </ScrollFadeIn>
@@ -219,6 +215,10 @@ const Index = () => {
 
           <ScrollFadeIn variant="rise" delay={150}>
             <ExpertQuotes />
+          </ScrollFadeIn>
+
+          <ScrollFadeIn variant="fade">
+            <AccreditedProvidersBar />
           </ScrollFadeIn>
         </Suspense>
       </MainLayout>
