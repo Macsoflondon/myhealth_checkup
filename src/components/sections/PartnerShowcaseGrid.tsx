@@ -20,44 +20,6 @@ const PartnerShowcaseGrid = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
 
-          {/* Row 2: Medichecks — Logo beside Video */}
-          <div className="md:col-span-2 mt-8 mb-2 pt-4">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              {/* Logo */}
-              <div className="flex-shrink-0">
-                <img
-                  src="/lovable-uploads/provider-medichecks-new-v3.png"
-                  alt="Medichecks logo"
-                  className="h-48 sm:h-44 md:h-52 w-auto object-contain"
-                />
-              </div>
-
-              {/* Video — deferred load to keep initial paint fast */}
-              <div className="relative rounded-xl w-full max-w-2xl">
-                <video
-                  src="/videos/medichecks-promo.mp4"
-                  poster="/lovable-uploads/provider-medichecks-new-v3.png"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="none"
-                  className="w-full object-contain rounded-xl max-h-[400px]"
-                />
-              </div>
-            </div>
-
-            {/* CTA below */}
-            <div className="flex justify-center mt-7">
-              <Link
-                to="/provider/medichecks"
-                className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
-              >
-                View Medichecks profile
-              </Link>
-            </div>
-          </div>
-
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2 mt-10 sm:mt-14">
             <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col text-center items-center">
