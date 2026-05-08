@@ -9,7 +9,7 @@ import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 const PartnerShowcaseGrid = () => {
 
   return (
-    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden bg-white">
+    <section className="text-3xl sm:text-4xl font-heading font-bold text-brand-navy text-white md:text-6xl">
       <NavyDecorativeCircles />
 
       {/* Featured Partners of the Month — Goodbody (moved above the publications carousel) */}
