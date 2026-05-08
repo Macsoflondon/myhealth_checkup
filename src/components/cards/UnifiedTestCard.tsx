@@ -114,7 +114,7 @@ export function UnifiedTestCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "flex flex-col overflow-hidden font-sans flex-shrink-0 w-full max-w-[340px]",
+        "text-sm leading-relaxed mb-4 line-clamp-3 font-bold text-[#08122b]",
         className
       )}
       style={{
@@ -163,7 +163,7 @@ export function UnifiedTestCard({
         <div className="grid grid-cols-3 gap-2 mb-4">
           {[
             { icon: "🧬", value: biomarkers, label: "Biomarkers" },
-            { icon: "⏱", value: results, label: "Results" },
+            { icon: "⏱", value: "\n", label: "Results" },
             { icon: "💉", value: collection.split(" / ")[0] || collection.split(" ")[0], label: "Collection" },
           ].map((stat) => (
             <div
