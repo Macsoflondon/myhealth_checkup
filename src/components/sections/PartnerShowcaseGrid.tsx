@@ -44,6 +44,9 @@ const PartnerShowcaseGrid = () => {
       {/* Featured Publications carousel between Goodbody and Medichecks */}
       <FeaturedPublications />
 
+      {/* Our Providers Most Popular Tests — sits between the publications carousel and Medichecks */}
+      <DreamHealthShowcase />
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
 
