@@ -4,6 +4,7 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import UKRegionMap from "@/components/sections/UKRegionMap";
 import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
+import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 
 const PartnerShowcaseGrid = () => {
 
@@ -19,6 +20,16 @@ const PartnerShowcaseGrid = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
+          <div className="md:col-span-2 text-center mt-6 sm:mt-8">
+            <p className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+              Featured Partners
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white">
+              Our Featured Partners of the Month
+            </h2>
+          </div>
+
+          <GoodbodyTestGallery />
 
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2 mt-10 sm:mt-14">
