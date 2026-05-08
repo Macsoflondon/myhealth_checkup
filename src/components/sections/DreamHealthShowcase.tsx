@@ -174,7 +174,7 @@ const DreamHealthShowcase = () => {
                       </span>
                       <button
                         onClick={() => navigate("/popular-tests")}
-                        className="text-sm font-semibold text-white bg-gradient-to-r from-[#22c0d4] to-[#e70d69] px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
+                        className="text-sm font-semibold text-white bg-[#22c0d4] px-4 py-2 rounded-full hover:bg-[#1ba8ba] transition-colors"
                       >
                         View kit
                       </button>
