@@ -221,7 +221,7 @@ const HoverExpand_001 = ({
   onTestClick?: (image: GalleryImageData) => void;
   getOverlayData?: (image: GalleryImageData) => OverlayData;
 }) => {
-  const [activeImage, setActiveImage] = useState<number | null>(0);
+  const [activeImage, setActiveImage] = useState<number | null>(null);
   const breakpoint = useBreakpoint();
 
   const config = {
