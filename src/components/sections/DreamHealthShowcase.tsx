@@ -25,6 +25,14 @@ const tiles = [
 // Rotating image pool so each popular kit gets a visual without duplicating provider data
 const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral];
 
+// Per-test image overrides keyed by normalised test name
+const testImageOverrides: Record<string, string> = {
+  "advanced well man": medichecksAdvancedWellMan,
+};
+
+const getOverrideImage = (name: string) =>
+  testImageOverrides[cleanName(name).toLowerCase()];
+
 const cleanName = (name: string) =>
   name
     .replace(/\s*[-–|].*$/, "")
