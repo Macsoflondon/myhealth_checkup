@@ -184,9 +184,6 @@ const Index = () => {
             <StartJourneySection />
           </ScrollFadeIn>
 
-          <ScrollFadeIn variant="rise" delay={100}>
-            <TestHighlightsClinicFinder />
-          </ScrollFadeIn>
 
           {/* Animated gradient divider — scales horizontally from the left on enter */}
           <ScrollFadeIn variant="slide-left" className="origin-left">
