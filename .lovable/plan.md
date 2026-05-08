@@ -1,39 +1,44 @@
-## Problem
+## Goal
 
-Logged-in users have no way to change their password from the dashboard. The only password reset flow is via the public "Forgot password" email link on `/auth`, which is unusable for someone already signed in who simply wants to update their credentials.
+Update the "Your health. On the perfect plan." section on the homepage (`src/components/sections/DreamHealthShowcase.tsx`) so that:
 
-## Solution
+1. The Lola Health "Cardiovascular" test is hidden.
+2. Tests are interleaved across providers (no provider clustering).
+3. Two rows are removed from the bottom (12 cards instead of 18 — 4 rows on desktop).
+4. The filmstrip carousel directly above the headline shows 8 actual popular test kit images instead of the current generic kit photos.
 
-Add a **Change Password** section inside the existing Profile tab on the Dashboard (`src/components/dashboard/ProfileSettings.tsx`), plus a "Send password reset email" fallback for users who can't remember their current password.
+All changes are presentation-only and live in `DreamHealthShowcase.tsx`. The shared `usePopularTestsFromDatabase` hook is not modified, so other consumers are unaffected.
 
-### What to build
+## Changes
 
-A new `ChangePasswordCard` component rendered at the bottom of `ProfileSettings.tsx`, containing:
+### 1. Filter out Lola Health Cardiovascular
 
-1. **Inline password change form** (primary path)
-   - Current password field
-   - New password field (with existing `PasswordStrengthIndicator`)
-   - Confirm new password field
-   - Submit button → re-authenticates by calling `supabase.auth.signInWithPassword({ email: user.email, password: currentPassword })` to verify the current password, then `supabase.auth.updateUser({ password: newPassword })`
-   - Validates with existing `validatePassword()` from `src/lib/passwordValidation.ts`
-   - Shows success/error via existing `toast` (sonner)
+In the component, after data loads, drop any test where `provider_id === 'lola-health'` AND the cleaned name matches "cardiovascular" (case-insensitive). This is precise and won't accidentally remove other Lola Health tests or other providers' cardio tests.
 
-2. **"Forgot current password?" fallback**
-   - Small link/button below the form
-   - Calls `supabase.auth.resetPasswordForEmail(user.email, { redirectTo: ${origin}/reset-password })`
-   - Reuses the existing `/reset-password` page already in `src/pages/ResetPassword.tsx`
-   - Toast confirms the reset email was sent
+### 2. Interleave tests across providers (round-robin)
 
-### Technical notes
+Group the loaded tests by `provider_id`, then walk the groups in round-robin order so the rendered grid alternates Medichecks → Thriva → Randox → Lola Health → GOODBODY → London Medical Lab → Medichecks → … Pure presentation reorder, no data mutation.
 
-- File touched: `src/components/dashboard/ProfileSettings.tsx` (add new section) — or new `src/components/dashboard/ChangePasswordCard.tsx` imported into it. Prefer the latter for cleanliness.
-- Reuses: `Input`, `Label`, `Button`, `Card`, `PasswordStrengthIndicator`, `validatePassword`, `useAuth`, `supabase` client, `toast`.
-- No DB / RLS / edge function changes required — Supabase Auth handles password updates server-side.
-- Styling matches existing Profile tab cards (glassmorphism / brand colours per project standards).
-- British English copy ("Change password", "Current password", "New password", "Confirm new password", "Password updated successfully.").
+### 3. Trim to 12 cards
 
-### Out of scope
+Cap the rendered list at 12 (4 rows × 3 columns on desktop, 6 rows × 2 on tablet, 12 stacked on mobile). The hook is already requested with `limit=18`; we simply slice the interleaved result.
 
-- No changes to `/auth` or `/reset-password` pages.
-- No new routes.
-- No email template changes (existing reset email flow already works).
+### 4. Replace the top filmstrip with 8 popular-test images
+
+The current `tiles` array uses static kit images. Replace it with the first 8 entries of the interleaved popular-tests list, each rendered in the existing tile style with:
+- `src` = `getOverrideImage(test.test_name) || test.image_url || kitImages[i % kitImages.length]` (same fallback chain as the cards below, so the Medichecks Advanced Well Man override and any future overrides apply).
+- `alt` = the cleaned test name.
+- While loading, render 8 skeleton tiles in the same layout to prevent layout shift.
+
+The carousel keeps its existing horizontal scroll, snap, and rounded-tile styling — only the image sources change.
+
+## Out of scope
+
+- No changes to the database, the `usePopularTestsFromDatabase` hook, navigation, or any other section.
+- No styling/typography changes to cards or the headline.
+- No new packages.
+
+## Notes / assumptions
+
+- "Two rose from the bottom" is read as "two rows from the bottom" — i.e. drop the last 6 cards (2 rows of 3 on desktop), leaving 12. If you actually meant 1 row or a different count, say the word and I'll adjust.
+- "Eight of the Tesco images" is read as "eight of the test images" — i.e. the kit photos from the popular tests just below. Confirm if you meant something else.
