@@ -3,6 +3,7 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import UKRegionMap from "@/components/sections/UKRegionMap";
+import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
 
 const PartnerShowcaseGrid = () => {
 
