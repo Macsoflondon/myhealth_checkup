@@ -379,7 +379,7 @@ const ClinicFinder = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Providers</SelectItem>
-                    <SelectItem value="medichecks">Medichecks</SelectItem>
+                    <SelectItem value="medichecks">\n</SelectItem>
                     <SelectItem value="thriva">Thriva</SelectItem>
                     <SelectItem value="goodbody">Goodbody</SelectItem>
                     <SelectItem value="randox">Randox</SelectItem>

@@ -47,7 +47,7 @@ export interface ProviderConfig {
 export const providerConfigs: Record<string, ProviderConfig> = {
   medichecks: {
     id: 'medichecks',
-    name: 'Medichecks',
+    name: '\n',
     logo: '/lovable-uploads/provider-medichecks-new-v3.png',
     turnaround: '3 working days',
     badgeText: 'Medichecks Blood Test',
