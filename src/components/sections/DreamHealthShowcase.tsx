@@ -7,6 +7,7 @@ import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/kit-white.jpg";
 import kitBlack from "@/assets/kits/kit-black.jpg";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
+import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
 import { usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -23,6 +24,14 @@ const tiles = [
 
 // Rotating image pool so each popular kit gets a visual without duplicating provider data
 const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral];
+
+// Per-test image overrides keyed by normalised test name
+const testImageOverrides: Record<string, string> = {
+  "advanced well man": medichecksAdvancedWellMan,
+};
+
+const getOverrideImage = (name: string) =>
+  testImageOverrides[cleanName(name).toLowerCase()];
 
 const cleanName = (name: string) =>
   name
@@ -96,7 +105,7 @@ const DreamHealthShowcase = () => {
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
                     <img
-                      src={t.image_url || kitImages[i % kitImages.length]}
+                      src={getOverrideImage(t.test_name) || t.image_url || kitImages[i % kitImages.length]}
                       alt={t.test_name}
                       loading="lazy"
                       onError={(e) => {
