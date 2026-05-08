@@ -69,7 +69,7 @@ const AccreditedProvidersBar = () => {
                 to={getProviderRoute(id)}
                 className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-3 md:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
               >
-                <div className="flex items-center justify-center h-[40px] sm:h-[50px] w-full">
+                <div className="flex items-center justify-center h-[80px] sm:h-[100px] w-full">
                   <img
                     src={provider.logo}
                     alt={`${provider.name} logo`}
