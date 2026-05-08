@@ -105,7 +105,7 @@ const DreamHealthShowcase = () => {
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
                     <img
-                      src={t.image_url || kitImages[i % kitImages.length]}
+                      src={getOverrideImage(t.test_name) || t.image_url || kitImages[i % kitImages.length]}
                       alt={t.test_name}
                       loading="lazy"
                       onError={(e) => {
