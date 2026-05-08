@@ -25,7 +25,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
-  'medichecks': 'Medichecks',
+  'medichecks': '\n',
   'thriva': 'Thriva',
   'randox': 'Randox Health',
   'london-medical-laboratory': 'London Medical Laboratory',
@@ -59,7 +59,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
   },
   'medichecks': {
     id: 'medichecks',
-    name: 'Medichecks',
+    name: '\n',
     logo: PROVIDER_LOGOS['medichecks'],
     website: PROVIDER_WEBSITES['medichecks'],
     description: 'UK\'s leading blood testing service',

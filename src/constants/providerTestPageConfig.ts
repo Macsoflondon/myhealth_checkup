@@ -47,10 +47,10 @@ export interface ProviderConfig {
 export const providerConfigs: Record<string, ProviderConfig> = {
   medichecks: {
     id: 'medichecks',
-    name: 'Medichecks',
+    name: '\n',
     logo: '/lovable-uploads/provider-medichecks-new-v3.png',
     turnaround: '3 working days',
-    badgeText: 'Medichecks Blood Test',
+    badgeText: '\n Blood Test',
     features: [
       { title: 'Bespoke Doctor\'s Report', description: 'Personalised insights and actionable advice from qualified doctors' },
       { title: 'UKAS Accredited Labs', description: 'Established in 2001 with ISO 15189 accredited laboratories' },
@@ -61,7 +61,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       {
         icon: 'clinic',
         title: 'Venous Draw at a Clinic (+£35)',
-        description: 'Visit one of Medichecks\' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.',
+        description: 'Visit one of \n\' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.',
       },
       {
         icon: 'home',
@@ -75,22 +75,22 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       },
     ],
     whyChoose: {
-      title: 'Why Choose Medichecks?',
+      title: 'Why Choose \n?',
       items: [
         { bold: 'Established in 2001:', text: 'Over 14,000 5-star reviews on Feefo with decades of trusted health testing experience' },
         { bold: 'Expert Doctor Support:', text: 'Bespoke doctor\'s report with actionable advice, expert support, and tailored recommendations' },
-        { bold: 'Track Your Health:', text: 'MyMedichecks portal lets you view results, monitor changes, and store your medical history over time' },
+        { bold: 'Track Your Health:', text: 'My\n portal lets you view results, monitor changes, and store your medical history over time' },
         { bold: 'Flexible Collection:', text: 'Choose from clinic visits, home nurse appointments, or self-arranged professional collection' },
       ],
     },
     quickInfo: {
       sampleType: 'Venous blood sample',
       labProcessing: 'UKAS accredited laboratories',
-      resultsDelivery: 'MyMedichecks online dashboard with doctor\'s report',
+      resultsDelivery: 'My\n online dashboard with doctor\'s report',
       supportPhone: '03450 600 600',
     },
     ctaText: 'Get ready to elevate your health understanding with a personalised doctor\'s report. Go beyond results and tap into expert insights tailored just for you.',
-    ctaButtonText: 'Book with Medichecks',
+    ctaButtonText: 'Book with \n',
     aboutText: 'routine health check that provides a comprehensive look at your overall well-being. It covers biomarkers to assess organ function, nutritional balance, and potential health risks.',
     canonicalBase: 'https://myhealthcheckup.co.uk/medichecks',
   },

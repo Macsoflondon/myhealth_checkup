@@ -20,7 +20,7 @@ export interface PopularTest {
 
 const providerDisplayNames: Record<string, string> = {
   'goodbody-clinic': 'GOODBODY',
-  'medichecks': 'Medichecks',
+  'medichecks': '\n',
   'lola-health': 'Lola Health',
   'thriva': 'Thriva',
   'randox': 'Randox Health',

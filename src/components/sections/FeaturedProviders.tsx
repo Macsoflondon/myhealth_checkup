@@ -17,7 +17,7 @@ const FeaturedProviders = () => {
 
   const featuredProviderData = [{
     id: "medichecks",
-    name: "Medichecks",
+    name: "\n",
     rating: 4.7,
     reviews: "16,600+",
     description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
