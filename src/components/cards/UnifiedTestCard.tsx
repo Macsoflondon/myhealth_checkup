@@ -163,7 +163,7 @@ export function UnifiedTestCard({
         <div className="grid grid-cols-3 gap-2 mb-4">
           {[
             { icon: "🧬", value: biomarkers, label: "Biomarkers" },
-            { icon: "⏱", value: results, label: "Results" },
+            { icon: "⏱", value: "\n", label: "Results" },
             { icon: "💉", value: collection.split(" / ")[0] || collection.split(" ")[0], label: "Collection" },
           ].map((stat) => (
             <div
