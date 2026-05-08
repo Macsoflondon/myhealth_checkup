@@ -49,7 +49,7 @@ const IntelligentSearch = () => {
   const mockResults: SearchResult[] = [{
     id: '1',
     name: 'Advanced Thyroid Function',
-    provider: 'Medichecks',
+    provider: '\n',
     price: 79,
     category: 'Hormone Tests',
     relevanceScore: 98,
