@@ -7,6 +7,7 @@ import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/kit-white.jpg";
 import kitBlack from "@/assets/kits/kit-black.jpg";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
+import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
 import { usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 
