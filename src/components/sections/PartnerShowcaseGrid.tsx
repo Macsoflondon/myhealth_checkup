@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
-import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
+
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import UKRegionMap from "@/components/sections/UKRegionMap";
 import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
@@ -11,37 +11,7 @@ const PartnerShowcaseGrid = () => {
     <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden bg-white">
       <NavyDecorativeCircles />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
-        <div className="text-center mb-3 sm:mb-4 md:mb-5">
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
-            <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-              Featured Partners
-            </span>
-            <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
-          </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold mb-3">
-            <span className="text-[#08122b]">Our Featured Partners of </span>
-            <span className="text-[#08122b]">the Month</span>
-          </h2>
-          <p className="text-[#08122b] font-sans text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
-            Handpicked providers delivering trusted, accredited health testing across the UK.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
-          {/* GoodBody Test Gallery */}
-          <GoodbodyTestGallery />
-
-          {/* Divider */}
-          <div className="md:col-span-2 flex justify-center">
-            <div className="w-2/3 h-px bg-gradient-to-r from-transparent via-brand-turquoise/70 to-transparent" />
-          </div>
-
-        </div>
-      </div>
-
-      {/* Featured Publications carousel between Goodbody and Medichecks */}
+      {/* Featured Publications carousel */}
       <FeaturedPublications />
 
       {/* Our Providers Most Popular Tests — sits between the publications carousel and Medichecks */}
@@ -49,44 +19,6 @@ const PartnerShowcaseGrid = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
-
-          {/* Row 2: Medichecks — Logo beside Video */}
-          <div className="md:col-span-2 mt-8 mb-2 pt-4">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              {/* Logo */}
-              <div className="flex-shrink-0">
-                <img
-                  src="/lovable-uploads/provider-medichecks-new-v3.png"
-                  alt="Medichecks logo"
-                  className="h-48 sm:h-44 md:h-52 w-auto object-contain"
-                />
-              </div>
-
-              {/* Video — deferred load to keep initial paint fast */}
-              <div className="relative rounded-xl w-full max-w-2xl">
-                <video
-                  src="/videos/medichecks-promo.mp4"
-                  poster="/lovable-uploads/provider-medichecks-new-v3.png"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="none"
-                  className="w-full object-contain rounded-xl max-h-[400px]"
-                />
-              </div>
-            </div>
-
-            {/* CTA below */}
-            <div className="flex justify-center mt-7">
-              <Link
-                to="/provider/medichecks"
-                className="inline-block bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
-              >
-                View Medichecks profile
-              </Link>
-            </div>
-          </div>
 
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2 mt-10 sm:mt-14">
