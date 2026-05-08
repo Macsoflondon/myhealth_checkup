@@ -7,7 +7,7 @@ import UKRegionMap from "@/components/sections/UKRegionMap";
 const PartnerShowcaseGrid = () => {
 
   return (
-    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
+    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden bg-white">
       <NavyDecorativeCircles />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
