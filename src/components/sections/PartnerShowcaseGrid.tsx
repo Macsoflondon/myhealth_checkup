@@ -3,6 +3,7 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
 import UKRegionMap from "@/components/sections/UKRegionMap";
+import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
 
 const PartnerShowcaseGrid = () => {
 
@@ -42,6 +43,9 @@ const PartnerShowcaseGrid = () => {
 
       {/* Featured Publications carousel between Goodbody and Medichecks */}
       <FeaturedPublications />
+
+      {/* Our Providers Most Popular Tests — sits between the publications carousel and Medichecks */}
+      <DreamHealthShowcase />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
