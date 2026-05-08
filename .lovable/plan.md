@@ -1,39 +1,27 @@
 ## Goal
+Make the hero slideshow images look brighter, like they did before the dark scrim was strengthened.
 
-Reorder the homepage so the "Our Providers Most Popular Tests" section appears immediately after the "Our Partners Have Featured in" carousel — pushing the Medichecks logo/video block and the "Find a Clinic Near You" block down below it.
+## Cause
+The hero images themselves have no CSS filter. The darkening comes from a navy gradient overlay (`bg-gradient-to-b from-[#081129]/… via-[#081129]/… to-[#081129]/…`) layered on top of each image in `src/components/sections/Hero.tsx` (line 190), with per-slide opacities defined in the `heroSlides` array (lines 44–100). Current values sit between 40% and 80% — that's what's flattening the photos.
 
-## Current order
+## Change
+Reduce every overlay's navy opacity by roughly half, so the images read bright while the white text on top stays legible.
 
-Inside `PartnerShowcaseGrid.tsx`:
-1. "Our Featured Partners of the Month" heading
-2. `GoodbodyTestGallery`
-3. `FeaturedPublications` carousel ("Our Partners Have Featured in")
-4. Medichecks logo + promo video + CTA
-5. `UKRegionMap` "Find a Clinic Near You" card
+`src/components/sections/Hero.tsx`, slide themes:
 
-Then in `src/pages/Index.tsx`, separately:
-6. `DreamHealthShowcase` ("Our Providers Most Popular Tests")
+| Slide | Current overlay | New overlay |
+|---|---|---|
+| 1 | from `/75` via `/45` to `/70` | from `/35` via `/15` to `/30` |
+| 2 | from `/65` via `/40` to `/70` | from `/25` via `/10` to `/30` |
+| 3 | from `/80` via `/55` to `/80` | from `/40` via `/20` to `/40` |
+| 4 | from `/75` via `/50` to `/80` | from `/35` via `/15` to `/40` |
+| 5 | from `/70` via `/45` to `/75` | from `/30` via `/15` to `/35` |
 
-## Target order
-
-Inside `PartnerShowcaseGrid.tsx`:
-1. Featured Partners heading
-2. `GoodbodyTestGallery`
-3. `FeaturedPublications` carousel
-4. **`DreamHealthShowcase` ("Our Providers Most Popular Tests")** ← moved here
-5. Medichecks logo + video + CTA
-6. `UKRegionMap` "Find a Clinic Near You"
-
-## Changes
-
-1. **`src/pages/Index.tsx`** — remove the `<ScrollFadeIn>…<DreamHealthShowcase />…</ScrollFadeIn>` block (the lazy import stays available, but is no longer rendered here). This stops it appearing twice on the page.
-
-2. **`src/components/sections/PartnerShowcaseGrid.tsx`** — import `DreamHealthShowcase` and render it directly between `<FeaturedPublications />` and the second `container` div that holds the Medichecks block. Render it full-width (outside the inner container) so its existing white section background and self-contained layout sit cleanly between the two surrounding blocks.
-
-That's it — purely a reorder. No styling, copy, or data changes; the section keeps its current look and behaviour.
+No other files touched. No image assets, no layout, no copy changes.
 
 ## Out of scope
+- Headline / button styling
+- Removing the overlay entirely (kept at a light tint so white text remains readable)
+- Per-image colour grading or filters
 
-- No edits to `DreamHealthShowcase` itself (filmstrip, headline, cards stay as they are now).
-- No changes to other homepage sections, lazy-loading, or animations.
-- The section background mismatch (Partner section is currently `bg-brand-navy bg-white` — Tailwind keeps the latter) is left as-is; if you want a single, intentional background colour for this combined block, say the word and I'll fold that in.
+If you'd prefer the overlay gone completely (no scrim at all) I can do that instead — just say so before approving.
