@@ -282,7 +282,10 @@ const HoverExpand_001 = ({
         transition={{ duration: 0.3 }}
         className={cn("w-full mx-auto", "maxWidth" in config ? config.maxWidth : "")}
       >
-        <div className={cn("flex w-full items-center justify-center", config.gap)}>
+        <div
+          className={cn("flex w-full items-center justify-center", config.gap)}
+          onMouseLeave={() => setActiveImage(null)}
+        >
           {images.slice(0, config.numVisible).map((image, index) => {
             const isActive = activeImage === index;
             const width = isActive ? `${expandedPercent}%` : `${collapsedPercent}%`;
