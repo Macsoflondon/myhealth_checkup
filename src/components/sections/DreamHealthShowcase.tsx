@@ -114,7 +114,7 @@ const DreamHealthShowcase = () => {
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight leading-[1.05] text-[#08122b] lg:text-6xl">
           ​Our Providers Most Popular Tests
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-[#22c0d4] font-medium max-w-2xl mx-auto">
+        <p className="mt-4 text-base sm:text-lg font-medium max-w-2xl mx-auto text-[#22bed3]">
           myhealth checkup is the super simple way to find a test, match a provider, and get it done.
         </p>
 
