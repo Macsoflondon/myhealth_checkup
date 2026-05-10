@@ -116,28 +116,28 @@ const Header = ({ className }: HeaderProps) => {
       {/* Logo section scrolls normally */}
       <header className={className}>
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
-          <div className="px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center py-8">
+          <div className="px-3 md:px-4 lg:px-8 xl:px-12">
+            <div className="flex items-center gap-2 py-4 md:py-6 lg:py-8">
               {/* Left spacer for balance */}
-              <div className="flex-1" />
+              <div className="flex-1 min-w-0" />
 
               {/* Center: Logo + Tagline side by side */}
-              <Link to="/" className="flex items-center justify-center flex-shrink-0 gap-6 transition-all duration-200 hover:scale-105">
+              <Link to="/" className="flex items-center justify-center flex-shrink min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-200 hover:scale-105">
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-[4.5rem] lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain"
+                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain flex-shrink-0"
                 />
                 <img
                   src={headerTagline}
                   alt="Your Health. Your Choice. One Trusted Platform!"
-                  className="h-[4.5rem] lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain max-w-[50vw]"
+                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain max-w-[40vw] lg:max-w-[50vw]"
                 />
               </Link>
 
               {/* Right: Controls pushed to far right */}
-              <div className="flex-1 flex items-center justify-end">
-                <nav className="flex items-center gap-3" aria-label="User controls">
+              <div className="flex-1 min-w-0 flex items-center justify-end">
+                <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
                 </nav>
