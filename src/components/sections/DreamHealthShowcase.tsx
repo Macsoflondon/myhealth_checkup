@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
 import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
@@ -60,6 +60,7 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   const { data: popularTests, isLoading } = usePopularTestsFromDatabase(18);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
@@ -75,37 +76,91 @@ const DreamHealthShowcase = () => {
   }, [popularTests]);
 
   const filmstripTests = orderedTests.slice(0, 8);
+  // Quadruple the strip for a seamless loop
+  const filmstripLoop = useMemo(
+    () => [...filmstripTests, ...filmstripTests, ...filmstripTests, ...filmstripTests],
+    [filmstripTests]
+  );
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || filmstripTests.length === 0) return;
+
+    let animationId: number;
+    let position = 0;
+    const speed = 0.5; // moderate slow
+
+    const measureSetWidth = () => {
+      const children = track.children;
+      if (!children.length) return 0;
+      let total = 0;
+      for (let i = 0; i < filmstripTests.length && i < children.length; i++) {
+        total += (children[i] as HTMLElement).offsetWidth;
+        // include the gap between items
+        const style = window.getComputedStyle(track);
+        const gap = parseFloat(style.columnGap || style.gap || "0");
+        if (i < filmstripTests.length - 1) total += gap;
+      }
+      return total;
+    };
+
+    let setWidth = measureSetWidth();
+
+    const animate = () => {
+      if (!setWidth) setWidth = measureSetWidth();
+      position -= speed;
+      if (setWidth > 0 && Math.abs(position) >= setWidth) {
+        position += setWidth;
+      }
+      track.style.transform = `translateX(${position}px)`;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [filmstripTests.length]);
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
       {/* Filmstrip of tiles — sourced from the popular tests below */}
       <div className="relative">
-        <div className="flex gap-3 sm:gap-4 px-4 sm:px-6 overflow-x-auto scrollbar-hide snap-x">
-          {isLoading || filmstripTests.length === 0
-            ? Array.from({ length: 8 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md snap-start"
-                >
-                  <Skeleton className="w-full h-full bg-black/5" />
-                </div>
-              ))
-            : filmstripTests.map((t, i) => (
-                <div
-                  key={t.id}
-                  className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md snap-start bg-[#f6f7f9]"
-                >
-                  <img
-                    src={resolveImage(t, i)}
-                    alt={cleanName(t.test_name)}
-                    loading="lazy"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = kitImages[i % kitImages.length];
-                    }}
-                    className="w-full h-full object-contain p-4"
-                  />
-                </div>
-              ))}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+          }}
+        >
+          <div
+            ref={trackRef}
+            className="flex gap-3 sm:gap-4 px-4 sm:px-6 will-change-transform"
+          >
+            {isLoading || filmstripTests.length === 0
+              ? Array.from({ length: 8 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md"
+                  >
+                    <Skeleton className="w-full h-full bg-black/5" />
+                  </div>
+                ))
+              : filmstripLoop.map((t, i) => (
+                  <div
+                    key={`${t.id}-${i}`}
+                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md bg-[#f6f7f9]"
+                  >
+                    <img
+                      src={resolveImage(t, i)}
+                      alt={cleanName(t.test_name)}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = kitImages[i % kitImages.length];
+                      }}
+                      className="w-full h-full object-contain p-4"
+                    />
+                  </div>
+                ))}
+          </div>
         </div>
       </div>
 
