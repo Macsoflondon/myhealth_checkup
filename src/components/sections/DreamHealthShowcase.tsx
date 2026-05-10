@@ -184,11 +184,6 @@ const DreamHealthShowcase = () => {
 
         {/* Most popular test kit cards — sourced from the same data as the toolbar */}
         <div className="mt-12 sm:mt-14">
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <span className="inline-block px-3 py-1 rounded-full font-semibold tracking-wide uppercase bg-[#22bed3] text-white text-sm">
-              Most popular
-            </span>
-          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
             {isLoading &&
               Array.from({ length: 12 }).map((_, i) => (
