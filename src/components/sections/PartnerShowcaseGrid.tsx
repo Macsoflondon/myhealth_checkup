@@ -28,11 +28,11 @@ const PartnerShowcaseGrid = () => {
         </div>
       </div>
 
-      {/* Featured Publications carousel */}
-      <FeaturedPublications />
-
       {/* Our Providers Most Popular Tests */}
       <DreamHealthShowcase />
+
+      {/* Featured Publications carousel */}
+      <FeaturedPublications />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
