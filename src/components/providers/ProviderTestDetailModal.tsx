@@ -107,18 +107,14 @@ export default function ProviderTestDetailModal({
   const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
   const turnaround = goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
 
+  // Authoritative biomarker count: prefer the stored count, fall back to list length.
+  const displayedBiomarkerCount = Math.max(test.biomarker_count ?? 0, biomarkers.length);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl gap-0 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl gap-0 max-h-[90vh] overflow-y-auto [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
         {/* Branded header */}
-        <div className="p-6 pb-5 text-white relative" style={{ backgroundColor: brandColor }}>
-          <button
-            onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-
+        <div className="p-6 pb-5 pr-14 text-white relative" style={{ backgroundColor: brandColor }}>
           <p className="text-sm text-white/80 mb-1">
             {providerName} · {goodbodyStatic?.category || test.category || "General Health"}
           </p>
@@ -132,10 +128,10 @@ export default function ProviderTestDetailModal({
                 £{(goodbodyStatic?.price ?? test.price!).toFixed(0)}
               </span>
             )}
-            {(biomarkers.length > 0 || (test.biomarker_count && test.biomarker_count > 0)) && (
+            {displayedBiomarkerCount > 0 && (
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
                 <TestTube2 className="w-3.5 h-3.5" />
-                {biomarkers.length || test.biomarker_count} biomarkers
+                {displayedBiomarkerCount} biomarkers
               </span>
             )}
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
