@@ -38,11 +38,10 @@ const heroSlides: Array<{
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
     objectPosition: "30% 35%",
-    // Pull subject up + slightly right on mobile, scale in to avoid empty edges
     mobileObjectPosition: "35% 28%",
     mobileScale: "scale(1.15)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/35 via-[#081129]/15 to-[#081129]/30",
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/15",
       surface: 65,
       accent: "turquoise",
     },
@@ -52,11 +51,10 @@ const heroSlides: Array<{
     headline: "Clinics Nationwide",
     subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 58%",
-    // Centre the clinician's torso on portrait
     mobileObjectPosition: "55% 45%",
     mobileScale: "scale(1.1)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/30",
+      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/15",
       surface: 55,
       accent: "turquoise",
     },
@@ -66,11 +64,10 @@ const heroSlides: Array<{
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 68%",
-    // Keep the kit visible on a narrow viewport
     mobileObjectPosition: "30% 60%",
     mobileScale: "scale(1.2)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/40 via-[#081129]/20 to-[#081129]/40",
+      overlay: "bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/20",
       surface: 70,
       accent: "turquoise",
     },
@@ -80,11 +77,10 @@ const heroSlides: Array<{
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
     objectPosition: "center 15%",
-    // Lower focal point on mobile so the figure isn't cropped at the head
     mobileObjectPosition: "center 25%",
     mobileScale: "scale(1.1)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/35 via-[#081129]/15 to-[#081129]/40",
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
       surface: 65,
       accent: "turquoise",
     },
