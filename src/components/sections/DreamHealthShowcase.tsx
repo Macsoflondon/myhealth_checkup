@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
 import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
@@ -10,6 +10,8 @@ import kitCoral from "@/assets/kits/kit-coral.jpg";
 import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
+import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
 // Rotating image pool so each popular kit gets a visual without duplicating provider data
 const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral, bloodTestKit];
@@ -61,6 +63,7 @@ const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   const { data: popularTests, isLoading } = usePopularTestsFromDatabase(18);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
@@ -223,7 +226,7 @@ const DreamHealthShowcase = () => {
                         £{t.price}
                       </span>
                       <button
-                        onClick={() => navigate("/popular-tests")}
+                        onClick={() => setSelectedTest(t)}
                         className="text-sm font-semibold text-white bg-[#22c0d4] px-4 py-2 rounded-full hover:bg-[#1ba8ba] transition-colors"
                       >
                         View kit
@@ -235,6 +238,28 @@ const DreamHealthShowcase = () => {
           </div>
         </div>
       </div>
+
+      <ProviderTestDetailModal
+        test={
+          selectedTest
+            ? ({
+                id: selectedTest.id,
+                provider_id: selectedTest.provider_id,
+                test_name: selectedTest.test_name,
+                description: selectedTest.description,
+                price: selectedTest.price,
+                category: selectedTest.category,
+                sample_type: selectedTest.sample_type,
+                biomarker_count: selectedTest.biomarker_count,
+                url: selectedTest.url,
+                biomarkers_list: selectedTest.markers,
+              } satisfies ProviderTestCardData)
+            : null
+        }
+        providerName={selectedTest?.provider_name || ""}
+        open={!!selectedTest}
+        onOpenChange={(o) => !o && setSelectedTest(null)}
+      />
     </section>
   );
 };

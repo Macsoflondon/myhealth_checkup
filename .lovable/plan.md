@@ -1,44 +1,40 @@
-## Problem
+## Goal
 
-At tablet width (768–1023px) the main category toolbar (Most Popular Tests, General Wellness, Women's Health, Men's Health, Sports‑Fitness Health, Fertility – Prenatal, Cancer Screening, At Home Tests, More) is forced into a single no‑wrap row at near-desktop font sizes. The row is wider than the viewport and the first and last items are clipped on both edges (visible in the current screenshot).
+When users click the **"View kit"** button on any card in the *"Our Providers Most Popular Tests"* grid (homepage `DreamHealthShowcase` section), open a test-information modal styled exactly like the uploaded reference (Goodbody Clinic · Complete Allergy).
 
-Root cause is in `NavigationMenu.tsx`:
+## Approach
 
-- The non‑mobile branch uses `flex-nowrap` for everything ≥768px.
-- Each link is `text-sm md:text-sm lg:text-base xl:text-lg` with `whitespace-nowrap`, so 9 items cannot fit at 768–1023px.
+The project already has a fully built modal that matches the reference image: `src/components/providers/ProviderTestDetailModal.tsx`. It renders:
 
-The phone (<768px) layout already wraps and looks correct, and the desktop (≥1024px) layout already fits — only the tablet band is broken.
+- Branded coloured header with provider name · category, test title, price / biomarker count / turnaround pills, and a close button
+- Description, Collection Method badges, Biomarkers Included chips
+- Provider info card with brand-coloured avatar, tagline, accreditation chips
+- "Book with {provider} →" primary CTA + "+ Compare" secondary button
+- Footnote about being redirected to the provider's site
 
-## Fix
+So no new modal needs to be built — we only need to wire it into the popular-tests grid.
 
-Treat tablet as its own case in the toolbar so it stays inside the viewport while keeping the desktop look untouched.
+## Changes (single file)
 
-1. In `src/components/header/NavigationMenu.tsx`, in the non‑mobile branch:
-   - Switch the row from `flex-nowrap` to `flex-wrap` up to `lg`, then `lg:flex-nowrap` so desktop is unchanged.
-   - Tighten the gap on tablet: `gap-x-1 gap-y-1 lg:gap-2`.
-   - Centre the wrapped rows (already `justify-center`).
+**`src/components/sections/DreamHealthShowcase.tsx`**
 
-2. In the same file, on `renderNavItem` and `renderMoreButton`:
-   - Reduce the tablet type ramp from `text-sm md:text-sm lg:text-base xl:text-lg` to `text-xs md:text-[13px] lg:text-base xl:text-lg`.
-   - Reduce tablet padding from `px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5` to `px-1.5 md:px-1.5 lg:px-2.5 py-1 md:py-1 lg:py-1.5`.
-   - Keep `whitespace-nowrap` on each item so individual labels never break mid‑word; the row wraps between items instead.
+1. Import `useState` and `ProviderTestDetailModal`, plus the `ProviderTestCardData` type.
+2. Add local state: `const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);`
+3. Change the "View kit" button's `onClick` from `navigate("/popular-tests")` to `setSelectedTest(t)`.
+4. Map the selected `PopularTest` into the shape the modal expects:
+   ```ts
+   {
+     id, provider_id, test_name,
+     description, price, category,
+     sample_type, biomarker_count,
+     url,
+     biomarkers_list: t.markers, // PopularTest exposes `markers`
+   }
+   ```
+5. Render `<ProviderTestDetailModal>` once at the bottom of the section, controlled by `open={!!selectedTest}` and `onOpenChange={(o) => !o && setSelectedTest(null)}`, passing `providerName={selectedTest.provider_name}`.
 
-3. In `src/components/layout/Header.tsx`, in the toolbar wrapper (the `<div>` that holds `NavigationItems`):
-   - Reduce vertical padding so a two‑row toolbar still feels compact: change `py-1` to `py-1 md:py-1.5 lg:py-1`.
-   - Leave the `bg-[hsl(220,5%,97%)]`, gradient dividers, and sticky behaviour as‑is.
+## Out of scope
 
-Result at 768–1023px: all categories visible inside the viewport, naturally wrapping to two centred rows; desktop (≥1024px) is visually unchanged.
-
-## Out of scope (not changed in this plan)
-
-- The phone (<768px) header and drawer.
-- The navy logo/tagline band above the toolbar (the missing logo on tablet is a separate issue and can be addressed in a follow‑up if you want).
-- Promo ticker, mega menus, and the More dropdown contents.
-
-## Verification
-
-After the change, screenshot the home route at tablet widths 768×1024 and 820×1180 and confirm:
-
-- No category text is clipped on the left or right edge.
-- The toolbar wraps to at most two centred rows.
-- Desktop (≥1024px) still renders as a single row identical to today.
+- No changes to the modal's design, content sections, or other pages that already use it.
+- No changes to data fetching — we reuse `usePopularTestsFromDatabase` data already loaded for the grid.
+- The filmstrip tiles above the grid are not affected (no "View kit" button there).
