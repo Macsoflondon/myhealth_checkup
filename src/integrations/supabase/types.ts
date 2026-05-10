@@ -680,10 +680,12 @@ export type Database = {
       }
       provider_tests: {
         Row: {
+          base_price: number | null
           biomarker_count: number | null
           biomarkers_list: Json | null
           category: string | null
           clinic_visit_available: boolean | null
+          collection_options: Json | null
           conditions: Json | null
           created_at: string
           description: string | null
@@ -707,6 +709,7 @@ export type Database = {
           scraped_at: string
           symptoms: Json | null
           test_name: string
+          turnaround_days_text: string | null
           updated_at: string
           url: string | null
           url_verified: boolean | null
@@ -714,10 +717,12 @@ export type Database = {
           who_should_test: string | null
         }
         Insert: {
+          base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
           description?: string | null
@@ -741,6 +746,7 @@ export type Database = {
           scraped_at?: string
           symptoms?: Json | null
           test_name: string
+          turnaround_days_text?: string | null
           updated_at?: string
           url?: string | null
           url_verified?: boolean | null
@@ -748,10 +754,12 @@ export type Database = {
           who_should_test?: string | null
         }
         Update: {
+          base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
           description?: string | null
@@ -775,6 +783,7 @@ export type Database = {
           scraped_at?: string
           symptoms?: Json | null
           test_name?: string
+          turnaround_days_text?: string | null
           updated_at?: string
           url?: string | null
           url_verified?: boolean | null

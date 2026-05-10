@@ -1,64 +1,62 @@
-## Issues found
+## Goal
 
-### 1. Two close X buttons on the modal
-The shadcn `DialogContent` (`src/components/ui/dialog.tsx`, line 45–48) already renders a built-in close X in the top-right. `ProviderTestDetailModal.tsx` (line 115–120) adds a second custom X over the coloured header. That's why two X icons appear.
+For every test currently shown in "Our Providers' Most Popular Tests" (all `is_popular = true` rows across Lola Health, Goodbody, Medichecks, Randox, London Medical Laboratory, Thriva, Tuli), verify the real turnaround time, lowest available price, and collection options on the live provider page, then store and display them correctly.
 
-### 2. Wrong biomarker count on the count pill
-The modal renders `{biomarkers.length || test.biomarker_count}`. For Lola Health "Peak Insights 70", the database stores `biomarker_count = 70` but the partial `biomarkers_list` JSON only contains 10 grouped category entries (e.g. "Lipids", "Liver"), so the pill shows **10**. The authoritative number (`biomarker_count`) should win on the pill, with the list section showing whatever named biomarkers we actually have.
+## What's wrong today
 
-Audit of all `is_popular = true` tests where the displayed count is wrong:
+1. **Turnaround is provider-wide, not per-test.** `formatTurnaround()` in `ProviderTestDetailModal.tsx` returns one hard-coded string per provider (e.g. all Lola Health = "3–5 working days"). Lola's Peak Insights 70 is actually 2 working days.
+2. **Price is shown as a single figure (£230)** even when the provider lists tiered pricing ("from £195"). There is no "from" prefix and no concept of a base price.
+3. **Collection method copy is misleading.** Lola Health offers three options: in-clinic phlebotomy (+£35), at-home phlebotomy (+£35), or self-arranged phlebotomist (free). The card just says "At-home phlebotomy service".
 
-| Provider | Test | DB count | List len shown |
-|---|---|---|---|
-| Lola Health | Peak Insights 70 | 70 | 10 |
-| Lola Health | Vital Check 56 | 56 | 9 |
-| Lola Health | Female Hormones Clarity 31 | 31 | 11 |
-| Lola Health | Male Active Boost 36 | 36 | 7 |
-| Lola Health | Male Hormones Clarity 14 | 14 | 11 |
-| Lola Health | Thyroid & Hormonal Function | 10 | 7 |
-| Lola Health | Urinalysis | 15 | 6 |
-| Goodbody | Advanced Well Man (count 7 vs list 161 — count is wrong) | needs fix |
-| Goodbody | Advanced Well Woman (count 2 vs list 113 — count is wrong) | needs fix |
-| Goodbody | Bowel Cancer FIT (count 100 — incorrect, this is a single-marker test) | needs fix |
-| Goodbody | TruCheck™ (count 100 — likely incorrect) | needs verification |
-| Randox | Male Hormone QuickDraw / Thyroid / Vitamin D — all stored as 150 (default, wrong) | needs fix |
+## Approach
 
-### 3. Description text is just a category dump
-For Lola Health popular tests the `description` column currently contains a category list, e.g. "Peak comprehensive (Lipids incl Apo B, Lp(a), Liver, Kidney, Thyroid, Diabetes, Hormones, Vitamins, Iron, Inflammation)". The biomarker chips below already show those, so the description should explain **what the test is for and who it suits**, not duplicate the list.
+### 1. Source of truth — scrape every popular test
+Run a one-off admin script (Supabase Edge Function using the existing `FIRECRAWL_API_KEY`) that, for each `is_popular = true` row in `provider_tests`:
+- fetches the `url` with Firecrawl (`formats: ['markdown']`)
+- extracts: turnaround in working days, lowest/base price, available collection methods + any add-on cost
+- writes the verified values back via a follow-up migration
 
-## Proposed fix
+Output a CSV/JSON to `/mnt/documents/popular-tests-audit.json` for review before applying.
 
-### A. Code change — `src/components/providers/ProviderTestDetailModal.tsx`
-- Delete the custom `<button>` containing the second `<X>` (lines 115–120). Keep the shadcn built-in close button.
-- Make it visible on the dark coloured header by overriding the close button styling on `DialogContent` via a className (the shadcn close uses `text-foreground` which is invisible on the brand-coloured header — switch to white via a small CSS tweak, e.g. add `[&>button]:text-white [&>button]:opacity-100 [&>button]:hover:opacity-80` to the `DialogContent` className).
-- Change biomarker count badge logic:
-  ```ts
-  const displayedCount =
-    Math.max(test.biomarker_count ?? 0, biomarkers.length);
+### 2. Schema additions (one migration)
+Add three nullable columns to `provider_tests`:
+- `turnaround_days_text TEXT` — e.g. "2 working days", "Same day"
+- `base_price NUMERIC` — lowest available price; if set, UI shows "from £X"
+- `collection_options JSONB` — array of `{ method, price_modifier, note }`, e.g.
   ```
-  and only render the pill when `displayedCount > 0`. This fixes Peak Insights 70 → shows 70.
+  [
+    { "method": "In-clinic phlebotomy", "price_modifier": 35, "note": "+£35" },
+    { "method": "At-home phlebotomy",  "price_modifier": 35, "note": "+£35" },
+    { "method": "Self-arranged phlebotomist", "price_modifier": 0, "note": "Free" }
+  ]
+  ```
 
-### B. Data migration — fix biomarker counts and descriptions
-Create one SQL migration that updates `provider_tests` rows for each popular test where the data is wrong. Scope:
+### 3. Data update
+Apply scraped, human-reviewed values via `INSERT … ON CONFLICT` style updates (insert tool) for every popular test. Lola's Peak Insights 70 lands as: turnaround "2 working days", base_price 195, three collection options as above.
 
-- **Lola Health (8 tests):** rewrite `description` with 1–2 sentence plain-English explanation of who the test is for and what it covers (no biomarker list duplication). Keep `biomarker_count` as it is (those numbers are correct — the issue was display).
-- **Goodbody (5 tests):** correct `biomarker_count` to the real number for Advanced Well Man, Advanced Well Woman, Premium Complete, Bowel Cancer FIT (set to 1 — single FIT marker), TruCheck (verify against provider site; if uncertain, leave description but null the count rather than show "100"). Tighten description copy where it's just a marketing tagline.
-- **Randox (4 tests):** correct `biomarker_count` from the placeholder 150 to the real value per test (Vitamin D = 1, Thyroid Blood Test ≈ 5, Male/Female Hormone QuickDraw — verify on Randox site; default to the parsed list length if uncertain).
-- **Medichecks (3 tests):** populate `biomarker_count` from the test name where stated (e.g. Advanced Well Woman = 47 per its own description).
+### 4. UI changes — `ProviderTestDetailModal.tsx` and `ProviderTestCard.tsx`
+- **Turnaround pill:** prefer `test.turnaround_days_text`, fall back to current `formatTurnaround(provider_id)`.
+- **Price:** if `test.base_price` is set, render `from £{base_price}` (card and modal). Otherwise unchanged.
+- **Collection method block in modal:** if `collection_options` exists, replace the Finger-prick/Venous badges with a single line — "Multiple collection options available" — plus a Tooltip (shadcn `Tooltip`) listing each option and its price modifier. If no `collection_options`, keep existing badge behaviour.
+- **Card:** keep the current finger-prick/venous badges (no change), since the user only asked for the modal fix.
 
-Where the public count cannot be confirmed I will set it to `null` rather than show a misleading number, and the modal will simply omit the pill.
-
-I will compile the new descriptions and counts in a single migration, then run it. The new copy will be British English, professional, no diagnoses or marketing hype, in line with the project memory rules.
+### 5. QA
+After data is in:
+- Spot-check 4 tests in the modal (Peak Insights 70, Vital Check 56, a Goodbody test, a Randox test) and confirm the displayed turnaround, "from £X" and tooltip match the live provider page.
 
 ## Out of scope
+- Repopulating biomarker lists (separate task).
+- Changing how `formatTurnaround` works for non-popular tests.
+- Card-level redesign of badges (modal only for collection options).
 
-- Repopulating full `biomarkers_list` arrays for Lola Health tests (e.g. listing all 70 biomarkers for Peak Insights 70). That requires a re-scrape from Lola Health and is a separate task. The pill will show the correct total; the chips will continue to show whatever named biomarkers we have today.
-- Touching non-popular tests in the catalogue.
+## Technical notes
+- Scraper job: new edge function `audit-popular-tests` invoked manually from `/admin/test-dashboard` (or run once via `supabase--curl_edge_functions`) — no cron.
+- Firecrawl call uses `summary` + `markdown` to keep token cost down; parse with simple regex for "working days" and "£" patterns, then a small LLM step (existing `LOVABLE_API_KEY`/`OPENAI_API_KEY`) for collection options.
+- New columns are additive and nullable, so existing reads are unaffected.
+- Tooltip component already exists in `src/components/ui/tooltip.tsx`.
 
-## Open question
-
-Should I:
-- (a) Write the new descriptions and corrected counts myself based on each provider's public test page (I will look them up and use the official figures), or
-- (b) Wait for you to supply the exact descriptions/counts for the popular tests?
-
-I will proceed with (a) by default unless you say otherwise.
+## Deliverables
+1. Migration adding the three columns.
+2. Edge function `audit-popular-tests` + JSON audit artifact for review.
+3. Data update applying verified turnaround / base_price / collection_options to ~20 popular tests.
+4. Modal + card edits to render "from £X", per-test turnaround, and the collection-options tooltip.

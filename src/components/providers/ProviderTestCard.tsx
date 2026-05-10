@@ -17,6 +17,9 @@ export interface ProviderTestCardData {
   biomarkers_list?: any;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
+  turnaround_days_text?: string | null;
+  base_price?: number | null;
+  collection_options?: any;
 }
 
 interface ProviderTestCardProps {
