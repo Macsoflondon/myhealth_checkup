@@ -238,6 +238,28 @@ const DreamHealthShowcase = () => {
           </div>
         </div>
       </div>
+
+      <ProviderTestDetailModal
+        test={
+          selectedTest
+            ? ({
+                id: selectedTest.id,
+                provider_id: selectedTest.provider_id,
+                test_name: selectedTest.test_name,
+                description: selectedTest.description,
+                price: selectedTest.price,
+                category: selectedTest.category,
+                sample_type: selectedTest.sample_type,
+                biomarker_count: selectedTest.biomarker_count,
+                url: selectedTest.url,
+                biomarkers_list: selectedTest.markers,
+              } satisfies ProviderTestCardData)
+            : null
+        }
+        providerName={selectedTest?.provider_name || ""}
+        open={!!selectedTest}
+        onOpenChange={(o) => !o && setSelectedTest(null)}
+      />
     </section>
   );
 };
