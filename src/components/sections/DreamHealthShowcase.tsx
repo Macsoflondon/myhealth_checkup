@@ -212,7 +212,7 @@ const DreamHealthShowcase = () => {
                       className="w-full h-full object-contain p-4"
                     />
                   </div>
-                  <div className="p-5 flex flex-col flex-1 shadow rounded-lg">
+                  <div className="p-5 flex flex-col flex-1 rounded-lg shadow-xl">
                     <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
                       {t.provider_name}
                     </p>
