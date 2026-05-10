@@ -130,7 +130,7 @@ const DreamHealthShowcase = () => {
         {/* Most popular test kit cards — sourced from the same data as the toolbar */}
         <div className="mt-12 sm:mt-14">
           <div className="flex items-center justify-center gap-2 mb-6">
-            <span className="inline-block px-3 py-1 rounded-full bg-[#081129]/5 text-[#081129] text-xs font-semibold tracking-wide uppercase">
+            <span className="inline-block px-3 py-1 rounded-full font-semibold tracking-wide uppercase bg-[#22bed3] text-white text-sm">
               Most popular
             </span>
           </div>
