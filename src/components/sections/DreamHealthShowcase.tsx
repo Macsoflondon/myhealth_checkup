@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
 import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
@@ -10,6 +10,8 @@ import kitCoral from "@/assets/kits/kit-coral.jpg";
 import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
+import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
 // Rotating image pool so each popular kit gets a visual without duplicating provider data
 const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral, bloodTestKit];
