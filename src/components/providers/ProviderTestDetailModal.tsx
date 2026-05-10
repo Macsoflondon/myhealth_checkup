@@ -155,7 +155,29 @@ export default function ProviderTestDetailModal({
           )}
 
           {/* Collection method */}
-          {sampleBadges.length > 0 && (
+          {collectionOptions && collectionOptions.length > 0 ? (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                Collection Options
+              </h4>
+              <ul className="space-y-1.5">
+                {collectionOptions.map((opt) => (
+                  <li
+                    key={opt.method}
+                    className="flex items-center justify-between gap-3 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2"
+                  >
+                    <span>{opt.method}</span>
+                    <span className="font-semibold" style={{ color: brandColor }}>
+                      {opt.note ?? (opt.price_modifier > 0 ? `+£${opt.price_modifier}` : "Free")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-gray-500 mt-2">
+                Choose your preferred way to provide the sample at checkout.
+              </p>
+            </div>
+          ) : sampleBadges.length > 0 && (
             <div>
               <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                 Collection Method

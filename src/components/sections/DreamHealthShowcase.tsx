@@ -223,7 +223,7 @@ const DreamHealthShowcase = () => {
                     </p>
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-xl font-bold text-[#081129]">
-                        £{t.price}
+                        {t.base_price && t.base_price > 0 ? `from £${t.base_price}` : `£${t.price}`}
                       </span>
                       <button
                         onClick={() => setSelectedTest(t)}
@@ -253,6 +253,9 @@ const DreamHealthShowcase = () => {
                 biomarker_count: selectedTest.biomarker_count,
                 url: selectedTest.url,
                 biomarkers_list: selectedTest.markers,
+                turnaround_days_text: selectedTest.turnaround_days_text,
+                base_price: selectedTest.base_price,
+                collection_options: selectedTest.collection_options,
               } satisfies ProviderTestCardData)
             : null
         }
