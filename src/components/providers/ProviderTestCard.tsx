@@ -19,7 +19,7 @@ export interface ProviderTestCardData {
   clinic_visit_available?: boolean | null;
   turnaround_days_text?: string | null;
   base_price?: number | null;
-  collection_options?: Array<{ method: string; price_modifier: number; note?: string }> | null;
+  collection_options?: any;
 }
 
 interface ProviderTestCardProps {
