@@ -93,7 +93,7 @@ const heroSlides: Array<{
     mobileObjectPosition: "62% 45%",
     mobileScale: "scale(1.15)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/30 via-[#081129]/15 to-[#081129]/35",
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/15",
       surface: 60,
       accent: "turquoise",
     },
