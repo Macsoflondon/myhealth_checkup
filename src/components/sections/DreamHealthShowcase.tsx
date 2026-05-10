@@ -226,7 +226,7 @@ const DreamHealthShowcase = () => {
                         £{t.price}
                       </span>
                       <button
-                        onClick={() => navigate("/popular-tests")}
+                        onClick={() => setSelectedTest(t)}
                         className="text-sm font-semibold text-white bg-[#22c0d4] px-4 py-2 rounded-full hover:bg-[#1ba8ba] transition-colors"
                       >
                         View kit
