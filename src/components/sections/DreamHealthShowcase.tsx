@@ -176,7 +176,7 @@ const DreamHealthShowcase = () => {
         <div className="mt-7 flex justify-center">
           <button
             onClick={() => navigate("/assisted-test-finder")}
-            className="bg-[#081129] text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg hover:bg-[#0f1d44] transition-colors"
+            className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3]"
           >
             Start your health journey
           </button>
