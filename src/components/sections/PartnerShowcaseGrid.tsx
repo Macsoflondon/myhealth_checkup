@@ -19,7 +19,7 @@ const PartnerShowcaseGrid = () => {
             <p className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] mb-3">
               Featured Partners
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold text-white">
+            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white md:text-5xl">
               Our Featured Partners of the Month
             </h2>
           </div>
