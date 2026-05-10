@@ -1,27 +1,44 @@
-## Goal
-Make the hero slideshow images look brighter, like they did before the dark scrim was strengthened.
+## Problem
 
-## Cause
-The hero images themselves have no CSS filter. The darkening comes from a navy gradient overlay (`bg-gradient-to-b from-[#081129]/… via-[#081129]/… to-[#081129]/…`) layered on top of each image in `src/components/sections/Hero.tsx` (line 190), with per-slide opacities defined in the `heroSlides` array (lines 44–100). Current values sit between 40% and 80% — that's what's flattening the photos.
+At tablet width (768–1023px) the main category toolbar (Most Popular Tests, General Wellness, Women's Health, Men's Health, Sports‑Fitness Health, Fertility – Prenatal, Cancer Screening, At Home Tests, More) is forced into a single no‑wrap row at near-desktop font sizes. The row is wider than the viewport and the first and last items are clipped on both edges (visible in the current screenshot).
 
-## Change
-Reduce every overlay's navy opacity by roughly half, so the images read bright while the white text on top stays legible.
+Root cause is in `NavigationMenu.tsx`:
 
-`src/components/sections/Hero.tsx`, slide themes:
+- The non‑mobile branch uses `flex-nowrap` for everything ≥768px.
+- Each link is `text-sm md:text-sm lg:text-base xl:text-lg` with `whitespace-nowrap`, so 9 items cannot fit at 768–1023px.
 
-| Slide | Current overlay | New overlay |
-|---|---|---|
-| 1 | from `/75` via `/45` to `/70` | from `/35` via `/15` to `/30` |
-| 2 | from `/65` via `/40` to `/70` | from `/25` via `/10` to `/30` |
-| 3 | from `/80` via `/55` to `/80` | from `/40` via `/20` to `/40` |
-| 4 | from `/75` via `/50` to `/80` | from `/35` via `/15` to `/40` |
-| 5 | from `/70` via `/45` to `/75` | from `/30` via `/15` to `/35` |
+The phone (<768px) layout already wraps and looks correct, and the desktop (≥1024px) layout already fits — only the tablet band is broken.
 
-No other files touched. No image assets, no layout, no copy changes.
+## Fix
 
-## Out of scope
-- Headline / button styling
-- Removing the overlay entirely (kept at a light tint so white text remains readable)
-- Per-image colour grading or filters
+Treat tablet as its own case in the toolbar so it stays inside the viewport while keeping the desktop look untouched.
 
-If you'd prefer the overlay gone completely (no scrim at all) I can do that instead — just say so before approving.
+1. In `src/components/header/NavigationMenu.tsx`, in the non‑mobile branch:
+   - Switch the row from `flex-nowrap` to `flex-wrap` up to `lg`, then `lg:flex-nowrap` so desktop is unchanged.
+   - Tighten the gap on tablet: `gap-x-1 gap-y-1 lg:gap-2`.
+   - Centre the wrapped rows (already `justify-center`).
+
+2. In the same file, on `renderNavItem` and `renderMoreButton`:
+   - Reduce the tablet type ramp from `text-sm md:text-sm lg:text-base xl:text-lg` to `text-xs md:text-[13px] lg:text-base xl:text-lg`.
+   - Reduce tablet padding from `px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5` to `px-1.5 md:px-1.5 lg:px-2.5 py-1 md:py-1 lg:py-1.5`.
+   - Keep `whitespace-nowrap` on each item so individual labels never break mid‑word; the row wraps between items instead.
+
+3. In `src/components/layout/Header.tsx`, in the toolbar wrapper (the `<div>` that holds `NavigationItems`):
+   - Reduce vertical padding so a two‑row toolbar still feels compact: change `py-1` to `py-1 md:py-1.5 lg:py-1`.
+   - Leave the `bg-[hsl(220,5%,97%)]`, gradient dividers, and sticky behaviour as‑is.
+
+Result at 768–1023px: all categories visible inside the viewport, naturally wrapping to two centred rows; desktop (≥1024px) is visually unchanged.
+
+## Out of scope (not changed in this plan)
+
+- The phone (<768px) header and drawer.
+- The navy logo/tagline band above the toolbar (the missing logo on tablet is a separate issue and can be addressed in a follow‑up if you want).
+- Promo ticker, mega menus, and the More dropdown contents.
+
+## Verification
+
+After the change, screenshot the home route at tablet widths 768×1024 and 820×1180 and confirm:
+
+- No category text is clipped on the left or right edge.
+- The toolbar wraps to at most two centred rows.
+- Desktop (≥1024px) still renders as a single row identical to today.
