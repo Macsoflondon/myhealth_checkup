@@ -80,7 +80,7 @@ const Header = ({ className }: HeaderProps) => {
                   />
                 </Link>
 
-                <nav className="flex shrink-0 items-center gap-2 self-start pt-2" aria-label="User controls">
+                <nav className="flex shrink-0 items-center gap-2" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu isMobile />
                   <div className="pl-1 border-l border-white/20">
