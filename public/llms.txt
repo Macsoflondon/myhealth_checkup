@@ -4,22 +4,53 @@
 > cancer screening, hormone panels, fertility tests, and health MOTs from
 > regulated UK providers, helping consumers find the right test at the best price.
 
-## What We Do
+myhealth checkup is an independent comparison platform for private health
+tests in the United Kingdom. We focus on UKAS-accredited laboratories and
+CQC-regulated clinics, with transparent prices, biomarker lists, sample
+methods and turnaround times.
 
-- Compare private blood tests from UK-regulated laboratories
-- Cover: general health MOTs, cancer screening, hormones, fertility, thyroid, vitamins, allergy
+## Pages
 
-## Key Pages
+- [Home](/): Compare UK private health tests and screening providers.
+- [Compare tests](/compare): Side-by-side comparison of biomarkers, prices and turnaround.
+- [Compare by symptom](/compare/symptoms): Find tests recommended for specific symptoms.
+- [Compare by goal](/compare/goals): Tests grouped by health goal (longevity, performance, weight loss).
+- [Test categories](/test-categories): Browse all blood test categories.
+- [Trusted providers](/trusted-providers): UK-accredited test provider profiles.
+- [Compare providers](/providers/compare): Compare provider ratings, range and pricing.
+- [Find a clinic](/find-clinic): Locate accredited testing clinics across the UK.
+- [Biomarker database](/biomarker-database): Reference library of every biomarker we cover.
+- [Cancer biomarkers reference](/cancer-biomarkers-reference): Tumour markers and screening biomarkers.
+- [Cancer screening compare](/cancer-screening-compare): Compare private cancer screening panels.
+- [Assisted test finder](/assisted-test-finder): Guided quiz to recommend tests.
+- [Blood test analysis](/blood-test-analysis): AI-assisted blood test result interpretation.
+- [Health Resource Hub](/blog): Educational guides on private health testing.
+- [How it works](/how-it-works): How myhealth checkup compares providers.
+- [How we rank](/how-we-rank): Our ranking and editorial methodology.
+- [About](/about): Company mission, values and editorial independence.
+- [FAQs](/faqs): Frequently asked questions.
+- [Contact](/contact): Get in touch with the myhealth checkup team.
 
-- /compare — Side-by-side test comparison tool
-- /tests — Full test directory by category
-- /trusted-providers — UK provider profiles
-- /blog — Health testing guides
-- /biomarker-database — Biomarker reference library
+## Categories
 
-## Contact
+- [Hormones](/tests/hormones): Compare hormone blood tests (testosterone, oestrogen, cortisol).
+- [Thyroid](/tests/thyroid): TSH, T3, T4 and thyroid antibody tests.
+- [Vitamins](/tests/vitamins): Vitamin D, B12, iron and folate testing.
+- [Diabetes](/tests/diabetes): HbA1c, glucose and insulin resistance tests.
+- [Heart](/tests/heart): Cholesterol, lipids and cardiac risk markers.
+- [Cancer](/tests/cancer): PSA, CA125, CEA and other tumour markers.
+- [Fertility](/tests/fertility): AMH, FSH, LH and reproductive hormone tests.
+- [Men's health](/tests/mens-health): Testosterone, PSA and male health panels.
+- [Women's health](/tests/womens-health): Hormones, fertility and menopause tests.
+- [Gut health](/tests/gut): Microbiome, inflammation and digestive health tests.
 
-https://www.myhealthcheckup.co.uk/contact
+## Optional
+
+- [Privacy policy](/privacy-policy)
+- [Terms & conditions](/terms)
+- [Cookies](/cookies)
+- [Accessibility](/accessibility)
+- [Affiliate disclosure](/affiliate-disclosure)
 
 ## Allow
 

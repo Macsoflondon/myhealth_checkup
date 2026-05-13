@@ -191,6 +191,25 @@ const TestDetailPage = () => {
         <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
         <meta property="og:url" content={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
         <meta property="og:locale" content="en_GB" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": test.test_name,
+          "description": test.description || `${test.test_name} private health test available from accredited UK providers.`,
+          "brand": provider?.name ? { "@type": "Brand", "name": provider.name } : undefined,
+          "image": test.image_url || "https://www.myhealthcheckup.co.uk/og-image.png",
+          "category": test.category || "Health Test",
+          ...(test.price != null ? {
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "GBP",
+              "price": test.price.toFixed(2),
+              "availability": "https://schema.org/InStock",
+              "url": `https://www.myhealthcheckup.co.uk/${providerId}/${testId}`,
+              ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
+            }
+          } : {})
+        })}</script>
       </Helmet>
 
       <Header />
