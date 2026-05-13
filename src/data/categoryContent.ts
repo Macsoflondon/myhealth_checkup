@@ -30,7 +30,7 @@ export const categoryContent: Record<string, CategoryContent> = {
     name: "Hormone Tests",
     slug: "hormones",
     title: "Hormone Blood Tests UK | Compare Prices from £39 | myhealth checkup",
-    metaDescription: "Compare hormone blood tests from UK's leading private providers. Check testosterone, oestrogen, cortisol & more. Same-day results available. UKAS accredited labs.",
+    metaDescription: "Compare hormone blood tests from UK's leading private providers. Check testosterone, oestrogen, cortisol and more from UKAS accredited labs.",
     heroTitle: "Hormone Blood Tests",
     heroSubtitle: "Understand your hormonal balance with comprehensive hormone testing from trusted UK providers",
     introduction: "Hormones are chemical messengers that regulate virtually every function in your body, from metabolism and mood to sleep and reproduction. A hormone blood test can reveal imbalances that may be causing symptoms like fatigue, weight changes, mood swings, or fertility issues. Our platform compares hormone tests from UKAS-accredited UK laboratories, helping you find the right test at the best price.",
