@@ -152,10 +152,10 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in scrape-medichecks function:', error);
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: (error instanceof Error ? error.message : String(error)),
-        fallback: 'Will use database backup data' 
+      JSON.stringify({
+        success: false,
+        error: 'Internal server error',
+        fallback: 'Will use database backup data'
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
