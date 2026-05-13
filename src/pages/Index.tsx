@@ -121,7 +121,7 @@ const Index = () => {
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
-            content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use."
+            content="Compare UK private blood tests, hormone checks and screenings from accredited UKAS labs and CQC clinics. Free, transparent, independent."
           />
           <meta
             name="keywords"
