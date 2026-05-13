@@ -71,19 +71,21 @@ const Header = ({ className }: HeaderProps) => {
             {/* Top gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
             <div className="container mx-auto max-w-full px-3 sm:px-4 bg-tertiary">
-              <div className="py-4 flex items-start justify-between gap-6 sm:gap-8 min-w-0 bg-tertiary">
+              <div className="py-2.5 flex items-center justify-between gap-4 sm:gap-6 min-w-0 bg-tertiary">
                 <Link to="/" className="flex min-w-0 flex-1 items-start overflow-hidden">
                   <img
                     src={mobileLogo}
                     alt="myhealth checkup"
-                    className="h-[80px] xs:h-[90px] sm:h-[100px] w-auto max-w-[calc(100vw-11rem)] object-contain object-left"
+                    className="h-[70px] xs:h-[80px] sm:h-[90px] w-auto max-w-[calc(100vw-12rem)] object-contain object-left"
                   />
                 </Link>
 
-                <nav className="flex shrink-0 items-center gap-0.5 self-start pt-1" aria-label="User controls">
+                <nav className="flex shrink-0 items-center gap-2" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu isMobile />
-                  <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+                  <div className="pl-1 border-l border-white/20">
+                    <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+                  </div>
                 </nav>
               </div>
             </div>

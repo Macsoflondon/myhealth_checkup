@@ -41,7 +41,7 @@ const heroSlides: Array<{
     mobileObjectPosition: "35% 28%",
     mobileScale: "scale(1.15)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/15",
+      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/10",
       surface: 65,
       accent: "turquoise",
     },
@@ -54,7 +54,7 @@ const heroSlides: Array<{
     mobileObjectPosition: "55% 45%",
     mobileScale: "scale(1.1)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/15",
+      overlay: "bg-gradient-to-b from-[#081129]/5 via-transparent to-[#081129]/10",
       surface: 55,
       accent: "turquoise",
     },
@@ -67,7 +67,7 @@ const heroSlides: Array<{
     mobileObjectPosition: "30% 60%",
     mobileScale: "scale(1.2)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/20",
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/15",
       surface: 70,
       accent: "turquoise",
     },
@@ -80,7 +80,7 @@ const heroSlides: Array<{
     mobileObjectPosition: "center 25%",
     mobileScale: "scale(1.1)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
+      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/15",
       surface: 65,
       accent: "turquoise",
     },
@@ -93,7 +93,7 @@ const heroSlides: Array<{
     mobileObjectPosition: "62% 45%",
     mobileScale: "scale(1.15)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/15",
+      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/10",
       surface: 60,
       accent: "turquoise",
     },
