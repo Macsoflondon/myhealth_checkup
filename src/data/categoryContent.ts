@@ -162,7 +162,7 @@ export const categoryContent: Record<string, CategoryContent> = {
     name: "General Health",
     slug: "general-health",
     title: "General Health Blood Tests UK | Full Health Checks from £49 | myhealth checkup",
-    metaDescription: "Compare comprehensive health check blood tests from UK's top private providers. Check cholesterol, liver, kidney function & more. UKAS accredited results in 2-5 days.",
+    metaDescription: "Compare comprehensive health check blood tests from UK's top private providers. Cholesterol, liver, kidney function and more from UKAS accredited labs.",
     heroTitle: "General Health Blood Tests",
     heroSubtitle: "Comprehensive health screening to understand your overall wellbeing and catch issues early",
     introduction: "A general health blood test provides a comprehensive snapshot of your overall health, screening for common conditions and identifying potential issues before they become serious. These tests typically cover multiple body systems including liver function, kidney function, cholesterol, blood sugar, and key vitamins. Regular health checks are one of the most proactive steps you can take for your long-term wellbeing.",
