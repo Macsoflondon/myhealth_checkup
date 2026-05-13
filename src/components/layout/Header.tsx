@@ -83,7 +83,7 @@ const Header = ({ className }: HeaderProps) => {
                 <nav className="flex shrink-0 items-center gap-0.5 self-start pt-1" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu isMobile />
-                  <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} className="relative z-10" />
+                  <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
                 </nav>
               </div>
             </div>
