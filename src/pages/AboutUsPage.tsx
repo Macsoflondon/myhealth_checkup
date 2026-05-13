@@ -31,7 +31,11 @@ const AboutUsPage = () => {
       <Helmet>
         <title>About Us | myhealth checkup</title>
         <meta name="description" content="Learn about myhealth checkup's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/about" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/about" />
+        <meta property="og:title" content="About myhealth checkup — our mission and values" />
+        <meta property="og:description" content="Independent UK platform comparing accredited private health tests. Learn about our mission, values, and commitment to transparency." />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/about" />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AboutPage",
