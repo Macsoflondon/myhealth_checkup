@@ -82,26 +82,24 @@
 
   <!-- Biomarker & cancer hubs -->
   <url><loc>https://www.myhealthcheckup.co.uk/biomarker-database</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/cancer-screening</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/cancer-screening-compare</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/cancer-biomarkers-reference</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
   <!-- Discovery & search -->
-  <url><loc>https://www.myhealthcheckup.co.uk/intelligent-search</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/assisted-test-finder</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/recommendations</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/health-resource-hub</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
   <!-- Condition / health hub pages -->
-  <url><loc>https://www.myhealthcheckup.co.uk/heart-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/diabetes-testing</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/gut-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/mens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/womens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/vitamin-deficiency</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/conditions</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Provider catalogues -->
-  <url><loc>https://www.myhealthcheckup.co.uk/medichecks/tests</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/medichecks</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/medichecks/mens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/thriva</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/randox</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/lola-health</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/london-medical-laboratory</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/goodbody-clinic</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>
