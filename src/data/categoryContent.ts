@@ -291,7 +291,7 @@ export const categoryContent: Record<string, CategoryContent> = {
     name: "Men's Health",
     slug: "mens-health",
     title: "Men's Health Blood Tests UK | Testosterone & Prostate Tests from £49 | myhealth checkup",
-    metaDescription: "Compare men's health blood tests from leading UK providers. Check testosterone, PSA, heart health & more. Discreet home testing available. UKAS accredited labs.",
+    metaDescription: "Compare men's health blood tests from leading UK providers. Check testosterone, PSA and heart health from UKAS accredited labs.",
     heroTitle: "Men's Health Blood Tests",
     heroSubtitle: "Comprehensive testing for men's unique health needs, from hormones to heart health",
     introduction: "Men's health testing focuses on the specific health concerns that affect men, including testosterone levels, prostate health, cardiovascular risk, and metabolic function. Many men put off health checks, but regular testing can catch issues early when they're most treatable. Our platform compares men's health tests from trusted UK providers, making it easy to take control of your health.",
