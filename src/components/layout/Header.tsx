@@ -76,7 +76,7 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={mobileLogo}
                     alt="myhealth checkup"
-                    className="h-[80px] xs:h-[90px] sm:h-[100px] w-auto max-w-[calc(100vw-11rem)] object-contain object-left"
+                    className="h-[70px] xs:h-[80px] sm:h-[90px] w-auto max-w-[calc(100vw-12rem)] object-contain object-left"
                   />
                 </Link>
 
