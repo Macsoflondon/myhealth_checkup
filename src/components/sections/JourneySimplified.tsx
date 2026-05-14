@@ -7,7 +7,7 @@ const JourneySimplified = () => {
       number: "01",
       icon: Search,
       title: "Tell us what you want to check",
-      description: "Search by symptom, condition, or browse test categories to find the right test."
+      description: "Finding the right test shouldn't be complicated. We've made it simple in three easy steps."
     },
     {
       number: "02",
@@ -54,7 +54,7 @@ const JourneySimplified = () => {
                 <h3 className="text-base sm:text-lg font-heading font-semibold mb-1 text-brand-turquoise">
                   {step.title}
                 </h3>
-                <p className="text-tertiary font-sans font-medium text-xs sm:text-sm leading-snug max-w-[260px] mx-auto">
+                <p className="h-px w-8 sm:w-12 bg-brand-turquoise/40 font-semibold">
                   {step.description}
                 </p>
               </div>
