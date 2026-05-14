@@ -7,7 +7,7 @@ const JourneySimplified = () => {
       number: "01",
       icon: Search,
       title: "Tell us what you want to check",
-      description: "Finding the right test shouldn't be complicated. We've made it simple in three easy steps."
+      description: ""
     },
     {
       number: "02",
@@ -33,7 +33,6 @@ const JourneySimplified = () => {
             titleClassName="text-tertiary"
           />
           <p className="text-tertiary font-sans font-medium text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-snug mt-2">
-            Finding the right health test shouldn't be complicated. We've made it simple in three easy steps.
           </p>
         </div>
 
