@@ -172,13 +172,13 @@ const HormonesPage = () => {
         <title>Hormone Tests | myhealth checkup</title>
         <meta name="description" content="Complete hormone testing including thyroid, reproductive, stress, and metabolic hormones. Professional hormone analysis from £45." />
         <meta name="keywords" content="hormone blood tests, testosterone test, female hormones, thyroid hormones, cortisol test, fertility hormones, menopause test" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/hormones" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/hormones" />
         
         {/* Open Graph Tags */}
         <meta property="og:title" content="Hormone Tests | myhealth checkup" />
         <meta property="og:description" content="Comprehensive hormone testing for optimal health and wellness" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/hormones" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/hormones" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />

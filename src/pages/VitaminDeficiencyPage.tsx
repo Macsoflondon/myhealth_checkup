@@ -63,7 +63,7 @@ const VitaminDeficiencyPage = () => {
       <Helmet>
         <title>Vitamin Deficiency Tests | myhealth checkup</title>
         <meta name="description" content="Compare vitamin and mineral deficiency tests from UK providers. Test for vitamin D, B12, iron, and folate deficiencies from £39." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/tests/vitamins" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/tests/vitamins" />
       </Helmet>
       
       <Header />

@@ -41,13 +41,13 @@ const AboutUsPage = () => {
           "@type": "AboutPage",
           "name": "About myhealth checkup",
           "description": "Learn about myhealth checkup's mission to make health testing accessible to everyone.",
-          "url": "https://myhealthcheckup.co.uk/about",
-          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
+          "url": "https://www.myhealthcheckup.co.uk/about",
+          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" },
           "publisher": {
             "@type": "Organization",
             "name": "MYHEALTHCHECKUP LTD",
-            "url": "https://myhealthcheckup.co.uk",
-            "logo": "https://myhealthcheckup.co.uk/src/assets/logo-1.svg"
+            "url": "https://www.myhealthcheckup.co.uk",
+            "logo": "https://www.myhealthcheckup.co.uk/src/assets/logo-1.svg"
           }
         })}</script>
       </Helmet>

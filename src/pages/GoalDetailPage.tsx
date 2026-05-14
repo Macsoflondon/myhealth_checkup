@@ -19,7 +19,7 @@ const GoalDetailPage = () => {
   if (!goal) return <NotFound />;
 
   const pageTitle = `Blood Test for ${goal.name} — Compare UK Private Tests | myhealth checkup`;
-  const pageUrl = `https://myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
+  const pageUrl = `https://www.myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
 
   return (
     <MainLayout>

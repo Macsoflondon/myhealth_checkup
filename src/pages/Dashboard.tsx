@@ -13,6 +13,7 @@ import { useDraggable } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
   const { user, isLoading: authLoading } = useAuth();
@@ -64,6 +65,16 @@ const Dashboard = () => {
 
   return (
     <MainLayout mainClassName="flex-grow bg-muted/30 py-4 sm:py-6 md:py-10 px-3 sm:px-4">
+      <Helmet>
+        <title>My Dashboard | myhealth checkup</title>
+        <meta name="description" content="Manage your saved private health tests, providers and orders in one place on myhealth checkup — the UK's independent comparison platform." />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/dashboard" />
+        <meta name="robots" content="noindex, follow" />
+        <meta property="og:title" content="My Dashboard | myhealth checkup" />
+        <meta property="og:description" content="Manage your saved private health tests, providers and orders on myhealth checkup." />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/dashboard" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <div className="container mx-auto max-w-6xl">
         <PageHeading 
           title="My" 

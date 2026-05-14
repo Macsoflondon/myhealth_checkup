@@ -15,6 +15,7 @@ import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle, Lock } from "lucide-react";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { Helmet } from "react-helmet-async";
 
 
 const Auth = () => {
@@ -289,6 +290,16 @@ const Auth = () => {
   }
 
   return <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Sign In or Create Account | myhealth checkup</title>
+        <meta name="description" content="Sign in or create your myhealth checkup account to compare private UK health tests, save favourites and track orders across accredited providers." />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/auth" />
+        <meta name="robots" content="noindex, follow" />
+        <meta property="og:title" content="Sign In or Create Account | myhealth checkup" />
+        <meta property="og:description" content="Access your myhealth checkup account to compare and manage private UK health tests." />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/auth" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
         <div className="max-w-md w-full">

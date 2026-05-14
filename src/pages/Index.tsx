@@ -37,7 +37,7 @@ const Index = () => {
     name: "myhealth checkup - UK's Leading Health Test Comparison Platform",
     description:
       "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
-    url: "https://myhealthcheckup.co.uk",
+    url: "https://www.myhealthcheckup.co.uk",
     sameAs: [
       "https://www.facebook.com/myhealthcheckupuk",
       "https://www.twitter.com/myhealthcheckup",
@@ -45,7 +45,10 @@ const Index = () => {
     ],
     address: {
       "@type": "PostalAddress",
-      addressCountry: "United Kingdom",
+      streetAddress: "2/369 Clapham Road",
+      addressLocality: "London",
+      postalCode: "SW9 9BT",
+      addressCountry: "GB",
     },
     audience: {
       "@type": "Audience",
@@ -74,11 +77,11 @@ const Index = () => {
   const organisationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": "https://myhealthcheckup.co.uk/#organisation",
+    "@id": "https://www.myhealthcheckup.co.uk/#organisation",
     name: "myhealth checkup",
     legalName: "MYHEALTHCHECKUP LTD",
-    url: "https://myhealthcheckup.co.uk",
-    logo: "https://myhealthcheckup.co.uk/og-image.png",
+    url: "https://www.myhealthcheckup.co.uk",
+    logo: "https://www.myhealthcheckup.co.uk/og-image.png",
     sameAs: [
       "https://www.facebook.com/myhealthcheckupuk",
       "https://www.twitter.com/myhealthcheckup",
@@ -98,17 +101,17 @@ const Index = () => {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://myhealthcheckup.co.uk/#website",
-    url: "https://myhealthcheckup.co.uk",
+    "@id": "https://www.myhealthcheckup.co.uk/#website",
+    url: "https://www.myhealthcheckup.co.uk",
     name: "myhealth checkup",
     description: "Compare private health tests across accredited UK providers.",
-    publisher: { "@id": "https://myhealthcheckup.co.uk/#organisation" },
+    publisher: { "@id": "https://www.myhealthcheckup.co.uk/#organisation" },
     inLanguage: "en-GB",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://myhealthcheckup.co.uk/compare?search={search_term_string}",
+        urlTemplate: "https://www.myhealthcheckup.co.uk/compare?search={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },
@@ -127,7 +130,7 @@ const Index = () => {
             name="keywords"
             content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
           />
-          <link rel="canonical" href="https://myhealthcheckup.co.uk/" />
+          <link rel="canonical" href="https://www.myhealthcheckup.co.uk/" />
 
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
@@ -136,8 +139,8 @@ const Index = () => {
             property="og:description"
             content="Compare private health tests from accredited UK providers. Real-time prices, expert reviews, and transparent comparisons."
           />
-          <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
-          <meta property="og:url" content="https://myhealthcheckup.co.uk/" />
+          <meta property="og:image" content="https://www.myhealthcheckup.co.uk/og-image.png" />
+          <meta property="og:url" content="https://www.myhealthcheckup.co.uk/" />
           <meta property="og:locale" content="en_GB" />
 
           <meta name="twitter:card" content="summary_large_image" />
@@ -147,7 +150,7 @@ const Index = () => {
             name="twitter:description"
             content="Compare private blood tests, health screenings & wellness services. Real-time prices from accredited providers."
           />
-          <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta name="twitter:image" content="https://www.myhealthcheckup.co.uk/og-image.png" />
 
           <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 

@@ -22,7 +22,7 @@ const LegalPage = () => {
       <Helmet>
         <title>Legal | myhealth checkup</title>
         <meta name="description" content="Legal policies and compliance documents for myhealth checkup." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/legal" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/legal" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

@@ -260,11 +260,11 @@ const FindClinicPage = () => {
           name="keywords"
           content="blood test clinic, phlebotomy clinic, private blood test location, UKAS clinic, health test centre near me, UK blood test"
         />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-clinic" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/find-clinic" />
         <meta property="og:title" content="Find a Blood Test Clinic Near You | myhealth checkup" />
         <meta property="og:description" content="Find CQC‑regulated blood test clinics near you. 200+ locations nationwide from trusted UK providers." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/find-clinic" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/find-clinic" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Find a Blood Test Clinic Near You" />
         <meta name="twitter:description" content="Search CQC‑regulated blood test clinics by postcode. 200+ locations nationwide." />
@@ -274,7 +274,7 @@ const FindClinicPage = () => {
             "@type": "MedicalBusiness",
             name: "myhealth checkup - Clinic Finder",
             description: "Find CQC‑regulated blood test clinics across the UK",
-            url: "https://myhealthcheckup.co.uk/find-clinic",
+            url: "https://www.myhealthcheckup.co.uk/find-clinic",
             areaServed: { "@type": "Country", name: "United Kingdom" },
           })}
         </script>

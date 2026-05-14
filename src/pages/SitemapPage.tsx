@@ -28,7 +28,11 @@ const SitemapPage = () => {
       <Helmet>
         <title>Sitemap | myhealth checkup</title>
         <meta name="description" content="Navigate the complete myhealth checkup site structure. Find health tests, providers, and resources quickly." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/sitemap" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/sitemap" />
+        <meta property="og:title" content="Sitemap | myhealth checkup" />
+        <meta property="og:description" content="Browse the complete myhealth checkup site structure — every health test category, provider and resource page in one place." />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/sitemap" />
+        <meta property="og:type" content="website" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-[#081129]">
