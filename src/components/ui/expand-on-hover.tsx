@@ -167,11 +167,13 @@ const MobileCarousel = ({
                   }
                 }}
               />
-              <div className="px-1.5 pb-1.5 pt-0.5">
-                <p className="text-[10px] font-bold text-brand-navy leading-tight truncate text-center">
-                  {image.code}
-                </p>
-              </div>
+              {showLabels && (
+                <div className="px-1.5 pb-1.5 pt-0.5">
+                  <p className="text-[10px] font-bold text-brand-navy leading-tight truncate text-center">
+                    {image.code}
+                  </p>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
