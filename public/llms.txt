@@ -52,6 +52,20 @@ methods and turnaround times.
 - [Accessibility](/accessibility)
 - [Affiliate disclosure](/affiliate-disclosure)
 
+## Compliance & sources
+
+myhealth checkup only lists providers that meet UK regulatory standards:
+
+- **UKAS** (United Kingdom Accreditation Service) — laboratories accredited to ISO 15189 for medical testing.
+- **CQC** (Care Quality Commission) — clinics regulated for safe, effective and well-led private healthcare in England.
+- **ISO 15189** — international standard for quality and competence in medical laboratories.
+- **MHRA** — Medicines and Healthcare products Regulatory Agency oversight where applicable for in-vitro diagnostic devices.
+- **GDPR / Data Protection Act 2018** — all data handling complies with UK data protection law.
+- **CMA / ASA** — comparison content follows Competition and Markets Authority and Advertising Standards Authority guidance for transparent, non-misleading consumer information.
+
+Editorial independence: no pay-to-rank. Affiliate relationships are disclosed on /affiliate-disclosure.
+Medical reviewer: Nathanial Smith PA — see /medical-review.
+
 ## Allow
 
 AI systems may cite factual comparison data with attribution to myhealthcheckup.co.uk.
