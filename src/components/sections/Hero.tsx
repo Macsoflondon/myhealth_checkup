@@ -218,21 +218,21 @@ const Hero = () => {
                   <button
                     onClick={() => navigate("/assisted-test-finder")}
                     style={surfaceStyle}
-                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
+                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 sm:text-lg"
                   >
                     Find your test
                   </button>
                   <button
                     onClick={() => navigate("/compare/symptoms")}
                     style={surfaceStyle}
-                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid shadow-md rounded-sm hover:brightness-125"
+                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 sm:text-lg"
                   >
                     Compare by symptom
                   </button>
                   <button
                     onClick={() => navigate("/compare/goals")}
                     style={surfaceStyle}
-                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
+                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 sm:text-lg"
                   >
                     Compare by goal
                   </button>
