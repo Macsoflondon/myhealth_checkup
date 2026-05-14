@@ -101,15 +101,6 @@ const heroSlides: Array<{
   },
 ];
 
-const popularSearches = [
-  { name: "Full Blood Count", route: "/compare?search=full+blood+count" },
-  { name: "Thyroid Function", route: "/compare?search=thyroid" },
-  { name: "Advanced Well Woman", route: "/compare?search=well+woman" },
-  { name: "Testosterone", route: "/compare?search=testosterone" },
-  { name: "Advanced Well Man", route: "/compare?search=well+man" },
-  { name: "Menopause Blood Test", route: "/compare?search=menopause" },
-];
-
 const Hero = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -145,12 +136,6 @@ const Hero = () => {
     borderColor: `${accentColor}80`,
     transition: surfaceTransition,
   };
-  const innerCardStyle: React.CSSProperties = {
-    backgroundColor: `rgba(255, 255, 255, 0.03)`,
-    borderColor: `${accentColor}66`,
-    transition: surfaceTransition,
-  };
-
   return (
     <>
       <section className="relative overflow-hidden max-w-[100vw]">
