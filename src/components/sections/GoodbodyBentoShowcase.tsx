@@ -57,15 +57,10 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
-            <strong>Goodbody Clinics</strong> deliver high-quality private health
-            checks that are both accessible and affordable.
+            <strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable.
           </CalloutCard>
           <CalloutCard>
-            Combining clinical-grade accuracy with the ease of high-street
-            locations, they offer a wide range of over <strong>60 blood and wellness
-            tests</strong> tailored to your needs. Every test is processed in
-            UKAS-accredited laboratories and reviewed by a GP, ensuring results
-            you can trust.
+            Clinical-grade accuracy meets high-street convenience, with over <strong>60 blood and wellness tests</strong> to choose from.
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
@@ -78,12 +73,10 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
-            Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP, ensuring results you can trust.
-            {"\n"}
-            <strong>Regulated by the CQC</strong> and available at over <strong>200 locations nationwide</strong> or from the comfort of your home.
+            Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP for results you can trust.
           </CalloutCard>
           <CalloutCard>
-            <strong>Goodbody Clinics</strong> make proactive health simple, reliable, and within reach.
+            <strong>CQC regulated</strong>, with over <strong>200 locations nationwide</strong> or convenient home testing — proactive health, made simple.
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
