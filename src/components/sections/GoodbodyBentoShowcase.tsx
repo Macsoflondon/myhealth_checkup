@@ -14,13 +14,13 @@ const KIT = {
 };
 
 const KitTile = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-2xl overflow-hidden bg-white shadow-md flex items-center justify-center p-3 aspect-square">
+  <div className="rounded-2xl overflow-hidden bg-white shadow-md flex items-center justify-center p-2.5 aspect-square">
     <img
       src={src}
       alt={alt}
       loading="lazy"
       decoding="async"
-      className="w-[68%] h-[68%] object-contain transition-transform duration-300 hover:scale-105"
+      className="w-[82%] h-[82%] object-contain transition-transform duration-300 hover:scale-105"
     />
   </div>
 );
@@ -39,12 +39,12 @@ const GoodbodyBentoShowcase = () => {
         <div className="col-span-2 sm:col-span-2 row-span-2">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
         </div>
-        <div className="col-span-2 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
+        <div className="col-span-2 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-4 sm:p-5 overflow-hidden">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-48 sm:h-64 md:h-80 w-auto object-contain"
+            className="w-[88%] max-w-[260px] h-auto max-h-[78%] object-contain"
           />
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
