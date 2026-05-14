@@ -57,8 +57,8 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
-            <strong>Goodbody Clinics</strong> provide comprehensive private health
-            checks at affordable prices.
+            <strong>Goodbody Clinics</strong> deliver high-quality private health
+            checks that are both accessible and affordable.
           </CalloutCard>
           <CalloutCard>
             Visit one of over <strong>200 nationwide locations</strong>, or opt
