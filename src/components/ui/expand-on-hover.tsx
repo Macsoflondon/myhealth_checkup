@@ -48,10 +48,12 @@ const MobileCarousel = ({
   images,
   onTestClick,
   className,
+  showLabels = true,
 }: {
   images: GalleryImageData[];
   onTestClick?: (image: GalleryImageData) => void;
   className?: string;
+  showLabels?: boolean;
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
