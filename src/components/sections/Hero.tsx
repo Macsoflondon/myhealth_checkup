@@ -101,15 +101,6 @@ const heroSlides: Array<{
   },
 ];
 
-const popularSearches = [
-  { name: "Full Blood Count", route: "/compare?search=full+blood+count" },
-  { name: "Thyroid Function", route: "/compare?search=thyroid" },
-  { name: "Advanced Well Woman", route: "/compare?search=well+woman" },
-  { name: "Testosterone", route: "/compare?search=testosterone" },
-  { name: "Advanced Well Man", route: "/compare?search=well+man" },
-  { name: "Menopause Blood Test", route: "/compare?search=menopause" },
-];
-
 const Hero = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -145,15 +136,9 @@ const Hero = () => {
     borderColor: `${accentColor}80`,
     transition: surfaceTransition,
   };
-  const innerCardStyle: React.CSSProperties = {
-    backgroundColor: `rgba(255, 255, 255, 0.03)`,
-    borderColor: `${accentColor}66`,
-    transition: surfaceTransition,
-  };
-
   return (
     <>
-      <section className="relative overflow-hidden max-w-[100vw]">
+      <section className="relative overflow-hidden max-w-[100vw] min-h-[560px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px] flex flex-col">
         {heroSlides.map((s, i) => (
           <img
             key={i}
@@ -178,9 +163,9 @@ const Hero = () => {
 
         <div className={`absolute inset-0 z-[1] transition-[background] duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${slide.theme.overlay}`} />
 
-        <div className="relative z-10 pt-8 pb-12 sm:pt-12 sm:pb-16 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="max-w-[1240px] mx-auto">
+        <div className="relative z-10 flex flex-col flex-1 pt-8 sm:pt-12 md:pt-16 lg:pt-20 pb-6 sm:pb-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col flex-1">
+            <div className="max-w-[1240px] mx-auto flex flex-col flex-1 w-full">
 
               <div className="text-center mb-3 sm:mb-4">
                 <span style={surfaceStyle} className="inline-flex items-center gap-1.5 backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide uppercase border-2 border-solid rounded-sm shadow-md">
@@ -231,7 +216,7 @@ const Hero = () => {
                 </button>
               </div>
 
-              <div className="max-w-[855px] mx-auto">
+              <div className="max-w-[855px] mx-auto w-full mt-auto">
                 <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
                   <div className="relative">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
@@ -248,41 +233,8 @@ const Hero = () => {
                       <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
                     )}
                   </div>
-
-                  <div style={innerCardStyle} className="mt-3 sm:mt-4 backdrop-blur-md p-2 sm:p-3 text-center border-2 border-solid rounded-sm shadow-md">
-                    <p className="text-[11px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.22em] sm:tracking-[0.25em] text-white text-center leading-none mb-2 sm:mb-3">
-                      Popular Searches
-                    </p>
-                    <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-                        {popularSearches.slice(0, 3).map((search, index) => (
-                          <button
-                            key={index}
-                            onClick={() => navigate(search.route)}
-                            style={chipStyle}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] hover:brightness-125"
-                          >
-                            {search.name}
-                          </button>
-                        ))}
-                      </div>
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
-                        {popularSearches.slice(3, 5).map((search, index) => (
-                          <button
-                            key={index + 3}
-                            onClick={() => navigate(search.route)}
-                            style={chipStyle}
-                            className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 backdrop-blur-md border-2 transition-all duration-200 font-semibold text-xs sm:text-sm text-white whitespace-nowrap border-solid shadow-sm rounded-sm pt-[8px] pb-[8px] hover:brightness-125"
-                          >
-                            {search.name}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
-
 
             </div>
           </div>
