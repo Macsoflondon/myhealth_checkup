@@ -296,13 +296,13 @@ const Hero = () => {
         </div>
       </section>
 
-      <div className="bg-white py-1.5 sm:py-2 px-2 sm:px-4 border-b border-border overflow-x-auto scrollbar-hide">
+      <div className="bg-white py-2 sm:py-3 px-2 sm:px-4 border-b border-border overflow-x-auto scrollbar-hide">
         <div className="container mx-auto">
-          <div className="flex items-center justify-start sm:justify-center gap-x-3 sm:gap-x-7 lg:gap-x-9 flex-nowrap">
+          <div className="flex items-center justify-center gap-x-4 sm:gap-x-7 lg:gap-x-10 flex-nowrap">
             {trustSignals.map((signal, index) => (
-              <div key={index} className="flex items-center gap-1.5 text-[11px] whitespace-nowrap sm:text-lg font-semibold">
-                <signal.icon className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-                <span className="whitespace-nowrap text-primary font-extrabold text-xl">{signal.text}</span>
+              <div key={index} className="flex items-center justify-center gap-2 text-[11px] sm:text-lg font-semibold leading-none whitespace-nowrap">
+                <signal.icon className="w-4 h-4 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                <span className="text-primary font-extrabold text-[11px] sm:text-xl leading-none">{signal.text}</span>
               </div>
             ))}
           </div>
