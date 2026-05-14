@@ -11,7 +11,7 @@ const AffiliateDisclosurePage = () => {
       <Helmet>
         <title>Affiliate Disclosure | myhealth checkup</title>
         <meta name="description" content="Full transparency about our commercial relationships and how we fund myhealth checkup while maintaining editorial independence." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/affiliate-disclosure" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/affiliate-disclosure" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

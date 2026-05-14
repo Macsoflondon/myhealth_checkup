@@ -14,13 +14,13 @@ const TrustedProvidersPage = () => {
            content="Discover our network of trusted & accredited UK health test providers. UKAS certified labs, CQC regulated clinics, and award-winning testing services." 
          />
          <meta name="keywords" content="trusted UK health providers, UKAS accredited labs, CQC regulated clinics, health test providers, medical testing UK" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/trusted-providers" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/trusted-providers" />
         
         {/* Open Graph tags */}
         <meta property="og:title" content="Trusted Providers | myhealth checkup" />
         <meta property="og:description" content="Discover our network of trusted & accredited UK health test providers. UKAS certified labs and award-winning testing services." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/trusted-providers" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/trusted-providers" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -34,7 +34,7 @@ const TrustedProvidersPage = () => {
             "@type": "WebPage",
             "name": "Trusted UK Health Test Providers",
             "description": "Network of trusted & accredited UK health test providers with UKAS certification and CQC registration",
-            "url": "https://myhealthcheckup.co.uk/trusted-providers",
+            "url": "https://www.myhealthcheckup.co.uk/trusted-providers",
             "mainEntity": {
               "@type": "Organization",
               "name": "myhealth checkup",

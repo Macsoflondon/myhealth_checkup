@@ -72,14 +72,14 @@ const ContactPage = () => {
       <Helmet>
         <title>Contact Us | myhealth checkup</title>
         <meta name="description" content="Get in touch with myhealth checkup. We're here to help with questions about health tests, providers, and our comparison platform." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/contact" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/contact" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ContactPage",
           "name": "Contact myhealth checkup",
           "description": "Get in touch with myhealth checkup for questions about health tests and providers.",
-          "url": "https://myhealthcheckup.co.uk/contact",
-          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" }
+          "url": "https://www.myhealthcheckup.co.uk/contact",
+          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" }
         })}</script>
       </Helmet>
       <Header />

@@ -124,7 +124,7 @@ const AtHomeTestsPage = () => (
     pillLabel="At-Home Tests"
     seoDescription="Convenient at-home health testing kits with professional lab analysis and fast results. Finger prick, saliva, and urine tests delivered to your door."
     seoKeywords="at home blood test, home testing kit, finger prick test, health test at home, private blood test UK"
-    canonicalUrl="https://myhealthcheckup.co.uk/at-home-tests"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/at-home-tests"
     headline="At-Home Health Tests"
     subtitle="Take control of your health with convenient at-home testing kits. Professional lab analysis with results delivered securely online."
     searchPlaceholder="Search by symptom or test — e.g. 'vitamin D', 'thyroid'"

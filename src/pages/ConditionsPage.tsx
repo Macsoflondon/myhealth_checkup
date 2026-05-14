@@ -67,11 +67,11 @@ const ConditionsPage = () => {
         <title>Health Conditions Testing | myhealth checkup</title>
         <meta name="description" content="Specialised health tests for specific medical conditions including diabetes, heart health, thyroid disorders, and more. Professional testing from trusted UK providers." />
         <meta name="keywords" content="health conditions testing, diabetes test, heart health test, thyroid test, liver function test, kidney function test" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/conditions" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/conditions" />
         <meta property="og:title" content="Health Conditions Testing | myhealth checkup" />
         <meta property="og:description" content="Specialised health tests for specific medical conditions." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/conditions" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/conditions" />
       </Helmet>
       
       <div className="min-h-screen flex flex-col">

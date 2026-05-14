@@ -28,7 +28,7 @@ const SitemapPage = () => {
       <Helmet>
         <title>Sitemap | myhealth checkup</title>
         <meta name="description" content="Navigate the complete myhealth checkup site structure. Find health tests, providers, and resources quickly." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/sitemap" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/sitemap" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-[#081129]">

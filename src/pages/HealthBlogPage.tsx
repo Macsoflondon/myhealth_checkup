@@ -44,17 +44,17 @@ const HealthBlogPage = () => {
       <Helmet>
         <title>Health Resource Hub | myhealth checkup</title>
         <meta name="description" content="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/health-resources" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/health-resources" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Blog",
           "name": "myhealth checkup Health Resource Hub",
           "description": "Expert insights, health tips, and the latest research on preventive healthcare.",
-          "url": "https://myhealthcheckup.co.uk/health-resources",
+          "url": "https://www.myhealthcheckup.co.uk/health-resources",
           "publisher": {
             "@type": "Organization",
             "name": "MYHEALTHCHECKUP LTD",
-            "url": "https://myhealthcheckup.co.uk"
+            "url": "https://www.myhealthcheckup.co.uk"
           }
         })}</script>
       </Helmet>

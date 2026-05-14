@@ -12,12 +12,12 @@ const AssistedTestFinderPage = () => {
         <title>Find Your Health Test | myhealth checkup</title>
         <meta name="description" content="Let us help you find the perfect health test for your needs with our guided questionnaire." />
         <meta name="keywords" content="health test finder, personalised health tests, health screening questionnaire" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/find-test" />
         
         <meta property="og:title" content="Find Your Health Test | myhealth checkup" />
         <meta property="og:description" content="Let us help you find the perfect health test for your needs with our guided questionnaire." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/find-test" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/find-test" />
         
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Find Your Health Test | myhealth checkup" />

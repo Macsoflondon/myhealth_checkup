@@ -114,13 +114,13 @@ const HeartHealthPage = () => {
         <title>Heart Health Tests | myhealth checkup</title>
         <meta name="description" content="Comprehensive heart health testing including cholesterol, lipid profiles, and cardiac risk assessment. Professional cardiovascular screening from £79." />
         <meta name="keywords" content="heart health tests, cholesterol test, lipid profile, cardiac risk assessment, cardiovascular screening, heart disease prevention" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/heart-health" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/heart-health" />
         
         {/* Open Graph Tags */}
         <meta property="og:title" content="Heart Health Tests | myhealth checkup" />
         <meta property="og:description" content="Comprehensive cardiovascular screening and heart health testing" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/heart-health" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/heart-health" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
