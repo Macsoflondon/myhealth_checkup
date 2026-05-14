@@ -61,9 +61,11 @@ const GoodbodyBentoShowcase = () => {
             checks that are both accessible and affordable.
           </CalloutCard>
           <CalloutCard>
-            Visit one of over <strong>200 nationwide locations</strong>, or opt
-            for their convenient home testing service. Goodbody Clinics have you
-            covered.
+            Combining clinical-grade accuracy with the ease of high-street
+            locations, they offer a wide range of over <strong>60 blood and wellness
+            tests</strong> tailored to your needs. Every test is processed in
+            UKAS-accredited laboratories and reviewed by a GP, ensuring results
+            you can trust.
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
