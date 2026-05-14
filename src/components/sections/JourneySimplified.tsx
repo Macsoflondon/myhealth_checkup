@@ -19,7 +19,7 @@ const JourneySimplified = () => {
       number: "03",
       icon: Calendar,
       title: "Book directly with your chosen provider",
-      description: "Book directly with your chosen provider. No middlemen, no markup."
+      description: "​"
     }
   ];
 
