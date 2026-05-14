@@ -200,12 +200,12 @@ const Hero = () => {
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                       <input
                         type="text"
-                        placeholder="Search from over 200 tests..."
+                        placeholder="COMPARE OVER 200 TESTS"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyPress={handleKeyPress}
                         style={chipStyle}
-                        className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-solid rounded-sm shadow-sm"
+                        className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none backdrop-blur-md border-2 text-white placeholder:text-white/70 border-solid rounded-sm shadow-sm sm:text-lg font-extrabold"
                       />
                       {isAnalyzing && (
                         <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
