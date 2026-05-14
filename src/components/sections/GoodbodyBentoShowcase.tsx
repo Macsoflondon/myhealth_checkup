@@ -20,7 +20,7 @@ const KitTile = ({ src, alt }: { src: string; alt: string }) => (
       alt={alt}
       loading="lazy"
       decoding="async"
-      className="w-[85%] h-[85%] object-contain transition-transform duration-300 hover:scale-105"
+      className="w-[68%] h-[68%] object-contain transition-transform duration-300 hover:scale-105"
     />
   </div>
 );
