@@ -1,40 +1,37 @@
 ## Goal
 
-Push the headline, subline, and tri-colour gradient divider down so they sit immediately above the search bar (which is already anchored to the bottom of the hero with the CTA buttons pinned beneath it). The badge stays at the top.
+Move the "🇬🇧 UK's Leading Blood Test Comparison Platform" badge down from the top of the hero so it sits immediately above the headline, as part of the bottom-anchored content block.
 
 ## Change in `src/components/sections/Hero.tsx`
 
-Currently the inner column is:
+Current structure inside the hero column:
 
 ```text
-[badge]              ← top
-[headline + subline]
-[divider]
+[badge]              ← top of hero
 (flex spacer)
-[search bar]         ← mt-auto, bottom
+[headline + subline] ← bottom-anchored group
+[divider]
+[search bar]
 [CTA buttons]
 ```
 
-Restructure to:
+Target:
 
 ```text
-[badge]              ← top
-(flex spacer)
-[headline + subline] ← grouped, sits just above search
+(flex spacer)        ← empty top
+[badge]              ← bottom-anchored group starts here
+[headline + subline]
 [divider]
-[search bar]         ← still bottom-anchored
+[search bar]
 [CTA buttons]
 ```
 
 ### Implementation
 
-1. Keep the badge block as-is at the top.
-2. Wrap the headline/subline block + the gradient divider + the existing `mt-auto` search/CTA group in a single bottom-anchored container with `mt-auto` instead of putting `mt-auto` on the search group.
-3. Remove `mt-auto` from the search/CTA wrapper (it's now inside the bottom group).
-4. Tighten the spacing between divider and search bar (`mb-3 sm:mb-4` on the divider row instead of the current `mb-4 sm:mb-6`) so the text visually anchors to the search bar.
-5. Drop the `min-h-[100px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[170px]` reservation on the headline block — no longer needed now that the bottom group governs vertical position; the headline can size to content.
-
-No changes to copy, slide logic, badge, CTA buttons, search input, trust bar, or any other section.
+1. Remove the standalone badge `<div className="text-center mb-3 sm:mb-4">…</div>` block currently sitting at the top of the inner column (just under `<div className="max-w-[1240px] …">`).
+2. Re-insert the same badge markup as the first child of the existing `<div className="mt-auto w-full">` bottom group, immediately above the headline `<div className="text-center mb-1 sm:mb-2 …">`.
+3. Wrap the re-inserted badge in `<div className="text-center mb-3 sm:mb-4">…</div>` so its spacing to the headline matches its previous spacing to the headline.
+4. No changes to the badge copy, styling, surfaceStyle, slide logic, headline, divider, search bar, CTA buttons, or any other section.
 
 ## Files touched
 
