@@ -15,7 +15,7 @@ const StartJourneySection = () => {
           Take Control of Your Health Today
         </h2>
         <p className="text-base lg:text-lg text-[#081129]/70 leading-relaxed mb-8 max-w-md">
-          Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in
+          Compare trusted & accredited tests from leading UK providers. Find the right test for your needs in
           minutes.
         </p>
         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8 w-full max-w-lg">
