@@ -14,13 +14,13 @@ const KIT = {
 };
 
 const KitTile = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-2xl overflow-hidden bg-white shadow-md flex items-center justify-center p-2.5 aspect-square">
+  <div className="rounded-2xl overflow-hidden bg-white shadow-md flex items-center justify-center p-2 aspect-square">
     <img
       src={src}
       alt={alt}
       loading="lazy"
       decoding="async"
-      className="w-[82%] h-[82%] object-contain transition-transform duration-300 hover:scale-105"
+      className="w-[88%] h-[88%] object-contain transition-transform duration-300 hover:scale-105"
     />
   </div>
 );
@@ -33,8 +33,8 @@ const CalloutCard = ({ children }: { children: React.ReactNode }) => (
 
 const GoodbodyBentoShowcase = () => {
   return (
-    <div className="md:col-span-2 mt-6 mb-4">
-      <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[112px] gap-3 sm:gap-4">
+    <div className="md:col-span-2 mt-6 mb-8 overflow-hidden">
+      <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[108px] gap-3 sm:gap-3.5">
         {/* Top row: Advanced Well Man | Logo (center) | Premium Complete (right) */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
@@ -44,7 +44,7 @@ const GoodbodyBentoShowcase = () => {
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="w-[88%] max-w-[260px] h-auto max-h-[78%] object-contain"
+            className="w-[92%] max-w-[280px] h-auto max-h-[72%] object-contain"
           />
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
