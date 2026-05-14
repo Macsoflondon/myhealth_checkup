@@ -20,7 +20,7 @@ const KitTile = ({ src, alt }: { src: string; alt: string }) => (
       alt={alt}
       loading="lazy"
       decoding="async"
-      className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
+      className="w-[85%] h-[85%] object-contain transition-transform duration-300 hover:scale-105"
     />
   </div>
 );
@@ -44,7 +44,7 @@ const GoodbodyBentoShowcase = () => {
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+            className="h-48 sm:h-64 md:h-80 w-auto object-contain"
           />
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
