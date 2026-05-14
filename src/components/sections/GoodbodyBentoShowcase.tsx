@@ -57,15 +57,10 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
-            <strong>Goodbody Clinics</strong> deliver high-quality private health
-            checks that are both accessible and affordable.
+            <strong>Goodbody Clinics</strong> make private health checks simple, reliable, and within reach.
           </CalloutCard>
           <CalloutCard>
-            Combining clinical-grade accuracy with the ease of high-street
-            locations, they offer a wide range of over <strong>60 blood and wellness
-            tests</strong> tailored to your needs. Every test is processed in
-            UKAS-accredited laboratories and reviewed by a GP, ensuring results
-            you can trust.
+            Choose from over <strong>60 blood and wellness tests</strong>, designed to fit easily around your life and tailored to what you actually want to know.
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
