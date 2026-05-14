@@ -70,7 +70,7 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/trt-check-plus-testosterone-replacement-therapy-blood-test",
     category: "Hormone",
     biomarkerCount: 4,
-    description: "Specialized testing for individuals on testosterone replacement therapy."
+    description: "Specialised testing for individuals on testosterone replacement therapy."
   },
   {
     id: "medichecks-thyroid-function",

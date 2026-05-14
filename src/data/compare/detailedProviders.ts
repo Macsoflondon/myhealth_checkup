@@ -118,7 +118,7 @@ export const detailedProviders = [
     turnaroundTime: "2-4 days",
     customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
     keyDifferentiators: "Subscription-based TRT, physician-led support, repeat blood testing for optimisation",
-    description: "Specialized men's health and TRT monitoring",
+    description: "Specialised men's health and TRT monitoring",
   },
   {
     id: "manual-hrt",
