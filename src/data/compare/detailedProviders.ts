@@ -102,8 +102,8 @@ export const detailedProviders = [
     sampleCollection: "Clinics, home visits",
     turnaroundTime: "2-4 days",
     customerReviews: "Not yet rated on Trustpilot",
-    keyDifferentiators: "Specialized in wellness and longevity, personalized health packages",
-    description: "Wellness-focused health testing and optimization",
+    keyDifferentiators: "Specialised in wellness and longevity, personalised health packages",
+    description: "Wellness-focused health testing and optimisation",
   },
   {
     id: "manual-trt",

@@ -55,7 +55,7 @@ const heartTests = [
     category: "Prevention",
     price: "£299",
     biomarkers: ["Full Lipid Panel", "Inflammatory Markers", "Cardiac Enzymes", "Risk Calculators", "Vitamin D", "B12"],
-    suitableFor: ["Prevention focused", "Lifestyle optimization", "Long-term monitoring", "Health optimization"],
+    suitableFor: ["Prevention focused", "Lifestyle optimisation", "Long-term monitoring", "Health optimisation"],
     turnaround: "24-48 hours"
   }
 ];

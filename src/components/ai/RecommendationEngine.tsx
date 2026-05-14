@@ -111,9 +111,9 @@ const RecommendationEngine = () => {
       toast.error('Unable to generate recommendations. Please try again.');
       setAnalysisResult({
         medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
-        analysis: "Sorry, we couldn't analyze your request at the moment. Please try again or consult your healthcare professional.",
+        analysis: "Sorry, we couldn't analyse your request at the moment. Please try again or consult your healthcare professional.",
         recommendedTests: [],
-        generalGuidance: "Please consult your healthcare professional for personalized health advice.",
+        generalGuidance: "Please consult your healthcare professional for personalised health advice.",
         whenToSeeDoctor: "Seek immediate medical attention for urgent symptoms or persistent health concerns.",
         hasRecommendations: false
       });
@@ -152,7 +152,7 @@ const RecommendationEngine = () => {
           <h1 className="text-3xl font-bold">AI Wellness Recommendations</h1>
         </div>
         <p className="text-muted-foreground">
-          Get personalized wellness test recommendations from our trusted providers
+          Get personalised wellness test recommendations from our trusted providers
         </p>
       </div>
 

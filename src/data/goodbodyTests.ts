@@ -401,7 +401,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     id: 'Goodbody151',
     name: 'Gender Reveal Blood Test',
     price: 79,
-    description: 'Early gender determination blood test from 8 weeks pregnancy. Non-invasive test analyzing fetal DNA in maternal blood to reveal baby\'s sex.',
+    description: 'Early gender determination blood test from 8 weeks pregnancy. Non-invasive test analysing fetal DNA in maternal blood to reveal baby\'s sex.',
     biomarkers: 1,
     turnaround: '3-5 working days',
     categories: ['fertility', 'gender-reveal-tests'],

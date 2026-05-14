@@ -118,7 +118,7 @@ export const wellnessCategories: WellnessCategory[] = [
     colorClass: "bg-yellow-500",
     colorHex: "#EAB308",
     icon: Shield,
-    description: "Immune system function and defense assessment",
+    description: "Immune system function and defence assessment",
     testCount: 2,
     tests: ["Full Blood Count Test", "Autoimmune Disease Blood Test"]
   },

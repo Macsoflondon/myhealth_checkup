@@ -191,7 +191,7 @@ const HormonesPage = () => {
       <main className="flex-grow bg-background">
         <PageBanner
           title="Hormone Blood Tests"
-          subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimize your health with professional hormone analysis and personalized insights."
+          subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimise your health with professional hormone analysis and personalised insights."
         />
 
 
@@ -220,7 +220,7 @@ const HormonesPage = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">Improve Mood</h3>
                   <p className="text-muted-foreground">
-                    Stabilize mood and reduce anxiety through hormone optimization
+                    Stabilise mood and reduce anxiety through hormone optimisation
                   </p>
                 </div>
                 <div className="text-center">
