@@ -90,14 +90,6 @@ const GoodbodyBentoShowcase = () => {
           <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" />
         </div>
 
-        {/* Bottom strip: Vitamins | (blank for CTA) | Sports & Fitness */}
-        <div className="col-span-2 sm:col-span-2">
-          <KitTile src={KIT.vitamins} alt="Vitamins Blood Test" />
-        </div>
-        <div className="col-span-2 sm:col-span-2" aria-hidden="true" />
-        <div className="col-span-4 sm:col-span-2">
-          <KitTile src={KIT.sportsFitness} alt="Sports & Fitness Blood Test" />
-        </div>
       </div>
 
       {/* CTA */}
