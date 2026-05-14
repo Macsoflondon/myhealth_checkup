@@ -317,6 +317,10 @@ const FAQsPage = () => {
         <meta name="description" content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." />
         <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
         <link rel="canonical" href="https://www.myhealthcheckup.co.uk/faqs" />
+        <meta property="og:title" content="FAQs — Private Health Testing Questions | myhealth checkup" />
+        <meta property="og:description" content="Answers to common questions about private UK health testing — sample collection, results, pricing and choosing the right test." />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/faqs" />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
