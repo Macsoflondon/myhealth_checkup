@@ -76,7 +76,7 @@ const GoodbodyBentoShowcase = () => {
             Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP for results you can trust.
           </CalloutCard>
           <CalloutCard>
-            <strong>CQC regulated</strong>, with over <strong>200 locations nationwide</strong> or convenient home testing — proactive health, made simple.
+            <strong>CQC regulated</strong>, with over <strong>200 locations nationwide</strong>. Goodbody Clinics make proactive health simple, reliable, and within reach.
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
