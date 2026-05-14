@@ -28,7 +28,7 @@ const PartnerShowcaseGrid = () => {
             </h2>
           </div>
 
-          <GoodbodyTestGallery />
+          <GoodbodyBentoShowcase />
         </div>
       </div>
 
