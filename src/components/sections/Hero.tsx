@@ -10,6 +10,12 @@ import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
 
+import heroMobileLaptop from "@/assets/hero/mobile/hero-mobile-laptop.jpeg";
+import heroMobileReception from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
+import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
+import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
+import heroMobileKitUnbox from "@/assets/hero/mobile/hero-mobile-kit-unbox.png";
+
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
   overlay: string;
@@ -26,6 +32,7 @@ const ACCENT_HEX: Record<SlideTheme["accent"], string> = {
 
 const heroSlides: Array<{
   image: string;
+  mobileImage?: string;
   headline: string;
   subline: string;
   objectPosition: string;
@@ -36,6 +43,7 @@ const heroSlides: Array<{
 }> = [
   {
     image: heroEmpowered,
+    mobileImage: heroMobileLaptop,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
     objectPosition: "45% 22%",
