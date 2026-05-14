@@ -9,6 +9,9 @@ import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroCompare from "@/assets/hero/hero-compare-decide.webp";
+import heroSpringNumbers from "@/assets/hero/hero-spring-numbers.png";
+import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
+import heroKitKitchen from "@/assets/hero/hero-kit-kitchen.png";
 
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
