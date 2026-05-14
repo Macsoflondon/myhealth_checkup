@@ -10,6 +10,12 @@ import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
 
+import heroMobileLaptop from "@/assets/hero/mobile/hero-mobile-laptop.jpeg";
+import heroMobileReception from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
+import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
+import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
+import heroMobileKitUnbox from "@/assets/hero/mobile/hero-mobile-kit-unbox.png";
+
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
   overlay: string;
@@ -26,6 +32,7 @@ const ACCENT_HEX: Record<SlideTheme["accent"], string> = {
 
 const heroSlides: Array<{
   image: string;
+  mobileImage?: string;
   headline: string;
   subline: string;
   objectPosition: string;
@@ -36,6 +43,7 @@ const heroSlides: Array<{
 }> = [
   {
     image: heroEmpowered,
+    mobileImage: heroMobileLaptop,
     headline: "Your Results. Your Control.",
     subline: "Review your health test results with confidence — anytime, anywhere.",
     objectPosition: "45% 22%",
@@ -49,6 +57,7 @@ const heroSlides: Array<{
   },
   {
     image: heroClinic,
+    mobileImage: heroMobileReception,
     headline: "Clinics Nationwide",
     subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 38%",
@@ -62,6 +71,7 @@ const heroSlides: Array<{
   },
   {
     image: heroHomeKit,
+    mobileImage: heroMobileKitOpen,
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 50%",
@@ -75,6 +85,7 @@ const heroSlides: Array<{
   },
   {
     image: heroActive,
+    mobileImage: heroMobileActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
     objectPosition: "center 18%",
@@ -88,6 +99,7 @@ const heroSlides: Array<{
   },
   {
     image: heroKitUnboxing,
+    mobileImage: heroMobileKitUnbox,
     headline: "Your Kit. Your Kitchen.",
     subline: "Professional at-home blood test kits delivered straight to your door.",
     objectPosition: "center 42%",
@@ -142,7 +154,7 @@ const Hero = () => {
         {heroSlides.map((s, i) => (
           <img
             key={i}
-            src={s.image}
+            src={isMobile && s.mobileImage ? s.mobileImage : s.image}
             alt=""
             aria-hidden="true"
             loading={i === 0 ? "eager" : "lazy"}
