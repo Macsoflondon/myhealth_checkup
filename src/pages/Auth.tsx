@@ -411,7 +411,7 @@ const Auth = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/admin/login")}
-                  className="text-gray-300 hover:text-gray-400 text-[10px] transition-colors"
+                  className="text-gray-600 hover:text-gray-800 text-[10px] transition-colors"
                 >
                   Admin
                 </button>
