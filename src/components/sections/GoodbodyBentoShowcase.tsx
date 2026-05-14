@@ -11,11 +11,10 @@ const KIT = {
   vitamins: "/images/tests/vitamins-blood-test.webp",
   cholesterol: "/images/tests/cholesterol-blood-test.webp",
   sportsFitness: "/images/tests/sports-fitness-blood-test.webp",
-  episwitch: "/images/tests/episwitch-pse.webp",
 };
 
 const KitTile = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-2xl overflow-hidden bg-white shadow-md flex items-center justify-center p-4 aspect-square">
+  <div className="rounded-2xl overflow-hidden bg-white shadow-md flex items-center justify-center p-3 aspect-square">
     <img
       src={src}
       alt={alt}
@@ -35,26 +34,21 @@ const CalloutCard = ({ children }: { children: React.ReactNode }) => (
 const GoodbodyBentoShowcase = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
-      <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[110px] sm:auto-rows-[140px] gap-3 sm:gap-4">
-        {/* Top-left kit pair (now in the long section) */}
+      <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[112px] gap-3 sm:gap-4">
+        {/* Top row: Advanced Well Man | Logo (center) | Premium Complete (right) */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
         </div>
-        <div className="col-span-2 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" />
-        </div>
-
-        {/* Logo / brand card (moved to top-right) */}
-        <div className="col-span-4 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
+        <div className="col-span-2 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-16 sm:h-20 md:h-24 w-auto object-contain"
+            className="h-12 sm:h-16 md:h-20 w-auto object-contain"
           />
-          <p className="mt-3 text-[#22c0d4] font-heading italic text-base sm:text-lg text-center">
-            ​
-          </p>
+        </div>
+        <div className="col-span-4 sm:col-span-2 row-span-2">
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" />
         </div>
 
         {/* Row: kit + 2 callouts + kit */}
@@ -76,7 +70,7 @@ const GoodbodyBentoShowcase = () => {
           <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" />
         </div>
 
-        {/* Row: kit + 2 callouts + kit */}
+        {/* Row: kit + 2 callouts + cholesterol (replaces EpiSwitch) */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
           <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" />
         </div>
@@ -93,16 +87,14 @@ const GoodbodyBentoShowcase = () => {
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.episwitch} alt="EpiSwitch PSE Prostate Test" />
+          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" />
         </div>
 
-        {/* Bottom strip of 4 kits */}
+        {/* Bottom strip: Vitamins | (blank for CTA) | Sports & Fitness */}
         <div className="col-span-2 sm:col-span-2">
           <KitTile src={KIT.vitamins} alt="Vitamins Blood Test" />
         </div>
-        <div className="col-span-2 sm:col-span-2">
-          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" />
-        </div>
+        <div className="col-span-2 sm:col-span-2" aria-hidden="true" />
         <div className="col-span-4 sm:col-span-2">
           <KitTile src={KIT.sportsFitness} alt="Sports & Fitness Blood Test" />
         </div>

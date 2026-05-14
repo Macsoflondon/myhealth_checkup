@@ -1,16 +1,38 @@
-## Goal
-Remove the text label that appears under/over each test kit image in the homepage "Explore Our Test Range" filmstrip.
 
-## Where the text comes from
-The `HoverExpand_001` component (`src/components/ui/expand-on-hover.tsx`) renders the `image.code` string in two places:
-- Mobile carousel: a `<p>` under each thumbnail (lines 168–172)
-- Desktop hover view: a floating `<span>` overlay on the active image (lines 320–333)
+## Goodbody Bento Showcase — Rearrangement
 
-The component is reused by `FilmstripGallery`, `GoodbodyTestGallery`, and `TestProductFilmstrip`, so a blanket removal would affect all of them.
+Edits to `src/components/sections/GoodbodyBentoShowcase.tsx`.
 
-## Approach
-Add an optional `showLabels` prop (default `true`) to `HoverExpand_001`. Wrap both the mobile `<p>` block and the desktop `<AnimatePresence>` overlay so they only render when `showLabels` is true. Pass `showLabels={false}` from `TestProductFilmstrip` only — other galleries keep their current labels.
+### Tile swaps
 
-## Files to change
-- `src/components/ui/expand-on-hover.tsx` — add prop, gate both label renders
-- `src/components/sections/TestProductFilmstrip.tsx` — pass `showLabels={false}`
+1. **Top-right ↔ top-center swap**
+   - Move **Premium Complete Blood Test** kit into the top-right slot (currently the GOODBODY logo card).
+   - Move the **GOODBODY logo card** into the top-center slot (currently Premium Complete).
+   - Top-left stays: Advanced Well Man.
+
+2. **Middle-bottom row reshuffle**
+   - Replace **EpiSwitch PSE (Prostate)** tile (right side of third row) with **Cholesterol Blood Test**.
+   - Remove EpiSwitch entirely from the grid.
+
+3. **Bottom strip (3 tiles → 2 tiles + blank CTA slot)**
+   - Remove the bottom **Cholesterol** tile (it's been promoted up a row).
+   - Keep **Vitamins** (left) and **Sports & Fitness** (right).
+   - Center bottom slot becomes **blank** — leave empty so the existing "View Goodbody Profile" CTA below sits cleanly with breathing room (no tile, no placeholder card).
+
+### Final layout
+
+```
+[ Advanced Well Man ] [ GOODBODY LOGO ]    [ Premium Complete ]
+[ Early Cancer      ] [ Callouts x2  ]    [ Female Hormone   ]
+[ Thyroid           ] [ Callouts x2  ]    [ Cholesterol      ]
+[ Vitamins          ] [   (blank)    ]    [ Sports & Fitness ]
+```
+
+### Sizing fix (overlap with "Our Providers Most Popular Tests")
+
+Reduce tile row heights so the section no longer overlaps the next section:
+- `auto-rows-[110px] sm:auto-rows-[140px]` → `auto-rows-[88px] sm:auto-rows-[112px]`
+- Reduce logo size in the center logo card to keep proportions: `h-16 sm:h-20 md:h-24` → `h-12 sm:h-16 md:h-20`
+- Tighten KitTile inner padding from `p-4` → `p-3` so the shrunken tiles still display the kit imagery clearly.
+
+No other components or styles touched.
