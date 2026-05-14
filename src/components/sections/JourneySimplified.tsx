@@ -50,7 +50,7 @@ const JourneySimplified = () => {
                   </div>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-heading mb-1 text-brand-turquoise font-medium">
+                <h3 className="text-base font-heading mb-1 text-brand-turquoise font-medium sm:text-base">
                   {step.title}
                 </h3>
                 {step.description.trim() && (
