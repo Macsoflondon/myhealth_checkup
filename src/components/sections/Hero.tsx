@@ -218,7 +218,7 @@ const Hero = () => {
                   <button
                     onClick={() => navigate("/assisted-test-finder")}
                     style={surfaceStyle}
-                    className="backdrop-blur-md font-semibold px-2 sm:px-4 md:px-6 py-1.5 sm:py-2.5 md:py-3 text-[10px] sm:text-sm md:text-base lg:text-lg leading-tight transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 min-w-0 flex-shrink"
+                    className="backdrop-blur-md font-semibold px-3 sm:px-4 md:px-6 py-3 sm:py-2.5 md:py-3 min-h-[44px] sm:min-h-0 text-[11px] sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-tight transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 min-w-0 flex-shrink"
                   >
                     Find your test
                   </button>
