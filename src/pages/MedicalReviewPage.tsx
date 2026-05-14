@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
  */
 const REVIEWER = {
   name: "Nathanial Smith",
-  role: "Clinical Reviewer — Physician Associate",
+  role: "Clinical Reviewer — Registered Healthcare Professional",
   registration: {
     body: "Health and Care Professions Council (HCPC)",
     number: "PA43353",
@@ -31,7 +31,7 @@ const MedicalReviewPage = () => {
     "@context": "https://schema.org",
     "@type": "Person",
     name: REVIEWER.name,
-    jobTitle: "Physician Associate",
+    jobTitle: "Registered Healthcare Professional",
     description: REVIEWER.scope,
     affiliation: {
       "@type": "Organization",
@@ -55,7 +55,7 @@ const MedicalReviewPage = () => {
         <title>Medical Review & Editorial Standards | myhealth checkup</title>
         <meta
           name="description"
-          content="Our clinical content is reviewed by a registered Physician Associate (HCPC). See reviewer credentials, scope of review, and editorial standards."
+          content="Our clinical content is reviewed by a Registered Healthcare Professional (HCPC). See reviewer credentials, scope of review, and editorial standards."
         />
         <link rel="canonical" href="https://www.myhealthcheckup.co.uk/about/medical-review" />
         <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
@@ -120,7 +120,7 @@ const MedicalReviewPage = () => {
 
               <div className="bg-muted/40 rounded-lg p-4 border border-border">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  <strong>Important:</strong> Physician Associates are HCPC-registered healthcare professionals working
+                  <strong>Important:</strong> Registered Healthcare Professionals (such as Physician Associates) are HCPC-registered professionals working
                   under the supervision of doctors. They do not currently hold independent prescribing rights in the
                   UK. Our content is informational and comparative; it does not constitute medical advice, diagnosis or
                   prescription. Always consult your GP or a suitably qualified clinician for individual medical
