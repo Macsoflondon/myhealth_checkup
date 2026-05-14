@@ -102,8 +102,8 @@ export const detailedProviders = [
     sampleCollection: "Clinics, home visits",
     turnaroundTime: "2-4 days",
     customerReviews: "Not yet rated on Trustpilot",
-    keyDifferentiators: "Specialized in wellness and longevity, personalized health packages",
-    description: "Wellness-focused health testing and optimization",
+    keyDifferentiators: "Specialised in wellness and longevity, personalised health packages",
+    description: "Wellness-focused health testing and optimisation",
   },
   {
     id: "manual-trt",
@@ -118,7 +118,7 @@ export const detailedProviders = [
     turnaroundTime: "2-4 days",
     customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
     keyDifferentiators: "Subscription-based TRT, physician-led support, repeat blood testing for optimisation",
-    description: "Specialized men's health and TRT monitoring",
+    description: "Specialised men's health and TRT monitoring",
   },
   {
     id: "manual-hrt",

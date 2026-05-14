@@ -105,7 +105,7 @@ const wellnessCategoryCards = [
     id: "immunity-tests",
     name: "Immunity Tests",
     count: 2,
-    desc: "Immune system function and defense assessment",
+    desc: "Immune system function and defence assessment",
     icon: "◬",
     accent: "#f0b429",
     tag: "IMMUNE",

@@ -120,7 +120,7 @@ export default function SportsTestRecommendationEngine() {
 
       toast({
         title: "Recommendations Generated",
-        description: "Your personalized test recommendations are ready.",
+        description: "Your personalised test recommendations are ready.",
       });
     } catch (error) {
       console.error("Error getting recommendations:", error);
@@ -145,7 +145,7 @@ export default function SportsTestRecommendationEngine() {
             <div>
               <CardTitle className="text-2xl">AI-Powered Test Recommendations</CardTitle>
               <CardDescription>
-                Get personalized blood test suggestions based on your sport and goals
+                Get personalised blood test suggestions based on your sport and goals
               </CardDescription>
             </div>
           </div>
@@ -266,7 +266,7 @@ export default function SportsTestRecommendationEngine() {
           <CardContent className="py-12 text-center">
             <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground">
-              Fill in your athlete profile above to receive personalized test recommendations
+              Fill in your athlete profile above to receive personalised test recommendations
             </p>
           </CardContent>
         </Card>

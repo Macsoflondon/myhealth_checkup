@@ -106,7 +106,7 @@ const ThyroidPage = () => {
       <main className="flex-grow bg-background">
         <PageBanner
           title="Thyroid Blood Tests"
-          subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimizing treatment."
+          subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimising treatment."
         />
 
 
@@ -144,7 +144,7 @@ const ThyroidPage = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">Treatment Monitoring</h3>
                   <p className="text-muted-foreground">
-                    Track treatment effectiveness and optimize thyroid medication
+                    Track treatment effectiveness and optimise thyroid medication
                   </p>
                 </div>
               </div>
