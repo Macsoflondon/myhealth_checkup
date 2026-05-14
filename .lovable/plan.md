@@ -1,38 +1,21 @@
+## Shrink test kit images and enlarge GOODBODY logo in Featured Partner section
 
-## Goodbody Bento Showcase — Rearrangement
+### Problem
+The test kit tile images in `GoodbodyBentoShowcase.tsx` currently fill their containers (`w-full h-full`), making them visually dominant. The GOODBODY logo in the center tile is undersized relative to the space available.
 
-Edits to `src/components/sections/GoodbodyBentoShowcase.tsx`.
+### Changes
 
-### Tile swaps
+1. **Shrink test kit images**
+   - In `KitTile`, change the `<img>` from `w-full h-full` to `w-[85%] h-[85%]` so each kit image is ~15% smaller, creating breathing room inside each tile and reducing overall visual weight.
 
-1. **Top-right ↔ top-center swap**
-   - Move **Premium Complete Blood Test** kit into the top-right slot (currently the GOODBODY logo card).
-   - Move the **GOODBODY logo card** into the top-center slot (currently Premium Complete).
-   - Top-left stays: Advanced Well Man.
+2. **Enlarge GOODBODY logo 4x**
+   - Current: `h-12 sm:h-16 md:h-20`
+   - New: `h-48 sm:h-64 md:h-80`
+   - This fills the center `row-span-2` tile properly and gives the brand logo the visual prominence the user wants.
 
-2. **Middle-bottom row reshuffle**
-   - Replace **EpiSwitch PSE (Prostate)** tile (right side of third row) with **Cholesterol Blood Test**.
-   - Remove EpiSwitch entirely from the grid.
+### Files touched
+- `src/components/sections/GoodbodyBentoShowcase.tsx` only
 
-3. **Bottom strip (3 tiles → 2 tiles + blank CTA slot)**
-   - Remove the bottom **Cholesterol** tile (it's been promoted up a row).
-   - Keep **Vitamins** (left) and **Sports & Fitness** (right).
-   - Center bottom slot becomes **blank** — leave empty so the existing "View Goodbody Profile" CTA below sits cleanly with breathing room (no tile, no placeholder card).
-
-### Final layout
-
-```
-[ Advanced Well Man ] [ GOODBODY LOGO ]    [ Premium Complete ]
-[ Early Cancer      ] [ Callouts x2  ]    [ Female Hormone   ]
-[ Thyroid           ] [ Callouts x2  ]    [ Cholesterol      ]
-[ Vitamins          ] [   (blank)    ]    [ Sports & Fitness ]
-```
-
-### Sizing fix (overlap with "Our Providers Most Popular Tests")
-
-Reduce tile row heights so the section no longer overlaps the next section:
-- `auto-rows-[110px] sm:auto-rows-[140px]` → `auto-rows-[88px] sm:auto-rows-[112px]`
-- Reduce logo size in the center logo card to keep proportions: `h-16 sm:h-20 md:h-24` → `h-12 sm:h-16 md:h-20`
-- Tighten KitTile inner padding from `p-4` → `p-3` so the shrunken tiles still display the kit imagery clearly.
-
-No other components or styles touched.
+### Visual result
+- Test kit tiles have smaller, inset images.
+- Center GOODBODY logo tile becomes the dominant visual anchor of the grid.
