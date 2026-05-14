@@ -285,6 +285,7 @@ const GoodbodyTestGallery = () => {
           images={getTestsForTab()}
           onTestClick={handleTestClick}
           getOverlayData={getOverlayData}
+          showLabels={false}
         />
       </div>
 
