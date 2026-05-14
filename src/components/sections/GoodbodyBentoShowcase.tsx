@@ -83,9 +83,7 @@ const GoodbodyBentoShowcase = () => {
             <strong>Regulated by the CQC</strong> and available at over <strong>200 locations nationwide</strong> or from the comfort of your home.
           </CalloutCard>
           <CalloutCard>
-            They offer a blend of clinical precision and convenient high-street
-            accessibility, featuring over <strong>60 different blood and
-            wellness tests</strong> for you to choose from.
+            <strong>Goodbody Clinics</strong> make proactive health simple, reliable, and within reach.
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
