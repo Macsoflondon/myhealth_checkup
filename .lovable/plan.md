@@ -1,38 +1,16 @@
 ## Goal
+Remove the text label that appears under/over each test kit image in the homepage "Explore Our Test Range" filmstrip.
 
-Move the "🇬🇧 UK's Leading Blood Test Comparison Platform" badge down from the top of the hero so it sits immediately above the headline, as part of the bottom-anchored content block.
+## Where the text comes from
+The `HoverExpand_001` component (`src/components/ui/expand-on-hover.tsx`) renders the `image.code` string in two places:
+- Mobile carousel: a `<p>` under each thumbnail (lines 168–172)
+- Desktop hover view: a floating `<span>` overlay on the active image (lines 320–333)
 
-## Change in `src/components/sections/Hero.tsx`
+The component is reused by `FilmstripGallery`, `GoodbodyTestGallery`, and `TestProductFilmstrip`, so a blanket removal would affect all of them.
 
-Current structure inside the hero column:
+## Approach
+Add an optional `showLabels` prop (default `true`) to `HoverExpand_001`. Wrap both the mobile `<p>` block and the desktop `<AnimatePresence>` overlay so they only render when `showLabels` is true. Pass `showLabels={false}` from `TestProductFilmstrip` only — other galleries keep their current labels.
 
-```text
-[badge]              ← top of hero
-(flex spacer)
-[headline + subline] ← bottom-anchored group
-[divider]
-[search bar]
-[CTA buttons]
-```
-
-Target:
-
-```text
-(flex spacer)        ← empty top
-[badge]              ← bottom-anchored group starts here
-[headline + subline]
-[divider]
-[search bar]
-[CTA buttons]
-```
-
-### Implementation
-
-1. Remove the standalone badge `<div className="text-center mb-3 sm:mb-4">…</div>` block currently sitting at the top of the inner column (just under `<div className="max-w-[1240px] …">`).
-2. Re-insert the same badge markup as the first child of the existing `<div className="mt-auto w-full">` bottom group, immediately above the headline `<div className="text-center mb-1 sm:mb-2 …">`.
-3. Wrap the re-inserted badge in `<div className="text-center mb-3 sm:mb-4">…</div>` so its spacing to the headline matches its previous spacing to the headline.
-4. No changes to the badge copy, styling, surfaceStyle, slide logic, headline, divider, search bar, CTA buttons, or any other section.
-
-## Files touched
-
-- Edit: `src/components/sections/Hero.tsx` only.
+## Files to change
+- `src/components/ui/expand-on-hover.tsx` — add prop, gate both label renders
+- `src/components/sections/TestProductFilmstrip.tsx` — pass `showLabels={false}`
