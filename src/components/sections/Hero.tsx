@@ -99,19 +99,6 @@ const heroSlides: Array<{
       accent: "turquoise",
     },
   },
-  {
-    image: heroKitKitchen,
-    headline: "Comprehensive At-Home Testing.",
-    subline: "Everything you need to test confidently — clinical-grade, beautifully simple.",
-    objectPosition: "center 55%",
-    mobileObjectPosition: "60% 55%",
-    mobileScale: "scale(1.15)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
-      surface: 65,
-      accent: "pink",
-    },
-  },
 ];
 
 const Hero = () => {
