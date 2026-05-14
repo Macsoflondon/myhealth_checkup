@@ -79,7 +79,7 @@ const GoodbodyBentoShowcase = () => {
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
             Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP, ensuring results you can trust.
-            <br /><br />
+            {"\n"}
             <strong>Regulated by the CQC</strong> and available at over <strong>200 locations nationwide</strong> or from the comfort of your home.
           </CalloutCard>
           <CalloutCard>
