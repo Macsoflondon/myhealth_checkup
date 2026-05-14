@@ -45,7 +45,10 @@ const Index = () => {
     ],
     address: {
       "@type": "PostalAddress",
-      addressCountry: "United Kingdom",
+      streetAddress: "2/369 Clapham Road",
+      addressLocality: "London",
+      postalCode: "SW9 9BT",
+      addressCountry: "GB",
     },
     audience: {
       "@type": "Audience",
