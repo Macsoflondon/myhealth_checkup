@@ -24,24 +24,24 @@ const GoodbodyFeaturePartnerBento = () => {
           </p>
         </div>
 
-        {/* Coast image */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
-          <img src={coastImg} alt="Coastal cliffs" loading="lazy" className="w-full h-full object-cover" />
+        {/* Kit 1 */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
+          <img src={kit1} alt="Advanced Well Man test kit" loading="lazy" className="w-full h-full object-contain" />
         </div>
 
-        {/* Wave image */}
-        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden">
-          <img src={waveImg} alt="Turquoise wave" loading="lazy" className="w-full h-full object-cover" />
+        {/* Kit 2 — tall */}
+        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
+          <img src={kit2} alt="Premium Complete blood test kit" loading="lazy" className="w-full h-full object-contain" />
         </div>
 
-        {/* Sunrise image */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
-          <img src={sunriseImg} alt="Beach sunrise" loading="lazy" className="w-full h-full object-cover" />
+        {/* Kit 3 */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
+          <img src={kit3} alt="Advanced Well Woman test kit" loading="lazy" className="w-full h-full object-contain" />
         </div>
 
-        {/* Portrait */}
-        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden">
-          <img src={portraitImg} alt="Healthy lifestyle portrait" loading="lazy" className="w-full h-full object-cover" />
+        {/* Kit 4 — tall */}
+        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
+          <img src={kit4} alt="Early Cancer Screening kit" loading="lazy" className="w-full h-full object-contain" />
         </div>
 
         {/* Text card 1 */}
@@ -51,9 +51,9 @@ const GoodbodyFeaturePartnerBento = () => {
           </p>
         </div>
 
-        {/* Coast small */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
-          <img src={coastImg} alt="Coastal scene" loading="lazy" className="w-full h-full object-cover" />
+        {/* Kit 5 */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
+          <img src={kit5} alt="Sports & Fitness test kit" loading="lazy" className="w-full h-full object-contain" />
         </div>
 
         {/* Text card 2 */}
@@ -63,9 +63,9 @@ const GoodbodyFeaturePartnerBento = () => {
           </p>
         </div>
 
-        {/* Sunrise small */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
-          <img src={sunriseImg} alt="Sunrise" loading="lazy" className="w-full h-full object-cover" />
+        {/* Kit 6 */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
+          <img src={kit6} alt="Female Hormone & Fertility kit" loading="lazy" className="w-full h-full object-contain" />
         </div>
       </div>
     </div>
