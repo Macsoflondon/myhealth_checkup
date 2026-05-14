@@ -36,25 +36,25 @@ const GoodbodyBentoShowcase = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
       <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[110px] sm:auto-rows-[140px] gap-3 sm:gap-4">
-        {/* Logo / brand card */}
-        <div className="col-span-4 sm:col-span-4 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-10">
+        {/* Top-left kit pair (now in the long section) */}
+        <div className="col-span-2 sm:col-span-2 row-span-2">
+          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
+        </div>
+        <div className="col-span-2 sm:col-span-2 row-span-2">
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" />
+        </div>
+
+        {/* Logo / brand card (moved to top-right) */}
+        <div className="col-span-4 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-20 sm:h-28 md:h-32 w-auto object-contain"
+            className="h-16 sm:h-20 md:h-24 w-auto object-contain"
           />
-          <p className="mt-3 text-[#22c0d4] font-heading italic text-lg sm:text-2xl">
+          <p className="mt-3 text-[#22c0d4] font-heading italic text-base sm:text-lg text-center">
             Know more. Live better.
           </p>
-        </div>
-
-        {/* Top-right kit pair */}
-        <div className="col-span-2 sm:col-span-2">
-          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
-        </div>
-        <div className="col-span-2 sm:col-span-2">
-          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" />
         </div>
 
         {/* Row: kit + 2 callouts + kit */}
