@@ -1,7 +1,9 @@
-import coastImg from "@/assets/goodbody-lifestyle-coast.jpg";
-import portraitImg from "@/assets/goodbody-lifestyle-portrait.jpg";
-import sunriseImg from "@/assets/goodbody-lifestyle-sunrise.jpg";
-import waveImg from "@/assets/goodbody-lifestyle-wave.jpg";
+const kit1 = "/images/tests/advanced-well-man.webp";
+const kit2 = "/images/tests/premium-complete-blood-test.webp";
+const kit3 = "/images/tests/advanced-well-woman.webp";
+const kit4 = "/images/tests/early-cancer-screening.webp";
+const kit5 = "/images/tests/sports-fitness-blood-test.webp";
+const kit6 = "/images/tests/female-hormone-fertility.webp";
 
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-new-v4.png";
 
