@@ -163,7 +163,7 @@ const CANCER_SCREENING_TESTS: GalleryImage[] = [
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
 const GoodbodyTestGallery = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("General Health");
+  const [activeTab, setActiveTab] = useState<Tab>("​");
   const [testDetailOpen, setTestDetailOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
