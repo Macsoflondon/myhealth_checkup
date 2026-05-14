@@ -78,9 +78,9 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
-            Goodbody Clinics are <strong>regulated by the CQC</strong> and
-            exclusively use <strong>UKAS-accredited laboratory analysis</strong>,
-            providing you with a comprehensive GP review of your results.
+            Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP, ensuring results you can trust.
+            <br /><br />
+            <strong>Regulated by the CQC</strong> and available at over <strong>200 locations nationwide</strong> or from the comfort of your home.
           </CalloutCard>
           <CalloutCard>
             They offer a blend of clinical precision and convenient high-street
