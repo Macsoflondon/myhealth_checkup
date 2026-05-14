@@ -19,12 +19,12 @@ const PartnerShowcaseGrid = () => {
             <div className="flex items-center justify-center gap-3 mb-3">
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
               <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
-                Featured Partners
+                Featured Partner
               </span>
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
             </div>
             <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white md:text-5xl">
-              Our Featured Partners of the Month
+              Our Featured Partner of the Month
             </h2>
           </div>
 
