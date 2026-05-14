@@ -79,7 +79,7 @@ const PartnersPage = () => {
         <PageBanner
           title="Our Healthcare"
           accent="Partners"
-          subtitle="We partner with the UK's most trusted and accredited healthcare providers to bring you reliable, high-quality health testing services."
+          subtitle="We partner with the UK's most trusted & accredited healthcare providers to bring you reliable, high-quality health testing services."
         />
 
         {/* Partner Standards */}
