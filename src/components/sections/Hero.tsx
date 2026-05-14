@@ -57,6 +57,7 @@ const heroSlides: Array<{
   },
   {
     image: heroClinic,
+    mobileImage: heroMobileReception,
     headline: "Clinics Nationwide",
     subline: "No GP referral needed. Just choose a clinic and book.",
     objectPosition: "center 38%",
@@ -70,6 +71,7 @@ const heroSlides: Array<{
   },
   {
     image: heroHomeKit,
+    mobileImage: heroMobileKitOpen,
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 50%",
@@ -83,6 +85,7 @@ const heroSlides: Array<{
   },
   {
     image: heroActive,
+    mobileImage: heroMobileActive,
     headline: "Live With Confidence",
     subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
     objectPosition: "center 18%",
@@ -96,6 +99,7 @@ const heroSlides: Array<{
   },
   {
     image: heroKitUnboxing,
+    mobileImage: heroMobileKitUnbox,
     headline: "Your Kit. Your Kitchen.",
     subline: "Professional at-home blood test kits delivered straight to your door.",
     objectPosition: "center 42%",
