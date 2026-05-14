@@ -26,7 +26,7 @@ const KitTile = ({ src, alt }: { src: string; alt: string }) => (
 );
 
 const CalloutCard = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl bg-white shadow-md p-5 sm:p-6 text-[#081129] font-sans text-sm sm:text-base leading-relaxed">
+  <div className="rounded-2xl bg-white shadow-md p-5 sm:p-6 text-[#081129] font-sans text-sm leading-relaxed pt-[10px] sm:text-base">
     {children}
   </div>
 );
