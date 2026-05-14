@@ -13,6 +13,7 @@ import { useDraggable } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
   const { user, isLoading: authLoading } = useAuth();
