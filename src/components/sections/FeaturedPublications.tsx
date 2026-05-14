@@ -1,9 +1,6 @@
-import { useRef, useEffect } from "react";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 
 export const FeaturedPublications = () => {
-  const trackRef = useRef<HTMLDivElement>(null);
-
   const publications = [
     { name: "Bloomberg", url: "https://www.bloomberg.com", logo: "/images/logos/bloomberg.png" },
     { name: "The Guardian", url: "https://www.theguardian.com", logo: "/images/logos/the-guardian.png" },
@@ -21,43 +18,28 @@ export const FeaturedPublications = () => {
     { name: "woman&home", url: "https://www.womanandhome.com", logo: "/images/logos/woman-and-home.png" },
     { name: "Men's Health", url: "https://www.menshealth.com", logo: "/images/logos/mens-health.png" },
     { name: "VOGUE", url: "https://www.vogue.co.uk", logo: "/images/logos/vogue.png" },
-    { name: "Healthista", url: "https://www.healthista.com", logo: "/images/logos/healthista.png" }
+    { name: "Healthista", url: "https://www.healthista.com", logo: "/images/logos/healthista.png" },
   ];
 
-  // Quadruple for seamless loop
-  const items = [...publications, ...publications, ...publications, ...publications];
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    let animationId: number;
-    let position = 0;
-    const speed = 0.4;
-
-    const animate = () => {
-      position -= speed;
-      const firstChild = track.firstElementChild as HTMLElement | null;
-      if (firstChild && Math.abs(position) >= firstChild.offsetWidth * publications.length) {
-        position += firstChild.offsetWidth * publications.length;
-      }
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, [publications.length]);
+  // Bento span pattern by index. Mobile-safe spans use only col-span-2.
+  // Larger spans (row-span-2, col-span-2 row-span-2) are gated to md+.
+  const spans: Record<number, string> = {
+    0: "col-span-2 md:col-span-2",
+    3: "md:row-span-2",
+    6: "col-span-2 md:col-span-2 md:row-span-2",
+    10: "md:col-span-2",
+    13: "md:row-span-2",
+  };
 
   return (
     <section className="bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
 
-      {/* Decorative gradient line */}
+      {/* Top gradient line */}
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-      
-      <div className="py-10 md:py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div className="py-12 md:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section label */}
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
@@ -66,57 +48,39 @@ export const FeaturedPublications = () => {
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
           </div>
-          
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-8 md:mb-10">
-            <span className="text-white">Our Partners Have </span>
-            <span className="text-white">
-              Featured In
-            </span>
-          </h2>
-          
-          {/* Smooth continuous scroll */}
-          <div
-            className="relative overflow-hidden max-w-5xl mx-auto"
-            style={{
-              maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-              WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-            }}
-          >
-            <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
-              {items.map((publication, index) => (
-                <div key={`${publication.name}-${index}`} className="shrink-0 px-2 sm:px-3" style={{ width: "220px" }}>
-                  <a
-                    href={publication.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative flex items-center justify-center h-28 sm:h-32 rounded-2xl bg-white/85 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_rgba(8,17,41,0.25),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white hover:scale-[1.03] transition-all duration-500 ease-out group px-5 overflow-hidden"
-                  >
-                    {/* Inner highlight */}
-                    <span className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/10 to-transparent opacity-80" />
-                    {/* Diagonal sheen */}
-                    <span className="pointer-events-none absolute -top-1/2 -left-1/4 w-1/2 h-[200%] bg-gradient-to-r from-transparent via-white/40 to-transparent rotate-12 opacity-60" />
 
-                    {publication.logo ? (
-                      <img
-                        src={publication.logo}
-                        alt={`${publication.name} logo`}
-                        className="relative z-10 h-20 sm:h-24 md:h-28 w-auto max-w-[200px] object-contain"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <span className="relative z-10 text-[10px] sm:text-xs md:text-sm font-semibold text-brand-navy uppercase tracking-[0.25em] text-center leading-tight whitespace-normal">
-                        {publication.name}
-                      </span>
-                    )}
-                  </a>
-                </div>
-              ))}
-            </div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center text-white mb-8 md:mb-12">
+            Our Partners Have Featured In
+          </h2>
+
+          {/* Bento grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[110px] md:auto-rows-[130px] gap-3 md:gap-4">
+            {publications.map((pub, i) => (
+              <a
+                key={pub.name}
+                href={pub.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${pub.name} — opens in new tab`}
+                style={{ animationDelay: `${i * 40}ms` }}
+                className={`group relative flex items-center justify-center rounded-2xl md:rounded-3xl bg-[#0f1a3d] ring-1 ring-white/5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] overflow-hidden transition-all duration-500 ease-out hover:ring-brand-turquoise/40 hover:-translate-y-0.5 hover:bg-[#13225a] animate-fade-in ${spans[i] ?? ""}`}
+              >
+                {/* Subtle inner highlight */}
+                <span className="pointer-events-none absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white/[0.04] via-transparent to-transparent" />
+
+                <img
+                  src={pub.logo}
+                  alt={`${pub.name} logo`}
+                  loading="lazy"
+                  decoding="async"
+                  className="relative z-10 max-h-10 md:max-h-14 lg:max-h-16 max-w-[75%] w-auto object-contain brightness-0 invert opacity-75 group-hover:opacity-100 transition-opacity duration-300"
+                />
+              </a>
+            ))}
           </div>
         </div>
       </div>
-      
+
       {/* Bottom gradient line */}
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
