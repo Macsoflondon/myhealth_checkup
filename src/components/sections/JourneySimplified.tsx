@@ -32,7 +32,7 @@ const JourneySimplified = () => {
             gradientText="Simplified"
             titleClassName="text-tertiary"
           />
-          <p className="text-tertiary font-sans font-medium text-xs sm:text-sm md:text-base max-w-2xl mx-auto leading-snug mt-2">
+          <p className="text-base font-semibold text-tertiary max-w-2xl mx-auto leading-snug mt-2 text-center">
           </p>
         </div>
 
