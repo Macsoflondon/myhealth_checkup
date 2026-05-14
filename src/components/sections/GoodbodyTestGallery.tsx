@@ -201,7 +201,7 @@ const GoodbodyTestGallery = () => {
 
   const getTestsForTab = () => {
     switch (activeTab) {
-      case "General Health":
+      case "​":
         return resolveGalleryImages(GENERAL_HEALTH_TESTS);
       case "Hormone & Fertility":
         return resolveGalleryImages(HORMONE_FERTILITY_TESTS);
