@@ -26,7 +26,7 @@ const KitTile = ({ src, alt }: { src: string; alt: string }) => (
 );
 
 const CalloutCard = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl bg-white shadow-md p-5 sm:p-6 text-[#081129] font-sans text-sm sm:text-base leading-relaxed">
+  <div className="rounded-2xl bg-white shadow-md p-5 sm:p-6 text-[#081129] font-sans text-sm leading-relaxed pt-[10px] sm:text-base">
     {children}
   </div>
 );
@@ -79,7 +79,7 @@ const GoodbodyBentoShowcase = () => {
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
             Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP, ensuring results you can trust.
-            <br /><br />
+            {"\n"}
             <strong>Regulated by the CQC</strong> and available at over <strong>200 locations nationwide</strong> or from the comfort of your home.
           </CalloutCard>
           <CalloutCard>
