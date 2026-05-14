@@ -15,7 +15,7 @@ import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2, Droplet, Clock 
 import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 import { supabase } from "@/integrations/supabase/client";
 
-const TABS = ["​", "Hormone & Fertility", "Vitamin and Mineral Tests", "Cancer Screening"] as const;
+const TABS = ["General Health", "Hormone & Fertility", "Vitamin and Mineral Tests", "Cancer Screening"] as const;
 type Tab = typeof TABS[number];
 
 type GalleryImage = {
@@ -163,7 +163,7 @@ const CANCER_SCREENING_TESTS: GalleryImage[] = [
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
 const GoodbodyTestGallery = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("​");
+  const [activeTab, setActiveTab] = useState<Tab>("General Health");
   const [testDetailOpen, setTestDetailOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
@@ -201,7 +201,7 @@ const GoodbodyTestGallery = () => {
 
   const getTestsForTab = () => {
     switch (activeTab) {
-      case "​":
+      case "General Health":
         return resolveGalleryImages(GENERAL_HEALTH_TESTS);
       case "Hormone & Fertility":
         return resolveGalleryImages(HORMONE_FERTILITY_TESTS);
