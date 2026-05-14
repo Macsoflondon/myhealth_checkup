@@ -53,7 +53,7 @@ const GoodbodyBentoShowcase = () => {
             className="h-16 sm:h-20 md:h-24 w-auto object-contain"
           />
           <p className="mt-3 text-[#22c0d4] font-heading italic text-base sm:text-lg text-center">
-            Know more. Live better.
+            ​
           </p>
         </div>
 
