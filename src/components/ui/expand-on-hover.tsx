@@ -266,6 +266,7 @@ const HoverExpand_001 = ({
         images={images}
         onTestClick={onTestClick}
         className={className}
+        showLabels={showLabels}
       />
     );
   }
