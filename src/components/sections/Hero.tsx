@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Loader2, Shield, FlaskConical, MapPin, Clock, Stethoscope } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import TrustSignalsBar from "@/components/common/TrustSignalsBar";
 
 import heroEmpowered from "@/assets/hero/hero-empowered-results.webp";
 import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
@@ -107,14 +108,6 @@ const popularSearches = [
   { name: "Testosterone", route: "/compare?search=testosterone" },
   { name: "Advanced Well Man", route: "/compare?search=well+man" },
   { name: "Menopause Blood Test", route: "/compare?search=menopause" },
-];
-
-const trustSignals = [
-  { icon: Shield, text: "UKAS-accredited labs" },
-  { icon: FlaskConical, text: "200+ tests available" },
-  { icon: MapPin, text: "Clinics nationwide" },
-  { icon: Clock, text: "Results in 3–5 days" },
-  { icon: Stethoscope, text: "No GP referral needed" },
 ];
 
 const Hero = () => {
@@ -296,18 +289,7 @@ const Hero = () => {
         </div>
       </section>
 
-      <div className="bg-white py-2 sm:py-3 px-2 sm:px-4 border-b border-border overflow-x-auto scrollbar-hide">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-center gap-x-4 sm:gap-x-7 lg:gap-x-10 flex-nowrap">
-            {trustSignals.map((signal, index) => (
-              <div key={index} className="flex items-center justify-center gap-2 text-[11px] sm:text-lg font-semibold leading-none whitespace-nowrap">
-                <signal.icon className="w-4 h-4 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-                <span className="text-primary font-extrabold text-[11px] sm:text-xl leading-none">{signal.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <TrustSignalsBar />
     </>
   );
 };
