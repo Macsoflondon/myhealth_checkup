@@ -515,7 +515,7 @@ export const goodbodyTests: GoodbodyTest[] = [
     id: 'Goodbody204',
     name: 'Bowel Cancer Screening Test (FIT)',
     price: 69,
-    description: 'Discreet home test to check for occult blood in faeces, which can indicate colon cancer, bowel cancer, polyps, colitis or diverticulitis. Bowel cancer is one of the easiest cancers to cure if caught early.',
+    description: 'Discreet home test to check for occult blood in faeces, which can indicate colon cancer, bowel cancer, polyps, colitis or diverticulitis. Early detection of bowel cancer is associated with better outcomes.',
     biomarkers: 1,
     turnaround: '3-5 working days',
     categories: ['cancer-screening'],
