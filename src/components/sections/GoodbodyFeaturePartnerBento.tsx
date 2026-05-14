@@ -1,9 +1,7 @@
-const kit1 = "/images/tests/advanced-well-man.webp";
-const kit2 = "/images/tests/premium-complete-blood-test.webp";
-const kit3 = "/images/tests/advanced-well-woman.webp";
-const kit4 = "/images/tests/early-cancer-screening.webp";
-const kit5 = "/images/tests/sports-fitness-blood-test.webp";
-const kit6 = "/images/tests/female-hormone-fertility.webp";
+import coastImg from "@/assets/goodbody-lifestyle-coast.jpg";
+import portraitImg from "@/assets/goodbody-lifestyle-portrait.jpg";
+import sunriseImg from "@/assets/goodbody-lifestyle-sunrise.jpg";
+import waveImg from "@/assets/goodbody-lifestyle-wave.jpg";
 
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-new-v4.png";
 
@@ -24,24 +22,24 @@ const GoodbodyFeaturePartnerBento = () => {
           </p>
         </div>
 
-        {/* Kit 1 */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
-          <img src={kit1} alt="Advanced Well Man test kit" loading="lazy" className="w-full h-full object-contain" />
+        {/* Coast image */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
+          <img src={coastImg} alt="Coastal cliffs" loading="lazy" className="w-full h-full object-cover" />
         </div>
 
-        {/* Kit 2 — tall */}
-        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
-          <img src={kit2} alt="Premium Complete blood test kit" loading="lazy" className="w-full h-full object-contain" />
+        {/* Wave image */}
+        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden">
+          <img src={waveImg} alt="Turquoise wave" loading="lazy" className="w-full h-full object-cover" />
         </div>
 
-        {/* Kit 3 */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
-          <img src={kit3} alt="Advanced Well Woman test kit" loading="lazy" className="w-full h-full object-contain" />
+        {/* Sunrise image */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
+          <img src={sunriseImg} alt="Beach sunrise" loading="lazy" className="w-full h-full object-cover" />
         </div>
 
-        {/* Kit 4 — tall */}
-        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
-          <img src={kit4} alt="Early Cancer Screening kit" loading="lazy" className="w-full h-full object-contain" />
+        {/* Portrait */}
+        <div className="col-span-1 row-span-2 rounded-2xl overflow-hidden">
+          <img src={portraitImg} alt="Healthy lifestyle portrait" loading="lazy" className="w-full h-full object-cover" />
         </div>
 
         {/* Text card 1 */}
@@ -51,9 +49,9 @@ const GoodbodyFeaturePartnerBento = () => {
           </p>
         </div>
 
-        {/* Kit 5 */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
-          <img src={kit5} alt="Sports & Fitness test kit" loading="lazy" className="w-full h-full object-contain" />
+        {/* Coast small */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
+          <img src={coastImg} alt="Coastal scene" loading="lazy" className="w-full h-full object-cover" />
         </div>
 
         {/* Text card 2 */}
@@ -63,9 +61,9 @@ const GoodbodyFeaturePartnerBento = () => {
           </p>
         </div>
 
-        {/* Kit 6 */}
-        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden bg-white p-2 flex items-center justify-center">
-          <img src={kit6} alt="Female Hormone & Fertility kit" loading="lazy" className="w-full h-full object-contain" />
+        {/* Sunrise small */}
+        <div className="col-span-1 row-span-1 rounded-2xl overflow-hidden">
+          <img src={sunriseImg} alt="Sunrise" loading="lazy" className="w-full h-full object-cover" />
         </div>
       </div>
     </div>
