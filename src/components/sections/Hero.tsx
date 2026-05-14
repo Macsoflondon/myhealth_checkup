@@ -9,6 +9,9 @@ import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroCompare from "@/assets/hero/hero-compare-decide.webp";
+import heroSpringNumbers from "@/assets/hero/hero-spring-numbers.png";
+import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
+import heroKitKitchen from "@/assets/hero/hero-kit-kitchen.png";
 
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
@@ -97,6 +100,45 @@ const heroSlides: Array<{
       overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/10",
       surface: 60,
       accent: "turquoise",
+    },
+  },
+  {
+    image: heroSpringNumbers,
+    headline: "This Spring, Know Your Numbers.",
+    subline: "Trusted clinics. Clear pricing. No GP referral needed.",
+    objectPosition: "center 30%",
+    mobileObjectPosition: "center 30%",
+    mobileScale: "scale(1.1)",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/15",
+      surface: 60,
+      accent: "turquoise",
+    },
+  },
+  {
+    image: heroKitUnboxing,
+    headline: "Your Kit. Your Kitchen.",
+    subline: "Professional at-home blood test kits delivered straight to your door.",
+    objectPosition: "center 50%",
+    mobileObjectPosition: "55% 50%",
+    mobileScale: "scale(1.15)",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
+      surface: 65,
+      accent: "turquoise",
+    },
+  },
+  {
+    image: heroKitKitchen,
+    headline: "Comprehensive At-Home Testing.",
+    subline: "Everything you need to test confidently — clinical-grade, beautifully simple.",
+    objectPosition: "center 55%",
+    mobileObjectPosition: "60% 55%",
+    mobileScale: "scale(1.15)",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
+      surface: 65,
+      accent: "pink",
     },
   },
 ];
