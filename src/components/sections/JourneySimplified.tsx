@@ -7,7 +7,7 @@ const JourneySimplified = () => {
       number: "01",
       icon: Search,
       title: "Tell us what you want to check",
-      description: "Finding the right test shouldn't be complicated. We've made it simple in three easy steps."
+      description: ""
     },
     {
       number: "02",
