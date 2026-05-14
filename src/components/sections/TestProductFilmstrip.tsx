@@ -33,7 +33,7 @@ const TestProductFilmstrip = ({ className }: TestProductFilmstripProps) => {
           Browse health tests from trusted & accredited providers — compare and find the right one for you.
         </p>
         <div className="h-screen flex items-center justify-center">
-          <HoverExpand_001 images={TEST_PRODUCTS} />
+          <HoverExpand_001 images={TEST_PRODUCTS} showLabels={false} />
         </div>
       </div>
     </section>
