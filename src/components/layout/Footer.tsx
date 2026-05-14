@@ -61,7 +61,7 @@ const Footer = () => {
                 This site provides comparison information only and does not constitute medical advice. Consult your GP
                 for medical guidance. Clinical content reviewed by{" "}
                 <Link to="/about/medical-review" className="underline underline-offset-2 hover:text-white">
-                  Nathanial Smith, Physician Associate (HCPC PA43353)
+                  Nathanial Smith, Registered Healthcare Professional (HCPC PA43353)
                 </Link>
                 .
               </span>
