@@ -38,18 +38,18 @@ const PromoTicker = () => {
             style={{ willChange: "transform", backfaceVisibility: "hidden" }}
           >
             {items.map((p, i) => (
-              <span key={i} className="flex items-baseline shrink-0">
+              <span key={i} className="flex items-center shrink-0 gap-2 sm:gap-2.5 px-3 sm:px-5">
                 <span
-                  className="font-heading font-bold text-sm sm:text-lg md:text-xl tracking-wider sm:tracking-widest uppercase pl-2 pr-1.5 sm:pl-5 sm:pr-2"
+                  className="font-heading font-bold text-sm sm:text-lg md:text-xl tracking-wide uppercase leading-none"
                   style={{ color: p.color }}
                 >
                   {p.provider}:
                 </span>
-                <span className="text-white font-body text-sm sm:text-lg md:text-xl pr-2 sm:pr-3">
+                <span className="text-white font-body font-normal text-sm sm:text-lg md:text-xl leading-none">
                   {p.text}
                 </span>
                 <span
-                  className="text-brand-pink text-lg sm:text-xl leading-none px-1.5 sm:px-3"
+                  className="text-brand-pink text-lg sm:text-xl leading-none pl-1 sm:pl-2"
                   aria-hidden="true"
                 >
                   •
