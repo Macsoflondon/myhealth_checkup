@@ -44,7 +44,7 @@ const GoodbodyBentoShowcase = () => {
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-12 sm:h-16 md:h-20 w-auto object-contain"
+            className="h-48 sm:h-64 md:h-80 w-auto object-contain"
           />
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
