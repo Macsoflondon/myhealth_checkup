@@ -38,7 +38,7 @@ const HowWeRank = () => {
           Last reviewed: {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })} ·
           Reviewed by{' '}
           <Link to="/about/medical-review" className="text-primary underline underline-offset-2">
-            Nathanial Smith, Physician Associate (HCPC PA43353)
+            Nathanial Smith, Registered Healthcare Professional (HCPC PA43353)
           </Link>
         </p>
       </div>
@@ -56,8 +56,8 @@ const HowWeRank = () => {
             <p>
               Comparison and biomarker explainer content is reviewed by a named, registered UK healthcare
               professional. Our current Clinical Reviewer is{' '}
-              <strong className="text-foreground">Nathanial Smith</strong>, a Physician Associate registered with
-              the Health and Care Professions Council under registration number{' '}
+              <strong className="text-foreground">Nathanial Smith</strong>, a Registered Healthcare Professional
+              registered with the Health and Care Professions Council under registration number{' '}
               <Badge variant="secondary" className="font-mono">PA43353</Badge>.
             </p>
             <p>
