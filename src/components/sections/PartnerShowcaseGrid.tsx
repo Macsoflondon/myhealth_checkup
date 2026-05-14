@@ -5,6 +5,7 @@ import { FeaturedPublications } from "@/components/sections/FeaturedPublications
 import UKRegionMap from "@/components/sections/UKRegionMap";
 import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
+import GoodbodyFeaturePartnerBento from "@/components/sections/GoodbodyFeaturePartnerBento";
 
 const PartnerShowcaseGrid = () => {
 
@@ -15,17 +16,8 @@ const PartnerShowcaseGrid = () => {
       {/* Featured Partners of the Month — Goodbody (moved above the publications carousel) */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
-          <div className="md:col-span-2 text-center mt-2 sm:mt-4">
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
-              <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
-                Featured Partner
-              </span>
-              <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white md:text-5xl">
-              Our Featured Partner of the Month
-            </h2>
+          <div className="md:col-span-2 mt-2 sm:mt-4">
+            <GoodbodyFeaturePartnerBento />
           </div>
 
           <GoodbodyTestGallery />
