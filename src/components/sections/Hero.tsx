@@ -173,26 +173,27 @@ const Hero = () => {
                 </span>
               </div>
 
-              <div className="text-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[130px] md:min-h-[150px] lg:min-h-[170px] flex flex-col items-center justify-center">
-                <h1
-                  key={currentSlide}
-                  className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] xl:text-[4.2rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans lg:text-6xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)]"
-                >
-                  {slide.headline}
-                </h1>
-                <p
-                  key={`sub-${currentSlide}`}
-                  className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-white max-w-2xl mx-auto animate-fade-in font-medium drop-shadow-[0_2px_8px_rgba(8,17,41,0.85)]"
-                >
-                  {slide.subline}
-                </p>
-              </div>
-
-              <div className="flex justify-center mt-2 sm:mt-3 mb-4 sm:mb-6">
-                <span className="block w-12 sm:w-20 h-[2px] sm:h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
-              </div>
-
               <div className="mt-auto w-full">
+                <div className="text-center mb-1 sm:mb-2 flex flex-col items-center justify-center">
+                  <h1
+                    key={currentSlide}
+                    className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] xl:text-[4.2rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans lg:text-6xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)]"
+                  >
+                    {slide.headline}
+                  </h1>
+                  <p
+                    key={`sub-${currentSlide}`}
+                    className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-white max-w-2xl mx-auto animate-fade-in font-medium drop-shadow-[0_2px_8px_rgba(8,17,41,0.85)]"
+                  >
+                    {slide.subline}
+                  </p>
+                </div>
+
+                <div className="flex justify-center mt-2 sm:mt-3 mb-3 sm:mb-4">
+                  <span className="block w-12 sm:w-20 h-[2px] sm:h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
+                </div>
+
+                <div className="w-full">
                 <div className="max-w-[855px] mx-auto w-full">
                   <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
                     <div className="relative">
