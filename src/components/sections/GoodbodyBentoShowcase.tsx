@@ -14,7 +14,7 @@ const KIT = {
 };
 
 const KitTile = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-2xl overflow-hidden bg-white shadow-md p-3 aspect-square flex-col flex items-center justify-start">
+  <div className="rounded-2xl overflow-hidden bg-white shadow-md p-3 aspect-square flex-col flex items-center justify-center py-0 pb-[30px] pt-0">
     <img
       src={src}
       alt={alt}
