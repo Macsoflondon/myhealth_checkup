@@ -13,7 +13,7 @@ const JourneySimplified = () => {
       number: "02",
       icon: GitCompare,
       title: "Compare trusted tests & providers",
-      description: "Compare prices, turnaround times, sample types, and inclusions side by side."
+      description: "​"
     },
     {
       number: "03",
