@@ -154,7 +154,7 @@ const Hero = () => {
         {heroSlides.map((s, i) => (
           <img
             key={i}
-            src={s.image}
+            src={isMobile && s.mobileImage ? s.mobileImage : s.image}
             alt=""
             aria-hidden="true"
             loading={i === 0 ? "eager" : "lazy"}
