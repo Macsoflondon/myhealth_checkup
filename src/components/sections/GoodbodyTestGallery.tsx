@@ -15,7 +15,7 @@ import { ExternalLink, Mail, Phone, Info, FlaskConical, Loader2, Droplet, Clock 
 import { findTestByIdOrSlug, generateTestSlug, type TestData } from "@/utils/testSlugLookup";
 import { supabase } from "@/integrations/supabase/client";
 
-const TABS = ["General Health", "Hormone & Fertility", "Vitamin and Mineral Tests", "Cancer Screening"] as const;
+const TABS = ["​", "Hormone & Fertility", "Vitamin and Mineral Tests", "Cancer Screening"] as const;
 type Tab = typeof TABS[number];
 
 type GalleryImage = {
