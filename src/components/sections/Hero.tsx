@@ -192,47 +192,49 @@ const Hero = () => {
                 <span className="block w-12 sm:w-20 h-[2px] sm:h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
               </div>
 
-              <div className="flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mb-4 sm:mb-6">
-                <button
-                  onClick={() => navigate("/assisted-test-finder")}
-                  style={surfaceStyle}
-                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
-                >
-                  Find your test
-                </button>
-                <button
-                  onClick={() => navigate("/compare/symptoms")}
-                  style={surfaceStyle}
-                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid shadow-md rounded-sm hover:brightness-125"
-                >
-                  Compare by symptom
-                </button>
-                <button
-                  onClick={() => navigate("/compare/goals")}
-                  style={surfaceStyle}
-                  className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
-                >
-                  Compare by goal
-                </button>
-              </div>
-
-              <div className="max-w-[855px] mx-auto w-full mt-auto">
-                <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
-                  <div className="relative">
-                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
-                    <input
-                      type="text"
-                      placeholder="Search from over 200 tests..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      style={chipStyle}
-                      className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-solid rounded-sm shadow-sm"
-                    />
-                    {isAnalyzing && (
-                      <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
-                    )}
+              <div className="mt-auto w-full">
+                <div className="max-w-[855px] mx-auto w-full">
+                  <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
+                    <div className="relative">
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
+                      <input
+                        type="text"
+                        placeholder="Search from over 200 tests..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        style={chipStyle}
+                        className="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3.5 text-sm sm:text-base sm:rounded-xl focus:ring-2 focus:ring-white/30 focus:outline-none backdrop-blur-md border-2 font-semibold text-white placeholder:text-white/70 border-solid rounded-sm shadow-sm"
+                      />
+                      {isAnalyzing && (
+                        <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 animate-spin text-[hsl(var(--primary))]" />
+                      )}
+                    </div>
                   </div>
+                </div>
+
+                <div className="flex flex-nowrap gap-1.5 sm:gap-3 justify-center items-center mt-3 sm:mt-4">
+                  <button
+                    onClick={() => navigate("/assisted-test-finder")}
+                    style={surfaceStyle}
+                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
+                  >
+                    Find your test
+                  </button>
+                  <button
+                    onClick={() => navigate("/compare/symptoms")}
+                    style={surfaceStyle}
+                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid shadow-md rounded-sm hover:brightness-125"
+                  >
+                    Compare by symptom
+                  </button>
+                  <button
+                    onClick={() => navigate("/compare/goals")}
+                    style={surfaceStyle}
+                    className="backdrop-blur-md font-semibold px-2.5 sm:px-6 py-1.5 sm:py-3 text-[11px] sm:text-sm transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125"
+                  >
+                    Compare by goal
+                  </button>
                 </div>
               </div>
 
