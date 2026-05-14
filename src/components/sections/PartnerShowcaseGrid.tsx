@@ -5,6 +5,7 @@ import { FeaturedPublications } from "@/components/sections/FeaturedPublications
 import UKRegionMap from "@/components/sections/UKRegionMap";
 import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
 import GoodbodyTestGallery from "@/components/sections/GoodbodyTestGallery";
+import GoodbodyFeaturePartnerBento from "@/components/sections/GoodbodyFeaturePartnerBento";
 
 const PartnerShowcaseGrid = () => {
 
