@@ -15,6 +15,7 @@ import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle, Lock } from "lucide-react";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { Helmet } from "react-helmet-async";
 
 
 const Auth = () => {
