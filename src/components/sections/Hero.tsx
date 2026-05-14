@@ -90,32 +90,6 @@ const heroSlides: Array<{
     },
   },
   {
-    image: heroCompare,
-    headline: "Compare. Book. Test.",
-    subline: "Side-by-side pricing from accredited UK providers — no hidden fees.",
-    objectPosition: "center 42%",
-    mobileObjectPosition: "62% 45%",
-    mobileScale: "scale(1.15)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/10",
-      surface: 60,
-      accent: "turquoise",
-    },
-  },
-  {
-    image: heroSpringNumbers,
-    headline: "This Spring, Know Your Numbers.",
-    subline: "Trusted clinics. Clear pricing. No GP referral needed.",
-    objectPosition: "center 30%",
-    mobileObjectPosition: "center 30%",
-    mobileScale: "scale(1.1)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/15",
-      surface: 60,
-      accent: "turquoise",
-    },
-  },
-  {
     image: heroKitUnboxing,
     headline: "Your Kit. Your Kitchen.",
     subline: "Professional at-home blood test kits delivered straight to your door.",
