@@ -119,9 +119,14 @@ const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(new Set([0]));
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => {
+      const next = (prev + 1) % heroSlides.length;
+      setLoadedSlides((seen) => new Set([...seen, next]));
+      return next;
+    });
   }, []);
 
   useEffect(() => {
