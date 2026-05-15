@@ -153,7 +153,7 @@ export function UnifiedTestCard({
         </div>
 
         {/* Title */}
-        <h3 className="mb-0.5 text-xl">
+        <h3 className="mb-0.5 text-lg font-bold font-mono">
           {name}
         </h3>
 
