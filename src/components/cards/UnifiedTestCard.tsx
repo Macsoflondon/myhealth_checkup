@@ -210,7 +210,7 @@ export function UnifiedTestCard({
         )}
 
         {/* Divider */}
-        <div className="h-px w-full bg-[#081129]/10 my-2" />
+        <div className="h-px w-full bg-white/10 my-2" />
 
         {/* Stars + Provider Logo */}
         <div className="flex items-center justify-between mb-4 mt-2">
