@@ -150,15 +150,16 @@ const FeaturedProvidersGlass = () => {
             }}
           />
 
-          <div className="flex justify-center mb-4">
-            <span className="px-3 py-1 text-[10px] font-bold tracking-[0.3em] text-[#22c0d4] uppercase border border-[#22c0d4]/30 rounded-full bg-[#22c0d4]/5">
-              Verified Networks
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <span className="h-px w-10 bg-[#22c0d4]/60" />
+            <span className="text-[11px] md:text-xs font-bold tracking-[0.3em] text-[#22c0d4] uppercase">
+              Accredited &amp; Verified
             </span>
+            <span className="h-px w-10 bg-[#22c0d4]/60" />
           </div>
 
-          <h1 className="font-heading text-4xl md:text-6xl font-bold text-white tracking-tight relative inline-block">
-            Featured Partners
-            <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-[#22c0d4] to-transparent opacity-60" />
+          <h1 className="font-heading text-4xl md:text-6xl font-bold text-white tracking-tight">
+            Our Trusted Partners
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto pt-6">
             Accredited UK health testing providers — UKAS laboratories and CQC-regulated clinics with proven track records of clinical excellence.
