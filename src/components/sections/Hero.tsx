@@ -4,13 +4,11 @@ import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TrustSignalsBar from "@/components/common/TrustSignalsBar";
 
-import heroEmpowered from "@/assets/hero/hero-empowered-results.webp";
 import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
 
-import heroMobileLaptop from "@/assets/hero/mobile/hero-mobile-laptop.jpeg";
 import heroMobileReception from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
 import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
 import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
