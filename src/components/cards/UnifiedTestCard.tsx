@@ -240,7 +240,7 @@ export function UnifiedTestCard({
             }}
             className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer border-0"
             style={{
-              backgroundColor: "#22bed3",
+              backgroundColor: categoryColor,
               color: "#ffffff",
             }}
             onMouseEnter={(e) => {
