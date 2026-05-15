@@ -131,7 +131,7 @@ export function UnifiedTestCard({
       }}
     >
       {/* Top accent bar */}
-      <div className="h-1 w-full py-[4px] bg-gradient-to-r from-brand-turquoise to-brand-pink" />
+      <div className="h-2 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink" />
 
       <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
         {/* Compare checkbox + Category + Badge */}
