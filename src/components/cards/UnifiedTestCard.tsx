@@ -131,7 +131,7 @@ export function UnifiedTestCard({
       }}
     >
       {/* Top accent bar */}
-      <div className="h-1 w-full" style={{ backgroundColor: categoryColor }} />
+      <div className="h-1 w-full py-[4px]" style={{ backgroundColor: categoryColor }} />
 
       <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
         {/* Compare checkbox + Category + Badge */}
