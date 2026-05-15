@@ -42,20 +42,6 @@ const heroSlides: Array<{
   theme: SlideTheme;
 }> = [
   {
-    image: heroEmpowered,
-    mobileImage: heroMobileLaptop,
-    headline: "Your Results. Your Control.",
-    subline: "Review your health test results with confidence — anytime, anywhere.",
-    objectPosition: "45% 22%",
-    mobileObjectPosition: "50% 20%",
-    mobileScale: "scale(1.2)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/20",
-      surface: 65,
-      accent: "turquoise",
-    },
-  },
-  {
     image: heroClinic,
     mobileImage: heroMobileReception,
     headline: "Clinics Nationwide",
