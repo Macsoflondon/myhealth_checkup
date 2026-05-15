@@ -150,7 +150,7 @@ export function UnifiedTestCard({
         </div>
 
         {/* Title */}
-        <h3 className="mb-4 text-white">
+        <h3 className="mb-0.5 text-xl">
           {name}
         </h3>
 
