@@ -217,7 +217,7 @@ export function CategoryPageLayout({
                     ctaLabel="Compare"
                     compareSelected={!!compared.find((c) => c.id === test.id)}
                     onCompareToggle={() => toggleCompare(test)}
-                    className="w-full max-w-[340px]"
+                    className="w-full max-w-[360px]"
                   />
                 ))}
               </div>

@@ -189,12 +189,15 @@ export function UnifiedTestCard({
             <span className="text-[10px] text-white">
               Key Markers:
             </span>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1.5 mt-1.5">
               {markers.slice(0, expanded ? markers.length : 3).map((m) => (
                 <span
                   key={m}
-                  className="text-xs font-semibold text-white ml-0.5 text-center mx-px"
-                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
+                  className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.10)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                  }}
                 >
                   {m}
                 </span>

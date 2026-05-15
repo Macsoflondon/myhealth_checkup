@@ -1,21 +1,29 @@
-## Shrink test kit images and enlarge GOODBODY logo in Featured Partner section
+## Changes to `UnifiedTestCard.tsx` (single source of truth — all category pages already render through it, so updating it standardises every card automatically)
 
-### Problem
-The test kit tile images in `GoodbodyBentoShowcase.tsx` currently fill their containers (`w-full h-full`), making them visually dominant. The GOODBODY logo in the center tile is undersized relative to the space available.
+### 1. Widen card by ~0.5 cm (~19 px)
+In `CategoryPageLayout.tsx`, the card is constrained by `className="w-full max-w-[340px]"`. Bump to `max-w-[360px]` (≈ +20 px ≈ 0.5 cm at 96 dpi).
 
-### Changes
+### 2. Shaded container around each biomarker
+The "Key Markers" pills currently render with no background (the `style` was set on the `<span>` but the pill styling is missing padding/radius). Update each marker chip to:
 
-1. **Shrink test kit images**
-   - In `KitTile`, change the `<img>` from `w-full h-full` to `w-[85%] h-[85%]` so each kit image is ~15% smaller, creating breathing room inside each tile and reducing overall visual weight.
+```tsx
+<span
+  key={m}
+  className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+  style={{ backgroundColor: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.15)" }}
+>
+  {m}
+</span>
+```
 
-2. **Enlarge GOODBODY logo 4x**
-   - Current: `h-12 sm:h-16 md:h-20`
-   - New: `h-48 sm:h-64 md:h-80`
-   - This fills the center `row-span-2` tile properly and gives the brand logo the visual prominence the user wants.
+Also add a small gap above the chips row (`mt-1.5`) and keep the "Key Markers:" label as the existing styled span.
+
+### 3. Standardise all cards
+Because every category page (`WomensHealthPage`, `MensHealthPage`, `HeartHealthPage`, `HormonesPage`, etc.) already passes data into `UnifiedTestCard` via `CategoryPageLayout`, the two edits above propagate to every card. No per-page changes required.
 
 ### Files touched
-- `src/components/sections/GoodbodyBentoShowcase.tsx` only
+- `src/components/cards/UnifiedTestCard.tsx` — biomarker pill styling
+- `src/components/category/CategoryPageLayout.tsx` — `max-w-[340px]` → `max-w-[360px]`
 
-### Visual result
-- Test kit tiles have smaller, inset images.
-- Center GOODBODY logo tile becomes the dominant visual anchor of the grid.
+### Out of scope
+No data, routing, or business-logic changes. Pure presentation.
