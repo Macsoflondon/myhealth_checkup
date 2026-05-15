@@ -22,7 +22,7 @@ const thyroidTests = [
     price: "£69",
     biomarkers: ["TSH", "Free T3", "Free T4"],
     suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
-    turnaround: "1-2 days"
+    turnaround: "3-4 days"
   },
   {
     id: "thyroid-function-antibodies",
