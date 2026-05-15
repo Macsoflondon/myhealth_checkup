@@ -114,7 +114,7 @@ export function UnifiedTestCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "text-sm leading-relaxed mb-4 line-clamp-3 font-bold text-[#08122b] rounded-2xl shadow-2xl w-full max-w-[360px] bg-[#08122b]",
+        "rounded-2xl shadow-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden",
         className
       )}
       style={{
