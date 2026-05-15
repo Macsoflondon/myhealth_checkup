@@ -177,7 +177,7 @@ export function UnifiedTestCard({
               style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
             >
               <span className="text-base mb-0.5">{stat.icon}</span>
-              <span className="text-xs font-bold text-white">{stat.value}</span>
+              <span className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full font-semibold transition-all duration-200 cursor-pointer border-0 text-base">{stat.value}</span>
               <span className="text-[10px] text-white/60">{stat.label}</span>
             </div>
           ))}
@@ -187,7 +187,7 @@ export function UnifiedTestCard({
         {markers.length > 0 && (
           <div className="mb-4">
             <span className="text-[10px] text-white">
-              Key Markers
+              Key Markers:
             </span>
             <div className="flex flex-wrap gap-1.5">
               {markers.slice(0, expanded ? markers.length : 3).map((m) => (
