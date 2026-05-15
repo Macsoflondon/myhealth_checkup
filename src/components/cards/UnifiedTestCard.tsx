@@ -215,14 +215,14 @@ export function UnifiedTestCard({
         {/* Stars + Provider Logo */}
         <div className="flex items-center justify-between mb-4 mt-2">
           <StarRating rating={rating} reviews={reviews} />
-          <span className="text-xs font-medium text-[#081129]/50 ml-3 flex-shrink-0">{provider}</span>
+          <span className="text-xs font-medium text-white/60 ml-3 flex-shrink-0">{provider}</span>
         </div>
 
         {/* Price + CTA */}
         <div className="flex items-center justify-between mt-auto">
           <div className="flex items-baseline gap-1">
             {priceFrom && (
-              <span className="text-xs text-[#081129]/40 font-medium">from</span>
+              <span className="text-xs text-white/50 font-medium">from</span>
             )}
             <span className="text-2xl font-extrabold text-white">
               £{price}
