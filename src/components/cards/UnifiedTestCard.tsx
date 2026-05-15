@@ -215,7 +215,7 @@ export function UnifiedTestCard({
         {/* Stars + Provider Logo */}
         <div className="flex items-center justify-between mb-4 mt-2">
           <StarRating rating={rating} reviews={reviews} />
-          <span className="text-xs font-medium text-white/60 ml-3 flex-shrink-0">{provider}</span>
+          <span className="text-[10px] uppercase tracking-wider text-white/50 mb-2 block font-extrabold">{provider}</span>
         </div>
 
         {/* Price + CTA */}
