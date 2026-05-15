@@ -9,6 +9,11 @@ const SITEMAP = 'https://www.myhealthcheckup.co.uk/sitemap.xml';
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
+  const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${SERVICE_KEY}`) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+
   const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
   const GSC_KEY = Deno.env.get('GOOGLE_SEARCH_CONSOLE_API_KEY');
   if (!LOVABLE_API_KEY) return json({ error: 'LOVABLE_API_KEY missing' }, 500);
