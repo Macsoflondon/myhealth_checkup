@@ -135,7 +135,7 @@ export function UnifiedTestCard({
 
       <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
         {/* Compare checkbox + Category + Badge */}
-        <div className="flex items-center gap-2 mb-3 bg-[#22bed3]">
+        <div className="flex items-center gap-2 mb-3 bg-[#22bed3] rounded-2xl">
           {badge?.toLowerCase().includes("most popular") && (
             <span
               className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide text-white"
