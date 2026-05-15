@@ -6,6 +6,10 @@ import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
+// Hero first-slide images — preloaded for LCP optimisation
+import heroSlide1Desktop from "@/assets/hero/hero-empowered-results.webp";
+import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-laptop.jpeg";
+
 // Above-the-fold: eager
 import Hero from "@/components/sections/Hero";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
