@@ -4,13 +4,11 @@ import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TrustSignalsBar from "@/components/common/TrustSignalsBar";
 
-import heroEmpowered from "@/assets/hero/hero-empowered-results.webp";
 import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
 
-import heroMobileLaptop from "@/assets/hero/mobile/hero-mobile-laptop.jpeg";
 import heroMobileReception from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
 import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
 import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
@@ -41,20 +39,6 @@ const heroSlides: Array<{
   mobileScale?: string;
   theme: SlideTheme;
 }> = [
-  {
-    image: heroEmpowered,
-    mobileImage: heroMobileLaptop,
-    headline: "Your Results. Your Control.",
-    subline: "Review your health test results with confidence — anytime, anywhere.",
-    objectPosition: "45% 22%",
-    mobileObjectPosition: "50% 20%",
-    mobileScale: "scale(1.2)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/20",
-      surface: 65,
-      accent: "turquoise",
-    },
-  },
   {
     image: heroClinic,
     mobileImage: heroMobileReception,

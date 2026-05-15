@@ -7,8 +7,8 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
 // Hero first-slide images — preloaded for LCP optimisation
-import heroSlide1Desktop from "@/assets/hero/hero-empowered-results.webp";
-import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-laptop.jpeg";
+import heroSlide1Desktop from "@/assets/hero/hero-clinic-ease.webp";
+import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
 
 // Above-the-fold: eager
 import Hero from "@/components/sections/Hero";
