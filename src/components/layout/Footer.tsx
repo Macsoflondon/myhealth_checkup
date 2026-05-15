@@ -56,51 +56,19 @@ const Footer = () => {
             aria-label="Medical disclaimer"
             className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
           >
-            <p className="text-xs sm:text-sm leading-relaxed mb-2">
+            <p className="text-xs sm:text-sm leading-relaxed">
               <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
               <span className="text-white/85">
-                This site provides comparison information only and does not constitute medical advice. Consult your GP
-                for medical guidance. Clinical content reviewed by{" "}
-                <Link to="/about/medical-review" className="underline underline-offset-2 hover:text-white">
-                  Nathanial Smith, Registered Healthcare Professional (HCPC PA43353)
-                </Link>
-                .
+                This site provides comparison information only and does not constitute medical advice. Consult your GP for medical guidance.
               </span>
-            </p>
-            <p className="text-xs sm:text-sm text-white/90 font-sans">
-              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website. &#x200B;Company No. 16589056
             </p>
           </div>
         </div>
       </div>
 
-      {/* ========== Copyright + Compliance Links ========== */}
+      {/* ========== Copyright ========== */}
       <div className="bg-brand-navy pb-4 pt-2">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <nav
-            aria-label="Legal and compliance"
-            className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs sm:text-sm text-brand-pink font-sans mb-2"
-          >
-            <Link to="/privacy-policy" className="hover:text-white transition-colors hover:underline underline-offset-2">Privacy Policy</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/cookie-policy" className="hover:text-white transition-colors hover:underline underline-offset-2">Cookie Policy</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/terms" className="hover:text-white transition-colors hover:underline underline-offset-2">Terms &amp; Conditions</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/affiliate-disclosure" className="hover:text-white transition-colors hover:underline underline-offset-2">Affiliate Disclosure</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/fair-trading" className="hover:text-white transition-colors hover:underline underline-offset-2">Fair Trading</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/modern-slavery" className="hover:text-white transition-colors hover:underline underline-offset-2">Modern Slavery</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/accessibility" className="hover:text-white transition-colors hover:underline underline-offset-2">Accessibility</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/about/medical-review" className="hover:text-white transition-colors hover:underline underline-offset-2">Medical Review</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/how-we-rank" className="hover:text-white transition-colors hover:underline underline-offset-2">How We Rank</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/legal" className="hover:text-white transition-colors hover:underline underline-offset-2">Legal Hub</Link>
-          </nav>
           <p className="text-center text-xs sm:text-sm text-brand-pink/80 font-sans">
             © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
           </p>
