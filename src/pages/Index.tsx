@@ -176,53 +176,73 @@ const Index = () => {
         </div>
 
         <TestCategoryTicker />
+
         <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise">
             <MissionSection />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>
             <JourneySimplified />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="scale">
             <PartnersGrid />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={150}>
             <StartJourneySection />
           </ScrollFadeIn>
+        </Suspense>
 
+        {/* Animated gradient divider — scales horizontally from the left on enter */}
+        <ScrollFadeIn variant="slide-left" className="origin-left">
+          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        </ScrollFadeIn>
 
-          {/* Animated gradient divider — scales horizontally from the left on enter */}
-          <ScrollFadeIn variant="slide-left" className="origin-left">
-            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-          </ScrollFadeIn>
-
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>
             <PartnerShowcaseGrid />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="fade">
             <TestimonialCarousel />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>
             <ClinicAndHelpSection />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="scale">
             <CallToAction />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>
             <TrustPlatformSection />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={150}>
             <ExpertQuotes />
           </ScrollFadeIn>
+        </Suspense>
 
+        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="fade">
             <AccreditedProvidersBar />
           </ScrollFadeIn>
