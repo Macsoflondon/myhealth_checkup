@@ -169,11 +169,11 @@ export function UnifiedTestCard({
             <div
               key={stat.label}
               className="flex flex-col items-center text-center rounded-lg py-2 px-1"
-              style={{ backgroundColor: "rgba(8,17,41,0.04)" }}
+              style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
             >
               <span className="text-base mb-0.5">{stat.icon}</span>
-              <span className="text-xs font-bold text-[#081129]">{stat.value}</span>
-              <span className="text-[10px] text-[#081129]/40">{stat.label}</span>
+              <span className="text-xs font-bold text-white">{stat.value}</span>
+              <span className="text-[10px] text-white/60">{stat.label}</span>
             </div>
           ))}
         </div>
