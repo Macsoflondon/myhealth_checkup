@@ -1,6 +1,7 @@
 // Resubmits the sitemap to Google Search Console via the Lovable connector gateway.
 // Trigger: HTTP (manual / webhook / GitHub Action) or pg_cron schedule.
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { logProtectedCall } from '../_shared/audit.ts';
 
 const GATEWAY = 'https://connector-gateway.lovable.dev/google_search_console';
 const SITE = 'https://www.myhealthcheckup.co.uk/';
@@ -11,8 +12,10 @@ Deno.serve(async (req) => {
 
   const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
   if ((req.headers.get('Authorization') ?? '') !== `Bearer ${SERVICE_KEY}`) {
+    await logProtectedCall({ functionName: 'gsc-resubmit-sitemap', status: 'denied', req });
     return json({ error: 'Unauthorized' }, 401);
   }
+  await logProtectedCall({ functionName: 'gsc-resubmit-sitemap', status: 'allowed', req });
 
   const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
   const GSC_KEY = Deno.env.get('GOOGLE_SEARCH_CONSOLE_API_KEY');

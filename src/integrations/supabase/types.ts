@@ -613,6 +613,39 @@ export type Database = {
         }
         Relationships: []
       }
+      protected_call_log: {
+        Row: {
+          caller_id: string | null
+          created_at: string
+          details: Json | null
+          function_name: string
+          id: string
+          ip_address: string | null
+          status: string
+          user_agent: string | null
+        }
+        Insert: {
+          caller_id?: string | null
+          created_at?: string
+          details?: Json | null
+          function_name: string
+          id?: string
+          ip_address?: string | null
+          status: string
+          user_agent?: string | null
+        }
+        Update: {
+          caller_id?: string | null
+          created_at?: string
+          details?: Json | null
+          function_name?: string
+          id?: string
+          ip_address?: string | null
+          status?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       provider_test_mapping: {
         Row: {
           accreditations: string[] | null
@@ -789,6 +822,36 @@ export type Database = {
           url_verified?: boolean | null
           url_verified_at?: string | null
           who_should_test?: string | null
+        }
+        Relationships: []
+      }
+      role_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role?: Database["public"]["Enums"]["app_role"]
+          target_user_id?: string
         }
         Relationships: []
       }

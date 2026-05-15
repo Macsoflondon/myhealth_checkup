@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { logProtectedCall } from '../_shared/audit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -387,11 +388,13 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
     if ((req.headers.get('Authorization') ?? '') !== `Bearer ${supabaseKey}`) {
+      await logProtectedCall({ functionName: 'medichecks-scraper', status: 'denied', req });
       return new Response(
         JSON.stringify({ error: 'Unauthorized' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    await logProtectedCall({ functionName: 'medichecks-scraper', status: 'allowed', req });
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
