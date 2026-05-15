@@ -88,7 +88,7 @@ const UKRegionMap = () => {
         }
         .leaflet-tooltip.uk-region-tooltip::before { display: none; }
       `}</style>
-      <div className="w-full h-[260px] sm:h-[320px] rounded-xl overflow-hidden border border-brand-turquoise/30 mb-5">
+      <div ref={wrapperRef} className="w-full h-[260px] sm:h-[320px] rounded-xl overflow-hidden border border-brand-turquoise/30 mb-5">
         {!ready ? (
           <div className="h-full w-full flex items-center justify-center bg-[#081129]">
             <Loader2 className="w-7 h-7 animate-spin text-brand-turquoise" />
