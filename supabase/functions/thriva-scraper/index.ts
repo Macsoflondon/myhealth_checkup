@@ -61,10 +61,12 @@ Deno.serve(async (req) => {
 
   const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
   if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    await logProtectedCall({ functionName: 'thriva-scraper', status: 'denied', req });
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
+  await logProtectedCall({ functionName: 'thriva-scraper', status: 'allowed', req });
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
