@@ -181,7 +181,7 @@ export function UnifiedTestCard({
         {/* Key Markers */}
         {markers.length > 0 && (
           <div className="mb-4">
-            <span className="text-[10px] uppercase tracking-wider text-white/50 font-semibold mb-2 block">
+            <span className="text-[10px] text-white">
               Key Markers
             </span>
             <div className="flex flex-wrap gap-1.5">
