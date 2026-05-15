@@ -1494,6 +1494,8 @@ export type Database = {
     Functions: {
       cleanup_old_health_queries: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
+      cleanup_protected_call_log: { Args: never; Returns: undefined }
+      cleanup_role_audit_log: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
