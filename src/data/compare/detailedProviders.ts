@@ -217,7 +217,7 @@ export const detailedProviders = [
     coreServices: "Comprehensive blood testing, health screening, hormones, vitamins, allergy testing, fertility, longevity analysis",
     tests: "100+ blood tests including health MOTs, hormone profiles, vitamin panels, longevity analysis",
     sampleCollection: "At-home test kits and in-store tests at partner clinics",
-    turnaroundTime: "Next day results on most tests",
+    turnaroundTime: "3-4 days on most tests",
     customerReviews: "4.5/5 (Trustpilot, 3,250+ reviews)",
     keyDifferentiators:
       "UKAS ISO 15189 accredited, next day results, Humanity Age longevity analysis, comprehensive test menu, at-home and in-store options",
@@ -231,7 +231,7 @@ export const detailedProviders = [
     coreServices: "General health checks, vitamins, hormones, allergy testing, fertility",
     tests: "Comprehensive health, hormone and allergy testing",
     sampleCollection: "In-clinic (Harley Street) and home kits",
-    turnaroundTime: "1-3 days",
+    turnaroundTime: "3-6 days",
     customerReviews: "Not yet independently rated on Trustpilot",
     keyDifferentiators: "Central London clinic, fast turnaround, wide test menu, premium location",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
@@ -250,7 +250,7 @@ export const detailedProviders = [
       "3,000+ pathology tests: clinical biochemistry, haematology, immunology, microbiology, genetics, toxicology, specialist endocrinology",
     tests: "3,000+ diagnostic tests available - one of the UK's most comprehensive test menus",
     sampleCollection: "Venous blood draw at TDL clinics, GP surgeries, hospitals, home visits available",
-    turnaroundTime: "Same day to 2 working days (routine), specialist tests may take longer",
+    turnaroundTime: "2-4 working days (routine), specialist tests may take longer",
     customerReviews: "1.9/5 (Trustpilot, 22 reviews)",
     keyDifferentiators:
       "UK's largest independent pathology provider, 40+ years experience, same-day results for many tests, used by NHS and private hospitals, comprehensive test menu including rare and specialist tests",
