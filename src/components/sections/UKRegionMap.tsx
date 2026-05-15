@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
 import L from "leaflet";
@@ -36,14 +36,33 @@ const pinIcon = L.divIcon({
 const UKRegionMap = () => {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
+  const [inView, setInView] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const node = wrapperRef.current;
+    if (!node) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
     const id = requestAnimationFrame(() => setReady(true));
     return () => {
       cancelAnimationFrame(id);
       setReady(false);
     };
-  }, []);
+  }, [inView]);
 
   return (
     <>
@@ -69,7 +88,7 @@ const UKRegionMap = () => {
         }
         .leaflet-tooltip.uk-region-tooltip::before { display: none; }
       `}</style>
-      <div className="w-full h-[260px] sm:h-[320px] rounded-xl overflow-hidden border border-brand-turquoise/30 mb-5">
+      <div ref={wrapperRef} className="w-full h-[260px] sm:h-[320px] rounded-xl overflow-hidden border border-brand-turquoise/30 mb-5">
         {!ready ? (
           <div className="h-full w-full flex items-center justify-center bg-[#081129]">
             <Loader2 className="w-7 h-7 animate-spin text-brand-turquoise" />
