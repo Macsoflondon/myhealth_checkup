@@ -181,15 +181,15 @@ export function UnifiedTestCard({
         {/* Key Markers */}
         {markers.length > 0 && (
           <div className="mb-4">
-            <span className="text-[10px] uppercase tracking-wider text-[#081129]/35 font-semibold mb-2 block">
+            <span className="text-[10px] uppercase tracking-wider text-white/50 font-semibold mb-2 block">
               Key Markers
             </span>
             <div className="flex flex-wrap gap-1.5">
               {markers.slice(0, expanded ? markers.length : 3).map((m) => (
                 <span
                   key={m}
-                  className="px-2.5 py-1 rounded-md text-[11px] font-medium text-[#081129]/70 border border-[#081129]/10"
-                  style={{ backgroundColor: "rgba(8,17,41,0.04)" }}
+                  className="px-2.5 py-1 rounded-md text-[11px] font-medium text-white/80 border border-white/15"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
                 >
                   {m}
                 </span>
@@ -200,7 +200,7 @@ export function UnifiedTestCard({
                     e.stopPropagation();
                     setExpanded(true);
                   }}
-                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-[#081129]/50 border border-[#081129]/10 hover:border-[#081129]/25 transition-colors cursor-pointer bg-transparent"
+                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-white/60 border border-white/15 hover:border-white/40 transition-colors cursor-pointer bg-transparent"
                 >
                   +{markers.length - 3} more
                 </button>
