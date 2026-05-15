@@ -25,7 +25,7 @@ const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) =>
         </svg>
       );
     })}
-    <span className="text-xs font-semibold text-[#081129] ml-0.5">
+    <span className="text-xs font-semibold text-white ml-0.5">
       {rating.toFixed(1)} ({reviews.toLocaleString()})
     </span>
   </div>
