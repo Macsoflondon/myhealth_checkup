@@ -155,7 +155,7 @@ export function UnifiedTestCard({
         </h3>
 
         {/* Description */}
-        <p className="text-sm leading-relaxed mb-4 line-clamp-3 font-bold text-white">
+        <p className="text-sm leading-relaxed mb-4 line-clamp-5 font-bold text-white">
           {description}
         </p>
 
