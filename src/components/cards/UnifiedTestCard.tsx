@@ -224,7 +224,7 @@ export function UnifiedTestCard({
             {priceFrom && (
               <span className="text-xs text-[#081129]/40 font-medium">from</span>
             )}
-            <span className="h-px w-full bg-[#081129]/10 my-2 text-white">
+            <span className="text-2xl font-extrabold text-white">
               £{price}
             </span>
           </div>
