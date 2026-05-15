@@ -202,7 +202,7 @@ export const detailedProviders = [
     coreServices: "Health check panels, cholesterol, liver, kidney, hormone, and rapid testing with own state-of-the-art laboratory",
     tests: "Health check panels and rapid testing with own laboratory",
     sampleCollection: "Own nationwide clinics with full-time phlebotomy staff, home finger-prick kits",
-    turnaroundTime: "Same day or next day results on most markers",
+    turnaroundTime: "2-3 days on most markers",
     customerReviews: "4.8/5 (Trustpilot, 4,000+ reviews)",
     keyDifferentiators: "Ultra-fast turnaround (99.2% of markers start testing within 4 hours), own laboratory, 36 clinic locations, same-day appointments, NHS GPs, 100,000+ tests per month",
     description: "State-of-the-art own laboratory with nationwide clinics offering same-day appointments and same or next day results. Trusted for 100,000+ tests and consultations per month.",
