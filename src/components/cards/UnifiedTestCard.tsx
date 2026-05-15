@@ -114,20 +114,15 @@ export function UnifiedTestCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "rounded-2xl shadow-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden",
+        "rounded-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden border transition-all duration-300",
+        compareSelected
+          ? "border-brand-turquoise shadow-lg shadow-brand-turquoise/20"
+          : "border-border shadow-md hover:shadow-xl",
+        hovered && "-translate-y-1",
         className
       )}
       style={{
         background: "#ffffff",
-        border: `2px solid ${compareSelected ? "hsl(var(--brand-turquoise))" : "#081129"}`,
-        borderRadius: 20,
-        transition: "border-color 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: compareSelected
-          ? "0 0 0 1px hsl(var(--brand-turquoise) / 0.4), 0 8px 32px hsl(var(--brand-turquoise) / 0.15)"
-          : hovered
-            ? `0 20px 60px rgba(0,0,0,0.1), 0 0 0 1px ${categoryColor}33`
-            : "0 8px 32px rgba(0,0,0,0.06)",
       }}
     >
       {/* Top accent bar */}
