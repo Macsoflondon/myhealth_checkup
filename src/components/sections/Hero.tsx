@@ -59,8 +59,8 @@ const heroSlides: Array<{
     headline: "Test From Home",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 50%",
-    mobileObjectPosition: "5% 55%",
-    mobileScale: "scale(1.25)",
+    mobileObjectPosition: "35% 30%",
+    mobileScale: "scale(1.1)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
       surface: 70,
