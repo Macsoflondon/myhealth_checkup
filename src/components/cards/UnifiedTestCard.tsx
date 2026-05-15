@@ -193,7 +193,7 @@ export function UnifiedTestCard({
               {markers.slice(0, expanded ? markers.length : 3).map((m) => (
                 <span
                   key={m}
-                  className="text-xs font-semibold text-white ml-0.5 mx-[20px] text-center"
+                  className="text-xs font-semibold text-white ml-0.5 text-center mx-px"
                   style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
                 >
                   {m}
@@ -220,7 +220,7 @@ export function UnifiedTestCard({
         {/* Stars + Provider Logo */}
         <div className="flex items-center justify-between mb-4 mt-2">
           <StarRating rating={rating} reviews={reviews} />
-          <span className="text-xs font-semibold text-white ml-0.5 mx-[20px]">{provider}</span>
+          <span className="text-xs font-semibold text-white ml-0.5 text-center mx-px">{provider}</span>
         </div>
 
         {/* Price + CTA */}
