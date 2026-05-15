@@ -119,9 +119,14 @@ const Hero = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAnalyzing] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(new Set([0]));
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    setCurrentSlide((prev) => {
+      const next = (prev + 1) % heroSlides.length;
+      setLoadedSlides((seen) => new Set([...seen, next]));
+      return next;
+    });
   }, []);
 
   useEffect(() => {
@@ -151,27 +156,29 @@ const Hero = () => {
   return (
     <>
       <section className="relative overflow-hidden max-w-[100vw] min-h-[560px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px] flex flex-col">
-        {heroSlides.map((s, i) => (
-          <img
-            key={i}
-            src={isMobile && s.mobileImage ? s.mobileImage : s.image}
-            alt=""
-            aria-hidden="true"
-            loading={i === 0 ? "eager" : "lazy"}
-            decoding={i === 0 ? "sync" : "async"}
-            width={1920}
-            height={1080}
-            fetchPriority={i === 0 ? "high" : "low"}
-            style={{
-              objectPosition: isMobile && s.mobileObjectPosition ? s.mobileObjectPosition : s.objectPosition,
-              transform: isMobile && s.mobileScale ? s.mobileScale : undefined,
-              transformOrigin: "center center",
-            }}
-            className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
-              i === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
+        {heroSlides.map((s, i) =>
+          loadedSlides.has(i) ? (
+            <img
+              key={i}
+              src={isMobile && s.mobileImage ? s.mobileImage : s.image}
+              alt=""
+              aria-hidden="true"
+              loading={i === 0 ? "eager" : "lazy"}
+              decoding={i === 0 ? "sync" : "async"}
+              width={1920}
+              height={1080}
+              fetchPriority={i === 0 ? "high" : "low"}
+              style={{
+                objectPosition: isMobile && s.mobileObjectPosition ? s.mobileObjectPosition : s.objectPosition,
+                transform: isMobile && s.mobileScale ? s.mobileScale : undefined,
+                transformOrigin: "center center",
+              }}
+              className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                i === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ) : null
+        )}
 
         <div className={`absolute inset-0 z-[1] transition-[background] duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${slide.theme.overlay}`} />
 
