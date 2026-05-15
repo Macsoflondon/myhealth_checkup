@@ -36,14 +36,33 @@ const pinIcon = L.divIcon({
 const UKRegionMap = () => {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
+  const [inView, setInView] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const node = wrapperRef.current;
+    if (!node) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
     const id = requestAnimationFrame(() => setReady(true));
     return () => {
       cancelAnimationFrame(id);
       setReady(false);
     };
-  }, []);
+  }, [inView]);
 
   return (
     <>
