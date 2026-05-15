@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import FeaturedProviders from '@/components/sections/FeaturedProviders';
+import FeaturedProvidersGlass from '@/components/sections/FeaturedProvidersGlass';
 
 const TrustedProvidersPage = () => {
   return (
@@ -47,7 +47,7 @@ const TrustedProvidersPage = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <main className="flex-1">
-          <FeaturedProviders />
+          <FeaturedProvidersGlass />
         </main>
         <Footer />
       </div>
