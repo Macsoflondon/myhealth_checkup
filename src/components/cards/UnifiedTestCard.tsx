@@ -136,12 +136,14 @@ export function UnifiedTestCard({
       <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
         {/* Compare checkbox + Category + Badge */}
         <div className="flex items-center gap-2 mb-3 bg-[#22bed3]">
-          <span
-            className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide text-white"
-            style={{ backgroundColor: categoryColor }}
-          >
-            {category}
-          </span>
+          {badge?.toLowerCase().includes("most popular") && (
+            <span
+              className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide text-white"
+              style={{ backgroundColor: categoryColor }}
+            >
+              {category}
+            </span>
+          )}
           {badge && (
             <span className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide bg-[#081129]/5 text-[#081129]/60 border border-[#081129]/10">
               {badge}
