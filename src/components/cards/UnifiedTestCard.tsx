@@ -26,7 +26,7 @@ const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) =>
       );
     })}
     <span className="text-xs font-semibold text-white ml-0.5 whitespace-nowrap">
-      {rating.toFixed(1)} ({reviews.toLocaleString()})
+      {rating.toFixed(1)}&nbsp; ({reviews.toLocaleString()})
     </span>
   </div>
 );
