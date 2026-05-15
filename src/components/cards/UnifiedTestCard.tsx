@@ -25,7 +25,7 @@ const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) =>
         </svg>
       );
     })}
-    <span className="text-xs font-semibold text-[#081129] ml-0.5">
+    <span className="text-xs font-semibold text-white ml-0.5">
       {rating.toFixed(1)} ({reviews.toLocaleString()})
     </span>
   </div>
@@ -169,11 +169,11 @@ export function UnifiedTestCard({
             <div
               key={stat.label}
               className="flex flex-col items-center text-center rounded-lg py-2 px-1"
-              style={{ backgroundColor: "rgba(8,17,41,0.04)" }}
+              style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
             >
               <span className="text-base mb-0.5">{stat.icon}</span>
-              <span className="text-xs font-bold text-[#081129]">{stat.value}</span>
-              <span className="text-[10px] text-[#081129]/40">{stat.label}</span>
+              <span className="text-xs font-bold text-white">{stat.value}</span>
+              <span className="text-[10px] text-white/60">{stat.label}</span>
             </div>
           ))}
         </div>
@@ -181,15 +181,15 @@ export function UnifiedTestCard({
         {/* Key Markers */}
         {markers.length > 0 && (
           <div className="mb-4">
-            <span className="text-[10px] uppercase tracking-wider text-[#081129]/35 font-semibold mb-2 block">
+            <span className="text-[10px] uppercase tracking-wider text-white/50 font-semibold mb-2 block">
               Key Markers
             </span>
             <div className="flex flex-wrap gap-1.5">
               {markers.slice(0, expanded ? markers.length : 3).map((m) => (
                 <span
                   key={m}
-                  className="px-2.5 py-1 rounded-md text-[11px] font-medium text-[#081129]/70 border border-[#081129]/10"
-                  style={{ backgroundColor: "rgba(8,17,41,0.04)" }}
+                  className="px-2.5 py-1 rounded-md text-[11px] font-medium text-white/80 border border-white/15"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
                 >
                   {m}
                 </span>
@@ -200,7 +200,7 @@ export function UnifiedTestCard({
                     e.stopPropagation();
                     setExpanded(true);
                   }}
-                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-[#081129]/50 border border-[#081129]/10 hover:border-[#081129]/25 transition-colors cursor-pointer bg-transparent"
+                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-white/60 border border-white/15 hover:border-white/40 transition-colors cursor-pointer bg-transparent"
                 >
                   +{markers.length - 3} more
                 </button>
@@ -215,14 +215,14 @@ export function UnifiedTestCard({
         {/* Stars + Provider Logo */}
         <div className="flex items-center justify-between mb-4 mt-2">
           <StarRating rating={rating} reviews={reviews} />
-          <span className="text-xs font-medium text-[#081129]/50 ml-3 flex-shrink-0">{provider}</span>
+          <span className="text-xs font-medium text-white/60 ml-3 flex-shrink-0">{provider}</span>
         </div>
 
         {/* Price + CTA */}
         <div className="flex items-center justify-between mt-auto">
           <div className="flex items-baseline gap-1">
             {priceFrom && (
-              <span className="text-xs text-[#081129]/40 font-medium">from</span>
+              <span className="text-xs text-white/50 font-medium">from</span>
             )}
             <span className="text-2xl font-extrabold text-white">
               £{price}
