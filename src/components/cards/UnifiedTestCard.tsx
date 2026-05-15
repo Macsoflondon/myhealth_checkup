@@ -188,7 +188,7 @@ export function UnifiedTestCard({
               {markers.slice(0, expanded ? markers.length : 3).map((m) => (
                 <span
                   key={m}
-                  className="px-2.5 py-1 rounded-md text-[11px] font-medium text-white/80 border border-white/15"
+                  className="text-xs font-semibold text-white ml-0.5 mx-[20px] text-center"
                   style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
                 >
                   {m}
