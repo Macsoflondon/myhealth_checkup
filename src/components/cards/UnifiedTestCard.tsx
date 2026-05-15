@@ -145,7 +145,7 @@ export function UnifiedTestCard({
             </span>
           )}
           {badge && (
-            <span className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide bg-[#081129]/5 text-[#081129]/60 border border-[#081129]/10">
+            <span className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide bg-[#081129]/5 border border-[#081129]/10 text-white">
               {badge}
             </span>
           )}
