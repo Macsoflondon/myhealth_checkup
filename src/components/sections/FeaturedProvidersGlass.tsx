@@ -150,7 +150,7 @@ const FeaturedProvidersGlass = () => {
             }}
           />
 
-          <div className="inline-block mb-2">
+          <div className="flex justify-center mb-4">
             <span className="px-3 py-1 text-[10px] font-bold tracking-[0.3em] text-[#22c0d4] uppercase border border-[#22c0d4]/30 rounded-full bg-[#22c0d4]/5">
               Verified Networks
             </span>
