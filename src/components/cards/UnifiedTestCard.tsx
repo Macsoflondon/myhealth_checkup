@@ -114,7 +114,7 @@ export function UnifiedTestCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "text-sm leading-relaxed mb-4 line-clamp-3 font-bold text-[#08122b] rounded-2xl shadow-2xl w-full max-w-[360px] bg-[#08122b]",
+        "rounded-2xl shadow-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden",
         className
       )}
       style={{
@@ -131,11 +131,11 @@ export function UnifiedTestCard({
       }}
     >
       {/* Top accent bar */}
-      <div className="h-1 w-full py-[4px] bg-gradient-to-r from-brand-turquoise to-brand-pink" />
+      <div className="h-2 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink" />
 
       <div className="p-5 sm:p-6 flex flex-col flex-1 bg-[#08122b] text-white">
-        {/* Compare checkbox + Category + Badge */}
-        <div className="flex items-center gap-2 mb-3 rounded-2xl" style={{ backgroundColor: categoryColor }}>
+        {/* Category + Badge strip */}
+        <div className="flex items-center gap-2 mb-4 rounded-2xl px-1 py-1" style={{ backgroundColor: categoryColor }}>
           <span
             className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide text-white"
             style={{ backgroundColor: categoryColor }}
@@ -144,8 +144,7 @@ export function UnifiedTestCard({
           </span>
           {badge && (
             <span
-              className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide text-white ml-auto"
-              style={{ backgroundColor: categoryColor }}
+              className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wide text-white ml-auto bg-white/20"
             >
               {badge}
             </span>
@@ -153,12 +152,12 @@ export function UnifiedTestCard({
         </div>
 
         {/* Title */}
-        <h3 className="mb-0.5 text-lg font-bold font-mono">
+        <h3 className="mb-2 text-lg font-bold font-mono leading-snug min-h-[3.25rem] line-clamp-2">
           {name}
         </h3>
 
         {/* Description */}
-        <p className="text-sm leading-relaxed line-clamp-5 font-bold text-white mb-[26px] mt-[10px]">
+        <p className="text-sm leading-relaxed font-semibold text-white/90 line-clamp-3 min-h-[3.75rem] mb-4">
           {description}
         </p>
 
@@ -171,57 +170,59 @@ export function UnifiedTestCard({
           ].map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center text-center rounded-lg py-2 px-1"
+              className="flex flex-col items-center justify-center text-center rounded-lg py-2 px-1 min-h-[72px]"
               style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
             >
-              <span className="text-base mb-0.5">{stat.icon}</span>
-              <span className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full font-semibold transition-all duration-200 cursor-pointer border-0 text-base">{stat.value}</span>
-              <span className="text-[10px] text-white/60">{stat.label}</span>
+              <span className="text-base mb-1 leading-none">{stat.icon}</span>
+              <span className="text-sm font-semibold leading-tight truncate max-w-full">{stat.value}</span>
+              <span className="text-[10px] text-white/60 mt-0.5">{stat.label}</span>
             </div>
           ))}
         </div>
 
-        {/* Key Markers */}
-        {markers.length > 0 && (
-          <div className="mb-4">
-            <span className="text-[10px] text-white">
-              Key Markers:
-            </span>
-            <div className="flex flex-wrap gap-1.5 mt-1.5">
-              {markers.slice(0, expanded ? markers.length : 3).map((m) => (
-                <span
-                  key={m}
-                  className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.10)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                  }}
-                >
-                  {m}
-                </span>
-              ))}
-              {!expanded && markers.length > 3 && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setExpanded(true);
-                  }}
-                  className="px-2.5 py-1 rounded-md text-[10px] font-medium text-white/60 border border-white/15 hover:border-white/40 transition-colors cursor-pointer bg-transparent"
-                >
-                  +{markers.length - 3} more
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+        {/* Key Markers — reserve consistent space */}
+        <div className="mb-4 min-h-[72px]">
+          {markers.length > 0 && (
+            <>
+              <span className="text-[10px] uppercase tracking-wide text-white/70">
+                Key Markers
+              </span>
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                {markers.slice(0, expanded ? markers.length : 3).map((m) => (
+                  <span
+                    key={m}
+                    className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+                    style={{
+                      backgroundColor: "rgba(255,255,255,0.10)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                    }}
+                  >
+                    {m}
+                  </span>
+                ))}
+                {!expanded && markers.length > 3 && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExpanded(true);
+                    }}
+                    className="px-2.5 py-1 rounded-md text-[10px] font-medium text-white/60 border border-white/15 hover:border-white/40 transition-colors cursor-pointer bg-transparent"
+                  >
+                    +{markers.length - 3} more
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+        </div>
 
         {/* Divider */}
-        <div className="h-px w-full bg-white/10 my-2" />
+        <div className="h-px w-full bg-white/10 mb-3" />
 
-        {/* Stars + Provider Logo */}
-        <div className="flex items-center justify-between mb-4 mt-2">
+        {/* Stars + Provider */}
+        <div className="flex items-center justify-between mb-4 gap-2">
           <StarRating rating={rating} reviews={reviews} />
-          <span className="font-semibold text-white ml-0.5 text-center mx-px text-base">{provider}</span>
+          <span className="font-semibold text-white text-sm truncate">{provider}</span>
         </div>
 
         {/* Price + CTA */}
