@@ -23,7 +23,7 @@ const heartTests = [
     price: "£79",
     biomarkers: ["Total Cholesterol", "HDL Cholesterol", "LDL Cholesterol", "Triglycerides"],
     suitableFor: ["General screening", "Family history", "Routine monitoring", "Preventive care"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   },
   {
     id: "advanced-lipid-profile",
@@ -34,7 +34,7 @@ const heartTests = [
     price: "£129",
     biomarkers: ["Total Cholesterol", "HDL", "LDL", "Non-HDL", "Triglycerides", "Cholesterol Ratios", "ApoA1", "ApoB"],
     suitableFor: ["High cholesterol", "Diabetes", "Heart disease risk", "Medication monitoring"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   },
   {
     id: "cardiac-risk-assessment",
@@ -45,7 +45,7 @@ const heartTests = [
     price: "£199",
     biomarkers: ["Lipid Profile", "CRP", "Homocysteine", "Lipoprotein(a)", "Troponin"],
     suitableFor: ["High risk patients", "Pre-surgery screening", "Comprehensive assessment", "Family history"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   },
   {
     id: "heart-disease-prevention",
@@ -56,7 +56,7 @@ const heartTests = [
     price: "£299",
     biomarkers: ["Full Lipid Panel", "Inflammatory Markers", "Cardiac Enzymes", "Risk Calculators", "Vitamin D", "B12"],
     suitableFor: ["Prevention focused", "Lifestyle optimisation", "Long-term monitoring", "Health optimisation"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   }
 ];
 

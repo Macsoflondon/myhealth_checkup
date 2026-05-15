@@ -124,15 +124,15 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
-  'goodbody-clinic': '24-48 hours',
-  'medichecks': '1-3 days',
-  'lola-health': '2-4 days',
-  'thriva': '2-5 days',
-  'london-medical-laboratory': '24-72 hours',
-  'randox': '2-4 days',
-  'london-health-company': '2-5 days',
-  'medical-diagnosis': '1-3 days',
-  'clinilabs': '1-3 days',
+  'goodbody-clinic': '3-5 days',
+  'medichecks': '3-6 days',
+  'lola-health': '4-7 days',
+  'thriva': '4-8 days',
+  'london-medical-laboratory': '3-6 days',
+  'randox': '4-7 days',
+  'london-health-company': '4-8 days',
+  'medical-diagnosis': '3-6 days',
+  'clinilabs': '3-6 days',
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {

@@ -92,7 +92,7 @@ export const bodybuildingTests: FitnessTest[] = [
     name: 'Bodybuilder Profile',
     provider: 'Medical Diagnosis',
     price: 155,
-    turnaroundTime: '4 hours',
+    turnaroundTime: '3 days',
     biomarkerCount: 21,
     biomarkers: [
       'Testosterone',
@@ -138,7 +138,7 @@ export const bodybuildingTests: FitnessTest[] = [
     name: 'Bodybuilding Profile',
     provider: 'MedLabs UK',
     price: 240,
-    turnaroundTime: '24 hours',
+    turnaroundTime: '3 days',
     biomarkerCount: 45,
     biomarkers: [
       'Full Blood Count (FBC)',
@@ -208,7 +208,7 @@ export const athleteTests: FitnessTest[] = [
     provider: 'Sports Blood Tests (Edge)',
     price: 129,
     subscriptionPrice: 116,
-    turnaroundTime: '2 working days',
+    turnaroundTime: '4 working days',
     biomarkerCount: 18,
     biomarkers: [
       'Active B12',
@@ -255,7 +255,7 @@ export const athleteTests: FitnessTest[] = [
     provider: 'Sports Blood Tests (Edge)',
     price: 129,
     subscriptionPrice: 116,
-    turnaroundTime: '2 working days',
+    turnaroundTime: '4 working days',
     biomarkerCount: 18,
     biomarkers: [
       'Active B12',
@@ -302,7 +302,7 @@ export const athleteTests: FitnessTest[] = [
     provider: 'Sports Blood Tests (Edge)',
     price: 125,
     subscriptionPrice: 112,
-    turnaroundTime: '2 working days',
+    turnaroundTime: '4 working days',
     biomarkerCount: 17,
     biomarkers: [
       'Active B12',
@@ -351,7 +351,7 @@ export const performanceOptimizationTests: FitnessTest[] = [
     name: 'Sports and Fitness Blood Test',
     provider: 'Good Body Clinic',
     price: 99,
-    turnaroundTime: '2-3 working days',
+    turnaroundTime: '4-6 working days',
     biomarkerCount: 11,
     biomarkers: [
       'Albumin',
