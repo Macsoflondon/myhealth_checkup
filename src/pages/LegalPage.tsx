@@ -4,7 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBanner from '@/components/sections/PageBanner';
 import { Card, CardContent } from '@/components/ui/card';
-import { FileText, Shield, Cookie, Users, Handshake, Scale, Award } from 'lucide-react';
+import { FileText, Shield, Cookie, Users, Handshake, Scale, Award, Accessibility, Stethoscope } from 'lucide-react';
 
 const legalPages = [
   { title: 'Privacy Policy', path: '/privacy-policy', icon: Shield, description: 'How we collect, use, and protect your personal data.' },
@@ -14,6 +14,8 @@ const legalPages = [
   { title: 'Affiliate Disclosure', path: '/affiliate-disclosure', icon: Handshake, description: 'How we earn revenue and maintain editorial independence.' },
   { title: 'Fair Trading Policy', path: '/fair-trading', icon: Scale, description: 'Our commitment to fair and transparent trading practices.' },
   { title: 'How We Rank', path: '/how-we-rank', icon: Award, description: 'Our methodology for ranking and comparing providers.' },
+  { title: 'Accessibility Statement', path: '/accessibility', icon: Accessibility, description: 'Our commitment to accessible, inclusive digital experiences.' },
+  { title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC PA43353).' },
 ];
 
 const LegalPage = () => {
