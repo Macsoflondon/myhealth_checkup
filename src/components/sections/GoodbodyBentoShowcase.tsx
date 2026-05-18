@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { analytics } from "@/lib/analytics";
 
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
@@ -17,6 +18,14 @@ const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: s
   <Link
     to={href}
     aria-label={`${label} — view test information`}
+    onClick={() =>
+      analytics.kitTileClick({
+        tile_id: href,
+        tile_label: label,
+        destination: href,
+        surface: "goodbody_bento",
+      })
+    }
     className="group rounded-2xl overflow-hidden bg-white shadow-md p-3 h-full w-full flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:ring-2 hover:ring-brand-turquoise focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
   >
     <div className="flex-1 w-full flex items-center justify-center min-h-0">

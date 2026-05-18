@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { PROVIDER_DETAILS } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { analytics } from "@/lib/analytics";
 
 const FEATURED_PROVIDERS = [
   'medichecks',
@@ -66,6 +67,14 @@ const AccreditedProvidersBar = () => {
               <Link
                 key={id}
                 to={getProviderRoute(id)}
+                onClick={() =>
+                  analytics.kitTileClick({
+                    tile_id: id,
+                    tile_label: provider.name,
+                    destination: getProviderRoute(id),
+                    surface: "accredited_providers_bar",
+                  })
+                }
                 className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-2.5 md:p-3 lg:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
               >
                 <div className="flex items-center justify-center h-[56px] sm:h-[68px] md:h-[80px] lg:h-[88px] w-full">
