@@ -1,29 +1,19 @@
 ## Goal
 
-In the "Our Featured Partner of the Month" (Goodbody) bento, show the test name under each kit image and make every kit tile clickable, linking to the matching existing test/category page on the site.
+Tighten the Accredited Providers bar's internal vertical rhythm so its overall height feels in line with the TrustPlatformSection above and the footer below (both use `py-8 sm:py-10 md:py-12`).
 
-## Changes (single file: `src/components/sections/GoodbodyBentoShowcase.tsx`)
+## Tuning (single file: `src/components/sections/AccreditedProvidersBar.tsx`)
 
-1. Update `KitTile` to accept an `href` and a visible `label`:
-   - Wrap the tile in a React Router `<Link to={href}>`.
-   - Shrink image area slightly and add a centred caption underneath in navy `text-[#081129]`, `font-semibold`, `text-xs sm:text-sm`, truncated on small screens.
-   - Add hover affordance: subtle shadow lift + ring in brand turquoise, keyboard focus ring for accessibility.
+1. **Eyebrow row (line 29)** — currently `py-4 sm:py-6 md:py-8 lg:py-[30px]` is way too tall and dominates the section. Replace with `py-3 sm:py-4 md:py-5` and tighten gap from `gap-2` → `gap-3` for proper eyebrow proportions.
 
-2. Map each of the 6 kits to an existing on-site route (no new pages, no external links):
+2. **Heading margin (line 40)** — `mb-4 md:mb-5` is fine but bump to `mb-5 md:mb-6` so the gap to the accreditor row matches the gap below it.
 
-   | Tile | Label | Route |
-   |---|---|---|
-   | Advanced Well Man | "Advanced Well Man" | `/tests/mens-health` |
-   | Premium Complete | "Premium Complete" | `/test/general-health` |
-   | Early Cancer Screening | "Early Cancer Screening" | `/tests/cancer` |
-   | Female Hormone & Fertility | "Female Hormone & Fertility" | `/test/female-hormones` |
-   | Thyroid | "Thyroid Blood Test" | `/thyroid` |
-   | Cholesterol | "Cholesterol Blood Test" | `/test/lipid-profile` |
+3. **Accreditor row (line 45)** — drop redundant nested flex wrapper (lines 46–58 collapse into the outer flex). Increase `gap-x-6` → `gap-x-8 md:gap-x-10` for better breathing room, and bump `mb-5 md:mb-6` → `mb-6 md:mb-8` to balance against the larger logo row below.
 
-3. Keep the centre Goodbody logo tile and the two callout columns unchanged.
+4. **Provider logo grid (line 61)** — tighten gap from `gap-2 md:gap-3` → `gap-3 md:gap-4` for consistent rhythm with other grid sections. Reduce logo container height from `h-[80px] sm:h-[100px]` → `h-[64px] sm:h-[80px]` to bring overall section height closer to neighbour sections.
 
-## Notes
+5. **Tile padding (line 70)** — reduce `p-3 md:p-4` → `p-2.5 md:p-3` to match the tighter logo container.
 
-- All routes already exist in `src/routes/testRoutes.tsx` — verified.
-- Stays within the bento grid; no layout breakage since label sits inside the existing tile padding.
-- British English labels, no medical claims.
+## Rationale
+
+The outer section is now `py-8/10/12` (matching neighbours), but internal stacking (eyebrow `py-[30px]` + tall logo row `h-[100px]`) inflated total height past adjacent sections. Trimming inner spacing + logo container height brings the section's total visual height in line.

@@ -26,7 +26,7 @@ const AccreditedProvidersBar = () => {
   return (
     <section className="py-8 sm:py-10 md:py-12 bg-tertiary" aria-label="Accreditation and partners">
       <div className="container mx-auto px-4 sm:px-6 bg-white">
-        <div className="flex items-center justify-center gap-2 mb-2 my-0 py-4 sm:py-6 md:py-8 lg:py-[30px]">
+        <div className="flex items-center justify-center gap-3 mb-2 my-0 py-3 sm:py-4 md:py-5">
           <div className="h-px w-6 bg-brand-turquoise" />
           <span className="text-brand-turquoise text-[10px] font-semibold uppercase tracking-[0.25em]">
             Accredited & Verified
@@ -37,28 +37,26 @@ const AccreditedProvidersBar = () => {
         <SectionHeading
           title="Accredited Providers"
           gradientText="We Compare"
-          className="mb-4 md:mb-5"
+          className="mb-5 md:mb-6"
           titleClassName="text-brand-turquoise"
         />
 
         {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-5 md:mb-6">
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            {ACCREDITORS.map((a, i) => (
-              <div key={a.name} className="flex items-center gap-3">
-                <div className="text-center">
-                  <div className="text-sm font-bold text-brand-turquoise leading-tight">{a.name}</div>
-                  <div className="text-[10px] text-brand-turquoise/70 leading-tight">{a.desc}</div>
-                </div>
-                {i < ACCREDITORS.length - 1 && (
-                  <div className="hidden sm:block w-px h-7 bg-brand-turquoise/30" aria-hidden="true" />
-                )}
+        <div className="flex flex-wrap items-center justify-center gap-x-8 md:gap-x-10 gap-y-2 mb-6 md:mb-8">
+          {ACCREDITORS.map((a, i) => (
+            <div key={a.name} className="flex items-center gap-3">
+              <div className="text-center">
+                <div className="text-sm font-bold text-brand-turquoise leading-tight">{a.name}</div>
+                <div className="text-[10px] text-brand-turquoise/70 leading-tight">{a.desc}</div>
               </div>
-            ))}
-          </div>
+              {i < ACCREDITORS.length - 1 && (
+                <div className="hidden sm:block w-px h-7 bg-brand-turquoise/30" aria-hidden="true" />
+              )}
+            </div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 max-w-6xl mx-auto">
           {FEATURED_PROVIDERS.map((id) => {
             const provider = PROVIDER_DETAILS[id];
             if (!provider) return null;
@@ -67,9 +65,9 @@ const AccreditedProvidersBar = () => {
               <Link
                 key={id}
                 to={getProviderRoute(id)}
-                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-3 md:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
+                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-2.5 md:p-3 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
               >
-                <div className="flex items-center justify-center h-[80px] sm:h-[100px] w-full">
+                <div className="flex items-center justify-center h-[64px] sm:h-[80px] w-full">
                   <img
                     src={provider.logo}
                     alt={`${provider.name} logo`}
