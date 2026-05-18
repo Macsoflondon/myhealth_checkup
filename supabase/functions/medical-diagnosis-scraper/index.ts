@@ -35,14 +35,46 @@ function decodeHtmlEntities(s: string): string {
   return s
     .replace(/&#8211;/g, '–')
     .replace(/&#8217;/g, '\u2019')
+    .replace(/&#038;/g, '&')
+    .replace(/&#0?38;/g, '&')
     .replace(/&amp;/g, '&')
     .replace(/&pound;/g, '£')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"');
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)));
 }
 
 function stripHtml(html: string): string {
   return decodeHtmlEntities(html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+}
+
+/**
+ * Parse a raw scraper test name into structured fields.
+ * Medical-diagnosis WP exports many rows as "[PARAM]Parent Test!~!Biomarker Name".
+ * These are biomarker rows of a parent test, NOT standalone tests.
+ * Returns { kind: 'param', parent, biomarker } for those, or { kind: 'test', name } otherwise.
+ */
+export function parseRawTestName(raw: string): 
+  | { kind: 'param'; parent: string; biomarker: string }
+  | { kind: 'test'; name: string }
+  | { kind: 'junk' } {
+  const decoded = decodeHtmlEntities((raw ?? '').trim());
+  if (!decoded) return { kind: 'junk' };
+
+  const paramMatch = decoded.match(/^\[PARAM\](.+?)!~!(.+)$/);
+  if (paramMatch) {
+    const parent = paramMatch[1].trim().replace(/[\s\-:]+$/, '');
+    const biomarker = paramMatch[2].trim();
+    if (!parent || !biomarker) return { kind: 'junk' };
+    return { kind: 'param', parent, biomarker };
+  }
+  // Reject obvious junk patterns
+  if (/^\[?param\]?/i.test(decoded) || decoded.includes('!~!')) return { kind: 'junk' };
+  return { kind: 'test', name: decoded };
+}
+
+function slugify(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 80);
 }
 
 function determineCategory(title: string, description: string, cats: WooCategory[]): string {
