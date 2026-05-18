@@ -49,7 +49,7 @@ const Footer = () => {
             <ConnectColumn />
           </div>
 
-          {/* ========== Medical Disclaimer (crawlable, server-rendered) ========== */}
+          {/* ========== Brief Medical Disclaimer ========== */}
           <div
             id="medical-disclaimer"
             role="note"
@@ -59,7 +59,11 @@ const Footer = () => {
             <p className="text-xs sm:text-sm leading-relaxed">
               <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
               <span className="text-white/85">
-                This site provides comparison information only and does not constitute medical advice. Consult your GP for medical guidance.
+                This site provides comparison information only and does not constitute medical advice. See our{" "}
+                <Link to="/about/medical-review" className="underline hover:text-brand-pink transition-colors">
+                  Medical Review &amp; Editorial Standards
+                </Link>{" "}
+                for full details.
               </span>
             </p>
           </div>
