@@ -25,7 +25,7 @@ const ACCREDITORS = [
 const AccreditedProvidersBar = () => {
   return (
     <section className="py-4 md:py-6 bg-tertiary" aria-label="Accreditation and partners">
-      <div className="container mx-auto px-4 sm:px-6">
+      <div className="container mx-auto px-4 sm:px-6 bg-white">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="h-px w-6 bg-brand-turquoise" />
           <span className="text-brand-turquoise text-[10px] font-semibold uppercase tracking-[0.25em]">
