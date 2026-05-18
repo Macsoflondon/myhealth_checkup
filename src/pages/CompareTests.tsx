@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
-import { TestListCard } from "@/components/compare/TestListCard";
+import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
@@ -337,13 +337,24 @@ const CompareTests = () => {
                   />
                 ) : (
                   /* List View - Original card layout */
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {paginatedTests.map((test) => (
-                      <TestListCard 
-                        key={test.id} 
-                        test={test}
-                        isSelected={isTestSelected(test.id)}
-                        onToggleSelect={handleToggleSelect}
+                      <UnifiedTestCard
+                        key={test.id}
+                        category={test.category || "Health"}
+                        name={test.name}
+                        description={test.description || "Comprehensive health screening test"}
+                        biomarkers={test.biomarkerCount ?? 0}
+                        results={test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`}
+                        collection={test.features?.collection || "Home kit"}
+                        rating={(test as any).rating ?? 4.6}
+                        reviews={(test as any).reviewCount ?? (test as any).reviews ?? 0}
+                        price={test.price}
+                        provider={test.provider}
+                        url={test.url}
+                        ctaLabel={isTestSelected(test.id) ? "Selected" : "Compare"}
+                        compareSelected={isTestSelected(test.id)}
+                        onCompareToggle={() => handleToggleSelect(test)}
                       />
                     ))}
                     
