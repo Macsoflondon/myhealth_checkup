@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 
 import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
-import UKRegionMap from "@/components/sections/UKRegionMap";
+
 import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
 import GoodbodyBentoShowcase from "@/components/sections/GoodbodyBentoShowcase";
 
@@ -44,7 +44,7 @@ const PartnerShowcaseGrid = () => {
           {/* Bottom Row: Find a Clinic — Full width */}
           <div className="md:col-span-2 mt-10 sm:mt-14">
             <div className="bg-[#081129] rounded-2xl shadow-md p-5 lg:p-6 flex flex-col text-center items-center">
-              <UKRegionMap />
+              
               <div className="flex items-center justify-center gap-3 mb-2">
                 <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
                 <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
