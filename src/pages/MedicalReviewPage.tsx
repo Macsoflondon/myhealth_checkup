@@ -154,6 +154,23 @@ const MedicalReviewPage = () => {
               </p>
             </CardContent>
           </Card>
+          <Card className="mb-8 border-brand-pink/30">
+            <CardHeader>
+              <CardTitle className="text-brand-pink">Medical disclaimer</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+              <p>
+                This site provides comparison information only and does not constitute medical advice, diagnosis,
+                or treatment. Always consult your GP or a suitably qualified clinician for individual medical
+                guidance.
+              </p>
+              <p>
+                Clinical content is reviewed by {REVIEWER.name}, Registered Healthcare Professional ({REVIEWER.registration.body}:{" "}
+                <span className="font-mono font-semibold text-foreground">{REVIEWER.registration.number}</span>).
+                myhealth checkup is not a medical provider and does not deliver clinical care.
+              </p>
+            </CardContent>
+          </Card>
         </section>
       </main>
 
