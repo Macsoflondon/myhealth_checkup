@@ -89,7 +89,7 @@ const GoodbodyBentoShowcase = () => {
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" />
+          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
         </div>
 
       </div>
