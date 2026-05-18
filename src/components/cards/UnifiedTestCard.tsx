@@ -175,8 +175,8 @@ export function UnifiedTestCard({
           ))}
         </div>
 
-        {/* Key Markers — reserve consistent space */}
-        <div className="mb-4 min-h-[72px]">
+        {/* Key Markers — only reserve space when present */}
+        <div className={markers.length > 0 ? "mb-4 min-h-[72px]" : "mb-2"}>
           {markers.length > 0 && (
             <>
               <span className="text-[10px] uppercase tracking-wide text-white/70">
