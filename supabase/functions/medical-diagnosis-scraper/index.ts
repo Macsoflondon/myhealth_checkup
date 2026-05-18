@@ -166,36 +166,8 @@ Deno.serve(async (req) => {
 
     console.log(`Fetched ${all.length} Medical Diagnosis products`);
 
-    const rows = all.map((p) => {
-      const cleanShort = stripHtml(p.short_description || '');
-      const cleanLong = stripHtml(p.description || '');
-      const desc = (cleanShort || cleanLong).slice(0, 1000);
-      const price = priceFromWoo(p.prices, 'price');
-      const regular = priceFromWoo(p.prices, 'regular_price');
-      const category = determineCategory(p.name, desc, p.categories || []);
-      const biomarkerCount = extractBiomarkerCount(cleanShort + ' ' + cleanLong);
 
-      return {
-        provider_id: PROVIDER_ID,
-        provider_test_id: `meddiag-${p.slug}`,
-        test_name: decodeHtmlEntities(p.name),
-        category,
-        price,
-        original_price: regular && regular !== price ? regular : null,
-        description: desc || `${decodeHtmlEntities(p.name)} from Medical Diagnosis.`,
-        url: p.permalink,
-        image_url: p.images?.[0]?.src ?? null,
-        is_active: true,
-        biomarker_count: biomarkerCount,
-        sample_type: 'Venous blood',
-        clinic_visit_available: true,
-        home_kit_available: false,
-        scraped_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        url_verified: true,
-        url_verified_at: new Date().toISOString(),
-      };
-    });
+
 
     // First pass: aggregate [PARAM] biomarker rows under their parent test name.
     const biomarkerGroups = new Map<string, { parent: string; biomarkers: Set<string>; sample?: WooProduct }>();
