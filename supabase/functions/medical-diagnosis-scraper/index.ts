@@ -197,6 +197,87 @@ Deno.serve(async (req) => {
       };
     });
 
+    // First pass: aggregate [PARAM] biomarker rows under their parent test name.
+    const biomarkerGroups = new Map<string, { parent: string; biomarkers: Set<string>; sample?: WooProduct }>();
+    const realTests: WooProduct[] = [];
+    for (const p of all) {
+      const parsed = parseRawTestName(p.name);
+      if (parsed.kind === 'junk') continue;
+      if (parsed.kind === 'param') {
+        const key = parsed.parent.toLowerCase();
+        const g = biomarkerGroups.get(key) ?? { parent: parsed.parent, biomarkers: new Set(), sample: p };
+        g.biomarkers.add(parsed.biomarker);
+        biomarkerGroups.set(key, g);
+        continue;
+      }
+      realTests.push(p);
+    }
+
+    const rows = realTests.map((p) => {
+      const cleanShort = stripHtml(p.short_description || '');
+      const cleanLong = stripHtml(p.description || '');
+      const desc = (cleanShort || cleanLong).slice(0, 1000);
+      const price = priceFromWoo(p.prices, 'price');
+      const regular = priceFromWoo(p.prices, 'regular_price');
+      const category = determineCategory(p.name, desc, p.categories || []);
+      const niceName = decodeHtmlEntities(p.name);
+      // Attach aggregated biomarkers if this product matches a [PARAM] parent
+      const group = biomarkerGroups.get(niceName.toLowerCase());
+      const biomarkersList = group ? Array.from(group.biomarkers).sort() : null;
+      const biomarkerCount =
+        (biomarkersList?.length ?? null) ?? extractBiomarkerCount(cleanShort + ' ' + cleanLong);
+
+      return {
+        provider_id: PROVIDER_ID,
+        provider_test_id: `meddiag-${p.slug}`,
+        test_name: niceName,
+        category,
+        price,
+        original_price: regular && regular !== price ? regular : null,
+        description: desc || `${niceName} from Medical Diagnosis.`,
+        url: p.permalink,
+        image_url: p.images?.[0]?.src ?? null,
+        is_active: price !== null && price > 0,
+        biomarker_count: biomarkerCount,
+        biomarkers_list: biomarkersList,
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      };
+    });
+
+    // Emit synthetic parent rows for [PARAM] groups that have NO matching Woo product —
+    // marked inactive (no price) so they don't appear in catalogues but biomarker data is retained.
+    const matchedKeys = new Set(realTests.map((p) => decodeHtmlEntities(p.name).toLowerCase()));
+    for (const [key, g] of biomarkerGroups) {
+      if (matchedKeys.has(key)) continue;
+      rows.push({
+        provider_id: PROVIDER_ID,
+        provider_test_id: `meddiag-parent-${slugify(g.parent)}`,
+        test_name: g.parent,
+        category: determineCategory(g.parent, '', []),
+        price: null,
+        original_price: null,
+        description: `${g.parent} – includes ${g.biomarkers.size} biomarker${g.biomarkers.size === 1 ? '' : 's'}.`,
+        url: g.sample?.permalink ?? WOO_BASE,
+        image_url: g.sample?.images?.[0]?.src ?? null,
+        is_active: false,
+        biomarker_count: g.biomarkers.size,
+        biomarkers_list: Array.from(g.biomarkers).sort(),
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: false,
+        url_verified_at: new Date().toISOString(),
+      });
+    }
+
     const { upsertedCount, errors: upsertErrors, finalRowCount } =
       await upsertProviderTests(supabase as any, PROVIDER_ID, rows, 'meddiag-');
 
@@ -212,7 +293,9 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify({
       success: true,
       provider: PROVIDER_ID,
-      testsScraped: rows.length,
+      productsFetched: all.length,
+      realTests: realTests.length,
+      biomarkerGroups: biomarkerGroups.size,
       testsAfterDedupe: finalRowCount,
       testsUpserted: upsertedCount,
       upsertErrors: upsertErrors.slice(0, 5),
