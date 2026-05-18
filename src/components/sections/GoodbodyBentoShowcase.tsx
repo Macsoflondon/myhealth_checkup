@@ -46,7 +46,7 @@ const GoodbodyBentoShowcase = () => {
       <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[112px] gap-3 sm:gap-4">
         {/* Top row: Advanced Well Man | Logo (center) | Premium Complete (right) */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
+          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
           <img
