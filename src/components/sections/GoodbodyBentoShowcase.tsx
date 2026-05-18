@@ -13,16 +13,25 @@ const KIT = {
   sportsFitness: "/images/tests/sports-fitness-blood-test.webp",
 };
 
-const KitTile = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-2xl overflow-hidden bg-white shadow-md p-3 h-full w-full flex flex-col items-center justify-center">
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      decoding="async"
-      className="max-w-[85%] max-h-[85%] object-contain transition-transform duration-300 hover:scale-105"
-    />
-  </div>
+const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: string; href: string }) => (
+  <Link
+    to={href}
+    aria-label={`${label} — view test information`}
+    className="group rounded-2xl overflow-hidden bg-white shadow-md p-3 h-full w-full flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:ring-2 hover:ring-brand-turquoise focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
+  >
+    <div className="flex-1 w-full flex items-center justify-center min-h-0">
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className="max-w-[80%] max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
+      />
+    </div>
+    <span className="mt-1 text-[#081129] font-semibold text-[11px] sm:text-xs text-center leading-tight line-clamp-2 px-1">
+      {label}
+    </span>
+  </Link>
 );
 
 const CalloutCard = ({ children }: { children: React.ReactNode }) => (
