@@ -1,19 +1,26 @@
 ## Goal
 
-Tighten the Accredited Providers bar's internal vertical rhythm so its overall height feels in line with the TrustPlatformSection above and the footer below (both use `py-8 sm:py-10 md:py-12`).
+Make the accreditor labels (UKAS/CQC/ISO 15189) and provider logo tiles scale fluidly across breakpoints — bigger and more legible on desktop, comfortably compact on mobile — without changing the section's overall vertical rhythm.
 
-## Tuning (single file: `src/components/sections/AccreditedProvidersBar.tsx`)
+## Changes (single file: `src/components/sections/AccreditedProvidersBar.tsx`)
 
-1. **Eyebrow row (line 29)** — currently `py-4 sm:py-6 md:py-8 lg:py-[30px]` is way too tall and dominates the section. Replace with `py-3 sm:py-4 md:py-5` and tighten gap from `gap-2` → `gap-3` for proper eyebrow proportions.
+### 1. Accreditor block (lines 47–55)
+Scale the name and description font sizes responsively:
+- Name: `text-sm` → `text-sm md:text-base lg:text-lg`
+- Description: `text-[10px]` → `text-[10px] md:text-xs`
+- Divider height: `h-7` → `h-7 md:h-9 lg:h-10` to match taller text
+- Gap between name+desc pair and divider: `gap-3` → `gap-3 md:gap-4`
 
-2. **Heading margin (line 40)** — `mb-4 md:mb-5` is fine but bump to `mb-5 md:mb-6` so the gap to the accreditor row matches the gap below it.
+### 2. Provider logo tiles (lines 65–81)
+Scale logo container height and tile padding fluidly so logos breathe on desktop but stay compact on mobile (preserving total bar height):
+- Logo container: `h-[64px] sm:h-[80px]` → `h-[56px] sm:h-[68px] md:h-[80px] lg:h-[88px]`
+- Tile padding: `p-2.5 md:p-3` → `p-2.5 md:p-3 lg:p-4`
+- Provider name caption: `text-xs` → `text-[11px] sm:text-xs md:text-sm` for readability parity
+- Grid gap: keep `gap-3 md:gap-4` (already tuned)
 
-3. **Accreditor row (line 45)** — drop redundant nested flex wrapper (lines 46–58 collapse into the outer flex). Increase `gap-x-6` → `gap-x-8 md:gap-x-10` for better breathing room, and bump `mb-5 md:mb-6` → `mb-6 md:mb-8` to balance against the larger logo row below.
-
-4. **Provider logo grid (line 61)** — tighten gap from `gap-2 md:gap-3` → `gap-3 md:gap-4` for consistent rhythm with other grid sections. Reduce logo container height from `h-[80px] sm:h-[100px]` → `h-[64px] sm:h-[80px]` to bring overall section height closer to neighbour sections.
-
-5. **Tile padding (line 70)** — reduce `p-3 md:p-4` → `p-2.5 md:p-3` to match the tighter logo container.
+### 3. Eyebrow + heading (no change)
+Already responsively tuned — leave alone to preserve vertical rhythm.
 
 ## Rationale
 
-The outer section is now `py-8/10/12` (matching neighbours), but internal stacking (eyebrow `py-[30px]` + tall logo row `h-[100px]`) inflated total height past adjacent sections. Trimming inner spacing + logo container height brings the section's total visual height in line.
+Mobile keeps a tighter 56px logo box + smaller captions so the bar height matches the neighbouring sections at small viewports. Desktop scales up to 88px logo box + larger accreditor type for proper legibility — but since horizontal space at `md`+ is plentiful, taller logos absorb naturally without inflating section height beyond the `py-12` outer rhythm.

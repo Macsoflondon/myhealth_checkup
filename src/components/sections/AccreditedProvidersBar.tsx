@@ -44,13 +44,13 @@ const AccreditedProvidersBar = () => {
         {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
         <div className="flex flex-wrap items-center justify-center gap-x-8 md:gap-x-10 gap-y-2 mb-6 md:mb-8">
           {ACCREDITORS.map((a, i) => (
-            <div key={a.name} className="flex items-center gap-3">
+            <div key={a.name} className="flex items-center gap-3 md:gap-4">
               <div className="text-center">
-                <div className="text-sm font-bold text-brand-turquoise leading-tight">{a.name}</div>
-                <div className="text-[10px] text-brand-turquoise/70 leading-tight">{a.desc}</div>
+                <div className="text-sm md:text-base lg:text-lg font-bold text-brand-turquoise leading-tight">{a.name}</div>
+                <div className="text-[10px] md:text-xs text-brand-turquoise/70 leading-tight">{a.desc}</div>
               </div>
               {i < ACCREDITORS.length - 1 && (
-                <div className="hidden sm:block w-px h-7 bg-brand-turquoise/30" aria-hidden="true" />
+                <div className="hidden sm:block w-px h-7 md:h-9 lg:h-10 bg-brand-turquoise/30" aria-hidden="true" />
               )}
             </div>
           ))}
@@ -65,9 +65,9 @@ const AccreditedProvidersBar = () => {
               <Link
                 key={id}
                 to={getProviderRoute(id)}
-                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-2.5 md:p-3 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
+                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-2.5 md:p-3 lg:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
               >
-                <div className="flex items-center justify-center h-[64px] sm:h-[80px] w-full">
+                <div className="flex items-center justify-center h-[56px] sm:h-[68px] md:h-[80px] lg:h-[88px] w-full">
                   <img
                     src={provider.logo}
                     alt={`${provider.name} logo`}
@@ -75,7 +75,7 @@ const AccreditedProvidersBar = () => {
                     loading="lazy"
                   />
                 </div>
-                <span className="text-brand-turquoise text-xs font-medium text-center leading-tight">
+                <span className="text-brand-turquoise text-[11px] sm:text-xs md:text-sm font-medium text-center leading-tight">
                   {provider.name}
                 </span>
               </Link>
