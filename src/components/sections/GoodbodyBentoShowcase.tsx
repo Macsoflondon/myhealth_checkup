@@ -73,7 +73,7 @@ const GoodbodyBentoShowcase = () => {
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" />
+          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
 
         {/* Row: kit + 2 callouts + cholesterol (replaces EpiSwitch) */}
