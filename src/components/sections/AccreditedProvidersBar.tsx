@@ -84,7 +84,6 @@ const AccreditedProvidersBar = () => {
           })}
         </div>
         </div>
-        </div>
       </div>
     </section>
   );
