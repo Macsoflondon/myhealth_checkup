@@ -19,7 +19,7 @@ const MissionSection = lazy(() => import("@/components/sections/MissionSection")
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
 const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
-const ExpertQuotes = lazy(() => import("@/components/sections/ExpertQuotes"));
+
 const TestimonialCarousel = lazy(() => import("@/components/sections/TestimonialCarousel"));
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
 const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
