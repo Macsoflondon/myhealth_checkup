@@ -8,6 +8,7 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import FloatingNavDock from "./components/common/FloatingNavDock";
 import { GlobalHreflang } from "./components/seo/GlobalHreflang";
+import TestPageViewTracker from "./components/analytics/TestPageViewTracker";
 
 import { AppRoutes } from "./routes";
 import { SessionSecurityProvider } from "./components/security/SessionSecurityProvider";
@@ -42,6 +43,7 @@ const App = () => {
               <BrowserRouter>
                 <ScrollToTop />
                 <GlobalHreflang />
+                <TestPageViewTracker />
                 <FloatingNavDock />
                 <AppRoutes />
               </BrowserRouter>
