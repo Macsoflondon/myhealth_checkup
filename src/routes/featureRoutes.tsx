@@ -6,8 +6,7 @@ const IntelligentSearchPage = lazy(() => import("@/pages/IntelligentSearchPage")
 const RecommendationsPage = lazy(() => import("@/pages/RecommendationsPage"));
 const ReviewSystem = lazy(() => import("@/components/reviews/ReviewSystem"));
 const AssistedTestFinderPage = lazy(() => import("@/pages/AssistedTestFinderPage"));
-const FindClinicPage = lazy(() => import("@/pages/FindClinicPage"));
-const ClinicDetailPage = lazy(() => import("@/pages/ClinicDetailPage"));
+// Clinic-finder routes disabled — pages removed. Legacy paths redirect to home.
 const ProviderProfilePage = lazy(() => import("@/pages/ProviderProfilePage"));
 const ProviderTestCatalogPage = lazy(() => import("@/pages/ProviderTestCatalogPage"));
 const TestDetailPage = lazy(() => import("@/pages/TestDetailPage"));
@@ -34,10 +33,11 @@ export const featureRoutes = (
     <Route path="/reviews" element={<ReviewSystem />} />
     <Route path="/find-test" element={<AssistedTestFinderPage />} />
     <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
-    <Route path="/find-clinic" element={<FindClinicPage />} />
-    <Route path="/find-a-clinic" element={<Navigate to="/find-clinic" replace />} />
-    <Route path="/locations" element={<Navigate to="/find-clinic" replace />} />
-    <Route path="/locations/:clinicId" element={<ClinicDetailPage />} />
+    {/* Legacy clinic-finder paths — feature removed, redirect to home */}
+    <Route path="/find-clinic" element={<Navigate to="/" replace />} />
+    <Route path="/find-a-clinic" element={<Navigate to="/" replace />} />
+    <Route path="/locations" element={<Navigate to="/" replace />} />
+    <Route path="/locations/:clinicId" element={<Navigate to="/" replace />} />
     <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
     <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
     <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
