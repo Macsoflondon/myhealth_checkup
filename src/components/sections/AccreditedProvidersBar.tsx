@@ -38,7 +38,7 @@ const AccreditedProvidersBar = () => {
           title="Accredited Providers"
           gradientText="We Compare"
           className="mb-4 md:mb-5"
-          titleClassName="text-white"
+          titleClassName="text-brand-turquoise"
         />
 
         {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
@@ -47,11 +47,11 @@ const AccreditedProvidersBar = () => {
             {ACCREDITORS.map((a, i) => (
               <div key={a.name} className="flex items-center gap-3">
                 <div className="text-center">
-                  <div className="text-sm font-bold text-white leading-tight">{a.name}</div>
-                  <div className="text-[10px] text-white/55 leading-tight">{a.desc}</div>
+                  <div className="text-sm font-bold text-brand-turquoise leading-tight">{a.name}</div>
+                  <div className="text-[10px] text-brand-turquoise/70 leading-tight">{a.desc}</div>
                 </div>
                 {i < ACCREDITORS.length - 1 && (
-                  <div className="hidden sm:block w-px h-7 bg-white/15" aria-hidden="true" />
+                  <div className="hidden sm:block w-px h-7 bg-brand-turquoise/30" aria-hidden="true" />
                 )}
               </div>
             ))}
@@ -77,7 +77,7 @@ const AccreditedProvidersBar = () => {
                     loading="lazy"
                   />
                 </div>
-                <span className="text-white text-xs font-medium text-center leading-tight">
+                <span className="text-brand-turquoise text-xs font-medium text-center leading-tight">
                   {provider.name}
                 </span>
               </Link>
