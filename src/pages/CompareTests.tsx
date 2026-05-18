@@ -347,8 +347,8 @@ const CompareTests = () => {
                         biomarkers={test.biomarkerCount ?? 0}
                         results={test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`}
                         collection={test.features?.collection || "Home kit"}
-                        rating={test.rating ?? 4.6}
-                        reviews={test.reviewCount ?? 0}
+                        rating={(test as any).rating ?? 4.6}
+                        reviews={(test as any).reviewCount ?? (test as any).reviews ?? 0}
                         price={test.price}
                         provider={test.provider}
                         url={test.url}
