@@ -44,12 +44,12 @@ const AccreditedProvidersBar = () => {
         />
 
         {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
-        <div className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-8 md:gap-x-10 gap-y-2 mb-6 md:mb-8">
+        <div className="flex flex-nowrap sm:flex-wrap items-center justify-center gap-x-3 sm:gap-x-8 md:gap-x-10 gap-y-2 mb-6 md:mb-8">
           {ACCREDITORS.map((a, i) => (
-            <div key={a.name} className="flex items-center gap-2 sm:gap-3 md:gap-4">
+            <div key={a.name} className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
               <div className="text-center px-0.5 sm:px-0">
-                <div className="text-[13px] sm:text-sm md:text-base lg:text-lg font-bold text-brand-turquoise leading-tight">{a.name}</div>
-                <div className="text-[9px] sm:text-[10px] md:text-xs text-brand-turquoise/70 leading-tight">{a.desc}</div>
+                <div className="text-[13px] sm:text-sm md:text-base lg:text-lg font-bold text-brand-turquoise leading-tight whitespace-nowrap">{a.name}</div>
+                <div className="hidden sm:block text-[10px] md:text-xs text-brand-turquoise/70 leading-tight">{a.desc}</div>
               </div>
               {i < ACCREDITORS.length - 1 && (
                 <div className="hidden sm:block w-px h-7 md:h-9 lg:h-10 bg-brand-turquoise/30" aria-hidden="true" />
