@@ -57,7 +57,7 @@ const GoodbodyBentoShowcase = () => {
           />
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" />
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
 
         {/* Row: kit + 2 callouts + kit */}
