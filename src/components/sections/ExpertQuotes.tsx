@@ -25,7 +25,7 @@ const quotes = [
 const ExpertQuotes = () => {
   return (
     <section className="py-4 sm:py-5 md:py-6 bg-gradient-to-b from-white to-[hsl(187,72%,97%)]">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 bg-white">
         <div className="text-center mb-3 sm:mb-4">
           {/* Pink decorative swoosh */}
           <svg className="mx-auto mb-2" width="40" height="10" viewBox="0 0 80 20" fill="none" xmlns="http://www.w3.org/2000/svg">
