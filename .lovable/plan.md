@@ -1,26 +1,43 @@
 ## Goal
 
-Make the accreditor labels (UKAS/CQC/ISO 15189) and provider logo tiles scale fluidly across breakpoints — bigger and more legible on desktop, comfortably compact on mobile — without changing the section's overall vertical rhythm.
+Make the Accredited Providers bar's inner container and horizontal padding match the rhythm used by neighbouring sections (e.g. `TrustPlatformSection`) so its edges align cleanly at every breakpoint.
+
+## Problem
+
+Current wrapper:
+```
+<div className="container mx-auto px-4 sm:px-6 bg-white">
+```
+
+Neighbouring sections use:
+```
+<div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 ...">
+```
+
+Two issues:
+1. Padding stops at `sm:px-6` — at `lg`/`xl` the inner content sits closer to the screen edge than the sections above/below, breaking the gutter rhythm.
+2. `bg-white` is applied to the *padded* container, so the visible white panel hugs the viewport edges instead of sitting within the same gutter as adjacent sections.
 
 ## Changes (single file: `src/components/sections/AccreditedProvidersBar.tsx`)
 
-### 1. Accreditor block (lines 47–55)
-Scale the name and description font sizes responsively:
-- Name: `text-sm` → `text-sm md:text-base lg:text-lg`
-- Description: `text-[10px]` → `text-[10px] md:text-xs`
-- Divider height: `h-7` → `h-7 md:h-9 lg:h-10` to match taller text
-- Gap between name+desc pair and divider: `gap-3` → `gap-3 md:gap-4`
+1. Split the container from the white panel so padding + max-width come from a standards-compliant outer wrapper, and the white surface sits inside the same gutter as neighbours:
 
-### 2. Provider logo tiles (lines 65–81)
-Scale logo container height and tile padding fluidly so logos breathe on desktop but stay compact on mobile (preserving total bar height):
-- Logo container: `h-[64px] sm:h-[80px]` → `h-[56px] sm:h-[68px] md:h-[80px] lg:h-[88px]`
-- Tile padding: `p-2.5 md:p-3` → `p-2.5 md:p-3 lg:p-4`
-- Provider name caption: `text-xs` → `text-[11px] sm:text-xs md:text-sm` for readability parity
-- Grid gap: keep `gap-3 md:gap-4` (already tuned)
+```tsx
+<section className="py-8 sm:py-10 md:py-12 bg-tertiary" aria-label="...">
+  <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16">
+    <div className="bg-white rounded-2xl px-4 sm:px-6 lg:px-10 py-6 sm:py-8 md:py-10">
+      {/* eyebrow + heading + accreditors + logo grid */}
+    </div>
+  </div>
+</section>
+```
 
-### 3. Eyebrow + heading (no change)
-Already responsively tuned — leave alone to preserve vertical rhythm.
+2. Drop the now-redundant `my-0 py-3 sm:py-4 md:py-5` from the eyebrow row (vertical rhythm now lives on the white panel) and keep the existing `mb-*` spacing on heading/accreditor row/grid.
 
-## Rationale
+3. Keep the logo grid's existing `max-w-6xl mx-auto` so the 6-up row stays centred within the wider panel at `lg+`.
 
-Mobile keeps a tighter 56px logo box + smaller captions so the bar height matches the neighbouring sections at small viewports. Desktop scales up to 88px logo box + larger accreditor type for proper legibility — but since horizontal space at `md`+ is plentiful, taller logos absorb naturally without inflating section height beyond the `py-12` outer rhythm.
+## Result
+
+- Left/right edges of the white panel line up exactly with content edges in `TrustPlatformSection` and other neighbours from `xs` through `2xl`.
+- Vertical padding rhythm (`py-8/10/12` outer, panel inner padding) is preserved.
+- No behavioural changes; pure layout alignment.
