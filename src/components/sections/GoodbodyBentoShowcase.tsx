@@ -13,16 +13,25 @@ const KIT = {
   sportsFitness: "/images/tests/sports-fitness-blood-test.webp",
 };
 
-const KitTile = ({ src, alt }: { src: string; alt: string }) => (
-  <div className="rounded-2xl overflow-hidden bg-white shadow-md p-3 h-full w-full flex flex-col items-center justify-center">
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      decoding="async"
-      className="max-w-[85%] max-h-[85%] object-contain transition-transform duration-300 hover:scale-105"
-    />
-  </div>
+const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: string; href: string }) => (
+  <Link
+    to={href}
+    aria-label={`${label} — view test information`}
+    className="group rounded-2xl overflow-hidden bg-white shadow-md p-3 h-full w-full flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:ring-2 hover:ring-brand-turquoise focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
+  >
+    <div className="flex-1 w-full flex items-center justify-center min-h-0">
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className="max-w-[80%] max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
+      />
+    </div>
+    <span className="mt-1 text-[#081129] font-semibold text-[11px] sm:text-xs text-center leading-tight line-clamp-2 px-1">
+      {label}
+    </span>
+  </Link>
 );
 
 const CalloutCard = ({ children }: { children: React.ReactNode }) => (
@@ -37,7 +46,7 @@ const GoodbodyBentoShowcase = () => {
       <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[112px] gap-3 sm:gap-4">
         {/* Top row: Advanced Well Man | Logo (center) | Premium Complete (right) */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" />
+          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
           <img
@@ -48,12 +57,12 @@ const GoodbodyBentoShowcase = () => {
           />
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" />
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
 
         {/* Row: kit + 2 callouts + kit */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" />
+          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
@@ -64,12 +73,12 @@ const GoodbodyBentoShowcase = () => {
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" />
+          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
 
         {/* Row: kit + 2 callouts + cholesterol (replaces EpiSwitch) */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" />
+          <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
@@ -80,7 +89,7 @@ const GoodbodyBentoShowcase = () => {
           </CalloutCard>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" />
+          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
         </div>
 
       </div>

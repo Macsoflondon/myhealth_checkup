@@ -1,49 +1,29 @@
 ## Goal
-Tidy the footer by removing the duplicated legal-links strip and the duplicated company line, and move the clinical reviewer reference into the Legal Hub.
 
-## Changes
+In the "Our Featured Partner of the Month" (Goodbody) bento, show the test name under each kit image and make every kit tile clickable, linking to the matching existing test/category page on the site.
 
-### 1. `src/components/layout/Footer.tsx`
+## Changes (single file: `src/components/sections/GoodbodyBentoShowcase.tsx`)
 
-**Company column** — add Legal Hub link directly under Contact:
-```ts
-const companyLinks = [
-  ...,
-  { name: t("footer.links.contact"), link: "/contact" },
-  { name: "Legal Hub", link: "/legal" },
-];
-```
+1. Update `KitTile` to accept an `href` and a visible `label`:
+   - Wrap the tile in a React Router `<Link to={href}>`.
+   - Shrink image area slightly and add a centred caption underneath in navy `text-[#081129]`, `font-semibold`, `text-xs sm:text-sm`, truncated on small screens.
+   - Add hover affordance: subtle shadow lift + ring in brand turquoise, keyboard focus ring for accessibility.
 
-**Bottom legal/compliance strip** — delete the entire `<nav aria-label="Legal and compliance">` block containing Privacy, Cookie, Terms, Affiliate, Fair Trading, Modern Slavery, Accessibility, Medical Review, How We Rank, Legal Hub. Keep only the `© 2026 MYHEALTHCHECKUP LTD…` copyright line in that section.
+2. Map each of the 6 kits to an existing on-site route (no new pages, no external links):
 
-**Medical disclaimer block** — simplify to a single concise paragraph:
-- Remove the "Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC PA43353)" sentence and its `<Link>`.
-- Remove the second paragraph "MYHEALTHCHECKUP LTD is the UK's leading health service comparison website. Company No. 16589056" (duplicates the © line).
+   | Tile | Label | Route |
+   |---|---|---|
+   | Advanced Well Man | "Advanced Well Man" | `/tests/mens-health` |
+   | Premium Complete | "Premium Complete" | `/test/general-health` |
+   | Early Cancer Screening | "Early Cancer Screening" | `/tests/cancer` |
+   | Female Hormone & Fertility | "Female Hormone & Fertility" | `/test/female-hormones` |
+   | Thyroid | "Thyroid Blood Test" | `/thyroid` |
+   | Cholesterol | "Cholesterol Blood Test" | `/test/lipid-profile` |
 
-Result:
-```tsx
-<div id="medical-disclaimer" ...>
-  <p className="text-xs sm:text-sm leading-relaxed">
-    <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
-    <span className="text-white/85">
-      This site provides comparison information only and does not constitute
-      medical advice. Consult your GP for medical guidance.
-    </span>
-  </p>
-</div>
-```
+3. Keep the centre Goodbody logo tile and the two callout columns unchanged.
 
-### 2. `src/pages/LegalPage.tsx`
+## Notes
 
-Add the two items removed from the footer strip so the Legal Hub remains complete:
-```ts
-{ title: 'Accessibility Statement', path: '/accessibility', icon: <Icon>, description: '…' },
-{ title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Our clinical reviewer credentials and editorial process (Nathanial Smith, HCPC PA43353).' },
-```
-
-Pick lucide icons (e.g. `Eye` / `Accessibility`, `Stethoscope`) consistent with the existing list.
-
-## Out of scope
-- No copy changes elsewhere on site
-- No route changes — all destinations already exist (`/legal`, `/about/medical-review`, `/accessibility`)
-- No styling changes to Legal Hub cards
+- All routes already exist in `src/routes/testRoutes.tsx` — verified.
+- Stays within the bento grid; no layout breakage since label sits inside the existing tile padding.
+- British English labels, no medical claims.
