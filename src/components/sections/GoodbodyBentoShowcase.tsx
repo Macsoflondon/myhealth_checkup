@@ -62,7 +62,7 @@ const GoodbodyBentoShowcase = () => {
 
         {/* Row: kit + 2 callouts + kit */}
         <div className="col-span-2 sm:col-span-2 row-span-2">
-          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" />
+          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-2 flex flex-col gap-3 sm:gap-4">
           <CalloutCard>
