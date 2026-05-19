@@ -10,6 +10,7 @@ const AffiliateDisclosurePage = lazy(() => import("@/pages/AffiliateDisclosurePa
 const FairTradingPolicyPage = lazy(() => import("@/pages/FairTradingPolicyPage"));
 const HowWeRankPage = lazy(() => import("@/pages/HowWeRankPage"));
 const LegalPage = lazy(() => import("@/pages/LegalPage"));
+const ComplaintsPage = lazy(() => import("@/pages/ComplaintsPage"));
 
 export const complianceRoutes = (
   <>
