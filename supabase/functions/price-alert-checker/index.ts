@@ -123,6 +123,7 @@ serve(async (req) => {
         try {
           await resend.emails.send({
             from: 'myhealth checkup <support@myhealthcheckup.co.uk>',
+            reply_to: 'support@myhealthcheckup.co.uk',
             to: [userData.user.email],
             subject: `🎉 Price Drop Alert: ${testName}`,
             html: `
