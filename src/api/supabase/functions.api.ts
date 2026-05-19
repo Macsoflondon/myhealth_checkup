@@ -246,57 +246,6 @@ export const sendNotification = (
   );
 };
 
-// ============================================================================
-// Geocoding Functions
-// ============================================================================
-
-export interface GeocodeClinicRequest {
-  address: string;
-  postalCode?: string;
-}
-
-export interface GeocodeClinicResponse {
-  latitude: number;
-  longitude: number;
-  formattedAddress: string;
-}
-
-export const geocodeClinic = (
-  request: GeocodeClinicRequest
-): Promise<FunctionResponse<GeocodeClinicResponse>> => {
-  return invokeFunction<GeocodeClinicResponse, GeocodeClinicRequest>(
-    'geocode-clinic',
-    { body: request }
-  );
-};
-
-// ============================================================================
-// LML Nearest Clinic Functions
-// ============================================================================
-
-export interface LMLNearestRequest {
-  latitude: number;
-  longitude: number;
-  maxDistance?: number;
-}
-
-export interface LMLNearestResponse {
-  clinics: Array<{
-    id: string;
-    name: string;
-    distance: number;
-    address: string;
-  }>;
-}
-
-export const findNearestLMLClinics = (
-  request: LMLNearestRequest
-): Promise<FunctionResponse<LMLNearestResponse>> => {
-  return invokeFunction<LMLNearestResponse, LMLNearestRequest>(
-    'lml-nearest',
-    { body: request }
-  );
-};
 
 // ============================================================================
 // Admin MFA Verification Functions
@@ -349,10 +298,6 @@ export const functionsApi = {
   
   // Notification Functions
   sendNotification,
-  
-  // Location Functions
-  geocodeClinic,
-  findNearestLMLClinics,
   
   // Admin Functions
   verifyAdminMFA,

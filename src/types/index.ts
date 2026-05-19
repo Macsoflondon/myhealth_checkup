@@ -3,8 +3,6 @@
  */
 
 export type {
-  Clinic,
-  ClinicWithDistance,
   Provider,
   Test,
   TestFeatures,

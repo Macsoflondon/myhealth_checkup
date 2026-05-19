@@ -184,42 +184,6 @@ export type Database = {
         }
         Relationships: []
       }
-      clinics: {
-        Row: {
-          access_note: string | null
-          created_at: string
-          full_address: string | null
-          id: string
-          latitude: number | null
-          longitude: number | null
-          name: string
-          postal_code: string | null
-          provider_id: string | null
-        }
-        Insert: {
-          access_note?: string | null
-          created_at?: string
-          full_address?: string | null
-          id?: string
-          latitude?: number | null
-          longitude?: number | null
-          name: string
-          postal_code?: string | null
-          provider_id?: string | null
-        }
-        Update: {
-          access_note?: string | null
-          created_at?: string
-          full_address?: string | null
-          id?: string
-          latitude?: number | null
-          longitude?: number | null
-          name?: string
-          postal_code?: string | null
-          provider_id?: string | null
-        }
-        Relationships: []
-      }
       data_access_requests: {
         Row: {
           completed_at: string | null

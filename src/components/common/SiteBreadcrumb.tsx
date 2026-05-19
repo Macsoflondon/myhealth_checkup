@@ -27,8 +27,6 @@ const SLUG_LABELS: Record<string, string> = {
   categories: "Categories",
   providers: "Providers",
   provider: "Provider",
-  clinics: "Clinics",
-  "find-clinic": "Find a Clinic",
   "health-resource-hub": "Health Resource Hub",
   blog: "Health Resource Hub",
   "biomarker-database": "Biomarker Library",

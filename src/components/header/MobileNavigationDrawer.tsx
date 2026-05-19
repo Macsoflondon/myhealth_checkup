@@ -603,16 +603,6 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-gray-200 hover:border-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 active:scale-[0.98] transition-all touch-manipulation"
-                  >
-                    <Link to="/find-clinic" onClick={handleLinkClick}>
-                      <MapPin className="w-5 h-5 mr-3 text-[hsl(var(--primary))]" />
-                      Find a Clinic
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
                     className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-gray-200 hover:border-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))]/5 active:scale-[0.98] transition-all touch-manipulation"
                   >
                     <Link to="/contact" onClick={handleLinkClick}>

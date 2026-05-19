@@ -16,7 +16,7 @@ export { default as FeaturedProviders } from "./FeaturedProviders";
 export { FeaturedPublications } from "./FeaturedPublications";
 export { default as FeaturedTests } from "./FeaturedTests";
 export { default as FinalCTA } from "./FinalCTA";
-export { default as FindClinicSection } from "./FindClinicSection";
+
 export { default as FounderStory } from "./FounderStory";
 export { default as HealthBenefitsInfographic } from "./HealthBenefitsInfographic";
 export { default as HealthJourneyTimeline } from "./HealthJourneyTimeline";
@@ -27,7 +27,7 @@ export { default as JourneySimplified } from "./JourneySimplified";
 export { default as MediaSpotlight } from "./MediaSpotlight";
 export { default as MissionSection } from "./MissionSection";
 export { default as MostPopularTestsSection } from "./MostPopularTestsSection";
-export { default as NationwideClinics } from "./NationwideClinics";
+
 export { default as PartnersGrid } from "./PartnersGrid";
 export { default as PartnerShowcase } from "./PartnerShowcase";
 export { default as ProactiveHealthJourney } from "./ProactiveHealthJourney";

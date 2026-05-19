@@ -33,11 +33,6 @@ export const featureRoutes = (
     <Route path="/reviews" element={<ReviewSystem />} />
     <Route path="/find-test" element={<AssistedTestFinderPage />} />
     <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
-    {/* Legacy clinic-finder paths — feature removed, redirect to home */}
-    <Route path="/find-clinic" element={<Navigate to="/" replace />} />
-    <Route path="/find-a-clinic" element={<Navigate to="/" replace />} />
-    <Route path="/locations" element={<Navigate to="/" replace />} />
-    <Route path="/locations/:clinicId" element={<Navigate to="/" replace />} />
     <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
     <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
     <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />

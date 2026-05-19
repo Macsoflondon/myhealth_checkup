@@ -33,9 +33,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
 
   // Admin
   "/admin/login",
-  "/admin/clinic-upload",
-  "/admin/clinic-scraper",
-  "/admin/quick-clinic-import",
   "/admin/test-upload",
   "/admin/data-refresh",
   "/admin/scrapers",
@@ -52,9 +49,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/reviews",
   "/find-test",
   "/assisted-test-finder",
-  "/find-clinic",
-  "/find-a-clinic",
-  "/locations",
   "/biomarker-database",
   "/conditions",
 
@@ -136,7 +130,7 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/tests/:category",
   "/compare/symptoms/:symptomSlug",
   "/compare/goals/:goalSlug",
-  "/locations/:clinicId",
+  
   "/provider/:providerId",
   "/provider/:providerId/tests",
   "/provider/:providerId/tests/:testId",
