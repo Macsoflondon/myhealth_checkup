@@ -35,20 +35,6 @@ const heroSlides: Array<{
   theme: SlideTheme;
 }> = [
   {
-    image: heroClinic,
-    mobileImage: heroMobileReception,
-    headline: "Clinics Nationwide",
-    subline: "No GP referral needed. Just choose a clinic and book.",
-    objectPosition: "center 38%",
-    mobileObjectPosition: "60% 35%",
-    mobileScale: "scale(1.15)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/5 via-transparent to-[#081129]/15",
-      surface: 55,
-      accent: "turquoise",
-    },
-  },
-  {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
     headline: "Test From Home",
