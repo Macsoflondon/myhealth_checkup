@@ -25,7 +25,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
-  'medichecks': '\n',
+  'medichecks': 'Medichecks',
   'thriva': 'Thriva',
   'randox': 'Randox Health',
   'london-medical-laboratory': 'London Medical Laboratory',
