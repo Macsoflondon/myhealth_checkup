@@ -86,21 +86,21 @@ const CookieConsent = () => {
                 <Button
                   size="sm"
                   onClick={() => setShowSettings(true)}
-                  className="flex-1 lg:flex-none bg-gradient-to-r from-brand-turquoise to-brand-pink text-white hover:opacity-90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Manage
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleRejectAll}
-                  className="flex-1 lg:flex-none bg-gradient-to-r from-brand-turquoise to-brand-pink text-white hover:opacity-90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Reject All
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleAcceptAll}
-                  className="flex-1 lg:flex-none bg-gradient-to-r from-brand-turquoise to-brand-pink text-white hover:opacity-90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Accept All
                 </Button>
