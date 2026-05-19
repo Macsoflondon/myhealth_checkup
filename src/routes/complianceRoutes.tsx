@@ -23,5 +23,7 @@ export const complianceRoutes = (
     <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
     <Route path="/fair-trading" element={<FairTradingPolicyPage />} />
     <Route path="/how-we-rank" element={<HowWeRankPage />} />
+    <Route path="/complaints" element={<ComplaintsPage />} />
+    <Route path="/feedback" element={<ComplaintsPage />} />
   </>
 );
