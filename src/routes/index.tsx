@@ -19,9 +19,6 @@ const TestCategoriesPage = lazy(() => import("@/pages/TestCategoriesPage"));
 
 // Lazy-load admin pages — they're only used by admins, no need to bundle in the main chunk.
 const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
-const AdminClinicUploadPage = lazy(() => import("@/pages/AdminClinicUploadPage"));
-const AdminClinicScraperPage = lazy(() => import("@/pages/AdminClinicScraperPage"));
-const AdminQuickClinicImportPage = lazy(() => import("@/pages/AdminQuickClinicImportPage"));
 const AdminTestUploadPage = lazy(() => import("@/pages/AdminTestUploadPage"));
 const AdminDataRefreshPage = lazy(() => import("@/pages/AdminDataRefreshPage"));
 const AdminTestMapperPage = lazy(() => import("@/pages/AdminTestMapperPage"));
@@ -52,9 +49,6 @@ export function AppRoutes() {
         <Route path="/admin/login" element={<AdminAuth />} />
 
         {/* Admin Routes - Protected with server-side role verification */}
-        <Route path="/admin/clinic-upload" element={wrapAdmin(AdminClinicUploadPage)} />
-        <Route path="/admin/clinic-scraper" element={wrapAdmin(AdminClinicScraperPage)} />
-        <Route path="/admin/quick-clinic-import" element={wrapAdmin(AdminQuickClinicImportPage)} />
         <Route path="/admin/test-upload" element={wrapAdmin(AdminTestUploadPage)} />
         <Route path="/admin/data-refresh" element={wrapAdmin(AdminDataRefreshPage)} />
         <Route path="/admin/scrapers" element={wrapAdmin(AdminScraperDashboardPage)} />

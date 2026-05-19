@@ -67,7 +67,6 @@ const mobileNavigationItems = [
 
 // Static navigation items
 const staticNavigationItems = [
-  { name: "Find a Clinic", path: "/find-clinic", icon: "📍" },
   { name: "How It Works", path: "/how-it-works", icon: "❓" },
   { name: "Contact Us", path: "/contact", icon: "📞" }
 ];
