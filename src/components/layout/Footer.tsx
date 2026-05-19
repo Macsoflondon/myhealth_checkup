@@ -91,6 +91,10 @@ const Footer = () => {
                 <Link to="/fair-trading" className="underline hover:text-brand-turquoise transition-colors">
                   fair trading policy
                 </Link>
+                . To raise a concern, see our{" "}
+                <Link to="/complaints" className="underline hover:text-brand-turquoise transition-colors">
+                  feedback &amp; complaints process
+                </Link>
                 .
               </span>
             </p>
