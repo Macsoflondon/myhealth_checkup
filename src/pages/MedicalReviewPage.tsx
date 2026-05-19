@@ -120,11 +120,9 @@ const MedicalReviewPage = () => {
 
               <div className="bg-muted/40 rounded-lg p-4 border border-border">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  <strong>Important:</strong> Registered Healthcare Professionals (such as Physician Associates) are HCPC-registered professionals working
-                  under the supervision of doctors. They do not currently hold independent prescribing rights in the
-                  UK. Our content is informational and comparative; it does not constitute medical advice, diagnosis or
-                  prescription. Always consult your GP or a suitably qualified clinician for individual medical
-                  guidance.
+                  <strong>Important:</strong> Our content is informational and comparative; it does not constitute
+                  medical advice, diagnosis or prescription. Always consult your GP or a suitably qualified
+                  clinician for individual medical guidance.
                 </p>
               </div>
             </CardContent>

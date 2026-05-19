@@ -38,7 +38,7 @@ const HowWeRank = () => {
           Last reviewed: {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })} ·
           Reviewed by{' '}
           <Link to="/about/medical-review" className="text-primary underline underline-offset-2">
-            Nathanial Smith, Registered Healthcare Professional (HCPC PA43353)
+            Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353)
           </Link>
         </p>
       </div>

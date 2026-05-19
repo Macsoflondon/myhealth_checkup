@@ -1,43 +1,20 @@
-## Goal
+## Remove Physician Assistant claims from medical review pages
 
-Make the Accredited Providers bar's inner container and horizontal padding match the rhythm used by neighbouring sections (e.g. `TrustPlatformSection`) so its edges align cleanly at every breakpoint.
+Four files need updating to remove any suggestion that the clinical reviewer is a Physician Assistant / Physician Associate, works under a supervising doctor, or does not hold independent prescribing rights.
 
-## Problem
+### Changes
 
-Current wrapper:
-```
-<div className="container mx-auto px-4 sm:px-6 bg-white">
-```
+1. **`src/pages/MedicalReviewPage.tsx`**
+   - Replace the disclaimer paragraph that explicitly names "Physician Associates" and states they work "under the supervision of doctors" and "do not currently hold independent prescribing rights" with a neutral statement confirming the reviewer is a Registered Healthcare Professional and that content is informational only.
+   - The reviewer `role` field already reads "Clinical Reviewer — Registered Healthcare Professional" and does not need changing.
 
-Neighbouring sections use:
-```
-<div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 ...">
-```
+2. **`src/components/compliance/HowWeRank.tsx`**
+   - Rephrase the byline and registration reference so "PA43353" is clearly presented as an HCPC registration number, not a job-title abbreviation. No other reviewer details change.
 
-Two issues:
-1. Padding stops at `sm:px-6` — at `lg`/`xl` the inner content sits closer to the screen edge than the sections above/below, breaking the gutter rhythm.
-2. `bg-white` is applied to the *padded* container, so the visible white panel hugs the viewport edges instead of sitting within the same gutter as adjacent sections.
+3. **`src/pages/LegalPage.tsx`**
+   - Update the Medical Review card description to match the revised, neutral phrasing used in HowWeRank.
 
-## Changes (single file: `src/components/sections/AccreditedProvidersBar.tsx`)
+4. **`public/llms.txt`**
+   - Update the medical reviewer line from "Nathanial Smith PA" to "Nathanial Smith, Registered Healthcare Professional (HCPC)" so the public LLM context no longer implies the PA title.
 
-1. Split the container from the white panel so padding + max-width come from a standards-compliant outer wrapper, and the white surface sits inside the same gutter as neighbours:
-
-```tsx
-<section className="py-8 sm:py-10 md:py-12 bg-tertiary" aria-label="...">
-  <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16">
-    <div className="bg-white rounded-2xl px-4 sm:px-6 lg:px-10 py-6 sm:py-8 md:py-10">
-      {/* eyebrow + heading + accreditors + logo grid */}
-    </div>
-  </div>
-</section>
-```
-
-2. Drop the now-redundant `my-0 py-3 sm:py-4 md:py-5` from the eyebrow row (vertical rhythm now lives on the white panel) and keep the existing `mb-*` spacing on heading/accreditor row/grid.
-
-3. Keep the logo grid's existing `max-w-6xl mx-auto` so the 6-up row stays centred within the wider panel at `lg+`.
-
-## Result
-
-- Left/right edges of the white panel line up exactly with content edges in `TrustPlatformSection` and other neighbours from `xs` through `2xl`.
-- Vertical padding rhythm (`py-8/10/12` outer, panel inner padding) is preserved.
-- No behavioural changes; pure layout alignment.
+All other clinical-review metadata, scope text, and HCPC registration number remain intact.
