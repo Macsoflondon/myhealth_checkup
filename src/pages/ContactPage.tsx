@@ -84,7 +84,7 @@ const ContactPage = () => {
           "legalName": "MYHEALTHCHECKUP LTD",
           "description": "Independent UK platform comparing private health tests from accredited providers.",
           "url": "https://www.myhealthcheckup.co.uk/contact",
-          "email": "hello@myhealthcheckup.co.uk",
+          "email": "support@myhealthcheckup.co.uk",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "2/369 Clapham Road",

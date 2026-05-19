@@ -110,8 +110,8 @@ serve(async (req: Request) => {
 
     // Internal notification to compliance inbox
     await resend.emails.send({
-      from: "myhealth checkup <compliance@myhealthcheckup.co.uk>",
-      to: ["compliance@myhealthcheckup.co.uk", "legal@myhealthcheckup.co.uk"],
+      from: "myhealth checkup <support@myhealthcheckup.co.uk>",
+      to: ["support@myhealthcheckup.co.uk", "support@myhealthcheckup.co.uk"],
       reply_to: email,
       subject: `[${reference}] ${category.toUpperCase()} from ${name}`,
       html,
@@ -119,7 +119,7 @@ serve(async (req: Request) => {
 
     // Consumer acknowledgement
     await resend.emails.send({
-      from: "myhealth checkup <compliance@myhealthcheckup.co.uk>",
+      from: "myhealth checkup <support@myhealthcheckup.co.uk>",
       to: [email],
       subject: `We've received your submission (ref ${reference})`,
       html: `

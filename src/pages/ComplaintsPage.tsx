@@ -400,14 +400,14 @@ const ComplaintsPage: React.FC = () => {
                 <CardContent className="text-sm text-muted-foreground space-y-1">
                   <p>
                     <strong>Compliance:</strong>{" "}
-                    <a className="underline" href="mailto:compliance@myhealthcheckup.co.uk">
-                      compliance@myhealthcheckup.co.uk
+                    <a className="underline" href="mailto:support@myhealthcheckup.co.uk">
+                      support@myhealthcheckup.co.uk
                     </a>
                   </p>
                   <p>
                     <strong>Legal:</strong>{" "}
-                    <a className="underline" href="mailto:legal@myhealthcheckup.co.uk">
-                      legal@myhealthcheckup.co.uk
+                    <a className="underline" href="mailto:support@myhealthcheckup.co.uk">
+                      support@myhealthcheckup.co.uk
                     </a>
                   </p>
                   <p>

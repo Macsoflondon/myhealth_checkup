@@ -181,7 +181,7 @@ const PrivacyPolicy = () => {
             <p className="text-sm text-gray-600">Transfer your data</p>
           </div>
         </div>
-        <p className="text-gray-700 mt-4">Contact: privacy@myhealthcheckup.co.uk to exercise these rights.</p>
+        <p className="text-gray-700 mt-4">Contact: support@myhealthcheckup.co.uk to exercise these rights.</p>
       </Card>
 
       <Card className="p-6">
@@ -205,7 +205,7 @@ const PrivacyPolicy = () => {
         </h2>
         <div className="flex items-center gap-3">
           <Mail className="h-4 w-4 text-gray-500" />
-          <span className="text-gray-700">privacy@myhealthcheckup.co.uk</span>
+          <span className="text-gray-700">support@myhealthcheckup.co.uk</span>
         </div>
       </Card>
 

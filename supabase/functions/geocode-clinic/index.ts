@@ -36,7 +36,7 @@ serve(async (req) => {
       `https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=json&limit=1&countrycodes=gb`,
       {
         headers: {
-          'User-Agent': 'MyHealthCheckup/1.0 (contact@myhealthcheckup.co.uk)'
+          'User-Agent': 'MyHealthCheckup/1.0 (support@myhealthcheckup.co.uk)'
         }
       }
     );

@@ -114,7 +114,7 @@ const CookiePolicyPage = () => {
               <CardContent>
                 <p className="mb-4">If you have questions about our cookie policy, please contact us:</p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> privacy@myhealthcheckup.co.uk</p>
+                  <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                 </div>
               </CardContent>
             </Card>
