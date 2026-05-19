@@ -80,6 +80,11 @@ const heroSlides: Array<{
   },
 ];
 
+// Tiny blurred LQIPs (32px WebP, ~150B) for the first slide — render instantly so users
+// never see a navy "black screen" while the full hero image streams in.
+const LQIP_DESKTOP = "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADwBACdASogABIAPt1WpE2opKOiN/qoARAbiWUAs4AYv7MlNIQ/1eawUMfG66JUE+gA/oVLXJz6RR5bj3eso6dG03s3A+CfuMICh9a1oxoeVCOYa2rytgDftKG2CZ8TBmOxz+CZNRP6R7BUNygAAA==";
+const LQIP_MOBILE = "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAACwBQCdASogACAAPu1srlCppiQiqAqpMB2JYwC/WW2rQUZttiClW/8mD0nZ1fH5MRIxjzu7gAAA/vFUJTqM0A/JVYXFVGBF1UD2Ntya24HXaVS/iGfmszfkjsS9WyXn5PjeZ710jyoZRIZnAlaV+AggYPWpbO9xKKgdNBt1J53KpKoHvo8mBExdfPtH5ETUAAA=";
+
 const Hero = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
