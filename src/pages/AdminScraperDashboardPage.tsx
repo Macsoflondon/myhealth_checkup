@@ -193,6 +193,8 @@ const AdminScraperDashboardPage: React.FC = () => {
 
           <ScraperAlertsPanel />
 
+          <NormalizeCategoriesCard />
+
           <Alert>
             <Clock className="h-4 w-4" />
             <AlertDescription>
