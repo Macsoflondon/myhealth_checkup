@@ -4,10 +4,8 @@ import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TrustSignalsBar from "@/components/common/TrustSignalsBar";
 
-import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
-import heroMobileReception from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
 import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
 import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
 
@@ -36,20 +34,6 @@ const heroSlides: Array<{
   mobileScale?: string;
   theme: SlideTheme;
 }> = [
-  {
-    image: heroClinic,
-    mobileImage: heroMobileReception,
-    headline: "Clinics Nationwide",
-    subline: "No GP referral needed. Just choose a clinic and book.",
-    objectPosition: "center 38%",
-    mobileObjectPosition: "60% 35%",
-    mobileScale: "scale(1.15)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/5 via-transparent to-[#081129]/15",
-      surface: 55,
-      accent: "turquoise",
-    },
-  },
   {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
