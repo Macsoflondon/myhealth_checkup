@@ -13,14 +13,15 @@ const PLACEHOLDER_PATTERNS = [/gb\.png/i, /flag/i, /placeholder/i, /no[-_ ]image
 
 // Expected hostnames per provider (anything outside flags as wrong_host).
 const PROVIDER_HOST_ALLOWLIST: Record<string, RegExp[]> = {
-  randox: [/randoxhealth\.com/i, /randox\.com/i],
-  medichecks: [/medichecks\.com/i, /cloudinary\.com.*medichecks/i],
+  randox: [/randoxhealth\.com/i, /randox\.com/i, /blob\.core\.windows\.net/i, /azurefd\.net/i],
+  medichecks: [/medichecks\.com/i, /cloudinary\.com/i],
   thriva: [/thriva\.co/i],
   "goodbody-clinic": [/goodbodyclinic\.com/i],
   clinilabs: [/clinilabs\./i, /cdn\.shopify\.com/i],
   "lola-health": [/lola\.health/i, /lolahealth\./i],
   "london-health-company": [/londonhealthcompany\.com/i, /londonhealth\./i],
   "london-medical-laboratory": [/londonmedicallaboratory\.com/i, /lml\./i],
+  "medical-diagnosis": [/medical-diagnosis\.co\.uk/i],
   bluecrest: [/bluecrestwellness\.com/i],
 };
 
