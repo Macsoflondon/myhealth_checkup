@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
 import PageBanner from '@/components/sections/PageBanner';
+import SupportSLA from '@/components/compliance/SupportSLA';
 
 const AccessibilityPage = () => {
   return (
@@ -124,6 +125,8 @@ const AccessibilityPage = () => {
                  </div>
               </CardContent>
             </Card>
+
+            <SupportSLA variant="accessibility" className="mt-8" />
           </div>
         </div>
       </main>
