@@ -19,7 +19,7 @@ const REVIEWER = {
   registration: {
     body: "Health and Care Professions Council (HCPC)",
     number: "PA43353",
-    verifyUrl: "https://www.hcpc-uk.org/check-the-register/",
+    verifyUrl: "https://www.hcpc-uk.org/check-the-register/professional-registration-detail/?query=PA43353&profession=PA",
   },
   scope:
     "Reviews comparison content for clinical accuracy, biomarker descriptions, sample collection guidance, and general health-test explainers. Does not review or endorse individual provider commercial claims.",
