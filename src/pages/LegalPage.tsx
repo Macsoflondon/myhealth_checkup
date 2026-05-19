@@ -15,7 +15,7 @@ const legalPages = [
   { title: 'Fair Trading Policy', path: '/fair-trading', icon: Scale, description: 'Our commitment to fair and transparent trading practices.' },
   { title: 'How We Rank', path: '/how-we-rank', icon: Award, description: 'Our methodology for ranking and comparing providers.' },
   { title: 'Accessibility Statement', path: '/accessibility', icon: Accessibility, description: 'Our commitment to accessible, inclusive digital experiences.' },
-  { title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC PA43353).' },
+  { title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).' },
 ];
 
 const LegalPage = () => {

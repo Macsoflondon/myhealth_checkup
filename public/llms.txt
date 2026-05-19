@@ -64,7 +64,7 @@ myhealth checkup only lists providers that meet UK regulatory standards:
 - **CMA / ASA** — comparison content follows Competition and Markets Authority and Advertising Standards Authority guidance for transparent, non-misleading consumer information.
 
 Editorial independence: no pay-to-rank. Affiliate relationships are disclosed on /affiliate-disclosure.
-Medical reviewer: Nathanial Smith PA — see /medical-review.
+Medical reviewer: Nathanial Smith, Registered Healthcare Professional (HCPC) — see /medical-review.
 
 ## Allow
 
