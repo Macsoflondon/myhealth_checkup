@@ -251,7 +251,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                           {testCount} active tests • Last scraped: {formatDate(job?.last_scraped || null)}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap justify-end">
                         {getStatusBadge(job?.status)}
                         <Button
                           size="sm"
@@ -270,6 +270,38 @@ const AdminScraperDashboardPage: React.FC = () => {
                             </>
                           )}
                         </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={isRunning || runningScrapers.size > 0}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Purge & Re-scrape
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Purge all {provider.name} tests?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will <strong>permanently delete all {testCount} active rows</strong> in
+                                <code className="mx-1">provider_tests</code> for <strong>{provider.name}</strong>,
+                                then immediately re-trigger the scraper so the improved parser repopulates everything
+                                from scratch. Cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                onClick={() => purgeAndRescrape(provider)}
+                              >
+                                Yes, purge and re-scrape
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </CardHeader>
