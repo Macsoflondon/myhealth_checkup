@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle } from "lucide-react";
+import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
