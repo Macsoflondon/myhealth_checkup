@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
 import { ScraperAlertsPanel } from "@/components/admin/ScraperAlertsPanel";
+import { NormalizeCategoriesCard } from "@/components/admin/NormalizeCategoriesCard";
 
 interface ScrapingJob {
   id: string;
