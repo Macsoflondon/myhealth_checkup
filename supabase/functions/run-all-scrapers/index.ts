@@ -26,6 +26,12 @@ interface ScraperResult {
   message: string;
 }
 
+interface RunAllScrapersBody {
+  providerIds?: string[];
+  providerId?: string;
+  scheduled?: boolean;
+}
+
 async function sendAdminNotification(
   supabase: any,
   subject: string,
@@ -177,12 +183,17 @@ const waitUntil = (p: Promise<unknown>): void => {
   p.catch((err) => console.error("[run-all-scrapers] background task error:", getErrorMessage(err)));
 };
 
-async function runBatch(runId: string): Promise<void> {
+async function runBatch(
+  runId: string,
+  scrapersToRun: typeof SCRAPERS,
+): Promise<void> {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-  console.log(`[${new Date().toISOString()}] [${runId}] Starting scheduled scraping run for all providers`);
+  console.log(
+    `[${new Date().toISOString()}] [${runId}] Starting scraping run for ${scrapersToRun.length} provider(s)`,
+  );
 
   // Bounded concurrency: run scrapers in parallel batches to cut wall time
   // from ~3-5 min (sequential + 2s sleeps) to ~60-90 s without overwhelming
@@ -225,21 +236,21 @@ async function runBatch(runId: string): Promise<void> {
   }
 
   try {
-    for (let i = 0; i < SCRAPERS.length; i += CONCURRENCY) {
-      const batch = SCRAPERS.slice(i, i + CONCURRENCY);
+    for (let i = 0; i < scrapersToRun.length; i += CONCURRENCY) {
+      const batch = scrapersToRun.slice(i, i + CONCURRENCY);
       const batchResults = await Promise.all(batch.map(runScraper));
       results.push(...batchResults);
     }
 
     const successCount = results.filter(r => r.success).length;
-    const allSuccess = successCount === SCRAPERS.length;
-    const summary = `Completed ${successCount}/${SCRAPERS.length} scrapers successfully`;
+    const allSuccess = successCount === scrapersToRun.length;
+    const summary = `Completed ${successCount}/${scrapersToRun.length} scrapers successfully`;
 
     console.log(`[${new Date().toISOString()}] [${runId}] ${summary}`);
 
     const emailSubject = allSuccess
-      ? `✓ Scraper Run Complete: ${successCount}/${SCRAPERS.length} succeeded`
-      : `⚠️ Scraper Run: ${SCRAPERS.length - successCount} failed`;
+      ? `✓ Scraper Run Complete: ${successCount}/${scrapersToRun.length} succeeded`
+      : `⚠️ Scraper Run: ${scrapersToRun.length - successCount} failed`;
 
     await sendAdminNotification(
       supabase,
@@ -256,12 +267,64 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Cron/service-role guard: only callers with the service-role key may dispatch.
+  const body: RunAllScrapersBody = req.method === "POST"
+    ? await req.json().catch(() => ({}))
+    : {};
+
   const authHeader = req.headers.get("Authorization") ?? "";
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-  if (!serviceKey || authHeader !== `Bearer ${serviceKey}`) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+
+  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
+  const isScheduledRun = Boolean(body.scheduled) && anonKey.length > 0 && authHeader === `Bearer ${anonKey}`;
+
+  let isAdminUser = false;
+  if (!isServiceRole && !isScheduledRun) {
+    if (!authHeader || !supabaseUrl || !anonKey) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const userClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+
+    if (userErr || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { data: hasAdminRole, error: roleErr } = await userClient.rpc("has_role", {
+      _user_id: user.id,
+      _role: "admin",
+    });
+
+    if (roleErr || !hasAdminRole) {
+      return new Response(JSON.stringify({ error: "Admin only" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    isAdminUser = true;
+  }
+
+  const requestedProviderIds = [body.providerId, ...(body.providerIds ?? [])].filter(
+    (value): value is string => typeof value === "string" && value.length > 0,
+  );
+  const scrapersToRun = requestedProviderIds.length > 0
+    ? SCRAPERS.filter((scraper) => requestedProviderIds.includes(scraper.id))
+    : SCRAPERS;
+
+  if (requestedProviderIds.length > 0 && scrapersToRun.length === 0) {
+    return new Response(JSON.stringify({ error: "No matching providers found" }), {
+      status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
@@ -271,15 +334,16 @@ serve(async (req) => {
 
   // Fire-and-forget: detach the batch from the request so HTTP timeouts,
   // client disconnects, or cron invoker cancellations cannot abort it.
-  waitUntil(runBatch(runId));
+  waitUntil(runBatch(runId, scrapersToRun));
 
   return new Response(
     JSON.stringify({
       success: true,
-      message: `Scraper batch dispatched (${SCRAPERS.length} providers). Running in background.`,
+      message: `Scraper batch dispatched (${scrapersToRun.length} provider${scrapersToRun.length === 1 ? "" : "s"}). Running in background.`,
       runId,
-      providers: SCRAPERS.map(s => s.id),
+      providers: scrapersToRun.map(s => s.id),
       startedAt,
+      mode: isServiceRole ? "service" : isScheduledRun ? "scheduled" : isAdminUser ? "admin" : "unknown",
     }),
     {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
