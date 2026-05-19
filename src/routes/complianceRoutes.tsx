@@ -10,6 +10,7 @@ const AffiliateDisclosurePage = lazy(() => import("@/pages/AffiliateDisclosurePa
 const FairTradingPolicyPage = lazy(() => import("@/pages/FairTradingPolicyPage"));
 const HowWeRankPage = lazy(() => import("@/pages/HowWeRankPage"));
 const LegalPage = lazy(() => import("@/pages/LegalPage"));
+const ComplaintsPage = lazy(() => import("@/pages/ComplaintsPage"));
 
 export const complianceRoutes = (
   <>
@@ -22,5 +23,7 @@ export const complianceRoutes = (
     <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
     <Route path="/fair-trading" element={<FairTradingPolicyPage />} />
     <Route path="/how-we-rank" element={<HowWeRankPage />} />
+    <Route path="/complaints" element={<ComplaintsPage />} />
+    <Route path="/feedback" element={<ComplaintsPage />} />
   </>
 );

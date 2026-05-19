@@ -30,6 +30,7 @@ methods and turnaround times.
 - [About](/about): Company mission, values and editorial independence.
 - [FAQs](/faqs): Frequently asked questions.
 - [Contact](/contact): Get in touch with the myhealth checkup team.
+- [Feedback & complaints](/complaints): Submit feedback or a formal complaint with published response SLAs.
 
 ## Categories
 

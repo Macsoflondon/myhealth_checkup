@@ -144,3 +144,9 @@ verify_jwt = false
 # Public endpoint with in-code service-role bearer check (cron-only)
 [functions.scraper-health-check]
 verify_jwt = false
+
+# Submit Consumer Complaint / Feedback
+# Public endpoint - consumers must be able to lodge a complaint without auth
+# Security: honeypot, schema validation, length caps, Resend-based emailing
+[functions.submit-complaint]
+verify_jwt = false

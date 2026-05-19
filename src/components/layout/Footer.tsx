@@ -27,6 +27,7 @@ const Footer = () => {
     { name: "Test Categories", link: "/test-categories" },
     { name: t("footer.links.contact"), link: "/contact" },
     { name: "Expert Guidance", link: "/expert-guidance" },
+    { name: "Feedback & Complaints", link: "/complaints" },
     { name: "Legal Hub", link: "/legal" },
   ];
 
@@ -89,6 +90,10 @@ const Footer = () => {
                 and{" "}
                 <Link to="/fair-trading" className="underline hover:text-brand-turquoise transition-colors">
                   fair trading policy
+                </Link>
+                . To raise a concern, see our{" "}
+                <Link to="/complaints" className="underline hover:text-brand-turquoise transition-colors">
+                  feedback &amp; complaints process
                 </Link>
                 .
               </span>
