@@ -610,6 +610,51 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_image_audit: {
+        Row: {
+          category: string | null
+          checked_at: string
+          content_type: string | null
+          http_status: number | null
+          id: string
+          image_url: string | null
+          issue: string | null
+          provider_id: string
+          provider_test_id: string | null
+          run_id: string
+          status: string
+          test_name: string | null
+        }
+        Insert: {
+          category?: string | null
+          checked_at?: string
+          content_type?: string | null
+          http_status?: number | null
+          id?: string
+          image_url?: string | null
+          issue?: string | null
+          provider_id: string
+          provider_test_id?: string | null
+          run_id: string
+          status: string
+          test_name?: string | null
+        }
+        Update: {
+          category?: string | null
+          checked_at?: string
+          content_type?: string | null
+          http_status?: number | null
+          id?: string
+          image_url?: string | null
+          issue?: string | null
+          provider_id?: string
+          provider_test_id?: string | null
+          run_id?: string
+          status?: string
+          test_name?: string | null
+        }
+        Relationships: []
+      }
       provider_test_mapping: {
         Row: {
           accreditations: string[] | null
@@ -1453,7 +1498,22 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      provider_image_audit_latest: {
+        Row: {
+          category: string | null
+          checked_at: string | null
+          missing: number | null
+          ok: number | null
+          pct_ok: number | null
+          placeholder: number | null
+          provider_id: string | null
+          total: number | null
+          unreachable: number | null
+          wrong_host: number | null
+          wrong_type: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       cleanup_old_health_queries: { Args: never; Returns: undefined }

@@ -150,3 +150,6 @@ verify_jwt = false
 # Security: honeypot, schema validation, length caps, Resend-based emailing
 [functions.submit-complaint]
 verify_jwt = false
+
+[functions.verify-provider-images]
+verify_jwt = false
