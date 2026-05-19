@@ -59,7 +59,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
   },
   'medichecks': {
     id: 'medichecks',
-    name: '\n',
+    name: 'Medichecks',
     logo: PROVIDER_LOGOS['medichecks'],
     website: PROVIDER_WEBSITES['medichecks'],
     description: 'UK\'s leading blood testing service',
