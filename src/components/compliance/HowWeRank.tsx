@@ -246,8 +246,8 @@ const HowWeRank = () => {
             <p>
               We do not accept payment to remove providers, suppress unfavourable information, or promote a
               specific test outcome. If you believe a listing is inaccurate or misleading, please contact us at{' '}
-              <a href="mailto:editorial@myhealthcheckup.co.uk" className="text-primary underline underline-offset-2">
-                editorial@myhealthcheckup.co.uk
+              <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary underline underline-offset-2">
+                support@myhealthcheckup.co.uk
               </a>{' '}
               and we will investigate within five working days.
             </p>

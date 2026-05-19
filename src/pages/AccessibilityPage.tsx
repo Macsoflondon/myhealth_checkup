@@ -119,7 +119,7 @@ const AccessibilityPage = () => {
                   please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                   <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
+                   <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                    <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
                  </div>
               </CardContent>

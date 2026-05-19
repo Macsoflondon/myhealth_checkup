@@ -133,7 +133,7 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <p className="mb-4">For questions about these Terms & Conditions, please contact us:</p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> legal@myhealthcheckup.co.uk</p>
+                  <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                   <p><strong>Address:</strong> Clapham, SW London, United Kingdom</p>
                   <p><strong>Company Registration:</strong> 16589056 (England & Wales)</p>
                 </div>
