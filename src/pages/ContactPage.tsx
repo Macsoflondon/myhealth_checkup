@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import PageBanner from '@/components/sections/PageBanner';
+import SupportSLA from '@/components/compliance/SupportSLA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -244,6 +245,10 @@ const ContactPage = () => {
                   <p className="text-sm mt-4 text-muted-foreground">Company Registration: 16589056 (England & Wales)</p>
                 </CardContent>
               </Card>
+            </div>
+
+            <div className="mt-6">
+              <SupportSLA variant="default" />
             </div>
 
             {/* Row 3: Emergency */}

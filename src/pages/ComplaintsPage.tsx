@@ -5,6 +5,7 @@ import { Loader2, CheckCircle2, AlertCircle, Clock, Shield, Scale } from "lucide
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PageBanner from "@/components/sections/PageBanner";
+import SupportSLA from "@/components/compliance/SupportSLA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -415,6 +416,8 @@ const ComplaintsPage: React.FC = () => {
                   </p>
                 </CardContent>
               </Card>
+
+              <SupportSLA variant="complaints" />
             </div>
           </div>
         </div>
