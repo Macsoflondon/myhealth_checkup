@@ -32,6 +32,58 @@ interface RunAllScrapersBody {
   scheduled?: boolean;
 }
 
+async function sendSlackNotification(text: string, blocks?: unknown) {
+  const url = Deno.env.get("SLACK_WEBHOOK_URL");
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(blocks ? { text, blocks } : { text }),
+    });
+  } catch (err) {
+    console.error("Slack notify error:", getErrorMessage(err));
+  }
+}
+
+async function recordFailureAlerts(
+  supabase: any,
+  failed: ScraperResult[],
+): Promise<void> {
+  if (failed.length === 0) return;
+
+  // Look back 24h for repeated-failure detection
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { data: recent } = await supabase
+    .from("scraper_alerts")
+    .select("provider_id, created_at")
+    .eq("alert_type", "scrape_failed")
+    .gte("created_at", since);
+
+  const priorCounts = new Map<string, number>();
+  for (const row of recent ?? []) {
+    priorCounts.set(row.provider_id, (priorCounts.get(row.provider_id) ?? 0) + 1);
+  }
+
+  const rows = failed.map((f) => {
+    const prior = priorCounts.get(f.provider) ?? 0;
+    const isRepeated = prior >= 1;
+    return {
+      provider_id: f.provider,
+      alert_type: "scrape_failed" as const,
+      severity: isRepeated ? "critical" : "warning",
+      message: isRepeated
+        ? `Repeated failure (${prior + 1} in last 24h): ${f.message}`.slice(0, 1000)
+        : `Scraper failed: ${f.message}`.slice(0, 1000),
+      current_count: prior + 1,
+      previous_count: prior,
+    };
+  });
+
+  const { error } = await supabase.from("scraper_alerts").insert(rows);
+  if (error) console.error("Failed to insert scraper_alerts:", error.message);
+}
+
 async function sendAdminNotification(
   supabase: any,
   subject: string,
@@ -89,6 +141,7 @@ async function sendAdminNotification(
     console.error("Error in sendAdminNotification:", getErrorMessage(error));
   }
 }
+
 
 function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): string {
   const successCount = results.filter(r => r.success).length;
@@ -243,20 +296,32 @@ async function runBatch(
     }
 
     const successCount = results.filter(r => r.success).length;
+    const failedResults = results.filter(r => !r.success);
     const allSuccess = successCount === scrapersToRun.length;
     const summary = `Completed ${successCount}/${scrapersToRun.length} scrapers successfully`;
 
     console.log(`[${new Date().toISOString()}] [${runId}] ${summary}`);
 
+    // Persist dashboard alerts for any failures (warning, or critical if repeated)
+    await recordFailureAlerts(supabase, failedResults);
+
     const emailSubject = allSuccess
       ? `✓ Scraper Run Complete: ${successCount}/${scrapersToRun.length} succeeded`
       : `⚠️ Scraper Run: ${scrapersToRun.length - successCount} failed`;
+
+    if (!allSuccess) {
+      await sendSlackNotification(
+        `:rotating_light: ${emailSubject}\n` +
+          failedResults.map((r) => `• *${r.provider}*: ${r.message}`).join("\n"),
+      );
+    }
 
     await sendAdminNotification(
       supabase,
       emailSubject,
       generateEmailHtml(results, allSuccess)
     );
+
   } catch (err) {
     console.error(`[${new Date().toISOString()}] [${runId}] Batch run crashed:`, getErrorMessage(err));
   }
