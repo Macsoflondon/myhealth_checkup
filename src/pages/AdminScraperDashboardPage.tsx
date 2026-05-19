@@ -115,6 +115,34 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
   };
 
+  const purgeAndRescrape = async (provider: Provider) => {
+    setRunningScrapers(prev => new Set(prev).add(provider.id));
+    try {
+      const { data, error } = await supabase.functions.invoke('purge-and-rescrape', {
+        body: { providerId: provider.id, confirm: true }
+      });
+      if (error) throw error;
+      toast({
+        title: "Purge + re-scrape dispatched",
+        description: `${provider.name}: purged ${data?.purgedRows ?? 0} rows. Re-scrape running in background.`,
+      });
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      toast({
+        title: "Purge failed",
+        description: `${provider.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(prev => {
+        const next = new Set(prev);
+        next.delete(provider.id);
+        return next;
+      });
+    }
+  };
+
   const runAllScrapers = async () => {
     setRunningScrapers(new Set(PROVIDERS.map((provider) => provider.id)));
 
