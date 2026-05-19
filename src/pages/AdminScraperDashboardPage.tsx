@@ -80,8 +80,8 @@ const AdminScraperDashboardPage: React.FC = () => {
     setRunningScrapers(prev => new Set(prev).add(provider.id));
     
     try {
-      const { data, error } = await supabase.functions.invoke(provider.functionName, {
-        body: { replace: true }
+      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
+        body: { providerId: provider.id }
       });
 
       if (error) throw error;
@@ -111,8 +111,31 @@ const AdminScraperDashboardPage: React.FC = () => {
   };
 
   const runAllScrapers = async () => {
-    for (const provider of PROVIDERS) {
-      await runScraper(provider);
+    setRunningScrapers(new Set(PROVIDERS.map((provider) => provider.id)));
+
+    try {
+      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
+        body: { providerIds: PROVIDERS.map((provider) => provider.id) }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Scraper batch started",
+        description: data?.message || 'All provider scrapers are running in the background.',
+      });
+
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      console.error('Error running all scrapers:', error);
+      toast({
+        title: "Scraper batch failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(new Set());
     }
   };
 
@@ -173,7 +196,7 @@ const AdminScraperDashboardPage: React.FC = () => {
           <Alert>
             <Clock className="h-4 w-4" />
             <AlertDescription>
-              <strong>Scheduled scraping:</strong> All scrapers run automatically at 02:30 UTC daily, with a health check at 03:00 UTC that creates alerts when any provider drops below its expected test count.
+              <strong>Scheduled scraping:</strong> All provider scrapers run automatically every 6 hours, with a daily health check that creates alerts when any provider drops below its expected test count.
             </AlertDescription>
           </Alert>
 
