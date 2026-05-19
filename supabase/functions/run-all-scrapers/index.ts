@@ -296,20 +296,32 @@ async function runBatch(
     }
 
     const successCount = results.filter(r => r.success).length;
+    const failedResults = results.filter(r => !r.success);
     const allSuccess = successCount === scrapersToRun.length;
     const summary = `Completed ${successCount}/${scrapersToRun.length} scrapers successfully`;
 
     console.log(`[${new Date().toISOString()}] [${runId}] ${summary}`);
 
+    // Persist dashboard alerts for any failures (warning, or critical if repeated)
+    await recordFailureAlerts(supabase, failedResults);
+
     const emailSubject = allSuccess
       ? `✓ Scraper Run Complete: ${successCount}/${scrapersToRun.length} succeeded`
       : `⚠️ Scraper Run: ${scrapersToRun.length - successCount} failed`;
+
+    if (!allSuccess) {
+      await sendSlackNotification(
+        `:rotating_light: ${emailSubject}\n` +
+          failedResults.map((r) => `• *${r.provider}*: ${r.message}`).join("\n"),
+      );
+    }
 
     await sendAdminNotification(
       supabase,
       emailSubject,
       generateEmailHtml(results, allSuccess)
     );
+
   } catch (err) {
     console.error(`[${new Date().toISOString()}] [${runId}] Batch run crashed:`, getErrorMessage(err));
   }
