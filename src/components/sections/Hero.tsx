@@ -7,12 +7,9 @@ import TrustSignalsBar from "@/components/common/TrustSignalsBar";
 import heroClinic from "@/assets/hero/hero-clinic-ease.webp";
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
-import heroKitUnboxing from "@/assets/hero/hero-kit-unboxing.png";
-
 import heroMobileReception from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
 import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
 import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
-import heroMobileKitUnbox from "@/assets/hero/mobile/hero-mobile-kit-unbox.png";
 
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
@@ -77,20 +74,6 @@ const heroSlides: Array<{
     mobileScale: "scale(1.15)",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/20",
-      surface: 65,
-      accent: "turquoise",
-    },
-  },
-  {
-    image: heroKitUnboxing,
-    mobileImage: heroMobileKitUnbox,
-    headline: "Your Kit. Your Kitchen.",
-    subline: "Professional at-home blood test kits delivered straight to your door.",
-    objectPosition: "center 42%",
-    mobileObjectPosition: "55% 42%",
-    mobileScale: "scale(1.2)",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/25",
       surface: 65,
       accent: "turquoise",
     },
