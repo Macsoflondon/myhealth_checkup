@@ -87,8 +87,8 @@ const AdminScraperDashboardPage: React.FC = () => {
       if (error) throw error;
 
       toast({
-        title: "Scraper completed",
-        description: `${provider.name}: ${data?.message || 'Scraping finished'}`,
+        title: "Scraper started",
+        description: `${provider.name}: ${data?.message || 'Scraping is running in the background.'}`,
       });
 
       // Refresh data
