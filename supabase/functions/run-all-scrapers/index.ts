@@ -340,9 +340,11 @@ serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+  const cronSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? "";
 
   const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
-  const isScheduledRun = Boolean(body.scheduled) && anonKey.length > 0 && authHeader === `Bearer ${anonKey}`;
+  // Scheduled runs must present a dedicated cron secret (not the public anon key).
+  const isScheduledRun = Boolean(body.scheduled) && cronSecret.length > 0 && authHeader === `Bearer ${cronSecret}`;
 
   let isAdminUser = false;
   if (!isServiceRole && !isScheduledRun) {
