@@ -25,7 +25,7 @@ export const contentRoutes = (
     <Route path="/contact" element={<ContactPage />} />
     <Route path="/partners" element={<PartnersPage />} />
     <Route path="/blog" element={<HealthBlogPage />} />
-    <Route path="/health-blog" element={<HealthBlogPage />} />
+    <Route path="/health-blog" element={<Navigate to="/blog" replace />} />
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
