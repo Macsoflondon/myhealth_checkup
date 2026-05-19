@@ -93,7 +93,8 @@ serve(async (req: Request): Promise<Response> => {
 
       try {
         const emailResponse = await resend.emails.send({
-          from: "myhealth checkup <notifications@updates.myhealthcheckup.co.uk>",
+          from: "myhealth checkup <support@myhealthcheckup.co.uk>",
+          reply_to: "support@myhealthcheckup.co.uk",
           to: [email],
           subject: emailContent.subject,
           html: emailContent.html,
