@@ -127,7 +127,15 @@ const Hero = () => {
   };
   return (
     <>
-      <section className="relative overflow-hidden max-w-[100vw] min-h-[560px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px] flex flex-col">
+      <section
+        className="relative overflow-hidden max-w-[100vw] min-h-[560px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px] flex flex-col bg-[hsl(var(--brand-navy))]"
+        style={{
+          backgroundImage: `url("${isMobile ? LQIP_MOBILE : LQIP_DESKTOP}")`,
+          backgroundSize: "cover",
+          backgroundPosition: isMobile ? "60% 35%" : "center 38%",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         {heroSlides.map((s, i) =>
           loadedSlides.has(i) ? (
             <img
