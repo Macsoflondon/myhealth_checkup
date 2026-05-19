@@ -7,8 +7,8 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
 // Hero first-slide images — preloaded for LCP optimisation
-import heroSlide1Desktop from "@/assets/hero/hero-clinic-ease.webp";
-import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-reception.jpeg";
+import heroSlide1Desktop from "@/assets/hero/hero-home-kit.webp";
+import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-kit-open.png";
 
 // Above-the-fold: eager
 import Hero from "@/components/sections/Hero";
@@ -126,7 +126,7 @@ const Index = () => {
       <MainLayout>
         <Helmet>
           <link rel="preload" as="image" href={heroSlide1Desktop} type="image/webp" media="(min-width: 640px)" fetchPriority="high" />
-          <link rel="preload" as="image" href={heroSlide1Mobile} type="image/jpeg" media="(max-width: 639px)" fetchPriority="high" />
+          <link rel="preload" as="image" href={heroSlide1Mobile} type="image/png" media="(max-width: 639px)" fetchPriority="high" />
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
