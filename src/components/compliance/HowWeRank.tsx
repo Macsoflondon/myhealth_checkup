@@ -294,6 +294,26 @@ const HowWeRank = () => {
             </Link>
             .
           </p>
+
+          <div className="mt-4 pt-4 border-t border-primary/10">
+            <p className="text-sm text-muted-foreground mb-3">
+              When a placement involves a commercial arrangement we always label it visibly with one of these badges
+              and a tooltip explaining the relationship:
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <SponsoredBadge variant="sponsored" />
+              <SponsoredBadge variant="promoted" />
+              <SponsoredBadge variant="affiliate" />
+            </div>
+          </div>
+
+          <p className="text-sm text-muted-foreground mt-4">
+            Disagree with a ranking, a label, or a listing? Raise it via our{' '}
+            <Link to="/complaints" className="text-primary underline underline-offset-2">
+              feedback &amp; complaints process
+            </Link>{' '}
+            — we acknowledge within 2 business days and respond fully within 10.
+          </p>
         </div>
       </div>
     </article>
