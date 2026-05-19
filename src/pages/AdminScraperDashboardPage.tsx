@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2 } from "lucide-react";
+import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2, Trash2 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
@@ -99,6 +103,34 @@ const AdminScraperDashboardPage: React.FC = () => {
       console.error(`Error running ${provider.name} scraper:`, error);
       toast({
         title: "Scraper failed",
+        description: `${provider.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(prev => {
+        const next = new Set(prev);
+        next.delete(provider.id);
+        return next;
+      });
+    }
+  };
+
+  const purgeAndRescrape = async (provider: Provider) => {
+    setRunningScrapers(prev => new Set(prev).add(provider.id));
+    try {
+      const { data, error } = await supabase.functions.invoke('purge-and-rescrape', {
+        body: { providerId: provider.id, confirm: true }
+      });
+      if (error) throw error;
+      toast({
+        title: "Purge + re-scrape dispatched",
+        description: `${provider.name}: purged ${data?.purgedRows ?? 0} rows. Re-scrape running in background.`,
+      });
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      toast({
+        title: "Purge failed",
         description: `${provider.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
@@ -219,7 +251,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                           {testCount} active tests • Last scraped: {formatDate(job?.last_scraped || null)}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap justify-end">
                         {getStatusBadge(job?.status)}
                         <Button
                           size="sm"
@@ -238,6 +270,38 @@ const AdminScraperDashboardPage: React.FC = () => {
                             </>
                           )}
                         </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={isRunning || runningScrapers.size > 0}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Purge & Re-scrape
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Purge all {provider.name} tests?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will <strong>permanently delete all {testCount} active rows</strong> in
+                                <code className="mx-1">provider_tests</code> for <strong>{provider.name}</strong>,
+                                then immediately re-trigger the scraper so the improved parser repopulates everything
+                                from scratch. Cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                onClick={() => purgeAndRescrape(provider)}
+                              >
+                                Yes, purge and re-scrape
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </CardHeader>
