@@ -3,6 +3,9 @@
 <html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
+    <!-- Auto-upgrade any http:// subresource (provider images, third-party CDN URLs) to https://.
+         Belt-and-braces alongside the CSP header set in vercel.json + public/_headers. -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>myhealth checkup | Compare UK Private Health Tests</title>
     <meta name="description" content="Compare UK private blood tests, cancer screening and hormone panels from accredited UKAS labs and CQC clinics. Free, transparent, independent.">
