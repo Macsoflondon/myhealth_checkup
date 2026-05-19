@@ -209,18 +209,6 @@ const VitaminDeficiencyPage = () => {
                         <p>Compare prices from 7+ trusted UK providers</p>
                       </TooltipContent>
                     </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                            Find a Clinic
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>200+ clinics nationwide with instant availability</p>
-                      </TooltipContent>
-                    </Tooltip>
                   </div>
                 </TooltipProvider>
               </div>
