@@ -8,9 +8,15 @@
 export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message;
   if (typeof error === "string") return error;
-  if (error && typeof error === "object" && "message" in error) {
-    const m = (error as { message: unknown }).message;
-    if (typeof m === "string") return m;
+  if (error && typeof error === "object") {
+    const e = error as Record<string, unknown>;
+    const parts = [
+      typeof e.message === "string" ? e.message : null,
+      typeof e.details === "string" ? e.details : null,
+      typeof e.hint === "string" ? e.hint : null,
+      typeof e.code === "string" ? `(code ${e.code})` : null,
+    ].filter(Boolean) as string[];
+    if (parts.length) return parts.join(" — ");
   }
   try {
     return JSON.stringify(error);
