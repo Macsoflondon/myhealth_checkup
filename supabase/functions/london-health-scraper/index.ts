@@ -5,6 +5,24 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Extract a readable message from Errors, Supabase PostgrestError objects, or anything.
+// Avoids "[object Object]" being stored in scraping_jobs.error_message.
+function describeSupabaseError(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (err && typeof err === 'object') {
+    const e = err as Record<string, unknown>;
+    const parts = [
+      typeof e.message === 'string' ? e.message : null,
+      typeof e.details === 'string' ? e.details : null,
+      typeof e.hint === 'string' ? e.hint : null,
+      typeof e.code === 'string' ? `(code ${e.code})` : null,
+    ].filter(Boolean);
+    if (parts.length) return parts.join(' — ');
+    try { return JSON.stringify(err); } catch { /* ignore */ }
+  }
+  return String(err);
+}
+
 const PROVIDER_ID = 'london-health-company';
 const BASE_URL = 'https://www.londonhealthcompany.co.uk';
 
