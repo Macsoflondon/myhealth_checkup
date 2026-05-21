@@ -472,7 +472,7 @@ const WellnessPage = () => {
                 </h2>
               </div>
               <Link
-                to="/quiz"
+                to="/find-test"
                 className="inline-block whitespace-nowrap text-center"
                 style={{
                   background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
