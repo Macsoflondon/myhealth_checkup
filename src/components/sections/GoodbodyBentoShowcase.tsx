@@ -54,20 +54,22 @@ const GoodbodyBentoShowcase = () => {
     <div className="md:col-span-2 mt-6 mb-4">
       <div className="grid grid-cols-2 sm:grid-cols-6 auto-rows-auto sm:auto-rows-[112px] gap-3 sm:gap-4">
         {/* Top row: Advanced Well Man | Logo (center) | Premium Complete (right) */}
-        <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
+        {/* On mobile: logo spans full top, Advanced Well Man is pushed to the very end */}
+        <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2 order-last sm:order-none">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
-        <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-4 sm:p-8">
+        <div className="col-span-2 aspect-[2/1] sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-4 sm:p-8">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-24 sm:h-64 md:h-80 w-auto object-contain"
+            className="h-20 sm:h-64 md:h-80 w-auto object-contain"
           />
         </div>
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
           <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
+
 
         {/* Row: kit + 2 callouts + kit */}
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
