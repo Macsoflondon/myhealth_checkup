@@ -196,12 +196,102 @@ function extractPrice(html: string): { current: number | null; original: number 
   return { current, original };
 }
 
-// Known Randox placeholders that aren't real product imagery (e.g. UK-flag stand-ins).
+// Known Randox placeholders that aren't real product imagery (e.g. UK-flag stand-ins, logos, blanks).
 function isRandoxPlaceholderImage(url: string): boolean {
   const u = url.toLowerCase();
+  // UK flag stand-ins
   if (u.endsWith('/gb.png')) return true;
   if (u.includes('rdxhealthfrontdoor') && u.includes('/image/gb')) return true;
+  // Other known non-product assets
+  const blocked = [
+    '/placeholder', '/no-image', '/noimage', '/default', '/blank',
+    '/logo', '/favicon', '/spacer', '/pixel', '/transparent',
+    '/og-default', '/og-image', '/share-image', '/social-default',
+    '/flag', '/icon-', '/icons/',
+  ];
+  if (blocked.some(token => u.includes(token))) return true;
+  // 1x1 / tiny sized assets (common CDN sizing hints)
+  if (/[?&](w|width|h|height)=(1|2|3|4|5|10|16|24|32)\b/.test(u)) return true;
   return false;
+}
+
+// Canonicalize: decode entities, strip tracking, drop CDN resize query params,
+// upgrade to https. Returns null for clearly bogus inputs.
+function canonicalizeImageUrl(raw: string): string | null {
+  let url = raw.trim()
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"');
+
+  if (!url) return null;
+  if (url.startsWith('//')) url = 'https:' + url;
+  else if (url.startsWith('/')) url = 'https://randoxhealth.com' + url;
+  if (url.startsWith('http://')) url = 'https://' + url.slice(7);
+  if (!/^https:\/\//i.test(url)) return null;
+
+  try {
+    const u = new URL(url);
+    // Strip tracking + sizing params that produce duplicates
+    const drop = new Set([
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+      'gclid', 'fbclid', 'ref', 'source',
+      'w', 'h', 'width', 'height', 'quality', 'q', 'fit', 'auto', 'fm', 'dpr',
+    ]);
+    for (const key of Array.from(u.searchParams.keys())) {
+      if (drop.has(key.toLowerCase())) u.searchParams.delete(key);
+    }
+    u.hash = '';
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+
+// HEAD-check a URL to confirm it actually serves a real image (correct content-type
+// and meaningful payload size). Falls back to ranged GET if HEAD is unsupported.
+async function validateImageUrl(url: string): Promise<boolean> {
+  const MIN_BYTES = 2048; // < 2KB is almost always a spacer / placeholder
+  try {
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 8000);
+    let res = await fetch(url, {
+      method: 'HEAD',
+      redirect: 'follow',
+      signal: ctrl.signal,
+      headers: { 'User-Agent': 'Mozilla/5.0 myhealthcheckup-scraper' },
+    }).catch(() => null);
+
+    if (!res || res.status === 405 || res.status === 403) {
+      res = await fetch(url, {
+        method: 'GET',
+        redirect: 'follow',
+        signal: ctrl.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 myhealthcheckup-scraper',
+          'Range': 'bytes=0-4095',
+        },
+      }).catch(() => null);
+    }
+    clearTimeout(timeout);
+
+    if (!res || !res.ok) return false;
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    if (!ct.startsWith('image/')) return false;
+    const len = parseInt(res.headers.get('content-length') || '0', 10);
+    if (len && len < MIN_BYTES) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function resolveValidImageUrl(raw: string | null): Promise<string | null> {
+  if (!raw) return null;
+  const canonical = canonicalizeImageUrl(raw);
+  if (!canonical) return null;
+  if (isRandoxPlaceholderImage(canonical)) return null;
+  const ok = await validateImageUrl(canonical);
+  return ok ? canonical : null;
 }
 
 function extractImageUrl(html: string): string | null {
@@ -215,12 +305,10 @@ function extractImageUrl(html: string): string | null {
     const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
     let match: RegExpExecArray | null;
     while ((match = re.exec(html)) !== null) {
-      let url = match[1];
-      if (!url) continue;
-      if (url.startsWith('//')) url = 'https:' + url;
-      else if (url.startsWith('/')) url = 'https://randoxhealth.com' + url;
-      if (isRandoxPlaceholderImage(url)) continue;
-      return url;
+      const canonical = canonicalizeImageUrl(match[1]);
+      if (!canonical) continue;
+      if (isRandoxPlaceholderImage(canonical)) continue;
+      return canonical;
     }
   }
 
