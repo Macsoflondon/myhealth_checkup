@@ -1,56 +1,29 @@
-# Biomarker library: Ornament-style upgrade
+## Problem
 
-## Benchmark findings (Ornament Wiki / Health app)
+On mobile (≤640px) the "Provider of the Month" Goodbody bento grid in `src/components/sections/GoodbodyBentoShowcase.tsx` uses a rigid `auto-rows-[88px]` track. The two stacked text callouts ("Goodbody Clinics deliver…", "Clinical-grade…", "UKAS-accredited…", "make proactive health simple…") need ~150–200px each, but each `row-span-2` cell is only 176px tall total. The callout text overflows the cell and visually collides with the kit tiles and the "View Goodbody Profile" CTA below it (visible in the screenshot — the CTA button is sitting on top of the last callout text).
 
-Ornament's biomarker model — confirmed via their public API docs (`ornament.readme.io`) and Wiki taxonomy:
+Secondary issue: the mobile layout currently puts a full-width kit tile (Premium Complete, Female Hormone, Cholesterol) on its own row, which breaks the visual grouping and inflates section height needlessly.
 
-- **5,000+ biomarkers** organised by body system (Cardiovascular, Liver, Kidney, Thyroid, Anemia, Hormones, Vitamins & minerals, Bones & muscles, GI, Nervous system, etc.)
-- Each biomarker carries: **synonyms / aliases**, **biomaterial** (serum / whole blood / urine / saliva / stool), **supported units with conversion factors**, status thresholds (Low / Normal / Optimal / High / Critical), **age + sex banded reference ranges**, and **linked educational articles**.
-- Wiki entries follow a fixed shape: *What it is → Why it matters → What affects levels → Normal vs Optimal → Related conditions → When to retest*.
-- Distinction between **"normal" (lab reference)** and **"optimal" (preventative)** ranges is a signature Ornament feature.
+## Fix
 
-## Our current state
+Rework the grid responsively so the bento behaviour only applies from `sm:` upward; mobile becomes a clean 2-column flow with auto height.
 
-`biomarkers_library` (205 rows, 27 categories) has: code, name, category, description, clinical_significance, normal_range_male/female (free text), unit_of_measurement, interpretation_guide (jsonb), related_conditions[], lifestyle_factors[].
+In `GoodbodyBentoShowcase.tsx`:
 
-Gaps: no synonyms, no biomaterial, single free-text range only, no optimal band, no numeric thresholds, no alt units, no body-system taxonomy, no article links, ~25× smaller than Ornament.
+1. **Grid track** — change `grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[112px]` to `grid-cols-2 sm:grid-cols-6 auto-rows-auto sm:auto-rows-[112px]`.
+2. **Each cell** — drop the mobile-only `col-span-*` / `row-span-2`, keep the `sm:` spans intact. Example: `col-span-2 sm:col-span-2 row-span-2` → `sm:col-span-2 sm:row-span-2`.
+3. **Kit tiles** — give them a fixed mobile aspect (`aspect-square sm:aspect-auto sm:h-full`) so the image-led tiles stay square on mobile instead of stretching with text-card neighbours.
+4. **Logo cell** — shrink padding on mobile (`p-4 sm:p-8`) and cap logo height (`h-32 sm:h-64 md:h-80`) so it stops dominating the fold.
+5. **Callout pair wrapper** — keep `flex flex-col gap-3`, allow natural height on mobile (`sm:row-span-2`), so both callouts render in full without clipping.
+6. **CTA spacing** — bump top margin to `mt-10 sm:mt-8` so the "View Goodbody Profile" button never sits on top of the last callout when the grid reflows.
 
-## Proposed changes
+Desktop (sm and up) layout is unchanged — same 6-column bento, same row heights, same visual order.
 
-### 1. Schema (migration)
-Add to `biomarkers_library`:
-- `synonyms text[]` — aliases used by labs (e.g. "Hb", "Haemoglobin", "HGB")
-- `biomaterial text` — serum | plasma | whole_blood | urine | saliva | stool | other
-- `body_system text` — cardiovascular | hepatic | renal | endocrine | haematology | metabolic | nutritional | immunological | reproductive | musculoskeletal | gastrointestinal | neurological
-- `reference_ranges jsonb` — structured: `[{ sex, age_min, age_max, unit, normal_min, normal_max, optimal_min, optimal_max, critical_low, critical_high }]`
-- `alternate_units jsonb` — `[{ unit, conversion_factor }]` for mg/dL ↔ mmol/L style conversions
-- `what_it_measures text`, `why_it_matters text`, `what_affects_it text`, `when_to_retest text` — Ornament-style structured copy
-- `related_articles jsonb` — `[{ title, slug, url }]` linking to Health Resource Hub
-- `last_reviewed_at date`, `reviewed_by text` — clinical-review trail
+## Files
 
-Keep existing free-text `normal_range_male/female` for back-compat; deprecate in UI once `reference_ranges` is populated.
+- `src/components/sections/GoodbodyBentoShowcase.tsx` — responsive class adjustments only; no logic, copy, or link changes.
 
-### 2. Data seeding
-- Backfill the 205 existing biomarkers with `body_system`, `biomaterial`, `synonyms` (deterministic, no AI).
-- Expand the core set to ~400 biomarkers covering the gaps Ornament emphasises: full lipid sub-fractions (ApoA1/B, Lp(a)), advanced thyroid (rT3, TgAb, TPOAb), reproductive hormones (AMH, SHBG, DHEA-S), inflammation (hs-CRP, ESR, fibrinogen), micronutrients (B1/B2/B6/B9 active, zinc, selenium, copper, iodine), tumour markers (CA-125, CA 19-9, CA 15-3, PSA free/total, CEA, AFP), HbA1c + fasting insulin + HOMA-IR, urinary markers (ACR, microalbumin), stool (calprotectin, occult blood).
-- Use a one-shot seeding edge function pulling from a curated JSON (committed to repo), not from a third-party API — keeps us licence-clean.
+## Verification
 
-### 3. UI (BiomarkerDatabasePage)
-- Filter by **body system** + **biomaterial** alongside category.
-- Show each biomarker card with the Ornament Wiki structure: What it measures / Why it matters / What affects it / Normal vs Optimal / Related conditions / When to retest.
-- Render reference ranges as a table (sex × age band) with numeric Normal and Optimal bands side-by-side.
-- Add inline unit converter for biomarkers with `alternate_units`.
-- Cross-link related Health Resource Hub articles at the bottom of each card.
-
-### 4. Search
-- Index `synonyms` so users searching "HGB" land on Haemoglobin.
-
-## Out of scope (separate work)
-- User result digitisation (Ornament's lab-result OCR) — large project, raise separately.
-- Personalised "your reading vs optimal" widget — depends on user-uploaded results pipeline.
-
-## Confirm before I start
-Two decisions I need from you:
-
-1. **Scope:** schema + UI now, then a follow-up loop for the curated 400-biomarker seed JSON? Or do everything in one go (longer turnaround, larger diff)?
-2. **Optimal ranges:** comfortable publishing "optimal" bands distinct from lab "normal"? It is Ornament's strongest feature but edges toward clinical guidance — wants a disclaimer ("educational, not medical advice; based on published preventative-health literature").
+- Open `/` at 384px viewport, confirm: callouts no longer clipped, no overlap with CTA, kit tiles render as squares stacked 2-up.
+- Re-check at 768px and 1280px to confirm the desktop bento is visually identical to before.
