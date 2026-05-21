@@ -14,6 +14,7 @@ export interface ProviderTestCardData {
   biomarker_count?: number | null;
   is_popular?: boolean | null;
   url?: string | null;
+  image_url?: string | null;
   biomarkers_list?: any;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
@@ -21,6 +22,16 @@ export interface ProviderTestCardData {
   base_price?: number | null;
   collection_options?: any;
 }
+
+// Filter out known non-kit placeholders (e.g. Randox serves a UK flag when no product shot exists).
+const isUsableImage = (url?: string | null): url is string => {
+  if (!url) return false;
+  const u = url.toLowerCase();
+  if (u.endsWith("/gb.png")) return false;
+  if (u.includes("rdxhealthfrontdoor") && u.includes("/image/gb")) return false;
+  return /^https?:\/\//.test(u);
+};
+
 
 interface ProviderTestCardProps {
   test: ProviderTestCardData;
