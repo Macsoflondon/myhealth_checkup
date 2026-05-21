@@ -49,6 +49,21 @@ const ScrollFadeIn: React.FC<ScrollFadeInProps> = ({
     const node = elementRef.current;
     if (!node) return;
 
+    // Late-mount safety net (lazy-loaded sections, mobile): if the element
+    // is already at or above the viewport when we attach, IntersectionObserver
+    // may not fire an initial callback — reveal immediately.
+    const rect = node.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < vh && rect.bottom > 0) {
+      setIsVisible(true);
+      return;
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
