@@ -196,25 +196,37 @@ function extractPrice(html: string): { current: number | null; original: number 
   return { current, original };
 }
 
+// Known Randox placeholders that aren't real product imagery (e.g. UK-flag stand-ins).
+function isRandoxPlaceholderImage(url: string): boolean {
+  const u = url.toLowerCase();
+  if (u.endsWith('/gb.png')) return true;
+  if (u.includes('rdxhealthfrontdoor') && u.includes('/image/gb')) return true;
+  return false;
+}
+
 function extractImageUrl(html: string): string | null {
   const patterns = [
     /property="og:image"\s+content="([^"]+)"/i,
     /content="([^"]+)"\s+property="og:image"/i,
     /src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
   ];
-  
+
   for (const pattern of patterns) {
-    const match = html.match(pattern);
-    if (match && match[1]) {
+    const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    let match: RegExpExecArray | null;
+    while ((match = re.exec(html)) !== null) {
       let url = match[1];
+      if (!url) continue;
       if (url.startsWith('//')) url = 'https:' + url;
       else if (url.startsWith('/')) url = 'https://randoxhealth.com' + url;
+      if (isRandoxPlaceholderImage(url)) continue;
       return url;
     }
   }
-  
+
   return null;
 }
+
 
 function extractBiomarkersList(html: string): string[] | null {
   const biomarkers: string[] = [];
