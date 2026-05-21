@@ -585,7 +585,11 @@ Deno.serve(async (req) => {
         
         const description = extractDescription(html);
         const { current: price, original: originalPrice } = extractPrice(html);
-        const imageUrl = extractImageUrl(html);
+        const rawImageUrl = extractImageUrl(html);
+        const imageUrl = await resolveValidImageUrl(rawImageUrl);
+        if (rawImageUrl && !imageUrl) {
+          console.log(`Rejected unverified image for ${url}: ${rawImageUrl}`);
+        }
         const biomarkersList = extractBiomarkersList(html);
         const biomarkerCount = extractBiomarkerCount(html, biomarkersList);
         const category = determineCategory(title, description || '', url);
