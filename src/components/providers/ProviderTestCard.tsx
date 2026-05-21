@@ -86,6 +86,13 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
   const sampleBadges = getSampleBadges(test.sample_type, test.home_kit_available, test.clinic_visit_available);
   const turnaround = turnaroundTime || formatTurnaround(test.provider_id);
 
+  const hasImage = isUsableImage(test.image_url);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = hasImage && !imgFailed;
+  const showSkeleton = showImage && !imgLoaded;
+  const showFallback = !showImage;
+
   return (
     <article
       className="bg-white rounded-xl border-2 overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-all duration-200"
@@ -95,32 +102,49 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
       {/* Top accent bar */}
       <div className="h-1 w-full" style={{ backgroundColor: brandColor }} />
 
-      {/* Kit image / fallback */}
+      {/* Kit image / skeleton / branded fallback */}
       <div
-        className="relative w-full aspect-[4/3] bg-gray-50 flex items-center justify-center overflow-hidden"
+        className="relative w-full aspect-[4/3] flex items-center justify-center overflow-hidden"
         style={{ backgroundColor: `${brandColor}08` }}
       >
-        {isUsableImage(test.image_url) ? (
+        {showImage && (
           <img
             src={test.image_url!}
             alt={`${test.test_name} kit`}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-contain p-3"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = "none";
-              (e.currentTarget.nextElementSibling as HTMLElement | null)?.removeAttribute("hidden");
-            }}
+            className={`w-full h-full object-contain p-3 transition-opacity duration-300 ${
+              imgLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgFailed(true)}
           />
-        ) : null}
-        <div
-          hidden={isUsableImage(test.image_url)}
-          className="flex flex-col items-center justify-center gap-2"
-          style={{ color: brandColor }}
-        >
-          <TestTube2 className="w-10 h-10 opacity-70" />
-          <span className="text-xs font-medium opacity-70">{providerName}</span>
-        </div>
+        )}
+        {showSkeleton && (
+          <div
+            className="absolute inset-0 animate-pulse"
+            style={{
+              background: `linear-gradient(90deg, ${brandColor}08 0%, ${brandColor}1f 50%, ${brandColor}08 100%)`,
+            }}
+            aria-hidden="true"
+          />
+        )}
+        {showFallback && (
+          <div
+            className="flex flex-col items-center justify-center gap-2"
+            style={{ color: brandColor }}
+          >
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${brandColor}1f` }}
+            >
+              <TestTube2 className="w-8 h-8" />
+            </div>
+            <span className="text-xs font-semibold uppercase tracking-wider opacity-80">
+              {providerName}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="p-5 flex flex-col flex-1">
