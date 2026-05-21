@@ -31,6 +31,7 @@ export interface LiveTestData {
   is_active: boolean;
   image_url: string | null;
   url: string | null;
+  biomarker_count?: number | null;
   created_at: string;
   updated_at: string;
 }
