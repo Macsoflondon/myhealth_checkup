@@ -77,7 +77,7 @@ export function useBiomarkersLibrary(): UseBiomarkersLibraryReturn {
           .order("biomarker_name", { ascending: true });
 
         if (fetchError) throw fetchError;
-        setBiomarkers(data || []);
+        setBiomarkers((data || []) as unknown as BiomarkerDefinition[]);
       } catch (err) {
         console.error("Failed to fetch biomarkers library:", err);
         setError(err instanceof Error ? err.message : "Failed to load biomarkers");
