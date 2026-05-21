@@ -294,7 +294,80 @@ async function resolveValidImageUrl(raw: string | null): Promise<string | null> 
   return ok ? canonical : null;
 }
 
-function extractImageUrl(html: string): string | null {
+// Randox stores real product kit imagery on a single Azure blob host. Home test kits
+// live under /HTK/, clinic/services products live under /Services/. We harvest every
+// candidate then pick the one whose filename best matches the test's URL slug + title.
+const RANDOX_IMG_HOST = 'stesrhplatforma071.blob.core.windows.net';
+
+function slugTokens(input: string): string[] {
+  return input
+    .toLowerCase()
+    .replace(/\.[a-z0-9]+$/i, '')          // strip extension
+    .replace(/[_\-]+/g, ' ')               // separators → space
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .split(/\s+/)
+    .filter(t => t && !['the','a','an','and','of','for','test','kit','home','clinic','check','blood','health','-f','-m','f','m','imgs','female','male'].includes(t));
+}
+
+function harvestRandoxBlobImages(html: string): string[] {
+  const re = new RegExp(`https?://${RANDOX_IMG_HOST.replace(/\./g, '\\.')}/[^"')\\s]+\\.(?:webp|jpg|jpeg|png)`, 'gi');
+  const seen = new Set<string>();
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) {
+    const canonical = canonicalizeImageUrl(m[0]);
+    if (canonical) seen.add(canonical);
+  }
+  return Array.from(seen);
+}
+
+function pickBestKitImage(html: string, testUrl: string, title: string): string | null {
+  const candidates = harvestRandoxBlobImages(html);
+  if (!candidates.length) return null;
+
+  const isHome = testUrl.includes('/product/home/');
+  const isClinic = testUrl.includes('/product/clinic/');
+
+  // Prefer the matching catalogue tree
+  const tierFilter = (url: string) => {
+    if (isHome && url.includes('/HTK/')) return 2;
+    if (isClinic && url.includes('/Services/')) return 2;
+    if (url.includes('/HTK/') || url.includes('/Services/')) return 1;
+    return 0;
+  };
+
+  // Build search tokens from the URL slug and the test title
+  const slugFromUrl = testUrl.split('/').filter(Boolean).pop() || '';
+  const tokens = new Set<string>([...slugTokens(slugFromUrl), ...slugTokens(title)]);
+
+  let best: { url: string; score: number } | null = null;
+  for (const url of candidates) {
+    const filename = decodeURIComponent(url.split('/').pop() || '');
+    const fileTokens = slugTokens(filename);
+    let overlap = 0;
+    for (const t of fileTokens) if (tokens.has(t)) overlap++;
+
+    // Exact slug match in filename is a strong signal
+    const baseSlug = slugFromUrl.replace(/-test$|-home-test$|-home-test-kit$|-kit$/i, '');
+    const fileBase = filename.replace(/\.(webp|jpg|jpeg|png)$/i, '').toLowerCase();
+    const exactBonus = baseSlug && (fileBase === baseSlug.toLowerCase() || fileBase.replace(/[-_]/g, '') === baseSlug.replace(/[-_]/g, '').toLowerCase()) ? 5 : 0;
+
+    const score = tierFilter(url) * 10 + overlap * 2 + exactBonus;
+    if (!best || score > best.score) best = { url, score };
+  }
+
+  // Require at least minimal relevance — tier match OR token overlap
+  if (!best || best.score < 2) return null;
+  return best.url;
+}
+
+function extractImageUrl(html: string, testUrl?: string, title?: string): string | null {
+  // 1. Prefer best-matching Randox blob kit image
+  if (testUrl) {
+    const kit = pickBestKitImage(html, testUrl, title || '');
+    if (kit) return kit;
+  }
+
+  // 2. Fall back to og:image / generic <img> scan
   const patterns = [
     /property="og:image"\s+content="([^"]+)"/i,
     /content="([^"]+)"\s+property="og:image"/i,
