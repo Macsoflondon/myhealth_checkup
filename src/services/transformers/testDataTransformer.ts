@@ -11,7 +11,7 @@ export class TestDataTransformer {
   static transformSingle(test: LiveTestData): CompareTestData {
     const biomarkers = this.extractBioMarkers(test.description || '');
     // Prefer the authoritative DB value; only estimate when missing/zero
-    const dbCount = (test as any).biomarker_count;
+    const dbCount = test.biomarker_count;
     const biomarkerCount = (typeof dbCount === 'number' && dbCount > 0)
       ? dbCount
       : this.countBiomarkers(test.description || '');
