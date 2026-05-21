@@ -14,6 +14,7 @@ export interface ProviderTestCardData {
   biomarker_count?: number | null;
   is_popular?: boolean | null;
   url?: string | null;
+  image_url?: string | null;
   biomarkers_list?: any;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
@@ -21,6 +22,16 @@ export interface ProviderTestCardData {
   base_price?: number | null;
   collection_options?: any;
 }
+
+// Filter out known non-kit placeholders (e.g. Randox serves a UK flag when no product shot exists).
+const isUsableImage = (url?: string | null): url is string => {
+  if (!url) return false;
+  const u = url.toLowerCase();
+  if (u.endsWith("/gb.png")) return false;
+  if (u.includes("rdxhealthfrontdoor") && u.includes("/image/gb")) return false;
+  return /^https?:\/\//.test(u);
+};
+
 
 interface ProviderTestCardProps {
   test: ProviderTestCardData;
@@ -82,7 +93,36 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
       {/* Top accent bar */}
       <div className="h-1 w-full" style={{ backgroundColor: brandColor }} />
 
+      {/* Kit image / fallback */}
+      <div
+        className="relative w-full aspect-[4/3] bg-gray-50 flex items-center justify-center overflow-hidden"
+        style={{ backgroundColor: `${brandColor}08` }}
+      >
+        {isUsableImage(test.image_url) ? (
+          <img
+            src={test.image_url!}
+            alt={`${test.test_name} kit`}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-contain p-3"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+              (e.currentTarget.nextElementSibling as HTMLElement | null)?.removeAttribute("hidden");
+            }}
+          />
+        ) : null}
+        <div
+          hidden={isUsableImage(test.image_url)}
+          className="flex flex-col items-center justify-center gap-2"
+          style={{ color: brandColor }}
+        >
+          <TestTube2 className="w-10 h-10 opacity-70" />
+          <span className="text-xs font-medium opacity-70">{providerName}</span>
+        </div>
+      </div>
+
       <div className="p-5 flex flex-col flex-1">
+
         {/* Header: Provider badge + Popular tag */}
         <div className="flex items-start justify-between mb-3">
           {/* Provider badge */}
