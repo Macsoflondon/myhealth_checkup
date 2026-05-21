@@ -1,6 +1,30 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+export interface ReferenceRange {
+  sex: "male" | "female" | "all";
+  age_min: number;
+  age_max: number;
+  unit: string;
+  normal_min: number | null;
+  normal_max: number | null;
+  optimal_min: number | null;
+  optimal_max: number | null;
+  critical_low: number | null;
+  critical_high: number | null;
+}
+
+export interface AlternateUnit {
+  unit: string;
+  conversion_factor: number;
+}
+
+export interface RelatedArticle {
+  title: string;
+  slug?: string;
+  url?: string;
+}
+
 export interface BiomarkerDefinition {
   id: string;
   biomarker_name: string;
@@ -14,6 +38,18 @@ export interface BiomarkerDefinition {
   interpretation_guide: any;
   lifestyle_factors: string[] | null;
   related_conditions: string[] | null;
+  synonyms: string[] | null;
+  biomaterial: string | null;
+  body_system: string | null;
+  reference_ranges: ReferenceRange[] | null;
+  alternate_units: AlternateUnit[] | null;
+  what_it_measures: string | null;
+  why_it_matters: string | null;
+  what_affects_it: string | null;
+  when_to_retest: string | null;
+  related_articles: RelatedArticle[] | null;
+  last_reviewed_at: string | null;
+  reviewed_by: string | null;
 }
 
 interface UseBiomarkersLibraryReturn {
@@ -63,13 +99,14 @@ export function useBiomarkersLibrary(): UseBiomarkersLibraryReturn {
 
   const searchBiomarkers = useCallback((query: string): BiomarkerDefinition[] => {
     if (!query.trim()) return biomarkers.slice(0, 20);
-    
+
     const normalizedQuery = query.toLowerCase().trim();
     return biomarkers.filter(b =>
       b.biomarker_name.toLowerCase().includes(normalizedQuery) ||
       b.biomarker_code.toLowerCase().includes(normalizedQuery) ||
       b.description.toLowerCase().includes(normalizedQuery) ||
-      b.category.toLowerCase().includes(normalizedQuery)
+      b.category.toLowerCase().includes(normalizedQuery) ||
+      (b.synonyms ?? []).some(s => s.toLowerCase().includes(normalizedQuery))
     ).slice(0, 20);
   }, [biomarkers]);
 
