@@ -658,7 +658,7 @@ Deno.serve(async (req) => {
         
         const description = extractDescription(html);
         const { current: price, original: originalPrice } = extractPrice(html);
-        const rawImageUrl = extractImageUrl(html);
+        const rawImageUrl = extractImageUrl(html, url, title);
         const imageUrl = await resolveValidImageUrl(rawImageUrl);
         if (rawImageUrl && !imageUrl) {
           console.log(`Rejected unverified image for ${url}: ${rawImageUrl}`);
