@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Clock, TestTube2, Star, ExternalLink, ArrowRight } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { Button } from "@/components/ui/button";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+
 
 export interface ProviderTestCardData {
   id: string;
