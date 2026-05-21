@@ -63,7 +63,7 @@ const GoodbodyBentoShowcase = () => {
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-20 sm:h-64 md:h-80 w-auto object-contain"
+            className="max-h-full max-w-full object-contain"
           />
         </div>
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
