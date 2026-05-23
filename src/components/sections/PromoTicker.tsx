@@ -20,9 +20,8 @@ const PromoTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-      <div className="font-body font-normal text-[11px] xs:text-xs sm:text-lg md:text-xl leading-none text-[#08122b]">
+      <div className="font-body sm:text-lg md:text-xl leading-none text-[#08122b] font-semibold text-xl">
         <div
           className="relative overflow-hidden"
           style={{
@@ -45,7 +44,7 @@ const PromoTicker = () => {
                 >
                   {p.provider}:
                 </span>
-                <span className="font-body font-normal text-[11px] xs:text-xs sm:text-lg md:text-xl leading-none text-[#08122b]">
+                <span className="font-body sm:text-lg md:text-xl leading-none text-[#08122b] font-semibold text-xl">
                   {p.text}
                 </span>
                 <span
@@ -60,7 +59,7 @@ const PromoTicker = () => {
         </div>
       </div>
 
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      
     </section>
   );
 };
