@@ -166,8 +166,7 @@ const Header = ({ className }: HeaderProps) => {
             <NavigationItems className="flex items-center gap-0 flex-nowrap justify-center" />
           </div>
         </div>
-        {/* Bottom gradient divider for toolbar */}
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        {/* Bottom gradient divider removed */}
       </div>
     </ErrorBoundary>
   );
