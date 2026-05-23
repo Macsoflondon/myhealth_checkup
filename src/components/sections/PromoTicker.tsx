@@ -45,7 +45,7 @@ const PromoTicker = () => {
                 >
                   {p.provider}:
                 </span>
-                <span className="text-white font-body font-normal text-[11px] xs:text-xs sm:text-lg md:text-xl leading-none">
+                <span className="font-body font-normal text-[11px] xs:text-xs sm:text-lg md:text-xl leading-none text-[#08122b]">
                   {p.text}
                 </span>
                 <span
