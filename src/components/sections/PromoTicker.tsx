@@ -37,7 +37,7 @@ const PromoTicker = () => {
             style={{ willChange: "transform", backfaceVisibility: "hidden" }}
           >
             {items.map((p, i) => (
-              <span key={i} className="flex items-center shrink-0 gap-1.5 sm:gap-2.5 px-2 sm:px-5 bg-white">
+              <span key={i} className="flex items-center shrink-0 gap-1.5 sm:gap-2.5 px-2 sm:px-5 bg-[#08122b]">
                 <span
                   className="font-heading text-[11px] xs:text-xs sm:text-lg md:text-xl tracking-wide uppercase leading-none font-extrabold"
                   style={{ color: p.color }}
