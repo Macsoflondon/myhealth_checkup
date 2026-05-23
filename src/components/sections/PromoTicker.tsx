@@ -21,7 +21,7 @@ const PromoTicker = () => {
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
 
-      <div className="font-body sm:text-lg md:text-xl leading-none text-[#08122b] font-semibold text-xl">
+      <div className="font-body sm:text-lg md:text-xl leading-none font-semibold text-xl text-white bg-[#08122b]">
         <div
           className="relative overflow-hidden"
           style={{
@@ -44,7 +44,7 @@ const PromoTicker = () => {
                 >
                   {p.provider}:
                 </span>
-                <span className="font-body sm:text-lg md:text-xl leading-none text-[#08122b] font-semibold text-xl">
+                <span className="font-body sm:text-lg md:text-xl leading-none font-semibold text-xl text-white bg-[#08122b]">
                   {p.text}
                 </span>
                 <span
