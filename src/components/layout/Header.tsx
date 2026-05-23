@@ -87,8 +87,7 @@ const Header = ({ className }: HeaderProps) => {
                 </nav>
               </div>
             </div>
-            {/* Bottom gradient divider */}
-            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+            {/* Bottom gradient divider removed */}
 
             {/* Mobile Navigation Drawer (lazy — only loads when first opened) */}
             {isMenuOpen && (
@@ -152,8 +151,7 @@ const Header = ({ className }: HeaderProps) => {
         className="sticky z-40"
         style={{ top: tickerHeight }}
       >
-        {/* Top gradient divider for toolbar */}
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        {/* Top gradient divider removed */}
         <div
           className={cn(
             toolbarClasses,
