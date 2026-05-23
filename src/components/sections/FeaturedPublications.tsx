@@ -53,8 +53,7 @@ export const FeaturedPublications = () => {
     <section className="bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
 
-      {/* Decorative gradient line */}
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      {/* Decorative gradient line removed */}
       
       <div className="py-10 md:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
