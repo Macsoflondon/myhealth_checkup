@@ -118,37 +118,39 @@ const GoodbodyBentoShowcase = () => {
 
 
 
-        {/* Row: kit + 2 callouts + kit */}
+        {/* Row 2: kit | unified callout (spans 2 rows) | kit */}
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
           <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
-        <div className="col-span-2 sm:col-span-2 sm:row-span-2 flex flex-col gap-3 sm:gap-4">
-          <CalloutCard>
-            <strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable.
-          </CalloutCard>
-          <CalloutCard>
-            Clinical-grade accuracy meets high-street convenience, with over <strong>60 blood and wellness tests</strong> to choose from.
-          </CalloutCard>
+        <div className="col-span-2 sm:col-span-2 sm:row-span-4 rounded-2xl bg-white shadow-md overflow-hidden flex flex-col">
+          <div className="h-0.5 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink" />
+          <div className="flex-1 flex flex-col justify-between divide-y divide-[#081129]/10 px-5 sm:px-6 py-4 sm:py-5 text-[#081129] font-sans text-sm sm:text-base leading-relaxed">
+            <p className="py-3 sm:py-4">
+              <strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable.
+            </p>
+            <p className="py-3 sm:py-4">
+              Clinical-grade accuracy meets high-street convenience, with over <strong>60 blood and wellness tests</strong> to choose from.
+            </p>
+            <p className="py-3 sm:py-4">
+              Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP for results you can trust.
+            </p>
+            <p className="py-3 sm:py-4">
+              <strong>Goodbody Clinics</strong> make proactive health simple, reliable, and within reach.
+            </p>
+          </div>
         </div>
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
           <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
 
-        {/* Row: kit + 2 callouts + cholesterol */}
+        {/* Row 3: kit | (callout continues) | kit */}
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
           <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
-        </div>
-        <div className="col-span-2 sm:col-span-2 sm:row-span-2 flex flex-col gap-3 sm:gap-4">
-          <CalloutCard>
-            Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP for results you can trust.
-          </CalloutCard>
-          <CalloutCard>
-            <strong>Goodbody Clinics</strong> make proactive health simple, reliable, and within reach.
-          </CalloutCard>
         </div>
         <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
           <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
         </div>
+
 
       </div>
 
