@@ -1,33 +1,22 @@
 ## Goal
-Add a small sticky promo carousel that floats at the top of the "Premium Complete" test kit tile inside the Goodbody Featured Partner of the Month bento.
+Merge the two stacked centre callout columns in the Goodbody Featured Partner bento into one unified panel with evenly-spaced copy.
 
-## Scope
-Single file: `src/components/sections/GoodbodyBentoShowcase.tsx`. Frontend/presentation only — no data, route, or business logic changes.
+## Current state
+`GoodbodyBentoShowcase.tsx` renders two separate centre columns (rows 2 and 3), each containing two `CalloutCard`s — four cards total, visually split.
 
-## Implementation
-
-1. **Wrap the Premium Complete tile** (currently lines 69–71) in a `relative` container so the floating promo can absolutely position over it.
-
-2. **Build a `PremiumPromoCarousel` sub-component** rendered inside that wrapper, positioned `absolute -top-2 left-2 right-2 z-10` so it visually floats above the tile while scrolling with the section. ("Sticky" here = visually pinned to the tile's top edge — true CSS `position: sticky` doesn't apply inside a grid cell of this size.)
-   - Rounded pill, gradient background `from-brand-pink to-brand-turquoise`, white text, small shadow, `text-[10px] sm:text-xs` font-semibold uppercase tracking-wide.
-   - Reuse the existing `useMarqueeTicker` hook (`@/hooks/useMarqueeTicker`) for the scrolling messages, with `overflow-hidden` and mask edges matching the PromoTicker pattern.
-   - Messages (rotated):
-     - `20% OFF — code GB20`
-     - `Free GP review included`
-     - `UKAS-accredited results`
-     - `Limited time offer`
-   - Add a small ✦ or • separator between items, coloured white/80.
-
-3. **Tile padding adjustment**: add `pt-6` (or equivalent) to the Premium Complete `KitTile` only, so the floating pill doesn't overlap the product image. Easiest path: pass an optional `extraClassName` prop to `KitTile`, or wrap the tile in a div with `pt-3` so the absolute pill clears the image.
-
-4. **Accessibility**: wrap the marquee in a region with `aria-label="Promotional offer for Premium Complete blood test"`. Respect `prefers-reduced-motion` — the shared `useMarqueeTicker` already handles pause on offscreen/tab-hide; add a CSS fallback that stops translation when reduced-motion is set.
-
-5. **Responsive**: on mobile (`<sm`) the pill sits flush across the tile; on `sm+` it remains the same offset. No layout shift to other bento cells.
-
-## Out of scope
-- No changes to PromoTicker, Header, or any other section.
-- No new routes, no analytics events beyond what already exists on the tile click.
-- No backend / promo-code validation logic.
+## Change
+- Replace both centre `<div className="col-span-2 sm:col-span-2 sm:row-span-2 flex flex-col gap-3 sm:gap-4">…</div>` blocks with a **single** centre block that spans `sm:row-span-4` (covering both kit-tile rows on the sides).
+- Inside it, render one rounded white card with all four messages, separated by thin dividers (`divide-y divide-[#081129]/10`) and `justify-between` so spacing is even regardless of card height.
+- Keep all four existing copy lines verbatim:
+  1. Goodbody Clinics deliver high-quality private health checks that are accessible and affordable.
+  2. Clinical-grade accuracy meets high-street convenience, with over 60 blood and wellness tests to choose from.
+  3. Every test is processed in UKAS-accredited laboratories and reviewed by a GP for results you can trust.
+  4. Goodbody Clinics make proactive health simple, reliable, and within reach.
+- Mobile: stack as a single full-width card between the kit tiles (place it after the first side-tile pair, before the next row of side kits).
+- Typography: keep existing `text-[#081129] font-sans text-sm sm:text-base leading-relaxed`. Add subtle top accent — a 2px gradient bar (`from-brand-turquoise to-brand-pink`) inside the card to tie back to brand.
 
 ## Files touched
 - `src/components/sections/GoodbodyBentoShowcase.tsx` (edit only)
+
+## Out of scope
+Side kit tiles, logo tile, CTA, promo carousel — unchanged.
