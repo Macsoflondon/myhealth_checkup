@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
-import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
+import kitTurquoise from "/lovable-uploads/d08361a9-eb24-4de7-8982-f4f1dc715966.png";
 import kitPink from "@/assets/kits/kit-pink.jpg";
 import kitNavy from "@/assets/kits/kit-navy.jpg";
-import kitWhite from "@/assets/kits/kit-white.jpg";
-import kitBlack from "@/assets/kits/kit-black.jpg";
+import kitWhite from "/lovable-uploads/79ccc154-0fc1-4714-84e0-a7f0a05ca95e.png";
+import kitBlack from "/lovable-uploads/7b46e3e8-b059-4983-ac65-c6fa21f00e9c.png";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
 import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
@@ -159,7 +159,7 @@ const DreamHealthShowcase = () => {
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = kitImages[i % kitImages.length];
                       }}
-                      className="w-full h-full object-contain p-4"
+                      className="w-full h-full p-4 object-fill"
                     />
                   </div>
                 ))}
@@ -173,7 +173,7 @@ const DreamHealthShowcase = () => {
           ​Our Providers Most Popular Tests
         </h2>
         <p className="mt-4 text-base sm:text-lg font-medium max-w-2xl mx-auto text-[#08122b]">
-          myhealth checkup is the super simple way to find a test, match a provider, and get it done.
+          The super simple way to find a test, match a provider, and get it done.
         </p>
 
         <div className="mt-7 flex justify-center">
@@ -207,7 +207,7 @@ const DreamHealthShowcase = () => {
                       onError={(e) => {
                         (e.currentTarget as HTMLImageElement).src = kitImages[i % kitImages.length];
                       }}
-                      className="w-full h-full object-contain p-4"
+                      className="w-full h-full p-4 object-fill"
                     />
                   </div>
                   <div className="p-5 flex flex-col flex-1 rounded-lg shadow-xl">
