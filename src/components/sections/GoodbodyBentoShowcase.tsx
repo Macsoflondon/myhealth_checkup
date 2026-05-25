@@ -123,19 +123,19 @@ const GoodbodyBentoShowcase = () => {
           <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
         <div className="col-span-2 sm:col-span-2 sm:row-span-4 rounded-2xl bg-white shadow-md overflow-hidden flex flex-col">
-          <div className="h-0.5 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink" />
-          <div className="flex-1 flex flex-col justify-between divide-y divide-[#081129]/10 px-5 sm:px-6 py-4 sm:py-5 text-[#081129] font-sans text-sm sm:text-base leading-relaxed">
-            <p className="py-3 sm:py-4">
-              <strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable.
+          <div className="h-0.5 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink shrink-0" />
+          <div className="flex-1 grid grid-rows-4 divide-y divide-[#081129]/10 px-4 sm:px-6 text-[#081129] font-sans text-[13px] sm:text-base leading-snug sm:leading-relaxed">
+            <p className="flex items-center py-2.5 sm:py-3">
+              <span><strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable.</span>
             </p>
-            <p className="py-3 sm:py-4">
-              Clinical-grade accuracy meets high-street convenience, with over <strong>60 blood and wellness tests</strong> to choose from.
+            <p className="flex items-center py-2.5 sm:py-3">
+              <span>Clinical-grade accuracy meets high-street convenience, with over <strong>60 blood and wellness tests</strong> to choose from.</span>
             </p>
-            <p className="py-3 sm:py-4">
-              Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP for results you can trust.
+            <p className="flex items-center py-2.5 sm:py-3">
+              <span>Every test is processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP for results you can trust.</span>
             </p>
-            <p className="py-3 sm:py-4">
-              <strong>Goodbody Clinics</strong> make proactive health simple, reliable, and within reach.
+            <p className="flex items-center py-2.5 sm:py-3">
+              <span><strong>Goodbody Clinics</strong> make proactive health simple, reliable, and within reach.</span>
             </p>
           </div>
         </div>
