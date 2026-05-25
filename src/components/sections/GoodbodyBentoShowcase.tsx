@@ -1,5 +1,50 @@
 import { Link } from "react-router-dom";
 import { analytics } from "@/lib/analytics";
+import { useMarqueeTicker } from "@/hooks/useMarqueeTicker";
+
+const PROMO_MESSAGES = [
+  "20% OFF — code GB20",
+  "Free GP review included",
+  "UKAS-accredited results",
+  "Limited time offer",
+];
+
+const PromoCarousel = () => {
+  const trackRef = useMarqueeTicker(PROMO_MESSAGES.length);
+  const items = Array.from({ length: 6 }, () => PROMO_MESSAGES).flat();
+  return (
+    <div
+      className="absolute top-2 left-2 right-2 z-10 rounded-full shadow-lg overflow-hidden bg-gradient-to-r from-brand-pink to-brand-turquoise"
+      role="region"
+      aria-label="Promotional offer for Premium Complete blood test"
+    >
+      <div
+        className="relative overflow-hidden py-1"
+        style={{
+          maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        }}
+      >
+        <div
+          ref={trackRef}
+          className="flex whitespace-nowrap"
+          style={{ willChange: "transform", backfaceVisibility: "hidden" }}
+        >
+          {items.map((msg, i) => (
+            <span
+              key={i}
+              className="flex items-center shrink-0 px-3 text-white font-heading font-bold uppercase tracking-wide text-[9px] sm:text-[10px]"
+            >
+              {msg}
+              <span className="pl-3 text-white/70" aria-hidden="true">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
