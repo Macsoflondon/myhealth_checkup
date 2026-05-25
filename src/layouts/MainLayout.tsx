@@ -35,6 +35,7 @@ export const MainLayout = ({
       >
         Skip to main content
       </a>
+      <FloatingPromoCarousel />
       {!hideHeader && <Header />}
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         <SiteBreadcrumb />
