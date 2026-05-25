@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
+import FloatingPromoCarousel from "@/components/layout/FloatingPromoCarousel";
 
 interface MainLayoutProps {
   children: ReactNode;
