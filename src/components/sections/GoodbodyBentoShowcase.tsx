@@ -49,13 +49,13 @@ const PromoCarousel = () => {
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
 const KIT = {
-  advancedWellMan: "/images/tests/advanced-well-man.webp",
+  advancedWellMan: "/lovable-uploads/997b48c9-b561-4b95-ae47-7bd65c99eb76.png",
   premiumComplete: "/images/tests/premium-complete-blood-test.webp",
   earlyCancer: "/images/tests/early-cancer-screening.webp",
   femaleHormone: "/images/tests/female-hormone-fertility.webp",
-  thyroid: "/images/tests/thyroid-blood-test.webp",
+  thyroid: "/lovable-uploads/2facd156-1880-424c-9a28-cbe38e97323a.png",
   vitamins: "/images/tests/vitamins-blood-test.webp",
-  cholesterol: "/images/tests/cholesterol-blood-test.webp",
+  cholesterol: "/lovable-uploads/b0deab85-81fb-4362-8a3c-fbcba80f3e33.png",
   sportsFitness: "/images/tests/sports-fitness-blood-test.webp",
 };
 
