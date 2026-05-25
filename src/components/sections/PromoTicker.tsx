@@ -9,7 +9,7 @@ import { useMarqueeTicker } from "@/hooks/useMarqueeTicker";
 const promos = [
   { provider: "GoodBody", text: "5% off on all popular blood tests", color: "#0bb77e" },
   { provider: "MEDICHECKS", text: "20% off all tests with code APRIL20", color: "#e70d68" },
-  { provider: "Lola Health", text: "£20 off with code Mar20", color: "#fa757e" },
+  { provider: "Lola Health", text: "£20 off - use code MAY20", color: "#fa757e" },
 ];
 
 const SETS = 8;
