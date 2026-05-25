@@ -1,49 +1,33 @@
-## Why Randox kit images aren't showing
+## Goal
+Add a small sticky promo carousel that floats at the top of the "Premium Complete" test kit tile inside the Goodbody Featured Partner of the Month bento.
 
-Two compounding issues:
+## Scope
+Single file: `src/components/sections/GoodbodyBentoShowcase.tsx`. Frontend/presentation only — no data, route, or business logic changes.
 
-**1. The card component doesn't render images at all.** `src/components/providers/ProviderTestCard.tsx` (used by every provider catalog page, including `/providers/randox`) has no `<img>` element. The `image_url` field isn't even part of `ProviderTestCardData` — so even when the DB has a perfectly good kit URL, the card renders text-only. This affects all providers using the generic catalog, but it's most visible on Randox because Randox's catalog has 66 cards in a grid where the empty image slot is obvious.
+## Implementation
 
-**2. 44 of 66 Randox `image_url` values are a UK-flag placeholder, not a kit image.** From the DB:
+1. **Wrap the Premium Complete tile** (currently lines 69–71) in a `relative` container so the floating promo can absolutely position over it.
 
-```text
-44 × https://rdxhealthfrontdoor-...azurefd.net/image/gb.png   ← UK flag, not a kit
-21 × https://stesrhplatforma071.blob.core.windows.net/...     ← real kit photo
- 1 × other
-```
+2. **Build a `PremiumPromoCarousel` sub-component** rendered inside that wrapper, positioned `absolute -top-2 left-2 right-2 z-10` so it visually floats above the tile while scrolling with the section. ("Sticky" here = visually pinned to the tile's top edge — true CSS `position: sticky` doesn't apply inside a grid cell of this size.)
+   - Rounded pill, gradient background `from-brand-pink to-brand-turquoise`, white text, small shadow, `text-[10px] sm:text-xs` font-semibold uppercase tracking-wide.
+   - Reuse the existing `useMarqueeTicker` hook (`@/hooks/useMarqueeTicker`) for the scrolling messages, with `overflow-hidden` and mask edges matching the PromoTicker pattern.
+   - Messages (rotated):
+     - `20% OFF — code GB20`
+     - `Free GP review included`
+     - `UKAS-accredited results`
+     - `Limited time offer`
+   - Add a small ✦ or • separator between items, coloured white/80.
 
-That's the placeholder Randox themselves serve on their own site when no product shot exists. The scraper just stored whatever was on the page. So even after fixing the rendering, 2/3 of cards would still show a flag.
+3. **Tile padding adjustment**: add `pt-6` (or equivalent) to the Premium Complete `KitTile` only, so the floating pill doesn't overlap the product image. Easiest path: pass an optional `extraClassName` prop to `KitTile`, or wrap the tile in a div with `pt-3` so the absolute pill clears the image.
 
-## Fix
+4. **Accessibility**: wrap the marquee in a region with `aria-label="Promotional offer for Premium Complete blood test"`. Respect `prefers-reduced-motion` — the shared `useMarqueeTicker` already handles pause on offscreen/tab-hide; add a CSS fallback that stops translation when reduced-motion is set.
 
-### A. Render images on the card (all providers benefit)
+5. **Responsive**: on mobile (`<sm`) the pill sits flush across the tile; on `sm+` it remains the same offset. No layout shift to other bento cells.
 
-In `src/components/providers/ProviderTestCard.tsx`:
+## Out of scope
+- No changes to PromoTicker, Header, or any other section.
+- No new routes, no analytics events beyond what already exists on the tile click.
+- No backend / promo-code validation logic.
 
-1. Add `image_url?: string | null` to `ProviderTestCardData`.
-2. Add a 1:1 image header above the existing content block. When a usable image exists, render `<img loading="lazy" decoding="async">` on a `bg-gray-50` square. When missing or filtered, render a centered `TestTube2` icon with the provider brand-color tint as a clean fallback (matches existing card style).
-3. Add a `isUsableImage(url)` helper that returns false for empty/null and for known Randox placeholders (`/image/gb.png`, optionally any URL ending `/gb.png` from the rdxhealthfrontdoor host) so the fallback icon shows instead of a misleading flag.
-
-### B. Pass `image_url` through the query
-
-In `src/pages/ProviderTestsCatalogPage.tsx` (and `ProviderTestCatalogPage.tsx` if it uses the same card) — make sure the Supabase `select(...)` includes `image_url` so the field reaches the card.
-
-### C. Refresh Randox imagery (optional follow-up, no code change)
-
-The scraper at `supabase/functions/randox-scraper/index.ts` should skip the `gb.png` placeholder and either (a) leave `image_url` null when no real kit photo is found on the source page, or (b) attempt to derive a category-specific fallback. This is a one-line guard and a re-run, but I'll leave it out of this plan unless you want it included — the rendering fix alone resolves the "no kit showing" complaint by replacing flags with a clean branded fallback.
-
-## Files
-
-- `src/components/providers/ProviderTestCard.tsx` — add image header, placeholder filter, fallback icon
-- `src/pages/ProviderTestsCatalogPage.tsx` — include `image_url` in the query select
-- `src/pages/ProviderTestCatalogPage.tsx` — same, if it uses the same card
-
-## Verification
-
-- Open `/providers/randox` — every card has either a real kit photo or a clean branded TestTube icon, no UK flags.
-- Open `/providers/medichecks`, `/providers/goodbody-clinic`, `/providers/thriva` — confirm kit images now render and existing layout still flows.
-- Mobile 384px — image area stays square, card height consistent across the grid.
-
-## Question
-
-Do you want me to also patch the Randox scraper to stop storing the `gb.png` placeholder going forward, or just ship the rendering fix?
+## Files touched
+- `src/components/sections/GoodbodyBentoShowcase.tsx` (edit only)
