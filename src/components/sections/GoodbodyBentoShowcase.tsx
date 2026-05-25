@@ -111,9 +111,11 @@ const GoodbodyBentoShowcase = () => {
             className="max-h-full max-w-full object-contain"
           />
         </div>
-        <div className="aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
+        <div className="relative aspect-square sm:aspect-auto sm:h-full sm:col-span-2 sm:row-span-2">
+          <PromoCarousel />
           <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
+
 
 
         {/* Row: kit + 2 callouts + kit */}
