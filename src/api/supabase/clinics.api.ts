@@ -19,7 +19,7 @@ class ClinicsApi {
    */
   async getAllClinics(): Promise<ApiResponse<Clinic[]>> {
     try {
-      const { data, error } = await supabase.from("clinics").select("*");
+      const { data, error } = await supabase.from("clinics" as any).select("*");
       return { data: data as Clinic[], error };
     } catch (error) {
       return { data: null, error: error as Error };
