@@ -69,8 +69,9 @@ const Index = () => {
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
-            content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use."
+            content="Compare private blood tests and health screenings from UKAS-accredited UK providers. Real-time prices, biomarkers and expert reviews."
           />
+
           <meta
             name="keywords"
             content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"

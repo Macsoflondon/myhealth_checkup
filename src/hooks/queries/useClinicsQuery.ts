@@ -8,14 +8,14 @@ export function useClinicsQuery() {
   return useQuery({
     queryKey: CLINICS_QUERY_KEY,
     queryFn: async (): Promise<Clinic[]> => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('clinics')
         .select('*')
         .not('latitude', 'is', null)
         .not('longitude', 'is', null);
 
       if (error) throw error;
-      return data || [];
+      return (data || []) as Clinic[];
     },
     staleTime: 10 * 60 * 1000, // 10 minutes
     gcTime: 30 * 60 * 1000, // 30 minutes
