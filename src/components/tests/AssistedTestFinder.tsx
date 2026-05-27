@@ -341,9 +341,10 @@ export const AssistedTestFinder = () => {
         <NavigationControls />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 font-montserrat">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2 font-montserrat">
               Your Recommended Tests
-            </h1>
+            </h2>
+
             <p className="text-muted-foreground">Based on your answers, here are the tests we think suit you best.</p>
           </div>
 
@@ -588,7 +589,7 @@ function StepLayout({
   return (
     <div className="max-w-5xl mx-auto pt-4">
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h1>
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h2>
         {subtitle && <p className="text-muted-foreground mt-2 text-lg">{subtitle}</p>}
       </div>
       {children}
