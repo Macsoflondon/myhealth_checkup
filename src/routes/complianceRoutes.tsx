@@ -1,13 +1,16 @@
+import { lazy } from "react";
 import { Route } from "react-router-dom";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import CookiePolicyPage from "@/pages/CookiePolicyPage";
-import TermsConditionsPage from "@/pages/TermsConditionsPage";
-import AccessibilityPage from "@/pages/AccessibilityPage";
-import ModernSlaveryPage from "@/pages/ModernSlaveryPage";
-import AffiliateDisclosurePage from "@/pages/AffiliateDisclosurePage";
-import FairTradingPolicyPage from "@/pages/FairTradingPolicyPage";
-import HowWeRankPage from "@/pages/HowWeRankPage";
-import LegalPage from "@/pages/LegalPage";
+
+const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
+const CookiePolicyPage = lazy(() => import("@/pages/CookiePolicyPage"));
+const TermsConditionsPage = lazy(() => import("@/pages/TermsConditionsPage"));
+const AccessibilityPage = lazy(() => import("@/pages/AccessibilityPage"));
+const ModernSlaveryPage = lazy(() => import("@/pages/ModernSlaveryPage"));
+const AffiliateDisclosurePage = lazy(() => import("@/pages/AffiliateDisclosurePage"));
+const FairTradingPolicyPage = lazy(() => import("@/pages/FairTradingPolicyPage"));
+const HowWeRankPage = lazy(() => import("@/pages/HowWeRankPage"));
+const LegalPage = lazy(() => import("@/pages/LegalPage"));
+const ComplaintsPage = lazy(() => import("@/pages/ComplaintsPage"));
 
 export const complianceRoutes = (
   <>
@@ -20,5 +23,7 @@ export const complianceRoutes = (
     <Route path="/affiliate-disclosure" element={<AffiliateDisclosurePage />} />
     <Route path="/fair-trading" element={<FairTradingPolicyPage />} />
     <Route path="/how-we-rank" element={<HowWeRankPage />} />
+    <Route path="/complaints" element={<ComplaintsPage />} />
+    <Route path="/feedback" element={<ComplaintsPage />} />
   </>
 );

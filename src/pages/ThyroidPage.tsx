@@ -22,7 +22,7 @@ const thyroidTests = [
     price: "£69",
     biomarkers: ["TSH", "Free T3", "Free T4"],
     suitableFor: ["Fatigue concerns", "Weight changes", "Temperature sensitivity", "General screening"],
-    turnaround: "1-2 days"
+    turnaround: "3-4 days"
   },
   {
     id: "thyroid-function-antibodies",
@@ -33,7 +33,7 @@ const thyroidTests = [
     price: "£125",
     biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO", "Anti-Thyroglobulin"],
     suitableFor: ["Family history of thyroid disease", "Suspected autoimmune conditions", "Comprehensive screening", "Previous abnormal results"],
-    turnaround: "1-2 days"
+    turnaround: "3-4 days"
   }
 ];
 
@@ -87,13 +87,13 @@ const ThyroidPage = () => {
         <title>Thyroid Tests | myhealth checkup</title>
         <meta name="description" content="Comprehensive thyroid function tests including TSH, T3, T4, and thyroid antibodies. Professional thyroid screening from £69 with fast results." />
         <meta name="keywords" content="thyroid blood test, TSH test, T3 T4 test, thyroid antibodies, hypothyroid, hyperthyroid, thyroid function test" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/thyroid" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/thyroid" />
         
         {/* Open Graph Tags */}
         <meta property="og:title" content="Thyroid Tests | myhealth checkup" />
         <meta property="og:description" content="Comprehensive thyroid function testing including hormones and antibodies" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/thyroid" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/thyroid" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -106,7 +106,7 @@ const ThyroidPage = () => {
       <main className="flex-grow bg-background">
         <PageBanner
           title="Thyroid Blood Tests"
-          subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimizing treatment."
+          subtitle="Monitor your thyroid health with comprehensive hormone testing including TSH, T3, T4, and thyroid antibodies. Essential for detecting thyroid disorders and optimising treatment."
         />
 
 
@@ -144,7 +144,7 @@ const ThyroidPage = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">Treatment Monitoring</h3>
                   <p className="text-muted-foreground">
-                    Track treatment effectiveness and optimize thyroid medication
+                    Track treatment effectiveness and optimise thyroid medication
                   </p>
                 </div>
               </div>
@@ -288,18 +288,6 @@ const ThyroidPage = () => {
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Compare prices from 7+ trusted UK providers</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                            Find a Clinic
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>200+ clinics nationwide with instant availability</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>

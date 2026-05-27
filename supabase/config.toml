@@ -127,3 +127,32 @@ verify_jwt = false
 # London Health Company Scraper - Firecrawl-based scraper for londonhealthcompany.co.uk
 [functions.london-health-scraper]
 verify_jwt = false
+
+# IndexNow Submit - Push URL changes to Bing/Yandex/Seznam/Naver via IndexNow protocol
+# Public endpoint with in-code admin auth check (or internal=true for server-to-server calls)
+[functions.indexnow-submit]
+verify_jwt = false
+
+
+# Security Scan Snapshot
+# Public access (no JWT) - called by pg_cron on a schedule and by admins from /admin/security-diff
+# Security: in-code auth check requires either service-role bearer (cron) or authenticated admin user
+[functions.security-scan-snapshot]
+verify_jwt = false
+
+# Scraper Health Check
+# Public endpoint with in-code service-role bearer check (cron-only)
+[functions.scraper-health-check]
+verify_jwt = false
+
+# Submit Consumer Complaint / Feedback
+# Public endpoint - consumers must be able to lodge a complaint without auth
+# Security: honeypot, schema validation, length caps, Resend-based emailing
+[functions.submit-complaint]
+verify_jwt = false
+
+[functions.verify-provider-images]
+verify_jwt = false
+
+[functions.trigger-all-scrapers]
+verify_jwt = false

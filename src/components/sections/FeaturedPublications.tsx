@@ -9,7 +9,7 @@ export const FeaturedPublications = () => {
     { name: "The Guardian", url: "https://www.theguardian.com", logo: "/images/logos/the-guardian.png" },
     { name: "Cosmopolitan", url: "https://www.cosmopolitan.com", logo: "/images/logos/cosmopolitan.png" },
     { name: "TechCrunch", url: "https://www.techcrunch.com", logo: "/images/logos/techcrunch.png" },
-    { name: "The Mirror", url: "https://www.mirror.co.uk", logo: "/images/logos/mirror.png" },
+    { name: "The Mirror", url: "https://www.mirror.co.uk", logo: "/images/logos/mirror.webp" },
     { name: "Metro", url: "https://metro.co.uk", logo: "/images/logos/metro.png" },
     { name: "Daily Mail", url: "https://www.dailymail.co.uk", logo: "/images/logos/daily-mail.png" },
     { name: "Daily Express", url: "https://www.express.co.uk", logo: "/images/logos/daily-express.png" },
@@ -78,29 +78,34 @@ export const FeaturedPublications = () => {
           <div
             className="relative overflow-hidden max-w-5xl mx-auto"
             style={{
-              maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-              WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+              maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
             }}
           >
             <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
               {items.map((publication, index) => (
-                <div key={`${publication.name}-${index}`} className="shrink-0 px-2 sm:px-3" style={{ width: "330px" }}>
+                <div key={`${publication.name}-${index}`} className="shrink-0 px-2 sm:px-3" style={{ width: "220px" }}>
                   <a
                     href={publication.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-28 sm:h-32 rounded-xl border border-brand-turquoise/30 bg-white/5 backdrop-blur-sm hover:border-brand-pink/50 hover:bg-white/10 transition-all duration-300 group px-4"
+                    className="relative flex items-center justify-center h-28 sm:h-32 rounded-2xl bg-white/85 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_rgba(8,17,41,0.25),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white hover:scale-[1.03] transition-all duration-500 ease-out group px-5 overflow-hidden"
                   >
+                    {/* Inner highlight */}
+                    <span className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/10 to-transparent opacity-80" />
+                    {/* Diagonal sheen */}
+                    <span className="pointer-events-none absolute -top-1/2 -left-1/4 w-1/2 h-[200%] bg-gradient-to-r from-transparent via-white/40 to-transparent rotate-12 opacity-60" />
+
                     {publication.logo ? (
                       <img
                         src={publication.logo}
                         alt={`${publication.name} logo`}
-                        className="h-24 sm:h-28 md:h-32 w-auto max-w-[400px] object-contain"
-                        style={{ filter: "brightness(0) invert(1)" }}
+                        className="relative z-10 h-20 sm:h-24 md:h-28 w-auto max-w-[200px] object-contain"
                         loading="lazy"
+                        decoding="async"
                       />
                     ) : (
-                      <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-brand-turquoise uppercase tracking-[0.25em] group-hover:text-brand-pink transition-colors duration-300 text-center leading-tight whitespace-normal">
+                      <span className="relative z-10 text-[10px] sm:text-xs md:text-sm font-semibold text-brand-navy uppercase tracking-[0.25em] text-center leading-tight whitespace-normal">
                         {publication.name}
                       </span>
                     )}
@@ -113,7 +118,7 @@ export const FeaturedPublications = () => {
       </div>
       
       {/* Bottom gradient line */}
-      <div className="h-[3px] bg-gradient-to-r from-brand-pink via-brand-turquoise to-brand-pink" />
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
 };

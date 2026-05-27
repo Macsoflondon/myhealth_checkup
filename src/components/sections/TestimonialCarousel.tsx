@@ -62,19 +62,43 @@ const TestimonialCarousel = () => {
     let animationId: number;
     let position = 0;
     const speed = 0.35;
-    const setWidth = CARD_WIDTH * testimonials.length;
+
+    const measureSetWidth = () => {
+      const children = track.children;
+      if (!children.length) return 0;
+      let total = 0;
+      for (let i = 0; i < testimonials.length && i < children.length; i++) {
+        total += (children[i] as HTMLElement).offsetWidth;
+      }
+      return total;
+    };
+
+    let setWidth = measureSetWidth();
+
+    const ro = new ResizeObserver(() => {
+      setWidth = measureSetWidth();
+    });
+    ro.observe(track);
 
     const animate = () => {
-      position -= speed;
-      if (Math.abs(position) >= setWidth) {
-        position += setWidth;
+      if (!setWidth) {
+        setWidth = measureSetWidth();
       }
-      track.style.transform = `translateX(${position}px)`;
+      if (setWidth > 0) {
+        position -= speed;
+        if (Math.abs(position) >= setWidth) {
+          position += setWidth;
+        }
+        track.style.transform = `translateX(${position}px)`;
+      }
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
+    return () => {
+      cancelAnimationFrame(animationId);
+      ro.disconnect();
+    };
   }, []);
 
   return (
@@ -105,7 +129,7 @@ const TestimonialCarousel = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
           }}
         >
-          <div ref={trackRef} className="flex will-change-transform">
+          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((t, i) => (
               <div
                 key={i}

@@ -116,7 +116,7 @@ export const compareCategories = [
   { id: "heart-health", name: "Heart Health", description: "Cardiovascular risk and cholesterol testing", searchTerms: ["heart", "cardiac", "cardiovascular", "cholesterol", "lipid", "triglycerides", "hdl", "ldl"] },
   { id: "mens-health", name: "Men's Health", description: "Comprehensive men's health screening and monitoring", searchTerms: ["mens", "male", "prostate", "testosterone", "mens health", "male health"] },
   { id: "womens-health", name: "Women's Health", description: "Comprehensive women's health screening and monitoring", searchTerms: ["womens", "female", "ovarian", "cervical", "womens health", "female health", "well woman"] },
-  { id: "fertility", name: "Fertility Testing", description: "Reproductive health and fertility assessments", searchTerms: ["fertility", "reproductive", "sperm", "ovarian", "amh", "fsh", "lh"] },
+  { id: "fertility", name: "Fertility - Prenatal", description: "Reproductive health and fertility assessments", searchTerms: ["fertility", "reproductive", "sperm", "ovarian", "amh", "fsh", "lh"] },
   { id: "general-health", name: "General Health", description: "Comprehensive health screening packages", searchTerms: ["general", "comprehensive", "health check", "wellness", "screening"] },
   { id: "allergy-testing", name: "Allergy Testing", description: "Food and environmental allergy screening", searchTerms: ["allergy", "allergic", "intolerance", "food sensitivity", "ige"] },
   { id: "sports-performance-tests", name: "Sports Performance Tests", description: "Athletic performance optimization and health monitoring", searchTerms: ["sports", "athletic", "performance", "fitness", "athlete testing"] },

@@ -5,13 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
-
-interface CookiePreferences {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
-  functional: boolean;
-}
+import { broadcastConsent, type CookiePreferences } from '@/lib/consent';
 
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -28,44 +22,36 @@ const CookieConsent = () => {
     if (!consent) {
       setShowBanner(true);
     } else {
-      const saved = JSON.parse(consent);
-      setPreferences(saved);
+      try {
+        const saved = JSON.parse(consent) as CookiePreferences;
+        setPreferences(saved);
+        // Broadcast on hydration so listeners (analytics, ads) sync state.
+        broadcastConsent(saved);
+      } catch {
+        setShowBanner(true);
+      }
     }
   }, []);
 
-  const handleAcceptAll = () => {
-    const allAccepted = {
-      necessary: true,
-      analytics: true,
-      marketing: true,
-      functional: true
-    };
-    setPreferences(allAccepted);
-    localStorage.setItem('cookieConsent', JSON.stringify(allAccepted));
+  const persistAndBroadcast = (prefs: CookiePreferences) => {
+    setPreferences(prefs);
+    localStorage.setItem('cookieConsent', JSON.stringify(prefs));
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    broadcastConsent(prefs);
     setShowBanner(false);
     setShowSettings(false);
+  };
+
+  const handleAcceptAll = () => {
+    persistAndBroadcast({ necessary: true, analytics: true, marketing: true, functional: true });
   };
 
   const handleRejectAll = () => {
-    const minimal = {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      functional: false
-    };
-    setPreferences(minimal);
-    localStorage.setItem('cookieConsent', JSON.stringify(minimal));
-    localStorage.setItem('cookieConsentDate', new Date().toISOString());
-    setShowBanner(false);
-    setShowSettings(false);
+    persistAndBroadcast({ necessary: true, analytics: false, marketing: false, functional: false });
   };
 
   const handleSavePreferences = () => {
-    localStorage.setItem('cookieConsent', JSON.stringify(preferences));
-    localStorage.setItem('cookieConsentDate', new Date().toISOString());
-    setShowBanner(false);
-    setShowSettings(false);
+    persistAndBroadcast(preferences);
   };
 
   const updatePreference = (key: keyof CookiePreferences, value: boolean) => {
@@ -79,43 +65,42 @@ const CookieConsent = () => {
 
   return (
     <>
-      {/* Cookie Banner */}
+      {/* Cookie Banner — compact on mobile */}
       {showBanner && !showSettings && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg">
-          <div className="container mx-auto p-4">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <Shield className="h-5 w-5 text-brand-turquoise" />
-                  <h3 className="font-semibold text-brand-navy">Your Privacy Matters</h3>
+          <div className="container mx-auto px-3 py-2 sm:p-4">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2 sm:gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5 sm:mb-2">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-brand-turquoise flex-shrink-0" />
+                  <h3 className="font-semibold text-brand-navy text-sm sm:text-base">Your Privacy Matters</h3>
                 </div>
-                <p className="text-sm text-brand-navy">
-                  We use cookies to enhance your experience, provide personalised content, and analyse our traffic.
-                  By clicking "Accept All", you consent to our use of cookies. 
+                <p className="text-xs sm:text-sm text-brand-navy line-clamp-2 sm:line-clamp-none">
+                  We use cookies to enhance your experience and analyse traffic.
                   <a href="/privacy-policy" className="text-health-600 underline ml-1">
-                    Read our Privacy Policy
+                    Privacy Policy
                   </a>
                 </p>
               </div>
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-1.5 sm:gap-2 flex-wrap w-full lg:w-auto">
                 <Button
                   size="sm"
                   onClick={() => setShowSettings(true)}
-                  className="bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
-                  Manage Preferences
+                  Manage
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleRejectAll}
-                  className="bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Reject All
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleAcceptAll}
-                  className="bg-brand-turquoise text-white hover:bg-brand-pink border-brand-turquoise hover:border-brand-pink transition-all duration-200"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Accept All
                 </Button>

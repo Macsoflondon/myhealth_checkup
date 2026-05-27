@@ -15,32 +15,32 @@ const StartJourneySection = () => {
           Take Control of Your Health Today
         </h2>
         <p className="text-base lg:text-lg text-[#081129]/70 leading-relaxed mb-8 max-w-md">
-          Compare trusted, accredited health tests from leading UK providers. Find the right test for your needs in
+          Compare trusted & accredited tests from leading UK providers. Find the right test for your needs in
           minutes.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8 w-full max-w-lg">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8 w-full max-w-lg">
           <Link
             to="/assisted-test-finder"
-            className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight pt-[18px] border-tertiary border border-solid"
           >
             Find your test
           </Link>
           <Link
             to="/compare/symptoms"
-            className="bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+            className="min-w-0 bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight border-2 border-tertiary"
           >
             Compare by symptom
           </Link>
           <Link
             to="/compare/goals"
-            className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-sm sm:text-base px-8 py-3 rounded-full transition-colors duration-200 whitespace-nowrap text-center"
+            className="min-w-0 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-[11px] sm:text-sm px-2 sm:px-6 py-3 rounded-full transition-colors duration-200 text-center leading-tight pt-[18px] border-tertiary border border-solid"
           >
             Compare by goal
           </Link>
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center text-xs sm:text-sm text-[#081129]/60">
           <span>✓ UKAS Accredited Labs</span>
-          <span>✓ CQC Regulated</span>
+          <span>✓ CQC Regulated Providers</span>
           <span>✓ Free to Compare</span>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock the encryption key environment variable
+// Mock the encryption key environment variable.
+// Use ENCRYPTION_KEY (NOT VITE_*) so the secret name cannot accidentally
+// be embedded in the client bundle by Vite.
 const mockEncryptionKey = 'test-encryption-key-for-unit-tests-32chars';
-vi.stubEnv('VITE_ENCRYPTION_KEY', mockEncryptionKey);
+vi.stubEnv('ENCRYPTION_KEY', mockEncryptionKey);
 
 // Use vi.hoisted so the mock fn is available when vi.mock is hoisted
 const { mockFunctionsInvoke } = vi.hoisted(() => {

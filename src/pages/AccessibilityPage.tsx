@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
 import PageBanner from '@/components/sections/PageBanner';
+import SupportSLA from '@/components/compliance/SupportSLA';
 
 const AccessibilityPage = () => {
   return (
@@ -12,7 +13,7 @@ const AccessibilityPage = () => {
       <Helmet>
         <title>Accessibility | myhealth checkup</title>
         <meta name="description" content="Our commitment to making myhealth checkup accessible to everyone. WCAG 2.1 AA compliant with screen reader support and keyboard navigation." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/accessibility" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/accessibility" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">
@@ -119,11 +120,13 @@ const AccessibilityPage = () => {
                   please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                   <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
+                   <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                    <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
                  </div>
               </CardContent>
             </Card>
+
+            <SupportSLA variant="accessibility" className="mt-8" />
           </div>
         </div>
       </main>

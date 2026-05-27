@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import PageBanner from '@/components/sections/PageBanner';
+import SupportSLA from '@/components/compliance/SupportSLA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,28 +74,34 @@ const ContactPage = () => {
         <title>Contact Us | myhealth checkup</title>
         <meta name="description" content="Get in touch with myhealth checkup. We're here to help with questions about health tests, providers, and our comparison platform." />
         <link rel="canonical" href="https://www.myhealthcheckup.co.uk/contact" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Contact myhealth checkup | We're Here to Help" />
-        <meta property="og:description" content="Reach myhealth checkup with questions about private health tests, providers, or your account. Email and provider phone directory." />
+        <meta property="og:title" content="Contact Us | myhealth checkup" />
+        <meta property="og:description" content="Get in touch with myhealth checkup for questions about private UK health tests and accredited providers." />
         <meta property="og:url" content="https://www.myhealthcheckup.co.uk/contact" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact myhealth checkup | We're Here to Help" />
-        <meta name="twitter:description" content="Reach myhealth checkup with questions about private health tests, providers, or your account." />
-
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "name": "Contact myhealth checkup",
-          "description": "Get in touch with myhealth checkup for questions about health tests and providers.",
-          "url": "https://myhealthcheckup.co.uk/contact",
-          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" }
+          "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
+          "name": "myhealth checkup",
+          "legalName": "MYHEALTHCHECKUP LTD",
+          "description": "Independent UK platform comparing private health tests from accredited providers.",
+          "url": "https://www.myhealthcheckup.co.uk/contact",
+          "email": "support@myhealthcheckup.co.uk",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "2/369 Clapham Road",
+            "addressLocality": "London",
+            "postalCode": "SW9 9BT",
+            "addressCountry": "GB"
+          },
+          "areaServed": "GB",
+          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" }
         })}</script>
       </Helmet>
       <Header />
       <main className="flex-grow bg-[#081129] md:bg-white">
         
         <PageBanner title="You're Never Alone on Your Health Journey" subtitle="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way." />
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-12 bg-[primary-on-container]">
           <div className="max-w-6xl mx-auto">
             {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
@@ -238,6 +245,10 @@ const ContactPage = () => {
                   <p className="text-sm mt-4 text-muted-foreground">Company Registration: 16589056 (England & Wales)</p>
                 </CardContent>
               </Card>
+            </div>
+
+            <div className="mt-6">
+              <SupportSLA variant="default" />
             </div>
 
             {/* Row 3: Emergency */}

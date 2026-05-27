@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "npm:resend@2.0.0";
+import { getErrorMessage } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -23,6 +24,64 @@ interface ScraperResult {
   provider: string;
   success: boolean;
   message: string;
+}
+
+interface RunAllScrapersBody {
+  providerIds?: string[];
+  providerId?: string;
+  scheduled?: boolean;
+}
+
+async function sendSlackNotification(text: string, blocks?: unknown) {
+  const url = Deno.env.get("SLACK_WEBHOOK_URL");
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(blocks ? { text, blocks } : { text }),
+    });
+  } catch (err) {
+    console.error("Slack notify error:", getErrorMessage(err));
+  }
+}
+
+async function recordFailureAlerts(
+  supabase: any,
+  failed: ScraperResult[],
+): Promise<void> {
+  if (failed.length === 0) return;
+
+  // Look back 24h for repeated-failure detection
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { data: recent } = await supabase
+    .from("scraper_alerts")
+    .select("provider_id, created_at")
+    .eq("alert_type", "scrape_failed")
+    .gte("created_at", since);
+
+  const priorCounts = new Map<string, number>();
+  for (const row of recent ?? []) {
+    priorCounts.set(row.provider_id, (priorCounts.get(row.provider_id) ?? 0) + 1);
+  }
+
+  const rows = failed.map((f) => {
+    const prior = priorCounts.get(f.provider) ?? 0;
+    const isRepeated = prior >= 1;
+    return {
+      provider_id: f.provider,
+      alert_type: "scrape_failed" as const,
+      severity: isRepeated ? "critical" : "warning",
+      message: isRepeated
+        ? `Repeated failure (${prior + 1} in last 24h): ${f.message}`.slice(0, 1000)
+        : `Scraper failed: ${f.message}`.slice(0, 1000),
+      current_count: prior + 1,
+      previous_count: prior,
+    };
+  });
+
+  const { error } = await supabase.from("scraper_alerts").insert(rows);
+  if (error) console.error("Failed to insert scraper_alerts:", error.message);
 }
 
 async function sendAdminNotification(
@@ -79,9 +138,10 @@ async function sendAdminNotification(
       console.log("Admin notification sent successfully");
     }
   } catch (error) {
-    console.error("Error in sendAdminNotification:", error);
+    console.error("Error in sendAdminNotification:", getErrorMessage(error));
   }
 }
+
 
 function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): string {
   const successCount = results.filter(r => r.success).length;
@@ -160,22 +220,42 @@ function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): strin
   `;
 }
 
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+// Detect Supabase Edge Runtime (Deno Deploy) waitUntil API. Falls back to a
+// no-op shim in local/dev so the function still runs synchronously there.
+declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+const waitUntil = (p: Promise<unknown>): void => {
+  try {
+    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
+      EdgeRuntime.waitUntil(p);
+      return;
+    }
+  } catch {
+    // ignore — fall through to await-less detach
   }
+  // Best-effort detach: attach a catch so unhandled rejections don't crash the isolate.
+  p.catch((err) => console.error("[run-all-scrapers] background task error:", getErrorMessage(err)));
+};
 
+async function runBatch(
+  runId: string,
+  scrapersToRun: typeof SCRAPERS,
+): Promise<void> {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-  console.log(`[${new Date().toISOString()}] Starting scheduled scraping run for all providers`);
+  console.log(
+    `[${new Date().toISOString()}] [${runId}] Starting scraping run for ${scrapersToRun.length} provider(s)`,
+  );
 
+  // Bounded concurrency: run scrapers in parallel batches to cut wall time
+  // from ~3-5 min (sequential + 2s sleeps) to ~60-90 s without overwhelming
+  // upstream providers. Each scraper is independent.
+  const CONCURRENCY = 3;
   const results: ScraperResult[] = [];
 
-  for (const scraper of SCRAPERS) {
-    console.log(`[${new Date().toISOString()}] Running ${scraper.id} scraper...`);
-    
+  async function runScraper(scraper: typeof SCRAPERS[number]): Promise<ScraperResult> {
+    console.log(`[${new Date().toISOString()}] [${runId}] Running ${scraper.id} scraper...`);
     try {
       const response = await fetch(`${supabaseUrl}/functions/v1/${scraper.functionName}`, {
         method: 'POST',
@@ -192,54 +272,149 @@ serve(async (req) => {
       }
 
       const data = await response.json();
-      console.log(`[${new Date().toISOString()}] ${scraper.id} completed: ${JSON.stringify(data)}`);
-      
-      results.push({
+      console.log(`[${new Date().toISOString()}] [${runId}] ${scraper.id} completed: ${JSON.stringify(data)}`);
+      return {
         provider: scraper.id,
         success: true,
         message: data.message || 'Completed successfully',
-      });
-
-      // Small delay between scrapers to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      };
     } catch (error) {
-      console.error(`[${new Date().toISOString()}] ${scraper.id} failed:`, error);
-      results.push({
+      console.error(`[${new Date().toISOString()}] [${runId}] ${scraper.id} failed:`, getErrorMessage(error));
+      return {
         provider: scraper.id,
         success: false,
-        message: error instanceof Error ? error.message : 'Unknown error',
-      });
+        message: getErrorMessage(error),
+      };
     }
   }
 
-  const successCount = results.filter(r => r.success).length;
-  const allSuccess = successCount === SCRAPERS.length;
-  const summary = `Completed ${successCount}/${SCRAPERS.length} scrapers successfully`;
-  
-  console.log(`[${new Date().toISOString()}] ${summary}`);
+  try {
+    for (let i = 0; i < scrapersToRun.length; i += CONCURRENCY) {
+      const batch = scrapersToRun.slice(i, i + CONCURRENCY);
+      const batchResults = await Promise.all(batch.map(runScraper));
+      results.push(...batchResults);
+    }
 
-  // Send email notification to admins
-  const emailSubject = allSuccess 
-    ? `✓ Scraper Run Complete: ${successCount}/${SCRAPERS.length} succeeded`
-    : `⚠️ Scraper Run: ${SCRAPERS.length - successCount} failed`;
-  
-  await sendAdminNotification(
-    supabase,
-    emailSubject,
-    generateEmailHtml(results, allSuccess)
+    const successCount = results.filter(r => r.success).length;
+    const failedResults = results.filter(r => !r.success);
+    const allSuccess = successCount === scrapersToRun.length;
+    const summary = `Completed ${successCount}/${scrapersToRun.length} scrapers successfully`;
+
+    console.log(`[${new Date().toISOString()}] [${runId}] ${summary}`);
+
+    // Persist dashboard alerts for any failures (warning, or critical if repeated)
+    await recordFailureAlerts(supabase, failedResults);
+
+    const emailSubject = allSuccess
+      ? `✓ Scraper Run Complete: ${successCount}/${scrapersToRun.length} succeeded`
+      : `⚠️ Scraper Run: ${scrapersToRun.length - successCount} failed`;
+
+    if (!allSuccess) {
+      await sendSlackNotification(
+        `:rotating_light: ${emailSubject}\n` +
+          failedResults.map((r) => `• *${r.provider}*: ${r.message}`).join("\n"),
+      );
+    }
+
+    await sendAdminNotification(
+      supabase,
+      emailSubject,
+      generateEmailHtml(results, allSuccess)
+    );
+
+  } catch (err) {
+    console.error(`[${new Date().toISOString()}] [${runId}] Batch run crashed:`, getErrorMessage(err));
+  }
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  const body: RunAllScrapersBody = req.method === "POST"
+    ? await req.json().catch(() => ({}))
+    : {};
+
+  const authHeader = req.headers.get("Authorization") ?? "";
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+  const cronSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? "";
+
+  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
+  // Scheduled runs must present a dedicated cron secret (not the public anon key).
+  const isScheduledRun = Boolean(body.scheduled) && cronSecret.length > 0 && authHeader === `Bearer ${cronSecret}`;
+
+  let isAdminUser = false;
+  if (!isServiceRole && !isScheduledRun) {
+    if (!authHeader || !supabaseUrl || !anonKey) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const userClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+
+    if (userErr || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { data: hasAdminRole, error: roleErr } = await userClient.rpc("has_role", {
+      _user_id: user.id,
+      _role: "admin",
+    });
+
+    if (roleErr || !hasAdminRole) {
+      return new Response(JSON.stringify({ error: "Admin only" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    isAdminUser = true;
+  }
+
+  const requestedProviderIds = [body.providerId, ...(body.providerIds ?? [])].filter(
+    (value): value is string => typeof value === "string" && value.length > 0,
   );
+  const scrapersToRun = requestedProviderIds.length > 0
+    ? SCRAPERS.filter((scraper) => requestedProviderIds.includes(scraper.id))
+    : SCRAPERS;
+
+  if (requestedProviderIds.length > 0 && scrapersToRun.length === 0) {
+    return new Response(JSON.stringify({ error: "No matching providers found" }), {
+      status: 400,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const runId = crypto.randomUUID().slice(0, 8);
+  const startedAt = new Date().toISOString();
+
+  // Fire-and-forget: detach the batch from the request so HTTP timeouts,
+  // client disconnects, or cron invoker cancellations cannot abort it.
+  waitUntil(runBatch(runId, scrapersToRun));
 
   return new Response(
     JSON.stringify({
-      success: allSuccess,
-      message: summary,
-      results,
-      timestamp: new Date().toISOString(),
+      success: true,
+      message: `Scraper batch dispatched (${scrapersToRun.length} provider${scrapersToRun.length === 1 ? "" : "s"}). Running in background.`,
+      runId,
+      providers: scrapersToRun.map(s => s.id),
+      startedAt,
+      mode: isServiceRole ? "service" : isScheduledRun ? "scheduled" : isAdminUser ? "admin" : "unknown",
     }),
     {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 200,
+      status: 202,
     }
   );
 });

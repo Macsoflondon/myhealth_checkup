@@ -10,8 +10,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 199,
     price: "£199",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 7,
     rating: 4.8,
     reviews: 1240,
@@ -29,8 +29,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Goodbody",
     priceNum: 149,
     price: "£149",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 6,
     rating: 4.7,
     reviews: 890,
@@ -48,8 +48,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Thriva",
     priceNum: 89,
     price: "£89",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "4 days",
+    turnaroundDays: 4,
     biomarkerCount: 6,
     rating: 4.6,
     reviews: 542,
@@ -67,8 +67,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 99,
     price: "£99",
-    turnaround: "1–2 days",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 7,
     rating: 4.9,
     reviews: 2100,
@@ -86,8 +86,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Lola Health",
     priceNum: 69,
     price: "£69",
-    turnaround: "3–5 days",
-    turnaroundDays: 5,
+    turnaround: "5–7 days",
+    turnaroundDays: 7,
     biomarkerCount: 4,
     rating: 4.5,
     reviews: 310,
@@ -105,8 +105,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 125,
     price: "£125",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 8,
     rating: 4.7,
     reviews: 678,
@@ -124,8 +124,8 @@ const womensHealthTests: CategoryTestItem[] = [
     provider: "Randox Health",
     priceNum: 125,
     price: "£125",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "4 days",
+    turnaroundDays: 4,
     biomarkerCount: 7,
     rating: 4.7,
     reviews: 678,
@@ -140,10 +140,11 @@ const womensHealthTests: CategoryTestItem[] = [
 const WomensHealthPage = () => (
   <CategoryPageLayout
     seoTitle="Women's Health Tests | myhealth checkup"
+    pillLabel="Women's Health"
     seoDescription="Comprehensive women's health testing including hormones, fertility, menopause, and PCOS screening from trusted UK providers. Compare prices and book today."
     seoKeywords="women's health tests, hormone test, fertility test, menopause test, PCOS test, well woman test"
-    canonicalUrl="https://myhealthcheckup.co.uk/womens-health"
-    headline="Women's Health Blood Tests"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/womens-health"
+    headline="Women's Health"
     subtitle="Comprehensive female health screening — hormones, fertility, menopause, and PCOS — designed for women's unique needs."
     searchPlaceholder="Search by symptom or test — e.g. 'irregular periods', 'menopause'"
     trustStats={[
@@ -155,7 +156,7 @@ const WomensHealthPage = () => (
     tests={womensHealthTests}
     benefitsTitle="Why Choose Women's Health Testing?"
     benefits={[
-      { icon: Heart, title: "Hormone Balance", description: "Early detection and prevention of women's health conditions" },
+      { icon: Heart, title: "Hormone Balance", description: "Early detection of women's health conditions" },
       { icon: Baby, title: "Fertility Planning", description: "Comprehensive fertility and reproductive health insights" },
       { icon: Users, title: "Lifelong Wellness", description: "Monitor and optimise health throughout every life stage" },
     ]}

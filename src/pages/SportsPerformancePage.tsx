@@ -10,8 +10,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "Randox Health",
     priceNum: 129,
     price: "£129",
-    turnaround: "2–5 days",
-    turnaroundDays: 5,
+    turnaround: "Typically 3 days",
+    turnaroundDays: 3,
     biomarkerCount: 10,
     rating: 4.6,
     reviews: 445,
@@ -29,8 +29,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 169,
     price: "£169",
-    turnaround: "2–5 days",
-    turnaroundDays: 5,
+    turnaround: "Typically 4 days",
+    turnaroundDays: 4,
     biomarkerCount: 14,
     rating: 4.8,
     reviews: 1890,
@@ -48,8 +48,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "London Medical Laboratory",
     priceNum: 155,
     price: "£155",
-    turnaround: "4 hours",
-    turnaroundDays: 1,
+    turnaround: "Typically 3 days",
+    turnaroundDays: 3,
     biomarkerCount: 21,
     rating: 4.9,
     reviews: 760,
@@ -67,8 +67,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "Sports Blood Tests",
     priceNum: 129,
     price: "£129",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "Typically 4 days",
+    turnaroundDays: 4,
     biomarkerCount: 18,
     rating: 4.7,
     reviews: 320,
@@ -86,8 +86,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "Sports Blood Tests",
     priceNum: 129,
     price: "£129",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "Typically 4 days",
+    turnaroundDays: 4,
     biomarkerCount: 18,
     rating: 4.6,
     reviews: 290,
@@ -105,8 +105,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "Sports Blood Tests",
     priceNum: 125,
     price: "£125",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "Typically 4 days",
+    turnaroundDays: 4,
     biomarkerCount: 17,
     rating: 4.5,
     reviews: 210,
@@ -124,8 +124,8 @@ const fitnessTests: CategoryTestItem[] = [
     provider: "Good Body Clinic",
     priceNum: 99,
     price: "£99",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "Typically 5 days",
+    turnaroundDays: 5,
     biomarkerCount: 11,
     rating: 4.7,
     reviews: 340,
@@ -140,9 +140,10 @@ const fitnessTests: CategoryTestItem[] = [
 const SportsPerformancePage = () => (
   <CategoryPageLayout
     seoTitle="Sports Performance Tests | myhealth checkup"
+    pillLabel="Sports-Fitness Health"
     seoDescription="Optimise your fitness and athletic performance with comprehensive health blood tests. Monitor bodybuilding biomarkers, nutrition status, and recovery markers from trusted UK providers."
     seoKeywords="fitness health tests, bodybuilding blood tests, athletic blood tests, fitness biomarkers, sports nutrition testing, recovery markers"
-    canonicalUrl="https://myhealthcheckup.co.uk/sports-performance"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/sports-performance"
     headline="Sports-Fitness Health Blood Tests"
     subtitle="Optimise your athletic performance with comprehensive biomarker analysis — nutrition, recovery, and fitness markers from trusted UK labs."
     searchPlaceholder="Search by sport or goal — e.g. 'marathon', 'muscle recovery'"

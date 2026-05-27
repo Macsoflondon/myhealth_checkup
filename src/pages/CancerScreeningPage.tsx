@@ -10,8 +10,8 @@ const cancerTests: CategoryTestItem[] = [
     provider: "Randox Health",
     priceNum: 49,
     price: "£49",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "4 days",
+    turnaroundDays: 4,
     biomarkerCount: 1,
     rating: 4.7,
     reviews: 980,
@@ -29,8 +29,8 @@ const cancerTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 199,
     price: "£199",
-    turnaround: "3–5 days",
-    turnaroundDays: 5,
+    turnaround: "5–7 days",
+    turnaroundDays: 7,
     biomarkerCount: 8,
     rating: 4.9,
     reviews: 1450,
@@ -48,8 +48,8 @@ const cancerTests: CategoryTestItem[] = [
     provider: "Lola Health",
     priceNum: 79,
     price: "£79",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 2,
     rating: 4.6,
     reviews: 420,
@@ -67,8 +67,8 @@ const cancerTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 89,
     price: "£89",
-    turnaround: "5–7 days",
-    turnaroundDays: 7,
+    turnaround: "7–9 days",
+    turnaroundDays: 9,
     biomarkerCount: 3,
     rating: 4.8,
     reviews: 760,
@@ -86,8 +86,8 @@ const cancerTests: CategoryTestItem[] = [
     provider: "Goodbody",
     priceNum: 189,
     price: "£189",
-    turnaround: "7–10 days",
-    turnaroundDays: 10,
+    turnaround: "9–12 days",
+    turnaroundDays: 12,
     biomarkerCount: 4,
     rating: 4.7,
     reviews: 340,
@@ -105,8 +105,8 @@ const cancerTests: CategoryTestItem[] = [
     provider: "Randox Health",
     priceNum: 399,
     price: "£399",
-    turnaround: "10–14 days",
-    turnaroundDays: 14,
+    turnaround: "12–16 days",
+    turnaroundDays: 16,
     biomarkerCount: 12,
     rating: 4.9,
     reviews: 210,
@@ -121,9 +121,10 @@ const cancerTests: CategoryTestItem[] = [
 const CancerScreeningPage = () => (
   <CategoryPageLayout
     seoTitle="Cancer Screening | myhealth checkup"
+    pillLabel="Cancer Screening"
     seoDescription="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection."
     seoKeywords="cancer screening, prostate cancer test, bowel cancer screening, breast cancer markers, multi-cancer detection"
-    canonicalUrl="https://myhealthcheckup.co.uk/tests/cancer"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/tests/cancer"
     headline="Cancer Screening Tests"
     subtitle="Comprehensive cancer screening for early detection and peace of mind. Regular screening saves lives."
     searchPlaceholder="Search by cancer type or marker — e.g. 'PSA', 'ovarian'"

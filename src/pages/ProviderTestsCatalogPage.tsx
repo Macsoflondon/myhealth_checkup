@@ -106,6 +106,13 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
       <Helmet>
         <title>{config.metaTitle}</title>
         <meta name="description" content={config.metaDescription} />
+        <link rel="canonical" href={`https://www.myhealthcheckup.co.uk/providers/${config.providerId}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content={config.metaTitle} />
+        <meta property="og:description" content={config.metaDescription} />
+        <meta property="og:url" content={`https://www.myhealthcheckup.co.uk/providers/${config.providerId}`} />
+        <meta property="og:locale" content="en_GB" />
       </Helmet>
       <div className="min-h-screen bg-[primary-on-container] bg-tertiary">
         <ProviderCatalogHeader

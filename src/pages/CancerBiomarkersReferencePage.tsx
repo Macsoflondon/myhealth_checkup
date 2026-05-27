@@ -204,7 +204,7 @@ const CancerBiomarkersReferencePage = () => {
           name="keywords" 
           content="cancer biomarkers, tumour markers, PSA test, CA-125, CEA, AFP, CA 19-9, cancer screening markers, blood test cancer markers" 
         />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/cancer-biomarkers-reference" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/cancer-biomarkers-reference" />
       </Helmet>
       
       
@@ -495,9 +495,6 @@ const CancerBiomarkersReferencePage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
                   <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
-                </Button>
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
-                  <Link to="/find-clinic">Find a Clinic</Link>
                 </Button>
               </div>
             </div>

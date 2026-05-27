@@ -175,31 +175,40 @@ const TestDetailPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{test.test_name} - {provider.name} | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content={`Book the ${test.test_name} from ${provider.name} for £${test.price?.toFixed(2) || 'Price on request'}. ${test.description || 'Professional health testing with fast results.'}`} 
+        <title>{`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`}</title>
+        <meta
+          name="description"
+          content={`Compare the ${test.test_name} across accredited UK providers${
+            test.price != null ? ` from £${test.price.toFixed(2)}` : ""
+          }. View biomarkers, sample method, turnaround and pricing side-by-side.${
+            provider?.name ? ` Available from ${provider.name}.` : ""
+          }`.slice(0, 158)}
         />
         <link rel="canonical" href={`https://www.myhealthcheckup.co.uk/${providerId}/${testId}`} />
         <meta property="og:type" content="product" />
-        <meta property="og:title" content={`${test.test_name} - ${provider.name}`} />
-        <meta property="og:description" content={test.description || `${test.test_name} from ${provider.name}.`} />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content={`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`} />
+        <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
         <meta property="og:url" content={`https://www.myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "MedicalTest",
-          name: test.test_name,
-          description: test.description || `${test.test_name} from ${provider.name}.`,
-          category: test.category || undefined,
-          url: `https://www.myhealthcheckup.co.uk/${providerId}/${testId}`,
-          offers: test.price ? {
-            "@type": "Offer",
-            price: test.price,
-            priceCurrency: "GBP",
-            availability: "https://schema.org/InStock",
-            seller: { "@type": "Organization", name: provider.name },
-            url: test.url || undefined,
-          } : undefined,
+          "@type": "Product",
+          "name": test.test_name,
+          "description": test.description || `${test.test_name} private health test available from accredited UK providers.`,
+          "brand": provider?.name ? { "@type": "Brand", "name": provider.name } : undefined,
+          "image": test.image_url || "https://www.myhealthcheckup.co.uk/og-image.png",
+          "category": test.category || "Health Test",
+          ...(test.price != null ? {
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "GBP",
+              "price": test.price.toFixed(2),
+              "availability": "https://schema.org/InStock",
+              "url": `https://www.myhealthcheckup.co.uk/${providerId}/${testId}`,
+              ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
+            }
+          } : {})
         })}</script>
       </Helmet>
 
@@ -404,6 +413,8 @@ const TestDetailPage = () => {
                       <img 
                         src={getProviderLogo(providerId || '')} 
                         alt={provider.name}
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 object-contain"
                       />
                       <span className="font-medium">{provider.name}</span>

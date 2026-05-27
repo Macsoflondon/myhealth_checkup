@@ -14,14 +14,18 @@ const SALT_LENGTH = 16;
 const ITERATIONS = 100000;
 
 /**
- * Get encryption key from environment (securely stored in edge function secrets)
- * This key is NEVER sent to the client
+ * Get encryption key from environment (securely stored in edge function secrets).
+ * This key is NEVER sent to the client.
+ *
+ * SECURITY: We deliberately do NOT read VITE_* prefixed env vars here. Vite
+ * inlines any VITE_* variable into the client JS bundle, so naming an
+ * encryption secret with that prefix would risk leaking the AES-GCM key
+ * to every browser visitor. Use ENCRYPTION_KEY only.
  */
 function getEncryptionSecret(): string {
-  // Try both secret names for backwards compatibility
-  const key = Deno.env.get('VITE_ENCRYPTION_KEY') || Deno.env.get('ENCRYPTION_KEY');
+  const key = Deno.env.get('ENCRYPTION_KEY');
   if (!key) {
-    throw new Error('Encryption key environment variable is not configured');
+    throw new Error('ENCRYPTION_KEY environment variable is not configured');
   }
   return key;
 }

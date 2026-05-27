@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X, Clock, TestTube2, ExternalLink } from "lucide-react";
+import { Clock, TestTube2, ExternalLink } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
@@ -105,20 +105,22 @@ export default function ProviderTestDetailModal({
 
   const biomarkers = goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
   const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
-  const turnaround = goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
+  const turnaround = test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
+  const collectionOptions: Array<{ method: string; price_modifier: number; note?: string }> | null =
+    Array.isArray(test.collection_options) ? test.collection_options : null;
+
+  // Authoritative biomarker count: prefer the stored count, fall back to list length.
+  const displayedBiomarkerCount = Math.max(test.biomarker_count ?? 0, biomarkers.length);
+
+  // Pricing: show "from £X" when a base price is set (lowest available tier)
+  const headerPrice = test.base_price ?? goodbodyStatic?.price ?? test.price;
+  const priceIsFrom = test.base_price != null && test.base_price > 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl gap-0 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl gap-0 max-h-[90vh] overflow-y-auto [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
         {/* Branded header */}
-        <div className="p-6 pb-5 text-white relative" style={{ backgroundColor: brandColor }}>
-          <button
-            onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-
+        <div className="p-6 pb-5 pr-14 text-white relative" style={{ backgroundColor: brandColor }}>
           <p className="text-sm text-white/80 mb-1">
             {providerName} · {goodbodyStatic?.category || test.category || "General Health"}
           </p>
@@ -127,15 +129,15 @@ export default function ProviderTestDetailModal({
           </DialogTitle>
 
           <div className="flex flex-wrap gap-2">
-            {(goodbodyStatic?.price ?? test.price) != null && (
+            {headerPrice != null && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
-                £{(goodbodyStatic?.price ?? test.price!).toFixed(0)}
+                {priceIsFrom ? "from " : ""}£{headerPrice.toFixed(0)}
               </span>
             )}
-            {(biomarkers.length > 0 || (test.biomarker_count && test.biomarker_count > 0)) && (
+            {displayedBiomarkerCount > 0 && (
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
                 <TestTube2 className="w-3.5 h-3.5" />
-                {biomarkers.length || test.biomarker_count} biomarkers
+                {displayedBiomarkerCount} biomarkers
               </span>
             )}
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
@@ -153,7 +155,29 @@ export default function ProviderTestDetailModal({
           )}
 
           {/* Collection method */}
-          {sampleBadges.length > 0 && (
+          {collectionOptions && collectionOptions.length > 0 ? (
+            <div>
+              <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                Collection Options
+              </h4>
+              <ul className="space-y-1.5">
+                {collectionOptions.map((opt) => (
+                  <li
+                    key={opt.method}
+                    className="flex items-center justify-between gap-3 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2"
+                  >
+                    <span>{opt.method}</span>
+                    <span className="font-semibold" style={{ color: brandColor }}>
+                      {opt.note ?? (opt.price_modifier > 0 ? `+£${opt.price_modifier}` : "Free")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-gray-500 mt-2">
+                Choose your preferred way to provide the sample at checkout.
+              </p>
+            </div>
+          ) : sampleBadges.length > 0 && (
             <div>
               <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                 Collection Method

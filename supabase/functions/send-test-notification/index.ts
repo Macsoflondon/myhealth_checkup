@@ -93,7 +93,8 @@ serve(async (req: Request): Promise<Response> => {
 
       try {
         const emailResponse = await resend.emails.send({
-          from: "myhealth checkup <notifications@updates.myhealthcheckup.co.uk>",
+          from: "myhealth checkup <support@myhealthcheckup.co.uk>",
+          reply_to: "support@myhealthcheckup.co.uk",
           to: [email],
           subject: emailContent.subject,
           html: emailContent.html,
@@ -119,7 +120,7 @@ serve(async (req: Request): Promise<Response> => {
           JSON.stringify({ 
             success: true, 
             message: `Test ${notificationType} email sent to ${email}`,
-            emailId: emailResponse.id
+            emailId: emailResponse.data?.id ?? null
           }),
           {
             status: 200,
@@ -185,16 +186,18 @@ serve(async (req: Request): Promise<Response> => {
     }
   } catch (error: any) {
     console.error("Error in send-test-notification:", error);
+    const rawMsg = error instanceof Error ? error.message : String(error);
+    const isConfigError = rawMsg.includes("RESEND_API_KEY");
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: false,
-        error: error.message 
+        error: isConfigError ? "Email service unavailable" : "Internal server error",
       }),
       {
-        status: error.message.includes("RESEND_API_KEY") ? 503 : 500,
-        headers: { 
-          "Content-Type": "application/json", 
-          ...corsHeaders 
+        status: isConfigError ? 503 : 500,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders,
         },
       }
     );

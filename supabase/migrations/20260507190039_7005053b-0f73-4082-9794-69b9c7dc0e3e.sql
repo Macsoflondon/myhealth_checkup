@@ -1,0 +1,1 @@
+UPDATE public.provider_tests SET image_url='/medichecks-kits/advanced-well-woman.png' WHERE id IN ('43aaf7fe-8786-4ad5-89ac-a300c00e9de5','49963510-c6ee-4705-8f49-8bfb06384022');

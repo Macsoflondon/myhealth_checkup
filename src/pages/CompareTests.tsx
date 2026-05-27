@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
-import { TestListCard } from "@/components/compare/TestListCard";
+import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
@@ -158,21 +158,53 @@ const CompareTests = () => {
             name="description"
             content="Compare private blood tests from Medichecks, Thriva, Randox, and more UK providers. Transparent pricing and inclusions from trusted UK providers."
           />
-          <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
+          <link rel="canonical" href="https://www.myhealthcheckup.co.uk/compare" />
           <script type="application/ld+json">{JSON.stringify({
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             "name": "Compare Blood Tests",
             "description": "Compare private blood tests from Medichecks, Thriva, Randox, and more UK providers.",
-            "url": "https://myhealthcheckup.co.uk/compare",
-            "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
+            "url": "https://www.myhealthcheckup.co.uk/compare",
+            "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" },
             "breadcrumb": {
               "@type": "BreadcrumbList",
               "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.myhealthcheckup.co.uk" },
                 { "@type": "ListItem", "position": 2, "name": "Compare Tests" }
               ]
             }
+          })}</script>
+          {/* FAQPage schema — eligible for rich result snippets (audit 3.4) */}
+          <script type="application/ld+json">{JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How do I compare private blood tests in the UK?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Use myhealth checkup to compare price, biomarker coverage, sample method, and typical turnaround across UKAS-accredited providers including Medichecks, Thriva, Randox and more. Filter by category, then select up to four tests to compare side-by-side." }
+              },
+              {
+                "@type": "Question",
+                "name": "Are the labs UKAS accredited?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. We only list providers whose laboratories hold UKAS accreditation (ISO 15189 where applicable) and whose clinics are CQC regulated. Accreditation status is shown on every provider profile." }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need a GP referral to book a private blood test?",
+                "acceptedAnswer": { "@type": "Answer", "text": "No GP referral is required for the tests listed on myhealth checkup. You can book directly through the provider. Some specialist tests may include an optional GP review of your results." }
+              },
+              {
+                "@type": "Question",
+                "name": "How long do results take?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Typical turnaround is 2–5 working days from sample receipt for most blood tests, though times vary by provider and test type. Estimated turnaround is shown on each test card." }
+              },
+              {
+                "@type": "Question",
+                "name": "Is myhealth checkup free to use?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. The comparison platform is free for users. We may earn a referral fee when you book through a provider link, which never affects the price you pay or the ranking of results." }
+              }
+            ]
           })}</script>
         </Helmet>
 
@@ -305,13 +337,24 @@ const CompareTests = () => {
                   />
                 ) : (
                   /* List View - Original card layout */
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {paginatedTests.map((test) => (
-                      <TestListCard 
-                        key={test.id} 
-                        test={test}
-                        isSelected={isTestSelected(test.id)}
-                        onToggleSelect={handleToggleSelect}
+                      <UnifiedTestCard
+                        key={test.id}
+                        category={test.category || "Health"}
+                        name={test.name}
+                        description={test.description || "Comprehensive health screening test"}
+                        biomarkers={test.biomarkerCount ?? 0}
+                        results={test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`}
+                        collection={test.features?.collection || "Home kit"}
+                        rating={(test as any).rating ?? 4.6}
+                        reviews={(test as any).reviewCount ?? (test as any).reviews ?? 0}
+                        price={test.price}
+                        provider={test.provider}
+                        url={test.url}
+                        ctaLabel={isTestSelected(test.id) ? "Selected" : "Compare"}
+                        compareSelected={isTestSelected(test.id)}
+                        onCompareToggle={() => handleToggleSelect(test)}
                       />
                     ))}
                     

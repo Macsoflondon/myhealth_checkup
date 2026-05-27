@@ -39,7 +39,7 @@ const GutHealthPage = () => {
       <Helmet>
         <title>Gut Health Tests | myhealth checkup</title>
         <meta name="description" content="Compare gut health tests from top UK providers. Microbiome analysis, food intolerance testing, and digestive health screening from £89." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/tests/gut" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/tests/gut" />
       </Helmet>
       
       <Header />
@@ -153,18 +153,6 @@ const GutHealthPage = () => {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Compare prices from 7+ trusted UK providers</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                        <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                          Find a Clinic
-                        </Button>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>200+ clinics nationwide with instant availability</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

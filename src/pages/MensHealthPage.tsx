@@ -10,8 +10,8 @@ const mensHealthTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 199,
     price: "£199",
-    turnaround: "24–48 hours",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 7,
     rating: 4.8,
     reviews: 1240,
@@ -29,8 +29,8 @@ const mensHealthTests: CategoryTestItem[] = [
     provider: "Goodbody",
     priceNum: 149,
     price: "£149",
-    turnaround: "24–48 hours",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 6,
     rating: 4.7,
     reviews: 890,
@@ -48,8 +48,8 @@ const mensHealthTests: CategoryTestItem[] = [
     provider: "Thriva",
     priceNum: 89,
     price: "£89",
-    turnaround: "24–48 hours",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 6,
     rating: 4.9,
     reviews: 2100,
@@ -67,8 +67,8 @@ const mensHealthTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 125,
     price: "£125",
-    turnaround: "24–48 hours",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 6,
     rating: 4.6,
     reviews: 542,
@@ -86,8 +86,8 @@ const mensHealthTests: CategoryTestItem[] = [
     provider: "Randox Health",
     priceNum: 65,
     price: "£65",
-    turnaround: "24–48 hours",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 4,
     rating: 4.7,
     reviews: 980,
@@ -105,8 +105,8 @@ const mensHealthTests: CategoryTestItem[] = [
     provider: "Lola Health",
     priceNum: 45,
     price: "£45",
-    turnaround: "24–48 hours",
-    turnaroundDays: 2,
+    turnaround: "3–4 days",
+    turnaroundDays: 4,
     biomarkerCount: 3,
     rating: 4.5,
     reviews: 310,
@@ -121,9 +121,10 @@ const mensHealthTests: CategoryTestItem[] = [
 const MensHealthPage = () => (
   <CategoryPageLayout
     seoTitle="Men's Health Tests | myhealth checkup"
+    pillLabel="Men's Health"
     seoDescription="Comprehensive men's health testing including testosterone, prostate PSA, erectile dysfunction, and complete male wellness screening from £45."
     seoKeywords="men's health tests, testosterone test, prostate PSA test, male hormones, erectile dysfunction test, well man test"
-    canonicalUrl="https://myhealthcheckup.co.uk/mens-health"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/mens-health"
     headline="Men's Health Blood Tests"
     subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
     searchPlaceholder="Search by symptom or test — e.g. 'testosterone', 'prostate'"
@@ -136,7 +137,7 @@ const MensHealthPage = () => (
     tests={mensHealthTests}
     benefitsTitle="Why Choose Men's Health Testing?"
     benefits={[
-      { icon: Shield, title: "Early Detection", description: "Identify potential health issues before symptoms develop" },
+      { icon: Shield, title: "Early Detection", description: "Identify health issues before symptoms develop" },
       { icon: Activity, title: "Optimise Performance", description: "Maximise energy, strength, and overall male vitality" },
       { icon: Users, title: "Preventive Care", description: "Take control of your health with proactive screening" },
     ]}

@@ -10,8 +10,8 @@ const atHomeTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 49,
     price: "£49",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 10,
     rating: 4.8,
     reviews: 1240,
@@ -29,8 +29,8 @@ const atHomeTests: CategoryTestItem[] = [
     provider: "Thriva",
     priceNum: 89,
     price: "£89",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "4 days",
+    turnaroundDays: 4,
     biomarkerCount: 18,
     rating: 4.7,
     reviews: 890,
@@ -48,8 +48,8 @@ const atHomeTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 69,
     price: "£69",
-    turnaround: "3–5 days",
-    turnaroundDays: 5,
+    turnaround: "5–7 days",
+    turnaroundDays: 7,
     biomarkerCount: 4,
     rating: 4.6,
     reviews: 420,
@@ -67,8 +67,8 @@ const atHomeTests: CategoryTestItem[] = [
     provider: "Goodbody",
     priceNum: 99,
     price: "£99",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 6,
     rating: 4.9,
     reviews: 678,
@@ -86,8 +86,8 @@ const atHomeTests: CategoryTestItem[] = [
     provider: "Randox Health",
     priceNum: 79,
     price: "£79",
-    turnaround: "3 days",
-    turnaroundDays: 3,
+    turnaround: "5 days",
+    turnaroundDays: 5,
     biomarkerCount: 8,
     rating: 4.5,
     reviews: 310,
@@ -105,8 +105,8 @@ const atHomeTests: CategoryTestItem[] = [
     provider: "Lola Health",
     priceNum: 59,
     price: "£59",
-    turnaround: "2 days",
-    turnaroundDays: 2,
+    turnaround: "4 days",
+    turnaroundDays: 4,
     biomarkerCount: 5,
     rating: 4.7,
     reviews: 540,
@@ -121,9 +121,10 @@ const atHomeTests: CategoryTestItem[] = [
 const AtHomeTestsPage = () => (
   <CategoryPageLayout
     seoTitle="At-Home Tests | myhealth checkup"
+    pillLabel="At-Home Tests"
     seoDescription="Convenient at-home health testing kits with professional lab analysis and fast results. Finger prick, saliva, and urine tests delivered to your door."
     seoKeywords="at home blood test, home testing kit, finger prick test, health test at home, private blood test UK"
-    canonicalUrl="https://myhealthcheckup.co.uk/at-home-tests"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/at-home-tests"
     headline="At-Home Health Tests"
     subtitle="Take control of your health with convenient at-home testing kits. Professional lab analysis with results delivered securely online."
     searchPlaceholder="Search by symptom or test — e.g. 'vitamin D', 'thyroid'"

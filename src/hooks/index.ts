@@ -3,9 +3,6 @@
 // Core hooks
 export { useFavorites, useFavoritesApi } from "./useFavoritesApi";
 export { useOrders } from "./useOrders";
-export { useClinicsData } from "./useClinicsData";
-export { useGeocoding } from "./useGeocoding";
-export { useUserLocation } from "./useUserLocation";
 export { useNavigationData } from "./useNavigationData";
 export { useDraggable } from "./useDraggable";
 
@@ -37,4 +34,4 @@ export { useFavoritesQuery, useAddFavorite, useRemoveFavorite, useIsFavorite, fa
 export { useOrdersQuery, useCreateOrder, useUpdateOrderStatus, ordersQueryKeys } from "./queries/useOrdersQuery";
 export { useProviderTestsQuery, useProviderCatalogQuery, providersQueryKeys } from "./queries/useProvidersQuery";
 export { useActiveTestsQuery, useTestsByCategoryQuery, useSearchTestsQuery, usePopularTestsQuery, testsQueryKeys } from "./queries/useTestsQuery";
-export { useClinicsQuery } from "./queries/useClinicsQuery";
+

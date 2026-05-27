@@ -29,11 +29,11 @@ export function withLazyLoading<P extends object>(Component: ComponentType<P>, l
 // Lazy-loaded components for better code splitting
 export const LazyTestCategories = lazy(() => import("../sections/TestCategories"));
 export const LazyFeaturedProviders = lazy(() => import("../sections/FeaturedProviders"));
-export const LazyMostPopularTests = lazy(() => import("../tests/MostPopularTests"));
+
 export const LazyHealthBenefitsInfographic = lazy(() => import("../sections/HealthBenefitsInfographic"));
 export const LazyFounderStory = lazy(() => import("../sections/FounderStory"));
 export const LazyPartnerShowcase = lazy(() => import("../sections/PartnerShowcase"));
-export const LazyClinicMap = lazy(() => import("../clinic/ClinicFinder"));
+
 export const LazyHealthResources = lazy(() => import("../sections/HealthResources"));
 export const LazyHowItWorks = lazy(() => import("../sections/HowItWorks"));
 export const LazyMediaSpotlight = lazy(() => import("../sections/MediaSpotlight"));
@@ -49,11 +49,6 @@ export const FeaturedProviders = () => <ErrorBoundary>
       <LazyFeaturedProviders />
     </Suspense>
   </ErrorBoundary>;
-export const MostPopularTests = () => <ErrorBoundary>
-    <Suspense fallback={<LoadingSpinner message="Loading popular tests..." />}>
-      <LazyMostPopularTests />
-    </Suspense>
-  </ErrorBoundary>;
 export const HealthBenefitsInfographic = () => <ErrorBoundary>
     <Suspense fallback={<LoadingSpinner message="Loading health benefits..." />}>
       <LazyHealthBenefitsInfographic />
@@ -67,11 +62,6 @@ export const FounderStory = () => <ErrorBoundary>
 export const PartnerShowcase = () => <ErrorBoundary>
     <Suspense fallback={<LoadingSpinner message="Loading partners..." />}>
       <LazyPartnerShowcase />
-    </Suspense>
-  </ErrorBoundary>;
-export const ClinicMap = () => <ErrorBoundary>
-    <Suspense fallback={<LoadingSpinner message="Loading clinic map..." />}>
-      <LazyClinicMap />
     </Suspense>
   </ErrorBoundary>;
 export const HealthResources = () => <ErrorBoundary>

@@ -10,8 +10,8 @@ const fertilityTests: CategoryTestItem[] = [
     provider: "Medichecks",
     priceNum: 69,
     price: "£69",
-    turnaround: "2–3 days",
-    turnaroundDays: 3,
+    turnaround: "4–5 days",
+    turnaroundDays: 5,
     biomarkerCount: 3,
     rating: 4.8,
     reviews: 890,
@@ -29,8 +29,8 @@ const fertilityTests: CategoryTestItem[] = [
     provider: "London Medical Laboratory",
     priceNum: 79,
     price: "£79",
-    turnaround: "3–5 days",
-    turnaroundDays: 5,
+    turnaround: "5–7 days",
+    turnaroundDays: 7,
     biomarkerCount: 1,
     rating: 4.8,
     reviews: 342,
@@ -48,8 +48,8 @@ const fertilityTests: CategoryTestItem[] = [
     provider: "London Medical Laboratory",
     priceNum: 349,
     price: "£349",
-    turnaround: "7–10 days",
-    turnaroundDays: 10,
+    turnaround: "9–12 days",
+    turnaroundDays: 12,
     biomarkerCount: 3,
     rating: 5.0,
     reviews: 128,
@@ -67,8 +67,8 @@ const fertilityTests: CategoryTestItem[] = [
     provider: "London Medical Laboratory",
     priceNum: 399,
     price: "£399",
-    turnaround: "7–10 days",
-    turnaroundDays: 10,
+    turnaround: "9–12 days",
+    turnaroundDays: 12,
     biomarkerCount: 1,
     rating: 4.9,
     reviews: 67,
@@ -86,8 +86,8 @@ const fertilityTests: CategoryTestItem[] = [
     provider: "London Medical Laboratory",
     priceNum: 449,
     price: "£449",
-    turnaround: "7–10 days",
-    turnaroundDays: 10,
+    turnaround: "9–12 days",
+    turnaroundDays: 12,
     biomarkerCount: 5,
     rating: 4.9,
     reviews: 94,
@@ -105,8 +105,8 @@ const fertilityTests: CategoryTestItem[] = [
     provider: "London Medical Laboratory",
     priceNum: 599,
     price: "£599",
-    turnaround: "10–14 days",
-    turnaroundDays: 14,
+    turnaround: "12–16 days",
+    turnaroundDays: 16,
     biomarkerCount: 23,
     rating: 5.0,
     reviews: 56,
@@ -121,9 +121,10 @@ const fertilityTests: CategoryTestItem[] = [
 const FertilityTestsPage = () => (
   <CategoryPageLayout
     seoTitle="Fertility Tests | myhealth checkup"
+    pillLabel="Fertility & Prenatal"
     seoDescription="Non-invasive prenatal testing (NIPT), fertility screening, gender reveal, and paternity tests during pregnancy. Safe screening from 8 weeks."
     seoKeywords="NIPT, prenatal testing, gender reveal, fertility blood test, AMH test, pregnancy blood test"
-    canonicalUrl="https://myhealthcheckup.co.uk/fertility-tests"
+    canonicalUrl="https://www.myhealthcheckup.co.uk/fertility-tests"
     headline="Fertility & Prenatal Tests"
     subtitle="Non-invasive prenatal testing, fertility screening, and pregnancy blood tests from trusted UK labs. Safe, accurate, and confidential."
     searchPlaceholder="Search by test type — e.g. 'NIPT', 'gender reveal', 'AMH'"

@@ -3,29 +3,42 @@
 <html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
+    <!-- Auto-upgrade any http:// subresource (provider images, third-party CDN URLs) to https://.
+         Belt-and-braces alongside the CSP header set in vercel.json + public/_headers. -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>myhealth checkup | Compare UK Private Blood Tests</title>
-    <meta name="description" content="Compare private blood tests and health screenings from accredited UK providers. Real-time prices, biomarkers and trusted reviews.">
-
+    <title>myhealth checkup | Compare UK Private Health Tests</title>
+    <meta name="description" content="Compare UK private blood tests, cancer screening and hormone panels from accredited UKAS labs and CQC clinics. Free, transparent, independent.">
     <meta name="author" content="MYHEALTHCHECKUP LTD" />
     <meta name="robots" content="index, follow" />
+    <meta name="google-site-verification" content="KkVu0Dw7jMvEksZleeueGNVvgWYXDfCgof-ClC1yReM" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Geographic targeting: UK only (audit 2.x). hreflang asserts en-GB
+         is the canonical localised version. x-default falls back to the same
+         URL since we do not currently serve other locales. -->
+    <link rel="alternate" hreflang="en-gb" href="https://www.myhealthcheckup.co.uk/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.myhealthcheckup.co.uk/" />
+    <meta name="geo.region" content="GB" />
+    <meta name="geo.placename" content="United Kingdom" />
 
     <!-- Open Graph / Facebook -->
     
     
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/WbOGBsRMROaSo0gcxc0QbAhOsOj1/social-images/social-1767936720683-myhealth Main Logo (1500 x 1500 px) (Medium Banner (US) (Landscape)).png">
-    <meta property="og:url" content="https://myhealthcheckup.co.uk/" />
+    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/WbOGBsRMROaSo0gcxc0QbAhOsOj1/social-images/social-1778765090262-Screenshot_2026-05-14_at_00.06.44.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://www.myhealthcheckup.co.uk/" />
     <meta property="og:site_name" content="myhealth checkup" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@myhealthcheckup" />
-    <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/WbOGBsRMROaSo0gcxc0QbAhOsOj1/social-images/social-1767936720683-myhealth Main Logo (1500 x 1500 px) (Medium Banner (US) (Landscape)).png">
+    <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/WbOGBsRMROaSo0gcxc0QbAhOsOj1/social-images/social-1778765090262-Screenshot_2026-05-14_at_00.06.44.webp">
     
     <!-- Mobile Theme -->
     <meta name="theme-color" content="#081129">
@@ -35,12 +48,14 @@
     <!-- Preconnect to origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+    <link rel="dns-prefetch" href="https://storage.googleapis.com">
+    <link rel="preconnect" href="https://cdn.gpteng.co" crossorigin>
     
     <!-- Brand Typography: Montserrat (headings), Lato (body), Garamond (elegant accents) -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <!-- Non-render-blocking: load as print stylesheet then swap to all on load (FOIT-free) -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"></noscript>
     
-    <!-- Hero background is imported via JS module (hero-bg-blood-tubes.jpg) -->
     
   
   
@@ -49,15 +64,107 @@
   
   
   
-  <meta property="og:title" content="myhealth checkup | Compare UK Private Blood Tests">
-  <meta name="twitter:title" content="myhealth checkup | Compare UK Private Blood Tests">
-  <meta property="og:description" content="Compare private blood tests and health screenings from accredited UK providers. Real-time prices, biomarkers and trusted reviews.">
-  <meta name="twitter:description" content="Compare private blood tests and health screenings from accredited UK providers. Real-time prices, biomarkers and trusted reviews.">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
+  <!--
+    Static Organization + WebSite JSON-LD.
+    Lives in the HTML shell so crawlers (and LLM scrapers) get entity data
+    without executing React. Per-page schema is added at runtime via Helmet.
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.myhealthcheckup.co.uk/#organization",
+        "name": "myhealth checkup",
+        "url": "https://www.myhealthcheckup.co.uk/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.myhealthcheckup.co.uk/og-image.png"
+        },
+        "description": "UK private health testing comparison marketplace. Compare blood tests, cancer screening, hormone panels, and fertility tests from regulated UK providers.",
+        "address": { "@type": "PostalAddress", "addressCountry": "GB" },
+        "sameAs": [
+          "https://twitter.com/myhealthcheckup"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.myhealthcheckup.co.uk/#website",
+        "url": "https://www.myhealthcheckup.co.uk/",
+        "name": "myhealth checkup",
+        "publisher": { "@id": "https://www.myhealthcheckup.co.uk/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.myhealthcheckup.co.uk/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="myhealth checkup | Compare UK Private Health Tests">
+  <meta name="twitter:title" content="myhealth checkup | Compare UK Private Health Tests">
+  <meta property="og:description" content="Compare UK private blood tests, cancer screening and hormone panels from accredited UKAS labs and CQC clinics. Free, transparent, independent.">
+  <meta name="twitter:description" content="Compare UK private blood tests, cancer screening and hormone panels from accredited UKAS labs and CQC clinics. Free, transparent, independent.">
 </head>
 
   <body>
     <div id="root"></div>
+
+    <!--
+      Static, crawlable medical disclaimer + reviewer attribution.
+      Lives in the HTML shell (not the React tree) so search engines and AI
+      crawlers see it without executing JS. Hidden from sighted users since
+      the React Footer renders the full visible version on every page.
+    -->
+    <noscript>
+      <div role="note" aria-label="Medical disclaimer">
+        <p>
+          <strong>Medical disclaimer:</strong> This site provides comparison information only and does not
+          constitute medical advice. Consult your GP for medical guidance. Clinical content reviewed by
+          Nathanial Smith, Physician Associate (HCPC PA43353).
+        </p>
+      </div>
+    </noscript>
+    <p hidden id="static-medical-disclaimer" data-purpose="seo-eeat">
+      <strong>Medical disclaimer:</strong> This site provides comparison information only and does not constitute
+      medical advice. Consult your GP for medical guidance. Clinical content reviewed by Nathanial Smith,
+      Physician Associate (HCPC PA43353).
+    </p>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>

@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 
+// Tablets (>=768px) get the desktop header (logo + tagline side-by-side).
+// Phones (<768px) keep the compact mobile header.
 const MOBILE_BREAKPOINT = 768
 
 export function useIsMobile() {

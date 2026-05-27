@@ -38,6 +38,8 @@ export default function AsFeaturedIn({ providers = [] }: AsFeaturedInProps) {
               key={name}
               src={logos[name]} 
               alt={`${name} logo`} 
+              loading="lazy"
+              decoding="async"
               className="h-4 grayscale opacity-70"
             />
           ))}

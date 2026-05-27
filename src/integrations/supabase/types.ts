@@ -135,88 +135,52 @@ export type Database = {
       }
       biomarkers_library: {
         Row: {
-          alternate_units: Json | null
           biomarker_code: string
           biomarker_name: string
-          biomaterial: string | null
-          body_system: string | null
           category: string
           clinical_significance: string | null
           created_at: string
           description: string
           id: string
           interpretation_guide: Json | null
-          last_reviewed_at: string | null
           lifestyle_factors: string[] | null
           normal_range_female: string | null
           normal_range_male: string | null
-          reference_ranges: Json | null
-          related_articles: Json | null
           related_conditions: string[] | null
-          reviewed_by: string | null
-          synonyms: string[] | null
           unit_of_measurement: string | null
           updated_at: string
-          what_affects_it: string | null
-          what_it_measures: string | null
-          when_to_retest: string | null
-          why_it_matters: string | null
         }
         Insert: {
-          alternate_units?: Json | null
           biomarker_code: string
           biomarker_name: string
-          biomaterial?: string | null
-          body_system?: string | null
           category: string
           clinical_significance?: string | null
           created_at?: string
           description: string
           id?: string
           interpretation_guide?: Json | null
-          last_reviewed_at?: string | null
           lifestyle_factors?: string[] | null
           normal_range_female?: string | null
           normal_range_male?: string | null
-          reference_ranges?: Json | null
-          related_articles?: Json | null
           related_conditions?: string[] | null
-          reviewed_by?: string | null
-          synonyms?: string[] | null
           unit_of_measurement?: string | null
           updated_at?: string
-          what_affects_it?: string | null
-          what_it_measures?: string | null
-          when_to_retest?: string | null
-          why_it_matters?: string | null
         }
         Update: {
-          alternate_units?: Json | null
           biomarker_code?: string
           biomarker_name?: string
-          biomaterial?: string | null
-          body_system?: string | null
           category?: string
           clinical_significance?: string | null
           created_at?: string
           description?: string
           id?: string
           interpretation_guide?: Json | null
-          last_reviewed_at?: string | null
           lifestyle_factors?: string[] | null
           normal_range_female?: string | null
           normal_range_male?: string | null
-          reference_ranges?: Json | null
-          related_articles?: Json | null
           related_conditions?: string[] | null
-          reviewed_by?: string | null
-          synonyms?: string[] | null
           unit_of_measurement?: string | null
           updated_at?: string
-          what_affects_it?: string | null
-          what_it_measures?: string | null
-          when_to_retest?: string | null
-          why_it_matters?: string | null
         }
         Relationships: []
       }

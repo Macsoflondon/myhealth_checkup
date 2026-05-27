@@ -15,7 +15,7 @@ import ProviderTestCard from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 
 const PROVIDER_ID = "medichecks";
-const PROVIDER_NAME = "Medichecks";
+const PROVIDER_NAME = "\n";
 
 const MedichecksTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -84,7 +84,7 @@ const MedichecksTestsCatalogPage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>Medichecks Tests | myhealth checkup</title>
+        <title>\n Tests | myhealth checkup</title>
         <meta name="description" content="Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening." />
       </Helmet>
       <div className="min-h-screen bg-[primary-on-container] bg-tertiary">
@@ -107,8 +107,8 @@ const MedichecksTestsCatalogPage = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50" />
               <Input placeholder="Search tests..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
             </div>
-            <Button variant="outline" size="icon" onClick={() => setShowFilters(!showFilters)} className={showFilters ? "bg-primary text-primary-foreground" : ""}>
-              <SlidersHorizontal className="h-4 w-4" />
+            <Button variant="outline" size="icon" onClick={() => setShowFilters(!showFilters)} className={showFilters ? "bg-primary text-primary-foreground" : ""} aria-label={showFilters ? "Hide filters" : "Show filters"} aria-expanded={showFilters}>
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
           {showFilters && (

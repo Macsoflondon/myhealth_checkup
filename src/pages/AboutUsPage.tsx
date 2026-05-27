@@ -32,26 +32,22 @@ const AboutUsPage = () => {
         <title>About Us | myhealth checkup</title>
         <meta name="description" content="Learn about myhealth checkup's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
         <link rel="canonical" href="https://www.myhealthcheckup.co.uk/about" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="About myhealth checkup | Our Mission & Story" />
-        <meta property="og:description" content="Discover the story, values and mission behind myhealth checkup — the UK's trusted private health test comparison platform." />
+        <meta property="og:title" content="About myhealth checkup — our mission and values" />
+        <meta property="og:description" content="Independent UK platform comparing accredited private health tests. Learn about our mission, values, and commitment to transparency." />
         <meta property="og:url" content="https://www.myhealthcheckup.co.uk/about" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="About myhealth checkup | Our Mission & Story" />
-        <meta name="twitter:description" content="Discover the story, values and mission behind myhealth checkup — the UK's trusted private health test comparison platform." />
-
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "AboutPage",
           "name": "About myhealth checkup",
           "description": "Learn about myhealth checkup's mission to make health testing accessible to everyone.",
-          "url": "https://myhealthcheckup.co.uk/about",
-          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
+          "url": "https://www.myhealthcheckup.co.uk/about",
+          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" },
           "publisher": {
             "@type": "Organization",
             "name": "MYHEALTHCHECKUP LTD",
-            "url": "https://myhealthcheckup.co.uk",
-            "logo": "https://myhealthcheckup.co.uk/src/assets/logo-1.svg"
+            "url": "https://www.myhealthcheckup.co.uk",
+            "logo": "https://www.myhealthcheckup.co.uk/src/assets/logo-1.svg"
           }
         })}</script>
       </Helmet>
@@ -138,7 +134,7 @@ const AboutUsPage = () => {
                   <p className="text-white">Tests Compared</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">377+</div>
+                  <div className="text-3xl font-bold text-health-600 mb-2">250+</div>
                   <p className="text-white">Clinic Locations</p>
                 </div>
               </div>

@@ -21,7 +21,7 @@ const hormoneTests = [
     price: "£79",
     biomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Testosterone", "SHBG", "Prolactin"],
     suitableFor: ["Irregular cycles", "PMS symptoms", "Fertility planning", "Hormone imbalances"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   },
   {
     id: "male-hormones",
@@ -32,7 +32,7 @@ const hormoneTests = [
     price: "£43",
     biomarkers: ["Total Testosterone", "Free Testosterone", "SHBG", "LH", "FSH", "Prolactin"],
     suitableFor: ["Low energy/libido", "Muscle building", "Weight management", "Fertility concerns"],
-    turnaround: "2-5 working days"
+    turnaround: "4-8 working days"
   },
   {
     id: "testosterone-test",
@@ -43,7 +43,7 @@ const hormoneTests = [
     price: "£29",
     biomarkers: ["Total Testosterone"],
     suitableFor: ["Low energy", "Decreased libido", "Muscle loss", "Mood changes"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   },
   {
     id: "thyroid-hormones",
@@ -54,7 +54,7 @@ const hormoneTests = [
     price: "£89",
     biomarkers: ["TSH", "Free T3", "Free T4", "Anti-TPO"],
     suitableFor: ["Fatigue", "Weight changes", "Temperature sensitivity", "Hair loss"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   },
   {
     id: "menopause-hormones",
@@ -65,7 +65,7 @@ const hormoneTests = [
     price: "£69",
     biomarkers: ["FSH", "LH", "Oestradiol", "Testosterone", "SHBG"],
     suitableFor: ["Irregular periods", "Hot flashes", "Sleep issues", "Mood changes"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   },
   {
     id: "fertility-hormones",
@@ -76,7 +76,7 @@ const hormoneTests = [
     price: "£79",
     biomarkers: ["AMH", "FSH", "LH", "Oestradiol", "Testosterone", "Prolactin"],
     suitableFor: ["Family planning", "Fertility assessment", "IVF preparation", "PCOS screening"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   },
   {
     id: "cortisol-stress",
@@ -87,7 +87,7 @@ const hormoneTests = [
     price: "£45",
     biomarkers: ["Morning Cortisol"],
     suitableFor: ["Chronic stress", "Fatigue", "Sleep issues", "Mood disorders"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   },
   {
     id: "insulin-diabetes",
@@ -98,7 +98,7 @@ const hormoneTests = [
     price: "£79",
     biomarkers: ["Fasting Insulin", "HbA1c", "Glucose", "C-Peptide"],
     suitableFor: ["Weight management", "PCOS", "Diabetes risk", "Metabolic syndrome"],
-    turnaround: "2 working days"
+    turnaround: "4 working days"
   }
 ];
 
@@ -172,13 +172,13 @@ const HormonesPage = () => {
         <title>Hormone Tests | myhealth checkup</title>
         <meta name="description" content="Complete hormone testing including thyroid, reproductive, stress, and metabolic hormones. Professional hormone analysis from £45." />
         <meta name="keywords" content="hormone blood tests, testosterone test, female hormones, thyroid hormones, cortisol test, fertility hormones, menopause test" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/hormones" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/hormones" />
         
         {/* Open Graph Tags */}
         <meta property="og:title" content="Hormone Tests | myhealth checkup" />
         <meta property="og:description" content="Comprehensive hormone testing for optimal health and wellness" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/hormones" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/hormones" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -191,7 +191,7 @@ const HormonesPage = () => {
       <main className="flex-grow bg-background">
         <PageBanner
           title="Hormone Blood Tests"
-          subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimize your health with professional hormone analysis and personalized insights."
+          subtitle="Comprehensive hormone testing including reproductive, thyroid, stress, and metabolic hormones. Optimise your health with professional hormone analysis and personalised insights."
         />
 
 
@@ -220,7 +220,7 @@ const HormonesPage = () => {
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-foreground">Improve Mood</h3>
                   <p className="text-muted-foreground">
-                    Stabilize mood and reduce anxiety through hormone optimization
+                    Stabilise mood and reduce anxiety through hormone optimisation
                   </p>
                 </div>
                 <div className="text-center">

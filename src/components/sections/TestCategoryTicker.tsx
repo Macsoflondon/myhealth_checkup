@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useMarqueeTicker } from "@/hooks/useMarqueeTicker";
 
 const categories = [
   "Cancer Screening",
@@ -19,67 +19,12 @@ const categories = [
 const SETS = 8;
 
 const TestCategoryTicker = () => {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const positionRef = useRef(0);
-  const singleSetWidthRef = useRef(0);
-
-  const measureSetWidth = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return 0;
-    let width = 0;
-    for (let i = 0; i < categories.length && i < track.children.length; i++) {
-      width += (track.children[i] as HTMLElement).getBoundingClientRect().width;
-    }
-    return width;
-  }, []);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const measure = () => {
-      singleSetWidthRef.current = measureSetWidth();
-    };
-
-    measure();
-    document.fonts?.ready?.then(measure);
-
-    let animationId: number;
-    let lastTime = 0;
-    const pxPerMs = 0.04;
-
-    const animate = (timestamp: number) => {
-      if (lastTime === 0) lastTime = timestamp;
-      const delta = timestamp - lastTime;
-      lastTime = timestamp;
-
-      const clampedDelta = Math.min(delta, 50);
-      positionRef.current -= pxPerMs * clampedDelta;
-
-      const setWidth = singleSetWidthRef.current;
-      if (setWidth > 0 && Math.abs(positionRef.current) >= setWidth) {
-        positionRef.current += setWidth;
-      }
-
-      track.style.transform = `translate3d(${positionRef.current}px, 0, 0)`;
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    const onResize = () => measure();
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [measureSetWidth]);
-
+  const trackRef = useMarqueeTicker(categories.length);
   const items = Array.from({ length: SETS }, () => categories).flat();
 
   return (
-    <section className="bg-brand-navy overflow-hidden select-none">
+    <section className="bg-brand-navy overflow-hidden select-none relative">
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       <div className="py-2.5 sm:py-3">
         <div
           className="relative overflow-hidden"

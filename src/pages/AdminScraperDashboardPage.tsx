@@ -5,9 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle } from "lucide-react";
+import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2, Trash2 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
+import { ScraperAlertsPanel } from "@/components/admin/ScraperAlertsPanel";
+import { NormalizeCategoriesCard } from "@/components/admin/NormalizeCategoriesCard";
 
 interface ScrapingJob {
   id: string;
@@ -78,15 +85,15 @@ const AdminScraperDashboardPage: React.FC = () => {
     setRunningScrapers(prev => new Set(prev).add(provider.id));
     
     try {
-      const { data, error } = await supabase.functions.invoke(provider.functionName, {
-        body: { replace: true }
+      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
+        body: { providerId: provider.id }
       });
 
       if (error) throw error;
 
       toast({
-        title: "Scraper completed",
-        description: `${provider.name}: ${data?.message || 'Scraping finished'}`,
+        title: "Scraper started",
+        description: `${provider.name}: ${data?.message || 'Scraping is running in the background.'}`,
       });
 
       // Refresh data
@@ -108,9 +115,60 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
   };
 
+  const purgeAndRescrape = async (provider: Provider) => {
+    setRunningScrapers(prev => new Set(prev).add(provider.id));
+    try {
+      const { data, error } = await supabase.functions.invoke('purge-and-rescrape', {
+        body: { providerId: provider.id, confirm: true }
+      });
+      if (error) throw error;
+      toast({
+        title: "Purge + re-scrape dispatched",
+        description: `${provider.name}: purged ${data?.purgedRows ?? 0} rows. Re-scrape running in background.`,
+      });
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      toast({
+        title: "Purge failed",
+        description: `${provider.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(prev => {
+        const next = new Set(prev);
+        next.delete(provider.id);
+        return next;
+      });
+    }
+  };
+
   const runAllScrapers = async () => {
-    for (const provider of PROVIDERS) {
-      await runScraper(provider);
+    setRunningScrapers(new Set(PROVIDERS.map((provider) => provider.id)));
+
+    try {
+      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
+        body: { providerIds: PROVIDERS.map((provider) => provider.id) }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Scraper batch started",
+        description: data?.message || 'All provider scrapers are running in the background.',
+      });
+
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      console.error('Error running all scrapers:', error);
+      toast({
+        title: "Scraper batch failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(new Set());
     }
   };
 
@@ -164,10 +222,16 @@ const AdminScraperDashboardPage: React.FC = () => {
             </div>
           </div>
 
+          <LeakedPasswordProtectionStatus />
+
+          <ScraperAlertsPanel />
+
+          <NormalizeCategoriesCard />
+
           <Alert>
             <Clock className="h-4 w-4" />
             <AlertDescription>
-              <strong>Scheduled scraping:</strong> All scrapers run automatically at 06:00 and 14:00 daily (UK time).
+              <strong>Scheduled scraping:</strong> All provider scrapers run automatically every 6 hours, with a daily health check that creates alerts when any provider drops below its expected test count.
             </AlertDescription>
           </Alert>
 
@@ -187,7 +251,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                           {testCount} active tests • Last scraped: {formatDate(job?.last_scraped || null)}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap justify-end">
                         {getStatusBadge(job?.status)}
                         <Button
                           size="sm"
@@ -206,6 +270,38 @@ const AdminScraperDashboardPage: React.FC = () => {
                             </>
                           )}
                         </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={isRunning || runningScrapers.size > 0}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Purge & Re-scrape
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Purge all {provider.name} tests?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will <strong>permanently delete all {testCount} active rows</strong> in
+                                <code className="mx-1">provider_tests</code> for <strong>{provider.name}</strong>,
+                                then immediately re-trigger the scraper so the improved parser repopulates everything
+                                from scratch. Cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                onClick={() => purgeAndRescrape(provider)}
+                              >
+                                Yes, purge and re-scrape
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </CardHeader>

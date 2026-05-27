@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { CategoryHero } from "./CategoryHero";
+import { CategoryStandardHero } from "./CategoryStandardHero";
 import { CategoryFilters } from "./CategoryFilters";
 import { CategoryCompareDrawer, CompareItem } from "./CategoryCompareDrawer";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
@@ -50,6 +50,7 @@ export interface CategoryPageLayoutProps {
   seoKeywords?: string;
   canonicalUrl: string;
   /* Hero */
+  pillLabel: string;
   headline: string;
   subtitle: string;
   searchPlaceholder: string;
@@ -73,6 +74,7 @@ export function CategoryPageLayout({
   seoDescription,
   seoKeywords,
   canonicalUrl,
+  pillLabel,
   headline,
   subtitle,
   searchPlaceholder,
@@ -146,6 +148,15 @@ export function CategoryPageLayout({
     badgeColor: t.badgeColor,
   }));
 
+  // Derive per-filter accent colors from each tag's first matching test badgeColor
+  const filterColors = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const t of tests) {
+      if (t.tag && !map[t.tag]) map[t.tag] = t.badgeColor;
+    }
+    return map;
+  }, [tests]);
+
   return (
     <>
       <Helmet>
@@ -157,32 +168,6 @@ export function CategoryPageLayout({
         <meta property="og:description" content={seoDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: seoTitle,
-          description: seoDescription,
-          url: canonicalUrl,
-          mainEntity: {
-            "@type": "ItemList",
-            numberOfItems: tests.length,
-            itemListElement: tests.slice(0, 20).map((t, i) => ({
-              "@type": "ListItem",
-              position: i + 1,
-              item: {
-                "@type": "MedicalTest",
-                name: t.title,
-                description: t.desc,
-                offers: {
-                  "@type": "Offer",
-                  price: t.priceNum,
-                  priceCurrency: "GBP",
-                  seller: { "@type": "Organization", name: t.provider },
-                },
-              },
-            })),
-          },
-        })}</script>
       </Helmet>
 
       <div className="min-h-screen flex flex-col">
@@ -193,17 +178,10 @@ export function CategoryPageLayout({
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
 
-          <CategoryHero
-            headline={headline}
-            subtitle={subtitle}
-            searchPlaceholder={searchPlaceholder}
-            trustStats={trustStats}
-            search={search}
-            onSearchChange={setSearch}
-          />
+          <CategoryStandardHero pillLabel={pillLabel} benefits={benefits} />
 
           {/* Filter + Sort + Cards */}
-          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-primary-foreground">
+          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white">
             <div className="max-w-6xl mx-auto">
               <CategoryFilters
                 filters={filters}
@@ -214,10 +192,11 @@ export function CategoryPageLayout({
                 resultCount={filtered.length}
                 searchTerm={search || undefined}
                 compareCount={compared.length}
+                filterColors={filterColors}
               />
 
               {/* Cards grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
                 {filtered.map((test) => (
                   <UnifiedTestCard
                     key={test.id}
@@ -238,7 +217,7 @@ export function CategoryPageLayout({
                     ctaLabel="Compare"
                     compareSelected={!!compared.find((c) => c.id === test.id)}
                     onCompareToggle={() => toggleCompare(test)}
-                    className="w-full max-w-[340px]"
+                    className="w-full max-w-[360px]"
                   />
                 ))}
               </div>

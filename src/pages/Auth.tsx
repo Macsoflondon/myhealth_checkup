@@ -15,7 +15,8 @@ import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle, Lock } from "lucide-react";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
-import { AppleSignInButton } from "@/components/auth/AppleSignInButton";
+import { Helmet } from "react-helmet-async";
+
 
 const Auth = () => {
   const {
@@ -229,8 +230,8 @@ const Auth = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-          <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
+        <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
+          <div className="max-w-md w-full">
             <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
               Reset Password
             </h2>
@@ -289,9 +290,19 @@ const Auth = () => {
   }
 
   return <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Sign In or Create Account | myhealth checkup</title>
+        <meta name="description" content="Sign in or create your myhealth checkup account to compare private UK health tests, save favourites and track orders across accredited providers." />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/auth" />
+        <meta name="robots" content="noindex, follow" />
+        <meta property="og:title" content="Sign In or Create Account | myhealth checkup" />
+        <meta property="og:description" content="Access your myhealth checkup account to compare and manage private UK health tests." />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/auth" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
-      <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
+      <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
+        <div className="max-w-md w-full">
           <h2 className="text-2xl text-center mb-6 text-primary font-medium">
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
@@ -386,7 +397,7 @@ const Auth = () => {
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
-            <div className="relative my-4">
+            <div className="relative my-4 hidden">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-muted" />
               </div>
@@ -395,12 +406,11 @@ const Auth = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="hidden flex-col gap-3">
               <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
-              <AppleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
             </div>
 
-            <div className="text-center mt-4">
+            <div className="text-center mt-2">
               <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-[#081129] font-medium">
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
@@ -408,11 +418,11 @@ const Auth = () => {
 
             {/* Subtle admin access */}
             {!isSignUp && (
-              <div className="text-center mt-6 pt-4 border-t border-gray-100">
+              <div className="text-center mt-1 pt-1 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => navigate("/admin/login")}
-                  className="text-gray-300 hover:text-gray-400 text-[10px] transition-colors"
+                  className="text-gray-600 hover:text-gray-800 text-[10px] transition-colors"
                 >
                   Admin
                 </button>

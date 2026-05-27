@@ -311,6 +311,13 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -335,7 +342,7 @@ Deno.serve(async (req) => {
         urls.forEach(url => allProductUrls.add(url));
         console.log(`Found ${urls.length} products from ${categoryUrl}`);
       } catch (error) {
-        console.error(`Failed to fetch category ${categoryUrl}:`, error.message);
+        console.error(`Failed to fetch category ${categoryUrl}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -373,7 +380,7 @@ Deno.serve(async (req) => {
         
         console.log(`Scraped: ${title} - £${price} - ${biomarkerCount || 0} biomarkers`);
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, error.message);
+        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -406,7 +413,7 @@ Deno.serve(async (req) => {
       }, { onConflict: 'provider_id,provider_test_id' });
       
       if (!error) upsertedCount++;
-      else console.error(`Failed to upsert ${product.test_name}:`, error.message);
+      else console.error(`Failed to upsert ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
     }
 
     // Deactivate stale tests
@@ -444,11 +451,11 @@ Deno.serve(async (req) => {
 
     await supabase.from('scraping_jobs').update({
       status: 'failed',
-      error_message: error.message
+      error_message: (error instanceof Error ? error.message : String(error))
     }).eq('provider_id', 'london-medical-laboratory');
 
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }

@@ -1,4 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { getErrorMessage } from '../_shared/errors.ts';
+import { upsertProviderTests } from '../_shared/provider-upsert.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -6,169 +8,283 @@ const corsHeaders = {
 };
 
 const PROVIDER_ID = 'medical-diagnosis';
-const BASE_URL = 'https://www.medicaldiagnosis.co.uk';
+// WooCommerce site (correct domain has hyphen). The .net mirror serves the same DB.
+const WOO_BASE = 'https://www.medical-diagnosis.co.uk';
 
-function determineCategory(title: string, description: string): string {
-  const text = (title + ' ' + description).toLowerCase();
-  if (text.match(/cancer|tumour|psa|ca125|cea/)) return 'Cancer Screening';
-  if (text.match(/liver/)) return 'Liver Function';
+interface WooPrices {
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  currency_minor_unit: number;
+}
+interface WooCategory { name: string; slug: string }
+interface WooProduct {
+  id: number;
+  name: string;
+  slug: string;
+  permalink: string;
+  short_description: string;
+  description: string;
+  on_sale: boolean;
+  prices: WooPrices;
+  categories: WooCategory[];
+  images: { src: string }[];
+}
+
+function decodeHtmlEntities(s: string): string {
+  return s
+    .replace(/&#8211;/g, '–')
+    .replace(/&#8217;/g, '\u2019')
+    .replace(/&#038;/g, '&')
+    .replace(/&#0?38;/g, '&')
+    .replace(/&amp;/g, '&')
+    .replace(/&pound;/g, '£')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)));
+}
+
+function stripHtml(html: string): string {
+  return decodeHtmlEntities(html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+}
+
+/**
+ * Parse a raw scraper test name into structured fields.
+ * Medical-diagnosis WP exports many rows as "[PARAM]Parent Test!~!Biomarker Name".
+ * These are biomarker rows of a parent test, NOT standalone tests.
+ * Returns { kind: 'param', parent, biomarker } for those, or { kind: 'test', name } otherwise.
+ */
+export function parseRawTestName(raw: string): 
+  | { kind: 'param'; parent: string; biomarker: string }
+  | { kind: 'test'; name: string }
+  | { kind: 'junk' } {
+  const decoded = decodeHtmlEntities((raw ?? '').trim());
+  if (!decoded) return { kind: 'junk' };
+
+  const paramMatch = decoded.match(/^\[PARAM\](.+?)!~!(.+)$/);
+  if (paramMatch) {
+    const parent = paramMatch[1].trim().replace(/[\s\-:]+$/, '');
+    const biomarker = paramMatch[2].trim();
+    if (!parent || !biomarker) return { kind: 'junk' };
+    return { kind: 'param', parent, biomarker };
+  }
+  // Reject obvious junk patterns
+  if (/^\[?param\]?/i.test(decoded) || decoded.includes('!~!')) return { kind: 'junk' };
+  return { kind: 'test', name: decoded };
+}
+
+function slugify(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 80);
+}
+
+function determineCategory(title: string, description: string, cats: WooCategory[]): string {
+  const catText = cats.map(c => c.name).join(' ').toLowerCase();
+  const text = (title + ' ' + description + ' ' + catText).toLowerCase();
+  if (catText.match(/cancer|tumour/) || text.match(/cancer|tumour|psa|ca125|cea/)) return 'Cancer Screening';
   if (text.match(/heart|cardiovascular|cholesterol|lipid|cardiac/)) return 'Heart Health';
-  if (text.match(/fertility|amh|ovarian/)) return 'Fertility';
-  if (text.match(/thyroid|tsh|t3|t4/)) return 'Thyroid';
-  if (text.match(/vitamin|mineral|b12|d3|folate/)) return 'Vitamins & Minerals';
-  if (text.match(/iron|ferritin|anaemia/)) return 'Iron & Anaemia';
   if (text.match(/diabetes|glucose|hba1c/)) return 'Diabetes';
-  if (text.match(/women|female|menopause|pcos/)) return "Women's Health";
-  if (text.match(/men|male|testosterone|prostate/)) return "Men's Health";
+  if (text.match(/thyroid|tsh|t3|t4/)) return 'Thyroid';
+  if (text.match(/fertility|amh|ovarian/)) return 'Fertility';
+  if (text.match(/menopause|female|women|pcos/)) return "Women's Health";
+  if (text.match(/testosterone|prostate|men's|male/)) return "Men's Health";
+  if (text.match(/sti|std|sexual|hepatitis|hiv|chlamydia/)) return 'Sexual Health';
+  if (text.match(/allergy|intolerance/)) return 'Allergy';
+  if (text.match(/sport|fitness|performance/)) return 'Sports & Fitness';
+  if (text.match(/vitamin|mineral|b12|folate/)) return 'Vitamins & Minerals';
+  if (text.match(/iron|ferritin|anaemia/)) return 'Iron & Anaemia';
+  if (text.match(/liver|hepatic/)) return 'Liver Function';
   if (text.match(/kidney|renal/)) return 'Kidney Function';
   if (text.match(/hormone|cortisol|dhea/)) return 'Hormones';
-  if (text.match(/sports|fitness|performance/)) return 'Sports & Fitness';
-  if (text.match(/sti|std|sexual/)) return 'Sexual Health';
-  if (text.match(/allergy|intolerance/)) return 'Allergy';
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
-  return response.json();
+function extractBiomarkerCount(text: string): number | null {
+  const m = text.match(/(\d{1,3})\s*(?:biomarkers?|tests?|markers?|analytes?)/i);
+  if (m) {
+    const n = parseInt(m[1], 10);
+    if (n > 0 && n < 500) return n;
+  }
+  return null;
 }
 
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test health screening', limit: 300, includeSubdomains: false }),
+function priceFromWoo(prices: WooPrices, key: 'price' | 'regular_price' | 'sale_price'): number | null {
+  const raw = prices?.[key];
+  if (!raw) return null;
+  const minor = prices.currency_minor_unit ?? 2;
+  const value = parseInt(raw, 10);
+  if (Number.isNaN(value)) return null;
+  return value / Math.pow(10, minor);
+}
+
+async function fetchWooPage(page: number, perPage: number): Promise<WooProduct[]> {
+  const url = `${WOO_BASE}/wp-json/wc/store/products?per_page=${perPage}&page=${page}&_fields=id,name,slug,permalink,short_description,description,on_sale,prices,categories,images`;
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'MyHealthCheckup/1.0 (+https://www.myhealthcheckup.co.uk)',
+      'Accept': 'application/json',
+    },
   });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) =>
-    (l.includes('/product') || l.includes('/test') || l.includes('/blood-test') || l.includes('/health-screen') || l.includes('/shop'))
-    && !l.includes('?') && !l.includes('#') && !l.includes('/cart') && !l.includes('/account')
-  );
+  if (!res.ok) {
+    if (res.status === 400 || res.status === 404) return []; // past last page
+    throw new Error(`Woo store/products HTTP ${res.status}`);
+  }
+  return await res.json();
 }
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
-  try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
-    if (!firecrawlApiKey) throw new Error('FIRECRAWL_API_KEY not configured');
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    console.log('Starting Medical Diagnosis Firecrawl scraper...');
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  try {
+    console.log('Starting Medical Diagnosis scraper (Woo Store API)...');
 
     await supabase.from('scraping_jobs').upsert({
-      provider_id: PROVIDER_ID, status: 'running', last_scraped: new Date().toISOString(),
+      provider_id: PROVIDER_ID,
+      status: 'running',
+      last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
 
-    let productUrls: string[] = [];
-    try {
-      productUrls = await firecrawlMap(BASE_URL, firecrawlApiKey);
-      console.log(`Map discovered ${productUrls.length} URLs`);
-    } catch (e) {
-      console.error('Map failed:', e.message);
+    const perPage = 100;
+    const all: WooProduct[] = [];
+    // Cap at 6 pages = 600 products to keep within edge-function CPU budget; site reports ~1737
+    for (let page = 1; page <= 6; page++) {
+      const batch = await fetchWooPage(page, perPage);
+      if (batch.length === 0) break;
+      all.push(...batch);
+      if (batch.length < perPage) break;
     }
 
-    if (productUrls.length < 5) {
-      try {
-        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey);
-        if (homeResult.success && homeResult.data?.markdown) {
-          const urlMatches = homeResult.data.markdown.matchAll(/\((https?:\/\/[^)]+)\)/g);
-          for (const m of urlMatches) {
-            if (m[1].includes('medicaldiagnosis') && (m[1].includes('test') || m[1].includes('product') || m[1].includes('health'))) {
-              productUrls.push(m[1]);
-            }
-          }
-        }
-      } catch (e) {
-        console.error('Homepage scrape failed:', e.message);
+    console.log(`Fetched ${all.length} Medical Diagnosis products`);
+
+
+
+
+    // First pass: aggregate [PARAM] biomarker rows under their parent test name.
+    const biomarkerGroups = new Map<string, { parent: string; biomarkers: Set<string>; sample?: WooProduct }>();
+    const realTests: WooProduct[] = [];
+    for (const p of all) {
+      const parsed = parseRawTestName(p.name);
+      if (parsed.kind === 'junk') continue;
+      if (parsed.kind === 'param') {
+        const key = parsed.parent.toLowerCase();
+        const g = biomarkerGroups.get(key) ?? { parent: parsed.parent, biomarkers: new Set(), sample: p };
+        g.biomarkers.add(parsed.biomarker);
+        biomarkerGroups.set(key, g);
+        continue;
       }
+      realTests.push(p);
     }
 
-    productUrls = [...new Set(productUrls)];
-    console.log(`Total URLs: ${productUrls.length}`);
+    const rows = realTests.map((p) => {
+      const cleanShort = stripHtml(p.short_description || '');
+      const cleanLong = stripHtml(p.description || '');
+      const desc = (cleanShort || cleanLong).slice(0, 1000);
+      const price = priceFromWoo(p.prices, 'price');
+      const regular = priceFromWoo(p.prices, 'regular_price');
+      const category = determineCategory(p.name, desc, p.categories || []);
+      const niceName = decodeHtmlEntities(p.name);
+      // Attach aggregated biomarkers if this product matches a [PARAM] parent
+      const group = biomarkerGroups.get(niceName.toLowerCase());
+      const biomarkersList = group ? Array.from(group.biomarkers).sort() : null;
+      const biomarkerCount =
+        (biomarkersList?.length ?? null) ?? extractBiomarkerCount(cleanShort + ' ' + cleanLong);
 
-    const products: any[] = [];
-    for (const url of productUrls.slice(0, 80)) {
-      try {
-        const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) continue;
+      return {
+        provider_id: PROVIDER_ID,
+        provider_test_id: `meddiag-${p.slug}`,
+        test_name: niceName,
+        category,
+        price,
+        original_price: regular && regular !== price ? regular : null,
+        description: desc || `${niceName} from Medical Diagnosis.`,
+        url: p.permalink,
+        image_url: p.images?.[0]?.src ?? null,
+        is_active: price !== null && price > 0,
+        biomarker_count: biomarkerCount,
+        biomarkers_list: biomarkersList,
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      };
+    });
 
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
-
-        let title = metadata.title?.replace(/\s*[–|]\s*Medical\s*Diagnosis.*$/i, '').trim() || '';
-        if (!title) {
-          const h1 = markdown.match(/^#\s+(.+)$/m);
-          title = h1 ? h1[1].trim() : '';
-        }
-        if (!title || title.length < 3) continue;
-
-        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-
-        const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
-        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
-
-        products.push({
-          test_name: title,
-          provider_id: PROVIDER_ID,
-          provider_test_id: `meddiag-${slug}`,
-          category: determineCategory(title, metadata.description || ''),
-          price,
-          description: metadata.description || `${title} from Medical Diagnosis.`,
-          url,
-          is_active: true,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Venous blood',
-          clinic_visit_available: true,
-          home_kit_available: true,
-          scraped_at: new Date().toISOString(),
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${price ?? 'N/A'}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ ${e.message}`);
-      }
-    }
-
-    if (products.length > 0) {
-      const { error } = await supabase.from('provider_tests').upsert(products, {
-        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
+    // Emit synthetic parent rows for [PARAM] groups that have NO matching Woo product —
+    // marked inactive (no price) so they don't appear in catalogues but biomarker data is retained.
+    const matchedKeys = new Set(realTests.map((p) => decodeHtmlEntities(p.name).toLowerCase()));
+    for (const [key, g] of biomarkerGroups) {
+      if (matchedKeys.has(key)) continue;
+      rows.push({
+        provider_id: PROVIDER_ID,
+        provider_test_id: `meddiag-parent-${slugify(g.parent)}`,
+        test_name: g.parent,
+        category: determineCategory(g.parent, '', []),
+        price: null,
+        original_price: null,
+        description: `${g.parent} – includes ${g.biomarkers.size} biomarker${g.biomarkers.size === 1 ? '' : 's'}.`,
+        url: g.sample?.permalink ?? WOO_BASE,
+        image_url: g.sample?.images?.[0]?.src ?? null,
+        is_active: false,
+        biomarker_count: g.biomarkers.size,
+        biomarkers_list: Array.from(g.biomarkers).sort(),
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: false,
+        url_verified_at: new Date().toISOString(),
       });
-      if (error) throw error;
     }
+
+    const { upsertedCount, errors: upsertErrors, finalRowCount } =
+      await upsertProviderTests(supabase as any, PROVIDER_ID, rows, 'meddiag-');
 
     await supabase.from('scraping_jobs').upsert({
-      provider_id: PROVIDER_ID, status: 'completed',
+      provider_id: PROVIDER_ID,
+      status: 'completed',
       last_scraped: new Date().toISOString(),
-      next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: null,
+      next_scrape: new Date(Date.now() + 24 * 3600000).toISOString(),
+      last_test_count: upsertedCount,
+      error_message: upsertErrors.length ? upsertErrors.slice(0, 3).join('; ') : null,
     }, { onConflict: 'provider_id' });
 
     return new Response(JSON.stringify({
-      success: true, message: `Scraped ${products.length} Medical Diagnosis tests`, testsUpdated: products.length,
+      success: true,
+      provider: PROVIDER_ID,
+      productsFetched: all.length,
+      realTests: realTests.length,
+      biomarkerGroups: biomarkerGroups.size,
+      testsAfterDedupe: finalRowCount,
+      testsUpserted: upsertedCount,
+      upsertErrors: upsertErrors.slice(0, 5),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (error) {
-    console.error('Medical Diagnosis scraper error:', error);
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+    const errMsg = getErrorMessage(error);
+    console.error('Medical Diagnosis scraper error:', errMsg);
     await supabase.from('scraping_jobs').upsert({
-      provider_id: PROVIDER_ID, status: 'failed',
-      error_message: error.message, last_scraped: new Date().toISOString(),
+      provider_id: PROVIDER_ID,
+      status: 'failed',
+      error_message: errMsg,
+      last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: error.message }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
+    return new Response(JSON.stringify({ success: false, error: errMsg }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 500,
+    });
   }
 });

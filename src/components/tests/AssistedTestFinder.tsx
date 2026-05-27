@@ -85,7 +85,7 @@ const concernOptions = [
   { id: 'hormones', label: 'Hormonal changes' },
   { id: 'heart', label: 'Heart & cholesterol' },
   { id: 'thyroid', label: 'Thyroid' },
-  { id: 'fertility', label: 'Fertility' },
+  { id: 'fertility', label: 'Fertility - Prenatal' },
   { id: 'vitamins', label: 'Vitamin deficiencies' },
   { id: 'digestive', label: 'Digestive issues' },
   { id: 'weight', label: 'Weight management' },
@@ -132,7 +132,7 @@ const speedOptions = [
 ];
 
 const providerNames: Record<string, string> = {
-  medichecks: 'Medichecks',
+  medichecks: '\n',
   goodbody: 'GOODBODY',
   thriva: 'Thriva',
   randox: 'Randox Health',
@@ -341,10 +341,9 @@ export const AssistedTestFinder = () => {
         <NavigationControls />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2 font-montserrat">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 font-montserrat">
               Your Recommended Tests
-            </h2>
-
+            </h1>
             <p className="text-muted-foreground">Based on your answers, here are the tests we think suit you best.</p>
           </div>
 
@@ -589,7 +588,7 @@ function StepLayout({
   return (
     <div className="max-w-5xl mx-auto pt-4">
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h2>
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h1>
         {subtitle && <p className="text-muted-foreground mt-2 text-lg">{subtitle}</p>}
       </div>
       {children}

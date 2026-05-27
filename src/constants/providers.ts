@@ -18,7 +18,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'randox': '/lovable-uploads/provider-randox.png',
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
-  'goodbody-clinic': '/lovable-uploads/provider-goodbody-new-v3.png',
+  'goodbody-clinic': '/lovable-uploads/74b36cff-95b5-4bfc-8ad8-61b4512fd92f.png',
   'london-health-company': '/lovable-uploads/provider-london-health-company.png',
   'medical-diagnosis': '/lovable-uploads/provider-medical-diagnosis.png',
   'clinilabs': '/lovable-uploads/provider-clinilabs.png',
@@ -124,15 +124,15 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
-  'goodbody-clinic': '24-48 hours',
-  'medichecks': '1-3 days',
-  'lola-health': '2-4 days',
-  'thriva': '2-5 days',
-  'london-medical-laboratory': '24-72 hours',
-  'randox': '2-4 days',
-  'london-health-company': '2-5 days',
-  'medical-diagnosis': '1-3 days',
-  'clinilabs': '1-3 days',
+  'goodbody-clinic': '3-5 days',
+  'medichecks': '3-6 days',
+  'lola-health': '4-7 days',
+  'thriva': '4-8 days',
+  'london-medical-laboratory': '3-6 days',
+  'randox': '4-7 days',
+  'london-health-company': '4-8 days',
+  'medical-diagnosis': '3-6 days',
+  'clinilabs': '3-6 days',
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
@@ -165,6 +165,27 @@ export const providers: Provider[] = [
 
 export function getProviderLogo(providerId: string): string {
   return PROVIDER_LOGOS[providerId] || '/placeholder.svg';
+}
+
+/**
+ * Returns responsive srcSet (1x/2x/3x) for provider logos.
+ * Generated assets live in /lovable-uploads/providers/{id}@{160,320,480}.png
+ * Falls back to the original logo when no responsive set exists.
+ */
+const PROVIDERS_WITH_RESPONSIVE_LOGOS = new Set<string>([
+  'medichecks', 'thriva', 'randox', 'london-medical-laboratory',
+  'lola-health', 'goodbody-clinic', 'london-health-company',
+  'medical-diagnosis', 'clinilabs',
+]);
+
+export function getProviderLogoSrcSet(providerId: string): { src: string; srcSet?: string } {
+  const fallback = getProviderLogo(providerId);
+  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(providerId)) return { src: fallback };
+  const base = `/lovable-uploads/providers/${providerId}`;
+  return {
+    src: `${base}@160.png`,
+    srcSet: `${base}@160.png 1x, ${base}@320.png 2x, ${base}@480.png 3x`,
+  };
 }
 
 export function getProviderName(providerId: string): string {

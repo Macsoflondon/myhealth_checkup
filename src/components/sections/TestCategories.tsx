@@ -86,7 +86,7 @@ const TestCategories = (): JSX.Element => {
   }, {
     categoryId: "hormones",
     title: "Hormone Health",
-    description: "Comprehensive hormone testing including thyroid function, cortisol, reproductive hormones, and hormone optimization.",
+    description: "Comprehensive hormone testing including thyroid function, cortisol, reproductive hormones, and hormone optimisation.",
     icon: <FlaskConical className="h-6 w-6 text-white" />,
     link: "/compare?category=hormones",
     testCount: 18,

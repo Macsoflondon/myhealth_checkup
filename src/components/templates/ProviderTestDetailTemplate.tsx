@@ -16,6 +16,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
+import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 
 export interface ProviderTestData {
   id: string;
@@ -109,18 +110,18 @@ const BookingButton = ({
 
   return (
     <div className="space-y-3">
-      <Button 
-        size="lg" 
-        className="w-full" 
+      <Button
+        size="lg"
+        className="w-full"
         asChild
       >
-        <a 
-          href={testUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
+        <a
+          href={buildProviderBookingUrl(testUrl, providerConfig.id)}
+          {...externalLinkProps}
           className="flex items-center justify-center"
         >
           {providerConfig.ctaButtonText}
+          <ExternalLink className="w-4 h-4 ml-2" />
         </a>
       </Button>
 
@@ -363,6 +364,8 @@ export default function ProviderTestDetailTemplate({
             <img 
               src={providerConfig.logo} 
               alt={providerConfig.name} 
+              loading="lazy"
+              decoding="async"
               className="h-12 mb-4"
             />
             <div className="flex flex-wrap gap-2 mb-2">

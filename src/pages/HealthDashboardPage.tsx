@@ -39,7 +39,7 @@ const HealthDashboardPage = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
         
         <main className="flex-1 bg-white">

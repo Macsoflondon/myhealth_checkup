@@ -1,4 +1,4 @@
-import { useParams, Navigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import PageBanner from "@/components/sections/PageBanner";
@@ -7,15 +7,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Lightbulb, Search } from "lucide-react";
 import { goalPages } from "@/data/goalPages";
+import NotFound from "@/pages/NotFound";
 
 const GoalDetailPage = () => {
   const { goalSlug } = useParams<{ goalSlug: string }>();
   const goal = goalPages.find((g) => g.slug === goalSlug);
 
-  if (!goal) return <Navigate to="/compare/goals" replace />;
+  // Render a real 404 (with noindex + prerender-status-code) instead of a
+  // silent 200 redirect to /compare/goals — that pattern is a classic
+  // soft-404 and dilutes crawl budget.
+  if (!goal) return <NotFound />;
 
-  const pageTitle = `${goal.name} Blood Tests | myhealth checkup`;
-  const pageUrl = `https://myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
+  const pageTitle = `Blood Test for ${goal.name} — Compare UK Private Tests | myhealth checkup`;
+  const pageUrl = `https://www.myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
 
   return (
     <MainLayout>

@@ -3,21 +3,6 @@
  * Single source of truth for all entity interfaces
  */
 
-export interface Clinic {
-  id: string;
-  name: string;
-  full_address: string;
-  postal_code: string;
-  latitude: number;
-  longitude: number;
-  access_note?: string;
-  provider_id?: string;
-  created_at?: string;
-}
-
-export interface ClinicWithDistance extends Clinic {
-  distance?: number;
-}
 
 export interface Provider {
   id: string;

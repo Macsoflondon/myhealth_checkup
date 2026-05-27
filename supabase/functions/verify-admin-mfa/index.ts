@@ -170,7 +170,7 @@ serve(async (req) => {
     console.error('Error in verify-admin-mfa function:', error);
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: 'Internal server error',
         isAdmin: false,
         hasMFA: false,
         mfaVerified: false,

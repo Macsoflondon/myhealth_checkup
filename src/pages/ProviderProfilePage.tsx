@@ -75,26 +75,36 @@ const ProviderProfilePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{provider.name} - Blood Tests & Health Screening | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content={`Compare ${provider.name} blood tests and health screening. ${provider.accreditation ? provider.accreditation + '. ' : ''}Read reviews, view prices, and book online.`} 
+        <title>{`${provider.name} Reviews & Tests | myhealth checkup`}</title>
+        <meta
+          name="description"
+          content={`${provider.name} private health tests reviewed and compared.${
+            providerRatingData.rating
+              ? ` Rated ${providerRatingData.rating}/5 from ${providerRatingData.reviews.toLocaleString()} reviews.`
+              : ""
+          } Browse the full test range, prices, accreditations and turnaround times.`.slice(0, 158)}
         />
-        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <link rel="canonical" href={`https://www.myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:title" content={`${provider.name} Reviews & Tests | myhealth checkup`} />
+        <meta property="og:description" content={`${provider.name} private health tests reviewed and compared. Browse the full test range, prices and accreditations.`} />
+        <meta property="og:url" content={`https://www.myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "MedicalOrganization",
           "name": provider.name,
-          "description": `Compare ${provider.name} blood tests and health screening.`,
-          "url": `https://myhealthcheckup.co.uk/provider/${provider.id}`,
+          "description": `${provider.name} private health tests reviewed and compared.`,
+          "url": `https://www.myhealthcheckup.co.uk/provider/${provider.id}`,
           ...(websiteUrl ? { "sameAs": websiteUrl } : {}),
           ...(provider.accreditation ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": provider.accreditation } } : {}),
           ...(providerRatingData.rating ? { "aggregateRating": { "@type": "AggregateRating", "ratingValue": providerRatingData.rating, "bestRating": 5, "ratingCount": providerRatingData.reviews } } : {}),
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
-              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://myhealthcheckup.co.uk/compare" },
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.myhealthcheckup.co.uk" },
+              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://www.myhealthcheckup.co.uk/compare" },
               { "@type": "ListItem", "position": 3, "name": provider.name }
             ]
           }
@@ -142,6 +152,16 @@ const ProviderProfilePage = () => {
                   <Badge variant="secondary" className="gap-1 text-xs bg-green-100 text-green-800">
                     <Shield className="w-3 h-3" />
                     Accredited
+                  </Badge>
+                )}
+                {(provider as { cqcRegistrationNumber?: string }).cqcRegistrationNumber && (
+                  <Badge
+                    variant="secondary"
+                    className="gap-1 text-xs bg-blue-100 text-blue-800 font-mono"
+                    title="CQC registration number — verifiable on the Care Quality Commission public register"
+                  >
+                    <Shield className="w-3 h-3" />
+                    CQC: {(provider as { cqcRegistrationNumber?: string }).cqcRegistrationNumber}
                   </Badge>
                 )}
               </div>

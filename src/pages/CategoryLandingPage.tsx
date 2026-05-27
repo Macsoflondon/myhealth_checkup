@@ -112,7 +112,7 @@ const CategoryLandingPage: React.FC = () => {
           <title>{content.title}</title>
           <meta name="description" content={content.metaDescription} />
           <meta name="keywords" content={content.keywords.join(", ")} />
-          <link rel="canonical" href={`https://myhealthcheckup.co.uk/tests/${content.slug}`} />
+          <link rel="canonical" href={`https://www.myhealthcheckup.co.uk/tests/${content.slug}`} />
           <meta name="robots" content="index, follow" />
           
           {/* Open Graph */}
@@ -120,8 +120,8 @@ const CategoryLandingPage: React.FC = () => {
           <meta property="og:site_name" content="myhealth checkup" />
           <meta property="og:title" content={content.title} />
           <meta property="og:description" content={content.metaDescription} />
-          <meta property="og:url" content={`https://myhealthcheckup.co.uk/tests/${content.slug}`} />
-          <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta property="og:url" content={`https://www.myhealthcheckup.co.uk/tests/${content.slug}`} />
+          <meta property="og:image" content="https://www.myhealthcheckup.co.uk/og-image.png" />
           <meta property="og:locale" content="en_GB" />
           
           {/* Twitter Card */}
@@ -129,7 +129,7 @@ const CategoryLandingPage: React.FC = () => {
           <meta name="twitter:site" content="@myhealthcheckup" />
           <meta name="twitter:title" content={content.title} />
           <meta name="twitter:description" content={content.metaDescription} />
-          <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta name="twitter:image" content="https://www.myhealthcheckup.co.uk/og-image.png" />
           
           {/* JSON-LD Structured Data */}
           <script type="application/ld+json">
@@ -138,11 +138,11 @@ const CategoryLandingPage: React.FC = () => {
               "@type": "MedicalWebPage",
               "name": content.heroTitle,
               "description": content.metaDescription,
-              "url": `https://myhealthcheckup.co.uk/tests/${content.slug}`,
+              "url": `https://www.myhealthcheckup.co.uk/tests/${content.slug}`,
               "isPartOf": {
                 "@type": "WebSite",
                 "name": "myhealth checkup",
-                "url": "https://myhealthcheckup.co.uk"
+                "url": "https://www.myhealthcheckup.co.uk"
               },
               "mainEntity": {
                 "@type": "MedicalTest",
@@ -152,13 +152,26 @@ const CategoryLandingPage: React.FC = () => {
               "breadcrumb": {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
-                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
-                  { "@type": "ListItem", "position": 2, "name": "Tests", "item": "https://myhealthcheckup.co.uk/test-categories" },
-                  { "@type": "ListItem", "position": 3, "name": content.name, "item": `https://myhealthcheckup.co.uk/tests/${content.slug}` }
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.myhealthcheckup.co.uk" },
+                  { "@type": "ListItem", "position": 2, "name": "Tests", "item": "https://www.myhealthcheckup.co.uk/test-categories" },
+                  { "@type": "ListItem", "position": 3, "name": content.name, "item": `https://www.myhealthcheckup.co.uk/tests/${content.slug}` }
                 ]
               }
             })}
           </script>
+          {content.faqs && content.faqs.length > 0 && (
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": content.faqs.map((faq) => ({
+                  "@type": "Question",
+                  "name": faq.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+                }))
+              })}
+            </script>
+          )}
         </Helmet>
 
         <MainLayout>

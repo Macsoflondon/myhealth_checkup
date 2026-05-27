@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { logProtectedCall } from '../_shared/audit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -58,6 +59,15 @@ async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    await logProtectedCall({ functionName: 'thriva-scraper', status: 'denied', req });
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+  await logProtectedCall({ functionName: 'thriva-scraper', status: 'allowed', req });
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -77,7 +87,7 @@ Deno.serve(async (req) => {
       productUrls = await firecrawlMap('https://thriva.co/shop', firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
-      console.error('Map failed:', e.message);
+      console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
     }
 
     // Add known products as fallback
@@ -135,7 +145,7 @@ Deno.serve(async (req) => {
         console.log(`✓ ${title} - £${price ?? 'N/A'}`);
         await new Promise(r => setTimeout(r, 500));
       } catch (e) {
-        console.error(`✗ ${e.message}`);
+        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
       }
     }
 
@@ -172,9 +182,9 @@ Deno.serve(async (req) => {
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
     await supabase.from('scraping_jobs').upsert({
       provider_id: 'thriva', status: 'failed',
-      error_message: error.message, last_scraped: new Date().toISOString(),
+      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: error.message }),
+    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });

@@ -1,32 +1,35 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
-import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
-import myhealthLogo from "@/assets/myhealth-logo.png";
+import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
+import myhealthLogo from "@/assets/myhealth-logo.webp";
+import NewsletterSignup from "@/components/layout/NewsletterSignup";
 
 const Footer = () => {
   const { t } = useTranslation();
 
   const healthTestLinks = [
-    { name: t('footer.links.mensHealth'), link: "/tests/mens-health" },
-    { name: t('footer.links.womensHealth'), link: "/tests/womens-health" },
-    { name: t('footer.links.heartHealth'), link: "/tests/heart" },
-    { name: t('footer.links.diabetes'), link: "/tests/diabetes" },
-    { name: t('footer.links.thyroid'), link: "/thyroid" },
-    { name: t('footer.links.fertility'), link: "/fertility-tests" },
+    { name: t("footer.links.mensHealth"), link: "/tests/mens-health" },
+    { name: t("footer.links.womensHealth"), link: "/tests/womens-health" },
+    { name: t("footer.links.heartHealth"), link: "/tests/heart" },
+    { name: t("footer.links.diabetes"), link: "/tests/diabetes" },
+    { name: t("footer.links.thyroid"), link: "/thyroid" },
+    { name: t("footer.links.fertility"), link: "/fertility-tests" },
   ];
 
   const companyLinks = [
-    { name: t('footer.links.aboutUs'), link: "/about" },
-    { name: t('footer.links.howItWorks'), link: "/how-it-works" },
+    { name: t("footer.links.aboutUs"), link: "/about" },
+    { name: t("footer.links.howItWorks"), link: "/how-it-works" },
     { name: "Our Providers", link: "/providers" },
-    { name: "Find a Clinic", link: "/find-clinic" },
-    { name: t('footer.links.faqs'), link: "/faqs" },
+    
+    { name: t("footer.links.faqs"), link: "/faqs" },
     { name: "Health Resource Hub", link: "/blog" },
     { name: "Test Categories", link: "/test-categories" },
-    { name: t('footer.links.contact'), link: "/contact" },
+    { name: t("footer.links.contact"), link: "/contact" },
+    { name: "Expert Guidance", link: "/expert-guidance" },
+    { name: "Feedback & Complaints", link: "/complaints" },
+    { name: "Legal Hub", link: "/legal" },
   ];
-
 
   return (
     <footer>
@@ -34,42 +37,76 @@ const Footer = () => {
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
       {/* ========== Main Footer ========== */}
-      <div className="bg-brand-navy relative overflow-hidden pt-12 sm:pt-14 pb-8 sm:pb-10">
+      <div className="bg-[#060d20] relative overflow-hidden pt-12 sm:pt-14 pb-8 sm:pb-10">
         {/* Decorative glow orbs */}
         <div className="absolute top-20 left-10 w-64 h-64 bg-brand-turquoise/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-brand-pink/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 4-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
             <FooterColumn title="Health Tests" links={healthTestLinks} />
             <FooterColumn title="Company" links={companyLinks} />
+            <NewsletterSignup />
             <ConnectColumn />
           </div>
 
-          {/* ========== Disclaimer Row ========== */}
-          <div className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center">
-            <p className="text-xs sm:text-sm leading-relaxed mb-2">
-              <span className="font-semibold text-brand-pink">Important:</span>{" "}
-              <span className="text-white/80">
-                myhealth checkup is a comparison platform. We do not provide medical services. All testing is conducted by our trusted partner providers.
+          {/* ========== Brief Medical Disclaimer ========== */}
+          <div
+            id="medical-disclaimer"
+            role="note"
+            aria-label="Medical disclaimer"
+            className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
+          >
+            <p className="text-xs sm:text-sm leading-relaxed">
+              <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
+              <span className="text-white/85">
+                This site provides comparison information only and does not constitute medical advice. See our{" "}
+                <Link to="/about/medical-review" className="underline hover:text-brand-pink transition-colors">
+                  Medical Review &amp; Editorial Standards
+                </Link>{" "}
+                for full details.
               </span>
             </p>
-            <p className="text-xs sm:text-sm text-white/90 font-sans">
-              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website. &#x200B;Company No. 16589056
+          </div>
+
+          {/* ========== CMA / DMCC Compliance Statement ========== */}
+          <div
+            id="cma-dmcc-compliance"
+            role="note"
+            aria-label="CMA and DMCC compliance statement"
+            className="mt-3 sm:mt-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
+          >
+            <p className="text-xs sm:text-sm leading-relaxed">
+              <span className="font-semibold text-brand-turquoise">CMA &amp; DMCC compliance:</span>{" "}
+              <span className="text-white/85">
+                myhealth checkup operates in full compliance with the UK Competition and Markets Authority (CMA)
+                and the Digital Markets, Competition and Consumers Act 2024. Prices include mandatory fees where
+                known, sponsored placements are clearly labelled, ranking criteria are disclosed, and listings are
+                refreshed regularly for accuracy. Read our{" "}
+                <Link to="/how-we-rank" className="underline hover:text-brand-turquoise transition-colors">
+                  ranking methodology
+                </Link>{" "}
+                and{" "}
+                <Link to="/fair-trading" className="underline hover:text-brand-turquoise transition-colors">
+                  fair trading policy
+                </Link>
+                . To raise a concern, see our{" "}
+                <Link to="/complaints" className="underline hover:text-brand-turquoise transition-colors">
+                  feedback &amp; complaints process
+                </Link>
+                .
+              </span>
             </p>
           </div>
         </div>
       </div>
 
-      {/* ========== Copyright Line ========== */}
+      {/* ========== Copyright ========== */}
       <div className="bg-brand-navy pb-4 pt-2">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs sm:text-sm text-brand-pink font-sans">
-            © 2026 myhealth checkup. All rights reserved.{" "}
-            <Link to="/legal" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Legal</Link>
-            {" | "}
-            <Link to="/terms" className="text-brand-pink hover:text-white transition-colors underline-offset-2 hover:underline">Terms &amp; Conditions</Link>
+          <p className="text-center text-xs sm:text-sm text-brand-pink/80 font-sans">
+            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
           </p>
         </div>
       </div>
@@ -93,7 +130,9 @@ const Footer = () => {
             </div>
             {/* Slogan */}
             <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
-              Your <span className="text-brand-pink text-primary">health!</span> Your <span className="text-brand-pink">choice!</span> One <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
+              Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
+              <span className="text-brand-pink">choice!</span> One{" "}
+              <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
             </p>
           </div>
         </div>
@@ -144,22 +183,50 @@ const ConnectColumn = () => (
     <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Follow Us</p>
     <div className="flex gap-3 mb-5">
       <SocialIcon href="https://www.instagram.com/myhealthcheckup_uk" label="Instagram">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" fill="none"/><circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="none"/><circle cx="17.5" cy="6.5" r="1.25" fill="currentColor"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+          <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor" />
+        </svg>
       </SocialIcon>
       <SocialIcon href="https://www.facebook.com/myhealthcheckupuk" label="Facebook">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+        </svg>
       </SocialIcon>
       <SocialIcon href="https://www.tiktok.com/@myhealthcheckup" label="TikTok">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M9 12a4 4 0 104 4V4a5 5 0 005 5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+        </svg>
       </SocialIcon>
     </div>
 
     {/* Compliance Badges */}
     <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Compliance</p>
     <div className="flex gap-3 items-start">
-      <img src={complianceBadges} alt="ICO Registered, Companies House, UK GDPR compliance badges" className="h-16 sm:h-20 w-auto object-contain" />
+      <img
+        src={complianceBadges}
+        alt="ICO Registered, Companies House, UK GDPR compliance badges"
+        loading="lazy"
+        decoding="async"
+        className="h-16 sm:h-20 w-auto object-contain"
+      />
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
-        <img src={cyberEssentialsLogo} alt="Cyber Essentials" className="w-full h-full object-contain" />
+        <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
       </div>
     </div>
   </div>

@@ -72,14 +72,14 @@ const PartnersPage = () => {
       <Helmet>
         <title>Our Partners | myhealth checkup</title>
         <meta name="description" content="Meet our trusted UKAS-accredited healthcare partners. We work with the UK's leading providers to bring you reliable health testing services." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/partners" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/partners" />
       </Helmet>
       <Header />
       <main className="flex-grow">
         <PageBanner
           title="Our Healthcare"
           accent="Partners"
-          subtitle="We partner with the UK's most trusted and accredited healthcare providers to bring you reliable, high-quality health testing services."
+          subtitle="We partner with the UK's most trusted & accredited healthcare providers to bring you reliable, high-quality health testing services."
         />
 
         {/* Partner Standards */}

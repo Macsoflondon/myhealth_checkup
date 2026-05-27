@@ -6,8 +6,6 @@
   <url><loc>https://www.myhealthcheckup.co.uk/search</loc><lastmod>2026-04-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/how-it-works</loc><lastmod>2026-03-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/about</loc><lastmod>2026-03-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/find-clinic</loc><lastmod>2026-04-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.myhealthcheckup.co.uk/locations</loc><lastmod>2026-04-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/compare/symptoms</loc><lastmod>2026-04-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/compare/goals</loc><lastmod>2026-04-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
@@ -79,4 +77,27 @@
   <url><loc>https://www.myhealthcheckup.co.uk/accessibility</loc><lastmod>2026-02-01</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/how-we-rank</loc><lastmod>2026-03-15</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.myhealthcheckup.co.uk/sitemap</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+
+  <!-- Biomarker & cancer hubs -->
+  <url><loc>https://www.myhealthcheckup.co.uk/biomarker-database</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/cancer-screening-compare</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/cancer-biomarkers-reference</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Discovery & search -->
+  <url><loc>https://www.myhealthcheckup.co.uk/assisted-test-finder</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/recommendations</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Condition / health hub pages -->
+  <url><loc>https://www.myhealthcheckup.co.uk/mens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/womens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/conditions</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Provider catalogues -->
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/medichecks</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/medichecks/mens-health</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/thriva</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/randox</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/lola-health</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/london-medical-laboratory</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.myhealthcheckup.co.uk/providers/goodbody-clinic</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

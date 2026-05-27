@@ -23,7 +23,7 @@ const heartTests = [
     price: "£79",
     biomarkers: ["Total Cholesterol", "HDL Cholesterol", "LDL Cholesterol", "Triglycerides"],
     suitableFor: ["General screening", "Family history", "Routine monitoring", "Preventive care"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   },
   {
     id: "advanced-lipid-profile",
@@ -34,7 +34,7 @@ const heartTests = [
     price: "£129",
     biomarkers: ["Total Cholesterol", "HDL", "LDL", "Non-HDL", "Triglycerides", "Cholesterol Ratios", "ApoA1", "ApoB"],
     suitableFor: ["High cholesterol", "Diabetes", "Heart disease risk", "Medication monitoring"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   },
   {
     id: "cardiac-risk-assessment",
@@ -45,7 +45,7 @@ const heartTests = [
     price: "£199",
     biomarkers: ["Lipid Profile", "CRP", "Homocysteine", "Lipoprotein(a)", "Troponin"],
     suitableFor: ["High risk patients", "Pre-surgery screening", "Comprehensive assessment", "Family history"],
-    turnaround: "24-48 hours"
+    turnaround: "3-4 days"
   },
   {
     id: "heart-disease-prevention",
@@ -55,8 +55,8 @@ const heartTests = [
     category: "Prevention",
     price: "£299",
     biomarkers: ["Full Lipid Panel", "Inflammatory Markers", "Cardiac Enzymes", "Risk Calculators", "Vitamin D", "B12"],
-    suitableFor: ["Prevention focused", "Lifestyle optimization", "Long-term monitoring", "Health optimization"],
-    turnaround: "24-48 hours"
+    suitableFor: ["Prevention focused", "Lifestyle optimisation", "Long-term monitoring", "Health optimisation"],
+    turnaround: "3-4 days"
   }
 ];
 
@@ -114,13 +114,13 @@ const HeartHealthPage = () => {
         <title>Heart Health Tests | myhealth checkup</title>
         <meta name="description" content="Comprehensive heart health testing including cholesterol, lipid profiles, and cardiac risk assessment. Professional cardiovascular screening from £79." />
         <meta name="keywords" content="heart health tests, cholesterol test, lipid profile, cardiac risk assessment, cardiovascular screening, heart disease prevention" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/heart-health" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/heart-health" />
         
         {/* Open Graph Tags */}
         <meta property="og:title" content="Heart Health Tests | myhealth checkup" />
         <meta property="og:description" content="Comprehensive cardiovascular screening and heart health testing" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/heart-health" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/heart-health" />
         
         {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -320,18 +320,6 @@ const HeartHealthPage = () => {
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Compare prices from 7+ trusted UK providers</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                            Find a Clinic
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>200+ clinics nationwide with instant availability</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>

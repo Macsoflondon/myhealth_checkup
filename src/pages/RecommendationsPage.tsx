@@ -11,21 +11,21 @@ const RecommendationsPage = () => {
         <title>Health Recommendations | myhealth checkup</title>
         <meta 
           name="description" 
-          content="Get personalized health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers based on your wellness goals and health interests." 
+          content="Get personalised health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers based on your wellness goals and health interests." 
         />
-        <meta name="keywords" content="health test recommendations, AI wellness assistant, personalized health screening, UK health tests, preventive healthcare" />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/recommendations" />
+        <meta name="keywords" content="health test recommendations, AI wellness assistant, personalised health screening, UK health tests, preventive healthcare" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/recommendations" />
         
         {/* Open Graph tags */}
         <meta property="og:title" content="Health Recommendations | myhealth checkup" />
-        <meta property="og:description" content="Get personalized health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers." />
+        <meta property="og:description" content="Get personalised health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/recommendations" />
+        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/recommendations" />
         
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Health Recommendations | myhealth checkup" />
-        <meta name="twitter:description" content="Get personalized health test recommendations from our AI-powered wellness assistant." />
+        <meta name="twitter:description" content="Get personalised health test recommendations from our AI-powered wellness assistant." />
         
         {/* Structured Data */}
         <script type="application/ld+json">
@@ -33,8 +33,8 @@ const RecommendationsPage = () => {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             "name": "AI Health Recommendations",
-            "description": "AI-powered wellness test recommendation system for personalized health screening suggestions",
-            "url": "https://myhealthcheckup.co.uk/recommendations",
+            "description": "AI-powered wellness test recommendation system for personalised health screening suggestions",
+            "url": "https://www.myhealthcheckup.co.uk/recommendations",
             "applicationCategory": "HealthApplication",
             "operatingSystem": "Web Browser",
             "offers": {

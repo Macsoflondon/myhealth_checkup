@@ -47,10 +47,10 @@ export interface ProviderConfig {
 export const providerConfigs: Record<string, ProviderConfig> = {
   medichecks: {
     id: 'medichecks',
-    name: 'Medichecks',
+    name: '\n',
     logo: '/lovable-uploads/provider-medichecks-new-v3.png',
     turnaround: '3 working days',
-    badgeText: 'Medichecks Blood Test',
+    badgeText: '\n Blood Test',
     features: [
       { title: 'Bespoke Doctor\'s Report', description: 'Personalised insights and actionable advice from qualified doctors' },
       { title: 'UKAS Accredited Labs', description: 'Established in 2001 with ISO 15189 accredited laboratories' },
@@ -61,7 +61,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       {
         icon: 'clinic',
         title: 'Venous Draw at a Clinic (+£35)',
-        description: 'Visit one of Medichecks\' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.',
+        description: 'Visit one of \n\' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.',
       },
       {
         icon: 'home',
@@ -75,24 +75,24 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       },
     ],
     whyChoose: {
-      title: 'Why Choose Medichecks?',
+      title: 'Why Choose \n?',
       items: [
         { bold: 'Established in 2001:', text: 'Over 14,000 5-star reviews on Feefo with decades of trusted health testing experience' },
         { bold: 'Expert Doctor Support:', text: 'Bespoke doctor\'s report with actionable advice, expert support, and tailored recommendations' },
-        { bold: 'Track Your Health:', text: 'MyMedichecks portal lets you view results, monitor changes, and store your medical history over time' },
+        { bold: 'Track Your Health:', text: 'My\n portal lets you view results, monitor changes, and store your medical history over time' },
         { bold: 'Flexible Collection:', text: 'Choose from clinic visits, home nurse appointments, or self-arranged professional collection' },
       ],
     },
     quickInfo: {
       sampleType: 'Venous blood sample',
       labProcessing: 'UKAS accredited laboratories',
-      resultsDelivery: 'MyMedichecks online dashboard with doctor\'s report',
+      resultsDelivery: 'My\n online dashboard with doctor\'s report',
       supportPhone: '03450 600 600',
     },
     ctaText: 'Get ready to elevate your health understanding with a personalised doctor\'s report. Go beyond results and tap into expert insights tailored just for you.',
-    ctaButtonText: 'Book with Medichecks',
+    ctaButtonText: 'Book with \n',
     aboutText: 'routine health check that provides a comprehensive look at your overall well-being. It covers biomarkers to assess organ function, nutritional balance, and potential health risks.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/medichecks',
+    canonicalBase: 'https://www.myhealthcheckup.co.uk/medichecks',
   },
 
   'goodbody-clinic': {
@@ -138,13 +138,13 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your test with GoodBody Clinic today for professional venous blood collection at a pharmacy near you. Expert service with fast, reliable results.',
     ctaButtonText: 'Book with GoodBody',
     aboutText: 'blood test with professional venous collection at a GoodBody Clinic pharmacy. All tests are processed in UKAS-accredited laboratories with clinical interpretation.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/goodbody',
+    canonicalBase: 'https://www.myhealthcheckup.co.uk/goodbody',
   },
 
   thriva: {
     id: 'thriva',
     name: 'Thriva',
-    logo: '/lovable-uploads/provider-thriva.png',
+    logo: '/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png',
     turnaround: '2-3 working days',
     badgeText: 'Thriva Blood Test',
     features: [
@@ -183,7 +183,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Order your Thriva test kit today and take control of your health from the comfort of home. Get doctor-reviewed results with personalised recommendations.',
     ctaButtonText: 'Book with Thriva',
     aboutText: 'at-home blood test with convenient finger-prick collection. All results are reviewed by qualified doctors with personalised health insights.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/thriva',
+    canonicalBase: 'https://www.myhealthcheckup.co.uk/thriva',
   },
 
   randox: {
@@ -228,7 +228,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your comprehensive health check at a Randox Health clinic today. Advanced diagnostics with expert consultation and detailed insights.',
     ctaButtonText: 'Book with Randox Health',
     aboutText: 'comprehensive health test using advanced diagnostic technology. All tests include professional consultation and detailed health insights.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/randox',
+    canonicalBase: 'https://www.myhealthcheckup.co.uk/randox',
   },
 
 
@@ -274,7 +274,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your at-home blood test with Lola Health today. Professional phlebotomy service with doctor-reviewed results delivered to your app.',
     ctaButtonText: 'Book with Lola Health',
     aboutText: 'blood test with professional at-home phlebotomy. All results are processed in NHS-accredited laboratories and reviewed by qualified doctors.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/lola-health',
+    canonicalBase: 'https://www.myhealthcheckup.co.uk/lola-health',
   },
 
   'london-medical-laboratory': {
@@ -320,7 +320,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your test with London Medical Laboratory for fast, accurate results from a UKAS-accredited Harley Street laboratory.',
     ctaButtonText: 'Book with London Medical Lab',
     aboutText: 'blood test from a prestigious Harley Street laboratory. Fast turnaround with UKAS-accredited analysis and specialist review available.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/london-medical-laboratory',
+    canonicalBase: 'https://www.myhealthcheckup.co.uk/london-medical-laboratory',
   },
 };
 

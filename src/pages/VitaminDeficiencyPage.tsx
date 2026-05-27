@@ -63,7 +63,7 @@ const VitaminDeficiencyPage = () => {
       <Helmet>
         <title>Vitamin Deficiency Tests | myhealth checkup</title>
         <meta name="description" content="Compare vitamin and mineral deficiency tests from UK providers. Test for vitamin D, B12, iron, and folate deficiencies from £39." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/tests/vitamins" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/tests/vitamins" />
       </Helmet>
       
       <Header />
@@ -207,18 +207,6 @@ const VitaminDeficiencyPage = () => {
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Compare prices from 7+ trusted UK providers</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Link to="/find-clinic" className="flex-1 sm:flex-initial">
-                          <Button size="lg" className="w-full bg-[#22C0D4] hover:bg-[#E70D69] text-white transition-colors">
-                            Find a Clinic
-                          </Button>
-                        </Link>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>200+ clinics nationwide with instant availability</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>

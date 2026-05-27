@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { logProtectedCall } from '../_shared/audit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -385,6 +386,16 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    if ((req.headers.get('Authorization') ?? '') !== `Bearer ${supabaseKey}`) {
+      await logProtectedCall({ functionName: 'medichecks-scraper', status: 'denied', req });
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    await logProtectedCall({ functionName: 'medichecks-scraper', status: 'allowed', req });
+
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     console.log('Starting enhanced Medichecks scraper with updated URL patterns...');
@@ -413,7 +424,7 @@ Deno.serve(async (req) => {
         urls.forEach(url => allProductUrls.add(url));
         console.log(`Found ${urls.length} products from ${categoryUrl}`);
       } catch (error) {
-        console.error(`Failed to fetch category ${categoryUrl}:`, error.message);
+        console.error(`Failed to fetch category ${categoryUrl}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -457,7 +468,7 @@ Deno.serve(async (req) => {
         
         console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
       } catch (error) {
-        console.error(`Failed to scrape ${url}:`, error.message);
+        console.error(`Failed to scrape ${url}:`, (error instanceof Error ? error.message : String(error)));
       }
     }
 
@@ -528,7 +539,7 @@ Deno.serve(async (req) => {
       }
       
       if (error) {
-        console.error(`Failed to save ${product.test_name}:`, error.message);
+        console.error(`Failed to save ${product.test_name}:`, (error instanceof Error ? error.message : String(error)));
       } else {
         upsertedCount++;
       }
@@ -572,14 +583,14 @@ Deno.serve(async (req) => {
       .from('scraping_jobs')
       .update({
         status: 'failed',
-        error_message: error.message
+        error_message: (error instanceof Error ? error.message : String(error))
       })
       .eq('provider_id', 'medichecks');
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error.message
+        error: (error instanceof Error ? error.message : String(error))
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

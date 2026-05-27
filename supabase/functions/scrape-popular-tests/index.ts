@@ -335,6 +335,13 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
     if (!firecrawlApiKey) {
@@ -448,7 +455,7 @@ Deno.serve(async (req) => {
 
   } catch (error) {
     console.error('Error in scrape-popular-tests:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to scrape popular tests';
+    const errorMessage = error instanceof Error ? (error instanceof Error ? error.message : String(error)) : 'Failed to scrape popular tests';
     return new Response(
       JSON.stringify({ success: false, error: errorMessage }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

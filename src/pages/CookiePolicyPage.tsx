@@ -12,7 +12,7 @@ const CookiePolicyPage = () => {
       <Helmet>
         <title>Cookie Policy | myhealth checkup</title>
         <meta name="description" content="How myhealth checkup uses cookies and similar technologies. Manage your cookie preferences and understand our data practices." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/cookies" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/cookies" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">
@@ -114,7 +114,7 @@ const CookiePolicyPage = () => {
               <CardContent>
                 <p className="mb-4">If you have questions about our cookie policy, please contact us:</p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> privacy@myhealthcheckup.co.uk</p>
+                  <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                 </div>
               </CardContent>
             </Card>
