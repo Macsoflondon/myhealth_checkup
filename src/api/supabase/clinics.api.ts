@@ -19,8 +19,8 @@ class ClinicsApi {
    */
   async getAllClinics(): Promise<ApiResponse<Clinic[]>> {
     try {
-      const { data, error } = await supabase.from("clinics" as any).select("*");
-      return { data: data as Clinic[], error };
+      const { data, error } = await (supabase as any).from("clinics").select("*");
+      return { data: data as unknown as Clinic[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
@@ -31,12 +31,12 @@ class ClinicsApi {
    */
   async getClinicsByProvider(providerId: string): Promise<ApiResponse<Clinic[]>> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("clinics")
         .select("*")
         .eq("provider_id", providerId);
 
-      return { data: data as Clinic[], error };
+      return { data: data as unknown as Clinic[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
@@ -47,12 +47,12 @@ class ClinicsApi {
    */
   async getClinicsByPostalCode(postalCode: string): Promise<ApiResponse<Clinic[]>> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("clinics")
         .select("*")
         .ilike("postal_code", `${postalCode}%`);
 
-      return { data: data as Clinic[], error };
+      return { data: data as unknown as Clinic[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
@@ -63,12 +63,12 @@ class ClinicsApi {
    */
   async searchClinics(searchTerm: string): Promise<ApiResponse<Clinic[]>> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("clinics")
         .select("*")
         .or(`name.ilike.%${searchTerm}%,full_address.ilike.%${searchTerm}%`);
 
-      return { data: data as Clinic[], error };
+      return { data: data as unknown as Clinic[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
@@ -85,7 +85,7 @@ class ClinicsApi {
     try {
       // This would require PostGIS extension for proper distance calculation
       // For now, we'll fetch all clinics with coordinates and sort client-side
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("clinics")
         .select("*")
         .not("latitude", "is", null)
@@ -108,7 +108,7 @@ class ClinicsApi {
 
       clinicsWithDistance.sort((a, b) => a.distance - b.distance);
 
-      return { data: clinicsWithDistance.slice(0, limit) as Clinic[], error: null };
+      return { data: clinicsWithDistance.slice(0, limit) as unknown as Clinic[], error: null };
     } catch (error) {
       return { data: null, error: error as Error };
     }
