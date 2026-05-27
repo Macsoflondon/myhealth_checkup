@@ -1,0 +1,32 @@
+# myhealth checkup
+
+> The UK's trusted comparison platform for private blood tests, health screenings, and cancer screening from UKAS-accredited and CQC-regulated providers.
+
+myhealth checkup helps health-conscious adults compare private diagnostic tests across leading UK providers. Pricing, biomarkers, turnaround times, and accreditations are surfaced transparently so users can make informed decisions.
+
+## Pages
+
+- [Home](/): Compare private blood tests and health screenings from accredited UK providers.
+- [Compare Tests](/compare): Side-by-side comparison of blood tests across providers.
+- [Test Categories](/test-categories): Browse tests by health category.
+- [Compare by Symptom](/compare/symptoms): Find tests based on your symptoms.
+- [Compare by Goal](/compare/goals): Find tests aligned to your health goals.
+- [Assisted Test Finder](/assisted-test-finder): Guided quiz to recommend the right test.
+- [Find a Clinic](/find-clinic): Locate accredited clinics near you.
+- [How It Works](/how-it-works): How the comparison platform works.
+- [How We Rank](/how-we-rank): Our ranking methodology.
+- [Trusted Providers](/trusted-providers): Our accredited provider partners.
+- [Health Resource Hub](/blog): Articles on biomarkers, conditions, and preventative health.
+- [Blood Test Analysis](/blood-test-analysis): AI-assisted result interpretation tool.
+- [About Us](/about): Our mission and story.
+- [Contact](/contact): Get in touch.
+- [FAQs](/faqs): Common questions.
+
+## Optional
+
+- [Privacy Policy](/privacy-policy)
+- [Terms & Conditions](/terms)
+- [Cookie Policy](/cookies)
+- [Accessibility](/accessibility)
+- [Affiliate Disclosure](/affiliate-disclosure)
+- [Fair Trading Policy](/fair-trading)

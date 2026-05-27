@@ -180,7 +180,27 @@ const TestDetailPage = () => {
           name="description" 
           content={`Book the ${test.test_name} from ${provider.name} for £${test.price?.toFixed(2) || 'Price on request'}. ${test.description || 'Professional health testing with fast results.'}`} 
         />
-        <link rel="canonical" href={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <link rel="canonical" href={`https://www.myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={`${test.test_name} - ${provider.name}`} />
+        <meta property="og:description" content={test.description || `${test.test_name} from ${provider.name}.`} />
+        <meta property="og:url" content={`https://www.myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "MedicalTest",
+          name: test.test_name,
+          description: test.description || `${test.test_name} from ${provider.name}.`,
+          category: test.category || undefined,
+          url: `https://www.myhealthcheckup.co.uk/${providerId}/${testId}`,
+          offers: test.price ? {
+            "@type": "Offer",
+            price: test.price,
+            priceCurrency: "GBP",
+            availability: "https://schema.org/InStock",
+            seller: { "@type": "Organization", name: provider.name },
+            url: test.url || undefined,
+          } : undefined,
+        })}</script>
       </Helmet>
 
       <Header />

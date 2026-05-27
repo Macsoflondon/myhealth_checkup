@@ -157,6 +157,32 @@ export function CategoryPageLayout({
         <meta property="og:description" content={seoDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: seoTitle,
+          description: seoDescription,
+          url: canonicalUrl,
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: tests.length,
+            itemListElement: tests.slice(0, 20).map((t, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "MedicalTest",
+                name: t.title,
+                description: t.desc,
+                offers: {
+                  "@type": "Offer",
+                  price: t.priceNum,
+                  priceCurrency: "GBP",
+                  seller: { "@type": "Organization", name: t.provider },
+                },
+              },
+            })),
+          },
+        })}</script>
       </Helmet>
 
       <div className="min-h-screen flex flex-col">

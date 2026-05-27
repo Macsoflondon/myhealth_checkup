@@ -108,12 +108,14 @@ const Hero = () => {
             <div className="max-w-[1240px] mx-auto">
 
               <div className="text-center mb-1 sm:mb-2 min-h-[90px] sm:min-h-[120px] md:min-h-[140px] flex flex-col items-center justify-center">
-                <h1
+                <h1 className="sr-only">Compare Private Blood Tests and Health Screenings in the UK</h1>
+                <p
                   key={currentSlide}
+                  aria-hidden="true"
                   className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] lg:text-[4rem] xl:text-[4.2rem] font-heading font-bold tracking-[-0.03em] leading-[1.08] text-white animate-fade-in"
                 >
                   {slide.headline}
-                </h1>
+                </p>
                 <p
                   key={`sub-${currentSlide}`}
                   className="mt-2 sm:mt-3 text-sm sm:text-lg md:text-xl text-white/85 font-medium max-w-2xl mx-auto animate-fade-in"
