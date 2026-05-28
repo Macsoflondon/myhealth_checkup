@@ -107,7 +107,7 @@ const GENERAL_HEALTH_TESTS: GalleryImage[] = [
   galleryItem({ src: "/images/tests/kidney-blood-test.webp", alt: "Kidney Blood Test", code: "Kidney", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/cholesterol-blood-test.webp", alt: "Cholesterol Blood Test", code: "Cholesterol", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/full-blood-count-blood-test.webp", alt: "Full Blood Count Blood Test", code: "Full Blood Count", objectFit: "contain", matchTerms: ["full blood count blood test"] }),
-  galleryItem({ src: "/images/tests/advanced-well-woman.webp", alt: "Advanced Well Woman Blood Test", code: "Advanced Well Woman", objectFit: "contain" }),
+  galleryItem({ src: "https://37e227e1-0d67-4515-b064-99c243036534.lovableproject.com/lovable-uploads/b1fd9c18-e8ab-4e66-9b37-aa91aac93b18.png", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/liver-blood-test.webp", alt: "Liver Blood Test", code: "Liver", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/vitamins-blood-test.webp", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
   galleryItem({ src: "/images/tests/sports-fitness-blood-test.webp", alt: "Sports & Fitness Blood Test", code: "Sports & Fitness", objectFit: "contain", matchTerms: ["sports and fitness blood test", "comprehensive sports blood test"] }),
@@ -468,7 +468,7 @@ const GoodbodyTestGallery = () => {
 
             <section>
               <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Our Services</h3>
-              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
+              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
             </section>
 
             <section>
