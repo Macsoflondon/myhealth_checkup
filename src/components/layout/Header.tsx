@@ -68,9 +68,9 @@ const Header = ({ className }: HeaderProps) => {
         <div className={cn("sticky top-0 z-50 bg-[hsl(var(--brand-navy))]", className)}>
           <PromoTicker />
         <header className="bg-[hsl(var(--brand-navy))] shadow-md">
-          <div className="container mx-auto max-w-full px-3 sm:px-4 bg-tertiary bg-white">
+          <div className="container mx-auto max-w-full px-3 sm:px-4 bg-tertiary bg-[#08122b]">
               <div className="py-2.5 flex items-center justify-between gap-4 sm:gap-6 min-w-0 bg-tertiary bg-white">
-                <Link to="/" className="flex min-w-0 flex-1 items-start overflow-hidden">
+                <Link to="/" className="flex min-w-0 flex-1 items-start overflow-hidden bg-[#08122b]">
                   <img
                     src={mobileLogo}
                     alt="myhealth checkup"
