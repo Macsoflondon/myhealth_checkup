@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "@/assets/myhealth-logo.webp";
+import logo from "/myhealth-logo.png";
 export const Logo = () => {
   const location = useLocation();
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
