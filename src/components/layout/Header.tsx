@@ -88,8 +88,8 @@ const Header = ({ className }: HeaderProps) => {
               </div>
           </div>
 
-          {/* Bottom gradient divider */}
-          <div className="h-[3px] bg-brand-turquoise" />
+          {/* Divider removed */}
+
 
             {/* Mobile Navigation Drawer (lazy — only loads when first opened) */}
             {isMenuOpen && (
@@ -153,8 +153,8 @@ const Header = ({ className }: HeaderProps) => {
         className="sticky z-40"
         style={{ top: tickerHeight }}
       >
-        {/* Top gradient divider for toolbar */}
-        <div className="h-[3px] bg-brand-turquoise" />
+        {/* Divider removed */}
+
         <div
           className={cn(
             toolbarClasses,
@@ -167,8 +167,8 @@ const Header = ({ className }: HeaderProps) => {
             <NavigationItems className="flex items-center gap-0 flex-nowrap justify-center" />
           </div>
         </div>
-        {/* Bottom gradient divider for toolbar */}
-        <div className="h-[3px] bg-brand-turquoise" />
+        {/* Divider removed */}
+
       </div>
     </ErrorBoundary>
   );
