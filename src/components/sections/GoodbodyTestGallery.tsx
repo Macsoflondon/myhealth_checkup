@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
+import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -119,7 +120,7 @@ const GENERAL_HEALTH_TESTS: GalleryImage[] = [
   galleryItem({ src: "/images/tests/helicobacter-pylori-blood-test.webp", alt: "Helicobacter Pylori Blood Test", code: "Helicobacter Pylori", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/blood-group-blood-test.webp", alt: "Blood Group Blood Test", code: "Blood Group", objectFit: "contain", matchTerms: ["blood group blood test"] }),
   galleryItem({ src: "/images/tests/tiredness-fatigue-blood-test.webp", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain", matchTerms: ["tiredness and fatigue blood test", "tiredness fatigue"] }),
-  galleryItem({ src: "/images/tests/advanced-vitamins-blood-test.webp", alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
+  galleryItem({ src: goodbodyAdvancedVitamins, alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
   galleryItem({ src: "/images/tests/iron-blood-test.webp", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain", matchTerms: ["iron blood test"] }),
 ];
 
@@ -140,7 +141,7 @@ const HORMONE_FERTILITY_TESTS: GalleryImage[] = [
 
 const VITAMIN_NUTRITION_TESTS: GalleryImage[] = [
   galleryItem({ src: "/images/tests/vitamins-blood-test.webp", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
-  galleryItem({ src: "/images/tests/advanced-vitamins-blood-test.webp", alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
+  galleryItem({ src: goodbodyAdvancedVitamins, alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
   galleryItem({ src: "/images/tests/iron-blood-test.webp", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain", matchTerms: ["iron blood test"] }),
   galleryItem({ src: "/images/tests/tiredness-fatigue-blood-test.webp", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain", matchTerms: ["tiredness and fatigue blood test", "tiredness fatigue"] }),
   galleryItem({ src: "/images/tests/anaemia-blood-test.webp", alt: "Anaemia Blood Test", code: "Anaemia", objectFit: "contain" }),
