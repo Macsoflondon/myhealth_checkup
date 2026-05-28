@@ -468,7 +468,7 @@ const GoodbodyTestGallery = () => {
 
             <section>
               <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Our Services</h3>
-              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
+              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
             </section>
 
             <section>
