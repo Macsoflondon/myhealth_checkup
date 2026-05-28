@@ -86,10 +86,10 @@ const Header = ({ className }: HeaderProps) => {
                   </div>
                 </nav>
               </div>
-            </div>
+          </div>
 
-            {/* Bottom gradient divider */}
-            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+          {/* Bottom gradient divider */}
+          <div className="h-[3px] bg-brand-turquoise" />
 
             {/* Mobile Navigation Drawer (lazy — only loads when first opened) */}
             {isMenuOpen && (
@@ -154,7 +154,7 @@ const Header = ({ className }: HeaderProps) => {
         style={{ top: tickerHeight }}
       >
         {/* Top gradient divider for toolbar */}
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div className="h-[3px] bg-brand-turquoise" />
         <div
           className={cn(
             toolbarClasses,
@@ -168,7 +168,7 @@ const Header = ({ className }: HeaderProps) => {
           </div>
         </div>
         {/* Bottom gradient divider for toolbar */}
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div className="h-[3px] bg-brand-turquoise" />
       </div>
     </ErrorBoundary>
   );
