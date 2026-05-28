@@ -111,13 +111,13 @@ const PartnersGrid = () => {
                 <div key={`${provider.id}-${index}`} className="shrink-0 px-3 sm:px-4" style={{ width: "260px" }}>
                   <Link
                     to={`/provider/${provider.id}`}
-                    className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
+                    className="group rounded-xl p-6 sm:p-8 flex items-center justify-center 
                       w-full h-32 sm:h-40 overflow-hidden
                       border-2 border-[#22c0d4] 
                       transition-all duration-300 ease-out
                       hover:shadow-lg hover:shadow-[#22c0d4]/20 
                       hover:-translate-y-1 hover:scale-105
-                      hover:border-[#22c0d4]/30"
+                      hover:border-[#22c0d4]/30 bg-white"
                   >
                     {(() => {
                       const { src, srcSet } = getProviderLogoSrcSet(provider.id);
