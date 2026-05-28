@@ -48,7 +48,7 @@ const TestCategoryTicker = () => {
           </div>
         </div>
       </div>
-      <div className="h-[3px] bg-brand-turquoise" />
+      
     </section>
   );
 };
