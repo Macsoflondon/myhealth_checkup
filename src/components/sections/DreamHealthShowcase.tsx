@@ -1,20 +1,23 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
-import kitTurquoise from "@/assets/kits/kit-turquoise.jpg";
+import kitTurquoise from "@/assets/kits/vitamin-d.png";
 import kitPink from "@/assets/kits/kit-pink.jpg";
 import kitNavy from "@/assets/kits/kit-navy.jpg";
-import kitWhite from "@/assets/kits/kit-white.jpg";
-import kitBlack from "@/assets/kits/kit-black.jpg";
+import kitWhite from "@/assets/kits/male-hormone.png";
+import kitBlack from "@/assets/kits/general-health.png";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
 import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
+import vitaminB12 from "@/assets/kits/vitamin-b12.png";
+import femaleHormone from "@/assets/kits/female-hormone.png";
+import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
 // Rotating image pool so each popular kit gets a visual without duplicating provider data
-const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral, bloodTestKit];
+const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral, bloodTestKit, vitaminB12, femaleHormone, goodbodyAdvancedVitamins];
 
 const cleanName = (name: string) =>
   name
@@ -27,6 +30,7 @@ const cleanName = (name: string) =>
 // Per-test image overrides keyed by normalised test name
 const testImageOverrides: Record<string, string> = {
   "advanced well man": medichecksAdvancedWellMan,
+  "advanced vitamins": goodbodyAdvancedVitamins,
 };
 
 const getOverrideImage = (name: string) =>
@@ -170,10 +174,10 @@ const DreamHealthShowcase = () => {
       {/* Headline + subtitle + CTA */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center mt-10 sm:mt-14">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight leading-[1.05] text-[#08122b] lg:text-6xl">
-          ​Our Providers Most Popular Tests
+          ​
         </h2>
         <p className="mt-4 text-base sm:text-lg font-medium max-w-2xl mx-auto text-[#08122b]">
-          myhealth checkup is the super simple way to find a test, match a provider, and get it done.
+          ​
         </p>
 
         <div className="mt-7 flex justify-center">
