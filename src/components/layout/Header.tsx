@@ -88,7 +88,6 @@ const Header = ({ className }: HeaderProps) => {
               </div>
             </div>
 
-            </div>
             {/* Bottom gradient divider */}
             <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
