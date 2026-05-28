@@ -126,7 +126,7 @@ const Header = ({ className }: HeaderProps) => {
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto flex-shrink-0 object-fill"
+                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain flex-shrink-0"
                 />
                 <img
                   src={headerTagline}
