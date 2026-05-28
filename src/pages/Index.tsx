@@ -201,10 +201,6 @@ const Index = () => {
           </ScrollFadeIn>
         </Suspense>
 
-        {/* Animated gradient divider — scales horizontally from the left on enter */}
-        <ScrollFadeIn variant="slide-left" className="origin-left">
-          <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-        </ScrollFadeIn>
 
         <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>

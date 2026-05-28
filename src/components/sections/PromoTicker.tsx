@@ -20,7 +20,6 @@ const PromoTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
       <div className="pt-3 pb-1.5 sm:pt-5 sm:pb-2.5">
         <div
@@ -60,7 +59,7 @@ const PromoTicker = () => {
         </div>
       </div>
 
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      <div className="h-[3px] bg-brand-turquoise" />
     </section>
   );
 };
