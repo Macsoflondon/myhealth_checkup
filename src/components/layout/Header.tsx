@@ -3,9 +3,9 @@ import { useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
-import mainLogo from "/myhealth-logo-v3.png";
+import mainLogo from "@/assets/myhealth-logo-cropped.webp";
 import headerTagline from "@/assets/header-tagline.webp";
-import mobileLogo from "/myhealth-logo-v3.png";
+import mobileLogo from "/myhealth-logo.png";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
@@ -126,7 +126,7 @@ const Header = ({ className }: HeaderProps) => {
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto flex-shrink-0 object-fill"
+                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain flex-shrink-0"
                 />
                 <img
                   src={headerTagline}
