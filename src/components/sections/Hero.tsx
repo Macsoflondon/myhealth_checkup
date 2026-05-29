@@ -37,7 +37,7 @@ const heroSlides: Array<{
   {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
-    headline: "Test From Home",
+    headline: "The Smarter Way to Choose Private Testing.",
     subline: "Professional at-home finger-prick blood test kits delivered to your door.",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
