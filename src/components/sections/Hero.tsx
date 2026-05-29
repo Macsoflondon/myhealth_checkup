@@ -38,7 +38,7 @@ const heroSlides: Array<{
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
     headline: "The Smarter Way to Compare.",
-    subline: "Professional at-home finger-prick blood test kits delivered to your door.",
+    subline: "​",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
     mobileScale: "scale(1.1)",
