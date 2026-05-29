@@ -160,7 +160,7 @@ const Hero = () => {
                 <div className="text-center mb-1 sm:mb-2 flex-col flex items-center justify-center">
                   <h1
                     key={currentSlide}
-                    className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] xl:text-[4.2rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans lg:text-6xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)] text-center"
+                    className="text-[1.25rem] sm:text-[2rem] md:text-[2.6rem] xl:text-[3.4rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)] text-center whitespace-nowrap"
                   >
                     {slide.headline}
                   </h1>
