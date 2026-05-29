@@ -362,10 +362,10 @@ const RecommendationEngine = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" aria-label={`Learn more about ${rec.testName} from ${rec.provider}`}>
                         Learn More
                       </Button>
-                      <Button size="sm">
+                      <Button size="sm" aria-label={`View details for ${rec.testName} from ${rec.provider}`}>
                         View Test Details
                       </Button>
                     </div>
