@@ -17,6 +17,7 @@ import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+import { seo } from "@/lib/seo";
 
 export interface ProviderTestData {
   id: string;
@@ -339,8 +340,30 @@ export default function ProviderTestDetailTemplate({
     ? test.biomarkers_list 
     : null;
 
-  const pageTitle = `${test.test_name} - ${providerConfig.name} Blood Test | myhealth checkup`;
-  const pageDescription = `${test.description} Book your ${test.test_name} blood test with ${providerConfig.name} through myhealth checkup. ${providerConfig.aboutText}`;
+  const { title: pageTitle, description: pageDescription } = seo.test(test.test_name, {
+    providerName: providerConfig.name,
+    priceGbp: test.price ?? null,
+  });
+  const canonicalUrl = `${providerConfig.canonicalBase}/${testId}`;
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: test.test_name,
+    description: test.description,
+    category: test.category,
+    brand: { "@type": "Brand", name: providerConfig.name },
+    ...(test.price != null && {
+      offers: {
+        "@type": "Offer",
+        url: canonicalUrl,
+        priceCurrency: "GBP",
+        price: test.price,
+        availability: "https://schema.org/InStock",
+        seller: { "@type": "Organization", name: providerConfig.name },
+      },
+    }),
+  };
 
   const hasDiscount = test.original_price && test.original_price > (test.price || 0);
 
@@ -352,7 +375,8 @@ export default function ProviderTestDetailTemplate({
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="product" />
-        <link rel="canonical" href={`${providerConfig.canonicalBase}/${testId}`} />
+        <link rel="canonical" href={canonicalUrl} />
+        <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
       </Helmet>
 
       <div className="min-h-screen bg-white py-12">
