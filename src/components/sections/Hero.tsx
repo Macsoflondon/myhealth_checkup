@@ -184,6 +184,7 @@ const Hero = () => {
                       <input
                         type="text"
                         placeholder="COMPARE OVER 200 TESTS"
+                        aria-label="Search blood tests and health screenings"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyPress={handleKeyPress}

@@ -92,15 +92,15 @@ export function CategoryStandardHero({
                 boxShadow: "0 0 24px #e70d69",
               }}
             />
-            <span
-              className="text-lg sm:text-2xl md:text-[33px] font-bold uppercase leading-none truncate"
+            <h1
+              className="text-lg sm:text-2xl md:text-[33px] font-bold uppercase leading-none truncate m-0"
               style={{
                 letterSpacing: "0.14em",
                 color: "#22c0d4",
               }}
             >
               {pillLabel}
-            </span>
+            </h1>
             <span
               className="inline-block rounded-full shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-[18px] md:h-[18px]"
               style={{
@@ -108,6 +108,7 @@ export function CategoryStandardHero({
                 boxShadow: "0 0 24px #e70d69",
               }}
             />
+
           </div>
         </div>
 
