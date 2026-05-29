@@ -67,8 +67,8 @@ const HealthResources = () => {
                     {resource.readTime}
                   </div>
                   
-                  <Button variant="outline" className="w-full border-health-300 text-white bg-[#e70d69] text-center rounded-none">
-                    Read More
+                  <Button variant="outline" className="w-full border-health-300 text-white bg-[#e70d69] text-center rounded-none" aria-label={`Read guide: ${resource.title}`}>
+                    Read this guide
                   </Button>
                 </CardContent>
               </Card>)}

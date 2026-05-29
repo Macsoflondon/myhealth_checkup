@@ -428,7 +428,7 @@ const FAQsPage = () => {
                   </p>
                   <Link to="/how-it-works">
                     <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]">
-                      Learn More
+                      See how it works
                     </Button>
                   </Link>
                 </CardContent>

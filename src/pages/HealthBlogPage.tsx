@@ -247,8 +247,9 @@ const FeaturedArticleCard = ({ article, formatDate, getReadTime }: ArticleCardPr
               href={article.url} 
               target="_blank" 
               rel="noopener noreferrer"
+              aria-label={`Read full article: ${article.title}`}
             >
-              Read More <ExternalLink className="h-3 w-3" />
+              Read full article <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </a>
           </Button>
         </div>
@@ -317,8 +318,9 @@ const RecentArticleRow = ({ article, formatDate, getReadTime }: ArticleCardProps
                   href={article.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  aria-label={`Read full article: ${article.title}`}
                 >
-                  Read More <ExternalLink className="h-3 w-3" />
+                  Read full article <ExternalLink className="h-3 w-3" aria-hidden="true" />
                 </a>
               </Button>
             </div>

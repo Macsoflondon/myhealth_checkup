@@ -54,7 +54,7 @@ const GutHealthPage = () => {
               Compare Tests
             </Button>
             <Button variant="outline" size="lg" className="border-amber-500 text-amber-700 hover:bg-amber-50">
-              Learn More
+              Explore gut health testing
             </Button>
           </div>
         </PageBanner>
