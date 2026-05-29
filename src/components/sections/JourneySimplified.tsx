@@ -7,19 +7,19 @@ const JourneySimplified = () => {
       number: "01",
       icon: Search,
       title: "Tell us what you want to check",
-      description: ""
+      description: "Search by symptom, health goal, or specific biomarker to discover the private tests that match what you actually need."
     },
     {
       number: "02",
       icon: GitCompare,
       title: "Compare trusted tests & providers",
-      description: "​"
+      description: "See prices, biomarkers, sample methods and turnaround times side-by-side from UKAS-accredited labs and CQC-regulated clinics."
     },
     {
       number: "03",
       icon: Calendar,
       title: "Book directly with the provider",
-      description: "​"
+      description: "Click through to the provider you choose and complete your booking with them — we never see your medical data."
     }
   ];
 
@@ -33,6 +33,7 @@ const JourneySimplified = () => {
             titleClassName="text-tertiary"
           />
           <p className="text-base font-semibold text-tertiary max-w-2xl mx-auto leading-snug mt-2 text-center">
+            Three simple steps from "I'm not sure which test I need" to a confirmed booking with a trusted UK provider — no account required, no medical data stored with us.
           </p>
         </div>
 
@@ -53,11 +54,9 @@ const JourneySimplified = () => {
                 <h3 className="text-base font-heading mb-1 text-brand-turquoise font-medium sm:text-base">
                   {step.title}
                 </h3>
-                {step.description.trim() && (
-                  <p className="h-px w-8 sm:w-12 bg-brand-turquoise/40 font-semibold">
-                    {step.description}
-                  </p>
-                )}
+                <p className="mt-1 text-sm text-tertiary/80 max-w-xs mx-auto leading-snug">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
