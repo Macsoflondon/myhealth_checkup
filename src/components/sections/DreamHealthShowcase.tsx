@@ -1,23 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
-import kitTurquoise from "@/assets/kits/vitamin-d.png";
-import kitPink from "@/assets/kits/goodbody-advanced-well-man-v2.png";
-import kitNavy from "@/assets/kits/kit-navy.jpg";
-import kitWhite from "@/assets/kits/male-hormone.png";
-import kitBlack from "@/assets/kits/general-health.png";
-import kitCoral from "@/assets/kits/kit-coral.jpg";
-import thrivaKit from "@/assets/kits/randox-genetic-haemochromatosis.png";
+import vitaminD from "@/assets/kits/vitamin-d.png";
 import vitaminB12 from "@/assets/kits/vitamin-b12.png";
+import maleHormone from "@/assets/kits/male-hormone.png";
 import femaleHormone from "@/assets/kits/female-hormone.png";
+import generalHealth from "@/assets/kits/general-health.png";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
+import goodbodyWellMan from "@/assets/kits/goodbody-advanced-well-man-v2.png";
+import medichecksWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
+import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
-
-// Rotating image pool so each popular kit gets a visual without duplicating provider data
-const kitImages = [kitTurquoise, kitPink, kitNavy, kitBlack, kitWhite, kitCoral, bloodTestKit, vitaminB12, femaleHormone, goodbodyAdvancedVitamins];
 
 const cleanName = (name: string) =>
   name
@@ -27,17 +23,53 @@ const cleanName = (name: string) =>
     .replace(/\s*\| Book Online today$/i, "")
     .trim();
 
-// Per-test image overrides keyed by normalised test name
-const testImageOverrides: Record<string, string> = {
-  "advanced well man": thrivaKit,
-  "advanced vitamins": goodbodyAdvancedVitamins,
+// Generic placeholder image URLs that should be ignored in favour of a
+// topic-matched in-house asset.
+const PLACEHOLDER_PATTERNS = [
+  /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
+  /lovableproject\.com\/lovable-uploads\//i,
+];
+const isPlaceholder = (url?: string | null) =>
+  !!url && PLACEHOLDER_PATTERNS.some((re) => re.test(url));
+
+// Topic-based picker — matches the test name to a thematically correct kit.
+// Order matters: more specific keywords first.
+const TOPIC_IMAGES: Array<[RegExp, string]> = [
+  [/\bvitamin\s*d\b/i, vitaminD],
+  [/\bvitamin\s*b\s*12\b/i, vitaminB12],
+  [/\bthyroid\b/i, vitaminB12],
+  [/\b(female|woman|women|menopause)\b/i, femaleHormone],
+  [/\b(male|man|men)\b.*\b(hormone|fertility|quickdraw|active|boost|testosterone)\b/i, maleHormone],
+  [/\b(hormone|fertility|sports|testosterone)\b/i, maleHormone],
+  [/\b(well\s*man|wellman)\b/i, goodbodyWellMan],
+  [/\b(general\s*health|optimal\s*health|wellness|complete|premium)\b/i, generalHealth],
+  [/\b(genetic|haemochromatosis|dna)\b/i, randoxGeneticHaemochromatosis],
+  [/\b(vitamins?)\b/i, goodbodyAdvancedVitamins],
+];
+
+const pickTopicImage = (name: string): string => {
+  for (const [re, img] of TOPIC_IMAGES) if (re.test(name)) return img;
+  return bloodTestKit;
 };
 
-const getOverrideImage = (name: string) =>
-  testImageOverrides[cleanName(name).toLowerCase()];
+// Provider-specific overrides where we have a branded asset.
+const providerOverrides: Record<string, Record<string, string>> = {
+  "medichecks": {
+    "advanced well man": medichecksWellMan,
+    "advanced well woman": femaleHormone,
+  },
+  "goodbody-clinic": {
+    "advanced well man": goodbodyWellMan,
+  },
+};
 
-const resolveImage = (t: PopularTest, i: number) =>
-  getOverrideImage(t.test_name) || t.image_url || kitImages[i % kitImages.length];
+const resolveImage = (t: PopularTest): string => {
+  const key = cleanName(t.test_name).toLowerCase();
+  const providerHit = providerOverrides[t.provider_id]?.[key];
+  if (providerHit) return providerHit;
+  if (t.image_url && !isPlaceholder(t.image_url)) return t.image_url;
+  return pickTopicImage(t.test_name);
+};
 
 /** Round-robin interleave by provider so the grid alternates providers */
 const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
