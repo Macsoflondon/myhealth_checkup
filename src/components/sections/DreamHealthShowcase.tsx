@@ -8,11 +8,6 @@ import femaleHormone from "@/assets/kits/female-hormone.png";
 import generalHealth from "@/assets/kits/general-health.png";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
 import goodbodyWellMan from "@/assets/kits/goodbody-advanced-well-man-v2.png";
-import goodbodyWellWoman from "@/assets/kits/goodbody-advanced-well-woman.png";
-import medichecksWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
-import medichecksWellWoman from "@/assets/kits/medichecks-advanced-well-woman.png";
-import medichecksThyroid from "@/assets/kits/medichecks-thyroid.png";
-import medichecksSportsHormone from "@/assets/kits/medichecks-sports-hormone.png";
 import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -41,8 +36,8 @@ const isPlaceholder = (url?: string | null) =>
 const TOPIC_IMAGES: Array<[RegExp, string]> = [
   [/\bvitamin\s*d\b/i, vitaminD],
   [/\bvitamin\s*b\s*12\b/i, vitaminB12],
-  [/\bthyroid\b/i, medichecksThyroid],
-  [/\b(sports|athletic|performance)\b/i, medichecksSportsHormone],
+  [/\bthyroid\b/i, bloodTestKit],
+  [/\b(sports|athletic|performance)\b/i, bloodTestKit],
   [/\b(menopause)\b/i, femaleHormone],
   [/\b(female|woman|women)\b/i, femaleHormone],
   [/\b(male|man|men)\b.*\b(hormone|fertility|quickdraw|active|boost|testosterone)\b/i, maleHormone],
@@ -61,14 +56,15 @@ const pickTopicImage = (name: string): string => {
 // Provider-specific overrides where we have a branded asset.
 const providerOverrides: Record<string, Record<string, string>> = {
   "medichecks": {
-    "advanced well man": medichecksWellMan,
-    "advanced well woman": medichecksWellWoman,
-    "advanced thyroid function": medichecksThyroid,
-    "sports hormone": medichecksSportsHormone,
+    "advanced well man": "https://www.medichecks.com/cdn/shop/files/advanced-well-man-blood-test-400216.png",
+    "advanced well woman": "https://www.medichecks.com/cdn/shop/files/advanced-well-woman-blood-test-457156.png",
+    "advanced thyroid function": "https://www.medichecks.com/cdn/shop/files/advanced-thyroid-function-blood-test-157336.png",
+    "sports hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png",
+    "optimal health": "https://www.medichecks.com/cdn/shop/files/optimal-health-blood-test-707618.png",
   },
   "goodbody-clinic": {
-    "advanced well man": goodbodyWellMan,
-    "advanced well woman": goodbodyWellWoman,
+    "advanced well man": "https://goodbodyclinic.com/cdn/shop/files/ADVANCEDWELLMAN_333f3f11-4432-4d4c-91e6-e294f200bfa5.jpg",
+    "advanced well woman": "https://goodbodyclinic.com/cdn/shop/files/ADVANCEDWELLWOMAN_0c94a7ae-8c65-41f9-b247-d14cb54553f3.jpg",
   },
 };
 
@@ -256,12 +252,9 @@ const DreamHealthShowcase = () => {
 
             {!isLoading &&
               orderedTests.map((t, i) => {
-                // Deterministic "compared this week" — social proof without faking data swings
-                const comparedThisWeek = 60 + ((t.id.charCodeAt(0) + i * 17) % 180);
                 const isMostChosen = i < 3; // top 3 only — scarcity of the label preserves its value
                 const displayPrice = t.base_price && t.base_price > 0 ? t.base_price : t.price;
-                // Anchor: typical high-street comparable, capped sensibly. Compliant: "typical", never guaranteed.
-                const anchorPrice = Math.round(Number(displayPrice) * 1.6);
+                const pricePrefix = t.base_price && t.base_price > 0 ? "from £" : "£";
                 return (
                 <article
                   key={t.id}
@@ -295,20 +288,10 @@ const DreamHealthShowcase = () => {
                         `Comprehensive screening covering ${t.biomarker_count || "key"} biomarkers. ${t.sample_type || "Blood sample"} collection.`}
                     </p>
 
-                    {/* Social proof — comparison activity */}
-                    <p className="mt-3 text-[11px] text-[#081129]/60">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#22c0d4] mr-1.5 align-middle" />
-                      {comparedThisWeek} people compared this in the last 7 days
-                    </p>
-
                     <div className="mt-4 flex items-end justify-between">
                       <div className="flex flex-col">
-                        {/* Anchoring — strike-through reference price */}
-                        <span className="text-[11px] text-[#081129]/50 line-through">
-                          typical £{anchorPrice}
-                        </span>
                         <span className="text-xl font-bold text-[#081129] leading-none">
-                          from £{displayPrice}
+                          {pricePrefix}{displayPrice}
                         </span>
                       </div>
                       <button
