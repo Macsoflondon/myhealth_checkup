@@ -41,10 +41,12 @@ const isPlaceholder = (url?: string | null) =>
 const TOPIC_IMAGES: Array<[RegExp, string]> = [
   [/\bvitamin\s*d\b/i, vitaminD],
   [/\bvitamin\s*b\s*12\b/i, vitaminB12],
-  [/\bthyroid\b/i, vitaminB12],
-  [/\b(female|woman|women|menopause)\b/i, femaleHormone],
+  [/\bthyroid\b/i, medichecksThyroid],
+  [/\b(sports|athletic|performance)\b/i, medichecksSportsHormone],
+  [/\b(menopause)\b/i, femaleHormone],
+  [/\b(female|woman|women)\b/i, femaleHormone],
   [/\b(male|man|men)\b.*\b(hormone|fertility|quickdraw|active|boost|testosterone)\b/i, maleHormone],
-  [/\b(hormone|fertility|sports|testosterone)\b/i, maleHormone],
+  [/\b(hormone|fertility|testosterone)\b/i, maleHormone],
   [/\b(well\s*man|wellman)\b/i, goodbodyWellMan],
   [/\b(general\s*health|optimal\s*health|wellness|complete|premium)\b/i, generalHealth],
   [/\b(genetic|haemochromatosis|dna)\b/i, randoxGeneticHaemochromatosis],
@@ -60,10 +62,13 @@ const pickTopicImage = (name: string): string => {
 const providerOverrides: Record<string, Record<string, string>> = {
   "medichecks": {
     "advanced well man": medichecksWellMan,
-    "advanced well woman": femaleHormone,
+    "advanced well woman": medichecksWellWoman,
+    "advanced thyroid function": medichecksThyroid,
+    "sports hormone": medichecksSportsHormone,
   },
   "goodbody-clinic": {
     "advanced well man": goodbodyWellMan,
+    "advanced well woman": goodbodyWellWoman,
   },
 };
 
