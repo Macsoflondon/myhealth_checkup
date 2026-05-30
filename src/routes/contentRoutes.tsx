@@ -30,7 +30,7 @@ export const contentRoutes = (
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
     <Route path="/biomarker-database" element={<BiomarkerDatabasePage />} />
-    <Route path="/expert-guidance" element={<ExpertGuidancePage />} />
+    
     <Route path="/typography-showcase" element={<AdminRoute><TypographyShowcasePage /></AdminRoute>} />
   </>
 );
