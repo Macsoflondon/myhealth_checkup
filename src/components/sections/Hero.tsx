@@ -52,7 +52,7 @@ const heroSlides: Array<{
     image: heroActive,
     mobileImage: heroMobileActive,
     headline: "Know Your Numbers. Own Your Health.",
-    subline: "Know your numbers. Stay ahead. Take control of your wellbeing.",
+    subline: "​",
     objectPosition: "center 18%",
     mobileObjectPosition: "center 22%",
     mobileScale: "scale(1.15)",
