@@ -27,6 +27,7 @@ const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
 const TrustPlatformSection = lazy(() => import("@/components/sections/TrustPlatformSection"));
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
+const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
 
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
