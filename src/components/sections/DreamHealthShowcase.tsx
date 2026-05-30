@@ -174,7 +174,7 @@ const DreamHealthShowcase = () => {
       {/* Headline + subtitle + CTA */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center mt-10 sm:mt-14">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold tracking-tight leading-[1.05] text-[#08122b] lg:text-6xl">
-          ​
+          ​Our  Partners Most Popular Tests
         </h2>
         <p className="mt-4 text-base sm:text-lg font-medium max-w-2xl mx-auto text-[#08122b]">
           ​
