@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
+import thrivaKit from "@/assets/kits/thriva-kit.jpg";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -100,14 +101,14 @@ const findBackendImageForGalleryItem = (
 };
 
 const GENERAL_HEALTH_TESTS: GalleryImage[] = [
-  galleryItem({ src: "/images/tests/advanced-well-man.webp", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
+  galleryItem({ src: thrivaKit, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/general-health-blood-test.webp", alt: "General Health Blood Test", code: "General Health", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/premium-complete-blood-test.webp", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain", matchTerms: ["premium complete blood test"] }),
   galleryItem({ src: "/images/tests/complete-allergy-blood-test.webp", alt: "Complete Allergy Blood Test", code: "Complete Allergy", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/kidney-blood-test.webp", alt: "Kidney Blood Test", code: "Kidney", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/cholesterol-blood-test.webp", alt: "Cholesterol Blood Test", code: "Cholesterol", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/full-blood-count-blood-test.webp", alt: "Full Blood Count Blood Test", code: "Full Blood Count", objectFit: "contain", matchTerms: ["full blood count blood test"] }),
-  galleryItem({ src: "https://37e227e1-0d67-4515-b064-99c243036534.lovableproject.com/lovable-uploads/b1fd9c18-e8ab-4e66-9b37-aa91aac93b18.png", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
+  galleryItem({ src: thrivaKit, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/liver-blood-test.webp", alt: "Liver Blood Test", code: "Liver", objectFit: "contain" }),
   galleryItem({ src: "/images/tests/vitamins-blood-test.webp", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
   galleryItem({ src: "/images/tests/sports-fitness-blood-test.webp", alt: "Sports & Fitness Blood Test", code: "Sports & Fitness", objectFit: "contain", matchTerms: ["sports and fitness blood test", "comprehensive sports blood test"] }),

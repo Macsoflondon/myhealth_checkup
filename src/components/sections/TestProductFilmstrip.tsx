@@ -1,9 +1,10 @@
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { SectionHeading } from "@/components/ui/section-heading";
+import thrivaKit from "@/assets/kits/thriva-kit.jpg";
 import { cn } from "@/lib/utils";
 
 const TEST_PRODUCTS = [
-  { src: "/images/tests/advanced-well-man.webp", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
+  { src: thrivaKit, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
   { src: "/images/tests/premium-complete-blood-test.webp", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain" },
   { src: "/images/tests/early-cancer-screening.webp", alt: "Early Cancer Screening Test", code: "Cancer Screening", objectFit: "contain" },
   { src: "/images/tests/female-hormone-fertility.webp", alt: "Female Hormone & Fertility Test", code: "Hormone & Fertility", objectFit: "contain" },

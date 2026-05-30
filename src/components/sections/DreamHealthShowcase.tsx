@@ -7,7 +7,7 @@ import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/male-hormone.png";
 import kitBlack from "@/assets/kits/general-health.png";
 import kitCoral from "@/assets/kits/kit-coral.jpg";
-import medichecksAdvancedWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
+import thrivaKit from "@/assets/kits/thriva-kit.jpg";
 import vitaminB12 from "@/assets/kits/vitamin-b12.png";
 import femaleHormone from "@/assets/kits/female-hormone.png";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
@@ -29,7 +29,7 @@ const cleanName = (name: string) =>
 
 // Per-test image overrides keyed by normalised test name
 const testImageOverrides: Record<string, string> = {
-  "advanced well man": medichecksAdvancedWellMan,
+  "advanced well man": thrivaKit,
   "advanced vitamins": goodbodyAdvancedVitamins,
 };
 
