@@ -43,6 +43,7 @@ const App = () => {
             <TooltipProvider>
               <BrowserRouter>
                 <ScrollToTop />
+                <GlobalPageBackground />
                 <GlobalHreflang />
                 <TestPageViewTracker />
                 <FloatingNavDock />
