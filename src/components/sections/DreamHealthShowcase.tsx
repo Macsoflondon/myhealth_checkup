@@ -29,7 +29,7 @@ const cleanName = (name: string) =>
 
 // Per-test image overrides keyed by normalised test name
 const testImageOverrides: Record<string, string> = {
-  "advanced well man": medichecksAdvancedWellMan,
+  "advanced well man": thrivaKit,
   "advanced vitamins": goodbodyAdvancedVitamins,
 };
 
