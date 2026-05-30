@@ -8,7 +8,11 @@ import femaleHormone from "@/assets/kits/female-hormone.png";
 import generalHealth from "@/assets/kits/general-health.png";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
 import goodbodyWellMan from "@/assets/kits/goodbody-advanced-well-man-v2.png";
+import goodbodyWellWoman from "@/assets/kits/goodbody-advanced-well-woman.png";
 import medichecksWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
+import medichecksWellWoman from "@/assets/kits/medichecks-advanced-well-woman.png";
+import medichecksThyroid from "@/assets/kits/medichecks-thyroid.png";
+import medichecksSportsHormone from "@/assets/kits/medichecks-sports-hormone.png";
 import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -37,10 +41,12 @@ const isPlaceholder = (url?: string | null) =>
 const TOPIC_IMAGES: Array<[RegExp, string]> = [
   [/\bvitamin\s*d\b/i, vitaminD],
   [/\bvitamin\s*b\s*12\b/i, vitaminB12],
-  [/\bthyroid\b/i, vitaminB12],
-  [/\b(female|woman|women|menopause)\b/i, femaleHormone],
+  [/\bthyroid\b/i, medichecksThyroid],
+  [/\b(sports|athletic|performance)\b/i, medichecksSportsHormone],
+  [/\b(menopause)\b/i, femaleHormone],
+  [/\b(female|woman|women)\b/i, femaleHormone],
   [/\b(male|man|men)\b.*\b(hormone|fertility|quickdraw|active|boost|testosterone)\b/i, maleHormone],
-  [/\b(hormone|fertility|sports|testosterone)\b/i, maleHormone],
+  [/\b(hormone|fertility|testosterone)\b/i, maleHormone],
   [/\b(well\s*man|wellman)\b/i, goodbodyWellMan],
   [/\b(general\s*health|optimal\s*health|wellness|complete|premium)\b/i, generalHealth],
   [/\b(genetic|haemochromatosis|dna)\b/i, randoxGeneticHaemochromatosis],
@@ -56,10 +62,13 @@ const pickTopicImage = (name: string): string => {
 const providerOverrides: Record<string, Record<string, string>> = {
   "medichecks": {
     "advanced well man": medichecksWellMan,
-    "advanced well woman": femaleHormone,
+    "advanced well woman": medichecksWellWoman,
+    "advanced thyroid function": medichecksThyroid,
+    "sports hormone": medichecksSportsHormone,
   },
   "goodbody-clinic": {
     "advanced well man": goodbodyWellMan,
+    "advanced well woman": goodbodyWellWoman,
   },
 };
 
@@ -108,18 +117,13 @@ const DreamHealthShowcase = () => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Dedupe globally by cleaned name AND by image so the section never
-    //    shows the same test or same kit photo twice (e.g. Well Woman appears
-    //    in both Goodbody and Medichecks bestsellers).
-    const seenName = new Set<string>();
-    const seenImg = new Set<string>();
+    // 2. Dedupe WITHIN each provider only (so e.g. Goodbody Well Woman and
+    //    Medichecks Well Woman both stay — each partner gets their own card).
+    const seenPerProvider = new Set<string>();
     const deduped = filtered.filter((t) => {
-      const nameKey = cleanName(t.test_name).toLowerCase();
-      if (seenName.has(nameKey)) return false;
-      const imgKey = (t.image_url || "").trim().toLowerCase();
-      if (imgKey && seenImg.has(imgKey)) return false;
-      seenName.add(nameKey);
-      if (imgKey) seenImg.add(imgKey);
+      const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
+      if (seenPerProvider.has(key)) return false;
+      seenPerProvider.add(key);
       return true;
     });
     // 3. Cap at 5 per provider so no single partner dominates
