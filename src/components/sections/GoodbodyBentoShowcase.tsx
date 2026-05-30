@@ -79,11 +79,11 @@ const GoodbodyBentoShowcase = () => {
             Why choose <span className="text-[#47a970]">Goodbody Clinics</span>
           </h3>
           <p className="text-sm sm:text-base leading-relaxed mb-3">
-            <strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable — clinical-grade accuracy meets high-street convenience.
+            <strong className="text-[#47a970]">Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable — clinical-grade accuracy meets high-street convenience.
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-[#22c0d4] to-[#e70d69] mx-auto my-3" />
+          <div className="w-12 h-px bg-gradient-to-r from-[#47a970] to-[#e70d69] mx-auto my-3" />
           <p className="text-sm sm:text-base leading-relaxed">
-            Choose from over <strong>60 blood and wellness tests</strong>, each processed in <strong>UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
+            Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
           </p>
         </div>
         <div className="col-span-4 sm:col-span-2 row-span-2">
