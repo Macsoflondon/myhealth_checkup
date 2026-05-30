@@ -76,7 +76,7 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="col-span-2 sm:col-span-2 row-span-4 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
           <h3 className="font-heading font-bold text-lg sm:text-xl mb-4 text-[#081129]">
-            Why choose <span className="text-[#22c0d4]">Goodbody Clinics</span>
+            Why choose <span className="text-[#47a970]">Goodbody Clinics</span>
           </h3>
           <p className="text-sm sm:text-base leading-relaxed mb-3">
             <strong>Goodbody Clinics</strong> deliver high-quality private health checks that are accessible and affordable — clinical-grade accuracy meets high-street convenience.
