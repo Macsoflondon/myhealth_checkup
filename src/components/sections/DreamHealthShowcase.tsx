@@ -65,6 +65,7 @@ const providerOverrides: Record<string, Record<string, string>> = {
     "advanced well woman": medichecksWellWoman,
     "advanced thyroid function": medichecksThyroid,
     "sports hormone": medichecksSportsHormone,
+    "optimal health": "https://www.medichecks.com/cdn/shop/files/optimal-health-blood-test-707618.png",
   },
   "goodbody-clinic": {
     "advanced well man": goodbodyWellMan,
@@ -256,8 +257,6 @@ const DreamHealthShowcase = () => {
 
             {!isLoading &&
               orderedTests.map((t, i) => {
-                // Deterministic "compared this week" — social proof without faking data swings
-                const comparedThisWeek = 60 + ((t.id.charCodeAt(0) + i * 17) % 180);
                 const isMostChosen = i < 3; // top 3 only — scarcity of the label preserves its value
                 const displayPrice = t.base_price && t.base_price > 0 ? t.base_price : t.price;
                 // Anchor: typical high-street comparable, capped sensibly. Compliant: "typical", never guaranteed.
@@ -293,12 +292,6 @@ const DreamHealthShowcase = () => {
                     <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1">
                       {t.description ||
                         `Comprehensive screening covering ${t.biomarker_count || "key"} biomarkers. ${t.sample_type || "Blood sample"} collection.`}
-                    </p>
-
-                    {/* Social proof — comparison activity */}
-                    <p className="mt-3 text-[11px] text-[#081129]/60">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#22c0d4] mr-1.5 align-middle" />
-                      {comparedThisWeek} people compared this in the last 7 days
                     </p>
 
                     <div className="mt-4 flex items-end justify-between">
