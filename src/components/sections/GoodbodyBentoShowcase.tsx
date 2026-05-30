@@ -79,7 +79,10 @@ const GoodbodyBentoShowcase = () => {
             ​
           </h3>
           <p className="text-sm sm:text-base leading-relaxed mb-3">
-            Goodbody Clinics delivers high-quality private blood tests and cancer screening that are accessible, affordable, and convenient. With clinical-grade accuracy and high-street accessibility, we empower people to take control of their health with confidence.
+            <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> that are accessible, affordable, and convenient.
+          </p>
+          <p className="text-sm sm:text-base leading-relaxed mb-3">
+            With <strong className="text-[#47a970]">clinical-grade accuracy</strong> and high-street accessibility, we empower people to take control of their health with confidence.
           </p>
           <div className="w-12 h-px bg-gradient-to-r from-[#47a970] to-[#e70d69] mx-auto my-3" />
           <p className="text-sm sm:text-base leading-relaxed">
