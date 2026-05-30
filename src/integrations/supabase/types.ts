@@ -1571,6 +1571,7 @@ export type Database = {
           tablename: string
         }[]
       }
+      sanitize_popular_provider_tests: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
