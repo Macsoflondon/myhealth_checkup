@@ -14,7 +14,7 @@ const ConditionsPage = lazy(() => import("@/pages/ConditionsPage"));
 const TrustedProvidersPage = lazy(() => import("@/pages/TrustedProvidersPage"));
 const TypographyShowcasePage = lazy(() => import("@/pages/TypographyShowcasePage"));
 const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage"));
-const ExpertGuidancePage = lazy(() => import("@/pages/ExpertGuidancePage"));
+
 
 export const contentRoutes = (
   <>
@@ -30,7 +30,7 @@ export const contentRoutes = (
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
     <Route path="/biomarker-database" element={<BiomarkerDatabasePage />} />
-    <Route path="/expert-guidance" element={<ExpertGuidancePage />} />
+    
     <Route path="/typography-showcase" element={<AdminRoute><TypographyShowcasePage /></AdminRoute>} />
   </>
 );

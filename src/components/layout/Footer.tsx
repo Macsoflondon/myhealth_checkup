@@ -26,7 +26,7 @@ const Footer = () => {
     { name: "Health Resource Hub", link: "/blog" },
     { name: "Test Categories", link: "/test-categories" },
     { name: t("footer.links.contact"), link: "/contact" },
-    { name: "Expert Guidance", link: "/expert-guidance" },
+    
     { name: "Feedback & Complaints", link: "/complaints" },
     { name: "Legal Hub", link: "/legal" },
   ];
