@@ -1,6 +1,6 @@
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { SectionHeading } from "@/components/ui/section-heading";
-import thrivaKit from "@/assets/kits/thriva-kit.jpg";
+import thrivaKit from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { cn } from "@/lib/utils";
 
 const TEST_PRODUCTS = [
