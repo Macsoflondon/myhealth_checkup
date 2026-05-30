@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
+import thrivaKit from "@/assets/kits/thriva-kit.jpg";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
