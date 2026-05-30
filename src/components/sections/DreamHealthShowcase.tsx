@@ -76,18 +76,31 @@ const DreamHealthShowcase = () => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Dedupe by provider + cleaned name so label collisions can't double-render
-    const seen = new Set<string>();
+    // 2. Dedupe globally by cleaned name AND by image so the section never
+    //    shows the same test or same kit photo twice (e.g. Well Woman appears
+    //    in both Goodbody and Medichecks bestsellers).
+    const seenName = new Set<string>();
+    const seenImg = new Set<string>();
     const deduped = filtered.filter((t) => {
-      const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
+      const nameKey = cleanName(t.test_name).toLowerCase();
+      if (seenName.has(nameKey)) return false;
+      const imgKey = (t.image_url || "").trim().toLowerCase();
+      if (imgKey && seenImg.has(imgKey)) return false;
+      seenName.add(nameKey);
+      if (imgKey) seenImg.add(imgKey);
       return true;
     });
-    // 3. Round-robin interleave so providers don't cluster
-    const interleaved = interleaveByProvider(deduped);
-    // 4. Cap at 12 cards (drops two desktop rows from the bottom)
-    return interleaved.slice(0, 12);
+    // 3. Cap at 5 per provider so no single partner dominates
+    const perProvider = new Map<string, number>();
+    const capped = deduped.filter((t) => {
+      const n = perProvider.get(t.provider_id) ?? 0;
+      if (n >= 5) return false;
+      perProvider.set(t.provider_id, n + 1);
+      return true;
+    });
+    // 4. Round-robin interleave so providers don't cluster, then cap at 20
+    //    (4 partners × ~5 kits each).
+    return interleaveByProvider(capped).slice(0, 20);
   }, [popularTests]);
 
   const filmstripTests = orderedTests.slice(0, 8);
