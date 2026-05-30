@@ -76,9 +76,17 @@ const DreamHealthShowcase = () => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Round-robin interleave so providers don't cluster
-    const interleaved = interleaveByProvider(filtered);
-    // 3. Cap at 12 cards (drops two desktop rows from the bottom)
+    // 2. Dedupe by provider + cleaned name so label collisions can't double-render
+    const seen = new Set<string>();
+    const deduped = filtered.filter((t) => {
+      const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    // 3. Round-robin interleave so providers don't cluster
+    const interleaved = interleaveByProvider(deduped);
+    // 4. Cap at 12 cards (drops two desktop rows from the bottom)
     return interleaved.slice(0, 12);
   }, [popularTests]);
 
