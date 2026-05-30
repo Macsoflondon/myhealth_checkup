@@ -9,6 +9,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import FloatingNavDock from "./components/common/FloatingNavDock";
 import { GlobalHreflang } from "./components/seo/GlobalHreflang";
 import TestPageViewTracker from "./components/analytics/TestPageViewTracker";
+import GlobalPageBackground from "./components/layout/GlobalPageBackground";
 
 import { AppRoutes } from "./routes";
 import { SessionSecurityProvider } from "./components/security/SessionSecurityProvider";
