@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bloodTestKit from "@/assets/blood-test-kit.jpg";
 import kitTurquoise from "@/assets/kits/vitamin-d.png";
-import kitPink from "@/assets/kits/kit-pink.jpg";
+import kitPink from "@/assets/kits/goodbody-advanced-well-man-v2.png";
 import kitNavy from "@/assets/kits/kit-navy.jpg";
 import kitWhite from "@/assets/kits/male-hormone.png";
 import kitBlack from "@/assets/kits/general-health.png";
