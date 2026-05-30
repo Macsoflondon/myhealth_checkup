@@ -134,10 +134,8 @@ const FeaturedProvidersGlass = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
   return (
-    <section className="relative w-full bg-[#081129] py-16 md:py-24 px-4 overflow-hidden">
-      {/* Ambient background orbs */}
-      <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-[#22c0d4]/10 blur-[120px]" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-[#e70d69]/10 blur-[120px]" />
+    <section className="relative w-full py-16 md:py-24 px-4 overflow-hidden">
+
 
       <div className="relative max-w-7xl mx-auto space-y-16">
         {/* Header */}
