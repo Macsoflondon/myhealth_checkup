@@ -8,11 +8,6 @@ import femaleHormone from "@/assets/kits/female-hormone.png";
 import generalHealth from "@/assets/kits/general-health.png";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
 import goodbodyWellMan from "@/assets/kits/goodbody-advanced-well-man-v2.png";
-import goodbodyWellWoman from "@/assets/kits/goodbody-advanced-well-woman.png";
-import medichecksWellMan from "@/assets/kits/medichecks-advanced-well-man.png";
-import medichecksWellWoman from "@/assets/kits/medichecks-advanced-well-woman.png";
-import medichecksThyroid from "@/assets/kits/medichecks-thyroid.png";
-import medichecksSportsHormone from "@/assets/kits/medichecks-sports-hormone.png";
 import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -61,15 +56,15 @@ const pickTopicImage = (name: string): string => {
 // Provider-specific overrides where we have a branded asset.
 const providerOverrides: Record<string, Record<string, string>> = {
   "medichecks": {
-    "advanced well man": medichecksWellMan,
-    "advanced well woman": medichecksWellWoman,
-    "advanced thyroid function": medichecksThyroid,
-    "sports hormone": medichecksSportsHormone,
+    "advanced well man": "https://www.medichecks.com/cdn/shop/files/advanced-well-man-blood-test-400216.png",
+    "advanced well woman": "https://www.medichecks.com/cdn/shop/files/advanced-well-woman-blood-test-457156.png",
+    "advanced thyroid function": "https://www.medichecks.com/cdn/shop/files/advanced-thyroid-function-blood-test-157336.png",
+    "sports hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png",
     "optimal health": "https://www.medichecks.com/cdn/shop/files/optimal-health-blood-test-707618.png",
   },
   "goodbody-clinic": {
-    "advanced well man": goodbodyWellMan,
-    "advanced well woman": goodbodyWellWoman,
+    "advanced well man": "https://goodbodyclinic.com/cdn/shop/files/ADVANCEDWELLMAN_333f3f11-4432-4d4c-91e6-e294f200bfa5.jpg",
+    "advanced well woman": "https://goodbodyclinic.com/cdn/shop/files/ADVANCEDWELLWOMAN_0c94a7ae-8c65-41f9-b247-d14cb54553f3.jpg",
   },
 };
 
