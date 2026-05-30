@@ -36,8 +36,8 @@ const isPlaceholder = (url?: string | null) =>
 const TOPIC_IMAGES: Array<[RegExp, string]> = [
   [/\bvitamin\s*d\b/i, vitaminD],
   [/\bvitamin\s*b\s*12\b/i, vitaminB12],
-  [/\bthyroid\b/i, medichecksThyroid],
-  [/\b(sports|athletic|performance)\b/i, medichecksSportsHormone],
+  [/\bthyroid\b/i, bloodTestKit],
+  [/\b(sports|athletic|performance)\b/i, bloodTestKit],
   [/\b(menopause)\b/i, femaleHormone],
   [/\b(female|woman|women)\b/i, femaleHormone],
   [/\b(male|man|men)\b.*\b(hormone|fertility|quickdraw|active|boost|testosterone)\b/i, maleHormone],
@@ -254,8 +254,7 @@ const DreamHealthShowcase = () => {
               orderedTests.map((t, i) => {
                 const isMostChosen = i < 3; // top 3 only — scarcity of the label preserves its value
                 const displayPrice = t.base_price && t.base_price > 0 ? t.base_price : t.price;
-                // Anchor: typical high-street comparable, capped sensibly. Compliant: "typical", never guaranteed.
-                const anchorPrice = Math.round(Number(displayPrice) * 1.6);
+                const pricePrefix = t.base_price && t.base_price > 0 ? "from £" : "£";
                 return (
                 <article
                   key={t.id}
@@ -291,12 +290,8 @@ const DreamHealthShowcase = () => {
 
                     <div className="mt-4 flex items-end justify-between">
                       <div className="flex flex-col">
-                        {/* Anchoring — strike-through reference price */}
-                        <span className="text-[11px] text-[#081129]/50 line-through">
-                          typical £{anchorPrice}
-                        </span>
                         <span className="text-xl font-bold text-[#081129] leading-none">
-                          from £{displayPrice}
+                          {pricePrefix}{displayPrice}
                         </span>
                       </div>
                       <button
