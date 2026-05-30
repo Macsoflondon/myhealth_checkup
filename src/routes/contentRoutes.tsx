@@ -14,7 +14,7 @@ const ConditionsPage = lazy(() => import("@/pages/ConditionsPage"));
 const TrustedProvidersPage = lazy(() => import("@/pages/TrustedProvidersPage"));
 const TypographyShowcasePage = lazy(() => import("@/pages/TypographyShowcasePage"));
 const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage"));
-const ExpertGuidancePage = lazy(() => import("@/pages/ExpertGuidancePage"));
+
 
 export const contentRoutes = (
   <>
