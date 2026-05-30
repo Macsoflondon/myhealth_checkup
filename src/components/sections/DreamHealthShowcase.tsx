@@ -117,18 +117,13 @@ const DreamHealthShowcase = () => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Dedupe globally by cleaned name AND by image so the section never
-    //    shows the same test or same kit photo twice (e.g. Well Woman appears
-    //    in both Goodbody and Medichecks bestsellers).
-    const seenName = new Set<string>();
-    const seenImg = new Set<string>();
+    // 2. Dedupe WITHIN each provider only (so e.g. Goodbody Well Woman and
+    //    Medichecks Well Woman both stay — each partner gets their own card).
+    const seenPerProvider = new Set<string>();
     const deduped = filtered.filter((t) => {
-      const nameKey = cleanName(t.test_name).toLowerCase();
-      if (seenName.has(nameKey)) return false;
-      const imgKey = (t.image_url || "").trim().toLowerCase();
-      if (imgKey && seenImg.has(imgKey)) return false;
-      seenName.add(nameKey);
-      if (imgKey) seenImg.add(imgKey);
+      const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
+      if (seenPerProvider.has(key)) return false;
+      seenPerProvider.add(key);
       return true;
     });
     // 3. Cap at 5 per provider so no single partner dominates
