@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { analytics } from "@/lib/analytics";
-import wellManKit from "@/assets/kits/goodbody-advanced-well-man.png";
 
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
 const KIT = {
-  advancedWellMan: wellManKit,
+  advancedWellMan: "/images/tests/advanced-well-man.webp",
   premiumComplete: "/images/tests/premium-complete-blood-test.webp",
   earlyCancer: "/images/tests/early-cancer-screening.webp",
   femaleHormone: "/images/tests/female-hormone-fertility.webp",
