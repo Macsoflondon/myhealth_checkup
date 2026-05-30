@@ -185,7 +185,7 @@ const DreamHealthShowcase = () => {
             onClick={() => navigate("/assisted-test-finder")}
             className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3] focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
-            Start your health journey
+            Get my test match — 60 seconds, free
           </button>
         </div>
 
