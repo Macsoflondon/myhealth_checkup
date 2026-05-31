@@ -180,12 +180,15 @@ const Header = ({ className }: HeaderProps) => {
         <PromoTicker />
       </div>
 
-      {/* Logo section — becomes sticky when search docks */}
+      {/* Logo section — sticks at top when search docks */}
       <header
+        ref={logoBarRef}
         className={cn(
           className,
-          isSearchDocked && "sticky top-0 z-40 shadow-lg"
+          "sticky z-[60] motion-reduce:transition-none",
+          isSearchDocked && "shadow-lg"
         )}
+        style={{ top: isSearchDocked ? 0 : tickerHeight }}
       >
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
