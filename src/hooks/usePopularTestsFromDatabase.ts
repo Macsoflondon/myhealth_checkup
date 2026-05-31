@@ -1,6 +1,63 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+const WEBSITE_ENRICHMENT_PROVIDERS = new Set([
+  'lola-health',
+  'london-medical-laboratory',
+]);
+
+const hasAbsoluteImageUrl = (url?: string | null) => !!url && /^https?:\/\//i.test(url);
+
+async function enrichTestsFromWebsite(tests: PopularTest[]): Promise<PopularTest[]> {
+  const items = tests
+    .filter(
+      (test) =>
+        WEBSITE_ENRICHMENT_PROVIDERS.has(test.provider_id) &&
+        !!test.url &&
+        (!hasAbsoluteImageUrl(test.image_url) || !test.description?.trim())
+    )
+    .map((test) => ({
+      id: test.id,
+      provider_id: test.provider_id,
+      url: test.url,
+      test_name: test.test_name,
+    }));
+
+  if (items.length === 0) return tests;
+
+  const { data, error } = await supabase.functions.invoke('popular-test-website-data', {
+    body: { items },
+  });
+
+  if (error || !data?.items || !Array.isArray(data.items)) {
+    console.warn('Popular test website enrichment failed:', error?.message || 'No enrichment data');
+    return tests;
+  }
+
+  const enrichmentById = new Map<string, { title?: string; description?: string; image_url?: string }>();
+
+  for (const item of data.items as Array<{ id?: string; title?: string; description?: string; image_url?: string }>) {
+    if (!item?.id) continue;
+    enrichmentById.set(item.id, {
+      title: item.title,
+      description: item.description,
+      image_url: item.image_url,
+    });
+  }
+
+  return tests.map((test) => {
+    const enrichment = enrichmentById.get(test.id);
+    if (!enrichment) return test;
+
+    return {
+      ...test,
+      test_name: enrichment.title?.trim() || test.test_name,
+      description: enrichment.description?.trim() || test.description,
+      image_url: hasAbsoluteImageUrl(enrichment.image_url) ? enrichment.image_url : test.image_url,
+    };
+  });
+}
+
 export interface PopularTest {
   id: string;
   test_name: string;
@@ -64,7 +121,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         .limit(limit);
 
       if (!popularError && popularData && popularData.length > 0) {
-        return popularData.map(test => ({
+        const mappedTests = popularData.map(test => ({
           id: test.id,
           test_name: test.test_name,
           provider_id: test.provider_id,
@@ -84,6 +141,8 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           collection_options: (test as any).collection_options || undefined,
           is_popular: (test as any).is_popular ?? undefined,
         }));
+
+        return enrichTestsFromWebsite(mappedTests);
       }
 
       // Fallback: Get diverse tests from all providers based on price
@@ -131,7 +190,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         }
       }
 
-      return diverseTests;
+      return enrichTestsFromWebsite(diverseTests);
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000
