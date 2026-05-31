@@ -232,7 +232,7 @@ const DreamHealthShowcase = () => {
         <div className="mt-12 sm:mt-14">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
             {isLoading &&
-              Array.from({ length: 12 }).map((_, i) => (
+              Array.from({ length: 9 }).map((_, i) => (
                 <Skeleton key={i} className="h-[360px] rounded-2xl bg-black/5" />
               ))}
 
