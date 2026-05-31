@@ -1,67 +1,41 @@
-## Goal
+## Problem
 
-Bring the "Our Partners' Most Popular Tests" section (`DreamHealthShowcase.tsx`) into structural and typographic parity with the other homepage sections (Featured Partners, Start Your Journey, Testimonials, As Seen In, Accredited).
+All 5 London Medical Laboratory tests shown in "Our Partners' Most Popular Tests" have `description = NULL` and `turnaround_days_text = NULL`. The matching Lola Health and Medichecks cards are fully populated, so LML cards render with no body copy.
 
-## Current state
+Affected tests (all `is_popular=true`):
+1. Allergy Complete
+2. Cholesterol Lipid Profile
+3. Diabetes – Diagnosis and Monitoring (HbA1c)
+4. Erectile Dysfunction Impotence Profile
+5. Female Hair Loss Advanced
 
-- Filmstrip carousel renders first.
-- The H2 heading + CTA button sit *below* the carousel and *above* the 9‑card grid.
-- Heading uses `text-3xl sm:text-4xl md:text-5xl` — larger than every other homepage H2.
-- No eyebrow badge above the title.
+Images and prices are already correct in the DB.
 
-## Target structure (top → bottom)
+## Plan
 
-```text
-[ — Our Partners' Most Popular Tests — ]   ← eyebrow badge
-       Find Your Perfect Test Match           ← H2 (standardised size)
-       short supporting sentence               ← subhead
-       [ Get my test match — 60 seconds ]     ← CTA button
+1. **Extend `supabase/functions/popular-test-website-data/index.ts`**
+   - Already extracts `title`, `description`, `image_url`. Add extraction of:
+     - `turnaround_days_text` – parse the LML product page for the "Results in X working days" / "Turnaround" block (regex over the structured spec list).
+     - `biomarker_count` – read the "Biomarkers tested" number when present (fallback: count list items in the biomarker section).
+   - Return these new fields in the response payload.
 
-       ───── carousel filmstrip ─────
-       ───── 9 mixed-provider cards ─────
-```
+2. **Update `supabase/functions/scrape-popular-tests/index.ts`**
+   - When syncing scraped items back into `provider_tests`, also persist `description`, `turnaround_days_text`, and `biomarker_count` when the scraped value is non-null (never overwrite existing data with null).
 
-## Changes
+3. **One-off backfill for the 5 LML rows**
+   - Invoke `popular-test-website-data` for the 5 LML URLs and `UPDATE provider_tests` with the returned `description` + `turnaround_days_text` (+ `biomarker_count` if missing).
+   - No schema changes needed — columns already exist.
 
-### 1. `src/components/sections/DreamHealthShowcase.tsx`
-- Move the existing `<div className="container … text-center mt-10 sm:mt-14">` block (heading + CTA) from below the carousel to **above** the carousel, inside the `<section>` before the filmstrip wrapper.
-- Add an eyebrow badge directly above the H2 using the canonical pattern already used by `StartJourneySection`, `TestimonialCarousel`, and `FeaturedPublications`:
-  ```tsx
-  <div className="flex items-center justify-center gap-3 mb-4">
-    <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-    <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
-      Our Partners' Most Popular Tests
-    </span>
-    <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-  </div>
-  ```
-- Change the H2 copy to a benefit-led title (e.g. "Find Your Perfect Test Match") since the badge now carries the section label, and apply the standardised size class (see step 3).
-- Keep the existing turquoise pill CTA, but place it under the H2 (with a one-line supporting sentence) so the header block is self-contained.
-- Adjust top/bottom spacing on the carousel and grid so vertical rhythm matches neighbouring sections (`mt-10 sm:mt-14` between header→carousel, `mt-12 sm:mt-14` between carousel→grid).
+4. **Frontend (`DreamHealthShowcase.tsx` and any shared popular-test card)**
+   - No structural changes. Verify the card already renders `description` and `turnaround_days_text` for LML once populated (it does for Lola/Medichecks). If a provider-specific guard is hiding the description for LML, remove it.
 
-### 2. Eyebrow badge consistency
-Audit the other homepage sections for any that *don't* yet use the badge pattern and confirm: Featured Partners, Start Your Journey, Accredited & Verified, Testimonials, and As Seen In already use it (verified). Only `DreamHealthShowcase` is missing it — no other section changes required.
-
-### 3. Standardised H2 size for all homepage sections
-Adopt a single token via `SectionHeading` and direct H2s:
-
-```text
-text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight
-```
-
-- Update `src/components/ui/section-heading.tsx` default `h2` classes to the standardised size (currently `text-xl sm:text-2xl md:text-3xl lg:text-3xl` — slightly small).
-- Update raw H2s in homepage sections to match. Files to touch:
-  - `DreamHealthShowcase.tsx` (line 279)
-  - `StartJourneySection.tsx` (line 14)
-  - `FeaturedProvidersGlass.tsx` (line 159, currently `text-4xl md:text-6xl` — too large)
-  - Any other homepage section H2 that diverges (sweep `src/components/sections/*` for `text-4xl|text-5xl|text-6xl` on H2 and normalise).
-
-No copy changes outside the new badge text and the H2 rename in `DreamHealthShowcase`.
+5. **Verification**
+   - Re-query `provider_tests` to confirm all 5 LML rows now have non-null `description` and `turnaround_days_text`.
+   - Reload `/` and confirm the 5 LML cards now display the same level of detail as Lola Health and Medichecks cards.
 
 ## Out of scope
-- No changes to data fetching, scrapers, card content, or images — purely presentational header restructuring.
-- No changes to non-homepage pages that reuse `SectionHeading` will be made unless the size change visibly regresses them; will spot-check after the edit.
 
-## Validation
-- Visually verify each homepage section's heading block now follows: badge → H2 → optional subhead → optional CTA → content.
-- Confirm H2 font size is identical across all homepage sections at `sm`, `md`, and `lg` breakpoints.
+- No image regeneration (images are correct).
+- No price changes.
+- No changes to which tests are marked popular for LML.
+- No new DB columns or migrations.
