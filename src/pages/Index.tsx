@@ -240,11 +240,7 @@ const Index = () => {
         </Suspense>
 
 
-        <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="fade">
-            <AccreditedProvidersBar />
-          </ScrollFadeIn>
-        </Suspense>
+
       </MainLayout>
     </ErrorBoundary>
   );
