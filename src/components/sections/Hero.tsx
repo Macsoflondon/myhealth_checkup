@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import TrustSignalsBar from "@/components/common/TrustSignalsBar";
+
 
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
@@ -220,9 +220,8 @@ const Hero = () => {
           </div>
         </div>
       </section>
-
-      <TrustSignalsBar />
     </>
+
   );
 };
 
