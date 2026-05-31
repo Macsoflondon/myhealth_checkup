@@ -195,7 +195,7 @@ Deno.test("conflict resolution: upserts rule and backfills disagreeing rows", as
   const tests: Row[] = [
     { id: "t1", provider_id: "medichecks", source_section: "Women's Health",
       category: null, is_active: true, canonical_category: "general-health" },
-    { id: "t2", provider_id: "medichecks", source_section: "womens-health",
+    { id: "t2", provider_id: "medichecks", source_section: "women's health",
       category: null, is_active: true, canonical_category: "general-health" },
     { id: "t3", provider_id: "medichecks", source_section: "thyroid",
       category: null, is_active: true, canonical_category: "thyroid" },
