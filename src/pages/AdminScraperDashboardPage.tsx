@@ -380,7 +380,10 @@ const AdminScraperDashboardPage: React.FC = () => {
 
           <ScrapeRunLogPanel />
 
+          <SectionMappingAuditPanel />
+
           <CategoryVerificationPanel />
+
 
           <Card>
             <CardHeader>
