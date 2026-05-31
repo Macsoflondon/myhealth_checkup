@@ -50,6 +50,8 @@ const AdminScraperDashboardPage: React.FC = () => {
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [runningScrapers, setRunningScrapers] = useState<Set<string>>(new Set());
   const [testCounts, setTestCounts] = useState<Record<string, number>>({});
+  const [isRefreshingPopular, setIsRefreshingPopular] = useState(false);
+  const [popularResult, setPopularResult] = useState<string | null>(null);
 
   const fetchJobs = async () => {
     const { data, error } = await supabase
