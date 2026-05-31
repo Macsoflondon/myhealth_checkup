@@ -444,7 +444,7 @@ const FAQsPage = () => {
               <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-[#08122b]">
                 Still have questions?
               </h2>
-              <p className="mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto text-white">
+              <p className="mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto text-[#08122b]">
                 Our support team is here to help you find the right test for your needs.
               </p>
               
