@@ -277,10 +277,10 @@ const Header = ({ className }: HeaderProps) => {
       </header>
 
 
-      {/* Toolbar sticks below the promo ticker independently */}
+      {/* Toolbar sticks below the logo bar */}
       <div
-        className="sticky z-40"
-        style={{ top: tickerHeight }}
+        className="sticky z-40 transition-[top] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none"
+        style={{ top: (isSearchDocked ? 0 : tickerHeight) + logoBarHeight }}
       >
         {/* Divider removed */}
 
