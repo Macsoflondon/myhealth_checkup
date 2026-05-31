@@ -4,7 +4,7 @@ import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopula
 import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
-import { formatTestPrice } from "@/lib/utils";
+
 import { getBranding } from "@/data/providerBranding";
 
 const cleanName = (name: string) =>
