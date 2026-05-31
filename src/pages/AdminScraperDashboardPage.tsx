@@ -17,6 +17,7 @@ import { ScraperAlertsPanel } from "@/components/admin/ScraperAlertsPanel";
 import { NormalizeCategoriesCard } from "@/components/admin/NormalizeCategoriesCard";
 import { ScrapeRunLogPanel } from "@/components/admin/ScrapeRunLogPanel";
 import { CategoryVerificationPanel } from "@/components/admin/CategoryVerificationPanel";
+import { SectionMappingAuditPanel } from "@/components/admin/SectionMappingAuditPanel";
 
 interface ScrapingJob {
   id: string;
