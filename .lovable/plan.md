@@ -1,12 +1,9 @@
-Edit `src/components/sections/PersuasionTrustStrip.tsx`:
+Remove the `PersuasionTrustStrip` section (the turquoise/pink stats strip with "100% UKAS-accredited labs", "200+ tests compared", etc.) that sits directly below the hero on the homepage, since equivalent trust messaging already appears elsewhere on the page.
 
-1. Replace the third stat (`40,000+` / "UK adults guided") with:
-   - icon: `Stethoscope` (from lucide-react)
-   - value: keep visual balance — use a short label-only treatment by setting value to `"No GP"` and label to `"referral needed"` (matches the 2-line stat format used by the other tiles).
-2. Keep "60 sec / to your match" as-is.
-3. Update the footer line from:
-   `Independent · CQC Regulated partners · No pay-to-rank`
-   to:
-   `Independent · CQC Regulated partners · Results in 3–5 days`
+## Changes
 
-No other files or logic change.
+**`src/pages/Index.tsx`**
+- Remove the lazy import of `PersuasionTrustStrip`.
+- Remove its `<Suspense><PersuasionTrustStrip /></Suspense>` block (currently rendered right after `<TestCategoryTicker />`).
+
+The component file itself (`src/components/sections/PersuasionTrustStrip.tsx`) will be left in place in case you want to reuse it later — let me know if you'd prefer it deleted too.
