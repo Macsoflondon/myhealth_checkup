@@ -28,8 +28,10 @@ const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const [tickerHeight, setTickerHeight] = useState(0);
+  const [logoBarHeight, setLogoBarHeight] = useState(0);
   const [isSearchDocked, setIsSearchDocked] = useState(false);
   const [dockedSearchTerm, setDockedSearchTerm] = useState("");
+  const logoBarRef = useRef<HTMLElement>(null);
   const promoTrackerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -104,6 +106,20 @@ const Header = ({ className }: HeaderProps) => {
     observer.observe(promoTrackerRef.current);
     return () => observer.disconnect();
   }, [isMobile]);
+
+  // Measure logo bar height for sticky toolbar offset when docked
+  useEffect(() => {
+    if (isMobile || !logoBarRef.current) return;
+    const measure = () => {
+      if (logoBarRef.current) {
+        setLogoBarHeight(logoBarRef.current.getBoundingClientRect().height);
+      }
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(logoBarRef.current);
+    return () => observer.disconnect();
+  }, [isMobile, isSearchDocked]);
   if (isMobile) {
     return (
       <ErrorBoundary>
@@ -164,12 +180,15 @@ const Header = ({ className }: HeaderProps) => {
         <PromoTicker />
       </div>
 
-      {/* Logo section — becomes sticky when search docks */}
+      {/* Logo section — sticks at top when search docks */}
       <header
+        ref={logoBarRef}
         className={cn(
           className,
-          isSearchDocked && "sticky top-0 z-40 shadow-lg"
+          "sticky z-[60] motion-reduce:transition-none",
+          isSearchDocked && "shadow-lg"
         )}
+        style={{ top: isSearchDocked ? 0 : tickerHeight }}
       >
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
@@ -258,10 +277,10 @@ const Header = ({ className }: HeaderProps) => {
       </header>
 
 
-      {/* Toolbar sticks below the promo ticker independently */}
+      {/* Toolbar sticks below the logo bar */}
       <div
-        className="sticky z-40"
-        style={{ top: tickerHeight }}
+        className="sticky z-40 transition-[top] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none"
+        style={{ top: (isSearchDocked ? 0 : tickerHeight) + logoBarHeight }}
       >
         {/* Divider removed */}
 
