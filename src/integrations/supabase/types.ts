@@ -1718,8 +1718,6 @@ export type Database = {
         Returns: string
       }
       sanitize_popular_provider_tests: { Args: never; Returns: undefined }
-      show_limit: { Args: never; Returns: number }
-      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
