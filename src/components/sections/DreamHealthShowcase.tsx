@@ -85,6 +85,7 @@ const DreamHealthShowcase = () => {
     const valid = popularTests.filter(
       (t) =>
         ALLOWED_PROVIDERS.has(t.provider_id) &&
+        (t as any).is_popular === true &&
         isRealProviderImage(t.image_url) &&
         !!t.url
     );

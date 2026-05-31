@@ -19,6 +19,7 @@ export interface PopularTest {
   turnaround_days_text?: string;
   base_price?: number;
   collection_options?: Array<{ method: string; price_modifier: number; note?: string }>;
+  is_popular?: boolean;
 }
 
 const providerDisplayNames: Record<string, string> = {
@@ -82,6 +83,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           turnaround_days_text: (test as any).turnaround_days_text || undefined,
           base_price: (test as any).base_price ?? undefined,
           collection_options: (test as any).collection_options || undefined,
+          is_popular: (test as any).is_popular ?? undefined,
         }));
       }
 
