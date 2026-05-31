@@ -6,6 +6,7 @@ import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
 import type { ProviderTestCardData } from "./ProviderTestCard";
+import { formatTestPrice } from "@/lib/utils";
 
 interface ProviderTestDetailModalProps {
   test: ProviderTestCardData | null;
