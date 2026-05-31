@@ -83,6 +83,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           turnaround_days_text: (test as any).turnaround_days_text || undefined,
           base_price: (test as any).base_price ?? undefined,
           collection_options: (test as any).collection_options || undefined,
+          is_popular: (test as any).is_popular ?? undefined,
         }));
       }
 
