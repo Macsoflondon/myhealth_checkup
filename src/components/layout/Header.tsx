@@ -28,9 +28,50 @@ const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const [tickerHeight, setTickerHeight] = useState(0);
+  const [isSearchDocked, setIsSearchDocked] = useState(false);
+  const [dockedSearchTerm, setDockedSearchTerm] = useState("");
   const promoTrackerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  // Observe hero search sentinel to drive docked state (desktop only).
+  useEffect(() => {
+    if (isMobile) {
+      setIsSearchDocked(false);
+      return;
+    }
+    const findAndObserve = () => {
+      const el = document.getElementById("hero-search-sentinel");
+      if (!el) {
+        // No hero on this route — keep header in default state.
+        setIsSearchDocked(false);
+        return null;
+      }
+      const observer = new IntersectionObserver(
+        ([entry]) => setIsSearchDocked(!entry.isIntersecting),
+        { rootMargin: "-80px 0px 0px 0px", threshold: 0 }
+      );
+      observer.observe(el);
+      return observer;
+    };
+    let observer = findAndObserve();
+    // Hero may mount slightly later (lazy children) — retry once on next frame.
+    const raf = requestAnimationFrame(() => {
+      if (!observer) observer = findAndObserve();
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      observer?.disconnect();
+    };
+  }, [isMobile, location.pathname]);
+
+  const handleDockedSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && dockedSearchTerm.trim()) {
+      navigate(`/compare?search=${encodeURIComponent(dockedSearchTerm.trim())}`);
+    }
+  };
+
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
