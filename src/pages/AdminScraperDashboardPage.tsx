@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2, Trash2 } from "lucide-react";
+import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2, Trash2, Sparkles } from "lucide-react";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -50,6 +50,8 @@ const AdminScraperDashboardPage: React.FC = () => {
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [runningScrapers, setRunningScrapers] = useState<Set<string>>(new Set());
   const [testCounts, setTestCounts] = useState<Record<string, number>>({});
+  const [isRefreshingPopular, setIsRefreshingPopular] = useState(false);
+  const [popularResult, setPopularResult] = useState<string | null>(null);
 
   const fetchJobs = async () => {
     const { data, error } = await supabase
@@ -172,6 +174,29 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
   };
 
+  const refreshPopularTests = async () => {
+    setIsRefreshingPopular(true);
+    setPopularResult(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('scrape-popular-tests', {
+        body: {},
+      });
+      if (error) throw error;
+      const summary = Array.isArray(data?.providers)
+        ? data.providers.map((p: any) => `${p.provider}: ${p.matched ?? 0} matched`).join(' • ')
+        : data?.message || 'Done.';
+      setPopularResult(summary);
+      toast({ title: 'Popular tests refreshed', description: summary });
+      await fetchTestCounts();
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : 'Unknown error';
+      setPopularResult(`Failed: ${msg}`);
+      toast({ title: 'Refresh failed', description: msg, variant: 'destructive' });
+    } finally {
+      setIsRefreshingPopular(false);
+    }
+  };
+
   const getJobForProvider = (providerId: string) => {
     return jobs.find(j => j.provider_id === providerId);
   };
@@ -227,6 +252,36 @@ const AdminScraperDashboardPage: React.FC = () => {
           <ScraperAlertsPanel />
 
           <NormalizeCategoriesCard />
+
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    Refresh Popular Tests
+                  </CardTitle>
+                  <CardDescription>
+                    Scrape each provider's curated best-sellers page and update <code>is_popular</code>, <code>popularity_rank</code> and <code>image_url</code>. Runs as your admin user.
+                  </CardDescription>
+                </div>
+                <Button onClick={refreshPopularTests} disabled={isRefreshingPopular}>
+                  {isRefreshingPopular ? (
+                    <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Refreshing...</>
+                  ) : (
+                    <><Sparkles className="h-4 w-4 mr-2" />Refresh Popular Tests</>
+                  )}
+                </Button>
+              </div>
+            </CardHeader>
+            {popularResult && (
+              <CardContent className="pt-0">
+                <Alert>
+                  <AlertDescription className="text-sm">{popularResult}</AlertDescription>
+                </Alert>
+              </CardContent>
+            )}
+          </Card>
 
           <Alert>
             <Clock className="h-4 w-4" />
