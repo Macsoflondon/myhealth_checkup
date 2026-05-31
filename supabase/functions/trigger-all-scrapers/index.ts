@@ -13,6 +13,15 @@ serve(async (req) => {
   const url = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
+  // Auth: service-role bearer only.
+  const authHeader = req.headers.get("Authorization") ?? "";
+  if (authHeader !== `Bearer ${serviceKey}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const res = await fetch(`${url}/functions/v1/run-all-scrapers`, {
     method: "POST",
     headers: {
