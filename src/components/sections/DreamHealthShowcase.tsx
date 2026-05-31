@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
+import { getBranding } from "@/data/providerBranding";
 
 const cleanName = (name: string) =>
   name
@@ -23,18 +24,49 @@ const PLACEHOLDER_PATTERNS = [
 const isRealProviderImage = (url?: string | null): url is string =>
   !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
 
-// Only ever use the image URL that came from the provider's own product page.
-// If we don't have one, the test is filtered out entirely — never substituted.
 const resolveImage = (t: PopularTest): string | null =>
   isRealProviderImage(t.image_url) ? t.image_url! : null;
 
+const fallbackGradient = (providerName: string) => {
+  const b = getBranding(providerName);
+  const from = b?.primary ?? "#081129";
+  const to = b?.accent ?? "#22c0d4";
+  return `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
+};
 
-/** Round-robin interleave by provider so the grid alternates providers */
-const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
+const FallbackTile = ({
+  t,
+  className,
+  showCategory = true,
+}: {
+  t: PopularTest;
+  className?: string;
+  showCategory?: boolean;
+}) => (
+  <div
+    className={`w-full h-full flex flex-col items-center justify-center text-center p-4 ${className ?? ""}`}
+    style={{ backgroundImage: fallbackGradient(t.provider_name) }}
+  >
+    <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-white/85">
+      {t.provider_name}
+    </span>
+    <span className="mt-2 text-sm sm:text-base font-heading font-bold text-white leading-tight line-clamp-3">
+      {cleanName(t.test_name)}
+    </span>
+    {showCategory && t.category && (
+      <span className="mt-2 text-[10px] uppercase tracking-wider text-white/70">
+        {t.category}
+      </span>
+    )}
+  </div>
+);
+
+/** Round-robin interleave by provider, capped per provider, so the grid alternates providers */
+const interleaveByProvider = (tests: PopularTest[], maxPerProvider = 2): PopularTest[] => {
   const groups = new Map<string, PopularTest[]>();
   for (const t of tests) {
     const arr = groups.get(t.provider_id) ?? [];
-    arr.push(t);
+    if (arr.length < maxPerProvider) arr.push(t);
     groups.set(t.provider_id, arr);
   }
   const buckets = Array.from(groups.values());
@@ -56,20 +88,18 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(18);
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(30);
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
-    // 0. Hard filter: never display a test that doesn't have a real provider image.
-    const withImage = popularTests.filter((t) => isRealProviderImage(t.image_url));
-    // 1. Hide Lola Health Cardiovascular
-    const filtered = withImage.filter((t) => {
+    // Hide Lola Health Cardiovascular per existing rule
+    const filtered = popularTests.filter((t) => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Dedupe WITHIN each provider only.
+    // Dedupe within each provider
     const seenPerProvider = new Set<string>();
     const deduped = filtered.filter((t) => {
       const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
@@ -77,25 +107,18 @@ const DreamHealthShowcase = () => {
       seenPerProvider.add(key);
       return true;
     });
-    // 3. Cap at 5 per provider.
-    const perProvider = new Map<string, number>();
-    const capped = deduped.filter((t) => {
-      const n = perProvider.get(t.provider_id) ?? 0;
-      if (n >= 5) return false;
-      perProvider.set(t.provider_id, n + 1);
-      return true;
-    });
-    // 4. Round-robin interleave so providers don't cluster.
-    return interleaveByProvider(capped).slice(0, 20);
+    // Round-robin across providers, max 2 per provider, take 9
+    return interleaveByProvider(deduped, 2).slice(0, 9);
   }, [popularTests]);
 
 
-  const filmstripTests = orderedTests.slice(0, 8);
+  const filmstripTests = orderedTests;
   // Quadruple the strip for a seamless loop
   const filmstripLoop = useMemo(
     () => [...filmstripTests, ...filmstripTests, ...filmstripTests, ...filmstripTests],
     [filmstripTests]
   );
+
 
   useEffect(() => {
     const track = trackRef.current;
