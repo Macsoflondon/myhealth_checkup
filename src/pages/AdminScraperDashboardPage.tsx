@@ -16,6 +16,7 @@ import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswor
 import { ScraperAlertsPanel } from "@/components/admin/ScraperAlertsPanel";
 import { NormalizeCategoriesCard } from "@/components/admin/NormalizeCategoriesCard";
 import { ScrapeRunLogPanel } from "@/components/admin/ScrapeRunLogPanel";
+import { CategoryVerificationPanel } from "@/components/admin/CategoryVerificationPanel";
 
 interface ScrapingJob {
   id: string;
@@ -377,6 +378,8 @@ const AdminScraperDashboardPage: React.FC = () => {
           </div>
 
           <ScrapeRunLogPanel />
+
+          <CategoryVerificationPanel />
 
           <Card>
             <CardHeader>
