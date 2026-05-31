@@ -172,7 +172,7 @@ const Hero = () => {
                 </div>
 
                 
-                <div className="max-w-[855px] mx-auto w-full">
+                <div id="hero-search-sentinel" className="max-w-[855px] mx-auto w-full">
                   <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
                     <div className="relative">
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
