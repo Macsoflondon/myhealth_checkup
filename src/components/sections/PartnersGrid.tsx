@@ -12,7 +12,7 @@ const PartnersGrid = () => {
 
     let animationId: number;
     let position = 0;
-    const speed = 0.8;
+    const speed = 0.5;
 
     // Measure actual rendered width of one full set of providers
     const measureSetWidth = () => {
