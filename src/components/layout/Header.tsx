@@ -106,6 +106,20 @@ const Header = ({ className }: HeaderProps) => {
     observer.observe(promoTrackerRef.current);
     return () => observer.disconnect();
   }, [isMobile]);
+
+  // Measure logo bar height for sticky toolbar offset when docked
+  useEffect(() => {
+    if (isMobile || !logoBarRef.current) return;
+    const measure = () => {
+      if (logoBarRef.current) {
+        setLogoBarHeight(logoBarRef.current.getBoundingClientRect().height);
+      }
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(logoBarRef.current);
+    return () => observer.disconnect();
+  }, [isMobile, isSearchDocked]);
   if (isMobile) {
     return (
       <ErrorBoundary>
