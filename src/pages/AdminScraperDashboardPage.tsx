@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { LeakedPasswordProtectionStatus } from "@/components/admin/LeakedPasswordProtectionStatus";
 import { ScraperAlertsPanel } from "@/components/admin/ScraperAlertsPanel";
 import { NormalizeCategoriesCard } from "@/components/admin/NormalizeCategoriesCard";
+import { ScrapeRunLogPanel } from "@/components/admin/ScrapeRunLogPanel";
 
 interface ScrapingJob {
   id: string;
@@ -374,6 +375,8 @@ const AdminScraperDashboardPage: React.FC = () => {
               );
             })}
           </div>
+
+          <ScrapeRunLogPanel />
 
           <Card>
             <CardHeader>
