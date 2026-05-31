@@ -1,65 +1,48 @@
 ## Goal
 
-Make `Our Partners' Most Popular Tests` (homepage carousel + grid + the `/most-popular-tests` page) reflect **only** what each provider themselves advertises as popular/best-selling, with **only real provider product images**. No generic kit fallbacks, no AI-generated images.
+Collapse the two separate dashboards into a single Health Dashboard. The "My Dashboard" page (saved tests, saved providers, orders, profile) becomes tabs inside the Health Dashboard, with **Profile** as one of those subsections.
 
-## What's wrong today
+## Changes
 
-1. The `is_popular` flag in `provider_tests` was last set by a generic crawl of broad catalogue URLs (e.g. Lola Health's `/all-blood-tests`, Goodbody's full catalogue), not curated "best-seller" lists. That's why obscure tests (Lola CRP/Iron/Glucose, Goodbody Alzheimer's) ended up flagged.
-2. Many flagged tests have `image_url = NULL` or a stale placeholder (`/kits/kit-*.jpg`, `lovableproject.com/lovable-uploads`). The frontend falls back to a generic kit topic match — that's where the wrong-looking Medichecks Ultimate Performance, Lola CRP/Iron/Glucose images come from.
+### 1. `src/components/dashboard/HealthDataHub.tsx`
+Expand the existing `Tabs` from 3 tabs → 7 tabs:
 
-## Plan
+- Overview (existing)
+- Test Results (existing)
+- Upload (existing)
+- **Saved Tests** (new — favorites grid from `Dashboard.tsx`)
+- **Saved Providers** (new — saved providers grid from `Dashboard.tsx`)
+- **Orders** (new — order history list from `Dashboard.tsx`)
+- **Profile** (new — renders `<ProfileSettings />`)
 
-### 1. Rewrite `scrape-popular-tests` edge function
+Move the favorites/orders/providers data fetching (`useDashboardData`, `useDraggable`) and the JSX blocks from `Dashboard.tsx` into `HealthDataHub.tsx` verbatim, wrapped in their respective `<TabsContent>`. Read `?tab=` from `useSearchParams` so existing deep-links like `/dashboard?tab=orders` keep working after redirect.
 
-Per-provider, use the URLs the providers themselves use to surface their best-sellers/popular tests:
+Tab list becomes responsive: 2 rows on mobile (`grid-cols-4` + wrap) or a horizontal scroll — match existing TabsList styling.
 
-| Provider | Source URL (curated popular) |
-|---|---|
-| Medichecks | `https://www.medichecks.com/collections/best-sellers` |
-| Goodbody Clinic | `https://goodbodyclinic.com/collections/best-selling-blood-tests` (Shopify best-sellers collection) |
-| Thriva | `https://thriva.co/blood-tests` (sorted by popularity) |
-| Lola Health | `https://www.lolahealth.com/popular-blood-tests` (their popular collection) |
-| Randox | `https://www.randoxhealth.com/popular` |
-| London Medical Laboratory | `https://www.londonmedicallaboratory.com/blood-tests` (filter by `bestseller`) |
+### 2. `src/pages/Dashboard.tsx`
+Replace entire file with a redirect component:
+```tsx
+<Navigate to={`/health-dashboard${location.search}`} replace />
+```
+Preserves the `?tab=orders` query so `useOrders` and OAuth redirects still land in the right tab.
 
-For each provider:
-- Firecrawl `scrape` with `formats: ['markdown','links',{type:'json',schema:…}]`
-- JSON schema: `tests: [{ name, price, product_url, image_url }]`
-- Take top 5 per provider in the order they appear on the page (that *is* the provider's ranking).
+### 3. `src/pages/HealthDashboardPage.tsx`
+- Update `<title>` and meta to "My Dashboard | myhealth checkup".
+- Add canonical `https://www.myhealthcheckup.co.uk/health-dashboard`.
 
-### 2. For each matched test, persist the real image
+### 4. `src/components/header/UserMenu.tsx`
+Change both `/dashboard` links → `/health-dashboard`. Single "Dashboard" entry (no separate Health Dashboard link if one exists).
 
-- For each scraped item, follow `product_url` and scrape `formats: ['json']` extracting `og:image` (and/or first product gallery image).
-- Update `provider_tests` for the matched DB row:
-  - `is_popular = true`
-  - `popularity_rank = <position on provider's own page, 1-N>`
-  - `image_url = <scraped product image URL>` (only if non-empty and looks like an image)
-- Tests **not** on the provider's popular page → `is_popular = false`, `popularity_rank = null` (image_url left alone).
+### 5. Leave as-is (auto-handled by redirect)
+- `src/pages/Auth.tsx` — `navigate("/dashboard")` after login still works via redirect.
+- `src/hooks/useOrders.ts` — `/dashboard?tab=orders` works via redirect.
+- `GoogleSignInButton.tsx` / `AppleSignInButton.tsx` — OAuth `redirectTo` works via redirect.
+- `routes/authRoutes.tsx` — keep `/dashboard` route mapped to the new redirect component.
 
-### 3. Hide tests without a real provider image (frontend)
+### 6. `src/pages/SitemapPage.tsx`
+Update the "Dashboard" link path from `/dashboard` → `/health-dashboard`.
 
-In `DreamHealthShowcase.tsx` and `MostPopularTests` page:
-- Remove the entire `pickTopicImage` topic-fallback path and the `providerOverrides` block.
-- `resolveImage` becomes: return `t.image_url` if it's a real, non-placeholder URL, otherwise return `null`.
-- Cards/tiles whose `resolveImage` returns null are **filtered out** of the list before render. No placeholder, no generated image, no in-house kit asset.
-
-### 4. Run once, verify
-
-- Invoke `scrape-popular-tests` and report back which tests each provider listed + which images were captured.
-- Show the user the resulting popular list per provider so they can confirm before we call it done.
-
-## Files touched
-
-- `supabase/functions/scrape-popular-tests/index.ts` — rewrite scrape logic, add per-product image scrape, write `image_url`.
-- `src/components/sections/DreamHealthShowcase.tsx` — strip topic/override fallbacks, filter tests without real image.
-- `src/pages/MostPopularTests.tsx` (or equivalent) — same filter rule.
-
-## Things I will NOT do
-
-- No image generation. No in-house kit asset fallback. No topic-based image guessing.
-- No manual edits to the popular list — it must come from the provider's page.
-- No changes to other sections of the site.
-
-## Open question
-
-Some providers (Thriva, Randox, London Medical Lab, Clinilabs) don't have a clean "best sellers" page. For these, the function will return 0 popular tests and they simply won't appear in the section until they publish one or you tell me a specific URL to use. Confirm that's the desired behaviour, or give me the URL you want used for each.
+## Out of scope
+- No DB changes.
+- No changes to `ProfileSettings` itself — reused as-is.
+- No restyling of cards; visual parity with current dashboards.
