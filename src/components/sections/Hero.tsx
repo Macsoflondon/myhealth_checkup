@@ -150,7 +150,7 @@ const Hero = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-12 flex flex-col flex-1">
             <div className="max-w-[1240px] mx-auto flex flex-col flex-1 w-full">
 
-              <div className="mt-auto mb-40 sm:mb-44 w-full">
+              <div className="mt-auto mb-32 sm:mb-36 w-full">
 
                 <div className="text-center mb-1 sm:mb-2 flex-col flex items-center justify-center">
                   <h1
