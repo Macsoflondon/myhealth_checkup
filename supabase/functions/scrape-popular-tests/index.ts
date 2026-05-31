@@ -417,6 +417,12 @@ Deno.serve(async (req) => {
         // Only overwrite image_url if we have a real one — never null out existing real images.
         if (image) update.image_url = image;
 
+        // LML product pages carry the descriptive copy in a "What can I expect" block.
+        if (provider.id === 'london-medical-laboratory' && item.product_url) {
+          const desc = await scrapeLmlDescription(item.product_url);
+          if (desc) update.description = desc;
+        }
+
         const { error } = await supabase
           .from('provider_tests')
           .update(update)
