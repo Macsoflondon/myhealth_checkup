@@ -1,33 +1,67 @@
 ## Goal
-Fix the homepage “Our Partners Most Popular Tests” section so it consistently shows 9 real tests, uses real provider product images, and reflects current provider website pricing/details — including London Medical Laboratory and Lola Health.
 
-## What I’ll change
-1. **Repair provider coverage in the popular-tests pipeline**
-   - Extend the popularity refresh logic so London Medical Laboratory is included in the popular ranking flow instead of being excluded.
-   - Review Lola Health ranking refresh at the same time so its rows are actually eligible for the homepage set.
-   - Keep the homepage locked to 9 items.
+Bring the "Our Partners' Most Popular Tests" section (`DreamHealthShowcase.tsx`) into structural and typographic parity with the other homepage sections (Featured Partners, Start Your Journey, Testimonials, As Seen In, Accredited).
 
-2. **Fix image sourcing for provider cards**
-   - Update the data flow so the card image uses the real product/test-kit image URL from the provider product page wherever available.
-   - Remove dependency on placeholder/fallback imagery for London Medical Laboratory when a product image can be scraped and stored.
+## Current state
 
-3. **Refresh stale provider website data**
-   - Re-run the relevant scrapers / popularity refresh so price, product URL, description, and image URL are pulled again from the providers’ live sites.
-   - Verify London Medical Laboratory rows are repopulated with usable images and current product metadata.
+- Filmstrip carousel renders first.
+- The H2 heading + CTA button sit *below* the carousel and *above* the 9‑card grid.
+- Heading uses `text-3xl sm:text-4xl md:text-5xl` — larger than every other homepage H2.
+- No eyebrow badge above the title.
 
-4. **Tighten homepage filtering so bad rows stay out**
-   - Keep non-test items like “Blood Draw Appointment” excluded.
-   - Preserve provider diversity in the 9-card set while allowing London Medical Laboratory and Lola Health to appear once their data is valid.
+## Target structure (top → bottom)
 
-5. **Validate the result end-to-end**
-   - Check the underlying provider rows after refresh.
-   - Confirm the homepage section is drawing from refreshed data and that London Medical Laboratory and Lola Health can surface with real kit images.
+```text
+[ — Our Partners' Most Popular Tests — ]   ← eyebrow badge
+       Find Your Perfect Test Match           ← H2 (standardised size)
+       short supporting sentence               ← subhead
+       [ Get my test match — 60 seconds ]     ← CTA button
 
-## Technical notes
-- Current issue found: London Medical Laboratory has active rows but **0 popular flags** and **0 images**, so the homepage filter drops it.
-- Current issue found: the `scrape-popular-tests` function only refreshes **Goodbody, Medichecks, and Lola**, so London Medical Laboratory never gets ranked into the “popular” pool.
-- Current issue found: Lola Health has rows, but currently also has **0 popular flags**, so it depends on fallback selection rather than being explicitly ranked.
-- Current issue found: the homepage component already slices to **9** items, but the data underneath is incomplete/stale, which is why the visible set collapses toward Goodbody/Medichecks.
+       ───── carousel filmstrip ─────
+       ───── 9 mixed-provider cards ─────
+```
 
-## Deliverable
-A homepage popular-tests section that stays at 9 cards and pulls real provider product data/images, with London Medical Laboratory and Lola Health properly represented when their live rows are available.
+## Changes
+
+### 1. `src/components/sections/DreamHealthShowcase.tsx`
+- Move the existing `<div className="container … text-center mt-10 sm:mt-14">` block (heading + CTA) from below the carousel to **above** the carousel, inside the `<section>` before the filmstrip wrapper.
+- Add an eyebrow badge directly above the H2 using the canonical pattern already used by `StartJourneySection`, `TestimonialCarousel`, and `FeaturedPublications`:
+  ```tsx
+  <div className="flex items-center justify-center gap-3 mb-4">
+    <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+    <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+      Our Partners' Most Popular Tests
+    </span>
+    <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+  </div>
+  ```
+- Change the H2 copy to a benefit-led title (e.g. "Find Your Perfect Test Match") since the badge now carries the section label, and apply the standardised size class (see step 3).
+- Keep the existing turquoise pill CTA, but place it under the H2 (with a one-line supporting sentence) so the header block is self-contained.
+- Adjust top/bottom spacing on the carousel and grid so vertical rhythm matches neighbouring sections (`mt-10 sm:mt-14` between header→carousel, `mt-12 sm:mt-14` between carousel→grid).
+
+### 2. Eyebrow badge consistency
+Audit the other homepage sections for any that *don't* yet use the badge pattern and confirm: Featured Partners, Start Your Journey, Accredited & Verified, Testimonials, and As Seen In already use it (verified). Only `DreamHealthShowcase` is missing it — no other section changes required.
+
+### 3. Standardised H2 size for all homepage sections
+Adopt a single token via `SectionHeading` and direct H2s:
+
+```text
+text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight
+```
+
+- Update `src/components/ui/section-heading.tsx` default `h2` classes to the standardised size (currently `text-xl sm:text-2xl md:text-3xl lg:text-3xl` — slightly small).
+- Update raw H2s in homepage sections to match. Files to touch:
+  - `DreamHealthShowcase.tsx` (line 279)
+  - `StartJourneySection.tsx` (line 14)
+  - `FeaturedProvidersGlass.tsx` (line 159, currently `text-4xl md:text-6xl` — too large)
+  - Any other homepage section H2 that diverges (sweep `src/components/sections/*` for `text-4xl|text-5xl|text-6xl` on H2 and normalise).
+
+No copy changes outside the new badge text and the H2 rename in `DreamHealthShowcase`.
+
+## Out of scope
+- No changes to data fetching, scrapers, card content, or images — purely presentational header restructuring.
+- No changes to non-homepage pages that reuse `SectionHeading` will be made unless the size change visibly regresses them; will spot-check after the edit.
+
+## Validation
+- Visually verify each homepage section's heading block now follows: badge → H2 → optional subhead → optional CTA → content.
+- Confirm H2 font size is identical across all homepage sections at `sm`, `md`, and `lg` breakpoints.

@@ -230,8 +230,32 @@ const DreamHealthShowcase = () => {
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+            Our Partners' Most Popular Tests
+          </span>
+          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+        </div>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-[#08122b]">
+          Find Your Perfect Test Match
+        </h2>
+        <p className="mt-4 text-base lg:text-lg text-[#081129]/70 max-w-2xl mx-auto">
+          Hand-picked, best-selling tests from the UK's most trusted accredited providers.
+        </p>
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={() => navigate("/assisted-test-finder")}
+            className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3] hover:bg-brand-pink focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Get my test match — 60 seconds, free
+          </button>
+        </div>
+      </div>
+
       {/* Carousel filmstrip — same mixed-provider set as the grid below */}
-      <div className="relative">
+      <div className="relative mt-10 sm:mt-14">
         <div
           className="relative overflow-hidden"
           style={{
@@ -276,18 +300,6 @@ const DreamHealthShowcase = () => {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center mt-10 sm:mt-14">
-        <h2 className="text-3xl sm:text-4xl font-heading font-bold text-[#08122b] md:text-5xl">
-          Our Partners Most Popular Tests
-        </h2>
-
-        <div className="mt-7 flex justify-center">
-          <button
-            onClick={() => navigate("/assisted-test-finder")}
-            className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3] focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-          >
-            Get my test match — 60 seconds, free
-          </button>
-        </div>
 
         {/* 9 mixed-provider test cards — uniform sizing */}
         <div className="mt-12 sm:mt-14">
