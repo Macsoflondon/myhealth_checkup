@@ -59,7 +59,7 @@ export const seo = {
         : "";
     const providerBit = opts?.providerName ? ` Available from ${opts.providerName}.` : "";
     return {
-      title: withSuffix(`${testName} — Compare Providers & Prices in the UK`),
+      title: withSuffix(`${testName}${priceBit} — UK Prices`),
       description: trimDesc(
         `Compare the ${testName} across accredited UK providers${priceBit}. View biomarkers, sample method, turnaround and pricing side-by-side.${providerBit}`
       ),
