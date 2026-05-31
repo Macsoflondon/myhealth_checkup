@@ -80,6 +80,63 @@ export type Database = {
         }
         Relationships: []
       }
+      biomarker_audit_runs: {
+        Row: {
+          approved: boolean
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          delta: string
+          id: string
+          notes: string | null
+          provider_id: string
+          provider_test_id: string | null
+          run_id: string
+          scraped_biomarkers: Json | null
+          scraped_count: number | null
+          stored_count: number | null
+          stored_list: Json | null
+          test_name: string
+          url: string | null
+        }
+        Insert: {
+          approved?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          delta: string
+          id?: string
+          notes?: string | null
+          provider_id: string
+          provider_test_id?: string | null
+          run_id: string
+          scraped_biomarkers?: Json | null
+          scraped_count?: number | null
+          stored_count?: number | null
+          stored_list?: Json | null
+          test_name: string
+          url?: string | null
+        }
+        Update: {
+          approved?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          delta?: string
+          id?: string
+          notes?: string | null
+          provider_id?: string
+          provider_test_id?: string | null
+          run_id?: string
+          scraped_biomarkers?: Json | null
+          scraped_count?: number | null
+          stored_count?: number | null
+          stored_list?: Json | null
+          test_name?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       biomarker_readings: {
         Row: {
           appointment_id: string | null
