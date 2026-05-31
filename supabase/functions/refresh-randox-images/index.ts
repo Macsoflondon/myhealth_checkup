@@ -42,8 +42,14 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
-  // One-off maintenance endpoint — admin verification done via Supabase RLS on the
-  // user_roles table; we additionally accept the service role key from Lovable tooling.
+  // Auth: service-role bearer only. Prevents unauthenticated crawl + DB writes.
+  const authHeader = req.headers.get('Authorization') ?? '';
+  if (authHeader !== `Bearer ${serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   const admin = createClient(supabaseUrl, serviceKey);
 
   const { data: tests, error } = await admin
