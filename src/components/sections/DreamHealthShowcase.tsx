@@ -1,14 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import bloodTestKit from "@/assets/blood-test-kit.jpg";
-import vitaminD from "@/assets/kits/vitamin-d.png";
-import vitaminB12 from "@/assets/kits/vitamin-b12.png";
-import maleHormone from "@/assets/kits/male-hormone.png";
-import femaleHormone from "@/assets/kits/female-hormone.png";
-import generalHealth from "@/assets/kits/general-health.png";
-import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
-import goodbodyWellMan from "@/assets/kits/goodbody-advanced-well-man-v2.png";
-import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
@@ -23,68 +14,19 @@ const cleanName = (name: string) =>
     .replace(/\s*\| Book Online today$/i, "")
     .trim();
 
-// Generic placeholder image URLs that should be ignored in favour of a
-// topic-matched in-house asset.
+// A real provider image is an absolute http(s) URL hosted by the provider
+// (not a Lovable upload placeholder, not a local /kits/kit-* placeholder).
 const PLACEHOLDER_PATTERNS = [
   /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
   /lovableproject\.com\/lovable-uploads\//i,
 ];
-const isPlaceholder = (url?: string | null) =>
-  !!url && PLACEHOLDER_PATTERNS.some((re) => re.test(url));
+const isRealProviderImage = (url?: string | null): url is string =>
+  !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
 
-// Topic-based picker — matches the test name to a thematically correct kit.
-// Order matters: more specific keywords first.
-const TOPIC_IMAGES: Array<[RegExp, string]> = [
-  [/\bvitamin\s*d\b/i, vitaminD],
-  [/\bvitamin\s*b\s*12\b/i, vitaminB12],
-  [/\bthyroid\b/i, bloodTestKit],
-  [/\b(sports|athletic|performance)\b/i, bloodTestKit],
-  [/\b(menopause)\b/i, femaleHormone],
-  [/\b(female|woman|women)\b/i, femaleHormone],
-  [/\b(male|man|men)\b.*\b(hormone|fertility|quickdraw|active|boost|testosterone)\b/i, maleHormone],
-  [/\b(hormone|fertility|testosterone)\b/i, maleHormone],
-  [/\b(well\s*man|wellman)\b/i, goodbodyWellMan],
-  [/\b(general\s*health|optimal\s*health|wellness|complete|premium)\b/i, generalHealth],
-  [/\b(genetic|haemochromatosis|dna)\b/i, randoxGeneticHaemochromatosis],
-  [/\b(vitamins?)\b/i, goodbodyAdvancedVitamins],
-];
-
-const pickTopicImage = (name: string): string => {
-  for (const [re, img] of TOPIC_IMAGES) if (re.test(name)) return img;
-  return bloodTestKit;
-};
-
-// Provider-specific overrides where we have a branded asset.
-// Keys are matched as substrings against the cleaned, lowercased test name,
-// so renames (e.g. "Sports Hormone" → "Sports Performance Hormone") still resolve.
-const providerOverrides: Record<string, Record<string, string>> = {
-  "medichecks": {
-    "advanced well man": "https://www.medichecks.com/cdn/shop/files/advanced-well-man-blood-test-400216.png",
-    "advanced well woman": "https://www.medichecks.com/cdn/shop/files/advanced-well-woman-blood-test-457156.png",
-    "advanced thyroid function": "https://www.medichecks.com/cdn/shop/files/advanced-thyroid-function-blood-test-157336.png",
-    "sports performance hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png",
-    "sports hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png",
-    "optimal health": "https://www.medichecks.com/cdn/shop/files/optimal-health-blood-test-707618.png",
-  },
-  "goodbody-clinic": {
-    "advanced well man": "https://goodbodyclinic.com/cdn/shop/files/ADVANCEDWELLMAN_333f3f11-4432-4d4c-91e6-e294f200bfa5.jpg",
-    "advanced well woman": "https://goodbodyclinic.com/cdn/shop/files/ADVANCEDWELLWOMAN_0c94a7ae-8c65-41f9-b247-d14cb54553f3.jpg",
-  },
-};
-
-const resolveImage = (t: PopularTest): string => {
-  const key = cleanName(t.test_name).toLowerCase();
-  const overrides = providerOverrides[t.provider_id];
-  if (overrides) {
-    // Prefer the longest matching key so "advanced well woman" beats "well woman" etc.
-    const hit = Object.entries(overrides)
-      .filter(([k]) => key.includes(k))
-      .sort((a, b) => b[0].length - a[0].length)[0];
-    if (hit) return hit[1];
-  }
-  if (t.image_url && !isPlaceholder(t.image_url)) return t.image_url;
-  return pickTopicImage(t.test_name);
-};
+// Only ever use the image URL that came from the provider's own product page.
+// If we don't have one, the test is filtered out entirely — never substituted.
+const resolveImage = (t: PopularTest): string | null =>
+  isRealProviderImage(t.image_url) ? t.image_url! : null;
 
 
 /** Round-robin interleave by provider so the grid alternates providers */
@@ -111,6 +53,7 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
   return out;
 };
 
+
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   const { data: popularTests, isLoading } = usePopularTestsFromDatabase(18);
@@ -119,13 +62,14 @@ const DreamHealthShowcase = () => {
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
+    // 0. Hard filter: never display a test that doesn't have a real provider image.
+    const withImage = popularTests.filter((t) => isRealProviderImage(t.image_url));
     // 1. Hide Lola Health Cardiovascular
-    const filtered = popularTests.filter((t) => {
+    const filtered = withImage.filter((t) => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Dedupe WITHIN each provider only (so e.g. Goodbody Well Woman and
-    //    Medichecks Well Woman both stay — each partner gets their own card).
+    // 2. Dedupe WITHIN each provider only.
     const seenPerProvider = new Set<string>();
     const deduped = filtered.filter((t) => {
       const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
@@ -133,7 +77,7 @@ const DreamHealthShowcase = () => {
       seenPerProvider.add(key);
       return true;
     });
-    // 3. Cap at 5 per provider so no single partner dominates
+    // 3. Cap at 5 per provider.
     const perProvider = new Map<string, number>();
     const capped = deduped.filter((t) => {
       const n = perProvider.get(t.provider_id) ?? 0;
@@ -141,10 +85,10 @@ const DreamHealthShowcase = () => {
       perProvider.set(t.provider_id, n + 1);
       return true;
     });
-    // 4. Round-robin interleave so providers don't cluster, then cap at 20
-    //    (4 partners × ~5 kits each).
+    // 4. Round-robin interleave so providers don't cluster.
     return interleaveByProvider(capped).slice(0, 20);
   }, [popularTests]);
+
 
   const filmstripTests = orderedTests.slice(0, 8);
   // Quadruple the strip for a seamless loop
@@ -221,11 +165,11 @@ const DreamHealthShowcase = () => {
                     className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md bg-[#f6f7f9]"
                   >
                     <img
-                      src={resolveImage(t)}
+                      src={resolveImage(t)!}
                       alt={cleanName(t.test_name)}
                       loading="lazy"
                       onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = bloodTestKit;
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
                       }}
                       className="w-full h-full object-contain p-4"
                     />
@@ -276,11 +220,11 @@ const DreamHealthShowcase = () => {
                   )}
                   <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
                     <img
-                      src={resolveImage(t)}
+                      src={resolveImage(t)!}
                       alt={t.test_name}
                       loading="lazy"
                       onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = bloodTestKit;
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
                       }}
                       className="w-full h-full object-contain p-4"
                     />
