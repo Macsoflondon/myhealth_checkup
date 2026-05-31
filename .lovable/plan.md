@@ -1,8 +1,10 @@
-Remove the "Accredited Providers We Compare" section that sits just above the footer on the homepage (/).
+Reorder homepage sections so "You're Never Alone on Your Health Journey" (rendered by `ClinicAndHelpSection`) sits directly below the "Trusted Health Comparison Platform" section (`TrustPlatformSection`), just above the footer.
 
-Changes to `src/pages/Index.tsx`:
-- Delete the `<Suspense>` block (lines ~243-247) that renders `<AccreditedProvidersBar />` wrapped in `<ScrollFadeIn>`.
-- Remove the now-unused `lazy(() => import(...AccreditedProvidersBar))` import at the top (line 27).
+Change in `src/pages/Index.tsx`:
+- Move the `<Suspense>` block wrapping `<ClinicAndHelpSection />` (lines 224-228) to after the `<TrustPlatformSection />` block (after line 240).
 
-Scope:
-- Homepage only. The `AccreditedProvidersBar` component file stays in place since other pages may still use it (will not delete the component).
+New order at the bottom of the homepage:
+1. TestimonialCarousel
+2. CallToAction
+3. TrustPlatformSection
+4. ClinicAndHelpSection  ← moved here, last before footer

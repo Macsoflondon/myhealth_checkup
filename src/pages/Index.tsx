@@ -222,12 +222,6 @@ const Index = () => {
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={100}>
-            <ClinicAndHelpSection />
-          </ScrollFadeIn>
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="scale">
             <CallToAction />
           </ScrollFadeIn>
@@ -238,6 +232,13 @@ const Index = () => {
             <TrustPlatformSection />
           </ScrollFadeIn>
         </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <ScrollFadeIn variant="rise" delay={100}>
+            <ClinicAndHelpSection />
+          </ScrollFadeIn>
+        </Suspense>
+
 
 
 
