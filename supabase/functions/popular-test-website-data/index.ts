@@ -77,7 +77,8 @@ function extractDescription(html: string) {
 function extractImageUrl(html: string, url: string) {
   const direct =
     extractMeta(html, 'og:image') ||
-    html.match(/<img[^>]+class=["'][^"']*(?:wp-post-image|product__media-item|woocommerce-product-gallery__image)[^"']*["'][^>]+src=["']([^"']+)["']/i)?.[1] ||
+    html.match(/<img[^>]+id=["']main-image["'][^>]+src=["']([^"']+)["']/i)?.[1] ||
+    html.match(/<img[^>]+class=["'][^"']*(?:wp-post-image|product__media-item|woocommerce-product-gallery__image|large-product-image|product-card-image)[^"']*["'][^>]+src=["']([^"']+)["']/i)?.[1] ||
     html.match(/data-large_image=["']([^"']+)["']/i)?.[1] ||
     null;
 

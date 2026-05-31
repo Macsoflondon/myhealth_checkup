@@ -33,6 +33,54 @@ interface ScrapedTest {
   image_url?: string;
 }
 
+function decodeHtml(value: string) {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .trim();
+}
+
+function stripHtml(value?: string | null) {
+  if (!value) return null;
+  const cleaned = decodeHtml(value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '));
+  return cleaned || null;
+}
+
+function normalizeUrl(url: string | null | undefined, baseUrl: string) {
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+  return null;
+}
+
+function parseLmlListingHtml(html: string, baseUrl: string): ScrapedTest[] {
+  const cards = Array.from(html.matchAll(/<div class="product-card d-flex flex-fill flex-column position-relative">([\s\S]*?)<\/div>\s*<a href="([^"]+)" class="btn btn-cyan[\s\S]*?<\/a>/gi));
+
+  return cards
+    .map((match) => {
+      const cardHtml = match[1] ?? '';
+      const productUrl = normalizeUrl(match[2], baseUrl) ?? undefined;
+      const name = stripHtml(cardHtml.match(/<div class="product-card-link-title">[\s\S]*?<a[^>]*>([\s\S]*?)<\/a>/i)?.[1] ?? null) ?? '';
+      const priceText = stripHtml(cardHtml.match(/<div class="product-card-link-price">([\s\S]*?)<div class="product-link-place">/i)?.[1] ?? null);
+      const price = priceText ? Number.parseFloat(priceText.replace(/[^\d.]/g, '')) : undefined;
+      const imageUrl = normalizeUrl(cardHtml.match(/<img[^>]+class="[^"]*product-card-image[^"]*"[^>]+src="([^"]+)"/i)?.[1] ?? null, baseUrl) ?? undefined;
+
+      return {
+        name,
+        price: Number.isFinite(price) ? price : undefined,
+        product_url: productUrl,
+        image_url: imageUrl,
+      } satisfies ScrapedTest;
+    })
+    .filter((item) => item.name.length > 3)
+    .slice(0, MAX_PER_PROVIDER);
+}
+
 // ---------- fuzzy match ----------
 const normalize = (s: string) =>
   s.toLowerCase()
@@ -114,6 +162,28 @@ async function firecrawl(url: string, body: Record<string, unknown>, apiKey: str
 
 async function scrapeListing(provider: ProviderConfig, apiKey: string): Promise<ScrapedTest[]> {
   console.log(`[${provider.id}] scraping listing ${provider.popularTestsUrl}`);
+
+  if (provider.id === 'london-medical-laboratory') {
+    try {
+      const response = await fetch(provider.popularTestsUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
+          Accept: 'text/html,application/xhtml+xml',
+        },
+      });
+      if (response.ok) {
+        const html = await response.text();
+        const parsed = parseLmlListingHtml(html, provider.popularTestsUrl);
+        if (parsed.length > 0) {
+          console.log(`[${provider.id}] extracted ${parsed.length} listings via HTML fallback`);
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error(`[${provider.id}] HTML listing fallback failed:`, error);
+    }
+  }
+
   const data = await firecrawl(provider.popularTestsUrl, {
     formats: [{
       type: 'json',
