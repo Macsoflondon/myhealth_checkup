@@ -214,6 +214,7 @@ const DreamHealthShowcase = () => {
             {!isLoading &&
               orderedTests.map((t, i) => {
                 const isMostChosen = i < 3;
+                const open = () => setSelectedTest(t);
                 return (
                   <article
                     key={t.id}
@@ -224,11 +225,11 @@ const DreamHealthShowcase = () => {
                         Most chosen
                       </span>
                     )}
-                    <a
-                      href={t.url!}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0"
+                    <button
+                      type="button"
+                      onClick={open}
+                      className="aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0 w-full"
+                      aria-label={`View details for ${cleanName(t.test_name)}`}
                     >
                       <img
                         src={resolveImage(t)!}
@@ -239,35 +240,33 @@ const DreamHealthShowcase = () => {
                         }}
                         className="w-full h-full object-contain p-4"
                       />
-                    </a>
+                    </button>
                     <div className="p-5 flex flex-col flex-1">
                       <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
                         {t.provider_name}
                       </p>
-                      <a
-                        href={t.url!}
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
-                        className="mt-1 text-lg font-heading font-bold text-[#081129] leading-snug hover:text-[#22c0d4] transition-colors line-clamp-2 min-h-[3.25rem]"
+                      <button
+                        type="button"
+                        onClick={open}
+                        className="mt-1 text-left text-lg font-heading font-bold text-[#081129] leading-snug hover:text-[#22c0d4] transition-colors line-clamp-2 min-h-[3.25rem]"
                       >
                         {cleanName(t.test_name)}
-                      </a>
+                      </button>
                       <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1 line-clamp-3">
                         {t.description || ""}
                       </p>
 
                       <div className="mt-4 flex items-end justify-between">
                         <span className="text-xl font-bold text-[#081129] leading-none">
-                          {formatTestPrice(t)}
+                          {withFrom(formatTestPrice(t))}
                         </span>
-                        <a
-                          href={t.url!}
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
+                        <button
+                          type="button"
+                          onClick={open}
                           className="text-sm font-semibold text-white bg-[#22c0d4] px-4 py-2 rounded-full hover:bg-[#1ba8ba] transition-colors"
                         >
                           See what's tested
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </article>
@@ -276,8 +275,16 @@ const DreamHealthShowcase = () => {
           </div>
         </div>
       </div>
+
+      <ProviderTestDetailModal
+        test={selectedTest ? toCardData(selectedTest) : null}
+        providerName={selectedTest?.provider_name || ""}
+        open={!!selectedTest}
+        onOpenChange={(o) => !o && setSelectedTest(null)}
+      />
     </section>
   );
 };
+
 
 export default DreamHealthShowcase;
