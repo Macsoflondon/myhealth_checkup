@@ -151,11 +151,6 @@ const Hero = () => {
             <div className="max-w-[1240px] mx-auto flex flex-col flex-1 w-full">
 
               <div className="mt-auto mb-40 sm:mb-44 w-full">
-                <div className="text-center mb-3 sm:mb-4">
-                  <span style={surfaceStyle} className="inline-flex items-center gap-1.5 backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 text-white text-xs sm:text-sm font-semibold tracking-wide uppercase border-2 border-solid rounded-sm shadow-md">
-                    🇬🇧 UK's Leading Blood Test Comparison Platform
-                  </span>
-                </div>
 
                 <div className="text-center mb-1 sm:mb-2 flex-col flex items-center justify-center">
                   <h1
