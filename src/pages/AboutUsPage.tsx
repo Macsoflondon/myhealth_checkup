@@ -59,7 +59,7 @@ const AboutUsPage = () => {
           subtitle="Trusted health comparison platform."
         />
 
-        <TrustBadgesSection />
+        <TrustPlatformSection />
 
         <section className="bg-[#081129] py-0">
           <div className="container mx-auto px-4 my-[10px]">
