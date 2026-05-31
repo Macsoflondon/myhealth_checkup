@@ -24,8 +24,16 @@ const PLACEHOLDER_PATTERNS = [
 const isRealProviderImage = (url?: string | null): url is string =>
   !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
 
+// Specific tests that should always render the branded fallback tile
+// instead of the provider's product image (visual consistency in the grid).
+const FORCE_FALLBACK: Array<{ provider: string; test: RegExp }> = [
+  { provider: "goodbody-clinic", test: /premium\s+complete/i },
+];
+const shouldForceFallback = (t: PopularTest) =>
+  FORCE_FALLBACK.some((r) => r.provider === t.provider_id && r.test.test(t.test_name));
+
 const resolveImage = (t: PopularTest): string | null =>
-  isRealProviderImage(t.image_url) ? t.image_url! : null;
+  !shouldForceFallback(t) && isRealProviderImage(t.image_url) ? t.image_url! : null;
 
 const fallbackGradient = (providerName: string) => {
   const b = getBranding(providerName);
