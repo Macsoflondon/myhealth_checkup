@@ -438,7 +438,7 @@ const FAQsPage = () => {
         </div>
 
         {/* Contact Support */}
-        <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12">
+        <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-white">
