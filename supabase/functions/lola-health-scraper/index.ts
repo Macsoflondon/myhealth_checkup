@@ -128,9 +128,11 @@ Deno.serve(async (req) => {
     const collectionProducts = await fetchLolaCollectionProducts();
     const collectionByHandle = new Map(collectionProducts.map((product: any) => [product.handle, product]));
 
-    productUrls = [...new Set(productUrls.length > 0
-      ? productUrls
-      : collectionProducts.map((product: any) => `https://lolahealth.com/products/${product.handle}`))];
+    const collectionUrls = collectionProducts
+      .map((product: any) => `https://lolahealth.com/products/${product.handle}`)
+      .filter((url: string) => url.includes('/products/'));
+
+    productUrls = [...new Set([...collectionUrls, ...productUrls])];
     console.log(`Total URLs: ${productUrls.length}`);
 
     const products: any[] = [];
