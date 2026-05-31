@@ -1,10 +1,13 @@
-Reorder homepage sections so "You're Never Alone on Your Health Journey" (rendered by `ClinicAndHelpSection`) sits directly below the "Trusted Health Comparison Platform" section (`TrustPlatformSection`), just above the footer.
+Move the homepage "Why Trust Us — Trusted Health Comparison Platform" section (`TrustPlatformSection`) into the About Us page, replacing the existing `TrustBadgesSection` there. The homepage will no longer render `TrustPlatformSection`.
 
-Change in `src/pages/Index.tsx`:
-- Move the `<Suspense>` block wrapping `<ClinicAndHelpSection />` (lines 224-228) to after the `<TrustPlatformSection />` block (after line 240).
+Changes:
 
-New order at the bottom of the homepage:
-1. TestimonialCarousel
-2. CallToAction
-3. TrustPlatformSection
-4. ClinicAndHelpSection  ← moved here, last before footer
+`src/pages/Index.tsx`
+- Remove the `<Suspense>` block that renders `<TrustPlatformSection />`.
+- Remove the `lazy(() => import("@/components/sections/TrustPlatformSection"))` import line.
+
+`src/pages/AboutUsPage.tsx`
+- Replace the `import TrustBadgesSection from "@/components/sections/TrustBadgesSection"` with `import TrustPlatformSection from "@/components/sections/TrustPlatformSection"`.
+- Replace the `<TrustBadgesSection />` render at line 62 with `<TrustPlatformSection />` in the same position (directly under `PageBanner`, above the "Our Mission" section).
+
+No other pages/components are affected. `TrustBadgesSection.tsx` file is left in place since it may be referenced elsewhere.
