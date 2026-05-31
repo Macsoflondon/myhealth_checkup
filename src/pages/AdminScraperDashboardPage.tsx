@@ -253,6 +253,36 @@ const AdminScraperDashboardPage: React.FC = () => {
 
           <NormalizeCategoriesCard />
 
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    Refresh Popular Tests
+                  </CardTitle>
+                  <CardDescription>
+                    Scrape each provider's curated best-sellers page and update <code>is_popular</code>, <code>popularity_rank</code> and <code>image_url</code>. Runs as your admin user.
+                  </CardDescription>
+                </div>
+                <Button onClick={refreshPopularTests} disabled={isRefreshingPopular}>
+                  {isRefreshingPopular ? (
+                    <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Refreshing...</>
+                  ) : (
+                    <><Sparkles className="h-4 w-4 mr-2" />Refresh Popular Tests</>
+                  )}
+                </Button>
+              </div>
+            </CardHeader>
+            {popularResult && (
+              <CardContent className="pt-0">
+                <Alert>
+                  <AlertDescription className="text-sm">{popularResult}</AlertDescription>
+                </Alert>
+              </CardContent>
+            )}
+          </Card>
+
           <Alert>
             <Clock className="h-4 w-4" />
             <AlertDescription>
