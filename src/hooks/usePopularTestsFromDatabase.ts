@@ -19,6 +19,7 @@ export interface PopularTest {
   turnaround_days_text?: string;
   base_price?: number;
   collection_options?: Array<{ method: string; price_modifier: number; note?: string }>;
+  is_popular?: boolean;
 }
 
 const providerDisplayNames: Record<string, string> = {
