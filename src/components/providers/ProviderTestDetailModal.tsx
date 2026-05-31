@@ -161,8 +161,11 @@ export default function ProviderTestDetailModal({
       ? (test.collection_options as CollectionOption[])
       : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
 
-  // Authoritative biomarker count: prefer the stored count, fall back to list length.
-  const displayedBiomarkerCount = Math.max(test.biomarker_count ?? 0, biomarkers.length);
+  // Authoritative biomarker count: the list is the source of truth when present.
+  // Only fall back to the stored count when there is no list at all.
+  const displayedBiomarkerCount = biomarkers.length > 0
+    ? biomarkers.length
+    : (test.biomarker_count ?? 0);
 
   // Pricing: show "from £X" when a base price is set (lowest available tier)
   const headerPrice = test.base_price ?? goodbodyStatic?.price ?? test.price;
