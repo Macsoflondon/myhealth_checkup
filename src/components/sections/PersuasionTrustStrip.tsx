@@ -1,4 +1,4 @@
-import { ShieldCheck, FlaskConical, Users, Clock } from "lucide-react";
+import { ShieldCheck, FlaskConical, Stethoscope, Clock } from "lucide-react";
 
 /**
  * 8 psychological design tactics — concentrated trust strip.
@@ -17,7 +17,7 @@ const PersuasionTrustStrip = () => {
   const stats = [
     { icon: ShieldCheck, value: "100%", label: "UKAS-accredited labs", tone: "turquoise" as const },
     { icon: FlaskConical, value: "200+", label: "tests compared", tone: "pink" as const },
-    { icon: Users, value: "40,000+", label: "UK adults guided", tone: "turquoise" as const },
+    { icon: Stethoscope, value: "No GP", label: "referral needed", tone: "turquoise" as const },
     { icon: Clock, value: "60 sec", label: "to your match", tone: "pink" as const },
   ];
 
@@ -53,7 +53,7 @@ const PersuasionTrustStrip = () => {
         </div>
 
         <p className="mt-4 text-center text-xs sm:text-sm text-[#081129]/60">
-          Independent · CQC Regulated partners · No pay-to-rank
+          Independent · CQC Regulated partners · Results in 3–5 days
         </p>
       </div>
     </section>
