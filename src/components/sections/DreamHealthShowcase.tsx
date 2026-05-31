@@ -165,11 +165,11 @@ const DreamHealthShowcase = () => {
                     className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md bg-[#f6f7f9]"
                   >
                     <img
-                      src={resolveImage(t)}
+                      src={resolveImage(t)!}
                       alt={cleanName(t.test_name)}
                       loading="lazy"
                       onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src = bloodTestKit;
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
                       }}
                       className="w-full h-full object-contain p-4"
                     />
