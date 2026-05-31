@@ -1,12 +1,22 @@
-## Extend Trusted Partners carousel to edges
+## Fix Medichecks Sports Hormone image fallback
 
-File: `src/components/sections/PartnersGrid.tsx`
+**Root cause** — `src/components/sections/DreamHealthShowcase.tsx`
 
-Change the carousel wrapper (line 95–101) so the marquee track spans nearly the full viewport with the fade gradients tightened to the page edges.
+The latest scrape renamed the row from `Sports Hormone Blood Test` to `Sports Performance Hormone Blood Test for Health and Fitness`. The provider override lookup uses an exact key match on a cleaned name:
 
-1. Remove the `max-w-5xl mx-auto` constraint and break out of the parent `container` by using a full-bleed wrapper (`w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]`).
-2. Tighten the mask gradient so the fade-in/out happens within ~3% of each viewport edge instead of 5% of a centred 5xl box:
-   - `mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)` (and matching `-webkit-mask-image`).
-3. Keep the existing track, animation, and logo cards untouched — only the wrapper width and mask change.
+```ts
+"medichecks": { "sports hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png", ... }
+```
 
-Result: logos travel right up to the viewport edges and softly fade in/out very close to those edges.
+After `cleanName` the new title becomes `Sports Performance Hormone`, which no longer equals `"sports hormone"`. `image_url` is `null` in the DB, so it falls through to the topic regex and lands on the generic `bloodTestKit` asset (the "generated image" you're seeing).
+
+### Fix
+
+In `src/components/sections/DreamHealthShowcase.tsx`:
+
+1. Change `providerOverrides` matching from exact key equality to substring/regex contains, so `"sports hormone"` matches inside `"sports performance hormone"`.
+   - Iterate the provider's entries and return the first whose key appears as a substring of the cleaned, lowercased test name.
+2. Keep the existing entries intact (advanced well man/woman, advanced thyroid function, optimal health, etc.) — substring match still works for those.
+3. As belt-and-braces, also add the explicit entry `"sports performance hormone": <same medichecks URL>` so future exact-key edits remain unambiguous.
+
+No DB / migration / scraper changes needed.
