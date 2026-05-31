@@ -1,8 +1,29 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatTestPrice } from "@/lib/utils";
+import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+
+const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
+
+const toCardData = (t: PopularTest): ProviderTestCardData => ({
+  id: t.id,
+  provider_id: t.provider_id,
+  test_name: t.test_name,
+  description: t.description ?? null,
+  price: t.price ?? null,
+  category: t.category ?? null,
+  sample_type: t.sample_type ?? null,
+  biomarker_count: t.biomarker_count ?? null,
+  url: t.url ?? null,
+  biomarkers_list: (t.markers as any) ?? null,
+  turnaround_days_text: t.turnaround_days_text ?? null,
+  base_price: t.base_price ?? null,
+  collection_options: (t.collection_options as any) ?? null,
+});
+
 
 const cleanName = (name: string) =>
   name
