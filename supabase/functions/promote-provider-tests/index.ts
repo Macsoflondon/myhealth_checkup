@@ -52,6 +52,17 @@ Deno.serve(async (req) => {
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+  // Auth: require service-role bearer (cron/internal calls). Admin JWTs go through
+  // run-all-scrapers / scrape-and-verify, which call this with the service key.
+  const authHeader = req.headers.get("Authorization") ?? "";
+  if (authHeader !== `Bearer ${serviceKey}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
 
   const body = await req.json().catch(() => ({}));

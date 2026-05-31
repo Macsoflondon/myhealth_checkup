@@ -12,6 +12,24 @@ const BodySchema = z.object({
   items: z.array(ItemSchema).min(1).max(12),
 });
 
+// SSRF guard: only allow scraping the two providers this function is built for.
+const ALLOWED_HOSTS: Record<z.infer<typeof ItemSchema>['provider_id'], string[]> = {
+  'lola-health': ['lolahealth.com'],
+  'london-medical-laboratory': ['londonmedicallaboratory.com'],
+};
+
+function assertAllowedUrl(item: z.infer<typeof ItemSchema>) {
+  const parsed = new URL(item.url);
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    throw new Error('URL protocol not allowed');
+  }
+  const allowed = ALLOWED_HOSTS[item.provider_id] ?? [];
+  const host = parsed.hostname.toLowerCase();
+  if (!allowed.some((h) => host === h || host.endsWith('.' + h))) {
+    throw new Error(`URL host ${host} not allowed for provider ${item.provider_id}`);
+  }
+}
+
 const ABSOLUTE_URL = /^https?:\/\//i;
 
 function decodeHtml(value: string) {
@@ -86,6 +104,8 @@ function extractImageUrl(html: string, url: string) {
 }
 
 async function scrapeProductPage(item: z.infer<typeof ItemSchema>) {
+  assertAllowedUrl(item);
+
   const response = await fetch(item.url, {
     headers: {
       'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
