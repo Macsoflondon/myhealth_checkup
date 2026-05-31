@@ -493,24 +493,36 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
   },
   "male-hormone-fertility": {
     slug: "male-hormone-fertility",
-    name: "Male Hormone & Fertility",
+    name: "Male Hormone and Fertility Blood Test",
     headline: "Complete Male Hormone Panel",
-    description: "A comprehensive male hormone test measuring testosterone, FSH, LH, and other key hormones affecting fertility and wellbeing.",
+    description: "Checks the 6 key male hormones that regulate fertility, mood, energy, libido and muscle development.",
     detailedDescription: "This panel measures the key hormones that regulate male fertility and overall wellbeing. Low testosterone can cause symptoms like fatigue, low mood, and reduced libido, while hormone imbalances can affect fertility. This test provides valuable insights for men concerned about their hormonal health.",
-    biomarkers: ["Testosterone", "Free Testosterone", "SHBG", "FSH", "LH", "Prolactin", "Oestradiol"],
+    biomarkers: [
+      "Follicular Stimulating Hormone (FSH)",
+      "Free Androgen Index",
+      "Luteinizing Hormone (LH)",
+      "Prolactin",
+      "Sex Hormone Binding Globulin (SHBG)",
+      "Testosterone",
+    ],
     whoShouldTake: [
       "Men trying to conceive",
       "Those with symptoms of low testosterone",
       "Men experiencing fertility issues",
       "Anyone with low energy or reduced libido",
-      "Men wanting to optimise hormonal health"
+      "Men wanting to optimise hormonal health",
     ],
     preparation: "Blood sample must be taken between 8-10am for accurate testosterone levels.",
-    sampleType: "Venous blood sample",
+    sampleType: "Venous or finger-prick blood sample",
     turnaround: "4-6 working days",
     category: "Men's Health",
-    goodbodyUrl: "https://goodbodyclinic.com/products/male-hormone-fertility-blood-test",
-    price: 79
+    goodbodyUrl: "https://goodbodyclinic.com/products/male-hormone-and-fertility-blood-test",
+    price: 79,
+    collectionOptions: [
+      { method: "At-home finger-prick kit", price: 79 },
+      { method: "In-clinic venous draw", price: 109 },
+      { method: "Home nurse visit", price: 129 },
+    ],
   },
   "menopause": {
     slug: "menopause",
