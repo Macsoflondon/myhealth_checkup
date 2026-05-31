@@ -62,13 +62,14 @@ const DreamHealthShowcase = () => {
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
+    // 0. Hard filter: never display a test that doesn't have a real provider image.
+    const withImage = popularTests.filter((t) => isRealProviderImage(t.image_url));
     // 1. Hide Lola Health Cardiovascular
-    const filtered = popularTests.filter((t) => {
+    const filtered = withImage.filter((t) => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // 2. Dedupe WITHIN each provider only (so e.g. Goodbody Well Woman and
-    //    Medichecks Well Woman both stay — each partner gets their own card).
+    // 2. Dedupe WITHIN each provider only.
     const seenPerProvider = new Set<string>();
     const deduped = filtered.filter((t) => {
       const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
@@ -76,7 +77,7 @@ const DreamHealthShowcase = () => {
       seenPerProvider.add(key);
       return true;
     });
-    // 3. Cap at 5 per provider so no single partner dominates
+    // 3. Cap at 5 per provider.
     const perProvider = new Map<string, number>();
     const capped = deduped.filter((t) => {
       const n = perProvider.get(t.provider_id) ?? 0;
@@ -84,10 +85,10 @@ const DreamHealthShowcase = () => {
       perProvider.set(t.provider_id, n + 1);
       return true;
     });
-    // 4. Round-robin interleave so providers don't cluster, then cap at 20
-    //    (4 partners × ~5 kits each).
+    // 4. Round-robin interleave so providers don't cluster.
     return interleaveByProvider(capped).slice(0, 20);
   }, [popularTests]);
+
 
   const filmstripTests = orderedTests.slice(0, 8);
   // Quadruple the strip for a seamless loop
