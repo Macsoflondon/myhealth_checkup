@@ -29,14 +29,57 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-function extractFromMarkdown(markdown: string, url: string): any {
+function extractPriceFromHtml(html: string): number {
+  if (!html) return 0;
+
+  // 1. Shopify-style data-amount attribute (Goodbody afterpay block carries the true total)
+  const dataAmountMatches = [...html.matchAll(/data-amount=["'](\d+(?:\.\d{1,2})?)["']/gi)];
+  if (dataAmountMatches.length) {
+    const amounts = dataAmountMatches
+      .map(m => parseFloat(m[1]))
+      .filter(n => n > 10 && n < 5000);
+    if (amounts.length) return Math.max(...amounts);
+  }
+
+  // 2. JSON-LD / Shopify product JSON
+  const jsonPrice = html.match(/"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i);
+  if (jsonPrice) {
+    const p = parseFloat(jsonPrice[1]);
+    if (p > 10 && p < 5000) return p;
+  }
+
+  // 3. og:price:amount meta
+  const og = html.match(/property=["']og:price:amount["'][^>]*content=["']([\d.]+)["']/i);
+  if (og) {
+    const p = parseFloat(og[1]);
+    if (p > 10 && p < 5000) return p;
+  }
+  return 0;
+}
+
+function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   let title = '';
   const h1Match = markdown.match(/^#\s+(.+)$/m);
   if (h1Match) title = h1Match[1].replace(/\s*[–|]\s*Goodbody.*$/i, '').trim();
 
-  let price = 0;
-  const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-  if (priceMatch) price = parseFloat(priceMatch[1].replace(',', ''));
+  // Prefer authoritative price from raw HTML
+  let price = extractPriceFromHtml(html);
+
+  // Detect afterpay/clearpay instalment text so we never mistake it for the headline price
+  const instalmentMatch = markdown.match(/4\s*(?:interest-free\s*)?payments?\s*of\s*£([\d,]+(?:\.\d{1,2})?)/i);
+  const instalmentValue = instalmentMatch ? parseFloat(instalmentMatch[1].replace(',', '')) : 0;
+
+  if (!price && instalmentValue > 0) {
+    price = +(instalmentValue * 4).toFixed(2);
+  }
+
+  if (!price) {
+    // Fallback: scan all £ prices in markdown, skip the instalment value, prefer the largest plausible amount
+    const all = [...markdown.matchAll(/£([\d,]+(?:\.\d{1,2})?)/g)]
+      .map(m => parseFloat(m[1].replace(',', '')))
+      .filter(n => n > 10 && n < 5000 && n !== instalmentValue);
+    if (all.length) price = Math.max(...all);
+  }
 
   let biomarkerCount: number | null = null;
   const countMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
@@ -66,11 +109,12 @@ async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
   const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
+    body: JSON.stringify({ url, formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 2000 }),
   });
   if (!response.ok) throw new Error(`Firecrawl scrape error: ${response.status}`);
   return response.json();
 }
+
 
 async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
   const response = await fetch('https://api.firecrawl.dev/v1/map', {
