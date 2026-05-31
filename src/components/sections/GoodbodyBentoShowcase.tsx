@@ -74,24 +74,25 @@ const GoodbodyBentoShowcase = () => {
           <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
         <div className="row-span-2 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
-          <p className="text-base sm:text-lg leading-snug sm:leading-relaxed mb-3">
-            <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> that are accessible, affordable and convenient across the UK.
+          <p className="text-sm sm:text-base leading-relaxed mb-3">
+            <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> that are accessible, affordable, and convenient.
           </p>
-          <p className="text-base sm:text-lg leading-snug sm:leading-relaxed mb-3">
-            With <strong className="text-[#47a970]">clinical-grade accuracy</strong> and high-street accessibility, we empower people to take control of their health with confidence — no GP referral required.
+          <p className="text-sm sm:text-base leading-relaxed mb-3">
+            With <strong className="text-[#47a970]">clinical-grade accuracy</strong> and high-street accessibility, we empower people to take control of their health with confidence.
           </p>
-          <p className="text-base sm:text-lg leading-snug sm:leading-relaxed">
-            Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable and within reach.
+          <p className="text-sm sm:text-base leading-relaxed">
+            Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
           </p>
           <div className="flex justify-center mt-5">
             <Link
               to="/provider/goodbody"
-              className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200 text-sm sm:text-base"
+              className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200 text-sm"
             >
               View Goodbody Profile
             </Link>
           </div>
         </div>
+
         <div className="aspect-square">
           <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
@@ -106,6 +107,7 @@ const GoodbodyBentoShowcase = () => {
       </div>
 
     </div>
+
   );
 };
 
