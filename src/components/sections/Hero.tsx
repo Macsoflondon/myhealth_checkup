@@ -37,7 +37,7 @@ const heroSlides: Array<{
   {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
-    headline: "The Smarter Way to Compare.",
+    headline: "Compare Private Health Tests & Screenings in the UK",
     subline: "​",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
