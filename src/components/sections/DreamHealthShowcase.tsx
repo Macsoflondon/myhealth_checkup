@@ -1,8 +1,29 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatTestPrice } from "@/lib/utils";
+import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+
+const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
+
+const toCardData = (t: PopularTest): ProviderTestCardData => ({
+  id: t.id,
+  provider_id: t.provider_id,
+  test_name: t.test_name,
+  description: t.description ?? null,
+  price: t.price ?? null,
+  category: t.category ?? null,
+  sample_type: t.sample_type ?? null,
+  biomarker_count: t.biomarker_count ?? null,
+  url: t.url ?? null,
+  biomarkers_list: (t.markers as any) ?? null,
+  turnaround_days_text: t.turnaround_days_text ?? null,
+  base_price: t.base_price ?? null,
+  collection_options: (t.collection_options as any) ?? null,
+});
+
 
 const cleanName = (name: string) =>
   name
@@ -49,6 +70,8 @@ const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   const { data: popularTests, isLoading } = usePopularTestsFromDatabase(150);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
+
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
@@ -191,6 +214,7 @@ const DreamHealthShowcase = () => {
             {!isLoading &&
               orderedTests.map((t, i) => {
                 const isMostChosen = i < 3;
+                const open = () => setSelectedTest(t);
                 return (
                   <article
                     key={t.id}
@@ -201,11 +225,11 @@ const DreamHealthShowcase = () => {
                         Most chosen
                       </span>
                     )}
-                    <a
-                      href={t.url!}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0"
+                    <button
+                      type="button"
+                      onClick={open}
+                      className="aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0 w-full"
+                      aria-label={`View details for ${cleanName(t.test_name)}`}
                     >
                       <img
                         src={resolveImage(t)!}
@@ -216,35 +240,33 @@ const DreamHealthShowcase = () => {
                         }}
                         className="w-full h-full object-contain p-4"
                       />
-                    </a>
+                    </button>
                     <div className="p-5 flex flex-col flex-1">
                       <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
                         {t.provider_name}
                       </p>
-                      <a
-                        href={t.url!}
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
-                        className="mt-1 text-lg font-heading font-bold text-[#081129] leading-snug hover:text-[#22c0d4] transition-colors line-clamp-2 min-h-[3.25rem]"
+                      <button
+                        type="button"
+                        onClick={open}
+                        className="mt-1 text-left text-lg font-heading font-bold text-[#081129] leading-snug hover:text-[#22c0d4] transition-colors line-clamp-2 min-h-[3.25rem]"
                       >
                         {cleanName(t.test_name)}
-                      </a>
+                      </button>
                       <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1 line-clamp-3">
                         {t.description || ""}
                       </p>
 
                       <div className="mt-4 flex items-end justify-between">
                         <span className="text-xl font-bold text-[#081129] leading-none">
-                          {formatTestPrice(t)}
+                          {withFrom(formatTestPrice(t))}
                         </span>
-                        <a
-                          href={t.url!}
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
+                        <button
+                          type="button"
+                          onClick={open}
                           className="text-sm font-semibold text-white bg-[#22c0d4] px-4 py-2 rounded-full hover:bg-[#1ba8ba] transition-colors"
                         >
                           See what's tested
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </article>
@@ -253,8 +275,16 @@ const DreamHealthShowcase = () => {
           </div>
         </div>
       </div>
+
+      <ProviderTestDetailModal
+        test={selectedTest ? toCardData(selectedTest) : null}
+        providerName={selectedTest?.provider_name || ""}
+        open={!!selectedTest}
+        onOpenChange={(o) => !o && setSelectedTest(null)}
+      />
     </section>
   );
 };
+
 
 export default DreamHealthShowcase;
