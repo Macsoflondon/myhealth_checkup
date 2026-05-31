@@ -1633,6 +1633,10 @@ export type Database = {
       }
     }
     Functions: {
+      category_text_to_canonical: {
+        Args: { _category: string }
+        Returns: string
+      }
       cleanup_old_health_queries: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_protected_call_log: { Args: never; Returns: undefined }
