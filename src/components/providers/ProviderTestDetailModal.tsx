@@ -162,9 +162,11 @@ export default function ProviderTestDetailModal({
   const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
   const turnaround = test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
   const collectionOptions: CollectionOption[] | null =
-    Array.isArray(test.collection_options) && test.collection_options.length > 0
-      ? (test.collection_options as CollectionOption[])
-      : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
+    goodbodyStatic?.collectionOptions && goodbodyStatic.collectionOptions.length > 0
+      ? goodbodyStatic.collectionOptions
+      : Array.isArray(test.collection_options) && test.collection_options.length > 0
+        ? (test.collection_options as CollectionOption[])
+        : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
 
   // Authoritative biomarker count: the list is the source of truth when present.
   // Only fall back to the stored count when there is no list at all.
