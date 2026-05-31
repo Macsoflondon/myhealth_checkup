@@ -441,7 +441,7 @@ const FAQsPage = () => {
         <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-white">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-[#08122b]">
                 Still have questions?
               </h2>
               <p className="mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto text-white">
