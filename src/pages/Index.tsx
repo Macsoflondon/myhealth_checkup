@@ -25,7 +25,7 @@ const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealth
 const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
-const TrustPlatformSection = lazy(() => import("@/components/sections/TrustPlatformSection"));
+
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
 const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
 
@@ -227,11 +227,8 @@ const Index = () => {
           </ScrollFadeIn>
         </Suspense>
 
-        <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={100}>
-            <TrustPlatformSection />
-          </ScrollFadeIn>
-        </Suspense>
+
+
 
         <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>

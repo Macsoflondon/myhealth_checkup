@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FounderStory from "@/components/sections/FounderStory";
 import PartnerShowcase from "@/components/sections/PartnerShowcase";
-import TrustBadgesSection from "@/components/sections/TrustBadgesSection";
+import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
 import { SectionHeading } from "@/components/ui/section-heading";
 import PageBanner from "@/components/sections/PageBanner";
 import { Shield, Users, Award, Heart } from "lucide-react";
@@ -59,7 +59,7 @@ const AboutUsPage = () => {
           subtitle="Trusted health comparison platform."
         />
 
-        <TrustBadgesSection />
+        <TrustPlatformSection />
 
         <section className="bg-[#081129] py-0">
           <div className="container mx-auto px-4 my-[10px]">
