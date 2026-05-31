@@ -37,17 +37,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link to="/dashboard" className="flex items-center gap-2" onClick={onItemClick}>
+              <Link to="/health-dashboard" className="flex items-center gap-2" onClick={onItemClick}>
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/health-dashboard" className="flex items-center gap-2" onClick={onItemClick}>
-                <Activity className="h-4 w-4" />
-                Health Dashboard
-              </Link>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOut className="h-4 w-4 mr-2" />
@@ -87,17 +82,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link to="/dashboard" className="flex items-center gap-2">
+            <Link to="/health-dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/health-dashboard" className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              Health Dashboard
-            </Link>
-          </DropdownMenuItem>
+
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="h-4 w-4 mr-2" />
