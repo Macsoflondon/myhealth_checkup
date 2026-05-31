@@ -64,7 +64,12 @@ const formatTurnaround = (providerId: string): string => {
  * no `collection_options` JSON. Keeps the modal layout consistent across all
  * providers (matches the Lola Health reference design).
  */
-type CollectionOption = { method: string; price_modifier: number; note?: string };
+type CollectionOption = {
+  method: string;
+  price_modifier?: number;
+  price?: number;
+  note?: string;
+};
 
 const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = {
   "lola-health": [
