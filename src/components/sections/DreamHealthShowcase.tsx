@@ -39,7 +39,6 @@ const PLACEHOLDER_PATTERNS = [
 ];
 
 const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
-  "lola-health": "https://cdn.shopify.com/s/files/1/0640/8830/9912/collections/our-blood-tests.jpg",
   "randox": "https://stesrhplatforma071.blob.core.windows.net/images/Images/HTK/female/Food_Sensitivity.webp",
   "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
 };
@@ -96,6 +95,7 @@ const isDisplayablePopularTest = (t: PopularTest) =>
   ALLOWED_PROVIDER_SET.has(t.provider_id) &&
   !!t.url &&
   !!resolveImage(t) &&
+  (t.provider_id !== "lola-health" || t.is_popular === true) &&
   !NON_TEST_PATTERNS.some((pattern) => pattern.test(t.test_name));
 
 const getPriorityScore = (t: PopularTest) => {
@@ -141,12 +141,8 @@ const DreamHealthShowcase = () => {
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
     const valid = popularTests.filter(isDisplayablePopularTest);
-    const filtered = valid.filter((t) => {
-      if (t.provider_id !== "lola-health") return true;
-      return !/cardiovascular/i.test(t.test_name);
-    });
     const seenPerProvider = new Set<string>();
-    const deduped = filtered.filter((t) => {
+    const deduped = valid.filter((t) => {
       const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
       if (seenPerProvider.has(key)) return false;
       seenPerProvider.add(key);
