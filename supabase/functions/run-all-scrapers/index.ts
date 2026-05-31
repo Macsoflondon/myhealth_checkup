@@ -302,6 +302,29 @@ async function runBatch(
 
     console.log(`[${new Date().toISOString()}] [${runId}] ${summary}`);
 
+    // Chain popular-tests refresh + sanitise so homepage rankings track the
+    // freshly scraped catalogue, not stale pinned rows.
+    try {
+      console.log(`[${runId}] Chaining scrape-popular-tests...`);
+      const popRes = await fetch(`${supabaseUrl}/functions/v1/scrape-popular-tests`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseServiceKey}`,
+        },
+        body: JSON.stringify({}),
+      });
+      console.log(`[${runId}] scrape-popular-tests status: ${popRes.status}`);
+    } catch (e) {
+      console.error(`[${runId}] scrape-popular-tests failed:`, getErrorMessage(e));
+    }
+    try {
+      await supabase.rpc('sanitize_popular_provider_tests');
+      console.log(`[${runId}] sanitize_popular_provider_tests OK`);
+    } catch (e) {
+      console.error(`[${runId}] sanitize_popular_provider_tests failed:`, getErrorMessage(e));
+    }
+
     // Persist dashboard alerts for any failures (warning, or critical if repeated)
     await recordFailureAlerts(supabase, failedResults);
 
