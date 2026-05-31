@@ -691,6 +691,36 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_section_category_map: {
+        Row: {
+          canonical_category: string
+          created_at: string
+          id: string
+          needs_review: boolean
+          provider_id: string
+          source_section: string
+          updated_at: string
+        }
+        Insert: {
+          canonical_category: string
+          created_at?: string
+          id?: string
+          needs_review?: boolean
+          provider_id: string
+          source_section: string
+          updated_at?: string
+        }
+        Update: {
+          canonical_category?: string
+          created_at?: string
+          id?: string
+          needs_review?: boolean
+          provider_id?: string
+          source_section?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       provider_test_mapping: {
         Row: {
           accreditations: string[] | null
@@ -761,6 +791,7 @@ export type Database = {
           base_price: number | null
           biomarker_count: number | null
           biomarkers_list: Json | null
+          canonical_category: string | null
           category: string | null
           clinic_visit_available: boolean | null
           collection_options: Json | null
@@ -785,6 +816,8 @@ export type Database = {
           provider_test_id: string | null
           sample_type: string | null
           scraped_at: string
+          source_section: string | null
+          source_section_label: string | null
           symptoms: Json | null
           test_name: string
           turnaround_days_text: string | null
@@ -798,6 +831,7 @@ export type Database = {
           base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
+          canonical_category?: string | null
           category?: string | null
           clinic_visit_available?: boolean | null
           collection_options?: Json | null
@@ -822,6 +856,8 @@ export type Database = {
           provider_test_id?: string | null
           sample_type?: string | null
           scraped_at?: string
+          source_section?: string | null
+          source_section_label?: string | null
           symptoms?: Json | null
           test_name: string
           turnaround_days_text?: string | null
@@ -835,6 +871,7 @@ export type Database = {
           base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
+          canonical_category?: string | null
           category?: string | null
           clinic_visit_available?: boolean | null
           collection_options?: Json | null
@@ -859,6 +896,8 @@ export type Database = {
           provider_test_id?: string | null
           sample_type?: string | null
           scraped_at?: string
+          source_section?: string | null
+          source_section_label?: string | null
           symptoms?: Json | null
           test_name?: string
           turnaround_days_text?: string | null
@@ -957,6 +996,48 @@ export type Database = {
           provider_name?: string
           provider_website?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      scrape_run_log: {
+        Row: {
+          completed_at: string | null
+          details: Json | null
+          id: string
+          mappings_upserted: number | null
+          providers_run: number | null
+          started_at: string
+          status: string
+          tests_promoted: number | null
+          tests_scraped: number | null
+          trigger_source: string | null
+          verification_failures: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          details?: Json | null
+          id?: string
+          mappings_upserted?: number | null
+          providers_run?: number | null
+          started_at?: string
+          status?: string
+          tests_promoted?: number | null
+          tests_scraped?: number | null
+          trigger_source?: string | null
+          verification_failures?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          details?: Json | null
+          id?: string
+          mappings_upserted?: number | null
+          providers_run?: number | null
+          started_at?: string
+          status?: string
+          tests_promoted?: number | null
+          tests_scraped?: number | null
+          trigger_source?: string | null
+          verification_failures?: number | null
         }
         Relationships: []
       }
@@ -1571,7 +1652,13 @@ export type Database = {
           tablename: string
         }[]
       }
+      resolve_canonical_category: {
+        Args: { _provider_id: string; _source_section: string }
+        Returns: string
+      }
       sanitize_popular_provider_tests: { Args: never; Returns: undefined }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
