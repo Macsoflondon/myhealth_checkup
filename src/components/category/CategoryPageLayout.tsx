@@ -10,6 +10,8 @@ import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { LucideIcon } from "lucide-react";
 import { Search } from "lucide-react";
 
+const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
+
 /* ───────── Types ───────── */
 export interface CategoryTestItem {
   id: string | number;
@@ -211,6 +213,7 @@ export function CategoryPageLayout({
                     rating={test.rating}
                     reviews={test.reviews}
                     price={test.priceNum}
+                    priceFrom={isFromPriceLabel(test.price)}
                     markers={test.biomarkers}
                     provider={test.provider}
                     url={test.url}

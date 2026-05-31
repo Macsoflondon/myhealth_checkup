@@ -164,6 +164,12 @@ export interface PopularTest {
   is_popular?: boolean;
 }
 
+export const hasStartingPrice = (test: Pick<PopularTest, 'price' | 'base_price' | 'collection_options'>) =>
+  Boolean(
+    (typeof test.base_price === 'number' && test.base_price > 0 && test.base_price !== test.price) ||
+    (Array.isArray(test.collection_options) && test.collection_options.length > 0)
+  );
+
 const providerDisplayNames: Record<string, string> = {
   'goodbody-clinic': 'GOODBODY',
   'medichecks': 'Medichecks',

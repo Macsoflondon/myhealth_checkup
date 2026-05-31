@@ -8,7 +8,7 @@ import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 import { CategoryPageLayout, CategoryTestItem } from '@/components/category/CategoryPageLayout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
+import { hasStartingPrice, usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
 import { getBranding } from '@/data/providerBranding';
 import { getProviderRating } from '@/constants/providerRatings';
 
@@ -132,7 +132,7 @@ const MostPopularTestsPage = () => {
         badgeColor: branding?.primary || '#e70d69',
         provider: t.provider_name,
         priceNum: t.price,
-        price: `£${t.price}`,
+        price: hasStartingPrice(t) ? `from £${t.price}` : `£${t.price}`,
         turnaround: t.turnaround_time || '2–5 days',
         turnaroundDays: parseTurnaroundDays(t.turnaround_time || '5'),
         biomarkerCount: t.biomarker_count || 0,

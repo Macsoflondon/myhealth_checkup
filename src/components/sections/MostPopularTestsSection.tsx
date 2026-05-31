@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
+import { hasStartingPrice, usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { getProviderRating } from "@/constants/providerRatings";
@@ -71,6 +71,7 @@ const MostPopularTestsSection = () => {
                   rating={providerData.rating}
                   reviews={providerData.reviews}
                   price={test.price}
+                   priceFrom={hasStartingPrice(test)}
                   provider={test.provider_name}
                   url={test.url || undefined}
                   ctaLabel={test.url ? "View test" : "Compare"}
