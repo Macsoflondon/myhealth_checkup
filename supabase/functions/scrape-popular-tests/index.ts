@@ -29,6 +29,7 @@ const MAX_PER_PROVIDER = 8;
 interface ScrapedTest {
   name: string;
   price?: number;
+  base_price?: number;
   product_url?: string;
   image_url?: string;
 }
@@ -79,6 +80,43 @@ function parseLmlListingHtml(html: string, baseUrl: string): ScrapedTest[] {
     })
     .filter((item) => item.name.length > 3)
     .slice(0, MAX_PER_PROVIDER);
+}
+
+async function scrapeLolaBestSellers(): Promise<ScrapedTest[]> {
+  const response = await fetch('https://lolahealth.com/collections/blood-tests/products.json?limit=250&sort_by=best-selling', {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
+      Accept: 'application/json,text/plain,*/*',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Lola best-sellers fetch failed: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const products = Array.isArray(data?.products) ? data.products : [];
+
+  return products.slice(0, MAX_PER_PROVIDER).map((product: any) => {
+    const variants = Array.isArray(product?.variants) ? product.variants : [];
+    const variantPrices = variants
+      .map((variant: any) => Number(variant?.price))
+      .filter((value: number) => Number.isFinite(value));
+    const headlinePrice = Number.isFinite(Number(variants?.[0]?.price)) ? Number(variants[0].price) : undefined;
+    const basePrice = variantPrices.length > 0 ? Math.min(...variantPrices) : undefined;
+
+    return {
+      name: String(product?.title ?? '').trim(),
+      price: headlinePrice,
+      base_price: basePrice,
+      product_url: normalizeUrl(product?.url ?? `/products/${product?.handle ?? ''}`, 'https://lolahealth.com/collections/blood-tests') ?? undefined,
+      image_url:
+        normalizeUrl(product?.image?.src, 'https://lolahealth.com') ??
+        normalizeUrl(product?.featured_image, 'https://lolahealth.com') ??
+        normalizeUrl(product?.images?.[0]?.src ?? product?.images?.[0], 'https://lolahealth.com') ??
+        undefined,
+    } satisfies ScrapedTest;
+  }).filter((item) => item.name.length > 3);
 }
 
 // ---------- fuzzy match ----------
@@ -162,6 +200,18 @@ async function firecrawl(url: string, body: Record<string, unknown>, apiKey: str
 
 async function scrapeListing(provider: ProviderConfig, apiKey: string): Promise<ScrapedTest[]> {
   console.log(`[${provider.id}] scraping listing ${provider.popularTestsUrl}`);
+
+  if (provider.id === 'lola-health') {
+    try {
+      const products = await scrapeLolaBestSellers();
+      if (products.length > 0) {
+        console.log(`[${provider.id}] extracted ${products.length} listings via Shopify products feed`);
+        return products;
+      }
+    } catch (error) {
+      console.error(`[${provider.id}] Shopify products feed failed:`, error);
+    }
+  }
 
   if (provider.id === 'london-medical-laboratory') {
     try {
@@ -285,11 +335,11 @@ Deno.serve(async (req) => {
 
     const { data: allDb } = await supabase
       .from('provider_tests')
-      .select('id, test_name, provider_id, image_url')
+      .select('id, test_name, provider_id, image_url, provider_test_id')
       .in('provider_id', providerIds)
       .eq('is_active', true);
 
-    const dbByProvider = new Map<string, { id: string; test_name: string; image_url: string | null }[]>();
+    const dbByProvider = new Map<string, { id: string; test_name: string; image_url: string | null; provider_test_id: string | null }[]>();
     for (const t of (allDb ?? [])) {
       const arr = dbByProvider.get(t.provider_id) ?? [];
       arr.push(t);
@@ -317,10 +367,17 @@ Deno.serve(async (req) => {
           image = await scrapeProductImage(item.product_url, apiKey);
         }
 
+        const matchedProviderTestId = dbTests.find((test) => test.id === match.id)?.provider_test_id ?? null;
+
         const update: Record<string, unknown> = {
           is_popular: true,
           popularity_rank: rank,
         };
+        if (provider.id === 'lola-health') {
+          if (typeof item.price === 'number' && Number.isFinite(item.price) && item.price > 0) update.price = item.price;
+          if (typeof item.base_price === 'number' && Number.isFinite(item.base_price) && item.base_price > 0) update.base_price = item.base_price;
+          if (item.product_url) update.url = item.product_url;
+        }
         // Only overwrite image_url if we have a real one — never null out existing real images.
         if (image) update.image_url = image;
 
@@ -340,6 +397,7 @@ Deno.serve(async (req) => {
           rank,
           scraped: item.name,
           matched: match.test_name,
+          provider_test_id: matchedProviderTestId,
           score: +match.score.toFixed(2),
           image: image ?? '(kept existing)',
         });
