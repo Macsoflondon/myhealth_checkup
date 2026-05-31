@@ -4,6 +4,12 @@
  * biomarkers, preparation instructions, and booking URLs.
  */
 
+export interface GoodbodyCollectionOption {
+  method: string;
+  price: number;
+  note?: string;
+}
+
 export interface GoodbodyTestDetail {
   slug: string;
   name: string;
@@ -18,6 +24,8 @@ export interface GoodbodyTestDetail {
   category: string;
   goodbodyUrl: string;
   price: number;
+  /** Optional per-collection-method pricing tiers shown in the modal. */
+  collectionOptions?: GoodbodyCollectionOption[];
 }
 
 export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
