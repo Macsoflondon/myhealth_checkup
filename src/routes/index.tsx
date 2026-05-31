@@ -26,6 +26,7 @@ const AdminScraperDashboardPage = lazy(() => import("@/pages/AdminScraperDashboa
 const AdminTestDashboardPage = lazy(() => import("@/pages/AdminTestDashboardPage"));
 const AdminEncryptionStatusPage = lazy(() => import("@/pages/AdminEncryptionStatusPage"));
 const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage"));
+const AdminBiomarkerAuditPage = lazy(() => import("@/pages/AdminBiomarkerAuditPage"));
 
 const PageFallback = () => (
   <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
