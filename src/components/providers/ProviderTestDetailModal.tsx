@@ -230,7 +230,12 @@ export default function ProviderTestDetailModal({
                   >
                     <span>{opt.method}</span>
                     <span className="font-semibold" style={{ color: brandColor }}>
-                      {opt.note ?? (opt.price_modifier > 0 ? `+£${opt.price_modifier}` : "Free")}
+                      {opt.note
+                        ?? (typeof opt.price === "number"
+                          ? `£${opt.price}`
+                          : (opt.price_modifier ?? 0) > 0
+                            ? `+£${opt.price_modifier}`
+                            : "Free")}
                     </span>
                   </li>
                 ))}
