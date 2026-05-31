@@ -228,10 +228,20 @@ export const CategoryVerificationPanel = () => {
             <CheckCircle2 className="h-5 w-5" />
             Category Mapping Verification
           </CardTitle>
-          <Button size="sm" variant="outline" onClick={run} disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-            <span className="ml-2">Re-check</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button size="sm" variant="outline" onClick={exportCsv} disabled={loading || mismatches.length === 0}>
+              <Download className="h-4 w-4" />
+              <span className="ml-2">CSV ({mismatches.length})</span>
+            </Button>
+            <Button size="sm" variant="outline" onClick={exportJson} disabled={loading || mismatches.length === 0}>
+              <Download className="h-4 w-4" />
+              <span className="ml-2">JSON</span>
+            </Button>
+            <Button size="sm" variant="outline" onClick={run} disabled={loading}>
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+              <span className="ml-2">Re-check</span>
+            </Button>
+          </div>
         </div>
         <p className="text-sm text-muted-foreground">
           Confirms every active provider_tests row resolves to a canonical category and has a real URL + image so the
