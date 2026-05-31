@@ -98,13 +98,35 @@ async function scrapeProductPage(item: z.infer<typeof ItemSchema>) {
   }
 
   const html = await response.text();
+  const lolaJson = item.provider_id === 'lola-health'
+    ? await fetch(`${item.url}.js`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
+          Accept: 'application/json,text/plain,*/*',
+        },
+      }).then(async (res) => (res.ok ? res.json() : null)).catch(() => null)
+    : null;
+
+  const lolaImageUrl = item.provider_id === 'lola-health'
+    ? normalizeUrl(
+        lolaJson?.featured_image ||
+          lolaJson?.media?.find?.((media: { media_type?: string; src?: string }) => media?.media_type === 'image' && media?.src)?.src ||
+          lolaJson?.images?.[0],
+        item.url,
+      )
+    : null;
+
+  const lolaPrice = item.provider_id === 'lola-health' && typeof lolaJson?.price === 'number'
+    ? Number((lolaJson.price / 100).toFixed(2))
+    : null;
 
   return {
     id: item.id,
     provider_id: item.provider_id,
     title: extractTitle(html) || item.test_name,
     description: extractDescription(html),
-    image_url: extractImageUrl(html, item.url),
+    image_url: lolaImageUrl || extractImageUrl(html, item.url),
+    price: lolaPrice,
     url: item.url,
   };
 }
@@ -135,6 +157,7 @@ Deno.serve(async (req) => {
             title: item.test_name,
             description: null,
             image_url: null,
+            price: null,
             url: item.url,
           };
         }
