@@ -52,31 +52,28 @@ const CalloutCard = ({ children }: { children: React.ReactNode }) => (
 const GoodbodyBentoShowcase = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
-      <div className="grid grid-cols-4 sm:grid-cols-6 auto-rows-[88px] sm:auto-rows-[112px] gap-3 sm:gap-4">
-        {/* Top row: Advanced Well Man | Logo (center) | Premium Complete (right) */}
-        <div className="col-span-2 sm:col-span-2 row-span-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        {/* Row 1 */}
+        <div className="aspect-square">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
-        <div className="col-span-2 sm:col-span-2 row-span-2 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-6 sm:p-8">
+        <div className="aspect-square rounded-2xl bg-white shadow-md flex items-center justify-center p-6 sm:p-8">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="h-48 sm:h-64 md:h-80 w-auto object-contain"
+            className="max-h-full max-w-full w-auto h-auto object-contain"
           />
         </div>
-        <div className="col-span-4 sm:col-span-2 row-span-2">
+        <div className="aspect-square">
           <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
 
-        {/* Row: kit + unified callout (spans 4 rows) + kit */}
-        <div className="col-span-2 sm:col-span-2 row-span-2">
+        {/* Row 2: kit | callout (spans 2 rows) | kit */}
+        <div className="aspect-square">
           <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
-        <div className="col-span-2 sm:col-span-2 row-span-4 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
-          <h3 className="font-heading font-bold text-lg sm:text-xl mb-4 text-[#081129]">
-            ​
-          </h3>
+        <div className="row-span-2 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
           <p className="text-sm sm:text-base leading-relaxed mb-3">
             <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> that are accessible, affordable, and convenient.
           </p>
@@ -88,19 +85,17 @@ const GoodbodyBentoShowcase = () => {
             Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
           </p>
         </div>
-        <div className="col-span-4 sm:col-span-2 row-span-2">
+        <div className="aspect-square">
           <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
 
-        {/* Row: kit + (callout continues) + kit */}
-        <div className="col-span-2 sm:col-span-2 row-span-2">
+        {/* Row 3 */}
+        <div className="aspect-square">
           <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
         </div>
-        <div className="col-span-4 sm:col-span-2 row-span-2">
+        <div className="aspect-square">
           <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
         </div>
-
-
       </div>
 
       {/* CTA */}
