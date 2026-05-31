@@ -80,11 +80,19 @@ const GoodbodyBentoShowcase = () => {
           <p className="text-sm sm:text-base leading-relaxed mb-3">
             With <strong className="text-[#47a970]">clinical-grade accuracy</strong> and high-street accessibility, we empower people to take control of their health with confidence.
           </p>
-          <div className="w-12 h-px bg-gradient-to-r from-[#47a970] to-[#e70d69] mx-auto my-3" />
           <p className="text-sm sm:text-base leading-relaxed">
             Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
           </p>
+          <div className="flex justify-center mt-5">
+            <Link
+              to="/provider/goodbody"
+              className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200 text-sm"
+            >
+              View Goodbody Profile
+            </Link>
+          </div>
         </div>
+
         <div className="aspect-square">
           <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
