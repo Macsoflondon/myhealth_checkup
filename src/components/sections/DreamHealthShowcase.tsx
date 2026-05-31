@@ -40,15 +40,37 @@ const PLACEHOLDER_PATTERNS = [
 
 const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
   "lola-health": "https://cdn.shopify.com/s/files/1/0640/8830/9912/collections/our-blood-tests.jpg",
+  "randox": "https://stesrhplatforma071.blob.core.windows.net/images/Images/HTK/female/Food_Sensitivity.webp",
   "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
 };
 
+const normalizeImageUrl = (url?: string | null, providerId?: string, pageUrl?: string | null) => {
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  if (!url.startsWith('/')) return null;
+
+  try {
+    if (pageUrl) return new URL(url, pageUrl).toString();
+    if (providerId === "lola-health") return new URL(url, "https://lolahealth.com").toString();
+    if (providerId === "london-medical-laboratory") return new URL(url, "https://www.londonmedicallaboratory.com").toString();
+  } catch {
+    return null;
+  }
+
+  return null;
+};
+
 const isRealProviderImage = (url?: string | null): url is string =>
-  !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
+  !!url &&
+  /^https?:\/\//i.test(url) &&
+  !PLACEHOLDER_PATTERNS.some((re) => re.test(url)) &&
+  !/\/image\/gb\.png(?:\?|$)/i.test(url) &&
+  !/randox-health-white-red-dot/i.test(url);
 
 const resolveImage = (t: PopularTest): string | null =>
-  isRealProviderImage(t.image_url)
-    ? t.image_url!
+  isRealProviderImage(normalizeImageUrl(t.image_url, t.provider_id, t.url))
+    ? normalizeImageUrl(t.image_url, t.provider_id, t.url)!
     : PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null;
 
 const ALLOWED_PROVIDERS = [
@@ -80,7 +102,10 @@ const getPriorityScore = (t: PopularTest) => {
   const hasPopularityFlag = t.is_popular === true ? 1000 : 0;
   const rankBoost = t.popularity_rank ? Math.max(0, 200 - t.popularity_rank) : 0;
   const bloodTestBoost = /blood test|home test|test kit|health test|screen/i.test(t.test_name) ? 25 : 0;
-  return hasPopularityFlag + rankBoost + bloodTestBoost;
+  const validPriceBoost = (typeof t.price === "number" && t.price > 0) || (typeof t.base_price === "number" && t.base_price > 0) ? 80 : 0;
+  const validDescriptionBoost = t.description?.trim() ? 40 : 0;
+  const validImageBoost = resolveImage(t) ? 120 : -300;
+  return hasPopularityFlag + rankBoost + bloodTestBoost + validPriceBoost + validDescriptionBoost + validImageBoost;
 };
 
 const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
@@ -301,6 +326,11 @@ const DreamHealthShowcase = () => {
                         alt={t.test_name}
                         loading="lazy"
                         onError={(e) => {
+                          const fallback = PROVIDER_FALLBACK_IMAGES[t.provider_id];
+                          if (fallback && e.currentTarget.src !== fallback) {
+                            e.currentTarget.src = fallback;
+                            return;
+                          }
                           (e.currentTarget as HTMLImageElement).style.display = "none";
                         }}
                         className="w-full h-full object-contain p-4"
