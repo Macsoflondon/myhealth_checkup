@@ -4,7 +4,33 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import { CheckCircle2, AlertTriangle, RefreshCw, Loader2 } from "lucide-react";
+import { CheckCircle2, AlertTriangle, RefreshCw, Loader2, Download } from "lucide-react";
+
+const PROVIDER_NAMES: Record<string, string> = {
+  "medichecks": "Medichecks",
+  "thriva": "Thriva",
+  "goodbody-clinic": "GoodBody Clinic",
+  "lola-health": "Lola Health",
+  "randox": "Randox Health",
+  "london-medical-laboratory": "London Medical Laboratory",
+  "london-health-company": "London Health Company",
+  "clinilabs": "Clinilabs",
+  "medical-diagnosis": "Medical Diagnosis",
+};
+
+interface MismatchRow {
+  id: string;
+  provider_id: string;
+  provider_name: string;
+  provider_test_id: string | null;
+  test_name: string;
+  canonical_category: string | null;
+  source_section: string | null;
+  category: string | null;
+  url: string | null;
+  image_url: string | null;
+  issues: string[];
+}
 
 interface CategoryStat {
   canonical_category: string | null;
