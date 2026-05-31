@@ -5,6 +5,7 @@ import { FeaturedPublications } from "@/components/sections/FeaturedPublications
 
 import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
 import GoodbodyBentoShowcase from "@/components/sections/GoodbodyBentoShowcase";
+import CallToAction from "@/components/sections/CallToAction";
 
 const PartnerShowcaseGrid = () => {
 
@@ -38,9 +39,11 @@ const PartnerShowcaseGrid = () => {
       {/* Featured Publications carousel */}
       <FeaturedPublications />
 
+      {/* Take Control CTA slotted between the two tricolor dividers */}
+      <CallToAction />
 
       {/* Bottom gradient line */}
-      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
 };
