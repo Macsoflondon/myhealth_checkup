@@ -51,7 +51,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
   return useQuery({
     queryKey: ['popular-tests-database', limit],
     queryFn: async (): Promise<PopularTest[]> => {
-      // Pull a wide pool of valid provider rows: must have a URL and an external image.
+      // Pull a wide pool of valid provider rows: must have a URL.
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
@@ -59,7 +59,6 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         .eq('is_active', true)
         .not('price', 'is', null)
         .not('url', 'is', null)
-        .like('image_url', 'http%')
         .order('is_popular', { ascending: false, nullsFirst: false })
         .order('popularity_rank', { ascending: true, nullsFirst: false })
         .limit(limit);

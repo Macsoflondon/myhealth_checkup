@@ -37,11 +37,51 @@ const PLACEHOLDER_PATTERNS = [
   /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
   /lovableproject\.com\/lovable-uploads\//i,
 ];
+
+const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
+  "lola-health": "https://cdn.shopify.com/s/files/1/0640/8830/9912/collections/our-blood-tests.jpg",
+  "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
+};
+
 const isRealProviderImage = (url?: string | null): url is string =>
   !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
 
 const resolveImage = (t: PopularTest): string | null =>
-  isRealProviderImage(t.image_url) ? t.image_url! : null;
+  isRealProviderImage(t.image_url)
+    ? t.image_url!
+    : PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null;
+
+const ALLOWED_PROVIDERS = [
+  "lola-health",
+  "goodbody-clinic",
+  "medichecks",
+  "randox",
+  "london-medical-laboratory",
+] as const;
+
+const ALLOWED_PROVIDER_SET = new Set<string>(ALLOWED_PROVIDERS);
+
+const NON_TEST_PATTERNS = [
+  /blood draw appointment/i,
+  /appointment/i,
+  /consultation/i,
+  /microsuction/i,
+  /mole screening/i,
+  /coming soon/i,
+];
+
+const isDisplayablePopularTest = (t: PopularTest) =>
+  ALLOWED_PROVIDER_SET.has(t.provider_id) &&
+  !!t.url &&
+  !!resolveImage(t) &&
+  !NON_TEST_PATTERNS.some((pattern) => pattern.test(t.test_name));
+
+const getPriorityScore = (t: PopularTest) => {
+  const hasPopularityFlag = t.is_popular === true ? 1000 : 0;
+  const rankBoost = t.popularity_rank ? Math.max(0, 200 - t.popularity_rank) : 0;
+  const bloodTestBoost = /blood test|home test|test kit|health test|screen/i.test(t.test_name) ? 25 : 0;
+  return hasPopularityFlag + rankBoost + bloodTestBoost;
+};
 
 const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
   const groups = new Map<string, PopularTest[]>();
@@ -68,27 +108,14 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(150);
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500);
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
-    const ALLOWED_PROVIDERS = new Set([
-      "lola-health",
-      "goodbody-clinic",
-      "medichecks",
-      "randox",
-      "london-medical-laboratory",
-    ]);
-    const valid = popularTests.filter(
-      (t) =>
-        ALLOWED_PROVIDERS.has(t.provider_id) &&
-        (t as any).is_popular === true &&
-        isRealProviderImage(t.image_url) &&
-        !!t.url
-    );
+    const valid = popularTests.filter(isDisplayablePopularTest);
     const filtered = valid.filter((t) => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
@@ -107,7 +134,34 @@ const DreamHealthShowcase = () => {
       perProvider.set(t.provider_id, n + 1);
       return true;
     });
-    return interleaveByProvider(capped).slice(0, 9);
+
+    const sorted = [...capped].sort((a, b) => {
+      const scoreDiff = getPriorityScore(b) - getPriorityScore(a);
+      if (scoreDiff !== 0) return scoreDiff;
+      const priceA = Number.isFinite(a.price) ? a.price : Number.POSITIVE_INFINITY;
+      const priceB = Number.isFinite(b.price) ? b.price : Number.POSITIVE_INFINITY;
+      if (priceA !== priceB) return priceA - priceB;
+      return cleanName(a.test_name).localeCompare(cleanName(b.test_name));
+    });
+
+    const byProvider = new Map<string, PopularTest[]>();
+    for (const test of sorted) {
+      const bucket = byProvider.get(test.provider_id) ?? [];
+      bucket.push(test);
+      byProvider.set(test.provider_id, bucket);
+    }
+
+    const guaranteedCoverage: PopularTest[] = [];
+    for (const providerId of ALLOWED_PROVIDERS) {
+      const next = byProvider.get(providerId)?.shift();
+      if (next) guaranteedCoverage.push(next);
+    }
+
+    const remainder = interleaveByProvider(
+      ALLOWED_PROVIDERS.flatMap((providerId) => byProvider.get(providerId) ?? [])
+    );
+
+    return [...guaranteedCoverage, ...remainder].slice(0, 9);
   }, [popularTests]);
 
   const filmstripTests = orderedTests;
