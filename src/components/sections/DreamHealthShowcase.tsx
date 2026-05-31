@@ -5,7 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
-import { getBranding } from "@/data/providerBranding";
 
 const cleanName = (name: string) =>
   name
@@ -24,49 +23,18 @@ const PLACEHOLDER_PATTERNS = [
 const isRealProviderImage = (url?: string | null): url is string =>
   !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
 
+// Only ever use the image URL that came from the provider's own product page.
+// If we don't have one, the test is filtered out entirely — never substituted.
 const resolveImage = (t: PopularTest): string | null =>
   isRealProviderImage(t.image_url) ? t.image_url! : null;
 
-const fallbackGradient = (providerName: string) => {
-  const b = getBranding(providerName);
-  const from = b?.primary ?? "#081129";
-  const to = b?.accent ?? "#22c0d4";
-  return `linear-gradient(135deg, ${from} 0%, ${to} 100%)`;
-};
 
-const FallbackTile = ({
-  t,
-  className,
-  showCategory = true,
-}: {
-  t: PopularTest;
-  className?: string;
-  showCategory?: boolean;
-}) => (
-  <div
-    className={`w-full h-full flex flex-col items-center justify-center text-center p-4 ${className ?? ""}`}
-    style={{ backgroundImage: fallbackGradient(t.provider_name) }}
-  >
-    <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-white/85">
-      {t.provider_name}
-    </span>
-    <span className="mt-2 text-sm sm:text-base font-heading font-bold text-white leading-tight line-clamp-3">
-      {cleanName(t.test_name)}
-    </span>
-    {showCategory && t.category && (
-      <span className="mt-2 text-[10px] uppercase tracking-wider text-white/70">
-        {t.category}
-      </span>
-    )}
-  </div>
-);
-
-/** Round-robin interleave by provider, capped per provider, so the grid alternates providers */
-const interleaveByProvider = (tests: PopularTest[], maxPerProvider = 2): PopularTest[] => {
+/** Round-robin interleave by provider so the grid alternates providers */
+const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
   const groups = new Map<string, PopularTest[]>();
   for (const t of tests) {
     const arr = groups.get(t.provider_id) ?? [];
-    if (arr.length < maxPerProvider) arr.push(t);
+    arr.push(t);
     groups.set(t.provider_id, arr);
   }
   const buckets = Array.from(groups.values());
@@ -88,18 +56,20 @@ const interleaveByProvider = (tests: PopularTest[], maxPerProvider = 2): Popular
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(30);
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(18);
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
-    // Hide Lola Health Cardiovascular per existing rule
-    const filtered = popularTests.filter((t) => {
+    // 0. Hard filter: never display a test that doesn't have a real provider image.
+    const withImage = popularTests.filter((t) => isRealProviderImage(t.image_url));
+    // 1. Hide Lola Health Cardiovascular
+    const filtered = withImage.filter((t) => {
       if (t.provider_id !== "lola-health") return true;
       return !/cardiovascular/i.test(t.test_name);
     });
-    // Dedupe within each provider
+    // 2. Dedupe WITHIN each provider only.
     const seenPerProvider = new Set<string>();
     const deduped = filtered.filter((t) => {
       const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
@@ -107,18 +77,25 @@ const DreamHealthShowcase = () => {
       seenPerProvider.add(key);
       return true;
     });
-    // Round-robin across providers, max 2 per provider, take 9
-    return interleaveByProvider(deduped, 2).slice(0, 9);
+    // 3. Cap at 5 per provider.
+    const perProvider = new Map<string, number>();
+    const capped = deduped.filter((t) => {
+      const n = perProvider.get(t.provider_id) ?? 0;
+      if (n >= 5) return false;
+      perProvider.set(t.provider_id, n + 1);
+      return true;
+    });
+    // 4. Round-robin interleave so providers don't cluster.
+    return interleaveByProvider(capped).slice(0, 20);
   }, [popularTests]);
 
 
-  const filmstripTests = orderedTests;
+  const filmstripTests = orderedTests.slice(0, 8);
   // Quadruple the strip for a seamless loop
   const filmstripLoop = useMemo(
     () => [...filmstripTests, ...filmstripTests, ...filmstripTests, ...filmstripTests],
     [filmstripTests]
   );
-
 
   useEffect(() => {
     const track = trackRef.current;
@@ -182,30 +159,22 @@ const DreamHealthShowcase = () => {
                     <Skeleton className="w-full h-full bg-black/5" />
                   </div>
                 ))
-              : filmstripLoop.map((t, i) => {
-                  const img = resolveImage(t);
-                  return (
-                    <div
-                      key={`${t.id}-${i}`}
-                      className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md bg-[#f6f7f9]"
-                    >
-                      {img ? (
-                        <img
-                          src={img}
-                          alt={cleanName(t.test_name)}
-                          loading="lazy"
-                          onError={(e) => {
-                            (e.currentTarget as HTMLImageElement).style.display = "none";
-                          }}
-                          className="w-full h-full object-contain p-4"
-                        />
-                      ) : (
-                        <FallbackTile t={t} showCategory={false} />
-                      )}
-                    </div>
-                  );
-                })}
-
+              : filmstripLoop.map((t, i) => (
+                  <div
+                    key={`${t.id}-${i}`}
+                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md bg-[#f6f7f9]"
+                  >
+                    <img
+                      src={resolveImage(t)!}
+                      alt={cleanName(t.test_name)}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                      className="w-full h-full object-contain p-4"
+                    />
+                  </div>
+                ))}
           </div>
         </div>
       </div>
@@ -232,7 +201,7 @@ const DreamHealthShowcase = () => {
         <div className="mt-12 sm:mt-14">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left">
             {isLoading &&
-              Array.from({ length: 9 }).map((_, i) => (
+              Array.from({ length: 12 }).map((_, i) => (
                 <Skeleton key={i} className="h-[360px] rounded-2xl bg-black/5" />
               ))}
 
@@ -250,21 +219,16 @@ const DreamHealthShowcase = () => {
                     </span>
                   )}
                   <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
-                    {resolveImage(t) ? (
-                      <img
-                        src={resolveImage(t)!}
-                        alt={t.test_name}
-                        loading="lazy"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).style.display = "none";
-                        }}
-                        className="w-full h-full object-contain p-4"
-                      />
-                    ) : (
-                      <FallbackTile t={t} />
-                    )}
+                    <img
+                      src={resolveImage(t)!}
+                      alt={t.test_name}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                      className="w-full h-full object-contain p-4"
+                    />
                   </div>
-
                   <div className="p-5 flex flex-col flex-1 rounded-lg shadow-xl">
                     <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
                       {t.provider_name}
