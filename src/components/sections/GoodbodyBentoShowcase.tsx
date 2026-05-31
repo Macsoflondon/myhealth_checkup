@@ -34,7 +34,7 @@ const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: s
         alt={alt}
         loading="lazy"
         decoding="async"
-        className="max-w-[80%] max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
+        className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
       />
     </div>
     <span className="mt-1 text-[#081129] font-semibold text-[11px] sm:text-xs text-center leading-tight line-clamp-2 px-1">
