@@ -438,7 +438,7 @@ const TestCategoriesPage = () => {
               >
                 Not sure where to start?
               </p>
-              <h4
+              <h2
                 style={{
                   fontSize: 24,
                   fontWeight: 800,
@@ -448,7 +448,7 @@ const TestCategoriesPage = () => {
                 }}
               >
                 Find the Right Health Test for You
-              </h4>
+              </h2>
             </div>
             <div style={{ display: "flex", gap: 12 }}>
               <Link
