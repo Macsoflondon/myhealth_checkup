@@ -4,127 +4,144 @@
 // for that (provider_id, source_section) pair.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
-const corsHeaders = {
+export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const CANONICAL_CATEGORIES = new Set([
+export const CANONICAL_CATEGORIES = new Set([
   "womens-health", "mens-health", "fertility", "sexual-health", "thyroid",
   "heart", "gut", "vitamins", "hormones", "cancer-screening",
   "sports-performance", "at-home", "general-health",
 ]);
 
-const norm = (s: string) =>
+export const norm = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "");
 
-Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+// Minimal interface our handler needs from a Supabase-like client.
+export interface SbLike {
+  auth: {
+    getUser: () => Promise<{ data: { user: { id: string } | null }; error: unknown }>;
+  };
+  from: (table: string) => any;
+}
 
-  try {
-    const authHeader = req.headers.get("Authorization") ?? "";
-    if (!authHeader) {
-      return json({ error: "Unauthorized" }, 401);
-    }
+export interface HandlerDeps {
+  userClientFor: (authHeader: string) => SbLike;
+  adminClient: SbLike;
+}
 
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const ANON = Deno.env.get("SUPABASE_ANON_KEY")!;
+export function createHandler(deps: HandlerDeps) {
+  return async (req: Request): Promise<Response> => {
+    if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-    // Caller-bound client to identify the user
-    const userClient = createClient(SUPABASE_URL, ANON, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
-    if (userErr || !userData.user) return json({ error: "Unauthorized" }, 401);
+    try {
+      const authHeader = req.headers.get("Authorization") ?? "";
+      if (!authHeader) return json({ error: "Unauthorized" }, 401);
 
-    // Admin check
-    const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
-    const { data: roleRows, error: roleErr } = await admin
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userData.user.id)
-      .eq("role", "admin")
-      .limit(1);
-    if (roleErr) return json({ error: roleErr.message }, 500);
-    if (!roleRows || roleRows.length === 0) return json({ error: "Forbidden" }, 403);
+      const userClient = deps.userClientFor(authHeader);
+      const { data: userData, error: userErr } = await userClient.auth.getUser();
+      if (userErr || !userData.user) return json({ error: "Unauthorized" }, 401);
 
-    const body = await req.json().catch(() => ({}));
-    const {
-      provider_id,
-      source_section,
-      canonical_category,
-      backfill = true,
-      mark_reviewed = true,
-    } = body ?? {};
+      const admin = deps.adminClient;
+      const { data: roleRows, error: roleErr } = await admin
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userData.user.id)
+        .eq("role", "admin")
+        .limit(1);
+      if (roleErr) return json({ error: (roleErr as any).message ?? "role lookup failed" }, 500);
+      if (!roleRows || roleRows.length === 0) return json({ error: "Forbidden" }, 403);
 
-    if (!provider_id || !source_section || !canonical_category) {
-      return json({ error: "provider_id, source_section, canonical_category required" }, 400);
-    }
-    if (!CANONICAL_CATEGORIES.has(canonical_category)) {
-      return json({ error: `Unknown canonical_category '${canonical_category}'` }, 400);
-    }
+      const body = await req.json().catch(() => ({}));
+      const {
+        provider_id,
+        source_section,
+        canonical_category,
+        backfill = true,
+        mark_reviewed = true,
+      } = body ?? {};
 
-    const section = norm(String(source_section));
-    if (!section) return json({ error: "Invalid source_section" }, 400);
-
-    // Upsert rule
-    const { error: upsertErr } = await admin
-      .from("provider_section_category_map")
-      .upsert(
-        {
-          provider_id,
-          source_section: section,
-          canonical_category,
-          needs_review: !mark_reviewed,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "provider_id,source_section" }
-      );
-    if (upsertErr) return json({ error: `Rule upsert failed: ${upsertErr.message}` }, 500);
-
-    let updated_rows = 0;
-    if (backfill) {
-      // Update active rows where normalized source_section matches.
-      // Server-side normalization isn't trivial via PostgREST; fetch ids then patch.
-      const { data: candidates, error: fetchErr } = await admin
-        .from("provider_tests")
-        .select("id, source_section, category")
-        .eq("provider_id", provider_id)
-        .eq("is_active", true)
-        .limit(5000);
-      if (fetchErr) return json({ error: fetchErr.message }, 500);
-
-      const ids = (candidates ?? [])
-        .filter((r: any) => norm(r.source_section ?? r.category ?? "") === section)
-        .map((r: any) => r.id);
-
-      if (ids.length > 0) {
-        const { error: updErr, count } = await admin
-          .from("provider_tests")
-          .update({ canonical_category }, { count: "exact" })
-          .in("id", ids);
-        if (updErr) return json({ error: `Backfill failed: ${updErr.message}` }, 500);
-        updated_rows = count ?? ids.length;
+      if (!provider_id || !source_section || !canonical_category) {
+        return json({ error: "provider_id, source_section, canonical_category required" }, 400);
       }
+      if (!CANONICAL_CATEGORIES.has(canonical_category)) {
+        return json({ error: `Unknown canonical_category '${canonical_category}'` }, 400);
+      }
+
+      const section = norm(String(source_section));
+      if (!section) return json({ error: "Invalid source_section" }, 400);
+
+      const { error: upsertErr } = await admin
+        .from("provider_section_category_map")
+        .upsert(
+          {
+            provider_id,
+            source_section: section,
+            canonical_category,
+            needs_review: !mark_reviewed,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "provider_id,source_section" }
+        );
+      if (upsertErr) return json({ error: `Rule upsert failed: ${(upsertErr as any).message}` }, 500);
+
+      let updated_rows = 0;
+      if (backfill) {
+        const { data: candidates, error: fetchErr } = await admin
+          .from("provider_tests")
+          .select("id, source_section, category")
+          .eq("provider_id", provider_id)
+          .eq("is_active", true)
+          .limit(5000);
+        if (fetchErr) return json({ error: (fetchErr as any).message }, 500);
+
+        const ids = (candidates ?? [])
+          .filter((r: any) => norm(r.source_section ?? r.category ?? "") === section)
+          .map((r: any) => r.id);
+
+        if (ids.length > 0) {
+          const { error: updErr, count } = await admin
+            .from("provider_tests")
+            .update({ canonical_category }, { count: "exact" })
+            .in("id", ids);
+          if (updErr) return json({ error: `Backfill failed: ${(updErr as any).message}` }, 500);
+          updated_rows = count ?? ids.length;
+        }
+      }
+
+      return json({
+        ok: true,
+        provider_id,
+        source_section: section,
+        canonical_category,
+        updated_rows,
+      });
+    } catch (e) {
+      return json({ error: (e as Error).message }, 500);
     }
+  };
+}
 
-    return json({
-      ok: true,
-      provider_id,
-      source_section: section,
-      canonical_category,
-      updated_rows,
-    });
-  } catch (e) {
-    return json({ error: (e as Error).message }, 500);
-  }
-});
-
-function json(body: unknown, status = 200) {
+export function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
+
+// Default runtime wiring
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const ANON = Deno.env.get("SUPABASE_ANON_KEY")!;
+
+const defaultHandler = createHandler({
+  userClientFor: (authHeader: string) =>
+    createClient(SUPABASE_URL, ANON, {
+      global: { headers: { Authorization: authHeader } },
+    }) as unknown as SbLike,
+  adminClient: createClient(SUPABASE_URL, SERVICE_ROLE) as unknown as SbLike,
+});
+
+Deno.serve(defaultHandler);
