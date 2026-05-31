@@ -287,6 +287,42 @@ async function scrapeProductImage(url: string, apiKey: string): Promise<string |
   return isImageUrl(img) ? img : null;
 }
 
+/** Pull the "What can I expect from <test>?" body copy off an LML product page. */
+async function scrapeLmlDescription(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
+        Accept: 'text/html,application/xhtml+xml',
+      },
+    });
+    if (!res.ok) return null;
+    const html = await res.text();
+    const m = html.match(/<h2[^>]*>\s*What can I expect[^<]*<\/h2>([\s\S]*?)<h2/i);
+    if (!m) return null;
+    let txt = m[1].replace(/<[^>]+>/g, ' ');
+    txt = txt
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&ldquo;|&rdquo;/g, '"')
+      .replace(/&lsquo;|&rsquo;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!txt) return null;
+    if (txt.length > 380) {
+      const cut = txt.slice(0, 380);
+      const dot = cut.lastIndexOf('.');
+      txt = dot > 200 ? cut.slice(0, dot + 1) : cut + '…';
+    }
+    return txt;
+  } catch (err) {
+    console.error('scrapeLmlDescription failed', url, err);
+    return null;
+  }
+}
+
 // ---------- main ----------
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
