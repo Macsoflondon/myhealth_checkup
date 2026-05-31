@@ -6,7 +6,62 @@ const WEBSITE_ENRICHMENT_PROVIDERS = new Set([
   'london-medical-laboratory',
 ]);
 
+const WEBSITE_ENRICHMENT_BATCH_SIZE = 12;
+
+const PROVIDER_BASE_URLS: Record<string, string> = {
+  'lola-health': 'https://lolahealth.com',
+  'london-medical-laboratory': 'https://www.londonmedicallaboratory.com',
+};
+
 const hasAbsoluteImageUrl = (url?: string | null) => !!url && /^https?:\/\//i.test(url);
+
+const hasMeaningfulPrice = (value?: number | null) => Number.isFinite(value) && Number(value) > 0;
+
+const extractPriceFromText = (value?: string | null) => {
+  if (!value) return null;
+  const match = value.match(/£\s?(\d+(?:\.\d{1,2})?)/i);
+  return match ? Number.parseFloat(match[1]) : null;
+};
+
+const normalizeProviderAssetUrl = (
+  url: string | null | undefined,
+  providerId: string,
+  pageUrl?: string | null,
+) => {
+  if (!url) return null;
+  if (hasAbsoluteImageUrl(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  if (!url.startsWith('/')) return null;
+
+  const baseUrl = pageUrl ?? PROVIDER_BASE_URLS[providerId];
+  if (!baseUrl) return null;
+
+  try {
+    return new URL(url, baseUrl).toString();
+  } catch {
+    return null;
+  }
+};
+
+function normalizeTestRecord(test: PopularTest): PopularTest {
+  const normalizedImage = normalizeProviderAssetUrl(test.image_url, test.provider_id, test.url);
+  const descriptionPrice = extractPriceFromText(test.description);
+  const fallbackPrice = hasMeaningfulPrice(test.price)
+    ? test.price
+    : hasMeaningfulPrice(test.base_price)
+      ? test.base_price
+      : descriptionPrice;
+
+  return {
+    ...test,
+    image_url: normalizedImage ?? test.image_url,
+    price: fallbackPrice ?? test.price,
+    base_price:
+      hasMeaningfulPrice(test.base_price) || test.provider_id !== 'lola-health'
+        ? test.base_price
+        : fallbackPrice ?? test.base_price,
+  };
+}
 
 async function enrichTestsFromWebsite(tests: PopularTest[]): Promise<PopularTest[]> {
   const items = tests
@@ -23,38 +78,68 @@ async function enrichTestsFromWebsite(tests: PopularTest[]): Promise<PopularTest
       test_name: test.test_name,
     }));
 
-  if (items.length === 0) return tests;
+  if (items.length === 0) return tests.map(normalizeTestRecord);
 
-  const { data, error } = await supabase.functions.invoke('popular-test-website-data', {
-    body: { items },
-  });
+  const batches = Array.from(
+    { length: Math.ceil(items.length / WEBSITE_ENRICHMENT_BATCH_SIZE) },
+    (_, index) => items.slice(index * WEBSITE_ENRICHMENT_BATCH_SIZE, (index + 1) * WEBSITE_ENRICHMENT_BATCH_SIZE)
+  );
 
-  if (error || !data?.items || !Array.isArray(data.items)) {
-    console.warn('Popular test website enrichment failed:', error?.message || 'No enrichment data');
-    return tests;
-  }
+  const responses = await Promise.all(
+    batches.map(async (batch) => {
+      const { data, error } = await supabase.functions.invoke('popular-test-website-data', {
+        body: { items: batch },
+      });
 
-  const enrichmentById = new Map<string, { title?: string; description?: string; image_url?: string }>();
+      if (error || !data?.items || !Array.isArray(data.items)) {
+        console.warn('Popular test website enrichment failed:', error?.message || 'No enrichment data');
+        return [];
+      }
 
-  for (const item of data.items as Array<{ id?: string; title?: string; description?: string; image_url?: string }>) {
+      return data.items as Array<{
+        id?: string;
+        title?: string;
+        description?: string;
+        image_url?: string;
+        price?: number | null;
+      }>;
+    })
+  );
+
+  const enrichmentById = new Map<string, { title?: string; description?: string; image_url?: string; price?: number | null }>();
+
+  for (const item of responses.flat()) {
     if (!item?.id) continue;
     enrichmentById.set(item.id, {
       title: item.title,
       description: item.description,
       image_url: item.image_url,
+      price: item.price,
     });
   }
 
   return tests.map((test) => {
     const enrichment = enrichmentById.get(test.id);
-    if (!enrichment) return test;
+    const normalizedCurrentImage = normalizeProviderAssetUrl(test.image_url, test.provider_id, test.url);
 
-    return {
+    if (!enrichment) return normalizeTestRecord(test);
+
+    const enrichedPrice = hasMeaningfulPrice(enrichment.price) ? Number(enrichment.price) : null;
+    const nextPrice = hasMeaningfulPrice(test.price) ? test.price : enrichedPrice ?? test.price;
+    const nextBasePrice = hasMeaningfulPrice(test.base_price)
+      ? test.base_price
+      : test.provider_id === 'lola-health'
+        ? enrichedPrice ?? extractPriceFromText(enrichment.description) ?? test.base_price
+        : test.base_price;
+
+    return normalizeTestRecord({
       ...test,
       test_name: enrichment.title?.trim() || test.test_name,
       description: enrichment.description?.trim() || test.description,
-      image_url: hasAbsoluteImageUrl(enrichment.image_url) ? enrichment.image_url : test.image_url,
-    };
+      image_url: normalizeProviderAssetUrl(enrichment.image_url, test.provider_id, test.url) ?? normalizedCurrentImage ?? test.image_url,
+      price: nextPrice,
+      base_price: nextBasePrice,
+    });
   });
 }
 
