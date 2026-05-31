@@ -1,56 +1,42 @@
-# Fix "Our Partners Most Popular Tests" — 9 cards, restored info, Premium Complete tile
 
-## 1. Why only 6 cards show today
+## Goal
+On the home `Our Partners Most Popular Tests` block (component: `src/components/sections/DreamHealthShowcase.tsx`), render **9 test cards in the grid** with a mix of all providers, and make the **scrolling filmstrip carousel** above it cycle a mix of providers instead of only GOODBODY.
 
-`usePopularTestsFromDatabase` returns only rows flagged `is_popular = true`. That set is currently ~6 rows after the round‑robin cap of 2/provider, so the grid collapses to 6 even though `limit=30` is requested.
+## Root cause of the current behaviour
+The component hard-filters every test that does not have a real, provider-hosted `image_url`:
 
-**Fix:** in `src/hooks/usePopularTestsFromDatabase.ts`, after the popular query, if the result is shorter than `limit`, run a second query against `provider_tests` (active, has price, excluding already‑returned ids) ordered by price desc, and append until we have `limit` rows. Preserves the popular ordering at the top and gives the grid enough variety to fill 9 with at most 2 per provider.
-
-No DB schema changes. No new dependencies.
-
-## 2. Restore the missing card info
-
-Earlier the card body in `DreamHealthShowcase.tsx` showed three things that were stripped during the recent edits:
-
-- `from £X` price (always with the word "from")
-- A struck‑through `typical £Y` anchor (≈ `displayPrice × 1.6`, rounded)
-- A social‑proof line: `N people compared this in the last 7 days` (deterministic from `t.id`, so it doesn't jitter on every render)
-
-**Fix:** put those three elements back into the card markup, exactly where they used to sit:
-
-```text
-[Provider]                        (turquoise eyebrow)
-Test name                         (bold heading)
-Description                       (existing)
-• N people compared this …        (social proof)
-typical £Y         from £X        (anchor + price)        [See what's tested]
+```ts
+const withImage = popularTests.filter((t) => isRealProviderImage(t.image_url));
 ```
 
-Keep the existing `formatTestPrice` import — we'll bypass it here in favour of explicit `from £{displayPrice}` to honour the user's instruction that "from" must always be visible.
+In production data today only GOODBODY rows have provider-hosted image URLs that pass `isRealProviderImage`. That is why:
+- The grid collapses to ~3 cards
+- The filmstrip is 100% GOODBODY
 
-## 3. Force Goodbody "Premium Complete" to use the branded fallback tile
+## Changes (frontend only, single file: `DreamHealthShowcase.tsx`)
 
-The Goodbody Premium Complete image is a square branded box that looks out of place next to the other product photos. Add a small allow/deny step in the image resolver in `DreamHealthShowcase.tsx`:
+1. **Drop the "must have provider image" gate.** Keep `isRealProviderImage` for *choosing* whether to render an `<img>`, but stop using it to filter rows out of the dataset.
 
-```text
-const FORCE_FALLBACK = [
-  { provider: "goodbody-clinic", test: /premium\s+complete/i },
-];
-const shouldForceFallback = (t) =>
-  FORCE_FALLBACK.some(r => r.provider === t.provider_id && r.test.test(t.test_name));
-```
+2. **Branded fallback tile when no image.** When `resolveImage(t)` returns `null`, render a same-shape tile (square in filmstrip, 4:3 in card) with:
+   - Background gradient from the provider's brand colour (via existing `getBranding(provider_id)`), defaulting to the navy → turquoise brand gradient.
+   - Centered provider name (uppercase, white) + small category label underneath.
+   - No external assets — pure CSS so it can't 404.
 
-`resolveImage(t)` returns `null` when `shouldForceFallback(t)` is true, so both the grid card and the filmstrip render `<FallbackTile t={t} />` (Goodbody navy → turquoise gradient with provider + test name). All other imagery stays exactly as it is now.
+3. **Provider mix enforcement.** Tighten the existing `interleaveByProvider` so the final 9 cards include **at most 2 per provider**, drawn round-robin across every provider present in the dataset (GOODBODY, Medichecks, Lola Health, Thriva, Randox, London Medical Laboratory). Slice to **9** for the grid.
 
-## 4. Out of scope (explicitly unchanged)
+4. **Filmstrip uses the same mixed set.** Change `filmstripTests` from `orderedTests.slice(0, 8)` to use the same 9 mixed entries (or up to 12 if dataset allows). Quadrupled loop already handles seamless scroll.
 
-- The hero → carousel flow above this section.
-- The filmstrip layout, speed, masking, and tile sizes.
-- The `FallbackTile` visual treatment.
-- The CTA button copy and behaviour.
-- Any other section on the homepage.
+5. **Most-chosen label** stays on the top 3 cards only (unchanged rule).
 
-## Files touched
+6. No DB schema changes, no hook changes, no copy changes beyond what's needed for the fallback tile. `usePopularTestsFromDatabase(18)` already returns enough rows.
 
-- `src/hooks/usePopularTestsFromDatabase.ts` — top‑up query so the hook returns up to `limit` rows even when `is_popular` count is low.
-- `src/components/sections/DreamHealthShowcase.tsx` — restore `from £X` / `typical £Y` / social‑proof line in the card body, and add the `shouldForceFallback` rule for Goodbody Premium Complete.
+## Out of scope
+- Editing the popular flag (`is_popular`) on rows in the database.
+- Scraping or backfilling provider images.
+- Any other home sections.
+
+## Verification
+- Reload `/`, scroll to `Our Partners Most Popular Tests`.
+- Grid shows exactly 9 cards, no more than 2 from the same provider, with provider name visible on each card.
+- Filmstrip above shows multiple provider brand tiles cycling (not just GOODBODY).
+- Cards that have a real image still show the image; cards that don't show the branded gradient fallback with provider name.
