@@ -70,6 +70,8 @@ const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   const { data: popularTests, isLoading } = usePopularTestsFromDatabase(150);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
+
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
