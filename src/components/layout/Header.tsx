@@ -195,56 +195,48 @@ const Header = ({ className }: HeaderProps) => {
             <div
               className={cn(
                 "flex items-center gap-2 transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-2 md:py-3" : "py-4 md:py-6 lg:py-8"
+                isSearchDocked ? "py-8 md:py-10" : "py-4 md:py-6 lg:py-8"
               )}
             >
-              {/* Left spacer — collapses when docked so logo shifts left */}
+              {/* Left: Logo + Tagline */}
+              <div className="flex-1 min-w-0 flex items-center justify-start">
+                <Link
+                  to="/"
+                  className="flex items-center flex-shrink-0 min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
+                >
+                  <img
+                    src={mainLogo}
+                    alt="myhealth checkup"
+                    className={cn(
+                      "w-auto object-contain flex-shrink-0 transition-[height] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                      isSearchDocked
+                        ? "h-12 md:h-14 lg:h-16"
+                        : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
+                    )}
+                  />
+                  <img
+                    src={headerTagline}
+                    alt="Your Health. Your Choice. One Trusted Platform!"
+                    aria-hidden={isSearchDocked}
+                    className={cn(
+                      "w-auto object-contain transition-[height,max-width,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                      isSearchDocked
+                        ? "h-0 max-w-0 opacity-0"
+                        : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw] opacity-100"
+                    )}
+                  />
+                </Link>
+              </div>
+
+              {/* Center: docked search */}
               <div
                 className={cn(
-                  "min-w-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                  isSearchDocked ? "flex-[0]" : "flex-1"
-                )}
-              />
-
-              {/* Logo + Tagline */}
-              <Link
-                to="/"
-                className="flex items-center flex-shrink-0 min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
-              >
-                <img
-                  src={mainLogo}
-                  alt="myhealth checkup"
-                  className={cn(
-                    "w-auto object-contain flex-shrink-0 transition-[height] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                    isSearchDocked
-                      ? "h-10 md:h-12 lg:h-14"
-                      : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
-                  )}
-                />
-                <img
-                  src={headerTagline}
-                  alt="Your Health. Your Choice. One Trusted Platform!"
-                  aria-hidden={isSearchDocked}
-                  className={cn(
-                    "w-auto object-contain transition-[height,max-width,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                    isSearchDocked
-                      ? "h-0 max-w-0 opacity-0"
-                      : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw] opacity-100"
-                  )}
-                />
-              </Link>
-
-              {/* Docked search — fades in when scrolled past hero */}
-              <div
-                className={cn(
-                  "flex items-center transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none overflow-hidden",
-                  isSearchDocked
-                    ? "flex-1 max-w-[640px] ml-4 md:ml-6 opacity-100"
-                    : "flex-[0] max-w-0 ml-0 opacity-0 pointer-events-none"
+                  "flex-1 flex items-center justify-center transition-opacity duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                  isSearchDocked ? "opacity-100" : "opacity-0 pointer-events-none"
                 )}
                 aria-hidden={!isSearchDocked}
               >
-                <div className="relative w-full">
+                <div className="relative w-full max-w-[640px]">
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/80 w-4 h-4 md:w-5 md:h-5" />
                   <input
                     type="text"
@@ -259,13 +251,8 @@ const Header = ({ className }: HeaderProps) => {
                 </div>
               </div>
 
-              {/* Right controls */}
-              <div
-                className={cn(
-                  "min-w-0 flex items-center justify-end transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                  isSearchDocked ? "flex-[0_0_auto]" : "flex-1"
-                )}
-              >
+              {/* Right controls — always anchored right */}
+              <div className="flex-1 min-w-0 flex items-center justify-end">
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
