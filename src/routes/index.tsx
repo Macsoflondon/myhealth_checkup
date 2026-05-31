@@ -57,6 +57,7 @@ export function AppRoutes() {
         <Route path="/admin/test-dashboard" element={wrapAdmin(AdminTestDashboardPage)} />
         <Route path="/admin/encryption-status" element={wrapAdmin(AdminEncryptionStatusPage)} />
         <Route path="/admin/security-diff" element={wrapAdmin(AdminSecurityDiffPage)} />
+        <Route path="/admin/biomarker-audit" element={wrapAdmin(AdminBiomarkerAuditPage)} />
 
         {/* Feature Routes */}
         {featureRoutes}
