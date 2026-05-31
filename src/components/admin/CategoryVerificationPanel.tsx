@@ -49,15 +49,15 @@ interface Issue {
 export const CategoryVerificationPanel = () => {
   const [stats, setStats] = useState<CategoryStat[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
+  const [mismatches, setMismatches] = useState<MismatchRow[]>([]);
   const [loading, setLoading] = useState(false);
 
   const run = async () => {
     setLoading(true);
 
-    // Pull all active tests (capped at 5k for safety)
     const { data: rows } = await supabase
       .from("provider_tests")
-      .select("id,provider_id,test_name,canonical_category,source_section,category,url,image_url")
+      .select("id,provider_id,provider_test_id,test_name,canonical_category,source_section,category,url,image_url")
       .eq("is_active", true)
       .limit(5000);
 
@@ -66,6 +66,7 @@ export const CategoryVerificationPanel = () => {
     const missingCanonical: Issue["sample"] = [];
     const missingUrl: Issue["sample"] = [];
     const missingImage: Issue["sample"] = [];
+    const allMismatches: MismatchRow[] = [];
 
     for (const r of list) {
       const key = r.canonical_category ?? "__null__";
@@ -81,6 +82,34 @@ export const CategoryVerificationPanel = () => {
       if (r.image_url) cur.with_image++;
       if (r.url && r.image_url && r.canonical_category) cur.renderable++;
       byCat.set(key, cur);
+
+      const rowIssues: string[] = [];
+      if (!r.canonical_category) rowIssues.push("missing_canonical");
+      if (!r.url) rowIssues.push("missing_url");
+      if (!r.image_url) rowIssues.push("missing_image");
+      // Section mismatch: source_section explicitly mentions women but landed elsewhere
+      if (r.source_section && /women|female/i.test(r.source_section) && r.canonical_category !== "womens-health") {
+        rowIssues.push("section_mismatch:womens-health");
+      }
+      if (r.source_section && /(^|[^a-z])men([^a-z]|$)|male|prostate/i.test(r.source_section) && r.canonical_category && r.canonical_category !== "mens-health") {
+        rowIssues.push("section_mismatch:mens-health");
+      }
+
+      if (rowIssues.length > 0) {
+        allMismatches.push({
+          id: r.id,
+          provider_id: r.provider_id,
+          provider_name: PROVIDER_NAMES[r.provider_id] || r.provider_id,
+          provider_test_id: (r as any).provider_test_id ?? null,
+          test_name: r.test_name,
+          canonical_category: r.canonical_category,
+          source_section: r.source_section,
+          category: r.category,
+          url: r.url,
+          image_url: r.image_url,
+          issues: rowIssues,
+        });
+      }
 
       if (!r.canonical_category && missingCanonical.length < 10) {
         missingCanonical.push({
@@ -106,12 +135,77 @@ export const CategoryVerificationPanel = () => {
     const totalMissingImage = list.filter((r) => !r.image_url).length;
 
     setStats(sorted);
+    setMismatches(allMismatches);
     setIssues([
       { kind: "missing_canonical", count: totalMissingCanonical, sample: missingCanonical },
       { kind: "missing_url", count: totalMissingUrl, sample: missingUrl },
       { kind: "missing_image", count: totalMissingImage, sample: missingImage },
     ]);
     setLoading(false);
+  };
+
+  const triggerDownload = (filename: string, mime: string, content: string) => {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportJson = () => {
+    const ts = new Date().toISOString().replace(/[:.]/g, "-");
+    triggerDownload(
+      `category-mismatches-${ts}.json`,
+      "application/json",
+      JSON.stringify({ generated_at: new Date().toISOString(), count: mismatches.length, rows: mismatches }, null, 2)
+    );
+  };
+
+  const exportCsv = () => {
+    const ts = new Date().toISOString().replace(/[:.]/g, "-");
+    const header = [
+      "provider_name",
+      "provider_id",
+      "provider_test_id",
+      "id",
+      "test_name",
+      "canonical_category",
+      "source_section",
+      "category",
+      "url",
+      "image_url",
+      "issues",
+    ];
+    const esc = (v: unknown) => {
+      const s = v == null ? "" : String(v);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows = mismatches.map((m) =>
+      [
+        m.provider_name,
+        m.provider_id,
+        m.provider_test_id,
+        m.id,
+        m.test_name,
+        m.canonical_category,
+        m.source_section,
+        m.category,
+        m.url,
+        m.image_url,
+        m.issues.join("|"),
+      ]
+        .map(esc)
+        .join(",")
+    );
+    triggerDownload(
+      `category-mismatches-${ts}.csv`,
+      "text/csv",
+      [header.join(","), ...rows].join("\n")
+    );
   };
 
   useEffect(() => {
