@@ -185,8 +185,10 @@ Deno.serve(async (req) => {
         if (!result.success || !result.data) { console.log(`No data for ${slug}`); continue; }
 
         const markdown = result.data.markdown || '';
+        const html = result.data.html || result.data.rawHtml || '';
         const metadata = result.data.metadata || {};
-        const extracted = extractFromMarkdown(markdown, url);
+        const extracted = extractFromMarkdown(markdown, url, html);
+
 
         const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
         if (!title || title === 'Unknown Test') continue;
