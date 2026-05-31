@@ -93,10 +93,10 @@ const PartnersGrid = () => {
         />
 
         <div
-          className="relative overflow-hidden max-w-5xl mx-auto"
+          className="relative overflow-hidden w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
           style={{
-            maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            maskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
           }}
         >
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
