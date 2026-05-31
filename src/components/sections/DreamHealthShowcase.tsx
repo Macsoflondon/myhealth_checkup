@@ -75,8 +75,18 @@ const DreamHealthShowcase = () => {
 
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
+    const ALLOWED_PROVIDERS = new Set([
+      "lola-health",
+      "goodbody-clinic",
+      "medichecks",
+      "randox",
+      "london-medical-laboratory",
+    ]);
     const valid = popularTests.filter(
-      (t) => isRealProviderImage(t.image_url) && !!t.url
+      (t) =>
+        ALLOWED_PROVIDERS.has(t.provider_id) &&
+        isRealProviderImage(t.image_url) &&
+        !!t.url
     );
     const filtered = valid.filter((t) => {
       if (t.provider_id !== "lola-health") return true;
