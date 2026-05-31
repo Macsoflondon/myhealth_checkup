@@ -39,7 +39,7 @@ const PLACEHOLDER_PATTERNS = [
 ];
 
 const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
-  "randox": "https://stesrhplatforma071.blob.core.windows.net/images/Images/HTK/female/Food_Sensitivity.webp",
+  "randox": "/lovable-uploads/randox-thyroid-health.png",
   "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
 };
 
