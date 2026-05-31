@@ -13,6 +13,7 @@ import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopula
 import { Skeleton } from "@/components/ui/skeleton";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+import { formatTestPrice } from "@/lib/utils";
 
 const cleanName = (name: string) =>
   name
@@ -253,8 +254,6 @@ const DreamHealthShowcase = () => {
             {!isLoading &&
               orderedTests.map((t, i) => {
                 const isMostChosen = i < 3; // top 3 only — scarcity of the label preserves its value
-                const displayPrice = t.base_price && t.base_price > 0 ? t.base_price : t.price;
-                const pricePrefix = t.base_price && t.base_price > 0 ? "from £" : "£";
                 return (
                 <article
                   key={t.id}
@@ -291,7 +290,7 @@ const DreamHealthShowcase = () => {
                     <div className="mt-4 flex items-end justify-between">
                       <div className="flex flex-col">
                         <span className="text-xl font-bold text-[#081129] leading-none">
-                          {pricePrefix}{displayPrice}
+                          {formatTestPrice(t)}
                         </span>
                       </div>
                       <button
