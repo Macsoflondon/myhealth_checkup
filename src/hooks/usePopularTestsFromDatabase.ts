@@ -60,26 +60,50 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
         .order('popularity_rank', { ascending: true, nullsFirst: false })
         .limit(limit);
 
+      const mapRow = (test: any): PopularTest => ({
+        id: test.id,
+        test_name: test.test_name,
+        provider_id: test.provider_id,
+        provider_name: providerDisplayNames[test.provider_id] || test.provider_id,
+        price: test.price || 0,
+        biomarker_count: test.biomarker_count || 0,
+        category: test.category || 'General Health',
+        turnaround_time: 'Results in 2-4 days',
+        sample_type: test.sample_type || 'Blood sample',
+        url: test.url || '',
+        popularity_rank: test.popularity_rank || undefined,
+        markers: parseMarkers(test.biomarkers_list),
+        description: test.description || undefined,
+        image_url: test.image_url || undefined,
+        turnaround_days_text: test.turnaround_days_text || undefined,
+        base_price: test.base_price ?? undefined,
+        collection_options: test.collection_options || undefined,
+      });
+
       if (!popularError && popularData && popularData.length > 0) {
-        return popularData.map(test => ({
-          id: test.id,
-          test_name: test.test_name,
-          provider_id: test.provider_id,
-          provider_name: providerDisplayNames[test.provider_id] || test.provider_id,
-          price: test.price || 0,
-          biomarker_count: test.biomarker_count || 0,
-          category: test.category || 'General Health',
-          turnaround_time: 'Results in 2-4 days',
-          sample_type: test.sample_type || 'Blood sample',
-          url: test.url || '',
-          popularity_rank: test.popularity_rank || undefined,
-          markers: parseMarkers(test.biomarkers_list),
-          description: test.description || undefined,
-          image_url: (test as any).image_url || undefined,
-          turnaround_days_text: (test as any).turnaround_days_text || undefined,
-          base_price: (test as any).base_price ?? undefined,
-          collection_options: (test as any).collection_options || undefined,
-        }));
+        const popular = popularData.map(mapRow);
+
+        // Top up with additional active tests when the popular set is smaller than the requested limit
+        if (popular.length < limit) {
+          const existingIds = popular.map((p) => p.id);
+          const { data: extraData } = await supabase
+            .from('provider_tests')
+            .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options')
+            .eq('is_active', true)
+            .not('price', 'is', null)
+            .not('id', 'in', `(${existingIds.join(',')})`)
+            .order('price', { ascending: false })
+            .limit(limit * 2);
+
+          if (extraData && extraData.length > 0) {
+            for (const row of extraData) {
+              if (popular.length >= limit) break;
+              popular.push(mapRow(row));
+            }
+          }
+        }
+
+        return popular;
       }
 
       // Fallback: Get diverse tests from all providers based on price
