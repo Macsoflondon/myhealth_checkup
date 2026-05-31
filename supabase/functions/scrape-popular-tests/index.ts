@@ -18,9 +18,10 @@ interface ProviderConfig {
 }
 
 const PROVIDERS: ProviderConfig[] = [
-  { id: 'medichecks',      name: 'Medichecks',      popularTestsUrl: 'https://www.medichecks.com/collections/best-sellers' },
-  { id: 'goodbody-clinic', name: 'Goodbody Clinic', popularTestsUrl: 'https://goodbodyclinic.com/collections/all?sort_by=best-selling' },
-  { id: 'lola-health',     name: 'Lola Health',     popularTestsUrl: 'https://www.lolahealth.com/popular-blood-tests' },
+  { id: 'medichecks',                name: 'Medichecks',                  popularTestsUrl: 'https://www.medichecks.com/collections/best-sellers' },
+  { id: 'goodbody-clinic',           name: 'Goodbody Clinic',             popularTestsUrl: 'https://goodbodyclinic.com/collections/all?sort_by=best-selling' },
+  { id: 'lola-health',               name: 'Lola Health',                 popularTestsUrl: 'https://lolahealth.com/collections/blood-tests?sort_by=best-selling' },
+  { id: 'london-medical-laboratory', name: 'London Medical Laboratory',   popularTestsUrl: 'https://www.londonmedicallaboratory.com/product-category/all' },
 ];
 
 const MAX_PER_PROVIDER = 8;
