@@ -1,0 +1,1 @@
+REVOKE SELECT (price_check_frequency_hours, realtime_enabled) ON public.test_categories FROM anon, authenticated;
