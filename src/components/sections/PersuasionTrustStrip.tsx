@@ -1,4 +1,4 @@
-import { ShieldCheck, FlaskConical, Users, Clock } from "lucide-react";
+import { ShieldCheck, FlaskConical, Stethoscope, Clock } from "lucide-react";
 
 /**
  * 8 psychological design tactics — concentrated trust strip.
