@@ -250,16 +250,21 @@ const DreamHealthShowcase = () => {
                     </span>
                   )}
                   <div className="aspect-[4/3] overflow-hidden bg-[#f6f7f9]">
-                    <img
-                      src={resolveImage(t)!}
-                      alt={t.test_name}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = "none";
-                      }}
-                      className="w-full h-full object-contain p-4"
-                    />
+                    {resolveImage(t) ? (
+                      <img
+                        src={resolveImage(t)!}
+                        alt={t.test_name}
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display = "none";
+                        }}
+                        className="w-full h-full object-contain p-4"
+                      />
+                    ) : (
+                      <FallbackTile t={t} />
+                    )}
                   </div>
+
                   <div className="p-5 flex flex-col flex-1 rounded-lg shadow-xl">
                     <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
                       {t.provider_name}
