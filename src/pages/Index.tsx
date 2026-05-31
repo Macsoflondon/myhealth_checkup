@@ -24,7 +24,7 @@ const TestimonialCarousel = lazy(() => import("@/components/sections/Testimonial
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
 const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
-const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
+
 const TrustPlatformSection = lazy(() => import("@/components/sections/TrustPlatformSection"));
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
 const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
@@ -240,11 +240,7 @@ const Index = () => {
         </Suspense>
 
 
-        <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="fade">
-            <AccreditedProvidersBar />
-          </ScrollFadeIn>
-        </Suspense>
+
       </MainLayout>
     </ErrorBoundary>
   );
