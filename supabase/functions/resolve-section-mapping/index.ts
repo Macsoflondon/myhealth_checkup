@@ -131,17 +131,18 @@ export function json(body: unknown, status = 200) {
   });
 }
 
-// Default runtime wiring
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const ANON = Deno.env.get("SUPABASE_ANON_KEY")!;
+// Default runtime wiring — skipped during unit tests (no env)
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const ANON = Deno.env.get("SUPABASE_ANON_KEY");
 
-const defaultHandler = createHandler({
-  userClientFor: (authHeader: string) =>
-    createClient(SUPABASE_URL, ANON, {
-      global: { headers: { Authorization: authHeader } },
-    }) as unknown as SbLike,
-  adminClient: createClient(SUPABASE_URL, SERVICE_ROLE) as unknown as SbLike,
-});
-
-Deno.serve(defaultHandler);
+if (SUPABASE_URL && SERVICE_ROLE && ANON) {
+  const defaultHandler = createHandler({
+    userClientFor: (authHeader: string) =>
+      createClient(SUPABASE_URL, ANON, {
+        global: { headers: { Authorization: authHeader } },
+      }) as unknown as SbLike,
+    adminClient: createClient(SUPABASE_URL, SERVICE_ROLE) as unknown as SbLike,
+  });
+  Deno.serve(defaultHandler);
+}
