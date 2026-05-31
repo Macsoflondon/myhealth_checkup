@@ -151,35 +151,102 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* Promo ticker stays sticky at top */}
-      <div ref={promoTrackerRef} className={cn("sticky top-0 z-50", className)}>
+      {/* Promo ticker — collapses when search docks */}
+      <div
+        ref={promoTrackerRef}
+        className={cn("sticky top-0 z-50 overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none", className)}
+        style={{
+          maxHeight: isSearchDocked ? 0 : 200,
+          opacity: isSearchDocked ? 0 : 1,
+        }}
+        aria-hidden={isSearchDocked}
+      >
         <PromoTicker />
       </div>
 
-      {/* Logo section scrolls normally */}
-      <header className={className}>
+      {/* Logo section — becomes sticky when search docks */}
+      <header
+        className={cn(
+          className,
+          isSearchDocked && "sticky top-0 z-40 shadow-lg"
+        )}
+      >
         <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
-            <div className="flex items-center gap-2 py-4 md:py-6 lg:py-8">
-              {/* Left spacer for balance */}
-              <div className="flex-1 min-w-0" />
+            <div
+              className={cn(
+                "flex items-center gap-2 transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                isSearchDocked ? "py-2 md:py-3" : "py-4 md:py-6 lg:py-8"
+              )}
+            >
+              {/* Left spacer — collapses when docked so logo shifts left */}
+              <div
+                className={cn(
+                  "min-w-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                  isSearchDocked ? "flex-[0]" : "flex-1"
+                )}
+              />
 
-              {/* Center: Logo + Tagline side by side */}
-              <Link to="/" className="flex items-center justify-center flex-shrink min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-200 hover:scale-105">
+              {/* Logo + Tagline */}
+              <Link
+                to="/"
+                className="flex items-center flex-shrink-0 min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
+              >
                 <img
                   src={mainLogo}
                   alt="myhealth checkup"
-                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain flex-shrink-0"
+                  className={cn(
+                    "w-auto object-contain flex-shrink-0 transition-[height] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                    isSearchDocked
+                      ? "h-10 md:h-12 lg:h-14"
+                      : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
+                  )}
                 />
                 <img
                   src={headerTagline}
                   alt="Your Health. Your Choice. One Trusted Platform!"
-                  className="h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] w-auto object-contain max-w-[40vw] lg:max-w-[50vw]"
+                  aria-hidden={isSearchDocked}
+                  className={cn(
+                    "w-auto object-contain transition-[height,max-width,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                    isSearchDocked
+                      ? "h-0 max-w-0 opacity-0"
+                      : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw] opacity-100"
+                  )}
                 />
               </Link>
 
-              {/* Right: Controls pushed to far right */}
-              <div className="flex-1 min-w-0 flex items-center justify-end">
+              {/* Docked search — fades in when scrolled past hero */}
+              <div
+                className={cn(
+                  "flex items-center transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none overflow-hidden",
+                  isSearchDocked
+                    ? "flex-1 max-w-[640px] ml-4 md:ml-6 opacity-100"
+                    : "flex-[0] max-w-0 ml-0 opacity-0 pointer-events-none"
+                )}
+                aria-hidden={!isSearchDocked}
+              >
+                <div className="relative w-full">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/80 w-4 h-4 md:w-5 md:h-5" />
+                  <input
+                    type="text"
+                    placeholder="COMPARE OVER 200 TESTS"
+                    aria-label="Search blood tests and health screenings"
+                    value={dockedSearchTerm}
+                    onChange={(e) => setDockedSearchTerm(e.target.value)}
+                    onKeyDown={handleDockedSearchKey}
+                    tabIndex={isSearchDocked ? 0 : -1}
+                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white/10 border-2 border-[#22c0d4]/60 text-white placeholder:text-white/70 backdrop-blur-md focus:ring-2 focus:ring-white/30 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Right controls */}
+              <div
+                className={cn(
+                  "min-w-0 flex items-center justify-end transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                  isSearchDocked ? "flex-[0_0_auto]" : "flex-1"
+                )}
+              >
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
@@ -189,6 +256,7 @@ const Header = ({ className }: HeaderProps) => {
           </div>
         </div>
       </header>
+
 
       {/* Toolbar sticks below the promo ticker independently */}
       <div
