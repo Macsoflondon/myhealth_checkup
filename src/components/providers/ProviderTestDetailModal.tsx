@@ -156,8 +156,10 @@ export default function ProviderTestDetailModal({
   const biomarkers = goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
   const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
   const turnaround = test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
-  const collectionOptions: Array<{ method: string; price_modifier: number; note?: string }> | null =
-    Array.isArray(test.collection_options) ? test.collection_options : null;
+  const collectionOptions: CollectionOption[] | null =
+    Array.isArray(test.collection_options) && test.collection_options.length > 0
+      ? (test.collection_options as CollectionOption[])
+      : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
 
   // Authoritative biomarker count: prefer the stored count, fall back to list length.
   const displayedBiomarkerCount = Math.max(test.biomarker_count ?? 0, biomarkers.length);
