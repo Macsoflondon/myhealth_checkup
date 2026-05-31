@@ -53,7 +53,7 @@ const PersuasionTrustStrip = () => {
         </div>
 
         <p className="mt-4 text-center text-xs sm:text-sm text-[#081129]/60">
-          Independent · CQC Regulated partners · No pay-to-rank
+          Independent · CQC Regulated partners · Results in 3–5 days
         </p>
       </div>
     </section>
