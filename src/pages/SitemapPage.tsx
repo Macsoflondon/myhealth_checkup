@@ -21,7 +21,7 @@ const SitemapPage = () => {
     links: [{ name: "Privacy Policy", path: "/privacy-policy" }, { name: "Terms & Conditions", path: "/terms" }, { name: "Cookie Policy", path: "/cookies" }, { name: "Accessibility", path: "/accessibility" }]
   }, {
     title: "User Account",
-    links: [{ name: "Sign In / Register", path: "/auth" }, { name: "Dashboard", path: "/dashboard" }]
+    links: [{ name: "Sign In / Register", path: "/auth" }, { name: "Dashboard", path: "/health-dashboard" }]
   }];
 
   return <div className="min-h-screen flex flex-col">
