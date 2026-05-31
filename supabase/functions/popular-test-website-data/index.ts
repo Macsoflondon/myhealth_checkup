@@ -104,6 +104,8 @@ function extractImageUrl(html: string, url: string) {
 }
 
 async function scrapeProductPage(item: z.infer<typeof ItemSchema>) {
+  assertAllowedUrl(item);
+
   const response = await fetch(item.url, {
     headers: {
       'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
