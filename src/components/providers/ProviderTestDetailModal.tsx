@@ -59,6 +59,55 @@ const formatTurnaround = (providerId: string): string => {
   return defaults[providerId.toLowerCase()] || "2–5 working days";
 };
 
+/**
+ * Standard collection-option fallbacks per provider, used when the test row has
+ * no `collection_options` JSON. Keeps the modal layout consistent across all
+ * providers (matches the Lola Health reference design).
+ */
+type CollectionOption = { method: string; price_modifier: number; note?: string };
+
+const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = {
+  "lola-health": [
+    { method: "In-clinic phlebotomy", price_modifier: 35 },
+    { method: "At-home phlebotomy", price_modifier: 35 },
+    { method: "Self-arranged phlebotomist", price_modifier: 0, note: "Free" },
+  ],
+  medichecks: [
+    { method: "Finger-prick home kit", price_modifier: 0, note: "Included" },
+    { method: "Venous home phlebotomist", price_modifier: 35 },
+    { method: "Clinic phlebotomy", price_modifier: 25 },
+  ],
+  "london-medical-laboratory": [
+    { method: "Finger-prick home kit", price_modifier: 0, note: "Included" },
+    { method: "Venous clinic draw", price_modifier: 35 },
+    { method: "Home phlebotomist visit", price_modifier: 45 },
+  ],
+  "goodbody-clinic": [
+    { method: "In-clinic venous draw", price_modifier: 0, note: "Included" },
+  ],
+  goodbody: [
+    { method: "In-clinic venous draw", price_modifier: 0, note: "Included" },
+  ],
+  randox: [
+    { method: "In-clinic appointment", price_modifier: 0, note: "Included" },
+    { method: "Home visit (selected areas)", price_modifier: 0, note: "POA" },
+  ],
+  "randox-health": [
+    { method: "In-clinic appointment", price_modifier: 0, note: "Included" },
+    { method: "Home visit (selected areas)", price_modifier: 0, note: "POA" },
+  ],
+  thriva: [
+    { method: "Finger-prick home kit", price_modifier: 0, note: "Included" },
+    { method: "Venous home phlebotomist", price_modifier: 35 },
+  ],
+  "tuli-health": [
+    { method: "In-clinic appointment", price_modifier: 0, note: "Included" },
+  ],
+  tuli: [
+    { method: "In-clinic appointment", price_modifier: 0, note: "Included" },
+  ],
+};
+
 const parseBiomarkersList = (biomarkersList: any): string[] => {
   if (!biomarkersList) return [];
   if (Array.isArray(biomarkersList)) {
