@@ -64,7 +64,12 @@ const formatTurnaround = (providerId: string): string => {
  * no `collection_options` JSON. Keeps the modal layout consistent across all
  * providers (matches the Lola Health reference design).
  */
-type CollectionOption = { method: string; price_modifier: number; note?: string };
+type CollectionOption = {
+  method: string;
+  price_modifier?: number;
+  price?: number;
+  note?: string;
+};
 
 const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = {
   "lola-health": [
@@ -157,12 +162,17 @@ export default function ProviderTestDetailModal({
   const sampleBadges = getSampleBadges(goodbodyStatic?.sampleType || test.sample_type);
   const turnaround = test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
   const collectionOptions: CollectionOption[] | null =
-    Array.isArray(test.collection_options) && test.collection_options.length > 0
-      ? (test.collection_options as CollectionOption[])
-      : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
+    goodbodyStatic?.collectionOptions && goodbodyStatic.collectionOptions.length > 0
+      ? goodbodyStatic.collectionOptions
+      : Array.isArray(test.collection_options) && test.collection_options.length > 0
+        ? (test.collection_options as CollectionOption[])
+        : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
 
-  // Authoritative biomarker count: prefer the stored count, fall back to list length.
-  const displayedBiomarkerCount = Math.max(test.biomarker_count ?? 0, biomarkers.length);
+  // Authoritative biomarker count: the list is the source of truth when present.
+  // Only fall back to the stored count when there is no list at all.
+  const displayedBiomarkerCount = biomarkers.length > 0
+    ? biomarkers.length
+    : (test.biomarker_count ?? 0);
 
   // Pricing: show "from £X" when a base price is set (lowest available tier)
   const headerPrice = test.base_price ?? goodbodyStatic?.price ?? test.price;
@@ -220,7 +230,12 @@ export default function ProviderTestDetailModal({
                   >
                     <span>{opt.method}</span>
                     <span className="font-semibold" style={{ color: brandColor }}>
-                      {opt.note ?? (opt.price_modifier > 0 ? `+£${opt.price_modifier}` : "Free")}
+                      {opt.note
+                        ?? (typeof opt.price === "number"
+                          ? `£${opt.price}`
+                          : (opt.price_modifier ?? 0) > 0
+                            ? `+£${opt.price_modifier}`
+                            : "Free")}
                     </span>
                   </li>
                 ))}

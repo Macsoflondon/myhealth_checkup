@@ -202,8 +202,9 @@ Deno.serve(async (req) => {
           description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
           url,
           is_active: true,
-          biomarkers_list: extracted.biomarkers.length > 0 ? extracted.biomarkers : null,
-          biomarker_count: extracted.biomarkerCount || extracted.biomarkers.length || null,
+          // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
+          // the scraper must NOT overwrite biomarkers_list / biomarker_count,
+          // otherwise wrong markers (B12, folate, etc.) get reinstated.
           sample_type: 'Venous blood',
           clinic_visit_available: true,
           home_kit_available: true,
