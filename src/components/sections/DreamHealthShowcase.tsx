@@ -50,7 +50,7 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(30);
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(150);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const orderedTests = useMemo(() => {
