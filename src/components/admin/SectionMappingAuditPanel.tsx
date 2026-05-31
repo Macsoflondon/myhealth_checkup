@@ -3,8 +3,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, RefreshCw, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Loader2, RefreshCw, AlertTriangle, CheckCircle2, Check, X } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 type MapRow = {
   provider_id: string;
@@ -20,6 +28,22 @@ type TestRow = {
   source_section: string | null;
   canonical_category: string | null;
 };
+
+const CANONICAL_CATEGORIES = [
+  "womens-health",
+  "mens-health",
+  "fertility",
+  "sexual-health",
+  "thyroid",
+  "heart",
+  "gut",
+  "vitamins",
+  "hormones",
+  "cancer-screening",
+  "sports-performance",
+  "at-home",
+  "general-health",
+] as const;
 
 const norm = (s: string | null | undefined) =>
   (s ?? "")
@@ -48,6 +72,8 @@ export const SectionMappingAuditPanel = () => {
   const [unmapped, setUnmapped] = useState<Unmapped[]>([]);
   const [missingCanonical, setMissingCanonical] = useState<TestRow[]>([]);
   const [activeCount, setActiveCount] = useState(0);
+  const [draft, setDraft] = useState<Record<string, string>>({}); // key -> chosen canonical
+  const [busyKey, setBusyKey] = useState<string | null>(null);
 
   const run = async () => {
     setLoading(true);
@@ -114,6 +140,43 @@ export const SectionMappingAuditPanel = () => {
     run();
   }, []);
 
+  const resolve = async (params: {
+    key: string;
+    provider_id: string;
+    source_section: string;
+    canonical_category: string;
+  }) => {
+    const { key, provider_id, source_section, canonical_category } = params;
+    if (!canonical_category) {
+      toast({ title: "Pick a category first", variant: "destructive" });
+      return;
+    }
+    setBusyKey(key);
+    const { data, error } = await supabase.functions.invoke("resolve-section-mapping", {
+      body: { provider_id, source_section, canonical_category, backfill: true, mark_reviewed: true },
+    });
+    setBusyKey(null);
+
+    if (error || (data as any)?.error) {
+      toast({
+        title: "Failed to save rule",
+        description: error?.message ?? (data as any)?.error ?? "Unknown error",
+        variant: "destructive",
+      });
+      return;
+    }
+    toast({
+      title: "Rule saved",
+      description: `${provider_id} · ${source_section} → ${canonical_category} (${(data as any)?.updated_rows ?? 0} rows backfilled)`,
+    });
+    setDraft((d) => {
+      const next = { ...d };
+      delete next[key];
+      return next;
+    });
+    await run();
+  };
+
   const needsReview = mapRules.filter((r) => r.needs_review);
   const clean =
     !loading &&
@@ -127,6 +190,27 @@ export const SectionMappingAuditPanel = () => {
       return acc;
     }, {})
   ).sort((a, b) => a[0].localeCompare(b[0]));
+
+  const CategorySelect = ({
+    value,
+    onChange,
+  }: {
+    value: string;
+    onChange: (v: string) => void;
+  }) => (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="h-8 w-[180px] text-xs">
+        <SelectValue placeholder="Choose category" />
+      </SelectTrigger>
+      <SelectContent>
+        {CANONICAL_CATEGORIES.map((c) => (
+          <SelectItem key={c} value={c} className="text-xs">
+            {c}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
 
   return (
     <Card>
@@ -170,27 +254,61 @@ export const SectionMappingAuditPanel = () => {
             <p className="text-sm text-muted-foreground">No rows disagree with their provider's mapping rule.</p>
           ) : (
             <div className="space-y-3">
-              {conflicts.map((c) => (
-                <div key={`${c.provider_id}::${c.source_section}`} className="border rounded-md p-3">
-                  <div className="flex items-center gap-2 flex-wrap text-sm">
-                    <Badge variant="outline">{c.provider_id}</Badge>
-                    <code className="text-xs">{c.source_section}</code>
-                    <span className="text-muted-foreground">rule says</span>
-                    <Badge>{c.expected}</Badge>
-                    <span className="text-muted-foreground">but rows have</span>
-                    <Badge variant="destructive">{c.actual}</Badge>
-                    <span className="text-muted-foreground">({c.rows.length} rows)</span>
+              {conflicts.map((c) => {
+                const key = `c::${c.provider_id}::${c.source_section}`;
+                const choice = draft[key] ?? c.expected;
+                return (
+                  <div key={key} className="border rounded-md p-3 space-y-2">
+                    <div className="flex items-center gap-2 flex-wrap text-sm">
+                      <Badge variant="outline">{c.provider_id}</Badge>
+                      <code className="text-xs">{c.source_section}</code>
+                      <span className="text-muted-foreground">rule</span>
+                      <Badge>{c.expected}</Badge>
+                      <span className="text-muted-foreground">vs rows</span>
+                      <Badge variant="destructive">{c.actual}</Badge>
+                      <span className="text-muted-foreground">({c.rows.length} rows)</span>
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs text-muted-foreground">Approve canonical:</span>
+                      <CategorySelect value={choice} onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))} />
+                      <Button
+                        size="sm"
+                        onClick={() =>
+                          resolve({
+                            key,
+                            provider_id: c.provider_id,
+                            source_section: c.source_section,
+                            canonical_category: choice,
+                          })
+                        }
+                        disabled={busyKey === key}
+                      >
+                        {busyKey === key ? (
+                          <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                        ) : (
+                          <Check className="h-3 w-3 mr-1" />
+                        )}
+                        Save & backfill
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setDraft((d) => ({ ...d, [key]: c.actual }))}
+                      >
+                        Use rows' value ({c.actual})
+                      </Button>
+                    </div>
+                    <ul className="text-xs text-muted-foreground space-y-1 max-h-32 overflow-auto">
+                      {c.rows.slice(0, 10).map((r) => (
+                        <li key={r.id}>
+                          <code>{r.id.slice(0, 8)}</code> — {r.test_name}
+                        </li>
+                      ))}
+                      {c.rows.length > 10 && <li>… +{c.rows.length - 10} more</li>}
+                    </ul>
                   </div>
-                  <ul className="mt-2 text-xs text-muted-foreground space-y-1 max-h-40 overflow-auto">
-                    {c.rows.slice(0, 25).map((r) => (
-                      <li key={r.id}>
-                        <code>{r.id.slice(0, 8)}</code> — {r.test_name}
-                      </li>
-                    ))}
-                    {c.rows.length > 25 && <li>… +{c.rows.length - 25} more</li>}
-                  </ul>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </Section>
@@ -199,18 +317,46 @@ export const SectionMappingAuditPanel = () => {
           {unmapped.length === 0 ? (
             <p className="text-sm text-muted-foreground">Every active row's section has an explicit per-provider rule.</p>
           ) : (
-            <div className="space-y-2 max-h-72 overflow-auto">
-              {unmapped.map((u) => (
-                <div
-                  key={`${u.provider_id}::${u.source_section}`}
-                  className="flex items-center gap-2 text-sm border rounded-md p-2"
-                >
-                  <Badge variant="outline">{u.provider_id}</Badge>
-                  <code className="text-xs">{u.source_section}</code>
-                  <span className="text-muted-foreground truncate">— e.g. {u.example_test}</span>
-                  <span className="ml-auto text-muted-foreground">{u.row_count} rows</span>
-                </div>
-              ))}
+            <div className="space-y-2 max-h-[480px] overflow-auto">
+              {unmapped.map((u) => {
+                const key = `u::${u.provider_id}::${u.source_section}`;
+                const choice = draft[key] ?? "";
+                return (
+                  <div
+                    key={key}
+                    className="flex items-center gap-2 text-sm border rounded-md p-2 flex-wrap"
+                  >
+                    <Badge variant="outline">{u.provider_id}</Badge>
+                    <code className="text-xs">{u.source_section}</code>
+                    <span className="text-muted-foreground truncate max-w-[260px]">
+                      — e.g. {u.example_test}
+                    </span>
+                    <span className="text-muted-foreground">{u.row_count} rows</span>
+                    <div className="ml-auto flex items-center gap-2">
+                      <CategorySelect value={choice} onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))} />
+                      <Button
+                        size="sm"
+                        onClick={() =>
+                          resolve({
+                            key,
+                            provider_id: u.provider_id,
+                            source_section: u.source_section,
+                            canonical_category: choice,
+                          })
+                        }
+                        disabled={busyKey === key || !choice}
+                      >
+                        {busyKey === key ? (
+                          <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                        ) : (
+                          <Check className="h-3 w-3 mr-1" />
+                        )}
+                        Approve
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </Section>
@@ -219,15 +365,41 @@ export const SectionMappingAuditPanel = () => {
           {needsReview.length === 0 ? (
             <p className="text-sm text-muted-foreground">All rules are confirmed.</p>
           ) : (
-            <div className="space-y-1 max-h-48 overflow-auto text-sm">
-              {needsReview.map((r) => (
-                <div key={`${r.provider_id}::${r.source_section}`} className="flex items-center gap-2">
-                  <Badge variant="outline">{r.provider_id}</Badge>
-                  <code className="text-xs">{r.source_section}</code>
-                  <span>→</span>
-                  <Badge variant="secondary">{r.canonical_category}</Badge>
-                </div>
-              ))}
+            <div className="space-y-1 max-h-72 overflow-auto text-sm">
+              {needsReview.map((r) => {
+                const key = `r::${r.provider_id}::${r.source_section}`;
+                const choice = draft[key] ?? r.canonical_category;
+                return (
+                  <div key={key} className="flex items-center gap-2 border rounded p-2 flex-wrap">
+                    <Badge variant="outline">{r.provider_id}</Badge>
+                    <code className="text-xs">{r.source_section}</code>
+                    <span>→</span>
+                    <Badge variant="secondary">{r.canonical_category}</Badge>
+                    <div className="ml-auto flex items-center gap-2">
+                      <CategorySelect value={choice} onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))} />
+                      <Button
+                        size="sm"
+                        onClick={() =>
+                          resolve({
+                            key,
+                            provider_id: r.provider_id,
+                            source_section: r.source_section,
+                            canonical_category: choice,
+                          })
+                        }
+                        disabled={busyKey === key}
+                      >
+                        {busyKey === key ? (
+                          <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                        ) : (
+                          <Check className="h-3 w-3 mr-1" />
+                        )}
+                        Confirm
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </Section>
