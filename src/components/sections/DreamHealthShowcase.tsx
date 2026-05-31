@@ -55,11 +55,14 @@ const pickTopicImage = (name: string): string => {
 };
 
 // Provider-specific overrides where we have a branded asset.
+// Keys are matched as substrings against the cleaned, lowercased test name,
+// so renames (e.g. "Sports Hormone" → "Sports Performance Hormone") still resolve.
 const providerOverrides: Record<string, Record<string, string>> = {
   "medichecks": {
     "advanced well man": "https://www.medichecks.com/cdn/shop/files/advanced-well-man-blood-test-400216.png",
     "advanced well woman": "https://www.medichecks.com/cdn/shop/files/advanced-well-woman-blood-test-457156.png",
     "advanced thyroid function": "https://www.medichecks.com/cdn/shop/files/advanced-thyroid-function-blood-test-157336.png",
+    "sports performance hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png",
     "sports hormone": "https://www.medichecks.com/cdn/shop/files/sports-hormone-blood-test-618906.png",
     "optimal health": "https://www.medichecks.com/cdn/shop/files/optimal-health-blood-test-707618.png",
   },
@@ -71,11 +74,18 @@ const providerOverrides: Record<string, Record<string, string>> = {
 
 const resolveImage = (t: PopularTest): string => {
   const key = cleanName(t.test_name).toLowerCase();
-  const providerHit = providerOverrides[t.provider_id]?.[key];
-  if (providerHit) return providerHit;
+  const overrides = providerOverrides[t.provider_id];
+  if (overrides) {
+    // Prefer the longest matching key so "advanced well woman" beats "well woman" etc.
+    const hit = Object.entries(overrides)
+      .filter(([k]) => key.includes(k))
+      .sort((a, b) => b[0].length - a[0].length)[0];
+    if (hit) return hit[1];
+  }
   if (t.image_url && !isPlaceholder(t.image_url)) return t.image_url;
   return pickTopicImage(t.test_name);
 };
+
 
 /** Round-robin interleave by provider so the grid alternates providers */
 const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
