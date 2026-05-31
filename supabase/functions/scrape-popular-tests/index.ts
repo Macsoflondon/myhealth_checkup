@@ -170,8 +170,25 @@ async function scrapeProductImage(url: string, apiKey: string): Promise<string |
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
+  // Allow either service-role bearer OR an authenticated admin user.
+  const auth = req.headers.get('Authorization') ?? '';
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${serviceKey}`) {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  let authorized = auth === `Bearer ${serviceKey}`;
+  if (!authorized && auth.startsWith('Bearer ')) {
+    try {
+      const userClient = createClient(supabaseUrl, Deno.env.get('SUPABASE_ANON_KEY') ?? '', {
+        global: { headers: { Authorization: auth } },
+      });
+      const { data: { user } } = await userClient.auth.getUser();
+      if (user) {
+        const admin = createClient(supabaseUrl, serviceKey);
+        const { data: roles } = await admin.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin');
+        authorized = !!roles && roles.length > 0;
+      }
+    } catch (_) { /* fallthrough */ }
+  }
+  if (!authorized) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
