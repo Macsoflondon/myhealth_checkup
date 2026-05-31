@@ -156,7 +156,7 @@ const FeaturedProvidersGlass = () => {
             <span className="h-px w-10 bg-[#22c0d4]/60" />
           </div>
 
-          <h1 className="font-heading text-4xl md:text-6xl font-bold text-white tracking-tight">
+          <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight tracking-tight">
             Our Trusted Partners
           </h1>
           <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto pt-6">

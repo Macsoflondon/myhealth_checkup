@@ -11,7 +11,7 @@ const StartJourneySection = () => {
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
         </div>
-        <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 text-[#081129]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight mb-4 text-[#081129]">
           Take Control of Your Health Today
         </h2>
         <p className="text-base lg:text-lg text-[#081129]/70 leading-relaxed mb-8 max-w-md">

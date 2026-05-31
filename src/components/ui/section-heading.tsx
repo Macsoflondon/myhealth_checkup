@@ -30,7 +30,7 @@ const SectionHeading = ({
       className
     )}>
       <h2 className={cn(
-        "text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold leading-tight",
+        "text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight",
         titleClassName
       )}>
         <span>{title} </span>
