@@ -174,6 +174,29 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
   };
 
+  const refreshPopularTests = async () => {
+    setIsRefreshingPopular(true);
+    setPopularResult(null);
+    try {
+      const { data, error } = await supabase.functions.invoke('scrape-popular-tests', {
+        body: {},
+      });
+      if (error) throw error;
+      const summary = Array.isArray(data?.providers)
+        ? data.providers.map((p: any) => `${p.provider}: ${p.matched ?? 0} matched`).join(' • ')
+        : data?.message || 'Done.';
+      setPopularResult(summary);
+      toast({ title: 'Popular tests refreshed', description: summary });
+      await fetchTestCounts();
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : 'Unknown error';
+      setPopularResult(`Failed: ${msg}`);
+      toast({ title: 'Refresh failed', description: msg, variant: 'destructive' });
+    } finally {
+      setIsRefreshingPopular(false);
+    }
+  };
+
   const getJobForProvider = (providerId: string) => {
     return jobs.find(j => j.provider_id === providerId);
   };
