@@ -2,6 +2,7 @@ import { Clock, TestTube2, Star, ExternalLink, ArrowRight } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { Button } from "@/components/ui/button";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+import { formatTestPrice } from "@/lib/utils";
 
 export interface ProviderTestCardData {
   id: string;
@@ -147,7 +148,7 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
         {/* Price + turnaround + biomarkers row */}
         <div className="flex items-end justify-between mt-2 mb-3">
           <span className="text-2xl font-bold" style={{ color: brandColor }}>
-            {test.price ? `£${test.price.toFixed(0)}` : "Price on request"}
+            {test.price ? formatTestPrice(test) : "Price on request"}
           </span>
           <div className="text-right space-y-1">
             <div className="flex items-center gap-1.5 text-sm text-gray-500 justify-end">

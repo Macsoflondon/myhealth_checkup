@@ -131,7 +131,7 @@ export default function ProviderTestDetailModal({
           <div className="flex flex-wrap gap-2">
             {headerPrice != null && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
-                {priceIsFrom ? "from " : ""}£{headerPrice.toFixed(0)}
+                {formatTestPrice({ ...test, price: headerPrice as number }) || `£${(headerPrice as number).toFixed(0)}`}
               </span>
             )}
             {displayedBiomarkerCount > 0 && (
