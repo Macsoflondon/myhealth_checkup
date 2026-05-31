@@ -37,11 +37,19 @@ const PLACEHOLDER_PATTERNS = [
   /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
   /lovableproject\.com\/lovable-uploads\//i,
 ];
+
+const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
+  "lola-health": "https://cdn.shopify.com/s/files/1/0640/8830/9912/collections/our-blood-tests.jpg",
+  "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
+};
+
 const isRealProviderImage = (url?: string | null): url is string =>
   !!url && /^https?:\/\//i.test(url) && !PLACEHOLDER_PATTERNS.some((re) => re.test(url));
 
 const resolveImage = (t: PopularTest): string | null =>
-  isRealProviderImage(t.image_url) ? t.image_url! : null;
+  isRealProviderImage(t.image_url)
+    ? t.image_url!
+    : PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null;
 
 const ALLOWED_PROVIDERS = [
   "lola-health",
@@ -65,7 +73,7 @@ const NON_TEST_PATTERNS = [
 const isDisplayablePopularTest = (t: PopularTest) =>
   ALLOWED_PROVIDER_SET.has(t.provider_id) &&
   !!t.url &&
-  isRealProviderImage(t.image_url) &&
+  !!resolveImage(t) &&
   !NON_TEST_PATTERNS.some((pattern) => pattern.test(t.test_name));
 
 const getPriorityScore = (t: PopularTest) => {
