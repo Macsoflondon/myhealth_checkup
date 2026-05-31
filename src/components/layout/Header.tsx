@@ -28,8 +28,10 @@ const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const [tickerHeight, setTickerHeight] = useState(0);
+  const [logoBarHeight, setLogoBarHeight] = useState(0);
   const [isSearchDocked, setIsSearchDocked] = useState(false);
   const [dockedSearchTerm, setDockedSearchTerm] = useState("");
+  const logoBarRef = useRef<HTMLElement>(null);
   const promoTrackerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
