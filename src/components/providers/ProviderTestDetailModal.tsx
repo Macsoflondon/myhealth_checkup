@@ -285,16 +285,26 @@ export default function ProviderTestDetailModal({
               <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                 Biomarkers Included
               </h4>
-              <div className="flex flex-wrap gap-2">
-                {biomarkers.map((b, i) => (
+              <div className="flex flex-wrap gap-2 max-h-72 overflow-y-auto pr-1">
+                {(showAllBiomarkers ? biomarkers : biomarkers.slice(0, 24)).map((b, i) => (
                   <span
                     key={i}
-                    className="inline-block px-3 py-1.5 rounded-full text-sm text-gray-700 bg-gray-100 border border-gray-200"
+                    className="inline-block px-3 py-1.5 rounded-full text-sm text-gray-700 bg-gray-100 border border-gray-200 break-words"
                   >
                     {b}
                   </span>
                 ))}
               </div>
+              {biomarkers.length > 24 && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllBiomarkers((v) => !v)}
+                  className="mt-2 text-xs font-semibold underline"
+                  style={{ color: brandColor }}
+                >
+                  {showAllBiomarkers ? "Show fewer" : `Show all ${biomarkers.length}`}
+                </button>
+              )}
             </div>
           )}
 
