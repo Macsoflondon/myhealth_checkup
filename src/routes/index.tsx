@@ -19,6 +19,7 @@ const TestCategoriesPage = lazy(() => import("@/pages/TestCategoriesPage"));
 
 // Lazy-load admin pages — they're only used by admins, no need to bundle in the main chunk.
 const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
+const AdminRecovery = lazy(() => import("@/pages/AdminRecovery"));
 const AdminTestUploadPage = lazy(() => import("@/pages/AdminTestUploadPage"));
 const AdminDataRefreshPage = lazy(() => import("@/pages/AdminDataRefreshPage"));
 const AdminTestMapperPage = lazy(() => import("@/pages/AdminTestMapperPage"));
@@ -48,6 +49,7 @@ export function AppRoutes() {
 
         {/* Admin Auth */}
         <Route path="/admin/login" element={<AdminAuth />} />
+        <Route path="/admin/recovery" element={<AdminRecovery />} />
 
         {/* Admin Routes - Protected with server-side role verification */}
         <Route path="/admin/test-upload" element={wrapAdmin(AdminTestUploadPage)} />

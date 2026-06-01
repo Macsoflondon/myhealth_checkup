@@ -156,3 +156,7 @@ verify_jwt = false
 
 [functions.trigger-all-scrapers]
 verify_jwt = false
+
+# Admin Recovery - public (gated by ADMIN_RECOVERY_SECRET in body)
+[functions.admin-recovery]
+verify_jwt = false
