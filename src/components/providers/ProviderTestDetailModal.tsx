@@ -319,34 +319,41 @@ export default function ProviderTestDetailModal({
           </div>
 
           {/* CTA buttons */}
-          <div className="flex gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {test.url ? (
               <Button
-                className="flex-1 h-12 text-base font-semibold text-white"
+                className="h-12 text-sm font-semibold text-white"
                 style={{ backgroundColor: brandColor }}
                 asChild
               >
                 <a href={test.url} target="_blank" rel="noopener noreferrer">
-                  Book with {providerName} →
+                  Book test →
                 </a>
               </Button>
             ) : (
               <Button
-                className="flex-1 h-12 text-base font-semibold text-white"
+                className="h-12 text-sm font-semibold text-white"
                 style={{ backgroundColor: brandColor }}
                 disabled
               >
-                Book with {providerName} →
+                Book test →
               </Button>
             )}
             <Button
               variant="outline"
-              className="h-12 text-base font-semibold border-gray-200 hover:bg-gray-50"
+              className="h-12 text-sm font-semibold border-gray-200 hover:bg-gray-50"
               asChild
             >
               <Link to={`/compare?test=${encodeURIComponent(test.test_name)}`}>
                 + Compare
               </Link>
+            </Button>
+            <Button
+              variant="ghost"
+              className="h-12 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+              onClick={() => onOpenChange(false)}
+            >
+              ← Back
             </Button>
           </div>
 
