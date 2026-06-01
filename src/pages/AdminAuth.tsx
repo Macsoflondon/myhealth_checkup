@@ -268,6 +268,17 @@ const AdminAuth = () => {
           </Button>
         </form>
 
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            disabled={loading || isLocked}
+            className="text-white/60 hover:text-white text-xs transition-colors disabled:opacity-50"
+          >
+            Forgot password?
+          </button>
+        </div>
+
         <div className="mt-8 text-center">
           <button
             type="button"
