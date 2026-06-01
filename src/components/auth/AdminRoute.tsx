@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdminMFA } from "@/hooks/useAdminMFA";
-import { Loader2, ShieldAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { AdminMFAGuard } from "@/components/admin/AdminMFAGuard";
 import { logger } from "@/lib/logger";
 
