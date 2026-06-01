@@ -320,11 +320,11 @@ export default function ProviderTestDetailModal({
               >
                 {getProviderInitial(providerName)}
               </span>
-              <div>
-                <p className="font-semibold" style={{ color: brandColor }}>
+              <div className="min-w-0">
+                <p className="font-semibold truncate" style={{ color: brandColor }}>
                   {providerName}
                 </p>
-                <p className="text-sm text-gray-500">{tagline}</p>
+                <p className="text-sm text-gray-500 line-clamp-2">{tagline}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
