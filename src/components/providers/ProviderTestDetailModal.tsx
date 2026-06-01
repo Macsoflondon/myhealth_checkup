@@ -180,7 +180,7 @@ export default function ProviderTestDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl gap-0 max-h-[90vh] overflow-y-auto [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
+      <DialogContent className="w-[calc(100vw-2rem)] sm:w-full max-w-2xl p-0 rounded-2xl gap-0 max-h-[90vh] overflow-y-auto overflow-x-hidden [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
         {/* Branded header */}
         <div className="p-6 pb-5 pr-14 text-white relative" style={{ backgroundColor: brandColor }}>
           <p className="text-sm text-white/80 mb-1">
@@ -319,34 +319,41 @@ export default function ProviderTestDetailModal({
           </div>
 
           {/* CTA buttons */}
-          <div className="flex gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {test.url ? (
               <Button
-                className="flex-1 h-12 text-base font-semibold text-white"
+                className="h-12 text-sm font-semibold text-white"
                 style={{ backgroundColor: brandColor }}
                 asChild
               >
                 <a href={test.url} target="_blank" rel="noopener noreferrer">
-                  Book with {providerName} →
+                  Book test →
                 </a>
               </Button>
             ) : (
               <Button
-                className="flex-1 h-12 text-base font-semibold text-white"
+                className="h-12 text-sm font-semibold text-white"
                 style={{ backgroundColor: brandColor }}
                 disabled
               >
-                Book with {providerName} →
+                Book test →
               </Button>
             )}
             <Button
               variant="outline"
-              className="h-12 text-base font-semibold border-gray-200 hover:bg-gray-50"
+              className="h-12 text-sm font-semibold border-gray-200 hover:bg-gray-50"
               asChild
             >
               <Link to={`/compare?test=${encodeURIComponent(test.test_name)}`}>
                 + Compare
               </Link>
+            </Button>
+            <Button
+              variant="ghost"
+              className="h-12 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+              onClick={() => onOpenChange(false)}
+            >
+              ← Back
             </Button>
           </div>
 
