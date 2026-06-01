@@ -121,25 +121,17 @@ const CompareTests = () => {
     }, 300);
   }, []);
 
-  // Comparison handlers - unlimited test selection
+  // Comparison handlers — delegate to global store
   const handleToggleSelect = useCallback((test: CompareTestData) => {
-    setSelectedTests(prev => {
-      const isAlreadySelected = prev.some(t => t.id === test.id);
-      
-      if (isAlreadySelected) {
-        return prev.filter(t => t.id !== test.id);
-      }
-      
-      return [...prev, test];
-    });
+    compareStore.toggle(test);
   }, []);
 
   const handleRemoveTest = useCallback((testId: string) => {
-    setSelectedTests(prev => prev.filter(t => t.id !== testId));
+    compareStore.remove(testId);
   }, []);
 
   const handleClearAll = useCallback(() => {
-    setSelectedTests([]);
+    compareStore.clear();
   }, []);
 
   const handleOpenComparison = useCallback(() => {
@@ -147,6 +139,16 @@ const CompareTests = () => {
       setIsComparisonOpen(true);
     }
   }, [selectedTests.length]);
+
+  // Auto-open comparison panel when arriving via ?openCompare=1
+  useEffect(() => {
+    if (searchParams.get("openCompare") === "1" && selectedTests.length >= 2) {
+      setIsComparisonOpen(true);
+      const next = new URLSearchParams(searchParams);
+      next.delete("openCompare");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, selectedTests.length, setSearchParams]);
 
   const isTestSelected = useCallback((testId: string) => {
     return selectedTests.some(t => t.id === testId);
