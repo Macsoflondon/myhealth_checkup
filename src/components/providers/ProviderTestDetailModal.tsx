@@ -180,7 +180,7 @@ export default function ProviderTestDetailModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 overflow-hidden rounded-2xl gap-0 max-h-[90vh] overflow-y-auto [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
+      <DialogContent className="w-[calc(100vw-2rem)] sm:w-full max-w-2xl p-0 rounded-2xl gap-0 max-h-[90vh] overflow-y-auto overflow-x-hidden [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
         {/* Branded header */}
         <div className="p-6 pb-5 pr-14 text-white relative" style={{ backgroundColor: brandColor }}>
           <p className="text-sm text-white/80 mb-1">
