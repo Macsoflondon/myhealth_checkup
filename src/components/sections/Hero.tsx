@@ -37,7 +37,7 @@ const heroSlides: Array<{
   {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
-    headline: "The Easiest Way To Compare Private Health Tests & Cancer Screenings",
+    headline: "The Easiest Way To Compare",
     subline: "​",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
