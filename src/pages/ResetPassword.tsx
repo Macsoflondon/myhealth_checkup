@@ -12,6 +12,7 @@ import Footer from "@/components/layout/Footer";
 import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthIndicator";
 import { validatePassword } from "@/lib/passwordValidation";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const ResetPassword = () => {
   const { user } = useAuth();
