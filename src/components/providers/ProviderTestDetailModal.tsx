@@ -238,10 +238,10 @@ export default function ProviderTestDetailModal({
                 {collectionOptions.map((opt) => (
                   <li
                     key={opt.method}
-                    className="flex items-center justify-between gap-3 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2"
+                    className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2"
                   >
-                    <span>{opt.method}</span>
-                    <span className="font-semibold" style={{ color: brandColor }}>
+                    <span className="min-w-0 break-words">{opt.method}</span>
+                    <span className="font-semibold whitespace-nowrap" style={{ color: brandColor }}>
                       {opt.note
                         ?? (typeof opt.price === "number"
                           ? `£${opt.price}`
