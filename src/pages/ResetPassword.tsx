@@ -109,6 +109,10 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Reset Password | myhealth checkup</title>
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <Header />
       <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
         <div className="max-w-md w-full">
