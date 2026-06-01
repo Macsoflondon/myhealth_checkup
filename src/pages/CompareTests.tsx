@@ -55,9 +55,10 @@ const CompareTests = () => {
   // View mode state
   const [viewMode, setViewMode] = useState<TestViewMode>("list");
 
-  // Comparison states - no limit on number of tests
-  const [selectedTests, setSelectedTests] = useState<CompareTestData[]>([]);
+  // Comparison states - synced with global compareStore
+  const selectedTests = useCompareItems();
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Use the centralised data hook
   const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
