@@ -64,13 +64,18 @@ serve(async (req) => {
       );
     }
 
-    // Check admin role using service role client
+    // Check admin role membership directly; has_role() is reserved for
+    // contexts that should additionally enforce an AAL2 session.
     const adminClient = createClient(supabaseUrl, supabaseServiceKey);
     
-    const { data: isAdmin, error: roleError } = await adminClient.rpc('has_role', {
-      _user_id: user.id,
-      _role: 'admin'
-    });
+    const { data: adminRoleRow, error: roleError } = await adminClient
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    const isAdmin = !!adminRoleRow;
 
     if (roleError) {
       console.error('Failed to check admin role:', roleError);

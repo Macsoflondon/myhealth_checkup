@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdminMFA } from "@/hooks/useAdminMFA";
-import { Loader2, ShieldAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { AdminMFAGuard } from "@/components/admin/AdminMFAGuard";
 import { logger } from "@/lib/logger";
 
 interface AdminRouteProps {
@@ -43,10 +43,12 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
       }
 
       try {
-        const { data: hasRole, error } = await supabase.rpc('has_role', {
-          _user_id: user.id,
-          _role: requiredRole,
-        });
+        const { data: roleRow, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', requiredRole)
+          .maybeSingle();
 
         if (cancelled) return;
 
@@ -56,7 +58,7 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
           return;
         }
 
-        if (!hasRole) {
+        if (!roleRow) {
           logger.warn('Unauthorized admin access attempt:', { userId: user.id, requiredRole });
           navigate("/");
           return;
@@ -89,26 +91,17 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
 
   if (!isAuthorized) return null;
 
-  // MFA gate — block admin content until both enrolled and AAL2-verified.
-  if (enforceMFA && (mfa.needsMFASetup || mfa.needsMFAVerification)) {
-    const setupMode = mfa.needsMFASetup;
+  if (enforceMFA) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-6">
-        <div className="max-w-md w-full text-center space-y-4 border rounded-lg p-8 bg-card">
-          <ShieldAlert className="h-10 w-10 text-primary mx-auto" />
-          <h1 className="text-xl font-semibold">
-            {setupMode ? 'Multi-factor authentication required' : 'Verify your second factor'}
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {setupMode
-              ? 'Admin accounts must enrol an authenticator app before accessing the dashboard.'
-              : 'Please complete the second-factor challenge to continue.'}
-          </p>
-          <Button onClick={() => navigate('/admin/login')}>
-            {setupMode ? 'Enrol now' : 'Verify'}
-          </Button>
-        </div>
-      </div>
+      <AdminMFAGuard
+        isVerified={mfa.isVerified}
+        needsMFASetup={mfa.needsMFASetup}
+        needsMFAVerification={mfa.needsMFAVerification}
+        isLoading={mfa.isLoading}
+        onMFAComplete={mfa.checkMFAStatus}
+      >
+        {children}
+      </AdminMFAGuard>
     );
   }
 
