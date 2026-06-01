@@ -195,13 +195,14 @@ export default function ProviderTestDetailModal({
           <p className="text-sm text-white/80 mb-1">
             {providerName} · {goodbodyStatic?.category || test.category || "General Health"}
           </p>
-          <DialogTitle className="text-2xl font-bold text-white mb-3">
+          <DialogTitle className="text-2xl font-bold text-white mb-3 break-words pr-2">
             {goodbodyStatic?.name || test.test_name}
           </DialogTitle>
 
           <div className="flex flex-wrap gap-2">
-            {headerPrice != null && (
+            {headerPrice != null && (headerPrice as number) > 0 && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
+                {priceIsFrom ? "from " : ""}
                 {formatTestPrice({ ...test, price: headerPrice as number }) || `£${(headerPrice as number).toFixed(0)}`}
               </span>
             )}
@@ -222,7 +223,9 @@ export default function ProviderTestDetailModal({
         <div className="p-6 space-y-6">
           {/* Description */}
           {(goodbodyStatic?.description || test.description) && (
-            <p className="text-base text-gray-700 leading-relaxed">{goodbodyStatic?.description || test.description}</p>
+            <p className="text-base text-gray-700 leading-relaxed whitespace-pre-line break-words">
+              {goodbodyStatic?.description || test.description}
+            </p>
           )}
 
           {/* Collection method */}
