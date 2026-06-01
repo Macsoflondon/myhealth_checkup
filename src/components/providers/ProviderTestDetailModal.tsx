@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Clock, TestTube2, ExternalLink } from "lucide-react";
+import { Clock, TestTube2, Check } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
 import type { ProviderTestCardData } from "./ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
+import { compareStore, useCompareItems } from "@/stores/compareStore";
+import type { CompareTestData } from "@/types";
+
 
 interface ProviderTestDetailModalProps {
   test: ProviderTestCardData | null;
