@@ -170,6 +170,50 @@ export function CategoryPageLayout({
         <meta property="og:description" content={seoDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: seoTitle,
+          description: seoDescription,
+          url: canonicalUrl,
+          breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: breadcrumbs.map((b, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: b.label,
+              ...(b.href ? { item: `https://www.myhealthcheckup.co.uk${b.href}` } : {}),
+            })),
+          },
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: filtered.length,
+            itemListElement: filtered.slice(0, 50).map((t, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "Product",
+                name: t.title,
+                description: t.desc,
+                category: t.tag,
+                brand: { "@type": "Brand", name: t.provider },
+                aggregateRating: t.reviews > 0 ? {
+                  "@type": "AggregateRating",
+                  ratingValue: t.rating,
+                  reviewCount: t.reviews,
+                } : undefined,
+                offers: {
+                  "@type": "Offer",
+                  price: t.priceNum,
+                  priceCurrency: "GBP",
+                  availability: "https://schema.org/InStock",
+                  seller: { "@type": "Organization", name: t.provider },
+                  ...(t.url ? { url: t.url } : {}),
+                },
+              },
+            })),
+          },
+        })}</script>
       </Helmet>
 
       <div className="min-h-screen flex flex-col">
