@@ -52,7 +52,66 @@ const CalloutCard = ({ children }: { children: React.ReactNode }) => (
 const GoodbodyBentoShowcase = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+      {/* Mobile layout (<sm) */}
+      <div className="grid grid-cols-2 gap-3 sm:hidden">
+        {/* Row 1: Logo spans 2 cols */}
+        <div className="col-span-2 aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-6">
+          <img
+            src={GOODBODY_LOGO}
+            alt="GOODBODY"
+            loading="lazy"
+            className="max-h-full max-w-full w-auto h-auto object-contain"
+          />
+        </div>
+
+        {/* Row 2: two kits */}
+        <div className="aspect-square">
+          <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
+        </div>
+
+        {/* Row 3: condensed text + CTA, footprint of 2x2 kit tiles */}
+        <div className="col-span-2 aspect-square rounded-2xl bg-white shadow-md p-4 flex flex-col justify-center text-center text-[#081129] font-sans">
+          <p className="text-[11px] leading-snug mb-2">
+            <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> — accessible, affordable and convenient.
+          </p>
+          <p className="text-[11px] leading-snug mb-2">
+            <strong className="text-[#47a970]">Clinical-grade accuracy</strong> with high-street accessibility, empowering confident health decisions.
+          </p>
+          <p className="text-[11px] leading-snug">
+            Over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP.
+          </p>
+          <div className="flex justify-center mt-3">
+            <Link
+              to="/provider/goodbody"
+              className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200 text-xs"
+            >
+              View Goodbody Profile
+            </Link>
+          </div>
+        </div>
+
+        {/* Row 4: two kits */}
+        <div className="aspect-square">
+          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
+        </div>
+
+        {/* Row 5: two kits */}
+        <div className="aspect-square">
+          <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
+        </div>
+      </div>
+
+      {/* Desktop/tablet layout (sm+) — unchanged */}
+      <div className="hidden sm:grid sm:grid-cols-3 gap-3 sm:gap-4">
         {/* Row 1 */}
         <div className="aspect-square">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
@@ -105,10 +164,9 @@ const GoodbodyBentoShowcase = () => {
           <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
         </div>
       </div>
-
     </div>
-
   );
 };
+
 
 export default GoodbodyBentoShowcase;
