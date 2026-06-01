@@ -76,7 +76,23 @@ const MostPopularTestsSection = () => {
                   url={test.url || undefined}
                   ctaLabel={test.url ? "View test" : "Compare"}
                   markers={test.markers}
+                  testDetails={{
+                    id: test.id,
+                    provider_id: test.provider_id,
+                    test_name: test.test_name,
+                    description: test.description ?? null,
+                    price: test.price ?? null,
+                    category: test.category ?? null,
+                    sample_type: test.sample_type ?? null,
+                    biomarker_count: test.biomarker_count ?? null,
+                    url: test.url ?? null,
+                    biomarkers_list: (test.markers as any) ?? null,
+                    turnaround_days_text: test.turnaround_time ?? null,
+                    base_price: (test as any).base_price ?? null,
+                    collection_options: (test as any).collection_options ?? null,
+                  }}
                 />
+
               );
             })}
           </div>
