@@ -76,7 +76,10 @@ export interface UnifiedTestCardProps {
   onCompareToggle?: () => void;
   /** Additional className */
   className?: string;
+  /** Optional structured test data — when provided, tapping the card opens a detail modal */
+  testDetails?: ProviderTestCardData;
 }
+
 
 /* ───────── Component ───────── */
 export function UnifiedTestCard({
