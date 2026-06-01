@@ -75,11 +75,11 @@ const GoodbodyBentoShowcase = () => {
         {/* Row 3: text + CTA, footprint of 2x2 kit tiles */}
         <div className="col-span-2 min-h-[20rem] rounded-2xl bg-white shadow-md p-5 flex flex-col text-center text-[#081129] font-sans">
           <div className="flex-1 flex flex-col justify-center space-y-3">
-            <p className="text-sm leading-relaxed">
-              <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> — accessible, affordable and convenient.
+            <p className="text-sm leading-relaxed whitespace-pre-line">
+              <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong>{"\n"}accessible, affordable and convenient.
             </p>
-            <p className="text-sm leading-relaxed">
-              <strong className="text-[#47a970]">Clinical-grade accuracy</strong> with high-street accessibility, empowering confident health decisions.
+            <p className="text-sm leading-relaxed whitespace-pre-line">
+              <strong className="text-[#47a970]">Clinical-grade accuracy</strong> with high-street accessibility, empowering confident{"\u00A0"}{"\n"}health decisions.
             </p>
             <p className="text-sm leading-relaxed">
               Over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP.
