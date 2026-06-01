@@ -1,28 +1,17 @@
-## Mobile layout for Featured Partner section
+## Polish mobile Goodbody text/CTA card
 
-Restructure `src/components/sections/GoodbodyBentoShowcase.tsx` so the mobile (`<sm`) layout follows this order, while the existing `sm:` and larger layout stays exactly as it is today.
+Target: the `col-span-2 aspect-square` mobile-only card in `src/components/sections/GoodbodyBentoShowcase.tsx` (the three paragraphs + "View Goodbody Profile" button).
 
-### New mobile order (2-column grid)
+### Changes (mobile only — `<sm`)
 
-```text
-Row 1: [ GOODBODY logo spanning 2 cols, ~square (h = 1 tile) ]
-Row 2: [ Advanced Well Man ] [ Premium Complete ]
-Row 3: [ Goodbody description + "View Goodbody Profile" CTA — spans 2 cols, height ≈ 2 tiles ]
-Row 4: [ Early Cancer Screening ] [ Female Hormone & Fertility ]
-Row 5: [ Thyroid Blood Test ] [ Cholesterol Blood Test ]
-```
+1. Drop the rigid `aspect-square` and use `min-h-[2/1 tile]` equivalent via `min-h-[18rem]` so content can breathe; keep footprint ≈ 2×2 kit tiles.
+2. Switch the inner layout to `flex flex-col justify-between` so:
+   - Paragraph stack sits at the top with even spacing.
+   - CTA pins to the bottom.
+3. Bump typography: paragraphs from `text-[11px]` → `text-sm leading-relaxed`, slightly tighter copy where needed so it reads cleanly without overflow.
+4. Increase internal padding `p-4` → `p-5`, and use `space-y-3` between paragraphs instead of mb-2 to even out rhythm.
+5. CTA: full-width on mobile (`w-full` inside a `mt-4` wrapper), `py-3 text-sm font-semibold`, keeps turquoise→pink hover.
+6. No changes to desktop/tablet branch, no changes to other files.
 
-- Logo tile: `col-span-2`, white card, logo `object-contain` filling the card with comfortable padding.
-- Text/CTA tile: `col-span-2`, condensed copy area sized to roughly the footprint of 4 kit tiles (2×2). Font sizes nudged down on mobile so all copy + CTA fit without overflow. CTA stays the existing turquoise → pink hover button linking to `/provider/goodbody`.
-- Kit tiles unchanged in content, just reordered.
-
-### Implementation approach
-
-Render two separate grids in the component:
-
-- `<div class="grid grid-cols-2 gap-3 sm:hidden">…mobile layout…</div>`
-- `<div class="hidden sm:grid sm:grid-cols-3 gap-3 sm:gap-4">…existing desktop/tablet layout, unchanged…</div>`
-
-This keeps the desktop/tablet bento exactly as designed (current 3-col layout with logo top-middle, callout row-span-2 in centre) and isolates all changes to the mobile breakpoint.
-
-No changes to any other file, no data/business-logic changes.
+### Result
+Bigger, properly spaced copy filling the box, with a prominent professional CTA anchored at the bottom edge — consistent with the rest of the bento.
