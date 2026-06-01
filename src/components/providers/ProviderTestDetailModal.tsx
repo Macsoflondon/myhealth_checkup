@@ -151,7 +151,12 @@ export default function ProviderTestDetailModal({
   open,
   onOpenChange,
 }: ProviderTestDetailModalProps) {
+  const navigate = useNavigate();
+  const compareItems = useCompareItems();
+  const [showAllBiomarkers, setShowAllBiomarkers] = useState(false);
   if (!test) return null;
+  const inCompare = compareStore.has(test.id);
+
 
   const branding = getBranding(test.provider_id);
   const brandColor = branding?.primary || "#22c0d4";
