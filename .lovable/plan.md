@@ -1,17 +1,45 @@
-## Polish mobile Goodbody text/CTA card
+# Plan: Modal QA + Working Compare Flow
 
-Target: the `col-span-2 aspect-square` mobile-only card in `src/components/sections/GoodbodyBentoShowcase.tsx` (the three paragraphs + "View Goodbody Profile" button).
+## 1. Modal QA pass (`ProviderTestDetailModal.tsx`)
 
-### Changes (mobile only — `<sm`)
+Verify and tighten so every provider's test renders cleanly at 375–1440px without overflow or clipping:
 
-1. Drop the rigid `aspect-square` and use `min-h-[2/1 tile]` equivalent via `min-h-[18rem]` so content can breathe; keep footprint ≈ 2×2 kit tiles.
-2. Switch the inner layout to `flex flex-col justify-between` so:
-   - Paragraph stack sits at the top with even spacing.
-   - CTA pins to the bottom.
-3. Bump typography: paragraphs from `text-[11px]` → `text-sm leading-relaxed`, slightly tighter copy where needed so it reads cleanly without overflow.
-4. Increase internal padding `p-4` → `p-5`, and use `space-y-3` between paragraphs instead of mb-2 to even out rhythm.
-5. CTA: full-width on mobile (`w-full` inside a `mt-4` wrapper), `py-3 text-sm font-semibold`, keeps turquoise→pink hover.
-6. No changes to desktop/tablet branch, no changes to other files.
+- Header title: add `break-words` + `pr-2` so very long test names (e.g. Randox panels) don't push the close button.
+- Header pill row: already wraps — keep, but ensure price pill uses `formatTestPrice` fallback when `headerPrice` is 0.
+- Description: add `whitespace-pre-line` so multi-line provider descriptions render.
+- Collection options list items: switch to `flex-wrap` so long method names (e.g. "Self-arranged phlebotomist") don't crush the price column on 360px.
+- Biomarkers: cap visible chips at ~24 with "+N more" toggle to avoid 200-row Randox panels blowing the modal height. Keep scrollable container as fallback.
+- Provider card: ensure tagline truncates to 2 lines.
+- CTA grid: keep 3-col on ≥sm, stacked on mobile. Ensure Book/Compare/Back all have consistent height and the disabled Book state is visually clear.
+- Sanity check across providers: Medichecks, Goodbody (static data), Randox, Thriva, Lola, London Medical Lab, Tuli — confirm sections (collection options, biomarkers, accreditations) all populate via fallbacks already defined.
 
-### Result
-Bigger, properly spaced copy filling the box, with a prominent professional CTA anchored at the bottom edge — consistent with the rest of the bento.
+## 2. Working "+ Compare" feature
+
+Currently the button links to `/compare?test=<name>` which the compare page ignores — selection state is local to `CompareTests` only. Replace with a shared, persistent compare store.
+
+### New: `src/stores/compareStore.ts`
+- Tiny Zustand store (already a dep) holding `items: CompareTestData[]`, `add`, `remove`, `clear`, `has(id)`.
+- Persist to `localStorage` (`mhc:compare`) so selections survive navigation.
+
+### `ProviderTestDetailModal.tsx`
+- Replace the `<Link>` "+ Compare" with a button that:
+  1. Maps the current `ProviderTestCardData` → `CompareTestData` shape.
+  2. Calls `compareStore.add(test)`.
+  3. Closes the modal and navigates to `/compare?openCompare=1` via `useNavigate`.
+- Show "Added ✓" state briefly if user re-taps while already in list (toggle off).
+
+### `CompareTests.tsx`
+- On mount, seed `selectedTests` from `compareStore.items` and subscribe to changes (so additions from anywhere reflect immediately).
+- Push local toggle changes back into the store (single source of truth).
+- Read `?openCompare=1` from `useSearchParams` and auto-open `ComparisonPanel` when ≥2 items are present; otherwise just show the `ComparisonBar`.
+
+### `UnifiedTestCard.tsx`
+- `onCompareToggle` already exists for the in-page list; also call into `compareStore` so toggles from any card (home, carousels) accumulate the same selection set.
+
+## 3. Verification
+- Manual sweep: open modal on Home → Most Popular, Compare page → Recommended carousel, and a provider catalog. Tap "+ Compare" twice on different tests, confirm bar appears, navigate to `/compare`, confirm panel opens with both.
+- Resize to 375px and 1440px, check no horizontal scroll inside modal for the longest Randox panel.
+
+## Out of scope
+- No backend / DB changes.
+- No new compare logic — reuses existing `ComparisonPanel`.

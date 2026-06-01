@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Clock, TestTube2, ExternalLink } from "lucide-react";
+import { Clock, TestTube2, Check } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
 import type { ProviderTestCardData } from "./ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
+import { compareStore, useCompareItems } from "@/stores/compareStore";
+import type { CompareTestData } from "@/types";
+
 
 interface ProviderTestDetailModalProps {
   test: ProviderTestCardData | null;
@@ -147,7 +151,12 @@ export default function ProviderTestDetailModal({
   open,
   onOpenChange,
 }: ProviderTestDetailModalProps) {
+  const navigate = useNavigate();
+  const compareItems = useCompareItems();
+  const [showAllBiomarkers, setShowAllBiomarkers] = useState(false);
   if (!test) return null;
+  const inCompare = compareStore.has(test.id);
+
 
   const branding = getBranding(test.provider_id);
   const brandColor = branding?.primary || "#22c0d4";
@@ -186,13 +195,14 @@ export default function ProviderTestDetailModal({
           <p className="text-sm text-white/80 mb-1">
             {providerName} · {goodbodyStatic?.category || test.category || "General Health"}
           </p>
-          <DialogTitle className="text-2xl font-bold text-white mb-3">
+          <DialogTitle className="text-2xl font-bold text-white mb-3 break-words pr-2">
             {goodbodyStatic?.name || test.test_name}
           </DialogTitle>
 
           <div className="flex flex-wrap gap-2">
-            {headerPrice != null && (
+            {headerPrice != null && (headerPrice as number) > 0 && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-white/20 text-white">
+                {priceIsFrom ? "from " : ""}
                 {formatTestPrice({ ...test, price: headerPrice as number }) || `£${(headerPrice as number).toFixed(0)}`}
               </span>
             )}
@@ -213,7 +223,9 @@ export default function ProviderTestDetailModal({
         <div className="p-6 space-y-6">
           {/* Description */}
           {(goodbodyStatic?.description || test.description) && (
-            <p className="text-base text-gray-700 leading-relaxed">{goodbodyStatic?.description || test.description}</p>
+            <p className="text-base text-gray-700 leading-relaxed whitespace-pre-line break-words">
+              {goodbodyStatic?.description || test.description}
+            </p>
           )}
 
           {/* Collection method */}
@@ -226,10 +238,10 @@ export default function ProviderTestDetailModal({
                 {collectionOptions.map((opt) => (
                   <li
                     key={opt.method}
-                    className="flex items-center justify-between gap-3 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2"
+                    className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2"
                   >
-                    <span>{opt.method}</span>
-                    <span className="font-semibold" style={{ color: brandColor }}>
+                    <span className="min-w-0 break-words">{opt.method}</span>
+                    <span className="font-semibold whitespace-nowrap" style={{ color: brandColor }}>
                       {opt.note
                         ?? (typeof opt.price === "number"
                           ? `£${opt.price}`
@@ -273,16 +285,26 @@ export default function ProviderTestDetailModal({
               <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                 Biomarkers Included
               </h4>
-              <div className="flex flex-wrap gap-2">
-                {biomarkers.map((b, i) => (
+              <div className="flex flex-wrap gap-2 max-h-72 overflow-y-auto pr-1">
+                {(showAllBiomarkers ? biomarkers : biomarkers.slice(0, 24)).map((b, i) => (
                   <span
                     key={i}
-                    className="inline-block px-3 py-1.5 rounded-full text-sm text-gray-700 bg-gray-100 border border-gray-200"
+                    className="inline-block px-3 py-1.5 rounded-full text-sm text-gray-700 bg-gray-100 border border-gray-200 break-words"
                   >
                     {b}
                   </span>
                 ))}
               </div>
+              {biomarkers.length > 24 && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllBiomarkers((v) => !v)}
+                  className="mt-2 text-xs font-semibold underline"
+                  style={{ color: brandColor }}
+                >
+                  {showAllBiomarkers ? "Show fewer" : `Show all ${biomarkers.length}`}
+                </button>
+              )}
             </div>
           )}
 
@@ -298,11 +320,11 @@ export default function ProviderTestDetailModal({
               >
                 {getProviderInitial(providerName)}
               </span>
-              <div>
-                <p className="font-semibold" style={{ color: brandColor }}>
+              <div className="min-w-0">
+                <p className="font-semibold truncate" style={{ color: brandColor }}>
                   {providerName}
                 </p>
-                <p className="text-sm text-gray-500">{tagline}</p>
+                <p className="text-sm text-gray-500 line-clamp-2">{tagline}</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -342,11 +364,37 @@ export default function ProviderTestDetailModal({
             <Button
               variant="outline"
               className="h-12 text-sm font-semibold border-gray-200 hover:bg-gray-50"
-              asChild
+              onClick={() => {
+                const compareTest: CompareTestData = {
+                  id: test.id,
+                  name: test.test_name,
+                  provider: providerName,
+                  price: (test.base_price ?? test.price ?? 0) as number,
+                  category: test.category || "General Health",
+                  description: test.description || "",
+                  available: true,
+                  features: {
+                    turnaround,
+                    collection: test.sample_type || "See provider",
+                  },
+                  providerLogo: "",
+                  biomarkerCount: displayedBiomarkerCount,
+                  url: test.url || undefined,
+                };
+                if (inCompare) {
+                  compareStore.remove(test.id);
+                } else {
+                  compareStore.add(compareTest);
+                }
+                onOpenChange(false);
+                navigate("/compare?openCompare=1");
+              }}
             >
-              <Link to={`/compare?test=${encodeURIComponent(test.test_name)}`}>
-                + Compare
-              </Link>
+              {inCompare ? (
+                <><Check className="w-4 h-4 mr-1" /> In compare</>
+              ) : (
+                "+ Compare"
+              )}
             </Button>
             <Button
               variant="ghost"

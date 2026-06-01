@@ -1,5 +1,7 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "react-router-dom";
+import { compareStore, useCompareItems } from "@/stores/compareStore";
 import MainLayout from "@/layouts/MainLayout";
 
 import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
@@ -53,9 +55,10 @@ const CompareTests = () => {
   // View mode state
   const [viewMode, setViewMode] = useState<TestViewMode>("list");
 
-  // Comparison states - no limit on number of tests
-  const [selectedTests, setSelectedTests] = useState<CompareTestData[]>([]);
+  // Comparison states - synced with global compareStore
+  const selectedTests = useCompareItems();
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Use the centralised data hook
   const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
@@ -118,25 +121,17 @@ const CompareTests = () => {
     }, 300);
   }, []);
 
-  // Comparison handlers - unlimited test selection
+  // Comparison handlers — delegate to global store
   const handleToggleSelect = useCallback((test: CompareTestData) => {
-    setSelectedTests(prev => {
-      const isAlreadySelected = prev.some(t => t.id === test.id);
-      
-      if (isAlreadySelected) {
-        return prev.filter(t => t.id !== test.id);
-      }
-      
-      return [...prev, test];
-    });
+    compareStore.toggle(test);
   }, []);
 
   const handleRemoveTest = useCallback((testId: string) => {
-    setSelectedTests(prev => prev.filter(t => t.id !== testId));
+    compareStore.remove(testId);
   }, []);
 
   const handleClearAll = useCallback(() => {
-    setSelectedTests([]);
+    compareStore.clear();
   }, []);
 
   const handleOpenComparison = useCallback(() => {
@@ -144,6 +139,16 @@ const CompareTests = () => {
       setIsComparisonOpen(true);
     }
   }, [selectedTests.length]);
+
+  // Auto-open comparison panel when arriving via ?openCompare=1
+  useEffect(() => {
+    if (searchParams.get("openCompare") === "1" && selectedTests.length >= 2) {
+      setIsComparisonOpen(true);
+      const next = new URLSearchParams(searchParams);
+      next.delete("openCompare");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, selectedTests.length, setSearchParams]);
 
   const isTestSelected = useCallback((testId: string) => {
     return selectedTests.some(t => t.id === testId);
