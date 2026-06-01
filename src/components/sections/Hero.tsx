@@ -37,7 +37,7 @@ const heroSlides: Array<{
   {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
-    headline: "The Easiest Way To Compare\nPrivate Health Tests & Cancer Screenings",
+    headline: "The Easiest Way To Compare",
     subline: "​",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
@@ -155,7 +155,7 @@ const Hero = () => {
                 <div className="text-center mb-1 sm:mb-2 flex-col flex items-center justify-center">
                   <h1
                     key={currentSlide}
-                    className="text-[1.6rem] sm:text-[2.4rem] md:text-[3rem] tracking-[-0.03em] leading-[1.1] text-white animate-fade-in font-bold font-sans lg:text-5xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)] text-center xl:text-6xl whitespace-pre-line"
+                    className="text-[2rem] sm:text-[3rem] md:text-[3.6rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans lg:text-6xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)] text-center xl:text-8xl"
                   >
                     {slide.headline}
                   </h1>
