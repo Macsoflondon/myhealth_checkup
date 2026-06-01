@@ -124,7 +124,23 @@ export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> =
                   onCtaClick={
                     onSelectTest ? () => onSelectTest(test) : undefined
                   }
+                  testDetails={{
+                    id: test.id,
+                    provider_id: test.provider,
+                    test_name: test.name,
+                    description: test.description ?? null,
+                    price: test.price ?? null,
+                    category: test.category ?? null,
+                    sample_type: test.features?.collection ?? null,
+                    biomarker_count: test.biomarkerCount ?? null,
+                    url: test.url ?? null,
+                    biomarkers_list: null,
+                    turnaround_days_text: test.features?.turnaround ?? null,
+                    base_price: null,
+                    collection_options: null,
+                  }}
                 />
+
               </CarouselItem>
             );
           })}

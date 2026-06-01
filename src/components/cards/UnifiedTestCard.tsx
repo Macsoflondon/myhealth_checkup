@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
+import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+
 
 /* ───────── Gradient star rating with partial fill ───────── */
 const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) => (
@@ -73,7 +76,10 @@ export interface UnifiedTestCardProps {
   onCompareToggle?: () => void;
   /** Additional className */
   className?: string;
+  /** Optional structured test data — when provided, tapping the card opens a detail modal */
+  testDetails?: ProviderTestCardData;
 }
+
 
 /* ───────── Component ───────── */
 export function UnifiedTestCard({
@@ -97,34 +103,54 @@ export function UnifiedTestCard({
   compareSelected,
   onCompareToggle,
   className,
+  testDetails,
 }: UnifiedTestCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   const handleCta = () => {
     if (onCtaClick) {
       onCtaClick();
+    } else if (testDetails) {
+      setDetailOpen(true);
     } else if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
+  const handleCardClick = () => {
+    if (testDetails) setDetailOpen(true);
+  };
+
   return (
+    <>
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={handleCardClick}
+      role={testDetails ? "button" : undefined}
+      tabIndex={testDetails ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (testDetails && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          setDetailOpen(true);
+        }
+      }}
       className={cn(
         "rounded-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden border transition-all duration-300",
         compareSelected
           ? "border-brand-turquoise shadow-lg shadow-brand-turquoise/20"
           : "border-border shadow-md hover:shadow-xl",
         hovered && "-translate-y-1",
+        testDetails && "cursor-pointer",
         className
       )}
       style={{
         background: "#ffffff",
       }}
     >
+
       {/* Top accent bar */}
       <div className="h-2 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink" />
 
@@ -255,7 +281,17 @@ export function UnifiedTestCard({
         </div>
       </div>
     </div>
+    {testDetails && (
+      <ProviderTestDetailModal
+        test={testDetails}
+        providerName={provider}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+      />
+    )}
+    </>
   );
 }
+
 
 export default UnifiedTestCard;
