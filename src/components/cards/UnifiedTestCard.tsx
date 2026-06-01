@@ -103,34 +103,54 @@ export function UnifiedTestCard({
   compareSelected,
   onCompareToggle,
   className,
+  testDetails,
 }: UnifiedTestCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   const handleCta = () => {
     if (onCtaClick) {
       onCtaClick();
+    } else if (testDetails) {
+      setDetailOpen(true);
     } else if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
+  const handleCardClick = () => {
+    if (testDetails) setDetailOpen(true);
+  };
+
   return (
+    <>
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={handleCardClick}
+      role={testDetails ? "button" : undefined}
+      tabIndex={testDetails ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (testDetails && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          setDetailOpen(true);
+        }
+      }}
       className={cn(
         "rounded-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden border transition-all duration-300",
         compareSelected
           ? "border-brand-turquoise shadow-lg shadow-brand-turquoise/20"
           : "border-border shadow-md hover:shadow-xl",
         hovered && "-translate-y-1",
+        testDetails && "cursor-pointer",
         className
       )}
       style={{
         background: "#ffffff",
       }}
     >
+
       {/* Top accent bar */}
       <div className="h-2 w-full bg-gradient-to-r from-brand-turquoise to-brand-pink" />
 
