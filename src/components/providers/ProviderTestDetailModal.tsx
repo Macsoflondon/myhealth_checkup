@@ -364,11 +364,37 @@ export default function ProviderTestDetailModal({
             <Button
               variant="outline"
               className="h-12 text-sm font-semibold border-gray-200 hover:bg-gray-50"
-              asChild
+              onClick={() => {
+                const compareTest: CompareTestData = {
+                  id: test.id,
+                  name: test.test_name,
+                  provider: providerName,
+                  price: (test.base_price ?? test.price ?? 0) as number,
+                  category: test.category || "General Health",
+                  description: test.description || "",
+                  available: true,
+                  features: {
+                    turnaround,
+                    collection: test.sample_type || "See provider",
+                  },
+                  providerLogo: "",
+                  biomarkerCount: displayedBiomarkerCount,
+                  url: test.url || undefined,
+                };
+                if (inCompare) {
+                  compareStore.remove(test.id);
+                } else {
+                  compareStore.add(compareTest);
+                }
+                onOpenChange(false);
+                navigate("/compare?openCompare=1");
+              }}
             >
-              <Link to={`/compare?test=${encodeURIComponent(test.test_name)}`}>
-                + Compare
-              </Link>
+              {inCompare ? (
+                <><Check className="w-4 h-4 mr-1" /> In compare</>
+              ) : (
+                "+ Compare"
+              )}
             </Button>
             <Button
               variant="ghost"
