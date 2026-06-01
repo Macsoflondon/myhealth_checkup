@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
+import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+
 
 /* ───────── Gradient star rating with partial fill ───────── */
 const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) => (
