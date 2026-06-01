@@ -72,26 +72,27 @@ const GoodbodyBentoShowcase = () => {
           <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
 
-        {/* Row 3: condensed text + CTA, footprint of 2x2 kit tiles */}
-        <div className="col-span-2 aspect-square rounded-2xl bg-white shadow-md p-4 flex flex-col justify-center text-center text-[#081129] font-sans">
-          <p className="text-[11px] leading-snug mb-2">
-            <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> — accessible, affordable and convenient.
-          </p>
-          <p className="text-[11px] leading-snug mb-2">
-            <strong className="text-[#47a970]">Clinical-grade accuracy</strong> with high-street accessibility, empowering confident health decisions.
-          </p>
-          <p className="text-[11px] leading-snug">
-            Over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP.
-          </p>
-          <div className="flex justify-center mt-3">
-            <Link
-              to="/provider/goodbody"
-              className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-200 text-xs"
-            >
-              View Goodbody Profile
-            </Link>
+        {/* Row 3: text + CTA, footprint of 2x2 kit tiles */}
+        <div className="col-span-2 min-h-[20rem] rounded-2xl bg-white shadow-md p-5 flex flex-col text-center text-[#081129] font-sans">
+          <div className="flex-1 flex flex-col justify-center space-y-3">
+            <p className="text-sm leading-relaxed">
+              <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> — accessible, affordable and convenient.
+            </p>
+            <p className="text-sm leading-relaxed">
+              <strong className="text-[#47a970]">Clinical-grade accuracy</strong> with high-street accessibility, empowering confident health decisions.
+            </p>
+            <p className="text-sm leading-relaxed">
+              Over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP.
+            </p>
           </div>
+          <Link
+            to="/provider/goodbody"
+            className="mt-4 w-full bg-brand-turquoise hover:bg-brand-pink text-white font-semibold py-3 rounded-lg transition-colors duration-200 text-sm"
+          >
+            View Goodbody Profile
+          </Link>
         </div>
+
 
         {/* Row 4: two kits */}
         <div className="aspect-square">
