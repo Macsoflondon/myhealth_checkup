@@ -39,17 +39,19 @@ const AdminAuth = () => {
     (async () => {
       setVerifyingRole(true);
       try {
-        const { data: hasRole, error } = await supabase.rpc('has_role', {
-          _user_id: user.id,
-          _role: 'admin',
-        });
+        const { data: roleRow, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
         if (cancelled) return;
         if (error) {
           logger.error('Admin role check failed:', error);
           setVerifyingRole(false);
           return;
         }
-        if (hasRole) {
+        if (roleRow) {
           navigate("/admin/test-dashboard");
         } else {
           // Regular user — silently send them home, keep their session intact.
@@ -69,10 +71,12 @@ const AdminAuth = () => {
   const verifyAfterLogin = async (userId: string) => {
     setVerifyingRole(true);
     try {
-      const { data: hasRole, error } = await supabase.rpc('has_role', {
-        _user_id: userId,
-        _role: 'admin'
-      });
+      const { data: roleRow, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
 
       if (error) {
         logger.error('Admin role check failed:', error);
@@ -82,7 +86,7 @@ const AdminAuth = () => {
         return;
       }
 
-      if (!hasRole) {
+      if (!roleRow) {
         logger.warn('Non-admin attempted admin login:', { userId });
         toast.error("Access denied. This portal is for administrators only.");
         await supabase.auth.signOut();
