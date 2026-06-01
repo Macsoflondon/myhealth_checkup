@@ -148,6 +148,33 @@ const AdminAuth = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    setEmailError("");
+    if (!email) {
+      setEmailError("Enter your admin email above, then click Forgot password");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        toast.error(error.message || "Failed to send reset email");
+      } else {
+        toast.success("Password reset email sent. Check your inbox.");
+      }
+    } catch {
+      toast.error("Failed to send reset email");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (authLoading || verifyingRole) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
