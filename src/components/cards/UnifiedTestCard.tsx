@@ -281,7 +281,17 @@ export function UnifiedTestCard({
         </div>
       </div>
     </div>
+    {testDetails && (
+      <ProviderTestDetailModal
+        test={testDetails}
+        providerName={provider}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+      />
+    )}
+    </>
   );
 }
+
 
 export default UnifiedTestCard;
