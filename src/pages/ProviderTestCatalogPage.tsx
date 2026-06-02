@@ -94,12 +94,12 @@ const ProviderTestCatalogPage = () => {
       );
     }
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((test) => test.category === selectedCategory);
+      filtered = filtered.filter((test) => normalizeCategory(test.category) === selectedCategory);
     }
     setFilteredTests(filtered);
   };
 
-  const categories = ["all", ...Array.from(new Set(tests.map((test) => test.category).filter(Boolean)))];
+  const categories = ["all", ...Array.from(new Set(tests.map((test) => normalizeCategory(test.category)).filter(Boolean)))];
 
   if (!provider) {
     return (
