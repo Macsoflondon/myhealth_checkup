@@ -12,6 +12,14 @@ import type { ProviderTestData } from "@/api/supabase/providers.api";
 import ProviderTestCard from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 
+const normalizeCategory = (cat: string | null | undefined): string | null => {
+  if (!cat) return null;
+  const lower = cat.toLowerCase().trim();
+  if (lower === "mens health") return "Men's Health";
+  if (lower === "womens health") return "Women's Health";
+  return cat;
+};
+
 const ProviderTestCatalogPage = () => {
   const { providerId } = useParams();
   const [tests, setTests] = useState<ProviderTestData[]>([]);
@@ -86,12 +94,12 @@ const ProviderTestCatalogPage = () => {
       );
     }
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((test) => test.category === selectedCategory);
+      filtered = filtered.filter((test) => normalizeCategory(test.category) === selectedCategory);
     }
     setFilteredTests(filtered);
   };
 
-  const categories = ["all", ...Array.from(new Set(tests.map((test) => test.category).filter(Boolean)))];
+  const categories = ["all", ...Array.from(new Set(tests.map((test) => normalizeCategory(test.category)).filter(Boolean)))];
 
   if (!provider) {
     return (

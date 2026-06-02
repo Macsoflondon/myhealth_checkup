@@ -68,6 +68,14 @@ interface ProviderTestsCatalogPageProps {
   providerId: string;
 }
 
+const normalizeCategory = (cat: string | null | undefined): string | null => {
+  if (!cat) return null;
+  const lower = cat.toLowerCase().trim();
+  if (lower === "mens health") return "Men's Health";
+  if (lower === "womens health") return "Women's Health";
+  return cat;
+};
+
 const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps) => {
   const config = PROVIDER_CONFIGS[providerId] ?? PROVIDER_CONFIGS["medichecks"]!;
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -90,12 +98,12 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
 
   const categories = useMemo(() => {
     if (!tests) return [];
-    return [...new Set(tests.map((t) => t.category).filter(Boolean))].sort() as string[];
+    return [...new Set(tests.map((t) => normalizeCategory(t.category)).filter(Boolean))].sort() as string[];
   }, [tests]);
 
   const filteredTests = useMemo(() => {
     if (!tests) return [];
-    const filtered = selectedCategory === "all" ? tests : tests.filter((t) => t.category === selectedCategory);
+    const filtered = selectedCategory === "all" ? tests : tests.filter((t) => normalizeCategory(t.category) === selectedCategory);
     return sortTests(filtered, sortBy);
   }, [tests, selectedCategory, sortBy]);
 
