@@ -138,6 +138,44 @@ serve(async (req) => {
       if (clinicFiltered.length >= 5) filtered = clinicFiltered;
     }
 
+    // Concern-driven prioritisation. When the user flags cancer screening,
+    // surface tests containing oncology biomarkers (PSA, AFP, CEA, CA-125,
+    // CA 19-9, CA 15-3, LDH, beta-hCG) ahead of hormone/general panels so
+    // the AI sees them first and PSA wins for males.
+    const CANCER_MARKERS = [
+      "psa", "prostate specific antigen", "afp", "alpha-fetoprotein",
+      "cea", "carcinoembryonic", "ca-125", "ca125", "ca 125",
+      "ca-19", "ca19", "ca 19", "ca-15", "ca15", "ca 15",
+      "ldh", "lactate dehydrogenase", "beta-hcg", "beta hcg",
+      "tumour marker", "tumor marker", "cancer",
+    ];
+    const wantsCancerScreening = concerns.some(
+      (c) => c === "cancer-screening" || c === "cancer" || c.toLowerCase().includes("cancer")
+    );
+
+    const isCancerTest = (t: any): boolean => {
+      const haystack = [
+        t.test_name, t.category, t.description,
+        Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "",
+        t.who_should_test,
+      ].filter(Boolean).join(" ").toLowerCase();
+      return CANCER_MARKERS.some((m) => haystack.includes(m));
+    };
+    const hasPsa = (t: any): boolean => {
+      const hay = (t.test_name + " " + (Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "")).toLowerCase();
+      return hay.includes("psa") || hay.includes("prostate specific antigen");
+    };
+
+    if (wantsCancerScreening) {
+      const cancerTests = filtered.filter(isCancerTest);
+      const otherTests = filtered.filter((t: any) => !isCancerTest(t));
+      if (gender === "male") {
+        // Surface PSA tests first for males
+        cancerTests.sort((a: any, b: any) => Number(hasPsa(b)) - Number(hasPsa(a)));
+      }
+      filtered = [...cancerTests, ...otherTests];
+    }
+
     // Limit to top 80 tests for AI context (sorted by relevance signals)
     const testsForAI = filtered.slice(0, 80).map((t: any) => ({
       id: t.id,
@@ -151,6 +189,7 @@ serve(async (req) => {
       clinicVisit: t.clinic_visit_available,
       description: t.description?.slice(0, 200),
       url: t.url,
+      isCancerMarkerTest: wantsCancerScreening ? isCancerTest(t) : undefined,
     }));
 
     const userProfile = {
