@@ -12,6 +12,14 @@ import type { ProviderTestData } from "@/api/supabase/providers.api";
 import ProviderTestCard from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 
+const normalizeCategory = (cat: string | null | undefined): string | null => {
+  if (!cat) return null;
+  const lower = cat.toLowerCase().trim();
+  if (lower === "mens health") return "Men's Health";
+  if (lower === "womens health") return "Women's Health";
+  return cat;
+};
+
 const ProviderTestCatalogPage = () => {
   const { providerId } = useParams();
   const [tests, setTests] = useState<ProviderTestData[]>([]);
