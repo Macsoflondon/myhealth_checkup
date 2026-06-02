@@ -17,6 +17,14 @@ import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailMo
 const PROVIDER_ID = "medichecks";
 const PROVIDER_NAME = "\n";
 
+const normalizeCategory = (cat: string | null | undefined): string | null => {
+  if (!cat) return null;
+  const lower = cat.toLowerCase().trim();
+  if (lower === "mens health") return "Men's Health";
+  if (lower === "womens health") return "Women's Health";
+  return cat;
+};
+
 const MedichecksTestsCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,7 +49,7 @@ const MedichecksTestsCatalogPage = () => {
 
   const categories = useMemo(() => {
     if (!tests) return [];
-    return [...new Set(tests.map((t) => t.category).filter(Boolean))].sort() as string[];
+    return [...new Set(tests.map((t) => normalizeCategory(t.category)).filter(Boolean))].sort() as string[];
   }, [tests]);
 
   const priceBounds = useMemo(() => {
@@ -54,7 +62,7 @@ const MedichecksTestsCatalogPage = () => {
     if (!tests) return [];
     let filtered = tests;
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((t) => t.category === selectedCategory);
+      filtered = filtered.filter((t) => normalizeCategory(t.category) === selectedCategory);
     }
     if (searchTerm.trim()) {
       const search = searchTerm.toLowerCase();
