@@ -7,32 +7,35 @@ import type { ProviderTestCardData } from "@/components/providers/ProviderTestCa
 
 
 /* ───────── Gradient star rating with partial fill ───────── */
-const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) => (
-  <div className="flex items-center gap-1.5">
-    {[1, 2, 3, 4, 5].map((i) => {
-      const fill = Math.min(1, Math.max(0, rating - (i - 1)));
-      const pct = `${Math.round(fill * 100)}%`;
-      const id = `star-${i}-${Math.round(rating * 10)}`;
-      return (
-        <svg key={i} width="16" height="16" viewBox="0 0 20 20" className="flex-shrink-0">
-          <defs>
-            <linearGradient id={id}>
-              <stop offset={pct} stopColor="#facc15" />
-              <stop offset={pct} stopColor="#d1d5db" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.5.91-5.33L2.27 6.67l5.34-.78z"
-            fill={`url(#${id})`}
-          />
-        </svg>
-      );
-    })}
-    <span className="text-xs font-semibold text-white ml-0.5 whitespace-nowrap">
-      {rating.toFixed(1)}&nbsp; ({reviews.toLocaleString()})
-    </span>
-  </div>
-);
+const StarRating = ({ rating, reviews }: { rating: number; reviews: number }) => {
+  if (reviews === 0) return null;
+  return (
+    <div className="flex items-center gap-1.5">
+      {[1, 2, 3, 4, 5].map((i) => {
+        const fill = Math.min(1, Math.max(0, rating - (i - 1)));
+        const pct = `${Math.round(fill * 100)}%`;
+        const id = `star-${i}-${Math.round(rating * 10)}`;
+        return (
+          <svg key={i} width="16" height="16" viewBox="0 0 20 20" className="flex-shrink-0">
+            <defs>
+              <linearGradient id={id}>
+                <stop offset={pct} stopColor="#facc15" />
+                <stop offset={pct} stopColor="#d1d5db" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.33L10 13.27l-4.77 2.5.91-5.33L2.27 6.67l5.34-.78z"
+              fill={`url(#${id})`}
+            />
+          </svg>
+        );
+      })}
+      <span className="text-xs font-semibold text-white ml-0.5 whitespace-nowrap">
+        {rating.toFixed(1)}&nbsp; ({reviews.toLocaleString()})
+      </span>
+    </div>
+  );
+};
 
 /* ───────── Types ───────── */
 export interface UnifiedTestCardProps {
