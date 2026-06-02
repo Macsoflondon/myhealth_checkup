@@ -217,6 +217,7 @@ RULES:
 6. Always recommend consulting a GP for concerning symptoms
 7. Consider age-appropriate screening (e.g. PSA for men 50+, comprehensive panels for 40+)
 8. For "preventive screening" goals, prioritise broad panels covering cardiovascular, metabolic, and nutritional markers
+9. CANCER SCREENING RULE: If the user's concerns include "cancer-screening", you MUST rank tests containing oncology biomarkers (PSA, AFP, CEA, CA-125, CA 19-9, CA 15-3, LDH, beta-hCG) above hormone, vitamin, or general wellness tests. Tests flagged with isCancerMarkerTest=true take absolute priority. For male users, a PSA-containing test MUST be the "Best Match". Never recommend a testosterone or hormone panel as the top match when cancer screening is the stated concern.
 
 RESPONSE FORMAT - Return ONLY valid JSON:
 {
