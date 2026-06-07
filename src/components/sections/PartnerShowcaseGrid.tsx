@@ -66,23 +66,24 @@ const PartnerShowcaseGrid = () => {
             </h2>
           </div>
 
-          <Suspense fallback={<BentoSkeleton />}>
+          <SafeBlock name="Featured Partner" fallback={<BentoSkeleton />}>
             <GoodbodyBentoShowcase />
-          </Suspense>
+          </SafeBlock>
         </div>
       </div>
 
-      <Suspense fallback={<BlockSkeleton />}>
+      <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
-      </Suspense>
+      </SafeBlock>
 
-      <Suspense fallback={<BlockSkeleton height="min-h-[280px]" />}>
+      <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
         <FeaturedPublications />
-      </Suspense>
+      </SafeBlock>
 
-      <Suspense fallback={<CtaSkeleton />}>
+      <SafeBlock name="Call To Action" fallback={<CtaSkeleton />}>
         <CallToAction />
-      </Suspense>
+      </SafeBlock>
+
 
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
