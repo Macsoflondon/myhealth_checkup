@@ -1698,6 +1698,21 @@ export type Database = {
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_protected_call_log: { Args: never; Returns: undefined }
       cleanup_role_audit_log: { Args: never; Returns: undefined }
+      get_biomarker_validation_issues: {
+        Args: never
+        Returns: {
+          biomarker_count: number
+          biomarkers_list: Json
+          category: string
+          id: string
+          issue: string
+          provider_id: string
+          scraped_at: string
+          test_name: string
+          updated_at: string
+          url: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
