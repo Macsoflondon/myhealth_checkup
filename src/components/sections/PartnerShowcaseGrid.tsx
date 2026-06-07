@@ -1,6 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+
 
 const FeaturedPublications = lazy(() =>
   import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
@@ -43,9 +45,35 @@ const CtaSkeleton = () => (
   </div>
 );
 
+const SectionErrorFallback = ({ name }: { name: string }) => (
+  <div className="container mx-auto px-4 py-6" role="alert">
+    <div className="max-w-4xl mx-auto rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white/70 text-sm">
+      We couldn't load the {name} section right now. The rest of the page is unaffected.
+    </div>
+  </div>
+);
+
+const SafeBlock = ({
+  name,
+  fallback,
+  children,
+}: {
+  name: string;
+  fallback: ReactNode;
+  children: ReactNode;
+}) => (
+  <ErrorBoundary fallback={<SectionErrorFallback name={name} />}>
+    <Suspense fallback={fallback}>{children}</Suspense>
+  </ErrorBoundary>
+);
+
+
 const PartnerShowcaseGrid = () => {
   return (
-    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden min-h-[800px]">
+    <section
+      data-hq-images
+      className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden min-h-[800px] [&_img]:[image-rendering:high-quality] [&_img]:[-webkit-backface-visibility:hidden] [&_img]:transform-gpu"
+    >
       <NavyDecorativeCircles />
 
       {/* Featured Partner — Goodbody */}
@@ -64,23 +92,24 @@ const PartnerShowcaseGrid = () => {
             </h2>
           </div>
 
-          <Suspense fallback={<BentoSkeleton />}>
+          <SafeBlock name="Featured Partner" fallback={<BentoSkeleton />}>
             <GoodbodyBentoShowcase />
-          </Suspense>
+          </SafeBlock>
         </div>
       </div>
 
-      <Suspense fallback={<BlockSkeleton />}>
+      <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
-      </Suspense>
+      </SafeBlock>
 
-      <Suspense fallback={<BlockSkeleton height="min-h-[280px]" />}>
+      <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
         <FeaturedPublications />
-      </Suspense>
+      </SafeBlock>
 
-      <Suspense fallback={<CtaSkeleton />}>
+      <SafeBlock name="Call To Action" fallback={<CtaSkeleton />}>
         <CallToAction />
-      </Suspense>
+      </SafeBlock>
+
 
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
