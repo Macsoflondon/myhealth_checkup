@@ -309,10 +309,9 @@ const AddonWarning = () => (
     <div className="flex items-start gap-3">
       <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
       <div>
-        <p className="font-semibold text-amber-800">Add-on Test</p>
+        <p className="font-semibold text-amber-800">Add-on Only</p>
         <p className="text-sm text-amber-700">
-          This biomarker test can only be added to another blood test panel from Lola Health. 
-          Browse their test packages to add this biomarker.
+          This test can only be purchased when bundled with one of Lola Health's full test panels. It cannot be ordered on its own.
         </p>
       </div>
     </div>
