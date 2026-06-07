@@ -70,7 +70,10 @@ const SafeBlock = ({
 
 const PartnerShowcaseGrid = () => {
   return (
-    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden min-h-[800px]">
+    <section
+      data-hq-images
+      className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden min-h-[800px] [&_img]:[image-rendering:high-quality] [&_img]:[-webkit-backface-visibility:hidden] [&_img]:transform-gpu"
+    >
       <NavyDecorativeCircles />
 
       {/* Featured Partner — Goodbody */}
