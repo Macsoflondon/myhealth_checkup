@@ -180,9 +180,19 @@ export function UnifiedTestCard({
           {name}
         </h3>
 
+        {/* Lola Health add-on notice */}
+        {/lola\s*health/i.test(provider) && (
+          <div className="mb-2 inline-flex items-start gap-1.5 rounded-md border border-amber-400/40 bg-amber-400/10 px-2.5 py-1.5 text-[11px] font-semibold text-amber-200">
+            <span aria-hidden>⚠</span>
+            <span>Add-on test — only available when purchased with a Lola Health full test.</span>
+          </div>
+        )}
+
         {/* Description */}
         <p className="text-sm leading-relaxed font-semibold text-white/90 line-clamp-3 min-h-[3.75rem] mb-4">
-          {description}
+          {/lola\s*health/i.test(provider)
+            ? `Add-on only: must be added to a Lola Health full test panel. ${description}`
+            : description}
         </p>
 
         {/* Stats row */}
