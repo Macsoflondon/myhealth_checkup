@@ -1,19 +1,54 @@
-
+import { lazy, Suspense } from "react";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { FeaturedPublications } from "@/components/sections/FeaturedPublications";
+const FeaturedPublications = lazy(() =>
+  import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
+);
+const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
+const GoodbodyBentoShowcase = lazy(() => import("@/components/sections/GoodbodyBentoShowcase"));
+const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
-import DreamHealthShowcase from "@/components/sections/DreamHealthShowcase";
-import GoodbodyBentoShowcase from "@/components/sections/GoodbodyBentoShowcase";
-import CallToAction from "@/components/sections/CallToAction";
+const BentoSkeleton = () => (
+  <div
+    className="min-h-[420px] sm:min-h-[480px] w-full rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-6 space-y-4"
+    aria-hidden="true"
+  >
+    <Skeleton className="h-6 w-1/3 bg-white/10" />
+    <Skeleton className="h-48 sm:h-64 w-full bg-white/10" />
+    <div className="grid grid-cols-2 gap-3">
+      <Skeleton className="h-20 bg-white/10" />
+      <Skeleton className="h-20 bg-white/10" />
+    </div>
+  </div>
+);
+
+const BlockSkeleton = ({ height = "min-h-[360px]" }: { height?: string }) => (
+  <div className={`container mx-auto px-4 ${height}`} aria-hidden="true">
+    <div className="max-w-6xl mx-auto space-y-4 py-8">
+      <Skeleton className="h-8 w-1/2 mx-auto bg-white/10" />
+      <Skeleton className="h-4 w-2/3 mx-auto bg-white/10" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        <Skeleton className="h-40 bg-white/10" />
+        <Skeleton className="h-40 bg-white/10" />
+        <Skeleton className="h-40 bg-white/10" />
+      </div>
+    </div>
+  </div>
+);
+
+const CtaSkeleton = () => (
+  <div className="container mx-auto px-4 min-h-[220px] py-8" aria-hidden="true">
+    <Skeleton className="h-40 w-full max-w-4xl mx-auto bg-white/10 rounded-2xl" />
+  </div>
+);
 
 const PartnerShowcaseGrid = () => {
-
   return (
-    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
+    <section className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden min-h-[800px]">
       <NavyDecorativeCircles />
 
-      {/* Featured Partners of the Month — Goodbody (moved above the publications carousel) */}
+      {/* Featured Partner — Goodbody */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
           <div className="md:col-span-2 text-center mt-2 sm:mt-4">
@@ -29,20 +64,24 @@ const PartnerShowcaseGrid = () => {
             </h2>
           </div>
 
-          <GoodbodyBentoShowcase />
+          <Suspense fallback={<BentoSkeleton />}>
+            <GoodbodyBentoShowcase />
+          </Suspense>
         </div>
       </div>
 
-      {/* Our Providers Most Popular Tests */}
-      <DreamHealthShowcase />
+      <Suspense fallback={<BlockSkeleton />}>
+        <DreamHealthShowcase />
+      </Suspense>
 
-      {/* Featured Publications carousel */}
-      <FeaturedPublications />
+      <Suspense fallback={<BlockSkeleton height="min-h-[280px]" />}>
+        <FeaturedPublications />
+      </Suspense>
 
-      {/* Take Control CTA slotted between the two tricolor dividers */}
-      <CallToAction />
+      <Suspense fallback={<CtaSkeleton />}>
+        <CallToAction />
+      </Suspense>
 
-      {/* Bottom gradient line */}
       <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
     </section>
   );
