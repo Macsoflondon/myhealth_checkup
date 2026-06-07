@@ -221,6 +221,12 @@ export default function ProviderTestDetailModal({
 
         {/* Body */}
         <div className="p-6 space-y-6">
+          {/lola\s*health/i.test(providerName) && (
+            <div className="rounded-lg border border-amber-400 bg-amber-50 p-4 text-sm text-amber-900">
+              <strong className="block mb-1">Add-on test</strong>
+              This test is only available as an add-on when purchased alongside one of Lola Health's full test panels. It cannot be ordered on its own.
+            </div>
+          )}
           {/* Description */}
           {(goodbodyStatic?.description || test.description) && (
             <p className="text-base text-gray-700 leading-relaxed whitespace-pre-line break-words">
