@@ -1,6 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+
 
 const FeaturedPublications = lazy(() =>
   import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
