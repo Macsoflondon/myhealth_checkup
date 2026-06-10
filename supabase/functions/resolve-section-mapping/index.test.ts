@@ -45,6 +45,15 @@ function makeFake(opts: {
         error: opts.userId ? null : { message: "no user" },
       }),
     },
+    rpc: (fn: string, args: Record<string, unknown>) => {
+      if (fn === "has_role" && args._role === "admin") {
+        return Promise.resolve({
+          data: opts.isAdmin && args._user_id === opts.userId,
+          error: null,
+        });
+      }
+      return Promise.resolve({ data: false, error: null });
+    },
     from(table: string) {
       const ctx: any = { table, filters: {} as Record<string, any> };
 
