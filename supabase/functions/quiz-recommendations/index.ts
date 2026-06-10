@@ -106,6 +106,24 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Persistent rate limit, keyed by authenticated user when present, otherwise client IP
+    let clientKey = `ip:${clientIp}`;
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      try {
+        const { data: userData } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+        if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
+      } catch (_) { /* fall back to IP */ }
+    }
+    const allowed = await checkPersistentRateLimit(supabase, "quiz-recommendations", clientKey);
+    if (!allowed) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+
     // Fetch active provider tests with relevant fields
     const { data: tests, error: dbError } = await supabase
       .from("provider_tests")
