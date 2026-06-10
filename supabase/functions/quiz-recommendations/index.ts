@@ -7,20 +7,41 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// In-memory rate limiter: 5 requests per IP per 60 seconds
+// Persistent shared rate limiter: 5 requests per client_key per 60 seconds
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 5;
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+async function checkPersistentRateLimit(
+  supabase: ReturnType<typeof createClient>,
+  endpoint: string,
+  clientKey: string,
+): Promise<boolean> {
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
+  const { data, error } = await supabase
+    .from("api_rate_limits")
+    .select("id, request_count")
+    .eq("endpoint", endpoint)
+    .eq("client_key", clientKey)
+    .gte("window_start", windowStart)
+    .maybeSingle();
+  if (error) {
+    console.error("rate limit lookup error:", error);
+    return true; // fail-open to avoid breaking UX on transient lookup errors
+  }
+  if (!data) {
+    await supabase.from("api_rate_limits").insert({
+      endpoint,
+      client_key: clientKey,
+      request_count: 1,
+      window_start: new Date().toISOString(),
+    });
     return true;
   }
-  if (entry.count >= RATE_LIMIT_MAX) return false;
-  entry.count++;
+  if (data.request_count >= RATE_LIMIT_MAX) return false;
+  await supabase
+    .from("api_rate_limits")
+    .update({ request_count: data.request_count + 1 })
+    .eq("id", data.id);
   return true;
 }
 
@@ -29,14 +50,8 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Rate limiting by IP
+  // Rate limit deferred until after supabase client is created (persistent store)
   const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (!checkRateLimit(clientIp)) {
-    return new Response(
-      JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
-      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-  }
 
   try {
     const body = await req.json();
@@ -90,6 +105,24 @@ serve(async (req) => {
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Persistent rate limit, keyed by authenticated user when present, otherwise client IP
+    let clientKey = `ip:${clientIp}`;
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      try {
+        const { data: userData } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+        if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
+      } catch (_) { /* fall back to IP */ }
+    }
+    const allowed = await checkPersistentRateLimit(supabase, "quiz-recommendations", clientKey);
+    if (!allowed) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
 
     // Fetch active provider tests with relevant fields
     const { data: tests, error: dbError } = await supabase
