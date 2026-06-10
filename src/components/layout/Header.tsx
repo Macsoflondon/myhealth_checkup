@@ -127,16 +127,16 @@ const Header = ({ className }: HeaderProps) => {
           <PromoTicker />
         <header className="bg-[hsl(var(--brand-navy))] shadow-md">
           <div className="container mx-auto max-w-full px-3 sm:px-4 bg-[#08122b]">
-              <div className="py-2.5 flex items-center justify-between gap-4 sm:gap-6 min-w-0 bg-[#08122b]">
-                <Link to="/" className="flex min-w-0 flex-1 items-center overflow-hidden bg-[#08122b]">
+              <div className="relative py-2.5 flex items-center justify-center min-w-0 bg-[#08122b]">
+                <Link to="/" className="flex items-center justify-center overflow-hidden bg-[#08122b]">
                   <img
                     src={mainLogo}
                     alt="myhealth checkup"
-                    className="h-[70px] xs:h-[80px] sm:h-[90px] w-auto max-w-[calc(100vw-12rem)] object-contain object-left"
+                    className="h-[70px] xs:h-[80px] sm:h-[90px] w-auto max-w-[calc(100vw-9rem)] object-contain object-center"
                   />
                 </Link>
 
-                <nav className="flex shrink-0 items-center gap-2" aria-label="User controls">
+                <nav className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex shrink-0 items-center gap-2" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu isMobile />
                   <div className="pl-1 border-l border-white/20">
