@@ -194,12 +194,12 @@ const Header = ({ className }: HeaderProps) => {
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
             <div
               className={cn(
-                "flex items-center gap-2 transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
+                "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
                 isSearchDocked ? "py-8 md:py-10" : "py-4 md:py-6 lg:py-8"
               )}
             >
-              {/* Left: Logo + Tagline */}
-              <div className="flex-1 min-w-0 flex items-center justify-start">
+              {/* Center: Logo + Tagline (truly page-centered) */}
+              {!isSearchDocked && (
                 <Link
                   to="/"
                   className="flex items-center flex-shrink-0 min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
@@ -207,35 +207,18 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={mainLogo}
                     alt="myhealth checkup"
-                    className={cn(
-                      "w-auto object-contain flex-shrink-0 transition-[height] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                      isSearchDocked
-                        ? "h-12 md:h-14 lg:h-16"
-                        : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
-                    )}
+                    className="w-auto object-contain flex-shrink-0 h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
                   />
                   <img
                     src={headerTagline}
                     alt="Your Health. Your Choice. One Trusted Platform!"
-                    aria-hidden={isSearchDocked}
-                    className={cn(
-                      "w-auto object-contain transition-[height,max-width,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                      isSearchDocked
-                        ? "h-0 max-w-0 opacity-0"
-                        : "h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw] opacity-100"
-                    )}
+                    className="w-auto object-contain h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw]"
                   />
                 </Link>
-              </div>
+              )}
 
               {/* Center: docked search */}
-              <div
-                className={cn(
-                  "flex-1 flex items-center justify-center transition-opacity duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                  isSearchDocked ? "opacity-100" : "opacity-0 pointer-events-none"
-                )}
-                aria-hidden={!isSearchDocked}
-              >
+              {isSearchDocked && (
                 <div className="relative w-full max-w-[640px]">
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/80 w-4 h-4 md:w-5 md:h-5" />
                   <input
@@ -245,14 +228,13 @@ const Header = ({ className }: HeaderProps) => {
                     value={dockedSearchTerm}
                     onChange={(e) => setDockedSearchTerm(e.target.value)}
                     onKeyDown={handleDockedSearchKey}
-                    tabIndex={isSearchDocked ? 0 : -1}
                     className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white/10 border-2 border-[#22c0d4]/60 text-white placeholder:text-white/70 backdrop-blur-md focus:ring-2 focus:ring-white/30 focus:outline-none"
                   />
                 </div>
-              </div>
+              )}
 
-              {/* Right controls — always anchored right */}
-              <div className="flex-1 min-w-0 flex items-center justify-end">
+              {/* Right controls — absolutely anchored so they don't pull the logo off-centre */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
