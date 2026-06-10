@@ -45,14 +45,14 @@ export function createHandler(deps: HandlerDeps) {
       if (userErr || !userData.user) return json({ error: "Unauthorized" }, 401);
 
       const admin = deps.adminClient;
-      const { data: roleRows, error: roleErr } = await admin
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userData.user.id)
-        .eq("role", "admin")
-        .limit(1);
+      // Use has_role RPC via the user-scoped client so the AAL2/MFA check
+      // inside has_role() is enforced (service-role queries bypass RLS and MFA).
+      const { data: isAdmin, error: roleErr } = await (userClient as any).rpc("has_role", {
+        _user_id: userData.user.id,
+        _role: "admin",
+      });
       if (roleErr) return json({ error: (roleErr as any).message ?? "role lookup failed" }, 500);
-      if (!roleRows || roleRows.length === 0) return json({ error: "Forbidden" }, 403);
+      if (!isAdmin) return json({ error: "Forbidden" }, 403);
 
       const body = await req.json().catch(() => ({}));
       const {
