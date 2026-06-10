@@ -1,24 +1,46 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// In-memory rate limiter: 5 requests per IP per 60 seconds
+// Persistent shared rate limiter: 5 requests per client_key per 60 seconds
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 5;
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+async function checkPersistentRateLimit(
+  supabase: ReturnType<typeof createClient>,
+  endpoint: string,
+  clientKey: string,
+): Promise<boolean> {
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
+  const { data, error } = await supabase
+    .from("api_rate_limits")
+    .select("id, request_count")
+    .eq("endpoint", endpoint)
+    .eq("client_key", clientKey)
+    .gte("window_start", windowStart)
+    .maybeSingle();
+  if (error) {
+    console.error("rate limit lookup error:", error);
     return true;
   }
-  if (entry.count >= RATE_LIMIT_MAX) return false;
-  entry.count++;
+  if (!data) {
+    await supabase.from("api_rate_limits").insert({
+      endpoint,
+      client_key: clientKey,
+      request_count: 1,
+      window_start: new Date().toISOString(),
+    });
+    return true;
+  }
+  if (data.request_count >= RATE_LIMIT_MAX) return false;
+  await supabase
+    .from("api_rate_limits")
+    .update({ request_count: data.request_count + 1 })
+    .eq("id", data.id);
   return true;
 }
 
