@@ -107,9 +107,21 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Rate limiting by IP
+  // Persistent shared rate limit, keyed by authenticated user when present, otherwise client IP
   const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (!checkRateLimit(clientIp)) {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  const rateClient = createClient(supabaseUrl, supabaseServiceKey);
+  let clientKey = `ip:${clientIp}`;
+  const authHeader = req.headers.get("Authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    try {
+      const { data: userData } = await rateClient.auth.getUser(authHeader.replace("Bearer ", ""));
+      if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
+    } catch (_) { /* fall back to IP */ }
+  }
+  const allowed = await checkPersistentRateLimit(rateClient, "test-recommendations", clientKey);
+  if (!allowed) {
     return new Response(
       JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
       { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
