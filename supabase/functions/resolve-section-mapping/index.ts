@@ -25,6 +25,7 @@ export interface SbLike {
     getUser: () => Promise<{ data: { user: { id: string } | null }; error: unknown }>;
   };
   from: (table: string) => any;
+  rpc?: (fn: string, args: Record<string, unknown>) => any;
 }
 
 export interface HandlerDeps {
