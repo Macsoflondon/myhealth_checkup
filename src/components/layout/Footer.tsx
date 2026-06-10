@@ -70,35 +70,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* ========== CMA / DMCC Compliance Statement ========== */}
-          <div
-            id="cma-dmcc-compliance"
-            role="note"
-            aria-label="CMA and DMCC compliance statement"
-            className="mt-3 sm:mt-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
-          >
-            <p className="text-xs sm:text-sm leading-relaxed">
-              <span className="font-semibold text-brand-turquoise">CMA &amp; DMCC compliance:</span>{" "}
-              <span className="text-white/85">
-                myhealth checkup operates in full compliance with the UK Competition and Markets Authority (CMA)
-                and the Digital Markets, Competition and Consumers Act 2024. Prices include mandatory fees where
-                known, sponsored placements are clearly labelled, ranking criteria are disclosed, and listings are
-                refreshed regularly for accuracy. Read our{" "}
-                <Link to="/how-we-rank" className="underline hover:text-brand-turquoise transition-colors">
-                  ranking methodology
-                </Link>{" "}
-                and{" "}
-                <Link to="/fair-trading" className="underline hover:text-brand-turquoise transition-colors">
-                  fair trading policy
-                </Link>
-                . To raise a concern, see our{" "}
-                <Link to="/complaints" className="underline hover:text-brand-turquoise transition-colors">
-                  feedback &amp; complaints process
-                </Link>
-                .
-              </span>
-            </p>
-          </div>
         </div>
       </div>
 
