@@ -80,17 +80,29 @@ const goalOptions = [
   { id: 'fitness-performance', label: 'Fitness & performance optimisation' },
 ];
 
-const concernOptions = [
+type GenderFilter = 'male' | 'female' | 'all';
+type AgeId = 'under-30' | '30-39' | '40-49' | '50-59' | '60-plus';
+
+interface FilterableOption {
+  id: string;
+  label: string;
+  gender?: GenderFilter;
+  ages?: AgeId[];
+}
+
+const concernOptions: FilterableOption[] = [
   { id: 'fatigue', label: 'Fatigue or low energy' },
   { id: 'hormones', label: 'Hormonal changes' },
   { id: 'heart', label: 'Heart & cholesterol' },
   { id: 'thyroid', label: 'Thyroid' },
-  { id: 'fertility', label: 'Fertility - Prenatal' },
+  { id: 'fertility', label: 'Fertility - Prenatal', gender: 'female', ages: ['under-30', '30-39', '40-49'] },
+  { id: 'prostate', label: 'Prostate health', gender: 'male', ages: ['40-49', '50-59', '60-plus'] },
   { id: 'vitamins', label: 'Vitamin deficiencies' },
   { id: 'digestive', label: 'Digestive issues' },
   { id: 'weight', label: 'Weight management' },
   { id: 'sexual-health', label: 'Sexual health' },
-  { id: 'cancer-screening', label: 'Cancer screening' },
+  { id: 'menopause', label: 'Menopause', gender: 'female', ages: ['40-49', '50-59', '60-plus'] },
+  { id: 'cancer-screening', label: 'Cancer screening', ages: ['30-39', '40-49', '50-59', '60-plus'] },
   { id: 'liver', label: 'Liver health' },
   { id: 'diabetes', label: 'Diabetes risk' },
   { id: 'bone-joint', label: 'Bone & joint health' },
@@ -98,11 +110,13 @@ const concernOptions = [
   { id: 'none', label: 'None — just a general check' },
 ];
 
-const symptomOptions = [
+const symptomOptions: FilterableOption[] = [
   { id: 'tiredness', label: 'Unexplained tiredness' },
   { id: 'brain-fog', label: 'Brain fog or poor concentration' },
   { id: 'hair-skin', label: 'Hair loss or skin changes' },
-  { id: 'irregular-periods', label: 'Irregular periods' },
+  { id: 'irregular-periods', label: 'Irregular periods', gender: 'female' },
+  { id: 'hot-flushes', label: 'Hot flushes or night sweats', gender: 'female', ages: ['40-49', '50-59', '60-plus'] },
+  { id: 'low-libido', label: 'Low libido or erectile issues', gender: 'male' },
   { id: 'joint-pain', label: 'Joint pain or stiffness' },
   { id: 'frequent-infections', label: 'Frequent infections' },
   { id: 'mood-anxiety', label: 'Mood changes or anxiety' },
@@ -110,6 +124,21 @@ const symptomOptions = [
   { id: 'family-history', label: 'Family history of chronic disease' },
   { id: 'none', label: 'None of the above' },
 ];
+
+const filterByProfile = (
+  options: FilterableOption[],
+  gender: string,
+  ageRange: string,
+): FilterableOption[] => {
+  return options.filter(o => {
+    if (o.gender && o.gender !== 'all') {
+      // Only enforce when user has selected a binary gender; show all when non-binary / prefer-not-to-say / empty
+      if ((gender === 'male' || gender === 'female') && o.gender !== gender) return false;
+    }
+    if (o.ages && ageRange && !o.ages.includes(ageRange as AgeId)) return false;
+    return true;
+  });
+};
 
 const sampleMethodOptions = [
   { id: 'home-kit', label: 'Home test kit' },
