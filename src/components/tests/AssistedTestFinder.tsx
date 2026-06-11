@@ -514,7 +514,7 @@ export const AssistedTestFinder = () => {
         return (
           <StepLayout title="Do you have any specific areas of concern?" subtitle="Select all that apply.">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-w-3xl mx-auto">
-              {concernOptions.map(o => (
+              {filterByProfile(concernOptions, answers.gender, answers.ageRange).map(o => (
                 <OptionCard key={o.id} label={o.label} selected={answers.concerns.includes(o.id)} onClick={() => handleMultiSelect('concerns', o.id)} />
               ))}
             </div>
@@ -534,7 +534,7 @@ export const AssistedTestFinder = () => {
         return (
           <StepLayout title="Are you experiencing any of these?" subtitle="Optional — select any that apply, or skip.">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-              {symptomOptions.map(o => (
+              {filterByProfile(symptomOptions, answers.gender, answers.ageRange).map(o => (
                 <OptionCard key={o.id} label={o.label} selected={answers.symptoms.includes(o.id)} onClick={() => handleMultiSelect('symptoms', o.id)} />
               ))}
             </div>
