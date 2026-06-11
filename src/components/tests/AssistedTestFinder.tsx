@@ -235,18 +235,16 @@ export const AssistedTestFinder = () => {
     <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
       <Button
         onClick={handleBack}
-        variant="outline"
-        className="flex items-center gap-2 px-6 py-3 rounded-full border-muted-foreground/30"
+        className="flex items-center gap-2 px-6 py-3 rounded-full bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-transparent"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-4 h-4 text-white" />
         Back
       </Button>
       <Button
         onClick={handleRestart}
-        variant="outline"
-        className="flex items-center gap-2 px-6 py-3 rounded-full border-secondary/40 text-secondary"
+        className="flex items-center gap-2 px-6 py-3 rounded-full bg-brand-pink text-white hover:bg-brand-pink/90 border-transparent"
       >
-        <RotateCcw className="w-4 h-4" />
+        <RotateCcw className="w-4 h-4 text-white" />
         Restart
       </Button>
     </div>
