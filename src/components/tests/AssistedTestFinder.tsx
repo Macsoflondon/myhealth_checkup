@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw, Shield, Loader2, ExternalLink } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { trackEvent } from '@/lib/analytics';
 
 type Step =
   | 'welcome'
@@ -184,13 +185,56 @@ export const AssistedTestFinder = () => {
   });
   const [results, setResults] = useState<AIResults | null>(null);
   const navigate = useNavigate();
+  const startedAtRef = useRef<number | null>(null);
+  const quizIdRef = useRef<string>(
+    (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`
+  );
 
   const currentStepIndex = stepOrder.indexOf(currentStep as any);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Emit step_viewed with what was shown vs. filtered out (for completion-rate analysis).
+    if (currentStep === 'concerns' || currentStep === 'symptoms') {
+      const all = currentStep === 'concerns' ? concernOptions : symptomOptions;
+      const shown = filterByProfile(all, answers.gender, answers.ageRange);
+      const shownIds = shown.map(o => o.id);
+      const filteredOutIds = all.filter(o => !shownIds.includes(o.id)).map(o => o.id);
+      trackEvent('quiz_step_viewed', {
+        quiz_id: quizIdRef.current,
+        step: currentStep,
+        step_index: currentStepIndex + 1,
+        gender: answers.gender || 'unspecified',
+        age_range: answers.ageRange || 'unspecified',
+        shown_count: shownIds.length,
+        filtered_out_count: filteredOutIds.length,
+        shown_options: shownIds.join(','),
+        filtered_out_options: filteredOutIds.join(','),
+      });
+    } else if (currentStep !== 'welcome' && currentStep !== 'loading' && currentStep !== 'results') {
+      trackEvent('quiz_step_viewed', {
+        quiz_id: quizIdRef.current,
+        step: currentStep,
+        step_index: currentStepIndex + 1,
+      });
+    }
   }, [currentStep]);
+
+  // Track abandonment on unmount if user left mid-quiz.
+  useEffect(() => {
+    return () => {
+      if (startedAtRef.current && currentStep !== 'results') {
+        trackEvent('quiz_abandoned', {
+          quiz_id: quizIdRef.current,
+          last_step: currentStep,
+          duration_ms: Date.now() - startedAtRef.current,
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleBack = () => {
     if (currentStep === 'results' || currentStep === 'loading') {
@@ -206,6 +250,15 @@ export const AssistedTestFinder = () => {
     setCurrentStep('welcome');
     setAnswers({ who: '', gender: '', ageRange: '', goal: '', concerns: [], symptoms: [], sampleMethod: '', budget: '', speed: '' });
     setResults(null);
+    quizIdRef.current = (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`;
+    startedAtRef.current = null;
+    trackEvent('quiz_restarted', { quiz_id: quizIdRef.current });
+  };
+
+  const handleStart = () => {
+    startedAtRef.current = Date.now();
+    trackEvent('quiz_started', { quiz_id: quizIdRef.current });
+    setCurrentStep('who');
   };
 
   const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
@@ -236,31 +289,79 @@ export const AssistedTestFinder = () => {
   };
 
   const handleSubmitQuiz = async () => {
+    // Sanitise: drop any concern/symptom that isn't valid for this gender + age,
+    // so excluded male/female-related conditions can't influence ranking even if
+    // an earlier answer was retained from before a gender/age change.
+    const allowedConcernIds = new Set(
+      filterByProfile(concernOptions, answers.gender, answers.ageRange).map(o => o.id)
+    );
+    const allowedSymptomIds = new Set(
+      filterByProfile(symptomOptions, answers.gender, answers.ageRange).map(o => o.id)
+    );
+    const cleanedConcerns = answers.concerns.filter(id => allowedConcernIds.has(id) || id === 'none');
+    const cleanedSymptoms = answers.symptoms.filter(id => allowedSymptomIds.has(id) || id === 'none');
+    const droppedConcerns = answers.concerns.filter(id => !cleanedConcerns.includes(id));
+    const droppedSymptoms = answers.symptoms.filter(id => !cleanedSymptoms.includes(id));
+
+    const sanitisedAnswers: QuizAnswers = {
+      ...answers,
+      concerns: cleanedConcerns,
+      symptoms: cleanedSymptoms,
+    };
+
+    if (droppedConcerns.length || droppedSymptoms.length) {
+      trackEvent('quiz_answers_sanitised', {
+        quiz_id: quizIdRef.current,
+        dropped_concerns: droppedConcerns.join(','),
+        dropped_symptoms: droppedSymptoms.join(','),
+        gender: answers.gender,
+        age_range: answers.ageRange,
+      });
+    }
+
+    trackEvent('quiz_submitted', {
+      quiz_id: quizIdRef.current,
+      gender: answers.gender,
+      age_range: answers.ageRange,
+      goal: answers.goal,
+      concerns_count: cleanedConcerns.length,
+      symptoms_count: cleanedSymptoms.length,
+      duration_ms: startedAtRef.current ? Date.now() - startedAtRef.current : 0,
+    });
+
     setCurrentStep('loading');
     try {
       const { data, error } = await supabase.functions.invoke('quiz-recommendations', {
-        body: answers,
+        body: sanitisedAnswers,
       });
 
       if (error) {
         console.error('Quiz error:', error);
         toast.error('Failed to generate recommendations. Please try again.');
         setCurrentStep('preferences');
+        trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'invoke_error' });
         return;
       }
 
       if (data?.error) {
         toast.error(data.error);
         setCurrentStep('preferences');
+        trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'fn_error' });
         return;
       }
 
       setResults(data as AIResults);
       setCurrentStep('results');
+      trackEvent('quiz_completed', {
+        quiz_id: quizIdRef.current,
+        recommendations_count: (data as AIResults)?.recommendations?.length ?? 0,
+        duration_ms: startedAtRef.current ? Date.now() - startedAtRef.current : 0,
+      });
     } catch (e) {
       console.error('Quiz error:', e);
       toast.error('Something went wrong. Please try again.');
       setCurrentStep('preferences');
+      trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'exception' });
     }
   };
 
@@ -332,7 +433,7 @@ export const AssistedTestFinder = () => {
               Answer a few questions about your health goals and we'll recommend the most relevant tests from trusted UK providers.
             </p>
             <Button
-              onClick={() => setCurrentStep('who')}
+              onClick={handleStart}
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
             >
               Start Quiz
