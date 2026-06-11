@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw, Shield, Loader2, ExternalLink } from 'lucide-react';
@@ -158,6 +158,10 @@ export const AssistedTestFinder = () => {
 
   const currentStepIndex = stepOrder.indexOf(currentStep as any);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep]);
 
   const handleBack = () => {
     if (currentStep === 'results' || currentStep === 'loading') {
