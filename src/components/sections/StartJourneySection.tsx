@@ -9,7 +9,7 @@ const StartJourneySection = () => {
             {/* Eyebrow */}
             <div className="flex items-center gap-2 mb-5">
               <div className="h-px w-6 bg-slate-200" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
                 Start Your Journey
               </span>
               <div className="h-px w-6 bg-slate-200" />
