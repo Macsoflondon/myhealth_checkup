@@ -289,31 +289,79 @@ export const AssistedTestFinder = () => {
   };
 
   const handleSubmitQuiz = async () => {
+    // Sanitise: drop any concern/symptom that isn't valid for this gender + age,
+    // so excluded male/female-related conditions can't influence ranking even if
+    // an earlier answer was retained from before a gender/age change.
+    const allowedConcernIds = new Set(
+      filterByProfile(concernOptions, answers.gender, answers.ageRange).map(o => o.id)
+    );
+    const allowedSymptomIds = new Set(
+      filterByProfile(symptomOptions, answers.gender, answers.ageRange).map(o => o.id)
+    );
+    const cleanedConcerns = answers.concerns.filter(id => allowedConcernIds.has(id) || id === 'none');
+    const cleanedSymptoms = answers.symptoms.filter(id => allowedSymptomIds.has(id) || id === 'none');
+    const droppedConcerns = answers.concerns.filter(id => !cleanedConcerns.includes(id));
+    const droppedSymptoms = answers.symptoms.filter(id => !cleanedSymptoms.includes(id));
+
+    const sanitisedAnswers: QuizAnswers = {
+      ...answers,
+      concerns: cleanedConcerns,
+      symptoms: cleanedSymptoms,
+    };
+
+    if (droppedConcerns.length || droppedSymptoms.length) {
+      trackEvent('quiz_answers_sanitised', {
+        quiz_id: quizIdRef.current,
+        dropped_concerns: droppedConcerns.join(','),
+        dropped_symptoms: droppedSymptoms.join(','),
+        gender: answers.gender,
+        age_range: answers.ageRange,
+      });
+    }
+
+    trackEvent('quiz_submitted', {
+      quiz_id: quizIdRef.current,
+      gender: answers.gender,
+      age_range: answers.ageRange,
+      goal: answers.goal,
+      concerns_count: cleanedConcerns.length,
+      symptoms_count: cleanedSymptoms.length,
+      duration_ms: startedAtRef.current ? Date.now() - startedAtRef.current : 0,
+    });
+
     setCurrentStep('loading');
     try {
       const { data, error } = await supabase.functions.invoke('quiz-recommendations', {
-        body: answers,
+        body: sanitisedAnswers,
       });
 
       if (error) {
         console.error('Quiz error:', error);
         toast.error('Failed to generate recommendations. Please try again.');
         setCurrentStep('preferences');
+        trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'invoke_error' });
         return;
       }
 
       if (data?.error) {
         toast.error(data.error);
         setCurrentStep('preferences');
+        trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'fn_error' });
         return;
       }
 
       setResults(data as AIResults);
       setCurrentStep('results');
+      trackEvent('quiz_completed', {
+        quiz_id: quizIdRef.current,
+        recommendations_count: (data as AIResults)?.recommendations?.length ?? 0,
+        duration_ms: startedAtRef.current ? Date.now() - startedAtRef.current : 0,
+      });
     } catch (e) {
       console.error('Quiz error:', e);
       toast.error('Something went wrong. Please try again.');
       setCurrentStep('preferences');
+      trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'exception' });
     }
   };
 
