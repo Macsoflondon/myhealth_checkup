@@ -132,11 +132,12 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={mainLogo}
                     alt="myhealth checkup"
-                    className="h-[70px] xs:h-[80px] sm:h-[90px] w-auto max-w-[calc(100vw-9rem)] object-contain object-center"
+                    className="h-[56px] xs:h-[64px] sm:h-[72px] w-auto max-w-[calc(100vw-12rem)] object-contain object-center"
                   />
                 </Link>
 
-                <nav className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex shrink-0 items-center gap-2" aria-label="User controls">
+                <nav className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex shrink-0 items-center gap-1.5" aria-label="User controls">
+
                   <LanguageSwitcher />
                   <UserMenu isMobile />
                   <div className="pl-1 border-l border-white/20">
