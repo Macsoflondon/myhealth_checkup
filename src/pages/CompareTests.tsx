@@ -376,7 +376,7 @@ const CompareTests = () => {
                             size="lg"
                             onClick={handleLoadMore}
                             disabled={isLoadingMore}
-                            className="min-w-[200px]"
+                            className="min-w-[200px] bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy hover:text-white"
                           >
                             {isLoadingMore ? (
                               <>
