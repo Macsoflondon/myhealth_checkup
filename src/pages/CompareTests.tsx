@@ -262,9 +262,9 @@ const CompareTests = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => setShowFilters(!showFilters)}
-                      className="lg:hidden"
+                      className="lg:hidden bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy"
                     >
-                      <Filter size={18} className="mr-2" />
+                      <Filter size={18} className="mr-2 text-white" />
                       Filters
                     </Button>
                     <p className="text-sm text-muted-foreground">
