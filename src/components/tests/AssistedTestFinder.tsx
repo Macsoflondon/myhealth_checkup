@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw, Shield, Loader2, ExternalLink } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { trackEvent } from '@/lib/analytics';
 
 type Step =
   | 'welcome'
@@ -184,13 +185,56 @@ export const AssistedTestFinder = () => {
   });
   const [results, setResults] = useState<AIResults | null>(null);
   const navigate = useNavigate();
+  const startedAtRef = useRef<number | null>(null);
+  const quizIdRef = useRef<string>(
+    (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`
+  );
 
   const currentStepIndex = stepOrder.indexOf(currentStep as any);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Emit step_viewed with what was shown vs. filtered out (for completion-rate analysis).
+    if (currentStep === 'concerns' || currentStep === 'symptoms') {
+      const all = currentStep === 'concerns' ? concernOptions : symptomOptions;
+      const shown = filterByProfile(all, answers.gender, answers.ageRange);
+      const shownIds = shown.map(o => o.id);
+      const filteredOutIds = all.filter(o => !shownIds.includes(o.id)).map(o => o.id);
+      trackEvent('quiz_step_viewed', {
+        quiz_id: quizIdRef.current,
+        step: currentStep,
+        step_index: currentStepIndex + 1,
+        gender: answers.gender || 'unspecified',
+        age_range: answers.ageRange || 'unspecified',
+        shown_count: shownIds.length,
+        filtered_out_count: filteredOutIds.length,
+        shown_options: shownIds.join(','),
+        filtered_out_options: filteredOutIds.join(','),
+      });
+    } else if (currentStep !== 'welcome' && currentStep !== 'loading' && currentStep !== 'results') {
+      trackEvent('quiz_step_viewed', {
+        quiz_id: quizIdRef.current,
+        step: currentStep,
+        step_index: currentStepIndex + 1,
+      });
+    }
   }, [currentStep]);
+
+  // Track abandonment on unmount if user left mid-quiz.
+  useEffect(() => {
+    return () => {
+      if (startedAtRef.current && currentStep !== 'results') {
+        trackEvent('quiz_abandoned', {
+          quiz_id: quizIdRef.current,
+          last_step: currentStep,
+          duration_ms: Date.now() - startedAtRef.current,
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleBack = () => {
     if (currentStep === 'results' || currentStep === 'loading') {
@@ -206,6 +250,15 @@ export const AssistedTestFinder = () => {
     setCurrentStep('welcome');
     setAnswers({ who: '', gender: '', ageRange: '', goal: '', concerns: [], symptoms: [], sampleMethod: '', budget: '', speed: '' });
     setResults(null);
+    quizIdRef.current = (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`;
+    startedAtRef.current = null;
+    trackEvent('quiz_restarted', { quiz_id: quizIdRef.current });
+  };
+
+  const handleStart = () => {
+    startedAtRef.current = Date.now();
+    trackEvent('quiz_started', { quiz_id: quizIdRef.current });
+    setCurrentStep('who');
   };
 
   const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
