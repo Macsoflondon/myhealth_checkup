@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 import { analytics } from "@/lib/analytics";
+import generalHealthAsset from "@/assets/goodbody/general-health-fingerprint.png.asset.json";
+import cholesterolFpAsset from "@/assets/goodbody/cholesterol-fingerprint.png.asset.json";
+import wellManFpAsset from "@/assets/goodbody/essential-well-man-fingerprint.png.asset.json";
+import wellWomanFpAsset from "@/assets/goodbody/essential-well-woman-fingerprint.png.asset.json";
 
 const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
@@ -12,6 +16,10 @@ const KIT = {
   vitamins: "/images/tests/vitamins-blood-test.webp",
   cholesterol: "/images/tests/cholesterol-blood-test.webp",
   sportsFitness: "/images/tests/sports-fitness-blood-test.webp",
+  generalHealthFp: generalHealthAsset.url,
+  cholesterolFp: cholesterolFpAsset.url,
+  wellManFp: wellManFpAsset.url,
+  wellWomanFp: wellWomanFpAsset.url,
 };
 
 const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: string; href: string }) => (
@@ -43,12 +51,6 @@ const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: s
   </Link>
 );
 
-const CalloutCard = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl bg-white shadow-md p-5 sm:p-6 text-[#081129] font-sans text-sm leading-relaxed pt-[10px] sm:text-base">
-    {children}
-  </div>
-);
-
 const GoodbodyBentoShowcase = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
@@ -64,15 +66,23 @@ const GoodbodyBentoShowcase = () => {
           />
         </div>
 
-        {/* Row 2: two kits */}
+        {/* Row 2: original + new fingerprint */}
         <div className="aspect-square">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
         <div className="aspect-square">
-          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
+          <KitTile src={KIT.generalHealthFp} alt="General Health Fingerprint Blood Test" label="General Health" href="/test/general-health" />
         </div>
 
-        {/* Row 3: text + CTA, footprint of 2x2 kit tiles */}
+        {/* Row 3: original + new fingerprint */}
+        <div className="aspect-square">
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.wellManFp} alt="Essential Well Man Fingerprint Test" label="Essential Well Man" href="/tests/mens-health" />
+        </div>
+
+        {/* Row 4: text + CTA, footprint of 2x2 kit tiles */}
         <div className="col-span-2 min-h-[20rem] rounded-2xl bg-white shadow-md p-5 flex flex-col text-center text-[#081129] font-sans">
           <div className="flex-1 flex flex-col justify-center space-y-3">
             <p className="text-sm leading-relaxed whitespace-pre-line">
@@ -93,31 +103,38 @@ const GoodbodyBentoShowcase = () => {
           </Link>
         </div>
 
-
-        {/* Row 4: two kits */}
+        {/* Row 5: original + new fingerprint */}
         <div className="aspect-square">
           <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
         <div className="aspect-square">
-          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
+          <KitTile src={KIT.wellWomanFp} alt="Essential Well Woman Fingerprint Test" label="Essential Well Woman" href="/tests/womens-health" />
         </div>
 
-        {/* Row 5: two kits */}
+        {/* Row 6: originals */}
+        <div className="aspect-square">
+          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
+        </div>
         <div className="aspect-square">
           <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
         </div>
+
+        {/* Row 7: original + new fingerprint */}
         <div className="aspect-square">
           <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
         </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.cholesterolFp} alt="Cholesterol Fingerprint Blood Test" label="Cholesterol Fingerprint" href="/test/lipid-profile" />
+        </div>
       </div>
 
-      {/* Desktop/tablet layout (sm+) — unchanged */}
-      <div className="hidden sm:grid sm:grid-cols-3 gap-3 sm:gap-4">
+      {/* Desktop/tablet layout (sm+) — 4 col grid, callout spans 2x2 */}
+      <div className="hidden sm:grid sm:grid-cols-4 gap-3 sm:gap-4">
         {/* Row 1 */}
         <div className="aspect-square">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
-        <div className="aspect-square rounded-2xl bg-white shadow-md flex items-center justify-center p-6 sm:p-8">
+        <div className="aspect-square rounded-2xl bg-white shadow-md flex items-center justify-center p-6 sm:p-8 col-span-2">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
@@ -126,14 +143,14 @@ const GoodbodyBentoShowcase = () => {
           />
         </div>
         <div className="aspect-square">
-          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
+          <KitTile src={KIT.generalHealthFp} alt="General Health Fingerprint Blood Test" label="General Health" href="/test/general-health" />
         </div>
 
-        {/* Row 2: kit | callout (spans 2 rows) | kit */}
+        {/* Row 2: kit | callout (2x2) | kit */}
         <div className="aspect-square">
-          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
+          <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
-        <div className="row-span-2 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
+        <div className="col-span-2 row-span-2 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
           <p className="text-sm sm:text-base leading-relaxed mb-3">
             <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> that are accessible, affordable, and convenient.
           </p>
@@ -152,17 +169,30 @@ const GoodbodyBentoShowcase = () => {
             </Link>
           </div>
         </div>
-
         <div className="aspect-square">
-          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
+          <KitTile src={KIT.wellManFp} alt="Essential Well Man Fingerprint Test" label="Essential Well Man" href="/tests/mens-health" />
         </div>
 
         {/* Row 3 */}
         <div className="aspect-square">
+          <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
+        </div>
+
+        {/* Row 4 */}
+        <div className="aspect-square">
           <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
         </div>
         <div className="aspect-square">
+          <KitTile src={KIT.wellWomanFp} alt="Essential Well Woman Fingerprint Test" label="Essential Well Woman" href="/tests/womens-health" />
+        </div>
+        <div className="aspect-square">
           <KitTile src={KIT.cholesterol} alt="Cholesterol Blood Test" label="Cholesterol Blood Test" href="/test/lipid-profile" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.cholesterolFp} alt="Cholesterol Fingerprint Blood Test" label="Cholesterol Fingerprint" href="/test/lipid-profile" />
         </div>
       </div>
     </div>
