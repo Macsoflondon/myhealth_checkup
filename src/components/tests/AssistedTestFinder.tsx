@@ -433,7 +433,7 @@ export const AssistedTestFinder = () => {
               Answer a few questions about your health goals and we'll recommend the most relevant tests from trusted UK providers.
             </p>
             <Button
-              onClick={() => setCurrentStep('who')}
+              onClick={handleStart}
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
             >
               Start Quiz
