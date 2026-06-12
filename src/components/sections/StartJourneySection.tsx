@@ -49,7 +49,7 @@ const StartJourneySection = () => {
               </div>
 
               {/* Heading */}
-              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.625rem] mb-4">
+              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.625rem] mb-8">
                 Take Control of Your<br />Health Today
               </h2>
               <p className="text-base sm:text-xl text-slate-500 leading-relaxed max-w-sm mb-8">
