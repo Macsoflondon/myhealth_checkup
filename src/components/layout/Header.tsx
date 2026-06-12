@@ -198,7 +198,7 @@ const Header = ({ className }: HeaderProps) => {
             <div
               className={cn(
                 "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-6 md:py-8" : "py-4 md:py-6 lg:py-8"
+                isSearchDocked ? "py-2 md:py-3" : "py-2 md:py-3 lg:py-4"
               )}
             >
               {/* Center: Combined logo + tagline */}
