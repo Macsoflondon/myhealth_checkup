@@ -113,18 +113,18 @@ const StartJourneySection = () => {
           {/* Right column — Live Comparison */}
           <div>
             {/* Eyebrow row */}
-            <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="flex items-center justify-center gap-4 mb-5">
               <hr
                 className="flex-1 border-0 h-px"
                 style={{
-                  maxWidth: "60px",
+                  maxWidth: "90px",
                   background: "linear-gradient(to right, transparent, rgba(34,192,212,0.35))",
                 }}
               />
               <span
                 style={{
                   color: "#22c0d4",
-                  fontSize: "10px",
+                  fontSize: "15px",
                   fontWeight: 700,
                   textTransform: "uppercase",
                   letterSpacing: "0.18em",
@@ -135,15 +135,15 @@ const StartJourneySection = () => {
               <hr
                 className="flex-1 border-0 h-px"
                 style={{
-                  maxWidth: "60px",
+                  maxWidth: "90px",
                   background: "linear-gradient(to right, rgba(34,192,212,0.35), transparent)",
                 }}
               />
             </div>
 
             <h3
-              className="font-heading text-center mb-6"
-              style={{ fontWeight: 700, color: "#081129", fontSize: "24px" }}
+              className="font-heading text-center mb-9"
+              style={{ fontWeight: 700, color: "#081129", fontSize: "36px" }}
             >
               Compare at a glance.
             </h3>
@@ -153,20 +153,20 @@ const StartJourneySection = () => {
               style={{
                 background: "rgba(8,17,41,0.97)",
                 border: "1px solid rgba(34,192,212,0.2)",
-                borderRadius: "16px",
-                padding: "24px",
-                boxShadow: "0 20px 60px rgba(8,17,41,0.25)",
+                borderRadius: "24px",
+                padding: "36px",
+                boxShadow: "0 30px 90px rgba(8,17,41,0.28)",
               }}
             >
               <div
                 style={{
-                  paddingBottom: "12px",
+                  paddingBottom: "18px",
                   borderBottom: "1px solid rgba(34,192,212,0.14)",
                 }}
               >
                 <span
                   style={{
-                    fontSize: "11px",
+                    fontSize: "16.5px",
                     fontWeight: 700,
                     textTransform: "uppercase",
                     letterSpacing: "0.14em",
@@ -183,9 +183,9 @@ const StartJourneySection = () => {
                   style={{
                     display: "grid",
                     gridTemplateColumns: "1fr auto auto",
-                    gap: "12px",
+                    gap: "18px",
                     alignItems: "center",
-                    padding: "11px 0",
+                    padding: "16.5px 0",
                     borderBottom:
                       i === providers.length - 1
                         ? "none"
@@ -195,15 +195,15 @@ const StartJourneySection = () => {
                   <div style={{ minWidth: 0 }}>
                     <div
                       className="font-heading"
-                      style={{ fontSize: "13px", fontWeight: 700, color: "#ffffff" }}
+                      style={{ fontSize: "19.5px", fontWeight: 700, color: "#ffffff" }}
                     >
                       {p.name}
                     </div>
                     <div
                       style={{
-                        fontSize: "11px",
+                        fontSize: "16.5px",
                         color: "rgba(255,255,255,0.42)",
-                        marginTop: "2px",
+                        marginTop: "3px",
                       }}
                     >
                       {p.bio}
@@ -211,12 +211,12 @@ const StartJourneySection = () => {
                   </div>
                   <span
                     style={{
-                      fontSize: "9px",
+                      fontSize: "13.5px",
                       fontWeight: 700,
                       textTransform: "uppercase",
                       letterSpacing: "0.05em",
                       borderRadius: "20px",
-                      padding: "3px 8px",
+                      padding: "5px 12px",
                       whiteSpace: "nowrap",
                       ...badgeStyles[p.variant],
                     }}
@@ -226,7 +226,7 @@ const StartJourneySection = () => {
                   <div
                     className="font-heading"
                     style={{
-                      fontSize: "15px",
+                      fontSize: "22.5px",
                       fontWeight: 800,
                       color: "#ffffff",
                       textAlign: "right",
@@ -241,13 +241,13 @@ const StartJourneySection = () => {
               <div
                 style={{
                   borderTop: "1px solid rgba(34,192,212,0.1)",
-                  paddingTop: "12px",
+                  paddingTop: "18px",
                   marginTop: 0,
                 }}
               >
                 <p
                   style={{
-                    fontSize: "10px",
+                    fontSize: "15px",
                     color: "rgba(255,255,255,0.28)",
                     textAlign: "center",
                     margin: 0,
