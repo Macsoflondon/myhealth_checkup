@@ -7,14 +7,14 @@ const steps = [
     icon: Search,
     title: "Search & Compare",
     description:
-      "Choose a test category or search by biomarker. Filter by price, sample method, turnaround time, or accreditation. See every option side by side.",
+      "Choose a test category or by goals. Filter by price, sample method, turnaround time,.\nSee every option side by side.",
   },
   {
     number: "02",
     icon: CheckCircle,
     title: "Choose Your Provider",
     description:
-      "Every listed provider is independently verified as UKAS-accredited or CQC-regulated. No pay-to-rank. No hidden bias. You choose based on facts.",
+      "Every listed provider is independently verified as UKAS-accredited or CQC-regulated. No hidden bias. No hidden fees.\u00a0 You choose based on facts.",
   },
   {
     number: "03",
@@ -80,7 +80,7 @@ const JourneySimplified = () => {
                 <h3 className="text-base font-heading mb-1 text-brand-turquoise font-medium sm:text-base">
                   {step.title}
                 </h3>
-                <p className="mt-1 text-sm text-tertiary/80 max-w-xs mx-auto leading-snug">
+                <p className="mt-1 text-sm text-tertiary/80 max-w-xs mx-auto leading-snug whitespace-pre-line">
                   {step.description}
                 </p>
               </div>
