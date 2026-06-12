@@ -57,7 +57,7 @@ const StartJourneySection = () => {
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col w-full gap-4 mb-12">
+              <div className="flex flex-col w-full gap-4 mb-8">
                 <Link
                   to="/assisted-test-finder"
                   className="w-full h-[72px] inline-flex items-center justify-center bg-[#22c0d4] hover:bg-[#1da9bc] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98]"
