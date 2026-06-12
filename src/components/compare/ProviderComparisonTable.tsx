@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { CheckCircle, Heart } from "lucide-react";
+import { CheckCircle, Heart, Plus } from "lucide-react";
 import type { CompareTestData } from "@/types";
 
 interface ProviderComparisonTableProps {
@@ -12,6 +12,9 @@ const PINK = "#e70d69";
 const TINT = "#f0f4fa";
 const DIVIDER = "#e2e8f0";
 const MUTED = "#94a3b8";
+
+const MIN_COLS = 3;
+const MAX_COLS = 5;
 
 const Tick: React.FC = () => (
   <CheckCircle size={18} color={TURQUOISE} className="inline-block" aria-label="Yes" />
@@ -37,14 +40,17 @@ const formatPrice = (price: number): string => {
   return `£${price.toFixed(2)}`;
 };
 
+type Slot = CompareTestData | null;
+
 interface RowProps {
   label: string;
   index: number;
-  children: React.ReactNode[];
-  colCount: number;
+  slots: Slot[];
+  render: (t: CompareTestData, i: number) => React.ReactNode;
+  placeholder?: React.ReactNode;
 }
 
-const Row: React.FC<RowProps> = ({ label, index, children, colCount }) => {
+const Row: React.FC<RowProps> = ({ label, index, slots, render, placeholder }) => {
   const bg = index % 2 === 0 ? "#ffffff" : TINT;
   return (
     <tr style={{ borderBottom: `1px solid ${DIVIDER}` }}>
@@ -64,7 +70,7 @@ const Row: React.FC<RowProps> = ({ label, index, children, colCount }) => {
       >
         {label}
       </th>
-      {children.map((cell, i) => (
+      {slots.map((slot, i) => (
         <td
           key={i}
           className="text-center"
@@ -77,16 +83,36 @@ const Row: React.FC<RowProps> = ({ label, index, children, colCount }) => {
             color: NAVY,
           }}
         >
-          {cell}
+          {slot ? render(slot, i) : (placeholder ?? <Dash />)}
         </td>
-      ))}
-      {/* spacer to ensure even count */}
-      {Array.from({ length: Math.max(0, colCount - children.length) }).map((_, i) => (
-        <td key={`pad-${i}`} style={{ background: bg, minWidth: 160 }} />
       ))}
     </tr>
   );
 };
+
+const PlaceholderHeader: React.FC = () => (
+  <div
+    className="flex flex-col items-center justify-center text-center"
+    style={{
+      minHeight: 96,
+      border: "2px dashed rgba(255,255,255,0.2)",
+      borderRadius: 8,
+      padding: "12px 8px",
+    }}
+  >
+    <Plus size={20} color={TURQUOISE} />
+    <div
+      className="mt-2"
+      style={{
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        fontSize: 12,
+        color: "rgba(255,255,255,0.5)",
+      }}
+    >
+      Select a test
+    </div>
+  </div>
+);
 
 export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = ({ tests }) => {
   const [saved, setSaved] = useState<Record<string, boolean>>({});
@@ -103,9 +129,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
     return picked;
   }, [tests]);
 
-  if (!tests || tests.length === 0) return null;
+  const colCount = Math.min(MAX_COLS, Math.max(MIN_COLS, columns.length));
+  const slots: Slot[] = Array.from({ length: colCount }, (_, i) => columns[i] ?? null);
 
-  const colCount = columns.length;
   const providerCount = columns.length;
   const testCount = tests.length;
 
@@ -126,9 +152,15 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
           borderRadius: 6,
         }}
       >
-        Comparing {providerCount} provider{providerCount === 1 ? "" : "s"} across {testCount} test
-        {testCount === 1 ? "" : "s"}. Prices shown are current at time of listing. Always confirm
-        directly with the provider before booking.
+        {providerCount === 0 ? (
+          <>Select tests above to start comparing providers side-by-side. Prices shown are current at time of listing.</>
+        ) : (
+          <>
+            Comparing {providerCount} provider{providerCount === 1 ? "" : "s"} across {testCount} test
+            {testCount === 1 ? "" : "s"}. Prices shown are current at time of listing. Always confirm
+            directly with the provider before booking.
+          </>
+        )}
       </div>
 
       <div
@@ -163,9 +195,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               >
                 Providers
               </th>
-              {columns.map((test) => (
+              {slots.map((test, i) => (
                 <th
-                  key={test.id}
+                  key={test?.id ?? `ph-${i}`}
                   scope="col"
                   style={{
                     background: NAVY,
@@ -177,52 +209,56 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     borderBottom: `1px solid rgba(255,255,255,0.08)`,
                   }}
                 >
-                  <div className="flex items-start gap-3">
-                    <div
-                      className="rounded-lg flex-shrink-0 flex items-center justify-center"
-                      style={{
-                        background: "#ffffff",
-                        width: 40,
-                        height: 40,
-                        padding: 4,
-                      }}
-                    >
-                      {test.providerLogo ? (
-                        <img
-                          src={test.providerLogo}
-                          alt={`${test.provider} logo`}
-                          className="max-w-full max-h-full object-contain"
-                        />
-                      ) : (
-                        <span
-                          className="font-montserrat font-bold text-xs"
-                          style={{ color: NAVY }}
+                  {test ? (
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="rounded-lg flex-shrink-0 flex items-center justify-center"
+                        style={{
+                          background: "#ffffff",
+                          width: 40,
+                          height: 40,
+                          padding: 4,
+                        }}
+                      >
+                        {test.providerLogo ? (
+                          <img
+                            src={test.providerLogo}
+                            alt={`${test.provider} logo`}
+                            className="max-w-full max-h-full object-contain"
+                          />
+                        ) : (
+                          <span
+                            className="font-montserrat font-bold text-xs"
+                            style={{ color: NAVY }}
+                          >
+                            {test.provider.slice(0, 2).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div
+                          className="font-montserrat font-semibold text-sm truncate"
+                          style={{ color: TURQUOISE }}
                         >
-                          {test.provider.slice(0, 2).toUpperCase()}
-                        </span>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div
-                        className="font-montserrat font-semibold text-sm truncate"
-                        style={{ color: TURQUOISE }}
-                      >
-                        {test.provider}
-                      </div>
-                      <div
-                        className="font-['DM_Sans'] text-xs mt-0.5 line-clamp-2"
-                        style={{ color: "#ffffff", opacity: 0.85 }}
-                      >
-                        {test.name}
-                      </div>
-                      <div
-                        className="font-montserrat font-bold mt-2"
-                        style={{ color: PINK, fontSize: 20, lineHeight: 1 }}
-                      >
-                        {formatPrice(test.price)}
+                          {test.provider}
+                        </div>
+                        <div
+                          className="font-['DM_Sans'] text-xs mt-0.5 line-clamp-2"
+                          style={{ color: "#ffffff", opacity: 0.85 }}
+                        >
+                          {test.name}
+                        </div>
+                        <div
+                          className="font-montserrat font-bold mt-2"
+                          style={{ color: PINK, fontSize: 20, lineHeight: 1 }}
+                        >
+                          {formatPrice(test.price)}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <PlaceholderHeader />
+                  )}
                 </th>
               ))}
             </tr>
@@ -231,59 +267,46 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
             <Row
               label="Biomarkers"
               index={0}
-              colCount={colCount}
-              children={columns.map((t) => (
-                <span key={t.id}>{(t.biomarkerCount ?? 0)} biomarkers</span>
-              ))}
+              slots={slots}
+              render={(t) => <span>{(t.biomarkerCount ?? 0)} biomarkers</span>}
             />
             <Row
               label="Turnaround"
               index={1}
-              colCount={colCount}
-              children={columns.map((t) => (
-                <span key={t.id}>{t.features?.turnaround || "—"}</span>
-              ))}
+              slots={slots}
+              render={(t) => <span>{t.features?.turnaround || "—"}</span>}
             />
             <Row
               label="Sample method"
               index={2}
-              colCount={colCount}
-              children={columns.map((t) => (
-                <span key={t.id}>{t.features?.collection || "—"}</span>
-              ))}
+              slots={slots}
+              render={(t) => <span>{t.features?.collection || "—"}</span>}
             />
             <Row
               label="Doctor review"
               index={3}
-              colCount={colCount}
-              children={columns.map((t) => (
-                <span key={t.id}>{hasDoctorReview(t) ? <Tick /> : <Dash />}</span>
-              ))}
+              slots={slots}
+              render={(t) => (hasDoctorReview(t) ? <Tick /> : <Dash />)}
             />
             <Row
               label="UKAS accredited"
               index={4}
-              colCount={colCount}
-              children={columns.map((t) => (
-                <span key={t.id}>{hasAccreditation(t, "UKAS") ? <Tick /> : <Dash />}</span>
-              ))}
+              slots={slots}
+              render={(t) => (hasAccreditation(t, "UKAS") ? <Tick /> : <Dash />)}
             />
             <Row
               label="CQC regulated"
               index={5}
-              colCount={colCount}
-              children={columns.map((t) => (
-                <span key={t.id}>{hasAccreditation(t, "CQC") ? <Tick /> : <Dash />}</span>
-              ))}
+              slots={slots}
+              render={(t) => (hasAccreditation(t, "CQC") ? <Tick /> : <Dash />)}
             />
             <Row
               label="Provider link"
               index={6}
-              colCount={colCount}
-              children={columns.map((t) =>
+              slots={slots}
+              render={(t) =>
                 t.url && t.url !== "#" ? (
                   <a
-                    key={t.id}
                     href={t.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -293,19 +316,34 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     Book now →
                   </a>
                 ) : (
-                  <Dash key={t.id} />
+                  <Dash />
                 )
-              )}
+              }
             />
             <Row
               label="Save"
               index={7}
-              colCount={colCount}
-              children={columns.map((t) => {
+              slots={slots}
+              placeholder={
+                <span
+                  aria-hidden
+                  className="inline-flex items-center justify-center rounded-full"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    border: `1px solid ${DIVIDER}`,
+                    background: "#ffffff",
+                    opacity: 0.3,
+                    cursor: "not-allowed",
+                  }}
+                >
+                  <Heart size={18} color={PINK} fill="none" />
+                </span>
+              }
+              render={(t) => {
                 const isSaved = !!saved[t.id];
                 return (
                   <button
-                    key={t.id}
                     type="button"
                     onClick={() => toggleSave(t.id)}
                     aria-label={isSaved ? "Remove from saved" : "Save"}
@@ -325,17 +363,33 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     />
                   </button>
                 );
-              })}
+              }}
             />
             <Row
               label="Book"
               index={8}
-              colCount={colCount}
-              children={columns.map((t) => {
+              slots={slots}
+              placeholder={
+                <button
+                  type="button"
+                  disabled
+                  className="block w-full text-center font-montserrat font-semibold rounded-full"
+                  style={{
+                    background: "transparent",
+                    color: MUTED,
+                    padding: "10px 14px",
+                    fontSize: 13,
+                    border: `2px dashed ${DIVIDER}`,
+                    cursor: "not-allowed",
+                  }}
+                >
+                  Add test
+                </button>
+              }
+              render={(t) => {
                 const available = !!t.url && t.url !== "#";
                 return available ? (
                   <a
-                    key={t.id}
                     href={t.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -353,7 +407,6 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                   </a>
                 ) : (
                   <button
-                    key={t.id}
                     type="button"
                     disabled
                     className="block w-full text-center font-montserrat font-semibold rounded-full"
@@ -368,7 +421,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     Unavailable
                   </button>
                 );
-              })}
+              }}
             />
           </tbody>
         </table>
