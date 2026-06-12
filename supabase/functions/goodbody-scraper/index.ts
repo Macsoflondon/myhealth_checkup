@@ -57,6 +57,45 @@ function extractPriceFromHtml(html: string): number {
   return 0;
 }
 
+function stripShopifySizeSuffix(url: string): string {
+  if (!url) return url;
+  // Shopify resize: foo_600x.jpg, foo_600x600.jpg, foo_1024x1024_crop_center.jpg → strip to master
+  return url.replace(/_(\d+)x(\d+)?(?:_[a-z_]+)?(\.(?:jpe?g|png|webp|gif|avif))/i, '$3');
+}
+
+function extractImageFromHtml(html: string, markdown: string): string | null {
+  if (!html && !markdown) return null;
+  const candidates: string[] = [];
+
+  // 1. og:image / twitter:image (highest priority — provider's chosen hero)
+  const og = html.match(/property=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/name=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/name=["']twitter:image["'][^>]*content=["']([^"']+)["']/i);
+  if (og) candidates.push(og[1]);
+
+  // 2. Shopify product JSON featured_image
+  const featured = html.match(/"featured_image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp))"/i);
+  if (featured) candidates.push(featured[1].replace(/\\\//g, '/'));
+
+  // 3. JSON-LD image
+  const ld = html.match(/"image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp)[^"]*)"/i);
+  if (ld) candidates.push(ld[1].replace(/\\\//g, '/'));
+
+  // 4. First product-gallery <img> in markdown
+  const mdImg = markdown.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+\.(?:jpe?g|png|webp)[^)\s]*)\)/i);
+  if (mdImg) candidates.push(mdImg[1]);
+
+  for (let raw of candidates) {
+    if (!raw) continue;
+    if (raw.startsWith('//')) raw = 'https:' + raw;
+    // Drop query string size hints (e.g. ?width=600), keep ?v= cache buster
+    raw = raw.replace(/([?&])width=\d+&?/gi, '$1').replace(/[?&]$/, '');
+    raw = stripShopifySizeSuffix(raw);
+    if (/^https?:\/\//i.test(raw)) return raw;
+  }
+  return null;
+}
+
 function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   let title = '';
   const h1Match = markdown.match(/^#\s+(.+)$/m);
