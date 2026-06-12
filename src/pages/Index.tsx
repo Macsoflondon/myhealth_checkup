@@ -19,6 +19,8 @@ const MissionSection = lazy(() => import("@/components/sections/MissionSection")
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
 const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
+const LiveComparisonPanel = lazy(() => import("@/components/sections/LiveComparisonPanel"));
+const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
 
 const TestimonialCarousel = lazy(() => import("@/components/sections/TestimonialCarousel"));
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
@@ -209,6 +211,16 @@ const Index = () => {
           </ScrollFadeIn>
         </Suspense>
 
+
+        <Suspense fallback={<SectionFallback />}>
+          <ScrollFadeIn variant="rise" delay={100}>
+            <LiveComparisonPanel />
+          </ScrollFadeIn>
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <AccreditedProvidersBar />
+        </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>

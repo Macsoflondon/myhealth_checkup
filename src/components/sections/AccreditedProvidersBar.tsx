@@ -1,100 +1,92 @@
-import { Link } from "react-router-dom";
-import { PROVIDER_DETAILS } from "@/constants/providers";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { analytics } from "@/lib/analytics";
+import React from "react";
 
-const FEATURED_PROVIDERS = [
-  'medichecks',
-  'goodbody-clinic',
-  'thriva',
-  'randox',
-  'london-medical-laboratory',
-  'lola-health',
+interface TrustItem {
+  icon: string;
+  label: string;
+}
+
+const trustItems: TrustItem[] = [
+  { icon: "🔬", label: "UKAS-Accredited Labs" },
+  { icon: "✔", label: "CQC-Regulated Clinics" },
+  { icon: "🏆", label: "ISO 15189 Certification" },
+  { icon: "🔒", label: "GDPR Compliant" },
+  { icon: "💷", label: "Transparent Pricing" },
+  { icon: "🩺", label: "No GP Referral Needed" },
 ];
 
-const getProviderRoute = (id: string) => {
-  if (id === 'goodbody-clinic') return '/provider/goodbody';
-  return `/provider/${id}`;
-};
-
-const ACCREDITORS = [
-  { name: "UKAS", desc: "Laboratory accreditation" },
-  { name: "CQC", desc: "Care Quality Commission" },
-  { name: "ISO 15189", desc: "Medical laboratory standard" },
-];
-
-const AccreditedProvidersBar = () => {
+const AccreditedProvidersBar: React.FC = () => {
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-tertiary" aria-label="Accreditation and partners">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16">
-        <div className="bg-white rounded-2xl px-3 sm:px-6 lg:px-10 py-6 sm:py-8 md:py-10">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <div className="h-px w-6 bg-brand-turquoise" />
-          <span className="text-brand-turquoise text-[10px] font-semibold uppercase tracking-[0.25em]">
-            Accredited & Verified
-          </span>
-          <div className="h-px w-6 bg-brand-turquoise" />
+    <div
+      style={{
+        backgroundColor: "#f5f8fc",
+        borderBottom: "1px solid #eef1f6",
+        padding: "18px 20px",
+      }}
+    >
+      <div
+        className="mx-auto flex flex-wrap items-center justify-center"
+        style={{ maxWidth: "1280px", gap: "6px 22px" }}
+      >
+        {/* Top label */}
+        <div
+          className="w-full text-center font-sans font-bold uppercase"
+          style={{
+            fontSize: "9px",
+            letterSpacing: "0.14em",
+            color: "#8892a4",
+            marginBottom: "6px",
+            flexBasis: "100%",
+          }}
+        >
+          All listed providers meet every one of the following standards
         </div>
 
-        <SectionHeading
-          title="Accredited Providers"
-          gradientText="We Compare"
-          className="mb-5 md:mb-6"
-          titleClassName="text-brand-turquoise"
-        />
+        {trustItems.map((item, index) => {
+          const isOdd = (index + 1) % 2 === 1;
+          const iconBg = isOdd
+            ? "rgba(34,192,212,0.12)"
+            : "rgba(231,13,105,0.1)";
+          const iconColor = isOdd ? "#22c0d4" : "#e70d69";
 
-        {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
-        <div data-testid="accreditors-row" className="flex flex-nowrap sm:flex-wrap items-stretch sm:items-center justify-center gap-x-3 sm:gap-x-8 md:gap-x-10 gap-y-2 mb-6 md:mb-8">
-          {ACCREDITORS.map((a, i) => (
-            <div key={a.name} className="flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
-              <div className="flex flex-col items-center justify-center text-center px-0.5 sm:px-0 min-h-[28px] sm:min-h-0">
-                <div className="text-[13px] sm:text-sm md:text-base lg:text-lg font-bold text-brand-turquoise leading-none whitespace-nowrap">{a.name}</div>
-                <div className="hidden sm:block text-[10px] md:text-xs text-brand-turquoise/70 leading-tight mt-1">{a.desc}</div>
-              </div>
-              {i < ACCREDITORS.length - 1 && (
-                <div className="block w-px h-4 sm:h-7 md:h-9 lg:h-10 bg-brand-turquoise/30 self-center" aria-hidden="true" />
+          return (
+            <React.Fragment key={item.label}>
+              {index > 0 && (
+                <div
+                  className="hidden sm:block"
+                  style={{
+                    width: "1px",
+                    height: "18px",
+                    backgroundColor: "#d8dce6",
+                  }}
+                />
               )}
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 max-w-6xl mx-auto">
-          {FEATURED_PROVIDERS.map((id) => {
-            const provider = PROVIDER_DETAILS[id];
-            if (!provider) return null;
-
-            return (
-              <Link
-                key={id}
-                to={getProviderRoute(id)}
-                onClick={() =>
-                  analytics.kitTileClick({
-                    tile_id: id,
-                    tile_label: provider.name,
-                    destination: getProviderRoute(id),
-                    surface: "accredited_providers_bar",
-                  })
-                }
-                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-2.5 md:p-3 lg:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
-              >
-                <div className="flex items-center justify-center h-[56px] sm:h-[68px] md:h-[80px] lg:h-[88px] w-full">
-                  <img
-                    src={provider.logo}
-                    alt={`${provider.name} logo`}
-                    className="max-h-full max-w-full object-contain"
-                    loading="lazy"
-                  />
+              <div className="flex items-center" style={{ gap: "7px" }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{
+                    width: "26px",
+                    height: "26px",
+                    borderRadius: "9999px",
+                    backgroundColor: iconBg,
+                    color: iconColor,
+                    fontSize: "13px",
+                    flexShrink: 0,
+                  }}
+                >
+                  {item.icon}
                 </div>
-                <span className="text-brand-turquoise text-[11px] sm:text-xs md:text-sm font-medium text-center leading-tight">
-                  {provider.name}
+                <span
+                  className="font-sans font-bold"
+                  style={{ fontSize: "11px", color: "#081129" }}
+                >
+                  {item.label}
                 </span>
-              </Link>
-            );
-          })}
-        </div>
-        </div>
+              </div>
+            </React.Fragment>
+          );
+        })}
       </div>
-    </section>
+    </div>
   );
 };
 
