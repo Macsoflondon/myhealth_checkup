@@ -187,28 +187,28 @@ const Index = () => {
 
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise">
+          <SectionReveal>
             <MissionSection />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="scale">
+          <SectionReveal>
             <PartnersGrid />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={100}>
+          <SectionReveal delay={0.1}>
             <JourneySimplified />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={150}>
+          <SectionReveal delay={0.15}>
             <StartJourneySection />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
 
@@ -218,15 +218,15 @@ const Index = () => {
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={100}>
+          <SectionReveal delay={0.1}>
             <PartnerShowcaseGrid />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="fade">
+          <SectionReveal>
             <TestimonialCarousel />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
 
@@ -234,9 +234,9 @@ const Index = () => {
 
 
         <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={100}>
+          <SectionReveal delay={0.1}>
             <ClinicAndHelpSection />
-          </ScrollFadeIn>
+          </SectionReveal>
         </Suspense>
 
 
