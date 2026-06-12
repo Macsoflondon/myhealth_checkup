@@ -193,18 +193,18 @@ const Hero = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-nowrap gap-1 sm:gap-2.5 md:gap-3 justify-center items-center mt-3 sm:mt-4 w-full max-w-full">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3 justify-center items-center mt-3 sm:mt-4 w-full max-w-full">
                   <button
                     onClick={() => navigate("/assisted-test-finder")}
                     style={surfaceStyle}
-                    className="backdrop-blur-md font-semibold px-3 sm:px-4 md:px-6 py-3 sm:py-2.5 md:py-3 min-h-[44px] sm:min-h-0 text-[11px] sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-tight transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 min-w-0 flex-shrink"
+                    className="backdrop-blur-md font-semibold px-3 sm:px-4 md:px-6 py-3 sm:py-2.5 md:py-3 min-h-[44px] sm:min-h-0 text-[11px] sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-tight transition-all duration-300 border-2 text-white border-solid rounded-sm shadow-md hover:brightness-125 min-w-0 flex-shrink"
                   >
                     Find your test
                   </button>
                   <button
                     onClick={() => navigate("/compare/goals")}
                     style={surfaceStyle}
-                    className="backdrop-blur-md font-semibold px-3 sm:px-4 md:px-6 py-3 sm:py-2.5 md:py-3 min-h-[44px] sm:min-h-0 text-[11px] sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-tight transition-all duration-300 border-2 text-white whitespace-nowrap border-solid rounded-sm shadow-md hover:brightness-125 min-w-0 flex-shrink"
+                    className="backdrop-blur-md font-semibold px-3 sm:px-4 md:px-6 py-3 sm:py-2.5 md:py-3 min-h-[44px] sm:min-h-0 text-[11px] sm:text-sm md:text-base lg:text-lg leading-snug sm:leading-tight transition-all duration-300 border-2 text-white border-solid rounded-sm shadow-md hover:brightness-125 min-w-0 flex-shrink"
                   >
                     Compare by goal
                   </button>

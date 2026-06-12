@@ -35,10 +35,10 @@ const StartJourneySection = () => {
         .float-card { animation: float-card 5s ease-in-out infinite; }
       `}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 lg:gap-[144px] items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-[144px] items-center">
           {/* Left column — existing card unchanged */}
           <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden">
-            <div className="p-12 sm:p-[60px] flex flex-col items-center text-center">
+            <div className="p-6 sm:p-10 md:p-14 lg:p-[60px] flex flex-col items-center text-center">
               {/* Eyebrow */}
               <div className="flex items-center gap-3 mb-8">
                 <div className="h-px w-9 bg-slate-200" />
