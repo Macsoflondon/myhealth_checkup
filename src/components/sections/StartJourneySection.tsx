@@ -21,6 +21,10 @@ const FALLBACK_PANEL = {
 };
 
 const StartJourneySection = () => {
+  const livePanel = useLiveComparisonPanel();
+  const panel = livePanel ?? FALLBACK_PANEL;
+  const providers = panel.rows;
+
   return (
     <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
       <style>{`
