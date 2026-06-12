@@ -111,7 +111,7 @@ const EmptyState: React.FC = () => (
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
     <Button asChild variant="secondary">
-      <a href="/compare">Browse all tests</a>
+      <Link to="/compare">Browse all tests</Link>
     </Button>
   </div>
 );

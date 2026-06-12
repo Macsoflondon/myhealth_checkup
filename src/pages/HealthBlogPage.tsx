@@ -44,7 +44,7 @@ const HealthBlogPage = () => {
       <Helmet>
         <title>Health Resource Hub | myhealth checkup</title>
         <meta name="description" content="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults." />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/health-resources" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/blog" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Blog",
