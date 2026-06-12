@@ -26,7 +26,7 @@ export const MainLayout = ({
   mainClassName = "flex-1"
 }: MainLayoutProps) => {
   return (
-    <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)] overflow-x-hidden">
+    <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
       {/* Accessibility: skip to main content */}
       <a
         href="#main-content"

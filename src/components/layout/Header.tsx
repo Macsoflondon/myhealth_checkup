@@ -5,8 +5,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
 import mainLogo from "@/assets/myhealth-logo-cropped.webp";
+import fullLogo from "@/assets/myhealth-logo-full.png.asset.json";
 import headerTagline from "@/assets/header-tagline.webp";
 import mobileLogo from "/myhealth-logo.png";
+
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
 import { UserMenu } from "../header/UserMenu";
@@ -191,37 +193,33 @@ const Header = ({ className }: HeaderProps) => {
         )}
         style={{ top: isSearchDocked ? 0 : tickerHeight }}
       >
-        <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
+        <div className="bg-white">
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
             <div
               className={cn(
                 "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-8 md:py-10" : "py-4 md:py-6 lg:py-8"
+                isSearchDocked ? "py-6 md:py-8" : "py-4 md:py-6 lg:py-8"
               )}
             >
-              {/* Center: Logo + Tagline (truly page-centered) */}
+              {/* Center: Combined logo + tagline */}
               {!isSearchDocked && (
                 <Link
                   to="/"
-                  className="flex items-center flex-shrink-0 min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
+                  className="flex items-center flex-shrink-0 min-w-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
                 >
                   <img
-                    src={mainLogo}
-                    alt="myhealth checkup"
-                    className="w-auto object-contain flex-shrink-0 h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
-                  />
-                  <img
-                    src={headerTagline}
-                    alt="Your Health. Your Choice. One Trusted Platform!"
-                    className="w-auto object-contain h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw]"
+                    src={fullLogo.url}
+                    alt="myhealth checkup — Your health! Your choice! One trusted platform!"
+                    className="w-auto object-contain flex-shrink-0 h-14 md:h-16 lg:h-20 xl:h-24 max-w-[80vw]"
                   />
                 </Link>
               )}
 
+
               {/* Center: docked search */}
               {isSearchDocked && (
                 <div className="relative w-full max-w-[640px]">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/80 w-4 h-4 md:w-5 md:h-5" />
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#081129]/70 w-4 h-4 md:w-5 md:h-5" />
                   <input
                     type="text"
                     placeholder="COMPARE OVER 200 TESTS"
@@ -229,18 +227,19 @@ const Header = ({ className }: HeaderProps) => {
                     value={dockedSearchTerm}
                     onChange={(e) => setDockedSearchTerm(e.target.value)}
                     onKeyDown={handleDockedSearchKey}
-                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white/10 border-2 border-[#22c0d4]/60 text-white placeholder:text-white/70 backdrop-blur-md focus:ring-2 focus:ring-white/30 focus:outline-none"
+                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white border-2 border-[#22c0d4]/60 text-[#081129] placeholder:text-[#081129]/60 focus:ring-2 focus:ring-[#22c0d4]/40 focus:outline-none"
                   />
                 </div>
               )}
 
               {/* Right controls — absolutely anchored so they don't pull the logo off-centre */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center bg-[#081129] pl-2">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center bg-white pl-2">
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
                 </nav>
               </div>
+
             </div>
           </div>
         </div>
