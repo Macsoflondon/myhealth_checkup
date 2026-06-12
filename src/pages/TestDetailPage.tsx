@@ -10,7 +10,7 @@ import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCi
 import { supabase } from "@/integrations/supabase/client";
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
-import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
+import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderLogo, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
 import { logger } from "@/lib/logger";
@@ -345,7 +345,7 @@ const TestDetailPage = () => {
 
             {/* Compare Prices Section */}
             {otherProviders.length > 0 && (
-              <ProviderComparisonTable
+              <TestProviderPriceTable
                 testName={test.test_name}
                 providers={[
                   {

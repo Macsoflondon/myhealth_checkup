@@ -1,246 +1,379 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Star, Clock, ExternalLink, Home, Building2, TestTube } from "lucide-react";
-import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
-import { getProviderLogo } from "@/constants/providers";
-
-interface ProviderTestOption {
-  id: string;
-  providerId: string;
-  providerName: string;
-  price: number;
-  turnaroundTime: string;
-  collectionMethod: string;
-  biomarkerCount?: number;
-  url?: string;
-  rating?: number;
-  reviews?: string;
-}
+import React, { useMemo, useState } from "react";
+import { CheckCircle, Heart } from "lucide-react";
+import type { CompareTestData } from "@/types";
 
 interface ProviderComparisonTableProps {
-  testName: string;
-  providers: ProviderTestOption[];
-  className?: string;
+  tests: CompareTestData[];
 }
 
-export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = ({
-  testName,
-  providers,
-  className = ""
-}) => {
-  if (providers.length === 0) {
-    return null;
-  }
+const NAVY = "#081129";
+const TURQUOISE = "#22c0d4";
+const PINK = "#e70d69";
+const TINT = "#f0f4fa";
+const DIVIDER = "#e2e8f0";
+const MUTED = "#94a3b8";
 
-  // Sort by price ascending
-  const sortedProviders = [...providers].sort((a, b) => a.price - b.price);
-  const lowestPrice = sortedProviders[0]?.price;
+const Tick: React.FC = () => (
+  <CheckCircle size={18} color={TURQUOISE} className="inline-block" aria-label="Yes" />
+);
+
+const Dash: React.FC = () => (
+  <span style={{ color: MUTED }} aria-label="No">—</span>
+);
+
+const hasAccreditation = (test: CompareTestData, needle: string): boolean => {
+  const list = test.accreditations || [];
+  return list.some((a) => a.toLowerCase().includes(needle.toLowerCase()));
+};
+
+const hasDoctorReview = (test: CompareTestData): boolean => {
+  if (hasAccreditation(test, "GP Review")) return true;
+  const bio = test.features?.bioMarkers?.toLowerCase() || "";
+  return bio.includes("doctor");
+};
+
+const formatPrice = (price: number): string => {
+  if (price == null || Number.isNaN(price)) return "—";
+  return `£${price.toFixed(2)}`;
+};
+
+interface RowProps {
+  label: string;
+  index: number;
+  children: React.ReactNode[];
+  colCount: number;
+}
+
+const Row: React.FC<RowProps> = ({ label, index, children, colCount }) => {
+  const bg = index % 2 === 0 ? "#ffffff" : TINT;
+  return (
+    <tr style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+      <th
+        scope="row"
+        className="font-montserrat text-left sticky left-0 z-10"
+        style={{
+          background: NAVY,
+          color: "#ffffff",
+          fontWeight: 500,
+          fontSize: 14,
+          width: 160,
+          minWidth: 160,
+          padding: "14px 16px",
+          borderBottom: `1px solid ${DIVIDER}`,
+        }}
+      >
+        {label}
+      </th>
+      {children.map((cell, i) => (
+        <td
+          key={i}
+          className="text-center"
+          style={{
+            background: bg,
+            minWidth: 160,
+            fontSize: 14,
+            fontFamily: "'DM Sans', system-ui, sans-serif",
+            padding: "14px 16px",
+            color: NAVY,
+          }}
+        >
+          {cell}
+        </td>
+      ))}
+      {/* spacer to ensure even count */}
+      {Array.from({ length: Math.max(0, colCount - children.length) }).map((_, i) => (
+        <td key={`pad-${i}`} style={{ background: bg, minWidth: 160 }} />
+      ))}
+    </tr>
+  );
+};
+
+export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = ({ tests }) => {
+  const [saved, setSaved] = useState<Record<string, boolean>>({});
+
+  const columns = useMemo(() => {
+    const seen = new Set<string>();
+    const picked: CompareTestData[] = [];
+    for (const t of tests) {
+      const key = t.provider;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      picked.push(t);
+    }
+    return picked;
+  }, [tests]);
+
+  if (!tests || tests.length === 0) return null;
+
+  const colCount = columns.length;
+  const providerCount = columns.length;
+  const testCount = tests.length;
+
+  const toggleSave = (id: string) => {
+    setSaved((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
 
   return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <TestTube className="h-5 w-5 text-primary" />
-          Compare Prices for {testName}
-        </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Compare this test across {providers.length} trusted UK providers
-        </p>
-      </CardHeader>
-      <CardContent>
-        {/* Desktop Table View */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b text-left">
-                <th className="pb-3 font-medium text-muted-foreground">Provider</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Price</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Turnaround</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Collection</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Biomarkers</th>
-                <th className="pb-3 font-medium text-muted-foreground text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {sortedProviders.map((provider) => (
-                <tr key={provider.id} className="hover:bg-muted/50 transition-colors">
-                  <td className="py-4">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage 
-                          src={getProviderLogo(provider.providerId)} 
-                          alt={provider.providerName}
-                        />
-                        <AvatarFallback>{provider.providerName.slice(0, 2).toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <Link 
-                          to={`/provider/${provider.providerId}`}
-                          className="font-medium hover:text-primary transition-colors"
-                        >
-                          {provider.providerName}
-                        </Link>
-                        {provider.rating && (
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                            <span>{provider.rating}</span>
-                            {provider.reviews && <span>({provider.reviews})</span>}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 text-center">
-                    <span className="text-lg font-bold text-primary">
-                      £{provider.price.toFixed(2)}
-                    </span>
-                    {provider.price === lowestPrice && (
-                      <Badge className="ml-2 bg-green-100 text-green-800 text-xs">
-                        Lowest
-                      </Badge>
-                    )}
-                  </td>
-                  <td className="py-4 text-center">
-                    <div className="flex items-center justify-center gap-1 text-sm">
-                      <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>{provider.turnaroundTime}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 text-center">
-                    <Badge variant="outline" className="text-xs">
-                      {provider.collectionMethod.includes('home') || provider.collectionMethod.includes('Home') ? (
-                        <>
-                          <Home className="h-3 w-3 mr-1" />
-                          Home Kit
-                        </>
-                      ) : (
-                        <>
-                          <Building2 className="h-3 w-3 mr-1" />
-                          Clinic
-                        </>
-                      )}
-                    </Badge>
-                  </td>
-                  <td className="py-4 text-center">
-                    <span className="text-sm font-medium">
-                      {provider.biomarkerCount || '-'}
-                    </span>
-                  </td>
-                  <td className="py-4 text-right">
-                    {provider.url ? (
-                      <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
-                        <a 
-                          href={buildProviderBookingUrl(provider.url, provider.providerId, testName)}
-                          {...externalLinkProps}
-                        >
-                          Book Now
-                          <ExternalLink className="h-3.5 w-3.5 ml-1" />
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button asChild variant="outline" size="sm">
-                        <Link to={`/provider/${provider.providerId}`}>
-                          View Provider
-                        </Link>
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="w-full">
+      {/* Info bar */}
+      <div
+        className="mb-4 font-['DM_Sans'] text-sm"
+        style={{
+          background: TINT,
+          borderLeft: `4px solid ${TURQUOISE}`,
+          padding: "12px 16px",
+          color: "#475569",
+          borderRadius: 6,
+        }}
+      >
+        Comparing {providerCount} provider{providerCount === 1 ? "" : "s"} across {testCount} test
+        {testCount === 1 ? "" : "s"}. Prices shown are current at time of listing. Always confirm
+        directly with the provider before booking.
+      </div>
 
-        {/* Mobile Card View */}
-        <div className="md:hidden space-y-4">
-          {sortedProviders.map((provider) => (
-            <Card key={provider.id} className="relative overflow-hidden">
-              {provider.price === lowestPrice && (
-                <div className="absolute top-0 right-0 bg-green-500 text-white text-xs px-2 py-0.5 rounded-bl">
-                  Lowest Price
-                </div>
-              )}
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage 
-                      src={getProviderLogo(provider.providerId)} 
-                      alt={provider.providerName}
-                    />
-                    <AvatarFallback>{provider.providerName.slice(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <Link 
-                      to={`/provider/${provider.providerId}`}
-                      className="font-medium hover:text-primary transition-colors"
+      <div
+        className="overflow-x-auto rounded-lg"
+        style={{
+          boxShadow: "0 4px 20px rgba(8, 17, 41, 0.08)",
+          border: `1px solid ${DIVIDER}`,
+        }}
+      >
+        <table
+          className="w-full border-collapse"
+          style={{ tableLayout: "auto", background: "#ffffff" }}
+        >
+          <thead>
+            <tr>
+              <th
+                scope="col"
+                className="sticky left-0 z-20"
+                style={{
+                  background: NAVY,
+                  color: "#ffffff",
+                  width: 160,
+                  minWidth: 160,
+                  padding: "20px 16px",
+                  textAlign: "left",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 13,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  borderBottom: `1px solid rgba(255,255,255,0.08)`,
+                }}
+              >
+                Providers
+              </th>
+              {columns.map((test) => (
+                <th
+                  key={test.id}
+                  scope="col"
+                  style={{
+                    background: NAVY,
+                    color: "#ffffff",
+                    minWidth: 220,
+                    padding: "20px 16px",
+                    textAlign: "left",
+                    verticalAlign: "top",
+                    borderBottom: `1px solid rgba(255,255,255,0.08)`,
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="rounded-lg flex-shrink-0 flex items-center justify-center"
+                      style={{
+                        background: "#ffffff",
+                        width: 40,
+                        height: 40,
+                        padding: 4,
+                      }}
                     >
-                      {provider.providerName}
-                    </Link>
-                    {provider.rating && (
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span>{provider.rating}</span>
+                      {test.providerLogo ? (
+                        <img
+                          src={test.providerLogo}
+                          alt={`${test.provider} logo`}
+                          className="max-w-full max-h-full object-contain"
+                        />
+                      ) : (
+                        <span
+                          className="font-montserrat font-bold text-xs"
+                          style={{ color: NAVY }}
+                        >
+                          {test.provider.slice(0, 2).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div
+                        className="font-montserrat font-semibold text-sm truncate"
+                        style={{ color: TURQUOISE }}
+                      >
+                        {test.provider}
                       </div>
-                    )}
+                      <div
+                        className="font-['DM_Sans'] text-xs mt-0.5 line-clamp-2"
+                        style={{ color: "#ffffff", opacity: 0.85 }}
+                      >
+                        {test.name}
+                      </div>
+                      <div
+                        className="font-montserrat font-bold mt-2"
+                        style={{ color: PINK, fontSize: 20, lineHeight: 1 }}
+                      >
+                        {formatPrice(test.price)}
+                      </div>
+                    </div>
                   </div>
-                  <div className="ml-auto text-right">
-                    <span className="text-xl font-bold text-primary">
-                      £{provider.price.toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-2 text-sm mb-3">
-                  <div className="text-center p-2 bg-muted/50 rounded">
-                    <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                    <span className="text-xs">{provider.turnaroundTime}</span>
-                  </div>
-                  <div className="text-center p-2 bg-muted/50 rounded">
-                    {provider.collectionMethod.includes('home') || provider.collectionMethod.includes('Home') ? (
-                      <>
-                        <Home className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                        <span className="text-xs">Home Kit</span>
-                      </>
-                    ) : (
-                      <>
-                        <Building2 className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                        <span className="text-xs">Clinic</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="text-center p-2 bg-muted/50 rounded">
-                    <TestTube className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                    <span className="text-xs">{provider.biomarkerCount || '-'} markers</span>
-                  </div>
-                </div>
-                
-                {provider.url ? (
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                    <a 
-                      href={buildProviderBookingUrl(provider.url, provider.providerId, testName)}
-                      {...externalLinkProps}
-                    >
-                      Book with {provider.providerName}
-                      <ExternalLink className="h-4 w-4 ml-2" />
-                    </a>
-                  </Button>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <Row
+              label="Biomarkers"
+              index={0}
+              colCount={colCount}
+              children={columns.map((t) => (
+                <span key={t.id}>{(t.biomarkerCount ?? 0)} biomarkers</span>
+              ))}
+            />
+            <Row
+              label="Turnaround"
+              index={1}
+              colCount={colCount}
+              children={columns.map((t) => (
+                <span key={t.id}>{t.features?.turnaround || "—"}</span>
+              ))}
+            />
+            <Row
+              label="Sample method"
+              index={2}
+              colCount={colCount}
+              children={columns.map((t) => (
+                <span key={t.id}>{t.features?.collection || "—"}</span>
+              ))}
+            />
+            <Row
+              label="Doctor review"
+              index={3}
+              colCount={colCount}
+              children={columns.map((t) => (
+                <span key={t.id}>{hasDoctorReview(t) ? <Tick /> : <Dash />}</span>
+              ))}
+            />
+            <Row
+              label="UKAS accredited"
+              index={4}
+              colCount={colCount}
+              children={columns.map((t) => (
+                <span key={t.id}>{hasAccreditation(t, "UKAS") ? <Tick /> : <Dash />}</span>
+              ))}
+            />
+            <Row
+              label="CQC regulated"
+              index={5}
+              colCount={colCount}
+              children={columns.map((t) => (
+                <span key={t.id}>{hasAccreditation(t, "CQC") ? <Tick /> : <Dash />}</span>
+              ))}
+            />
+            <Row
+              label="Provider link"
+              index={6}
+              colCount={colCount}
+              children={columns.map((t) =>
+                t.url && t.url !== "#" ? (
+                  <a
+                    key={t.id}
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-['DM_Sans'] font-medium hover:underline"
+                    style={{ color: TURQUOISE }}
+                  >
+                    Book now →
+                  </a>
                 ) : (
-                  <Button asChild variant="outline" className="w-full">
-                    <Link to={`/provider/${provider.providerId}`}>
-                      View {provider.providerName}
-                    </Link>
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+                  <Dash key={t.id} />
+                )
+              )}
+            />
+            <Row
+              label="Save"
+              index={7}
+              colCount={colCount}
+              children={columns.map((t) => {
+                const isSaved = !!saved[t.id];
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => toggleSave(t.id)}
+                    aria-label={isSaved ? "Remove from saved" : "Save"}
+                    aria-pressed={isSaved}
+                    className="inline-flex items-center justify-center rounded-full transition-colors"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      border: `1px solid ${isSaved ? PINK : DIVIDER}`,
+                      background: isSaved ? PINK : "#ffffff",
+                    }}
+                  >
+                    <Heart
+                      size={18}
+                      color={isSaved ? "#ffffff" : PINK}
+                      fill={isSaved ? "#ffffff" : "none"}
+                    />
+                  </button>
+                );
+              })}
+            />
+            <Row
+              label="Book"
+              index={8}
+              colCount={colCount}
+              children={columns.map((t) => {
+                const available = !!t.url && t.url !== "#";
+                return available ? (
+                  <a
+                    key={t.id}
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center font-montserrat font-semibold rounded-full transition-colors"
+                    style={{
+                      background: PINK,
+                      color: "#ffffff",
+                      padding: "10px 14px",
+                      fontSize: 13,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a5a")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
+                  >
+                    Book Now
+                  </a>
+                ) : (
+                  <button
+                    key={t.id}
+                    type="button"
+                    disabled
+                    className="block w-full text-center font-montserrat font-semibold rounded-full"
+                    style={{
+                      background: "#cbd5e1",
+                      color: "#ffffff",
+                      padding: "10px 14px",
+                      fontSize: 13,
+                      cursor: "not-allowed",
+                    }}
+                  >
+                    Unavailable
+                  </button>
+                );
+              })}
+            />
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
