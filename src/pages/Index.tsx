@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
@@ -30,6 +31,10 @@ const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
 const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
+const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
+const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
+
+
 
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
@@ -238,6 +243,20 @@ const Index = () => {
             <ClinicAndHelpSection />
           </SectionReveal>
         </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <ScrollFadeIn variant="rise" delay={100}>
+            <ProviderComparisonTable />
+          </ScrollFadeIn>
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <ScrollFadeIn variant="rise" delay={150}>
+            <NewsletterSection />
+          </ScrollFadeIn>
+        </Suspense>
+
+
 
 
 
