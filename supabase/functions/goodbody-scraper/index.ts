@@ -170,11 +170,34 @@ async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
-  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  // Auth: service role OR admin user (with AAL2 enforced server-side by has_role).
+  const authHeader = req.headers.get('Authorization') ?? '';
+  const supabaseUrlEnv = Deno.env.get('SUPABASE_URL') ?? '';
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
+
+  if (!isServiceRole) {
+    if (!authHeader || !supabaseUrlEnv || !anonKey) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const userClient = createClient(supabaseUrlEnv, anonKey, {
+      global: { headers: { Authorization: authHeader } },
     });
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+    if (userErr || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const { data: hasAdminRole } = await userClient.rpc('has_role', { _user_id: user.id, _role: 'admin' });
+    if (!hasAdminRole) {
+      return new Response(JSON.stringify({ error: 'Admin only' }), {
+        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
   }
 
   try {
