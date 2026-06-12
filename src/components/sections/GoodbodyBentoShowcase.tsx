@@ -16,11 +16,20 @@ const KIT = {
   vitamins: "/images/tests/vitamins-blood-test.webp",
   cholesterol: "/images/tests/cholesterol-blood-test.webp",
   sportsFitness: "/images/tests/sports-fitness-blood-test.webp",
+  advancedWellWoman: "/images/tests/advanced-well-woman.webp",
+  testosterone: "/images/tests/testosterone-blood-test.webp",
+  cardiacRisk: "/images/tests/cardiac-risk-blood-test.webp",
+  fullBloodCount: "/images/tests/full-blood-count-blood-test.webp",
+  liver: "/images/tests/liver-blood-test.webp",
+  kidney: "/images/tests/kidney-blood-test.webp",
+  iron: "/images/tests/iron-blood-test.webp",
+  tiredness: "/images/tests/tiredness-fatigue-blood-test.webp",
   generalHealthFp: generalHealthAsset.url,
   cholesterolFp: cholesterolFpAsset.url,
   wellManFp: wellManFpAsset.url,
   wellWomanFp: wellWomanFpAsset.url,
 };
+
 
 const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: string; href: string }) => (
   <Link
