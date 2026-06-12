@@ -18,9 +18,9 @@ export const moreNavigationSections = [
     title: "About",
     items: [
       { name: "About Us", path: "/about" },
-      { name: "How It Works", path: "/how-it-works" },
       { name: "Frequently Asked Questions", path: "/faqs" }
     ]
+
   },
   {
     title: "Services",
