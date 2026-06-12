@@ -10,6 +10,7 @@ import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
 import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
+import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import { TestViewToggle, type TestViewMode } from "@/components/compare/TestViewToggle";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
