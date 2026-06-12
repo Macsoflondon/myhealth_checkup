@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
 import myhealthLogo from "/myhealth-logo.png";
-import NewsletterSignup from "@/components/layout/NewsletterSignup";
+
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -47,7 +47,6 @@ const Footer = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
             <FooterColumn title="Health Tests" links={healthTestLinks} />
             <FooterColumn title="Company" links={companyLinks} />
-            <NewsletterSignup />
             <ConnectColumn />
           </div>
 
