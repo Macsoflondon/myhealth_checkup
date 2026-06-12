@@ -233,7 +233,7 @@ const Header = ({ className }: HeaderProps) => {
               )}
 
               {/* Right controls — absolutely anchored so they don't pull the logo off-centre */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center bg-white pl-2">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center pl-2" style={{ backgroundColor: "#ffffff" }}>
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
