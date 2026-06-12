@@ -266,7 +266,7 @@ export function CategoryPageLayout({
                     onCompareToggle={() => toggleCompare(test)}
                     className="w-full max-w-[360px]"
                     testDetails={{
-                      id: test.id,
+                      id: String(test.id),
                       provider_id: (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
                       test_name: test.title,
                       description: test.desc ?? null,
