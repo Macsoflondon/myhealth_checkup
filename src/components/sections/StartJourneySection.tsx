@@ -79,13 +79,6 @@ const StartJourneySection = () => {
               </div>
 
             </div>
-
-            {/* Bottom Accent Bar */}
-            <div className="h-[9px] w-full flex" aria-hidden="true">
-              <div className="h-full flex-1 bg-[#22c0d4]" />
-              <div className="h-full flex-1 bg-[#e70d69]" />
-              <div className="h-full flex-1 bg-[#081129]" />
-            </div>
           </div>
 
           {/* Right column — Live Comparison */}
