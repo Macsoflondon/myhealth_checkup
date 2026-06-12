@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+import SectionReveal from "@/components/ui/SectionReveal";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
