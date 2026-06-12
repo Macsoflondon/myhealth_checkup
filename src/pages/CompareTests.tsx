@@ -245,30 +245,29 @@ const CompareTests = () => {
               )}
             </section>
 
-            {/* SECTION 2 — Comparison table */}
-            {selectedTests.length > 0 && (
-              <section>
-                <div
-                  className="h-px w-full mb-8"
-                  style={{ background: "#22c0d4" }}
-                />
-                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                  <p className="font-montserrat font-semibold text-foreground text-base">
-                    Comparing {selectedTests.length}{" "}
-                    {selectedTests.length === 1 ? "test" : "tests"}
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleClearAll}
-                    className="font-['DM_Sans']"
-                  >
-                    Clear selection
-                  </Button>
-                </div>
-                <ProviderComparisonTable tests={selectedTests} />
-              </section>
-            )}
+            {/* SECTION 2 — Comparison table (always visible) */}
+            <section>
+              <div
+                className="h-px w-full mb-8"
+                style={{ background: "#22c0d4" }}
+              />
+              <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                <p className="font-montserrat font-semibold text-foreground text-base">
+                  Comparing {selectedTests.length}{" "}
+                  {selectedTests.length === 1 ? "test" : "tests"}
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleClearAll}
+                  className="font-['DM_Sans']"
+                  disabled={selectedTests.length === 0}
+                >
+                  Clear selection
+                </Button>
+              </div>
+              <ProviderComparisonTable tests={selectedTests} />
+            </section>
           </div>
         </MainLayout>
 
