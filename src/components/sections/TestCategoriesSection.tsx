@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
+import bloodTubesAsset from "@/assets/blood-test-tubes.jpeg.asset.json";
 
 const categories = [
   {
     tag: "Blood Testing",
     tagVariant: "teal" as const,
-    count: "280+ Tests",
+    count: "1,400+ Tests",
     title: "Blood Tests & Panels",
     description:
       "Individual biomarkers to comprehensive wellness panels. At-home kits and clinic-based venepuncture from UKAS-accredited laboratories.",
     link: "/compare",
     linkLabel: "Explore Tests",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&q=85&auto=format&fit=crop",
+    image: bloodTubesAsset.url,
   },
   {
     tag: "Cancer Screening",
     tagVariant: "pink" as const,
-    count: "40+ Screens",
+    count: "40 Screens",
     title: "Private Cancer Screening",
     description:
       "Multi-cancer early detection tests, tumour markers, and targeted screening for bowel, prostate, ovarian, and other cancers from regulated UK clinics.",
@@ -27,7 +28,7 @@ const categories = [
   {
     tag: "Wellness",
     tagVariant: "teal" as const,
-    count: "60+ Panels",
+    count: "600+ Panels",
     title: "Wellness & Longevity",
     description:
       "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
@@ -42,22 +43,21 @@ const TestCategoriesSection = () => {
     <section className="bg-white py-14 sm:py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
 
-        {/* Header — uses the platform's standard SectionHeading */}
+        {/* Header — standardised to match other section headings */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-            <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <div className="h-px w-6 bg-slate-200" />
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
               What We Compare
             </span>
-            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+            <div className="h-px w-6 bg-slate-200" />
           </div>
           <SectionHeading
             title="Every test. Every provider."
             gradientText="One transparent platform."
-            titleClassName="text-[#081129]"
-            gradientClassName="text-brand-turquoise"
+            titleClassName="text-tertiary"
           />
-          <p className="mt-3 text-base sm:text-lg text-[#081129]/65 leading-relaxed">
+          <p className="text-base font-semibold text-tertiary max-w-2xl mx-auto leading-snug mt-2 text-center">
             Browse by category. Compare biomarkers, pricing, turnaround times, and accreditation in one place — with no promotional influence from any provider.
           </p>
         </div>
