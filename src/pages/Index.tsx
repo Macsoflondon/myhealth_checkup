@@ -214,6 +214,16 @@ const Index = () => {
 
         <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>
+            <LiveComparisonPanel />
+          </ScrollFadeIn>
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <AccreditedProvidersBar />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <ScrollFadeIn variant="rise" delay={100}>
             <PartnerShowcaseGrid />
           </ScrollFadeIn>
         </Suspense>
