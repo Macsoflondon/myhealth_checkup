@@ -1,86 +1,108 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Clock, ArrowRight } from "lucide-react";
-const HealthResources = () => {
-  const resources = [{
-    title: "Complete Guide to Blood Tests",
-    description: "Everything you need to know about private blood testing in the UK.",
-    readTime: "5 min read",
-    link: "/resources/blood-tests-guide"
-  }, {
-    title: "Understanding Your Results",
-    description: "How to interpret common biomarkers and when to see a GP.",
-    readTime: "7 min read",
-    link: "/resources/understanding-results"
-  }, {
-    title: "Health Screening by Age",
-    description: "Recommended tests for different life stages and risk factors.",
-    readTime: "6 min read",
-    link: "/resources/screening-by-age"
-  }];
-  return <section className="py-16 bg-[#081129] relative overflow-hidden">
-      {/* Decorative half-circles */}
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { blogArticles } from '@/data/blogArticles';
+import type { BlogArticle } from '@/types/blog.types';
+
+const FALLBACK_IMAGE =
+  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80';
+
+const formatDate = (dateStr: string) =>
+  new Date(dateStr).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
+  <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
+    <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
+      <img
+        src={article.image}
+        alt={article.title}
+        loading="lazy"
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;
+        }}
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,17,41,0.5)] via-transparent to-transparent" />
+      <span
+        className="absolute left-3 bottom-3 inline-block rounded-full bg-[#22c0d4] text-white px-2.5 py-1 uppercase"
+        style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, letterSpacing: '0.08em', fontWeight: 600 }}
+      >
+        {article.category}
+      </span>
+    </div>
+    <div className="p-5 flex flex-col flex-1">
+      <div
+        className="uppercase"
+        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 11, color: '#94a3b8', letterSpacing: '0.08em' }}
+      >
+        {article.provider}
+      </div>
+      <h3
+        className="mt-1 mb-2 line-clamp-2"
+        style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 16, color: '#081129', lineHeight: 1.35 }}
+      >
+        {article.title}
+      </h3>
+      <p
+        className="line-clamp-3 mb-4 flex-1"
+        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#64748b', lineHeight: 1.55 }}
+      >
+        {article.excerpt}
+      </p>
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-[#f0f4fa]">
+        <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, color: '#94a3b8' }}>
+          {formatDate(article.date)}
+        </span>
+        <a
+          href={article.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
+          style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#22c0d4', fontWeight: 500 }}
+        >
+          Read article →
+        </a>
+      </div>
+    </div>
+  </article>
+);
+
+const HealthResources: React.FC = () => {
+  const articles = blogArticles.filter((a) => a.provider !== 'Thriva').slice(0, 3);
+
+  return (
+    <section className="py-16 bg-[#081129] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-64 h-64 bg-brand-turquoise/5 rounded-full translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-pink/5 rounded-full -translate-x-1/3 translate-y-1/3" />
-      <div className="absolute top-1/2 left-0 w-40 h-40 bg-brand-turquoise/5 rounded-full -translate-x-1/2" />
-      <div className="absolute bottom-0 right-1/4 w-36 h-36 bg-brand-pink/5 rounded-full translate-y-1/2" />
-      <div className="absolute top-[15%] left-[20%] w-52 h-52 bg-brand-turquoise/[0.04] rounded-full" />
-      <div className="absolute top-[30%] right-[10%] w-44 h-44 bg-brand-pink/[0.03] rounded-full" />
-      <div className="absolute bottom-[25%] left-[40%] w-48 h-48 bg-brand-turquoise/[0.03] rounded-full" />
-      <div className="absolute top-0 left-[60%] w-56 h-56 bg-brand-pink/[0.04] rounded-full -translate-y-1/2" />
-      <div className="absolute bottom-[10%] right-[35%] w-40 h-40 bg-brand-turquoise/[0.04] rounded-full" />
-      <div className="absolute top-[65%] left-0 w-60 h-60 bg-brand-pink/[0.03] rounded-full -translate-x-1/3" />
-      <div className="absolute top-[5%] right-[25%] w-52 h-52 bg-brand-turquoise/[0.04] rounded-full" />
-      <div className="absolute bottom-[35%] left-[15%] w-48 h-48 bg-brand-pink/[0.03] rounded-full" />
-      <div className="absolute top-[40%] right-[55%] w-56 h-56 bg-brand-turquoise/[0.03] rounded-full" />
-      <div className="absolute bottom-[5%] left-[70%] w-44 h-44 bg-brand-pink/[0.04] rounded-full translate-y-1/4" />
-      <div className="absolute top-[55%] right-[5%] w-60 h-60 bg-brand-turquoise/[0.04] rounded-full translate-x-1/3" />
-      <div className="absolute top-[80%] left-[30%] w-40 h-40 bg-brand-pink/[0.03] rounded-full" />
-      <div className="absolute bottom-[50%] right-[40%] w-52 h-52 bg-brand-turquoise/[0.03] rounded-full" />
-      <div className="absolute top-[20%] left-[50%] w-36 h-36 bg-brand-pink/[0.04] rounded-full" />
-      <div className="absolute bottom-[65%] left-[5%] w-48 h-48 bg-brand-turquoise/[0.04] rounded-full -translate-x-1/4" />
-      <div className="absolute top-[75%] right-[15%] w-56 h-56 bg-brand-pink/[0.03] rounded-full" />
-      <div className="absolute bottom-[20%] left-[55%] w-44 h-44 bg-brand-turquoise/[0.03] rounded-full" />
-      <div className="absolute top-[10%] right-[70%] w-60 h-60 bg-brand-pink/[0.04] rounded-full" />
-      <div className="absolute bottom-[40%] right-[65%] w-40 h-40 bg-brand-turquoise/[0.04] rounded-full" />
-      <div className="absolute top-[90%] left-[45%] w-52 h-52 bg-brand-pink/[0.03] rounded-full translate-y-1/3" />
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-semibold mb-12 text-[#e70d69] text-center">
             Health Resources Hub
           </h2>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {resources.map((resource, index) => <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                    {resource.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {resource.description}
-                  </p>
-                  
-                  <div className="flex items-center text-sm text-gray-500 mb-6">
-                    <Clock className="w-4 h-4 mr-2" />
-                    {resource.readTime}
-                  </div>
-                  
-                  <Button variant="outline" className="w-full border-health-300 text-white bg-[#e70d69] text-center rounded-none" aria-label={`Read guide: ${resource.title}`}>
-                    Read this guide
-                  </Button>
-                </CardContent>
-              </Card>)}
+            {articles.map((article) => (
+              <FeaturedCard key={article.url} article={article} />
+            ))}
           </div>
-          
-          <div className="text-center mt-12 bg-[#081129]">
-            <Button className="bg-health-600 hover:bg-health-700">
-              View All Resources
-            </Button>
+
+          <div className="text-center mt-12">
+            <Link
+              to="/health-resources"
+              className="inline-block rounded-full bg-white text-[#081129] hover:bg-[#f0f4fa] transition-colors"
+              style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 14, fontWeight: 600, padding: '12px 32px' }}
+            >
+              View all articles
+            </Link>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default HealthResources;
