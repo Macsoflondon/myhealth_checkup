@@ -261,10 +261,25 @@ export function CategoryPageLayout({
                     markers={test.biomarkers}
                     provider={test.provider}
                     url={test.url}
-                    ctaLabel="Compare"
+                    ctaLabel="View details"
                     compareSelected={!!compared.find((c) => c.id === test.id)}
                     onCompareToggle={() => toggleCompare(test)}
                     className="w-full max-w-[360px]"
+                    testDetails={{
+                      id: String(test.id),
+                      provider_id: (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
+                      test_name: test.title,
+                      description: test.desc ?? null,
+                      price: test.priceNum ?? null,
+                      category: test.tag ?? null,
+                      sample_type: test.collection ?? null,
+                      biomarker_count: test.biomarkerCount ?? null,
+                      url: test.url ?? null,
+                      biomarkers_list: (test.biomarkers as any) ?? null,
+                      turnaround_days_text: test.turnaround ?? null,
+                      base_price: null,
+                      collection_options: null,
+                    }}
                   />
                 ))}
               </div>
