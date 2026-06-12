@@ -193,7 +193,7 @@ const Header = ({ className }: HeaderProps) => {
         )}
         style={{ top: isSearchDocked ? 0 : tickerHeight }}
       >
-        <div className="bg-white">
+        <div style={{ backgroundColor: "#ffffff" }}>
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
             <div
               className={cn(
@@ -205,7 +205,7 @@ const Header = ({ className }: HeaderProps) => {
               {!isSearchDocked && (
                 <Link
                   to="/"
-                  className="flex items-center flex-shrink-0 min-w-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
+                  className="flex items-center flex-shrink-0 min-w-0 scale-105 motion-reduce:transition-none"
                 >
                   <img
                     src={fullLogo.url}
@@ -233,7 +233,7 @@ const Header = ({ className }: HeaderProps) => {
               )}
 
               {/* Right controls — absolutely anchored so they don't pull the logo off-centre */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center bg-white pl-2">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center pl-2" style={{ backgroundColor: "#ffffff" }}>
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
