@@ -1,128 +1,54 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import MainLayout from "@/layouts/MainLayout";
 
-import { FiltersSidebar } from "@/components/compare/FiltersSidebar";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
-import { RecommendedTestsCarousel } from "@/components/compare/RecommendedTestsCarousel";
-import { GroupedTestsTable } from "@/components/compare/GroupedTestsTable";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
-import { TestViewToggle, type TestViewMode } from "@/components/compare/TestViewToggle";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Loader2, Filter, TrendingUp } from "lucide-react";
-import { providers } from "@/constants/providers";
+import { Search, X } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
+import { getProviderRating } from "@/constants/providerRatings";
+import { getCategoryPinColor } from "@/data/categoryColors";
+import { getBranding } from "@/data/providerBranding";
 
-const CATEGORY_LIST = [
-  "general health",
-  "thyroid",
-  "hormones",
-  "women's health",
-  "men's health",
-  "nutrition",
-  "fertility",
-  "heart health",
-  "diabetes",
-  "cancer screening",
-];
+const resolveCategoryColor = (test: CompareTestData): string => {
+  const cat = test.category || "";
+  const pin = getCategoryPinColor(cat.toLowerCase().replace(/\s+/g, "-"));
+  if (pin && pin !== "#e70d69") return pin;
+  const brand = getBranding(test.provider);
+  if (brand?.primary) return brand.primary;
+  return "#e70d69";
+};
 
 const CompareTests = () => {
-  // Filter states
   const [filters, setFilters] = useState<CompareFilters>(defaultFilters);
-  
-  // Mobile filter visibility
-  const [showFilters, setShowFilters] = useState(false);
-  
-  // Pagination states
-  const ITEMS_PER_PAGE = 12;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  // View mode state
-  const [viewMode, setViewMode] = useState<TestViewMode>("list");
-
-  // Comparison states - synced with global compareStore
-  const selectedTests = useCompareItems();
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Use the centralised data hook
+  const selectedTests = useCompareItems();
+
   const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
-  
-  // Fetch recommended tests for the current category
+
   const effectiveCategory = filters.selectedCategory || urlCategory || "general-health";
   const { data: recommendedTests = [], isLoading: isLoadingRecommended } = useRecommendedTests(
     effectiveCategory,
     8
   );
 
-  // Set initial category from URL
-  React.useEffect(() => {
+  useEffect(() => {
     if (urlCategory && !filters.selectedCategory) {
       setFilters(prev => ({ ...prev, selectedCategory: urlCategory }));
     }
-  }, [urlCategory]);
+  }, [urlCategory, filters.selectedCategory]);
 
-  // Reset pagination when filters change
-  React.useEffect(() => {
-    setCurrentPage(1);
-  }, [filters]);
-
-  // Filter update helpers
-  const updateFilter = useCallback(<K extends keyof CompareFilters>(
-    key: K,
-    value: CompareFilters[K]
-  ) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  }, []);
-
-  // Clear all filters
-  const clearFilters = useCallback(() => {
-    setFilters(defaultFilters);
-  }, []);
-
-  // Format providers for the sidebar
-  const formattedProviders = useMemo(() => 
-    providers.map(p => ({ id: p.id, name: p.name })),
-  []);
-
-  const memoizedStats = useMemo(() => ({
-    testCount: tests.length,
-    providerCount: providers.length,
-  }), [tests.length]);
-
-  // Pagination logic
-  const paginatedTests = useMemo(() => {
-    return tests.slice(0, currentPage * ITEMS_PER_PAGE);
-  }, [tests, currentPage]);
-
-  const hasMoreTests = paginatedTests.length < tests.length;
-  const totalPages = Math.ceil(tests.length / ITEMS_PER_PAGE);
-
-  const handleLoadMore = useCallback(() => {
-    setIsLoadingMore(true);
-    setTimeout(() => {
-      setCurrentPage(prev => prev + 1);
-      setIsLoadingMore(false);
-    }, 300);
-  }, []);
-
-  // Comparison handlers — delegate to global store
   const handleToggleSelect = useCallback((test: CompareTestData) => {
     compareStore.toggle(test);
   }, []);
@@ -136,12 +62,9 @@ const CompareTests = () => {
   }, []);
 
   const handleOpenComparison = useCallback(() => {
-    if (selectedTests.length >= 2) {
-      setIsComparisonOpen(true);
-    }
+    if (selectedTests.length >= 2) setIsComparisonOpen(true);
   }, [selectedTests.length]);
 
-  // Auto-open comparison panel when arriving via ?openCompare=1
   useEffect(() => {
     if (searchParams.get("openCompare") === "1" && selectedTests.length >= 2) {
       setIsComparisonOpen(true);
@@ -151,9 +74,42 @@ const CompareTests = () => {
     }
   }, [searchParams, selectedTests.length, setSearchParams]);
 
-  const isTestSelected = useCallback((testId: string) => {
-    return selectedTests.some(t => t.id === testId);
-  }, [selectedTests]);
+  const isSelected = useCallback(
+    (id: string) => selectedTests.some(t => t.id === id),
+    [selectedTests]
+  );
+
+  const hasSearch = filters.searchQuery.trim().length > 0;
+  const displayTests: CompareTestData[] = hasSearch
+    ? tests.slice(0, 12)
+    : recommendedTests.slice(0, 8);
+  const showLoading = hasSearch ? isLoading : isLoadingRecommended;
+
+  const renderCard = (test: CompareTestData) => {
+    const selected = isSelected(test.id);
+    const rating = getProviderRating(test.provider);
+    return (
+      <div key={test.id} className="w-[300px] flex-shrink-0">
+        <UnifiedTestCard
+          category={test.category || "Health"}
+          categoryColor={resolveCategoryColor(test)}
+          name={test.name}
+          description={test.description || "Comprehensive health screening test"}
+          biomarkers={test.biomarkerCount ?? 0}
+          results={test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`}
+          collection={test.features?.collection || "Home kit"}
+          rating={rating.rating}
+          reviews={rating.reviews}
+          price={test.price}
+          provider={test.provider}
+          url={test.url}
+          ctaLabel={selected ? "Selected ✓" : "Compare →"}
+          compareSelected={selected}
+          onCtaClick={() => handleToggleSelect(test)}
+        />
+      </div>
+    );
+  };
 
   return (
     <ErrorBoundary>
@@ -180,7 +136,6 @@ const CompareTests = () => {
               ]
             }
           })}</script>
-          {/* FAQPage schema — eligible for rich result snippets (audit 3.4) */}
           <script type="application/ld+json">{JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
@@ -215,202 +170,94 @@ const CompareTests = () => {
         </Helmet>
 
         <MainLayout>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 bg-white rounded-lg">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground font-montserrat mb-4 sm:mb-6">
-              {effectiveCategory && effectiveCategory !== "all" 
-                ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
-                : "Compare Private Blood Tests"}
-            </h1>
-            
-            {/* Recommended Tests Carousel */}
-            <RecommendedTestsCarousel
-              tests={recommendedTests}
-              category={effectiveCategory}
-              onSelectTest={handleToggleSelect}
-              selectedTestIds={selectedTests.map(t => t.id)}
-              isLoading={isLoadingRecommended}
-            />
-            <div className="flex flex-col lg:flex-row gap-8">
-              {/* Filters Sidebar */}
-              <FiltersSidebar
-                searchQuery={filters.searchQuery}
-                onSearchChange={(v) => updateFilter('searchQuery', v)}
-                providers={formattedProviders}
-                selectedProvider={filters.selectedProvider}
-                onProviderChange={(v) => updateFilter('selectedProvider', v)}
-                priceRange={filters.priceRange}
-                onPriceRangeChange={(v) => updateFilter('priceRange', v)}
-                categories={CATEGORY_LIST}
-                selectedCategory={filters.selectedCategory}
-                onCategoryChange={(v) => updateFilter('selectedCategory', v)}
-                sampleMethod={filters.sampleMethod}
-                onSampleMethodChange={(v) => updateFilter('sampleMethod', v)}
-                fastingRequired={filters.fastingRequired}
-                onFastingChange={(v) => updateFilter('fastingRequired', v)}
-                gpReview={filters.gpReview}
-                onGpReviewChange={(v) => updateFilter('gpReview', v)}
-                onClearFilters={clearFilters}
-                isVisible={showFilters}
-                onClose={() => setShowFilters(false)}
-              />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+            {/* SECTION 1 — Recommended / Search */}
+            <section className="mb-12">
+              <h1 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-foreground font-montserrat mb-6">
+                {effectiveCategory && effectiveCategory !== "all"
+                  ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
+                  : "Compare Private Blood Tests"}
+              </h1>
 
-              {/* Results */}
-              <main className="flex-1 min-w-0">
-                {/* Sort, View Toggle, and Filter Toggle */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setShowFilters(!showFilters)}
-                      className="lg:hidden bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy"
-                    >
-                      <Filter size={18} className="mr-2 text-white" />
-                      Filters
-                    </Button>
-                    <p className="text-sm text-muted-foreground">
-                      {tests.length} {tests.length === 1 ? "test" : "tests"} found
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3 flex-wrap">
-                    {/* View Toggle */}
-                    <TestViewToggle value={viewMode} onChange={setViewMode} />
-                    
-                    {/* Sort - only show in list view */}
-                    {viewMode === "list" && (
-                      <Select 
-                        value={filters.sortBy} 
-                        onValueChange={(v) => updateFilter('sortBy', v)}
-                      >
-                        <SelectTrigger className="w-[160px] bg-background">
-                          <SelectValue placeholder="Sort by" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="price-asc">Price (low to high)</SelectItem>
-                          <SelectItem value="price-desc">Price (high to low)</SelectItem>
-                          <SelectItem value="turnaround">Fastest results</SelectItem>
-                          <SelectItem value="popular">Most popular</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                  </div>
-                </div>
-
-                {/* Test Display - based on view mode */}
-                {isLoading ? (
-                  <div className="flex justify-center items-center py-20">
-                    <div className="text-center">
-                      <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-                      <p className="text-muted-foreground">Finding the best tests for you...</p>
-                    </div>
-                  </div>
-                ) : tests.length === 0 ? (
-                  <div className="text-center py-20">
-                    <div className="max-w-md mx-auto">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
-                        <TrendingUp className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-foreground mb-2">No tests found</h3>
-                      <p className="text-muted-foreground mb-6">
-                        No tests found matching your filters. Try adjusting your search.
-                      </p>
-                      <Button variant="outline" onClick={clearFilters}>
-                        Clear filters
-                      </Button>
-                    </div>
-                  </div>
-                ) : viewMode === "grouped" ? (
-                  /* Grouped View - Tests clustered by type with expandable providers */
-                  <GroupedTestsTable
-                    tests={tests.map(t => ({
-                      id: t.id,
-                      testName: t.name,
-                      provider: t.provider,
-                      price: t.price,
-                      originalPrice: undefined,
-                      turnaroundDays: t.turnaroundDays,
-                      biomarkerCount: t.biomarkerCount,
-                      sampleType: t.features?.collection,
-                      homeKitAvailable: t.features?.collection?.toLowerCase().includes("home") || false,
-                      clinicVisitAvailable: t.features?.collection?.toLowerCase().includes("clinic") || false,
-                      gpReviewIncluded: false,
-                      url: t.url,
-                      description: t.description,
-                      category: t.category,
-                    }))}
-                    title="Tests by Type"
+              {/* Search bar */}
+              <div className="max-w-2xl mx-auto mb-8">
+                <div className="relative">
+                  <Search
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                   />
-                ) : viewMode === "table" ? (
-                  <ProviderComparisonTable tests={tests} />
-                ) : (
-                  /* List View - Original card layout */
+                  <input
+                    type="text"
+                    value={filters.searchQuery}
+                    onChange={(e) =>
+                      setFilters(prev => ({ ...prev, searchQuery: e.target.value }))
+                    }
+                    placeholder="Search tests by name, biomarker, or provider…"
+                    className="w-full h-12 pl-11 pr-11 rounded-full border border-border bg-white text-sm font-['DM_Sans'] text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-turquoise/40 focus:border-brand-turquoise transition"
+                  />
+                  {filters.searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFilters(prev => ({ ...prev, searchQuery: "" }))
+                      }
+                      aria-label="Clear search"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-muted text-muted-foreground"
+                    >
+                      <X size={16} />
+                    </button>
+                  )}
+                </div>
+              </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {paginatedTests.map((test) => (
-                      <UnifiedTestCard
-                        key={test.id}
-                        category={test.category || "Health"}
-                        name={test.name}
-                        description={test.description || "Comprehensive health screening test"}
-                        biomarkers={test.biomarkerCount ?? 0}
-                        results={test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`}
-                        collection={test.features?.collection || "Home kit"}
-                        rating={(test as any).rating ?? 4.6}
-                        reviews={(test as any).reviewCount ?? (test as any).reviews ?? 0}
-                        price={test.price}
-                        provider={test.provider}
-                        url={test.url}
-                        ctaLabel={isTestSelected(test.id) ? "Selected" : "Compare"}
-                        compareSelected={isTestSelected(test.id)}
-                        onCompareToggle={() => handleToggleSelect(test)}
-                      />
-                    ))}
-                    
-                    {/* Pagination Controls */}
-                    {tests.length > ITEMS_PER_PAGE && (
-                      <div className="flex flex-col items-center gap-4 pt-8 pb-4">
-                        <p className="text-sm text-muted-foreground">
-                          Showing {paginatedTests.length} of {tests.length} tests
-                        </p>
-                        
-                        {hasMoreTests ? (
-                          <Button
-                            variant="outline"
-                            size="lg"
-                            onClick={handleLoadMore}
-                            disabled={isLoadingMore}
-                            className="min-w-[200px] bg-brand-navy text-white hover:bg-brand-navy/90 border-brand-navy hover:text-white"
-                          >
-                            {isLoadingMore ? (
-                              <>
-                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                Loading...
-                              </>
-                            ) : (
-                              <>Load more tests</>
-                            )}
-                          </Button>
-                        ) : (
-                          <p className="text-sm text-muted-foreground font-medium">
-                            You've reached the end
-                          </p>
-                        )}
-                        
-                        {/* Page indicator */}
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <span>Page {currentPage} of {totalPages}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </main>
-            </div>
+              {/* Horizontal scrolling cards */}
+              {showLoading ? (
+                <div className="flex gap-4 pb-4 overflow-x-auto">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-[300px] h-[420px] bg-muted animate-pulse rounded-2xl flex-shrink-0"
+                    />
+                  ))}
+                </div>
+              ) : displayTests.length === 0 ? (
+                <p className="text-center text-sm text-muted-foreground py-12">
+                  No tests found for this search.
+                </p>
+              ) : (
+                <div className="flex gap-4 pb-4 overflow-x-auto">
+                  {displayTests.map(renderCard)}
+                </div>
+              )}
+            </section>
+
+            {/* SECTION 2 — Comparison table */}
+            {selectedTests.length > 0 && (
+              <section>
+                <div
+                  className="h-px w-full mb-8"
+                  style={{ background: "#22c0d4" }}
+                />
+                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                  <p className="font-montserrat font-semibold text-foreground text-base">
+                    Comparing {selectedTests.length}{" "}
+                    {selectedTests.length === 1 ? "test" : "tests"}
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleClearAll}
+                    className="font-['DM_Sans']"
+                  >
+                    Clear selection
+                  </Button>
+                </div>
+                <ProviderComparisonTable tests={selectedTests} />
+              </section>
+            )}
           </div>
         </MainLayout>
 
-        {/* Comparison Bar - fixed at bottom when tests selected */}
         <ComparisonBar
           selectedTests={selectedTests}
           onRemoveTest={handleRemoveTest}
@@ -418,7 +265,6 @@ const CompareTests = () => {
           onClearAll={handleClearAll}
         />
 
-        {/* Comparison Panel Modal */}
         <ComparisonPanel
           tests={selectedTests}
           isOpen={isComparisonOpen}
