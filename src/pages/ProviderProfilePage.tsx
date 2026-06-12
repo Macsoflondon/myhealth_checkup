@@ -17,7 +17,7 @@ const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
   'goodbody-clinic': '/providers/goodbody-clinic',
   'medichecks': '/providers/medichecks',
   'thriva': '/providers/thriva',
-  'randox-health': '/providers/randox',
+  'randox': '/providers/randox',
   'lola-health': '/providers/lola-health',
   'london-medical-laboratory': '/providers/london-medical-laboratory',
 };

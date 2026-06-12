@@ -129,12 +129,12 @@ const Header = ({ className }: HeaderProps) => {
           <PromoTicker />
         <header className="bg-[hsl(var(--brand-navy))] shadow-md">
           <div className="container mx-auto max-w-full px-3 sm:px-4 bg-[#08122b]">
-              <div className="relative py-2.5 flex items-center justify-center min-w-0 bg-[#08122b] pr-[9.5rem] xs:pr-[10rem] sm:pr-[10.5rem]">
+              <div className="relative py-6 flex items-center justify-center min-w-0 bg-[#08122b] pr-[9.5rem] xs:pr-[10rem] sm:pr-[10.5rem]">
                 <Link to="/" className="relative z-10 flex items-center justify-center overflow-hidden bg-[#08122b]">
                   <img
                     src={mainLogo}
                     alt="myhealth checkup"
-                    className="h-[56px] xs:h-[64px] sm:h-[72px] w-auto max-w-[calc(100vw-11rem)] object-contain object-center"
+                    className="h-[72px] xs:h-[80px] sm:h-[88px] w-auto max-w-[calc(100vw-11rem)] object-contain object-center"
                   />
                 </Link>
 
@@ -198,7 +198,7 @@ const Header = ({ className }: HeaderProps) => {
             <div
               className={cn(
                 "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-2 md:py-3" : "py-2 md:py-3 lg:py-4"
+                isSearchDocked ? "py-2 md:py-3" : "py-4 md:py-6 lg:py-8"
               )}
             >
               {/* Center: Combined logo + tagline */}
@@ -211,7 +211,7 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={fullLogo.url}
                     alt="myhealth checkup — Your health! Your choice! One trusted platform!"
-                    className="w-auto object-contain flex-shrink-0 h-20 md:h-24 lg:h-28 xl:h-32 max-w-[90vw]"
+                    className="w-auto object-contain flex-shrink-0 h-24 md:h-28 lg:h-32 xl:h-36 max-w-[90vw]"
                   />
                 </Link>
               )}

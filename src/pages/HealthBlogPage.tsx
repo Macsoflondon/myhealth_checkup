@@ -44,7 +44,7 @@ const HealthBlogPage = () => {
       <Helmet>
         <title>Health Resource Hub | myhealth checkup</title>
         <meta name="description" content="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults." />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/health-resources" />
+        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/blog" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Blog",
@@ -93,10 +93,10 @@ const HealthBlogPage = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="font-bold mb-4 text-[#22c0d4] text-4xl">Featured Articles</h2>
-              <p className="text-xl text-[#e70d69]">Our most popular health and wellness content</p>
+              <h2 className="font-bold mb-4 text-[#22c0d4] text-2xl sm:text-3xl md:text-4xl">Featured Articles</h2>
+              <p className="text-base sm:text-lg md:text-xl text-[#e70d69]">Our most popular health and wellness content</p>
             </div>
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {featuredArticles.map((article, index) => (
                 <FeaturedArticleCard 
                   key={index} 
@@ -119,8 +119,8 @@ const HealthBlogPage = () => {
           <section className="py-16 bg-[#081129]">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="font-bold mb-4 text-[#22c0d4] text-4xl">Recent Articles</h2>
-                <p className="text-xl text-[#e70d69]">Stay up to date with the latest health insights</p>
+                <h2 className="font-bold mb-4 text-[#22c0d4] text-2xl sm:text-3xl md:text-4xl">Recent Articles</h2>
+                <p className="text-base sm:text-lg md:text-xl text-[#e70d69]">Stay up to date with the latest health insights</p>
               </div>
               <div className="max-w-4xl mx-auto space-y-6">
                 {recentArticles.map((article, index) => (

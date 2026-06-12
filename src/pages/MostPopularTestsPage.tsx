@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { Star, TrendingUp, Shield, AlertCircle, Inbox, RotateCw } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -111,7 +112,7 @@ const EmptyState: React.FC = () => (
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
     <Button asChild variant="secondary">
-      <a href="/compare">Browse all tests</a>
+      <Link to="/compare">Browse all tests</Link>
     </Button>
   </div>
 );
