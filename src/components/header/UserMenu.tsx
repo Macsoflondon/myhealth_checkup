@@ -74,7 +74,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+            className="!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
             aria-label="User menu"
           >
             <User className="h-4 w-4" />
@@ -102,7 +102,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+        className="!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
         aria-label="Sign in"
         asChild
       >
