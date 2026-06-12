@@ -24,7 +24,7 @@ const AssistedTestFinderPage = () => {
         <meta name="twitter:description" content="Let us help you find the perfect health test for your needs with our guided questionnaire." />
       </Helmet>
       
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         
         <Header />
         <main className="flex-1">
