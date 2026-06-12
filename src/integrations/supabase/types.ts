@@ -424,6 +424,39 @@ export type Database = {
         }
         Relationships: []
       }
+      live_comparison_panels: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          last_scraped_at: string | null
+          panel_name: string
+          rows: Json
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          last_scraped_at?: string | null
+          panel_name: string
+          rows?: Json
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          last_scraped_at?: string | null
+          panel_name?: string
+          rows?: Json
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lola_health_products: {
         Row: {
           areas_covered: string[] | null

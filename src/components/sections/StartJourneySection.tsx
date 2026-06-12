@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLiveComparisonPanel } from "@/hooks/useLiveComparisonPanel";
 
 type BadgeVariant = "teal" | "pink" | "neutral";
 
@@ -8,21 +9,22 @@ const badgeStyles: Record<BadgeVariant, React.CSSProperties> = {
   neutral: { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.55)" },
 };
 
-const providers: Array<{
-  name: string;
-  bio: string;
-  badge: string;
-  variant: BadgeVariant;
-  price: string;
-}> = [
-  { name: "Medichecks", bio: "At-home kit · UKAS · 24–48h", badge: "UKAS", variant: "teal", price: "£29" },
-  { name: "Thriva", bio: "At-home kit · Subscription option", badge: "AT-HOME", variant: "neutral", price: "£39" },
-  { name: "Randox Health", bio: "Clinic-based · UKAS · 48–72h", badge: "POPULAR", variant: "pink", price: "£49" },
-  { name: "Goodbody Health", bio: "Walk-in UK clinics · CQC", badge: "WALK-IN", variant: "neutral", price: "£55" },
-  { name: "London Medical Laboratory", bio: "Walk-in London · ISO 15189", badge: "UKAS", variant: "teal", price: "£65" },
-];
+const FALLBACK_PANEL = {
+  panel_name: "Full Blood Count Panel",
+  rows: [
+    { name: "Medichecks", bio: "At-home kit · UKAS · 24–48h", badge: "UKAS", variant: "teal" as const, price: "£29" },
+    { name: "Thriva", bio: "At-home kit · Subscription option", badge: "AT-HOME", variant: "neutral" as const, price: "£39" },
+    { name: "Randox Health", bio: "Clinic-based · UKAS · 48–72h", badge: "POPULAR", variant: "pink" as const, price: "£49" },
+    { name: "Goodbody Health", bio: "Walk-in UK clinics · CQC", badge: "WALK-IN", variant: "neutral" as const, price: "£55" },
+    { name: "London Medical Laboratory", bio: "Walk-in London · ISO 15189", badge: "UKAS", variant: "teal" as const, price: "£65" },
+  ],
+};
 
 const StartJourneySection = () => {
+  const livePanel = useLiveComparisonPanel();
+  const panel = livePanel ?? FALLBACK_PANEL;
+  const providers = panel.rows;
+
   return (
     <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
       <style>{`
@@ -130,7 +132,7 @@ const StartJourneySection = () => {
                   letterSpacing: "0.18em",
                 }}
               >
-                Updated regularly
+                Live Comparison
               </span>
               <hr
                 className="flex-1 border-0 h-px"
@@ -173,7 +175,7 @@ const StartJourneySection = () => {
                     color: "#22c0d4",
                   }}
                 >
-                  Live Comparison — Full Blood Count Panel
+                  Updated regularly — {panel.panel_name}
                 </span>
               </div>
 
