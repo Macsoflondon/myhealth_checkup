@@ -10,7 +10,7 @@ import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { Search, X, Table2 } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
@@ -232,29 +232,50 @@ const CompareTests = () => {
             </section>
 
             {/* SECTION 2 — Comparison table */}
-            {selectedTests.length > 0 && (
-              <section>
+            <section>
+              <div
+                className="h-px w-full mb-8"
+                style={{ background: "#22c0d4" }}
+              />
+              {selectedTests.length > 0 ? (
+                <>
+                  <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                    <p className="font-montserrat font-semibold text-foreground text-base">
+                      Comparing {selectedTests.length}{" "}
+                      {selectedTests.length === 1 ? "test" : "tests"}
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleClearAll}
+                      className="font-['DM_Sans']"
+                    >
+                      Clear selection
+                    </Button>
+                  </div>
+                  <ProviderComparisonTable tests={selectedTests} />
+                </>
+              ) : (
                 <div
-                  className="h-px w-full mb-8"
-                  style={{ background: "#22c0d4" }}
-                />
-                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                  <p className="font-montserrat font-semibold text-foreground text-base">
-                    Comparing {selectedTests.length}{" "}
-                    {selectedTests.length === 1 ? "test" : "tests"}
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleClearAll}
-                    className="font-['DM_Sans']"
+                  className="bg-white rounded-2xl border border-[#e2e8f0] flex flex-col items-center justify-center text-center"
+                  style={{ padding: "48px" }}
+                >
+                  <Table2 size={40} color="#22c0d4" className="mb-4" />
+                  <h2
+                    className="font-montserrat font-semibold mb-2"
+                    style={{ color: "#081129", fontSize: "18px" }}
                   >
-                    Clear selection
-                  </Button>
+                    Select tests above to compare
+                  </h2>
+                  <p
+                    className="font-['DM_Sans']"
+                    style={{ color: "#94a3b8", fontSize: "14px" }}
+                  >
+                    Click 'Compare →' on any test card to add it to your comparison table.
+                  </p>
                 </div>
-                <ProviderComparisonTable tests={selectedTests} />
-              </section>
-            )}
+              )}
+            </section>
           </div>
         </MainLayout>
 
