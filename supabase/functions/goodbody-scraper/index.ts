@@ -57,6 +57,45 @@ function extractPriceFromHtml(html: string): number {
   return 0;
 }
 
+function stripShopifySizeSuffix(url: string): string {
+  if (!url) return url;
+  // Shopify resize: foo_600x.jpg, foo_600x600.jpg, foo_1024x1024_crop_center.jpg → strip to master
+  return url.replace(/_(\d+)x(\d+)?(?:_[a-z_]+)?(\.(?:jpe?g|png|webp|gif|avif))/i, '$3');
+}
+
+function extractImageFromHtml(html: string, markdown: string): string | null {
+  if (!html && !markdown) return null;
+  const candidates: string[] = [];
+
+  // 1. og:image / twitter:image (highest priority — provider's chosen hero)
+  const og = html.match(/property=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/name=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/name=["']twitter:image["'][^>]*content=["']([^"']+)["']/i);
+  if (og) candidates.push(og[1]);
+
+  // 2. Shopify product JSON featured_image
+  const featured = html.match(/"featured_image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp))"/i);
+  if (featured) candidates.push(featured[1].replace(/\\\//g, '/'));
+
+  // 3. JSON-LD image
+  const ld = html.match(/"image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp)[^"]*)"/i);
+  if (ld) candidates.push(ld[1].replace(/\\\//g, '/'));
+
+  // 4. First product-gallery <img> in markdown
+  const mdImg = markdown.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+\.(?:jpe?g|png|webp)[^)\s]*)\)/i);
+  if (mdImg) candidates.push(mdImg[1]);
+
+  for (let raw of candidates) {
+    if (!raw) continue;
+    if (raw.startsWith('//')) raw = 'https:' + raw;
+    // Drop query string size hints (e.g. ?width=600), keep ?v= cache buster
+    raw = raw.replace(/([?&])width=\d+&?/gi, '$1').replace(/[?&]$/, '');
+    raw = stripShopifySizeSuffix(raw);
+    if (/^https?:\/\//i.test(raw)) return raw;
+  }
+  return null;
+}
+
 function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   let title = '';
   const h1Match = markdown.match(/^#\s+(.+)$/m);
@@ -101,8 +140,9 @@ function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   }
 
   const description = markdown.substring(0, 500).replace(/[#*\[\]]/g, '').trim();
+  const imageUrl = extractImageFromHtml(html, markdown);
 
-  return { title, price, biomarkerCount, biomarkers, description };
+  return { title, price, biomarkerCount, biomarkers, description, imageUrl };
 }
 
 async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
@@ -130,11 +170,34 @@ async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
-  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  // Auth: service role OR admin user (with AAL2 enforced server-side by has_role).
+  const authHeader = req.headers.get('Authorization') ?? '';
+  const supabaseUrlEnv = Deno.env.get('SUPABASE_URL') ?? '';
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
+
+  if (!isServiceRole) {
+    if (!authHeader || !supabaseUrlEnv || !anonKey) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const userClient = createClient(supabaseUrlEnv, anonKey, {
+      global: { headers: { Authorization: authHeader } },
     });
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+    if (userErr || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const { data: hasAdminRole } = await userClient.rpc('has_role', { _user_id: user.id, _role: 'admin' });
+    if (!hasAdminRole) {
+      return new Response(JSON.stringify({ error: 'Admin only' }), {
+        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
   }
 
   try {
@@ -193,6 +256,11 @@ Deno.serve(async (req) => {
         const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
         if (!title || title === 'Unknown Test') continue;
 
+        // Image URL: prefer scraper extraction, fall back to Firecrawl metadata ogImage.
+        // Always strip Shopify size suffix so we store the master (highest-resolution) URL.
+        let imageUrl = extracted.imageUrl as string | null;
+        if (!imageUrl && metadata.ogImage) imageUrl = stripShopifySizeSuffix(metadata.ogImage);
+
         products.push({
           test_name: title,
           provider_id: 'goodbody-clinic',
@@ -201,6 +269,7 @@ Deno.serve(async (req) => {
           price: extracted.price || null,
           description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
           url,
+          ...(imageUrl ? { image_url: imageUrl } : {}),
           is_active: true,
           // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
           // the scraper must NOT overwrite biomarkers_list / biomarker_count,
