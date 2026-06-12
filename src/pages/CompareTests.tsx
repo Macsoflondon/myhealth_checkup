@@ -341,8 +341,11 @@ const CompareTests = () => {
                     }))}
                     title="Tests by Type"
                   />
+                ) : viewMode === "table" ? (
+                  <ProviderComparisonTable tests={tests} />
                 ) : (
                   /* List View - Original card layout */
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {paginatedTests.map((test) => (
                       <UnifiedTestCard
