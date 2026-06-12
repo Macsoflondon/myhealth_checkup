@@ -94,7 +94,7 @@ const Auth = () => {
   // Redirect authenticated users to dashboard
   useEffect(() => {
     if (!isLoading && user) {
-      navigate("/dashboard");
+      navigate("/health-dashboard");
     }
   }, [user, isLoading, navigate]);
   const validateForm = (): boolean => {
@@ -217,7 +217,7 @@ const Auth = () => {
         }
         
         toast.success("Logged in successfully!");
-        navigate("/dashboard");
+        navigate("/health-dashboard");
       }
     } catch (error: any) {
       toast.error("An unexpected error occurred. Please try again.");
