@@ -99,6 +99,10 @@ const PartnerShowcaseGrid = () => {
         </div>
       </div>
 
+      <SafeBlock name="Test Categories" fallback={<BlockSkeleton />}>
+        <TestCategoriesSection />
+      </SafeBlock>
+
       <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
       </SafeBlock>
