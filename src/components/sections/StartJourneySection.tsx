@@ -79,27 +79,18 @@ const StartJourneySection = () => {
               </div>
 
               {/* Trust Indicators */}
-              <div className="flex flex-col items-center gap-4 w-full">
-                <div className="flex items-center gap-3">
-                  <div className="h-px w-9 bg-slate-200" />
-                  <span className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
-                    Trust Indicators
-                  </span>
-                  <div className="h-px w-9 bg-slate-200" />
+              <div className="flex flex-wrap justify-center items-center gap-x-7 gap-y-3 w-full">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#22c0d4]" />
+                  <span className="text-sm sm:text-base font-medium text-slate-600">Independent</span>
                 </div>
-                <div className="flex flex-wrap justify-center items-center gap-x-7 gap-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#22c0d4]" />
-                    <span className="text-sm sm:text-base font-medium text-slate-600">Independent</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#e70d69]" />
-                    <span className="text-sm sm:text-base font-medium text-slate-600">CQC Regulated</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#081129]" />
-                    <span className="text-sm sm:text-base font-medium text-slate-600">Typical 3–5 days</span>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#e70d69]" />
+                  <span className="text-sm sm:text-base font-medium text-slate-600">CQC Regulated</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#081129]" />
+                  <span className="text-sm sm:text-base font-medium text-slate-600">Typical 3–5 days</span>
                 </div>
               </div>
             </div>
