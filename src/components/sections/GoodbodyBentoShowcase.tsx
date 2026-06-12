@@ -227,14 +227,6 @@ const GoodbodyBentoShowcase = () => {
         <div className="aspect-square">
           <KitTile src={KIT.sportsFitness} alt="Sports & Fitness Blood Test" label="Sports & Fitness" href="/test/general-health" />
         </div>
-
-        {/* Row 5: liver + tiredness on the left, rest empty for breathing room */}
-        <div className="aspect-square">
-          <KitTile src={KIT.liver} alt="Liver Blood Test" label="Liver" href="/test/general-health" />
-        </div>
-        <div className="aspect-square">
-          <KitTile src={KIT.tiredness} alt="Tiredness & Fatigue Blood Test" label="Tiredness & Fatigue" href="/test/general-health" />
-        </div>
       </div>
     </div>
   );
