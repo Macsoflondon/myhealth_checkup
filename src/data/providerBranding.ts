@@ -38,14 +38,14 @@ export const providerBranding: Record<string, ProviderBrand> = {
   londonmedicallab: {
     primary: "#1565C0",
     accent: "#6A1B9A",
-    tagline: "Love My Life",
+    tagline: "Fast delivery. Next day results.",
     primaryLight: "#1565C01A",
     accentLight: "#6A1B9A12",
   },
   lola: {
     primary: "#E8604C",
     accent: "#1B4B5A",
-    tagline: "Unlock Your Longevity",
+    tagline: "Blood Tests & Biological Age, From Home",
     primaryLight: "#E8604C1A",
     accentLight: "#1B4B5A12",
   },
