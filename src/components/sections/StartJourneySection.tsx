@@ -20,6 +20,11 @@ const providers: Array<{
   { name: "Randox Health", bio: "Clinic-based · UKAS · 48–72h", badge: "POPULAR", variant: "pink", price: "£49" },
   { name: "Goodbody Health", bio: "Walk-in UK clinics · CQC", badge: "WALK-IN", variant: "neutral", price: "£55" },
   { name: "London Medical Laboratory", bio: "Walk-in London · ISO 15189", badge: "UKAS", variant: "teal", price: "£65" },
+  { name: "Lola Health", bio: "Women's health · CQC · 48–72h", badge: "CQC", variant: "pink", price: "£89" },
+  { name: "Medichecks", bio: "Advanced thyroid panel · UKAS", badge: "UKAS", variant: "teal", price: "£45" },
+  { name: "Thriva", bio: "Heart health panel · UKAS", badge: "UKAS", variant: "teal", price: "£49" },
+  { name: "Randox Health", bio: "Vitamin D & B12 · UKAS", badge: "UKAS", variant: "teal", price: "£79" },
+  { name: "Goodbody Health", bio: "Health MOT · full screen · CQC", badge: "CQC", variant: "pink", price: "£149" },
 ];
 
 const StartJourneySection = () => {
@@ -33,7 +38,7 @@ const StartJourneySection = () => {
         .float-card { animation: float-card 5s ease-in-out infinite; }
       `}</style>
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left column — existing card unchanged */}
           <div className="relative bg-white rounded-3xl border border-slate-100 shadow-[0_8px_40px_-12px_rgba(8,17,41,0.12)] overflow-hidden">
             <div className="p-8 sm:p-10 flex flex-col items-center text-center">
