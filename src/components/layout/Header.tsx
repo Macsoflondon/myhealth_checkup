@@ -165,7 +165,7 @@ const Header = ({ className }: HeaderProps) => {
   }
   // Toolbar with glassmorphism
   const toolbarClasses = cn(
-    "bg-[hsl(220,5%,97%)] border-b border-gray-200/30 my-0 mx-0 px-0 py-2 md:py-2.5 lg:py-1 shadow-[0_4px_30px_rgba(0,0,0,0.06)]",
+    "bg-brand-navy border-b border-white/10 my-0 mx-0 px-0 py-2 md:py-2.5 lg:py-1 shadow-[0_4px_30px_rgba(0,0,0,0.2)]",
     styles.toolbar
   );
   return (
@@ -198,7 +198,7 @@ const Header = ({ className }: HeaderProps) => {
             <div
               className={cn(
                 "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-6 md:py-8" : "py-4 md:py-6 lg:py-8"
+                isSearchDocked ? "py-2 md:py-3" : "py-2 md:py-3 lg:py-4"
               )}
             >
               {/* Center: Combined logo + tagline */}
@@ -210,7 +210,7 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={fullLogo.url}
                     alt="myhealth checkup — Your health! Your choice! One trusted platform!"
-                    className="w-auto object-contain flex-shrink-0 h-14 md:h-16 lg:h-20 xl:h-24 max-w-[80vw]"
+                    className="w-auto object-contain flex-shrink-0 h-20 md:h-24 lg:h-28 xl:h-32 max-w-[90vw]"
                   />
                 </Link>
               )}

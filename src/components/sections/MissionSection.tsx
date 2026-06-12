@@ -23,9 +23,9 @@ const MissionSection = () => {
         {/* Top gradient divider */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         
-        <div className="bg-brand-navy py-6 sm:py-8 md:py-10 lg:py-12">
-          <div className="container mx-auto px-3 sm:px-4 text-4xl">
-            <h2 className="text-center text-2xl sm:text-2xl font-heading font-bold whitespace-nowrap xl:text-6xl lg:text-8xl md:text-7xl">
+        <div className="bg-brand-navy py-3 sm:py-4 md:py-5 lg:py-6">
+          <div className="container mx-auto px-3 sm:px-4">
+            <h2 className="text-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-bold whitespace-nowrap">
               <span className="text-white">Your </span>
               <span className="text-brand-turquoise">health</span>
               <span className="text-white"> is your greatest </span>
