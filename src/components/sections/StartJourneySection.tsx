@@ -132,7 +132,7 @@ const StartJourneySection = () => {
                   letterSpacing: "0.18em",
                 }}
               >
-                Updated regularly
+                Live Comparison
               </span>
               <hr
                 className="flex-1 border-0 h-px"
@@ -175,7 +175,7 @@ const StartJourneySection = () => {
                     color: "#22c0d4",
                   }}
                 >
-                  Live Comparison — Full Blood Count Panel
+                  Updated regularly — {panel.panel_name}
                 </span>
               </div>
 
