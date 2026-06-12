@@ -193,32 +193,28 @@ const Header = ({ className }: HeaderProps) => {
         )}
         style={{ top: isSearchDocked ? 0 : tickerHeight }}
       >
-        <div className="bg-[hsl(var(--brand-navy))]" style={{ backgroundColor: "#081129" }}>
+        <div className="bg-white">
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
             <div
               className={cn(
                 "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-8 md:py-10" : "py-4 md:py-6 lg:py-8"
+                isSearchDocked ? "py-6 md:py-8" : "py-4 md:py-6 lg:py-8"
               )}
             >
-              {/* Center: Logo + Tagline (truly page-centered) */}
+              {/* Center: Combined logo + tagline */}
               {!isSearchDocked && (
                 <Link
                   to="/"
-                  className="flex items-center flex-shrink-0 min-w-0 gap-3 md:gap-4 lg:gap-6 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
+                  className="flex items-center flex-shrink-0 min-w-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 motion-reduce:transition-none"
                 >
                   <img
-                    src={mainLogo}
-                    alt="myhealth checkup"
-                    className="w-auto object-contain flex-shrink-0 h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem]"
-                  />
-                  <img
-                    src={headerTagline}
-                    alt="Your Health. Your Choice. One Trusted Platform!"
-                    className="w-auto object-contain h-12 md:h-14 lg:h-[5rem] xl:h-[5.5rem] max-w-[40vw] lg:max-w-[50vw]"
+                    src={fullLogo.url}
+                    alt="myhealth checkup — Your health! Your choice! One trusted platform!"
+                    className="w-auto object-contain flex-shrink-0 h-14 md:h-16 lg:h-20 xl:h-24 max-w-[80vw]"
                   />
                 </Link>
               )}
+
 
               {/* Center: docked search */}
               {isSearchDocked && (
