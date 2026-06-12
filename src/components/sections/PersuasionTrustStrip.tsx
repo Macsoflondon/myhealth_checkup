@@ -26,7 +26,7 @@ const PersuasionTrustStrip = () => {
       aria-label="Why people choose myhealth checkup"
       className="bg-white border-y border-black/5 py-6 sm:py-8"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
           {stats.map(({ icon: Icon, value, label, tone }) => (
             <div

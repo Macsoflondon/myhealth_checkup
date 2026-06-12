@@ -230,7 +230,7 @@ const DreamHealthShowcase = () => {
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
@@ -299,7 +299,7 @@ const DreamHealthShowcase = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 text-center mt-10 sm:mt-14">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mt-10 sm:mt-14">
 
         {/* 9 mixed-provider test cards — uniform sizing */}
         <div className="mt-12 sm:mt-14">

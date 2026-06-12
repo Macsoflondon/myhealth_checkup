@@ -36,7 +36,7 @@ const categories = [
 const TestCategoriesSection = () => {
   return (
     <section className="bg-white py-14 sm:py-16 md:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="flex items-center justify-center gap-3 mb-4">

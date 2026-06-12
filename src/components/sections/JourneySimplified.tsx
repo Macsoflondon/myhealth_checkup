@@ -35,7 +35,7 @@ const steps = [
 const JourneySimplified = () => {
   return (
     <section className="pt-8 sm:pt-10 md:pt-12 lg:pt-14 sm:pb-3 md:pb-4 lg:pb-6 bg-card pb-[10px]">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-8">
         <div className="text-center mb-3 sm:mb-4 md:mb-5">
           <div className="flex items-center justify-center gap-2 mb-3">
             <div className="h-px w-6 bg-slate-200" />
