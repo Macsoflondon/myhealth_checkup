@@ -80,7 +80,7 @@ const JourneySimplified = () => {
                 <h3 className="text-base font-heading mb-1 text-brand-turquoise font-medium sm:text-base">
                   {step.title}
                 </h3>
-                <p className="mt-1 text-sm text-tertiary/80 max-w-xs mx-auto leading-snug">
+                <p className="mt-1 text-sm text-tertiary/80 max-w-xs mx-auto leading-snug whitespace-pre-line">
                   {step.description}
                 </p>
               </div>
