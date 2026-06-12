@@ -1,148 +1,151 @@
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import FounderStory from "@/components/sections/FounderStory";
-import PartnerShowcase from "@/components/sections/PartnerShowcase";
-import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
-import { SectionHeading } from "@/components/ui/section-heading";
 import PageBanner from "@/components/sections/PageBanner";
-import { Shield, Users, Award, Heart } from "lucide-react";
 
 const AboutUsPage = () => {
-  const values = [{
-    icon: <Shield className="h-8 w-8 text-health-600" />,
-    title: "Trust & Transparency",
-    description: "We believe in complete transparency about our testing processes, pricing, and partnerships."
-  }, {
-    icon: <Users className="h-8 w-8 text-health-600" />,
-    title: "Accessibility for All",
-    description: "Making high-quality health testing accessible to everyone, regardless of location or circumstance."
-  }, {
-    icon: <Award className="h-8 w-8 text-health-600" />,
-    title: "Quality Excellence",
-    description: "Partnering only with UKAS-accredited laboratories to ensure the highest standards of accuracy."
-  }, {
-    icon: <Heart className="h-8 w-8 text-health-600" />,
-    title: "Health Empowerment",
-    description: "Empowering individuals to take control of their health through knowledge and early detection."
-  }];
-
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>About Us | myhealth checkup</title>
-        <meta name="description" content="Learn about myhealth checkup's mission to make health testing accessible to everyone. Discover our story, values, and commitment to your wellbeing." />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/about" />
-        <meta property="og:title" content="About myhealth checkup — our mission and values" />
-        <meta property="og:description" content="Independent UK platform comparing accredited private health tests. Learn about our mission, values, and commitment to transparency." />
-        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/about" />
-        <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          "name": "About myhealth checkup",
-          "description": "Learn about myhealth checkup's mission to make health testing accessible to everyone.",
-          "url": "https://www.myhealthcheckup.co.uk/about",
-          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" },
-          "publisher": {
-            "@type": "Organization",
-            "name": "MYHEALTHCHECKUP LTD",
-            "url": "https://www.myhealthcheckup.co.uk",
-            "logo": "https://www.myhealthcheckup.co.uk/src/assets/logo-1.svg"
-          }
-        })}</script>
-      </Helmet>
-      
-      <Header />
-      <main className="flex-grow bg-[#081129]">
-        <PageBanner
-          title="About myhealth checkup"
-          subtitle="Trusted health comparison platform."
+        <meta
+          name="description"
+          content="myhealth checkup is the UK's first fully independent comparison platform for private health testing. Learn about our mission, our AI diagnostic integration engine, and what we are building."
         />
+      </Helmet>
 
-        <TrustPlatformSection />
+      <Header />
 
-        <section className="bg-[#081129] py-0">
-          <div className="container mx-auto px-4 my-[10px]">
-            <SectionHeading 
-              title="Our" 
-              gradientText="Mission" 
-              className="mb-8"
-              titleClassName="text-white"
-            />
-            <div className="text-base sm:text-lg text-muted-foreground space-y-4 sm:space-y-6 max-w-4xl mx-auto">
-              <p className="text-white font-light text-left">
-                At myhealth checkup, we believe proactive healthcare should be accessible to everyone. Too often, people wait until symptoms appear before taking action on their health. We are changing that narrative by making comprehensive health testing as easy as booking a table at a restaurant.
+      <PageBanner
+        title="About myhealth checkup"
+        subtitle="Decision infrastructure for UK private diagnostics."
+      />
+
+      <main className="flex-1 bg-white">
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          {/* Mission Statement */}
+          <section className="mb-16">
+            <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-[#081129] mb-6">
+              Our Mission Statement
+            </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-[#22c0d4] to-[#e70d69] mb-8 rounded-full" />
+            <div className="font-['DM_Sans'] text-[#081129]/85 text-lg leading-relaxed space-y-5">
+              <p className="text-xl font-medium text-[#081129]">
+                Your health is your greatest asset. It deserves clarity, not confusion.
               </p>
-              
-              <p className="text-white text-left font-light">
-                Our platform connects you with trusted, UKAS-accredited laboratories across the UK, giving you the power to monitor your health on your terms. No more waiting weeks for GP appointments or dealing with complex referrals — just straightforward, clinical-grade testing with expert guidance.
+              <p>
+                At myhealth checkup, we exist to fix a broken market. The UK private diagnostics sector is growing fast, but it remains fragmented, opaque, and genuinely difficult for consumers to navigate. Dozens of providers, inconsistent terminology, hidden costs, and no way to compare what you are actually buying. We built myhealth checkup to change that.
               </p>
-              
-              <p className="text-white font-light text-base text-left">
-                We have partnered with leading providers to bring you the most comprehensive range of tests at competitive prices, maintaining the highest standards of accuracy and confidentiality.
+              <p>
+                We are the UK's first fully independent comparison platform for private health testing. No paid rankings. No in-house lab promotions. No financial incentive to push you towards any particular provider. Just transparent, biomarker-level comparison across blood tests, cancer screening, wellness panels, hormone testing, and longevity diagnostics, all from UKAS-accredited laboratories, CQC-regulated clinics, and ISO 15189-certified facilities.
+              </p>
+              <p>
+                Our platform connects health-conscious consumers with the UK's most trusted private diagnostic providers. You can compare tests not just by price, but by the specific biomarkers included, turnaround time, sample method, and location options. Everything you need to make an informed decision, in one place, for free.
+              </p>
+              <p className="text-xl font-semibold text-[#081129]">
+                We are not a marketplace. We are decision infrastructure.
               </p>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="py-0 bg-[#081129]">
-          <div className="container mx-auto px-4 bg-[#081129]">
-            <SectionHeading 
-              title="Our" 
-              gradientText="Values" 
-              className="mb-8"
-              titleClassName="text-white"
-            />
-            <p className="max-w-3xl mx-auto text-center text-[#e70d69] font-medium text-base sm:text-xl mb-8 sm:mb-12">
-              These core values guide everything we do and shape how we serve our community.
+          {/* Our Core Mission */}
+          <section className="mb-16">
+            <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
+              Our Core Mission
+            </h3>
+            <div className="h-0.5 w-16 bg-[#22c0d4] mb-6 rounded-full" />
+            <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
+              <p>
+                Too many people wait until symptoms appear before taking action on their health. Long NHS waiting lists, complex referral pathways, and a lack of accessible information make that worse. The NHS waiting list stood at 7.3 million patients in late 2025. Median waits for consultant-led referrals are running at over 13 weeks. People are being left behind, and they are increasingly turning to private diagnostics to take back control.
+              </p>
+              <p>
+                myhealth checkup puts that control in your hands. No GP referral required. No opaque pricing. No confusion. Just clear, clinically credible information that helps you make the right decision for your health, on your terms.
+              </p>
+            </div>
+          </section>
+
+          {/* AI Diagnostic Integration Engine */}
+          <section className="mb-16">
+            <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
+              Our AI Diagnostic Integration Engine
+            </h3>
+            <div className="h-0.5 w-16 bg-[#e70d69] mb-6 rounded-full" />
+            <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
+              <p>
+                The next phase of myhealth checkup goes beyond comparison. We are building something that does not yet exist in the UK private diagnostics market.
+              </p>
+              <p>
+                Our AI Diagnostic Integration Engine converts private test results into NHS-compatible structured data format using HL7 FHIR R4 standards and, with your explicit consent, feeds them directly into your NHS health record. Your private diagnostic history becomes part of your NHS file. No silos. No duplication. No results lost between appointments.
+              </p>
+              <p>
+                The AI layer then reviews your integrated results for clinical inconsistencies or trends that may require follow-up, and alerts your GP automatically. This is not a wellness chatbot. It is a genuine clinical data bridge between the private and public healthcare systems, designed to improve continuity of care and patient safety.
+              </p>
+              <p>
+                This capability is a UK first. Nothing equivalent exists in the private diagnostics market today. It is built to align with the NHS Long Term Plan, the 2024 Elective Reform Plan, and the UK Government's Major Conditions Strategy, all of which prioritise early detection, prevention, and private-public diagnostic integration.
+              </p>
+            </div>
+          </section>
+
+          {/* Why Accreditation Matters */}
+          <section className="mb-16">
+            <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
+              Why Accreditation Matters
+            </h3>
+            <div className="h-0.5 w-16 bg-[#22c0d4] mb-6 rounded-full" />
+            <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
+              <p>
+                Every provider featured on myhealth checkup is screened against the highest standards before inclusion. We only list providers operating from UKAS-accredited laboratories, CQC-regulated facilities, and ISO 15189-certified environments. If a provider does not meet those standards, they are not on our platform. It is that straightforward.
+              </p>
+              <p>
+                We believe accreditation is not a nice-to-have. It is the minimum standard your health decisions deserve.
+              </p>
+            </div>
+          </section>
+
+          {/* What We Are Building Towards */}
+          <section className="mb-16">
+            <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
+              What We Are Building Towards
+            </h3>
+            <div className="h-0.5 w-16 bg-[#e70d69] mb-6 rounded-full" />
+            <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
+              <p>
+                myhealth checkup launched in 2025 and is currently in late-stage platform development, with public launch targeted for July 2026. We have onboarded six trusted UK provider partners including Medichecks, Randox Health, London Medical Laboratory, and Goodbody Clinic, with further integrations in progress.
+              </p>
+              <p>
+                Stage 2 of the platform introduces a centralised, secure health data hub where your private results can be stored and shared, with your consent, directly with NHS GPs and specialists. This addresses one of the most persistent failures in UK healthcare: private diagnostic results sitting in silos, never informing the NHS pathway that follows.
+              </p>
+              <p>
+                We are backed by a team combining clinical expertise, technology development, and consumer healthcare experience, and we are currently seeking grant funding to complete platform development, scale our marketing acquisition, and build the regulatory compliance infrastructure our NHS integration roadmap requires.
+              </p>
+              <p>
+                The private diagnostics market in the UK is worth over £500 million and growing at 10 to 15 per cent annually. No independent aggregator has owned it yet. We intend to.
+              </p>
+            </div>
+          </section>
+
+          {/* Closing tagline */}
+          <section className="mt-20 rounded-2xl bg-[#081129] px-6 py-12 md:px-12 md:py-16 text-center">
+            <p className="font-montserrat font-bold text-2xl md:text-4xl bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent leading-tight">
+              "Your Health. Your Choice. One Trusted Platform."
             </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-              {values.map((value, index) => <div key={index} className="bg-white p-5 sm:p-8 rounded-lg shadow-md">
-                  <div className="flex items-center mb-4">
-                    {value.icon}
-                    <h3 className="text-lg sm:text-xl font-semibold ml-3 text-[#081129]">{value.title}</h3>
-                  </div>
-                  <p className="text-gray-600">{value.description}</p>
-                </div>)}
-            </div>
-          </div>
-        </section>
-
-        <FounderStory />
-        <PartnerShowcase />
-
-        <section className="py-10 sm:py-16 bg-[#081129] my-0">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <SectionHeading 
-                title="Join The" 
-                gradientText="Community" 
-                className="mb-8"
-                titleClassName="text-white"
-              />
-              <p className="mb-8 text-[#e70d69] font-medium text-lg">
-                Become part of a growing community of health-conscious individuals who are taking charge of their wellbeing through knowledge and early detection.
-              </p>
-              <div className="grid grid-cols-3 gap-4 sm:gap-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">9</div>
-                  <p className="text-white">Accredited Providers</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">300+</div>
-                  <p className="text-white">Tests Compared</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-health-600 mb-2">250+</div>
-                  <p className="text-white">Clinic Locations</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+            <p className="mt-6 font-['DM_Sans'] text-white/80 text-base md:text-lg">
+              To find out more or discuss partnership opportunities, visit{" "}
+              <a
+                href="https://www.myhealthcheckup.co.uk"
+                className="text-[#22c0d4] hover:text-[#e70d69] underline underline-offset-4 transition-colors"
+              >
+                www.myhealthcheckup.co.uk
+              </a>{" "}
+              or get in touch directly.
+            </p>
+          </section>
+        </article>
       </main>
+
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default AboutUsPage;
