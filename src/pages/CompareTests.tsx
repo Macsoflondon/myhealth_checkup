@@ -10,7 +10,7 @@ import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { Search, X, Table2 } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
