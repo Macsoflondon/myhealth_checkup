@@ -140,8 +140,9 @@ function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   }
 
   const description = markdown.substring(0, 500).replace(/[#*\[\]]/g, '').trim();
+  const imageUrl = extractImageFromHtml(html, markdown);
 
-  return { title, price, biomarkerCount, biomarkers, description };
+  return { title, price, biomarkerCount, biomarkers, description, imageUrl };
 }
 
 async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
