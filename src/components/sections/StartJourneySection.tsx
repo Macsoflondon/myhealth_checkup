@@ -4,9 +4,9 @@ import { useLiveComparisonPanel } from "@/hooks/useLiveComparisonPanel";
 type BadgeVariant = "teal" | "pink" | "neutral";
 
 const badgeStyles: Record<BadgeVariant, React.CSSProperties> = {
-  teal: { background: "rgba(34,192,212,0.15)", color: "#22c0d4" },
-  pink: { background: "rgba(231,13,105,0.15)", color: "#e70d69" },
-  neutral: { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.55)" },
+  teal: { background: "rgba(34,192,212,0.12)", color: "#22c0d4" },
+  pink: { background: "rgba(231,13,105,0.12)", color: "#e70d69" },
+  neutral: { background: "rgba(8,17,41,0.06)", color: "rgba(8,17,41,0.55)" },
 };
 
 const FALLBACK_PANEL = {
@@ -34,13 +34,13 @@ const StartJourneySection = () => {
         }
         .float-card { animation: float-card 5s ease-in-out infinite; }
       `}</style>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-[144px] items-center">
-          {/* Left column — existing card unchanged */}
-          <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden">
-            <div className="p-6 sm:p-10 md:p-14 lg:p-[60px] flex flex-col items-center text-center">
+      <div className="max-w-[1480px] mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-stretch">
+          {/* Left column — Start Your Journey */}
+          <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden h-full">
+            <div className="p-6 sm:p-8 md:p-10 flex flex-col items-center text-center h-full">
               {/* Eyebrow */}
-              <div className="flex items-center gap-3 mb-8">
+              <div className="flex items-center gap-3 mb-5">
                 <div className="h-px w-9 bg-slate-200" />
                 <span className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
                   Start Your Journey
@@ -49,183 +49,150 @@ const StartJourneySection = () => {
               </div>
 
               {/* Heading */}
-              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.625rem] mb-8">
+              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] mb-4">
                 Take Control of Your<br />Health Today
               </h2>
-              <p className="text-base sm:text-xl text-slate-500 leading-relaxed max-w-sm mb-8">
+              <p className="text-base sm:text-lg text-slate-500 leading-relaxed max-w-md mb-6">
                 Compare trusted, accredited tests from leading UK providers in minutes.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col w-full gap-4 mb-8">
+              <div className="flex flex-col w-full gap-3 mt-auto">
                 <Link
                   to="/assisted-test-finder"
-                  className="w-full h-[72px] inline-flex items-center justify-center bg-[#22c0d4] hover:bg-[#1da9bc] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98]"
+                  className="w-full h-[60px] inline-flex items-center justify-center bg-[#22c0d4] hover:bg-[#1da9bc] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98]"
                 >
                   Find your test
                 </Link>
                 <Link
                   to="/compare/goals"
-                  className="w-full h-[72px] inline-flex items-center justify-center bg-[#e70d69] hover:bg-[#c50a5a] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(231,13,105,0.45)] hover:shadow-[0_10px_32px_-8px_rgba(231,13,105,0.55)] transition-all active:scale-[0.98]"
+                  className="w-full h-[60px] inline-flex items-center justify-center bg-[#e70d69] hover:bg-[#c50a5a] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(231,13,105,0.45)] hover:shadow-[0_10px_32px_-8px_rgba(231,13,105,0.55)] transition-all active:scale-[0.98]"
                 >
                   Compare by goal
                 </Link>
                 <Link
                   to="/compare"
-                  className="w-full h-[72px] inline-flex items-center justify-center bg-white border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold text-base rounded-full transition-colors active:scale-[0.98]"
+                  className="w-full h-[60px] inline-flex items-center justify-center bg-white border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold text-base rounded-full transition-colors active:scale-[0.98]"
                 >
                   Browse all tests
                 </Link>
               </div>
-
             </div>
           </div>
 
           {/* Right column — Live Comparison */}
-          <div>
-            {/* Eyebrow row */}
-            <div className="flex items-center justify-center gap-4 mb-5">
-              <hr
-                className="flex-1 border-0 h-px"
-                style={{
-                  maxWidth: "90px",
-                  background: "linear-gradient(to right, transparent, rgba(34,192,212,0.35))",
-                }}
-              />
-              <span
-                style={{
-                  color: "#22c0d4",
-                  fontSize: "15px",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.18em",
-                }}
-              >
-                Live Comparison
-              </span>
-              <hr
-                className="flex-1 border-0 h-px"
-                style={{
-                  maxWidth: "90px",
-                  background: "linear-gradient(to right, rgba(34,192,212,0.35), transparent)",
-                }}
-              />
-            </div>
-
-            <h3
-              className="font-heading text-center mb-9"
-              style={{ fontWeight: 700, color: "#081129", fontSize: "36px" }}
-            >
-              Compare at a glance.
-            </h3>
-
-            <div
-              className="float-card"
-              style={{
-                background: "rgba(8,17,41,0.97)",
-                border: "1px solid rgba(34,192,212,0.2)",
-                borderRadius: "24px",
-                padding: "36px",
-                boxShadow: "0 30px 90px rgba(8,17,41,0.28)",
-              }}
-            >
-              <div
-                style={{
-                  paddingBottom: "18px",
-                  borderBottom: "1px solid rgba(34,192,212,0.14)",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "16.5px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.14em",
-                    color: "#22c0d4",
-                  }}
-                >
-                  Updated regularly — {panel.panel_name}
+          <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden h-full">
+            <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
+              {/* Eyebrow row */}
+              <div className="flex items-center justify-center gap-3 mb-5">
+                <div className="h-px w-9 bg-slate-200" />
+                <span className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
+                  Live Comparison
                 </span>
+                <div className="h-px w-9 bg-slate-200" />
               </div>
 
-              {providers.map((p, i) => (
-                <div
-                  key={p.name}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr auto auto",
-                    gap: "18px",
-                    alignItems: "center",
-                    padding: "16.5px 0",
-                    borderBottom:
-                      i === providers.length - 1
-                        ? "none"
-                        : "1px solid rgba(255,255,255,0.055)",
-                  }}
-                >
-                  <div style={{ minWidth: 0 }}>
-                    <div
-                      className="font-heading"
-                      style={{ fontSize: "19.5px", fontWeight: 700, color: "#ffffff" }}
-                    >
-                      {p.name}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "16.5px",
-                        color: "rgba(255,255,255,0.42)",
-                        marginTop: "3px",
-                      }}
-                    >
-                      {p.bio}
-                    </div>
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "13.5px",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.05em",
-                      borderRadius: "20px",
-                      padding: "5px 12px",
-                      whiteSpace: "nowrap",
-                      ...badgeStyles[p.variant],
-                    }}
-                  >
-                    {p.badge}
-                  </span>
-                  <div
-                    className="font-heading"
-                    style={{
-                      fontSize: "22.5px",
-                      fontWeight: 800,
-                      color: "#ffffff",
-                      textAlign: "right",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {p.price}
-                  </div>
-                </div>
-              ))}
+              <h3 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] text-center mb-6">
+                Compare at a Glance
+              </h3>
 
               <div
+                className="float-card flex-1 flex flex-col"
                 style={{
-                  borderTop: "1px solid rgba(34,192,212,0.1)",
-                  paddingTop: "18px",
-                  marginTop: 0,
+                  background: "#ffffff",
+                  border: "1px solid rgba(8,17,41,0.08)",
+                  borderRadius: "20px",
+                  padding: "24px",
+                  boxShadow: "0 12px 40px -16px rgba(8,17,41,0.12)",
                 }}
               >
-                <p
-                  style={{
-                    fontSize: "15px",
-                    color: "rgba(255,255,255,0.28)",
-                    textAlign: "center",
-                    margin: 0,
-                  }}
-                >
-                  Prices sourced directly from provider websites. Always verify before booking.
-                </p>
+                <div style={{ paddingBottom: "14px", borderBottom: "1px solid rgba(8,17,41,0.08)" }}>
+                  <span
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.14em",
+                      color: "#22c0d4",
+                    }}
+                  >
+                    Updated regularly — {panel.panel_name}
+                  </span>
+                </div>
+
+                {providers.map((p, i) => (
+                  <div
+                    key={p.name}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr auto auto",
+                      gap: "14px",
+                      alignItems: "center",
+                      padding: "12px 0",
+                      borderBottom:
+                        i === providers.length - 1
+                          ? "none"
+                          : "1px solid rgba(8,17,41,0.06)",
+                    }}
+                  >
+                    <div style={{ minWidth: 0 }}>
+                      <div
+                        className="font-heading"
+                        style={{ fontSize: "16px", fontWeight: 700, color: "#081129" }}
+                      >
+                        {p.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "13px",
+                          color: "rgba(8,17,41,0.55)",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {p.bio}
+                      </div>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.05em",
+                        borderRadius: "20px",
+                        padding: "4px 10px",
+                        whiteSpace: "nowrap",
+                        ...badgeStyles[p.variant],
+                      }}
+                    >
+                      {p.badge}
+                    </span>
+                    <div
+                      className="font-heading"
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: 800,
+                        color: "#081129",
+                        textAlign: "right",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {p.price}
+                    </div>
+                  </div>
+                ))}
+
+                <div style={{ borderTop: "1px solid rgba(8,17,41,0.06)", paddingTop: "14px", marginTop: "auto" }}>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "rgba(8,17,41,0.45)",
+                      textAlign: "center",
+                      margin: 0,
+                    }}
+                  >
+                    Prices sourced directly from provider websites. Always verify before booking.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
