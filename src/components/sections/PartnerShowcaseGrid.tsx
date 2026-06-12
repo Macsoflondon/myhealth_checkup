@@ -9,6 +9,7 @@ const FeaturedPublications = lazy(() =>
 );
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
 const GoodbodyBentoShowcase = lazy(() => import("@/components/sections/GoodbodyBentoShowcase"));
+const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
 const BentoSkeleton = () => (
@@ -97,6 +98,10 @@ const PartnerShowcaseGrid = () => {
           </SafeBlock>
         </div>
       </div>
+
+      <SafeBlock name="Test Categories" fallback={<BlockSkeleton />}>
+        <TestCategoriesSection />
+      </SafeBlock>
 
       <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
