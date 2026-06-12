@@ -219,7 +219,7 @@ const Header = ({ className }: HeaderProps) => {
               {/* Center: docked search */}
               {isSearchDocked && (
                 <div className="relative w-full max-w-[640px]">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/80 w-4 h-4 md:w-5 md:h-5" />
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#081129]/70 w-4 h-4 md:w-5 md:h-5" />
                   <input
                     type="text"
                     placeholder="COMPARE OVER 200 TESTS"
@@ -227,18 +227,19 @@ const Header = ({ className }: HeaderProps) => {
                     value={dockedSearchTerm}
                     onChange={(e) => setDockedSearchTerm(e.target.value)}
                     onKeyDown={handleDockedSearchKey}
-                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white/10 border-2 border-[#22c0d4]/60 text-white placeholder:text-white/70 backdrop-blur-md focus:ring-2 focus:ring-white/30 focus:outline-none"
+                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white border-2 border-[#22c0d4]/60 text-[#081129] placeholder:text-[#081129]/60 focus:ring-2 focus:ring-[#22c0d4]/40 focus:outline-none"
                   />
                 </div>
               )}
 
               {/* Right controls — absolutely anchored so they don't pull the logo off-centre */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center bg-[#081129] pl-2">
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center bg-white pl-2">
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
                 </nav>
               </div>
+
             </div>
           </div>
         </div>
