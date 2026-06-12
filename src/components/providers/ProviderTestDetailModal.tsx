@@ -350,8 +350,7 @@ export default function ProviderTestDetailModal({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {test.url ? (
               <Button
-                className="h-12 text-sm font-semibold text-white"
-                style={{ backgroundColor: brandColor }}
+                className="h-12 text-sm font-semibold rounded-xl border-0 bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
                 asChild
               >
                 <a href={test.url} target="_blank" rel="noopener noreferrer">
@@ -360,16 +359,14 @@ export default function ProviderTestDetailModal({
               </Button>
             ) : (
               <Button
-                className="h-12 text-sm font-semibold text-white"
-                style={{ backgroundColor: brandColor }}
+                className="h-12 text-sm font-semibold rounded-xl border-0 bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300 opacity-60"
                 disabled
               >
                 Book test →
               </Button>
             )}
             <Button
-              variant="outline"
-              className="h-12 text-sm font-semibold border-gray-200 hover:bg-gray-50"
+              className="h-12 text-sm font-semibold rounded-xl border-0 bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300"
               onClick={() => {
                 const compareTest: CompareTestData = {
                   id: test.id,
@@ -403,8 +400,8 @@ export default function ProviderTestDetailModal({
               )}
             </Button>
             <Button
-              variant="ghost"
-              className="h-12 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+              variant="outline"
+              className="h-12 text-sm font-semibold rounded-xl bg-white border-2 border-[#081129]/15 text-[#081129] hover:bg-[#081129]/5 hover:text-[#081129]"
               onClick={() => onOpenChange(false)}
             >
               ← Back
