@@ -233,6 +233,11 @@ Deno.serve(async (req) => {
         const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
         if (!title || title === 'Unknown Test') continue;
 
+        // Image URL: prefer scraper extraction, fall back to Firecrawl metadata ogImage.
+        // Always strip Shopify size suffix so we store the master (highest-resolution) URL.
+        let imageUrl = extracted.imageUrl as string | null;
+        if (!imageUrl && metadata.ogImage) imageUrl = stripShopifySizeSuffix(metadata.ogImage);
+
         products.push({
           test_name: title,
           provider_id: 'goodbody-clinic',
@@ -241,6 +246,7 @@ Deno.serve(async (req) => {
           price: extracted.price || null,
           description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
           url,
+          ...(imageUrl ? { image_url: imageUrl } : {}),
           is_active: true,
           // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
           // the scraper must NOT overwrite biomarkers_list / biomarker_count,
