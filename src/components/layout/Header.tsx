@@ -205,7 +205,8 @@ const Header = ({ className }: HeaderProps) => {
               {!isSearchDocked && (
                 <Link
                   to="/"
-                  className="flex items-center flex-shrink-0 min-w-0 scale-105 motion-reduce:transition-none"
+                  className="flex items-center flex-shrink-0 min-w-0 transform-gpu scale-105 hover:scale-110 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform motion-reduce:transition-none motion-reduce:hover:scale-105"
+                  style={{ transformOrigin: "center center" }}
                 >
                   <img
                     src={fullLogo.url}
