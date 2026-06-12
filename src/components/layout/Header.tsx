@@ -129,7 +129,7 @@ const Header = ({ className }: HeaderProps) => {
           <PromoTicker />
         <header className="bg-[hsl(var(--brand-navy))] shadow-md">
           <div className="container mx-auto max-w-full px-3 sm:px-4 bg-[#08122b]">
-              <div className="relative py-6 flex items-center justify-center min-w-0 bg-[#08122b] pr-[9.5rem] xs:pr-[10rem] sm:pr-[10.5rem]">
+              <div className="relative py-4 flex items-center justify-center min-w-0 bg-[#08122b] pr-[9.5rem] xs:pr-[10rem] sm:pr-[10.5rem]">
                 <Link to="/" className="relative z-10 flex items-center justify-center overflow-hidden bg-[#08122b]">
                   <img
                     src={mainLogo}
