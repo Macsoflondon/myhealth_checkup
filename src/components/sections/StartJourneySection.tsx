@@ -52,7 +52,7 @@ const StartJourneySection = () => {
               <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.625rem] mb-4">
                 Take Control of Your<br />Health Today
               </h2>
-              <p className="text-base sm:text-xl text-slate-500 leading-relaxed max-w-sm mb-12">
+              <p className="text-base sm:text-xl text-slate-500 leading-relaxed max-w-sm mb-8">
                 Compare trusted, accredited tests from leading UK providers in minutes.
               </p>
 
