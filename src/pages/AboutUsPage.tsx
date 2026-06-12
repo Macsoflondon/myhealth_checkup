@@ -123,23 +123,6 @@ const AboutUsPage = () => {
               </p>
             </div>
           </section>
-
-          {/* Closing tagline */}
-          <section className="mt-20 rounded-2xl bg-[#081129] px-6 py-12 md:px-12 md:py-16 text-center">
-            <p className="font-montserrat font-bold text-2xl md:text-4xl bg-gradient-to-r from-[#22c0d4] to-[#e70d69] bg-clip-text text-transparent leading-tight">
-              "Your Health. Your Choice. One Trusted Platform."
-            </p>
-            <p className="mt-6 font-['DM_Sans'] text-white/80 text-base md:text-lg">
-              To find out more or discuss partnership opportunities, visit{" "}
-              <a
-                href="https://www.myhealthcheckup.co.uk"
-                className="text-[#22c0d4] hover:text-[#e70d69] underline underline-offset-4 transition-colors"
-              >
-                www.myhealthcheckup.co.uk
-              </a>{" "}
-              or get in touch directly.
-            </p>
-          </section>
         </article>
       </main>
 
