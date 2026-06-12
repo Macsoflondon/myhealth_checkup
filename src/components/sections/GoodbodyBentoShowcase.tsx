@@ -137,13 +137,16 @@ const GoodbodyBentoShowcase = () => {
         </div>
       </div>
 
-      {/* Desktop/tablet layout (sm+) — 4 col grid, callout spans 2x2 */}
-      <div className="hidden sm:grid sm:grid-cols-4 gap-3 sm:gap-4">
-        {/* Row 1 */}
+      {/* Desktop/tablet layout (sm+) — 6 col grid, logo 2-wide flat at top, callout spans 2x2 */}
+      <div className="hidden sm:grid sm:grid-cols-6 gap-3 sm:gap-4">
+        {/* Row 1: kit | kit | LOGO (2 wide, flat) | kit | kit */}
+        <div className="aspect-square">
+          <KitTile src={KIT.fullBloodCount} alt="Full Blood Count Test" label="Full Blood Count" href="/test/general-health" />
+        </div>
         <div className="aspect-square">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
-        <div className="aspect-square rounded-2xl bg-white shadow-md flex items-center justify-center p-6 sm:p-8 col-span-2">
+        <div className="aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-4 sm:p-6 col-span-2">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
@@ -154,8 +157,14 @@ const GoodbodyBentoShowcase = () => {
         <div className="aspect-square">
           <KitTile src={KIT.generalHealthFp} alt="General Health Fingerprint Blood Test" label="General Health" href="/test/general-health" />
         </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.cardiacRisk} alt="Cardiac Risk Blood Test" label="Cardiac Risk" href="/test/general-health" />
+        </div>
 
-        {/* Row 2: kit | callout (2x2) | kit */}
+        {/* Row 2: kit | kit | CALLOUT (2x2) | kit | kit */}
+        <div className="aspect-square">
+          <KitTile src={KIT.testosterone} alt="Testosterone Blood Test" label="Testosterone" href="/tests/mens-health" />
+        </div>
         <div className="aspect-square">
           <KitTile src={KIT.premiumComplete} alt="Premium Complete Blood Test" label="Premium Complete" href="/test/general-health" />
         </div>
@@ -181,16 +190,28 @@ const GoodbodyBentoShowcase = () => {
         <div className="aspect-square">
           <KitTile src={KIT.wellManFp} alt="Essential Well Man Fingerprint Test" label="Essential Well Man" href="/tests/mens-health" />
         </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.advancedWellWoman} alt="Advanced Well Woman Blood Test" label="Advanced Well Woman" href="/tests/womens-health" />
+        </div>
 
-        {/* Row 3 */}
+        {/* Row 3: kit | kit | (callout continues) | kit | kit */}
+        <div className="aspect-square">
+          <KitTile src={KIT.iron} alt="Iron Blood Test" label="Iron" href="/test/general-health" />
+        </div>
         <div className="aspect-square">
           <KitTile src={KIT.earlyCancer} alt="Early Cancer Screening Test" label="Early Cancer Screening" href="/tests/cancer" />
         </div>
         <div className="aspect-square">
           <KitTile src={KIT.femaleHormone} alt="Female Hormone & Fertility Test" label="Female Hormone & Fertility" href="/test/female-hormones" />
         </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.vitamins} alt="Vitamins Blood Test" label="Vitamins" href="/test/general-health" />
+        </div>
 
-        {/* Row 4 */}
+        {/* Row 4: 6 kits across */}
+        <div className="aspect-square">
+          <KitTile src={KIT.kidney} alt="Kidney Blood Test" label="Kidney" href="/test/general-health" />
+        </div>
         <div className="aspect-square">
           <KitTile src={KIT.thyroid} alt="Thyroid Blood Test" label="Thyroid Blood Test" href="/thyroid" />
         </div>
@@ -202,6 +223,17 @@ const GoodbodyBentoShowcase = () => {
         </div>
         <div className="aspect-square">
           <KitTile src={KIT.cholesterolFp} alt="Cholesterol Fingerprint Blood Test" label="Cholesterol Fingerprint" href="/test/lipid-profile" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.sportsFitness} alt="Sports & Fitness Blood Test" label="Sports & Fitness" href="/test/general-health" />
+        </div>
+
+        {/* Row 5: liver + tiredness on the left, rest empty for breathing room */}
+        <div className="aspect-square">
+          <KitTile src={KIT.liver} alt="Liver Blood Test" label="Liver" href="/test/general-health" />
+        </div>
+        <div className="aspect-square">
+          <KitTile src={KIT.tiredness} alt="Tiredness & Fatigue Blood Test" label="Tiredness & Fatigue" href="/test/general-health" />
         </div>
       </div>
     </div>
