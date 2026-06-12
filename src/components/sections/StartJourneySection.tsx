@@ -52,12 +52,12 @@ const StartJourneySection = () => {
               <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] mb-4">
                 Take Control of Your<br />Health Today
               </h2>
-              <p className="text-base sm:text-lg text-slate-500 leading-relaxed max-w-md mb-6">
+              <p className="text-base sm:text-lg text-slate-500 leading-relaxed max-w-md mb-4">
                 Compare trusted, accredited tests from leading UK providers in minutes.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col w-full gap-3 mt-auto">
+              <div className="flex flex-col w-full gap-3">
                 <Link
                   to="/assisted-test-finder"
                   className="w-full h-[60px] inline-flex items-center justify-center bg-[#22c0d4] hover:bg-[#1da9bc] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98]"
