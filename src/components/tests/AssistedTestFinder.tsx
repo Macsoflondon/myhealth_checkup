@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { trackEvent } from '@/lib/analytics';
+import myhealthCheckupLogo from '@/assets/myhealth-checkup-logo.png.asset.json';
 
 type Step =
   | 'welcome'
@@ -422,11 +423,14 @@ export const AssistedTestFinder = () => {
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-primary" />
-              </div>
+              <img
+                src={myhealthCheckupLogo.url}
+                alt="myhealth checkup — Your health. Your choice. One trusted platform."
+                className="w-full max-w-md h-auto rounded-xl"
+                loading="eager"
+              />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-montserrat">
+            <h1 className="sr-only">
               Find the Right Health Test for You
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
