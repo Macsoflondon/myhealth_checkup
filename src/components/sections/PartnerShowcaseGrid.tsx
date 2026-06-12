@@ -78,7 +78,7 @@ const PartnerShowcaseGrid = () => {
 
       {/* Featured Partner — Goodbody */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
           <div className="md:col-span-2 text-center mt-2 sm:mt-4">
             <div className="flex items-center justify-center gap-3 mb-3">
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
