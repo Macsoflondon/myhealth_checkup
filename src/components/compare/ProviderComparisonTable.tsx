@@ -114,7 +114,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ width: "100%", maxWidth: "100%" }}>
       {/* Info bar */}
       <div
         className="mb-4 font-['DM_Sans'] text-sm"
