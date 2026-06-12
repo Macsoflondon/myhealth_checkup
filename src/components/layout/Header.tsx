@@ -210,7 +210,7 @@ const Header = ({ className }: HeaderProps) => {
                   <img
                     src={fullLogo.url}
                     alt="myhealth checkup — Your health! Your choice! One trusted platform!"
-                    className="w-auto object-contain flex-shrink-0 h-14 md:h-16 lg:h-20 xl:h-24 max-w-[80vw]"
+                    className="w-auto object-contain flex-shrink-0 h-20 md:h-24 lg:h-28 xl:h-32 max-w-[90vw]"
                   />
                 </Link>
               )}
