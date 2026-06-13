@@ -6,39 +6,39 @@ const TESTS = [
   {
     name: "Full Blood Count Panel",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£39" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£39" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£49" }, { label: "Clinic-based", price: "£69" }] },
-      { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£55" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£65" }] },
+      { name: "Medichecks", options: [{ label: "At-home nurse visit", price: "£59" }, { label: "Clinic-based", price: "£59" }] },
+      { name: "Randox Health", options: [{ label: "Clinic-based", price: "£99" }] },
+      { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£65" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£75" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }] },
     ],
   },
   {
     name: "Thyroid Health Panel",
     providers: [
       { name: "Medichecks", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£89" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£45" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£79" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£69" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£102" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£99" }] },
+      { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£69" }] },
       { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£79" }] },
     ],
   },
   {
     name: "Cholesterol Panel",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£34" }] },
-      { name: "Randox Health", options: [{ label: "Clinic-based", price: "£45" }] },
-      { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£49" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£55" }] },
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£55" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£59" }] },
+      { name: "Randox Health", options: [{ label: "Clinic-based", price: "£49" }] },
+      { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£55" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£59" }] },
     ],
   },
   {
     name: "Hormone Panel",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£89" }, { label: "Clinic-based", price: "£149" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£79" }] },
-      { name: "Lola Health", options: [{ label: "Clinic-based", price: "£89" }] },
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£99" }, { label: "Clinic-based", price: "£159" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£117" }] },
       { name: "Randox Health", options: [{ label: "Clinic-based", price: "£169" }] },
       { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£99" }] },
     ],
@@ -46,9 +46,9 @@ const TESTS = [
   {
     name: "Vitamin D & B12 Panel",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£45" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£32" }] },
-      { name: "Randox Health", options: [{ label: "Clinic-based", price: "£49" }] },
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£59" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£59" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£55" }] },
       { name: "Goodbody Health", options: [{ label: "Clinic-based", price: "£55" }] },
       { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£60" }] },
     ],
@@ -65,8 +65,8 @@ const StartJourneySection = () => {
       setTimeout(() => {
         setTestIdx((i) => (i + 1) % TESTS.length);
         setFading(false);
-      }, 350);
-    }, 5000);
+      }, 500);
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -131,7 +131,7 @@ const StartJourneySection = () => {
 
               {/* Rotating test name — fades on transition */}
               <h3
-                className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-opacity duration-300"
+                className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out"
                 style={{ opacity: fading ? 0 : 1 }}
               >
                 {test.name}
@@ -139,7 +139,7 @@ const StartJourneySection = () => {
 
               {/* Card */}
               <div
-                className="flex-1 flex flex-col transition-opacity duration-300"
+                className="flex-1 flex flex-col transition-all duration-500 ease-in-out"
                 style={{
                   opacity: fading ? 0 : 1,
                   border: "1px solid rgba(8,17,41,0.08)",
@@ -230,7 +230,7 @@ const StartJourneySection = () => {
                   }}
                 >
                   <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>
-                    Prices sourced directly from provider websites. Always verify before booking.
+                    Prices verified June 2026 from provider websites. Always confirm current pricing before booking.
                   </p>
                 </div>
               </div>
