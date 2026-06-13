@@ -131,7 +131,7 @@ const StartJourneySection = () => {
 
               {/* Rotating test name — fades on transition */}
               <h3
-                className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-opacity duration-300"
+                className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out"
                 style={{ opacity: fading ? 0 : 1 }}
               >
                 {test.name}
