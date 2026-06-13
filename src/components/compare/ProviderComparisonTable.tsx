@@ -215,11 +215,11 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                 }
                 const parsed = parseCollection(test.features?.collection || "");
                 const collNote = parsed.homeKit && parsed.clinic
-                  ? "Home kit & clinic available"
+                  ? "At-home kit & venous draw"
                   : parsed.homeKit
-                  ? "At-home finger-prick kit"
+                  ? "At-home kit"
                   : parsed.clinic
-                  ? "Clinic venous draw"
+                  ? "Venous draw"
                   : "";
                 return (
                   <th
@@ -337,7 +337,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               }}
             />
             <Row
-              label="Home kit price"
+              label="At-home kit"
               index={3}
               slots={slots}
               render={(t) => {
@@ -347,14 +347,14 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                   <div>
                     <div style={{ color: NAVY, fontWeight: 700 }}>{formatPrice(t.price)}</div>
                     <div style={noteStyle}>
-                      finger-prick{p.clinic && p.homeKit ? " (combined price)" : ""}
+                      at-home kit{p.clinic && p.homeKit ? " (combined price)" : ""}
                     </div>
                   </div>
                 );
               }}
             />
             <Row
-              label="Clinic price"
+              label="Venous draw"
               index={4}
               slots={slots}
               render={(t) => {
