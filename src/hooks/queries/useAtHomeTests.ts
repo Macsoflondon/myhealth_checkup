@@ -39,6 +39,9 @@ export const useAtHomeTests = (category?: string, search?: string) => {
         .eq("is_active", true)
         .eq("home_kit_available", true)
         .eq("is_addon", false)
+        .or(
+          "sample_type.ilike.%finger%,sample_type.ilike.%home%,sample_type.ilike.%at-home%,sample_type.ilike.%saliva%,sample_type.ilike.%urine%,sample_type.ilike.%stool%,sample_type.is.null"
+        )
         .order("is_popular", { ascending: false })
         .order("test_name", { ascending: true });
 
