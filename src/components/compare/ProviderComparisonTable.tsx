@@ -29,9 +29,9 @@ const parseCollection = (collection: string): ParsedCollection => {
   const homeKit = /finger-?prick|home kit|at-?home/.test(s);
   const clinic = /venous|clinic/.test(s);
   let label = collection || "—";
-  if (homeKit && clinic) label = "Home finger-prick & clinic venous";
-  else if (homeKit) label = "At-home finger-prick";
-  else if (clinic) label = "Clinic venous draw";
+  if (homeKit && clinic) label = "At-home kit & venous draw";
+  else if (homeKit) label = "At-home kit";
+  else if (clinic) label = "Venous draw";
   return { homeKit, clinic, label };
 };
 
