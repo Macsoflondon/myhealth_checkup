@@ -70,7 +70,10 @@ export const useAtHomeCategories = () => {
         .select("category")
         .eq("is_active", true)
         .eq("home_kit_available", true)
-        .eq("is_addon", false);
+        .eq("is_addon", false)
+        .or(
+          "sample_type.ilike.%finger%,sample_type.ilike.%home%,sample_type.ilike.%at-home%,sample_type.ilike.%saliva%,sample_type.ilike.%urine%,sample_type.ilike.%stool%,sample_type.is.null"
+        );
       if (error) throw error;
       const cats = Array.from(new Set((data || []).map((r) => r.category).filter(Boolean))).sort();
       return ["All", ...cats];
