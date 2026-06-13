@@ -139,7 +139,7 @@ const StartJourneySection = () => {
 
               {/* Card */}
               <div
-                className="flex-1 flex flex-col transition-opacity duration-300"
+                className="flex-1 flex flex-col transition-all duration-500 ease-in-out"
                 style={{
                   opacity: fading ? 0 : 1,
                   border: "1px solid rgba(8,17,41,0.08)",
