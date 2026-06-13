@@ -65,8 +65,8 @@ const StartJourneySection = () => {
       setTimeout(() => {
         setTestIdx((i) => (i + 1) % TESTS.length);
         setFading(false);
-      }, 350);
-    }, 5000);
+      }, 500);
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
