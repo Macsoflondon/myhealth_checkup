@@ -156,10 +156,10 @@ const FeaturedProvidersGlass = () => {
             <span className="h-px w-10 bg-[#22c0d4]/60" />
           </div>
 
-          <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight tracking-tight">
+          <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#081129] leading-tight tracking-tight">
             Our Trusted Partners
           </h1>
-          <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto pt-6">
+          <p className="text-[#081129] text-base md:text-lg max-w-2xl mx-auto pt-6">
             Accredited UK health testing providers — UKAS laboratories and CQC-regulated clinics with proven track records of clinical excellence.
           </p>
         </div>
@@ -297,14 +297,14 @@ const FeaturedProvidersGlass = () => {
         </div>
 
         {/* Trust footer */}
-        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
+        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-[#081129] text-sm">
           <p>All providers are independently vetted for clinical excellence.</p>
           <div className="flex gap-6 uppercase tracking-[0.2em] font-bold text-[10px]">
-            <span className="flex items-center gap-2 text-gray-400">
+            <span className="flex items-center gap-2 text-[#081129]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               UKAS Accredited
             </span>
-            <span className="flex items-center gap-2 text-gray-400">
+            <span className="flex items-center gap-2 text-[#081129]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#22c0d4]" />
               CQC Regulated
             </span>
