@@ -38,7 +38,7 @@ const heroSlides: Array<{
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
     headline: "The Easiest Way To Compare Private Health Tests.",
-    subline: "​",
+    subline: "Your health is your greatest asset. It deserves clarity, not confusion.",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
     mobileScale: "scale(1.1)",

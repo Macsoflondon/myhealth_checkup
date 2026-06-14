@@ -241,8 +241,8 @@ const DreamHealthShowcase = () => {
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-[#08122b]">
           Find Your Perfect Test Match
         </h2>
-        <p className="mt-4 text-base lg:text-lg text-[#081129]/70 max-w-2xl mx-auto">
-          Hand-picked, best-selling tests from the UK's most trusted accredited providers.
+        <p className="mt-4 text-base lg:text-lg text-[#081129]/70 max-w-2xl mx-auto whitespace-pre-line">
+          {"\n"}
         </p>
         <div className="mt-6 flex justify-center">
           <button
