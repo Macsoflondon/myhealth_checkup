@@ -297,14 +297,14 @@ const FeaturedProvidersGlass = () => {
         </div>
 
         {/* Trust footer */}
-        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
+        <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-[#081129] text-sm">
           <p>All providers are independently vetted for clinical excellence.</p>
           <div className="flex gap-6 uppercase tracking-[0.2em] font-bold text-[10px]">
-            <span className="flex items-center gap-2 text-gray-400">
+            <span className="flex items-center gap-2 text-[#081129]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               UKAS Accredited
             </span>
-            <span className="flex items-center gap-2 text-gray-400">
+            <span className="flex items-center gap-2 text-[#081129]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#22c0d4]" />
               CQC Regulated
             </span>
