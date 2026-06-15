@@ -39,7 +39,7 @@ const JourneySimplified = () => {
         <div className="text-center mb-3 sm:mb-4 md:mb-5">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-            <span className="text-sm sm:text-base font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
+            <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
               Simple Process
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
