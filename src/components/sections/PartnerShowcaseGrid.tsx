@@ -8,6 +8,7 @@ const FeaturedPublications = lazy(() =>
   import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
 );
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
+const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
 const GoodbodyBentoShowcase = lazy(() => import("@/components/sections/GoodbodyBentoShowcase"));
 const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
@@ -105,6 +106,10 @@ const PartnerShowcaseGrid = () => {
 
       <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
+      </SafeBlock>
+
+      <SafeBlock name="Provider Comparison Table" fallback={<BlockSkeleton />}>
+        <ProviderComparisonTable />
       </SafeBlock>
 
       <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
