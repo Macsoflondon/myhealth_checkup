@@ -271,19 +271,6 @@ const CompareTests = () => {
           </div>
         </MainLayout>
 
-        <ComparisonBar
-          selectedTests={selectedTests}
-          onRemoveTest={handleRemoveTest}
-          onCompare={handleOpenComparison}
-          onClearAll={handleClearAll}
-        />
-
-        <ComparisonPanel
-          tests={selectedTests}
-          isOpen={isComparisonOpen}
-          onClose={() => setIsComparisonOpen(false)}
-          onRemoveTest={handleRemoveTest}
-        />
       </div>
     </ErrorBoundary>
   );
