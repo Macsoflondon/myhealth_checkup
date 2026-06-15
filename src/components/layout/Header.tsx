@@ -188,7 +188,7 @@ const Header = ({ className }: HeaderProps) => {
         ref={logoBarRef}
         className={cn(
           className,
-          "sticky z-[60] motion-reduce:transition-none",
+          "sticky z-[60] transition-[top] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
           isSearchDocked && "shadow-lg"
         )}
         style={{ top: isSearchDocked ? 0 : tickerHeight }}
