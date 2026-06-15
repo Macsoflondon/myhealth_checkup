@@ -21,6 +21,8 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   'randox': '/randox',
   'randox-health': '/randox', // Alias
   'thriva': '/thriva',
+  'clinilabs': '/clinilabs',
+  'medical-diagnosis': '/medical-diagnosis',
 };
 
 // Provider display names
@@ -28,11 +30,13 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   'goodbody-clinic': 'GOODBODY',
   'goodbody': 'GOODBODY',
   'lola-health': 'Lola Health',
-  'london-medical-laboratory': 'London Medical Laboratory',
+  'london-medical-laboratory': 'London Health Company',
   'medichecks': 'Medichecks',
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',
   'thriva': 'Thriva',
+  'clinilabs': 'Clinilabs',
+  'medical-diagnosis': 'Medical Diagnosis',
 };
 
 /**
