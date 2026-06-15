@@ -38,7 +38,7 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
       if (authLoading) return;
 
       if (!user) {
-        navigate("/auth");
+        navigate("/admin/login");
         return;
       }
 

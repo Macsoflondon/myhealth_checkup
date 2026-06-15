@@ -264,12 +264,12 @@ function AdminTestDashboardContent() {
                 Test Catalogue Dashboard
               </h1>
             </div>
-            <a
-              href="/admin/biomarker-audit"
+            <Link
+              to="/admin/biomarker-audit"
               className="inline-flex items-center gap-2 rounded-md bg-brand-pink px-3 py-2 text-sm font-semibold text-white hover:bg-brand-pink/90"
             >
               Open Biomarker Audit →
-            </a>
+            </Link>
           </div>
           <p className="text-white/60 text-sm">
             Master catalogue with provider pricing — {combinedRows.length} master tests, {providerTests?.length ?? 0} provider listings
