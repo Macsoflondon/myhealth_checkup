@@ -8,6 +8,7 @@ import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
+import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
