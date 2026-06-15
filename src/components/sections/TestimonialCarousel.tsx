@@ -115,7 +115,7 @@ const TestimonialCarousel = () => {
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
         </div>
         
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-10 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-10 sm:mb-12">
           <span className="text-white">What people say about </span>
           <span className="text-brand-turquoise">myhealth checkup</span>
           <span className="text-white">.</span>

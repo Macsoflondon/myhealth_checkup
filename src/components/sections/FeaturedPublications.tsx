@@ -67,7 +67,7 @@ export const FeaturedPublications = () => {
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
           </div>
           
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-8 md:mb-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-8 md:mb-10">
             <span className="text-white">As Seen In</span>
           </h2>
           

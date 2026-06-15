@@ -22,7 +22,7 @@ const MostPopularTestsSection = () => {
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
             MOST POPULAR
           </span>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight mb-4 leading-tight">
             <span className="text-[#081129]">Most Popular Tests from Our </span>
             <span className="text-[#081129]">
               Providers
