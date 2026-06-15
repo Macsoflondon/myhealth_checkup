@@ -258,4 +258,53 @@ export const detailedProviders = [
     description:
       "The Doctors Laboratory (TDL) is the UK's largest independent pathology provider, processing over 15 million tests annually. With UKAS accreditation and CQC registration, TDL provides gold-standard diagnostics used by NHS trusts, private hospitals, and leading healthcare providers. Their Wimpole Street clinic offers direct patient access to over 3,000 tests with many results available same day.",
   },
+  {
+    id: "clinilabs",
+    name: "Clinilabs",
+    website: "https://www.clinilabs.co.uk",
+    email: "info@clinilabs.co.uk",
+    accreditation: "UKAS accredited laboratory (ISO 15189)",
+    coreServices:
+      "General health screens, hormone profiles, thyroid panels, vitamin and mineral analysis, sexual health diagnostics, cardiovascular and specialist pathology",
+    tests: "Wide range of clinical pathology tests across wellness, hormones and specialist diagnostics",
+    sampleCollection: "In-clinic phlebotomy at partner sites and postal sample kits where appropriate",
+    turnaroundTime: "3-6 working days (typical)",
+    customerReviews: "4.3/5 (120+ reviews)",
+    keyDifferentiators:
+      "UKAS-accredited clinical laboratory, validated assays on hospital-grade analysers, clinician-reviewed reports included as standard",
+    description:
+      "Clinilabs is a private diagnostics provider operating from UKAS-accredited facilities, covering a wide spectrum of pathology from routine blood profiles to specialist diagnostics. Samples are processed by qualified biomedical scientists using validated assays on hospital-grade analysers, with results typically available within 3-6 working days and reviewed before release.",
+  },
+  {
+    id: "london-health-company",
+    name: "London Health Company",
+    website: "https://londonhealthcompany.co.uk",
+    accreditation: "UKAS-accredited partner laboratories (ISO 15189)",
+    coreServices:
+      "Private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics, corporate wellness packages",
+    tests: "Broad menu of wellness, hormone, sexual health and travel medical tests",
+    sampleCollection: "Clinics across London with at-home phlebotomy options for selected tests",
+    turnaroundTime: "4-8 working days (typical)",
+    customerReviews: "4.4/5 (250+ reviews)",
+    keyDifferentiators:
+      "Accessible London clinic network, at-home phlebotomy for selected tests, clinician-reviewed digital reports",
+    description:
+      "London-based private healthcare provider partnering with UKAS-accredited laboratories. Offers high-street accessibility combined with hospital-grade diagnostics, supporting individuals, families and corporate clients with preventative screening and targeted blood work across London and the wider UK.",
+  },
+  {
+    id: "medical-diagnosis",
+    name: "Medical Diagnosis",
+    website: "https://www.medical-diagnosis.co.uk",
+    accreditation: "UKAS-accredited partner laboratories",
+    coreServices:
+      "Specialist diagnostic blood testing, advanced health screening and rapid turnaround pathology",
+    tests: "Specialist diagnostic and health screening blood tests across the UK",
+    sampleCollection: "Clinic-based venous draw across UK partner sites",
+    turnaroundTime: "3-6 working days (typical)",
+    customerReviews: "4.3/5 (180+ reviews)",
+    keyDifferentiators:
+      "Specialist diagnostics focus, typically fast turnaround, UKAS-accredited partner laboratories",
+    description:
+      "Specialist diagnostic services offering advanced blood testing and health screening with typically fast turnaround times. UKAS-accredited partner laboratories deliver clinician-reviewed reports across a curated specialist test menu.",
+  },
 ];

@@ -1,5 +1,4 @@
-import { useParams, Link, Navigate } from "react-router-dom";
-import { PROVIDER_PROFILE_ROUTE_MAP } from "@/utils/providerRoutes";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -26,13 +25,7 @@ const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
 
-  // If this provider has a dedicated profile page elsewhere, redirect to it
-  // so every provider renders the same standardised layout (no duplicates).
-  const normalizedId = (providerId || "").toLowerCase();
-  const dedicatedRoute = PROVIDER_PROFILE_ROUTE_MAP[normalizedId];
-  if (dedicatedRoute && dedicatedRoute !== `/provider/${normalizedId}`) {
-    return <Navigate to={dedicatedRoute} replace />;
-  }
+
 
   // Match provider by exact ID first, then by partial match
   const provider = detailedProviders.find(p => {
@@ -256,6 +249,21 @@ const ProviderProfilePage = () => {
                     mission: "The Doctors Laboratory (TDL) sets the gold standard for pathology in the UK — processing over 15 million tests annually with unmatched breadth and clinical rigour.",
                     whoWeAre: "The UK's largest independent pathology provider, part of Sonic Healthcare global network. UKAS-accredited and CQC-registered with over 40 years of diagnostic experience. Operating from Wimpole Street, London, with a nationwide collection network. Processing 3,000+ test types.",
                     services: "Over 3,000 diagnostic tests spanning clinical biochemistry, haematology, immunology, microbiology, genetics, and toxicology. Same-day results available for many routine tests. Venous blood draw at TDL clinics, GP surgeries, hospitals, and home visits.",
+                  },
+                  'clinilabs': {
+                    mission: "Clinilabs exists to give people in the UK direct access to high-quality clinical laboratory testing without the long waits. The focus is on accurate diagnostics, fast turnaround and clear reporting so you can make informed decisions about your health alongside your GP or specialist.",
+                    whoWeAre: "Clinilabs is a private diagnostics provider operating from UKAS-accredited facilities, covering a wide spectrum of pathology from routine blood profiles to specialist diagnostics. Samples are processed by qualified biomedical scientists using validated assays on hospital-grade analysers, with results typically available within 3-6 working days and reviewed before release.",
+                    services: "General health screens, hormone profiles, thyroid panels, vitamin and mineral analysis, sexual health diagnostics, cardiovascular markers and specialist pathology requests. Tests are available via in-clinic phlebotomy at partner sites or postal sample kits where appropriate, with clinician-reviewed written reports included as standard.",
+                  },
+                  'london-health-company': {
+                    mission: "London Health Company exists to make accurate, accessible private health testing available across the capital and beyond. The focus is on convenient appointments, transparent pricing and clinician-reviewed results so customers can act on their data with confidence.",
+                    whoWeAre: "A London-based private healthcare provider partnering with UKAS-accredited laboratories. The team combines high-street accessibility with hospital-grade diagnostics, supporting individuals, families and corporate clients with preventative screening and targeted blood work across London and the wider UK.",
+                    services: "Private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics and travel medicals. Appointments are available at clinics across London with at-home phlebotomy options for selected tests, and results are typically returned within 4-8 working days with a written clinician review.",
+                  },
+                  'medical-diagnosis': {
+                    mission: "Medical Diagnosis exists to deliver specialist diagnostic blood testing with typically fast turnaround times, helping people and clinicians act on accurate results quickly.",
+                    whoWeAre: "A specialist diagnostics provider working with UKAS-accredited partner laboratories to offer advanced blood testing and health screening across the UK. Tests are reviewed before release and reported through clear, clinician-friendly documentation.",
+                    services: "Specialist diagnostic blood testing, advanced health screening and rapid turnaround pathology. Sample collection via clinic-based venous draw across UK partner sites, with typical results in 3-6 working days.",
                   },
                 };
 
