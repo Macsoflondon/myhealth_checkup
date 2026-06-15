@@ -186,7 +186,7 @@ const FeaturedProvidersGlass = () => {
                 />
 
                 <div
-                  className="relative bg-[#0b1a36]/90 backdrop-blur-3xl rounded-[2.25rem] p-7 md:p-8 h-full flex flex-col transition-all duration-700 group-hover:bg-[#0b1a36]/60"
+                  className="relative bg-white border border-[#e2e8f0] rounded-[2.25rem] p-7 md:p-8 h-full flex flex-col transition-all duration-700 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5"
                   style={{
                     boxShadow: `0 0 0 0 rgba(${p.glowRgb},0)`,
                   }}
