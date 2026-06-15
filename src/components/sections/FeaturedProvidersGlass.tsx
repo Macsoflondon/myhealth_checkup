@@ -134,7 +134,7 @@ const FeaturedProvidersGlass = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
   return (
-    <section className="relative w-full py-16 md:py-24 px-4 overflow-hidden">
+    <section className="relative w-full py-16 md:py-24 px-4 overflow-hidden bg-[#fafbfc]">
 
 
       <div className="relative max-w-7xl mx-auto space-y-16">
