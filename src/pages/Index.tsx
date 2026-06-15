@@ -239,15 +239,15 @@ const Index = () => {
 
 
         <Suspense fallback={<SectionFallback />}>
-          <SectionReveal delay={0.1}>
-            <ClinicAndHelpSection />
-          </SectionReveal>
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
           <ScrollFadeIn variant="rise" delay={100}>
             <ProviderComparisonTable />
           </ScrollFadeIn>
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <SectionReveal delay={0.1}>
+            <ClinicAndHelpSection />
+          </SectionReveal>
         </Suspense>
 
 
