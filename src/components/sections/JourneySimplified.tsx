@@ -49,7 +49,7 @@ const JourneySimplified = () => {
             gradientText="in four steps."
             titleClassName="text-tertiary"
           />
-          <p className="text-base font-semibold text-tertiary max-w-2xl mx-auto leading-snug mt-2 text-center">
+          <p className="text-base font-semibold text-tertiary mx-auto leading-snug mt-2 text-center">
             No account required. No subscription. Compare, choose, and book directly with the provider you trust — in minutes.
           </p>
         </div>
