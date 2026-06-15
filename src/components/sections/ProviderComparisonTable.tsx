@@ -31,7 +31,6 @@ const ProviderComparisonTable = () => (
           A quick-glance comparison of key provider attributes for a standard full blood count test. Prices are indicative — always verify directly with the provider before booking.
         </p>
       </div>
-      </div>
       <p className="mt-2 text-center text-xs text-[#8892a4] leading-relaxed">
         myhealth checkup is independent. No payments from listed providers influence ranking. Prices sourced from provider websites — verify before booking.
       </p>
