@@ -37,7 +37,7 @@ const heroSlides: Array<{
   {
     image: heroHomeKit,
     mobileImage: heroMobileKitOpen,
-    headline: "The Easiest Way To Compare Private Health Tests.",
+    headline: "The Easiest Way To Compare\nPrivate Health Tests",
     subline: "​",
     objectPosition: "center 50%",
     mobileObjectPosition: "35% 30%",
@@ -51,7 +51,7 @@ const heroSlides: Array<{
   {
     image: heroActive,
     mobileImage: heroMobileActive,
-    headline: "Know Your Numbers. Own Your Health.",
+    headline: "Know Your Numbers.\nOwn Your Health.",
     subline: "​",
     objectPosition: "center 18%",
     mobileObjectPosition: "center 22%",
