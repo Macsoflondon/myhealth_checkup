@@ -10,7 +10,7 @@ const categories = [
     title: "Blood Tests & Panels",
     description:
       "Individual biomarkers to comprehensive wellness panels. At-home kits and clinic-based venepuncture from UKAS-accredited laboratories.",
-    link: "/compare",
+    link: "/wellness",
     linkLabel: "Explore Tests",
     image: bloodTubesAsset.url,
   },
@@ -21,7 +21,7 @@ const categories = [
     title: "Private Cancer Screening",
     description:
       "Multi-cancer early detection tests, tumour markers, and targeted screening for bowel, prostate, ovarian, and other cancers from regulated UK clinics.",
-    link: "/categories/cancer-screening",
+    link: "/tests/cancer",
     linkLabel: "Explore Screening",
     image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1200&q=85&auto=format&fit=crop",
   },
@@ -32,7 +32,7 @@ const categories = [
     title: "Wellness & Longevity",
     description:
       "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
-    link: "/categories/wellness",
+    link: "/test-categories",
     linkLabel: "Explore Panels",
     image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85&auto=format&fit=crop",
   },
