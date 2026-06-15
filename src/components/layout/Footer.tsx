@@ -100,10 +100,10 @@ const StayInformedSection = () => {
 
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-      {/* Two-column top: Follow Us | Stay Informed */}
+      {/* Two-column top: Follow Us + Compliance | Stay Informed */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-        {/* Left: Follow Us */}
-        <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
+        {/* Left: Follow Us + Compliance badges */}
+        <div className="flex flex-col items-center text-center">
           <SectionHeading title="Follow Us" />
           <div className="flex gap-3 mt-1">
             <SocialIcon
@@ -137,6 +137,20 @@ const StayInformedSection = () => {
                 <path d="M16.7 3.2h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.1a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.9a7.1 7.1 0 004.2 1.4V7.7a4.3 4.3 0 01-4.5-4.5z" fill="#fff" fillOpacity="0.9" />
               </svg>
             </SocialIcon>
+          </div>
+
+          {/* Compliance badges */}
+          <div className="flex gap-4 items-center justify-center mt-5">
+            <img
+              src={complianceBadges}
+              alt="ICO Registered, Companies House, UK GDPR compliance badges"
+              loading="lazy"
+              decoding="async"
+              className="h-20 sm:h-24 w-auto object-contain"
+            />
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-brand-navy flex items-center justify-center p-2">
+              <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+            </div>
           </div>
         </div>
 
@@ -179,26 +193,10 @@ const StayInformedSection = () => {
         </div>
       </div>
 
-      {/* Bottom: Copyright + Compliance */}
-      <div className="mt-6 pt-5 border-t border-white/10">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-center sm:text-left text-xs text-brand-pink/80 font-sans">
-            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
-          </p>
-          <div className="flex gap-3 items-center">
-            <img
-              src={complianceBadges}
-              alt="ICO Registered, Companies House, UK GDPR compliance badges"
-              loading="lazy"
-              decoding="async"
-              className="h-14 sm:h-16 w-auto object-contain"
-            />
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
-              <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Condensed copyright above faint divider */}
+      <p className="mt-5 pt-3 border-t border-white/10 text-center text-[10px] sm:text-xs text-brand-pink/80 font-sans leading-tight">
+        © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+      </p>
     </div>
   );
 };
