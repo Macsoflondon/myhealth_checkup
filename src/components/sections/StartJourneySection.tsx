@@ -147,6 +147,7 @@ const StartJourneySection = () => {
                 <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
                   From Letterbox to Lab
                 </span>
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
               <h3 className="font-heading font-bold text-white text-2xl sm:text-3xl tracking-tight leading-tight">
                 Convenient at-home test kits, delivered to your door.
