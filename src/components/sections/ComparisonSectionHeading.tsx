@@ -17,9 +17,9 @@ const ComparisonSectionHeading = ({
           <span>Side-by-Side</span>
           <span aria-hidden="true" className="inline-block h-px w-6 sm:w-8 bg-[#e70d69]/60" />
         </span>
-        <div className="mt-2 text-xl sm:text-2xl font-bold text-white">
+        <h2 className="mt-2 text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-[#081129]">
           Provider comparison — full picture.
-        </div>
+        </h2>
       </div>
       <p className="mt-6 text-base sm:text-lg text-white/70 leading-relaxed">
         A quick-glance comparison of key provider attributes for a standard full blood count test.
