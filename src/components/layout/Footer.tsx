@@ -91,21 +91,6 @@ const ColumnHeading = ({ title }: { title: string }) => (
   </div>
 );
 
-/* ========== Health Tests Column ========== */
-const HealthTestsColumn = ({ links }: { links: { name: string; link: string }[] }) => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-    <ColumnHeading title="Health Tests" />
-    <ul className="space-y-2.5">
-      {links.map((item, i) => (
-        <li key={i}>
-          <Link to={item.link} className="text-white/80 hover:text-brand-pink transition-colors text-xs sm:text-sm font-sans">
-            {item.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
 
 
 /* ========== Stay Informed Column (newsletter) ========== */
