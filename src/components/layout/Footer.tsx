@@ -200,57 +200,62 @@ const StayInformedColumn = () => {
         We will never share your email. Unsubscribe at any time.
       </p>
 
-      {/* Divider + Follow Us (brand-coloured) */}
+      {/* Social + Compliance side by side */}
       <div className="mt-5 pt-4 border-t border-white/10">
-        <p className="text-white/60 text-[10px] uppercase tracking-wider mb-3 text-center">Follow Us</p>
-        <div className="flex gap-3 justify-center">
-          <SocialIcon
-            href="https://www.instagram.com/myhealthcheckup_uk"
-            label="Instagram"
-            style={{ background: "linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)" }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" strokeWidth="1.8" fill="none" />
-              <circle cx="12" cy="12" r="5" stroke="#fff" strokeWidth="1.8" fill="none" />
-              <circle cx="17.5" cy="6.5" r="1.25" fill="#fff" />
-            </svg>
-          </SocialIcon>
-          <SocialIcon
-            href="https://www.facebook.com/myhealthcheckupuk"
-            label="Facebook"
-            style={{ background: "#1877F2" }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
-              <path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.5 2.9h-2.4v7A10 10 0 0022 12z" />
-            </svg>
-          </SocialIcon>
-          <SocialIcon
-            href="https://www.tiktok.com/@myhealthcheckup"
-            label="TikTok"
-            style={{ background: "#000" }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M16.5 3h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.9a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.7a7.1 7.1 0 004.2 1.4V7.5a4.3 4.3 0 01-4.5-4.5z" fill="#25F4EE" />
-              <path d="M17 3.5h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.4a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V9.2a7.1 7.1 0 004.2 1.4V8a4.3 4.3 0 01-4.5-4.5z" fill="#FE2C55" fillOpacity="0.85" />
-              <path d="M16.7 3.2h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.1a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.9a7.1 7.1 0 004.2 1.4V7.7a4.3 4.3 0 01-4.5-4.5z" fill="#fff" fillOpacity="0.9" />
-            </svg>
-          </SocialIcon>
-        </div>
-      </div>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+          {/* Socials */}
+          <div className="flex flex-col items-center sm:items-start">
+            <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Follow Us</p>
+            <div className="flex gap-3">
+              <SocialIcon
+                href="https://www.instagram.com/myhealthcheckup_uk"
+                label="Instagram"
+                style={{ background: "linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" strokeWidth="1.8" fill="none" />
+                  <circle cx="12" cy="12" r="5" stroke="#fff" strokeWidth="1.8" fill="none" />
+                  <circle cx="17.5" cy="6.5" r="1.25" fill="#fff" />
+                </svg>
+              </SocialIcon>
+              <SocialIcon
+                href="https://www.facebook.com/myhealthcheckupuk"
+                label="Facebook"
+                style={{ background: "#1877F2" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+                  <path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.5 2.9h-2.4v7A10 10 0 0022 12z" />
+                </svg>
+              </SocialIcon>
+              <SocialIcon
+                href="https://www.tiktok.com/@myhealthcheckup"
+                label="TikTok"
+                style={{ background: "#000" }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M16.5 3h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.9a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.7a7.1 7.1 0 004.2 1.4V7.5a4.3 4.3 0 01-4.5-4.5z" fill="#25F4EE" />
+                  <path d="M17 3.5h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.4a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V9.2a7.1 7.1 0 004.2 1.4V8a4.3 4.3 0 01-4.5-4.5z" fill="#FE2C55" fillOpacity="0.85" />
+                  <path d="M16.7 3.2h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.1a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.9a7.1 7.1 0 004.2 1.4V7.7a4.3 4.3 0 01-4.5-4.5z" fill="#fff" fillOpacity="0.9" />
+                </svg>
+              </SocialIcon>
+            </div>
+          </div>
 
-      {/* Divider + Compliance badges */}
-      <div className="mt-5 pt-4 border-t border-white/10">
-        <p className="text-white/60 text-[10px] uppercase tracking-wider mb-3 text-center">Compliance</p>
-        <div className="flex gap-3 items-center justify-center">
-          <img
-            src={complianceBadges}
-            alt="ICO Registered, Companies House, UK GDPR compliance badges"
-            loading="lazy"
-            decoding="async"
-            className="h-16 sm:h-20 w-auto object-contain"
-          />
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
-            <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+          {/* Compliance */}
+          <div className="flex flex-col items-center sm:items-end">
+            <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Compliance</p>
+            <div className="flex gap-3 items-center">
+              <img
+                src={complianceBadges}
+                alt="ICO Registered, Companies House, UK GDPR compliance badges"
+                loading="lazy"
+                decoding="async"
+                className="h-14 sm:h-16 w-auto object-contain"
+              />
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
+                <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
