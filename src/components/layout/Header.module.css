@@ -35,8 +35,6 @@
   transition: box-shadow var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
   overflow: visible;
 }
-  50% { transform: translateY(-1.5px); }
-}
 
 .toolbarSticky {
   position: fixed;
