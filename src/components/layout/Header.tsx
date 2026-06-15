@@ -164,15 +164,14 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* Promo ticker — slides upward with scroll */}
+      {/* Promo ticker — collapses in normal flow as user scrolls */}
       <div
         ref={promoTrackerRef}
-        className={cn("sticky top-0 z-50 overflow-hidden motion-reduce:transition-none", className)}
+        className={cn("relative z-50 overflow-hidden motion-reduce:transition-none", className)}
         style={{
-          maxHeight: lerp(tickerHeight || 200, 0, collapseProgress),
+          maxHeight: collapseProgress >= 1 ? 0 : lerp(tickerHeight || 200, 0, collapseProgress),
           opacity: 1 - collapseProgress,
-          transform: `translateY(${-collapseProgress * (tickerHeight || 0)}px)`,
-          willChange: "transform, opacity, max-height",
+          willChange: "opacity, max-height",
           pointerEvents: collapseProgress > 0.9 ? "none" : "auto",
         }}
         aria-hidden={isSearchDocked}
@@ -180,16 +179,13 @@ const Header = ({ className }: HeaderProps) => {
         <PromoTicker />
       </div>
 
-      {/* Logo section — shrinks continuously as user scrolls */}
+      {/* Logo section — scrolls away in normal flow (no sticky) so the toolbar
+          locks to the top only once the logo bar has fully left the viewport. */}
       <header
         ref={logoBarRef}
-        className={cn(
-          className,
-          "sticky top-0 z-[60] motion-reduce:transition-none"
-        )}
+        className={cn(className, "relative z-[60] motion-reduce:transition-none")}
         style={{
           boxShadow: `0 4px 20px rgba(0,0,0,${collapseProgress * 0.12})`,
-          willChange: "padding",
         }}
       >
         <div style={{ backgroundColor: "#ffffff" }}>
@@ -197,69 +193,37 @@ const Header = ({ className }: HeaderProps) => {
             <div
               className="relative flex items-center justify-center"
               style={{
-                paddingTop: `${lerp(24, 2, collapseProgress)}px`,
-                paddingBottom: `${lerp(24, 2, collapseProgress)}px`,
+                paddingTop: `${lerp(24, 6, collapseProgress)}px`,
+                paddingBottom: `${lerp(24, 6, collapseProgress)}px`,
               }}
             >
-              {/* Center: Combined logo + tagline (cross-fades with search) */}
               <Link
                 to="/"
                 className="flex items-center flex-shrink-0 min-w-0 transform-gpu hover:scale-105 will-change-transform motion-reduce:hover:scale-100"
-                style={{
-                  transformOrigin: "center center",
-                  opacity: 1 - Math.min(1, collapseProgress / 0.6),
-                  pointerEvents: isSearchDocked ? "none" : "auto",
-                  position: isSearchDocked ? "absolute" : "relative",
-                }}
-                aria-hidden={isSearchDocked}
-                tabIndex={isSearchDocked ? -1 : 0}
+                style={{ transformOrigin: "center center" }}
               >
                 <img
                   src={fullLogo.url}
                   alt="myhealth checkup — Your health! Your choice! One trusted platform!"
                   className="w-auto object-contain flex-shrink-0 max-w-[90vw]"
-                  style={{ height: `${lerp(128, 48, collapseProgress)}px` }}
+                  style={{ height: `${lerp(128, 64, collapseProgress)}px` }}
                 />
               </Link>
 
-              {/* Center: docked search */}
-              {isSearchDocked && (
-                <div
-                  className="relative w-full max-w-[640px]"
-                  style={{ opacity: Math.min(1, (collapseProgress - 0.6) / 0.4) }}
-                >
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#081129]/70 w-4 h-4 md:w-5 md:h-5" />
-                  <input
-                    type="text"
-                    placeholder="COMPARE OVER 200 TESTS"
-                    aria-label="Search blood tests and health screenings"
-                    value={dockedSearchTerm}
-                    onChange={(e) => setDockedSearchTerm(e.target.value)}
-                    onKeyDown={handleDockedSearchKey}
-                    className="w-full pl-10 md:pl-12 pr-4 py-2.5 text-sm md:text-base font-bold rounded-lg bg-white border-2 border-[#22c0d4]/60 text-[#081129] placeholder:text-[#081129]/60 focus:ring-2 focus:ring-[#22c0d4]/40 focus:outline-none"
-                  />
-                </div>
-              )}
-
-              {/* Right controls — absolutely anchored so they don't pull the logo off-centre */}
               <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center pl-2" style={{ backgroundColor: "#ffffff" }}>
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
                 </nav>
               </div>
-
             </div>
           </div>
         </div>
       </header>
 
-
-      {/* Toolbar sticks directly below the (shrinking) logo bar */}
-      <div
-        className="sticky z-40 motion-reduce:transition-none"
-        style={{ top: logoBarHeight }}
-      >
+      {/* Toolbar locks to the top of the viewport once the header above has
+          fully scrolled out — sticky top:0 achieves this naturally. */}
+      <div className="sticky top-0 z-40 motion-reduce:transition-none">
         <div
           className={cn(toolbarClasses, "motion-reduce:transition-none")}
           style={{
@@ -276,3 +240,4 @@ const Header = ({ className }: HeaderProps) => {
   );
 };
 export default Header;
+
