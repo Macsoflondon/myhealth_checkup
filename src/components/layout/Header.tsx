@@ -38,19 +38,21 @@ const Header = ({ className }: HeaderProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  // Continuous scroll-driven collapse progress (desktop only).
+  // Continuous scroll-driven collapse progress (desktop/tablet only).
+  // Threshold is the actual logo bar height — collapse finishes exactly when
+  // the logo bar has rolled fully out of view, at which point the toolbar locks.
   useEffect(() => {
     if (isMobile) {
       setCollapseProgress(0);
       return;
     }
-    const COLLAPSE_PX = 160;
     let rafId = 0;
     let ticking = false;
     const update = () => {
       ticking = false;
       const y = window.scrollY;
-      const p = Math.min(1, Math.max(0, y / COLLAPSE_PX));
+      const threshold = Math.max(80, (logoBarHeight || 120) + (tickerHeight || 0));
+      const p = Math.min(1, Math.max(0, y / threshold));
       setCollapseProgress(p);
     };
     const onScroll = () => {
