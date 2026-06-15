@@ -5,6 +5,13 @@ import { SectionHeading } from "@/components/ui/section-heading";
 const HereToHelp = () => {
   const resources = [
     {
+      icon: Search,
+      title: "Find the Right Test for You",
+      description: "Browse our full range of test categories to discover what's best for your health needs.",
+      link: "/test-categories",
+      accent: "brand-pink"
+    },
+    {
       icon: BookOpen,
       title: "Health Hub",
       description: "In-depth articles on tests, conditions and what your results mean.",
