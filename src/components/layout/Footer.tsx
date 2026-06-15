@@ -17,14 +17,6 @@ const Footer = () => {
     { name: t("footer.links.fertility"), link: "/fertility-tests" },
   ];
 
-  const companyLinks = [
-    { name: t("footer.links.aboutUs"), link: "/about" },
-    { name: "Our Providers", link: "/providers" },
-    { name: t("footer.links.faqs"), link: "/faqs" },
-    { name: "Health Resource Hub", link: "/blog" },
-    { name: t("footer.links.contact"), link: "/contact" },
-    { name: "Legal Hub", link: "/legal" },
-  ];
 
   return (
     <footer>
@@ -39,9 +31,8 @@ const Footer = () => {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
             <HealthTestsColumn links={healthTestLinks} />
-            <CompanyColumn links={companyLinks} />
             <StayInformedColumn />
           </div>
 
@@ -56,8 +47,8 @@ const Footer = () => {
               <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
               <span className="text-white/85">
                 This site provides comparison information only and does not constitute medical advice. See our{" "}
-                <Link to="/about/medical-review" className="underline hover:text-brand-pink transition-colors">
-                  Medical Review &amp; Editorial Standards
+                <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
+                  Legal Hub
                 </Link>{" "}
                 for full details.
               </span>
@@ -131,21 +122,6 @@ const HealthTestsColumn = ({ links }: { links: { name: string; link: string }[] 
   </div>
 );
 
-/* ========== Company Column ========== */
-const CompanyColumn = ({ links }: { links: { name: string; link: string }[] }) => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-    <ColumnHeading title="Company" />
-    <ul className="space-y-2.5">
-      {links.map((item, i) => (
-        <li key={i}>
-          <Link to={item.link} className="text-white/80 hover:text-brand-pink transition-colors text-xs sm:text-sm font-sans">
-            {item.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
 
 /* ========== Stay Informed Column (newsletter) ========== */
 const StayInformedColumn = () => {
