@@ -175,7 +175,7 @@ const FeaturedProviders = () => {
                       style={brand ? { backgroundColor: brand.primary } : undefined}
                       asChild
                     >
-                      <Link to={`/provider/${provider.id.toLowerCase()}`}>
+                      <Link to={getProviderProfileRoute(provider.id)}>
                         View Profile
                       </Link>
                     </Button>
