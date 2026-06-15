@@ -65,8 +65,8 @@ const heroSlides: Array<{
   },
   {
     image: heroResults,
-    headline: "Your Results.\nWherever You Are.",
-    subline: "​",
+    headline: "Find Your Right Test",
+    subline: "Wherever You Are",
     objectPosition: "center 40%",
     theme: {
       overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/25",
