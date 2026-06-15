@@ -81,7 +81,7 @@ const StartJourneySection = () => {
       <div className="max-w-[1480px] mx-auto px-4 sm:px-6">
 
         {/* ── ROW 1 — Take Control (full width, horizontal) ─────────────── */}
-        <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden mb-8 lg:mb-12">
+        <div className="relative bg-white rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden mb-8 lg:mb-12 transition-transform duration-700 ease-out hover:-translate-y-1">
           <div className="p-6 sm:p-8 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10">
 
             {/* Left: text */}
@@ -129,7 +129,7 @@ const StartJourneySection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
 
           {/* LEFT — Letterbox video */}
-          <div className="relative bg-[#081129] rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden h-full min-h-[420px]">
+          <div className="relative bg-[#081129] rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full min-h-[420px] transition-transform duration-700 ease-out hover:-translate-y-1">
             <video
               src={letterboxVideo.url}
               autoPlay
@@ -159,7 +159,7 @@ const StartJourneySection = () => {
           </div>
 
           {/* RIGHT — Live Comparison */}
-          <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden h-full">
+          <div className="relative bg-white rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1">
             <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
 
               <div className="flex items-center justify-center gap-3 mb-5">
