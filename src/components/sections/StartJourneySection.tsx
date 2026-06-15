@@ -88,7 +88,7 @@ const StartJourneySection = () => {
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                 <div className="h-px w-9 bg-slate-200" />
-                <span className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
                   Start Your Journey
                 </span>
                 <div className="h-px w-9 bg-slate-200 lg:hidden" />
@@ -144,7 +144,7 @@ const StartJourneySection = () => {
             <div className="relative z-10 p-6 sm:p-8 md:p-10 h-full flex flex-col justify-end">
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-px w-9 bg-brand-turquoise/60" />
-                <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
+                <span className="text-xs sm:text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
                   From Letterbox to Lab
                 </span>
               </div>
@@ -163,7 +163,7 @@ const StartJourneySection = () => {
 
               <div className="flex items-center justify-center gap-3 mb-5">
                 <div className="h-px w-9 bg-slate-200" />
-                <span className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
+                <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
                   Live Comparison
                 </span>
                 <div className="h-px w-9 bg-slate-200" />
