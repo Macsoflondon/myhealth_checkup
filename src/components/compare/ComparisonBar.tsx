@@ -42,7 +42,7 @@ export const ComparisonBar = ({
             <div className="flex items-center gap-2">
               <GitCompare className="h-5 w-5 text-primary" />
               <span className="font-semibold text-sm whitespace-nowrap">
-                Compare Tests
+                {/* Text removed per request */}
               </span>
               <Badge variant="default" className="bg-primary">
                 {selectedTests.length}
@@ -94,7 +94,7 @@ export const ComparisonBar = ({
               onClick={onClearAll}
               className="text-muted-foreground hover:text-foreground"
             >
-              Clear All
+              {/* Text removed per request */}
             </Button>
             
             <Button
@@ -105,14 +105,14 @@ export const ComparisonBar = ({
                 orderedTests.length < 2 && "opacity-50 cursor-not-allowed"
               )}
             >
-              Compare {orderedTests.length > 1 ? `${orderedTests.length} Tests` : ''}
+              {/* Text removed per request */}
             </Button>
           </div>
         </div>
 
         {orderedTests.length === 1 && (
           <p className="text-xs text-muted-foreground mt-2 text-center">
-            Select at least one more test to compare
+            {/* Text removed per request */}
           </p>
         )}
       </div>
