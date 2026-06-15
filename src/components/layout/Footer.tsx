@@ -118,7 +118,7 @@ const ColumnHeading = ({ title }: { title: string }) => (
   </div>
 );
 
-/* ========== Health Tests Column (links + social) ========== */
+/* ========== Health Tests Column ========== */
 const HealthTestsColumn = ({ links }: { links: { name: string; link: string }[] }) => (
   <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
     <ColumnHeading title="Health Tests" />
@@ -131,34 +131,10 @@ const HealthTestsColumn = ({ links }: { links: { name: string; link: string }[] 
         </li>
       ))}
     </ul>
-
-    {/* Divider + Follow Us */}
-    <div className="mt-5 pt-4 border-t border-white/10">
-      <p className="text-white/60 text-[10px] uppercase tracking-wider mb-3">Follow Us</p>
-      <div className="flex gap-3">
-        <SocialIcon href="https://www.instagram.com/myhealthcheckup_uk" label="Instagram">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-            <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-            <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor" />
-          </svg>
-        </SocialIcon>
-        <SocialIcon href="https://www.facebook.com/myhealthcheckupuk" label="Facebook">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          </svg>
-        </SocialIcon>
-        <SocialIcon href="https://www.tiktok.com/@myhealthcheckup" label="TikTok">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          </svg>
-        </SocialIcon>
-      </div>
-    </div>
   </div>
 );
 
-/* ========== Company Column (links + compliance badges) ========== */
+/* ========== Company Column ========== */
 const CompanyColumn = ({ links }: { links: { name: string; link: string }[] }) => (
   <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
     <ColumnHeading title="Company" />
@@ -171,23 +147,6 @@ const CompanyColumn = ({ links }: { links: { name: string; link: string }[] }) =
         </li>
       ))}
     </ul>
-
-    {/* Divider + Compliance badges */}
-    <div className="mt-5 pt-4 border-t border-white/10">
-      <p className="text-white/60 text-[10px] uppercase tracking-wider mb-3">Compliance</p>
-      <div className="flex gap-3 items-start">
-        <img
-          src={complianceBadges}
-          alt="ICO Registered, Companies House, UK GDPR compliance badges"
-          loading="lazy"
-          decoding="async"
-          className="h-16 sm:h-20 w-auto object-contain"
-        />
-        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
-          <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
-        </div>
-      </div>
-    </div>
   </div>
 );
 
