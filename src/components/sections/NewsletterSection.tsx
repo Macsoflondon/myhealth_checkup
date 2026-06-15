@@ -28,8 +28,8 @@ const NewsletterSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         <div className="max-w-xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-            <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+            <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+            <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em]">
               Stay Informed
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />

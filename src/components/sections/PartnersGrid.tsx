@@ -78,8 +78,8 @@ const PartnersGrid = () => {
       <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Section label */}
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-          <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+          <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em]">
             Accredited & Verified
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />

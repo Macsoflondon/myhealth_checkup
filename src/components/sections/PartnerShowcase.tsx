@@ -26,8 +26,8 @@ export default function AsFeaturedIn({ providers = [] }: AsFeaturedInProps) {
     <section className="py-12 bg-[#F5F7FA]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-          <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+          <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em]">
             As Seen In
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
