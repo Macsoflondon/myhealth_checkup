@@ -377,44 +377,8 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               render={(t) => (hasAccreditation(t, "GP Review") ? <Tick /> : <Dash />)}
             />
             <Row
-              label="UKAS accredited"
-              index={6}
-              slots={slots}
-              render={(t) => (hasAccreditation(t, "UKAS") ? <Tick /> : <Dash />)}
-            />
-            <Row
-              label="CQC regulated"
-              index={7}
-              slots={slots}
-              render={(t) => (hasAccreditation(t, "CQC") ? <Tick /> : <Dash />)}
-            />
-            <Row
-              label="Provider link"
-              index={8}
-              slots={slots}
-              render={(t) =>
-                t.url && t.url !== "#" ? (
-                  <a
-                    href={t.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: TURQUOISE,
-                      fontFamily: "'DM Sans', system-ui, sans-serif",
-                      fontWeight: 500,
-                    }}
-                    className="hover:underline"
-                  >
-                    Book now →
-                  </a>
-                ) : (
-                  <Dash />
-                )
-              }
-            />
-            <Row
               label="Book"
-              index={9}
+              index={6}
               slots={slots}
               placeholder={
                 <button
