@@ -209,9 +209,9 @@ const FeaturedProvidersGlass = () => {
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 transition-colors group-hover:border-yellow-500/40">
+                        <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-[#e2e8f0] transition-colors group-hover:border-yellow-500/40">
                           <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                          <span className="text-white text-xs font-bold">
+                          <span className="text-[#081129] text-xs font-bold">
                             {canonical.rating}
                           </span>
                         </div>
@@ -224,7 +224,7 @@ const FeaturedProvidersGlass = () => {
 
                     {/* Title + tagline */}
                     <div className="space-y-1">
-                      <h2 className="font-heading text-2xl font-bold text-white transition-colors">
+                      <h2 className="font-heading text-2xl font-bold text-[#081129] transition-colors">
                         {p.displayName}
                       </h2>
                       <p
@@ -236,13 +236,13 @@ const FeaturedProvidersGlass = () => {
                       >
                         {p.tagline}
                       </p>
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 pt-1">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8] pt-1">
                         {canonical.reviewsFormatted} reviews · UK Wide
                       </p>
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-400 leading-relaxed text-[15px] group-hover:text-gray-300 transition-colors">
+                    <p className="text-[#64748b] leading-relaxed text-[15px] transition-colors">
                       {p.description}
                     </p>
 
@@ -251,10 +251,7 @@ const FeaturedProvidersGlass = () => {
                       {p.tags.map((t) => (
                         <span
                           key={t}
-                          className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors group-hover:text-white"
-                          style={{
-                            borderColor: undefined,
-                          }}
+                          className="px-3 py-1 rounded-lg bg-[#f0f4fa] border border-[#e2e8f0] text-[10px] uppercase font-bold tracking-wider text-[#94a3b8] transition-colors"
                         >
                           {t}
                         </span>
