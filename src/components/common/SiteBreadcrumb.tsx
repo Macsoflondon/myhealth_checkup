@@ -112,7 +112,7 @@ const SiteBreadcrumb = () => {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   {c.isLast ? (
-                    <BreadcrumbPage>{c.label}</BreadcrumbPage>
+                    <BreadcrumbPage>{c.label === "Compare Tests" ? "\n" : c.label}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
                       <Link to={c.href}>{c.label}</Link>
