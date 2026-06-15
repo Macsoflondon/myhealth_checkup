@@ -16,6 +16,7 @@ const legalPages = [
   { title: 'How We Rank', path: '/how-we-rank', icon: Award, description: 'Our methodology for ranking and comparing providers.' },
   { title: 'Accessibility Statement', path: '/accessibility', icon: Accessibility, description: 'Our commitment to accessible, inclusive digital experiences.' },
   { title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).' },
+  { title: 'Feedback & Complaints', path: '/complaints', icon: MessageSquareWarning, description: 'How to raise a concern, give feedback, or make a complaint about our platform.' },
 ];
 
 const LegalPage = () => {
