@@ -49,6 +49,9 @@ export const featureRoutes = (
     <Route path="/providers/randox" element={<ProviderTestsCatalogPage providerId="randox" />} />
     <Route path="/providers/lola-health" element={<ProviderTestsCatalogPage providerId="lola-health" />} />
     <Route path="/providers/london-medical-laboratory" element={<ProviderTestsCatalogPage providerId="london-medical-laboratory" />} />
+    <Route path="/clinilabs" element={<ClinilabsPage />} />
+    <Route path="/london-medical-laboratory" element={<LondonMedicalLaboratoryPage />} />
+    <Route path="/medical-diagnosis" element={<MedicalDiagnosisPage />} />
     <Route path="/blood-test-analysis" element={<BloodTestAnalysisPage />} />
   </>
 );
