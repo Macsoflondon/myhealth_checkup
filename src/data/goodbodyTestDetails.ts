@@ -73,23 +73,23 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
   },
   "advanced-well-woman": {
     slug: "advanced-well-woman",
-    name: "Advanced Well Man",
-    headline: "Complete Male Health Assessment",
-    description: "This comprehensive test evaluates various biomarkers in the blood, providing insights into areas such as hormonal levels, cholesterol levels, and overall organ function.",
-    detailedDescription: "This comprehensive test evaluates various biomarkers in the blood, providing insights into areas such as hormonal levels, cholesterol levels, and overall organ function.",
-    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "HbA1c", "Testosterone", "Thyroid Function", "Iron Studies", "Vitamin D", "Vitamin B12", "Folate"],
+    name: "Advanced Well Woman",
+    headline: "Complete Female Health Assessment",
+    description: "A comprehensive blood test for women evaluating hormonal balance, thyroid function, cholesterol, iron and key vitamins to give a complete picture of female health.",
+    detailedDescription: "This in-depth panel assesses the biomarkers most relevant to women's health — including reproductive hormones, thyroid markers, full blood count, liver and kidney function, lipid profile and vitamin status — supporting informed decisions about wellbeing, hormonal changes and longer-term health.",
+    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "HbA1c", "Oestradiol", "FSH", "LH", "Thyroid Function", "Iron Studies", "Vitamin D", "Vitamin B12", "Folate"],
     whoShouldTake: [
-      "Men over 35 seeking a comprehensive health check",
-      "Those experiencing hormonal symptoms or irregularities",
-      "Men with a family history of thyroid disease or diabetes",
-      "Anyone wanting to understand their health status",
-      "Men experiencing fatigue, weight changes, or mood swings"
+      "Women over 35 seeking a comprehensive health check",
+      "Those experiencing hormonal symptoms or menstrual irregularities",
+      "Women with a family history of thyroid disease or diabetes",
+      "Anyone wanting to understand their overall health status",
+      "Women experiencing fatigue, weight changes, or mood swings"
     ],
-    preparation: "Fasting for 8-12 hours recommended. Take blood sample in the morning for accurate hormone levels.",
+    preparation: "Fasting for 8-12 hours recommended. Take blood sample in the morning for accurate hormone levels; results may vary across the menstrual cycle.",
     sampleType: "Venous blood sample",
     turnaround: "4-6 working days",
-    category: "General Health",
-    goodbodyUrl: "https://goodbodyclinic.com/products/advanced-well-man-blood-test",
+    category: "Women's Health",
+    goodbodyUrl: "https://goodbodyclinic.com/products/advanced-well-woman-blood-test",
     price: 175
   },
   "anaemia": {
