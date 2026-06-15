@@ -104,7 +104,7 @@ const SiteBreadcrumb = () => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
+                <Link to="/">{"\n"}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {crumbs.map((c) => (
