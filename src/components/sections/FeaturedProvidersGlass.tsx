@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
-import { getProviderRoute } from "@/utils/providerRoutes";
+import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 
@@ -268,7 +268,7 @@ const FeaturedProvidersGlass = () => {
                     </Link>
                     <div className="grid grid-cols-2 gap-3">
                       <Link
-                        to={`/provider/${p.id.toLowerCase()}`}
+                        to={getProviderProfileRoute(p.id)}
                         className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
                       >
                         View Profile
