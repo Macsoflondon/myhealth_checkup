@@ -190,6 +190,36 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
 
   return (
     <div className="w-full">
+      <style>{`
+        @media (max-width: 640px) {
+          .comparison-table th[scope="col"],
+          .comparison-table th[scope="row"],
+          .comparison-table td {
+            padding: 10px 8px !important;
+            font-size: 12px !important;
+          }
+          .comparison-table th[scope="row"],
+          .comparison-table thead th:first-child {
+            width: 108px !important;
+            min-width: 108px !important;
+          }
+          .comparison-table thead th:not(:first-child) {
+            min-width: 168px !important;
+          }
+          .comparison-table .provider-name {
+            font-size: 12px !important;
+            word-break: break-word;
+          }
+          .comparison-table .provider-test-name {
+            font-size: 11px !important;
+          }
+        }
+        .comparison-table .provider-name,
+        .comparison-table .provider-test-name {
+          overflow-wrap: anywhere;
+          word-break: break-word;
+        }
+      `}</style>
 
       <div
         style={{
