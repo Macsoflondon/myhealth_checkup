@@ -162,56 +162,70 @@ const Header = ({ className }: HeaderProps) => {
   );
   return (
     <ErrorBoundary>
-      {/* Promo ticker — collapses when search docks */}
+      {/* Promo ticker — slides upward with scroll */}
       <div
         ref={promoTrackerRef}
-        className={cn("sticky top-0 z-50 overflow-hidden transition-[max-height,opacity] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none", className)}
+        className={cn("sticky top-0 z-50 overflow-hidden motion-reduce:transition-none", className)}
         style={{
-          maxHeight: isSearchDocked ? 0 : 200,
-          opacity: isSearchDocked ? 0 : 1,
+          maxHeight: lerp(tickerHeight || 200, 0, collapseProgress),
+          opacity: 1 - collapseProgress,
+          transform: `translateY(${-collapseProgress * (tickerHeight || 0)}px)`,
+          willChange: "transform, opacity, max-height",
+          pointerEvents: collapseProgress > 0.9 ? "none" : "auto",
         }}
         aria-hidden={isSearchDocked}
       >
         <PromoTicker />
       </div>
 
-      {/* Logo section — sticks at top when search docks */}
+      {/* Logo section — shrinks continuously as user scrolls */}
       <header
         ref={logoBarRef}
         className={cn(
           className,
-          "sticky z-[60] transition-[top] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-          isSearchDocked && "shadow-lg"
+          "sticky top-0 z-[60] motion-reduce:transition-none"
         )}
-        style={{ top: isSearchDocked ? 0 : tickerHeight }}
+        style={{
+          boxShadow: `0 4px 20px rgba(0,0,0,${collapseProgress * 0.12})`,
+          willChange: "padding",
+        }}
       >
         <div style={{ backgroundColor: "#ffffff" }}>
           <div className="px-3 md:px-4 lg:px-8 xl:px-12">
             <div
-              className={cn(
-                "relative flex items-center justify-center transition-[padding] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-                isSearchDocked ? "py-0 md:py-2" : "py-2 md:py-4 lg:py-6"
-              )}
+              className="relative flex items-center justify-center"
+              style={{
+                paddingTop: `${lerp(24, 2, collapseProgress)}px`,
+                paddingBottom: `${lerp(24, 2, collapseProgress)}px`,
+              }}
             >
-              {/* Center: Combined logo + tagline */}
-              {!isSearchDocked && (
-                <Link
-                  to="/"
-                  className="flex items-center flex-shrink-0 min-w-0 transform-gpu scale-105 hover:scale-110 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform motion-reduce:transition-none motion-reduce:hover:scale-105"
-                  style={{ transformOrigin: "center center" }}
-                >
-                  <img
-                    src={fullLogo.url}
-                    alt="myhealth checkup — Your health! Your choice! One trusted platform!"
-                    className="w-auto object-contain flex-shrink-0 h-24 md:h-28 lg:h-32 xl:h-36 max-w-[90vw]"
-                  />
-                </Link>
-              )}
-
+              {/* Center: Combined logo + tagline (cross-fades with search) */}
+              <Link
+                to="/"
+                className="flex items-center flex-shrink-0 min-w-0 transform-gpu hover:scale-105 will-change-transform motion-reduce:hover:scale-100"
+                style={{
+                  transformOrigin: "center center",
+                  opacity: 1 - Math.min(1, collapseProgress / 0.6),
+                  pointerEvents: isSearchDocked ? "none" : "auto",
+                  position: isSearchDocked ? "absolute" : "relative",
+                }}
+                aria-hidden={isSearchDocked}
+                tabIndex={isSearchDocked ? -1 : 0}
+              >
+                <img
+                  src={fullLogo.url}
+                  alt="myhealth checkup — Your health! Your choice! One trusted platform!"
+                  className="w-auto object-contain flex-shrink-0 max-w-[90vw]"
+                  style={{ height: `${lerp(128, 48, collapseProgress)}px` }}
+                />
+              </Link>
 
               {/* Center: docked search */}
               {isSearchDocked && (
-                <div className="relative w-full max-w-[640px]">
+                <div
+                  className="relative w-full max-w-[640px]"
+                  style={{ opacity: Math.min(1, (collapseProgress - 0.6) / 0.4) }}
+                >
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#081129]/70 w-4 h-4 md:w-5 md:h-5" />
                   <input
                     type="text"
@@ -239,27 +253,22 @@ const Header = ({ className }: HeaderProps) => {
       </header>
 
 
-      {/* Toolbar sticks below the logo bar */}
+      {/* Toolbar sticks directly below the (shrinking) logo bar */}
       <div
-        className="sticky z-40 transition-[top] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none"
-        style={{ top: (isSearchDocked ? 0 : tickerHeight) + logoBarHeight }}
+        className="sticky z-40 motion-reduce:transition-none"
+        style={{ top: logoBarHeight }}
       >
-        {/* Divider removed */}
-
         <div
-          className={cn(
-            toolbarClasses,
-            "transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none",
-            isToolbarSticky && "shadow-lg",
-          )}
-          style={{ overflow: "visible" }}
+          className={cn(toolbarClasses, "motion-reduce:transition-none")}
+          style={{
+            overflow: "visible",
+            boxShadow: `0 4px 30px rgba(0,0,0,${0.2 + collapseProgress * 0.15})`,
+          }}
         >
           <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: "visible" }}>
             <NavigationItems className="flex items-center gap-0 flex-nowrap justify-center" />
           </div>
         </div>
-        {/* Divider removed */}
-
       </div>
     </ErrorBoundary>
   );
