@@ -31,11 +31,9 @@ const Header = ({ className }: HeaderProps) => {
   const [tickerHeight, setTickerHeight] = useState(0);
   const [logoBarHeight, setLogoBarHeight] = useState(0);
   const [collapseProgress, setCollapseProgress] = useState(0);
-  const [dockedSearchTerm, setDockedSearchTerm] = useState("");
   const logoBarRef = useRef<HTMLElement>(null);
   const promoTrackerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
 
   // Continuous scroll-driven collapse progress (desktop/tablet only).
@@ -72,11 +70,7 @@ const Header = ({ className }: HeaderProps) => {
   const isSearchDocked = collapseProgress > 0.6;
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-  const handleDockedSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && dockedSearchTerm.trim()) {
-      navigate(`/compare?search=${encodeURIComponent(dockedSearchTerm.trim())}`);
-    }
-  };
+
 
 
   const toggleMenu = useCallback(() => {
