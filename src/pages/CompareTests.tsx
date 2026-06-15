@@ -259,10 +259,9 @@ const CompareTests = () => {
                   variant="outline"
                   size="sm"
                   onClick={handleClearAll}
-                  className="font-['DM_Sans'] gap-1.5 border-destructive text-destructive hover:bg-destructive/10"
+                  className="font-['DM_Sans'] font-semibold border-brand-turquoise text-brand-navy bg-white hover:bg-brand-turquoise/10"
                 >
-                  <X size={14} />
-                  Clear&nbsp;
+                  Clear
                 </Button>
               </div>
             </section>
