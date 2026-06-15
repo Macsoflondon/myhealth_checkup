@@ -333,7 +333,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                             opacity: 0.85,
                           }}
                         >
-                          {test.name}
+                          {test.name.replace(/\s*\(\d+\s+Biomarkers?\)\s*$/i, "")}
                         </div>
                         <div
                           className="mt-2"
