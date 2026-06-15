@@ -314,6 +314,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                       </div>
                       <div className="min-w-0 flex-1">
                         <div
+                          className="provider-name"
                           style={{
                             fontFamily: "'Montserrat', sans-serif",
                             fontWeight: 600,
@@ -324,7 +325,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                           {test.provider}
                         </div>
                         <div
-                          className="line-clamp-2 mt-0.5"
+                          className="provider-test-name line-clamp-2 mt-0.5"
                           style={{
                             fontFamily: "'DM Sans', system-ui, sans-serif",
                             fontSize: 12,
