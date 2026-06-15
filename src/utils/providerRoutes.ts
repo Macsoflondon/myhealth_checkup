@@ -17,6 +17,7 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   'goodbody': '/goodbody-clinic', // Alias
   'lola-health': '/lola-health',
   'london-medical-laboratory': '/london-medical-laboratory',
+  'london-health-company': '/london-health-company',
   'medichecks': '/medichecks',
   'randox': '/randox',
   'randox-health': '/randox', // Alias
@@ -30,7 +31,8 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   'goodbody-clinic': 'GOODBODY',
   'goodbody': 'GOODBODY',
   'lola-health': 'Lola Health',
-  'london-medical-laboratory': 'London Health Company',
+  'london-medical-laboratory': 'London Medical Laboratory',
+  'london-health-company': 'London Health Company',
   'medichecks': 'Medichecks',
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',

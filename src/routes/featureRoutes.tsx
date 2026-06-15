@@ -22,6 +22,7 @@ const SymptomDetailPage = lazy(() => import("@/pages/SymptomDetailPage"));
 const GoalDetailPage = lazy(() => import("@/pages/GoalDetailPage"));
 const ClinilabsPage = lazy(() => import("@/pages/ClinilabsPage"));
 const LondonMedicalLaboratoryPage = lazy(() => import("@/pages/LondonMedicalLaboratoryPage"));
+const LondonHealthCompanyPage = lazy(() => import("@/pages/LondonHealthCompanyPage"));
 const MedicalDiagnosisPage = lazy(() => import("@/pages/MedicalDiagnosisPage"));
 
 export const featureRoutes = (
@@ -51,6 +52,7 @@ export const featureRoutes = (
     <Route path="/providers/london-medical-laboratory" element={<ProviderTestsCatalogPage providerId="london-medical-laboratory" />} />
     <Route path="/clinilabs" element={<ClinilabsPage />} />
     <Route path="/london-medical-laboratory" element={<LondonMedicalLaboratoryPage />} />
+    <Route path="/london-health-company" element={<LondonHealthCompanyPage />} />
     <Route path="/medical-diagnosis" element={<MedicalDiagnosisPage />} />
     <Route path="/blood-test-analysis" element={<BloodTestAnalysisPage />} />
   </>
