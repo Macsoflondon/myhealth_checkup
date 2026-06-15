@@ -170,23 +170,17 @@ const FeaturedProvidersGlass = () => {
             const canonical = getProviderRating(p.id);
             return (
               <article key={p.id} className="group relative">
-                {/* Animated border layer */}
+                {/* Always-visible coloured border layer */}
                 <div
-                  className="absolute -inset-[1px] rounded-[2.25rem] bg-gradient-to-br from-white/10 to-white/5 transition-all duration-500 group-hover:blur-[2px]"
+                  className="absolute -inset-[2px] rounded-[2.25rem] transition-all duration-500 group-hover:blur-[3px]"
                   style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(${p.glowRgb},0.6), rgba(${p.glowRgb},0.15))`,
-                    opacity: 0.15,
-                  }}
-                />
-                <div
-                  className="absolute -inset-[1px] rounded-[2.25rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[2px]"
-                  style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(${p.glowRgb},0.65), rgba(${p.glowRgb},0.15))`,
+                    backgroundImage: `linear-gradient(135deg, rgba(${p.glowRgb},0.9), rgba(${p.glowRgb},0.45))`,
+                    opacity: 1,
                   }}
                 />
 
                 <div
-                  className="relative bg-white border border-[#e2e8f0] rounded-[2.25rem] p-7 md:p-8 h-full flex flex-col transition-all duration-700 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5"
+                  className="relative bg-white rounded-[2.15rem] p-7 md:p-8 h-full flex flex-col transition-all duration-700 hover:shadow-lg hover:-translate-y-0.5"
                   style={{
                     boxShadow: `0 0 0 0 rgba(${p.glowRgb},0)`,
                   }}
