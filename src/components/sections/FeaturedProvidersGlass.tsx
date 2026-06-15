@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
-import { getProviderRoute } from "@/utils/providerRoutes";
+import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 
