@@ -173,7 +173,7 @@ const Hero = () => {
                   </h1>
                   <p
                     key={`sub-${currentSlide}`}
-                    className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-white max-w-2xl mx-auto animate-fade-in font-medium drop-shadow-[0_2px_8px_rgba(8,17,41,0.85)]"
+                    className="mt-1 sm:mt-2 text-[2.5rem] sm:text-[3.75rem] md:text-[4.5rem] leading-[1.05] text-white max-w-4xl mx-auto animate-fade-in font-bold font-sans lg:text-6xl xl:text-7xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)]"
                   >
                     {slide.subline}
                   </p>
