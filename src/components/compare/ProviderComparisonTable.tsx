@@ -178,12 +178,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
           fontSize: 13,
         }}
       >
-        {providerCount === 0 ? (
-          <>Select a test above to begin comparing providers side by side.</>
-        ) : (
+        {providerCount > 0 && (
           <>
-            Comparing {providerCount} provider{providerCount === 1 ? "" : "s"} across {testCount} test
-            {testCount === 1 ? "" : "s"}. Prices shown are current at time of listing. Always confirm
+            Prices shown are current at time of listing. Always confirm
             directly with the provider before booking.
           </>
         )}
