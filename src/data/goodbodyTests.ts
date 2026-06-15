@@ -554,7 +554,7 @@ export const goodbodyTests: GoodbodyTest[] = [
   {
     id: 'Goodbody208',
     name: 'Guardant Reveal™',
-    price: 1499,
+    price: 4320,
     description: 'Advanced blood test for cancer recurrence monitoring and treatment response assessment. Detects minimal residual disease and circulating tumour DNA.',
     biomarkers: 18,
     turnaround: '2-3 weeks',

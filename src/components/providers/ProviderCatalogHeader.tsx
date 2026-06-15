@@ -73,7 +73,7 @@ const ProviderCatalogHeader = ({
           </div>
           <div className="flex gap-3">
             <Button asChild variant="outline" className="text-white border-white/30 hover:bg-white/10">
-              <Link to="/providers">
+              <Link to="/trusted-providers">
                 ← All Providers
               </Link>
             </Button>

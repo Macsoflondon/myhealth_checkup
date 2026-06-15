@@ -76,7 +76,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
         a: "Both are accepted by UKAS-accredited laboratories. Venous samples are generally preferred when accuracy is critical or when multiple hormones are tested together.",
       },
     ],
-    compareHref: "/tests/hormones",
+    compareHref: "/hormones",
     category: "Hormones",
   },
   {
@@ -159,7 +159,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
         a: "Sustained high cortisol is associated with central weight gain, but many other factors are involved. A test is a starting point, not a diagnosis.",
       },
     ],
-    compareHref: "/tests/hormones",
+    compareHref: "/hormones",
     category: "Hormones",
   },
   {
@@ -311,7 +311,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
         a: "Most LFT panels do not require fasting, but if cholesterol or glucose is included on the same panel, a 10–12 hour fast is usually recommended.",
       },
     ],
-    compareHref: "/tests/liver",
+    compareHref: "/compare?category=liver",
     category: "Organ Health",
   },
   {
@@ -349,7 +349,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
         a: "Yes — mild dehydration can raise creatinine and urea temporarily. Test when normally hydrated for the most representative result.",
       },
     ],
-    compareHref: "/tests/kidney-health",
+    compareHref: "/compare?category=kidney",
     category: "Organ Health",
   },
   {
@@ -424,7 +424,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
         a: "Yes — a low-titre positive ANA is found in a small proportion of healthy adults. The result needs interpretation in clinical context.",
       },
     ],
-    compareHref: "/tests/general-health",
+    compareHref: "/test/general-health",
     category: "Inflammation & Immunity",
   },
   {
@@ -462,7 +462,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
         a: "Most providers will send a replacement kit free of charge if the lab can't process your sample due to insufficient volume or haemolysis.",
       },
     ],
-    compareHref: "/tests/at-home-tests",
+    compareHref: "/at-home-tests",
     category: "General",
   },
   {
