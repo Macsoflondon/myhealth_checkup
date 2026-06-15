@@ -43,21 +43,21 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
 
 /**
  * Canonical profile page route per provider.
- * Ensures every provider has exactly ONE profile destination
- * (no duplicate /provider/:id vs dedicated-page mix-ups).
+ * Every provider renders the same /provider/:id layout (ProviderProfilePage)
+ * to keep the experience identical across the catalogue.
  */
 export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
   'medichecks': '/provider/medichecks',
-  'goodbody': '/goodbody-clinic',
-  'goodbody-clinic': '/goodbody-clinic',
+  'goodbody': '/provider/goodbody-clinic',
+  'goodbody-clinic': '/provider/goodbody-clinic',
   'thriva': '/provider/thriva',
   'randox': '/provider/randox-health',
   'randox-health': '/provider/randox-health',
   'lola-health': '/provider/lola-health',
-  'london-medical-laboratory': '/london-medical-laboratory',
-  'london-health-company': '/london-health-company',
-  'clinilabs': '/clinilabs',
-  'medical-diagnosis': '/medical-diagnosis',
+  'london-medical-laboratory': '/provider/london-medical-laboratory',
+  'london-health-company': '/provider/london-health-company',
+  'clinilabs': '/provider/clinilabs',
+  'medical-diagnosis': '/provider/medical-diagnosis',
 };
 
 export function getProviderProfileRoute(providerId: string): string {
