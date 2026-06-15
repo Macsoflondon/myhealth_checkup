@@ -223,6 +223,12 @@ const Index = () => {
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
+          <ScrollFadeIn variant="rise" delay={100}>
+            <ProviderComparisonTable />
+          </ScrollFadeIn>
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
           <SectionReveal delay={0.1}>
             <PartnerShowcaseGrid />
           </SectionReveal>
@@ -232,16 +238,6 @@ const Index = () => {
           <SectionReveal>
             <TestimonialCarousel />
           </SectionReveal>
-        </Suspense>
-
-
-
-
-
-        <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise" delay={100}>
-            <ProviderComparisonTable />
-          </ScrollFadeIn>
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
