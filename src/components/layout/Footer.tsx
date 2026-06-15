@@ -19,13 +19,10 @@ const Footer = () => {
 
   const companyLinks = [
     { name: t("footer.links.aboutUs"), link: "/about" },
-    { name: t("footer.links.howItWorks"), link: "/how-it-works" },
     { name: "Our Providers", link: "/providers" },
     { name: t("footer.links.faqs"), link: "/faqs" },
     { name: "Health Resource Hub", link: "/blog" },
-    { name: "Test Categories", link: "/test-categories" },
     { name: t("footer.links.contact"), link: "/contact" },
-    { name: "Feedback & Complaints", link: "/complaints" },
     { name: "Legal Hub", link: "/legal" },
   ];
 
