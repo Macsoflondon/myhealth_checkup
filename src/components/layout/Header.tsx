@@ -86,14 +86,6 @@ const Header = ({ className }: HeaderProps) => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsToolbarSticky(window.scrollY > 120);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Measure ticker height for sticky toolbar offset (desktop only)
   useEffect(() => {
