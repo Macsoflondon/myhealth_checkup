@@ -259,22 +259,25 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     <div className="flex items-start gap-3">
                       <div
                         className="rounded-lg flex-shrink-0 flex items-center justify-center"
-                        style={{ background: "#ffffff", width: 40, height: 40, padding: 4 }}
+                        style={{ background: "#ffffff", width: 48, height: 48, padding: 5 }}
                       >
-                        {test.providerLogo ? (
-                          <img
-                            src={test.providerLogo}
-                            alt={`${test.provider} logo`}
-                            className="max-w-full max-h-full object-contain"
-                          />
-                        ) : (
-                          <span
-                            className="font-montserrat font-bold text-xs"
-                            style={{ color: NAVY }}
-                          >
-                            {test.provider.slice(0, 2).toUpperCase()}
-                          </span>
-                        )}
+                        {(() => {
+                          const logo = resolveLogo(test);
+                          return logo ? (
+                            <img
+                              src={logo}
+                              alt={`${test.provider} logo`}
+                              className="max-w-full max-h-full object-contain"
+                            />
+                          ) : (
+                            <span
+                              className="font-montserrat font-bold text-xs"
+                              style={{ color: NAVY }}
+                            >
+                              {test.provider.slice(0, 2).toUpperCase()}
+                            </span>
+                          );
+                        })()}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div
