@@ -166,25 +166,6 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
 
   return (
     <div className="w-full">
-      <div
-        className="mb-4"
-        style={{
-          background: "#f0f4fa",
-          borderLeft: `4px solid ${TURQUOISE}`,
-          padding: "12px 16px",
-          color: "#475569",
-          borderRadius: 6,
-          fontFamily: "'DM Sans', system-ui, sans-serif",
-          fontSize: 13,
-        }}
-      >
-        {providerCount > 0 && (
-          <>
-            Prices shown are current at time of listing. Always confirm
-            directly with the provider before booking.
-          </>
-        )}
-      </div>
 
       <div
         style={{

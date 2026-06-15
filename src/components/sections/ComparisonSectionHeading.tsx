@@ -15,11 +15,11 @@ const ComparisonSectionHeading = ({
         <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-[#e70d69]">
           Side-by-Side
         </span>
-        <div className="mt-2 text-xl sm:text-2xl font-bold text-[#081129]">
+        <div className="mt-2 text-xl sm:text-2xl font-bold text-white">
           Provider comparison — full picture.
         </div>
       </div>
-      <p className="mt-6 text-base sm:text-lg text-[#081129]/65 leading-relaxed">
+      <p className="mt-6 text-base sm:text-lg text-white/70 leading-relaxed">
         A quick-glance comparison of key provider attributes for a standard full blood count test.
         Prices are indicative — always verify directly with the provider before booking.
       </p>
