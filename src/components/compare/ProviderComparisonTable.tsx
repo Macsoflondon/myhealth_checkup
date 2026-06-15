@@ -1,6 +1,28 @@
 import React, { useMemo } from "react";
 import { CheckCircle, Plus, Home, Building2 } from "lucide-react";
 import type { CompareTestData } from "@/types";
+import { PROVIDER_LOGOS } from "@/constants/providers";
+
+const PROVIDER_NAME_TO_ID: Record<string, string> = {
+  "medichecks": "medichecks",
+  "thriva": "thriva",
+  "randox": "randox",
+  "randox health": "randox",
+  "london medical laboratory": "london-medical-laboratory",
+  "london health company": "london-health-company",
+  "lola health": "lola-health",
+  "goodbody": "goodbody-clinic",
+  "goodbody clinic": "goodbody-clinic",
+  "clinilabs": "clinilabs",
+  "medical diagnosis": "medical-diagnosis",
+};
+
+const resolveLogo = (test: CompareTestData): string | undefined => {
+  if (test.providerLogo) return test.providerLogo;
+  const key = (test.provider || "").toLowerCase().trim();
+  const id = PROVIDER_NAME_TO_ID[key];
+  return id ? PROVIDER_LOGOS[id] : undefined;
+};
 
 interface ProviderComparisonTableProps {
   tests: CompareTestData[];
@@ -237,22 +259,25 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     <div className="flex items-start gap-3">
                       <div
                         className="rounded-lg flex-shrink-0 flex items-center justify-center"
-                        style={{ background: "#ffffff", width: 40, height: 40, padding: 4 }}
+                        style={{ background: "#ffffff", width: 48, height: 48, padding: 5 }}
                       >
-                        {test.providerLogo ? (
-                          <img
-                            src={test.providerLogo}
-                            alt={`${test.provider} logo`}
-                            className="max-w-full max-h-full object-contain"
-                          />
-                        ) : (
-                          <span
-                            className="font-montserrat font-bold text-xs"
-                            style={{ color: NAVY }}
-                          >
-                            {test.provider.slice(0, 2).toUpperCase()}
-                          </span>
-                        )}
+                        {(() => {
+                          const logo = resolveLogo(test);
+                          return logo ? (
+                            <img
+                              src={logo}
+                              alt={`${test.provider} logo`}
+                              className="max-w-full max-h-full object-contain"
+                            />
+                          ) : (
+                            <span
+                              className="font-montserrat font-bold text-xs"
+                              style={{ color: NAVY }}
+                            >
+                              {test.provider.slice(0, 2).toUpperCase()}
+                            </span>
+                          );
+                        })()}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div
