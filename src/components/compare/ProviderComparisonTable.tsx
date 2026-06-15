@@ -352,8 +352,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                             style={{
                               fontFamily: "'DM Sans', system-ui, sans-serif",
                               fontSize: 11,
-                              color: MUTED,
-                              opacity: 0.6,
+                              color: "rgba(255,255,255,0.65)",
                               marginTop: 4,
                             }}
                           >
