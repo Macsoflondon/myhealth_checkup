@@ -1,63 +1,64 @@
-## Goal
+# Homepage Polish Plan
 
-1. Restyle the three CTA buttons at the bottom of the test detail modal (`ProviderTestDetailModal`) to match the site-wide CTA style — turquoise (#22c0d4) with pink (#e70d69) hover, white text, rounded, no per-provider brand colour on the buttons.
-2. Make **every** test card across the site open this detail modal first when clicked. Inside the modal the user can then Book, Compare, or go Back.
+Grouped into 8 tracks. I'll batch related edits.
 
-## Scope of changes
+## 1. Top navigation (Navbar)
+- Increase nav link / button font size by 2 steps (e.g. `text-sm` → `text-base`, `text-base` → `text-lg`).
+- Smooth sticky transition: animate background, blur, padding, shadow with `transition-all duration-500 ease-out` based on scroll Y, rather than the current abrupt class swap. Cross-fade between transparent and glass state.
 
-### 1. `src/components/providers/ProviderTestDetailModal.tsx`
+## 2. Hero headline
+- "Your health is your greatest asset. It deserves clarity, not confusion." — on desktop (lg+) drop font size enough to fit on **one line** (likely `lg:text-4xl` or `lg:text-[2rem]` with `lg:whitespace-nowrap`). Mobile/tablet unchanged.
 
-Replace the CTA button block (lines ~349–412) so all three buttons use the standardised platform style:
+## 3. "Take control of your health today" section
+- Convert to a horizontal side-by-side: text block on the left, CTA buttons on the right (`lg:flex lg:items-center lg:justify-between`).
+- Move this block to sit **above** the Live Comparison section.
+- In its previous vertical slot (next to Live Comparison), insert a new **video** element:
+  - Generate with `videogen--generate_video` (1080p, ~5s, 16:9) — prompt: realistic HD shot of a branded test-kit package dropping through a UK letterbox, hands picking it up, opening the box to reveal a blood-test kit inside.
+  - Save to `src/assets/letterbox-kit.mp4`, embed via `<video autoPlay muted loop playsInline>`.
 
-- **Book test** → solid `bg-[#22c0d4] hover:bg-[#e70d69] text-white` rounded-xl, opens `test.url` in new tab (unchanged behaviour). Disabled state keeps the same colour scheme but at reduced opacity when no URL.
-- **+ Compare / In compare** → solid `bg-[#e70d69] hover:bg-[#22c0d4] text-white` rounded-xl (mirror of Book — the two main CTAs form the turquoise↔pink pair already used in `CallToAction.tsx` and `StartJourneySection`). Keeps the toggle logic + navigate to `/compare?openCompare=1`.
-- **← Back** → ghost / outline style with navy text on white, `border-[#081129]/15 hover:bg-[#081129]/5`, simply closes the modal.
+## 4. Live Comparison data fixes
+Edit `src/hooks/useLiveComparisonPanel.ts` (and/or underlying data source):
+- **Lola Health**: add in-clinic price/method (verify price).
+- **Randox**: add at-home kit option alongside in-clinic.
+- **Goodbody**: add at-home kit option alongside in-clinic.
+- **London Medical Laboratory**: in-clinic only (keep as-is, remove home if present).
 
-Remove `style={{ backgroundColor: brandColor }}` from these buttons. Brand colour stays everywhere else in the modal (header bar, accreditation pills, provider avatar).
+Note: I'll need to read the file to confirm structure; will use the existing provider rows and extend collection methods/prices.
 
-### 2. `src/pages/CompareTests.tsx` — wire modal into the `/compare` cards
+## 5. Partner of the Month — Goodbody logo
+- Increase logo fill inside the existing white container (no container resize). Change `object-contain` padding / max-height so the logo + tagline reach closer to the card edges, matching the attached screenshot.
 
-In `renderCard` (lines 88–112), add a `testDetails={…}` prop on `UnifiedTestCard` built from the `CompareTestData`, mirroring the mapping used in `MostPopularTestsSection.tsx` lines 79–93:
+## 6. "What We Compare" CTA routing
+On the three boxes (Explore Tests / Explore Screening / Explore Tests):
+- **Blood test panel / general wellness** → `/tests/general-health` (general wellness landing).
+- **Private cancer screening** → `/cancer-screening`.
+- **Wellness & Longevity** → `/wellness` (or relevant test-categories filter).
+Currently all three route to the comparison page — fix the `to`/`href` props.
 
-```ts
-testDetails={{
-  id: test.id,
-  provider_id: test.provider.toLowerCase().replace(/\s+/g, "-"),
-  test_name: test.name,
-  description: test.description ?? null,
-  price: test.price ?? null,
-  category: test.category ?? null,
-  sample_type: test.features?.collection ?? null,
-  biomarker_count: test.biomarkerCount ?? null,
-  url: test.url ?? null,
-  biomarkers_list: null,
-  turnaround_days_text: test.features?.turnaround ?? null,
-  base_price: null,
-  collection_options: null,
-}}
-```
+## 7. "Side by Side / Full Picture" section
+- Keep the header + intro copy.
+- **Remove the provider comparison table** rendered beneath it.
 
-Remove `onCtaClick={() => handleToggleSelect(test)}` so the card click opens the modal (default behaviour in `UnifiedTestCard` when `testDetails` is present). Compare toggling now happens inside the modal via its **+ Compare** button. The card-level "Selected ✓" visual state stays via `compareSelected={selected}`.
+## 8. Footer restructure
+- **Health Tests column**: append a divider then a "Follow Us" row with the Instagram / Facebook / TikTok social icons.
+- **Company column**: append a divider then the compliance badges (ICO, Companies House, Cyber Essentials).
+- **Connect column**: replace its contents with the **Stay Informed** newsletter block (currently elsewhere on the page). Move "Stay Informed" out of its current location into this footer slot.
+- Remove now-empty old Stay Informed section.
 
-### 3. `src/components/category/CategoryPageLayout.tsx` — wire modal into category grid cards
+## Technical notes
+- Files I expect to touch:
+  - `src/components/layout/Navbar.tsx` (font size + sticky transition)
+  - Hero component on `Index.tsx` (likely `src/components/sections/Hero*`)
+  - `src/components/sections/FeaturedProvidersGlass.tsx` (logo fill)
+  - `src/components/sections/` — Take Control / Live Comparison / What We Compare / Side-by-Side / Stay Informed (need to identify exact filenames on first read)
+  - `src/hooks/useLiveComparisonPanel.ts` (provider methods/prices)
+  - `src/components/layout/Footer.tsx` (column reshuffle)
+  - `src/pages/Index.tsx` (section reorder)
+- New asset: `src/assets/letterbox-kit.mp4` via videogen.
 
-In the grid map (lines 246–269), add the same `testDetails` mapping, sourced from each `test` row (uses fields `test.id`, `test.provider`, `test.title`, `test.desc`, `test.price`/`priceNum`, `test.biomarkerCount`, `test.biomarkers`, `test.turnaround`, `test.collection`, `test.url`, `test.tag`). Drop the direct `url` opening on CTA — clicking the card opens the modal, and the modal's **Book test** button then handles the external link.
+## Risks / confirmations
+- Generated video realism is variable — if first render looks off I'll regenerate once, otherwise keep.
+- Lola Health in-clinic price: I'll source from existing provider data if present; if missing I'll mark TBC rather than invent a number — please confirm if you have it.
+- "Wellness & Longevity" target route: confirm `/wellness` is correct, or should it be `/test-categories?cat=wellness`?
 
-`compareSelected` + `onCompareToggle` are kept so the in-card compare state still works for users who want to multi-select from the grid without opening the modal — but the primary click target now opens the modal first, matching the requested flow.
-
-### 4. No changes needed
-
-`MostPopularTestsSection.tsx` and `RecommendedTestsCarousel.tsx` already pass `testDetails` — they automatically pick up the new button styling from change #1.
-
-## Out of scope
-
-- No data, fetching, or business-logic changes.
-- No changes to card visual layout (only the modal's CTA row + click wiring).
-- No changes to provider branding colours used elsewhere in the modal.
-
-## Verification
-
-- Open `/compare`: click any card → modal opens with new turquoise/pink buttons. **+ Compare** adds the test and routes to comparison. **Book test** opens provider site in new tab. **← Back** closes modal.
-- Open a category page (e.g. `/wellness`): same behaviour.
-- Open the homepage Most Popular section: cards already opened the modal — confirm buttons now use the new colour scheme.
-- `bun run build` passes clean.
+Ready to switch to build mode and execute in the order above (data + layout first, video render last since it's the slowest).

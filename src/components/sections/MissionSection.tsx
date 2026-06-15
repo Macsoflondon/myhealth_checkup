@@ -25,7 +25,7 @@ const MissionSection = () => {
         
         <div className="bg-brand-navy py-3 sm:py-4 md:py-5 lg:py-6">
           <div className="container mx-auto px-3 sm:px-4">
-            <h2 className="text-center text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-bold">
+            <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl lg:whitespace-nowrap font-heading font-bold">
               <span className="text-white">Your </span>
               <span className="text-brand-turquoise">health</span>
               <span className="text-white"> is your greatest </span>

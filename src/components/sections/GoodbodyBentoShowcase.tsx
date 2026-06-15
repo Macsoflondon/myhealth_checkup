@@ -65,12 +65,12 @@ const GoodbodyBentoShowcase = () => {
       {/* Mobile layout (<sm) */}
       <div className="grid grid-cols-2 gap-3 sm:hidden">
         {/* Row 1: Logo spans 2 cols */}
-        <div className="col-span-2 aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-6">
+        <div className="col-span-2 aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-1.5">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="max-h-full max-w-full w-auto h-auto object-contain"
+            className="w-full h-full object-contain"
           />
         </div>
 
@@ -145,12 +145,12 @@ const GoodbodyBentoShowcase = () => {
         <div className="aspect-square">
           <KitTile src={KIT.advancedWellMan} alt="Advanced Well Man Blood Test" label="Advanced Well Man" href="/tests/mens-health" />
         </div>
-        <div className="aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-4 sm:p-6 col-span-2">
+        <div className="aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-2 sm:p-2.5 col-span-2">
           <img
             src={GOODBODY_LOGO}
             alt="GOODBODY"
             loading="lazy"
-            className="max-h-full max-w-full w-auto h-auto object-contain"
+            className="w-full h-full object-contain"
           />
         </div>
         <div className="aspect-square">
