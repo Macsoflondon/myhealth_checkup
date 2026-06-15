@@ -64,7 +64,7 @@ const heroSlides: Array<{
     },
   },
   {
-    image: heroResults.url,
+    image: heroResults,
     headline: "Your Results.\nWherever You Are.",
     subline: "​",
     objectPosition: "center 40%",
