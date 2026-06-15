@@ -21,6 +21,8 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   'randox': '/randox',
   'randox-health': '/randox', // Alias
   'thriva': '/thriva',
+  'clinilabs': '/clinilabs',
+  'medical-diagnosis': '/medical-diagnosis',
 };
 
 // Provider display names
