@@ -109,13 +109,13 @@ const TestimonialCarousel = () => {
         {/* Section label */}
         <div className="flex items-center justify-center gap-3 mb-3">
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-          <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+          <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
             Trusted by users
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
         </div>
         
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-10 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-10 sm:mb-12">
           <span className="text-white">What people say about </span>
           <span className="text-brand-turquoise">myhealth checkup</span>
           <span className="text-white">.</span>

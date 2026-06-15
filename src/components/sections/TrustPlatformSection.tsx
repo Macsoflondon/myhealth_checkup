@@ -39,13 +39,13 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-            <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+            <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
               Why Trust Us
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
           </div>
 
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-heading font-bold mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight mb-3">
             <span className="text-white">Trusted Health </span>
             <span className="text-white">Comparison Platform</span>
           </h2>
