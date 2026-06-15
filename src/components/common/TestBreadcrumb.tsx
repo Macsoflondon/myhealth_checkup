@@ -25,7 +25,7 @@ const TestBreadcrumb = ({ providerName, testName }: TestBreadcrumbProps) => {
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link to="/compare">{"\n"}</Link>
+            <Link to="/compare">Compare Tests</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
