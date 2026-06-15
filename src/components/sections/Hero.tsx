@@ -63,6 +63,17 @@ const heroSlides: Array<{
       accent: "turquoise",
     },
   },
+  {
+    image: heroResults.url,
+    headline: "Your Results.\nWherever You Are.",
+    subline: "​",
+    objectPosition: "center 40%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/25",
+      surface: 70,
+      accent: "pink",
+    },
+  },
 ];
 
 // Tiny blurred LQIPs (32px WebP, ~150B) for the first slide — render instantly so users
