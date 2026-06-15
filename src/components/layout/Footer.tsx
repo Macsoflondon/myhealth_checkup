@@ -5,16 +5,6 @@ import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp"
 
 
 const Footer = () => {
-  const { t } = useTranslation();
-
-  const healthTestLinks = [
-    { name: t("footer.links.mensHealth"), link: "/tests/mens-health" },
-    { name: t("footer.links.womensHealth"), link: "/tests/womens-health" },
-    { name: t("footer.links.heartHealth"), link: "/tests/heart" },
-    { name: t("footer.links.diabetes"), link: "/tests/diabetes" },
-    { name: t("footer.links.thyroid"), link: "/thyroid" },
-    { name: t("footer.links.fertility"), link: "/fertility-tests" },
-  ];
 
 
   return (
