@@ -58,7 +58,7 @@ const TestCategoriesSection = () => {
             titleClassName="text-tertiary"
           />
           <p className="text-base font-semibold text-tertiary max-w-2xl mx-auto leading-snug mt-2 text-center">
-            Browse by category. Compare biomarkers, pricing, turnaround times, and accreditation in one place — with no promotional influence from any provider.
+            Browse by category. Compare biomarkers, pricing, turnaround times, all in one place!
           </p>
         </div>
 
