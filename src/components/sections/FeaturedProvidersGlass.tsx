@@ -274,14 +274,14 @@ const FeaturedProvidersGlass = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <Link
                         to={`/provider/${p.id.toLowerCase()}`}
-                        className="py-3 px-4 rounded-xl border border-white/10 text-white/70 text-xs font-semibold text-center hover:bg-white/5 hover:text-white transition-all"
+                        className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
                       >
                         View Profile
                       </Link>
                       <a
                         href={buildProviderWebsiteUrl(`https://${p.website}`, p.id)}
                         {...externalLinkProps}
-                        className="py-3 px-4 rounded-xl border border-white/10 text-white/70 text-xs font-semibold text-center hover:bg-white/5 hover:text-white transition-all"
+                        className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
                       >
                         Visit Site
                       </a>
