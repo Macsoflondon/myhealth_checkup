@@ -29,8 +29,8 @@ const PROVIDERS: ProviderEntry[] = [
       "Award-winning home and clinic blood testing with doctor-reviewed results and comprehensive health MOTs.",
     tags: ["Health MOTs", "Doctor Reviews", "UKAS Accredited"],
     website: "medichecks.com",
-    glow: "#22c0d4",
-    glowRgb: "34,192,212",
+    glow: "#e70d69",
+    glowRgb: "231,13,105",
   },
   {
     id: "goodbody",
@@ -41,8 +41,8 @@ const PROVIDERS: ProviderEntry[] = [
       "Comprehensive wellness profiles with GP follow-ups across a nationwide network of CQC-regulated clinics.",
     tags: ["GP Follow-ups", "CQC Regulated", "Nationwide"],
     website: "health.goodbodyclinic.com",
-    glow: "#22c0d4",
-    glowRgb: "34,192,212",
+    glow: "#009B8D",
+    glowRgb: "0,155,141",
   },
   {
     id: "thriva",
@@ -53,8 +53,8 @@ const PROVIDERS: ProviderEntry[] = [
       "Personalised home blood tests and a digital dashboard with doctor reviews to monitor your health over time.",
     tags: ["Home Testing", "Digital Dashboard", "GP Advice"],
     website: "thriva.co",
-    glow: "#e70d69",
-    glowRgb: "231,13,105",
+    glow: "#3D1152",
+    glowRgb: "61,17,82",
   },
   {
     id: "randox",
@@ -65,8 +65,8 @@ const PROVIDERS: ProviderEntry[] = [
       "Global diagnostics provider offering advanced health checks across UKAS-accredited and FDA-approved facilities.",
     tags: ["UKAS Accredited", "FDA Approved", "Advanced Diagnostics"],
     website: "randoxhealth.com",
-    glow: "#22c0d4",
-    glowRgb: "34,192,212",
+    glow: "#2D4BA0",
+    glowRgb: "45,75,160",
   },
   {
     id: "london-medical-laboratory",
@@ -77,8 +77,8 @@ const PROVIDERS: ProviderEntry[] = [
       "London-based private health testing and wellness services with accessible appointments and clinician-reviewed results.",
     tags: ["London Based", "Private Testing", "Wellness Screens"],
     website: "londonhealthcompany.co.uk",
-    glow: "#3b82f6",
-    glowRgb: "59,130,246",
+    glow: "#1565C0",
+    glowRgb: "21,101,192",
   },
   {
     id: "lola-health",
@@ -89,8 +89,8 @@ const PROVIDERS: ProviderEntry[] = [
       "Modern testing platform focused on women's health and wellness with a tailored, design-led experience.",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus"],
     website: "referrals.lolahealth.com/myhealthcheckup",
-    glow: "#e70d69",
-    glowRgb: "231,13,105",
+    glow: "#E8604C",
+    glowRgb: "232,96,76",
   },
   {
     id: "clinilabs",
@@ -101,8 +101,8 @@ const PROVIDERS: ProviderEntry[] = [
       "UKAS-accredited clinical laboratory delivering a wide range of diagnostic and health screening tests across the UK.",
     tags: ["UKAS Accredited", "Clinical Lab", "Diagnostics"],
     website: "clinilabs.co.uk",
-    glow: "#22c0d4",
-    glowRgb: "34,192,212",
+    glow: "#2E7D32",
+    glowRgb: "46,125,50",
   },
   {
     id: "london-health-company",
@@ -125,8 +125,8 @@ const PROVIDERS: ProviderEntry[] = [
       "Specialist diagnostics with typically fast turnaround blood testing and health screening across the UK.",
     tags: ["Fast Results", "Specialist Testing", "UK Wide"],
     website: "medical-diagnosis.co.uk",
-    glow: "#e70d69",
-    glowRgb: "231,13,105",
+    glow: "#E53935",
+    glowRgb: "229,57,53",
   },
 ];
 
@@ -212,7 +212,7 @@ const FeaturedProvidersGlass = () => {
                         <SaveProviderButton
                           isSaved={isProviderSaved(p.id)}
                           onToggle={() => toggleSaveProvider(p.id, p.displayName)}
-                          className="bg-transparent hover:bg-transparent text-[#e70d69] hover:text-[#e70d69] [&_svg]:fill-[#e70d69]"
+                          className="!bg-transparent hover:!bg-transparent !border-0 !shadow-none !ring-0 !p-0 !h-auto !w-auto text-[#e70d69] hover:text-[#e70d69] [&_svg]:fill-[#e70d69] [&_svg]:h-5 [&_svg]:w-5"
                         />
                       </div>
                     </div>
@@ -258,10 +258,10 @@ const FeaturedProvidersGlass = () => {
                   <div className="relative z-10 space-y-3 pt-8">
                     <Link
                       to={getProviderRoute(p.id)}
-                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95"
+                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110"
                       style={{
-                        background: `linear-gradient(90deg, #22c0d4, ${p.glow === "#22c0d4" ? "#e70d69" : p.glow})`,
-                        boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.35)`,
+                        background: `linear-gradient(135deg, ${p.glow}, rgba(${p.glowRgb}, 0.78))`,
+                        boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
                       }}
                     >
                       Browse Tests
