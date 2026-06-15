@@ -82,7 +82,7 @@ const PartnersGrid = () => {
           <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
             Accredited & Verified
           </span>
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
 
         <SectionHeading 

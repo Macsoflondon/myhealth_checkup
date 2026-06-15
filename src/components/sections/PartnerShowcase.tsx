@@ -30,7 +30,7 @@ export default function AsFeaturedIn({ providers = [] }: AsFeaturedInProps) {
           <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
             As Seen In
           </span>
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
         <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
           {allFeaturedIn.map((name: string) => (
