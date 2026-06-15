@@ -67,7 +67,7 @@ const Header = ({ className }: HeaderProps) => {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafId);
     };
-  }, [isMobile, location.pathname]);
+  }, [isMobile, location.pathname, logoBarHeight, tickerHeight]);
 
   const isSearchDocked = collapseProgress > 0.6;
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
