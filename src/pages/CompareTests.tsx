@@ -5,8 +5,6 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import MainLayout from "@/layouts/MainLayout";
 
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
-import { ComparisonBar } from "@/components/compare/ComparisonBar";
-import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import type { CompareTestData } from "@/services/CompareService";
@@ -271,19 +269,6 @@ const CompareTests = () => {
           </div>
         </MainLayout>
 
-        <ComparisonBar
-          selectedTests={selectedTests}
-          onRemoveTest={handleRemoveTest}
-          onCompare={handleOpenComparison}
-          onClearAll={handleClearAll}
-        />
-
-        <ComparisonPanel
-          tests={selectedTests}
-          isOpen={isComparisonOpen}
-          onClose={() => setIsComparisonOpen(false)}
-          onRemoveTest={handleRemoveTest}
-        />
       </div>
     </ErrorBoundary>
   );
