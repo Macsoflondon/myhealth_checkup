@@ -8,7 +8,7 @@ import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getBranding } from "@/data/providerBranding";
-import { getProviderRoute } from "@/utils/providerRoutes";
+import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 
