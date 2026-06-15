@@ -17,7 +17,7 @@ import {
 const HIDDEN_PREFIXES = ["/admin", "/auth", "/reset-password", "/dashboard", "/client-portal"];
 
 const SLUG_LABELS: Record<string, string> = {
-  compare: "Compare Tests",
+  compare: "\n",
   "compare-by-symptom": "By Symptom",
   "compare-by-goal": "By Goal",
   symptoms: "Symptoms",
