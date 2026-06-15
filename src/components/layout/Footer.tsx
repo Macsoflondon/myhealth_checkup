@@ -19,11 +19,7 @@ const Footer = () => {
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-brand-pink/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
-            <HealthTestsColumn links={healthTestLinks} />
-            <StayInformedColumn />
-          </div>
+          <StayInformedColumn />
 
           {/* ========== Brief Medical Disclaimer ========== */}
           <div
