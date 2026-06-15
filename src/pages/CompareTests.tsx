@@ -269,6 +269,17 @@ const CompareTests = () => {
                 </Button>
               </div>
               <ProviderComparisonTable tests={selectedTests} />
+              <div className="flex justify-end mt-6">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleClearAll}
+                  className="font-['DM_Sans'] gap-1.5 border-destructive text-destructive hover:bg-destructive/10"
+                >
+                  <X size={14} />
+                  Clear comparison
+                </Button>
+              </div>
             </section>
           </div>
         </MainLayout>
