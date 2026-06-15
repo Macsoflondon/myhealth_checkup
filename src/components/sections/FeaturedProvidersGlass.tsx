@@ -201,7 +201,7 @@ const FeaturedProvidersGlass = () => {
                     {/* Top row: logo + rating + save */}
                     <div className="flex justify-between items-start gap-3">
                       <div
-                        className="h-16 w-32 bg-white rounded-2xl flex items-center justify-center p-2.5 transition-all duration-500 ring-1 ring-white/10 group-hover:ring-white/30"
+                        className="h-16 w-32 bg-[#f8fafc] rounded-2xl flex items-center justify-center p-2.5 transition-all duration-500 ring-1 ring-[#e2e8f0] group-hover:ring-[#22c0d4]/30"
                       >
                         <ProviderLogo
                           provider={p.name}
