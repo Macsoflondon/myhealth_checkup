@@ -88,16 +88,6 @@ const TestCategoriesSection = () => {
                 }}
               />
 
-              {/* Count badge — top right */}
-              <span
-                className="absolute top-4 right-4 z-10 font-heading font-semibold text-xs tracking-wide text-white px-3 py-1.5 rounded-full"
-                style={{
-                  background: "rgba(8,17,41,0.72)",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                }}
-              >
-                {cat.count}
-              </span>
 
               {/* Card content — sits at bottom above overlay */}
               <div className="relative z-10 p-6 sm:p-7">
