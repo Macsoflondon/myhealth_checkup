@@ -43,15 +43,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ========== Copyright ========== */}
-      <div className="bg-brand-navy pb-4 pt-2">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs sm:text-sm text-brand-pink/80 font-sans">
-            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
-          </p>
-        </div>
-      </div>
-
       {/* ========== Pink Divider Line ========== */}
       <div className="h-[2px] bg-brand-pink" />
 
@@ -62,20 +53,7 @@ const Footer = () => {
             <div className="flex items-center gap-3">
               <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
                 <span className="text-white">my</span>
-                <span className="text-brand-turquoise text-primary-foreground">health</span>
-              </span>
-              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2 text-primary">
-                checkup
-              </span>
-            </div>
-            <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
-              Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
-              <span className="text-brand-pink">choice!</span> One{" "}
-              <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
-            </p>
-          </div>
-        </div>
-      </div>
+                <truncated due to context window limits
     </footer>
   );
 };
