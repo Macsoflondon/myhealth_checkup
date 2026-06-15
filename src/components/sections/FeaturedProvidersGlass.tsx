@@ -98,9 +98,9 @@ const PROVIDERS: ProviderEntry[] = [
     displayName: "Clinilabs",
     tagline: "Clinical Precision, Trusted Results",
     description:
-      "Professional clinical laboratory services covering a wide range of diagnostic and health screening tests.",
-    tags: ["Clinical Lab", "Diagnostic Testing", "Accredited"],
-    website: "clinilabs.com",
+      "UKAS-accredited clinical laboratory delivering a wide range of diagnostic and health screening tests across the UK.",
+    tags: ["UKAS Accredited", "Clinical Lab", "Diagnostics"],
+    website: "clinilabs.co.uk",
     glow: "#22c0d4",
     glowRgb: "34,192,212",
   },
