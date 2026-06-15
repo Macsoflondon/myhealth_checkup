@@ -1,4 +1,4 @@
-import { BookOpen, HelpCircle, MessageCircle } from "lucide-react";
+import { BookOpen, HelpCircle, MessageCircle, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 
