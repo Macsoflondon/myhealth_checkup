@@ -22,8 +22,7 @@ const ComparisonSectionHeading = ({
         </h2>
       </div>
       <p className="mt-6 text-base sm:text-lg text-[#081129]/70 leading-relaxed">
-        A quick-glance comparison of key provider attributes for a standard full blood count test.
-        Prices are indicative — always verify directly with the provider before booking.
+        {"\n"}
       </p>
     </div>
   </div>
