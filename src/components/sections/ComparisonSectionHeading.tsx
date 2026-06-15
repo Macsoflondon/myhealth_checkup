@@ -12,8 +12,10 @@ const ComparisonSectionHeading = ({
   <div className={className}>
     <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
       <div className="flex flex-col items-center justify-center mb-4">
-        <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-[#e70d69]">
-          Side-by-Side
+        <span className="inline-flex items-center gap-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-[#e70d69] whitespace-nowrap">
+          <span aria-hidden="true" className="inline-block h-px w-6 sm:w-8 bg-[#e70d69]/60" />
+          <span>Side-by-Side</span>
+          <span aria-hidden="true" className="inline-block h-px w-6 sm:w-8 bg-[#e70d69]/60" />
         </span>
         <div className="mt-2 text-xl sm:text-2xl font-bold text-white">
           Provider comparison — full picture.
