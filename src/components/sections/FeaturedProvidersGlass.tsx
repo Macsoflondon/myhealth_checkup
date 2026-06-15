@@ -186,7 +186,7 @@ const FeaturedProvidersGlass = () => {
                 />
 
                 <div
-                  className="relative bg-[#0b1a36]/90 backdrop-blur-3xl rounded-[2.25rem] p-7 md:p-8 h-full flex flex-col transition-all duration-700 group-hover:bg-[#0b1a36]/60"
+                  className="relative bg-white border border-[#e2e8f0] rounded-[2.25rem] p-7 md:p-8 h-full flex flex-col transition-all duration-700 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5"
                   style={{
                     boxShadow: `0 0 0 0 rgba(${p.glowRgb},0)`,
                   }}
@@ -201,7 +201,7 @@ const FeaturedProvidersGlass = () => {
                     {/* Top row: logo + rating + save */}
                     <div className="flex justify-between items-start gap-3">
                       <div
-                        className="h-16 w-32 bg-white rounded-2xl flex items-center justify-center p-2.5 transition-all duration-500 ring-1 ring-white/10 group-hover:ring-white/30"
+                        className="h-16 w-32 bg-[#f8fafc] rounded-2xl flex items-center justify-center p-2.5 transition-all duration-500 ring-1 ring-[#e2e8f0] group-hover:ring-[#22c0d4]/30"
                       >
                         <ProviderLogo
                           provider={p.name}
@@ -209,9 +209,9 @@ const FeaturedProvidersGlass = () => {
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 transition-colors group-hover:border-yellow-500/40">
+                        <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-[#e2e8f0] transition-colors group-hover:border-yellow-500/40">
                           <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                          <span className="text-white text-xs font-bold">
+                          <span className="text-[#081129] text-xs font-bold">
                             {canonical.rating}
                           </span>
                         </div>
@@ -224,7 +224,7 @@ const FeaturedProvidersGlass = () => {
 
                     {/* Title + tagline */}
                     <div className="space-y-1">
-                      <h2 className="font-heading text-2xl font-bold text-white transition-colors">
+                      <h2 className="font-heading text-2xl font-bold text-[#081129] transition-colors">
                         {p.displayName}
                       </h2>
                       <p
@@ -236,13 +236,13 @@ const FeaturedProvidersGlass = () => {
                       >
                         {p.tagline}
                       </p>
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-gray-500 pt-1">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8] pt-1">
                         {canonical.reviewsFormatted} reviews · UK Wide
                       </p>
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-400 leading-relaxed text-[15px] group-hover:text-gray-300 transition-colors">
+                    <p className="text-[#64748b] leading-relaxed text-[15px] transition-colors">
                       {p.description}
                     </p>
 
@@ -251,10 +251,7 @@ const FeaturedProvidersGlass = () => {
                       {p.tags.map((t) => (
                         <span
                           key={t}
-                          className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] uppercase font-bold tracking-wider text-gray-400 transition-colors group-hover:text-white"
-                          style={{
-                            borderColor: undefined,
-                          }}
+                          className="px-3 py-1 rounded-lg bg-[#f0f4fa] border border-[#e2e8f0] text-[10px] uppercase font-bold tracking-wider text-[#94a3b8] transition-colors"
                         >
                           {t}
                         </span>
@@ -277,14 +274,14 @@ const FeaturedProvidersGlass = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <Link
                         to={`/provider/${p.id.toLowerCase()}`}
-                        className="py-3 px-4 rounded-xl border border-white/10 text-white/70 text-xs font-semibold text-center hover:bg-white/5 hover:text-white transition-all"
+                        className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
                       >
                         View Profile
                       </Link>
                       <a
                         href={buildProviderWebsiteUrl(`https://${p.website}`, p.id)}
                         {...externalLinkProps}
-                        className="py-3 px-4 rounded-xl border border-white/10 text-white/70 text-xs font-semibold text-center hover:bg-white/5 hover:text-white transition-all"
+                        className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
                       >
                         Visit Site
                       </a>
