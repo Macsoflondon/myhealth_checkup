@@ -251,6 +251,7 @@ const CompareTests = () => {
                 className="h-px w-full mb-8"
                 style={{ background: "#22c0d4" }}
               />
+              <ComparisonSectionHeading className="mb-8" />
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                 <p className="font-montserrat font-semibold text-foreground text-base">
                   Comparing {selectedTests.length}{" "}
