@@ -35,10 +35,10 @@ const HereToHelp = () => {
             
             {/* Left Column */}
             <div>
-              <div className="flex items-center gap-2 mb-4 justify-center lg:justify-start">
-                <div className="h-px w-6 bg-brand-pink" />
-                <span className="text-brand-pink text-xs font-semibold uppercase tracking-wider">Here to Help</span>
-                <div className="h-px w-6 bg-brand-pink" />
+              <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+                <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">Here to Help</span>
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
 
               <SectionHeading
