@@ -258,10 +258,10 @@ const FeaturedProvidersGlass = () => {
                   <div className="relative z-10 space-y-3 pt-8">
                     <Link
                       to={getProviderRoute(p.id)}
-                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95"
+                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110"
                       style={{
-                        background: `linear-gradient(90deg, #22c0d4, ${p.glow === "#22c0d4" ? "#e70d69" : p.glow})`,
-                        boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.35)`,
+                        background: `linear-gradient(135deg, ${p.glow}, rgba(${p.glowRgb}, 0.78))`,
+                        boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
                       }}
                     >
                       Browse Tests
