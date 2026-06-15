@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
+import { PROVIDER_PROFILE_ROUTE_MAP } from "@/utils/providerRoutes";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -24,7 +25,15 @@ const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
-  
+
+  // If this provider has a dedicated profile page elsewhere, redirect to it
+  // so every provider renders the same standardised layout (no duplicates).
+  const normalizedId = (providerId || "").toLowerCase();
+  const dedicatedRoute = PROVIDER_PROFILE_ROUTE_MAP[normalizedId];
+  if (dedicatedRoute && dedicatedRoute !== `/provider/${normalizedId}`) {
+    return <Navigate to={dedicatedRoute} replace />;
+  }
+
   // Match provider by exact ID first, then by partial match
   const provider = detailedProviders.find(p => {
     const lowerId = p.id.toLowerCase();
