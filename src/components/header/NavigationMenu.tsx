@@ -115,7 +115,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         type="button"
         aria-haspopup="menu"
         aria-expanded={activeDropdown === "MORE"}
-        className={`group relative font-heading text-xs md:text-sm lg:text-lg xl:text-xl leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+        className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
           activeDropdown === "MORE" ? 'text-brand-pink' : 'text-[#1a9baa] hover:text-brand-pink'
         }`}
         onClick={(e) => handleDropdownToggle(e, "MORE")}
