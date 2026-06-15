@@ -28,10 +28,9 @@ interface HeaderProps {
 }
 const Header = ({ className }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isToolbarSticky, setIsToolbarSticky] = useState(false);
   const [tickerHeight, setTickerHeight] = useState(0);
   const [logoBarHeight, setLogoBarHeight] = useState(0);
-  const [isSearchDocked, setIsSearchDocked] = useState(false);
+  const [collapseProgress, setCollapseProgress] = useState(0);
   const [dockedSearchTerm, setDockedSearchTerm] = useState("");
   const logoBarRef = useRef<HTMLElement>(null);
   const promoTrackerRef = useRef<HTMLDivElement>(null);
@@ -39,36 +38,37 @@ const Header = ({ className }: HeaderProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  // Observe hero search sentinel to drive docked state (desktop only).
+  // Continuous scroll-driven collapse progress (desktop only).
   useEffect(() => {
     if (isMobile) {
-      setIsSearchDocked(false);
+      setCollapseProgress(0);
       return;
     }
-    const findAndObserve = () => {
-      const el = document.getElementById("hero-search-sentinel");
-      if (!el) {
-        // No hero on this route — keep header in default state.
-        setIsSearchDocked(false);
-        return null;
-      }
-      const observer = new IntersectionObserver(
-        ([entry]) => setIsSearchDocked(!entry.isIntersecting),
-        { rootMargin: "-80px 0px 0px 0px", threshold: 0 }
-      );
-      observer.observe(el);
-      return observer;
+    const COLLAPSE_PX = 160;
+    let rafId = 0;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY;
+      const p = Math.min(1, Math.max(0, y / COLLAPSE_PX));
+      setCollapseProgress(p);
     };
-    let observer = findAndObserve();
-    // Hero may mount slightly later (lazy children) — retry once on next frame.
-    const raf = requestAnimationFrame(() => {
-      if (!observer) observer = findAndObserve();
-    });
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        rafId = requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
     return () => {
-      cancelAnimationFrame(raf);
-      observer?.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
     };
   }, [isMobile, location.pathname]);
+
+  const isSearchDocked = collapseProgress > 0.6;
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
   const handleDockedSearchKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && dockedSearchTerm.trim()) {
