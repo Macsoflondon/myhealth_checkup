@@ -5,24 +5,25 @@ import SimpleProviderProfile from "@/components/providers/SimpleProviderProfile"
 const LondonMedicalLaboratoryPage = () => (
   <MainLayout>
     <Helmet>
-      <title>London Health Company | myhealth checkup</title>
-      <meta name="description" content="London Health Company — London-based private health testing and wellness screening, including blood tests, hormone profiles and full body health checks." />
+      <title>London Medical Laboratory | myhealth checkup</title>
+      <meta name="description" content="London Medical Laboratory — UKAS-accredited private blood testing with next-day in-store results and home test kits posted across the UK." />
     </Helmet>
     <SimpleProviderProfile
       providerId="london-medical-laboratory"
-      title="London Health Company"
-      tagline="Your Local Health Expert"
-      logo="/lovable-uploads/provider-london-health-company.png"
-      website="https://londonhealthcompany.co.uk"
-      mission="London Health Company exists to make accurate, accessible private health testing available across the capital and beyond. We focus on convenient appointments, transparent pricing, and clinician-reviewed results so customers can act on their data with confidence."
-      about="A London-based private healthcare provider partnering with UKAS-accredited laboratories. Our team combines high street accessibility with hospital-grade diagnostics, supporting individuals, families and corporate clients with preventative screening and targeted blood work."
-      services="We offer a broad menu of private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics and travel medicals. Appointments are available across London with at-home sample collection options for selected tests."
+      title="London Medical Laboratory"
+      logo="/lovable-uploads/provider-london-medical.png"
+      website="https://londonmedicallaboratory.com"
+      mission="London Medical Laboratory exists to deliver fast, accurate private blood testing without the long waits. We combine a UKAS-accredited central laboratory with a national network of in-store partners and a postal home-testing service, giving people across the UK reliable access to the diagnostics they need to take control of their health."
+      about="London Medical Laboratory (LML) is a UKAS-accredited medical laboratory headquartered in central London. We process samples from thousands of partner pharmacies and clinics nationwide, as well as finger-prick home test kits sent directly to customers. Every test is analysed on hospital-grade Roche equipment by qualified biomedical scientists, with results typically available the next day for in-store tests and within 3–4 working days for home kits."
+      services="Our test menu covers general health profiles, full blood counts, lipid and cholesterol panels, liver and kidney function, diabetes (HbA1c), thyroid, hormone and fertility testing, vitamin and mineral analysis, allergy and intolerance screening, sexual health, and cardiovascular risk assessment. Tests can be booked at over 1,000 partner locations including selected pharmacies, or ordered as a home finger-prick kit with prepaid return postage."
+      whatsNew="We continue to expand our partner network and at-home test range, including new menopause and perimenopause profiles, advanced cardiac risk markers, and convenient subscription bundles for regular monitoring. Doctor-reviewed result reports are included with every test, written in plain English so customers can understand exactly what their numbers mean."
       categories={[
-        { heading: "Wellness Screens", items: ["Essential Health Check", "Advanced Wellness Profile", "Executive Health Screen", "Annual Health MOT"] },
-        { heading: "Blood Tests", items: ["Full Blood Count", "Lipid & Cholesterol Profile", "Liver & Kidney Function", "Diabetes (HbA1c)", "Vitamin D & B12", "Iron Studies"] },
-        { heading: "Hormones & Fertility", items: ["Female Hormone Panel", "Male Hormone & Testosterone", "Thyroid Function", "Menopause Profile", "Fertility (AMH) Test"] },
-        { heading: "Sexual Health", items: ["Full STI Screen", "HIV & Syphilis Test", "Chlamydia & Gonorrhoea"] },
+        { heading: "Wellness & General Health", items: ["General Health Profile", "Advanced Wellness Check", "Full Blood Count", "Liver & Kidney Function", "Diabetes (HbA1c)"] },
+        { heading: "Hormones & Fertility", items: ["Female Hormone Profile", "Male Hormone & Testosterone", "Thyroid Function", "Menopause & Perimenopause", "Fertility (AMH) Test"] },
+        { heading: "Vitamins & Minerals", items: ["Vitamin D", "Vitamin B12 & Folate", "Iron Profile", "Magnesium", "Zinc & Copper"] },
+        { heading: "Cardiovascular & Sexual Health", items: ["Lipid & Cholesterol Profile", "Cardiac Risk Assessment", "Full STI Screen", "HIV & Syphilis"] },
       ]}
+      closingNote="Order online, collect a kit at home or visit a partner pharmacy. Doctor-reviewed reports included with every test."
     />
   </MainLayout>
 );
