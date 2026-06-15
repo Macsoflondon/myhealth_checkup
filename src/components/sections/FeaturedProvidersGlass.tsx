@@ -212,6 +212,7 @@ const FeaturedProvidersGlass = () => {
                         <SaveProviderButton
                           isSaved={isProviderSaved(p.id)}
                           onToggle={() => toggleSaveProvider(p.id, p.displayName)}
+                          className="bg-transparent hover:bg-transparent text-[#e70d69] hover:text-[#e70d69] [&_svg]:fill-[#e70d69]"
                         />
                       </div>
                     </div>
