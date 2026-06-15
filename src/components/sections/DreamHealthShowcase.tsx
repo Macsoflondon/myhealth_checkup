@@ -232,11 +232,11 @@ const DreamHealthShowcase = () => {
     <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
           <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
             Our Partners' Most Popular Tests
           </span>
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-[#08122b]">
           Find Your Perfect Test Match
