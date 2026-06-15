@@ -7,7 +7,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 const ProviderComparisonTable = () => {
   const { data: tests = [] } = useRecommendedTests("general-health", 5);
   const selected = useCompareItems();
-  const display = selected.length > 0 ? selected : tests.slice(0, 5);
+  const display = selected;
 
   return (
     <section className="bg-[#f5f8fc] py-14 sm:py-16 md:py-20">
@@ -18,11 +18,11 @@ const ProviderComparisonTable = () => {
         </div>
         <div className="flex justify-end mt-6">
           <Button
-            variant="outline"
+            variant="shimmer"
             size="sm"
             onClick={() => compareStore.clear()}
             disabled={selected.length === 0}
-            className="font-['DM_Sans'] font-semibold border-brand-turquoise text-brand-navy bg-white hover:bg-brand-turquoise/10"
+            className="font-['DM_Sans'] font-bold text-white"
           >
             Clear
           </Button>
