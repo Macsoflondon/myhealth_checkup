@@ -233,7 +233,7 @@ const DreamHealthShowcase = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+          <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em]">
             Our Partners' Most Popular Tests
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />

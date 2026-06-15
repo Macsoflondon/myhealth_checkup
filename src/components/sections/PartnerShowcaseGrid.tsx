@@ -82,8 +82,8 @@ const PartnerShowcaseGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
           <div className="md:col-span-2 text-center mt-2 sm:mt-4">
             <div className="flex items-center justify-center gap-3 mb-3">
-              <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />
-              <span className="text-brand-turquoise text-xs sm:text-sm font-semibold uppercase tracking-[0.25em]">
+              <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+              <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em]">
                 Featured Partner
               </span>
               <div className="h-px w-8 sm:w-12 bg-brand-turquoise" />

@@ -47,7 +47,7 @@ const TestCategoriesSection = () => {
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-            <span className="text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
+            <span className="text-sm sm:text-base font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
               What We Compare
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
