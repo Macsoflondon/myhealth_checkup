@@ -256,10 +256,10 @@ const CompareTests = () => {
               <ProviderComparisonTable tests={selectedTests} />
               <div className="flex justify-end mt-6">
                 <Button
-                  variant="outline"
                   size="sm"
                   onClick={handleClearAll}
-                  className="font-['DM_Sans'] font-semibold border-brand-turquoise text-brand-navy bg-white hover:bg-brand-turquoise/10"
+                  disabled={selectedTests.length === 0}
+                  className="font-['DM_Sans'] font-bold text-white bg-gradient-to-r from-brand-turquoise to-brand-pink hover:opacity-90 border-0 disabled:opacity-40"
                 >
                   Clear
                 </Button>
