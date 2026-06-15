@@ -27,7 +27,7 @@ export default function AsFeaturedIn({ providers = [] }: AsFeaturedInProps) {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-center gap-3 mb-6">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em]">
+          <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
             As Seen In
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />

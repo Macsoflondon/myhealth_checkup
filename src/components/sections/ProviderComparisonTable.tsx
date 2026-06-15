@@ -1,4 +1,3 @@
-import { X } from "lucide-react";
 import ComparisonSectionHeading from "./ComparisonSectionHeading";
 import { ProviderComparisonTable as FullProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
@@ -23,9 +22,8 @@ const ProviderComparisonTable = () => {
             size="sm"
             onClick={() => compareStore.clear()}
             disabled={selected.length === 0}
-            className="font-['DM_Sans'] gap-1.5 border-destructive text-destructive hover:bg-destructive/10"
+            className="font-['DM_Sans'] font-semibold border-brand-turquoise text-brand-navy bg-white hover:bg-brand-turquoise/10"
           >
-            <X size={14} />
             Clear
           </Button>
         </div>
