@@ -42,6 +42,30 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
 };
 
 /**
+ * Canonical profile page route per provider.
+ * Ensures every provider has exactly ONE profile destination
+ * (no duplicate /provider/:id vs dedicated-page mix-ups).
+ */
+export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
+  'medichecks': '/provider/medichecks',
+  'goodbody': '/goodbody-clinic',
+  'goodbody-clinic': '/goodbody-clinic',
+  'thriva': '/provider/thriva',
+  'randox': '/provider/randox-health',
+  'randox-health': '/provider/randox-health',
+  'lola-health': '/provider/lola-health',
+  'london-medical-laboratory': '/london-medical-laboratory',
+  'london-health-company': '/london-health-company',
+  'clinilabs': '/clinilabs',
+  'medical-diagnosis': '/medical-diagnosis',
+};
+
+export function getProviderProfileRoute(providerId: string): string {
+  const normalizedId = providerId.toLowerCase();
+  return PROVIDER_PROFILE_ROUTE_MAP[normalizedId] || `/provider/${normalizedId}`;
+}
+
+/**
  * Get the canonical URL route for a provider
  * @param providerId - The provider_id from the database
  * @returns The URL path for the provider's test detail pages
