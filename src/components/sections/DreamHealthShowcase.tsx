@@ -229,7 +229,7 @@ const DreamHealthShowcase = () => {
   }, [filmstripTests.length]);
 
   return (
-    <section className="bg-white py-12 sm:py-16 md:py-20 overflow-hidden">
+    <section className="bg-white pt-2 pb-12 sm:pt-3 sm:pb-16 md:pt-4 md:pb-20 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
