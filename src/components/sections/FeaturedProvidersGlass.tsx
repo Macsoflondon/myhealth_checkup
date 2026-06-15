@@ -122,9 +122,9 @@ const PROVIDERS: ProviderEntry[] = [
     displayName: "Medical Diagnosis",
     tagline: "Specialist Diagnostics, Faster",
     description:
-      "Specialist diagnostic services offering advanced blood testing and health screening with typically fast turnarounds.",
-    tags: ["Specialist Testing", "Fast Results", "Advanced Diagnostics"],
-    website: "medicaldiagnosis.co.uk",
+      "Specialist diagnostics with typically fast turnaround blood testing and health screening across the UK.",
+    tags: ["Fast Results", "Specialist Testing", "UK Wide"],
+    website: "medical-diagnosis.co.uk",
     glow: "#e70d69",
     glowRgb: "231,13,105",
   },
