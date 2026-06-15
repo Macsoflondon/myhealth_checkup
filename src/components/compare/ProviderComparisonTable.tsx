@@ -158,32 +158,8 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
     return picked.slice(0, MAX_COLS);
   }, [tests]);
 
-  // Empty state when no providers selected
-  if (columns.length === 0) {
-    return (
-      <div
-        className="w-full rounded-xl border border-dashed flex flex-col items-center justify-center text-center px-6 py-12 sm:py-16"
-        style={{ borderColor: "rgba(34,192,212,0.4)", background: "rgba(8,17,41,0.4)" }}
-      >
-        <div
-          className="flex items-center justify-center rounded-full mb-4"
-          style={{ width: 56, height: 56, background: "rgba(34,192,212,0.12)" }}
-        >
-          <Plus size={28} color={TURQUOISE} />
-        </div>
-        <h3 className="font-montserrat font-semibold text-white text-lg sm:text-xl mb-2">
-          No providers selected yet
-        </h3>
-        <p className="text-white/70 text-sm sm:text-base max-w-md leading-relaxed font-['DM_Sans']">
-          Pick at least two tests from the list above to see a side-by-side comparison of
-          biomarkers, turnaround, sample method and price.
-        </p>
-        <p className="text-white/40 text-xs sm:text-sm mt-3 font-['DM_Sans']">
-          Tip: tap the checkbox on any test card to add it to your comparison.
-        </p>
-      </div>
-    );
-  }
+  // Note: when no providers are selected, the table still renders with placeholder
+  // columns so users can see the structure they're filling in.
 
   const colCount = Math.min(MAX_COLS, Math.max(MIN_COLS, columns.length));
   const slots: Slot[] = Array.from({ length: colCount }, (_, i) => columns[i] ?? null);
