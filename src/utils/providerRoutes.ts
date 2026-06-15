@@ -30,11 +30,13 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   'goodbody-clinic': 'GOODBODY',
   'goodbody': 'GOODBODY',
   'lola-health': 'Lola Health',
-  'london-medical-laboratory': 'London Medical Laboratory',
+  'london-medical-laboratory': 'London Health Company',
   'medichecks': 'Medichecks',
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',
   'thriva': 'Thriva',
+  'clinilabs': 'Clinilabs',
+  'medical-diagnosis': 'Medical Diagnosis',
 };
 
 /**
