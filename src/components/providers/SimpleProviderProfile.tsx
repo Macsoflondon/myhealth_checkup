@@ -1,4 +1,4 @@
-import { Mail, ExternalLink } from "lucide-react";
+import { Mail, Phone, ExternalLink } from "lucide-react";
 
 interface Category {
   heading: string;
@@ -8,36 +8,37 @@ interface Category {
 interface SimpleProviderProfileProps {
   providerId: string;
   title: string;
-  tagline: string;
   logo: string;
   website: string;
   email?: string;
+  phone?: string;
   mission: string;
   about: string;
   services: string;
+  whatsNew?: string;
   categories: Category[];
+  closingNote?: string;
 }
 
 const SimpleProviderProfile = ({
   title,
-  tagline,
   logo,
   website,
   email,
+  phone,
   mission,
   about,
   services,
+  whatsNew,
   categories,
+  closingNote,
 }: SimpleProviderProfileProps) => (
   <div className="min-h-screen bg-white">
     <div className="container mx-auto px-4 pt-10 pb-0">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-1">
         {title}
       </h1>
-      <p className="italic text-lg text-[#22c0d4]" style={{ fontFamily: "'EB Garamond', Garamond, serif" }}>
-        {tagline}
-      </p>
-      <div className="h-px bg-gray-200 w-full max-w-2xl mt-4 mb-6" />
+      <div className="h-px bg-gray-200 w-full max-w-2xl mb-6" />
     </div>
 
     <div className="container mx-auto px-4 py-12 max-w-6xl">
@@ -58,8 +59,15 @@ const SimpleProviderProfile = ({
             <p className="text-foreground font-sans leading-relaxed">{services}</p>
           </section>
 
+          {whatsNew && (
+            <section>
+              <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-4">What's New</h2>
+              <p className="text-foreground font-sans leading-relaxed">{whatsNew}</p>
+            </section>
+          )}
+
           <section>
-            <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-6">Available Tests</h2>
+            <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129] mb-6">Our Tests</h2>
             <div className="space-y-6">
               {categories.map((c) => (
                 <div key={c.heading}>
@@ -83,14 +91,22 @@ const SimpleProviderProfile = ({
                   {email}
                 </a>
               )}
+              {phone && (
+                <a href={`tel:${phone.replace(/\s+/g, "")}`} className="flex items-center gap-3 text-foreground hover:text-[#081129] transition-colors font-sans">
+                  <Phone className="h-5 w-5 text-muted-foreground" />
+                  {phone}
+                </a>
+              )}
               <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-[#081129] transition-colors font-sans">
                 <ExternalLink className="h-5 w-5 text-muted-foreground" />
                 Visit website
               </a>
             </div>
-            <p className="mt-4 text-muted-foreground font-sans leading-relaxed text-sm">
-              Pricing, turnaround times and biomarker lists vary by test. Always check the provider's website for the latest details. This information is for educational purposes only and is not medical advice.
-            </p>
+            {closingNote && (
+              <p className="mt-4 text-muted-foreground font-sans leading-relaxed">
+                {closingNote}
+              </p>
+            )}
           </section>
         </div>
 
