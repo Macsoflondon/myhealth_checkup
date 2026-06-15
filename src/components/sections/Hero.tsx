@@ -6,6 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
+import heroResults from "@/assets/hero/hero-mobile-results.jpeg.asset.json";
 import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
 import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
 
@@ -60,6 +61,17 @@ const heroSlides: Array<{
       overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/20",
       surface: 65,
       accent: "turquoise",
+    },
+  },
+  {
+    image: heroResults.url,
+    headline: "Your Results.\nWherever You Are.",
+    subline: "​",
+    objectPosition: "center 40%",
+    theme: {
+      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/25",
+      surface: 70,
+      accent: "pink",
     },
   },
 ];
