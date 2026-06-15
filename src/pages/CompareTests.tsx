@@ -8,6 +8,7 @@ import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { ComparisonPanel } from "@/components/compare/ComparisonPanel";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
+import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
@@ -251,6 +252,7 @@ const CompareTests = () => {
                 className="h-px w-full mb-8"
                 style={{ background: "#22c0d4" }}
               />
+              <ComparisonSectionHeading className="mb-8" />
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                 <p className="font-montserrat font-semibold text-foreground text-base">
                   Comparing {selectedTests.length}{" "}
