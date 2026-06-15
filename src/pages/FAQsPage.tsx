@@ -332,7 +332,7 @@ const FAQsPage = () => {
       <main className="flex-grow bg-background">
         <PageBanner
           title="Frequently Asked Questions"
-          subtitle="Explore frequently asked questions about health testing, results, providers, and using our platform."
+          subtitle={"\n"}
         >
           {/* Search Bar */}
           <div className="max-w-xl sm:max-w-2xl mx-auto mt-6">
