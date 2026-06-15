@@ -4,7 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBanner from '@/components/sections/PageBanner';
 import { Card, CardContent } from '@/components/ui/card';
-import { FileText, Shield, Cookie, Users, Handshake, Scale, Award, Accessibility, Stethoscope } from 'lucide-react';
+import { FileText, Shield, Cookie, Users, Handshake, Scale, Award, Accessibility, Stethoscope, MessageSquareWarning } from 'lucide-react';
 
 const legalPages = [
   { title: 'Privacy Policy', path: '/privacy-policy', icon: Shield, description: 'How we collect, use, and protect your personal data.' },
