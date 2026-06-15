@@ -20,6 +20,9 @@ const CompareBySymptomPage = lazy(() => import("@/pages/CompareBySymptomPage"));
 const CompareByGoalPage = lazy(() => import("@/pages/CompareByGoalPage"));
 const SymptomDetailPage = lazy(() => import("@/pages/SymptomDetailPage"));
 const GoalDetailPage = lazy(() => import("@/pages/GoalDetailPage"));
+const ClinilabsPage = lazy(() => import("@/pages/ClinilabsPage"));
+const LondonMedicalLaboratoryPage = lazy(() => import("@/pages/LondonMedicalLaboratoryPage"));
+const MedicalDiagnosisPage = lazy(() => import("@/pages/MedicalDiagnosisPage"));
 
 export const featureRoutes = (
   <>
