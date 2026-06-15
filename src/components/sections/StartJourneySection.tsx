@@ -91,7 +91,7 @@ const StartJourneySection = () => {
                 <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
                   Start Your Journey
                 </span>
-                <div className="h-px w-8 sm:w-12 bg-brand-pink lg:hidden" />
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
               <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] lg:text-[2.5rem] mb-3">
                 Take Control of Your Health Today
@@ -147,6 +147,7 @@ const StartJourneySection = () => {
                 <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
                   From Letterbox to Lab
                 </span>
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
               <h3 className="font-heading font-bold text-white text-2xl sm:text-3xl tracking-tight leading-tight">
                 Convenient at-home test kits, delivered to your door.
