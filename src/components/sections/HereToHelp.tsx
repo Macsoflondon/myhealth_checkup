@@ -1,9 +1,16 @@
-import { BookOpen, HelpCircle, MessageCircle } from "lucide-react";
+import { BookOpen, HelpCircle, MessageCircle, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const HereToHelp = () => {
   const resources = [
+    {
+      icon: Search,
+      title: "Find the Right Test for You",
+      description: "Browse our full range of test categories to discover what's best for your health needs.",
+      link: "/test-categories",
+      accent: "brand-pink"
+    },
     {
       icon: BookOpen,
       title: "Health Hub",

@@ -1,21 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
 
 
 const Footer = () => {
-  const { t } = useTranslation();
-
-  const healthTestLinks = [
-    { name: t("footer.links.mensHealth"), link: "/tests/mens-health" },
-    { name: t("footer.links.womensHealth"), link: "/tests/womens-health" },
-    { name: t("footer.links.heartHealth"), link: "/tests/heart" },
-    { name: t("footer.links.diabetes"), link: "/tests/diabetes" },
-    { name: t("footer.links.thyroid"), link: "/thyroid" },
-    { name: t("footer.links.fertility"), link: "/fertility-tests" },
-  ];
 
 
   return (
@@ -30,11 +19,7 @@ const Footer = () => {
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-brand-pink/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* 3-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
-            <HealthTestsColumn links={healthTestLinks} />
-            <StayInformedColumn />
-          </div>
+          <StayInformedColumn />
 
           {/* ========== Brief Medical Disclaimer ========== */}
           <div
@@ -106,21 +91,6 @@ const ColumnHeading = ({ title }: { title: string }) => (
   </div>
 );
 
-/* ========== Health Tests Column ========== */
-const HealthTestsColumn = ({ links }: { links: { name: string; link: string }[] }) => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-    <ColumnHeading title="Health Tests" />
-    <ul className="space-y-2.5">
-      {links.map((item, i) => (
-        <li key={i}>
-          <Link to={item.link} className="text-white/80 hover:text-brand-pink transition-colors text-xs sm:text-sm font-sans">
-            {item.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
 
 
 /* ========== Stay Informed Column (newsletter) ========== */
