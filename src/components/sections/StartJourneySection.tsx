@@ -159,7 +159,7 @@ const StartJourneySection = () => {
           </div>
 
           {/* RIGHT — Live Comparison */}
-          <div className="relative bg-white rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden h-full">
+          <div className="relative bg-white rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1">
             <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
 
               <div className="flex items-center justify-center gap-3 mb-5">
