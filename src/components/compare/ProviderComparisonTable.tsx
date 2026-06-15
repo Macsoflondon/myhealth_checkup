@@ -1,6 +1,28 @@
 import React, { useMemo } from "react";
 import { CheckCircle, Plus, Home, Building2 } from "lucide-react";
 import type { CompareTestData } from "@/types";
+import { PROVIDER_LOGOS } from "@/constants/providers";
+
+const PROVIDER_NAME_TO_ID: Record<string, string> = {
+  "medichecks": "medichecks",
+  "thriva": "thriva",
+  "randox": "randox",
+  "randox health": "randox",
+  "london medical laboratory": "london-medical-laboratory",
+  "london health company": "london-health-company",
+  "lola health": "lola-health",
+  "goodbody": "goodbody-clinic",
+  "goodbody clinic": "goodbody-clinic",
+  "clinilabs": "clinilabs",
+  "medical diagnosis": "medical-diagnosis",
+};
+
+const resolveLogo = (test: CompareTestData): string | undefined => {
+  if (test.providerLogo) return test.providerLogo;
+  const key = (test.provider || "").toLowerCase().trim();
+  const id = PROVIDER_NAME_TO_ID[key];
+  return id ? PROVIDER_LOGOS[id] : undefined;
+};
 
 interface ProviderComparisonTableProps {
   tests: CompareTestData[];
