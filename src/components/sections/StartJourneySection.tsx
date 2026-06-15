@@ -129,7 +129,7 @@ const StartJourneySection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
 
           {/* LEFT — Letterbox video */}
-          <div className="relative bg-[#081129] rounded-[2rem] border border-slate-100 shadow-[0_12px_60px_-16px_rgba(8,17,41,0.14)] overflow-hidden h-full min-h-[420px]">
+          <div className="relative bg-[#081129] rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full min-h-[420px] transition-transform duration-700 ease-out hover:-translate-y-1">
             <video
               src={letterboxVideo.url}
               autoPlay
