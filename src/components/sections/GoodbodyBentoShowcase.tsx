@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { analytics } from "@/lib/analytics";
 import generalHealthAsset from "@/assets/goodbody/general-health-fingerprint.png.asset.json";
 import cholesterolFpAsset from "@/assets/goodbody/cholesterol-fingerprint.png.asset.json";
