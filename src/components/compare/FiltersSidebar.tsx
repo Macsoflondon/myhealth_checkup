@@ -84,10 +84,21 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   onFastingChange,
   gpReview,
   onGpReviewChange,
+  sampleTypes,
+  onSampleTypesChange,
+  collectionMethods,
+  onCollectionMethodsChange,
+  feeFilter,
+  onFeeFilterChange,
+  clinicalReview,
+  onClinicalReviewChange,
   onClearFilters,
   isVisible = true,
   onClose,
 }) => {
+  const toggle = <T extends string>(list: T[] | undefined, value: T): T[] =>
+    list?.includes(value) ? list.filter(v => v !== value) : [...(list ?? []), value];
+
   return (
     <aside
       className={cn(
