@@ -104,12 +104,11 @@ const GoodbodyBentoShowcase = () => {
               Over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP.
             </p>
           </div>
-          <Link
-            to="/provider/goodbody-clinic"
-            className="mt-4 w-full bg-brand-turquoise hover:bg-brand-pink text-white font-semibold py-3 rounded-lg transition-colors duration-200 text-sm"
-          >
-            View Goodbody Profile
-          </Link>
+          <Button asChild className="mt-4 w-full">
+            <Link to="/provider/goodbody-clinic">
+              View Goodbody Profile
+            </Link>
+          </Button>
         </div>
 
         {/* Row 5: original + new fingerprint */}
@@ -179,12 +178,11 @@ const GoodbodyBentoShowcase = () => {
             Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
           </p>
           <div className="flex justify-center mt-5">
-            <Link
-              to="/provider/goodbody-clinic"
-              className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200 text-sm"
-            >
-              View Goodbody Profile
-            </Link>
+            <Button asChild>
+              <Link to="/provider/goodbody-clinic">
+                View Goodbody Profile
+              </Link>
+            </Button>
           </div>
         </div>
         <div className="aspect-square">
