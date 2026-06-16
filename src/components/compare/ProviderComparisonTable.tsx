@@ -354,72 +354,118 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               label="Biomarkers"
               index={0}
               slots={slots}
-              render={(t) => <span>{t.biomarkerCount ?? 0} biomarkers</span>}
+              render={(t) => <span className="font-semibold">{t.biomarkerCount ?? '—'}</span>}
             />
             <Row
-              label="Turnaround"
+              label="Turnaround Time"
               index={1}
               slots={slots}
               render={(t) => <span>{t.features?.turnaround || "—"}</span>}
             />
             <Row
-              label="Sample method"
+              label="Sample Type"
               index={2}
               slots={slots}
+              render={(t) => (
+                <span>{t.sampleTypeCode ? SAMPLE_TYPE_LABELS[t.sampleTypeCode] : <Dash />}</span>
+              )}
+            />
+            <Row
+              label="Collection Method"
+              index={3}
+              slots={slots}
               render={(t) => {
-                const p = parseCollection(t.features?.collection || "");
+                if (!t.collectionMethod) return <Dash />;
                 return (
-                  <span className="inline-flex items-center gap-1.5 justify-center">
-                    {p.homeKit && <Home size={14} color={TURQUOISE} />}
-                    {p.clinic && <Building2 size={14} color={TURQUOISE} />}
-                    <span>{p.label}</span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <Check size={14} color={TURQUOISE} />
+                    <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
                   </span>
                 );
               }}
             />
             <Row
-              label="At-home kit"
-              index={3}
-              slots={slots}
-              render={(t) => {
-                const p = parseCollection(t.features?.collection || "");
-                if (!p.homeKit) return <Dash />;
-                return (
-                  <div>
-                    <div style={{ color: NAVY, fontWeight: 700 }}>{formatPrice(t.price)}</div>
-                    <div style={noteStyle}>
-                      at-home kit{p.clinic && p.homeKit ? " (combined price)" : ""}
-                    </div>
-                  </div>
-                );
-              }}
-            />
-            <Row
-              label="Venous draw"
+              label="Additional Collection Fees"
               index={4}
               slots={slots}
               render={(t) => {
-                const p = parseCollection(t.features?.collection || "");
-                if (!p.clinic) return <Dash />;
+                const fee = formatCollectionFee(t.collectionFeeType, t.collectionFeeAmount);
+                if (fee.isFree) {
+                  return (
+                    <span style={{ color: '#15803d', fontWeight: 600 }}>{fee.label}</span>
+                  );
+                }
                 return (
-                  <div>
-                    <div style={{ color: NAVY, fontWeight: 700 }}>{formatPrice(t.price)}</div>
-                    <div style={noteStyle}>
-                      venous draw{p.clinic && p.homeKit ? " (combined price)" : ""}
-                    </div>
-                  </div>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '4px 10px',
+                      borderRadius: 999,
+                      background: '#fef3c7',
+                      color: '#92400e',
+                      fontWeight: 600,
+                      fontSize: 12,
+                    }}
+                  >
+                    {fee.label}
+                  </span>
                 );
               }}
             />
             <Row
-              label="Doctor review"
+              label="Total Expected Cost"
               index={5}
               slots={slots}
-              render={(t) => (hasAccreditation(t, "GP Review") ? <Tick /> : <Dash />)}
+              render={(t) => {
+                const total = computeTotalExpectedCost(
+                  t.price,
+                  t.collectionFeeType,
+                  t.collectionFeeAmount,
+                  t.clinicalReviewType,
+                  t.clinicalReviewFee,
+                );
+                return (
+                  <span style={{ color: NAVY, fontWeight: 800, fontSize: 16 }}>
+                    {formatPrice(total)}
+                  </span>
+                );
+              }}
+            />
+            <Row
+              label="Clinical Review"
+              index={6}
+              slots={slots}
+              render={(t) => {
+                const r = formatClinicalReview(t.clinicalReviewType, t.clinicalReviewFee);
+                if (!r.isAvailable) return <Dash />;
+                if (r.isIncluded) {
+                  return (
+                    <span className="inline-flex items-center gap-1.5" style={{ color: '#15803d', fontWeight: 600 }}>
+                      <Check size={14} /> {r.label}
+                    </span>
+                  );
+                }
+                return (
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      padding: '4px 10px',
+                      borderRadius: 999,
+                      background: '#fef3c7',
+                      color: '#92400e',
+                      fontWeight: 600,
+                      fontSize: 12,
+                    }}
+                  >
+                    {r.label}
+                  </span>
+                );
+              }}
             />
             <Row
               label="Book"
-              index={6}
+              index={7}
               slots={slots}
               placeholder={
                 <button
