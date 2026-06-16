@@ -137,7 +137,7 @@ export const TestFinderQuiz = () => {
   };
 
   return (
-    <div className="bg-[#0F2238] border border-white/10 rounded-2xl p-5 sm:p-8 space-y-6">
+    <div className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8 space-y-6">
       {/* Progress */}
       <div>
         <div className="flex justify-between text-[11px] uppercase tracking-wide text-white/50 mb-2">
