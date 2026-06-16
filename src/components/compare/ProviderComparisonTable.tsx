@@ -70,15 +70,8 @@ const hasAccreditation = (test: CompareTestData, needle: string): boolean =>
 const formatPrice = (price: number): string =>
   price == null || Number.isNaN(price) ? "—" : `£${price.toFixed(2)}`;
 
-const Tick: React.FC = () => <CheckCircle size={18} color={TURQUOISE} className="inline-block" />;
 const Dash: React.FC = () => <span style={{ color: MUTED }}>—</span>;
 
-const noteStyle: React.CSSProperties = {
-  fontFamily: "'DM Sans', system-ui, sans-serif",
-  fontSize: 11,
-  color: MUTED,
-  marginTop: 2,
-};
 
 const cellBase = (bg: string): React.CSSProperties => ({
   background: bg,
