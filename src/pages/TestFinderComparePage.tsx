@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 import { ComparisonTable } from "@/components/testFinder/ComparisonTable";
 import { FiltersPanel } from "@/components/testFinder/FiltersPanel";
 import { useTestFinder, testFinderStore } from "@/stores/testFinderStore";
-import { SEED_TESTS } from "@/data/testFinderSeed";
+import { TEST_CATALOGUE } from "@/lib/testFinder/catalogue";
 import { applyFilters } from "@/lib/testFinder/filters";
 
 const TestFinderComparePage = () => {
@@ -17,7 +17,7 @@ const TestFinderComparePage = () => {
   const selectedIds = useTestFinder((s) => s.selectedTestIds);
   const recs = useTestFinder((s) => s.recommendations);
 
-  const pool = recs.length > 0 ? recs : SEED_TESTS;
+  const pool = recs.length > 0 ? recs : TEST_CATALOGUE;
   const filtered = useMemo(() => applyFilters(pool, filters), [pool, filters]);
   const selectedTests = useMemo(
     () => filtered.filter((t) => selectedIds.includes(t.id)),
