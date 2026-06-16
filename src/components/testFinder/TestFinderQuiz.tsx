@@ -16,7 +16,7 @@ import {
   GOAL_LABEL,
   SAMPLE_TYPE_LABEL,
 } from "@/lib/testFinder/labels";
-import { SEED_TESTS } from "@/data/testFinderSeed";
+import { TEST_CATALOGUE } from "@/lib/testFinder/catalogue";
 import { getRecommendations } from "@/lib/testFinder/recommendationService";
 import { deriveFilterState } from "@/lib/testFinder/filters";
 import { testFinderStore } from "@/stores/testFinderStore";
@@ -130,7 +130,7 @@ export const TestFinderQuiz = () => {
     };
     const filters = deriveFilterState(profile);
     testFinderStore.setProfile(profile, filters);
-    const recs = await getRecommendations(SEED_TESTS, profile);
+    const recs = await getRecommendations(TEST_CATALOGUE, profile);
     testFinderStore.setRecommendations(recs);
     testFinderStore.setSelected(recs.slice(0, 3).map((r) => r.id));
     navigate("/find-test/recommendations");
