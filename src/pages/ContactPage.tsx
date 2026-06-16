@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -49,11 +50,22 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string;
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchParams] = useSearchParams();
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: { firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' },
   });
+
+  useEffect(() => {
+    if (searchParams.get('topic') === 'test-finder') {
+      form.setValue('subject', 'Help me find a test');
+      setTimeout(() => {
+        formCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [searchParams, form]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -106,7 +118,8 @@ const ContactPage = () => {
             {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
-              <Card className="text-[#081129]">
+              <div ref={formCardRef}>
+                <Card className="text-[#081129]">
                 <CardHeader>
                   <CardTitle>Send Us a Message</CardTitle>
                 </CardHeader>
@@ -164,6 +177,7 @@ const ContactPage = () => {
                   </Form>
                 </CardContent>
               </Card>
+              </div>
 
               {/* Provider Contact Directory */}
               <Card className="text-[#081129]">
