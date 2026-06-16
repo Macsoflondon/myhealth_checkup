@@ -264,6 +264,11 @@ export const AssistedTestFinder = () => {
   };
 
   const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
+    if (field === 'gender' && value === 'prefer-not-to-say') {
+      setAnswers(prev => ({ ...prev, gender: value }));
+      setCurrentStep('contact-care');
+      return;
+    }
     setAnswers(prev => ({ ...prev, [field]: value }));
     if (autoAdvance) {
       const idx = stepOrder.indexOf(currentStep as any);
