@@ -220,7 +220,7 @@ export const TestFinderQuiz = () => {
 
       {step === 4 && (
         <div className="space-y-5">
-          <h2 className="text-white text-xl font-semibold">Practical preferences</h2>
+          <h2 className="text-[#081129] text-xl font-semibold">Practical preferences</h2>
 
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-wide text-brand-turquoise mb-2">
