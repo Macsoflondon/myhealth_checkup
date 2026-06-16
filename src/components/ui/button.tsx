@@ -20,6 +20,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline hover:scale-105 active:scale-95",
         gradient: "bg-gradient-to-r from-primary to-secondary text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
         shimmer: "btn-shimmer text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
+        brandPill: "rounded-full border-tertiary bg-primary text-primary-foreground shadow-elevation-2 hover:bg-secondary hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
       },
       size: {
         default: "h-12 px-8 py-2",
