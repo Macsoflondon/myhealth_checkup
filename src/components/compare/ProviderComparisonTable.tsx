@@ -346,13 +346,24 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               index={3}
               slots={slots}
               render={(t) => {
-                if (!t.collectionMethod) return <Dash />;
-                return (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Check size={14} color={TURQUOISE} />
-                    <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
-                  </span>
-                );
+                if (t.collectionMethod) {
+                  return (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check size={14} color={TURQUOISE} />
+                      <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
+                    </span>
+                  );
+                }
+                const parsed = parseCollection(t.features?.collection || "");
+                if (parsed.label && parsed.label !== "—") {
+                  return (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check size={14} color={TURQUOISE} />
+                      <span>{parsed.label}</span>
+                    </span>
+                  );
+                }
+                return <Dash />;
               }}
             />
             <Row
