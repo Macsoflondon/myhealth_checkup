@@ -13,6 +13,11 @@ async function sha1(s: string) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+const MAX_TEXTS = 50;
+const MAX_TEXT_LEN = 2000;
+const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_WINDOW_MIN = 5;
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -23,11 +28,43 @@ Deno.serve(async (req) => {
         status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+    if (texts.length === 0 || texts.length > MAX_TEXTS) {
+      return new Response(JSON.stringify({ error: `texts must be 1..${MAX_TEXTS} items` }), {
+        status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    for (const t of texts) {
+      if (typeof t !== 'string' || t.length > MAX_TEXT_LEN) {
+        return new Response(JSON.stringify({ error: `each text must be a string <= ${MAX_TEXT_LEN} chars` }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    }
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     );
+
+    // Per-IP rate limiting via api_rate_limits
+    const ip = (req.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'unknown';
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000).toISOString();
+    const { count } = await supabase
+      .from('api_rate_limits')
+      .select('id', { count: 'exact', head: true })
+      .eq('identifier', `translate:${ip}`)
+      .gte('window_start', windowStart);
+    if ((count ?? 0) >= RATE_LIMIT_MAX) {
+      return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), {
+        status: 429,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Retry-After': String(RATE_LIMIT_WINDOW_MIN * 60) },
+      });
+    }
+    await supabase.from('api_rate_limits').insert({
+      identifier: `translate:${ip}`,
+      endpoint: 'translate',
+      window_start: new Date().toISOString(),
+    });
 
     // Look up cache
     const hashes = await Promise.all((texts as string[]).map(sha1));
