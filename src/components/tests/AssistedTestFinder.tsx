@@ -192,7 +192,8 @@ export const AssistedTestFinder = () => {
     (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`
   );
 
-  const currentStepIndex = stepOrder.indexOf(currentStep as any);
+  const effectiveStepForProgress = currentStep === 'contact-care' ? 'gender' : currentStep;
+  const currentStepIndex = stepOrder.indexOf(effectiveStepForProgress as any);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   useEffect(() => {
@@ -239,6 +240,10 @@ export const AssistedTestFinder = () => {
   }, []);
 
   const handleBack = () => {
+    if (currentStep === 'contact-care') {
+      setCurrentStep('gender');
+      return;
+    }
     if (currentStep === 'results' || currentStep === 'loading') {
       setCurrentStep('preferences');
       return;
