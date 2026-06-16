@@ -19,8 +19,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ========== Pink Divider Line ========== */}
-      <div className="h-[2px] bg-brand-pink" />
     </footer>
   );
 };
