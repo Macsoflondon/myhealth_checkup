@@ -12,6 +12,7 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
+import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 
 const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
   'goodbody-clinic': '/providers/goodbody-clinic',
@@ -361,7 +362,11 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
+        {/* Live tests grid from Supabase */}
+        <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+
           {/* Left column — narrow */}
           <div className="lg:col-span-1 flex flex-col gap-4">
             {/* Contact Information */}

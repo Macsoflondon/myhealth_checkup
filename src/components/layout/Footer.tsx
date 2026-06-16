@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import complianceBadges from "@/assets/compliance/compliance-badges.svg";
 import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
 
@@ -86,16 +87,34 @@ const SectionHeading = ({ title }: { title: string }) => (
 const StayInformedSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) {
-      setError(true);
-      setTimeout(() => setError(false), 2500);
+      setError("Please enter a valid email.");
+      setTimeout(() => setError(null), 2500);
       return;
     }
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke(
+        "newsletter-subscribe",
+        { body: { email: email.trim(), source: "footer", consent: true } }
+      );
+      if (fnErr || (data as any)?.error) {
+        setError((data as any)?.error || "Subscription failed. Try again.");
+        setTimeout(() => setError(null), 3000);
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError("Subscription failed. Try again.");
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -181,10 +200,14 @@ const StayInformedSection = () => {
               />
               <button
                 onClick={handleSubmit}
-                className="bg-brand-turquoise hover:bg-[#1aa8bb] text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
+                disabled={loading}
+                className="bg-brand-turquoise hover:bg-[#1aa8bb] disabled:opacity-60 text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
               >
-                Subscribe
+                {loading ? "Subscribing…" : "Subscribe"}
               </button>
+              {error && (
+                <p className="text-xs text-brand-pink mt-1">{error}</p>
+              )}
             </div>
           )}
           <p className="mt-3 text-[10px] text-white/40 leading-relaxed">
