@@ -22,52 +22,30 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <StayInformedSection />
 
-          {/* ========== Brief Medical Disclaimer ========== */}
-          <div
-            id="medical-disclaimer"
-            role="note"
-            aria-label="Medical disclaimer"
-            className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
-          >
-            <p className="text-xs sm:text-sm leading-relaxed">
-              <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
-              <span className="text-white/85">
-                This site provides comparison information only and does not constitute medical advice. See our{" "}
-                <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
-                  Legal Hub
-                </Link>{" "}
-                for full details.
-              </span>
-            </p>
+          {/* ========== Brand Bar ========== */}
+          <div className="mt-8 sm:mt-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-3">
+                <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
+                  <span className="text-white">my</span>
+                  <span className="text-brand-turquoise text-primary-foreground">health</span>
+                </span>
+                <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2 text-primary">
+                  checkup
+                </span>
+              </div>
+              <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
+                Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
+                <span className="text-brand-pink">choice!</span> One{" "}
+                <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
+              </p>
+            </div>
           </div>
-
         </div>
       </div>
 
       {/* ========== Pink Divider Line ========== */}
       <div className="h-[2px] bg-brand-pink" />
-
-      {/* ========== Brand Bar ========== */}
-      <div className="bg-[#060d20] py-5 sm:py-6">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-            <div className="flex items-center gap-3">
-              <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
-                <span className="text-white">my</span>
-                <span className="text-brand-turquoise text-primary-foreground">health</span>
-              </span>
-              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2 text-primary">
-                checkup
-              </span>
-            </div>
-            <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
-              Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
-              <span className="text-brand-pink">choice!</span> One{" "}
-              <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
-            </p>
-          </div>
-        </div>
-      </div>
     </footer>
   );
 };
@@ -121,9 +99,11 @@ const StayInformedSection = () => {
     <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
       {/* Two-column top: Follow Us + Compliance | Stay Informed */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-        {/* Left: Follow Us + Compliance badges */}
-        <div className="flex flex-col items-center text-center">
-          <SectionHeading title="Follow Us" />
+        {/* Left: Follow Us + Compliance badges + Copyright */}
+        <div className="w-full flex flex-col items-center text-center">
+          <div className="w-full">
+            <SectionHeading title="Follow Us" />
+          </div>
           <div className="flex gap-3 mt-1">
             <SocialIcon
               href="https://www.instagram.com/myhealthcheckup_uk"
@@ -159,7 +139,7 @@ const StayInformedSection = () => {
           </div>
 
           {/* Compliance badges */}
-          <div className="flex gap-4 items-center justify-center mt-5">
+          <div className="flex gap-4 items-center justify-center mt-3">
             <img
               src={complianceBadges}
               alt="ICO Registered, Companies House, UK GDPR compliance badges"
@@ -171,6 +151,11 @@ const StayInformedSection = () => {
               <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
             </div>
           </div>
+
+          {/* Copyright */}
+          <p className="mt-3 text-[10px] sm:text-xs text-brand-pink/80 font-sans leading-tight">
+            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+          </p>
         </div>
 
         {/* Right: Stay Informed */}
@@ -216,10 +201,24 @@ const StayInformedSection = () => {
         </div>
       </div>
 
-      {/* Condensed copyright above faint divider */}
-      <p className="mt-5 pt-3 border-t border-white/10 text-center text-[10px] sm:text-xs text-brand-pink/80 font-sans leading-tight">
-        © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
-      </p>
+      {/* Medical disclaimer (full-width, bottom of card) */}
+      <div
+        id="medical-disclaimer"
+        role="note"
+        aria-label="Medical disclaimer"
+        className="mt-6 sm:mt-8 pt-4 border-t border-white/10 text-center"
+      >
+        <p className="text-xs sm:text-sm leading-relaxed">
+          <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
+          <span className="text-white/85">
+            This site provides comparison information only and does not constitute medical advice. See our{" "}
+            <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
+              Legal Hub
+            </Link>{" "}
+            for full details.
+          </span>
+        </p>
+      </div>
     </div>
   );
 };
