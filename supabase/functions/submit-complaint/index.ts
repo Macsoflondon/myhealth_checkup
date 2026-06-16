@@ -1,5 +1,10 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "npm:resend@2.0.0";
+
+const RATE_LIMIT_MAX = 5; // max submissions per IP
+const RATE_LIMIT_WINDOW_MIN = 60; // minutes
+
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -77,7 +82,38 @@ serve(async (req: Request) => {
         400,
       );
 
+    // Per-IP rate limit (sliding window via api_rate_limits)
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (supabaseUrl && serviceKey) {
+      const supabase = createClient(supabaseUrl, serviceKey);
+      const windowStart = new Date(
+        Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000,
+      ).toISOString();
+      const { count: recentCount } = await supabase
+        .from("api_rate_limits")
+        .select("*", { count: "exact", head: true })
+        .eq("client_key", ip)
+        .eq("endpoint", "submit-complaint")
+        .gte("window_start", windowStart);
+      if ((recentCount ?? 0) >= RATE_LIMIT_MAX) {
+        return json(
+          { error: "Too many requests. Please try again later." },
+          429,
+        );
+      }
+      await supabase.from("api_rate_limits").insert({
+        client_key: ip,
+        endpoint: "submit-complaint",
+        window_start: new Date().toISOString(),
+        request_count: 1,
+      });
+    }
+
     const reference = `MHC-${Date.now().toString(36).toUpperCase()}-${Math.random()
+
       .toString(36)
       .slice(2, 6)
       .toUpperCase()}`;

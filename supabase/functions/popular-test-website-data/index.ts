@@ -1,5 +1,10 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { z } from 'npm:zod';
+
+const RATE_LIMIT_MAX = 20; // max calls per IP per window
+const RATE_LIMIT_WINDOW_MIN = 5;
+
 
 const ItemSchema = z.object({
   id: z.string().uuid(),
@@ -157,6 +162,36 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Per-IP rate limit (sliding window via api_rate_limits)
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    if (supabaseUrl && serviceKey) {
+      const sb = createClient(supabaseUrl, serviceKey);
+      const windowStart = new Date(
+        Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000,
+      ).toISOString();
+      const { count: recentCount } = await sb
+        .from('api_rate_limits')
+        .select('*', { count: 'exact', head: true })
+        .eq('client_key', ip)
+        .eq('endpoint', 'popular-test-website-data')
+        .gte('window_start', windowStart);
+      if ((recentCount ?? 0) >= RATE_LIMIT_MAX) {
+        return new Response(
+          JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+        );
+      }
+      await sb.from('api_rate_limits').insert({
+        client_key: ip,
+        endpoint: 'popular-test-website-data',
+        window_start: new Date().toISOString(),
+        request_count: 1,
+      });
+    }
+
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) {
       return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), {
@@ -164,6 +199,7 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
 
     const items = await Promise.all(
       parsed.data.items.map(async (item) => {
