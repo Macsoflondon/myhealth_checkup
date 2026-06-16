@@ -370,9 +370,9 @@ export const AssistedTestFinder = () => {
     <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
       <Button
         onClick={handleBack}
-        className="flex items-center gap-2 px-6 py-3 rounded-full bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-transparent"
+        className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#1B3A6B] hover:bg-[#1B3A6B]/5 border border-[#1B3A6B]"
       >
-        <ArrowLeft className="w-4 h-4 text-white" />
+        <ArrowLeft className="w-4 h-4 text-[#1B3A6B]" />
         Back
       </Button>
       <Button
@@ -387,7 +387,7 @@ export const AssistedTestFinder = () => {
 
   const ProgressHeader = () => (
     <div className="max-w-2xl mx-auto px-6 pt-4 pb-2">
-      <div className="flex justify-between items-center mb-2 text-sm text-muted-foreground">
+      <div className="flex justify-between items-center mb-2 text-sm text-[#1B3A6B]">
         <span>Step {currentStepIndex + 1} of {TOTAL_STEPS}</span>
         <span>{progressPercent}%</span>
       </div>
@@ -419,7 +419,7 @@ export const AssistedTestFinder = () => {
   // === WELCOME ===
   if (currentStep === 'welcome') {
     return (
-      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
             <div className="flex justify-center mb-6">
@@ -454,7 +454,7 @@ export const AssistedTestFinder = () => {
   // === LOADING ===
   if (currentStep === 'loading') {
     return (
-      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-md mx-auto">
             <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-6" />
@@ -473,7 +473,7 @@ export const AssistedTestFinder = () => {
   // === RESULTS ===
   if (currentStep === 'results' && results) {
     return (
-      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]">
         <NavigationControls />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
@@ -704,7 +704,7 @@ export const AssistedTestFinder = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+    <div className="bg-white min-h-[80vh]">
       <NavigationControls />
       <ProgressHeader />
       <div className="p-4 pb-16">{renderStepContent()}</div>
@@ -724,8 +724,8 @@ function StepLayout({
   return (
     <div className="max-w-5xl mx-auto pt-4">
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h1>
-        {subtitle && <p className="text-muted-foreground mt-2 text-lg">{subtitle}</p>}
+        <h1 className="text-3xl md:text-4xl font-bold text-[#1B3A6B] font-montserrat">{title}</h1>
+        {subtitle && <p className="text-[#1B3A6B]/70 mt-2 text-lg">{subtitle}</p>}
       </div>
       {children}
     </div>
