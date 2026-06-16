@@ -1,7 +1,14 @@
 import React, { useMemo } from "react";
-import { CheckCircle, Plus, Home, Building2 } from "lucide-react";
+import { CheckCircle, Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS } from "@/constants/providers";
+import {
+  SAMPLE_TYPE_LABELS,
+  COLLECTION_METHOD_LABELS,
+  formatCollectionFee,
+  formatClinicalReview,
+  computeTotalExpectedCost,
+} from "@/lib/comparisonFormat";
 
 const PROVIDER_NAME_TO_ID: Record<string, string> = {
   "medichecks": "medichecks",
