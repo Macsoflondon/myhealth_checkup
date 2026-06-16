@@ -140,12 +140,12 @@ export const TestFinderQuiz = () => {
     <div className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8 space-y-6">
       {/* Progress */}
       <div>
-        <div className="flex justify-between text-[11px] uppercase tracking-wide text-white/50 mb-2">
+        <div className="flex justify-between text-[11px] uppercase tracking-wide text-[#081129]/50 mb-2">
           <span>
             Step {step + 1} of {STEPS.length} · {STEPS[step]}
           </span>
         </div>
-        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+        <div className="h-1 bg-[#081129]/10 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-brand-turquoise to-brand-pink transition-all"
             style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
