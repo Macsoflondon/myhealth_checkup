@@ -12,6 +12,7 @@ type Step =
   | 'welcome'
   | 'who'
   | 'gender'
+  | 'contact-care'
   | 'age'
   | 'goal'
   | 'concerns'
