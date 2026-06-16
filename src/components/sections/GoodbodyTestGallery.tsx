@@ -5,6 +5,7 @@ import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
 import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -296,12 +297,11 @@ const GoodbodyTestGallery = () => {
 
       {/* View Profile Button */}
       <div className="flex justify-center mt-8 pb-[10px]">
-        <Link
-          to="/provider/goodbody-clinic"
-          className="bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
-        >
-          View Goodbody Profile
-        </Link>
+        <Button asChild>
+          <Link to="/provider/goodbody-clinic">
+            View Goodbody Profile
+          </Link>
+        </Button>
       </div>
 
       {/* ===== Test Detail Modal (Reference card style) ===== */}
