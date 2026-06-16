@@ -242,14 +242,6 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     </th>
                   );
                 }
-                const parsed = parseCollection(test.features?.collection || "");
-                const collNote = parsed.homeKit && parsed.clinic
-                  ? "At-home kit & venous draw"
-                  : parsed.homeKit
-                  ? "At-home kit"
-                  : parsed.clinic
-                  ? "Venous draw"
-                  : "";
                 return (
                   <th
                     key={test.id}
@@ -321,18 +313,6 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                         >
                           {formatPrice(test.price)}
                         </div>
-                        {collNote && (
-                          <div
-                            style={{
-                              fontFamily: "'DM Sans', system-ui, sans-serif",
-                              fontSize: 11,
-                              color: "rgba(255,255,255,0.65)",
-                              marginTop: 4,
-                            }}
-                          >
-                            {collNote}
-                          </div>
-                        )}
                       </div>
                     </div>
                   </th>
@@ -366,13 +346,24 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               index={3}
               slots={slots}
               render={(t) => {
-                if (!t.collectionMethod) return <Dash />;
-                return (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Check size={14} color={TURQUOISE} />
-                    <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
-                  </span>
-                );
+                if (t.collectionMethod) {
+                  return (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check size={14} color={TURQUOISE} />
+                      <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
+                    </span>
+                  );
+                }
+                const parsed = parseCollection(t.features?.collection || "");
+                if (parsed.label && parsed.label !== "—") {
+                  return (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check size={14} color={TURQUOISE} />
+                      <span>{parsed.label}</span>
+                    </span>
+                  );
+                }
+                return <Dash />;
               }}
             />
             <Row
