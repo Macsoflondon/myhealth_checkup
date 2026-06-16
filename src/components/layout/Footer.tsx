@@ -75,7 +75,7 @@ const StayInformedSection = () => {
       {/* Two-column top: Follow Us + Copyright/Disclaimer | Stay Informed */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         {/* Left: Follow Us + Copyright + Medical Disclaimer */}
-        <div className="w-full flex flex-col items-center text-center">
+        <div className="w-full flex flex-col items-center text-center h-full">
           <div className="w-full">
             <SectionHeading title="Follow Us" />
           </div>
@@ -113,19 +113,19 @@ const StayInformedSection = () => {
             </SocialIcon>
           </div>
 
-          {/* Copyright — shrunk to one line */}
-          <p className="mt-2 text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
-            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
-          </p>
-
-          {/* Medical Disclaimer — directly under copyright, one line, shrunk */}
-          <p className="text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
-            <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
-            This site provides comparison information only and does not constitute medical advice.{" "}
-            <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
-              Legal Hub
-            </Link>
-          </p>
+          {/* Copyright + Medical Disclaimer — pushed to bottom of column */}
+          <div className="mt-auto">
+            <p className="text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
+              © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+            </p>
+            <p className="text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
+              <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
+              This site provides comparison information only and does not constitute medical advice.{" "}
+              <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
+                Legal Hub
+              </Link>
+            </p>
+          </div>
         </div>
 
         {/* Right: Stay Informed */}
