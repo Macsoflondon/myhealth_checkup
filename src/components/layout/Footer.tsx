@@ -87,16 +87,34 @@ const SectionHeading = ({ title }: { title: string }) => (
 const StayInformedSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) {
-      setError(true);
-      setTimeout(() => setError(false), 2500);
+      setError("Please enter a valid email.");
+      setTimeout(() => setError(null), 2500);
       return;
     }
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke(
+        "newsletter-subscribe",
+        { body: { email: email.trim(), source: "footer", consent: true } }
+      );
+      if (fnErr || (data as any)?.error) {
+        setError((data as any)?.error || "Subscription failed. Try again.");
+        setTimeout(() => setError(null), 3000);
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError("Subscription failed. Try again.");
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
