@@ -815,6 +815,11 @@ export type Database = {
         Row: {
           accreditations: string[] | null
           availability_status: string | null
+          clinical_review_fee: number | null
+          clinical_review_type: string | null
+          collection_fee_amount: number | null
+          collection_fee_type: string | null
+          collection_method: string | null
           created_at: string
           current_price: number | null
           discount_percentage: number | null
@@ -826,6 +831,7 @@ export type Database = {
           provider_test_name: string
           provider_url: string | null
           sample_collection_method: string | null
+          sample_type: string | null
           test_master_id: string
           turnaround_time_days: number | null
           updated_at: string
@@ -833,6 +839,11 @@ export type Database = {
         Insert: {
           accreditations?: string[] | null
           availability_status?: string | null
+          clinical_review_fee?: number | null
+          clinical_review_type?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_method?: string | null
           created_at?: string
           current_price?: number | null
           discount_percentage?: number | null
@@ -844,6 +855,7 @@ export type Database = {
           provider_test_name: string
           provider_url?: string | null
           sample_collection_method?: string | null
+          sample_type?: string | null
           test_master_id: string
           turnaround_time_days?: number | null
           updated_at?: string
@@ -851,6 +863,11 @@ export type Database = {
         Update: {
           accreditations?: string[] | null
           availability_status?: string | null
+          clinical_review_fee?: number | null
+          clinical_review_type?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_method?: string | null
           created_at?: string
           current_price?: number | null
           discount_percentage?: number | null
@@ -862,6 +879,7 @@ export type Database = {
           provider_test_name?: string
           provider_url?: string | null
           sample_collection_method?: string | null
+          sample_type?: string | null
           test_master_id?: string
           turnaround_time_days?: number | null
           updated_at?: string
@@ -884,6 +902,11 @@ export type Database = {
           canonical_category: string | null
           category: string | null
           clinic_visit_available: boolean | null
+          clinical_review_fee: number | null
+          clinical_review_type: string | null
+          collection_fee_amount: number | null
+          collection_fee_type: string | null
+          collection_method: string | null
           collection_options: Json | null
           conditions: Json | null
           created_at: string
@@ -924,6 +947,11 @@ export type Database = {
           canonical_category?: string | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          clinical_review_fee?: number | null
+          clinical_review_type?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_method?: string | null
           collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
@@ -964,6 +992,11 @@ export type Database = {
           canonical_category?: string | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          clinical_review_fee?: number | null
+          clinical_review_type?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_method?: string | null
           collection_options?: Json | null
           conditions?: Json | null
           created_at?: string

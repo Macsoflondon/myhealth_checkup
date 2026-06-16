@@ -40,6 +40,14 @@ export interface CompareTestData extends Test {
   turnaroundDays?: number;
   userRating?: number;
   url?: string; // Provider booking URL
+
+  // Standardised comparison fields (optional — populated from DB when available)
+  sampleTypeCode?: 'finger_prick' | 'venous' | 'saliva' | 'urine' | 'stool' | 'buccal_swab' | 'multiple' | null;
+  collectionMethod?: 'home_kit' | 'clinic' | 'home_visit' | 'mobile_phleb' | 'third_party_phleb' | 'self_arranged' | 'multiple' | null;
+  collectionFeeType?: 'none' | 'fixed' | 'from' | 'varies' | 'self_arranged' | null;
+  collectionFeeAmount?: number | null;
+  clinicalReviewType?: 'included' | 'optional' | 'gp_included' | 'consultant_included' | 'clinician_included' | 'not_included' | 'not_available' | null;
+  clinicalReviewFee?: number | null;
 }
 
 export interface UserProfile {

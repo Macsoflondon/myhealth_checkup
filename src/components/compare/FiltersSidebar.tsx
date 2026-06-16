@@ -37,7 +37,7 @@ interface FiltersSidebarProps {
   selectedCategory: string;
   onCategoryChange: (value: string) => void;
   
-  // Sample method
+  // Sample method (legacy single-select, kept)
   sampleMethod: string;
   onSampleMethodChange: (value: string) => void;
   
@@ -48,6 +48,16 @@ interface FiltersSidebarProps {
   // GP Review
   gpReview: boolean;
   onGpReviewChange: (value: boolean) => void;
+
+  // Standardised filter groups (optional — wire up incrementally per page)
+  sampleTypes?: string[];
+  onSampleTypesChange?: (next: string[]) => void;
+  collectionMethods?: string[];
+  onCollectionMethodsChange?: (next: string[]) => void;
+  feeFilter?: 'all' | 'none' | 'additional';
+  onFeeFilterChange?: (next: 'all' | 'none' | 'additional') => void;
+  clinicalReview?: Array<'included' | 'optional' | 'not_included'>;
+  onClinicalReviewChange?: (next: Array<'included' | 'optional' | 'not_included'>) => void;
   
   // Clear all
   onClearFilters: () => void;
@@ -74,10 +84,21 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   onFastingChange,
   gpReview,
   onGpReviewChange,
+  sampleTypes,
+  onSampleTypesChange,
+  collectionMethods,
+  onCollectionMethodsChange,
+  feeFilter,
+  onFeeFilterChange,
+  clinicalReview,
+  onClinicalReviewChange,
   onClearFilters,
   isVisible = true,
   onClose,
 }) => {
+  const toggle = <T extends string>(list: T[] | undefined, value: T): T[] =>
+    list?.includes(value) ? list.filter(v => v !== value) : [...(list ?? []), value];
+
   return (
     <aside
       className={cn(
