@@ -289,12 +289,12 @@ export const TestFinderQuiz = () => {
       )}
 
       {/* Nav */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+      <div className="flex items-center justify-between pt-4 border-t border-[#081129]/10">
         <button
           type="button"
           disabled={step === 0}
           onClick={() => setStep(Math.max(0, step - 1))}
-          className="flex items-center gap-1 text-white/70 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-sm px-3 py-2"
+          className="flex items-center gap-1 text-[#081129]/70 hover:text-[#081129] disabled:opacity-30 disabled:cursor-not-allowed text-sm px-3 py-2"
         >
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
