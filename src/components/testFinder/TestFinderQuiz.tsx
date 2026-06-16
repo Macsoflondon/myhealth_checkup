@@ -81,7 +81,7 @@ const Chip = ({
     className={`text-sm px-4 py-2 rounded-full border transition-colors min-h-[44px] ${
       active
         ? "bg-brand-turquoise text-[#081129] border-brand-turquoise font-semibold"
-        : "bg-white/5 text-white border-white/15 hover:border-brand-turquoise"
+        : "bg-[#081129]/5 text-[#081129] border-[#081129]/15 hover:border-brand-turquoise"
     }`}
   >
     {children}
@@ -137,15 +137,15 @@ export const TestFinderQuiz = () => {
   };
 
   return (
-    <div className="bg-[#0F2238] border border-white/10 rounded-2xl p-5 sm:p-8 space-y-6">
+    <div className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8 space-y-6">
       {/* Progress */}
       <div>
-        <div className="flex justify-between text-[11px] uppercase tracking-wide text-white/50 mb-2">
+        <div className="flex justify-between text-[11px] uppercase tracking-wide text-[#081129]/50 mb-2">
           <span>
             Step {step + 1} of {STEPS.length} · {STEPS[step]}
           </span>
         </div>
-        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+        <div className="h-1 bg-[#081129]/10 rounded-full overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-brand-turquoise to-brand-pink transition-all"
             style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
@@ -155,8 +155,8 @@ export const TestFinderQuiz = () => {
 
       {step === 0 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">What's your sex?</h2>
-          <p className="text-white/60 text-sm">
+          <h2 className="text-[#081129] text-xl font-semibold">What's your sex?</h2>
+          <p className="text-[#081129]/60 text-sm">
             Used only to tailor recommendations — never shown as a visible filter.
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
@@ -171,7 +171,7 @@ export const TestFinderQuiz = () => {
 
       {step === 1 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">Which age band?</h2>
+          <h2 className="text-[#081129] text-xl font-semibold">Which age band?</h2>
           <div className="flex flex-wrap gap-2 pt-2">
             {AGE_BANDS.map((a) => (
               <Chip key={a} active={ageBand === a} onClick={() => setAgeBand(a)}>
@@ -184,8 +184,8 @@ export const TestFinderQuiz = () => {
 
       {step === 2 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">What are your primary goals?</h2>
-          <p className="text-white/60 text-sm">Pick one or more.</p>
+          <h2 className="text-[#081129] text-xl font-semibold">What are your primary goals?</h2>
+          <p className="text-[#081129]/60 text-sm">Pick one or more.</p>
           <div className="flex flex-wrap gap-2 pt-2">
             {GOALS.map((g) => (
               <Chip
@@ -202,8 +202,8 @@ export const TestFinderQuiz = () => {
 
       {step === 3 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">Any specific concerns?</h2>
-          <p className="text-white/60 text-sm">Optional — skip if nothing applies.</p>
+          <h2 className="text-[#081129] text-xl font-semibold">Any specific concerns?</h2>
+          <p className="text-[#081129]/60 text-sm">Optional — skip if nothing applies.</p>
           <div className="flex flex-wrap gap-2 pt-2">
             {concernOptions.map((c) => (
               <Chip
@@ -220,7 +220,7 @@ export const TestFinderQuiz = () => {
 
       {step === 4 && (
         <div className="space-y-5">
-          <h2 className="text-white text-xl font-semibold">Practical preferences</h2>
+          <h2 className="text-[#081129] text-xl font-semibold">Practical preferences</h2>
 
           <div>
             <div className="text-[11px] font-semibold uppercase tracking-wide text-brand-turquoise mb-2">
@@ -257,7 +257,7 @@ export const TestFinderQuiz = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="flex items-center gap-3 text-white/85 text-sm cursor-pointer">
+            <label className="flex items-center gap-3 text-[#081129]/85 text-sm cursor-pointer">
               <input
                 type="checkbox"
                 checked={avoidVenous}
@@ -266,7 +266,7 @@ export const TestFinderQuiz = () => {
               />
               Prefer finger-prick / avoid venous draw
             </label>
-            <label className="flex items-center gap-3 text-white/85 text-sm cursor-pointer">
+            <label className="flex items-center gap-3 text-[#081129]/85 text-sm cursor-pointer">
               <input
                 type="checkbox"
                 checked={noFees}
@@ -275,7 +275,7 @@ export const TestFinderQuiz = () => {
               />
               No additional collection fees
             </label>
-            <label className="flex items-center gap-3 text-white/85 text-sm cursor-pointer">
+            <label className="flex items-center gap-3 text-[#081129]/85 text-sm cursor-pointer">
               <input
                 type="checkbox"
                 checked={reviewIncluded}
@@ -289,12 +289,12 @@ export const TestFinderQuiz = () => {
       )}
 
       {/* Nav */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+      <div className="flex items-center justify-between pt-4 border-t border-[#081129]/10">
         <button
           type="button"
           disabled={step === 0}
           onClick={() => setStep(Math.max(0, step - 1))}
-          className="flex items-center gap-1 text-white/70 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-sm px-3 py-2"
+          className="flex items-center gap-1 text-[#081129]/70 hover:text-[#081129] disabled:opacity-30 disabled:cursor-not-allowed text-sm px-3 py-2"
         >
           <ChevronLeft className="w-4 h-4" /> Back
         </button>
