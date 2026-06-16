@@ -721,7 +721,7 @@ export const AssistedTestFinder = () => {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
-                  onClick={() => navigate('/contact')}
+                  onClick={() => navigate('/contact?topic=test-finder')}
                   className="bg-[#081129] hover:bg-[#081129]/90 text-white px-8 py-3 text-lg font-medium rounded-full"
                 >
                   Contact our customer care team
