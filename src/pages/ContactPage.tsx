@@ -50,11 +50,22 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string;
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchParams] = useSearchParams();
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: { firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' },
   });
+
+  useEffect(() => {
+    if (searchParams.get('topic') === 'test-finder') {
+      form.setValue('subject', 'Help me find a test');
+      setTimeout(() => {
+        formCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [searchParams, form]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
