@@ -245,7 +245,7 @@ const CompareTests = () => {
             </section>
 
             {/* SECTION 2 — Comparison table (always visible) */}
-            <section>
+            <section className="bg-white rounded-2xl p-6">
               <ComparisonSectionHeading className="mb-8" />
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                 <p className="font-montserrat font-semibold text-foreground text-base">
@@ -256,11 +256,11 @@ const CompareTests = () => {
               <ProviderComparisonTable tests={selectedTests} />
               <div className="flex justify-end mt-6">
                 <Button
-                  variant="shimmer"
+                  variant="default"
                   size="sm"
                   onClick={handleClearAll}
                   disabled={selectedTests.length === 0}
-                  className="font-['DM_Sans'] font-bold text-white"
+                  className="font-['DM_Sans'] font-bold text-brand-pink hover:text-brand-pink"
                 >
                   Clear
                 </Button>
