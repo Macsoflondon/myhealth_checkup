@@ -118,7 +118,8 @@ const ContactPage = () => {
             {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
-              <Card className="text-[#081129]">
+              <div ref={formCardRef}>
+                <Card className="text-[#081129]">
                 <CardHeader>
                   <CardTitle>Send Us a Message</CardTitle>
                 </CardHeader>
