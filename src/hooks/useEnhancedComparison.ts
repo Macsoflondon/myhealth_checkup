@@ -102,9 +102,9 @@ export function useEnhancedComparison() {
   const comparisonResult = useMemo((): ComparisonResult | null => {
     if (selectedTests.length < 2) return null;
 
-    // Find best value (lowest total cost)
-    const bestValue = selectedTests.reduce((best, test) => 
-      test.totalEstimatedCost < (best?.totalEstimatedCost ?? Infinity) ? test : best
+    // Find best value (lowest total expected cost)
+    const bestValue = selectedTests.reduce((best, test) =>
+      test.totalExpectedCost < (best?.totalExpectedCost ?? Infinity) ? test : best
     , selectedTests[0]);
 
     // Find fastest results
