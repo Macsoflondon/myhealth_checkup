@@ -264,10 +264,116 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 onCheckedChange={(checked) => onGpReviewChange(!!checked)}
               />
               <span className="text-sm text-foreground">
-                GP review included
+                Clinical review included
               </span>
             </label>
           </div>
+
+          {/* Standardised: Sample type */}
+          {onSampleTypesChange && (
+            <div>
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Sample type
+              </Label>
+              <div className="space-y-2">
+                {([
+                  ['finger_prick', 'Finger-prick'],
+                  ['venous', 'Venous blood draw'],
+                  ['saliva', 'Saliva'],
+                  ['urine', 'Urine'],
+                  ['stool', 'Stool'],
+                  ['buccal_swab', 'Buccal swab'],
+                ] as const).map(([value, label]) => (
+                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={sampleTypes?.includes(value) ?? false}
+                      onCheckedChange={() =>
+                        onSampleTypesChange(toggle(sampleTypes, value))
+                      }
+                    />
+                    <span className="text-sm text-foreground">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Standardised: Collection method */}
+          {onCollectionMethodsChange && (
+            <div>
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Collection method
+              </Label>
+              <div className="space-y-2">
+                {([
+                  ['home_kit', 'Home kit included'],
+                  ['clinic', 'Clinic appointment'],
+                  ['home_visit', 'Home visit'],
+                  ['mobile_phleb', 'Mobile phlebotomy'],
+                  ['third_party_phleb', 'Third-party phlebotomy'],
+                  ['self_arranged', 'Self-arranged'],
+                ] as const).map(([value, label]) => (
+                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={collectionMethods?.includes(value) ?? false}
+                      onCheckedChange={() =>
+                        onCollectionMethodsChange(toggle(collectionMethods, value))
+                      }
+                    />
+                    <span className="text-sm text-foreground">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Standardised: Additional collection fees */}
+          {onFeeFilterChange && (
+            <div>
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Additional collection fees
+              </Label>
+              <Select
+                value={feeFilter ?? 'all'}
+                onValueChange={(v) => onFeeFilterChange(v as 'all' | 'none' | 'additional')}
+              >
+                <SelectTrigger className="bg-background">
+                  <SelectValue placeholder="Any" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Any</SelectItem>
+                  <SelectItem value="none">No additional fees</SelectItem>
+                  <SelectItem value="additional">Has additional fees</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* Standardised: Clinical review */}
+          {onClinicalReviewChange && (
+            <div>
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Clinical review
+              </Label>
+              <div className="space-y-2">
+                {([
+                  ['included', 'Included in price'],
+                  ['optional', 'Optional add-on'],
+                  ['not_included', 'Not included'],
+                ] as const).map(([value, label]) => (
+                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={clinicalReview?.includes(value) ?? false}
+                      onCheckedChange={() =>
+                        onClinicalReviewChange(toggle(clinicalReview, value))
+                      }
+                    />
+                    <span className="text-sm text-foreground">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </aside>
