@@ -12,6 +12,7 @@ type Step =
   | 'welcome'
   | 'who'
   | 'gender'
+  | 'contact-care'
   | 'age'
   | 'goal'
   | 'concerns'
@@ -191,7 +192,8 @@ export const AssistedTestFinder = () => {
     (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`
   );
 
-  const currentStepIndex = stepOrder.indexOf(currentStep as any);
+  const effectiveStepForProgress = currentStep === 'contact-care' ? 'gender' : currentStep;
+  const currentStepIndex = stepOrder.indexOf(effectiveStepForProgress as any);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   useEffect(() => {
@@ -238,6 +240,10 @@ export const AssistedTestFinder = () => {
   }, []);
 
   const handleBack = () => {
+    if (currentStep === 'contact-care') {
+      setCurrentStep('gender');
+      return;
+    }
     if (currentStep === 'results' || currentStep === 'loading') {
       setCurrentStep('preferences');
       return;
@@ -263,6 +269,11 @@ export const AssistedTestFinder = () => {
   };
 
   const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
+    if (field === 'gender' && value === 'prefer-not-to-say') {
+      setAnswers(prev => ({ ...prev, gender: value }));
+      setCurrentStep('contact-care');
+      return;
+    }
     setAnswers(prev => ({ ...prev, [field]: value }));
     if (autoAdvance) {
       const idx = stepOrder.indexOf(currentStep as any);
@@ -696,6 +707,35 @@ export const AssistedTestFinder = () => {
               </div>
             </div>
           </StepLayout>
+        );
+
+      case 'contact-care':
+        return (
+          <div className="max-w-xl mx-auto pt-4">
+            <div className="bg-white rounded-3xl border border-[#081129]/10 p-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#081129] font-montserrat mb-4">
+                We want to find the best test for you
+              </h2>
+              <p className="text-[#1B3A6B]/70 text-lg mb-8">
+                Get in touch with our customer care team and we'll assist you in the best way we can.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  onClick={() => navigate('/contact')}
+                  className="bg-[#081129] hover:bg-[#081129]/90 text-white px-8 py-3 text-lg font-medium rounded-full"
+                >
+                  Contact our customer care team
+                </Button>
+                <Button
+                  onClick={handleBack}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#1B3A6B] hover:bg-[#1B3A6B]/5 border border-[#1B3A6B]"
+                >
+                  <ArrowLeft className="w-4 h-4 text-[#1B3A6B]" />
+                  Back
+                </Button>
+              </div>
+            </div>
+          </div>
         );
 
       default:
