@@ -81,7 +81,7 @@ const Chip = ({
     className={`text-sm px-4 py-2 rounded-full border transition-colors min-h-[44px] ${
       active
         ? "bg-brand-turquoise text-[#081129] border-brand-turquoise font-semibold"
-        : "bg-white/5 text-white border-white/15 hover:border-brand-turquoise"
+        : "bg-[#081129]/5 text-[#081129] border-[#081129]/15 hover:border-brand-turquoise"
     }`}
   >
     {children}
