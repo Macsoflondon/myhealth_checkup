@@ -1,23 +1,71 @@
-## Footer Card Restructure
+## Goal
 
-### Current Layout
-The `StayInformedSection` card has a two-column top row (`Follow Us` | `Stay Informed`) and a bottom row separated by a faint divider (`border-t border-white/10`) containing copyright text + compliance badges.
+Replace the ad-hoc "Sample Method / At-Home Kit / Venous Draw / Doctor Review" rows with six standardised, decision-grade rows, add a **Total Expected Cost** row, and refactor the filter system to match. Persist the new fields in Supabase so every comparison surface (test pages, provider tables, compare hub, category pages) reads from one source of truth.
 
-### Proposed Changes
-1. **Move compliance images up**  
-   Relocate the compliance badge images from the bottom row into the left column, positioned underneath the `Follow Us` social icons. Increase their size so they fill the vertical space and visually balance the `Stay Informed` subscription form on the right.
+## New comparison rows (in order)
 
-2. **Center `Follow Us` content**  
-   Align the `Follow Us` heading and social icons centrally within the left column so the social row and compliance images below it read as a single centered block.
+1. Biomarkers
+2. Turnaround Time
+3. Sample Type
+4. Collection Method
+5. Additional Collection Fees *(amber pill when > £0)*
+6. **Total Expected Cost** *(test price + mandatory fees, bold)*
+7. Clinical Review
 
-3. **Move copyright above the divider & condense**  
-   Take the copyright line (`© 2026 MYHEALTHCHECKUP LTD...`) out of the bottom row and place it just above the faint `border-t` divider. Reduce font size / padding so it fits compactly in that narrow space.
+Green check for positive values, grey dash for unavailable, amber highlight for hidden fees.
 
-4. **Remove the old bottom section**  
-   Delete the entire `mt-6 pt-5 border-t` container that currently holds the copyright and compliance badges, eliminating the empty space below the divider.
+## Database schema
 
-### Result
-The card ends cleanly after the faint divider with no orphaned whitespace. All content (social icons, compliance badges, subscription form, condensed copyright) lives within the single card boundary at the correct vertical levels.
+New migration adds nullable structured columns to `provider_test_mapping` (and mirror on `provider_tests` for scraped catalogs):
 
-### File to change
-- `src/components/layout/Footer.tsx`
+```text
+sample_type             text   -- CHECK enum
+collection_method       text   -- CHECK enum
+collection_fee_type     text   -- 'none' | 'fixed' | 'from' | 'varies' | 'self_arranged'
+collection_fee_amount   numeric(6,2)
+clinical_review_type    text   -- 'included' | 'optional' | 'gp_included' | 'consultant_included' | 'clinician_included' | 'not_included' | 'not_available'
+clinical_review_fee     numeric(6,2)
+```
+
+Allowed `sample_type`: `finger_prick`, `venous`, `saliva`, `urine`, `stool`, `buccal_swab`, `multiple`.
+Allowed `collection_method`: `home_kit`, `clinic`, `home_visit`, `mobile_phleb`, `third_party_phleb`, `self_arranged`, `multiple`.
+
+Existing `sample_collection_method` text stays for back-compat. A one-off backfill in the same migration maps known free-text values into the new structured fields.
+
+## Types & transformers
+
+- `src/types/comparison.ts`: extend `EnhancedTestData` with the six new fields plus `totalExpectedCost` (`basePrice + (collection_fee_amount ?? 0) + (clinical_review_type === 'optional' ? 0 : clinical_review_fee ?? 0)`). Extend `ComparisonFilters` with the new arrays.
+- `src/services/transformers/testDataTransformer.ts` + `src/hooks/useEnhancedComparison.ts`: populate them; gracefully `null` when missing.
+- `src/integrations/supabase/types.ts` regenerates after migration — no manual edit.
+
+## UI
+
+- `src/components/compare/EnhancedComparisonTable.tsx` and `src/components/compare/ProviderComparisonTable.tsx`: new row order, icons, amber fee pill, bold Total row.
+- New `src/lib/comparisonFormat.ts`: `SAMPLE_TYPE_LABELS`, `COLLECTION_METHOD_LABELS`, `REVIEW_LABELS`, `formatFee`, `computeTotal`.
+- `src/components/compare/TestFeatureRow.tsx`: drop hardcoded "Doctor Review" casing.
+
+## Filters
+
+- `src/components/compare/CompareFilters.tsx` / `FiltersSidebar.tsx`: four new groups — Sample Type, Collection Method, Additional Collection Fees, Clinical Review.
+- `src/components/compare/AdvancedFilters.tsx`: seven advanced toggles per brief (doctor/consultant/GP review included, home visit available, home kit only, venous required, finger-prick only).
+
+## Out of scope
+
+- Per-provider scraper updates to populate the new columns for every test (will be backfilled separately; UI renders `—` when null).
+- Admin editors for the new fields (follow-up).
+
+## Files touched
+
+- `supabase/migrations/<new>.sql` — schema + backfill
+- `src/types/comparison.ts`
+- `src/lib/comparisonFormat.ts` *(new)*
+- `src/services/transformers/testDataTransformer.ts`
+- `src/hooks/useEnhancedComparison.ts`
+- `src/components/compare/EnhancedComparisonTable.tsx`
+- `src/components/compare/ProviderComparisonTable.tsx`
+- `src/components/compare/CompareFilters.tsx`
+- `src/components/compare/FiltersSidebar.tsx`
+- `src/components/compare/AdvancedFilters.tsx`
+- `src/components/compare/TestFeatureRow.tsx`
+
+Approve and I'll ship in one pass.
