@@ -155,8 +155,8 @@ export const TestFinderQuiz = () => {
 
       {step === 0 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">What's your sex?</h2>
-          <p className="text-white/60 text-sm">
+          <h2 className="text-[#081129] text-xl font-semibold">What's your sex?</h2>
+          <p className="text-[#081129]/60 text-sm">
             Used only to tailor recommendations — never shown as a visible filter.
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
