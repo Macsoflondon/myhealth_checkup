@@ -6,6 +6,8 @@ const IntelligentSearchPage = lazy(() => import("@/pages/IntelligentSearchPage")
 const RecommendationsPage = lazy(() => import("@/pages/RecommendationsPage"));
 const ReviewSystem = lazy(() => import("@/components/reviews/ReviewSystem"));
 const AssistedTestFinderPage = lazy(() => import("@/pages/AssistedTestFinderPage"));
+const TestFinderRecommendationsPage = lazy(() => import("@/pages/TestFinderRecommendationsPage"));
+const TestFinderComparePage = lazy(() => import("@/pages/TestFinderComparePage"));
 // Clinic-finder routes disabled — pages removed. Legacy paths redirect to home.
 const ProviderProfilePage = lazy(() => import("@/pages/ProviderProfilePage"));
 const ProviderTestCatalogPage = lazy(() => import("@/pages/ProviderTestCatalogPage"));
@@ -36,6 +38,8 @@ export const featureRoutes = (
     <Route path="/recommendations" element={<RecommendationsPage />} />
     <Route path="/reviews" element={<ReviewSystem />} />
     <Route path="/find-test" element={<AssistedTestFinderPage />} />
+    <Route path="/find-test/recommendations" element={<TestFinderRecommendationsPage />} />
+    <Route path="/find-test/compare" element={<TestFinderComparePage />} />
     <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
     <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
     <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
