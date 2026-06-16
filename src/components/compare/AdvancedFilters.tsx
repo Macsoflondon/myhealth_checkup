@@ -106,7 +106,8 @@ export const AdvancedFilters = ({
     (filters.priceRange[0] !== 0 || filters.priceRange[1] !== 500 ? 1 : 0) +
     filters.accreditations.length +
     (filters.popularOnly ? 1 : 0) +
-    (filters.minBiomarkerCount !== null ? 1 : 0);
+    (filters.minBiomarkerCount !== null ? 1 : 0) +
+    (filters.serviceToggles?.length ?? 0);
 
   const handleBiomarkerToggle = (biomarker: string) => {
     const newBiomarkers = filters.biomarkers.includes(biomarker)
