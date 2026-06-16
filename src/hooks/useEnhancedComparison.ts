@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import type { EnhancedTestData, ComparisonResult, SavedComparison } from '@/types/comparison';
 import { PROVIDER_NAMES, PROVIDER_LOGOS } from '@/constants/providers';
+import { computeTotalExpectedCost } from '@/lib/comparisonFormat';
 
 
 export function useEnhancedComparison() {
@@ -17,9 +18,27 @@ export function useEnhancedComparison() {
     const basePrice = test.price || 0;
     const gpCost = test.gp_consultation_included ? 0 : (test.gp_consultation_cost || 0);
     const phlebCost = test.phlebotomy_included ? 0 : (test.phlebotomy_cost || 0);
-    
+
     const providerName = PROVIDER_NAMES[test.provider_id] || test.provider_id;
     const providerLogo = PROVIDER_LOGOS[test.provider_id] || '';
+
+    const sampleTypeCode = test.sample_type ?? null;
+    const collectionMethod = test.collection_method ?? null;
+    const collectionFeeType = test.collection_fee_type ?? null;
+    const collectionFeeAmount = test.collection_fee_amount != null
+      ? Number(test.collection_fee_amount) : null;
+    const clinicalReviewType = test.clinical_review_type ?? null;
+    const clinicalReviewFee = test.clinical_review_fee != null
+      ? Number(test.clinical_review_fee) : null;
+
+    const totalExpectedCost = computeTotalExpectedCost(
+      basePrice,
+      collectionFeeType,
+      collectionFeeAmount,
+      clinicalReviewType,
+      clinicalReviewFee,
+    );
+
     return {
       id: test.id,
       testName: test.test_name,
@@ -37,6 +56,13 @@ export function useEnhancedComparison() {
       sampleType: test.sample_type || 'finger-prick',
       homeKitAvailable: test.home_kit_available ?? true,
       clinicVisitAvailable: test.clinic_visit_available ?? false,
+      sampleTypeCode,
+      collectionMethod,
+      collectionFeeType,
+      collectionFeeAmount,
+      clinicalReviewType,
+      clinicalReviewFee,
+      totalExpectedCost,
       biomarkerCount: test.biomarker_count || extractBiomarkerCount(test.description),
       biomarkersList: test.biomarkers_list || extractBiomarkers(test.description),
       accreditations: ['UKAS', 'CQC'],
@@ -46,6 +72,7 @@ export function useEnhancedComparison() {
       lastUpdated: test.updated_at
     };
   }, []);
+
 
   // Add test to comparison
   const addToComparison = useCallback((test: EnhancedTestData) => {
