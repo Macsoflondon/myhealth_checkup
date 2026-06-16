@@ -177,6 +177,7 @@ const ContactPage = () => {
                   </Form>
                 </CardContent>
               </Card>
+              </div>
 
               {/* Provider Contact Directory */}
               <Card className="text-[#081129]">
