@@ -32,6 +32,15 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
+export type ServiceToggle =
+  | 'home_kit'
+  | 'clinic_visit'
+  | 'mobile_phleb'
+  | 'no_additional_fees'
+  | 'clinical_review_included'
+  | 'optional_clinician_review'
+  | 'finger_prick_only';
+
 export interface AdvancedFilterOptions {
   biomarkers: string[];
   priceRange: [number, number];
@@ -41,6 +50,7 @@ export interface AdvancedFilterOptions {
   accreditations: string[];
   popularOnly: boolean;
   minBiomarkerCount: number | null;
+  serviceToggles?: ServiceToggle[];
 }
 
 interface AdvancedFiltersProps {
