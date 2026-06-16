@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { CheckCircle, Plus, Check } from "lucide-react";
+import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import {
