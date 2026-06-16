@@ -709,6 +709,35 @@ export const AssistedTestFinder = () => {
           </StepLayout>
         );
 
+      case 'contact-care':
+        return (
+          <div className="max-w-xl mx-auto pt-4">
+            <div className="bg-white rounded-3xl border border-[#081129]/10 p-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#081129] font-montserrat mb-4">
+                We want to find the best test for you
+              </h2>
+              <p className="text-[#1B3A6B]/70 text-lg mb-8">
+                Get in touch with our customer care team and we'll assist you in the best way we can.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  onClick={() => navigate('/contact')}
+                  className="bg-[#081129] hover:bg-[#081129]/90 text-white px-8 py-3 text-lg font-medium rounded-full"
+                >
+                  Contact our customer care team
+                </Button>
+                <Button
+                  onClick={handleBack}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#1B3A6B] hover:bg-[#1B3A6B]/5 border border-[#1B3A6B]"
+                >
+                  <ArrowLeft className="w-4 h-4 text-[#1B3A6B]" />
+                  Back
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
