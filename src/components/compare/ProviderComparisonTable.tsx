@@ -64,8 +64,6 @@ const parseCollection = (collection: string): ParsedCollection => {
   return { homeKit, clinic, label };
 };
 
-const hasAccreditation = (test: CompareTestData, needle: string): boolean =>
-  (test.accreditations || []).some((a) => a.toLowerCase().includes(needle.toLowerCase()));
 
 const formatPrice = (price: number): string =>
   price == null || Number.isNaN(price) ? "—" : `£${price.toFixed(2)}`;
