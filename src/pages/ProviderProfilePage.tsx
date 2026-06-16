@@ -12,6 +12,7 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
+import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 
 const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
   'goodbody-clinic': '/providers/goodbody-clinic',
