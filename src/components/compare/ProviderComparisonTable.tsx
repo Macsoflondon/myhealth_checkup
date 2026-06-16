@@ -242,14 +242,6 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     </th>
                   );
                 }
-                const parsed = parseCollection(test.features?.collection || "");
-                const collNote = parsed.homeKit && parsed.clinic
-                  ? "At-home kit & venous draw"
-                  : parsed.homeKit
-                  ? "At-home kit"
-                  : parsed.clinic
-                  ? "Venous draw"
-                  : "";
                 return (
                   <th
                     key={test.id}
