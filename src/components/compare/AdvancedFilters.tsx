@@ -299,6 +299,9 @@ export const AdvancedFilters = ({
                         checked={filters.bloodDraw === true}
                         onCheckedChange={handleBloodDrawToggle}
                       />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Standardised service toggles */}
@@ -337,9 +340,6 @@ export const AdvancedFilters = ({
                       </div>
                     );
                   })}
-                </div>
-              </div>
-                  </div>
                 </div>
               </div>
 
