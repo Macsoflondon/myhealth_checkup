@@ -313,18 +313,6 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                         >
                           {formatPrice(test.price)}
                         </div>
-                        {collNote && (
-                          <div
-                            style={{
-                              fontFamily: "'DM Sans', system-ui, sans-serif",
-                              fontSize: 11,
-                              color: "rgba(255,255,255,0.65)",
-                              marginTop: 4,
-                            }}
-                          >
-                            {collNote}
-                          </div>
-                        )}
                       </div>
                     </div>
                   </th>
