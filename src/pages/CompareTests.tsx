@@ -126,7 +126,7 @@ const CompareTests = () => {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-background">
+      <div className="min-h-screen flex flex-col bg-card">
         <Helmet>
           <title>Compare Blood Tests | myhealth checkup</title>
           <meta
@@ -182,11 +182,11 @@ const CompareTests = () => {
           })}</script>
         </Helmet>
 
-        <MainLayout>
+        <MainLayout mainClassName="flex-1 bg-card">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             {/* SECTION 1 — Recommended / Search */}
             <section className="mb-12">
-              <h1 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-white font-montserrat mb-6">
+              <h1 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-foreground font-montserrat mb-6">
                 {effectiveCategory && effectiveCategory !== "all"
                   ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
                   : "Compare Private Blood Tests"}
@@ -206,7 +206,7 @@ const CompareTests = () => {
                       setFilters(prev => ({ ...prev, searchQuery: e.target.value }))
                     }
                     placeholder="Search tests by name, biomarker, or provider…"
-                    className="w-full h-12 pl-11 pr-11 rounded-full border border-border bg-white text-sm font-['DM_Sans'] text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-turquoise/40 focus:border-brand-turquoise transition"
+                    className="w-full h-12 pl-11 pr-11 rounded-full border border-border bg-card text-sm font-['DM_Sans'] text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                   />
                   {filters.searchQuery && (
                     <button
@@ -245,7 +245,7 @@ const CompareTests = () => {
             </section>
 
             {/* SECTION 2 — Comparison table (always visible) */}
-            <section className="bg-white rounded-2xl p-6">
+            <section className="bg-card p-0">
               <ComparisonSectionHeading className="mb-8" />
               <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                 <p className="font-montserrat font-semibold text-foreground text-base">
@@ -256,11 +256,11 @@ const CompareTests = () => {
               <ProviderComparisonTable tests={selectedTests} />
               <div className="flex justify-end mt-6">
                 <Button
-                  variant="shimmer"
-                  size="sm"
+                  variant="brandPill"
+                  size="default"
                   onClick={handleClearAll}
                   disabled={selectedTests.length === 0}
-                  className="font-['DM_Sans'] font-bold"
+                  className="font-semibold px-5 py-2.5"
                 >
                   Clear
                 </Button>
