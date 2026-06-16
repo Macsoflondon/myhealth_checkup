@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import complianceBadges from "@/assets/compliance/compliance-badges.svg";
-import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.webp";
-
 
 const Footer = () => {
-
-
   return (
     <footer>
       {/* ========== Top Gradient Divider ========== */}
@@ -21,26 +16,6 @@ const Footer = () => {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <StayInformedSection />
-
-          {/* ========== Brand Bar ========== */}
-          <div className="mt-8 sm:mt-10">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-3">
-                <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
-                  <span className="text-white">my</span>
-                  <span className="text-brand-turquoise text-primary-foreground">health</span>
-                </span>
-                <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2 text-primary">
-                  checkup
-                </span>
-              </div>
-              <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
-                Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
-                <span className="text-brand-pink">choice!</span> One{" "}
-                <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -97,9 +72,9 @@ const StayInformedSection = () => {
 
   return (
     <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-      {/* Two-column top: Follow Us + Compliance | Stay Informed */}
+      {/* Two-column top: Follow Us + Copyright/Disclaimer | Stay Informed */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-        {/* Left: Follow Us + Compliance badges + Copyright */}
+        {/* Left: Follow Us + Copyright + Medical Disclaimer */}
         <div className="w-full flex flex-col items-center text-center">
           <div className="w-full">
             <SectionHeading title="Follow Us" />
@@ -138,23 +113,18 @@ const StayInformedSection = () => {
             </SocialIcon>
           </div>
 
-          {/* Compliance badges */}
-          <div className="flex gap-4 items-center justify-center mt-3">
-            <img
-              src={complianceBadges}
-              alt="ICO Registered, Companies House, UK GDPR compliance badges"
-              loading="lazy"
-              decoding="async"
-              className="h-20 sm:h-24 w-auto object-contain"
-            />
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-brand-navy flex items-center justify-center p-2">
-              <img src={cyberEssentialsLogo} alt="Cyber Essentials" loading="lazy" decoding="async" className="w-full h-full object-contain" />
-            </div>
-          </div>
-
-          {/* Copyright */}
-          <p className="mt-3 text-[10px] sm:text-xs text-brand-pink/80 font-sans leading-tight">
+          {/* Copyright — shrunk to one line */}
+          <p className="mt-2 text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
             © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+          </p>
+
+          {/* Medical Disclaimer — directly under copyright, one line, shrunk */}
+          <p className="text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
+            <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
+            This site provides comparison information only and does not constitute medical advice.{" "}
+            <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
+              Legal Hub
+            </Link>
           </p>
         </div>
 
@@ -201,23 +171,27 @@ const StayInformedSection = () => {
         </div>
       </div>
 
-      {/* Medical disclaimer (full-width, bottom of card) */}
-      <div
-        id="medical-disclaimer"
-        role="note"
-        aria-label="Medical disclaimer"
-        className="mt-6 sm:mt-8 pt-4 border-t border-white/10 text-center"
-      >
-        <p className="text-xs sm:text-sm leading-relaxed">
-          <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
-          <span className="text-white/85">
-            This site provides comparison information only and does not constitute medical advice. See our{" "}
-            <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
-              Legal Hub
-            </Link>{" "}
-            for full details.
-          </span>
-        </p>
+      {/* Brand Bar — moved to where medical disclaimer was */}
+      <div className="mt-6 sm:mt-8">
+        <div className="h-[2px] bg-brand-pink" />
+        <div className="pt-4 text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-3">
+              <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
+                <span className="text-white">my</span>
+                <span className="text-brand-turquoise text-primary-foreground">health</span>
+              </span>
+              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2 text-primary">
+                checkup
+              </span>
+            </div>
+            <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
+              Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
+              <span className="text-brand-pink">choice!</span> One{" "}
+              <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
