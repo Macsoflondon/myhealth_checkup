@@ -202,8 +202,8 @@ export const TestFinderQuiz = () => {
 
       {step === 3 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">Any specific concerns?</h2>
-          <p className="text-white/60 text-sm">Optional — skip if nothing applies.</p>
+          <h2 className="text-[#081129] text-xl font-semibold">Any specific concerns?</h2>
+          <p className="text-[#081129]/60 text-sm">Optional — skip if nothing applies.</p>
           <div className="flex flex-wrap gap-2 pt-2">
             {concernOptions.map((c) => (
               <Chip
