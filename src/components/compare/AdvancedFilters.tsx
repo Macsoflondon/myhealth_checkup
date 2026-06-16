@@ -299,7 +299,46 @@ export const AdvancedFilters = ({
                         checked={filters.bloodDraw === true}
                         onCheckedChange={handleBloodDrawToggle}
                       />
-                    </div>
+              </div>
+
+              {/* Standardised service toggles */}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium">Sample & collection options</Label>
+                <div className="grid grid-cols-1 gap-2">
+                  {([
+                    ['home_kit', 'Home kit included'],
+                    ['clinic_visit', 'Clinic appointment included'],
+                    ['mobile_phleb', 'Mobile phlebotomy available'],
+                    ['no_additional_fees', 'No additional collection fees'],
+                    ['clinical_review_included', 'Clinical review included in price'],
+                    ['optional_clinician_review', 'Optional clinician review available'],
+                    ['finger_prick_only', 'Finger-prick only (no needles)'],
+                  ] as const).map(([value, label]) => {
+                    const checked = filters.serviceToggles?.includes(value) ?? false;
+                    return (
+                      <div
+                        key={value}
+                        className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <Label htmlFor={`svc-${value}`} className="cursor-pointer text-sm">
+                          {label}
+                        </Label>
+                        <Checkbox
+                          id={`svc-${value}`}
+                          checked={checked}
+                          onCheckedChange={() => {
+                            const current = filters.serviceToggles ?? [];
+                            const next = checked
+                              ? current.filter(v => v !== value)
+                              : [...current, value];
+                            onFiltersChange({ ...filters, serviceToggles: next });
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
                   </div>
                 </div>
               </div>
