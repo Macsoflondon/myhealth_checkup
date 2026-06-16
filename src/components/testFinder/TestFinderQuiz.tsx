@@ -171,7 +171,7 @@ export const TestFinderQuiz = () => {
 
       {step === 1 && (
         <div className="space-y-3">
-          <h2 className="text-white text-xl font-semibold">Which age band?</h2>
+          <h2 className="text-[#081129] text-xl font-semibold">Which age band?</h2>
           <div className="flex flex-wrap gap-2 pt-2">
             {AGE_BANDS.map((a) => (
               <Chip key={a} active={ageBand === a} onClick={() => setAgeBand(a)}>
