@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
@@ -9,7 +9,7 @@ import { ProviderComparisonTable } from "@/components/compare/ProviderComparison
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { Search, X, FlaskConical, Building2, PoundSterling } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
