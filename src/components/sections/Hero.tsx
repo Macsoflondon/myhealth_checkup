@@ -6,8 +6,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
-import heroResults from "@/assets/hero/hero-mobile-results-zoomed.jpeg";
-import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.png";
+import heroResults from "@/assets/hero/hero-mobile-results-zoomed.webp";
+import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.webp";
 import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
 
 type SlideTheme = {
