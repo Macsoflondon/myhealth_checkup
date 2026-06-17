@@ -17,15 +17,23 @@ const ProviderComparisonTable = () => {
           <FullProviderComparisonTable tests={display} />
         </div>
         <div className="flex justify-end mt-6">
-          <Button
-            variant="shimmer"
-            size="sm"
+          <button
+            type="button"
             onClick={() => compareStore.clear()}
             disabled={selected.length === 0}
-            className="font-['DM_Sans'] font-bold text-white"
+            className="inline-block rounded-full px-5 py-2.5 text-[13px] font-semibold text-white font-['Montserrat'] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+            style={{
+              background: selected.length === 0 ? "#cbd5e1" : "#e70d69",
+            }}
+            onMouseEnter={(e) => {
+              if (selected.length > 0) e.currentTarget.style.background = "#c40a5a";
+            }}
+            onMouseLeave={(e) => {
+              if (selected.length > 0) e.currentTarget.style.background = "#e70d69";
+            }}
           >
             Clear
-          </Button>
+          </button>
         </div>
       </div>
     </section>
