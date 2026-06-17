@@ -607,6 +607,45 @@ export type Database = {
         }
         Relationships: []
       }
+      popular_test_enrichment_cache: {
+        Row: {
+          created_at: string
+          description: string | null
+          fetched_at: string
+          image_url: string | null
+          price: number | null
+          provider_id: string
+          test_id: string
+          title: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          fetched_at?: string
+          image_url?: string | null
+          price?: number | null
+          provider_id: string
+          test_id: string
+          title?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          fetched_at?: string
+          image_url?: string | null
+          price?: number | null
+          provider_id?: string
+          test_id?: string
+          title?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       price_alert_preferences: {
         Row: {
           created_at: string
