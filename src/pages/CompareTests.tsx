@@ -246,10 +246,13 @@ const CompareTests = () => {
 
             {/* SECTION 2 — Comparison table (only when 2+ selected) */}
             {selectedTests.length >= 2 && (
-              <section className="bg-card p-0 animate-fade-in">
+              <section
+                className="p-6 sm:p-8 rounded-2xl animate-fade-in"
+                style={{ backgroundColor: "#222b45" }}
+              >
                 <ComparisonSectionHeading className="mb-8" />
                 <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                  <p className="font-montserrat font-semibold text-foreground text-base">
+                  <p className="font-montserrat font-semibold text-white text-base">
                     Comparing {selectedTests.length} tests
                   </p>
                 </div>
