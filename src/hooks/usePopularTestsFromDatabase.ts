@@ -283,8 +283,10 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
 
       return enrichTestsFromWebsite(diverseTests);
     },
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000
+    staleTime: 60 * 60 * 1000, // 1h — backed by edge function cache
+    gcTime: 2 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 };
 

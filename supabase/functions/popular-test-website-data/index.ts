@@ -200,13 +200,63 @@ Deno.serve(async (req) => {
       });
     }
 
+    const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
+    const sb = supabaseUrl && serviceKey ? createClient(supabaseUrl, serviceKey) : null;
 
-    const items = await Promise.all(
+    // Read cache
+    const ids = parsed.data.items.map((i) => i.id);
+    const cached = sb
+      ? (await sb
+          .from('popular_test_enrichment_cache')
+          .select('test_id, title, description, image_url, price, fetched_at')
+          .in('test_id', ids)).data ?? []
+      : [];
+    const cacheMap = new Map(cached.map((row) => [row.test_id, row]));
+    const cutoff = Date.now() - CACHE_TTL_MS;
+
+    const results = await Promise.all(
       parsed.data.items.map(async (item) => {
+        const hit = cacheMap.get(item.id);
+        if (hit && hit.fetched_at && new Date(hit.fetched_at).getTime() > cutoff) {
+          return {
+            id: item.id,
+            provider_id: item.provider_id,
+            title: hit.title ?? item.test_name,
+            description: hit.description ?? null,
+            image_url: hit.image_url ?? null,
+            price: hit.price ?? null,
+            url: item.url,
+          };
+        }
         try {
-          return await scrapeProductPage(item);
+          const fresh = await scrapeProductPage(item);
+          if (sb) {
+            await sb.from('popular_test_enrichment_cache').upsert({
+              test_id: item.id,
+              provider_id: item.provider_id,
+              url: item.url,
+              title: fresh.title,
+              description: fresh.description,
+              image_url: fresh.image_url,
+              price: fresh.price,
+              fetched_at: new Date().toISOString(),
+            });
+          }
+          return fresh;
         } catch (error) {
           console.error('popular-test-website-data scrape failed', item.url, error);
+          // Fall back to stale cache if available
+          if (hit) {
+            return {
+              id: item.id,
+              provider_id: item.provider_id,
+              title: hit.title ?? item.test_name,
+              description: hit.description ?? null,
+              image_url: hit.image_url ?? null,
+              price: hit.price ?? null,
+              url: item.url,
+            };
+          }
           return {
             id: item.id,
             provider_id: item.provider_id,
@@ -220,9 +270,13 @@ Deno.serve(async (req) => {
       })
     );
 
-    return new Response(JSON.stringify({ items }), {
+    return new Response(JSON.stringify({ items: results }), {
       status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600',
+      },
     });
   } catch (error) {
     console.error('popular-test-website-data fatal', error);
