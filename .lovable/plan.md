@@ -1,11 +1,12 @@
-## Button Styling Fixes
+## Objective
+Update the Featured Publications section heading so the main title is "Press & Media" rather than repeating the "As Seen In" section label.
 
-### 1. Clear Button — `src/components/sections/ProviderComparisonTable.tsx`
-- Change default background from `#e70d69` (pink) to `#22c0d4` (turquoise).
-- On hover, change background from `#c40a5a` (dark pink) to `#e70d69` (pink).
-- Increase size to match `Find Your Test` buttons (`h-11`, `px-8`, `text-base`).
-- Keep disabled state as slate grey.
+## Change Details
 
-### 2. Book Now Buttons — `src/components/compare/ProviderComparisonTable.tsx`
-- Default background stays `#e70d69` (pink).
-- On hover, change background from `#c40a5a` (dark pink) to `#22c0d4` (turquoise).
+### File: `src/components/sections/FeaturedPublications.tsx`
+- **Line 71** (inside the `<h2>` element): change the text content from `As Seen In` to `Press & Media`.
+- **Line 65** (the turquoise section label above the heading): leave as `As Seen In` — this acts as the section identifier.
+
+### Verification
+- Confirm no other "As Seen In" headings are duplicated within the same section context on the homepage.
+- Ensure the visual hierarchy remains intact (turquoise label + white heading).
