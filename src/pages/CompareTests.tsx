@@ -126,7 +126,7 @@ const CompareTests = () => {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-card">
+      <div className="min-h-screen flex flex-col bg-white">
         <Helmet>
           <title>Compare Blood Tests | myhealth checkup</title>
           <meta
@@ -182,7 +182,7 @@ const CompareTests = () => {
           })}</script>
         </Helmet>
 
-        <MainLayout mainClassName="flex-1 bg-card">
+        <MainLayout mainClassName="flex-1 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             {/* SECTION 1 — Recommended / Search */}
             <section className="mb-12">
@@ -246,10 +246,13 @@ const CompareTests = () => {
 
             {/* SECTION 2 — Comparison table (only when 2+ selected) */}
             {selectedTests.length >= 2 && (
-              <section className="bg-card p-0 animate-fade-in">
+              <section
+                className="p-6 sm:p-8 rounded-2xl animate-fade-in"
+                style={{ backgroundColor: "#222b45" }}
+              >
                 <ComparisonSectionHeading className="mb-8" />
                 <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                  <p className="font-montserrat font-semibold text-foreground text-base">
+                  <p className="font-montserrat font-semibold text-white text-base">
                     Comparing {selectedTests.length} tests
                   </p>
                 </div>
