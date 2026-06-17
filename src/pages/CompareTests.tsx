@@ -182,7 +182,7 @@ const CompareTests = () => {
           })}</script>
         </Helmet>
 
-        <MainLayout mainClassName="flex-1 bg-card">
+        <MainLayout mainClassName="flex-1 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             {/* SECTION 1 — Recommended / Search */}
             <section className="mb-12">
