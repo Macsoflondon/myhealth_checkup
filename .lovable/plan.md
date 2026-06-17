@@ -1,17 +1,13 @@
-## Fix Goodbody Bento Layout Imbalance
+## Objective
+In `ProviderTestDetailModal.tsx`, rearrange the CTA buttons so **Compare** sits to the left of **Book** and they display side-by-side rather than stacked.
 
-The desktop bento grid in `src/components/sections/GoodbodyBentoShowcase.tsx` is misaligned because the central callout panel (col-span-2, row-span-2) is taller than two natural square rows. This stretches rows 2–3, leaves the logo card in row 1 looking empty, and inflates the kit tiles around it.
+## What will change
+1. **Order swap**: The Compare button renders first (left), Book button renders second (right).
+2. **Layout**: Change the buttons container from vertical stack to a horizontal flex row.
+3. **Responsiveness**: On narrow viewports they should remain usable—likely via a `flex-col sm:flex-row` container with equal width buttons (`flex-1`) on larger screens.
 
-Tighten the callout so it fits within two square-row heights, letting all rows align:
+## Files
+- `src/components/providers/ProviderTestDetailModal.tsx` — update the CTA block (lines ~373-405)
 
-- Reduce callout padding: `p-6 sm:p-8` → `p-5 sm:p-6`
-- Reduce text size: `text-sm sm:text-base` → `text-xs sm:text-sm`
-- Tighter leading + spacing: `leading-relaxed` → `leading-snug`, `mb-3` → `mb-2`, `mt-5` → `mt-3`
-- Trim the third paragraph slightly so it doesn't push the box taller:
-  - From: "Choose from over **60 blood and wellness tests**, each processed in **UKAS-accredited laboratories** and reviewed by a GP. Proactive health, made simple, reliable, and within reach."
-  - To: "Over **60 blood and wellness tests**, processed in **UKAS-accredited laboratories** and reviewed by a GP."
-- Make the button compact: add `size="sm"` to the `Button`.
-
-Mobile layout (the `sm:hidden` block) is unchanged — it already stacks correctly.
-
-No other files touched.
+## No other scope
+No changes to compare logic, navigation, styling tokens, or other components.
