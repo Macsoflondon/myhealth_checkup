@@ -141,10 +141,10 @@ export function UnifiedTestCard({
         }
       }}
       className={cn(
-        "rounded-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden border transition-all duration-300",
+        "rounded-2xl w-full max-w-[360px] bg-[#08122b] flex flex-col h-full overflow-hidden border-2 transition-all duration-300",
         compareSelected
-          ? "border-brand-turquoise shadow-lg shadow-brand-turquoise/20"
-          : "border-border shadow-md hover:shadow-xl",
+          ? "border-brand-turquoise shadow-lg shadow-brand-turquoise/30 ring-2 ring-brand-turquoise/40"
+          : "border-brand-turquoise/40 shadow-md hover:border-brand-pink hover:shadow-2xl hover:shadow-brand-pink/25",
         hovered && "-translate-y-1",
         testDetails && "cursor-pointer",
         className
