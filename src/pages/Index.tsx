@@ -9,7 +9,7 @@ import { useMobileOptimization } from "@/hooks/use-mobile";
 
 // Hero first-slide images — preloaded for LCP optimisation
 import heroSlide1Desktop from "@/assets/hero/hero-home-kit.webp";
-import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-kit-open.png";
+import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-kit-open.webp";
 
 // Above-the-fold: eager
 import Hero from "@/components/sections/Hero";
