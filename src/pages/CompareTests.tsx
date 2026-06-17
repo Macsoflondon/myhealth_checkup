@@ -183,69 +183,70 @@ const CompareTests = () => {
         </Helmet>
 
         <MainLayout mainClassName="flex-1 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-            {/* SECTION 1 — Recommended / Search */}
-            <section className="mb-12">
-              <h1 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold text-foreground font-montserrat mb-6">
+          {/* HERO — white, centered H1 + premium search */}
+          <section className="bg-white pt-16 sm:pt-20 pb-10 sm:pb-12 px-4 sm:px-6">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="font-montserrat text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#081129] mb-8">
                 {effectiveCategory && effectiveCategory !== "all"
                   ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
                   : "Compare Private Blood Tests"}
               </h1>
 
-              {/* Search bar */}
-              <div className="max-w-2xl mx-auto mb-8">
-                <div className="relative">
-                  <Search
-                    size={18}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-                  />
-                  <input
-                    type="text"
-                    value={filters.searchQuery}
-                    onChange={(e) =>
-                      setFilters(prev => ({ ...prev, searchQuery: e.target.value }))
-                    }
-                    placeholder="Search tests by name, biomarker, or provider…"
-                    className="w-full h-12 pl-11 pr-11 rounded-full border border-border bg-card text-sm font-['DM_Sans'] text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
-                  />
-                  {filters.searchQuery && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setFilters(prev => ({ ...prev, searchQuery: "" }))
-                      }
-                      aria-label="Clear search"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-muted text-muted-foreground"
-                    >
-                      <X size={16} />
-                    </button>
-                  )}
-                </div>
+              <div className="relative group max-w-2xl mx-auto">
+                <Search
+                  size={20}
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#22c0d4] transition-colors"
+                />
+                <input
+                  type="text"
+                  value={filters.searchQuery}
+                  onChange={(e) =>
+                    setFilters(prev => ({ ...prev, searchQuery: e.target.value }))
+                  }
+                  placeholder="Search tests by name, biomarker, or provider…"
+                  className="w-full pl-12 pr-12 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#22c0d4]/20 focus:border-[#22c0d4] transition-all text-base sm:text-lg placeholder-gray-400 text-[#081129]"
+                />
+                {filters.searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setFilters(prev => ({ ...prev, searchQuery: "" }))}
+                    aria-label="Clear search"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-gray-100 text-gray-400"
+                  >
+                    <X size={18} />
+                  </button>
+                )}
               </div>
+            </div>
+          </section>
 
-              {/* Horizontal scrolling cards */}
+          {/* DARK BAND — recommended / search results */}
+          <section className="bg-[#081129] py-16 sm:py-20 px-4 sm:px-6">
+            <div className="max-w-7xl mx-auto">
               {showLoading ? (
                 <div className="flex gap-4 pb-4 overflow-x-auto">
                   {Array.from({ length: 4 }).map((_, i) => (
                     <div
                       key={i}
-                      className="w-[300px] h-[420px] bg-muted animate-pulse rounded-2xl flex-shrink-0"
+                      className="w-[300px] h-[420px] bg-white/5 animate-pulse rounded-2xl flex-shrink-0"
                     />
                   ))}
                 </div>
               ) : displayTests.length === 0 ? (
-                <p className="text-center text-sm text-muted-foreground py-12">
+                <p className="text-center text-sm text-white/60 py-12">
                   No tests found for this search.
                 </p>
               ) : (
-                <div className="flex gap-4 pb-4 overflow-x-auto">
+                <div className="flex gap-5 pb-4 overflow-x-auto">
                   {displayTests.map(renderCard)}
                 </div>
               )}
-            </section>
+            </div>
+          </section>
 
-            {/* SECTION 2 — Comparison table (only when 2+ selected) */}
-            {selectedTests.length >= 2 && (
+          {/* SECTION 2 — Comparison table (only when 2+ selected) */}
+          {selectedTests.length >= 2 && (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
               <section
                 className="p-6 sm:p-8 rounded-2xl animate-fade-in"
                 style={{ backgroundColor: "#222b45" }}
@@ -269,8 +270,8 @@ const CompareTests = () => {
                   </Button>
                 </div>
               </section>
-            )}
-          </div>
+            </div>
+          )}
         </MainLayout>
 
       </div>
