@@ -112,11 +112,11 @@ const StayInformedSection = () => {
           </div>
 
           {/* Copyright + Medical Disclaimer — pushed to bottom of column */}
-          <div className="mt-auto">
-            <p className="text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
+          <div className="mt-6 sm:mt-auto w-full space-y-2 px-1">
+            <p className="text-[10px] sm:text-[11px] text-white/60 leading-snug text-center break-words">
               © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
             </p>
-            <p className="text-[8px] sm:text-[10px] text-white/60 whitespace-nowrap leading-tight">
+            <p className="text-[10px] sm:text-[11px] text-white/60 leading-snug text-center break-words">
               <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
               This site provides comparison information only and does not constitute medical advice.{" "}
               <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
@@ -154,7 +154,7 @@ const StayInformedSection = () => {
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="bg-brand-turquoise hover:bg-[#1aa8bb] disabled:opacity-60 text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
+                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
               >
                 {loading ? "Subscribing…" : "Subscribe"}
               </button>
