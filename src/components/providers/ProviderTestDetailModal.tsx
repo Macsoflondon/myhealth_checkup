@@ -371,11 +371,23 @@ export default function ProviderTestDetailModal({
           </div>
 
           {/* CTAs */}
-          <div className="space-y-2 pt-1">
+          <div className="flex flex-col sm:flex-row gap-2 pt-1">
+            <Button
+              variant="outline"
+              onClick={handleCompare}
+              className="flex-1 h-14 text-sm font-semibold rounded-full bg-white border-2 border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4] hover:text-white transition-colors"
+            >
+              {inCompare ? (
+                <><Check className="w-4 h-4 mr-1.5" /> In compare — view list</>
+              ) : (
+                <>+ Compare this test</>
+              )}
+            </Button>
+
             {test.url ? (
               <Button
                 asChild
-                className="w-full h-14 text-base font-semibold rounded-full bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300 shadow-md"
+                className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300 shadow-md"
               >
                 <a href={test.url} target="_blank" rel="noopener noreferrer">
                   Book with {providerName}
@@ -385,23 +397,11 @@ export default function ProviderTestDetailModal({
             ) : (
               <Button
                 disabled
-                className="w-full h-14 text-base font-semibold rounded-full bg-[#e70d69] text-white opacity-60"
+                className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] text-white opacity-60"
               >
                 Book with {providerName}
               </Button>
             )}
-
-            <Button
-              variant="outline"
-              onClick={handleCompare}
-              className="w-full h-12 text-sm font-semibold rounded-full bg-white border-2 border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4] hover:text-white transition-colors"
-            >
-              {inCompare ? (
-                <><Check className="w-4 h-4 mr-1.5" /> In compare — view list</>
-              ) : (
-                <>+ Compare this test</>
-              )}
-            </Button>
           </div>
 
           {test.url && (
