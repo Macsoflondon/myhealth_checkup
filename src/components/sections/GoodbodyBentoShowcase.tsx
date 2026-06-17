@@ -167,18 +167,18 @@ const GoodbodyBentoShowcase = () => {
         <div className="aspect-square">
           <KitTile src={KIT.wellManFp} alt="Essential Well Man Fingerprint Test" label="Essential Well Man" href="/tests/mens-health" />
         </div>
-        <div className="col-span-2 row-span-2 rounded-2xl bg-white shadow-md p-6 sm:p-8 flex flex-col justify-center text-center text-[#081129] font-sans">
-          <p className="text-sm sm:text-base leading-relaxed mb-3">
+        <div className="col-span-2 row-span-2 rounded-2xl bg-white shadow-md p-5 sm:p-6 flex flex-col justify-center text-center text-[#081129] font-sans">
+          <p className="text-xs sm:text-sm leading-snug mb-2">
             <strong className="text-[#47a970]">Goodbody Clinics</strong> delivers <strong className="text-[#47a970]">high-quality private blood tests</strong> and <strong className="text-[#47a970]">cancer screening</strong> that are accessible, affordable, and convenient.
           </p>
-          <p className="text-sm sm:text-base leading-relaxed mb-3">
+          <p className="text-xs sm:text-sm leading-snug mb-2">
             With <strong className="text-[#47a970]">clinical-grade accuracy</strong> and high-street accessibility, we empower people to take control of their health with confidence.
           </p>
-          <p className="text-sm sm:text-base leading-relaxed">
-            Choose from over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, each processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP. Proactive health, made simple, reliable, and within reach.
+          <p className="text-xs sm:text-sm leading-snug">
+            Over <strong className="text-[#47a970]">60 blood and wellness tests</strong>, processed in <strong className="text-[#47a970]">UKAS-accredited laboratories</strong> and reviewed by a GP.
           </p>
-          <div className="flex justify-center mt-5">
-            <Button asChild>
+          <div className="flex justify-center mt-3">
+            <Button asChild size="sm">
               <Link to="/provider/goodbody-clinic">
                 View Goodbody Profile
               </Link>
