@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
@@ -9,7 +9,7 @@ import { ProviderComparisonTable } from "@/components/compare/ProviderComparison
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { Search, X, FlaskConical, Building2, PoundSterling } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
@@ -183,19 +183,51 @@ const CompareTests = () => {
         </Helmet>
 
         <MainLayout mainClassName="flex-1 bg-white">
-          {/* HERO — white, centered H1 + premium search */}
-          <section className="bg-white pt-16 sm:pt-20 pb-10 sm:pb-12 px-4 sm:px-6">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="font-montserrat text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#081129] mb-8">
+          {/* CATEGORY HEADER — dark band with heading, stats, search */}
+          <section className="py-16 sm:py-20 px-4 sm:px-6" style={{ backgroundColor: "#222b45" }}>
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
                 {effectiveCategory && effectiveCategory !== "all"
-                  ? `Compare ${getCategoryDisplayName(effectiveCategory)}`
+                  ? `Compare ${getCategoryDisplayName(effectiveCategory)} Blood Tests`
                   : "Compare Private Blood Tests"}
               </h1>
+              <p className="font-sans text-base sm:text-lg text-white/70 max-w-2xl mx-auto mb-10">
+                {effectiveCategory && effectiveCategory !== "all"
+                  ? `Compare ${getCategoryDisplayName(effectiveCategory).toLowerCase()} blood tests from leading UK providers. Review pricing, biomarkers, turnaround times and sample methods to find the right test for your needs.`
+                  : "Compare blood tests from leading UK providers. Review pricing, biomarkers, turnaround times and sample methods to find the right test for your needs."}
+              </p>
+
+              {/* Stat Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10">
+                <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-5 text-center">
+                  <FlaskConical size={22} className="mx-auto mb-2 text-[#C59F4E]" />
+                  <p className="font-heading text-2xl sm:text-3xl font-bold text-[#C59F4E]">
+                    {tests.length}
+                  </p>
+                  <p className="text-sm text-white/60 mt-1">Tests available</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-5 text-center">
+                  <Building2 size={22} className="mx-auto mb-2 text-[#C59F4E]" />
+                  <p className="font-heading text-2xl sm:text-3xl font-bold text-[#C59F4E]">
+                    {new Set(tests.map(t => t.provider)).size}
+                  </p>
+                  <p className="text-sm text-white/60 mt-1">Providers</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-6 py-5 text-center">
+                  <PoundSterling size={22} className="mx-auto mb-2 text-[#C59F4E]" />
+                  <p className="font-heading text-2xl sm:text-3xl font-bold text-[#C59F4E]">
+                    {tests.length > 0
+                      ? `£${Math.min(...tests.map(t => t.price ?? Infinity)).toFixed(0)}`
+                      : "—"}
+                  </p>
+                  <p className="text-sm text-white/60 mt-1">Lowest price</p>
+                </div>
+              </div>
 
               <div className="relative group max-w-2xl mx-auto">
                 <Search
                   size={20}
-                  className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#22c0d4] transition-colors"
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-[#22c0d4] transition-colors"
                 />
                 <input
                   type="text"
@@ -204,14 +236,14 @@ const CompareTests = () => {
                     setFilters(prev => ({ ...prev, searchQuery: e.target.value }))
                   }
                   placeholder="Search tests by name, biomarker, or provider…"
-                  className="w-full pl-12 pr-12 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#22c0d4]/20 focus:border-[#22c0d4] transition-all text-base sm:text-lg placeholder-gray-400 text-[#081129]"
+                  className="w-full pl-12 pr-12 py-4 bg-white/10 border border-white/20 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#22c0d4]/20 focus:border-[#22c0d4] transition-all text-base sm:text-lg placeholder-white/40 text-white"
                 />
                 {filters.searchQuery && (
                   <button
                     type="button"
                     onClick={() => setFilters(prev => ({ ...prev, searchQuery: "" }))}
                     aria-label="Clear search"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-gray-100 text-gray-400"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-white/10 text-white/40"
                   >
                     <X size={18} />
                   </button>
