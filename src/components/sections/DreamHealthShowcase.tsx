@@ -271,7 +271,7 @@ const DreamHealthShowcase = () => {
               ? Array.from({ length: 9 }).map((_, i) => (
                   <div
                     key={i}
-                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md"
+                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-lg"
                   >
                     <Skeleton className="w-full h-full bg-black/5" />
                   </div>
@@ -282,7 +282,7 @@ const DreamHealthShowcase = () => {
                     href={t.url!}
                     target="_blank"
                     rel="noopener noreferrer sponsored"
-                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-md bg-[#f6f7f9]"
+                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-lg bg-[#f6f7f9]"
                   >
                     <img
                       src={resolveImage(t)!}
@@ -316,7 +316,7 @@ const DreamHealthShowcase = () => {
                 return (
                   <article
                     key={t.id}
-                    className="relative flex flex-col h-full bg-white border border-black/5 shadow-sm hover:shadow-lg transition-shadow rounded-2xl overflow-hidden"
+                    className="relative flex flex-col h-full bg-white border border-black/5 shadow-lg hover:shadow-2xl transition-shadow rounded-2xl overflow-hidden"
                   >
                     {isMostChosen && (
                       <span className="absolute top-3 left-3 z-10 text-[10px] font-semibold uppercase tracking-wider text-white bg-[#e70d69] px-2.5 py-1 rounded-full shadow">

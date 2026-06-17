@@ -1,12 +1,9 @@
-## Objective
-Update the Featured Publications section heading so the main title is "Press & Media" rather than repeating the "As Seen In" section label.
+## Increase Card Shadow Depth
 
-## Change Details
+The test cards in `DreamHealthShowcase.tsx` currently use `shadow-sm` (default) and `shadow-lg` (on hover). Bump both up by two shades:
 
-### File: `src/components/sections/FeaturedPublications.tsx`
-- **Line 71** (inside the `<h2>` element): change the text content from `As Seen In` to `Press & Media`.
-- **Line 65** (the turquoise section label above the heading): leave as `As Seen In` — this acts as the section identifier.
+- Grid cards (line 319): `shadow-sm` → `shadow-lg`, `hover:shadow-lg` → `shadow-2xl`
+- Filmstrip cards (line 285): `shadow-md` → `shadow-lg`
+- Filmstrip skeleton placeholders (line 274): `shadow-md` → `shadow-lg`
 
-### Verification
-- Confirm no other "As Seen In" headings are duplicated within the same section context on the homepage.
-- Ensure the visual hierarchy remains intact (turquoise label + white heading).
+No other files or logic change.
