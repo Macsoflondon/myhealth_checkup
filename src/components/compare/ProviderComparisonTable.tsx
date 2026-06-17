@@ -484,7 +484,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                       fontFamily: "'Montserrat', sans-serif",
                       fontWeight: 600,
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a5a")}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = TURQUOISE)}
                     onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
                   >
                     Book Now
