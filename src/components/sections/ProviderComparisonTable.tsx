@@ -21,15 +21,15 @@ const ProviderComparisonTable = () => {
             type="button"
             onClick={() => compareStore.clear()}
             disabled={selected.length === 0}
-            className="inline-block rounded-full px-5 py-2.5 text-[13px] font-semibold text-white font-['Montserrat'] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center h-11 rounded-full px-8 text-base font-semibold text-white font-['Montserrat'] transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60"
             style={{
-              background: selected.length === 0 ? "#cbd5e1" : "#e70d69",
+              background: selected.length === 0 ? "#cbd5e1" : "#22c0d4",
             }}
             onMouseEnter={(e) => {
-              if (selected.length > 0) e.currentTarget.style.background = "#c40a5a";
+              if (selected.length > 0) e.currentTarget.style.background = "#e70d69";
             }}
             onMouseLeave={(e) => {
-              if (selected.length > 0) e.currentTarget.style.background = "#e70d69";
+              if (selected.length > 0) e.currentTarget.style.background = "#22c0d4";
             }}
           >
             Clear
