@@ -244,28 +244,29 @@ const CompareTests = () => {
               )}
             </section>
 
-            {/* SECTION 2 — Comparison table (always visible) */}
-            <section className="bg-card p-0">
-              <ComparisonSectionHeading className="mb-8" />
-              <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                <p className="font-montserrat font-semibold text-foreground text-base">
-                  Comparing {selectedTests.length}{" "}
-                  {selectedTests.length === 1 ? "test" : "tests"}
-                </p>
-              </div>
-              <ProviderComparisonTable tests={selectedTests} />
-              <div className="flex justify-end mt-6">
-                <Button
-                  variant="brandPill"
-                  size="default"
-                  onClick={handleClearAll}
-                  disabled={selectedTests.length === 0}
-                  className="font-semibold px-5 py-2.5"
-                >
-                  Clear
-                </Button>
-              </div>
-            </section>
+            {/* SECTION 2 — Comparison table (only when 2+ selected) */}
+            {selectedTests.length >= 2 && (
+              <section className="bg-card p-0 animate-fade-in">
+                <ComparisonSectionHeading className="mb-8" />
+                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                  <p className="font-montserrat font-semibold text-foreground text-base">
+                    Comparing {selectedTests.length} tests
+                  </p>
+                </div>
+                <ProviderComparisonTable tests={selectedTests} />
+                <div className="flex justify-end mt-6">
+                  <Button
+                    variant="brandPill"
+                    size="default"
+                    onClick={handleClearAll}
+                    disabled={selectedTests.length === 0}
+                    className="font-semibold px-5 py-2.5"
+                  >
+                    Clear
+                  </Button>
+                </div>
+              </section>
+            )}
           </div>
         </MainLayout>
 
