@@ -4,6 +4,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+import { LazyMount } from "@/components/common/LazyMount";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
