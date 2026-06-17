@@ -154,7 +154,7 @@ const StayInformedSection = () => {
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="bg-brand-turquoise hover:bg-[#1aa8bb] disabled:opacity-60 text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
+                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
               >
                 {loading ? "Subscribing…" : "Subscribe"}
               </button>
