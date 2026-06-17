@@ -68,7 +68,7 @@ export const FeaturedPublications = () => {
           </div>
           
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-8 md:mb-10">
-            <span className="text-white">As Seen In</span>
+            <span className="text-white">Press &amp; Media</span>
           </h2>
           
           {/* Smooth continuous scroll */}
