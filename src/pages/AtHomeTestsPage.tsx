@@ -390,7 +390,6 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
             onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
           >
             Book with LML
-            <ExternalLink size={12} />
           </button>
         </div>
       </div>
