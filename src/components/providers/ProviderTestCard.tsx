@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Clock, TestTube2, Star, ExternalLink, ArrowRight } from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { Button } from "@/components/ui/button";
