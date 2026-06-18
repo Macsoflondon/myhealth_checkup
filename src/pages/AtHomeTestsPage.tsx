@@ -4,15 +4,46 @@ import MainLayout from "@/layouts/MainLayout";
 import { useAtHomeTests, useAtHomeCategories, type AtHomeTest } from "@/hooks/queries/useAtHomeTests";
 import { getProviderMeta } from "@/constants/providerMeta";
 import { getProviderLogo } from "@/constants/providers";
+import { compareStore, useCompareItems } from "@/stores/compareStore";
+import type { CompareTestData } from "@/types";
 import {
   Search, Home, Clock, Shield,
-  CheckCircle, X, ExternalLink, FlaskConical, Package
+  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus
 } from "lucide-react";
 
 const NAVY = "#081129";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 const TINT = "#f0f4fa";
+
+// Additional collection cost options (shown for at-home kits with optional blood draw paths)
+const COLLECTION_ADDONS: { label: string; price: number }[] = [
+  { label: "At Home Phlebotomist", price: 80 },
+  { label: "In Clinic Blood Draw", price: 35 },
+  { label: "Third-party blood draw (e.g. Royal Mail kit)", price: 3.99 },
+];
+
+function toCompareTestData(test: AtHomeTest): CompareTestData {
+  const meta = getProviderMeta(test.provider_id);
+  const logo = getProviderLogo(test.provider_id) || meta.logo || "";
+  return {
+    id: test.id,
+    name: test.test_name,
+    provider: meta.displayName,
+    price: test.price ?? 0,
+    category: test.category || "",
+    description: test.description || "",
+    available: true,
+    features: {
+      turnaround: test.turnaround_days_text || "",
+      collection: "At-home kit",
+      bioMarkers: test.biomarker_count ? String(test.biomarker_count) : undefined,
+    },
+    providerLogo: logo,
+    biomarkerCount: test.biomarker_count ?? undefined,
+    url: test.url || undefined,
+  };
+}
 
 // ─── Test Info Sheet Modal ───────────────────────────────────────────────────
 
