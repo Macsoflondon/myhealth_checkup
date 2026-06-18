@@ -127,18 +127,19 @@ function validateMappedTest(
     pushMissing(issues, source, test, 'price');
   }
 
-  if (!test.features || typeof test.features !== 'object') {
+  const features = test.features as unknown as Record<string, unknown> | undefined;
+  if (!features || typeof features !== 'object') {
     pushMissing(issues, source, test, 'features');
   } else {
     for (const f of ['bioMarkers', 'turnaround', 'collection'] as const) {
-      if (!isNonEmptyString((test.features as Record<string, unknown>)[f])) {
+      if (!isNonEmptyString(features[f])) {
         pushMissing(issues, source, test, `features.${f}`);
       }
     }
   }
 
-  const url = (test as CompareTestData & { testUrl?: string }).testUrl
-    ?? (test.features as Record<string, unknown> | undefined)?.['Real provider URL'];
+  const extra = test as unknown as { testUrl?: unknown };
+  const url = extra.testUrl ?? features?.['Real provider URL'];
   if (url !== undefined && !isHttpUrl(url)) {
     issues.push({
       severity: 'warning',
@@ -186,7 +187,7 @@ export function validateCompareData(): ValidationReport {
 
   // 2) Validate each compare-ready dataset
   const datasets: Array<[string, CompareTestData[]]> = [
-    ['mappedTestData', compareData.filter(t => t.id?.startsWith('real-test-'))],
+    ['mappedTestData', (compareData as CompareTestData[]).filter(t => t.id?.startsWith('real-test-'))],
     ['medichecksCompareData', medichecksCompareData],
     ['londonLabCompareData', londonLabCompareData],
   ];
