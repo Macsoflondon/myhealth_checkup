@@ -249,7 +249,6 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
                 onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
               >
                 Book with {meta.displayName}
-                <ExternalLink size={16} />
               </a>
             </div>
           )}
@@ -390,7 +389,6 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
             onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
           >
             Book with LML
-            <ExternalLink size={12} />
           </button>
         </div>
       </div>
