@@ -102,8 +102,8 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
               <div className="flex items-center gap-1.5">
                 <FlaskConical size={14} color={TURQUOISE} />
                 <div>
-                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.biomarker_count} {test.category === "Allergy" ? "allergens" : "biomarkers"}</div>
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{test.category === "Allergy" ? "Tested" : "Measured"}</div>
+                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.biomarker_count} {test.category === "Allergy" ? "allergies tested" : "biomarkers"}</div>
+                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{test.category === "Allergy" ? "Allergens" : "Measured"}</div>
                 </div>
               </div>
             )}
