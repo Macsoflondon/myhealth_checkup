@@ -183,8 +183,7 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
           <Button
             variant="outline"
             size="sm"
-            className="flex-1"
-            style={{ borderColor: `${brandColor}55`, color: brandColor }}
+            className="flex-1 border-white text-white bg-transparent hover:bg-white/10"
             asChild
             onClick={(e) => e.stopPropagation()}
           >
