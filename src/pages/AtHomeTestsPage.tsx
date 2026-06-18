@@ -8,7 +8,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import {
   Search, Home, Clock, Shield,
-  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus
+  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus, Syringe
 } from "lucide-react";
 
 const NAVY = "#081129";
@@ -90,7 +90,7 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
               <div style={{ color: PINK, fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 28 }}>
                 {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
               </div>
-              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>At-home kit</div>
+              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Venous blood draw</div>
             </div>
             {test.turnaround_days_text && (
               <div className="flex items-center gap-1.5">
@@ -111,12 +111,12 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
               </div>
             )}
             <div className="flex items-center gap-1.5">
-              <Home size={14} color={TURQUOISE} />
+              <Syringe size={14} color={TURQUOISE} />
               <div>
-                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>At-home kit</div>
-                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Collection</div>
+                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>Venous blood draw</div>
+                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Venous blood draw</div>
               </div>
-            </div>
+              </div>
           </div>
         </div>
 
