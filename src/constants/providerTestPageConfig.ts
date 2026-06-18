@@ -322,6 +322,124 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     aboutText: 'blood test from a prestigious Harley Street laboratory. Fast turnaround with UKAS-accredited analysis and specialist review available.',
     canonicalBase: 'https://www.myhealthcheckup.co.uk/london-medical-laboratory',
   },
+
+  'clinilabs': {
+    id: 'clinilabs',
+    name: 'Clinilabs',
+    logo: '/lovable-uploads/provider-clinilabs.png',
+    turnaround: '2-5 working days',
+    badgeText: 'Clinilabs Blood Test',
+    features: [
+      { title: 'UKAS Accredited Labs', description: 'High-accuracy testing in ISO 15189 accredited laboratories' },
+      { title: 'Nationwide Coverage', description: 'Clinic locations available across the UK' },
+      { title: 'Fast Turnaround', description: 'Results delivered within 2–5 working days' },
+      { title: 'Wide Test Range', description: 'Comprehensive menu of blood and health tests' },
+    ],
+    sampleOptions: [
+      {
+        icon: 'clinic',
+        title: 'Clinic Visit',
+        description: 'Visit a Clinilabs partner clinic for professional venous blood collection by a trained phlebotomist.',
+      },
+    ],
+    whyChoose: {
+      title: 'Why Choose Clinilabs?',
+      items: [
+        { bold: 'Accredited Testing:', text: 'ISO 15189 certified laboratories for reliable, accurate results' },
+        { bold: 'Broad Test Menu:', text: 'Comprehensive range covering health, hormones, vitamins, and more' },
+        { bold: 'Nationwide Access:', text: 'Clinic locations across the UK for convenient booking' },
+        { bold: 'Fast Results:', text: 'Turnaround of 2–5 working days with online result delivery' },
+      ],
+    },
+    quickInfo: {
+      sampleType: 'Venous blood draw',
+      labProcessing: 'ISO 15189 accredited laboratories',
+      resultsDelivery: 'Secure online portal',
+    },
+    ctaText: 'Book your blood test with Clinilabs today for reliable, accredited results at a clinic near you.',
+    ctaButtonText: 'Book with Clinilabs',
+    aboutText: 'blood test processed in ISO 15189 accredited laboratories. Professional phlebotomy and fast, secure online result delivery.',
+    canonicalBase: 'https://myhealthcheckup.co.uk/clinilabs',
+  },
+
+  'london-health-company': {
+    id: 'london-health-company',
+    name: 'London Health Company',
+    logo: '/lovable-uploads/provider-london-health-company.png',
+    turnaround: '2-4 working days',
+    badgeText: 'London Health Company Blood Test',
+    features: [
+      { title: 'Professional Phlebotomy', description: 'Trained phlebotomists for accurate sample collection' },
+      { title: 'London-Based', description: 'Convenient clinic locations across London' },
+      { title: 'Comprehensive Panels', description: 'Wide range of blood tests and health checks' },
+      { title: 'Fast Results', description: 'Results delivered within 2–4 working days' },
+    ],
+    sampleOptions: [
+      {
+        icon: 'clinic',
+        title: 'Clinic Visit',
+        description: 'Visit a London Health Company clinic for professional venous blood collection by a trained phlebotomist.',
+      },
+    ],
+    whyChoose: {
+      title: 'Why Choose London Health Company?',
+      items: [
+        { bold: 'London Convenience:', text: 'Multiple clinic locations across London for easy access' },
+        { bold: 'Professional Service:', text: 'Trained phlebotomists for accurate and comfortable blood collection' },
+        { bold: 'Comprehensive Testing:', text: 'Wide range of blood tests and health screening panels' },
+        { bold: 'Fast Turnaround:', text: 'Results within 2–4 working days via secure online portal' },
+      ],
+    },
+    quickInfo: {
+      sampleType: 'Venous blood draw',
+      labProcessing: 'Accredited laboratory partners',
+      resultsDelivery: 'Online portal delivery',
+    },
+    ctaText: 'Book your blood test with London Health Company for professional phlebotomy and reliable results.',
+    ctaButtonText: 'Book with London Health Company',
+    aboutText: 'blood test with professional venous collection at a London Health Company clinic. Fast, accurate results via secure online portal.',
+    canonicalBase: 'https://myhealthcheckup.co.uk/london-health-company',
+  },
+
+  'medical-diagnosis': {
+    id: 'medical-diagnosis',
+    name: 'Medical Diagnosis',
+    logo: '/lovable-uploads/provider-medical-diagnosis.png',
+    turnaround: '2-5 working days',
+    badgeText: 'Medical Diagnosis Blood Test',
+    features: [
+      { title: 'Clinic-Based Testing', description: 'Professional venous blood collection at clinic locations' },
+      { title: 'Wide Test Range', description: 'Broad menu of diagnostic blood tests and health panels' },
+      { title: 'Competitive Pricing', description: 'Affordable private blood testing options' },
+      { title: 'Results Online', description: 'Secure online result delivery within 2–5 working days' },
+    ],
+    sampleOptions: [
+      {
+        icon: 'clinic',
+        title: 'Clinic Visit',
+        description: 'Visit a Medical Diagnosis clinic for professional venous blood collection by trained staff.',
+      },
+    ],
+    whyChoose: {
+      title: 'Why Choose Medical Diagnosis?',
+      items: [
+        { bold: 'Broad Test Menu:', text: 'Comprehensive range of diagnostic blood tests and health panels' },
+        { bold: 'Competitive Pricing:', text: 'Affordable private testing with transparent pricing' },
+        { bold: 'Clinic Access:', text: 'Professional venous blood collection at clinic locations' },
+        { bold: 'Online Results:', text: 'Secure digital delivery of results within 2–5 working days' },
+      ],
+    },
+    quickInfo: {
+      sampleType: 'Venous blood draw',
+      labProcessing: 'Accredited laboratory partners',
+      resultsDelivery: 'Secure online portal',
+      supportPhone: '020 3538 0930',
+    },
+    ctaText: 'Book your blood test with Medical Diagnosis for professional collection and reliable results at competitive prices.',
+    ctaButtonText: 'Book with Medical Diagnosis',
+    aboutText: 'blood test with professional venous collection at a Medical Diagnosis clinic. Competitive pricing with secure online result delivery.',
+    canonicalBase: 'https://myhealthcheckup.co.uk/medical-diagnosis',
+  },
 };
 
 export const getProviderConfig = (providerId: string): ProviderConfig | undefined => {

@@ -72,6 +72,9 @@ export const testRoutes = (
     <Route path="/thriva/:testId" element={<ProviderTestDetailPage providerId="thriva" />} />
     <Route path="/randox/:testId" element={<ProviderTestDetailPage providerId="randox" />} />
     <Route path="/london-medical-laboratory/:testId" element={<ProviderTestDetailPage providerId="london-medical-laboratory" />} />
+    <Route path="/clinilabs/:testId" element={<ProviderTestDetailPage providerId="clinilabs" />} />
+    <Route path="/london-health-company/:testId" element={<ProviderTestDetailPage providerId="london-health-company" />} />
+    <Route path="/medical-diagnosis/:testId" element={<ProviderTestDetailPage providerId="medical-diagnosis" />} />
 
     {/* Provider route aliases/redirects for cleaner URLs */}
     <Route path="/randox-health/:testId" element={<ProviderRedirect from="randox-health" to="randox" />} />
