@@ -51,6 +51,9 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = (test.biomarkers_list || []).map((b) => b.value);
+  const compareItems = useCompareItems();
+  const inCompare = compareItems.some((c) => c.id === test.id);
+  const handleCompareToggle = () => compareStore.toggle(toCompareTestData(test));
 
   return (
     <div
