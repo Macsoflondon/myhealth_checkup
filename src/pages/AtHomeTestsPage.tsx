@@ -242,6 +242,20 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = (test.biomarkers_list || []).map((b) => b.value);
+  const compareItems = useCompareItems();
+  const inCompare = compareItems.some((c) => c.id === test.id);
+
+  const handleCompare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    compareStore.toggle(toCompareTestData(test));
+  };
+
+  const handleBook = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (test.url && test.url !== "#") {
+      window.open(test.url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   return (
     <div
@@ -304,7 +318,7 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
         {/* Stats row */}
         <div className="flex items-center gap-3 mb-3" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b" }}>
           {test.biomarker_count != null && test.biomarker_count > 0 && (
-            <span className="flex items-center gap-1"><FlaskConical size={12} color={TURQUOISE} />{test.biomarker_count} {test.category === "Allergy" ? "allergens" : "biomarkers"}</span>
+            <span className="flex items-center gap-1"><FlaskConical size={12} color={TURQUOISE} />{test.biomarker_count} {test.category === "Allergy" ? "allergies tested" : "biomarkers"}</span>
           )}
           {test.turnaround_days_text && (
             <span className="flex items-center gap-1"><Clock size={12} color={TURQUOISE} />{test.turnaround_days_text}</span>
@@ -312,22 +326,54 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
           <span className="flex items-center gap-1"><Home size={12} color={TURQUOISE} />At-home kit</span>
         </div>
 
-        {/* Footer: price + CTA */}
-        <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid #f1f5f9" }}>
+        {/* Price */}
+        <div className="flex items-center justify-between pt-3 mb-3" style={{ borderTop: "1px solid #f1f5f9" }}>
           <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 20, color: PINK }}>
             {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
           </div>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8" }}>Base at-home kit</span>
+        </div>
+
+        {/* Footer: Compare + Book buttons */}
+        <div className="grid grid-cols-2 gap-2">
           <button
-            style={{ background: NAVY, color: "#fff", fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12, padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = TURQUOISE)}
-            onMouseLeave={(e) => (e.currentTarget.style.background = NAVY)}
+            onClick={handleCompare}
+            style={{
+              background: inCompare ? TURQUOISE : "#fff",
+              color: inCompare ? "#fff" : NAVY,
+              fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12,
+              padding: "10px 12px", borderRadius: 20,
+              border: `1.5px solid ${inCompare ? TURQUOISE : NAVY}`,
+              cursor: "pointer",
+              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
+              transition: "all 150ms",
+            }}
           >
-            View details
+            {inCompare ? <CheckCircle size={14} /> : <Plus size={14} />}
+            {inCompare ? "Added" : "Compare"}
+          </button>
+          <button
+            onClick={handleBook}
+            disabled={!test.url || test.url === "#"}
+            style={{
+              background: PINK, color: "#fff",
+              fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 12,
+              padding: "10px 12px", borderRadius: 20, border: "none",
+              cursor: test.url && test.url !== "#" ? "pointer" : "not-allowed",
+              opacity: test.url && test.url !== "#" ? 1 : 0.5,
+              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
+            }}
+            onMouseEnter={(e) => { if (test.url && test.url !== "#") e.currentTarget.style.background = "#c40a5a"; }}
+            onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
+          >
+            Book with {meta.displayName}
+            <ExternalLink size={12} />
           </button>
         </div>
       </div>
     </div>
   );
+
 };
 
 // ─── Page ────────────────────────────────────────────────────────────────────
