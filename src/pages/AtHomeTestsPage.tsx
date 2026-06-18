@@ -17,8 +17,8 @@ const PINK = "#e70d69";
 const TINT = "#f0f4fa";
 
 // Additional collection cost options (shown for at-home kits with optional blood draw paths)
-const COLLECTION_ADDONS: { label: string; price: number }[] = [
-  { label: "At Home Phlebotomist", price: 80 },
+const COLLECTION_ADDONS: { label: string; description?: string; price: number }[] = [
+  { label: "At Home Phlebotomist", description: "A professional phlebotomist comes to your home", price: 80 },
   { label: "In Clinic Blood Draw", price: 35 },
   { label: "Third-party blood draw (e.g. Royal Mail kit)", price: 3.99 },
 ];
@@ -128,11 +128,16 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {COLLECTION_ADDONS.map((a) => (
-                <div key={a.label} className="flex items-center justify-between" style={{ background: TINT, borderRadius: 8, padding: "8px 12px" }}>
-                  <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: NAVY }}>{a.label}</span>
-                  <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: PINK }}>
-                    +£{a.price.toFixed(2)}
-                  </span>
+                <div key={a.label} style={{ background: TINT, borderRadius: 8, padding: "8px 12px" }}>
+                  <div className="flex items-center justify-between">
+                    <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: NAVY }}>{a.label}</span>
+                    <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: PINK }}>
+                      +£{a.price.toFixed(2)}
+                    </span>
+                  </div>
+                  {a.description && (
+                    <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{a.description}</div>
+                  )}
                 </div>
               ))}
             </div>
