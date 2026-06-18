@@ -120,6 +120,25 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
         {/* Body */}
         <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
 
+          {/* Additional collection options */}
+          <div>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: NAVY, marginBottom: 8 }}>Additional Collection Options</div>
+            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b", marginBottom: 10 }}>
+              Base price covers the at-home finger-prick kit. Optional collection methods are available at additional cost:
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {COLLECTION_ADDONS.map((a) => (
+                <div key={a.label} className="flex items-center justify-between" style={{ background: TINT, borderRadius: 8, padding: "8px 12px" }}>
+                  <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: NAVY }}>{a.label}</span>
+                  <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: PINK }}>
+                    +£{a.price.toFixed(2)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
           {/* Description */}
           {test.description && (
             <div>
