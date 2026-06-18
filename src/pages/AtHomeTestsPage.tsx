@@ -4,15 +4,46 @@ import MainLayout from "@/layouts/MainLayout";
 import { useAtHomeTests, useAtHomeCategories, type AtHomeTest } from "@/hooks/queries/useAtHomeTests";
 import { getProviderMeta } from "@/constants/providerMeta";
 import { getProviderLogo } from "@/constants/providers";
+import { compareStore, useCompareItems } from "@/stores/compareStore";
+import type { CompareTestData } from "@/types";
 import {
   Search, Home, Clock, Shield,
-  CheckCircle, X, ExternalLink, FlaskConical, Package
+  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus
 } from "lucide-react";
 
 const NAVY = "#081129";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 const TINT = "#f0f4fa";
+
+// Additional collection cost options (shown for at-home kits with optional blood draw paths)
+const COLLECTION_ADDONS: { label: string; price: number }[] = [
+  { label: "At Home Phlebotomist", price: 80 },
+  { label: "In Clinic Blood Draw", price: 35 },
+  { label: "Third-party blood draw (e.g. Royal Mail kit)", price: 3.99 },
+];
+
+function toCompareTestData(test: AtHomeTest): CompareTestData {
+  const meta = getProviderMeta(test.provider_id);
+  const logo = getProviderLogo(test.provider_id) || meta.logo || "";
+  return {
+    id: test.id,
+    name: test.test_name,
+    provider: meta.displayName,
+    price: test.price ?? 0,
+    category: test.category || "",
+    description: test.description || "",
+    available: true,
+    features: {
+      turnaround: test.turnaround_days_text || "",
+      collection: "At-home kit",
+      bioMarkers: test.biomarker_count ? String(test.biomarker_count) : undefined,
+    },
+    providerLogo: logo,
+    biomarkerCount: test.biomarker_count ?? undefined,
+    url: test.url || undefined,
+  };
+}
 
 // ─── Test Info Sheet Modal ───────────────────────────────────────────────────
 
@@ -71,8 +102,8 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
               <div className="flex items-center gap-1.5">
                 <FlaskConical size={14} color={TURQUOISE} />
                 <div>
-                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.biomarker_count} {test.category === "Allergy" ? "allergens" : "biomarkers"}</div>
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{test.category === "Allergy" ? "Tested" : "Measured"}</div>
+                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.biomarker_count} {test.category === "Allergy" ? "allergies tested" : "biomarkers"}</div>
+                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{test.category === "Allergy" ? "Allergens" : "Measured"}</div>
                 </div>
               </div>
             )}
@@ -88,6 +119,25 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
 
         {/* Body */}
         <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
+
+          {/* Additional collection options */}
+          <div>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: NAVY, marginBottom: 8 }}>Additional Collection Options</div>
+            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b", marginBottom: 10 }}>
+              Base price covers the at-home finger-prick kit. Optional collection methods are available at additional cost:
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {COLLECTION_ADDONS.map((a) => (
+                <div key={a.label} className="flex items-center justify-between" style={{ background: TINT, borderRadius: 8, padding: "8px 12px" }}>
+                  <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: NAVY }}>{a.label}</span>
+                  <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: PINK }}>
+                    +£{a.price.toFixed(2)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
 
           {/* Description */}
           {test.description && (
@@ -192,6 +242,20 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = (test.biomarkers_list || []).map((b) => b.value);
+  const compareItems = useCompareItems();
+  const inCompare = compareItems.some((c) => c.id === test.id);
+
+  const handleCompare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    compareStore.toggle(toCompareTestData(test));
+  };
+
+  const handleBook = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (test.url && test.url !== "#") {
+      window.open(test.url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   return (
     <div
@@ -254,7 +318,7 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
         {/* Stats row */}
         <div className="flex items-center gap-3 mb-3" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b" }}>
           {test.biomarker_count != null && test.biomarker_count > 0 && (
-            <span className="flex items-center gap-1"><FlaskConical size={12} color={TURQUOISE} />{test.biomarker_count} {test.category === "Allergy" ? "allergens" : "biomarkers"}</span>
+            <span className="flex items-center gap-1"><FlaskConical size={12} color={TURQUOISE} />{test.biomarker_count} {test.category === "Allergy" ? "allergies tested" : "biomarkers"}</span>
           )}
           {test.turnaround_days_text && (
             <span className="flex items-center gap-1"><Clock size={12} color={TURQUOISE} />{test.turnaround_days_text}</span>
@@ -262,22 +326,54 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
           <span className="flex items-center gap-1"><Home size={12} color={TURQUOISE} />At-home kit</span>
         </div>
 
-        {/* Footer: price + CTA */}
-        <div className="flex items-center justify-between pt-3" style={{ borderTop: "1px solid #f1f5f9" }}>
+        {/* Price */}
+        <div className="flex items-center justify-between pt-3 mb-3" style={{ borderTop: "1px solid #f1f5f9" }}>
           <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 20, color: PINK }}>
             {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
           </div>
+          <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8" }}>Base at-home kit</span>
+        </div>
+
+        {/* Footer: Compare + Book buttons */}
+        <div className="grid grid-cols-2 gap-2">
           <button
-            style={{ background: NAVY, color: "#fff", fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12, padding: "8px 16px", borderRadius: 20, border: "none", cursor: "pointer" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = TURQUOISE)}
-            onMouseLeave={(e) => (e.currentTarget.style.background = NAVY)}
+            onClick={handleCompare}
+            style={{
+              background: inCompare ? TURQUOISE : "#fff",
+              color: inCompare ? "#fff" : NAVY,
+              fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12,
+              padding: "10px 12px", borderRadius: 20,
+              border: `1.5px solid ${inCompare ? TURQUOISE : NAVY}`,
+              cursor: "pointer",
+              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
+              transition: "all 150ms",
+            }}
           >
-            View details
+            {inCompare ? <CheckCircle size={14} /> : <Plus size={14} />}
+            {inCompare ? "Added" : "Compare"}
+          </button>
+          <button
+            onClick={handleBook}
+            disabled={!test.url || test.url === "#"}
+            style={{
+              background: PINK, color: "#fff",
+              fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 12,
+              padding: "10px 12px", borderRadius: 20, border: "none",
+              cursor: test.url && test.url !== "#" ? "pointer" : "not-allowed",
+              opacity: test.url && test.url !== "#" ? 1 : 0.5,
+              display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
+            }}
+            onMouseEnter={(e) => { if (test.url && test.url !== "#") e.currentTarget.style.background = "#c40a5a"; }}
+            onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
+          >
+            Book with {meta.displayName}
+            <ExternalLink size={12} />
           </button>
         </div>
       </div>
     </div>
   );
+
 };
 
 // ─── Page ────────────────────────────────────────────────────────────────────
