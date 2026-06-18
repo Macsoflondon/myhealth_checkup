@@ -127,7 +127,7 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
           <div>
             <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: NAVY, marginBottom: 8 }}>Additional Collection Options</div>
             <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b", marginBottom: 10 }}>
-              Base price covers the at-home finger-prick kit. Optional collection methods are available at additional cost:
+              Base price covers the venous blood draw. Optional collection methods are available at additional cost:
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {COLLECTION_ADDONS.map((a) => (
