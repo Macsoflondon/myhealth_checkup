@@ -185,14 +185,13 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
             size="sm"
             className="flex-1"
             style={{ borderColor: `${brandColor}55`, color: brandColor }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick();
-            }}
-            aria-label={`View details for ${test.test_name}`}
+            asChild
+            onClick={(e) => e.stopPropagation()}
           >
-            View Details
-            <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            <Link to="/compare" aria-label={`Compare ${test.test_name}`}>
+              Compare
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </Link>
           </Button>
           {test.url && (
             <Button
