@@ -164,7 +164,7 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
           {biomarkers.length > 0 && (
             <div>
               <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: NAVY, marginBottom: 8 }}>
-                Biomarkers Tested ({biomarkers.length})
+                {test.category === "Allergy" ? "Allergies Tested" : "Biomarkers Tested"} ({biomarkers.length})
               </div>
               <div className="flex flex-wrap gap-2">
                 {biomarkers.map((b, i) => (
