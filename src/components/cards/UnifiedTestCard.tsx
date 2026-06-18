@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
