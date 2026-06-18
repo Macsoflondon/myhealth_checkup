@@ -65,7 +65,7 @@ const heroSlides: Array<{
   },
   {
     image: heroResults,
-    headline: "Find Your Right Test",
+    headline: "Find The Right Test For You, Wherever You Are",
     subline: "Wherever You Are",
     objectPosition: "center 40%",
     theme: {
