@@ -51,6 +51,9 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = (test.biomarkers_list || []).map((b) => b.value);
+  const compareItems = useCompareItems();
+  const inCompare = compareItems.some((c) => c.id === test.id);
+  const handleCompareToggle = () => compareStore.toggle(toCompareTestData(test));
 
   return (
     <div
@@ -222,18 +225,33 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
 
           {/* CTA */}
           {test.url && test.url !== "#" && (
-            <a
-              href={test.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full rounded-full"
-              style={{ background: PINK, color: "#fff", fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 15, padding: "14px 24px", textDecoration: "none" }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a5a")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
-            >
-              Book with {meta.displayName}
-              <ExternalLink size={16} />
-            </a>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                onClick={handleCompareToggle}
+                className="flex items-center justify-center gap-2 rounded-full"
+                style={{
+                  background: inCompare ? TURQUOISE : "#fff",
+                  color: inCompare ? "#fff" : NAVY,
+                  border: `2px solid ${TURQUOISE}`,
+                  fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 15,
+                  padding: "14px 24px", flex: 1, cursor: "pointer", transition: "all 150ms",
+                }}
+              >
+                {inCompare ? "✓ In Compare" : "+ Compare"}
+              </button>
+              <a
+                href={test.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-full"
+                style={{ background: PINK, color: "#fff", fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 15, padding: "14px 24px", textDecoration: "none", flex: 1 }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a5a")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
+              >
+                Book with {meta.displayName}
+                <ExternalLink size={16} />
+              </a>
+            </div>
           )}
         </div>
       </div>
