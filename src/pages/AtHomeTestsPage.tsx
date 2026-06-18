@@ -114,7 +114,7 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
               <Syringe size={14} color={TURQUOISE} />
               <div>
                 <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>Venous blood draw</div>
-                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Venous blood draw</div>
+                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Collection</div>
               </div>
               </div>
           </div>
