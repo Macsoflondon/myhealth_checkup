@@ -254,7 +254,7 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
         {/* Stats row */}
         <div className="flex items-center gap-3 mb-3" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b" }}>
           {test.biomarker_count != null && test.biomarker_count > 0 && (
-            <span className="flex items-center gap-1"><FlaskConical size={12} color={TURQUOISE} />{test.biomarker_count} biomarkers</span>
+            <span className="flex items-center gap-1"><FlaskConical size={12} color={TURQUOISE} />{test.biomarker_count} {test.category === "Allergy" ? "allergens" : "biomarkers"}</span>
           )}
           {test.turnaround_days_text && (
             <span className="flex items-center gap-1"><Clock size={12} color={TURQUOISE} />{test.turnaround_days_text}</span>
