@@ -17,8 +17,8 @@ const PINK = "#e70d69";
 const TINT = "#f0f4fa";
 
 // Additional collection cost options (shown for at-home kits with optional blood draw paths)
-const COLLECTION_ADDONS: { label: string; price: number }[] = [
-  { label: "At Home Phlebotomist", price: 80 },
+const COLLECTION_ADDONS: { label: string; description?: string; price: number }[] = [
+  { label: "At Home Phlebotomist", description: "A professional phlebotomist comes to your home", price: 80 },
   { label: "In Clinic Blood Draw", price: 35 },
   { label: "Third-party blood draw (e.g. Royal Mail kit)", price: 3.99 },
 ];
