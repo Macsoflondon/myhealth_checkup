@@ -179,7 +179,7 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
         )}
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-2 mt-2">
+        <div className="flex flex-row gap-2 mt-2">
           <Button
             variant="outline"
             size="sm"
