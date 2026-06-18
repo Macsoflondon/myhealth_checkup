@@ -22,6 +22,7 @@ export interface ProviderTestCardData {
   turnaround_days_text?: string | null;
   base_price?: number | null;
   collection_options?: any;
+  reviews?: number | null;
 }
 
 interface ProviderTestCardProps {

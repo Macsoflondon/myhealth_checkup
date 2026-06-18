@@ -1,13 +1,5 @@
-## Update Hero Slide 3 Headline
+Add `reviews?: number | null` to the `ProviderTestCardData` interface in `src/components/providers/ProviderTestCard.tsx` (line 8).
 
-### Goal
-Update the third hero slide's headline from "Find Your Right Test" to "Find The Right Test For You, Wherever You Are".
+This makes the interface consistent with other test data shapes that expose a review count, allowing cards and modals to optionally display star/rating metadata when available.
 
-### Change
-- `src/components/sections/Hero.tsx` — Line ~95: update the `headline` field in the third entry of the `heroSlides` array.
-
-The subline "Wherever You Are" will remain as-is since the new headline already incorporates that phrase.
-
-### Validation
-- Confirm the updated text renders correctly in the live preview.
-- Verify no layout overflow occurs with the longer string on mobile and desktop.
+No other files need to change — the field is optional (`?`) and nullable, so all existing consumers remain compatible.
