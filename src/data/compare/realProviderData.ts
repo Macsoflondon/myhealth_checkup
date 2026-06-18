@@ -380,7 +380,7 @@ export const realTestData: RealTestData[] = [
   { Provider: "Goodbody Clinic", "Test Name": "Polycystic Ovary Syndrome", "Price (£)": 129, "Test URL": "https://health.goodbodyclinic.com/product/polycystic-ovary-syndrome-blood-test/", Tags: "Fertility", "Biomarker Count": 4 },
   { Provider: "Goodbody Clinic", "Test Name": "Pregnancy", "Price (£)": 79, "Test URL": "https://health.goodbodyclinic.com/product/pregnancy-blood-test/", Tags: "Fertility", "Biomarker Count": 4 },
   { Provider: "Goodbody Clinic", "Test Name": "Prostate PSA", "Price (£)": 119, "Test URL": "https://health.goodbodyclinic.com/product/prostate-psa-blood-test/", Tags: null, "Biomarker Count": 4 },
-  { Provider: "Goodbody Clinic", "Test Name": "Pylori", "Price (£)": 0, "Test URL": "https://health.goodbodyclinic.com/product/helicobacter-pylori-blood-test/", Tags: null, "Biomarker Count": 4 },
+  { Provider: "Goodbody Clinic", "Test Name": "Pylori", "Price (£)": 79, "Test URL": "https://health.goodbodyclinic.com/product/helicobacter-pylori-blood-test/", Tags: null, "Biomarker Count": 4 },
   { Provider: "Goodbody Clinic", "Test Name": "Sports & Fitness", "Price (£)": 139, "Test URL": "https://health.goodbodyclinic.com/product/sports-and-fitness-blood-test/", Tags: null, "Biomarker Count": 4 },
   { Provider: "Goodbody Clinic", "Test Name": "Testosterone", "Price (£)": 79, "Test URL": "https://health.goodbodyclinic.com/product/testosterone-blood-test/", Tags: "Fertility", "Biomarker Count": 4 },
   { Provider: "Goodbody Clinic", "Test Name": "Thyroid Function", "Price (£)": 79, "Test URL": "https://health.goodbodyclinic.com/product/thyroid-function-blood-test/", Tags: "Hormone", "Biomarker Count": 4 },
