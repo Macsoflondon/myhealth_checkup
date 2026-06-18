@@ -90,7 +90,7 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
               <div style={{ color: PINK, fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 28 }}>
                 {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
               </div>
-              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>At-home kit</div>
+              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Venous blood draw</div>
             </div>
             {test.turnaround_days_text && (
               <div className="flex items-center gap-1.5">
