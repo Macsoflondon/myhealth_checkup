@@ -128,11 +128,16 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {COLLECTION_ADDONS.map((a) => (
-                <div key={a.label} className="flex items-center justify-between" style={{ background: TINT, borderRadius: 8, padding: "8px 12px" }}>
-                  <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: NAVY }}>{a.label}</span>
-                  <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: PINK }}>
-                    +£{a.price.toFixed(2)}
-                  </span>
+                <div key={a.label} style={{ background: TINT, borderRadius: 8, padding: "8px 12px" }}>
+                  <div className="flex items-center justify-between">
+                    <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: NAVY }}>{a.label}</span>
+                    <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: PINK }}>
+                      +£{a.price.toFixed(2)}
+                    </span>
+                  </div>
+                  {a.description && (
+                    <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{a.description}</div>
+                  )}
                 </div>
               ))}
             </div>
