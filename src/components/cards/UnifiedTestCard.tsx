@@ -260,9 +260,9 @@ export function UnifiedTestCard({
           <span className="font-semibold text-white text-sm truncate">{provider}</span>
         </div>
 
-        {/* Price + CTA */}
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-baseline gap-1">
+        {/* Price + Buttons */}
+        <div className="mt-auto">
+          <div className="flex items-baseline gap-1 mb-3">
             {priceFrom && (
               <span className="text-xs text-white/50 font-medium">from</span>
             )}
@@ -270,28 +270,39 @@ export function UnifiedTestCard({
               £{price}
             </span>
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCta();
-            }}
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer border-0"
-            style={{
-              backgroundColor: categoryColor,
-              color: "#ffffff",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget.style.opacity = "0.85");
-              (e.currentTarget.style.transform = "scale(1.03)");
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget.style.opacity = "1");
-              (e.currentTarget.style.transform = "scale(1)");
-            }}
-          >
-            {ctaLabel}
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex flex-row gap-2">
+            <Link
+              to="/compare"
+              onClick={(e) => e.stopPropagation()}
+              className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border border-white text-white bg-transparent hover:bg-white/10 whitespace-nowrap"
+            >
+              Compare
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+            {testDetails ? (
+              <Link
+                to={`/${testDetails.provider_id}/${testDetails.id}`}
+                onClick={(e) => e.stopPropagation()}
+                className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border-0 text-white whitespace-nowrap"
+                style={{ backgroundColor: categoryColor }}
+              >
+                Book with {provider}
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            ) : url ? (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border-0 text-white whitespace-nowrap"
+                style={{ backgroundColor: categoryColor }}
+              >
+                Book with {provider}
+                <ArrowRight className="w-3 h-3" />
+              </a>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>
