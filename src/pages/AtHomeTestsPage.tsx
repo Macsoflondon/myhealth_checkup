@@ -8,7 +8,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import {
   Search, Home, Clock, Shield,
-  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus
+  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus, Syringe
 } from "lucide-react";
 
 const NAVY = "#081129";
