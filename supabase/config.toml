@@ -160,3 +160,11 @@ verify_jwt = false
 # Admin Recovery - public (gated by ADMIN_RECOVERY_SECRET in body)
 [functions.admin-recovery]
 verify_jwt = false
+
+# CSP Violation Report Sink (browser-posted, no auth)
+[functions.csp-report]
+verify_jwt = false
+
+# Sign-in Brute-Force Throttle (called pre-auth, no JWT)
+[functions.auth-throttle]
+verify_jwt = false
