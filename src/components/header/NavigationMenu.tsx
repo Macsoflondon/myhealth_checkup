@@ -6,6 +6,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { usePopularTestsForNavigation } from "@/hooks/usePopularTestsFromDatabase";
 import { MegaMenuDropdown } from "./MegaMenuDropdown";
 import { MoreDropdownMenu } from "./MoreDropdownMenu";
+import { NavItemDropdown } from "./NavItemDropdown";
+import type { PrimaryNavItem } from "./NavigationItems";
 import { 
   primaryNavigationItems, 
   moreNavigationSections 
@@ -84,9 +86,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
   const highlightedItems: string[] = ["Most Popular Tests"];
 
-  const renderNavItem = (item: typeof primaryNavigationItems[0]) => {
+  const renderNavItem = (item: PrimaryNavItem) => {
     const isPopularTests = item.name === "Most Popular Tests";
     const hasAccent = highlightedItems.includes(item.name);
+    const isDropdownOpen = activeDropdown === item.name;
+    const hasDropdown = item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
 
     return (
       <div
@@ -94,17 +98,49 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         className="relative nav-item-wrapper"
         style={{ overflow: 'visible' }}
       >
-        <Link
-          to={item.path}
-          className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-            hasAccent
-              ? "text-brand-turquoise hover:text-brand-pink font-bold"
-              : "text-white hover:text-brand-pink"
-          }`}
-          onClick={handleItemClick}
-        >
-          {item.name}
-        </Link>
+        {hasDropdown ? (
+          <>
+            <button
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={isDropdownOpen}
+              className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+                isDropdownOpen
+                  ? "text-brand-pink"
+                  : hasAccent
+                    ? "text-brand-turquoise hover:text-brand-pink font-bold"
+                    : "text-white hover:text-brand-pink"
+              }`}
+              onClick={(e) => handleDropdownToggle(e, item.name)}
+            >
+              {item.name}
+              <ChevronDown className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
+                isDropdownOpen ? 'rotate-180' : ''
+              }`} />
+            </button>
+            {isDropdownOpen && item.dropdownItems && (
+              <NavItemDropdown
+                title={item.name}
+                items={item.dropdownItems}
+                onItemClick={handleItemClick}
+                onClose={handleCloseDropdown}
+                isMobile={isMobile}
+              />
+            )}
+          </>
+        ) : (
+          <Link
+            to={item.path}
+            className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
+              hasAccent
+                ? "text-brand-turquoise hover:text-brand-pink font-bold"
+                : "text-white hover:text-brand-pink"
+            }`}
+            onClick={handleItemClick}
+          >
+            {item.name}
+          </Link>
+        )}
       </div>
     );
   };
