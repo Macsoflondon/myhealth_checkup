@@ -26,5 +26,7 @@ export const complianceRoutes = (
     <Route path="/how-we-rank" element={<HowWeRankPage />} />
     <Route path="/complaints" element={<ComplaintsPage />} />
     <Route path="/feedback" element={<ComplaintsPage />} />
+    <Route path="/trust" element={<TrustCentrePage />} />
+    <Route path="/security" element={<TrustCentrePage />} />
   </>
 );
