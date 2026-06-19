@@ -126,7 +126,7 @@ const PartnerShowcaseGrid = () => {
             </h2>
           </div>
           <div className="max-w-2xl mx-auto">
-            <LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} rotateMs={8000} />
+            <LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} rotateMs={30000} />
           </div>
         </div>
       </SafeBlock>

@@ -12,13 +12,23 @@ export type LiveComparisonPanelData = {
 // Prices mirror the source-of-truth `TESTS` array in StartJourneySection.
 export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
   {
-    name: "Hormone Panel",
+    name: "Male Hormone Panel",
     providers: [
       { name: "Medichecks", options: [{ label: "At-home kit", price: "£99" }, { label: "Clinic-based", price: "£159" }] },
       { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }, { label: "Clinic-based", price: "£139" }] },
       { name: "Thriva", options: [{ label: "At-home kit", price: "£117" }] },
       { name: "Randox Health", options: [{ label: "At-home kit", price: "£139" }, { label: "Clinic-based", price: "£169" }] },
       { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£89" }, { label: "Clinic-based", price: "£99" }] },
+    ],
+  },
+  {
+    name: "Female Hormone Panel",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£109" }, { label: "Clinic-based", price: "£169" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£165" }, { label: "Clinic-based", price: "£149" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£127" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£149" }, { label: "Clinic-based", price: "£179" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£95" }, { label: "Clinic-based", price: "£109" }] },
     ],
   },
   {
@@ -44,14 +54,25 @@ export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
     ],
   },
   {
-    name: "Vitamin D & B12 Panel",
+    name: "Vitamin D Test",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£59" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£59" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£60" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£99" }, { label: "Clinic-based", price: "£85" }] },
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£45" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£49" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£89" }, { label: "Clinic-based", price: "£75" }] },
+    ],
+  },
+  {
+    name: "Vitamin B12 Test",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£42" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£45" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£85" }, { label: "Clinic-based", price: "£69" }] },
     ],
   },
 ];
