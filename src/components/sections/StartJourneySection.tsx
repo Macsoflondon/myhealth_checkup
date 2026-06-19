@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import letterboxVideo from "@/assets/compare-screen-recording.mov.asset.json";
+import LiveComparisonCard from "@/components/sections/LiveComparisonCard";
+
 
 // ── Rotating test data ──────────────────────────────────────────────────────
 const TESTS = [
