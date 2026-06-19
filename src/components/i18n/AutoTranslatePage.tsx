@@ -187,34 +187,55 @@ export function AutoTranslatePage() {
       return;
     }
 
+    let running = false;
+    let rerun = false;
+
     const run = async () => {
-      const pending = collectPending(document.body, lang);
-      if (pending.length === 0) return;
+      if (running) { rerun = true; return; }
+      running = true;
+      try {
+        // Pause observer while we read + write, so our own writes don't retrigger us
+        observerRef.current?.disconnect();
 
-      // Deduplicate by source text — many strings repeat
-      const uniqueTexts = Array.from(
-        new Set(pending.map((p) => p.text).filter((t) => !inflight.has(`${lang}::${t}`))),
-      );
-      uniqueTexts.forEach((t) => inflight.add(`${lang}::${t}`));
+        const pending = collectPending(document.body, lang);
+        if (pending.length === 0) {
+          reattach();
+          return;
+        }
 
-      // Chunk
-      const chunks: string[][] = [];
-      for (let i = 0; i < uniqueTexts.length; i += BATCH_SIZE) {
-        chunks.push(uniqueTexts.slice(i, i + BATCH_SIZE));
+        const uniqueTexts = Array.from(
+          new Set(pending.map((p) => p.text).filter((t) => !inflight.has(`${lang}::${t}`))),
+        );
+        uniqueTexts.forEach((t) => inflight.add(`${lang}::${t}`));
+
+        // Chunk and run sequentially to avoid hammering the gateway
+        const chunks: string[][] = [];
+        for (let i = 0; i < uniqueTexts.length; i += BATCH_SIZE) {
+          chunks.push(uniqueTexts.slice(i, i + BATCH_SIZE));
+        }
+        for (const chunk of chunks) {
+          const result = await translateBatch(chunk, lang);
+          Object.entries(result).forEach(([src, tr]) => cache.set(`${lang}::${src}`, tr));
+        }
+        uniqueTexts.forEach((t) => inflight.delete(`${lang}::${t}`));
+
+        pending.forEach((p) => {
+          const tr = cache.get(`${lang}::${p.text}`);
+          if (tr) p.apply(tr);
+        });
+      } finally {
+        reattach();
+        running = false;
+        if (rerun) { rerun = false; debouncedRun(); }
       }
-      const results = await Promise.all(chunks.map((c) => translateBatch(c, lang)));
-      const merged: Record<string, string> = Object.assign({}, ...results);
+    };
 
-      Object.entries(merged).forEach(([src, tr]) => {
-        cache.set(`${lang}::${src}`, tr);
-        inflight.delete(`${lang}::${src}`);
-      });
-      // Clear inflight for anything that failed too, so a later mutation can retry
-      uniqueTexts.forEach((t) => inflight.delete(`${lang}::${t}`));
-
-      pending.forEach((p) => {
-        const tr = cache.get(`${lang}::${p.text}`);
-        if (tr) p.apply(tr);
+    const reattach = () => {
+      if (!observerRef.current) return;
+      observerRef.current.observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true,
       });
     };
 
@@ -223,28 +244,21 @@ export function AutoTranslatePage() {
       timerRef.current = window.setTimeout(run, DEBOUNCE_MS);
     };
 
-    // Initial pass
-    run();
-
-    // Watch for DOM changes (route content swaps, lazy-loaded sections, modals)
-    observerRef.current?.disconnect();
-    const observer = new MutationObserver((mutations) => {
-      // Ignore mutations that are only our own attribute writes
-      const meaningful = mutations.some(
-        (m) => m.type === 'childList' || (m.type === 'characterData'),
-      );
-      if (meaningful) debouncedRun();
-    });
+    const observer = new MutationObserver(() => debouncedRun());
+    observerRef.current = observer;
     observer.observe(document.body, {
       childList: true,
       subtree: true,
       characterData: true,
     });
-    observerRef.current = observer;
+
+    // Initial pass
+    run();
 
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
       observer.disconnect();
+      observerRef.current = null;
     };
   }, [lang, location.pathname]);
 
