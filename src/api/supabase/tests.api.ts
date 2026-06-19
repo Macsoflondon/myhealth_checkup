@@ -95,7 +95,6 @@ class TestsApi {
             `description.ilike.%${safe}%`,
             `category.ilike.%${safe}%`,
             `canonical_category.ilike.%${safe}%`,
-            `biomarkers_list.ilike.%${safe}%`,
           ].join(",")
         )
         .order("price", { ascending: true })

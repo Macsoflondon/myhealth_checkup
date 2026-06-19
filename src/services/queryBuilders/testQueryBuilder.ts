@@ -80,7 +80,6 @@ export class TestQueryBuilder {
           `description.ilike.%${safeTerm}%`,
           `category.ilike.%${safeTerm}%`,
           `canonical_category.ilike.%${safeTerm}%`,
-          `biomarkers_list.ilike.%${safeTerm}%`,
         ].join(',')
       )
       .order('price', { ascending: true })
