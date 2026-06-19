@@ -23,7 +23,7 @@ export interface ProviderTestCardData {
   base_price?: number | null;
   collection_options?: any;
   reviews?: number | null;
-  categoryColor?: string;
+  categoryColor?: string | null;
   badge?: string;
   rating?: number | null;
   price_from?: boolean;
