@@ -12,7 +12,20 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
   { name: "Most Popular Tests", path: "/popular-tests", hasDropdown: false, megaMenu: false },
   { name: "General Wellness", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
-  { name: "Men's Health", path: "/mens-health", hasDropdown: true, megaMenu: true },
+  {
+    name: "Men's Health",
+    path: "/mens-health",
+    hasDropdown: true,
+    megaMenu: true,
+    dropdownItems: [
+      { name: "Men's Health Checks", path: "/mens-health" },
+      { name: "Male Hormone Tests", path: "/mens-health?category=hormones" },
+      { name: "Male Fertility Tests", path: "/mens-health?category=fertility" },
+      { name: "Testosterone Tests", path: "/mens-health?category=testosterone" },
+      { name: "Prostate Tests", path: "/mens-health?category=prostate" },
+      { name: "View All Men's Tests", path: "/mens-health" },
+    ],
+  },
   { name: "Sports-Fitness Health", path: "/sports-performance", hasDropdown: true, megaMenu: true },
   { name: "Fertility - Prenatal", path: "/fertility-tests", hasDropdown: true, megaMenu: true },
   {
