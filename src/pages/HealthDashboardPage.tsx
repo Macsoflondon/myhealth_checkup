@@ -46,8 +46,11 @@ const HealthDashboardPage = () => {
         <Header />
         
         <main className="flex-1 bg-white">
-          <div className="container mx-auto px-4 py-12 max-w-6xl">
+          <div className="container mx-auto px-4 py-12 max-w-6xl space-y-8">
             <HealthDataHub />
+            <section id="security" aria-label="Account security">
+              <MfaEnrollment />
+            </section>
           </div>
         </main>
 
