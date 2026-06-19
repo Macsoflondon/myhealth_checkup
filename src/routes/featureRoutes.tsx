@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 
 const CompareTests = lazy(() => import("@/pages/CompareTests"));
-const DiagnosticTestComparison = lazy(() => import("@/components/DiagnosticTestComparison"));
+
 const IntelligentSearchPage = lazy(() => import("@/pages/IntelligentSearchPage"));
 const RecommendationsPage = lazy(() => import("@/pages/RecommendationsPage"));
 const ReviewSystem = lazy(() => import("@/components/reviews/ReviewSystem"));
@@ -30,7 +30,7 @@ const MedicalDiagnosisPage = lazy(() => import("@/pages/MedicalDiagnosisPage"));
 
 export const featureRoutes = (
   <>
-    <Route path="/compare" element={<DiagnosticTestComparison />} />
+    <Route path="/compare" element={<CompareTests />} />
     <Route path="/compare/symptoms" element={<CompareBySymptomPage />} />
     <Route path="/compare/symptoms/:symptomSlug" element={<SymptomDetailPage />} />
     <Route path="/compare/goals" element={<CompareByGoalPage />} />
