@@ -1,0 +1,1 @@
+DELETE FROM public.api_rate_limits WHERE client_key LIKE 'translate:%';

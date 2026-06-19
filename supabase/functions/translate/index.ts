@@ -15,7 +15,7 @@ async function sha1(s: string) {
 
 const MAX_TEXTS = 50;
 const MAX_TEXT_LEN = 2000;
-const RATE_LIMIT_MAX = 30;
+const RATE_LIMIT_MAX = 300;
 const RATE_LIMIT_WINDOW_MIN = 5;
 
 Deno.serve(async (req) => {
