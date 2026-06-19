@@ -78,25 +78,15 @@ export function CategoryStandardHero({
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
         {/* Pill row */}
         <div className="flex items-center justify-center relative mb-8 md:mb-10">
-          <div
-            className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 px-4 sm:px-9 md:px-[54px] py-2 sm:py-4 md:py-[18px] rounded-full max-w-full border-primary-foreground"
+          <h1
+            className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
             style={{
-              background: "rgba(34,192,212,0.08)",
-              border: "2px solid rgba(34,192,212,0.35)",
+              letterSpacing: "0.04em",
+              color: "#ffffff",
             }}
           >
-            <h1
-              className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0"
-              style={{
-                letterSpacing: "0.04em",
-                color: "#ffffff",
-              }}
-            >
-              {pillLabel}
-            </h1>
-
-
-          </div>
+            {pillLabel}
+          </h1>
         </div>
 
         {/* Benefits row */}

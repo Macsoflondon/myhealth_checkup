@@ -1,25 +1,12 @@
-## Goal
-On all category pages using the standardised hero pill: drop the uppercase styling and the two pink dots, make the label white, and make the section below the tricolour divider have a white background.
+Remove the capsule/pill border around the category heading on all category pages.
 
-## Changes
+## Scope
+Single shared component: `src/components/category/CategoryStandardHero.tsx`
 
-### 1. `src/components/category/CategoryStandardHero.tsx`
-- Remove the two pink dot `<span>`s flanking the `<h1>`.
-- Remove `uppercase` from the heading classes so the label renders in its passed casing (e.g. "General Wellness").
-- Change heading colour from turquoise `#22c0d4` → white `#ffffff`.
-- Keep everything else (navy hero background, benefits row, tricolour divider).
+## Change
+- Remove the rounded `div` wrapper (lines 81–99) that renders the turquoise border, semi-transparent background, and padding around the `<h1>`.
+- Keep the `<h1>` itself: white text, bold, sized as-is, centred in the hero.
+- All other hero elements (benefits row, tricolour divider, ambient glow, background grid) remain unchanged.
 
-### 2. `src/pages/WellnessPage.tsx` — "Browse Tests by Category" section
-- Change section `background` from `#081129` → `#ffffff`.
-- Restyle filter pills for the new white background so they remain readable:
-  - Inactive pill: dark border `rgba(8,17,41,0.2)`, dark text `#081129`, transparent background.
-  - Active/hovered pill: keep the existing accent colour border + tinted background + accent text (already legible on white).
-- Cards already have a white background and dark text — no change needed.
-- Bottom CTA banner already sits on white — no change.
-
-### 3. Pages using `CategoryPageLayout` (Men's, Women's, Fertility, Cancer Screening, Sports Performance, Thyroid, Heart, Hormones, Gut, Diabetes, Vitamin Deficiency, Most Popular Tests, etc.)
-- The cards section there is already `bg-white`. No change beyond the shared hero update above.
-
-## Out of scope
-- Hero (navy) background stays navy — only the pill text/dots change and the section below the divider goes white.
-- No copy changes, no routing changes, no other category-page restructuring.
+## Impact
+Every category page using `CategoryStandardHero` will show the plain category name with no capsule or border.
