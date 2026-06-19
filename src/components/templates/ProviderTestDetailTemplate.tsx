@@ -371,12 +371,17 @@ export default function ProviderTestDetailTemplate({
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
+        {test.is_addon && <meta name="robots" content="noindex, nofollow" />}
+        {test.is_addon && <meta name="googlebot" content="noindex, nofollow" />}
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="product" />
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+        {!test.is_addon && (
+          <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+        )}
       </Helmet>
+
 
       <div className="min-h-screen bg-white py-12">
         <div className="container mx-auto px-4 max-w-5xl">
