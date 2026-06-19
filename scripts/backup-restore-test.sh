@@ -149,8 +149,9 @@ PY
     RESTORE_MIN=$(( (RESTORE_END - START) / 60 ))
 
     PASS=true
-    [ "$RLS_OFF" -eq 0 ] || PASS=false
-    [ ${#MISSING_FNS[@]} -eq 0 ] || PASS=false
+    [ "$RLS_OFF" -eq 0 ]        || PASS=false
+    [ "$RLS_NO_POLICY" -eq 0 ]  || PASS=false
+    [ ${#MISSING_FNS[@]} -eq 0 ]|| PASS=false
     grep -qE 'FATAL|could not' "$LOG" && PASS=false || true
     echo "$DRIFT" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); sys.exit(0 if all((v['drift_pct'] or 0) <= 0.5 for v in d.values() if v['drift_pct'] is not None) else 1)" || PASS=false
 
@@ -161,12 +162,19 @@ PY
   "backup_file": "$(basename "$BACKUP_FILE")",
   "restore_minutes": ${RESTORE_MIN},
   "total_minutes": ${RTO_MIN},
-  "rls_tables_without_rls": ${RLS_OFF},
+  "rls": {
+    "tables_total": ${TOTAL_TABLES},
+    "tables_without_rls": ${RLS_OFF},
+    "tables_rls_on_no_policy": ${RLS_NO_POLICY},
+    "failing_tables": "${RLS_FAIL_TABLES}",
+    "per_table_csv": "$(basename "$RLS_CSV")"
+  },
   "missing_functions": $(printf '%s\n' "${MISSING_FNS[@]:-}" | python3 -c 'import sys,json;print(json.dumps([l for l in sys.stdin.read().split() if l]))'),
   "drift": ${DRIFT},
   "result": "$([ "$PASS" = true ] && echo PASS || echo FAIL)"
 }
 EOF
+
 
     echo
     echo "════════════════════════════════════════"
