@@ -6,6 +6,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { usePopularTestsForNavigation } from "@/hooks/usePopularTestsFromDatabase";
 import { MegaMenuDropdown } from "./MegaMenuDropdown";
 import { MoreDropdownMenu } from "./MoreDropdownMenu";
+import { NavItemDropdown } from "./NavItemDropdown";
+import type { PrimaryNavItem } from "./NavigationItems";
 import { 
   primaryNavigationItems, 
   moreNavigationSections 
