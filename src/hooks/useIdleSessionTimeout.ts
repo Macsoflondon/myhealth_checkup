@@ -98,8 +98,33 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
   useEffect(() => {
     if (!user) {
       clearTimers();
+      try { localStorage.removeItem(ABSOLUTE_START_KEY); } catch { /* ignore */ }
       return;
     }
+
+    // Absolute session cap: anchor on first observation of this user, force
+    // re-auth after ABSOLUTE_MAX_MS regardless of activity.
+    let absoluteStart: number;
+    try {
+      const stored = Number(localStorage.getItem(ABSOLUTE_START_KEY) ?? '');
+      absoluteStart = Number.isFinite(stored) && stored > 0 ? stored : Date.now();
+      if (!stored) localStorage.setItem(ABSOLUTE_START_KEY, String(absoluteStart));
+    } catch {
+      absoluteStart = Date.now();
+    }
+    const remainingAbsolute = absoluteStart + ABSOLUTE_MAX_MS - Date.now();
+    if (remainingAbsolute <= 0) {
+      handleTimeout();
+      return;
+    }
+    const absoluteTimer = setTimeout(() => {
+      try { localStorage.removeItem(ABSOLUTE_START_KEY); } catch { /* ignore */ }
+      toast.warning('Session reached its maximum length', {
+        description: 'Please sign in again to continue.',
+        duration: 5000,
+      });
+      handleTimeout();
+    }, remainingAbsolute);
 
     // Activity events to monitor
     const events = [
