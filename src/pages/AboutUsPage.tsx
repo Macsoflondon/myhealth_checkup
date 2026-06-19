@@ -10,8 +10,14 @@ const AboutUsPage = () => {
         <title>About Us | myhealth checkup</title>
         <meta
           name="description"
-          content="myhealth checkup is the UK's first fully independent comparison platform for private health testing. Learn about our mission, our AI diagnostic integration engine, and what we are building."
+          content="myhealth checkup is the UK's first fully independent comparison platform for private health testing. Learn about our mission and what we are building."
         />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/about" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="About myhealth checkup — independent UK health-test comparison" />
+        <meta property="og:description" content="The UK's first fully independent comparison platform for private health testing. Our mission, our standards and what we're building." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/about" />
+        <meta property="og:locale" content="en_GB" />
       </Helmet>
 
       <Header />
