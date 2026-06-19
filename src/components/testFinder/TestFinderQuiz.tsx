@@ -17,6 +17,7 @@ import {
   SAMPLE_TYPE_LABEL,
 } from "@/lib/testFinder/labels";
 import { TEST_CATALOGUE } from "@/lib/testFinder/catalogue";
+import { useTestCatalogue } from "@/lib/testFinder/useTestCatalogue";
 import { getRecommendations } from "@/lib/testFinder/recommendationService";
 import { deriveFilterState } from "@/lib/testFinder/filters";
 import { testFinderStore } from "@/stores/testFinderStore";
@@ -89,6 +90,7 @@ const Chip = ({
 );
 
 export const TestFinderQuiz = () => {
+  const { data: catalogue = TEST_CATALOGUE } = useTestCatalogue();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [sex, setSex] = useState<Sex | null>(null);
@@ -130,7 +132,7 @@ export const TestFinderQuiz = () => {
     };
     const filters = deriveFilterState(profile);
     testFinderStore.setProfile(profile, filters);
-    const recs = await getRecommendations(TEST_CATALOGUE, profile);
+    const recs = await getRecommendations(catalogue, profile);
     testFinderStore.setRecommendations(recs);
     testFinderStore.setSelected(recs.slice(0, 3).map((r) => r.id));
     navigate("/find-test/recommendations");

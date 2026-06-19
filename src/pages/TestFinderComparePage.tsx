@@ -8,16 +8,18 @@ import { ComparisonTable } from "@/components/testFinder/ComparisonTable";
 import { FiltersPanel } from "@/components/testFinder/FiltersPanel";
 import { useTestFinder, testFinderStore } from "@/stores/testFinderStore";
 import { TEST_CATALOGUE } from "@/lib/testFinder/catalogue";
+import { useTestCatalogue } from "@/lib/testFinder/useTestCatalogue";
 import { applyFilters } from "@/lib/testFinder/filters";
 
 const TestFinderComparePage = () => {
   const navigate = useNavigate();
+  const { data: catalogue = TEST_CATALOGUE } = useTestCatalogue();
   const filters = useTestFinder((s) => s.filters);
   const quizFilters = useTestFinder((s) => s.quizFilters);
   const selectedIds = useTestFinder((s) => s.selectedTestIds);
   const recs = useTestFinder((s) => s.recommendations);
 
-  const pool = recs.length > 0 ? recs : TEST_CATALOGUE;
+  const pool = recs.length > 0 ? recs : catalogue;
   const filtered = useMemo(() => applyFilters(pool, filters), [pool, filters]);
   const selectedTests = useMemo(
     () => filtered.filter((t) => selectedIds.includes(t.id)),
