@@ -13,7 +13,8 @@
     "prerender": "node scripts/prerender.mjs",
     "build:full": "bun run build && bun run preview --port 4173 & sleep 4 && bun run prerender; kill %1",
     "predev": "bunx tsx scripts/generate-sitemap.ts",
-    "prebuild": "bunx tsx scripts/generate-sitemap.ts"
+    "prebuild": "bunx tsx scripts/generate-sitemap.ts",
+    "seo:check": "node scripts/seo-regression.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

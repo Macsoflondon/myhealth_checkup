@@ -32,7 +32,7 @@ const TestFinderComparePage = () => {
           name="description"
           content="Compare private health tests side by side on price, biomarkers, sample type, collection and clinical review."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/find-test/compare" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test/compare" />
       </Helmet>
       <div className="min-h-screen bg-[#081129] text-white">
         <Header />

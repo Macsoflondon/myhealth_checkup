@@ -79,7 +79,7 @@ const SiteBreadcrumb = () => {
     isLast: idx === segments.length - 1,
   }));
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://www.myhealthcheckup.co.uk";
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://myhealthcheckup.co.uk";
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

@@ -37,7 +37,7 @@ const browser = await chromium.launch();
 const context = await browser.newContext({
   // Mark these requests so the app can opt out of analytics / heavy effects
   // if it wants to (we don't currently — keep this for future use).
-  userAgent: "Mozilla/5.0 (compatible; MHC-Prerenderer/1.0; +https://www.myhealthcheckup.co.uk)",
+  userAgent: "Mozilla/5.0 (compatible; MHC-Prerenderer/1.0; +https://myhealthcheckup.co.uk)",
 });
 
 let succeeded = 0;

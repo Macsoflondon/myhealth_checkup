@@ -8,7 +8,7 @@ const HeartHealthPage = () => (
     pillLabel="Heart Health"
     seoDescription="Compare cardiovascular tests — cholesterol, lipid profiles and cardiac risk assessment — from trusted UK providers."
     seoKeywords="heart health tests, cholesterol test, lipid profile, cardiac risk assessment, cardiovascular screening"
-    canonicalUrl="https://www.myhealthcheckup.co.uk/heart-health"
+    canonicalUrl="https://myhealthcheckup.co.uk/heart-health"
     headline="Heart Health Blood Tests"
     subtitle="Comprehensive cardiovascular screening — monitor your risk and take proactive steps for a healthier heart."
     searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'blood pressure'"

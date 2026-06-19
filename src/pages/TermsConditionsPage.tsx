@@ -11,10 +11,10 @@ const TermsConditionsPage = () => {
       <Helmet>
         <title>Terms & Conditions | myhealth checkup</title>
         <meta name="description" content="Terms and conditions governing your use of myhealth checkup, including booking, liability, and intellectual property." />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/terms" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/terms" />
         <meta property="og:title" content="Terms & Conditions | myhealth checkup" />
         <meta property="og:description" content="The terms and conditions that govern your use of the myhealth checkup comparison platform." />
-        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/terms" />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/terms" />
         <meta property="og:type" content="website" />
       </Helmet>
       <Header />

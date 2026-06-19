@@ -182,7 +182,7 @@ export function CategoryPageLayout({
               "@type": "ListItem",
               position: i + 1,
               name: b.label,
-              ...(b.href ? { item: `https://www.myhealthcheckup.co.uk${b.href}` } : {}),
+              ...(b.href ? { item: `https://myhealthcheckup.co.uk${b.href}` } : {}),
             })),
           },
           mainEntity: {

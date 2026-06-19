@@ -8,7 +8,7 @@ const HormonesPage = () => (
     pillLabel="Hormones"
     seoDescription="Compare hormone blood tests from trusted UK providers — thyroid, reproductive, stress and metabolic hormones."
     seoKeywords="hormone blood tests, testosterone test, female hormones, cortisol test, fertility hormones"
-    canonicalUrl="https://www.myhealthcheckup.co.uk/hormones"
+    canonicalUrl="https://myhealthcheckup.co.uk/hormones"
     headline="Hormone Blood Tests"
     subtitle="Comprehensive hormone testing — reproductive, thyroid, stress and metabolic — from trusted UK providers."
     searchPlaceholder="Search by symptom or test — e.g. 'low energy', 'menopause'"

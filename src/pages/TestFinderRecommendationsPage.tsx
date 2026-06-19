@@ -45,7 +45,7 @@ const TestFinderRecommendationsPage = () => {
           name="description"
           content="Personalised health test recommendations based on your goals, concerns, and preferences."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/find-test/recommendations" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test/recommendations" />
       </Helmet>
       <div className="min-h-screen bg-[#081129] text-white">
         <Header />

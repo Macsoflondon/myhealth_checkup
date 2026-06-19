@@ -8,7 +8,7 @@ const SportsPerformancePage = () => (
     pillLabel="Sports-Fitness Health"
     seoDescription="Optimise your fitness and athletic performance with comprehensive health blood tests from trusted UK providers."
     seoKeywords="fitness health tests, bodybuilding blood tests, athletic blood tests, sports nutrition testing, recovery markers"
-    canonicalUrl="https://www.myhealthcheckup.co.uk/sports-performance"
+    canonicalUrl="https://myhealthcheckup.co.uk/sports-performance"
     headline="Sports-Fitness Health Blood Tests"
     subtitle="Optimise athletic performance with comprehensive biomarker analysis — nutrition, recovery and fitness markers."
     searchPlaceholder="Search by sport or goal — e.g. 'marathon', 'muscle recovery'"

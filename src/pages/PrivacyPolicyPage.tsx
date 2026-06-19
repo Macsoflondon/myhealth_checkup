@@ -11,7 +11,7 @@ const PrivacyPolicyPage = () => {
       <Helmet>
         <title>Privacy Policy | myhealth checkup</title>
         <meta name="description" content="How we collect, use, and protect your personal data in compliance with UK GDPR and the Data Protection Act 2018." />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/privacy-policy" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/privacy-policy" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

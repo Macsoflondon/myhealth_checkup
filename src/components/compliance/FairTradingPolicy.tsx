@@ -16,7 +16,7 @@ const FairTradingPolicy = () => {
           <p className="text-sm"><strong>Trading Name:</strong> myhealth checkup</p>
           <p className="text-sm"><strong>Registered Office:</strong> Clapham, SW London, United Kingdom</p>
           <p className="text-sm"><strong>Telephone:</strong> 07776330508</p>
-          <p className="text-sm"><strong>Website:</strong> <a href="https://www.myhealthcheckup.co.uk" className="text-primary hover:underline">https://www.myhealthcheckup.co.uk</a></p>
+          <p className="text-sm"><strong>Website:</strong> <a href="https://myhealthcheckup.co.uk" className="text-primary hover:underline">https://myhealthcheckup.co.uk</a></p>
         </div>
       </div>
 
