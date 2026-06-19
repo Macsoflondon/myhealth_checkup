@@ -168,3 +168,7 @@ verify_jwt = false
 # Sign-in Brute-Force Throttle (called pre-auth, no JWT)
 [functions.auth-throttle]
 verify_jwt = false
+
+# Cyber Essentials Operational Alerts (called by Postgres trigger and CI scripts)
+[functions.security-alert-notify]
+verify_jwt = false
