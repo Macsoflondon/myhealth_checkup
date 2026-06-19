@@ -12,6 +12,9 @@ const ProviderComparisonTable = lazy(() => import("@/components/sections/Provide
 const GoodbodyBentoShowcase = lazy(() => import("@/components/sections/GoodbodyBentoShowcase"));
 const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
+const LiveComparisonCard = lazy(() => import("@/components/sections/LiveComparisonCard"));
+import { DEFAULT_LIVE_COMPARISON_PANELS } from "@/components/sections/LiveComparisonCard";
+
 
 const BentoSkeleton = () => (
   <div
