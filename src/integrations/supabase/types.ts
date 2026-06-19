@@ -277,6 +277,42 @@ export type Database = {
         }
         Relationships: []
       }
+      cron_run_log: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          job_name: string
+          rows_affected: number | null
+          started_at: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          job_name: string
+          rows_affected?: number | null
+          started_at?: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          job_name?: string
+          rows_affected?: number | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
       csp_reports: {
         Row: {
           blocked_uri: string | null
@@ -1970,6 +2006,7 @@ export type Database = {
         Args: { _category: string }
         Returns: string
       }
+      cleanup_cron_run_log: { Args: never; Returns: undefined }
       cleanup_csp_reports: { Args: never; Returns: undefined }
       cleanup_old_health_queries: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
@@ -2007,6 +2044,10 @@ export type Database = {
       }
       resolve_canonical_category: {
         Args: { _provider_id: string; _source_section: string }
+        Returns: string
+      }
+      run_logged_cleanup: {
+        Args: { _job_name: string; _sql: string }
         Returns: string
       }
       sanitize_popular_provider_tests: { Args: never; Returns: undefined }
