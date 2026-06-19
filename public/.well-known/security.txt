@@ -1,17 +1,17 @@
 # Security policy for myhealth checkup
-# https://www.myhealthcheckup.co.uk
+# https://myhealthcheckup.co.uk
 # Format: https://datatracker.ietf.org/doc/html/rfc9116
 
 Contact: mailto:security@myhealthcheckup.co.uk
 Contact: mailto:legal@myhealthcheckup.co.uk
 Expires: 2027-04-26T00:00:00.000Z
 Preferred-Languages: en-GB
-Canonical: https://www.myhealthcheckup.co.uk/.well-known/security.txt
-Policy: https://www.myhealthcheckup.co.uk/privacy-policy
+Canonical: https://myhealthcheckup.co.uk/.well-known/security.txt
+Policy: https://myhealthcheckup.co.uk/privacy-policy
 
 # Scope
 # We welcome reports about vulnerabilities affecting:
-#  - https://www.myhealthcheckup.co.uk
+#  - https://myhealthcheckup.co.uk
 #  - Subdomains of myhealthcheckup.co.uk
 #
 # Out of scope: third-party provider websites linked from our comparison pages.
