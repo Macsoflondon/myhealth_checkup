@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
     const { count } = await supabase
       .from('api_rate_limits')
       .select('id', { count: 'exact', head: true })
-      .eq('identifier', `translate:${ip}`)
+      .eq('client_key', `translate:${ip}`)
       .gte('window_start', windowStart);
     if ((count ?? 0) >= RATE_LIMIT_MAX) {
       return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), {
@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
       });
     }
     await supabase.from('api_rate_limits').insert({
-      identifier: `translate:${ip}`,
+      client_key: `translate:${ip}`,
       endpoint: 'translate',
       window_start: new Date().toISOString(),
     });
