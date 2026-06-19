@@ -108,10 +108,6 @@ const PartnerShowcaseGrid = () => {
         <DreamHealthShowcase />
       </SafeBlock>
 
-      <SafeBlock name="Provider Comparison Table" fallback={<BlockSkeleton />}>
-        <ProviderComparisonTable />
-      </SafeBlock>
-
       <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
         <FeaturedPublications />
       </SafeBlock>
