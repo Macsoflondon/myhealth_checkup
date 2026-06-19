@@ -1,44 +1,27 @@
 ## Goal
-Restrict `/at-home-tests` to **finger-prick tests only**. Today the page also surfaces saliva, urine, stool, swab, venous-only, and NULL sample-type tests.
+Surface the real error inside the "Something went wrong" fallback so the underlying cause becomes visible. The current ErrorBoundary hides everything behind a generic message, which is why I can't reproduce or diagnose the crash from the screenshot — every category route I tested (`/at-home-tests`, `/tests/cancer`, `/tests/thyroid`, `/tests/hormones`, `/tests/general-health`, `/tests/sexual-health`, `/womens-health`, `/mens-health`, `/sports-performance`, `/fertility-tests`, `/wellness`, `/compare`, `/providers`, `/biomarker-database`, `/health-blog`) currently loads cleanly on mobile + desktop with zero page errors.
 
-## Current vs. proposed filter
-
-Database breakdown of `home_kit_available=true, is_addon=false, is_active=true`:
-
-```text
-Finger-prick or Venous              59  ✅ keep
-Finger-prick                        34  ✅ keep
-At-home finger-prick                13  ✅ keep
-Venous or finger-prick blood ...     1  ✅ keep
-At-home finger-prick or venous       2  ✅ keep
-Stool sample                         4  ❌ drop
-Stool                                2  ❌ drop
-Blood (venous)                       3  ❌ drop
-Swab or Urine                        2  ❌ drop
-Urine                                1  ❌ drop
-NULL                                 1  ❌ drop
-```
-
-Net result: ~109 finger-prick tests shown (down from ~122).
+Likely cause given my repro failure: the user is on a stale cached bundle from before the recent universal-card refactor. The diagnostic patch will confirm it next time.
 
 ## Changes
 
-**`src/hooks/queries/useAtHomeTests.ts`** — both `useAtHomeTests` and `useAtHomeCategories`:
+**`src/components/common/ErrorBoundary.tsx`** — extend without changing the friendly UX:
 
-Replace the current broad `.or(...)` with a single strict filter:
+1. Add a collapsible **"Technical details"** `<details>` block below the existing copy, showing:
+   - `error.name: error.message`
+   - `error.stack` (monospace, scrollable, max-height ~240px)
+   - The component stack from `componentDidCatch` (stored on state)
+2. Add a **"Reload page"** button next to "Try Again" — hard reload bypasses the soft state reset and clears module-level caches.
+3. Add a **"Copy details"** button that copies error + stack to clipboard so the user can paste it back to me.
+4. `componentDidCatch` already logs via `logger.error` — also `console.error` the raw `Error` (preserves stack in Server Logs / browser devtools).
+5. Keep the CQC logo, layout, and primary copy unchanged.
 
-```ts
-.ilike("sample_type", "%finger%")
-```
-
-This keeps every variant that contains "finger" (covers "Finger-prick", "At-home finger-prick", "Finger-prick or Venous", etc.) and drops stool / urine / swab / venous-only / NULL.
-
-Categories list will auto-rebuild from the filtered set, so any category that becomes empty (e.g. a stool-only "Gut Health" entry) drops out of the chip rail automatically.
-
-## Copy
-No copy changes needed — the hero already says "Finger-prick blood tests, delivered to your door".
+State shape gains `errorInfo?: ErrorInfo` so the component stack is renderable.
 
 ## Out of scope
-- No schema changes, no new columns, no admin tooling.
-- Other pages (`/popular-tests`, category pages, provider catalogs) are untouched.
-- The universal card/modal work from the previous turn is unaffected.
+- No changes to routes, pages, the universal card, or the at-home filter.
+- No new dependencies.
+- No design-token changes.
+
+## Follow-up
+Once the patch lands, ask the user to hard-refresh (Cmd+Shift+R) the broken page. If it still crashes, the new fallback will show the actual error and stack — paste it back and the real fix becomes a 2-minute job.
