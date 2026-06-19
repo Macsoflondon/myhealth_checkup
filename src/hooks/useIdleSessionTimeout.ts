@@ -161,6 +161,7 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
 
     return () => {
       clearTimers();
+      clearTimeout(absoluteTimer);
       events.forEach((event) => {
         document.removeEventListener(event, handleActivity);
       });
