@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -84,8 +85,8 @@ const ProactiveHealthJourney = () => {
         </div>
         
         <div className="text-center mt-12">
-          <Button size="lg">
-            Start Your Journey
+          <Button asChild size="lg">
+            <Link to="/find-test">Start Your Journey</Link>
           </Button>
         </div>
       </div>

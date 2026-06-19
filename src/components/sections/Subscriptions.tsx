@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -40,8 +41,8 @@ const SubscriptionPlan = ({
         </ul>
       </CardContent>
       <CardFooter>
-        <Button className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
-          Subscribe Now
+        <Button asChild className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
+          <Link to="/contact">Subscribe Now</Link>
         </Button>
       </CardFooter>
     </Card>;
