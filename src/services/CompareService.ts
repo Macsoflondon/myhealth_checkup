@@ -90,15 +90,19 @@ export class CompareService {
     }
   }
 
-  static async searchTests(searchTerm: string, providers: string[] = ['all']): Promise<CompareTestData[]> {
+  static async searchTests(
+    searchTerm: string,
+    providers: string[] = ['all'],
+    category?: string,
+  ): Promise<CompareTestData[]> {
     if (!searchTerm.trim()) return [];
-    
-    const cacheKey = cacheService.generateKey('searchTests', { searchTerm, providers });
+
+    const cacheKey = cacheService.generateKey('searchTests', { searchTerm, providers, category });
     const cached = cacheService.get<CompareTestData[]>(cacheKey);
     if (cached) return cached;
 
     try {
-      const query = TestQueryBuilder.buildSearchQuery(searchTerm, providers);
+      const query = TestQueryBuilder.buildSearchQuery(searchTerm, providers, category);
       const { data, error } = await query;
 
       if (error) {

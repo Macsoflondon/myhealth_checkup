@@ -81,7 +81,7 @@ const CompareTests = () => {
 
   const hasSearch = filters.searchQuery.trim().length > 0;
   const displayTests: CompareTestData[] = hasSearch
-    ? tests.slice(0, 12)
+    ? tests
     : recommendedTests.slice(0, 8);
   const showLoading = hasSearch ? isLoading : isLoadingRecommended;
 
