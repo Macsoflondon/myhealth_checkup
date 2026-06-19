@@ -54,7 +54,7 @@ export const CompareFilters = ({
               </Badge>
             </Button>
             
-            {categories.slice(0, 8).map(category => <Button key={category.id} variant={selectedCategory === category.id ? "default" : "outline"} size="sm" onClick={() => onCategoryChange(category.id)} className={cn("rounded-full transition-all", selectedCategory === category.id && "bg-health-primary hover:bg-health-primary/90 text-white")}>
+            {categories.slice(0, 20).map(category => <Button key={category.id} variant={selectedCategory === category.id ? "default" : "outline"} size="sm" onClick={() => onCategoryChange(category.id)} className={cn("rounded-full transition-all", selectedCategory === category.id && "bg-health-primary hover:bg-health-primary/90 text-white")}>
                 {category.name}
                 <Badge variant="secondary" className="ml-2 h-4 px-1 text-xs">
                   {category.count}
