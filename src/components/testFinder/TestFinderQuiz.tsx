@@ -132,7 +132,7 @@ export const TestFinderQuiz = () => {
     };
     const filters = deriveFilterState(profile);
     testFinderStore.setProfile(profile, filters);
-    const recs = await getRecommendations(TEST_CATALOGUE, profile);
+    const recs = await getRecommendations(catalogue, profile);
     testFinderStore.setRecommendations(recs);
     testFinderStore.setSelected(recs.slice(0, 3).map((r) => r.id));
     navigate("/find-test/recommendations");
