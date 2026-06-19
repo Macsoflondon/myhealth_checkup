@@ -10,7 +10,25 @@ export interface PrimaryNavItem {
 
 export const primaryNavigationItems: PrimaryNavItem[] = [
   { name: "Most Popular Tests", path: "/popular-tests", hasDropdown: false, megaMenu: false },
-  { name: "General Wellness", path: "/wellness", hasDropdown: true, megaMenu: true },
+  {
+    name: "General Wellness",
+    path: "/wellness",
+    hasDropdown: true,
+    megaMenu: true,
+    dropdownItems: [
+      { name: "General Health Checks", path: "/wellness" },
+      { name: "Heart Health Tests", path: "/wellness?category=heart-health" },
+      { name: "Cholesterol Tests", path: "/wellness?category=cholesterol" },
+      { name: "Diabetes Tests", path: "/wellness?category=diabetes" },
+      { name: "Iron & Anaemia Tests", path: "/wellness?category=iron-anaemia" },
+      { name: "Liver Health Tests", path: "/wellness?category=liver" },
+      { name: "Kidney Tests", path: "/wellness?category=kidney" },
+      { name: "Vitamin & Nutrition Tests", path: "/wellness?category=vitamins" },
+      { name: "Allergy Tests", path: "/wellness?category=allergy" },
+      { name: "Thyroid Tests", path: "/wellness?category=thyroid" },
+      { name: "View All Wellness Tests", path: "/wellness" },
+    ],
+  },
   { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
   {
     name: "Men's Health",
