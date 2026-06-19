@@ -329,8 +329,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         role="button"
         tabIndex={0}
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleOpen(); } }}
-        className={`cursor-pointer rounded-2xl bg-white w-full ${className || ""}`}
-        style={{ border: "1px solid #e2e8f0", transition: "all 200ms", overflow: "hidden" }}
+        className={`group cursor-pointer rounded-2xl bg-white w-full h-full flex flex-col overflow-hidden ${className || ""}`}
+        style={{
+          border: "1px solid #e2e8f0",
+          transition: "border-color 200ms, box-shadow 200ms, transform 200ms",
+        }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLDivElement).style.borderColor = UTC_TURQUOISE;
           (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 24px rgba(34,192,212,0.12)";
@@ -342,69 +345,172 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
           (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
         }}
       >
-        <div style={{ height: 4, background: meta.color || UTC_TURQUOISE }} />
+        {/* Accent stripe — identical on every card */}
+        <div style={{ height: 4, background: meta.color || UTC_TURQUOISE, flexShrink: 0 }} />
 
-        <div style={{ padding: "16px" }}>
-          {/* Provider row */}
-          <div className="flex items-center justify-between mb-3">
+        {/* Body — flex column so the bottom block (price + buttons) is always flush */}
+        <div className="flex flex-1 flex-col p-4">
+          {/* Provider row — fixed height */}
+          <div className="flex items-center justify-between mb-3 h-7 flex-shrink-0">
             <div className="flex items-center gap-2 min-w-0">
-              {logo ? (
-                <div style={{ width: 28, height: 28, background: "#f8fafc", borderRadius: 6, padding: 3, flexShrink: 0 }}>
-                  <img src={logo} alt={meta.displayName} className="w-full h-full object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                </div>
-              ) : null}
-              <span className="truncate" style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12, color: UTC_TURQUOISE }}>{meta.displayName}</span>
+              <div
+                style={{ width: 28, height: 28, background: "#f8fafc", borderRadius: 6, padding: 3, flexShrink: 0 }}
+                className="flex items-center justify-center"
+              >
+                {logo ? (
+                  <img
+                    src={logo}
+                    alt={meta.displayName}
+                    className="w-full h-full object-contain"
+                    onError={(e) => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
+                  />
+                ) : null}
+              </div>
+              <span
+                className="truncate"
+                style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12, color: UTC_TURQUOISE }}
+              >
+                {meta.displayName}
+              </span>
             </div>
-            {test.is_popular && (
-              <span style={{ background: "#fff5f9", color: UTC_PINK, border: `1px solid ${UTC_PINK}30`, fontFamily: "'Montserrat',sans-serif", fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.06em", flexShrink: 0 }}>Popular</span>
+            <span
+              aria-hidden={!test.is_popular}
+              style={{
+                background: "#fff5f9",
+                color: UTC_PINK,
+                border: `1px solid ${UTC_PINK}30`,
+                fontFamily: "'Montserrat',sans-serif",
+                fontSize: 10,
+                fontWeight: 700,
+                padding: "2px 8px",
+                borderRadius: 20,
+                textTransform: "uppercase",
+                letterSpacing: "0.06em",
+                flexShrink: 0,
+                visibility: test.is_popular ? "visible" : "hidden",
+              }}
+            >
+              Popular
+            </span>
+          </div>
+
+          {/* Title — always reserves 2 lines */}
+          <div
+            className="line-clamp-2 mb-1"
+            style={{
+              fontFamily: "'Montserrat',sans-serif",
+              fontWeight: 700,
+              fontSize: 15,
+              color: UTC_NAVY,
+              lineHeight: 1.3,
+              minHeight: "calc(15px * 1.3 * 2)",
+            }}
+          >
+            {test.test_name}
+          </div>
+
+          {/* Category — always reserves one line */}
+          <div
+            className="truncate mb-2"
+            style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#94a3b8", minHeight: 18 }}
+          >
+            {test.category || "\u00A0"}
+          </div>
+
+          {/* Description — always reserves 2 lines */}
+          <p
+            className="line-clamp-2 mb-3"
+            style={{
+              fontFamily: "'DM Sans',sans-serif",
+              fontSize: 13,
+              color: "#64748b",
+              lineHeight: 1.5,
+              minHeight: "calc(13px * 1.5 * 2)",
+            }}
+          >
+            {test.description || "\u00A0"}
+          </p>
+
+          {/* Biomarker chips — fixed row */}
+          <div
+            className="flex flex-nowrap gap-1.5 mb-3 overflow-hidden"
+            style={{ minHeight: 22, maxHeight: 22 }}
+          >
+            {biomarkers.slice(0, 3).map((b, i) => (
+              <span
+                key={i}
+                className="truncate"
+                style={{
+                  background: UTC_TINT,
+                  color: UTC_NAVY,
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 11,
+                  padding: "2px 8px",
+                  borderRadius: 12,
+                  maxWidth: "40%",
+                }}
+              >
+                {b}
+              </span>
+            ))}
+            {biomarkers.length > 3 && (
+              <span
+                className="flex-shrink-0"
+                style={{
+                  background: UTC_TINT,
+                  color: "#94a3b8",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 11,
+                  padding: "2px 8px",
+                  borderRadius: 12,
+                }}
+              >
+                +{biomarkers.length - 3}
+              </span>
             )}
           </div>
 
-          {/* Title */}
-          <div className="line-clamp-2 mb-1" style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 15, color: UTC_NAVY, lineHeight: 1.3 }}>{test.test_name}</div>
-
-          {/* Category */}
-          {test.category && (
-            <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#94a3b8", marginBottom: 8 }}>{test.category}</div>
-          )}
-
-          {/* Description */}
-          {test.description && (
-            <p className="line-clamp-2" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: "#64748b", marginBottom: 10, lineHeight: 1.5 }}>{test.description}</p>
-          )}
-
-          {/* Biomarker chips */}
-          {biomarkers.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {biomarkers.slice(0, 3).map((b, i) => (
-                <span key={i} style={{ background: UTC_TINT, color: UTC_NAVY, fontFamily: "'DM Sans',sans-serif", fontSize: 11, padding: "2px 8px", borderRadius: 12 }}>{b}</span>
-              ))}
-              {biomarkers.length > 3 && (
-                <span style={{ background: UTC_TINT, color: "#94a3b8", fontFamily: "'DM Sans',sans-serif", fontSize: 11, padding: "2px 8px", borderRadius: 12 }}>+{biomarkers.length - 3} more</span>
-              )}
-            </div>
-          )}
-
-          {/* Stats row */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-3" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b" }}>
-            {test.biomarker_count != null && test.biomarker_count > 0 && (
-              <span className="flex items-center gap-1"><FlaskConical size={12} color={UTC_TURQUOISE} />{test.biomarker_count} {isAllergy ? "allergies tested" : "biomarkers"}</span>
-            )}
-            {test.turnaround_days_text && (
-              <span className="flex items-center gap-1"><Clock size={12} color={UTC_TURQUOISE} />{test.turnaround_days_text}</span>
-            )}
-            <span className="flex items-center gap-1"><Home size={12} color={UTC_TURQUOISE} />{collectionLabel(test)}</span>
+          {/* Stats row — single fixed-height row */}
+          <div
+            className="flex items-center gap-x-3 mb-3 overflow-hidden whitespace-nowrap"
+            style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b", minHeight: 20 }}
+          >
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <FlaskConical size={12} color={UTC_TURQUOISE} />
+              {test.biomarker_count && test.biomarker_count > 0
+                ? `${test.biomarker_count} ${isAllergy ? "allergens" : "markers"}`
+                : "—"}
+            </span>
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <Clock size={12} color={UTC_TURQUOISE} />
+              {test.turnaround_days_text || "—"}
+            </span>
+            <span className="flex items-center gap-1 flex-shrink-0 truncate">
+              <Home size={12} color={UTC_TURQUOISE} />
+              {collectionLabel(test)}
+            </span>
           </div>
+
+          {/* Spacer pushes price + buttons to the bottom */}
+          <div className="flex-1" />
 
           {/* Price */}
-          <div className="flex items-center justify-between pt-3 mb-3" style={{ borderTop: "1px solid #f1f5f9" }}>
+          <div
+            className="flex items-center justify-between pt-3 mb-3"
+            style={{ borderTop: "1px solid #f1f5f9" }}
+          >
             <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 20, color: UTC_PINK }}>
               {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
             </div>
-            <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8" }}>Base {collectionLabel(test).toLowerCase()}</span>
+            <span
+              className="truncate ml-2"
+              style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8" }}
+            >
+              Base {collectionLabel(test).toLowerCase()}
+            </span>
           </div>
 
-          {/* Buttons */}
+          {/* Buttons — flush bottom, identical heights */}
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={handleCompare}
@@ -412,11 +518,18 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               style={{
                 background: inCompare ? UTC_TURQUOISE : "#fff",
                 color: inCompare ? "#fff" : UTC_NAVY,
-                fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12,
-                padding: "10px 12px", borderRadius: 20,
+                fontFamily: "'Montserrat',sans-serif",
+                fontWeight: 600,
+                fontSize: 12,
+                height: 40,
+                padding: "0 12px",
+                borderRadius: 20,
                 border: `1.5px solid ${inCompare ? UTC_TURQUOISE : UTC_NAVY}`,
                 cursor: "pointer",
-                display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
                 transition: "all 150ms",
               }}
             >
@@ -427,11 +540,20 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               onClick={handleBook}
               aria-label={`Book ${test.test_name}`}
               style={{
-                background: UTC_PINK, color: "#fff",
-                fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 12,
-                padding: "10px 12px", borderRadius: 20, border: "none",
+                background: UTC_PINK,
+                color: "#fff",
+                fontFamily: "'Montserrat',sans-serif",
+                fontWeight: 700,
+                fontSize: 12,
+                height: 40,
+                padding: "0 12px",
+                borderRadius: 20,
+                border: "none",
                 cursor: "pointer",
-                display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
               }}
               onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a5a")}
               onMouseLeave={(e) => (e.currentTarget.style.background = UTC_PINK)}

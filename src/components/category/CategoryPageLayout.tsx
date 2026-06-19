@@ -242,7 +242,7 @@ export function CategoryPageLayout({
               />
 
               {/* Cards grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
                 {filtered.map((test) => (
                   <UnifiedTestCard
                     key={test.id}
@@ -264,7 +264,7 @@ export function CategoryPageLayout({
                     ctaLabel="View details"
                     compareSelected={!!compared.find((c) => c.id === test.id)}
                     onCompareToggle={() => toggleCompare(test)}
-                    className="w-full max-w-[360px]"
+                    className="w-full h-full"
                     testDetails={{
                       id: String(test.id),
                       provider_id: (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
