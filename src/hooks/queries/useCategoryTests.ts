@@ -35,21 +35,36 @@ export function useCategoryTests(canonicalCategory: string) {
   return useQuery({
     queryKey: ["category-tests-db", canonicalCategory],
     queryFn: async (): Promise<CategoryTestItem[]> => {
-      const { data, error } = await supabase
+      // DHT applies to both sexes — surface it on Men's and Women's pages
+      // while keeping its canonical_category as 'hormones'.
+      const includeDht =
+        canonicalCategory === "mens-health" || canonicalCategory === "womens-health";
+
+      let query = supabase
         .from("provider_tests")
         .select(
           "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,category,source_section_label"
         )
-        .eq("canonical_category", canonicalCategory)
         .eq("is_active", true)
         .not("image_url", "is", null)
-        .not("url", "is", null)
+        .not("url", "is", null);
+
+      if (includeDht) {
+        query = query.or(
+          `canonical_category.eq.${canonicalCategory},and(canonical_category.eq.hormones,test_name.ilike.%dihydrotestosterone%)`
+        );
+      } else {
+        query = query.eq("canonical_category", canonicalCategory);
+      }
+
+      const { data, error } = await query
         .order("is_popular", { ascending: false })
         .order("popularity_rank", { ascending: true, nullsFirst: false })
         .order("price", { ascending: true });
 
       if (error) throw error;
       if (!data) return [];
+
 
       const badgeColor = BADGE_COLOR_BY_CATEGORY[canonicalCategory] || "#3B82F6";
 
