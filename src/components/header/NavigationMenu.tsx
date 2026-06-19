@@ -172,7 +172,12 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   };
 
   const renderMoreButton = () => (
-    <div className="relative nav-item-wrapper" style={{ zIndex: 100 }}>
+    <div
+      className="relative nav-item-wrapper"
+      style={{ zIndex: 100 }}
+      onMouseEnter={() => handleWrapperMouseEnter("MORE")}
+      onMouseLeave={handleWrapperMouseLeave}
+    >
       <button
         type="button"
         aria-haspopup="menu"
