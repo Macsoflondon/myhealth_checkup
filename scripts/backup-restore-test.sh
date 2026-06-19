@@ -77,9 +77,45 @@ case "$CMD" in
     echo "→ Capturing restored row counts..."
     capture_counts "$RESTORE_DB_URL" "${EVIDENCE_DIR}/restored-counts.json"
 
-    echo "→ Verifying RLS posture..."
-    RLS_OFF=$(psql "$RESTORE_DB_URL" -At -c \
-      "SELECT count(*) FROM pg_tables WHERE schemaname='public' AND rowsecurity=false;")
+    echo "→ Verifying per-table RLS posture (full evidence dump)..."
+    RLS_CSV="${EVIDENCE_DIR}/rls-per-table.csv"
+    psql "$RESTORE_DB_URL" -c "\COPY (
+      SELECT
+        t.schemaname,
+        t.tablename,
+        t.rowsecurity                                            AS rls_enabled,
+        COALESCE(p.policy_count, 0)                              AS policy_count,
+        COALESCE(p.policy_names, '{}')                           AS policy_names,
+        has_table_privilege('anon',          format('%I.%I', t.schemaname, t.tablename), 'SELECT') AS anon_select,
+        has_table_privilege('anon',          format('%I.%I', t.schemaname, t.tablename), 'INSERT') AS anon_insert,
+        has_table_privilege('authenticated', format('%I.%I', t.schemaname, t.tablename), 'SELECT') AS auth_select,
+        has_table_privilege('authenticated', format('%I.%I', t.schemaname, t.tablename), 'INSERT') AS auth_insert,
+        has_table_privilege('authenticated', format('%I.%I', t.schemaname, t.tablename), 'UPDATE') AS auth_update,
+        has_table_privilege('authenticated', format('%I.%I', t.schemaname, t.tablename), 'DELETE') AS auth_delete,
+        CASE
+          WHEN t.rowsecurity = false                            THEN 'FAIL: RLS disabled'
+          WHEN COALESCE(p.policy_count,0) = 0                    THEN 'FAIL: RLS on but no policies (deny-all)'
+          ELSE 'PASS'
+        END AS verdict
+      FROM pg_tables t
+      LEFT JOIN (
+        SELECT schemaname, tablename,
+               count(*) AS policy_count,
+               array_agg(policyname) AS policy_names
+        FROM pg_policies
+        GROUP BY schemaname, tablename
+      ) p ON p.schemaname = t.schemaname AND p.tablename = t.tablename
+      WHERE t.schemaname = 'public'
+      ORDER BY t.tablename
+    ) TO STDOUT WITH CSV HEADER" > "$RLS_CSV"
+
+    RLS_OFF=$(awk -F, 'NR>1 && $3==\"f\"{c++} END{print c+0}' "$RLS_CSV")
+    RLS_NO_POLICY=$(awk -F, 'NR>1 && $3==\"t\" && $4==0{c++} END{print c+0}' "$RLS_CSV")
+    RLS_FAIL_TABLES=$(awk -F, 'NR>1 && $NF ~ /^\"?FAIL/{print $2}' "$RLS_CSV" | tr -d '"' | paste -sd, -)
+    TOTAL_TABLES=$(($(wc -l < "$RLS_CSV") - 1))
+
+    echo "   ${TOTAL_TABLES} tables checked | ${RLS_OFF} without RLS | ${RLS_NO_POLICY} RLS-on-no-policy"
+    [ -n "$RLS_FAIL_TABLES" ] && echo "   FAIL tables: $RLS_FAIL_TABLES"
 
     echo "→ Verifying critical functions..."
     MISSING_FNS=()
