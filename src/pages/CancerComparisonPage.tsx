@@ -36,6 +36,7 @@ export default function CancerComparisonPage() {
   const [cancerTests, setCancerTests] = useState<EnhancedTestData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCancerType, setActiveCancerType] = useState(searchParams.get('type') || 'all');
+  const [activeTab, setActiveTab] = useState<string>('browse');
   
   const {
     selectedTests,
