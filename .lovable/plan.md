@@ -1,5 +1,19 @@
-Add `reviews?: number | null` to the `ProviderTestCardData` interface in `src/components/providers/ProviderTestCard.tsx` (line 8).
+Extend `ProviderTestCardData` in `src/components/providers/ProviderTestCard.tsx` with the optional display-only fields that `UnifiedTestCardProps` consumes, so a single object can be passed both as `testDetails` and to derive card props.
 
-This makes the interface consistent with other test data shapes that expose a review count, allowing cards and modals to optionally display star/rating metadata when available.
+Add (all optional, alongside existing fields):
 
-No other files need to change — the field is optional (`?`) and nullable, so all existing consumers remain compatible.
+```ts
+categoryColor?: string;
+badge?: string;
+rating?: number | null;
+// reviews already added
+price_from?: boolean;
+markers?: string[];
+compare_selected?: boolean;
+onCompareToggle?: () => void;
+```
+
+Notes:
+- `name`, `biomarkers`, `turnaround`, `collection`, `provider` are already covered by existing fields (`test_name`, `biomarker_count`, `turnaround_days_text`, `sample_type`/`collection_options`, `provider_id`) — no rename needed; mapping happens at the call site.
+- `testDetails` in `UnifiedTestCardProps` already accepts the existing shape (`id`, `provider_id`), so no change needed there.
+- No consumer changes; all additions are optional.

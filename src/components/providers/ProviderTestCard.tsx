@@ -23,6 +23,13 @@ export interface ProviderTestCardData {
   base_price?: number | null;
   collection_options?: any;
   reviews?: number | null;
+  categoryColor?: string;
+  badge?: string;
+  rating?: number | null;
+  price_from?: boolean;
+  markers?: string[];
+  compare_selected?: boolean;
+  onCompareToggle?: () => void;
 }
 
 interface ProviderTestCardProps {
