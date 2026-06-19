@@ -115,19 +115,24 @@ const HealthBlogPage: React.FC = () => {
         <title>Health Resource Hub | myhealth checkup</title>
         <meta
           name="description"
-          content="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults."
+          content="Expert insights, health tips and the latest research on preventive healthcare and private health testing for UK adults."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/blog" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/blog" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Health Resource Hub — preventive health guides for UK adults" />
+        <meta property="og:description" content="Independent guides on private blood testing, biomarkers, cancer screening and longevity health for UK adults." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/blog" />
+        <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Blog',
           name: 'myhealth checkup Health Resource Hub',
           description: 'Expert insights, health tips, and the latest research on preventive healthcare.',
-          url: 'https://www.myhealthcheckup.co.uk/health-resources',
+          url: 'https://myhealthcheckup.co.uk/blog',
           publisher: {
             '@type': 'Organization',
             name: 'MYHEALTHCHECKUP LTD',
-            url: 'https://www.myhealthcheckup.co.uk',
+            url: 'https://myhealthcheckup.co.uk',
           },
         })}</script>
       </Helmet>
