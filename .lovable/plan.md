@@ -1,29 +1,17 @@
-## Re-categorise standalone hormone biomarkers
+## Objective
+Increase the visual size of the three homepage category cards (Blood Tests, Cancer Screening, Wellness & Longevity) by approximately 1.5x, matching the larger featured-article card proportions in the Medichecks reference.
 
-Data-only migration on `provider_tests`. No code or schema changes.
+## Current state
+- `src/components/sections/TestCategoriesSection.tsx` renders 3 image-overlay cards at:
+  - `min-h-[320px]` / `min-h-[380px]`
+  - Title `text-xl sm:text-2xl`, description `text-sm`, tag `text-[10px]`, CTA `text-[11px]`
+  - Padding `p-6 sm:p-7`, gap `gap-5 sm:gap-6`
 
-### Moves
+## Changes
+1. **Card dimensions**: raise `min-h` from 320/380 px to ~480/570 px (1.5x).
+2. **Typography scale-up**: title → ~1.5x, description → ~1.5x, tag/CTA → ~1.5x.
+3. **Spacing**: padding and grid gap scaled proportionally.
+4. **Overlay gradient**: extend dark zone to keep text legible on taller cards.
 
-| Test | Provider | From → To |
-|---|---|---|
-| Estradiol (Oestradiol) | lola-health | Hormones → **Women's Health** |
-| Progesterone | lola-health | Hormones → **Women's Health** |
-| Progesterone | london-medical-laboratory | Hormones → **Women's Health** |
-| Testosterone | lola-health | Hormones → **Men's Health** |
-| Testosterone Check | london-medical-laboratory | Hormones → **Men's Health** |
-| Testosterone Plus Profile | london-medical-laboratory | Hormones → **Men's Health** |
-| Testosterone Test Kit… | medichecks | Hormones → **Men's Health** |
-
-Oestradiol Blood Test for Female Reproductive Function (medichecks) is already in Women's Health — no action. TRT/Testosterone panels already in Men's Health — no action.
-
-### DHT — applies to both sexes
-
-`provider_tests.category` is a single text column, so a row can only live in one bucket. Two options:
-
-- **A. Keep DHT in Hormones, surface it on both pages via a page-level allow-list** (Men's Health and Women's Health pages additionally include any test whose name matches `dihydrotestosterone`). One row, no duplication — but needs a small code tweak on the two category pages.
-- **B. Duplicate the DHT row** so one copy sits in Men's Health and another in Women's Health (original stays in Hormones). Pure data, no code — but creates a duplicate that future scrapes/normalisers may collapse.
-
-Which do you want? My recommendation is **A** — cleaner data, and the existing pages already accept ad-hoc inclusion lists.
-
-### Out of scope
-- No changes to the categoriser in `normalize-test-categories` (it would re-bucket these into Hormones on next run). Flag if you want me to teach it about standalone sex-hormone markers as a follow-up.
+## Verification
+- Screenshot desktop and mobile (390px) to confirm no overflow, text remains readable, and cards match the requested density.
