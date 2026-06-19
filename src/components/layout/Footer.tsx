@@ -122,6 +122,10 @@ const StayInformedSection = () => {
               <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
                 Legal Hub
               </Link>
+              {" · "}
+              <Link to="/trust" className="underline hover:text-brand-pink transition-colors">
+                Trust &amp; Security
+              </Link>
             </p>
           </div>
         </div>
