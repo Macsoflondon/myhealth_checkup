@@ -76,17 +76,32 @@ class TestsApi {
   }
 
   /**
-   * Search tests by name
+   * Search active provider_tests across name / description / category /
+   * canonical_category / biomarkers. Returns rows shaped to the legacy
+   * Test interface so existing consumers keep working.
    */
   async searchTests(searchTerm: string): Promise<ApiResponse<Test[]>> {
     try {
+      const safe = searchTerm.replace(/[(),]/g, " ").trim();
       const { data, error } = await supabase
-        .from("tests_master")
-        .select("*")
+        .from("provider_tests")
+        .select(
+          "id, test_name, provider_id, category, canonical_category, description, biomarkers_list, biomarker_count, price, url, image_url, is_active, created_at, updated_at"
+        )
         .eq("is_active", true)
-        .ilike("test_name", `%${searchTerm}%`);
+        .or(
+          [
+            `test_name.ilike.%${safe}%`,
+            `description.ilike.%${safe}%`,
+            `category.ilike.%${safe}%`,
+            `canonical_category.ilike.%${safe}%`,
+            `biomarkers_list.ilike.%${safe}%`,
+          ].join(",")
+        )
+        .order("price", { ascending: true })
+        .limit(600);
 
-      return { data: data as Test[], error };
+      return { data: (data as unknown) as Test[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }

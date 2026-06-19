@@ -151,7 +151,8 @@ export function useCompareTestsData(filters: CompareFilters) {
         if (filters.searchQuery.trim()) {
           results = await CompareService.searchTests(
             filters.searchQuery,
-            providerFilter
+            providerFilter,
+            effectiveCategory || undefined,
           );
         } else {
           const categoryName = effectiveCategory || "all";
