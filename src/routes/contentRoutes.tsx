@@ -16,6 +16,7 @@ const TypographyShowcasePage = lazy(() => import("@/pages/TypographyShowcasePage
 const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage"));
 const BiomarkerGuidesIndexPage = lazy(() => import("@/pages/BiomarkerGuidesIndexPage"));
 const BiomarkerGuidePage = lazy(() => import("@/pages/BiomarkerGuidePage"));
+const TestosteroneLevelsByAgePage = lazy(() => import("@/pages/TestosteroneLevelsByAgePage"));
 
 
 export const contentRoutes = (
