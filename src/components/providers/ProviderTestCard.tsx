@@ -27,7 +27,7 @@ export interface ProviderTestCardData {
   badge?: string;
   rating?: number | null;
   price_from?: boolean;
-  markers?: string[];
+  markers?: string[] | null;
   compare_selected?: boolean;
   onCompareToggle?: () => void;
 }
