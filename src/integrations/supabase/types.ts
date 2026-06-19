@@ -277,6 +277,39 @@ export type Database = {
         }
         Relationships: []
       }
+      csp_reports: {
+        Row: {
+          blocked_uri: string | null
+          document_uri: string | null
+          id: string
+          ip_address: string | null
+          received_at: string
+          report: Json
+          user_agent: string | null
+          violated_directive: string | null
+        }
+        Insert: {
+          blocked_uri?: string | null
+          document_uri?: string | null
+          id?: string
+          ip_address?: string | null
+          received_at?: string
+          report: Json
+          user_agent?: string | null
+          violated_directive?: string | null
+        }
+        Update: {
+          blocked_uri?: string | null
+          document_uri?: string | null
+          id?: string
+          ip_address?: string | null
+          received_at?: string
+          report?: Json
+          user_agent?: string | null
+          violated_directive?: string | null
+        }
+        Relationships: []
+      }
       data_access_requests: {
         Row: {
           completed_at: string | null
@@ -1937,6 +1970,7 @@ export type Database = {
         Args: { _category: string }
         Returns: string
       }
+      cleanup_csp_reports: { Args: never; Returns: undefined }
       cleanup_old_health_queries: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_protected_call_log: { Args: never; Returns: undefined }

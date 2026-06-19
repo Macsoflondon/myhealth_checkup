@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { HealthDataHub } from "@/components/dashboard/HealthDataHub";
+import { MfaEnrollment } from "@/components/auth/MfaEnrollment";
 import { useAuth } from "@/context/AuthContext";
 
 const HealthDashboardPage = () => {
@@ -45,8 +46,11 @@ const HealthDashboardPage = () => {
         <Header />
         
         <main className="flex-1 bg-white">
-          <div className="container mx-auto px-4 py-12 max-w-6xl">
+          <div className="container mx-auto px-4 py-12 max-w-6xl space-y-8">
             <HealthDataHub />
+            <section id="security" aria-label="Account security">
+              <MfaEnrollment />
+            </section>
           </div>
         </main>
 

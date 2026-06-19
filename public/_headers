@@ -13,9 +13,9 @@
   # `'unsafe-eval'` removed (production code does not require it).
   # `http:` removed from img-src so HTTPS is enforced for images too.
   # `upgrade-insecure-requests` mitigates any third-party HTTP URL slipping in.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.firecrawl.dev https://storage.googleapis.com https://nominatim.openstreetmap.org; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.firecrawl.dev https://storage.googleapis.com https://nominatim.openstreetmap.org; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; report-uri https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report; report-to csp-endpoint
 
-  Reporting-Endpoints: csp-endpoint="/csp-report"
+  Reporting-Endpoints: csp-endpoint="https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report"
 
 # Long-cache hashed build assets
 /assets/*

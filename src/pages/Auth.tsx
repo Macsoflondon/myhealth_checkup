@@ -181,6 +181,17 @@ const Auth = () => {
         }
         toast.success("Sign up successful! Please check your email for verification.");
       } else {
+        // CE+ server-side brute-force gate (defence in depth on top of client-side lockout)
+        try {
+          const { data: throttle, error: throttleErr } = await supabase.functions.invoke('auth-throttle', {
+            body: { email, outcome: 'check' },
+          });
+          if (!throttleErr && throttle && throttle.allowed === false) {
+            toast.error('Too many sign-in attempts. Try again in 15 minutes.');
+            return;
+          }
+        } catch { /* network error — fall back to client-side lockout only */ }
+
         const {
           error
         } = await supabase.auth.signInWithPassword({
@@ -188,9 +199,14 @@ const Auth = () => {
           password
         });
         if (error) {
-          // Record failed attempt for brute-force protection
+          // Record failed attempt for brute-force protection (client + server)
           const { isNowLocked, attemptsRemaining: remaining } = recordFailedAttempt();
-          
+          try {
+            await supabase.functions.invoke('auth-throttle', {
+              body: { email, outcome: 'failure' },
+            });
+          } catch { /* ignore */ }
+
           // Handle specific auth errors
           if (error.message.includes('Invalid login credentials')) {
             if (isNowLocked) {
