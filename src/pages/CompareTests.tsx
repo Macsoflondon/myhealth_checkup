@@ -10,14 +10,14 @@ import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHea
 import ProviderComparisonSection from "@/components/sections/ProviderComparisonTable";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
-import { Search, X, FlaskConical, Building2, PoundSterling } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
-import { getCategoryDisplayName } from "@/utils/categoryTaglines";
 import { getProviderRating } from "@/constants/providerRatings";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { getBranding } from "@/data/providerBranding";
+import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import { getCompareHeader } from "@/data/compareCategoryBenefits";
 
 const resolveCategoryColor = (test: CompareTestData): string => {
   const cat = test.category || "";
