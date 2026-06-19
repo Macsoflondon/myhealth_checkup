@@ -41,7 +41,7 @@ export const validatePassword = (password: string): PasswordStrength => {
   return {
     score: Math.min(score, 4),
     feedback,
-    isValid: score >= 3 && password.length >= 8
+    isValid: score >= 4 && password.length >= 12,
   };
 };
 
