@@ -160,7 +160,7 @@ const AtHomeTestsPage: React.FC = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {paginated.map((test) => (
-                  <AtHomeTestCard key={test.id} test={test} onClick={() => setSelectedTest(test)} />
+                  <UniversalTestCard key={test.id} test={fromAtHomeTest(test)} onOpenDetail={() => setSelectedTest(test)} />
                 ))}
               </div>
 
@@ -184,7 +184,7 @@ const AtHomeTestsPage: React.FC = () => {
 
       {/* Info Sheet Modal */}
       {selectedTest && (
-        <TestInfoSheet test={selectedTest} onClose={() => setSelectedTest(null)} />
+        <UniversalTestDetailModal test={fromAtHomeTest(selectedTest)} onClose={() => setSelectedTest(null)} />
       )}
     </MainLayout>
   );
