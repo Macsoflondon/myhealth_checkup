@@ -1,12 +1,12 @@
-Remove the capsule/pill border around the category heading on all category pages.
+Replace the wrap-flow row of category pill buttons on `/at-home-tests` with a single dropdown (select) control.
 
 ## Scope
-Single shared component: `src/components/category/CategoryStandardHero.tsx`
+File: `src/pages/AtHomeTestsPage.tsx` (lines ~476–493)
 
 ## Change
-- Remove the rounded `div` wrapper (lines 81–99) that renders the turquoise border, semi-transparent background, and padding around the `<h1>`.
-- Keep the `<h1>` itself: white text, bold, sized as-is, centred in the hero.
-- All other hero elements (benefits row, tricolour divider, ambient glow, background grid) remain unchanged.
+- Remove the `.flex flex-wrap` block of category pill `<button>`s.
+- Replace with a styled native `<select>` populated from the same `categories` array (`useAtHomeCategories`), bound to `activeCategory` via `handleCategoryChange`.
+- Style: rounded-full, navy border matching the search input, DM Sans 14px, navy text, white background, chevron indicator, max-width ~280px, sits where the pill row was.
+- Keep the search input above it and results count below unchanged.
 
-## Impact
-Every category page using `CategoryStandardHero` will show the plain category name with no capsule or border.
+Out of scope: no data, routing, or other UI changes.
