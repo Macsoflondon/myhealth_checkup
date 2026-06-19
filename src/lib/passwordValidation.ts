@@ -8,10 +8,10 @@ export const validatePassword = (password: string): PasswordStrength => {
   const feedback: string[] = [];
   let score = 0;
 
-  if (password.length >= 8) {
+  if (password.length >= 12) {
     score += 1;
   } else {
-    feedback.push("Use at least 8 characters");
+    feedback.push("Use at least 12 characters (NCSC / Cyber Essentials guidance)");
   }
 
   if (/[a-z]/.test(password)) {
