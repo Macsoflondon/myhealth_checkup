@@ -19,6 +19,8 @@ interface AlertPayload {
   evidence_path?: string
   log_row_id?: string
   details?: Record<string, unknown>
+  /** When true, render only and return the to/subject/html — no Resend call, no DB write. */
+  dry_run?: boolean
 }
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
@@ -72,6 +74,17 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'alert_type and subject required' }), {
         status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
+    }
+
+    // Dry-run path: render only, do not query DB or call Resend.
+    if (payload.dry_run) {
+      const html = renderHtml(payload)
+      return new Response(JSON.stringify({
+        dry_run: true,
+        to: ['dry-run@example.test'],
+        subject: payload.subject,
+        html,
+      }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
     }
 
     const supa = createClient(SUPABASE_URL, SERVICE_ROLE_KEY)
