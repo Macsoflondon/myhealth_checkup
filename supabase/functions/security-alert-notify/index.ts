@@ -19,6 +19,8 @@ interface AlertPayload {
   evidence_path?: string
   log_row_id?: string
   details?: Record<string, unknown>
+  /** When true, render only and return the to/subject/html — no Resend call, no DB write. */
+  dry_run?: boolean
 }
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')
