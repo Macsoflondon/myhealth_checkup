@@ -58,7 +58,19 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
       { name: "View All Men's Tests", path: "/mens-health" },
     ],
   },
-  { name: "Sports-Fitness Health", path: "/sports-performance", hasDropdown: true, megaMenu: true },
+  {
+    name: "Sports-Fitness Health",
+    path: "/sports-performance",
+    hasDropdown: true,
+    megaMenu: true,
+    dropdownItems: [
+      { name: "Sports Performance Tests", path: "/sports-performance" },
+      { name: "Sports Hormone Tests", path: "/sports-performance?category=hormones" },
+      { name: "Testosterone Tests", path: "/sports-performance?category=testosterone" },
+      { name: "Energy & Fatigue Tests", path: "/sports-performance?category=energy" },
+      { name: "View All Sports Tests", path: "/sports-performance" },
+    ],
+  },
   {
     name: "Fertility - Prenatal",
     path: "/fertility-tests",
