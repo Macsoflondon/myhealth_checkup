@@ -42,7 +42,20 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
       { name: "View All Cancer Tests", path: "/tests/cancer" },
     ],
   },
-  { name: "At Home Tests", path: "/at-home-tests", hasDropdown: true, megaMenu: true },
+  {
+    name: "At Home Tests",
+    path: "/at-home-tests",
+    hasDropdown: true,
+    megaMenu: true,
+    dropdownItems: [
+      { name: "All At-Home Tests", path: "/at-home-tests" },
+      { name: "Women's Home Tests", path: "/at-home-tests?category=womens" },
+      { name: "Men's Home Tests", path: "/at-home-tests?category=mens" },
+      { name: "General Health Home Tests", path: "/at-home-tests?category=general" },
+      { name: "Allergy Home Tests", path: "/at-home-tests?category=allergy" },
+      { name: "View All Home Tests", path: "/at-home-tests" },
+    ],
+  },
   { name: "How It Works", path: "/how-it-works" }
 ];
 
