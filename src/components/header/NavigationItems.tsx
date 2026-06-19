@@ -29,7 +29,21 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
       { name: "View All Wellness Tests", path: "/wellness" },
     ],
   },
-  { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },
+  {
+    name: "Women's Health",
+    path: "/womens-health",
+    hasDropdown: true,
+    megaMenu: true,
+    dropdownItems: [
+      { name: "Women's Health Checks", path: "/womens-health" },
+      { name: "Female Hormone Tests", path: "/womens-health?category=hormones" },
+      { name: "Female Fertility Tests", path: "/womens-health?category=fertility" },
+      { name: "Menopause Tests", path: "/womens-health?category=menopause" },
+      { name: "PCOS Tests", path: "/womens-health?category=pcos" },
+      { name: "Thyroid Tests", path: "/womens-health?category=thyroid" },
+      { name: "View All Women's Tests", path: "/womens-health" },
+    ],
+  },
   {
     name: "Men's Health",
     path: "/mens-health",
