@@ -53,15 +53,16 @@ Deno.serve(async (req) => {
       window_start: new Date().toISOString(),
     });
 
-    // Persist as a security snapshot row (already RLS-protected, admin-only read).
-    await supabase.from('security_scan_snapshots').insert({
-      scanner: 'csp-report',
-      severity: 'info',
-      finding_id: 'csp_violation',
-      title: 'CSP violation reported by browser',
-      details: parsed as Record<string, unknown>,
+    // Persist to csp_reports (admin-readable, service-role writable).
+    const r = (parsed as any)?.['csp-report'] ?? parsed;
+    await supabase.from('csp_reports').insert({
       ip_address: ip,
-    }).select('id').maybeSingle();
+      user_agent: req.headers.get('user-agent')?.slice(0, 512) ?? null,
+      report: parsed,
+      document_uri: typeof r?.['document-uri'] === 'string' ? r['document-uri'].slice(0, 2048) : null,
+      violated_directive: typeof r?.['violated-directive'] === 'string' ? r['violated-directive'].slice(0, 256) : null,
+      blocked_uri: typeof r?.['blocked-uri'] === 'string' ? r['blocked-uri'].slice(0, 2048) : null,
+    });
 
     return new Response(null, { status: 204, headers: corsHeaders });
   } catch {
