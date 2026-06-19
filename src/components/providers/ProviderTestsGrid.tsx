@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getProviderRating } from "@/constants/providerRatings";
 import { getBranding } from "@/data/providerBranding";
 import { hasStartingPrice } from "@/hooks/usePopularTestsFromDatabase";
+import { toUnifiedCardProps } from "@/lib/unifiedCardAdapter";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
 // Map detailedProvider IDs (routing slug) -> DB provider_id
 const PROVIDER_ID_DB_MAP: Record<string, string> = {
@@ -75,44 +77,33 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
         {data.map((t: any) => {
-          const cleanName = (t.test_name as string)
-            .replace(/\s*[-–|].*$/, "")
-            .replace(/\s+Blood Test$/i, "")
-            .trim();
+          const card: ProviderTestCardData = {
+            id: t.id,
+            provider_id: dbId,
+            test_name: t.test_name,
+            description:
+              t.description || `Comprehensive screening from ${providerDisplayName}.`,
+            price: t.price ?? null,
+            category: t.category ?? null,
+            sample_type: t.sample_type ?? null,
+            biomarker_count: t.biomarker_count ?? null,
+            url: t.url ?? null,
+            biomarkers_list: (t.biomarkers_list as any) ?? null,
+            turnaround_days_text: t.turnaround_days_text ?? null,
+            base_price: t.base_price ?? null,
+            collection_options: t.collection_options ?? null,
+            price_from: hasStartingPrice(t),
+            categoryColor: branding?.primary || "#e70d69",
+          };
           return (
             <UnifiedTestCard
               key={t.id}
-              category={t.category || "Health"}
-              categoryColor={branding?.primary || "#e70d69"}
-              name={cleanName}
-              description={
-                t.description || `Comprehensive screening from ${providerDisplayName}.`
-              }
-              biomarkers={t.biomarker_count || 0}
-              results={t.turnaround_days_text || "2–5 working days"}
-              collection={t.sample_type || "Blood sample"}
-              rating={rating.rating}
-              reviews={rating.reviews}
-              price={t.price}
-              priceFrom={hasStartingPrice(t)}
-              provider={providerDisplayName}
-              url={t.url || undefined}
-              ctaLabel={t.url ? "View test" : "Compare"}
-              testDetails={{
-                id: t.id,
-                provider_id: dbId,
-                test_name: t.test_name,
-                description: t.description ?? null,
-                price: t.price ?? null,
-                category: t.category ?? null,
-                sample_type: t.sample_type ?? null,
-                biomarker_count: t.biomarker_count ?? null,
-                url: t.url ?? null,
-                biomarkers_list: (t.biomarkers_list as any) ?? null,
-                turnaround_days_text: t.turnaround_days_text ?? null,
-                base_price: t.base_price ?? null,
-                collection_options: t.collection_options ?? null,
-              }}
+              {...toUnifiedCardProps(card, {
+                provider: providerDisplayName,
+                rating: rating.rating,
+                reviews: rating.reviews,
+                ctaLabel: t.url ? "View test" : "Compare",
+              })}
             />
           );
         })}
