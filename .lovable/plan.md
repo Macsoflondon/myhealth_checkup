@@ -1,50 +1,75 @@
-## Approach
-A literal "fix everything across 94 pages" sweep would be enormous and risk regressions. Instead I'll run a **targeted automated audit + fix pass** in 5 phases, using Playwright at 391px against the live preview to find real issues rather than guessing from source.
+## Goal
 
-## Phase 1 — Automated mobile audit (no code changes)
-Run Playwright across the 20 highest-traffic public routes at 375px and 391px:
-`/`, `/popular-tests`, `/wellness`, `/womens-health`, `/mens-health`, `/sports-performance`, `/fertility-tests`, `/tests/cancer`, `/at-home-tests`, `/tests/heart`, `/tests/diabetes`, `/tests/vitamins`, `/tests/gut`, `/thyroid`, `/hormones`, `/compare`, `/find-test`, `/providers`, `/biomarker-database`, `/health-blog`.
+Make every test card on the platform look and behave exactly like the card on `/at-home-tests` (provider header, test name, category, description, biomarker chips, stats row, price + sub-label, Compare + Book), open the same rich detail modal, and ship inside a listing page laid out like `AtHomeTestsPage` (sticky search, category chip rail, responsive grid, load-more, sticky compare bar).
 
-For each: capture screenshot, measure `document.documentElement.scrollWidth > innerWidth` (horizontal overflow), list buttons with no onClick/href, list links with `href="#"` or `to=""`, log console errors. Dump to `/tmp/audit/report.json`.
+## What changes
 
-## Phase 2 — Category coverage sweep
-- Cross-check every entry in `src/constants/categories.ts` (19 categories) against:
-  - `primaryNavigationItems` (desktop nav) + `testCategoryCards` (mobile drawer) — add anything missing.
-  - `MobileNavigationDrawer` search index + `IntelligentSearch` — confirm every category id, name, and synonym is searchable.
-  - `/compare` filter + `compareCategories` — confirm clicking any category from any surface lands on a populated filtered view.
-- Fix: any orphan category gets a card on the mobile drawer + a route in `_known-routes.ts` if missing.
+### 1. Promote the card to a reusable component
+- Extract `AtHomeTestCard` from `src/pages/AtHomeTestsPage.tsx` into `src/components/cards/UniversalTestCard.tsx`.
+- Extract `TestInfoSheet` from the same file into `src/components/cards/UniversalTestDetailModal.tsx`.
+- Add a shared `UniversalTestData` type with the union of fields all sources provide (test_name, provider_id, category, description, biomarker_count, biomarkers_list, price, turnaround_days_text, sample_method, url, is_popular).
 
-## Phase 3 — Test card + detail modal sweep
-- Audit all 8 card components (`UnifiedTestCard`, `ProviderTestCard`, `MedichecksTestCard`, `ProviderTestsGrid` items, plus 4 category-page variants).
-- Standardise: every card must (a) be clickable as a whole, (b) open `ProviderTestDetailModal` (or `TestDetailPage` for routed cards), (c) expose a primary "Book" or "Compare" CTA.
-- Fix any card that currently renders without a click target or modal trigger.
+### 2. Adapter layer so every data source can feed the card
+- New `src/lib/universalTestAdapter.ts` with `fromAtHomeTest`, `fromProviderTest`, `fromMedichecksTest`, `fromTestsMaster`, `fromUnifiedCard`, `fromPopularTest`.
+- Adapter resolves provider meta + logo via existing `getProviderMeta` / `getProviderLogo` and normalises the collection method label (At-home kit / Clinic / Both) so the stats row stays consistent.
 
-## Phase 4 — CTA wiring sweep
-- Grep `<Button` and `<button` across `src/pages` + `src/components/sections` + `src/components/category` for instances missing `onClick`, `asChild` + `<Link>`, `href`, or `type="submit"`.
-- For each dead button, wire it to the most contextually obvious destination:
-  - "Find a test" / "Get started" → `/find-test`
-  - "Compare tests" → `/compare`
-  - "Browse all tests" → `/popular-tests`
-  - "Book consultation" → `/contact`
-- Flag any button where intent is ambiguous and leave a `TODO: wire CTA` comment instead of guessing wrong.
+### 3. Replace existing card components
+- Re-point these imports to `UniversalTestCard`:
+  - `src/components/cards/UnifiedTestCard.tsx` (becomes a thin wrapper for backwards compat)
+  - `src/components/providers/ProviderTestCard.tsx` (wrapper)
+  - `src/components/providers/medichecks/MedichecksTestCard.tsx` (wrapper)
+- Update direct call sites that pass through bespoke props:
+  - `src/components/sections/MostPopularTestsSection.tsx`
+  - `src/components/sections/DreamHealthShowcase.tsx`
+  - `src/components/compare/RecommendedTestsCarousel.tsx`
+  - `src/components/providers/ProviderTestsGrid.tsx`
+  - `src/pages/CompareTests.tsx`
+  - `src/pages/ProviderTestsCatalogPage.tsx`, `ProviderTestCatalogPage.tsx`
+  - `src/pages/ProviderProfilePage.tsx`
+  - `src/pages/MedichecksTestsCatalogPage.tsx`, `MedichecksMensHealthPage.tsx`
 
-## Phase 5 — Mobile overflow fixes
-For every page flagged in Phase 1:
-- Wrap stray wide elements (`min-w-[...]`, fixed-pixel tables) in `overflow-x-auto` containers.
-- Replace `whitespace-nowrap` on text blocks with responsive wrapping.
-- Convert any fixed-width grid (`grid-cols-3` without responsive prefix) to `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`.
-- Ensure section padding uses the project's container standard (`container mx-auto px-4 sm:px-6 lg:px-8`).
-- Confirm tap targets ≥ 44×44 on primary CTAs.
+### 4. Promote the listing layout
+- New `src/components/category/UniversalTestsListing.tsx` — generic page body lifted from `AtHomeTestsPage` (sticky search input, horizontal category chip rail, results count, responsive grid of `UniversalTestCard`, load-more button, sticky compare bar slot, detail modal wiring).
+- Props: `tests`, `categories`, `activeCategory`, `onCategoryChange`, `search`, `onSearchChange`, `isLoading`, `pageTitle`, `pageSubtitle`, optional `heroSlot`.
+- Refactor `src/components/category/CategoryPageLayout.tsx` to render this listing internally so every existing category page (Wellness, Womens, Mens, Sports, Cancer, Heart, Diabetes, Vitamins, Gut, Thyroid, Hormones, Fertility, etc.) inherits the at-home layout automatically.
+- Refactor these listing pages to render `UniversalTestsListing` directly:
+  - `MedichecksTestsCatalogPage`, `MedichecksMensHealthPage`
+  - `ProviderTestsCatalogPage`, `ProviderTestCatalogPage`
+  - `PopularTestsPage`
+
+### 5. Detail modal everywhere
+- Every card click opens `UniversalTestDetailModal`.
+- Modal renders: navy header (provider logo + name + test name + close), price + turnaround + sample method, full description, biomarker list (chips, scrollable), what's included, collection options with add-on prices, Compare toggle + Book CTA.
+- Replace `ProviderTestDetailModal` usage with the universal modal (keep the file as a re-export for compatibility).
+
+### 6. Wire compare + book consistently
+- Compare button uses the existing `compareStore` everywhere (already in place on AtHomeTestCard).
+- Book button: if `test.url` exists → open in new tab; else fall back to `/contact?test=<id>`.
+- Disabled state styling preserved.
 
 ## Out of scope
-- Admin routes (`/admin/*`) — separate concern.
-- Provider profile pages other than the 6 active ones (Goodbody, Medichecks, Thriva, Randox, Lola, LML, LHC, Blood Tests London, Medical Diagnosis, Clinilabs).
-- Visual redesign — fixes preserve current visual language.
-- Copy changes.
-- Backend / Supabase schema.
 
-## Deliverable
-A single changeset touching ~15–30 files. Plus `AUDIT.md` at the repo root listing every issue found + every fix applied + anything deferred with a clear `TODO` and reason. You can spot-check the report and tell me what to revisit.
+- No copy or data changes.
+- No new pages or routes.
+- No backend / Supabase changes.
+- Admin pages, scrapers, and the comparison table itself are untouched.
 
-## Risk
-Phases 3 + 4 may surface inconsistencies that are intentional (e.g. a card that's deliberately decorative). I'll leave anything ambiguous untouched with a `TODO` rather than silently rewire it.
+## Technical notes
+
+```
+src/components/cards/
+  UniversalTestCard.tsx          (new — lifted from AtHomeTestsPage)
+  UniversalTestDetailModal.tsx   (new — lifted from AtHomeTestsPage)
+  UnifiedTestCard.tsx            (becomes wrapper)
+
+src/lib/
+  universalTestAdapter.ts        (new)
+
+src/components/category/
+  UniversalTestsListing.tsx      (new — lifted from AtHomeTestsPage body)
+  CategoryPageLayout.tsx         (refactor to use UniversalTestsListing)
+
+src/pages/AtHomeTestsPage.tsx    (slimmed to data hook + <UniversalTestsListing />)
+```
+
+Estimated file touches: ~18 (3 new, ~15 edits). Risk: prop drift on call sites that pass bespoke fields — handled via the adapter so existing data flows don't need to change.
