@@ -1,31 +1,37 @@
-## Goal
-Bring `/compare` in line with every other page: full site chrome (header, sticky toolbar, floating nav dock, footer via `MainLayout`) and restore the previous category comparison table shown in the screenshot — dark navy header strip with "PROVIDERS" label, three "Select a test" slots, and rows for Biomarkers / Turnaround Time / Sample Type / Collection Method / Additional Collection Fees / Total Expected Cost / Clinical Review / Book.
+## Audit findings
 
-## Current state
-- `/compare` → `src/components/DiagnosticTestComparison.tsx` rendered raw, no `MainLayout`, no header/footer, custom search + 7-row inline grid.
-- The "old" table the user wants back already exists at `src/components/compare/ProviderComparisonTable.tsx` (519 lines). It has the exact dark-navy header, "Select a test" slot UI, the row labels in the screenshot, and the bottom "Add test" booking row.
+### Tests mis-categorised as Men's Health
+| Test | Provider | Current | Should be |
+|---|---|---|---|
+| Female Hair Loss Advanced | london-medical-laboratory | `Mens Health` | **Women's Health** |
+| Female Sexual Health - Advanced Screen | london-medical-laboratory | `Mens Health` | **Women's Health** |
+| Everyman/ Everywoman | randox | `Men's Health` | **General Health** (unisex panel) |
+| Weight-loss management | london-medical-laboratory | `Mens Health` | **General Health** (not gender-specific) |
+| Ultimate Athlete Performance (with PSA) | london-medical-laboratory | `Mens Health` | **Sports & Fitness** (PSA included but it's a performance panel) |
+
+### Casing duplicates polluting filters
+- `Mens Health` (8 rows) vs `Men's Health` (27 rows) — Men's Health page filters on the apostrophe form, so the 8 plain rows never surface anywhere
+- Same issue elsewhere: `Liver Health` vs `Liver Function`, `Sports Performance` vs `Sports & Fitness`, `Hormone` vs `Hormones`, `Vitamins` / `Vitamin and Mineral Tests` vs `Vitamins & Minerals`, `Fatigue` vs `Fatigue & Energy`, `Allergy & Sensitivity` vs `Allergy`
+
+Women's Health category was audited too — no foreign tests, no action needed.
 
 ## Changes
 
-**1. `src/pages/ComparePage.tsx` (new, thin)**
-- Wraps the page in `MainLayout` (same import other category pages use: `import MainLayout from "@/layouts/MainLayout"`) — that gives it the global header, ticker, floating nav dock, and footer automatically, identical to `/at-home-tests`, `/tests/cancer`, etc.
-- Adds the standard page header block used across category pages: turquoise eyebrow ("COMPARE TESTS"), navy H1 "Compare Diagnostic Tests", DM Sans subhead, trust-strip row (matches the visual rhythm of `AtHomeTestsPage`).
-- Renders `<ProviderComparisonTable />` as the body.
-- `<Helmet>` with proper title / meta description / canonical for `/compare`.
+**Single data-only Supabase migration** — no schema, no code:
 
-**2. `src/routes/featureRoutes.tsx`**
-- Swap `DiagnosticTestComparison` for the new `ComparePage` on the `/compare` route. Other compare sub-routes (`/compare/symptoms`, `/compare/goals`, etc.) untouched.
+1. **Re-categorise the 5 mis-placed tests** above to their correct category.
+2. **Normalise category casing** across `provider_tests`:
+   - `Mens Health` → `Men's Health`
+   - `Liver Function` → `Liver Health`
+   - `Sports Performance` → `Sports & Fitness`
+   - `Hormone` → `Hormones`
+   - `Vitamins`, `Vitamin and Mineral Tests` → `Vitamins & Minerals`
+   - `Fatigue` → `Fatigue & Energy`
+   - `Allergy & Sensitivity` → `Allergy`
+3. After the moves, re-run a verification SELECT against Men's Health to confirm only male-relevant tests remain.
 
-**3. `src/components/compare/ProviderComparisonTable.tsx`**
-- Keep as-is structurally. Quick audit pass only to confirm it (a) reads from the existing comparison store / unified view used elsewhere, (b) doesn't hardcode a max-width that conflicts with `MainLayout` containers, and (c) has no leftover white-on-white contrast bugs. Patch only if any of those fail — no redesign.
-
-**4. `src/components/DiagnosticTestComparison.tsx`**
-- Leave the file in place (referenced from nowhere else after the route swap) but stop importing it. Safe to delete in a follow-up; not removing now to keep this change reversible.
+No code changes — the category pages already filter on the canonical labels above; the migration just brings stragglers into them.
 
 ## Out of scope
-- No design changes to the table itself (matches the screenshot already).
-- No changes to `/compare/symptoms`, `/compare/goals`, symptom hubs, or saved comparisons.
-- No data-model changes.
-
-## Verification
-Drive Playwright to `/compare` on desktop + mobile: confirm the global header + floating dock render above the table, the three "Select a test" slots show, picking tests via the existing comparison store populates rows, and no console errors.
+- Provider source data isn't touched; if a provider re-syncs and re-introduces a bad category we'd need a separate normalisation trigger. Flag if you want that as a follow-up.
+- Sample-type / collection-method audit (separate concern from category).
