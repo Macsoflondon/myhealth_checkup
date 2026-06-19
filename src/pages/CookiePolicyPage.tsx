@@ -86,7 +86,14 @@ const CookiePolicyPage = () => {
                   <div className="bg-primary/5 p-4 rounded-lg">
                     <h4 className="font-semibold mb-2">Our Cookie Settings</h4>
                     <p className="text-sm text-muted-foreground mb-3">Use our cookie preference centre to control which types of cookies you accept.</p>
-                    <Button>Manage Cookie Preferences</Button>
+                    <Button
+                      onClick={() => {
+                        try { localStorage.removeItem('cookieConsent'); } catch {}
+                        window.dispatchEvent(new CustomEvent('cookie-preferences:open'));
+                      }}
+                    >
+                      Manage Cookie Preferences
+                    </Button>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">Browser Settings</h4>

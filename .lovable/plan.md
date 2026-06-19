@@ -1,39 +1,50 @@
-## Goal
-Merge the mobile drawer's two tabs so there's no overlap. The **Menu** tab becomes site navigation only; the **Test Categories** tab holds every test/category entry.
+## Approach
+A literal "fix everything across 94 pages" sweep would be enormous and risk regressions. Instead I'll run a **targeted automated audit + fix pass** in 5 phases, using Playwright at 391px against the live preview to find real issues rather than guessing from source.
 
-## File
-`src/components/header/MobileNavigationDrawer.tsx` — only file that needs changes. `NavigationItems.tsx` (data) stays untouched so desktop nav is unaffected.
+## Phase 1 — Automated mobile audit (no code changes)
+Run Playwright across the 20 highest-traffic public routes at 375px and 391px:
+`/`, `/popular-tests`, `/wellness`, `/womens-health`, `/mens-health`, `/sports-performance`, `/fertility-tests`, `/tests/cancer`, `/at-home-tests`, `/tests/heart`, `/tests/diabetes`, `/tests/vitamins`, `/tests/gut`, `/thyroid`, `/hormones`, `/compare`, `/find-test`, `/providers`, `/biomarker-database`, `/health-blog`.
 
-## Menu tab — after
-Only the 5 sections from `moreNavigationSections`:
-- About (About Us, FAQs)
-- Services (Our Providers, Assisted Test Finder)
-- Compare (Compare Tests)
-- Resources (Health Resources Hub, Biomarker Library)
-- Contact (Contact Us)
+For each: capture screenshot, measure `document.documentElement.scrollWidth > innerWidth` (horizontal overflow), list buttons with no onClick/href, list links with `href="#"` or `to=""`, log console errors. Dump to `/tmp/audit/report.json`.
 
-Drop the `primaryNavigationItems` render block from this tab entirely (currently shows General Wellness, Women's Health, Men's Health, Sports-Fitness, Fertility-Prenatal, Cancer Screening, At Home Tests, Most Popular Tests, How It Works).
+## Phase 2 — Category coverage sweep
+- Cross-check every entry in `src/constants/categories.ts` (19 categories) against:
+  - `primaryNavigationItems` (desktop nav) + `testCategoryCards` (mobile drawer) — add anything missing.
+  - `MobileNavigationDrawer` search index + `IntelligentSearch` — confirm every category id, name, and synonym is searchable.
+  - `/compare` filter + `compareCategories` — confirm clicking any category from any surface lands on a populated filtered view.
+- Fix: any orphan category gets a card on the mobile drawer + a route in `_known-routes.ts` if missing.
 
-## Test Categories tab — after
-Replace the current 5 grouped category-ID cards (Essential Tests / Organ Health / Gender Specific / Specialist Tests / Lifestyle & Wellness) with the canonical category pages from `primaryNavigationItems`, since General Wellness already covers the "Essential Tests" buckets:
+## Phase 3 — Test card + detail modal sweep
+- Audit all 8 card components (`UnifiedTestCard`, `ProviderTestCard`, `MedichecksTestCard`, `ProviderTestsGrid` items, plus 4 category-page variants).
+- Standardise: every card must (a) be clickable as a whole, (b) open `ProviderTestDetailModal` (or `TestDetailPage` for routed cards), (c) expose a primary "Book" or "Compare" CTA.
+- Fix any card that currently renders without a click target or modal trigger.
 
-1. Most Popular Tests → `/popular-tests`
-2. General Wellness → `/wellness`
-3. Women's Health → `/womens-health`
-4. Men's Health → `/mens-health`
-5. Sports-Fitness Health → `/sports-performance`
-6. Fertility - Prenatal → `/fertility-tests`
-7. Cancer Screening → `/tests/cancer`
-8. At Home Tests → `/at-home-tests`
+## Phase 4 — CTA wiring sweep
+- Grep `<Button` and `<button` across `src/pages` + `src/components/sections` + `src/components/category` for instances missing `onClick`, `asChild` + `<Link>`, `href`, or `type="submit"`.
+- For each dead button, wire it to the most contextually obvious destination:
+  - "Find a test" / "Get started" → `/find-test`
+  - "Compare tests" → `/compare`
+  - "Browse all tests" → `/popular-tests`
+  - "Book consultation" → `/contact`
+- Flag any button where intent is ambiguous and leave a `TODO: wire CTA` comment instead of guessing wrong.
 
-Rendered as the existing 2-column icon-card grid (reuse current card styling). Keep the "View All Test Categories" CTA → `/compare`.
-
-## Assumptions (flag if wrong)
-- **How It Works** moves into the Menu tab as a standalone link below Contact (it's informational, not a test category).
-- **Most Popular Tests** sits at the top of the Test Categories tab.
-- Icon/colour for each category mapped using the existing `getCategoryIcon` / `getCategoryColour` helpers — I'll add 8 new entries keyed by route slug.
-- Tab labels stay "Menu" / "Test Categories"; search bar behaviour unchanged.
-- Desktop nav, `NavigationItems.tsx`, and `MobileDropdownMenu.tsx` are out of scope.
+## Phase 5 — Mobile overflow fixes
+For every page flagged in Phase 1:
+- Wrap stray wide elements (`min-w-[...]`, fixed-pixel tables) in `overflow-x-auto` containers.
+- Replace `whitespace-nowrap` on text blocks with responsive wrapping.
+- Convert any fixed-width grid (`grid-cols-3` without responsive prefix) to `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`.
+- Ensure section padding uses the project's container standard (`container mx-auto px-4 sm:px-6 lg:px-8`).
+- Confirm tap targets ≥ 44×44 on primary CTAs.
 
 ## Out of scope
-Removing `categoryGroups`, `compareCategories` usage, and unused icon imports from the drawer (will clean up dead code as part of the edit).
+- Admin routes (`/admin/*`) — separate concern.
+- Provider profile pages other than the 6 active ones (Goodbody, Medichecks, Thriva, Randox, Lola, LML, LHC, Blood Tests London, Medical Diagnosis, Clinilabs).
+- Visual redesign — fixes preserve current visual language.
+- Copy changes.
+- Backend / Supabase schema.
+
+## Deliverable
+A single changeset touching ~15–30 files. Plus `AUDIT.md` at the repo root listing every issue found + every fix applied + anything deferred with a clear `TODO` and reason. You can spot-check the report and tell me what to revisit.
+
+## Risk
+Phases 3 + 4 may surface inconsistencies that are intentional (e.g. a card that's deliberately decorative). I'll leave anything ambiguous untouched with a `TODO` rather than silently rewire it.
