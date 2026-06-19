@@ -31,7 +31,7 @@ const ProviderComparisonSidebar = ({
             
             <Button size="sm" className="w-full bg-[#22c0d4] hover:bg-[#e70d69] text-white" asChild>
               <a href={provider.url} target="_blank" rel="noopener noreferrer" className="mx-[10px] px-0 py-0">
-                Book with {provider.name}
+                Book
                 <ExternalLink className="w-4 h-4 ml-2" />
               </a>
             </Button>

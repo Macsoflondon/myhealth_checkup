@@ -386,7 +386,7 @@ const TestDetailPage = () => {
                   {bookingUrl ? (
                     <Button size="lg" className="w-full bg-primary hover:bg-primary/90" asChild>
                       <a href={bookingUrl} {...externalLinkProps}>
-                        Book with {provider.name}
+                        Book
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
