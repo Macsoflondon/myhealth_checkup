@@ -204,7 +204,7 @@ const CancerBiomarkersReferencePage = () => {
           name="keywords" 
           content="cancer biomarkers, tumour markers, PSA test, CA-125, CEA, AFP, CA 19-9, cancer screening markers, blood test cancer markers" 
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/cancer-biomarkers-reference" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/cancer-biomarkers-reference" />
       </Helmet>
       
       

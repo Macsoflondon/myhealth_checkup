@@ -129,7 +129,7 @@ const ComplaintsPage: React.FC = () => {
           name="description"
           content="Submit feedback, a complaint, or a regulatory dispute to myhealth checkup. Published response SLAs aligned to CMA, DMCC 2024, ASA and ICO guidance."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/complaints" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/complaints" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

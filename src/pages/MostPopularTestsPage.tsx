@@ -18,7 +18,7 @@ const SEO = {
   description:
     'Discover our most popular health tests, trusted by thousands of customers. Compare the best-selling blood tests from UK providers.',
   keywords: 'popular health tests, blood tests, health screening, comprehensive health check',
-  canonical: 'https://www.myhealthcheckup.co.uk/popular-tests',
+  canonical: 'https://myhealthcheckup.co.uk/popular-tests',
 };
 
 const HERO_BENEFITS = [

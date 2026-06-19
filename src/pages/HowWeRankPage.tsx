@@ -11,7 +11,7 @@ const HowWeRankPage = () => {
       <Helmet>
         <title>How We Rank Providers | myhealth checkup</title>
         <meta name="description" content="Our transparent methodology for comparing and ranking UK health test providers based on accreditation, price, turnaround, and user reviews." />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/how-we-rank" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/how-we-rank" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

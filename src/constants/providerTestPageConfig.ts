@@ -92,7 +92,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Get ready to elevate your health understanding with a personalised doctor\'s report. Go beyond results and tap into expert insights tailored just for you.',
     ctaButtonText: 'Book with \n',
     aboutText: 'routine health check that provides a comprehensive look at your overall well-being. It covers biomarkers to assess organ function, nutritional balance, and potential health risks.',
-    canonicalBase: 'https://www.myhealthcheckup.co.uk/medichecks',
+    canonicalBase: 'https://myhealthcheckup.co.uk/medichecks',
   },
 
   'goodbody-clinic': {
@@ -138,7 +138,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your test with GoodBody Clinic today for professional venous blood collection at a pharmacy near you. Expert service with fast, reliable results.',
     ctaButtonText: 'Book with GoodBody',
     aboutText: 'blood test with professional venous collection at a GoodBody Clinic pharmacy. All tests are processed in UKAS-accredited laboratories with clinical interpretation.',
-    canonicalBase: 'https://www.myhealthcheckup.co.uk/goodbody',
+    canonicalBase: 'https://myhealthcheckup.co.uk/goodbody',
   },
 
   thriva: {
@@ -183,7 +183,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Order your Thriva test kit today and take control of your health from the comfort of home. Get doctor-reviewed results with personalised recommendations.',
     ctaButtonText: 'Book with Thriva',
     aboutText: 'at-home blood test with convenient finger-prick collection. All results are reviewed by qualified doctors with personalised health insights.',
-    canonicalBase: 'https://www.myhealthcheckup.co.uk/thriva',
+    canonicalBase: 'https://myhealthcheckup.co.uk/thriva',
   },
 
   randox: {
@@ -228,7 +228,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your comprehensive health check at a Randox Health clinic today. Advanced diagnostics with expert consultation and detailed insights.',
     ctaButtonText: 'Book with Randox Health',
     aboutText: 'comprehensive health test using advanced diagnostic technology. All tests include professional consultation and detailed health insights.',
-    canonicalBase: 'https://www.myhealthcheckup.co.uk/randox',
+    canonicalBase: 'https://myhealthcheckup.co.uk/randox',
   },
 
 
@@ -274,7 +274,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your at-home blood test with Lola Health today. Professional phlebotomy service with doctor-reviewed results delivered to your app.',
     ctaButtonText: 'Book with Lola Health',
     aboutText: 'blood test with professional at-home phlebotomy. All results are processed in NHS-accredited laboratories and reviewed by qualified doctors.',
-    canonicalBase: 'https://www.myhealthcheckup.co.uk/lola-health',
+    canonicalBase: 'https://myhealthcheckup.co.uk/lola-health',
   },
 
   'london-medical-laboratory': {
@@ -320,7 +320,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     ctaText: 'Book your test with London Medical Laboratory for fast, accurate results from a UKAS-accredited Harley Street laboratory.',
     ctaButtonText: 'Book with London Medical Lab',
     aboutText: 'blood test from a prestigious Harley Street laboratory. Fast turnaround with UKAS-accredited analysis and specialist review available.',
-    canonicalBase: 'https://www.myhealthcheckup.co.uk/london-medical-laboratory',
+    canonicalBase: 'https://myhealthcheckup.co.uk/london-medical-laboratory',
   },
 
   'clinilabs': {

@@ -26,7 +26,7 @@ Order Details:
 • Order Number: MH12345
 • Estimated Delivery: 2-3 business days
 
-Track your order: https://www.myhealthcheckup.co.uk/orders/MH12345
+Track your order: https://myhealthcheckup.co.uk/orders/MH12345
 
 Best regards,
 myhealth checkup Team`
@@ -47,7 +47,7 @@ Recommended Tests:
 • Thyroid Function Test
 • Vitamin D Test
 
-View full insights: https://www.myhealthcheckup.co.uk/dashboard
+View full insights: https://myhealthcheckup.co.uk/dashboard
 
 Stay healthy,
 myhealth checkup Team`
@@ -65,7 +65,7 @@ We recommend:
 • HbA1c (Diabetes check)
 • Vitamin D
 
-Book now: https://www.myhealthcheckup.co.uk/compare
+Book now: https://myhealthcheckup.co.uk/compare
 
 Your health is your greatest asset,
 myhealth checkup Team`
@@ -85,7 +85,7 @@ Get 20% off all vitamin deficiency tests:
 Use code: VITAMINS20
 Valid until: Sunday 11:59 PM
 
-Shop now: https://www.myhealthcheckup.co.uk/vitamins
+Shop now: https://myhealthcheckup.co.uk/vitamins
 
 Best regards,
 myhealth checkup Team`
@@ -94,7 +94,7 @@ myhealth checkup Team`
 
   const smsExamples = {
     results: {
-      message: "myhealth checkup: Your test results are ready to view. Log in to see your Full Blood Count results and personalised insights. https://www.myhealthcheckup.co.uk/results"
+      message: "myhealth checkup: Your test results are ready to view. Log in to see your Full Blood Count results and personalised insights. https://myhealthcheckup.co.uk/results"
     },
     appointments: {
       message: "myhealth checkup: Reminder - Your blood test appointment is tomorrow at 10:30 AM at Goodbody Clinic, London. Bring photo ID. Reply CANCEL to reschedule."

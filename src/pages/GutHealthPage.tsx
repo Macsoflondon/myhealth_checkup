@@ -8,7 +8,7 @@ const GutHealthPage = () => (
     pillLabel="Gut Health"
     seoDescription="Compare gut health and microbiome tests from trusted UK providers — digestive markers, food intolerance and bacterial analysis."
     seoKeywords="gut health test, microbiome test, food intolerance, digestive health"
-    canonicalUrl="https://www.myhealthcheckup.co.uk/tests/gut"
+    canonicalUrl="https://myhealthcheckup.co.uk/tests/gut"
     headline="Gut Health & Microbiome Testing"
     subtitle="Advanced testing for digestive health, food intolerances and the gut-body connection."
     searchPlaceholder="Search by symptom or test — e.g. 'bloating', 'microbiome'"

@@ -16,18 +16,18 @@ const CompareBySymptomPage = () => {
           name="description"
           content="Find the right blood test based on your symptoms. Compare tests for fatigue, low mood, hair loss, weight gain, low libido and more from accredited UK providers."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/compare/symptoms" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/compare/symptoms" />
         <meta property="og:title" content="Compare Tests by Symptom | myhealth checkup" />
         <meta property="og:description" content="Find the right blood test based on your symptoms." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.myhealthcheckup.co.uk/compare/symptoms" />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/compare/symptoms" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MedicalWebPage",
             name: "Compare Tests by Symptom",
             description: "Find the right blood test based on your symptoms.",
-            url: "https://www.myhealthcheckup.co.uk/compare/symptoms",
+            url: "https://myhealthcheckup.co.uk/compare/symptoms",
           })}
         </script>
       </Helmet>

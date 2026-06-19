@@ -133,18 +133,18 @@ const CompareTests = () => {
             name="description"
             content="Compare private blood tests from Medichecks, Thriva, Randox, and more UK providers. Transparent pricing and inclusions from trusted UK providers."
           />
-          <link rel="canonical" href="https://www.myhealthcheckup.co.uk/compare" />
+          <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
           <script type="application/ld+json">{JSON.stringify({
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             "name": "Compare Blood Tests",
             "description": "Compare private blood tests from Medichecks, Thriva, Randox, and more UK providers.",
-            "url": "https://www.myhealthcheckup.co.uk/compare",
-            "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://www.myhealthcheckup.co.uk" },
+            "url": "https://myhealthcheckup.co.uk/compare",
+            "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
             "breadcrumb": {
               "@type": "BreadcrumbList",
               "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.myhealthcheckup.co.uk" },
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
                 { "@type": "ListItem", "position": 2, "name": "Compare Tests" }
               ]
             }

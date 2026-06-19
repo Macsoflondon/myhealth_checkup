@@ -63,7 +63,7 @@ const TestCategoriesPage = () => {
           name="description"
           content="Browse all health test categories. Compare blood tests, cancer screening, heart health, hormone tests, and more from trusted UK providers."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/test-categories" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/test-categories" />
       </Helmet>
 
       <Header />

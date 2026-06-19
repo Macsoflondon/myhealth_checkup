@@ -87,27 +87,27 @@ const ProviderProfilePage = () => {
               : ""
           } Browse the full test range, prices, accreditations and turnaround times.`.slice(0, 158)}
         />
-        <link rel="canonical" href={`https://www.myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="myhealth checkup" />
         <meta property="og:title" content={`${provider.name} Reviews & Tests | myhealth checkup`} />
         <meta property="og:description" content={`${provider.name} private health tests reviewed and compared. Browse the full test range, prices and accreditations.`} />
-        <meta property="og:url" content={`https://www.myhealthcheckup.co.uk/provider/${provider.id}`} />
+        <meta property="og:url" content={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
         <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "MedicalOrganization",
           "name": provider.name,
           "description": `${provider.name} private health tests reviewed and compared.`,
-          "url": `https://www.myhealthcheckup.co.uk/provider/${provider.id}`,
+          "url": `https://myhealthcheckup.co.uk/provider/${provider.id}`,
           ...(websiteUrl ? { "sameAs": websiteUrl } : {}),
           ...(provider.accreditation ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": provider.accreditation } } : {}),
           ...(providerRatingData.rating ? { "aggregateRating": { "@type": "AggregateRating", "ratingValue": providerRatingData.rating, "bestRating": 5, "ratingCount": providerRatingData.reviews } } : {}),
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.myhealthcheckup.co.uk" },
-              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://www.myhealthcheckup.co.uk/compare" },
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
+              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://myhealthcheckup.co.uk/compare" },
               { "@type": "ListItem", "position": 3, "name": provider.name }
             ]
           }

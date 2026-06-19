@@ -8,7 +8,7 @@ const ThyroidPage = () => (
     pillLabel="Thyroid"
     seoDescription="Compare thyroid function tests — TSH, T3, T4 and thyroid antibodies — from trusted UK providers."
     seoKeywords="thyroid blood test, TSH test, T3 T4 test, thyroid antibodies, hypothyroid, hyperthyroid"
-    canonicalUrl="https://www.myhealthcheckup.co.uk/thyroid"
+    canonicalUrl="https://myhealthcheckup.co.uk/thyroid"
     headline="Thyroid Blood Tests"
     subtitle="Monitor your thyroid health with comprehensive hormone and antibody testing from trusted UK labs."
     searchPlaceholder="Search by symptom or test — e.g. 'fatigue', 'TSH'"

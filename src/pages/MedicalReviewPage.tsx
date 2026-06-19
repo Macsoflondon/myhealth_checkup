@@ -36,7 +36,7 @@ const MedicalReviewPage = () => {
     affiliation: {
       "@type": "Organization",
       name: "myhealth checkup",
-      url: "https://www.myhealthcheckup.co.uk/",
+      url: "https://myhealthcheckup.co.uk/",
     },
     hasCredential: [
       {
@@ -46,7 +46,7 @@ const MedicalReviewPage = () => {
         identifier: REVIEWER.registration.number,
       },
     ],
-    url: "https://www.myhealthcheckup.co.uk/about/medical-review",
+    url: "https://myhealthcheckup.co.uk/about/medical-review",
   };
 
   return (
@@ -57,7 +57,7 @@ const MedicalReviewPage = () => {
           name="description"
           content="Our clinical content is reviewed by a Registered Healthcare Professional (HCPC). See reviewer credentials, scope of review, and editorial standards."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/about/medical-review" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/about/medical-review" />
         <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
       </Helmet>
 

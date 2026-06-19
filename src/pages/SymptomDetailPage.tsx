@@ -19,7 +19,7 @@ const SymptomDetailPage = () => {
   if (!symptom) return <NotFound />;
 
   const pageTitle = `Blood Test for ${symptom.name} — Compare UK Private Tests | myhealth checkup`;
-  const pageUrl = `https://www.myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
+  const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
 
   return (
     <MainLayout>

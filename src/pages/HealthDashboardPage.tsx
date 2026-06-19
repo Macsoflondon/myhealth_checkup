@@ -36,7 +36,7 @@ const HealthDashboardPage = () => {
           name="description"
           content="Manage your saved tests, providers, orders, profile and health data in one place on myhealth checkup."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/health-dashboard" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/health-dashboard" />
         <meta name="robots" content="noindex, follow" />
       </Helmet>
 

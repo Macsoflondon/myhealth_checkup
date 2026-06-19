@@ -197,7 +197,7 @@ const TestDetailPage = () => {
           "name": test.test_name,
           "description": test.description || `${test.test_name} private health test available from accredited UK providers.`,
           "brand": provider?.name ? { "@type": "Brand", "name": provider.name } : undefined,
-          "image": test.image_url || "https://www.myhealthcheckup.co.uk/og-image.png",
+          "image": test.image_url || "https://myhealthcheckup.co.uk/og-image.png",
           "category": test.category || "Health Test",
           ...(test.price != null ? {
             "offers": {
@@ -205,7 +205,7 @@ const TestDetailPage = () => {
               "priceCurrency": "GBP",
               "price": test.price.toFixed(2),
               "availability": "https://schema.org/InStock",
-              "url": `https://www.myhealthcheckup.co.uk/${providerId}/${testId}`,
+              "url": `https://myhealthcheckup.co.uk/${providerId}/${testId}`,
               ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
             }
           } : {})
