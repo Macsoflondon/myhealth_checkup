@@ -211,7 +211,8 @@ const WellnessPage = () => {
         {/* Browse Tests by Category */}
         <section
           style={{
-            background: "#081129",
+            background: "#ffffff",
+
             padding: "32px 40px 72px",
             position: "relative",
             overflow: "hidden",
@@ -241,9 +242,10 @@ const WellnessPage = () => {
                     style={{
                       padding: "7px 20px",
                       borderRadius: 100,
-                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(255,255,255,0.4)",
-                      background: active || isHoveredTag ? `${color}18` : "rgba(6,11,24,0.3)",
-                      color: active || isHoveredTag ? color : "#ffffff",
+                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(8,17,41,0.2)",
+                      background: active || isHoveredTag ? `${color}18` : "transparent",
+                      color: active || isHoveredTag ? color : "#081129",
+
                       fontSize: 12,
                       fontWeight: 700,
                       letterSpacing: "0.1em",

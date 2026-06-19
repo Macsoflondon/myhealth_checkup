@@ -1,24 +1,25 @@
 ## Goal
-Replace every "Book with {provider}" call-to-action label on test cards and related booking buttons with a single "Book" label.
+On all category pages using the standardised hero pill: drop the uppercase styling and the two pink dots, make the label white, and make the section below the tricolour divider have a white background.
 
-## Scope
-All user-facing "Book with..." strings rendered inside test cards, detail modals, comparison tables, and provider-specific booking CTAs.
+## Changes
 
-## Files to change
-1. `src/components/cards/UnifiedTestCard.tsx` — lines 275, 287
-2. `src/components/providers/ProviderTestCard.tsx` — line 216
-3. `src/components/providers/ProviderTestDetailModal.tsx` — lines 393, 402
-4. `src/components/compare/TestProviderPriceTable.tsx` — line 227
-5. `src/components/compare/ProviderComparisonSidebar.tsx` — line 34
-6. `src/pages/AtHomeTestsPage.tsx` — lines 251, 391
-7. `src/pages/TestDetailPage.tsx` — line 389
-8. `src/constants/providerTestPageConfig.ts` — all `ctaButtonText` entries (lines ~93, 139, 184, 229, 275, 321, 360, 399, 439)
+### 1. `src/components/category/CategoryStandardHero.tsx`
+- Remove the two pink dot `<span>`s flanking the `<h1>`.
+- Remove `uppercase` from the heading classes so the label renders in its passed casing (e.g. "General Wellness").
+- Change heading colour from turquoise `#22c0d4` → white `#ffffff`.
+- Keep everything else (navy hero background, benefits row, tricolour divider).
 
-## What stays the same
-- Button styling, colours, and hover behaviour
-- Navigation and routing logic
-- The "Compare" secondary button on cards
-- Any non-CTA "Book with Provider" strings (e.g. step titles)
+### 2. `src/pages/WellnessPage.tsx` — "Browse Tests by Category" section
+- Change section `background` from `#081129` → `#ffffff`.
+- Restyle filter pills for the new white background so they remain readable:
+  - Inactive pill: dark border `rgba(8,17,41,0.2)`, dark text `#081129`, transparent background.
+  - Active/hovered pill: keep the existing accent colour border + tinted background + accent text (already legible on white).
+- Cards already have a white background and dark text — no change needed.
+- Bottom CTA banner already sits on white — no change.
 
-## Technical detail
-Each instance of the label text "Book with {providerName}" (or equivalent variable interpolation) will be replaced with the literal string "Book". No new dependencies. No functional changes.
+### 3. Pages using `CategoryPageLayout` (Men's, Women's, Fertility, Cancer Screening, Sports Performance, Thyroid, Heart, Hormones, Gut, Diabetes, Vitamin Deficiency, Most Popular Tests, etc.)
+- The cards section there is already `bg-white`. No change beyond the shared hero update above.
+
+## Out of scope
+- Hero (navy) background stays navy — only the pill text/dots change and the section below the divider goes white.
+- No copy changes, no routing changes, no other category-page restructuring.
