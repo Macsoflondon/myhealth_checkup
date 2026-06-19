@@ -11,6 +11,7 @@ const FairTradingPolicyPage = lazy(() => import("@/pages/FairTradingPolicyPage")
 const HowWeRankPage = lazy(() => import("@/pages/HowWeRankPage"));
 const LegalPage = lazy(() => import("@/pages/LegalPage"));
 const ComplaintsPage = lazy(() => import("@/pages/ComplaintsPage"));
+const TrustCentrePage = lazy(() => import("@/pages/TrustCentrePage"));
 
 export const complianceRoutes = (
   <>
