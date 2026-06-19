@@ -90,6 +90,7 @@ const Chip = ({
 );
 
 export const TestFinderQuiz = () => {
+  const { data: catalogue = TEST_CATALOGUE } = useTestCatalogue();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [sex, setSex] = useState<Sex | null>(null);
