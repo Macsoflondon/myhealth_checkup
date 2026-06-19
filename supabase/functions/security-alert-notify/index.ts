@@ -76,6 +76,17 @@ Deno.serve(async (req) => {
       })
     }
 
+    // Dry-run path: render only, do not query DB or call Resend.
+    if (payload.dry_run) {
+      const html = renderHtml(payload)
+      return new Response(JSON.stringify({
+        dry_run: true,
+        to: ['dry-run@example.test'],
+        subject: payload.subject,
+        html,
+      }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } })
+    }
+
     const supa = createClient(SUPABASE_URL, SERVICE_ROLE_KEY)
     const { data: recipients, error } = await supa
       .from('security_alert_recipients')
