@@ -272,7 +272,7 @@ export function UnifiedTestCard({
                   className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border-0 text-white whitespace-nowrap"
                   style={{ backgroundColor: categoryColor }}
                 >
-                  Book with {provider}
+                  Book
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               ) : url ? (
@@ -284,7 +284,7 @@ export function UnifiedTestCard({
                   className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border-0 text-white whitespace-nowrap"
                   style={{ backgroundColor: categoryColor }}
                 >
-                  Book with {provider}
+                  Book
                   <ArrowRight className="w-3 h-3" />
                 </a>
               ) : null}

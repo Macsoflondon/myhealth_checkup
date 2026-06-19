@@ -213,7 +213,7 @@ export default function ProviderTestCard({ test, providerName, turnaroundTime, o
                 {...externalLinkProps}
                 aria-label={`Book ${test.test_name} with ${providerName}`}
               >
-                Book with {providerName}
+                Book
                 <ExternalLink className="w-3.5 h-3.5 ml-1" />
               </a>
             </Button>

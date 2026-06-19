@@ -390,7 +390,7 @@ export default function ProviderTestDetailModal({
                 className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300 shadow-md"
               >
                 <a href={test.url} target="_blank" rel="noopener noreferrer">
-                  Book with {providerName}
+                  Book
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </a>
               </Button>
@@ -399,7 +399,7 @@ export default function ProviderTestDetailModal({
                 disabled
                 className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] text-white opacity-60"
               >
-                Book with {providerName}
+                Book
               </Button>
             )}
           </div>

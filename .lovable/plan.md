@@ -1,11 +1,24 @@
-## Update navigation menu colors
+## Goal
+Replace every "Book with {provider}" call-to-action label on test cards and related booking buttons with a single "Book" label.
 
-**File:** `src/components/header/NavigationMenu.tsx`
+## Scope
+All user-facing "Book with..." strings rendered inside test cards, detail modals, comparison tables, and provider-specific booking CTAs.
 
-**Changes (lines 99-103 and 118-120):**
+## Files to change
+1. `src/components/cards/UnifiedTestCard.tsx` — lines 275, 287
+2. `src/components/providers/ProviderTestCard.tsx` — line 216
+3. `src/components/providers/ProviderTestDetailModal.tsx` — lines 393, 402
+4. `src/components/compare/TestProviderPriceTable.tsx` — line 227
+5. `src/components/compare/ProviderComparisonSidebar.tsx` — line 34
+6. `src/pages/AtHomeTestsPage.tsx` — lines 251, 391
+7. `src/pages/TestDetailPage.tsx` — line 389
+8. `src/constants/providerTestPageConfig.ts` — all `ctaButtonText` entries (lines ~93, 139, 184, 229, 275, 321, 360, 399, 439)
 
-1. **Regular nav items** (General Wellness, Women's Health, Men's Health, etc., plus Resources): change base text from turquoise `text-[#1a9baa]` → `text-white`. Keep hover state `hover:text-brand-pink` and the pink underline animation.
+## What stays the same
+- Button styling, colours, and hover behaviour
+- Navigation and routing logic
+- The "Compare" secondary button on cards
+- Any non-CTA "Book with Provider" strings (e.g. step titles)
 
-2. **"Most Popular Tests"** (the `hasAccent` highlighted item): currently pink (`text-brand-pink`). Change to turquoise `text-brand-turquoise` with `hover:text-brand-pink` so it flips to pink on hover. Keep `font-bold`.
-
-No other files affected. Underline accent and layout remain unchanged.
+## Technical detail
+Each instance of the label text "Book with {providerName}" (or equivalent variable interpolation) will be replaced with the literal string "Book". No new dependencies. No functional changes.

@@ -224,7 +224,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                       href={buildProviderBookingUrl(provider.url, provider.providerId, testName)}
                       {...externalLinkProps}
                     >
-                      Book with {provider.providerName}
+                      Book
                       <ExternalLink className="h-4 w-4 ml-2" />
                     </a>
                   </Button>

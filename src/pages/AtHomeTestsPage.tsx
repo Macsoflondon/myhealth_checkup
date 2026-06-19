@@ -248,7 +248,7 @@ const TestInfoSheet: React.FC<{ test: AtHomeTest; onClose: () => void }> = ({ te
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a5a")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
               >
-                Book with {meta.displayName}
+                Book
               </a>
             </div>
           )}
@@ -388,7 +388,7 @@ const AtHomeTestCard: React.FC<{ test: AtHomeTest; onClick: () => void }> = ({ t
             onMouseEnter={(e) => { if (test.url && test.url !== "#") e.currentTarget.style.background = "#c40a5a"; }}
             onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
           >
-            Book with LML
+            Book
           </button>
         </div>
       </div>
