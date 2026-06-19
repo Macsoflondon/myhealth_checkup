@@ -10,49 +10,33 @@ export const cleanTestName = (raw: string): string =>
     .replace(/\s*\| Book Online today$/i, "")
     .trim();
 
-type AdapterOverrides = Partial<
-  Pick<
-    UnifiedTestCardProps,
-    | "category"
-    | "categoryColor"
-    | "description"
-    | "results"
-    | "collection"
-    | "provider"
-    | "rating"
-    | "reviews"
-    | "badge"
-    | "ctaLabel"
-  >
->;
+/** Caller-supplied fields that aren't derivable from `ProviderTestCardData`. */
+export interface UnifiedCardOverrides {
+  provider: string;
+  rating: number;
+  reviews: number;
+  category?: string;
+  categoryColor?: string;
+  description?: string;
+  results?: string;
+  collection?: string;
+  badge?: string;
+  ctaLabel?: string;
+  onCtaClick?: UnifiedTestCardProps["onCtaClick"];
+  compareSelected?: boolean;
+  onCompareToggle?: UnifiedTestCardProps["onCompareToggle"];
+  className?: string;
+}
 
 /**
- * Map a `ProviderTestCardData` into the canonical subset of
- * `UnifiedTestCardProps` (name, biomarkers, results, collection,
- * price, priceFrom, markers, url, category, testDetails).
- *
- * Callers spread the result and override anything caller-specific
- * (rating/reviews, provider display name, ctaLabel, badge, …).
+ * Map a `ProviderTestCardData` into a fully-formed `UnifiedTestCardProps`.
+ * Caller supplies what can't be derived (provider name + rating/reviews)
+ * and may override any derived field.
  */
 export function toUnifiedCardProps(
   test: ProviderTestCardData,
-  overrides: AdapterOverrides = {}
-): Pick<
-  UnifiedTestCardProps,
-  | "category"
-  | "categoryColor"
-  | "name"
-  | "description"
-  | "biomarkers"
-  | "results"
-  | "collection"
-  | "price"
-  | "priceFrom"
-  | "markers"
-  | "url"
-  | "testDetails"
-> &
-  AdapterOverrides {
+  overrides: UnifiedCardOverrides
+): UnifiedTestCardProps {
   return {
     category: test.category ?? "Health",
     categoryColor: test.categoryColor ?? undefined,
