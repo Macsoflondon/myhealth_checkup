@@ -55,8 +55,14 @@ export function computeMatchScore(test: TestRecord, profile: UserProfile): numbe
   return score;
 }
 
-export function buildRecommendations(tests: TestRecord[], profile: UserProfile): TestRecord[] {
-  return tests
+export const MAX_RECOMMENDATIONS = 18;
+
+export function buildRecommendations(
+  tests: TestRecord[],
+  profile: UserProfile,
+  limit: number = MAX_RECOMMENDATIONS,
+): TestRecord[] {
+  const scored = tests
     .map((test) => ({ ...test, ai_match_score: computeMatchScore(test, profile) }))
     .filter((test) => (test.ai_match_score ?? 0) > 0)
     .sort((a, b) =>
@@ -64,6 +70,11 @@ export function buildRecommendations(tests: TestRecord[], profile: UserProfile):
         ? (b.ai_match_score ?? 0) - (a.ai_match_score ?? 0)
         : a.price - b.price,
     );
+  // Threshold: require a meaningful score (>= 25 = ~one goal + one age boost,
+  // or one concern match). Falls back to top-N if too few clear that bar.
+  const strong = scored.filter((t) => (t.ai_match_score ?? 0) >= 25);
+  const pool = strong.length >= 6 ? strong : scored;
+  return pool.slice(0, limit);
 }
 
 export function buildExplanation(test: TestRecord, profile: UserProfile): string[] {
