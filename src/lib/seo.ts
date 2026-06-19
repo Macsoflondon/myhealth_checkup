@@ -8,7 +8,7 @@
  */
 
 const SITE = "myhealth checkup";
-const BASE_URL = "https://www.myhealthcheckup.co.uk";
+const BASE_URL = "https://myhealthcheckup.co.uk";
 
 const clean = (s: string) => s.replace(/\s+/g, " ").trim();
 
