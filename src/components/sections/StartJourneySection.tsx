@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import letterboxVideo from "@/assets/compare-screen-recording.mov.asset.json";
+import LiveComparisonCard from "@/components/sections/LiveComparisonCard";
+
 
 // ── Rotating test data ──────────────────────────────────────────────────────
 const TESTS = [
@@ -60,22 +61,6 @@ const TESTS = [
 ];
 
 const StartJourneySection = () => {
-  const [testIdx, setTestIdx] = useState(0);
-  const [fading, setFading] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setTestIdx((i) => (i + 1) % TESTS.length);
-        setFading(false);
-      }, 500);
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const test = TESTS[testIdx];
-
   return (
     <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
       <div className="max-w-[1480px] mx-auto px-4 sm:px-6">
@@ -159,84 +144,7 @@ const StartJourneySection = () => {
           </div>
 
           {/* RIGHT — Live Comparison */}
-          <div className="relative bg-white rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1">
-            <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
-
-              <div className="flex items-center justify-center gap-3 mb-5">
-                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
-                  Live Comparison
-                </span>
-                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-              </div>
-
-              <h3
-                className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out"
-                style={{ opacity: fading ? 0 : 1 }}
-              >
-                {test.name}
-              </h3>
-
-              <div
-                className="flex-1 flex flex-col transition-all duration-500 ease-in-out"
-                style={{
-                  opacity: fading ? 0 : 1,
-                  border: "1px solid rgba(8,17,41,0.08)",
-                  borderRadius: "20px",
-                  overflow: "hidden",
-                }}
-              >
-                <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
-                  <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em", color: "#22c0d4" }}>
-                    {test.name}
-                  </span>
-                </div>
-
-                <div className="flex-1" style={{ padding: "0 20px" }}>
-                  {test.providers.map((provider, pi) => {
-                    const multiPrice = provider.options.length > 1;
-                    return (
-                      <div
-                        key={provider.name}
-                        style={{
-                          paddingTop: "14px",
-                          paddingBottom: "14px",
-                          borderBottom: pi === test.providers.length - 1 ? "none" : "1px solid rgba(8,17,41,0.07)",
-                        }}
-                      >
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
-                          <span className="font-heading" style={{ fontSize: "16px", fontWeight: 700, color: "#081129" }}>
-                            {provider.name}
-                          </span>
-                          {multiPrice && (
-                            <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(8,17,41,0.45)", letterSpacing: "0.02em" }}>
-                              From
-                            </span>
-                          )}
-                        </div>
-
-                        {provider.options.map((opt) => (
-                          <div key={opt.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "2px" }}>
-                            <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{opt.label}</span>
-                            <span className="font-heading" style={{ fontSize: "17px", fontWeight: 800, color: "#081129" }}>
-                              {opt.price}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
-                  <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>
-                    Prices verified June 2026 from provider websites. Always confirm current pricing before booking.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </div>
+          <LiveComparisonCard panels={TESTS} rotateMs={60000} />
 
         </div>
       </div>
@@ -245,3 +153,4 @@ const StartJourneySection = () => {
 };
 
 export default StartJourneySection;
+

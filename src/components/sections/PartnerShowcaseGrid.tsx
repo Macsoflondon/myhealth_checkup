@@ -12,6 +12,9 @@ const ProviderComparisonTable = lazy(() => import("@/components/sections/Provide
 const GoodbodyBentoShowcase = lazy(() => import("@/components/sections/GoodbodyBentoShowcase"));
 const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
+const LiveComparisonCard = lazy(() => import("@/components/sections/LiveComparisonCard"));
+import { DEFAULT_LIVE_COMPARISON_PANELS } from "@/components/sections/LiveComparisonCard";
+
 
 const BentoSkeleton = () => (
   <div
@@ -108,9 +111,30 @@ const PartnerShowcaseGrid = () => {
         <DreamHealthShowcase />
       </SafeBlock>
 
+      <SafeBlock name="Live Comparison" fallback={<BlockSkeleton height="min-h-[480px]" />}>
+        <div className="w-full py-10 sm:py-14 px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto text-center mb-6">
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+              <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
+                Side-by-side pricing
+              </span>
+              <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-white">
+              See how providers compare, live
+            </h2>
+          </div>
+          <div className="max-w-2xl mx-auto">
+            <LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} rotateMs={8000} />
+          </div>
+        </div>
+      </SafeBlock>
+
       <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
         <FeaturedPublications />
       </SafeBlock>
+
 
       <SafeBlock name="Call To Action" fallback={<CtaSkeleton />}>
         <CallToAction />
