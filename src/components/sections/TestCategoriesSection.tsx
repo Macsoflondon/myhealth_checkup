@@ -63,12 +63,12 @@ const TestCategoriesSection = () => {
         </div>
 
         {/* Cards — image behind dark overlay, content at bottom */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-9">
           {categories.map((cat) => (
             <Link
               key={cat.title}
               to={cat.link}
-              className="group relative flex flex-col justify-end min-h-[320px] sm:min-h-[380px] rounded-2xl overflow-hidden"
+              className="group relative flex flex-col justify-end min-h-[480px] sm:min-h-[570px] rounded-2xl overflow-hidden"
             >
               {/* Background image */}
               <img
@@ -84,15 +84,15 @@ const TestCategoriesSection = () => {
                 className="absolute inset-0"
                 style={{
                   background:
-                    "linear-gradient(to top, rgba(8,17,41,0.97) 0%, rgba(8,17,41,0.6) 55%, rgba(8,17,41,0.15) 100%)",
+                    "linear-gradient(to top, rgba(8,17,41,0.97) 0%, rgba(8,17,41,0.65) 60%, rgba(8,17,41,0.15) 100%)",
                 }}
               />
 
 
               {/* Card content — sits at bottom above overlay */}
-              <div className="relative z-10 p-6 sm:p-7">
+              <div className="relative z-10 p-9 sm:p-10">
                 <span
-                  className="inline-block font-heading font-bold text-[10px] uppercase tracking-[0.14em] px-3 py-1 rounded-md mb-3"
+                  className="inline-block font-heading font-bold text-[15px] uppercase tracking-[0.14em] px-4 py-1.5 rounded-md mb-5"
                   style={
                     cat.tagVariant === "teal"
                       ? {
@@ -110,13 +110,13 @@ const TestCategoriesSection = () => {
                   {cat.tag}
                 </span>
 
-                <h3 className="font-heading font-bold text-white text-xl sm:text-2xl leading-tight mb-3 group-hover:text-brand-turquoise transition-colors duration-200">
+                <h3 className="font-heading font-bold text-white text-3xl sm:text-4xl leading-tight mb-4 group-hover:text-brand-turquoise transition-colors duration-200">
                   {cat.title}
                 </h3>
-                <p className="text-sm text-white/[0.62] leading-relaxed mb-5">
+                <p className="text-lg sm:text-xl text-white/[0.7] leading-relaxed mb-7">
                   {cat.description}
                 </p>
-                <span className="inline-flex items-center gap-2 font-heading font-bold text-[11px] uppercase tracking-[0.12em] text-brand-turquoise transition-all duration-200 group-hover:gap-3">
+                <span className="inline-flex items-center gap-2 font-heading font-bold text-base uppercase tracking-[0.12em] text-brand-turquoise transition-all duration-200 group-hover:gap-3">
                   {cat.linkLabel} →
                 </span>
               </div>
