@@ -78,6 +78,7 @@ export const STATIC_ROUTES = [
   "/contact",
   "/partners",
   "/blog",
+  "/blog/testosterone-levels-by-age",
   "/health-blog",
 
   // Legal / compliance
