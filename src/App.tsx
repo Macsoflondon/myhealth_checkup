@@ -10,6 +10,7 @@ import FloatingNavDock from "./components/common/FloatingNavDock";
 import { GlobalHreflang } from "./components/seo/GlobalHreflang";
 import TestPageViewTracker from "./components/analytics/TestPageViewTracker";
 import GlobalPageBackground from "./components/layout/GlobalPageBackground";
+import { AutoTranslatePage } from "./components/i18n/AutoTranslatePage";
 
 import { AppRoutes } from "./routes";
 import { SessionSecurityProvider } from "./components/security/SessionSecurityProvider";
@@ -47,6 +48,7 @@ const App = () => {
                 <GlobalHreflang />
                 <TestPageViewTracker />
                 <FloatingNavDock />
+                <AutoTranslatePage />
                 <AppRoutes />
               </BrowserRouter>
             </TooltipProvider>
