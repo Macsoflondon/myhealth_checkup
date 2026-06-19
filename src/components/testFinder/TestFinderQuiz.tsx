@@ -17,6 +17,7 @@ import {
   SAMPLE_TYPE_LABEL,
 } from "@/lib/testFinder/labels";
 import { TEST_CATALOGUE } from "@/lib/testFinder/catalogue";
+import { useTestCatalogue } from "@/lib/testFinder/useTestCatalogue";
 import { getRecommendations } from "@/lib/testFinder/recommendationService";
 import { deriveFilterState } from "@/lib/testFinder/filters";
 import { testFinderStore } from "@/stores/testFinderStore";
