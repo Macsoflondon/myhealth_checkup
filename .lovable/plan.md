@@ -1,36 +1,42 @@
-The issue is real: the navigation is sending users to URLs like `/womens-health?category=menopause` and `/wellness?category=thyroid`, but those pages do not read the `category` query parameter. Separately, the compare query only knows broad `canonical_category` values, so slugs like `female-fertility`, `female-hormone-tests`, `thyroid-tests`, and `menopause` are not consistently mapped.
+## Goal
 
-Plan:
+Make every `/compare?category=...` page (and the no-category default) use the same header treatment used on `/womens-health` — title + 3 benefit tiles + tricolour gradient divider on the navy band. Nothing below the header changes.
 
-1. Fix the category click destinations
-   - Update the relevant navigation dropdown links so Thyroid, Menopause, Female Fertility, and Female Hormone items route to a filtered test listing instead of ignored parent-page query params.
-   - Use consistent slugs:
-     - `thyroid`
-     - `menopause`
-     - `female-fertility`
-     - `female-hormones`
+## Scope
 
-2. Make the compare/category query understand those slugs
-   - Extend the category mapping in `src/constants/categories.ts` so aliases such as `thyroid-tests`, `female-fertility-tests`, `female-hormone-tests`, `menopause-tests`, etc. resolve correctly.
-   - Update the compare query builder so broad categories still use exact `canonical_category`, but these subcategories use stricter name/category rules:
-     - Thyroid: thyroid/TSH/T3/T4/TPO/thyroid antibody tests only.
-     - Menopause: menopause/perimenopause/HRT-related hormone tests.
-     - Female fertility: female fertility/AMH/ovarian reserve/Fertility Hormones Profile; exclude male fertility and prenatal-only tests.
-     - Female hormones: female hormone/women’s hormone/oestrogen/progesterone/FSH/LH panels; exclude male hormone and unrelated thyroid tests.
+Touched: `src/pages/CompareTests.tsx` only (plus one tiny new file for per-category benefits). The comparison table, filters, recommended row, provider comparison section etc. are untouched.
 
-3. Audit and correct obvious database category mistakes
-   - Run a read audit against `provider_tests` for records whose `test_name` conflicts with `canonical_category`.
-   - Apply a Supabase migration/update for clear mismatches, e.g. female hormone rows currently marked as `thyroid`, thyroid rows not marked as `thyroid`, menopause rows grouped too broadly, and female fertility rows that should be fertility-linked.
-   - No new tables unless the audit shows the existing fields cannot represent the mapping.
+## Changes
 
-4. Keep category pages and compare page aligned
-   - Ensure `/thyroid` and `/compare?category=thyroid` return the same thyroid-only set.
-   - Ensure navigation for Women’s Health subitems lands on filtered compare results rather than the unfiltered Women’s Health parent page.
+1. **New file `src/data/compareCategoryBenefits.ts`**
+   - Exports a map `slug → { title, benefits: [3 × {icon, title, description}] }`.
+   - Seeded for every slug that currently routes to `/compare?category=...`: `womens-health`, `mens-health`, `hormones`, `thyroid`, `general-health`, `fertility`, `heart-health`, `diabetes`, `vitamins`, `cancer-screening`, plus the sub-category slugs `menopause`, `female-fertility`, `female-hormones`, `pcos`, `male-hormones`, `male-fertility`, `testosterone`, `prostate`, `amh`.
+   - Reuses copy/icons from `categoryContent.ts` where present; concise bespoke 3-tile sets for the sub-categories (e.g. Menopause → Hormone Clarity / Symptom Insight / Confident Decisions).
+   - `title` defaults to `"<Display Name> Blood Tests"` (e.g. "Menopause Blood Tests").
+   - A `getCompareHeader(slug)` helper returns the entry or a sensible fallback derived from `getCategoryDisplayName` + 3 generic benefits (Trusted Providers / Transparent Pricing / Fast Results) for slugs not explicitly mapped or the all-tests view.
 
-5. Verify the fix
-   - Use Playwright to click the relevant navigation items:
-     - Thyroid Tests
-     - Menopause Tests
-     - Female Fertility Tests
-     - Female Hormone Tests
-   - Confirm each page shows only matching tests and no obvious cross-category leakage.
+2. **`src/pages/CompareTests.tsx`**
+   - Remove the existing header block (lines 187–254): the `Compare X Blood Tests` heading, paragraph, three stat cards (Tests available / Providers / Lowest price), and the search input.
+   - Render `<CategoryStandardHero pillLabel={header.title} benefits={header.benefits} />` in its place, where `header = getCompareHeader(effectiveCategory)`.
+   - Drop now-unused imports (`FlaskConical`, `Building2`, `PoundSterling`, `Search`, `X` for the header) and the search input — search lives in the filters row further down and is not affected.
+   - If the in-hero search input is the only `filters.searchQuery` UI on this page, keep state intact (still used by the results filter) and add a `<CategoryFilters>`-style search above the cards only if removing breaks search — verify during implementation; otherwise leave search to existing filters row.
+
+3. **No other files touched.** Comparison table, recommended row, ProviderComparisonSection, footer all untouched.
+
+## Visual result
+
+Each compare page top band will read, e.g. for `/compare?category=menopause`:
+
+```text
+                Menopause Blood Tests
+        [icon]            [icon]            [icon]
+     Hormone Clarity   Symptom Insight   Confident Decisions
+     short copy        short copy        short copy
+        ───── turquoise→pink→turquoise divider ─────
+```
+
+…identical structure across menopause, thyroid, womens-health, mens-health, every sub-category, and the all-tests default.
+
+## Verification
+
+Playwright: load `/compare?category=menopause`, `/compare?category=thyroid`, `/compare?category=female-fertility`, `/compare` and screenshot the top band to confirm uniform layout and that the comparison table below is unchanged.
