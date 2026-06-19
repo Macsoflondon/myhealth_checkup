@@ -8,7 +8,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import {
   Search, Home, Clock, Shield,
-  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus, Syringe
+  CheckCircle, X, ExternalLink, FlaskConical, Package, Plus, Syringe, ChevronDown
 } from "lucide-react";
 
 const NAVY = "#081129";
@@ -473,24 +473,34 @@ const AtHomeTestsPage: React.FC = () => {
             />
           </div>
 
-          {/* Category pills */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryChange(cat)}
-                style={{
-                  fontFamily: "'DM Sans',sans-serif", fontWeight: 500, fontSize: 13,
-                  padding: "6px 16px", borderRadius: 20, border: `1.5px solid ${NAVY}`, cursor: "pointer",
-                  background: activeCategory === cat ? NAVY : "#fff",
-                  color: activeCategory === cat ? "#fff" : NAVY,
-                  transition: "all 150ms",
-                }}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Category dropdown */}
+          <div className="relative mb-8" style={{ maxWidth: 280 }}>
+            <select
+              value={activeCategory}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="w-full appearance-none pl-4 pr-10 py-3 rounded-full cursor-pointer"
+              style={{
+                border: `1.5px solid ${NAVY}`,
+                fontFamily: "'DM Sans',sans-serif",
+                fontSize: 14,
+                outline: "none",
+                color: NAVY,
+                background: "#fff",
+              }}
+              onFocus={(e) => (e.currentTarget.style.borderColor = TURQUOISE)}
+              onBlur={(e) => (e.currentTarget.style.borderColor = NAVY)}
+            >
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <ChevronDown
+              size={16}
+              color={NAVY}
+              className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+            />
           </div>
+
 
           {/* Results count */}
           {!isLoading && (
