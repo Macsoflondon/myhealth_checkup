@@ -12,7 +12,9 @@ import { toast } from 'sonner';
  * "User access control - accounts should be locked after a period of inactivity"
  */
 
-const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes idle
+const ABSOLUTE_MAX_MS = 12 * 60 * 60 * 1000; // 12-hour hard cap (CE+ session control)
+const ABSOLUTE_START_KEY = 'mhc.session.startedAt';
 const WARNING_BEFORE_MS = 2 * 60 * 1000; // 2 minutes warning
 
 interface UseIdleSessionTimeoutOptions {
