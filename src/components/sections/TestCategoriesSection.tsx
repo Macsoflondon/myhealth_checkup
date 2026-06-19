@@ -54,11 +54,11 @@ const TestCategoriesSection = () => {
           </div>
           <SectionHeading
             title="Every test. Every provider."
-            gradientText="One transparent platform."
-            titleClassName="text-tertiary"
+            gradientText={"\nOne transparent platform."}
+            titleClassName="text-tertiary whitespace-pre-line"
           />
           <p className="text-base font-semibold text-tertiary max-w-2xl mx-auto leading-snug mt-2 text-center">
-            Browse by category. Compare biomarkers, pricing, turnaround times, all in one place!
+            {"\n"}
           </p>
         </div>
 
