@@ -1929,7 +1929,6 @@ export type Database = {
           biomarkers_listed: number | null
           body_system: string | null
           category_primary: string | null
-          clinic_visit_available: boolean | null
           clinical_review_fee: number | null
           clinical_review_type: string | null
           collection_fee_amount: number | null
@@ -1937,14 +1936,11 @@ export type Database = {
           collection_method: string | null
           description: string | null
           discount_percentage: number | null
-          gp_consultation_included: boolean | null
-          home_kit_available: boolean | null
           id: string | null
           image_url: string | null
           is_addon: boolean | null
           is_popular: boolean | null
           original_price: number | null
-          phlebotomy_included: boolean | null
           popularity_rank: number | null
           price: number | null
           provider_id: string | null
@@ -1953,80 +1949,11 @@ export type Database = {
           sample_type_raw: string | null
           scraped_at: string | null
           test_name: string | null
+          total_expected_cost: number | null
           turnaround_days_text: string | null
           updated_at: string | null
           url: string | null
           url_verified: boolean | null
-        }
-        Insert: {
-          biomarker_count?: number | null
-          biomarkers_list?: Json | null
-          biomarkers_listed?: never
-          body_system?: never
-          category_primary?: never
-          clinic_visit_available?: boolean | null
-          clinical_review_fee?: number | null
-          clinical_review_type?: string | null
-          collection_fee_amount?: number | null
-          collection_fee_type?: string | null
-          collection_method?: string | null
-          description?: string | null
-          discount_percentage?: number | null
-          gp_consultation_included?: boolean | null
-          home_kit_available?: boolean | null
-          id?: string | null
-          image_url?: string | null
-          is_addon?: boolean | null
-          is_popular?: boolean | null
-          original_price?: number | null
-          phlebotomy_included?: boolean | null
-          popularity_rank?: number | null
-          price?: number | null
-          provider_id?: string | null
-          provider_name?: never
-          sample_type?: never
-          sample_type_raw?: string | null
-          scraped_at?: string | null
-          test_name?: string | null
-          turnaround_days_text?: string | null
-          updated_at?: string | null
-          url?: string | null
-          url_verified?: boolean | null
-        }
-        Update: {
-          biomarker_count?: number | null
-          biomarkers_list?: Json | null
-          biomarkers_listed?: never
-          body_system?: never
-          category_primary?: never
-          clinic_visit_available?: boolean | null
-          clinical_review_fee?: number | null
-          clinical_review_type?: string | null
-          collection_fee_amount?: number | null
-          collection_fee_type?: string | null
-          collection_method?: string | null
-          description?: string | null
-          discount_percentage?: number | null
-          gp_consultation_included?: boolean | null
-          home_kit_available?: boolean | null
-          id?: string | null
-          image_url?: string | null
-          is_addon?: boolean | null
-          is_popular?: boolean | null
-          original_price?: number | null
-          phlebotomy_included?: boolean | null
-          popularity_rank?: number | null
-          price?: number | null
-          provider_id?: string | null
-          provider_name?: never
-          sample_type?: never
-          sample_type_raw?: string | null
-          scraped_at?: string | null
-          test_name?: string | null
-          turnaround_days_text?: string | null
-          updated_at?: string | null
-          url?: string | null
-          url_verified?: boolean | null
         }
         Relationships: []
       }

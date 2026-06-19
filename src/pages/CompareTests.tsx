@@ -7,6 +7,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
+import ProviderComparisonSection from "@/components/sections/ProviderComparisonTable";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import { Search, X, FlaskConical, Building2, PoundSterling } from "lucide-react";
@@ -276,34 +277,8 @@ const CompareTests = () => {
             </div>
           </section>
 
-          {/* SECTION 2 — Comparison table (only when 2+ selected) */}
-          {selectedTests.length >= 2 && (
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-              <section
-                className="p-6 sm:p-8 rounded-2xl animate-fade-in"
-                style={{ backgroundColor: "#222b45" }}
-              >
-                <ComparisonSectionHeading className="mb-8" />
-                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                  <p className="font-montserrat font-semibold text-white text-base">
-                    Comparing {selectedTests.length} tests
-                  </p>
-                </div>
-                <ProviderComparisonTable tests={selectedTests} />
-                <div className="flex justify-end mt-6">
-                  <Button
-                    variant="brandPill"
-                    size="default"
-                    onClick={handleClearAll}
-                    disabled={selectedTests.length === 0}
-                    className="font-semibold px-5 py-2.5"
-                  >
-                    Clear
-                  </Button>
-                </div>
-              </section>
-            </div>
-          )}
+          {/* SECTION 2 — Side-by-side provider comparison */}
+          <ProviderComparisonSection />
         </MainLayout>
 
       </div>
