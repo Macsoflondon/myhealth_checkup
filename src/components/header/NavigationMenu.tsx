@@ -69,8 +69,32 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     setActiveDropdown(null);
   };
 
-  // Toggle dropdown on click (works for both mobile and desktop)
+  // Hover timeout ref for desktop dropdowns
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearHoverTimeout = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+  };
+
+  const handleWrapperMouseEnter = (itemName: string) => {
+    if (isMobile) return;
+    clearHoverTimeout();
+    setActiveDropdown(itemName);
+  };
+
+  const handleWrapperMouseLeave = () => {
+    if (isMobile) return;
+    hoverTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200);
+  };
+
+  // Toggle dropdown on click (mobile only; desktop uses hover)
   const handleDropdownToggle = (e: React.MouseEvent, itemName: string) => {
+    if (!isMobile) return;
     e.preventDefault();
     e.stopPropagation();
     setActiveDropdown(activeDropdown === itemName ? null : itemName);
