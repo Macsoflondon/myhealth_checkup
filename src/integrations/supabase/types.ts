@@ -924,9 +924,12 @@ export type Database = {
           accreditations: string[] | null
           availability_status: string | null
           clinical_review_fee: number | null
+          clinical_review_professional: string | null
           clinical_review_type: string | null
+          clinical_review_verification: string | null
           collection_fee_amount: number | null
           collection_fee_type: string | null
+          collection_fee_verification: string | null
           collection_method: string | null
           created_at: string
           current_price: number | null
@@ -934,6 +937,7 @@ export type Database = {
           id: string
           last_scraped_at: string | null
           original_price: number | null
+          policy_source_url: string | null
           provider_id: string
           provider_test_id: string
           provider_test_name: string
@@ -948,9 +952,12 @@ export type Database = {
           accreditations?: string[] | null
           availability_status?: string | null
           clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
           clinical_review_type?: string | null
+          clinical_review_verification?: string | null
           collection_fee_amount?: number | null
           collection_fee_type?: string | null
+          collection_fee_verification?: string | null
           collection_method?: string | null
           created_at?: string
           current_price?: number | null
@@ -958,6 +965,7 @@ export type Database = {
           id?: string
           last_scraped_at?: string | null
           original_price?: number | null
+          policy_source_url?: string | null
           provider_id: string
           provider_test_id: string
           provider_test_name: string
@@ -972,9 +980,12 @@ export type Database = {
           accreditations?: string[] | null
           availability_status?: string | null
           clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
           clinical_review_type?: string | null
+          clinical_review_verification?: string | null
           collection_fee_amount?: number | null
           collection_fee_type?: string | null
+          collection_fee_verification?: string | null
           collection_method?: string | null
           created_at?: string
           current_price?: number | null
@@ -982,6 +993,7 @@ export type Database = {
           id?: string
           last_scraped_at?: string | null
           original_price?: number | null
+          policy_source_url?: string | null
           provider_id?: string
           provider_test_id?: string
           provider_test_name?: string
@@ -1011,9 +1023,12 @@ export type Database = {
           category: string | null
           clinic_visit_available: boolean | null
           clinical_review_fee: number | null
+          clinical_review_professional: string | null
           clinical_review_type: string | null
+          clinical_review_verification: string | null
           collection_fee_amount: number | null
           collection_fee_type: string | null
+          collection_fee_verification: string | null
           collection_method: string | null
           collection_options: Json | null
           conditions: Json | null
@@ -1031,6 +1046,7 @@ export type Database = {
           original_price: number | null
           phlebotomy_cost: number | null
           phlebotomy_included: boolean | null
+          policy_source_url: string | null
           popularity_rank: number | null
           price: number | null
           provider_id: string
@@ -1056,9 +1072,12 @@ export type Database = {
           category?: string | null
           clinic_visit_available?: boolean | null
           clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
           clinical_review_type?: string | null
+          clinical_review_verification?: string | null
           collection_fee_amount?: number | null
           collection_fee_type?: string | null
+          collection_fee_verification?: string | null
           collection_method?: string | null
           collection_options?: Json | null
           conditions?: Json | null
@@ -1076,6 +1095,7 @@ export type Database = {
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
+          policy_source_url?: string | null
           popularity_rank?: number | null
           price?: number | null
           provider_id: string
@@ -1101,9 +1121,12 @@ export type Database = {
           category?: string | null
           clinic_visit_available?: boolean | null
           clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
           clinical_review_type?: string | null
+          clinical_review_verification?: string | null
           collection_fee_amount?: number | null
           collection_fee_type?: string | null
+          collection_fee_verification?: string | null
           collection_method?: string | null
           collection_options?: Json | null
           conditions?: Json | null
@@ -1121,6 +1144,7 @@ export type Database = {
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
+          policy_source_url?: string | null
           popularity_rank?: number | null
           price?: number | null
           provider_id?: string
