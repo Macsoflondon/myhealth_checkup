@@ -1,37 +1,29 @@
-## Audit findings
+## Re-categorise standalone hormone biomarkers
 
-### Tests mis-categorised as Men's Health
-| Test | Provider | Current | Should be |
-|---|---|---|---|
-| Female Hair Loss Advanced | london-medical-laboratory | `Mens Health` | **Women's Health** |
-| Female Sexual Health - Advanced Screen | london-medical-laboratory | `Mens Health` | **Women's Health** |
-| Everyman/ Everywoman | randox | `Men's Health` | **General Health** (unisex panel) |
-| Weight-loss management | london-medical-laboratory | `Mens Health` | **General Health** (not gender-specific) |
-| Ultimate Athlete Performance (with PSA) | london-medical-laboratory | `Mens Health` | **Sports & Fitness** (PSA included but it's a performance panel) |
+Data-only migration on `provider_tests`. No code or schema changes.
 
-### Casing duplicates polluting filters
-- `Mens Health` (8 rows) vs `Men's Health` (27 rows) — Men's Health page filters on the apostrophe form, so the 8 plain rows never surface anywhere
-- Same issue elsewhere: `Liver Health` vs `Liver Function`, `Sports Performance` vs `Sports & Fitness`, `Hormone` vs `Hormones`, `Vitamins` / `Vitamin and Mineral Tests` vs `Vitamins & Minerals`, `Fatigue` vs `Fatigue & Energy`, `Allergy & Sensitivity` vs `Allergy`
+### Moves
 
-Women's Health category was audited too — no foreign tests, no action needed.
+| Test | Provider | From → To |
+|---|---|---|
+| Estradiol (Oestradiol) | lola-health | Hormones → **Women's Health** |
+| Progesterone | lola-health | Hormones → **Women's Health** |
+| Progesterone | london-medical-laboratory | Hormones → **Women's Health** |
+| Testosterone | lola-health | Hormones → **Men's Health** |
+| Testosterone Check | london-medical-laboratory | Hormones → **Men's Health** |
+| Testosterone Plus Profile | london-medical-laboratory | Hormones → **Men's Health** |
+| Testosterone Test Kit… | medichecks | Hormones → **Men's Health** |
 
-## Changes
+Oestradiol Blood Test for Female Reproductive Function (medichecks) is already in Women's Health — no action. TRT/Testosterone panels already in Men's Health — no action.
 
-**Single data-only Supabase migration** — no schema, no code:
+### DHT — applies to both sexes
 
-1. **Re-categorise the 5 mis-placed tests** above to their correct category.
-2. **Normalise category casing** across `provider_tests`:
-   - `Mens Health` → `Men's Health`
-   - `Liver Function` → `Liver Health`
-   - `Sports Performance` → `Sports & Fitness`
-   - `Hormone` → `Hormones`
-   - `Vitamins`, `Vitamin and Mineral Tests` → `Vitamins & Minerals`
-   - `Fatigue` → `Fatigue & Energy`
-   - `Allergy & Sensitivity` → `Allergy`
-3. After the moves, re-run a verification SELECT against Men's Health to confirm only male-relevant tests remain.
+`provider_tests.category` is a single text column, so a row can only live in one bucket. Two options:
 
-No code changes — the category pages already filter on the canonical labels above; the migration just brings stragglers into them.
+- **A. Keep DHT in Hormones, surface it on both pages via a page-level allow-list** (Men's Health and Women's Health pages additionally include any test whose name matches `dihydrotestosterone`). One row, no duplication — but needs a small code tweak on the two category pages.
+- **B. Duplicate the DHT row** so one copy sits in Men's Health and another in Women's Health (original stays in Hormones). Pure data, no code — but creates a duplicate that future scrapes/normalisers may collapse.
 
-## Out of scope
-- Provider source data isn't touched; if a provider re-syncs and re-introduces a bad category we'd need a separate normalisation trigger. Flag if you want that as a follow-up.
-- Sample-type / collection-method audit (separate concern from category).
+Which do you want? My recommendation is **A** — cleaner data, and the existing pages already accept ad-hoc inclusion lists.
+
+### Out of scope
+- No changes to the categoriser in `normalize-test-categories` (it would re-bucket these into Hormones on next run). Flag if you want me to teach it about standalone sex-hormone markers as a follow-up.
