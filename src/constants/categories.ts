@@ -96,14 +96,11 @@ export const SLUG_TO_DB_CATEGORIES: Record<string, string[]> = {
 
 /**
  * Maps toolbar slugs to canonical_category values stored in provider_tests.
- * Used by the compare query builder to pull every active test for a chip
- * via .in('canonical_category', [...]) instead of fragile ilike matching,
- * and to absorb legacy slug values written by the trigger ('heart',
- * 'sports-performance', 'allergy', 'vitamins-minerals') without touching DB.
  */
 export const SLUG_TO_CANONICAL_CATEGORIES: Record<string, string[]> = {
   'hormones': ['hormones'],
   'thyroid': ['thyroid'],
+  'thyroid-tests': ['thyroid'],
   'vitamins': ['vitamins', 'vitamins-minerals'],
   'diabetes': ['diabetes'],
   'heart-health': ['heart-health', 'heart'],
@@ -123,6 +120,79 @@ export const SLUG_TO_CANONICAL_CATEGORIES: Record<string, string[]> = {
   'liver': ['general-health'],
   'blood-tests': ['general-health'],
 };
+
+/**
+ * Sub-category slugs that aren't a clean 1:1 with canonical_category.
+ * Narrow results by test_name pattern, optionally scoped to one or more
+ * canonical categories. Used by buildCategoryQuery to support nav items
+ * like "Menopause Tests", "Female Hormone Tests" etc.
+ */
+export interface SlugNameFilter {
+  canonicals?: string[];
+  includeNames: string[];
+  excludeNames?: string[];
+}
+
+export const SLUG_TO_NAME_FILTER: Record<string, SlugNameFilter> = {
+  'menopause': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['menopause', 'perimenopause', 'hrt'],
+  },
+  'menopause-tests': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['menopause', 'perimenopause', 'hrt'],
+  },
+  'female-hormones': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['female hormone', 'women', 'oestrogen', 'estrogen', 'progesterone', 'fsh', 'lh'],
+    excludeNames: ['male hormone'],
+  },
+  'female-hormone-tests': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['female hormone', 'women', 'oestrogen', 'estrogen', 'progesterone', 'fsh', 'lh'],
+    excludeNames: ['male hormone'],
+  },
+  'female-fertility': {
+    canonicals: ['fertility', 'womens-health'],
+    includeNames: ['female fertility', 'amh', 'ovarian reserve', 'female hormone and fertility', 'fertility hormones', 'fertility profile'],
+    excludeNames: ['male fertility', 'sperm'],
+  },
+  'female-fertility-tests': {
+    canonicals: ['fertility', 'womens-health'],
+    includeNames: ['female fertility', 'amh', 'ovarian reserve', 'female hormone and fertility', 'fertility hormones', 'fertility profile'],
+    excludeNames: ['male fertility', 'sperm'],
+  },
+  'pcos': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['pcos', 'polycystic'],
+  },
+  'male-hormones': {
+    canonicals: ['mens-health', 'hormones'],
+    includeNames: ['male hormone', 'testosterone'],
+    excludeNames: ['female'],
+  },
+  'male-fertility': {
+    canonicals: ['fertility', 'mens-health'],
+    includeNames: ['male fertility', 'sperm'],
+    excludeNames: ['female'],
+  },
+  'testosterone': {
+    canonicals: ['hormones', 'mens-health'],
+    includeNames: ['testosterone'],
+  },
+  'prostate': {
+    canonicals: ['mens-health', 'cancer-screening'],
+    includeNames: ['prostate', 'psa'],
+  },
+  'amh': {
+    canonicals: ['fertility', 'womens-health'],
+    includeNames: ['amh', 'anti-müllerian', 'anti-mullerian', 'ovarian reserve'],
+  },
+};
+
+export function getNameFilterForSlug(slug: string): SlugNameFilter | undefined {
+  return SLUG_TO_NAME_FILTER[slug.toLowerCase()];
+}
 
 export function getCanonicalCategoriesForSlug(slug: string): string[] | undefined {
   return SLUG_TO_CANONICAL_CATEGORIES[slug.toLowerCase()];
