@@ -80,3 +80,35 @@ Every January, review this runbook against:
 - Schema changes (new tables → add to canary list in script)
 - Cyber Essentials scheme update
 - Supabase backup product changes
+
+---
+
+## Appendix A — Per-table RLS evidence
+
+Every `run` produces `rls-per-table.csv` in the evidence directory with one row per `public.*` table:
+
+| Column | Meaning |
+|---|---|
+| `schemaname`, `tablename` | Identifier |
+| `rls_enabled` | `t` = `ALTER TABLE … ENABLE ROW LEVEL SECURITY` is set |
+| `policy_count`, `policy_names` | Number of policies + their names |
+| `anon_select / anon_insert` | Whether the anonymous role has the grant (separate from RLS) |
+| `auth_select / insert / update / delete` | Same for the `authenticated` role |
+| `verdict` | `PASS`, `FAIL: RLS disabled`, or `FAIL: RLS on but no policies (deny-all)` |
+
+Acceptance: zero `FAIL` rows. The summary counts and failing-table list are mirrored into `restore-test-YYYY-QX.json` under `"rls"`. Attach both files to the quarterly evidence pack.
+
+## Appendix B — Cron execution evidence
+
+Every cron run is logged to `public.cron_run_log` via `run_logged_cleanup()`. Failures auto-raise a `cron_job_failure` row in `scraper_alerts` (already surfaced on the admin dashboard).
+
+Export to evidence pack:
+```bash
+export SOURCE_DB_URL='<prod connection>'
+bash scripts/export-cron-evidence.sh 90
+```
+Outputs to `evidence/cron/YYYY-QX/`:
+- `cron-runs-90d-<ts>.csv` — every run with start/end/duration/status/rows/error
+- `cron-summary-90d-<ts>.json` — per-job success/failure counts + last 20 failures
+
+Run this once per quarter alongside the restore test.
