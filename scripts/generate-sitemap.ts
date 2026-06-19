@@ -33,6 +33,12 @@ interface SitemapEntry {
 
 const rawEntries: SitemapEntry[] = [
   {
+    "path": "/blog/testosterone-levels-by-age",
+    "lastmod": "2026-06-19",
+    "changefreq": "monthly",
+    "priority": "0.8"
+  },
+  {
     "path": "/",
     "lastmod": "2026-04-09",
     "changefreq": "weekly",
