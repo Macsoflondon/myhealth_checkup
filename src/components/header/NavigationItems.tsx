@@ -59,7 +59,21 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     ],
   },
   { name: "Sports-Fitness Health", path: "/sports-performance", hasDropdown: true, megaMenu: true },
-  { name: "Fertility - Prenatal", path: "/fertility-tests", hasDropdown: true, megaMenu: true },
+  {
+    name: "Fertility - Prenatal",
+    path: "/fertility-tests",
+    hasDropdown: true,
+    megaMenu: true,
+    dropdownItems: [
+      { name: "Fertility Tests", path: "/fertility-tests" },
+      { name: "Female Fertility Tests", path: "/fertility-tests?category=female-fertility" },
+      { name: "Male Fertility Tests", path: "/fertility-tests?category=male-fertility" },
+      { name: "AMH Fertility Test", path: "/fertility-tests?category=amh" },
+      { name: "Prenatal / NIPT Tests", path: "/fertility-tests?category=prenatal" },
+      { name: "Pregnancy Tests", path: "/fertility-tests?category=pregnancy" },
+      { name: "View All Fertility Tests", path: "/fertility-tests" },
+    ],
+  },
   {
     name: "Cancer Screening",
     path: "/tests/cancer",
