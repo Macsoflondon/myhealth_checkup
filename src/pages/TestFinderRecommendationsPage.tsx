@@ -54,7 +54,9 @@ const TestFinderRecommendationsPage = () => {
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold">Your recommended tests</h1>
               <p className="text-white/65 mt-2 text-sm sm:text-base">
-                Ranked by relevance to your profile. Add the ones you'd like to compare.
+                {recs.length > 0
+                  ? `Top ${recs.length} matches ranked by relevance to your profile. Add the ones you'd like to compare.`
+                  : "No clear matches yet — try restarting the quiz with broader preferences."}
               </p>
             </div>
             <div className="flex gap-2">
