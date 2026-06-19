@@ -182,7 +182,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         }`}
         onClick={(e) => handleDropdownToggle(e, "MORE")}
       >
-        Resources
+        More
         <ChevronDown className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
           activeDropdown === "MORE" ? 'rotate-180' : ''
         }`} />
