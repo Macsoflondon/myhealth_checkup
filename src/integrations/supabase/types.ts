@@ -1356,6 +1356,36 @@ export type Database = {
         }
         Relationships: []
       }
+      security_alert_recipients: {
+        Row: {
+          alert_types: string[]
+          created_at: string
+          email: string
+          enabled: boolean
+          id: string
+          label: string | null
+          updated_at: string
+        }
+        Insert: {
+          alert_types?: string[]
+          created_at?: string
+          email: string
+          enabled?: boolean
+          id?: string
+          label?: string | null
+          updated_at?: string
+        }
+        Update: {
+          alert_types?: string[]
+          created_at?: string
+          email?: string
+          enabled?: boolean
+          id?: string
+          label?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       security_scan_snapshots: {
         Row: {
           acknowledged_at: string | null

@@ -175,6 +175,27 @@ PY
 }
 EOF
 
+    # Fire email alert on any failure (RLS, missing functions, drift, restore log errors)
+    if [ "$PASS" != true ]; then
+      ALERT_URL="${ALERT_URL:-https://clvuioagsgfadynuvodj.supabase.co/functions/v1/security-alert-notify}"
+      ALERT_APIKEY="${ALERT_APIKEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdnVpb2Fnc2dmYWR5bnV2b2RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDQ1MDcsImV4cCI6MjA2ODA4MDUwN30.N_ddGrc6YhEYnINwofAI-SNOtsxZr5D-dLVuA5TZEBM}"
+      ALERT_TYPE='backup_restore_failure'
+      [ "$RLS_OFF" -gt 0 ] || [ "$RLS_NO_POLICY" -gt 0 ] && ALERT_TYPE='rls_failure'
+      curl -fsS -X POST "$ALERT_URL" \
+        -H "Content-Type: application/json" \
+        -H "apikey: $ALERT_APIKEY" \
+        -d "$(python3 -c "
+import json, sys
+print(json.dumps({
+  'alert_type': '$ALERT_TYPE',
+  'subject':    '[MHC] Backup restore ${QUARTER}: FAIL',
+  'job_name':   'backup-restore-test',
+  'duration_ms': ${RTO_MIN}*60000,
+  'error_message': 'RLS off: ${RLS_OFF}, no-policy: ${RLS_NO_POLICY}, missing fns: ${#MISSING_FNS[@]}, fail tables: ${RLS_FAIL_TABLES}',
+  'evidence_path': '${EVIDENCE_DIR}',
+  'details': json.loads(open('${REPORT}').read()),
+})) ")" > /dev/null || echo "⚠ alert POST failed (non-fatal)"
+    fi
 
     echo
     echo "════════════════════════════════════════"

@@ -112,3 +112,34 @@ Outputs to `evidence/cron/YYYY-QX/`:
 - `cron-summary-90d-<ts>.json` — per-job success/failure counts + last 20 failures
 
 Run this once per quarter alongside the restore test.
+
+---
+
+## Appendix C — Email alerts
+
+Failures auto-email every enabled recipient in `public.security_alert_recipients`.
+
+**Configure recipients** (admin SQL editor):
+```sql
+INSERT INTO public.security_alert_recipients (email, label, alert_types) VALUES
+  ('security@myhealthcheckup.co.uk', 'SecOps inbox',
+   ARRAY['cron_failure','rls_failure','backup_restore_failure']),
+  ('cto@myhealthcheckup.co.uk',       'CTO escalation',
+   ARRAY['rls_failure','backup_restore_failure']);
+
+-- Disable temporarily without deleting:
+UPDATE public.security_alert_recipients SET enabled = false WHERE email = '...';
+```
+
+`alert_types` accepts any combination of `cron_failure`, `rls_failure`, `backup_restore_failure`.
+
+**Trigger surface:**
+| Source | When it fires | Alert type |
+|---|---|---|
+| Postgres trigger on `cron_run_log` | row inserted/updated with `status='error'` | `cron_failure` |
+| `scripts/backup-restore-test.sh run` | any RLS table fails (`rls_enabled=false` or no policies) | `rls_failure` |
+| `scripts/backup-restore-test.sh run` | restore fails for any other reason (drift, missing fns, FATAL in log) | `backup_restore_failure` |
+
+Email body includes the job/context, duration, error message, evidence-pack path, and the full restore report JSON. Save the inbound email alongside the evidence pack for CE+ assessor review.
+
+**Transport:** Resend (`RESEND_API_KEY`). Sender defaults to `alerts@notify.www.myhealthcheckup.co.uk`; override with the `ALERT_FROM_ADDRESS` secret.
