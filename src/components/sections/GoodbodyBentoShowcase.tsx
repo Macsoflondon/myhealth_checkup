@@ -63,8 +63,9 @@ const KitTile = ({ src, alt, label, href }: { src: string; alt: string; label: s
 const GoodbodyBentoShowcase = () => {
   return (
     <div className="md:col-span-2 mt-6 mb-4">
-      {/* Mobile layout (<sm) */}
-      <div className="grid grid-cols-2 gap-3 sm:hidden">
+      {/* Mobile + tablet layout (<lg) */}
+      <div className="grid grid-cols-2 gap-3 lg:hidden">
+
         {/* Row 1: Logo spans 2 cols */}
         <div className="col-span-2 aspect-[2/1] rounded-2xl bg-white shadow-md flex items-center justify-center p-1.5">
           <img
@@ -136,8 +137,9 @@ const GoodbodyBentoShowcase = () => {
         </div>
       </div>
 
-      {/* Desktop/tablet layout (sm+) — 6 col grid, logo 2-wide flat at top, callout spans 2x2 */}
-      <div className="hidden sm:grid sm:grid-cols-6 gap-3 sm:gap-4">
+      {/* Desktop layout (lg+) — 6 col grid, logo 2-wide flat at top, callout spans 2x2 */}
+      <div className="hidden lg:grid lg:grid-cols-6 gap-3 lg:gap-4">
+
         {/* Row 1: kit | kit | LOGO (2 wide, flat) | kit | kit */}
         <div className="aspect-square">
           <KitTile src={KIT.generalHealthFp} alt="General Health Fingerprint Blood Test" label="General Health" href="/test/general-health" />
