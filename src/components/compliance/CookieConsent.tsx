@@ -31,6 +31,11 @@ const CookieConsent = () => {
         setShowBanner(true);
       }
     }
+    // Allow other parts of the app (e.g. /cookies "Manage Preferences" button)
+    // to re-open the settings panel without reloading.
+    const open = () => { setShowBanner(true); setShowSettings(true); };
+    window.addEventListener('cookie-preferences:open', open as EventListener);
+    return () => window.removeEventListener('cookie-preferences:open', open as EventListener);
   }, []);
 
   const persistAndBroadcast = (prefs: CookiePreferences) => {

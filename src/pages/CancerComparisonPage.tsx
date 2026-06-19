@@ -176,7 +176,7 @@ export default function CancerComparisonPage() {
             <CancerScreeningDisclaimer variant="full" />
           </div>
 
-          <Tabs defaultValue="browse" className="space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full max-w-md grid-cols-3">
               <TabsTrigger value="browse">Browse Tests</TabsTrigger>
               <TabsTrigger value="compare" disabled={selectedTests.length < 2}>
@@ -211,7 +211,7 @@ export default function CancerComparisonPage() {
                           Clear
                         </Button>
                         {selectedTests.length >= 2 && (
-                          <Button size="sm">
+                          <Button size="sm" onClick={() => setActiveTab('compare')}>
                             Compare {selectedTests.length} Tests
                           </Button>
                         )}
