@@ -48,14 +48,25 @@ const TESTS = [
     ],
   },
   {
-    name: "Vitamin D & B12 Panel",
+    name: "Vitamin D Test",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£59" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£59" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£60" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£99" }, { label: "Clinic-based", price: "£85" }] },
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£45" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£49" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£89" }, { label: "Clinic-based", price: "£75" }] },
+    ],
+  },
+  {
+    name: "Vitamin B12 Test",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£42" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£45" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£85" }, { label: "Clinic-based", price: "£69" }] },
     ],
   },
 ];
