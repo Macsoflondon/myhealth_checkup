@@ -121,6 +121,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         key={item.path}
         className="relative nav-item-wrapper"
         style={{ overflow: 'visible' }}
+        onMouseEnter={hasDropdown ? () => handleWrapperMouseEnter(item.name) : undefined}
+        onMouseLeave={hasDropdown ? handleWrapperMouseLeave : undefined}
       >
         {hasDropdown ? (
           <>
