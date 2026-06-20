@@ -65,7 +65,7 @@ const HereToHelp = () => {
                 <Link
                   key={index}
                   to={resource.link}
-                  className="relative flex items-start gap-4 sm:gap-5 bg-gray-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
+                  className="relative flex items-start gap-4 sm:gap-5 bg-[#F7F7F8] rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
                 >
                   {/* Top accent line */}
                   <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
