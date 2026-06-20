@@ -4,11 +4,17 @@ import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 
-import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
-import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
-import heroResults from "@/assets/hero/hero-mobile-results-zoomed.webp";
-import heroMobileKitOpen from "@/assets/hero/mobile/hero-mobile-kit-open.webp";
-import heroMobileActive from "@/assets/hero/mobile/hero-mobile-active.jpeg";
+import heroHomeKitAsset from "@/assets/hero/hero-home-kit.jpg.asset.json";
+import heroActiveAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
+import heroResultsAsset from "@/assets/hero/hero-results-phone.jpg.asset.json";
+import heroMobileKitOpenAsset from "@/assets/hero/mobile/hero-mobile-kit-open.jpg.asset.json";
+import heroMobileActiveAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
+
+const heroHomeKit = heroHomeKitAsset.url;
+const heroActive = heroActiveAsset.url;
+const heroResults = heroResultsAsset.url;
+const heroMobileKitOpen = heroMobileKitOpenAsset.url;
+const heroMobileActive = heroMobileActiveAsset.url;
 
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
