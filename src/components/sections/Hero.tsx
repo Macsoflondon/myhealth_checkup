@@ -4,17 +4,17 @@ import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 
-import heroHomeKitAsset from "@/assets/hero/hero-home-kit.jpg.asset.json";
-import heroActiveAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
+import heroManPhoneAsset from "@/assets/hero/hero-man-phone-park.jpg.asset.json";
+import heroCoupleAsset from "@/assets/hero/hero-elderly-couple-park.jpg.asset.json";
 import heroResultsAsset from "@/assets/hero/hero-results-phone.jpg.asset.json";
-import heroMobileKitOpenAsset from "@/assets/hero/mobile/hero-mobile-kit-open.jpg.asset.json";
-import heroMobileActiveAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
+import heroMobileManPhoneAsset from "@/assets/hero/mobile/hero-mobile-man-phone.jpg.asset.json";
+import heroMobileCoupleAsset from "@/assets/hero/mobile/hero-mobile-elderly-couple.jpg.asset.json";
 
-const heroHomeKit = heroHomeKitAsset.url;
-const heroActive = heroActiveAsset.url;
+const heroManPhone = heroManPhoneAsset.url;
+const heroCouple = heroCoupleAsset.url;
 const heroResults = heroResultsAsset.url;
-const heroMobileKitOpen = heroMobileKitOpenAsset.url;
-const heroMobileActive = heroMobileActiveAsset.url;
+const heroMobileManPhone = heroMobileManPhoneAsset.url;
+const heroMobileCouple = heroMobileCoupleAsset.url;
 
 type SlideTheme = {
   /** Tailwind classes for the absolute scrim overlay */
@@ -35,6 +35,7 @@ const heroSlides: Array<{
   mobileImage?: string;
   headline: string;
   subline: string;
+  alt: string;
   objectPosition: string;
   mobileObjectPosition?: string;
   /** Optional CSS transform (mobile only) — e.g. "scale(1.15)" to tighten the crop */
@@ -42,40 +43,43 @@ const heroSlides: Array<{
   theme: SlideTheme;
 }> = [
   {
-    image: heroHomeKit,
-    mobileImage: heroMobileKitOpen,
-    headline: "The Easiest Way To Compare\nPrivate Health Tests",
-    subline: "​",
-    objectPosition: "center 50%",
-    mobileObjectPosition: "35% 30%",
-    mobileScale: "scale(1.1)",
+    image: heroManPhone,
+    mobileImage: heroMobileManPhone,
+    headline: "Compare Private\nHealth Tests, Simply.",
+    subline: "Trusted clinics. Clear pricing. No GP referral needed.",
+    alt: "Man on a park bench comparing private health tests on his phone",
+    objectPosition: "center 35%",
+    mobileObjectPosition: "55% 30%",
+    mobileScale: "scale(1.05)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/20",
+      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
       surface: 70,
       accent: "turquoise",
     },
   },
   {
-    image: heroActive,
-    mobileImage: heroMobileActive,
+    image: heroCouple,
+    mobileImage: heroMobileCouple,
     headline: "Know Your Numbers.\nOwn Your Health.",
-    subline: "​",
-    objectPosition: "center 18%",
-    mobileObjectPosition: "center 22%",
-    mobileScale: "scale(1.15)",
+    subline: "Preventative screening from UKAS-accredited UK labs.",
+    alt: "Elderly couple walking hand in hand through a sunlit park",
+    objectPosition: "center 30%",
+    mobileObjectPosition: "center 30%",
+    mobileScale: "scale(1.1)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/20",
+      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
       surface: 65,
       accent: "turquoise",
     },
   },
   {
     image: heroResults,
-    headline: "Find The Right Test For You, Wherever You Are",
-    subline: "​",
+    headline: "The Right Test For You,\nWherever You Are.",
+    subline: "Results delivered securely, typically within days.",
+    alt: "Smartphone showing a personal health dashboard with results",
     objectPosition: "center 40%",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/15 via-transparent to-[#081129]/25",
+      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
       surface: 70,
       accent: "pink",
     },
@@ -143,12 +147,12 @@ const Hero = () => {
             <img
               key={i}
               src={isMobile && s.mobileImage ? s.mobileImage : s.image}
-              alt=""
-              aria-hidden="true"
+              alt={i === currentSlide ? s.alt : ""}
+              aria-hidden={i === currentSlide ? undefined : "true"}
               loading={i === 0 ? "eager" : "lazy"}
               decoding={i === 0 ? "sync" : "async"}
-              width={1920}
-              height={1080}
+              width={isMobile ? 1280 : 1920}
+              height={isMobile ? 1600 : 1088}
               fetchPriority={i === 0 ? "high" : "low"}
               style={{
                 objectPosition: isMobile && s.mobileObjectPosition ? s.mobileObjectPosition : s.objectPosition,
@@ -173,13 +177,13 @@ const Hero = () => {
                 <div className="text-center mb-1 sm:mb-2 flex-col flex items-center justify-center">
                   <h1
                     key={currentSlide}
-                    className="text-[2.5rem] sm:text-[3.75rem] md:text-[4.5rem] tracking-[-0.03em] leading-[1.05] text-white animate-fade-in font-bold font-sans lg:text-6xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)] text-center xl:text-7xl whitespace-pre-line"
+                    className="text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem] tracking-[-0.035em] leading-[1.02] text-white animate-fade-in font-extrabold font-sans drop-shadow-[0_2px_14px_rgba(8,17,41,0.9)] text-center whitespace-pre-line text-balance"
                   >
                     {slide.headline}
                   </h1>
                   <p
                     key={`sub-${currentSlide}`}
-                    className="mt-1 sm:mt-2 text-[2.5rem] sm:text-[3.75rem] md:text-[4.5rem] leading-[1.05] text-white max-w-4xl mx-auto animate-fade-in font-bold font-sans lg:text-6xl xl:text-7xl drop-shadow-[0_2px_12px_rgba(8,17,41,0.85)]"
+                    className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg lg:text-xl leading-snug tracking-[-0.005em] text-white/90 max-w-2xl mx-auto animate-fade-in font-medium font-sans drop-shadow-[0_1px_8px_rgba(8,17,41,0.85)] text-center text-balance"
                   >
                     {slide.subline}
                   </p>
