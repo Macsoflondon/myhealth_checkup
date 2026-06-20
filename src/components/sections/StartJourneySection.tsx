@@ -40,7 +40,33 @@ const TESTS = [
   },
 ];
 
+// ── Validation: ensure no test appears in both comparison tables ───────────
+const LEFT_PANELS = DEFAULT_LIVE_COMPARISON_PANELS;
+const RIGHT_PANELS = TESTS;
+const SYNC_ROTATE_MS = 30000;
+
+(() => {
+  const leftNames = new Set(LEFT_PANELS.map((p) => p.name.toLowerCase().trim()));
+  const overlap = RIGHT_PANELS.filter((p) => leftNames.has(p.name.toLowerCase().trim())).map((p) => p.name);
+  if (overlap.length > 0) {
+    const msg = `[LiveComparison] Duplicate test(s) in both comparison tables: ${overlap.join(", ")}. Each test must appear in only one table.`;
+    if (import.meta.env.DEV) throw new Error(msg);
+    console.error(msg);
+  }
+})();
+
+
 const StartJourneySection = () => {
+  // Synchronized rotation: both tables advance in lock-step on the same interval.
+  const maxLen = Math.max(LEFT_PANELS.length, RIGHT_PANELS.length);
+  const [syncIdx, setSyncIdx] = useState(0);
+  useEffect(() => {
+    if (maxLen <= 1) return;
+    const interval = setInterval(() => setSyncIdx((i) => (i + 1) % maxLen), SYNC_ROTATE_MS);
+    return () => clearInterval(interval);
+  }, [maxLen]);
+
+
   return (
     <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
       <div className="max-w-[1480px] mx-auto px-4 sm:px-6">
@@ -91,8 +117,9 @@ const StartJourneySection = () => {
         </div>
         {/* ── ROW 2 — Two Live Comparison panels ─────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          <LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} rotateMs={30000} />
-          <LiveComparisonCard panels={TESTS} rotateMs={60000} />
+          <LiveComparisonCard panels={LEFT_PANELS} panelIndex={syncIdx} />
+          <LiveComparisonCard panels={RIGHT_PANELS} panelIndex={syncIdx} />
+
         </div>
       </div>
     </section>
