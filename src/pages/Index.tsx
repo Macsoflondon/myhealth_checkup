@@ -9,8 +9,10 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
 // Hero first-slide images — preloaded for LCP optimisation
-import heroSlide1Desktop from "@/assets/hero/hero-home-kit.webp";
-import heroSlide1Mobile from "@/assets/hero/mobile/hero-mobile-kit-open.webp";
+import heroSlide1DesktopAsset from "@/assets/hero/hero-home-kit.jpg.asset.json";
+import heroSlide1MobileAsset from "@/assets/hero/mobile/hero-mobile-kit-open.jpg.asset.json";
+const heroSlide1Desktop = heroSlide1DesktopAsset.url;
+const heroSlide1Mobile = heroSlide1MobileAsset.url;
 
 // Above-the-fold: eager
 import Hero from "@/components/sections/Hero";
@@ -134,8 +136,8 @@ const Index = () => {
     <ErrorBoundary>
       <MainLayout>
         <Helmet>
-          <link rel="preload" as="image" href={heroSlide1Desktop} type="image/webp" media="(min-width: 640px)" fetchPriority="high" />
-          <link rel="preload" as="image" href={heroSlide1Mobile} type="image/png" media="(max-width: 639px)" fetchPriority="high" />
+          <link rel="preload" as="image" href={heroSlide1Desktop} type="image/jpeg" media="(min-width: 640px)" fetchPriority="high" />
+          <link rel="preload" as="image" href={heroSlide1Mobile} type="image/jpeg" media="(max-width: 639px)" fetchPriority="high" />
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
