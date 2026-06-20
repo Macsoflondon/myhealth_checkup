@@ -6,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroActiveAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
 import heroCoupleAsset from "@/assets/hero/hero-elderly-couple-park.jpg.asset.json";
-import heroResultsAsset from "@/assets/hero/hero-results-phone.jpg.asset.json";
+
 import heroMobileActiveAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
 import heroMobileCoupleAsset from "@/assets/hero/mobile/hero-mobile-elderly-couple.jpg.asset.json";
 
