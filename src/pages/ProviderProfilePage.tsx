@@ -46,7 +46,7 @@ const ProviderProfilePage = () => {
               accent="Not Found" 
             />
             <p className="text-muted-foreground mb-6 mt-4">The provider you're looking for doesn't exist.</p>
-            <Button asChild>
+            <Button asChild variant="skeuomorphic">
               <Link to="/compare">Browse All Tests</Link>
             </Button>
           </div>
