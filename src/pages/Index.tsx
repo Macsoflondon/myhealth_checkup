@@ -9,8 +9,8 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
 // Hero first-slide images — preloaded for LCP optimisation
-import heroSlide1DesktopAsset from "@/assets/hero/hero-home-kit.jpg.asset.json";
-import heroSlide1MobileAsset from "@/assets/hero/mobile/hero-mobile-kit-open.jpg.asset.json";
+import heroSlide1DesktopAsset from "@/assets/hero/hero-man-phone-park.jpg.asset.json";
+import heroSlide1MobileAsset from "@/assets/hero/mobile/hero-mobile-man-phone.jpg.asset.json";
 const heroSlide1Desktop = heroSlide1DesktopAsset.url;
 const heroSlide1Mobile = heroSlide1MobileAsset.url;
 
