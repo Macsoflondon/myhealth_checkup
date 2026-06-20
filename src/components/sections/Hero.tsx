@@ -72,18 +72,6 @@ const heroSlides: Array<{
       accent: "turquoise",
     },
   },
-  {
-    image: heroResults,
-    headline: "The Right Test For You,\nWherever You Are.",
-    subline: "Results delivered securely, typically within days.",
-    alt: "Smartphone showing a personal health dashboard with results",
-    objectPosition: "center 40%",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
-      surface: 70,
-      accent: "pink",
-    },
-  },
 ];
 
 // Tiny blurred LQIPs (32px WebP, ~150B) for the first slide — render instantly so users
