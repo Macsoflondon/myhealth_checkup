@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import letterboxVideo from "@/assets/compare-screen-recording.mov.asset.json";
-import LiveComparisonCard from "@/components/sections/LiveComparisonCard";
+import LiveComparisonCard, { DEFAULT_LIVE_COMPARISON_PANELS } from "@/components/sections/LiveComparisonCard";
 
 
 // ── Rotating test data ──────────────────────────────────────────────────────
@@ -120,43 +119,10 @@ const StartJourneySection = () => {
             </div>
           </div>
         </div>
-
-        {/* ── ROW 2 — Video + Live Comparison ────────────────────────────── */}
+        {/* ── ROW 2 — Two Live Comparison panels ─────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-
-          {/* LEFT — Letterbox video */}
-          <div className="relative bg-[#081129] rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full min-h-[420px] transition-transform duration-700 ease-out hover:-translate-y-1">
-            <video
-              src={letterboxVideo.url}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#081129]/80 via-[#081129]/10 to-transparent pointer-events-none" />
-            <div className="relative z-10 p-6 sm:p-8 md:p-10 h-full flex flex-col justify-end">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
-                  From Letterbox to Lab
-                </span>
-                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-              </div>
-              <h3 className="font-heading font-bold text-white text-2xl sm:text-3xl tracking-tight leading-tight">
-                Convenient at-home test kits, delivered to your door.
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-white/75 leading-relaxed max-w-md">
-                Collect your sample at home, post it back, and receive lab-verified results — all from accredited UK providers.
-              </p>
-            </div>
-          </div>
-
-          {/* RIGHT — Live Comparison */}
+          <LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} rotateMs={30000} />
           <LiveComparisonCard panels={TESTS} rotateMs={60000} />
-
         </div>
       </div>
     </section>
