@@ -1,33 +1,29 @@
-## Goal
+## Plan: Restore Active Lifestyle Hero Slide & Remove Man-on-Phone Slide
 
-Make the hero section images on the homepage crystal clear by replacing the current FHD/low-res assets with 4K-resolution regenerations matched to each existing scene, then host them via Lovable Assets (CDN) so the repo stays lean.
+The current hero has three slides:
+1. Man on phone in park (to be removed)
+2. Elderly couple walking in park (keep)
+3. Results on phone (keep)
 
-## Current State
+The user wants slide 1 replaced with the "woman jogging at sunrise" active-lifestyle image that was previously deleted.
 
-`src/components/sections/Hero.tsx` uses 5 images across 3 rotating slides:
+### Steps
 
-| Slide | Desktop (current size) | Mobile (current size) |
-|---|---|---|
-| Home test kit | `hero-home-kit.webp` 1920x1072 | `mobile/hero-mobile-kit-open.webp` 800x601 |
-| Active lifestyle | `hero-active-lifestyle.webp` 1920x1080 | `mobile/hero-mobile-active.jpeg` 493x482 |
-| Results on phone | `hero-mobile-results-zoomed.webp` 800x447 | (reused) |
+1. **Regenerate desktop active-lifestyle image**
+   - Generate a 1920×1088 premium photorealistic image: woman jogging at sunrise, active lifestyle, health and wellness theme
+   - Upload via `lovable-assets create` → `src/assets/hero/hero-active-lifestyle.jpg.asset.json`
 
-Mobile assets in particular are well below retina quality.
+2. **Regenerate mobile active-lifestyle image**
+   - Generate a 1280×1600 premium photorealistic image: same woman jogging theme, portrait crop
+   - Upload via `lovable-assets create` → `src/assets/hero/mobile/hero-mobile-active.jpg.asset.json`
 
-## Plan
+3. **Update `src/components/sections/Hero.tsx`**
+   - Replace the `hero-man-phone-park` and `hero-mobile-man-phone` imports with the new active-lifestyle asset imports
+   - Update `heroSlides[0]` to use the active-lifestyle images, headline, alt text, and object-position values from the original active-lifestyle slide
+   - Keep slides 2 (elderly couple) and 3 (results) unchanged
 
-1. Regenerate each of the 5 images with the premium image model at 4K-class dimensions:
-   - Desktop scenes: 1920x1080 generated at premium (true 4K source upscaled by model), keeping the same scene/composition (clinical home blood-test kit on kitchen surface; healthy active 35–50 yr-old UK adult outdoors; hand holding phone showing biomarker results dashboard).
-   - Mobile scenes: square/3:4 crops of the same scenes at maximum supported resolution.
-   - On-brand: clean, clinical, modern, vibrant; navy/turquoise/pink accents allowed only where natural (e.g. UI on phone). No medical-claim imagery, no diagnosis cues.
-2. Save originals to `/tmp/`, then upload each via `lovable-assets create` and write `.asset.json` pointers under `src/assets/hero/` and `src/assets/hero/mobile/` replacing the existing files.
-3. Update the 5 imports in `src/components/sections/Hero.tsx` to import the new `.asset.json` files and use `.url`.
-4. Delete the now-unused local binary hero files that are only referenced by `Hero.tsx` (keep the other hero-*.png/webp files that other components may use — verify with ripgrep before deleting).
-5. Verify in the live preview that the hero slides render sharply on desktop and mobile viewports.
+4. **Update `src/pages/Index.tsx`**
+   - Replace `heroSlide1Desktop` and `heroSlide1Mobile` imports/preloads to point to the new active-lifestyle assets
 
-## Technical Notes
-
-- Use `imagegen--generate_image` with `model: "premium"` for photorealistic clarity; transparent_background=false; jpg target for photos.
-- Use `lovable-assets create --file ... --filename <name>.jpg > src/assets/hero/<name>.jpg.asset.json` then `rm` the temp and any replaced binaries.
-- Keep filenames stable where possible (`hero-home-kit.jpg`, `hero-active-lifestyle.jpg`, `hero-results-phone.jpg`, `mobile/hero-mobile-kit-open.jpg`, `mobile/hero-mobile-active.jpg`) so future diffs are minimal.
-- No business-logic changes; Hero.tsx edits limited to import statements and the `.url` access pattern.
+5. **Clean up**
+   - Delete the unused asset pointers: `hero-man-phone-park.jpg.asset.json` and `hero-mobile-man-phone.jpg.asset.json`
