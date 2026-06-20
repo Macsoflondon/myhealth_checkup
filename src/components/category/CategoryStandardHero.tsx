@@ -77,7 +77,8 @@ export function CategoryStandardHero({
 
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
         {/* Pill row */}
-        <div className="flex items-center justify-center relative mb-8 md:mb-10">
+        <div className="flex items-center justify-center gap-3 sm:gap-4 relative mb-8 md:mb-10">
+          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
           <h1
             className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
             style={{
@@ -87,6 +88,7 @@ export function CategoryStandardHero({
           >
             {pillLabel}
           </h1>
+          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
         </div>
 
         {/* Benefits row */}
