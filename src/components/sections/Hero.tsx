@@ -4,16 +4,16 @@ import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 
-import heroManPhoneAsset from "@/assets/hero/hero-man-phone-park.jpg.asset.json";
+import heroActiveAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
 import heroCoupleAsset from "@/assets/hero/hero-elderly-couple-park.jpg.asset.json";
 import heroResultsAsset from "@/assets/hero/hero-results-phone.jpg.asset.json";
-import heroMobileManPhoneAsset from "@/assets/hero/mobile/hero-mobile-man-phone.jpg.asset.json";
+import heroMobileActiveAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
 import heroMobileCoupleAsset from "@/assets/hero/mobile/hero-mobile-elderly-couple.jpg.asset.json";
 
-const heroManPhone = heroManPhoneAsset.url;
+const heroActive = heroActiveAsset.url;
 const heroCouple = heroCoupleAsset.url;
 const heroResults = heroResultsAsset.url;
-const heroMobileManPhone = heroMobileManPhoneAsset.url;
+const heroMobileActive = heroMobileActiveAsset.url;
 const heroMobileCouple = heroMobileCoupleAsset.url;
 
 type SlideTheme = {
@@ -43,11 +43,11 @@ const heroSlides: Array<{
   theme: SlideTheme;
 }> = [
   {
-    image: heroManPhone,
-    mobileImage: heroMobileManPhone,
+    image: heroActive,
+    mobileImage: heroMobileActive,
     headline: "Compare Private\nHealth Tests, Simply.",
     subline: "Trusted clinics. Clear pricing. No GP referral needed.",
-    alt: "Man on a park bench comparing private health tests on his phone",
+    alt: "Woman jogging at sunrise on a scenic park path, representing an active healthy lifestyle",
     objectPosition: "center 35%",
     mobileObjectPosition: "55% 30%",
     mobileScale: "scale(1.05)",
