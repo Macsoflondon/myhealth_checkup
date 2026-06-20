@@ -1,20 +1,28 @@
 ## Goal
+The two Live Comparison cards on the homepage currently share overlapping tests (both rotations include Thyroid, Cholesterol, Vitamin D, Vitamin B12, Hormone), so they often display the same panel side-by-side. Split them into two non-overlapping themed rotations.
 
-In `StartJourneySection`, delete the left-side letterbox video card and move the second live comparison table (currently in `PartnerShowcaseGrid`, using `DEFAULT_LIVE_COMPARISON_PANELS`) into its place. End state: two `LiveComparisonCard`s sit side-by-side in Row 2 of `StartJourneySection`, and the comparison card is removed from `PartnerShowcaseGrid`.
+## Split (no overlap)
+
+**Left card — "Hormones & Vitality"** (uses `DEFAULT_LIVE_COMPARISON_PANELS` in `LiveComparisonCard.tsx`)
+- Male Hormone Panel
+- Female Hormone Panel
+- Thyroid Health Panel
+- Vitamin D Test
+
+**Right card — "Heart, Blood & Nutrition"** (uses local `TESTS` in `StartJourneySection.tsx`)
+- Full Blood Count Panel
+- Cholesterol Panel
+- Vitamin B12 Test
+- (keep just these three; remove Thyroid, Hormone, Vitamin D from this array)
+
+This guarantees the two cards never share a panel name, regardless of rotation timing.
 
 ## Changes
 
-1. **`src/components/sections/StartJourneySection.tsx`**
-   - Remove the `<video>` block (lines ~127–155) including the `letterboxVideo` import and the "From Letterbox to Lab" overlay copy.
-   - Replace that left grid cell with `<LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} rotateMs={30000} />`.
-   - Import `DEFAULT_LIVE_COMPARISON_PANELS` from `@/components/sections/LiveComparisonCard`.
-   - Keep the existing right-hand `LiveComparisonCard panels={TESTS}` unchanged.
+1. **`src/components/sections/LiveComparisonCard.tsx`**
+   - Trim `DEFAULT_LIVE_COMPARISON_PANELS` to: Male Hormone Panel, Female Hormone Panel, Thyroid Health Panel, Vitamin D Test (remove Cholesterol, Vitamin B12).
 
-2. **`src/components/sections/PartnerShowcaseGrid.tsx`**
-   - Remove the `<LiveComparisonCard panels={DEFAULT_LIVE_COMPARISON_PANELS} ... />` instance (line ~129) and its surrounding wrapper/Suspense if it becomes empty, plus the now-unused imports.
+2. **`src/components/sections/StartJourneySection.tsx`**
+   - Trim local `TESTS` to: Full Blood Count Panel, Cholesterol Panel, Vitamin B12 Test (remove Thyroid, Hormone, Vitamin D).
 
-## Out of scope
-
-- No changes to the `LiveComparisonCard` component itself.
-- No copy or styling changes elsewhere on the homepage.
-- The `compare-screen-recording.mov` asset file is left in place (not deleted) in case it's referenced elsewhere; can be removed in a follow-up if desired.
+No component/layout changes; only the data arrays.

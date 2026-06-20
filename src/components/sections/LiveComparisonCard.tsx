@@ -32,17 +32,6 @@ export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
     ],
   },
   {
-    name: "Cholesterol Panel",
-    providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£59" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£49" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£59" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£119" }, { label: "Clinic-based", price: "£99" }] },
-    ],
-  },
-  {
     name: "Thyroid Health Panel",
     providers: [
       { name: "Medichecks", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£89" }] },
@@ -62,17 +51,6 @@ export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
       { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£45" }] },
       { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£49" }] },
       { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£89" }, { label: "Clinic-based", price: "£75" }] },
-    ],
-  },
-  {
-    name: "Vitamin B12 Test",
-    providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£42" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£45" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£85" }, { label: "Clinic-based", price: "£69" }] },
     ],
   },
 ];
