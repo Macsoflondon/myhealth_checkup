@@ -60,6 +60,8 @@ interface LiveComparisonCardProps {
   rotateMs?: number;
   eyebrow?: string;
   className?: string;
+  /** When provided, disables internal rotation and uses this index instead. */
+  panelIndex?: number;
 }
 
 const LiveComparisonCard = ({
@@ -67,23 +69,35 @@ const LiveComparisonCard = ({
   rotateMs = 60000,
   eyebrow = "Live Comparison",
   className = "",
+  panelIndex,
 }: LiveComparisonCardProps) => {
-  const [idx, setIdx] = useState(0);
+  const controlled = panelIndex !== undefined;
+  const [internalIdx, setInternalIdx] = useState(0);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (panels.length <= 1) return;
+    if (controlled || panels.length <= 1) return;
     const interval = setInterval(() => {
       setFading(true);
       setTimeout(() => {
-        setIdx((i) => (i + 1) % panels.length);
+        setInternalIdx((i) => (i + 1) % panels.length);
         setFading(false);
       }, 500);
     }, rotateMs);
     return () => clearInterval(interval);
-  }, [panels.length, rotateMs]);
+  }, [panels.length, rotateMs, controlled]);
 
+  // Fade transition for controlled mode when panelIndex changes
+  useEffect(() => {
+    if (!controlled) return;
+    setFading(true);
+    const t = setTimeout(() => setFading(false), 500);
+    return () => clearTimeout(t);
+  }, [panelIndex, controlled]);
+
+  const idx = controlled ? (panelIndex! % panels.length) : internalIdx;
   const test = panels[idx];
+
   if (!test) return null;
 
   return (

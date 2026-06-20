@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import LiveComparisonCard, { DEFAULT_LIVE_COMPARISON_PANELS } from "@/components/sections/LiveComparisonCard";
+
 
 
 // ── Rotating test data ──────────────────────────────────────────────────────
