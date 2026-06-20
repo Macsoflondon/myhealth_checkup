@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import letterboxVideo from "@/assets/compare-screen-recording.mov.asset.json";
-import LiveComparisonCard from "@/components/sections/LiveComparisonCard";
+import LiveComparisonCard, { DEFAULT_LIVE_COMPARISON_PANELS } from "@/components/sections/LiveComparisonCard";
 
 
 // ── Rotating test data ──────────────────────────────────────────────────────
