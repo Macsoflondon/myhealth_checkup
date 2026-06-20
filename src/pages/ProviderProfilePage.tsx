@@ -299,11 +299,10 @@ const ProviderProfilePage = () => {
               
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
-                  variant="outline"
+                  variant="skeuomorphic"
                   size="providerCta"
                   asChild
                   className="min-h-[48px] w-full sm:w-auto inline-flex items-center px-[30px]"
-                  style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
                 >
                   <Link to={PROVIDER_CATALOG_ROUTES[provider.id] || `/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
                     <TestTube className="w-4 h-4 flex-shrink-0" />
