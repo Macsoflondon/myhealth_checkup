@@ -1461,35 +1461,52 @@ export type Database = {
       test_categories: {
         Row: {
           created_at: string
+          description: string | null
           display_order: number | null
           id: string
           last_price_update: string | null
           name: string
+          parent_id: string | null
           price_check_frequency_hours: number | null
           provider_id: string
           realtime_enabled: boolean | null
+          slug: string | null
         }
         Insert: {
           created_at?: string
+          description?: string | null
           display_order?: number | null
           id?: string
           last_price_update?: string | null
           name: string
+          parent_id?: string | null
           price_check_frequency_hours?: number | null
           provider_id: string
           realtime_enabled?: boolean | null
+          slug?: string | null
         }
         Update: {
           created_at?: string
+          description?: string | null
           display_order?: number | null
           id?: string
           last_price_update?: string | null
           name?: string
+          parent_id?: string | null
           price_check_frequency_hours?: number | null
           provider_id?: string
           realtime_enabled?: boolean | null
+          slug?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "test_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "test_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       test_results: {
         Row: {

@@ -1,42 +1,46 @@
-## Goal
+## Current SEO state
 
-Make every `/compare?category=...` page (and the no-category default) use the same header treatment used on `/womens-health` — title + 3 benefit tiles + tricolour gradient divider on the navy band. Nothing below the header changes.
+Last scan (cached) shows the site is in strong shape — 8 passing checks vs 2 failing:
 
-## Scope
+**Passing**
+- Page basics (viewport, lang), indexability, robots.txt, llms.txt, homepage 200 OK
+- Metadata quality (unique titles/descriptions, self-referential canonicals)
+- Open Graph / Twitter previews with absolute image URLs
+- Structured data: `Organization`, `WebSite`, `MedicalBusiness` sitewide; `FAQPage` on `/faqs`; `CollectionPage` + `Product` on category pages
+- Content structure (H1 hierarchy, alt text, accessible link/button names)
 
-Touched: `src/pages/CompareTests.tsx` only (plus one tiny new file for per-category benefits). The comparison table, filters, recommended row, provider comparison section etc. are untouched.
+**Failing**
+1. `http:sitemap` — flags `/auth`, `/reset-password`, `/dashboard`, `/health-dashboard`, `/notification-history` as missing from sitemap. These are intentionally excluded via `PRIVATE_PREFIXES` in `scripts/generate-sitemap.ts` (correct behaviour — authed/private). Already marked fixed last turn; the next scan will re-verify.
+2. `agent_content:semrush_content_suggestions` — Semrush recommends a `/blog/private-blood-test-cost-comparison-guide` article targeting "how much does a private blood test cost uk" (320 searches/mo). Content gap, not a technical SEO bug.
 
-## Changes
+## Plan
 
-1. **New file `src/data/compareCategoryBenefits.ts`**
-   - Exports a map `slug → { title, benefits: [3 × {icon, title, description}] }`.
-   - Seeded for every slug that currently routes to `/compare?category=...`: `womens-health`, `mens-health`, `hormones`, `thyroid`, `general-health`, `fertility`, `heart-health`, `diabetes`, `vitamins`, `cancer-screening`, plus the sub-category slugs `menopause`, `female-fertility`, `female-hormones`, `pcos`, `male-hormones`, `male-fertility`, `testosterone`, `prostate`, `amh`.
-   - Reuses copy/icons from `categoryContent.ts` where present; concise bespoke 3-tile sets for the sub-categories (e.g. Menopause → Hormone Clarity / Symptom Insight / Confident Decisions).
-   - `title` defaults to `"<Display Name> Blood Tests"` (e.g. "Menopause Blood Tests").
-   - A `getCompareHeader(slug)` helper returns the entry or a sensible fallback derived from `getCategoryDisplayName` + 3 generic benefits (Trusted Providers / Transparent Pricing / Fast Results) for slugs not explicitly mapped or the all-tests view.
+### 1. Trigger a fresh full audit
+Run `seo_chat--trigger_scan` (requires your approval) so findings reflect the current code, not the cached state. Scan takes ~1 minute; results appear in the SEO tab.
 
-2. **`src/pages/CompareTests.tsx`**
-   - Remove the existing header block (lines 187–254): the `Compare X Blood Tests` heading, paragraph, three stat cards (Tests available / Providers / Lowest price), and the search input.
-   - Render `<CategoryStandardHero pillLabel={header.title} benefits={header.benefits} />` in its place, where `header = getCompareHeader(effectiveCategory)`.
-   - Drop now-unused imports (`FlaskConical`, `Building2`, `PoundSterling`, `Search`, `X` for the header) and the search input — search lives in the filters row further down and is not affected.
-   - If the in-hero search input is the only `filters.searchQuery` UI on this page, keep state intact (still used by the results filter) and add a `<CategoryFilters>`-style search above the cards only if removing breaks search — verify during implementation; otherwise leave search to existing filters row.
+### 2. Re-verify structured data after the scan
+For every JSON-LD block currently shipped, confirm against Google Rich Results requirements:
+- `Organization` / `WebSite` / `MedicalBusiness` in `index.html` — confirm required fields (name, url, logo with absolute URL, sameAs if available)
+- `FAQPage` on `/faqs` — every Question has acceptedAnswer.text, no marketing copy in answers
+- `CollectionPage` + `Product` on `/tests/*` — Product entries need name, description, offers.price (GBP), offers.priceCurrency, offers.availability, brand
+- `BreadcrumbList` — verify it's emitted on deep routes; add via Helmet where missing
+- Run each schema through the Schema.org validator endpoint via `fetch_website` (https://validator.schema.org/) and Rich Results URL test where the route is publicly reachable
 
-3. **No other files touched.** Comparison table, recommended row, ProviderComparisonSection, footer all untouched.
+### 3. Address any new findings the scan surfaces
+- For each failing finding: report the `finding_id`, affected URL, severity, and the exact code fix
+- Apply fixes (per-route Helmet edits, JSON-LD additions, sitemap entries) and call `update_findings` to mark each fixed
+- Re-trigger the scan once at the end to confirm green
 
-## Visual result
+### 4. Content suggestion (separate decision)
+The Semrush "cost comparison guide" finding is a content-creation task, not a bug fix. I'll leave it failing unless you want me to draft the article — say the word and I'll spin up `/blog/private-blood-test-cost-comparison-guide` with the full article, Article + FAQPage schema, sitemap entry, and internal links from `/blog` and `/compare`.
 
-Each compare page top band will read, e.g. for `/compare?category=menopause`:
+## Technical notes
+- Per-route head already uses `react-helmet-async` (provider mounted in `src/main.tsx`)
+- Sitemap is generated by `scripts/generate-sitemap.ts` via `predev`/`prebuild`; private routes filtered by `PRIVATE_PREFIXES` — keep this mechanism
+- Helmet is client-side only; LinkedIn/Slack/Facebook see only static `index.html` head — accepted limitation, no SSR planned
+- og:image cache: any preview changes won't appear in shared links until each platform re-fetches; force refresh in their link-preview debuggers
 
-```text
-                Menopause Blood Tests
-        [icon]            [icon]            [icon]
-     Hormone Clarity   Symptom Insight   Confident Decisions
-     short copy        short copy        short copy
-        ───── turquoise→pink→turquoise divider ─────
-```
-
-…identical structure across menopause, thyroid, womens-health, mens-health, every sub-category, and the all-tests default.
-
-## Verification
-
-Playwright: load `/compare?category=menopause`, `/compare?category=thyroid`, `/compare?category=female-fertility`, `/compare` and screenshot the top band to confirm uniform layout and that the comparison table below is unchanged.
+## Out of scope (call out if you want them in)
+- Drafting the cost-comparison article (decision above)
+- Migrating to SSR for per-page social previews
+- Performance/Lighthouse work beyond what's already marked fixed
