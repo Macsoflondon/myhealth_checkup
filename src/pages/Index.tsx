@@ -4,7 +4,8 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
-import Hero from "@/components/sections/Hero";
+import HeroMasthead from "@/components/sections/HeroMasthead";
+import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import MissionSection from "@/components/sections/MissionSection";
 import PartnersGrid from "@/components/sections/PartnersGrid";
@@ -110,8 +111,9 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         </Helmet>
 
-        <div>
-          <Hero />
+        <div className="max-w-[1080px] mx-auto px-4 space-y-6">
+          <HeroMasthead />
+          <StatsBand />
         </div>
 
         <TestCategoryTicker />
@@ -135,3 +137,4 @@ const Index = () => {
 };
 
 export default Index;
+
