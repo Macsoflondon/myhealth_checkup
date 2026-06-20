@@ -6,13 +6,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 import heroActiveAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
 import heroCoupleAsset from "@/assets/hero/hero-elderly-couple-park.jpg.asset.json";
-import heroResultsAsset from "@/assets/hero/hero-results-phone.jpg.asset.json";
+
 import heroMobileActiveAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
 import heroMobileCoupleAsset from "@/assets/hero/mobile/hero-mobile-elderly-couple.jpg.asset.json";
 
 const heroActive = heroActiveAsset.url;
 const heroCouple = heroCoupleAsset.url;
-const heroResults = heroResultsAsset.url;
+
 const heroMobileActive = heroMobileActiveAsset.url;
 const heroMobileCouple = heroMobileCoupleAsset.url;
 
@@ -70,18 +70,6 @@ const heroSlides: Array<{
       overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
       surface: 65,
       accent: "turquoise",
-    },
-  },
-  {
-    image: heroResults,
-    headline: "The Right Test For You,\nWherever You Are.",
-    subline: "Results delivered securely, typically within days.",
-    alt: "Smartphone showing a personal health dashboard with results",
-    objectPosition: "center 40%",
-    theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
-      surface: 70,
-      accent: "pink",
     },
   },
 ];
