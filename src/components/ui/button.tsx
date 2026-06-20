@@ -21,6 +21,12 @@ const buttonVariants = cva(
         gradient: "bg-gradient-to-r from-primary to-secondary text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
         shimmer: "btn-shimmer text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
         brandPill: "rounded-full border-tertiary bg-primary text-primary-foreground shadow-elevation-2 hover:bg-secondary hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
+        skeuomorphic:
+          "rounded-xl border border-white/40 text-white font-semibold tracking-wide " +
+          "bg-[linear-gradient(180deg,#3ad7ea_0%,#22c0d4_45%,#1aa7ba_100%)] " +
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.55),inset_0_-2px_0_rgba(0,0,0,0.18),0_6px_14px_-4px_rgba(8,17,41,0.45),0_2px_4px_rgba(8,17,41,0.25)] " +
+          "hover:bg-[linear-gradient(180deg,#4ee0f2_0%,#26ccdf_45%,#1eb0c4_100%)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.65),inset_0_-2px_0_rgba(0,0,0,0.2),0_10px_20px_-6px_rgba(8,17,41,0.5),0_3px_6px_rgba(8,17,41,0.3)] hover:-translate-y-0.5 " +
+          "active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.2)] active:translate-y-0.5",
       },
       size: {
         default: "h-12 px-8 py-2",
