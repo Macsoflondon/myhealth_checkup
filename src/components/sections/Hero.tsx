@@ -12,7 +12,7 @@ import heroMobileCoupleAsset from "@/assets/hero/mobile/hero-mobile-elderly-coup
 
 const heroActive = heroActiveAsset.url;
 const heroCouple = heroCoupleAsset.url;
-const heroResults = heroResultsAsset.url;
+
 const heroMobileActive = heroMobileActiveAsset.url;
 const heroMobileCouple = heroMobileCoupleAsset.url;
 
