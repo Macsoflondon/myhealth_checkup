@@ -118,7 +118,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
   return (
     <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-4 min-h-[100svh] flex flex-col">
-      <div className="flex items-center justify-between border-b border-[#081129]/10 pb-3.5">
+      <div className="flex items-center justify-between border-b border-[#081129]/10 pb-2">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
           <Link to="/compare" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Compare</Link>
