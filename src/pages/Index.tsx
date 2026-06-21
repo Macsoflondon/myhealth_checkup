@@ -31,7 +31,7 @@ const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndH
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
-const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
+
 const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
 const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
 
@@ -197,10 +197,6 @@ const Index = () => {
         </div>
 
         <TestCategoryTicker />
-
-        <Suspense fallback={<SectionFallback />}>
-          <PersuasionTrustStrip />
-        </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
           <SectionReveal>
