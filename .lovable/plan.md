@@ -1,23 +1,26 @@
-## Plan
+## Hero compaction + overlay removal
 
-### 1. Rebalance hero heading vertical spacing
-The `Compare.` h1 currently sits with `mt-12 md:mt-16` above and only `mb-2` below the slogan row. Shift it upward by reducing top margin and add that space below to create more breathing room between the heading and the slogan.
+Edits to `src/components/sections/HeroMasthead.tsx`:
 
-**Changes:**
-- `mt-12 md:mt-16` → `mt-10 md:mt-14` (move heading up by one spacing step)
-- `mb-2` → `mb-5` (increase buffer below heading before slogan)
+1. **Reduce dead space above "Compare" by ~3 lines** (line 130)
+   - `mt-10 md:mt-14 mb-5` → `mt-3 md:mt-4 mb-3`
 
-### 2. Increase heading font size
-Bump the `Compare.` h1 up one step in the clamp range.
+2. **Reduce padding under the top nav by one line** (line 121)
+   - `pb-3.5` → `pb-2`
 
-**Change:**
-- `text-[clamp(4.5rem,12vw,10rem)]` → `text-[clamp(5rem,13vw,11rem)]`
+3. **Reduce padding under the slogan row by one line** (line 134)
+   - `pb-4` → `pb-2`
 
-### 3. Increase nav link font sizes
-All three top-nav links are currently `text-[10px]`. Raise each by one step.
+4. **Reduce vertical gap around the image** (line 141)
+   - `my-3` → `my-2`
 
-**Change:**
-- Nav links (`Compare`, `Categories`, `Find your test`): `text-[10px]` → `text-[11px]`
+5. **Reduce padding above the bottom three-column copy** (line 185)
+   - `pt-2` → `pt-1`
 
----
-**Scope:** Only `src/components/sections/HeroMasthead.tsx`. No other files touched.
+6. **Remove the two overlay buttons on the hero image without resizing it** (lines 168–181)
+   - Delete the slide-dot pager (`<div className="absolute left-5 top-[18px] ...">`)
+   - Delete the "Stay ahead of your health" pill (`<div className="absolute left-[18px] bottom-[18px] ...">`)
+   - Image container dimensions (`flex-1 min-h-[55svh]`) stay untouched, so the picture is not distorted.
+   - Auto-rotation interval still runs; only the manual dot controls are removed.
+
+Net effect: roughly 5 lines of vertical space reclaimed so the hero section fits within one viewport on the loading page, and the image is clean (no overlays).
