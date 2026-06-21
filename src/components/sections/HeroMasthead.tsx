@@ -25,13 +25,15 @@ const benchPhone = benchPhoneAsset.url;
 const bloodTestKit = bloodTestKitAsset.url;
 const heartMark = heartMarkAsset.url;
 
+// Per-slide focal points tuned for mobile / tablet / desktop crops
 const SLIDES = [
-  { src: joggingWoman, label: "Stay ahead of your health", pos: "center 35%" },
-  { src: clinicReception, label: "Walk-in clinics nationwide", pos: "center 50%" },
-  { src: seniorCouple, label: "Active at every age", pos: "center 30%" },
-  { src: benchPhone, label: "Your results, in your pocket", pos: "center 40%" },
-  { src: bloodTestKit, label: "Finger-prick test from home", pos: "center 55%" },
+  { src: joggingWoman,    label: "Stay ahead of your health",     posMobile: "30% 30%", posTablet: "center 32%", posDesktop: "center 35%" },
+  { src: clinicReception, label: "Walk-in clinics nationwide",    posMobile: "60% 50%", posTablet: "center 50%", posDesktop: "center 50%" },
+  { src: seniorCouple,    label: "Active at every age",           posMobile: "50% 25%", posTablet: "center 28%", posDesktop: "center 30%" },
+  { src: benchPhone,      label: "Your results, in your pocket",  posMobile: "55% 40%", posTablet: "center 40%", posDesktop: "center 40%" },
+  { src: bloodTestKit,    label: "Finger-prick test from home",   posMobile: "45% 55%", posTablet: "center 55%", posDesktop: "center 55%" },
 ];
+
 
 
 import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
