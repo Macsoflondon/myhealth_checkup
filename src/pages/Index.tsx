@@ -1,24 +1,46 @@
 import { Helmet } from "react-helmet-async";
+import { lazy, Suspense } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import SectionReveal from "@/components/ui/SectionReveal";
+import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+import { LazyMount } from "@/components/common/LazyMount";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
+// Hero first-slide images — preloaded for LCP optimisation
+import heroSlide1DesktopAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
+import heroSlide1MobileAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
+const heroSlide1Desktop = heroSlide1DesktopAsset.url;
+const heroSlide1Mobile = heroSlide1MobileAsset.url;
+
+// Above-the-fold: eager
 import HeroMasthead from "@/components/sections/HeroMasthead";
 import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-import MissionSection from "@/components/sections/MissionSection";
-import PartnersGrid from "@/components/sections/PartnersGrid";
-import JourneySimplified from "@/components/sections/JourneySimplified";
-import PartnerShowcaseGrid from "@/components/sections/PartnerShowcaseGrid";
 
-import ExpertQuotes from "@/components/sections/ExpertQuotes";
-import TestimonialCarousel from "@/components/sections/TestimonialCarousel";
-import ClinicAndHelpSection from "@/components/sections/ClinicAndHelpSection";
-import CallToAction from "@/components/sections/CallToAction";
-import AccreditedProvidersBar from "@/components/sections/AccreditedProvidersBar";
-import TrustPlatformSection from "@/components/sections/TrustPlatformSection";
-import StartJourneySection from "@/components/sections/StartJourneySection";
+// Below-the-fold: lazy-loaded to slim the initial bundle (audit 4.x)
+const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
+const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
+const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
+
+const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
+
+const TestimonialCarousel = lazy(() => import("@/components/sections/TestimonialCarousel"));
+const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
+const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
+const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
+
+
+const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
+const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
+const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
+const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
+
+
+
+
+const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
 const Index = () => {
   usePerformanceOptimization();
@@ -38,7 +60,10 @@ const Index = () => {
     ],
     address: {
       "@type": "PostalAddress",
-      addressCountry: "United Kingdom",
+      streetAddress: "2/369 Clapham Road",
+      addressLocality: "London",
+      postalCode: "SW9 9BT",
+      addressCountry: "GB",
     },
     audience: {
       "@type": "Audience",
@@ -63,22 +88,66 @@ const Index = () => {
     },
   };
 
+  // Organisation schema — enables Knowledge Panel & sitelinks (audit 3.2)
+  const organisationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://myhealthcheckup.co.uk/#organisation",
+    name: "myhealth checkup",
+    legalName: "MYHEALTHCHECKUP LTD",
+    url: "https://myhealthcheckup.co.uk",
+    logo: "https://myhealthcheckup.co.uk/og-image.png",
+    sameAs: [
+      "https://www.facebook.com/myhealthcheckupuk",
+      "https://www.twitter.com/myhealthcheckup",
+      "https://www.instagram.com/myhealthcheckup_uk",
+      "https://www.linkedin.com/company/myhealthcheckup",
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: "support@myhealthcheckup.co.uk",
+      areaServed: "GB",
+      availableLanguage: ["en-GB"],
+    },
+  };
+
+  // WebSite schema with SearchAction — enables Sitelinks Search Box (audit 3.2)
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://myhealthcheckup.co.uk/#website",
+    url: "https://myhealthcheckup.co.uk",
+    name: "myhealth checkup",
+    description: "Compare private health tests across accredited UK providers.",
+    publisher: { "@id": "https://myhealthcheckup.co.uk/#organisation" },
+    inLanguage: "en-GB",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://myhealthcheckup.co.uk/compare?search={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <ErrorBoundary>
       <MainLayout>
         <Helmet>
+          <link rel="preload" as="image" href={heroSlide1Desktop} type="image/jpeg" media="(min-width: 640px)" fetchPriority="high" />
+          <link rel="preload" as="image" href={heroSlide1Mobile} type="image/jpeg" media="(max-width: 639px)" fetchPriority="high" />
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
-            content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use."
+            content="Compare UK private blood tests, hormone checks and screenings from accredited UKAS labs and CQC clinics. Free, transparent, independent."
           />
           <meta
             name="keywords"
             content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
           />
           <link rel="canonical" href="https://myhealthcheckup.co.uk/" />
-
-          <link rel="preload" as="image" href="/src/assets/hero-bg-tubes.jpeg" type="image/jpeg" />
 
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
@@ -109,6 +178,8 @@ const Index = () => {
           <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
 
           <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+          <script type="application/ld+json">{JSON.stringify(organisationSchema)}</script>
+          <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
         <div className="max-w-[1080px] mx-auto px-4 space-y-6">
@@ -117,24 +188,71 @@ const Index = () => {
         </div>
 
         <TestCategoryTicker />
-        <MissionSection />
-        <JourneySimplified />
-        <PartnersGrid />
-        <StartJourneySection />
 
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <Suspense fallback={<SectionFallback />}>
+          <PersuasionTrustStrip />
+        </Suspense>
 
-        <PartnerShowcaseGrid />
-        <TestimonialCarousel />
-        <ClinicAndHelpSection />
-        <AccreditedProvidersBar />
-        <CallToAction />
-        <TrustPlatformSection />
-        <ExpertQuotes />
+
+
+        <Suspense fallback={<SectionFallback />}>
+          <SectionReveal>
+            <PartnersGrid />
+          </SectionReveal>
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <SectionReveal delay={0.1}>
+            <JourneySimplified />
+          </SectionReveal>
+        </Suspense>
+
+
+        <Suspense fallback={<SectionFallback />}>
+          <SectionReveal delay={0.15}>
+            <StartJourneySection />
+          </SectionReveal>
+        </Suspense>
+
+
+
+        <LazyMount minHeight={300}>
+          <Suspense fallback={<SectionFallback />}>
+            <AccreditedProvidersBar />
+          </Suspense>
+        </LazyMount>
+
+
+        <LazyMount minHeight={800}>
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.1}>
+              <PartnerShowcaseGrid />
+            </SectionReveal>
+          </Suspense>
+        </LazyMount>
+
+        <LazyMount minHeight={500}>
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal>
+              <TestimonialCarousel />
+            </SectionReveal>
+          </Suspense>
+        </LazyMount>
+
+        <LazyMount minHeight={500}>
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.1}>
+              <ClinicAndHelpSection />
+            </SectionReveal>
+          </Suspense>
+        </LazyMount>
+
+
+
+
       </MainLayout>
     </ErrorBoundary>
   );
 };
 
 export default Index;
-
