@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Heart, User, UserCheck, Droplet, Stethoscope, FlaskConical, Pill, Baby, Activity, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, Heart, User, UserCheck, Droplet, Stethoscope, FlaskConical, Pill, Baby, Activity, ShieldCheck } from "lucide-react";
 
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
