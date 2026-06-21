@@ -199,10 +199,6 @@ const Index = () => {
         <TestCategoryTicker />
 
         <Suspense fallback={<SectionFallback />}>
-          <PersuasionTrustStrip />
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
           <SectionReveal>
             <PartnersGrid />
           </SectionReveal>
