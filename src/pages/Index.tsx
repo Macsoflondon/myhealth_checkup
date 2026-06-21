@@ -19,8 +19,6 @@ import HeroMasthead from "@/components/sections/HeroMasthead";
 import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 
-// Below-the-fold: lazy-loaded to slim the initial bundle (audit 4.x)
-const MissionSection = lazy(() => import("@/components/sections/MissionSection"));
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
 const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
@@ -32,14 +30,10 @@ const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealth
 const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
-
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
 const PersuasionTrustStrip = lazy(() => import("@/components/sections/PersuasionTrustStrip"));
 const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
 const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
-
-
-
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
@@ -137,8 +131,22 @@ const Index = () => {
     <ErrorBoundary>
       <MainLayout>
         <Helmet>
-          <link rel="preload" as="image" href={heroSlide1Desktop} type="image/jpeg" media="(min-width: 640px)" fetchPriority="high" />
-          <link rel="preload" as="image" href={heroSlide1Mobile} type="image/jpeg" media="(max-width: 639px)" fetchPriority="high" />
+          <link
+            rel="preload"
+            as="image"
+            href={heroSlide1Desktop}
+            type="image/jpeg"
+            media="(min-width: 640px)"
+            fetchPriority="high"
+          />
+          <link
+            rel="preload"
+            as="image"
+            href={heroSlide1Mobile}
+            type="image/jpeg"
+            media="(max-width: 639px)"
+            fetchPriority="high"
+          />
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
@@ -194,14 +202,6 @@ const Index = () => {
           <PersuasionTrustStrip />
         </Suspense>
 
-
-
-        <Suspense fallback={<SectionFallback />}>
-          <SectionReveal>
-            <MissionSection />
-          </SectionReveal>
-        </Suspense>
-
         <Suspense fallback={<SectionFallback />}>
           <SectionReveal>
             <PartnersGrid />
@@ -214,21 +214,17 @@ const Index = () => {
           </SectionReveal>
         </Suspense>
 
-
         <Suspense fallback={<SectionFallback />}>
           <SectionReveal delay={0.15}>
             <StartJourneySection />
           </SectionReveal>
         </Suspense>
 
-
-
         <LazyMount minHeight={300}>
           <Suspense fallback={<SectionFallback />}>
             <AccreditedProvidersBar />
           </Suspense>
         </LazyMount>
-
 
         <LazyMount minHeight={800}>
           <Suspense fallback={<SectionFallback />}>
@@ -253,15 +249,6 @@ const Index = () => {
             </SectionReveal>
           </Suspense>
         </LazyMount>
-
-
-
-
-
-
-
-
-
       </MainLayout>
     </ErrorBoundary>
   );
