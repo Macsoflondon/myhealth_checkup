@@ -167,10 +167,24 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr] gap-6 pt-1">
+      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 pt-1 items-center">
         <h2 className="font-bold text-[22px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
-        <p className="text-xs text-[#081129]/60 leading-[1.55] m-0 font-[Lato]">We pull live prices from accredited UK providers — Medichecks, Goodbody, Lola, Thriva and more — and line them up side by side. No markup, no hidden fees.</p>
-        <p className="text-xs text-[#081129]/60 leading-[1.55] m-0 font-[Lato]">UKAS-accredited labs. CQC-regulated clinics. No GP referral needed. Results typically in 2–5 working days, by post or in clinic.</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+          {[
+            { value: "100%", label: "UKAS-accredited labs", Icon: ShieldCheck, color: TURQUOISE },
+            { value: "200+", label: "Tests to compare", Icon: FlaskConical, color: PINK },
+            { value: "No GP", label: "Referral needed", Icon: Stethoscope, color: "#3a5f85" },
+            { value: "60 sec", label: "To compare & decide", Icon: Zap, color: "#16a34a" },
+          ].map(({ value, label, Icon, color }) => (
+            <div key={label} className="bg-white rounded-xl border border-[#081129]/[0.08] p-3 shadow-[0_4px_16px_rgba(8,17,41,0.05)]">
+              <span className="w-[28px] h-[28px] rounded-[9px] inline-flex items-center justify-center mb-2" style={{ background: `${color}14` }}>
+                <Icon className="w-[15px] h-[15px]" style={{ color }} strokeWidth={2} />
+              </span>
+              <div className="font-extrabold text-[18px] tracking-[-0.02em] text-[#081129] leading-none font-[Montserrat]">{value}</div>
+              <div className="text-[11px] text-[#081129]/55 mt-1 font-[Lato]">{label}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
