@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
+import { UserMenu } from "@/components/header/UserMenu";
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
@@ -115,7 +117,7 @@ export default function HeroMasthead({ rotateMs = 3800 }: HeroMastheadProps) {
         <span className="text-[10px] font-bold uppercase tracking-[0.18em] font-[Montserrat] text-[#081129]/55">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
-        <span className="hidden sm:inline text-[10px] font-bold uppercase tracking-[0.18em] font-[Montserrat] text-[#081129]/30 whitespace-nowrap">UK · 200+ tests</span>
+        <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
       <div className="relative rounded-[18px] overflow-hidden my-4 h-[320px] bg-[#081129]">

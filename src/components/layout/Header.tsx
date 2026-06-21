@@ -11,13 +11,11 @@ import mobileLogo from "/myhealth-logo.png";
 
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
-import { UserMenu } from "../header/UserMenu";
 import { MobileMenu } from "../header/MobileMenu";
 // MobileNavigationDrawer is heavy (~640 lines) — lazy-load so it doesn't bloat the initial header chunk.
 const MobileNavigationDrawer = lazy(() =>
   import("../header/MobileNavigationDrawer").then((m) => ({ default: m.MobileNavigationDrawer })),
 );
-import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import PromoTicker from "../sections/PromoTicker";
