@@ -131,7 +131,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
-      <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-4">
+      <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-2">
         <span className="text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129]/55">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
