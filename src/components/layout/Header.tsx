@@ -188,8 +188,8 @@ const Header = ({ className }: HeaderProps) => {
                 style={{ transformOrigin: "center center" }}
               >
                 <img
-                  src={fullLogo.url}
-                  alt="myhealth checkup — Your health! Your choice! One trusted platform!"
+                  src={mainLogo}
+                  alt="myhealth checkup"
                   className="w-auto object-contain flex-shrink-0 max-w-[90vw]"
                   style={{ height: `${lerp(128, 64, collapseProgress)}px` }}
                 />
