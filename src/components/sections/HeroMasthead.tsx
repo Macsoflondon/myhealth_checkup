@@ -95,7 +95,7 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center gap-2.5 leading-none">
-    <img src={heartMark} alt="myhealth checkup" className="h-9 w-auto" />
+    <img src={heartMark} alt="myhealth checkup" className="h-10 w-auto" />
     <span className="font-bold text-[26px] tracking-[-0.02em] font-[Montserrat]">
       <span className="text-[#081129]">myhealth</span>
       <span className="text-[#e70d69]">checkup</span>
