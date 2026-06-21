@@ -1,14 +1,13 @@
-## Problem
-The slogan "Your health! Your choice! One trusted platform!" is visible in the desktop header because it's baked into the `fullLogo` image (`myhealth-logo-full.png`).
+## Goal
+Remove the white logo bar from the global header on every device while keeping the promo ticker carousel above the hero.
 
-## Solution
-Replace the desktop header's logo image with the existing cropped logo (`myhealth-logo-cropped.webp`) which contains only the heart mark and "myhealth checkup" wordmark — no tagline.
+## Change (single file)
+**src/components/layout/Header.tsx**
+- **Mobile branch**: drop the `<header>` block that renders the logo + mobile menu. Keep `<PromoTicker />` (and the lazy `MobileNavigationDrawer` if menu state still needs it — but since the trigger is gone, remove `MobileMenu`, `isMenuOpen` state, and the drawer too).
+- **Desktop branch**: delete the entire `<header ref={logoBarRef}>...</header>` logo bar. Keep the collapsing `<PromoTicker />` wrapper as-is (or simplify to a static `<PromoTicker />` since there's no logo bar to collapse into).
+- Remove now-unused imports: `Logo`, `mainLogo`, `mobileLogo`, `MobileMenu`, `MobileNavigationDrawer` lazy import, `SearchBar`, `NavigationItems`, `UtilityBar`, `styles`, related state/refs/effects.
 
-## Changes
-1. **src/components/layout/Header.tsx**
-   - In the desktop header `<Link>`, change `<img src={fullLogo.url} ... />` to use `mainLogo` instead.
-   - Update the `alt` text to just `"myhealth checkup"`.
-   - Remove the now-unused `fullLogo` import.
-   - Optionally remove the unused `headerTagline` import if it's not used elsewhere in the file.
+Result: `<Header />` renders only `<PromoTicker />`. Hero/StatsBand sit directly beneath it on all viewports. Mobile-first preserved (no logo bar at any breakpoint).
 
-No other files need to change. The mobile header already uses the cropped logo, so this change aligns desktop with mobile.
+## Out of scope
+No changes to `MainLayout`, `Index`, hero, or any other page — the `<Header />` slot still exists and just renders less.
