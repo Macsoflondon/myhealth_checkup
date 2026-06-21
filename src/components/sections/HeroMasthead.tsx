@@ -138,7 +138,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
-      <div className="relative rounded-[18px] overflow-hidden my-3 -mx-6 sm:-mx-9 flex-1 min-h-[55svh] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-2 -mx-6 sm:-mx-9 flex-1 min-h-[55svh] bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
           return (
@@ -164,21 +164,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         })}
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
-
-        <div className="absolute left-5 top-[18px] flex gap-1.5">
-          {SLIDES.map((_, n) => (
-            <button key={n} aria-label={`Slide ${n + 1}`} onClick={() => setI(n)}
-              className="h-[7px] rounded-full transition-all"
-              style={{ width: n === i % SLIDES.length ? 20 : 7, background: n === i % SLIDES.length ? TURQUOISE : "rgba(255,255,255,0.5)" }} />
-          ))}
-        </div>
-
-        <div className="absolute left-[18px] bottom-[18px]">
-          <span className="inline-flex items-center gap-2 px-3 py-[7px] rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-xs font-semibold font-[Montserrat]">
-            <span className="w-[7px] h-[7px] rounded-full" style={{ background: TURQUOISE }} />
-            {slide.label}
-          </span>
-        </div>
 
       </div>
 
