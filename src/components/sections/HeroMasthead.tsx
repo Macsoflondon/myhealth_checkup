@@ -128,7 +128,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       <div className="relative rounded-[18px] overflow-hidden my-4 h-[480px] bg-[#081129]">
         {SLIDES.map((s, n) => (
           <img key={n} src={s.src} alt={s.label}
-            className="absolute inset-0 w-full h-full object-contain transition-opacity duration-700"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
             style={{ opacity: n === i % SLIDES.length ? 1 : 0 }} />
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
