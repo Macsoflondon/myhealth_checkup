@@ -900,3 +900,7 @@ html, body {
     animation: none;
   }
 }
+/* Hero slide responsive focal points (per-slide via CSS vars) */
+.hero-slide { object-position: var(--pos-m, center center); }
+@media (min-width: 640px) { .hero-slide { object-position: var(--pos-t, var(--pos-m, center center)); } }
+@media (min-width: 1024px) { .hero-slide { object-position: var(--pos-d, var(--pos-t, center center)); } }
