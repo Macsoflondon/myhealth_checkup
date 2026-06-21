@@ -8,10 +8,8 @@ import headerTagline from "@/assets/header-tagline.png";
 import mobileLogo from "@/assets/myhealth-mobile-logo.png";
 import { SearchBar } from "../header/SearchBar";
 import { NavigationItems } from "../header/NavigationItems";
-import { UserMenu } from "../header/UserMenu";
 import { MobileMenu } from "../header/MobileMenu";
 import { MobileNavigationDrawer } from "../header/MobileNavigationDrawer";
-import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
 import { ErrorBoundary } from "../common/ErrorBoundary";
 import BrandTicker from "../sections/BrandTicker";
@@ -81,8 +79,6 @@ const Header = ({ className }: HeaderProps) => {
 
                 {/* Right: Navigation controls */}
                 <nav className="flex items-center gap-1 flex-shrink-0" aria-label="User controls">
-                  <LanguageSwitcher />
-                  <UserMenu isMobile />
                   <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
                 </nav>
               </div>
@@ -131,13 +127,8 @@ const Header = ({ className }: HeaderProps) => {
                 />
               </Link>
 
-              {/* Right: Controls pushed to far right */}
-              <div className="flex-1 flex items-center justify-end">
-                <nav className="flex items-center gap-3" aria-label="User controls">
-                  <LanguageSwitcher />
-                  <UserMenu />
-                </nav>
-              </div>
+              {/* Right spacer for balance */}
+              <div className="flex-1" />
             </div>
           </div>
         </div>
