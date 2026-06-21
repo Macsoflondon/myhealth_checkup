@@ -88,7 +88,7 @@ const Wordmark = () => (
   </span>
 );
 
-export default function HeroMasthead({ rotateMs = 3800 }: HeroMastheadProps) {
+export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const [i, setI] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setI((n) => n + 1), Math.max(1200, rotateMs));
