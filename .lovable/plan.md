@@ -1,21 +1,43 @@
-## Sticky category nav across the site (hidden over homepage hero)
+# Global Sticky Category Bar Rollout
 
-### Behaviour
-- Every route renders a sticky top bar containing the existing `NavigationMenu` (primary categories + More dropdown).
-- On the homepage (`/`), the bar is hidden while the hero is in view, then slides in once the user scrolls past it.
-- On all other routes, the bar is pinned at the top from page load.
+## Goal
+Every page in the app shows the sticky category toolbar at the top. The PromoTicker carousel is retired. Homepage keeps its existing hide-until-hero behaviour.
 
-### Implementation
-1. **New component** `src/components/layout/StickyCategoryBar.tsx`
-   - Navy `#081129` bar, `sticky top-0 z-50`, subtle bottom border + backdrop blur.
-   - Renders `<NavigationMenu />` from `src/components/header/NavigationMenu.tsx` (unchanged).
-   - Accepts `hideUntilScroll?: number` prop. When set, listens to `window` scroll and toggles a `translate-y-[-100%]` / opacity class until `scrollY > threshold`.
+## Current state (audit)
+- ~15 pages use `MainLayout` → already have the sticky bar.
+- ~48 pages render `<Header />` directly, plus all DB-driven category pages via `CategoryPageLayout` → currently show only `PromoTicker`, no sticky bar.
+- ~31 pages (admin tools, Dashboard, a few content pages) render neither → no top chrome at all.
 
-2. **Mount it in `src/layouts/MainLayout.tsx`** above `<main>`.
-   - Use `useLocation()`; if `pathname === "/"`, pass `hideUntilScroll={window.innerHeight * 0.8}` (approx hero height). Otherwise render as always-visible sticky.
+## Changes
 
-3. **No changes** to `NavigationMenu`, `Header` (PromoTicker), or page components — purely additive.
+### 1. Replace `Header.tsx` contents
+File: `src/components/layout/Header.tsx`
+- Drop `<PromoTicker />`.
+- Render `<StickyCategoryBar />` (always-visible variant — no `hideUntilTriggerId`).
+- Keep `ErrorBoundary` wrapper and `className` passthrough so existing call sites keep working unchanged.
 
-### Notes
-- Mobile: same sticky behaviour; existing `NavigationMenu` already handles mobile wrapping.
-- Keeps z-index above hero content but below modal/drawer overlays already at `z-[98]+`.
+Result: all ~48 direct `<Header />` users and every page routed through `CategoryPageLayout`/`DbCategoryPage` immediately get the sticky bar instead of the ticker.
+
+### 2. Add the bar to the "neither" pages
+For each page that uses neither `MainLayout` nor `<Header />`, add `<Header />` at the top of its returned JSX (since Header now == sticky bar). Targets:
+
+Admin: `AdminAuth`, `AdminRecovery`, `AdminBiomarkerAuditPage`, `AdminBiomarkerValidationPage`, `AdminTestDashboardPage`, `AdminTestMapperPage`, `Dashboard`.
+
+Content / category: `CancerScreeningPage`, `ClinilabsPage`, `DiabetesTestingPage`, `FemaleHormonesTestPage`, `FertilityTestsPage`, `GeneralHealthTestPage`, `GoodbodyClinicPage`, `GutHealthPage`, `HeartHealthPage`, `HormonesPage`*, `IronProfileTestPage`, `LipidProfileTestPage`, `LondonHealthCompanyPage`, `LondonMedicalLaboratoryPage`, `MaleHormoneTestPage`, `MedicalDiagnosisPage`, `MensHealthPage`, `ProviderTestDetailPage`, `SportsPerformancePage`, `ThyroidPage`, `VitaminDTestPage`, `VitaminDeficiencyPage`, `WellWomanTestPage`, `WomensHealthPage`.
+
+*Pages routed through `DbCategoryPage`/`CategoryPageLayout` are already covered by change #1 — verify per-file and skip if already inherited.
+
+### 3. Delete `PromoTicker` usages
+Search-and-remove any other direct `<PromoTicker />` imports/usages outside `Header.tsx`. Leave the component file in place (could be reused later) but unreferenced.
+
+### 4. Homepage behaviour unchanged
+`Index.tsx` continues using `MainLayout`, which passes `hideUntilTriggerId="sticky-bar-hero-end"` so the hero stays uncovered until scroll. No edits needed.
+
+## Verification
+- Visit `/wellness`, `/cancer-screening`, `/hormones`, `/dashboard`, `/admin/test-dashboard`, `/contact`, `/privacy-policy` — sticky bar present at top, no ticker.
+- Visit `/` — hero clear on load, sticky bar appears once hero scrolls past.
+- Mobile viewport — bar collapses to the compact "Menu" sheet trigger (already implemented).
+
+## Out of scope
+- Restyling the sticky bar.
+- Re-introducing promo messaging elsewhere (can be a follow-up if desired).
