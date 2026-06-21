@@ -120,7 +120,7 @@ export default function HeroMasthead({ rotateMs = 3800 }: HeroMastheadProps) {
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
-      <div className="relative rounded-[18px] overflow-hidden my-4 h-[320px] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-4 h-[480px] bg-[#081129]">
         {SLIDES.map((s, n) => (
           <img key={n} src={s.src} alt={s.label}
             className="absolute inset-0 w-full h-full object-contain transition-opacity duration-700"
