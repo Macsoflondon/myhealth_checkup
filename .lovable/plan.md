@@ -1,26 +1,21 @@
-## Hero compaction + overlay removal
+## Move stat cards into the hero footer
 
-Edits to `src/components/sections/HeroMasthead.tsx`:
+**`src/components/sections/HeroMasthead.tsx`** — replace the bottom grid
 
-1. **Reduce dead space above "Compare" by ~3 lines** (line 130)
-   - `mt-10 md:mt-14 mb-5` → `mt-3 md:mt-4 mb-3`
+Currently the hero's bottom row (lines 185–189) is `H2 + 2 paragraphs`. Replace the two paragraphs with the four shrunken stat cards (100% / 200+ / No GP / 60 sec). The "One price you can actually trust." headline stays.
 
-2. **Reduce padding under the top nav by one line** (line 121)
-   - `pb-3.5` → `pb-2`
+- Grid becomes `md:grid-cols-[1.1fr_2fr]`: H2 on the left, a nested 4-column stat strip on the right.
+- Stat card styling (shrunk to fit hero strip):
+  - White rounded card, border + soft shadow (same tokens as StatsBand)
+  - Icon chip 28×28 (down from 38×38), value `text-[18px]`, label `text-[11px]`
+  - Padding `p-3`, gap `gap-2.5` between cards
+- Add lucide-react imports (`ShieldCheck`, `FlaskConical`, `Stethoscope`, `Zap`) and a local `HERO_STATS` array mirroring the data from `StatsBand.tsx`.
 
-3. **Reduce padding under the slogan row by one line** (line 134)
-   - `pb-4` → `pb-2`
+**`src/components/sections/StatsBand.tsx`** — delete the original stat row
 
-4. **Reduce vertical gap around the image** (line 141)
-   - `my-3` → `my-2`
+- Remove the `STATS` constant (lines 21–26).
+- Remove the `<div className="grid grid-cols-2 md:grid-cols-4 ...">` block that renders them (lines 51–61).
+- Leave the categories pill row and the dark "Why test privately" CTA panel untouched.
+- Drop now-unused icon imports (`ShieldCheck`, `Zap`) from the lucide import — keep `FlaskConical`/`Stethoscope` since they're still used by `CATEGORIES`.
 
-5. **Reduce padding above the bottom three-column copy** (line 185)
-   - `pt-2` → `pt-1`
-
-6. **Remove the two overlay buttons on the hero image without resizing it** (lines 168–181)
-   - Delete the slide-dot pager (`<div className="absolute left-5 top-[18px] ...">`)
-   - Delete the "Stay ahead of your health" pill (`<div className="absolute left-[18px] bottom-[18px] ...">`)
-   - Image container dimensions (`flex-1 min-h-[55svh]`) stay untouched, so the picture is not distorted.
-   - Auto-rotation interval still runs; only the manual dot controls are removed.
-
-Net effect: roughly 5 lines of vertical space reclaimed so the hero section fits within one viewport on the loading page, and the image is clean (no overlays).
+No other components touched. Verify hero still fits one viewport after the swap.
