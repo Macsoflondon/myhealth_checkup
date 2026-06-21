@@ -177,6 +177,8 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           </span>
         </div>
 
+        {ad && <HeroSalesTestCard ad={ad} />}
+
       </div>
 
       <div className="pt-1">
