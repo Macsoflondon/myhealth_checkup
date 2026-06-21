@@ -1,7 +1,8 @@
 /**
- * Shared layout component for consistent page structure
- * Includes: Header (with PromoTicker), main content area, Footer, CookieConsent
+ * Shared layout component for consistent page structure.
+ * Includes: StickyCategoryBar (with hero-aware reveal on homepage), main content area, Footer, CookieConsent.
  */
+
 
 import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";

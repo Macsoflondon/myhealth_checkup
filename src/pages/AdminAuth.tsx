@@ -1,3 +1,4 @@
+import Header from "@/components/layout/Header";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -181,17 +182,22 @@ const AdminAuth = () => {
 
   if (authLoading || verifyingRole) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
-          <p className="mt-4 text-white/70 text-sm">Verifying admin access...</p>
+      <>
+        <Header />
+        <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
+            <p className="mt-4 text-white/70 text-sm">Verifying admin access...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
+    <>
+      <Header />
+      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
       <div className="max-w-sm w-full">
         {/* Shield icon */}
         <div className="flex justify-center mb-6">
@@ -294,6 +300,7 @@ const AdminAuth = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

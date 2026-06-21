@@ -1,3 +1,4 @@
+import Header from "@/components/layout/Header";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -50,7 +51,9 @@ const AdminRecovery = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
+    <>
+      <Header />
+      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
       <div className="max-w-md w-full">
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 rounded-full bg-destructive/15 flex items-center justify-center">
@@ -166,6 +169,7 @@ const AdminRecovery = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
