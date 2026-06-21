@@ -42,17 +42,6 @@ export default function StatsBand() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-[26px]">
-        {STATS.map(({ value, label, Icon, color }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#081129]/[0.08] p-[18px] shadow-[0_4px_16px_rgba(8,17,41,0.05)]">
-            <span className="w-[38px] h-[38px] rounded-[11px] inline-flex items-center justify-center mb-3" style={{ background: `${color}14` }}>
-              <Icon className="w-[19px] h-[19px]" style={{ color }} strokeWidth={2} />
-            </span>
-            <div className="font-extrabold text-[26px] tracking-[-0.02em] text-[#081129] leading-none font-[Montserrat]">{value}</div>
-            <div className="text-[13px] text-[#081129]/55 mt-[5px] font-[Lato]">{label}</div>
-          </div>
-        ))}
-      </div>
 
       <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-[34px] py-[30px] flex items-center justify-between gap-6 flex-wrap">
         <div className="absolute -right-[50px] -top-[60px] w-[220px] h-[220px] rounded-full bg-[#22c0d4]/[0.12]" />
