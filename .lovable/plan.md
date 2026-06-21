@@ -1,21 +1,36 @@
-## Move stat cards into the hero footer
+## Plan: Condense hero stat cards with icon-left layout
 
-**`src/components/sections/HeroMasthead.tsx`** — replace the bottom grid
+### What will change
+In `src/components/sections/HeroMasthead.tsx`, the four stat cards at the bottom of the hero section will switch from a vertical stack (icon → value → label) to a compact horizontal row (icon left, value+label right). The cards themselves will be shrunk to roughly half their current footprint.
 
-Currently the hero's bottom row (lines 185–189) is `H2 + 2 paragraphs`. Replace the two paragraphs with the four shrunken stat cards (100% / 200+ / No GP / 60 sec). The "One price you can actually trust." headline stays.
+### Layout change (each card)
+```
+Current:  vertical stack inside a card
+[  icon  ]
+ 100%
+UKAS-accredited labs
 
-- Grid becomes `md:grid-cols-[1.1fr_2fr]`: H2 on the left, a nested 4-column stat strip on the right.
-- Stat card styling (shrunk to fit hero strip):
-  - White rounded card, border + soft shadow (same tokens as StatsBand)
-  - Icon chip 28×28 (down from 38×38), value `text-[18px]`, label `text-[11px]`
-  - Padding `p-3`, gap `gap-2.5` between cards
-- Add lucide-react imports (`ShieldCheck`, `FlaskConical`, `Stethoscope`, `Zap`) and a local `HERO_STATS` array mirroring the data from `StatsBand.tsx`.
+Proposed: horizontal row, icon + text side-by-side
+[icon]  100%
+        UKAS-accredited labs
+```
 
-**`src/components/sections/StatsBand.tsx`** — delete the original stat row
+### Sizing adjustments per card
+| Property | Current | Proposed |
+|---|---|---|
+| Card padding | `p-3` | `p-2` |
+| Icon wrapper | `w-[28px] h-[28px]` | `w-[22px] h-[22px]` |
+| Icon SVG | `w-[15px] h-[15px]` | `w-[12px] h-[12px]` |
+| Value text | `text-[18px]` | `text-[14px]` |
+| Label text | `text-[11px]` | `text-[9px]` |
+| Grid gap | `gap-2.5` | `gap-2` |
 
-- Remove the `STATS` constant (lines 21–26).
-- Remove the `<div className="grid grid-cols-2 md:grid-cols-4 ...">` block that renders them (lines 51–61).
-- Leave the categories pill row and the dark "Why test privately" CTA panel untouched.
-- Drop now-unused icon imports (`ShieldCheck`, `Zap`) from the lucide import — keep `FlaskConical`/`Stethoscope` since they're still used by `CATEGORIES`.
+### Implementation details
+- Each card becomes `flex flex-row items-center gap-2` instead of the current block layout.
+- The icon wrapper stays a rounded coloured box but is smaller.
+- The value and label sit inside a nested `flex flex-col` to the right of the icon.
+- No changes to data/content — same four stats, same colours.
+- No other components touched.
 
-No other components touched. Verify hero still fits one viewport after the swap.
+### Verification
+Screenshot the hero section to confirm all four cards sit compactly in one row and the overall hero fits within a single viewport.
