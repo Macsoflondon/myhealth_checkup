@@ -26,12 +26,13 @@ const bloodTestKit = bloodTestKitAsset.url;
 const heartMark = heartMarkAsset.url;
 
 const SLIDES = [
-  { src: joggingWoman, label: "Stay ahead of your health" },
-  { src: clinicReception, label: "Walk-in clinics nationwide" },
-  { src: seniorCouple, label: "Active at every age" },
-  { src: benchPhone, label: "Your results, in your pocket" },
-  { src: bloodTestKit, label: "Finger-prick test from home" },
+  { src: joggingWoman, label: "Stay ahead of your health", pos: "center 35%" },
+  { src: clinicReception, label: "Walk-in clinics nationwide", pos: "center 50%" },
+  { src: seniorCouple, label: "Active at every age", pos: "center 30%" },
+  { src: benchPhone, label: "Your results, in your pocket", pos: "center 40%" },
+  { src: bloodTestKit, label: "Finger-prick test from home", pos: "center 55%" },
 ];
+
 
 import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
 
@@ -135,11 +136,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
-      <div className="relative rounded-[18px] overflow-hidden my-4 -mx-6 sm:-mx-9 h-[600px] md:h-[680px] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-4 -mx-6 sm:-mx-9 h-[360px] sm:h-[520px] md:h-[620px] lg:h-[700px] bg-[#081129]">
         {SLIDES.map((s, n) => (
           <img key={n} src={s.src} alt={s.label}
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-            style={{ opacity: n === i % SLIDES.length ? 1 : 0, objectPosition: "center center" }} />
+            style={{ opacity: n === i % SLIDES.length ? 1 : 0, objectPosition: s.pos }} />
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
