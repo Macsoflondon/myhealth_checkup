@@ -5,8 +5,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { Logo } from "../header/Logo";
 import mainLogo from "@/assets/myhealth-logo-cropped.webp";
-import fullLogo from "@/assets/myhealth-logo-full.png.asset.json";
-import headerTagline from "@/assets/header-tagline.webp";
 import mobileLogo from "/myhealth-logo.png";
 
 import { SearchBar } from "../header/SearchBar";
@@ -190,8 +188,8 @@ const Header = ({ className }: HeaderProps) => {
                 style={{ transformOrigin: "center center" }}
               >
                 <img
-                  src={fullLogo.url}
-                  alt="myhealth checkup — Your health! Your choice! One trusted platform!"
+                  src={mainLogo}
+                  alt="myhealth checkup"
                   className="w-auto object-contain flex-shrink-0 max-w-[90vw]"
                   style={{ height: `${lerp(128, 64, collapseProgress)}px` }}
                 />
