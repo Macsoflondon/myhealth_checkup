@@ -165,13 +165,13 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
-        {/* Rotating slide label bubble */}
-        <div className="absolute left-[18px] bottom-[18px] pointer-events-none">
+        {/* Rotating slide label */}
+        <div className="absolute left-[22px] bottom-[22px] pointer-events-none">
           <span
             key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-4xl font-semibold font-[Montserrat] animate-fade-in"
+            className="text-white text-4xl font-semibold font-[Montserrat] animate-fade-in"
+            style={{ textShadow: "0 2px 8px rgba(8,17,41,0.55)" }}
           >
-            <span className="w-[7px] h-[7px] rounded-full" style={{ background: TURQUOISE }} />
             {slide.label}
           </span>
         </div>
