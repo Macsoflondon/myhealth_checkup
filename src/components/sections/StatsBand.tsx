@@ -18,12 +18,6 @@ const CATEGORIES = [
   { label: "Cancer Screening", to: "/tests/cancer", Icon: ShieldCheck, color: "#0ea5e9" },
 ];
 
-const STATS = [
-  { value: "100%", label: "UKAS-accredited labs", Icon: ShieldCheck, color: TURQUOISE },
-  { value: "200+", label: "Tests to compare", Icon: FlaskConical, color: PINK },
-  { value: "No GP", label: "Referral needed", Icon: Stethoscope, color: "#3a5f85" },
-  { value: "60 sec", label: "To compare & decide", Icon: Zap, color: "#16a34a" },
-];
 
 export default function StatsBand() {
   return (
