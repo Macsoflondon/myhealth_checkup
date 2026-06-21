@@ -43,17 +43,13 @@ export default function StatsBand() {
       </div>
 
 
-      <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-[34px] py-[30px] flex items-center justify-between gap-6 flex-wrap">
+      <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-[34px] py-[15px] flex items-center justify-between gap-6 flex-wrap">
         <div className="absolute -right-[50px] -top-[60px] w-[220px] h-[220px] rounded-full bg-[#22c0d4]/[0.12]" />
         <div className="absolute right-[120px] -bottom-[90px] w-[200px] h-[200px] rounded-full bg-[#e70d69]/10" />
-        <div className="relative max-w-[560px]">
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#22c0d4] font-[Montserrat]">Why test privately</span>
-          <h2 className="font-extrabold text-[clamp(1.6rem,3vw,2.3rem)] tracking-[-0.03em] leading-[1.08] text-white mt-2.5 mb-2 font-[Montserrat]">
-            Your health is your greatest <span className="text-[#22c0d4]">asset.</span>
+        <div className="relative">
+          <h2 className="font-extrabold text-[clamp(1.2rem,2.2vw,1.7rem)] tracking-[-0.03em] leading-[1.08] text-white m-0 font-[Montserrat] whitespace-nowrap">
+            Your <span className="text-[#22c0d4]">health</span> is your greatest <span className="text-[#e70d69]">asset.</span>
           </h2>
-          <p className="text-[15px] text-white/75 leading-[1.55] m-0 font-[Lato]">
-            Compare private blood tests from the UK's most trusted providers — and book the right one with total confidence.
-          </p>
         </div>
         <div className="relative flex gap-3 flex-wrap">
           <Link to="/find-test" className="inline-flex items-center gap-2 px-[30px] py-3.5 rounded-full bg-[#22c0d4] hover:bg-[#1aa9bc] text-white text-[15px] font-semibold no-underline transition-colors font-[Montserrat]">
