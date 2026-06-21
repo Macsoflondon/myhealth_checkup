@@ -191,7 +191,7 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        <div className="max-w-[1080px] mx-auto px-4 space-y-6">
+        <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16 space-y-6">
           <HeroMasthead />
           <StatsBand />
         </div>
