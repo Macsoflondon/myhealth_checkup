@@ -159,7 +159,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </div>
 
         {ad && (
-        <Link to={ad.to} className="absolute right-[18px] bottom-[18px] w-[272px] bg-[#fafaf7]/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block">
+        <Link to={ad.to} className="absolute right-[18px] bottom-[18px] w-[272px] bg-[#fafaf7] rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block">
           <div className="flex items-center justify-between mb-2.5">
             <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.05em] text-white font-[Montserrat]" style={{ background: ad.color }}>{ad.category}</span>
             <span className="flex items-baseline gap-1">
@@ -170,7 +170,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           <div className="font-bold text-[15px] text-[#081129] leading-tight min-h-[36px] font-[Montserrat]">{ad.name}</div>
           <div className="flex items-center justify-between mt-3 gap-2">
             <img src={ad.providerLogo} alt={ad.provider}
-                 className="h-5 w-auto max-w-[96px] object-contain" />
+                 className="h-12 w-auto max-w-[140px] object-contain" />
             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-sm font-semibold font-[Montserrat]" style={{ background: ad.color }}>
               Compare <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
             </span>
