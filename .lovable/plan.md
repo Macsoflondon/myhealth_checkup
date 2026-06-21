@@ -1,43 +1,52 @@
-# Global Sticky Category Bar Rollout
+# Hero Sales Test Card — Replacement
 
 ## Goal
-Every page in the app shows the sticky category toolbar at the top. The PromoTicker carousel is retired. Homepage keeps its existing hide-until-hero behaviour.
+Restore a sales test card in the hero image area (`HeroMasthead.tsx`), positioned at the **bottom-right corner**, using the new layout from the HTML reference you provided. Size it **~1.5× the original compact hero test card** so it has more presence without dominating the image.
 
-## Current state (audit)
-- ~15 pages use `MainLayout` → already have the sticky bar.
-- ~48 pages render `<Header />` directly, plus all DB-driven category pages via `CategoryPageLayout` → currently show only `PromoTicker`, no sticky bar.
-- ~31 pages (admin tools, Dashboard, a few content pages) render neither → no top chrome at all.
+## What to build
 
-## Changes
+New component: `src/components/sections/HeroSalesTestCard.tsx`
 
-### 1. Replace `Header.tsx` contents
-File: `src/components/layout/Header.tsx`
-- Drop `<PromoTicker />`.
-- Render `<StickyCategoryBar />` (always-visible variant — no `hideUntilTriggerId`).
-- Keep `ErrorBoundary` wrapper and `className` passthrough so existing call sites keep working unchanged.
+A faithful React/Tailwind port of your reference HTML, adapted to:
+- Use real brand tokens (`#081129` navy, `#22c0d4` turquoise, `#e70d69` pink) instead of the demo `brandNavy/brandTurquoise/brandPink` config.
+- Pull live data from the existing rotating `ADVERTS` array in `HeroMasthead.tsx` (provider, test name, price, URL, category colour) — so the card cycles with the carousel.
+- Replace the placeholder "Allergy Complete Test / £299 / 295 markers" with the rotating ad's real test name, real `£price`, and the standard hero metrics (`Typical 2–5 days`, biomarker count if available else "Full panel", "Flexible collection").
+- Keep all three sections from the reference: dark navy header w/ price + 3 metric strip, white body (Additional Collection Options, About This Test, Standards & Accreditation, legal notice), and footer with `+ Compare` (secondary) and `Book Test` (primary pink → links to ad's URL).
+- Remove the `✕` close button (not a modal here — it's an overlay card).
 
-Result: all ~48 direct `<Header />` users and every page routed through `CategoryPageLayout`/`DbCategoryPage` immediately get the sticky bar instead of the ticker.
+## Placement & sizing
 
-### 2. Add the bar to the "neither" pages
-For each page that uses neither `MainLayout` nor `<Header />`, add `<Header />` at the top of its returned JSX (since Header now == sticky bar). Targets:
+In `HeroMasthead.tsx`, inside the hero image container (lines 141–179), add the card as an absolute overlay in the **bottom-right**:
 
-Admin: `AdminAuth`, `AdminRecovery`, `AdminBiomarkerAuditPage`, `AdminBiomarkerValidationPage`, `AdminTestDashboardPage`, `AdminTestMapperPage`, `Dashboard`.
+```text
+absolute right-4 bottom-4 sm:right-6 sm:bottom-6
+hidden md:flex            ← desktop/tablet only; mobile keeps image clean
+w-[clamp(360px,30vw,460px)]  ← ~1.5× the prior compact card width
+```
 
-Content / category: `CancerScreeningPage`, `ClinilabsPage`, `DiabetesTestingPage`, `FemaleHormonesTestPage`, `FertilityTestsPage`, `GeneralHealthTestPage`, `GoodbodyClinicPage`, `GutHealthPage`, `HeartHealthPage`, `HormonesPage`*, `IronProfileTestPage`, `LipidProfileTestPage`, `LondonHealthCompanyPage`, `LondonMedicalLaboratoryPage`, `MaleHormoneTestPage`, `MedicalDiagnosisPage`, `MensHealthPage`, `ProviderTestDetailPage`, `SportsPerformancePage`, `ThyroidPage`, `VitaminDTestPage`, `VitaminDeficiencyPage`, `WellWomanTestPage`, `WomensHealthPage`.
+- Original hero card was roughly `~240–300px` wide; new card targets `~380–460px` → ~1.5× larger.
+- Body uses `max-h-[55vh] overflow-y-auto` so it never exceeds the hero image height.
+- Hidden on mobile (`<md`) to preserve the slide label bubble and avoid covering the photo.
 
-*Pages routed through `DbCategoryPage`/`CategoryPageLayout` are already covered by change #1 — verify per-file and skip if already inherited.
+## Copy & compliance adjustments (British English / brand rules)
 
-### 3. Delete `PromoTicker` usages
-Search-and-remove any other direct `<PromoTicker />` imports/usages outside `Header.tsx`. Leave the component file in place (could be reused later) but unreferenced.
+- "UKAS accredited lab" → "UKAS-accredited laboratory"
+- "CQC regulated" → "CQC-regulated"
+- Replace "2-5 Days" with "Typical 2–5 days" (non-guaranteed phrasing per compliance memory)
+- "Book Test" button → "View test" (we are a comparison platform, not a booking provider) — links to `ad.url` (external `target="_blank" rel="noopener"`)
+- `+ Compare` button → wires into existing comparison persistence store (`useCompareStore` or equivalent — confirm exact hook during build)
+- Legal alert text kept, tightened to: "myhealth checkup is an independent comparison platform. Verify scheduling and clinical details directly with the chosen provider."
 
-### 4. Homepage behaviour unchanged
-`Index.tsx` continues using `MainLayout`, which passes `hideUntilTriggerId="sticky-bar-hero-end"` so the hero stays uncovered until scroll. No edits needed.
+## Files
 
-## Verification
-- Visit `/wellness`, `/cancer-screening`, `/hormones`, `/dashboard`, `/admin/test-dashboard`, `/contact`, `/privacy-policy` — sticky bar present at top, no ticker.
-- Visit `/` — hero clear on load, sticky bar appears once hero scrolls past.
-- Mobile viewport — bar collapses to the compact "Menu" sheet trigger (already implemented).
+- **New**: `src/components/sections/HeroSalesTestCard.tsx` — accepts `{ ad: Advert }` prop.
+- **Edit**: `src/components/sections/HeroMasthead.tsx` — import the new component, render `{ad && <HeroSalesTestCard ad={ad} />}` inside the hero image div (after line 177), positioned bottom-right.
 
 ## Out of scope
-- Restyling the sticky bar.
-- Re-introducing promo messaging elsewhere (can be a follow-up if desired).
+- No changes to the carousel rotation logic, slide images, or stats grid below the hero.
+- No changes to mobile layout beyond hiding the card `<md`.
+
+## Verification
+- Visual check on `/` at desktop, tablet, mobile breakpoints.
+- Confirm card cycles in sync with the slide carousel and shows real provider/test/price data.
+- Confirm "View test" opens the provider URL; "+ Compare" adds to the comparison store.
