@@ -138,7 +138,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
-      <div className="relative rounded-[18px] overflow-hidden my-4 -mx-6 sm:-mx-9 h-[360px] sm:h-[520px] md:h-[620px] lg:h-[700px] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-3 -mx-6 sm:-mx-9 h-[42svh] max-h-[420px] sm:h-[44svh] sm:max-h-[460px] md:h-[46svh] md:max-h-[520px] lg:h-[48svh] lg:max-h-[560px] bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
           return (
