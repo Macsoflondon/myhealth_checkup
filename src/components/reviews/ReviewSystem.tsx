@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import Header from '@/components/layout/Header';
 
 interface Review {
   id: string;
@@ -97,7 +98,9 @@ const ReviewSystem = () => {
   const averageRating = mockReviews.reduce((sum, review) => sum + review.rating, 0) / mockReviews.length;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <>
+      <Header />
+      <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-4">Customer Reviews</h1>
         
@@ -242,6 +245,7 @@ const ReviewSystem = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
