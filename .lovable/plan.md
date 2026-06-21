@@ -1,13 +1,11 @@
-# Rebalance hero vertical spacing
+## Plan
 
-Annotated screenshot shows: large empty band under the carousel image (before "One price you can actually trust." row), and the "Compare." title sitting right on top of the tagline strip with too little space above it.
+### 1. Remove the ad-card overlay from hero carousel
+In `src/components/sections/HeroMasthead.tsx`, delete the `{ad && (...)}` block (lines 183-203) that renders the floating test card with the **Compare** button on the hero images. This removes the buttons the user highlighted in the screenshot.
 
-## Changes — `src/components/sections/HeroMasthead.tsx`
+### 2. Update hero background to #F5F5F5
+Change the hero `<section>` background class from `bg-[#fafaf7]` to `bg-[#F5F5F5]` (line 120).
 
-1. **Drop `mt-auto` from the footer grid** (line 206) — that's what's pushing the footer copy to the very bottom of the 100svh card and creating the dead space below the image.
-2. **Increase the title's top margin** (line 130): `mt-6 md:mt-8` → `mt-12 md:mt-16` so "Compare." gets clear breathing room beneath the header divider.
-3. **Keep title bottom tight** (`mb-2`) so it still hugs the YOUR HEALTH tagline as a typographic pair.
-4. **Tighten footer top spacing** slightly (`pt-3` → `pt-4`) so it sits naturally under the image without a yawning gap.
-5. Keep `min-h-[100svh]` + `flex flex-col` on the section so the card still targets one viewport, but content now stacks naturally top-down instead of being spring-loaded to top + bottom.
+Also update the `PEARL` constant on line 13 from `"#fafaf7"` to `"#F5F5F5"` so it stays consistent with the user's stated colour.
 
-No image, copy, colour, or carousel logic changes. The `width`/`height`/`sizes`/`loading` attributes added earlier stay as-is — these already cover the responsive image loading request.
+No other sections, copy, or carousel logic are touched.

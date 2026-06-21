@@ -10,7 +10,7 @@ import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 const NAVY = "#081129";
-const PEARL = "#fafaf7";
+const PEARL = "#F5F5F5";
 
 // ── Hero carousel images ──────────────────────────────────────────────
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
@@ -117,7 +117,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#fafaf7] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-8 min-h-[100svh] flex flex-col">
+    <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-8 min-h-[100svh] flex flex-col">
       <div className="flex items-center justify-between border-b border-[#081129]/10 pb-3.5">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[10px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
@@ -180,27 +180,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           </span>
         </div>
 
-        {ad && (
-        <Link to={ad.to} className="absolute right-[18px] bottom-[18px] w-[272px] bg-[#fafaf7] rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.05em] text-white font-[Montserrat]" style={{ background: ad.color }}>{ad.category}</span>
-            <span className="flex items-baseline gap-1">
-              <span className="text-[11px] font-semibold text-[#081129]/45 font-[Lato]">from</span>
-              <span className="font-extrabold text-xl text-[#081129] font-[Montserrat]">£{ad.price}</span>
-            </span>
-          </div>
-          <div className="font-bold text-[15px] text-[#081129] leading-tight min-h-[36px] font-[Montserrat]">{ad.name}</div>
-          <div className="flex items-center mt-3 gap-3">
-            <div className="flex-1 flex items-center justify-center px-2 min-w-0">
-              <img src={ad.providerLogo} alt={ad.provider}
-                   className="h-12 w-auto max-w-full object-contain" />
-            </div>
-            <span className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-sm font-semibold font-[Montserrat]" style={{ background: ad.color }}>
-              Compare <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
-            </span>
-          </div>
-        </Link>
-        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr] gap-6 pt-4">
