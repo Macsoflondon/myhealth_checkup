@@ -3,11 +3,13 @@
  * Includes: Header (with PromoTicker), main content area, Footer, CookieConsent
  */
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
+import StickyCategoryBar from "@/components/layout/StickyCategoryBar";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -25,6 +27,18 @@ export const MainLayout = ({
   hideFooter = false,
   mainClassName = "flex-1"
 }: MainLayoutProps) => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const [heroThreshold, setHeroThreshold] = useState(() =>
+    typeof window !== "undefined" ? window.innerHeight * 0.8 : 600
+  );
+
+  useEffect(() => {
+    const onResize = () => setHeroThreshold(window.innerHeight * 0.8);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   return (
     <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
       {/* Accessibility: skip to main content */}
@@ -34,7 +48,11 @@ export const MainLayout = ({
       >
         Skip to main content
       </a>
-      
+
+      {!hideHeader && (
+        <StickyCategoryBar hideUntilScroll={isHome ? heroThreshold : undefined} />
+      )}
+
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         <SiteBreadcrumb />
         {children}
