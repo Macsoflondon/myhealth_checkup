@@ -169,19 +169,21 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 pt-1 items-center">
         <h2 className="font-bold text-[22px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {[
             { value: "100%", label: "UKAS-accredited labs", Icon: ShieldCheck, color: TURQUOISE },
             { value: "200+", label: "Tests to compare", Icon: FlaskConical, color: PINK },
             { value: "No GP", label: "Referral needed", Icon: Stethoscope, color: "#3a5f85" },
             { value: "60 sec", label: "To compare & decide", Icon: Zap, color: "#16a34a" },
           ].map(({ value, label, Icon, color }) => (
-            <div key={label} className="bg-white rounded-xl border border-[#081129]/[0.08] p-3 shadow-[0_4px_16px_rgba(8,17,41,0.05)]">
-              <span className="w-[28px] h-[28px] rounded-[9px] inline-flex items-center justify-center mb-2" style={{ background: `${color}14` }}>
-                <Icon className="w-[15px] h-[15px]" style={{ color }} strokeWidth={2} />
+            <div key={label} className="bg-white rounded-xl border border-[#081129]/[0.08] p-2 shadow-[0_4px_16px_rgba(8,17,41,0.05)] flex flex-row items-center gap-2">
+              <span className="w-[22px] h-[22px] rounded-[7px] inline-flex items-center justify-center shrink-0" style={{ background: `${color}14` }}>
+                <Icon className="w-[12px] h-[12px]" style={{ color }} strokeWidth={2} />
               </span>
-              <div className="font-extrabold text-[18px] tracking-[-0.02em] text-[#081129] leading-none font-[Montserrat]">{value}</div>
-              <div className="text-[11px] text-[#081129]/55 mt-1 font-[Lato]">{label}</div>
+              <div className="flex flex-col min-w-0">
+                <div className="font-extrabold text-[14px] tracking-[-0.02em] text-[#081129] leading-none font-[Montserrat]">{value}</div>
+                <div className="text-[9px] text-[#081129]/55 mt-0.5 font-[Lato] leading-tight">{label}</div>
+              </div>
             </div>
           ))}
         </div>
