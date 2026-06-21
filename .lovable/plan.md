@@ -1,9 +1,12 @@
-Plan
+# Hero image — show more, full width
 
-1. Remove opacity and backdrop-blur from the test display card (line 162)
-   - Change `bg-[#fafaf7]/95 backdrop-blur-md` to `bg-[#fafaf7]`
+The carousel container is already full bleed (`-mx-6 sm:-mx-9`), but the image is zoomed (`scale-[1.04]`) and cropped tight via `object-cover` on a fixed `h-[520px]` with `objectPosition: center 30%`, so subjects get cut off.
 
-2. Increase provider logo size in the ad card (line 173)
-   - Change `h-5 w-auto max-w-[96px]` to `h-12 w-auto max-w-[140px]` (2.4× taller, ~45% wider max)
+## Changes in `src/components/sections/HeroMasthead.tsx` (carousel block, ~line 138-143)
 
-That's it — two small, targeted changes to the HeroMasthead component.
+1. **Remove the `scale-[1.04]` zoom** so the image renders 1:1 within the frame — no extra cropping.
+2. **Increase frame height** from `h-[520px]` to `h-[600px] md:h-[680px]` so more of each photo is visible while preserving the full-width band.
+3. **Recentre crop** with `objectPosition: "center center"` (current `center 30%` pushes faces/subjects out of frame top).
+4. Keep `object-cover` (full-width fill, no letterboxing) and the navy backdrop for safety.
+
+No other sections, no copy, no card/logo changes.
