@@ -1,3 +1,4 @@
+import Header from "@/components/layout/Header";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -122,7 +123,9 @@ export default function AdminBiomarkerAuditPage() {
   }, [rows, provider, filterDelta]);
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <>
+      <Header />
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
       <h1 className="text-3xl font-bold mb-2">Biomarker Audit</h1>
       <p className="text-muted-foreground mb-6">
         Reconcile stored biomarkers against each provider's live product page. Run an audit, then
@@ -235,5 +238,6 @@ export default function AdminBiomarkerAuditPage() {
         )}
       </div>
     </div>
+    </>
   );
 }
