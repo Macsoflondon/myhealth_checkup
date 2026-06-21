@@ -124,8 +124,6 @@ const Header = ({ className }: HeaderProps) => {
                   className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 flex shrink-0 items-center gap-1.5 bg-[#08122b]"
                   aria-label="User controls"
                 >
-                  <LanguageSwitcher />
-                  <UserMenu isMobile />
                   <div className="pl-1 border-l border-white/20">
                     <MobileMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
                   </div>
@@ -199,15 +197,7 @@ const Header = ({ className }: HeaderProps) => {
                 />
               </Link>
 
-              <div
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center pl-2"
-                style={{ backgroundColor: "#ffffff" }}
-              >
-                <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
-                  <LanguageSwitcher />
-                  <UserMenu />
-                </nav>
-              </div>
+              <div className="flex-1" />
             </div>
           </div>
         </div>
