@@ -15,7 +15,8 @@ const heroSlide1Desktop = heroSlide1DesktopAsset.url;
 const heroSlide1Mobile = heroSlide1MobileAsset.url;
 
 // Above-the-fold: eager
-import Hero from "@/components/sections/Hero";
+import HeroMasthead from "@/components/sections/HeroMasthead";
+import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 
 // Below-the-fold: lazy-loaded to slim the initial bundle (audit 4.x)
@@ -182,8 +183,9 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        <div>
-          <Hero />
+        <div className="max-w-[1080px] mx-auto px-4 space-y-6">
+          <HeroMasthead />
+          <StatsBand />
         </div>
 
         <TestCategoryTicker />
