@@ -127,7 +127,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-6 md:mt-8 mb-2 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-12 md:mt-16 mb-2 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
@@ -203,7 +203,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr] gap-6 pt-3 mt-auto">
+      <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr] gap-6 pt-4">
         <h2 className="font-bold text-[22px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
         <p className="text-xs text-[#081129]/60 leading-[1.55] m-0 font-[Lato]">We pull live prices from accredited UK providers — Medichecks, Goodbody, Lola, Thriva and more — and line them up side by side. No markup, no hidden fees.</p>
         <p className="text-xs text-[#081129]/60 leading-[1.55] m-0 font-[Lato]">UKAS-accredited labs. CQC-regulated clinics. No GP referral needed. Results typically in 2–5 working days, by post or in clinic.</p>
