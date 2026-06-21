@@ -178,8 +178,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 pt-1 items-center">
-        <h2 className="font-bold text-[22px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
+      <div className="pt-1">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {[
             { value: "100%", label: "UKAS-accredited labs", Icon: ShieldCheck, color: TURQUOISE },
