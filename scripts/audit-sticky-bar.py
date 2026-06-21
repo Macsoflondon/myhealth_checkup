@@ -61,8 +61,9 @@ async def run(base: str, targets: list[str]) -> int:
                     pass
                 present = await page.locator(SELECTOR).first.count()
                 if path in HERO_GATED:
-                    status = "warn" if present else "pass"
-                    note = "bar visible before hero scroll" if present else "hero-gated (expected)"
+                    # Bar is rendered into the DOM but visually hero-gated; presence is fine.
+                    status = "pass" if present else "fail"
+                    note = "hero-gated (DOM present)" if present else "StickyCategoryBar missing"
                 else:
                     status = "pass" if present else "fail"
                     if not present:
