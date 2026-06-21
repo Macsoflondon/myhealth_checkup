@@ -109,12 +109,12 @@ export default function HeroMasthead({ rotateMs = 3800 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(3rem,9vw,7rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-3 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-3 mb-[4.5rem] font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
-      <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-4 mt-[18px]">
-        <span className="text-[10px] font-bold uppercase tracking-[0.18em] font-[Montserrat] text-[#081129]/55">
+      <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-4">
+        <span className="text-sm font-bold uppercase tracking-[0.14em] font-[Montserrat] text-[#081129]/55">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
