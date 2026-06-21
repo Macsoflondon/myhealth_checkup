@@ -117,7 +117,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#fafaf7] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-8">
+    <section className="rounded-[28px] overflow-hidden bg-[#fafaf7] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-8 min-h-[100svh] flex flex-col">
       <div className="flex items-center justify-between border-b border-[#081129]/10 pb-3.5">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[10px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
@@ -127,7 +127,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-10 mb-3 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-6 md:mt-8 mb-2 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
@@ -138,7 +138,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
-      <div className="relative rounded-[18px] overflow-hidden my-4 -mx-6 sm:-mx-9 h-[360px] sm:h-[520px] md:h-[620px] lg:h-[700px] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-3 -mx-6 sm:-mx-9 h-[42svh] max-h-[420px] sm:h-[44svh] sm:max-h-[460px] md:h-[46svh] md:max-h-[520px] lg:h-[48svh] lg:max-h-[560px] bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
           return (
@@ -203,7 +203,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr] gap-6 pt-1.5">
+      <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr] gap-6 pt-3 mt-auto">
         <h2 className="font-bold text-[22px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
         <p className="text-xs text-[#081129]/60 leading-[1.55] m-0 font-[Lato]">We pull live prices from accredited UK providers — Medichecks, Goodbody, Lola, Thriva and more — and line them up side by side. No markup, no hidden fees.</p>
         <p className="text-xs text-[#081129]/60 leading-[1.55] m-0 font-[Lato]">UKAS-accredited labs. CQC-regulated clinics. No GP referral needed. Results typically in 2–5 working days, by post or in clinic.</p>
