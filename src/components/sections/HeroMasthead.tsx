@@ -168,10 +168,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
             </span>
           </div>
           <div className="font-bold text-[15px] text-[#081129] leading-tight min-h-[36px] font-[Montserrat]">{ad.name}</div>
-          <div className="flex items-center justify-between mt-3 gap-2">
-            <img src={ad.providerLogo} alt={ad.provider}
-                 className="h-12 w-auto max-w-[140px] object-contain" />
-            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-sm font-semibold font-[Montserrat]" style={{ background: ad.color }}>
+          <div className="flex items-center mt-3 gap-3">
+            <div className="flex-1 flex items-center justify-center px-2 min-w-0">
+              <img src={ad.providerLogo} alt={ad.provider}
+                   className="h-12 w-auto max-w-full object-contain" />
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-sm font-semibold font-[Montserrat]" style={{ background: ad.color }}>
               Compare <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
             </span>
           </div>
