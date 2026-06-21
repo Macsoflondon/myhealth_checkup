@@ -1,19 +1,12 @@
-Re-insert the floating test-card overlay inside the hero image area (the dark carousel container) with the same auto-rotation logic that already drives `ad` and the slides.
+## Plan
 
-### What to restore
-- Positioned absolute at `right-[18px] bottom-[18px]` over the hero image.
-- Glassmorphism white card (`bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)]`).
-- Category pill on the left (`ad.color` background).
-- Price on the right (`from £{ad.price}`).
-- Test name in bold below.
-- Provider name + optional provider logo (adapted to the current `Advert` shape which carries `providerLogo` and `providerKey`).
+Remove the floating test-card overlay (the glassmorphism card showing rotating test adverts) from `src/components/sections/HeroMasthead.tsx`.
 
-### What to omit this time
-- The "Compare" CTA button and its `ArrowRight` icon at the bottom of the card.
+### Scope
+- Delete the `<Link>` block (lines 179–207) that renders `ad` as an absolute-positioned card at `right-[18px] bottom-[18px]`.
+- The rotating slide label bubble at `left-[18px] bottom-[18px]` is **kept** — only the card on the right is removed.
+- No other sections or logic touched.
 
-### Technical details
-- The `ad` variable and `ADVERTS` data already exist in `HeroMasthead.tsx`; only the JSX block needs re-inserting.
-- Use `Link to={ad.url}` so the card remains clickable.
-- Remove `ad.markers` references (that field no longer exists in the current `Advert` interface). Replace with the provider logo thumbnail if layout permits, or simply show `{ad.provider}` text.
-- Ensure the overlay sits inside the relative hero-image container, after the gradient overlay div and before the closing `</div>` of that container.
-- No other sections are touched; the compact stat-row footer stays as-is.
+### Cleanup considerations
+- The `ad` variable (line 117) and `ADVERTS` / `buildAdverts()` logic will be left in place to avoid breaking imports, but will simply go unused.
+- The `animate-fade-in` class can remain in the stylesheet as it is also used by the label bubble.

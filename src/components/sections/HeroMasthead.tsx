@@ -176,35 +176,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           </span>
         </div>
 
-        {ad && (
-          <Link
-            key={`ad-${i % ADVERTS.length}`}
-            to={ad.url || ad.to}
-            className="absolute right-[18px] bottom-[18px] w-[272px] rounded-xl border border-border/60 bg-card/95 backdrop-blur-md text-card-foreground shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block p-5 animate-fade-in transition-transform hover:-translate-y-0.5"
-          >
-            <div className="flex items-center justify-between gap-3 mb-3">
-              <span
-                className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.06em] text-white font-[Montserrat]"
-                style={{ background: ad.color }}
-              >
-                {ad.category}
-              </span>
-              <span className="flex items-baseline gap-1">
-                <span className="text-[11px] font-medium text-muted-foreground font-[Lato]">from</span>
-                <span className="font-extrabold text-xl text-foreground font-[Montserrat] tracking-tight">£{ad.price}</span>
-              </span>
-            </div>
-            <h3 className="font-semibold text-sm leading-snug text-foreground min-h-[40px] font-[Montserrat] m-0">
-              {ad.name}
-            </h3>
-            <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border/60">
-              {ad.providerLogo && (
-                <img src={ad.providerLogo} alt={ad.provider} className="h-5 w-auto object-contain" />
-              )}
-              <span className="text-xs text-muted-foreground font-[Lato]">{ad.provider}</span>
-            </div>
-          </Link>
-        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 pt-1 items-center">
