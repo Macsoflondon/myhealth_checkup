@@ -1,36 +1,19 @@
-## Plan: Condense hero stat cards with icon-left layout
+Re-insert the floating test-card overlay inside the hero image area (the dark carousel container) with the same auto-rotation logic that already drives `ad` and the slides.
 
-### What will change
-In `src/components/sections/HeroMasthead.tsx`, the four stat cards at the bottom of the hero section will switch from a vertical stack (icon → value → label) to a compact horizontal row (icon left, value+label right). The cards themselves will be shrunk to roughly half their current footprint.
+### What to restore
+- Positioned absolute at `right-[18px] bottom-[18px]` over the hero image.
+- Glassmorphism white card (`bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)]`).
+- Category pill on the left (`ad.color` background).
+- Price on the right (`from £{ad.price}`).
+- Test name in bold below.
+- Provider name + optional provider logo (adapted to the current `Advert` shape which carries `providerLogo` and `providerKey`).
 
-### Layout change (each card)
-```
-Current:  vertical stack inside a card
-[  icon  ]
- 100%
-UKAS-accredited labs
+### What to omit this time
+- The "Compare" CTA button and its `ArrowRight` icon at the bottom of the card.
 
-Proposed: horizontal row, icon + text side-by-side
-[icon]  100%
-        UKAS-accredited labs
-```
-
-### Sizing adjustments per card
-| Property | Current | Proposed |
-|---|---|---|
-| Card padding | `p-3` | `p-2` |
-| Icon wrapper | `w-[28px] h-[28px]` | `w-[22px] h-[22px]` |
-| Icon SVG | `w-[15px] h-[15px]` | `w-[12px] h-[12px]` |
-| Value text | `text-[18px]` | `text-[14px]` |
-| Label text | `text-[11px]` | `text-[9px]` |
-| Grid gap | `gap-2.5` | `gap-2` |
-
-### Implementation details
-- Each card becomes `flex flex-row items-center gap-2` instead of the current block layout.
-- The icon wrapper stays a rounded coloured box but is smaller.
-- The value and label sit inside a nested `flex flex-col` to the right of the icon.
-- No changes to data/content — same four stats, same colours.
-- No other components touched.
-
-### Verification
-Screenshot the hero section to confirm all four cards sit compactly in one row and the overall hero fits within a single viewport.
+### Technical details
+- The `ad` variable and `ADVERTS` data already exist in `HeroMasthead.tsx`; only the JSX block needs re-inserting.
+- Use `Link to={ad.url}` so the card remains clickable.
+- Remove `ad.markers` references (that field no longer exists in the current `Advert` interface). Replace with the provider logo thumbnail if layout permits, or simply show `{ad.provider}` text.
+- Ensure the overlay sits inside the relative hero-image container, after the gradient overlay div and before the closing `</div>` of that container.
+- No other sections are touched; the compact stat-row footer stays as-is.
