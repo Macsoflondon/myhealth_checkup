@@ -169,7 +169,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="absolute left-[18px] bottom-[18px] pointer-events-none">
           <span
             key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-2 px-3 py-[7px] rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-xs font-semibold font-[Montserrat] animate-fade-in"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-4xl font-semibold font-[Montserrat] animate-fade-in"
           >
             <span className="w-[7px] h-[7px] rounded-full" style={{ background: TURQUOISE }} />
             {slide.label}
