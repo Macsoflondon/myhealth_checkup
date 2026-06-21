@@ -128,7 +128,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </div>
 
       <h1 className="font-extrabold text-[clamp(5rem,13vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-3 md:mt-4 mb-3 font-[Montserrat]">
-        Compare<span className="text-[#22c0d4]">.</span>
+        <span className="inline-block animate-fade-in">Compare</span><span className="inline-block text-[#22c0d4] animate-dot-pop origin-bottom">.</span>
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-2">
