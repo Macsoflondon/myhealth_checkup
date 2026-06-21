@@ -5,6 +5,7 @@ import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
+import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
