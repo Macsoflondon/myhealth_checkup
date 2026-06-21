@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
+import { PROVIDER_LOGOS } from "@/constants/providers";
+import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 const NAVY = "#081129";
+const PEARL = "#fafaf7";
 
 // ── Hero carousel images ──────────────────────────────────────────────
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
@@ -20,9 +23,7 @@ const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
 const bloodTestKit = bloodTestKitAsset.url;
-
-// Heart mark — embedded as base64 so no separate asset upload is needed
-const HEART_MARK_B64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKgAAACiCAYAAADV0IbSAAAQAElEQVR4AeydCYAUxbnHv+qePVgOUSFGRH0GkBsFRKOoYFDihcczKt4BRRMjSjDiFY1HEqO+xzOHGlGIzxM1aowaFMMToxJFDrkRECISBAQ595zprvf/10wvvcvuzuzuHD1LD11d1VXVVd/31a+/6uqeHSxpoZ9jO5/f6t6uL8ya2O3NtQ92/duK33SdtuTew6ctvvvwaZ/+/PC3Prqlx1sf3dTzrVk/7fn2zBt6vD3j2p7T37ymz/TpY46c/uGVA/8+54eDZiy87LiZqy468b11I0/6x+bzT/mw7LxT/+meM2K2PuucOfqMH8zXp478VH/vgn/qnifcd1WmzHh25zuO+Xm312be1X3apwyU/TbITvkn9Jg2a0KPtz709BjXc/q71GVsz2lvX9vz7b9RpzF9p7/r1+ny42Z+dsng99ZcNOQfX1047IMd1OsH358VPfeMj/XZZ32iR5w71+h22sgFevili/Uply3Rw0Yt0UNHz9Mduo9umyk962u3xQH66+5PzH+k12vOxW0v39I20rqXp7gr4jCtFfd1BCUFYqmIKVFii/dRytaWVchDbSmllRIG11LCf3ZRO+nU9azHv3fVEn3sD9/TrJeOMPLQu8+4t9vr845pddzkEinsoBItW5YutKBMBMESZQml0aIjoguNZEqhihWxxbVZVhCTMmheZTlupe3qKivqVNoacUxXWDG31HJ1TLk6inKNINUh5oodc0RpLQp92bpI+g65ccfxoz/S6dAv1TagYKpVg11vYu8pX03u+7LuUNDhSAzbnnopMXmuEtc1Kan+uMqNeQdaYXxFabfALnKVwiBzmJFnqQKvjhcT1Oo02ixs01FOGLdEH/fTBfrQIbec65U1Nr6v6xsL+xccPbFAR4pEC/AQQfMRBTQsLRakMRfMbkgFEkv9kDoSTQYpwKxAMJASTKTFSkBqOVoIqRUVKYi0lSHXLtG9znxkqmThY2Whj4x28Vi//9VPHfFnvX9kn2+72vAk2o0PKjuGaXHIoRVmVoPoijgMLHfEcljX1Vox9gdtwbNK/KNVvFjDe8ZzRHQdFrTsQul03BWvfPe2xbrT4NHdvbrJ4gldnnyOtyQRsYotMb1F0LwtWlxbS72QQgoVD4I62laCc5UCx1bck2odK3BShxQeFRZxTRBXG0/qh9SKiXQ8ZMiFg388VyfTqbnl0L+5TeTm/Fu73z31hf4v6DZWiSiIADtiH9+0KM0UeKtCfiXT/uAmDlxRjtbgF8dOwhIArsBVYqZ6TJIFKKqxaQ9OwOra8ZO0DTziyRp1edDppOuX971hmpGHx3WFgQOvLvhdz7/s6FTQ4XRlSXHE1u3RTVEqkILCwojgLDSstBaIYdee7lEEARsHqYXLlyESdaS2J1WuIE8koorlxLGLG9TN9N2MndWMc3N26vP9n9EDW/e4UIkyMvgt5Gr4DxHX0aoK6FWwAspjJo5XZ7LuoOJgsxDnADumBP5IW1opuxpOZntt+SyoMXKaPo/lCFrDMTuORNrsK31veVd3Pufuh5BdY/tZt4lTRpWfWWopq9hWuI9EYAVooVKBlHXNPSkgtRAIqckTbbMNpZRVoKXIFlxuOgGpqyoBX2V996Qoq57ukRYGvyflVK8SkCpHGUgPGjTuSPab7mA1ucEcnHhzjwmTXhvwvC5OrGVgI9gtTorWGI5aMil4o1pZ4rqqinmoHj+RB/S4Fhq1sBIwx4mdIpRWIcAsQDD1tUI/CIkaJtIJKxIJZjjwu66YbsThaLoAFQXtuhx1Q9frn9VImu23vaZu7VrYZZRt6QI0buH6iHiQUnb2ZClJzZPCGJZpVaCNNp4UHrgaUktbkTikEi2I6ZiVIqQEnoDSk4qrxcbCyXK0WLgf9UP6ncFj5h829I5LJc0fT6c0N5v+5l7s/7ge0vqIMYKR9LduKS3al6k1PJ5WMdahB3UxXEzjQk+kBPeiKEGmRo6r3BhOL3C1VlpZFgCs1yYow1k4H9QwbYLJEfEg5aGKxhhhXYIYcLou1ijRMrj1OLSDf/iU5oKuxCrGVE4pRNAzYBKruZByurdEwSxabC3WnpA6uAPQMRuQSi1ILa0dK+Zb3ePYjjowDBrClN8QpFZMSecjRz7dnMWhMVqtnVXrOJCH0wc9q9tFSsQFSZ6ArlbiBeY5HiE+jeJDLzgPrKASThFvBQ+fBh8gKIgvkARkoIrZ3MQKHk0WEFpmaqUYAcR4zAOUM4oHK57vCqBEjoancWOVQjh11HQljo7KwVsduWpea5CISokNNOFSEYnDJBZEiXie1LJ1OyVasSrKKUWEadFS78KJJrBEWSJaEVKeb4JSuA48T4rp3geppSUGGMv8kNoxtxwe1EF+ckirtBDSQ/pf9ko6n5dCCaNuYHfvAE4zOpAwPkwCqLwcDAHy/Zt2ySPydWIqFxCjxHIZi/dRmimttavFcaK6aqurHBfAVS+QWO4FrVT1/ajJU77+a5aY4pgCkE4CVMAZgyiuUyVHf+nKqIUlAvhMPVu5stStFP7QBoqyulGOrHYYdhYcCzzZ+/atba1isc10LgZSwkhI/VJGtSPD5pjn9v7srKRDQLNi5uB1MurQ8783pPVh7QkAQ21Ibc3pXcw0P/iT0Upy9KFsOeo67DaXFrjrgO/P4ODTY1IOkwaGJkaGlz/g41HIRUaONsqTo65rdxseZ8sCawb+wXwBmRASAMbsm1M7V16i/94AAAWiSURBVPDM4/E9/34953/J4MlCecKwF1jgpd6361ZWoUQwhVNdwkkIvJhTO/OnbPno5y+ve3kl07kMlC2X/Yd9Z9ECYw676IIhJYeaxRDnbQ9SikAQCCnTf9m5aNrEzyf9iulcB8qVaxnC/rNkgXs7nPSCwrKH3XHgFRKE1AMTh/J+6ept/K+CmA5CoJxBkCOUIcMW+HzAH7SdgFMlYg6+Qr8epJ9VbpIfLvnVvsgKzEYZAyNMKEhmLPBmn7t0O3v3q0z2ohKQxtMiW6I75dQFtykeBym0CECDZNCgyXJTlysmDGrVqU6xFCAlABtiu+TI+eNVnZVynEn5cixC2H0mLXDTfoPvVwCxvj6+dsoCCydlDgGlFVpo+GrQJN0QnJucUuk9b5wKsvohoEEenWbItmTAQzpSj+fUePf+jVMReDipfggordDCAh/Gf8tuXa9WpW6VdJ83NtCe0xM+BNSzRAuJzZdA8DC+PnVi8J6Hzb0uL+CkDns5oDRBywr3feuUGaqeqZ1wHvjJ1SqfNA4BzafRSiLrlwMfrX4YX7vqLrdS8g1O6hACSiu0gPB+v/t0ceJ/3qitDhdE+TSt++UPAfVbI0/Tj/X46YLuRfvXKT3hzJcFUV0KhIDWZZU8yKvrTRHhXB/blTcP4VMxcwhoKlYKWJ3/7TlhfUe7ZA+pPqvcEugvfuwhcAoZIaApGClIVfj1udPbdDvQvyii55xd/m85YeGtKkiypkOWENB0WDGLbdy43+D7/d0RzvfKvpAzFt/V4uCkniGgtEKehNqLIsL56s5lC89f8qsWCSeHJQSUVshqaFpn/Jsi/9fnCOfvtnx83zXL/+eIprWYH2eFgObBOH3af2KNvylyRMvtm9+98JerJ9+WB+I3S8QQ0GaZL/Mn8zVmp0ib6o4I59jSd4oeX/P8i9WZLTgRAhrgwR37nctH+19jVrgx+fYnV6uXlr5UFWCx0ypaCGhazZnexm7f//jJKvGOnXAePPfHKr09BL+1ENCAjpH/u518r743wsmhCQGlFQIWuGLndzu5Ul9dtVW89+oBEzMr4oSAZsXMqXdCOPkrIISTD+CPWTBhr5vW/dYKAfVbI8dpvmNvaxcKV+p8xtmSH8CnauoQ0FQtleF6fMd+WpuuB7ro5ydfvX343vCME6om3UJAk5oo8xVGdBrRge/YK13HPEYKwg/HZl7r1HoIAU3NThmtNemgEV9vdyplb12pN2TcENCGrJOFMv5e/Lzy9Rn+knEWFMlQFyGgGTJsKs3yW/GTt86/r6V+VS4VGySrEwKazEIZKuffsfeeN06Fi6GGDRwC2rB9MlLKH/dqid9+z4SxQkAzYdUG2uSKPXy+2YCBahWFgNYySKYPX1//+uZM99GS2g8BbUmjmQFdct1kCGiuRyDsv0ELhIA2aJ6wMNcWCAHN9QiE/TdogRDQBs0TFubaAiGguR6BsP8GLRAC2qB5wsKmWyA9Z4aApseOYSsZskAIaIYMGzabHguEgKbHjmErGbJACGiGDBs2mx4LhICmx45hKxmyQAhohgwbNtt0C/jPDAH1WyNMB84CIaCBG5JQIL8FQkD91gjTgbNACGjghiQUyG+BEFC/NcJ04CwQAhq4IQkF8lugcYD6zwzToQWyYIEQ0CwYOeyi6RYIAW267cIzs2CBENAsGDnsoukWCAFtuu3CM7NggRDQLBg57KLpFsgWoE2XMDxzr7ZACOhePfzBVz4ENPhjtFdLGAK6Vw9/8JUPAQ3+GO3VEoaA7tXDH3zlgw9o8G0YSphBC4SAZtC4YdPNt0AIaPNtGLaQQQuEgGbQuGHTzbfA/wMAAP//8DtTewAAAAZJREFUAwD4wBFERndl/wAAAABJRU5ErkJggg==";
+const heartMark = heartMarkAsset.url;
 
 const SLIDES = [
   { src: joggingWoman, label: "Stay ahead of your health" },
@@ -44,35 +45,44 @@ const CATEGORY_META: Record<string, { color: string; to: string }> = {
   Vitamins: { color: "#16a34a", to: "/tests/vitamins" },
 };
 
-const PICKS: { category: string; name: string; tag?: string }[] = [
-  { category: "General Health", name: "Advanced Well Woman Blood Test", tag: "General Health" },
-  { category: "Hormone", name: "Testosterone Blood Test", tag: "Hormone" },
-  { category: "Heart", name: "Cholesterol Blood Test", tag: "Heart" },
-  { category: "Thyroid", name: "Thyroid Function Blood Test", tag: "Thyroid" },
-  { category: "Diabetes", name: "Diabetes (HbA1c) Blood Test", tag: "Diabetes" },
-  { category: "Fertility", name: "Day 3 Fertility Blood Test", tag: "Fertility" },
-  { category: "Vitamins", name: "Vitamin D (25 OH) Blood Test" },
+// providerName in realTestData → key in PROVIDER_LOGOS
+const PROVIDER_KEY: Record<string, keyof typeof PROVIDER_LOGOS> = {
+  "Medichecks": "medichecks",
+  "Goodbody Clinic": "goodbody-clinic",
+  "London Medical Laboratory": "london-medical-laboratory",
+  "Clinilabs": "clinilabs",
+};
+
+// Curated rotation: provider + preferred test name + display category
+const ROTATION: { provider: string; testName: string; category: string }[] = [
+  { provider: "Medichecks", testName: "Advanced Well Woman Blood Test", category: "General Health" },
+  { provider: "Goodbody Clinic", testName: "", category: "General Health" },
+  { provider: "London Medical Laboratory", testName: "", category: "General Health" },
+  { provider: "Clinilabs", testName: "", category: "General Health" },
+  { provider: "Medichecks", testName: "Cholesterol Blood Test", category: "Heart" },
+  { provider: "Medichecks", testName: "Thyroid Function Blood Test", category: "Thyroid" },
 ];
 
 interface Advert {
   category: string; color: string; to: string;
-  name: string; price: number; provider: string; markers: number | null; url: string;
+  name: string; price: number; provider: string;
+  providerKey: keyof typeof PROVIDER_LOGOS;
+  providerLogo: string; url: string;
 }
 
 function buildAdverts(): Advert[] {
-  const find = (name: string, tag?: string): RealTestData | undefined =>
-    realTestData.find((t) => t["Test Name"] === name) ||
-    (tag ? realTestData.find((t) => t.Tags === tag) : undefined);
-
-  return PICKS.flatMap(({ category, name, tag }) => {
-    const t = find(name, tag);
+  return ROTATION.flatMap(({ provider, testName, category }) => {
+    const t: RealTestData | undefined =
+      (testName && realTestData.find((r) => r.Provider === provider && r["Test Name"] === testName)) ||
+      realTestData.find((r) => r.Provider === provider);
     if (!t) return [];
     const meta = CATEGORY_META[category] ?? { color: TURQUOISE, to: "/compare" };
-    const count = t["Biomarker Count"];
+    const key = PROVIDER_KEY[t.Provider];
+    if (!key) return [];
     return [{
       category, color: meta.color, to: meta.to,
       name: t["Test Name"], price: t["Price (£)"], provider: t.Provider,
-      markers: count > 4 ? count : null, url: t["Test URL"],
+      providerKey: key, providerLogo: PROVIDER_LOGOS[key], url: t["Test URL"],
     }];
   });
 }
@@ -85,7 +95,7 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center gap-2.5 leading-none">
-    <img src={HEART_MARK_B64} alt="myhealth checkup" className="h-8 w-auto" />
+    <img src={heartMark} alt="myhealth checkup" className="h-9 w-auto" />
     <span className="font-bold text-[26px] tracking-[-0.02em] font-[Montserrat]">
       <span className="text-[#081129]">myhealth</span>
       <span className="text-[#e70d69]">checkup</span>
@@ -104,7 +114,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-[28px] overflow-hidden bg-white border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-8">
+    <section className="rounded-[28px] overflow-hidden bg-[#fafaf7] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-8">
       <div className="flex items-center justify-between border-b border-[#081129]/10 pb-3.5">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[10px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
@@ -114,22 +124,22 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-3 mb-[4.5rem] font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(4.5rem,12vw,10rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-10 mb-3 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-4">
-        <span className="text-sm font-bold uppercase tracking-[0.14em] font-[Montserrat] text-[#081129]/55">
+        <span className="text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129]/55">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
         <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
 
-      <div className="relative rounded-[18px] overflow-hidden my-4 h-[480px] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-4 -mx-6 sm:-mx-9 h-[520px] bg-[#081129]">
         {SLIDES.map((s, n) => (
           <img key={n} src={s.src} alt={s.label}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-            style={{ opacity: n === i % SLIDES.length ? 1 : 0 }} />
+            className="absolute inset-0 w-full h-full object-cover scale-[1.04] transition-opacity duration-700"
+            style={{ opacity: n === i % SLIDES.length ? 1 : 0, objectPosition: "center 30%" }} />
         ))}
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
@@ -149,7 +159,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </div>
 
         {ad && (
-        <Link to={ad.to} className="absolute right-[18px] bottom-[18px] w-[264px] bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block">
+        <Link to={ad.to} className="absolute right-[18px] bottom-[18px] w-[272px] bg-[#fafaf7]/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block">
           <div className="flex items-center justify-between mb-2.5">
             <span className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.05em] text-white font-[Montserrat]" style={{ background: ad.color }}>{ad.category}</span>
             <span className="flex items-baseline gap-1">
@@ -158,8 +168,9 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
             </span>
           </div>
           <div className="font-bold text-[15px] text-[#081129] leading-tight min-h-[36px] font-[Montserrat]">{ad.name}</div>
-          <div className="flex items-center justify-between mt-3">
-            <span className="text-[11.5px] text-[#081129]/50 font-[Lato]">{ad.provider}{ad.markers ? ` · ${ad.markers} markers` : ""}</span>
+          <div className="flex items-center justify-between mt-3 gap-2">
+            <img src={ad.providerLogo} alt={ad.provider}
+                 className="h-5 w-auto max-w-[96px] object-contain" />
             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white text-sm font-semibold font-[Montserrat]" style={{ background: ad.color }}>
               Compare <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
             </span>
