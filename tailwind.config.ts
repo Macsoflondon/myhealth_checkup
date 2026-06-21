@@ -309,7 +309,8 @@ export default {
     			'fade-in': 'fade-in 0.3s ease-out',
     			marquee: 'marquee 8s linear infinite',
     			ripple: 'ripple 600ms cubic-bezier(0.4, 0, 0.2, 1)',
-    			float: 'float 3s ease-in-out infinite'
+    			float: 'float 3s ease-in-out infinite',
+    			'dot-pop': 'dot-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s both'
     		}
     	}
     },
