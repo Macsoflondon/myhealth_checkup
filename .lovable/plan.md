@@ -1,21 +1,24 @@
-## Shrink hero sales card to a compact teaser
+## Hero card v3: teaser → modal, fixed size, provider colours
 
-Replace the current full overlay card on the hero with a small teaser (~110–130px wide, roughly a quarter of current footprint) showing only the essentials.
+### 1. `src/components/sections/HeroSalesTestCard.tsx` — refactor
+- **Fixed size:** `w-[280px] h-[150px]` (≈1.75× current ~160px). Hard pixel dims so it doesn't shimmy between rotations. Becomes a `<button>` opening a modal.
+- **Provider colour** resolved via `getBranding(ad.provider)` from `src/data/providerBranding.ts` → `brand.primary`. Fallback `#22c0d4`.
+- **Layout:**
+  - Top strip: 4px bar, `background: brand.primary`
+  - Provider name: 13px, bold, uppercase, `color: brand.primary`
+  - Test name: 13px, navy, 2-line clamp
+  - Price: 22px, black, navy `#081129`
+  - CTA pill: full width, navy bg, white text, "View details"
+- Clicking anywhere on the card opens the modal (the inner CTA is visual; whole card is the trigger).
 
-### Changes
+### 2. Modal (inline in same file, shadcn `Dialog`)
+- Reuses the previous full content: header (navy, pink top accent), price, 3-metric strip, collection options, accreditation badges, disclaimer.
+- Footer: `+ Compare` (→ `/compare`) and `View test` (→ `ad.url`, new tab, navy bg).
+- Controlled with local `useState`.
 
-**`src/components/sections/HeroSalesTestCard.tsx`** — rewrite as compact teaser:
-- Width: `w-[clamp(150px,11vw,180px)]` (~quarter of current ~460px max)
-- Vertical stack, rounded-xl, white bg, navy top accent bar
-- Content (top to bottom):
-  - Provider name (tiny uppercase turquoise, 8px)
-  - Test name (11px bold navy, 2-line clamp)
-  - Price (£XX.XX, 16px black pink)
-  - Single full-width "View test" pink pill button (10px) → links to `ad.url`
-- Drop: collection options, accreditation badges, disclaimer, Compare button, 3-metric strip, provider logo image
-- Keep positioning: `absolute right-4 bottom-4 sm:right-6 sm:bottom-6`, `hidden md:flex`
+### 3. No changes to `HeroMasthead.tsx`
+Same import, same slot.
 
-**No changes to `HeroMasthead.tsx`** — same component slot, same props.
-
-### Rationale
-At ¼ size the full card content would be illegible. Teaser preserves the sales hook (test, price, CTA) without competing with the hero imagery or slide label bubble.
+### Notes
+- "Same colour as provider" applies to top strip + provider name only. Price and CTA stay navy as you specified.
+- Card hidden under `md` as before.
