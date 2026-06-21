@@ -3,7 +3,7 @@
  * Includes: Header (with PromoTicker), main content area, Footer, CookieConsent
  */
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 
 import Footer from "@/components/layout/Footer";
@@ -29,15 +29,6 @@ export const MainLayout = ({
 }: MainLayoutProps) => {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
-  const [heroThreshold, setHeroThreshold] = useState(() =>
-    typeof window !== "undefined" ? window.innerHeight * 0.8 : 600
-  );
-
-  useEffect(() => {
-    const onResize = () => setHeroThreshold(window.innerHeight * 0.8);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
 
   return (
     <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
@@ -50,7 +41,7 @@ export const MainLayout = ({
       </a>
 
       {!hideHeader && (
-        <StickyCategoryBar hideUntilScroll={isHome ? heroThreshold : undefined} />
+        <StickyCategoryBar hideUntilTriggerId={isHome ? "sticky-bar-hero-end" : undefined} />
       )}
 
       <main id="main-content" className={mainClassName} tabIndex={-1}>
