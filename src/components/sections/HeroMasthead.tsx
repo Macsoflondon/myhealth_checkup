@@ -139,11 +139,30 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </div>
 
       <div className="relative rounded-[18px] overflow-hidden my-4 -mx-6 sm:-mx-9 h-[360px] sm:h-[520px] md:h-[620px] lg:h-[700px] bg-[#081129]">
-        {SLIDES.map((s, n) => (
-          <img key={n} src={s.src} alt={s.label}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-            style={{ opacity: n === i % SLIDES.length ? 1 : 0, objectPosition: s.pos }} />
-        ))}
+        {SLIDES.map((s, n) => {
+          const active = n === i % SLIDES.length;
+          return (
+            <img
+              key={n}
+              src={s.src}
+              alt={s.label}
+              width={1920}
+              height={1080}
+              sizes="100vw"
+              loading={n === 0 ? "eager" : "lazy"}
+              fetchPriority={n === 0 ? "high" : "low"}
+              decoding="async"
+              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+              style={{
+                opacity: active ? 1 : 0,
+                ["--pos-m" as any]: s.posMobile,
+                ["--pos-t" as any]: s.posTablet,
+                ["--pos-d" as any]: s.posDesktop,
+              }}
+            />
+          );
+        })}
+
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         <div className="absolute left-5 top-[18px] flex gap-1.5">
