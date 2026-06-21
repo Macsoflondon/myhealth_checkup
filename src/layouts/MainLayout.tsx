@@ -4,7 +4,7 @@
  */
 
 import { ReactNode } from "react";
-import Header from "@/components/layout/Header";
+
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
@@ -34,7 +34,7 @@ export const MainLayout = ({
       >
         Skip to main content
       </a>
-      {!hideHeader && <Header />}
+      
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         <SiteBreadcrumb />
         {children}
