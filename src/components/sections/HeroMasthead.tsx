@@ -165,6 +165,34 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
+        {ad && (
+          <Link
+            to={ad.url || ad.to}
+            className="absolute right-[18px] bottom-[18px] w-[264px] bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_16px_40px_rgba(8,17,41,0.28)] no-underline block"
+          >
+            <div className="flex items-center justify-between mb-2.5">
+              <span
+                className="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.05em] text-white font-[Montserrat]"
+                style={{ background: ad.color }}
+              >
+                {ad.category}
+              </span>
+              <span className="flex items-baseline gap-1">
+                <span className="text-[11px] font-semibold text-[#081129]/45 font-[Lato]">from</span>
+                <span className="font-extrabold text-xl text-[#081129] font-[Montserrat]">£{ad.price}</span>
+              </span>
+            </div>
+            <div className="font-bold text-[15px] text-[#081129] leading-tight min-h-[36px] font-[Montserrat]">
+              {ad.name}
+            </div>
+            <div className="flex items-center gap-2 mt-3">
+              {ad.providerLogo && (
+                <img src={ad.providerLogo} alt={ad.provider} className="h-5 w-auto object-contain" />
+              )}
+              <span className="text-[11.5px] text-[#081129]/55 font-[Lato]">{ad.provider}</span>
+            </div>
+          </Link>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 pt-1 items-center">
