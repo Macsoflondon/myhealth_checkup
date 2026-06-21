@@ -15,7 +15,7 @@ import { UserMenu } from "../header/UserMenu";
 import { MobileMenu } from "../header/MobileMenu";
 // MobileNavigationDrawer is heavy (~640 lines) — lazy-load so it doesn't bloat the initial header chunk.
 const MobileNavigationDrawer = lazy(() =>
-  import("../header/MobileNavigationDrawer").then(m => ({ default: m.MobileNavigationDrawer }))
+  import("../header/MobileNavigationDrawer").then((m) => ({ default: m.MobileNavigationDrawer })),
 );
 import { LanguageSwitcher } from "../header/LanguageSwitcher";
 import { UtilityBar } from "../header/UtilityBar";
@@ -70,9 +70,6 @@ const Header = ({ className }: HeaderProps) => {
   const isSearchDocked = collapseProgress > 0.6;
   const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-
-
-
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(!isMenuOpen);
   }, [isMenuOpen]);
@@ -81,7 +78,6 @@ const Header = ({ className }: HeaderProps) => {
     // Close mobile menu when route changes
     setIsMenuOpen(false);
   }, [location.pathname]);
-
 
   // Measure ticker height for sticky toolbar offset (desktop only)
   useEffect(() => {
@@ -115,8 +111,8 @@ const Header = ({ className }: HeaderProps) => {
       <ErrorBoundary>
         <div className={cn("sticky top-0 z-50 bg-[hsl(var(--brand-navy))]", className)}>
           <PromoTicker />
-        <header className="bg-[hsl(var(--brand-navy))] shadow-md">
-          <div className="container mx-auto max-w-full px-3 sm:px-4 bg-[#08122b]">
+          <header className="bg-[hsl(var(--brand-navy))] shadow-md">
+            <div className="container mx-auto max-w-full px-3 sm:px-4 bg-[#08122b]">
               <div className="relative py-4 flex items-center justify-center min-w-0 bg-[#08122b] pr-[9.5rem] xs:pr-[10rem] sm:pr-[10.5rem]">
                 <Link to="/" className="relative z-10 flex items-center justify-center overflow-hidden bg-[#08122b]">
                   <img
@@ -126,8 +122,10 @@ const Header = ({ className }: HeaderProps) => {
                   />
                 </Link>
 
-                <nav className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 flex shrink-0 items-center gap-1.5 bg-[#08122b]" aria-label="User controls">
-
+                <nav
+                  className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 flex shrink-0 items-center gap-1.5 bg-[#08122b]"
+                  aria-label="User controls"
+                >
                   <LanguageSwitcher />
                   <UserMenu isMobile />
                   <div className="pl-1 border-l border-white/20">
@@ -135,10 +133,9 @@ const Header = ({ className }: HeaderProps) => {
                   </div>
                 </nav>
               </div>
-          </div>
+            </div>
 
-          {/* Divider removed */}
-
+            {/* Divider removed */}
 
             {/* Mobile Navigation Drawer (lazy — only loads when first opened) */}
             {isMenuOpen && (
@@ -154,7 +151,7 @@ const Header = ({ className }: HeaderProps) => {
   // Toolbar with glassmorphism
   const toolbarClasses = cn(
     "bg-brand-navy border-b border-white/10 my-0 mx-0 px-0 py-2 md:py-2.5 lg:py-1 shadow-[0_4px_30px_rgba(0,0,0,0.2)]",
-    styles.toolbar
+    styles.toolbar,
   );
   return (
     <ErrorBoundary>
@@ -204,7 +201,10 @@ const Header = ({ className }: HeaderProps) => {
                 />
               </Link>
 
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center pl-2" style={{ backgroundColor: "#ffffff" }}>
+              <div
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex items-center pl-2"
+                style={{ backgroundColor: "#ffffff" }}
+              >
                 <nav className="flex items-center gap-1 md:gap-2 lg:gap-3" aria-label="User controls">
                   <LanguageSwitcher />
                   <UserMenu />
@@ -217,21 +217,25 @@ const Header = ({ className }: HeaderProps) => {
 
       {/* Toolbar locks to the top of the viewport once the header above has
           fully scrolled out — sticky top:0 achieves this naturally. */}
-      <div className="sticky top-0 z-40 motion-reduce:transition-none">
-        <div
-          className={cn(toolbarClasses, "motion-reduce:transition-none")}
-          style={{
-            overflow: "visible",
-            boxShadow: `0 4px 30px rgba(0,0,0,${0.2 + collapseProgress * 0.15})`,
-          }}
-        >
-          <div className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full" style={{ overflow: "visible" }}>
-            <NavigationItems className="flex items-center gap-0 flex-nowrap justify-center" />
+      {false && (
+        <div className="sticky top-0 z-40 motion-reduce:transition-none">
+          <div
+            className={cn(toolbarClasses, "motion-reduce:transition-none")}
+            style={{
+              overflow: "visible",
+              boxShadow: `0 4px 30px rgba(0,0,0,${0.2 + collapseProgress * 0.15})`,
+            }}
+          >
+            <div
+              className="flex items-center justify-center px-2 sm:px-3 lg:px-8 w-full"
+              style={{ overflow: "visible" }}
+            >
+              <NavigationItems className="flex items-center gap-0 flex-nowrap justify-center" />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </ErrorBoundary>
   );
 };
 export default Header;
-
