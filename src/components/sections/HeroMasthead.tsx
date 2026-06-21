@@ -169,7 +169,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="absolute left-[18px] bottom-[18px] pointer-events-none">
           <span
             key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-2 px-3 py-[7px] rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-xs font-semibold font-[Montserrat] animate-fade-in"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-4xl font-semibold font-[Montserrat] animate-fade-in"
           >
             <span className="w-[7px] h-[7px] rounded-full" style={{ background: TURQUOISE }} />
             {slide.label}
@@ -179,7 +179,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_2fr] gap-6 pt-1 items-center">
-        <h2 className="font-bold text-[28px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
+        <h2 className="font-bold text-[22px] tracking-[-0.02em] text-[#081129] leading-[1.15] m-0 font-[Montserrat]">One price you<br />can actually trust.</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
           {[
             { value: "100%", label: "UKAS-accredited labs", Icon: ShieldCheck, color: TURQUOISE },
