@@ -284,14 +284,19 @@ export default {
     					opacity: '0'
     				}
     			},
-    			float: {
-    				'0%, 100%': {
-    					transform: 'translateY(0)'
-    				},
-    				'50%': {
-    					transform: 'translateY(-4px)'
-    				}
+    		float: {
+    			'0%, 100%': {
+    				transform: 'translateY(0)'
+    			},
+    			'50%': {
+    				transform: 'translateY(-4px)'
     			}
+    		},
+    		'dot-pop': {
+    			'0%': { transform: 'scale(0)', opacity: '0' },
+    			'70%': { transform: 'scale(1.15)', opacity: '1' },
+    			'100%': { transform: 'scale(1)', opacity: '1' }
+    		}
     		},
     		animation: {
     			'accordion-down': 'accordion-down 0.2s ease-out',
