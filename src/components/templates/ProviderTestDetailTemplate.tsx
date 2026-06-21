@@ -382,6 +382,7 @@ export default function ProviderTestDetailTemplate({
         )}
       </Helmet>
 
+      <Header />
 
       <div className="min-h-screen bg-white py-12">
         <div className="container mx-auto px-4 max-w-5xl">
