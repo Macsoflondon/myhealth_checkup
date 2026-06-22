@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, FlaskConical, Stethoscope, Zap } from "lucide-react";
-import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
-import { UserMenu } from "@/components/header/UserMenu";
+
+
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
