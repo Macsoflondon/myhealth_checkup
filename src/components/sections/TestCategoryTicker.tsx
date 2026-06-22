@@ -18,13 +18,34 @@ const categories = [
 
 const SETS = 8;
 
-const TestCategoryTicker = () => {
+interface TestCategoryTickerProps {
+  /**
+   * "section" — default full-width navy strip used between page sections.
+   * "inline" — transparent background, navy text, tighter padding for use
+   *            inside the pearl hero footer.
+   */
+  variant?: "section" | "inline";
+}
+
+const TestCategoryTicker = ({ variant = "section" }: TestCategoryTickerProps) => {
   const trackRef = useMarqueeTicker(categories.length);
   const items = Array.from({ length: SETS }, () => categories).flat();
 
+  const isInline = variant === "inline";
+
+  const wrapperClass = isInline
+    ? "overflow-hidden select-none relative"
+    : "bg-brand-navy overflow-hidden select-none relative";
+
+  const innerPad = isInline ? "py-1.5 sm:py-2" : "py-2.5 sm:py-3";
+
+  const textClass = isInline
+    ? "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-brand-navy"
+    : "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-white";
+
   return (
-    <section className="bg-brand-navy overflow-hidden select-none relative">
-      <div className="py-2.5 sm:py-3">
+    <section className={wrapperClass} aria-label="Health test categories">
+      <div className={innerPad}>
         <div
           className="relative overflow-hidden"
           style={{
@@ -39,16 +60,13 @@ const TestCategoryTicker = () => {
           >
             {items.map((cat, i) => (
               <span key={i} className="flex items-center shrink-0">
-                <span className="font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-white">
-                  {cat}
-                </span>
+                <span className={textClass}>{cat}</span>
                 <span className="text-brand-pink text-lg px-1 sm:px-2">•</span>
               </span>
             ))}
           </div>
         </div>
       </div>
-      
     </section>
   );
 };
