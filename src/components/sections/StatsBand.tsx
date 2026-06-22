@@ -1,46 +1,10 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Heart, User, UserCheck, Droplet, Stethoscope, FlaskConical, Pill, Baby, Activity, ShieldCheck } from "lucide-react";
-
-const TURQUOISE = "#22c0d4";
-const PINK = "#e70d69";
-const NAVY = "#081129";
-
-const CATEGORIES = [
-  { label: "Women's Health", to: "/tests/womens-health", Icon: UserCheck, color: PINK },
-  { label: "Men's Health", to: "/tests/mens-health", Icon: User, color: "#3a5f85" },
-  { label: "Heart", to: "/tests/heart", Icon: Heart, color: "#ef4444" },
-  { label: "Diabetes", to: "/tests/diabetes", Icon: Droplet, color: "#f59e0b" },
-  { label: "Thyroid", to: "/thyroid", Icon: Stethoscope, color: "#7c3aed" },
-  { label: "Hormones", to: "/hormones", Icon: FlaskConical, color: PINK },
-  { label: "Vitamins", to: "/tests/vitamins", Icon: Pill, color: "#16a34a" },
-  { label: "Fertility", to: "/fertility-tests", Icon: Baby, color: "#ec4899" },
-  { label: "General Health", to: "/test/general-health", Icon: Activity, color: TURQUOISE },
-  { label: "Cancer Screening", to: "/tests/cancer", Icon: ShieldCheck, color: "#0ea5e9" },
-];
-
+import { ArrowRight } from "lucide-react";
 
 export default function StatsBand() {
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#f7f7f8] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-[30px] pt-[30px] pb-8">
-      <div className="flex items-center justify-between mb-3.5">
-        <span className="text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat] text-[#081129]/50">Browse by category</span>
-        <Link to="/test-categories" className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#22c0d4] no-underline font-[Montserrat]">
-          View all <ArrowRight className="w-3.5 h-3.5" strokeWidth={2.5} />
-        </Link>
-      </div>
-      <div className="flex gap-2.5 flex-wrap mb-[26px]">
-        {CATEGORIES.map(({ label, to, Icon, color }) => (
-          <Link key={label} to={to}
-            className="group inline-flex items-center gap-2.5 pl-[11px] pr-[15px] py-[9px] rounded-full no-underline bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200"
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = color; e.currentTarget.style.boxShadow = `0 8px 20px ${color}26`; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)"; e.currentTarget.style.boxShadow = "0 1px 2px rgba(8,17,41,0.04)"; }}>
-            <span className="w-[26px] h-[26px] rounded-full inline-flex items-center justify-center shrink-0" style={{ background: `${color}1a` }}>
-              <Icon className="w-[15px] h-[15px]" style={{ color }} strokeWidth={2} />
-            </span>
-            <span className="text-[13.5px] font-semibold text-[#081129] font-[Montserrat]">{label}</span>
-          </Link>
-        ))}
-      </div>
+    <section className="rounded-[28px] overflow-hidden bg-[#f7f7f8] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-[30px] py-[18px]">
+
 
 
       <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-[34px] py-[15px] flex items-center justify-between gap-6 flex-wrap">

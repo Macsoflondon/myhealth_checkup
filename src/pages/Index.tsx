@@ -16,8 +16,10 @@ const heroSlide1Mobile = heroSlide1MobileAsset.url;
 
 // Above-the-fold: eager
 import HeroMasthead from "@/components/sections/HeroMasthead";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+
 
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
@@ -193,10 +195,12 @@ const Index = () => {
 
         <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16 space-y-6">
           <HeroMasthead />
-          {/* Sentinel: StickyCategoryBar reveals once this scrolls past the top. */}
+          {/* Sentinel preserved for any other consumers; bar is now in-flow. */}
           <div id="sticky-bar-hero-end" aria-hidden="true" className="h-px w-full" />
+          <BrowseByCategoryBar />
           <StatsBand />
         </div>
+
 
         <TestCategoryTicker />
 
