@@ -2,14 +2,13 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-
+import FeaturedPartnerWheel from "@/components/sections/FeaturedPartnerWheel";
 
 const FeaturedPublications = lazy(() =>
   import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
 );
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
 const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
-const GoodbodyCarousel = lazy(() => import("@/components/sections/GoodbodyCarousel"));
 const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
@@ -79,27 +78,7 @@ const PartnerShowcaseGrid = () => {
     >
       <NavyDecorativeCircles />
 
-      {/* Featured Partner — Goodbody */}
-      <div className="w-full px-4 sm:px-6 relative">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
-          <div className="md:col-span-2 text-center mt-2 sm:mt-4">
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-              <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
-                Featured Partner
-              </span>
-              <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-white ">
-              Our Featured Partner of the Month
-            </h2>
-          </div>
-
-          <SafeBlock name="Featured Partner" fallback={<BentoSkeleton />}>
-            <GoodbodyCarousel />
-          </SafeBlock>
-        </div>
-      </div>
+      <FeaturedPartnerWheel />
 
       <SafeBlock name="Test Categories" fallback={<BlockSkeleton />}>
         <TestCategoriesSection />
