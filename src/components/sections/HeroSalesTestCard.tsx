@@ -42,7 +42,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
         className="hidden md:flex absolute right-4 bottom-4 sm:right-6 sm:bottom-6 z-10
-                   w-[280px] h-[150px] flex-col text-left
+                   w-[280px] h-[120px] flex-col text-left
                    rounded-2xl overflow-hidden bg-white
                    border border-slate-100
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]"
@@ -59,7 +59,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
           }}
         />
         <div
-          className="absolute left-4 top-8 w-1 h-6 rounded-full z-10"
+          className="absolute left-4 top-7 w-1 h-5 rounded-full z-10"
           style={{ background: hexToRgba(providerColor, 0.2) }}
         />
         <div
@@ -70,32 +70,41 @@ export default function HeroSalesTestCard({ ad }: Props) {
           }}
         />
 
-        <div className="flex-1 flex flex-col p-5 relative">
+        <div className="flex-1 flex flex-col p-4 relative">
           <span
-            className="text-[8px] uppercase tracking-[0.25em] font-bold mb-1.5 truncate"
+            className="text-[8px] uppercase tracking-[0.25em] font-bold mb-1 truncate"
             style={{ color: providerColor }}
           >
             {ad.provider}
           </span>
           <h3
-            className="text-[16px] font-extrabold leading-tight line-clamp-1"
+            className="text-[14px] font-extrabold leading-tight line-clamp-1"
             style={{ color: "#0f172a" }}
           >
             {ad.name}
           </h3>
 
-          <div className="mt-auto flex items-center justify-between gap-2">
-            <div
-              className="text-[18px] font-black leading-none"
-              style={{ color: "#0f172a" }}
-            >
-              £{ad.price.toFixed(2)}
+          <div className="mt-auto flex items-end justify-between gap-2">
+            <div className="flex flex-col leading-none">
+              <span
+                className="text-[9px] uppercase tracking-wider font-bold mb-0.5"
+                style={{ color: providerColor }}
+              >
+                from
+              </span>
+              <div
+                className="text-[16px] font-black leading-none"
+                style={{ color: "#0f172a" }}
+              >
+                £{ad.price.toFixed(2)}
+              </div>
             </div>
 
             <span
-              className="relative inline-block px-4 py-2 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider"
+              className="relative inline-block px-5 py-3 rounded-xl text-[15px] font-bold uppercase tracking-wider"
               style={{
                 background: "linear-gradient(to bottom, #1e293b, #0f172a)",
+                color: providerColor,
                 boxShadow:
                   "0 5px 0 0 #020617, 0 8px 15px rgba(15,23,42,0.35)",
               }}
@@ -106,6 +115,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
         </div>
       </button>
+
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md p-0 overflow-hidden gap-0 bg-white">
