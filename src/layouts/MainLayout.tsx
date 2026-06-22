@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
-import StickyCategoryBar from "@/components/layout/StickyCategoryBar";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -42,7 +42,7 @@ export const MainLayout = ({
       </a>
 
       {!hideHeader && !isHome && (
-        <StickyCategoryBar hideUntilTriggerId={undefined} />
+        <BrowseByCategoryBar variant="flush" />
       )}
 
 

@@ -199,8 +199,9 @@ const Index = () => {
 
         {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
         <div>
-          <div className="mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
-            <BrowseByCategoryBar />
+          <BrowseByCategoryBar />
+
+          <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />
           </div>
 
@@ -252,6 +253,7 @@ const Index = () => {
             </Suspense>
           </LazyMount>
         </div>
+
 
       </MainLayout>
     </ErrorBoundary>

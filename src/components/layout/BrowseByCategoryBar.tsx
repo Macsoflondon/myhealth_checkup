@@ -39,8 +39,14 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
  * Browse-by-category pill bar that doubles as the homepage sticky toolbar.
  * Uses native CSS `position: sticky` so the morph between in-flow and pinned
  * states is fully fluid in both scroll directions — no JS jumps, no flicker.
+ *
+ * Variants:
+ *  - "card"  (default, homepage): rounded card with horizontal margins, caps the
+ *            navy StatsBand below it; when stuck, becomes a fully-rounded pinned card.
+ *  - "flush" (non-homepage): full-width edge-to-edge bar pinned at the top of the
+ *            viewport from the start, no rounding.
  */
-export default function BrowseByCategoryBar() {
+export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "card" | "flush" } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -75,16 +81,27 @@ export default function BrowseByCategoryBar() {
 
   const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
 
+  const isFlush = variant === "flush";
+
+  // Wrapper margin / mt: card variant gets horizontal page-margin + top spacing;
+  // flush variant takes the full viewport width with zero offset.
+  const wrapperClass = isFlush
+    ? ""
+    : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+
+  // Inner card styling — switches on stuck + variant.
+  const innerClass = isFlush
+    ? "rounded-none bg-[#f7f7f8]/95 backdrop-blur-md border-b border-[#081129]/[0.08] shadow-[0_8px_24px_rgba(8,17,41,0.10)]"
+    : stuck
+    ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
+    : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+
   return (
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
-      <div className="sticky top-0 z-40" data-testid="browse-by-category-bar">
+      <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`px-2 sm:px-3 py-2 sm:py-2.5 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${
-            stuck
-              ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
-              : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]"
-          }`}
+          className={`px-2 sm:px-3 pt-2.5 sm:pt-3 pb-2 sm:pb-2.5 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
           <div className="flex items-center gap-2 flex-nowrap">
             {/* Scrollable pill strip — only this zone scrolls */}
