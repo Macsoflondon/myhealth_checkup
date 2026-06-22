@@ -41,9 +41,10 @@ export const MainLayout = ({
         Skip to main content
       </a>
 
-      {!hideHeader && (
-        <StickyCategoryBar hideUntilTriggerId={isHome ? "sticky-bar-hero-end" : undefined} />
+      {!hideHeader && !isHome && (
+        <StickyCategoryBar hideUntilTriggerId={undefined} />
       )}
+
 
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         <SiteBreadcrumb />
