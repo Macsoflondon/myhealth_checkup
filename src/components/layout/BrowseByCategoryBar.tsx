@@ -101,7 +101,7 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
       <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`px-2 sm:px-3 pt-2.5 sm:pt-3 pb-2 sm:pb-2.5 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`px-2 sm:px-3 pt-4 sm:pt-5 pb-2 sm:pb-2.5 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
           <div className="flex items-center gap-2 flex-nowrap">
             {/* Scrollable pill strip — only this zone scrolls */}
