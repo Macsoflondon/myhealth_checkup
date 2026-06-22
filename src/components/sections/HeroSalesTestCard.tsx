@@ -21,6 +21,15 @@ interface Props {
   ad: HeroSalesAd;
 }
 
+function hexToRgba(hex: string, alpha: number) {
+  const h = hex.replace("#", "");
+  const n = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const r = parseInt(n.slice(0, 2), 16);
+  const g = parseInt(n.slice(2, 4), 16);
+  const b = parseInt(n.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 export default function HeroSalesTestCard({ ad }: Props) {
   const [open, setOpen] = useState(false);
   const brand = getBranding(ad.provider);
@@ -34,37 +43,62 @@ export default function HeroSalesTestCard({ ad }: Props) {
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
         className="hidden md:flex absolute right-4 bottom-4 sm:right-6 sm:bottom-6 z-10
                    w-[280px] h-[150px] flex-col text-left
-                   rounded-xl overflow-hidden bg-white
-                   border border-[#081129]/10 shadow-[0_12px_32px_rgba(8,17,41,0.32)]
-                   hover:shadow-[0_16px_40px_rgba(8,17,41,0.40)] hover:-translate-y-0.5
-                   transition-all animate-fade-in"
+                   rounded-2xl overflow-hidden bg-white
+                   border border-slate-100
+                   hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]"
+        style={{
+          boxShadow:
+            "0 30px 60px -15px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02)",
+        }}
       >
-        <div className="h-[4px] w-full shrink-0" style={{ background: providerColor }} />
-        <div className="flex-1 flex flex-col p-3">
-          <span
-            className="text-[13px] font-extrabold tracking-[0.12em] uppercase font-[Montserrat] truncate"
-            style={{ color: providerColor }}
-          >
+        <div
+          className="absolute top-0 left-0 w-full h-[3px] z-10"
+          style={{
+            background: providerColor,
+            boxShadow: `0 2px 10px ${hexToRgba(providerColor, 0.3)}`,
+          }}
+        />
+        <div
+          className="absolute left-4 top-8 w-1 h-6 rounded-full z-10"
+          style={{ background: hexToRgba(providerColor, 0.2) }}
+        />
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.04]"
+          style={{
+            backgroundImage: `radial-gradient(${providerColor} 0.5px, transparent 0.5px)`,
+            backgroundSize: "8px 8px",
+          }}
+        />
+
+        <div className="flex-1 flex flex-col p-5 relative">
+          <span className="text-[8px] uppercase tracking-[0.25em] text-slate-400 font-bold mb-1.5 truncate">
             {ad.provider}
           </span>
           <h3
-            className="text-[13px] leading-tight font-bold mt-0.5 font-[Montserrat] line-clamp-2"
-            style={{ color: NAVY }}
+            className="text-[16px] font-extrabold leading-tight line-clamp-1"
+            style={{ color: "#0f172a" }}
           >
             {ad.name}
           </h3>
-          <div className="flex items-center justify-between mt-auto gap-2">
+
+          <div className="mt-auto flex items-center justify-between gap-2">
             <div
-              className="text-[22px] font-black font-[Montserrat] leading-none"
-              style={{ color: NAVY }}
+              className="text-[18px] font-black leading-none"
+              style={{ color: "#0f172a" }}
             >
               £{ad.price.toFixed(2)}
             </div>
+
             <span
-              className="px-3 py-1.5 rounded-full text-white text-[10px] font-bold tracking-wide font-[Montserrat]"
-              style={{ background: NAVY }}
+              className="relative inline-block px-4 py-2 rounded-xl text-white text-[10px] font-bold uppercase tracking-wider"
+              style={{
+                background: "linear-gradient(to bottom, #1e293b, #0f172a)",
+                boxShadow:
+                  "0 5px 0 0 #020617, 0 8px 15px rgba(15,23,42,0.35)",
+              }}
             >
-              View details
+              <span className="absolute inset-0 rounded-xl border-t border-white/10 pointer-events-none" />
+              <span className="relative">View Details</span>
             </span>
           </div>
         </div>
