@@ -71,7 +71,10 @@ export default function HeroSalesTestCard({ ad }: Props) {
         />
 
         <div className="flex-1 flex flex-col p-5 relative">
-          <span className="text-[8px] uppercase tracking-[0.25em] text-slate-400 font-bold mb-1.5 truncate">
+          <span
+            className="text-[8px] uppercase tracking-[0.25em] font-bold mb-1.5 truncate"
+            style={{ color: providerColor }}
+          >
             {ad.provider}
           </span>
           <h3
