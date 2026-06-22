@@ -135,8 +135,8 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <span className="text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129]/55">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
-        <div className="hidden sm:flex items-center gap-2"><LanguageSwitcher /><UserMenu /></div>
       </div>
+
 
       <div className="relative rounded-[18px] overflow-hidden my-2 -mx-6 sm:-mx-9 flex-1 min-h-[55svh] bg-[#081129]">
         {SLIDES.map((s, n) => {
