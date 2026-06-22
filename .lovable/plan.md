@@ -1,55 +1,32 @@
-## What's wrong
+## Move the 4 stat cards under the "greatest asset" banner
 
-In the screenshot the Language flag + Login avatar overflow the right edge of the rounded toolbar card and sit on top of the "At Home Tests" pill. Root cause is in `src/components/layout/BrowseByCategoryBar.tsx`:
+**Source:** `src/components/sections/HeroMasthead.tsx` lines 183–202 — the `grid grid-cols-2 md:grid-cols-4` block rendering UKAS / 200+ / No GP / 60 sec.
 
-- A single flex row holds pills, the More button, AND the language/user cluster.
-- The row uses `overflow-x-auto` and `ml-auto` on the right cluster. When the pills exceed the available width, `ml-auto` collapses, the right cluster ends up inside the scroll area, and on viewports where the card itself can't widen further the icons render flush against (and visually over) the last pill — exactly what's circled in the screenshot.
-- Right cluster has no `bg` of its own, so when it floats over a pill it looks broken.
+**Destination:** `src/components/sections/StatsBand.tsx` — append the same grid directly below the dark navy banner (line 26), still inside the off-white rounded card so it visually belongs to "Your health is your greatest asset."
 
-## Fix
+### Edits
 
-Rebuild the bar as a true 3-zone row that never overlaps and works from 360 px to ultra-wide:
+1. **`StatsBand.tsx`**
+   - Import `ShieldCheck, FlaskConical, Stethoscope, Zap` from `lucide-react`.
+   - After the dark banner `</div>`, add:
+     ```tsx
+     <div className="pt-3">
+       <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+         {/* same 4 cards, identical markup/styling as currently in HeroMasthead */}
+       </div>
+     </div>
+     ```
+   - Card markup copied verbatim so the visual treatment (white rounded card, icon bubble, Montserrat numerals, Lato label) matches the screenshot exactly.
 
-```text
-[ scrollable pill strip (flex-1, min-w-0, overflow-x-auto) ] [ More ] | [ 🌐  👤 ]
-```
+2. **`HeroMasthead.tsx`**
+   - Delete the `<div className="pt-1">…</div>` block (lines 183–202) and the four now-unused icon imports (`ShieldCheck, FlaskConical, Stethoscope, Zap`) if not referenced elsewhere in the file.
+   - Preserve breathing room below the hero photos: replace the deleted block with `<div className="h-10 sm:h-14" aria-hidden="true" />` — that's roughly 2–3 lines of whitespace at the bottom of the hero before the next section, matching the user's request, without re-introducing the stat strip.
 
-Edit `src/components/layout/BrowseByCategoryBar.tsx`:
+### Out of scope
 
-1. Outer flex becomes `flex items-center gap-2 flex-nowrap` (no overflow on the outer row).
-2. Wrap only the category pills in an inner `<div class="flex-1 min-w-0 overflow-x-auto scrollbar-none flex items-center gap-1.5 flex-nowrap">`. Add a subtle right-edge fade mask (`mask-image: linear-gradient(...)`) so pills that scroll off look intentional.
-3. `More` button moves out of the scroll strip into the outer row with `shrink-0`, so it's always visible.
-4. Language + User cluster moves out of the scroll strip into the outer row, `shrink-0`, with a `pl-2 border-l border-[#081129]/10` divider. Give it the same off-white card background so it can never appear to sit "on top of" a pill.
-5. Tighten paddings one more notch at `< sm` (`px-2 py-2`, pill `text-[11px]`, icon bubble `18×18`) so on a 360 px phone the right cluster + More stay pinned and pills scroll horizontally beneath them.
-6. Keep `position: sticky top-0` and the IntersectionObserver `stuck` state untouched — that's what gives the flicker-free glide.
+No changes to layout containers, no token edits, no routing/data changes. Pure relocation + spacing tweak.
 
-No visual redesign, no colour changes, no other components touched.
+### Files
 
-## Slug / route parity (verification only — no code change)
-
-Both bars consume the same source:
-
-- `BrowseByCategoryBar` → `primaryNavigationItems` from `src/components/header/NavigationItems.tsx` and renders `<Link to={item.path}>`.
-- `StickyCategoryBar` → `NavigationMenu` → same `primaryNavigationItems`.
-
-So the 8 top-level slugs (`/popular-tests`, `/wellness`, `/womens-health`, `/mens-health`, `/sports-performance`, `/fertility-tests`, `/tests/cancer`, `/at-home-tests`) are guaranteed identical. The Playwright test below asserts this at runtime so it can never silently drift.
-
-## End-to-end test
-
-Add `tests/e2e/category-bar.spec.ts` (Playwright, run via shell against the live dev server on `localhost:8080`). It will:
-
-1. Load `/`, screenshot the bar in-flow.
-2. Read the 8 pill `(label, href)` pairs from `BrowseByCategoryBar`.
-3. Scroll 1200 px, assert the bar is pinned (`getBoundingClientRect().top === 0`), screenshot, and assert there's no horizontal overlap between the last pill and the language/user cluster (`pill.right <= cluster.left`).
-4. Scroll back to 0, assert the bar returns to in-flow position without a layout jump (compare `top` deltas across `requestAnimationFrame` samples — no value should change by > 2 px between adjacent frames, which is our flicker check).
-5. For each pill click → assert `page.url()` ends with the expected slug AND that the resulting page renders a filtered result region (`[data-testid="filtered-results"]` or, fallback, the `<h1>` contains the category name). Repeat the click via the *sticky* `StickyCategoryBar` on a non-home route and assert the same URL — proving slug parity.
-6. Repeat the whole flow at `viewport: 375×812` (mobile) to cover the horizontal-scroll fallback.
-
-Test runner: drive Playwright from `code--exec` per the browser-use directive (no new npm deps, no Vitest changes).
-
-## Files
-
-- Edit: `src/components/layout/BrowseByCategoryBar.tsx`
-- Add: `tests/e2e/category-bar.spec.ts`
-
-Nothing else changes.
+- Edit: `src/components/sections/StatsBand.tsx`
+- Edit: `src/components/sections/HeroMasthead.tsx`
