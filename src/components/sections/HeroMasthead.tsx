@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, FlaskConical, Stethoscope, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 
 import { PROVIDER_LOGOS } from "@/constants/providers";
