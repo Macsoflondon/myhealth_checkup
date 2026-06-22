@@ -13,7 +13,7 @@ const STATS = [
 
 export default function StatsBand() {
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#f7f7f8] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-[30px] py-[18px]">
+    <section className="rounded-t-none rounded-b-[28px] overflow-hidden bg-[#f7f7f8] border border-t-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-[30px] pt-0 pb-[18px]">
       <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-[34px] py-[15px] flex items-center justify-between gap-6 flex-wrap">
         <div className="absolute -right-[50px] -top-[60px] w-[220px] h-[220px] rounded-full bg-[#22c0d4]/[0.12]" />
         <div className="absolute right-[120px] -bottom-[90px] w-[200px] h-[200px] rounded-full bg-[#e70d69]/10" />

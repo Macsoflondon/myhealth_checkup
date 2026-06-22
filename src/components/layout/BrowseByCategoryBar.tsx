@@ -80,10 +80,10 @@ export default function BrowseByCategoryBar() {
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
       <div className="sticky top-0 z-40" data-testid="browse-by-category-bar">
         <div
-          className={`rounded-[22px] px-2 sm:px-3 py-2 sm:py-2.5 transition-[background-color,box-shadow,border-color,backdrop-filter] duration-300 ${
+          className={`px-2 sm:px-3 py-2 sm:py-2.5 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${
             stuck
-              ? "bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
-              : "bg-[#f7f7f8] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)]"
+              ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
+              : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]"
           }`}
         >
           <div className="flex items-center gap-2 flex-nowrap">
