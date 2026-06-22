@@ -193,63 +193,66 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16 space-y-6">
+        <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
           <HeroMasthead />
-          {/* Sentinel preserved for any other consumers; bar is now in-flow. */}
-          <div id="sticky-bar-hero-end" aria-hidden="true" className="h-px w-full" />
-          <BrowseByCategoryBar />
-          <StatsBand />
         </div>
 
+        {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
+        <div>
+          <div className="mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+            <BrowseByCategoryBar />
+            <StatsBand />
+          </div>
 
-
-        <Suspense fallback={<SectionFallback />}>
-          <SectionReveal>
-            <PartnersGrid />
-          </SectionReveal>
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
-          <SectionReveal delay={0.1}>
-            <JourneySimplified />
-          </SectionReveal>
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
-          <SectionReveal delay={0.15}>
-            <StartJourneySection />
-          </SectionReveal>
-        </Suspense>
-
-        <LazyMount minHeight={300}>
-          <Suspense fallback={<SectionFallback />}>
-            <AccreditedProvidersBar />
-          </Suspense>
-        </LazyMount>
-
-        <LazyMount minHeight={800}>
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.1}>
-              <PartnerShowcaseGrid />
-            </SectionReveal>
-          </Suspense>
-        </LazyMount>
-
-        <LazyMount minHeight={500}>
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
-              <TestimonialCarousel />
+              <PartnersGrid />
             </SectionReveal>
           </Suspense>
-        </LazyMount>
 
-        <LazyMount minHeight={500}>
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal delay={0.1}>
-              <ClinicAndHelpSection />
+              <JourneySimplified />
             </SectionReveal>
           </Suspense>
-        </LazyMount>
+
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.15}>
+              <StartJourneySection />
+            </SectionReveal>
+          </Suspense>
+
+          <LazyMount minHeight={300}>
+            <Suspense fallback={<SectionFallback />}>
+              <AccreditedProvidersBar />
+            </Suspense>
+          </LazyMount>
+
+          <LazyMount minHeight={800}>
+            <Suspense fallback={<SectionFallback />}>
+              <SectionReveal delay={0.1}>
+                <PartnerShowcaseGrid />
+              </SectionReveal>
+            </Suspense>
+          </LazyMount>
+
+          <LazyMount minHeight={500}>
+            <Suspense fallback={<SectionFallback />}>
+              <SectionReveal>
+                <TestimonialCarousel />
+              </SectionReveal>
+            </Suspense>
+          </LazyMount>
+
+          <LazyMount minHeight={500}>
+            <Suspense fallback={<SectionFallback />}>
+              <SectionReveal delay={0.1}>
+                <ClinicAndHelpSection />
+              </SectionReveal>
+            </Suspense>
+          </LazyMount>
+        </div>
+
       </MainLayout>
     </ErrorBoundary>
   );
