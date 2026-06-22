@@ -202,7 +202,6 @@ const Index = () => {
         </div>
 
 
-        <TestCategoryTicker />
 
         <Suspense fallback={<SectionFallback />}>
           <SectionReveal>
