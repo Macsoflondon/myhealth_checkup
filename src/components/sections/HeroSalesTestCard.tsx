@@ -101,15 +101,14 @@ export default function HeroSalesTestCard({ ad }: Props) {
             </div>
 
             <span
-              className="relative inline-block px-5 py-3 rounded-xl text-[15px] font-bold uppercase tracking-wider"
+              className="relative inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider"
               style={{
-                background: "linear-gradient(to bottom, #1e293b, #0f172a)",
-                color: providerColor,
-                boxShadow:
-                  "0 5px 0 0 #020617, 0 8px 15px rgba(15,23,42,0.35)",
+                background: providerColor,
+                color: "#081129",
+                boxShadow: `0 3px 0 0 ${hexToRgba(providerColor, 0.5)}, 0 6px 12px ${hexToRgba(providerColor, 0.25)}`,
               }}
             >
-              <span className="absolute inset-0 rounded-xl border-t border-white/10 pointer-events-none" />
+              <span className="absolute inset-0 rounded-lg border-t border-white/20 pointer-events-none" />
               <span className="relative">View Details</span>
             </span>
           </div>

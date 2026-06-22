@@ -1,21 +1,9 @@
-Tweaks to `src/components/sections/HeroSalesTestCard.tsx` only — compact card, not the modal.
+Compact card CTA only in `src/components/sections/HeroSalesTestCard.tsx`:
 
-**Height**
-- `h-[150px]` → `h-[120px]`
-- Reduce padding `p-5` → `p-4` so content fits
+- Shrink button: `px-5 py-3` → `px-3 py-1.5`, text `text-[15px]` → `text-[11px]`
+- Background: navy gradient → provider colour (`background: providerColor`)
+- Text colour: provider colour → navy `#081129`
+- Tone down stacked shadow to match smaller size: `0 3px 0 0 ${hexToRgba(providerColor,0.5)}, 0 6px 12px ${hexToRgba(providerColor,0.25)}`
+- Keep inner top highlight border
 
-**Price block**
-- Add a small "from" label above the price, set to `providerColor`
-- Layout: small `text-[9px]` uppercase tracking-wider "from" line, then existing £price beneath
-- Keep price `font-black`, drop to `text-[16px]` to fit slimmer card
-
-**CTA button ("View Details")**
-- Increase size ~50%: `px-4 py-2` → `px-5 py-3`, text `text-[10px]` → `text-[15px]`
-- Change label colour from white to `providerColor` (keep navy gradient background)
-- Adjust stacked shadow to remain proportional
-
-**Provider name strip**
-- Keep small label at top in `providerColor` (already set)
-- May reduce `mb-1.5` → `mb-1` to recover vertical space
-
-No changes to modal, rotation, data, or `HeroMasthead`.
+S3 upload errors are infra rate-limiting, not source issues — no code fix needed.
