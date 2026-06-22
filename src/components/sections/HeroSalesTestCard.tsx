@@ -42,7 +42,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
         className="hidden md:flex absolute right-4 bottom-4 sm:right-6 sm:bottom-6 z-10
-                   w-[280px] h-[120px] flex-col text-left
+                   w-[210px] h-[120px] flex-col text-left
                    rounded-2xl overflow-hidden bg-white
                    border border-slate-100
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]"
@@ -84,7 +84,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
             {ad.name}
           </h3>
 
-          <div className="mt-auto flex items-end justify-between gap-2">
+          <div className="mt-auto flex items-end justify-between gap-1">
             <div className="flex flex-col leading-none">
               <span
                 className="text-[9px] uppercase tracking-wider font-bold mb-0.5"
@@ -101,15 +101,13 @@ export default function HeroSalesTestCard({ ad }: Props) {
             </div>
 
             <span
-              className="relative inline-block px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider"
+              className="inline-block text-[10px] font-bold uppercase tracking-wider underline decoration-2 underline-offset-2"
               style={{
-                background: providerColor,
                 color: "#081129",
-                boxShadow: `0 3px 0 0 ${hexToRgba(providerColor, 0.5)}, 0 6px 12px ${hexToRgba(providerColor, 0.25)}`,
+                textDecorationColor: providerColor,
               }}
             >
-              <span className="absolute inset-0 rounded-lg border-t border-white/20 pointer-events-none" />
-              <span className="relative">View Details</span>
+              View Details
             </span>
           </div>
         </div>
