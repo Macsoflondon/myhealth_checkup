@@ -3,6 +3,7 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import FeaturedPartnerWheel from "@/components/sections/FeaturedPartnerWheel";
+import faceGridAsset from "@/assets/goodbody-face-grid.jpg.asset.json";
 
 const FeaturedPublications = lazy(() =>
   import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
