@@ -79,7 +79,7 @@ const PartnerShowcaseGrid = () => {
     >
       <NavyDecorativeCircles />
 
-      <FeaturedPartnerWheel />
+      <FeaturedPartnerWheel faceTexture={faceGridAsset.url} />
 
       <SafeBlock name="Test Categories" fallback={<BlockSkeleton />}>
         <TestCategoriesSection />
