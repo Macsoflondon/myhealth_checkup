@@ -204,7 +204,7 @@ export default function FeaturedPartnerWheel({
         <div style={{ position: "relative", width: 1160, maxWidth: "100%", height: 642, marginTop: 2 }}>
           <div onPointerDown={(e) => startDrag(e, null)} style={{ position: "absolute", inset: 0, zIndex: 0, cursor: "grab", touchAction: "pan-y" }} />
 
-          <div ref={wheelRef} style={{ position: "absolute", left: "50%", top: 210, width: 0, height: 0, willChange: "transform" }}>
+          <div ref={wheelRef} style={{ position: "absolute", left: "50%", top: 644, width: 0, height: 0, willChange: "transform" }}>
             {wheel.map((k, i) => {
               const on = hovered === i;
               return (
