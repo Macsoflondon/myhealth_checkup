@@ -199,18 +199,12 @@ export default function FeaturedPartnerWheel({
           backgroundColor: "#081129",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-          <span style={{ width: 34, height: 2, background: "#E70D69", borderRadius: 2 }} />
-          <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 20, letterSpacing: ".2em", textTransform: "uppercase", color: "#22C0D4" }}>{eyebrow}</span>
-          <span style={{ width: 34, height: 2, background: "#E70D69", borderRadius: 2 }} />
-        </div>
-
-        <h2 style={{ margin: "22px 0 0", fontFamily: "'Lora',serif", fontWeight: 600, fontSize: 60, lineHeight: 1.04, color: "#f7f7f8", textAlign: "center", letterSpacing: "-.01em" }}>{partnerName}</h2>
+        <h2 style={{ margin: "0", fontFamily: "'Lora',serif", fontWeight: 600, fontSize: 60, lineHeight: 1.04, color: "#f7f7f8", textAlign: "center", letterSpacing: "-.01em" }}>{partnerName}</h2>
 
         <div style={{ position: "relative", width: 1160, maxWidth: "100%", height: 642, marginTop: 2 }}>
           <div onPointerDown={(e) => startDrag(e, null)} style={{ position: "absolute", inset: 0, zIndex: 0, cursor: "grab", touchAction: "pan-y" }} />
 
-          <div ref={wheelRef} style={{ position: "absolute", left: "50%", top: 644, width: 0, height: 0, willChange: "transform" }}>
+          <div ref={wheelRef} style={{ position: "absolute", left: "50%", top: 210, width: 0, height: 0, willChange: "transform" }}>
             {wheel.map((k, i) => {
               const on = hovered === i;
               return (
@@ -266,28 +260,6 @@ export default function FeaturedPartnerWheel({
         </div>
       </section>
 
-      <section style={{ position: "relative", width: "100%", background: "#fefefe", padding: "64px 0 74px" }}>
-        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 40px" }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <span style={{ width: 28, height: 2, background: "#E70D69", borderRadius: 2 }} />
-                <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 13, letterSpacing: ".18em", textTransform: "uppercase", color: "#22C0D4" }}>The Goodbody Range</span>
-              </div>
-              <h3 style={{ margin: "14px 0 0", fontFamily: "'Lora',serif", fontWeight: 600, fontSize: 34, color: "#081129", letterSpacing: "-.01em" }}>Explore every test in the collection</h3>
-            </div>
-            <p style={{ margin: 0, maxWidth: 360, fontSize: 14.5, lineHeight: 1.6, color: "#6b7585" }}>Hover to preview, click any kit to open its full information card. Over 60 clinically-validated tests, reviewed by a GP.</p>
-          </div>
-        </div>
-
-        <div className="gbstrip" style={{ marginTop: 38, overflowX: "auto", overflowY: "visible", padding: "26px 40px 30px", scrollSnapType: "x proximity" }}>
-          <div style={{ display: "flex", gap: 26, width: "max-content", margin: "0 auto", minWidth: "100%", justifyContent: "flex-start" }}>
-            {unique.map((k, i) => (
-              <StripCard key={i} kit={k} onClick={() => { setHovered(null); setSelKit(k); }} bg={bgOf(k)} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       {selKit && (
         <div onClick={() => setSelKit(null)} style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(8,17,41,.62)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28 }}>
