@@ -1,24 +1,22 @@
-The current wheel renders flat-colour bands on each card face. The reference screenshot shows the bands filled with a grid of diverse portrait photos, screen-blended over each kit's accent colour. The `KitFace` component already supports a `texture` prop and `FeaturedPartnerWheel` already forwards `faceTexture` — there's just no texture asset wired up.
+# Plan: reposition hero blood-test kit image
 
-## Steps
+## Goal
+Centre the blood-test kit box within the hero image frame so it is clearly visible (currently it sits at the lower-left edge and is partly clipped).
 
-1. Generate a portrait grid texture (`src/assets/goodbody-face-grid.jpg`)
-   - Premium model, ~1024x1024
-   - Prompt: tight 6x8 grid of diverse adult headshots on white, evenly lit, all roughly the same crop/scale, looking at camera, neutral expressions — designed to read well as a monochrome screen-blend.
-2. Externalise via `lovable-assets create` → `src/assets/goodbody-face-grid.jpg.asset.json`, then `rm` the original binary.
-3. In `src/components/sections/PartnerShowcaseGrid.tsx`:
-   - Import the asset JSON.
-   - Pass `<FeaturedPartnerWheel faceTexture={faceGrid.url} />`.
-4. Visual verify with Playwright screenshot at `/`.
+## Context
+- The homepage hero uses `src/components/sections/HeroMasthead.tsx`.
+- Hero slides are rendered with `object-fit: cover` and `object-position` controlled by per-breakpoint CSS custom properties (`posMobile`, `posTablet`, `posDesktop`) defined in the `SLIDES` array and applied in `src/index.css`.
+- The blood-test kit slide uses `hero-blood-test-kit.png` (landscape 1590×872). The rendered container is portrait (`min-h-[55svh]`), so the image is heavily cropped on the sides on mobile/tablet and on the top/bottom on desktop.
+- Current focal points: `posMobile: "45% 55%"`, `posTablet: "center 55%"`, `posDesktop: "center 55%"`.
 
-## Technical details
+## Proposed change
+Update the focal points for the `bloodTestKit` slide to move the crop window so the kit box sits nearer the middle of the visible frame:
+- `posMobile: "35% 60%"` — show more of the left side of the image (where the kit is) and keep the vertical focus on the lower half.
+- `posTablet: "40% 60%"` — slightly less horizontal shift for the wider tablet viewport.
+- `posDesktop: "50% 65%"` — on desktop the full width is visible, so focus lower in the image to bring the kit up from the bottom edge.
 
-- The texture renders inside `KitFace` via the existing `<img mixBlendMode: screen, filter: grayscale(1) contrast(1.05)>` overlay, which produces the recoloured-by-accent portrait look in the screenshot.
-- No changes to wheel geometry, animation, modal, or data — purely a visual coating.
-- No new dependencies. Asset served from Lovable CDN.
+## Verification
+After the change, check the hero renders on mobile, tablet and desktop viewports and confirm the blood-test kit box is clearly visible and no longer clipped at the left edge.
 
-## Out of scope
-
-- Card layout/typography changes
-- Replacing the Goodbody default kit data
-- Changing the mobile bento layout
+## Files to edit
+- `src/components/sections/HeroMasthead.tsx` (single line in the `SLIDES` array).
