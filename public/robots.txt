@@ -13,7 +13,7 @@ Disallow: /client-portal
 Disallow: /notifications
 
 # Sitemap
-Sitemap: https://www.myhealthcheckup.co.uk/sitemap.xml
+Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
 
 # Major search bots — explicit allow
 User-agent: Googlebot
