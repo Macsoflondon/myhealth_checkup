@@ -8,7 +8,7 @@ import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 
-// ── Brand ─────────────────────────────────────────────────────────────
+// ── Brand ────────────────────────────────────────────────────────────[...]
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 const NAVY = "#081129";
@@ -30,7 +30,7 @@ const heartMark = heartMarkAsset.url;
 // Per-slide focal points tuned for mobile / tablet / desktop crops
 const SLIDES = [
   { src: joggingWoman,    label: "Stay ahead of your health",     posMobile: "30% 30%", posTablet: "center 32%", posDesktop: "center 35%" },
-  { src: clinicReception, label: "Clinics Located Nationwide",    posMobile: "60% 50%", posTablet: "center 50%", posDesktop: "center 50%" },
+  { src: clinicReception, label: "Trusted UK Health Clinics",     posMobile: "60% 50%", posTablet: "center 50%", posDesktop: "center 50%" },
   { src: seniorCouple,    label: "Active at every age",           posMobile: "50% 25%", posTablet: "center 28%", posDesktop: "center 30%" },
   { src: benchPhone,      label: "Find. Compare. Book.",          posMobile: "55% 40%", posTablet: "center 40%", posDesktop: "center 40%" },
   { src: bloodTestKit,    label: "Easy At Home Kits Available",   posMobile: "35% 60%", posTablet: "40% 60%", posDesktop: "50% 65%" },
@@ -129,7 +129,8 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </div>
 
       <h1 className="font-extrabold text-[clamp(5rem,13vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-3 md:mt-4 mb-10 font-[Montserrat]">
-        Compare<span className="text-[#22c0d4]">.</span>
+        <span className="sr-only">Compare Private Blood Tests and Health Screenings in the UK</span>
+        <span aria-hidden="true">Compare<span className="text-[#22c0d4]">.</span></span>
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-2">
@@ -170,7 +171,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="absolute left-[18px] bottom-[18px] pointer-events-none">
           <span
             key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-2xl font-semibold font-[Montserrat] animate-fade-in"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-2xl font-semibold font-[Montserrat] animate-[...]
           >
             <span className="w-[7px] h-[7px] rounded-full" style={{ background: TURQUOISE }} />
             {slide.label}
