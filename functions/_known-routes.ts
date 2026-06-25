@@ -69,6 +69,9 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/providers/randox",
   "/providers/lola-health",
   "/providers/london-medical-laboratory",
+  "/providers/london-health-company",
+  "/providers/medical-diagnosis",
+  "/providers/clinilabs",
 
   // Tools
   "/blood-test-analysis",
@@ -114,6 +117,9 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/partners",
   "/blog",
   "/health-blog",
+  "/blog/testosterone-levels-by-age",
+  "/trusted-providers",
+  "/guides",
 
   // Legal
   "/legal",
@@ -148,6 +154,10 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/randox/:testId",
   "/randox-health/:testId",
   "/london-medical-laboratory/:testId",
+  "/clinilabs/:testId",
+  "/london-health-company/:testId",
+  "/medical-diagnosis/:testId",
+  "/guides/:slug",
 ];
 
 const DYNAMIC_ROUTE_REGEXES: readonly RegExp[] = DYNAMIC_ROUTE_PATTERNS.map(

@@ -51,16 +51,37 @@ const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
   "lola-health": {
     providerId: "lola-health",
     providerName: "Lola Health",
-    tagline: "Personalised health testing designed for women",
+    tagline: "Professional at-home phlebotomy with doctor-reviewed results",
     metaTitle: "Lola Health Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Lola Health blood tests. Women-focused health testing with home kits and expert support. Compare prices and order your test.",
+    metaDescription: "Browse all Lola Health blood tests. At-home nurse visits with venous blood draw and doctor-reviewed results. Compare prices and book your test.",
   },
   "london-medical-laboratory": {
     providerId: "london-medical-laboratory",
     providerName: "London Medical Laboratory",
-    tagline: "UKAS-accredited laboratory services",
+    tagline: "UKAS-accredited laboratory services with next-day results",
     metaTitle: "London Medical Laboratory Tests | Compare Health Tests UK",
     metaDescription: "Browse London Medical Laboratory's full range of blood tests and health screenings. Compare prices, biomarkers, and turnaround times.",
+  },
+  "london-health-company": {
+    providerId: "london-health-company",
+    providerName: "London Health Company",
+    tagline: "Accessible private health testing across London",
+    metaTitle: "London Health Company Blood Tests | Compare Health Tests UK",
+    metaDescription: "Browse all London Health Company blood tests. Private health screening with clinic and at-home options across London. Compare prices and book.",
+  },
+  "medical-diagnosis": {
+    providerId: "medical-diagnosis",
+    providerName: "Medical Diagnosis",
+    tagline: "Specialist diagnostics with fast turnaround",
+    metaTitle: "Medical Diagnosis Blood Tests | Compare Health Tests UK",
+    metaDescription: "Browse all Medical Diagnosis blood tests. Specialist diagnostic testing with UKAS-accredited partner laboratories. Compare prices and book.",
+  },
+  "clinilabs": {
+    providerId: "clinilabs",
+    providerName: "Clinilabs",
+    tagline: "Clinical-grade diagnostics from UKAS-accredited labs",
+    metaTitle: "Clinilabs Blood Tests | Compare Health Tests UK",
+    metaDescription: "Browse all Clinilabs blood tests. UKAS-accredited clinical laboratory testing with clinician-reviewed reports. Compare prices and book.",
   },
 };
 
