@@ -33,7 +33,7 @@ const SLIDES = [
   { src: clinicReception, label: "Clinics Located Nationwide",    posMobile: "60% 50%", posTablet: "center 50%", posDesktop: "center 50%" },
   { src: seniorCouple,    label: "Active at every age",           posMobile: "50% 25%", posTablet: "center 28%", posDesktop: "center 30%" },
   { src: benchPhone,      label: "Find. Compare. Book.",          posMobile: "55% 40%", posTablet: "center 40%", posDesktop: "center 40%" },
-  { src: bloodTestKit,    label: "Finger-prick test from home",   posMobile: "35% 60%", posTablet: "40% 60%", posDesktop: "50% 65%" },
+  { src: bloodTestKit,    label: "Easy At Home Kits Available",   posMobile: "35% 60%", posTablet: "40% 60%", posDesktop: "50% 65%" },
 ];
 
 
