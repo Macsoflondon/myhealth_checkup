@@ -10,7 +10,7 @@ import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCi
 import { supabase } from "@/integrations/supabase/client";
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
-import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
+import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderLogo, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
 import { logger } from "@/lib/logger";
@@ -175,7 +175,7 @@ const TestDetailPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`}</title>
+        <title>{`${test.test_name} | myhealth checkup`.slice(0, 60)}</title>
         <meta
           name="description"
           content={`Compare the ${test.test_name} across accredited UK providers${
@@ -187,10 +187,29 @@ const TestDetailPage = () => {
         <link rel="canonical" href={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content="myhealth checkup" />
-        <meta property="og:title" content={`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`} />
+        <meta property="og:title" content={`${test.test_name} | myhealth checkup`.slice(0, 60)} />
         <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
         <meta property="og:url" content={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
         <meta property="og:locale" content="en_GB" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": test.test_name,
+          "description": test.description || `${test.test_name} private health test available from accredited UK providers.`,
+          "brand": provider?.name ? { "@type": "Brand", "name": provider.name } : undefined,
+          "image": test.image_url || "https://myhealthcheckup.co.uk/og-image.png",
+          "category": test.category || "Health Test",
+          ...(test.price != null ? {
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "GBP",
+              "price": test.price.toFixed(2),
+              "availability": "https://schema.org/InStock",
+              "url": `https://myhealthcheckup.co.uk/${providerId}/${testId}`,
+              ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
+            }
+          } : {})
+        })}</script>
       </Helmet>
 
       <Header />
@@ -326,7 +345,7 @@ const TestDetailPage = () => {
 
             {/* Compare Prices Section */}
             {otherProviders.length > 0 && (
-              <ProviderComparisonTable
+              <TestProviderPriceTable
                 testName={test.test_name}
                 providers={[
                   {
@@ -367,7 +386,7 @@ const TestDetailPage = () => {
                   {bookingUrl ? (
                     <Button size="lg" className="w-full bg-primary hover:bg-primary/90" asChild>
                       <a href={bookingUrl} {...externalLinkProps}>
-                        Book with {provider.name}
+                        Book
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
@@ -394,6 +413,8 @@ const TestDetailPage = () => {
                       <img 
                         src={getProviderLogo(providerId || '')} 
                         alt={provider.name}
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 object-contain"
                       />
                       <span className="font-medium">{provider.name}</span>

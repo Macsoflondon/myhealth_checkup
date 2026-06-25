@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -80,6 +80,63 @@ export type Database = {
         }
         Relationships: []
       }
+      biomarker_audit_runs: {
+        Row: {
+          approved: boolean
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          delta: string
+          id: string
+          notes: string | null
+          provider_id: string
+          provider_test_id: string | null
+          run_id: string
+          scraped_biomarkers: Json | null
+          scraped_count: number | null
+          stored_count: number | null
+          stored_list: Json | null
+          test_name: string
+          url: string | null
+        }
+        Insert: {
+          approved?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          delta: string
+          id?: string
+          notes?: string | null
+          provider_id: string
+          provider_test_id?: string | null
+          run_id: string
+          scraped_biomarkers?: Json | null
+          scraped_count?: number | null
+          stored_count?: number | null
+          stored_list?: Json | null
+          test_name: string
+          url?: string | null
+        }
+        Update: {
+          approved?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          delta?: string
+          id?: string
+          notes?: string | null
+          provider_id?: string
+          provider_test_id?: string | null
+          run_id?: string
+          scraped_biomarkers?: Json | null
+          scraped_count?: number | null
+          stored_count?: number | null
+          stored_list?: Json | null
+          test_name?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       biomarker_readings: {
         Row: {
           appointment_id: string | null
@@ -135,88 +192,157 @@ export type Database = {
       }
       biomarkers_library: {
         Row: {
+          alternate_units: Json | null
           biomarker_code: string
           biomarker_name: string
+          biomaterial: string | null
+          body_system: string | null
           category: string
           clinical_significance: string | null
           created_at: string
           description: string
           id: string
           interpretation_guide: Json | null
+          last_reviewed_at: string | null
           lifestyle_factors: string[] | null
           normal_range_female: string | null
           normal_range_male: string | null
+          reference_ranges: Json | null
+          related_articles: Json | null
           related_conditions: string[] | null
+          reviewed_by: string | null
+          synonyms: string[] | null
           unit_of_measurement: string | null
           updated_at: string
+          what_affects_it: string | null
+          what_it_measures: string | null
+          when_to_retest: string | null
+          why_it_matters: string | null
         }
         Insert: {
+          alternate_units?: Json | null
           biomarker_code: string
           biomarker_name: string
+          biomaterial?: string | null
+          body_system?: string | null
           category: string
           clinical_significance?: string | null
           created_at?: string
           description: string
           id?: string
           interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
           lifestyle_factors?: string[] | null
           normal_range_female?: string | null
           normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
           related_conditions?: string[] | null
+          reviewed_by?: string | null
+          synonyms?: string[] | null
           unit_of_measurement?: string | null
           updated_at?: string
+          what_affects_it?: string | null
+          what_it_measures?: string | null
+          when_to_retest?: string | null
+          why_it_matters?: string | null
         }
         Update: {
+          alternate_units?: Json | null
           biomarker_code?: string
           biomarker_name?: string
+          biomaterial?: string | null
+          body_system?: string | null
           category?: string
           clinical_significance?: string | null
           created_at?: string
           description?: string
           id?: string
           interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
           lifestyle_factors?: string[] | null
           normal_range_female?: string | null
           normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
           related_conditions?: string[] | null
+          reviewed_by?: string | null
+          synonyms?: string[] | null
           unit_of_measurement?: string | null
           updated_at?: string
+          what_affects_it?: string | null
+          what_it_measures?: string | null
+          when_to_retest?: string | null
+          why_it_matters?: string | null
         }
         Relationships: []
       }
-      clinics: {
+      cron_run_log: {
         Row: {
-          access_note: string | null
           created_at: string
-          full_address: string | null
+          duration_ms: number | null
+          error_message: string | null
+          finished_at: string | null
           id: string
-          latitude: number | null
-          longitude: number | null
-          name: string
-          postal_code: string | null
-          provider_id: string | null
+          job_name: string
+          rows_affected: number | null
+          started_at: string
+          status: string
         }
         Insert: {
-          access_note?: string | null
           created_at?: string
-          full_address?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          finished_at?: string | null
           id?: string
-          latitude?: number | null
-          longitude?: number | null
-          name: string
-          postal_code?: string | null
-          provider_id?: string | null
+          job_name: string
+          rows_affected?: number | null
+          started_at?: string
+          status: string
         }
         Update: {
-          access_note?: string | null
           created_at?: string
-          full_address?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          finished_at?: string | null
           id?: string
-          latitude?: number | null
-          longitude?: number | null
-          name?: string
-          postal_code?: string | null
-          provider_id?: string | null
+          job_name?: string
+          rows_affected?: number | null
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      csp_reports: {
+        Row: {
+          blocked_uri: string | null
+          document_uri: string | null
+          id: string
+          ip_address: string | null
+          received_at: string
+          report: Json
+          user_agent: string | null
+          violated_directive: string | null
+        }
+        Insert: {
+          blocked_uri?: string | null
+          document_uri?: string | null
+          id?: string
+          ip_address?: string | null
+          received_at?: string
+          report: Json
+          user_agent?: string | null
+          violated_directive?: string | null
+        }
+        Update: {
+          blocked_uri?: string | null
+          document_uri?: string | null
+          id?: string
+          ip_address?: string | null
+          received_at?: string
+          report?: Json
+          user_agent?: string | null
+          violated_directive?: string | null
         }
         Relationships: []
       }
@@ -364,6 +490,39 @@ export type Database = {
           query_text?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      live_comparison_panels: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          last_scraped_at: string | null
+          panel_name: string
+          rows: Json
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          last_scraped_at?: string | null
+          panel_name: string
+          rows?: Json
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          last_scraped_at?: string | null
+          panel_name?: string
+          rows?: Json
+          slug?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -517,6 +676,45 @@ export type Database = {
         }
         Relationships: []
       }
+      popular_test_enrichment_cache: {
+        Row: {
+          created_at: string
+          description: string | null
+          fetched_at: string
+          image_url: string | null
+          price: number | null
+          provider_id: string
+          test_id: string
+          title: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          fetched_at?: string
+          image_url?: string | null
+          price?: number | null
+          provider_id: string
+          test_id: string
+          title?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          fetched_at?: string
+          image_url?: string | null
+          price?: number | null
+          provider_id?: string
+          test_id?: string
+          title?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       price_alert_preferences: {
         Row: {
           created_at: string
@@ -613,21 +811,139 @@ export type Database = {
         }
         Relationships: []
       }
+      protected_call_log: {
+        Row: {
+          caller_id: string | null
+          created_at: string
+          details: Json | null
+          function_name: string
+          id: string
+          ip_address: string | null
+          status: string
+          user_agent: string | null
+        }
+        Insert: {
+          caller_id?: string | null
+          created_at?: string
+          details?: Json | null
+          function_name: string
+          id?: string
+          ip_address?: string | null
+          status: string
+          user_agent?: string | null
+        }
+        Update: {
+          caller_id?: string | null
+          created_at?: string
+          details?: Json | null
+          function_name?: string
+          id?: string
+          ip_address?: string | null
+          status?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      provider_image_audit: {
+        Row: {
+          category: string | null
+          checked_at: string
+          content_type: string | null
+          http_status: number | null
+          id: string
+          image_url: string | null
+          issue: string | null
+          provider_id: string
+          provider_test_id: string | null
+          run_id: string
+          status: string
+          test_name: string | null
+        }
+        Insert: {
+          category?: string | null
+          checked_at?: string
+          content_type?: string | null
+          http_status?: number | null
+          id?: string
+          image_url?: string | null
+          issue?: string | null
+          provider_id: string
+          provider_test_id?: string | null
+          run_id: string
+          status: string
+          test_name?: string | null
+        }
+        Update: {
+          category?: string | null
+          checked_at?: string
+          content_type?: string | null
+          http_status?: number | null
+          id?: string
+          image_url?: string | null
+          issue?: string | null
+          provider_id?: string
+          provider_test_id?: string | null
+          run_id?: string
+          status?: string
+          test_name?: string | null
+        }
+        Relationships: []
+      }
+      provider_section_category_map: {
+        Row: {
+          canonical_category: string
+          created_at: string
+          id: string
+          needs_review: boolean
+          provider_id: string
+          source_section: string
+          updated_at: string
+        }
+        Insert: {
+          canonical_category: string
+          created_at?: string
+          id?: string
+          needs_review?: boolean
+          provider_id: string
+          source_section: string
+          updated_at?: string
+        }
+        Update: {
+          canonical_category?: string
+          created_at?: string
+          id?: string
+          needs_review?: boolean
+          provider_id?: string
+          source_section?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       provider_test_mapping: {
         Row: {
           accreditations: string[] | null
           availability_status: string | null
+          clinical_review_fee: number | null
+          clinical_review_professional: string | null
+          clinical_review_type: string | null
+          clinical_review_verification: string | null
+          collection_fee_amount: number | null
+          collection_fee_type: string | null
+          collection_fee_verification: string | null
+          collection_method: string | null
           created_at: string
           current_price: number | null
           discount_percentage: number | null
           id: string
           last_scraped_at: string | null
           original_price: number | null
+          policy_source_url: string | null
           provider_id: string
           provider_test_id: string
           provider_test_name: string
           provider_url: string | null
           sample_collection_method: string | null
+          sample_type: string | null
           test_master_id: string
           turnaround_time_days: number | null
           updated_at: string
@@ -635,17 +951,27 @@ export type Database = {
         Insert: {
           accreditations?: string[] | null
           availability_status?: string | null
+          clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
+          clinical_review_type?: string | null
+          clinical_review_verification?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_fee_verification?: string | null
+          collection_method?: string | null
           created_at?: string
           current_price?: number | null
           discount_percentage?: number | null
           id?: string
           last_scraped_at?: string | null
           original_price?: number | null
+          policy_source_url?: string | null
           provider_id: string
           provider_test_id: string
           provider_test_name: string
           provider_url?: string | null
           sample_collection_method?: string | null
+          sample_type?: string | null
           test_master_id: string
           turnaround_time_days?: number | null
           updated_at?: string
@@ -653,17 +979,27 @@ export type Database = {
         Update: {
           accreditations?: string[] | null
           availability_status?: string | null
+          clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
+          clinical_review_type?: string | null
+          clinical_review_verification?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_fee_verification?: string | null
+          collection_method?: string | null
           created_at?: string
           current_price?: number | null
           discount_percentage?: number | null
           id?: string
           last_scraped_at?: string | null
           original_price?: number | null
+          policy_source_url?: string | null
           provider_id?: string
           provider_test_id?: string
           provider_test_name?: string
           provider_url?: string | null
           sample_collection_method?: string | null
+          sample_type?: string | null
           test_master_id?: string
           turnaround_time_days?: number | null
           updated_at?: string
@@ -680,10 +1016,21 @@ export type Database = {
       }
       provider_tests: {
         Row: {
+          base_price: number | null
           biomarker_count: number | null
           biomarkers_list: Json | null
+          canonical_category: string | null
           category: string | null
           clinic_visit_available: boolean | null
+          clinical_review_fee: number | null
+          clinical_review_professional: string | null
+          clinical_review_type: string | null
+          clinical_review_verification: string | null
+          collection_fee_amount: number | null
+          collection_fee_type: string | null
+          collection_fee_verification: string | null
+          collection_method: string | null
+          collection_options: Json | null
           conditions: Json | null
           created_at: string
           description: string | null
@@ -699,14 +1046,18 @@ export type Database = {
           original_price: number | null
           phlebotomy_cost: number | null
           phlebotomy_included: boolean | null
+          policy_source_url: string | null
           popularity_rank: number | null
           price: number | null
           provider_id: string
           provider_test_id: string | null
           sample_type: string | null
           scraped_at: string
+          source_section: string | null
+          source_section_label: string | null
           symptoms: Json | null
           test_name: string
+          turnaround_days_text: string | null
           updated_at: string
           url: string | null
           url_verified: boolean | null
@@ -714,10 +1065,21 @@ export type Database = {
           who_should_test: string | null
         }
         Insert: {
+          base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
+          canonical_category?: string | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
+          clinical_review_type?: string | null
+          clinical_review_verification?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_fee_verification?: string | null
+          collection_method?: string | null
+          collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
           description?: string | null
@@ -733,14 +1095,18 @@ export type Database = {
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
+          policy_source_url?: string | null
           popularity_rank?: number | null
           price?: number | null
           provider_id: string
           provider_test_id?: string | null
           sample_type?: string | null
           scraped_at?: string
+          source_section?: string | null
+          source_section_label?: string | null
           symptoms?: Json | null
           test_name: string
+          turnaround_days_text?: string | null
           updated_at?: string
           url?: string | null
           url_verified?: boolean | null
@@ -748,10 +1114,21 @@ export type Database = {
           who_should_test?: string | null
         }
         Update: {
+          base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
+          canonical_category?: string | null
           category?: string | null
           clinic_visit_available?: boolean | null
+          clinical_review_fee?: number | null
+          clinical_review_professional?: string | null
+          clinical_review_type?: string | null
+          clinical_review_verification?: string | null
+          collection_fee_amount?: number | null
+          collection_fee_type?: string | null
+          collection_fee_verification?: string | null
+          collection_method?: string | null
+          collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
           description?: string | null
@@ -767,19 +1144,53 @@ export type Database = {
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
+          policy_source_url?: string | null
           popularity_rank?: number | null
           price?: number | null
           provider_id?: string
           provider_test_id?: string | null
           sample_type?: string | null
           scraped_at?: string
+          source_section?: string | null
+          source_section_label?: string | null
           symptoms?: Json | null
           test_name?: string
+          turnaround_days_text?: string | null
           updated_at?: string
           url?: string | null
           url_verified?: boolean | null
           url_verified_at?: string | null
           who_should_test?: string | null
+        }
+        Relationships: []
+      }
+      role_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role: Database["public"]["Enums"]["app_role"]
+          target_user_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          role?: Database["public"]["Enums"]["app_role"]
+          target_user_id?: string
         }
         Relationships: []
       }
@@ -840,6 +1251,48 @@ export type Database = {
           provider_name?: string
           provider_website?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      scrape_run_log: {
+        Row: {
+          completed_at: string | null
+          details: Json | null
+          id: string
+          mappings_upserted: number | null
+          providers_run: number | null
+          started_at: string
+          status: string
+          tests_promoted: number | null
+          tests_scraped: number | null
+          trigger_source: string | null
+          verification_failures: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          details?: Json | null
+          id?: string
+          mappings_upserted?: number | null
+          providers_run?: number | null
+          started_at?: string
+          status?: string
+          tests_promoted?: number | null
+          tests_scraped?: number | null
+          trigger_source?: string | null
+          verification_failures?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          details?: Json | null
+          id?: string
+          mappings_upserted?: number | null
+          providers_run?: number | null
+          started_at?: string
+          status?: string
+          tests_promoted?: number | null
+          tests_scraped?: number | null
+          trigger_source?: string | null
+          verification_failures?: number | null
         }
         Relationships: []
       }
@@ -927,38 +1380,133 @@ export type Database = {
         }
         Relationships: []
       }
+      security_alert_recipients: {
+        Row: {
+          alert_types: string[]
+          created_at: string
+          email: string
+          enabled: boolean
+          id: string
+          label: string | null
+          updated_at: string
+        }
+        Insert: {
+          alert_types?: string[]
+          created_at?: string
+          email: string
+          enabled?: boolean
+          id?: string
+          label?: string | null
+          updated_at?: string
+        }
+        Update: {
+          alert_types?: string[]
+          created_at?: string
+          email?: string
+          enabled?: boolean
+          id?: string
+          label?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      security_scan_snapshots: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          added_findings: Json
+          created_at: string
+          error_count: number
+          findings: Json
+          has_diff: boolean
+          id: string
+          modified_findings: Json
+          removed_findings: Json
+          scanned_at: string
+          total_findings: number
+          warn_count: number
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          added_findings?: Json
+          created_at?: string
+          error_count?: number
+          findings?: Json
+          has_diff?: boolean
+          id?: string
+          modified_findings?: Json
+          removed_findings?: Json
+          scanned_at?: string
+          total_findings?: number
+          warn_count?: number
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          added_findings?: Json
+          created_at?: string
+          error_count?: number
+          findings?: Json
+          has_diff?: boolean
+          id?: string
+          modified_findings?: Json
+          removed_findings?: Json
+          scanned_at?: string
+          total_findings?: number
+          warn_count?: number
+        }
+        Relationships: []
+      }
       test_categories: {
         Row: {
           created_at: string
+          description: string | null
           display_order: number | null
           id: string
           last_price_update: string | null
           name: string
+          parent_id: string | null
           price_check_frequency_hours: number | null
           provider_id: string
           realtime_enabled: boolean | null
+          slug: string | null
         }
         Insert: {
           created_at?: string
+          description?: string | null
           display_order?: number | null
           id?: string
           last_price_update?: string | null
           name: string
+          parent_id?: string | null
           price_check_frequency_hours?: number | null
           provider_id: string
           realtime_enabled?: boolean | null
+          slug?: string | null
         }
         Update: {
           created_at?: string
+          description?: string | null
           display_order?: number | null
           id?: string
           last_price_update?: string | null
           name?: string
+          parent_id?: string | null
           price_check_frequency_hours?: number | null
           provider_id?: string
           realtime_enabled?: boolean | null
+          slug?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "test_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "test_categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       test_results: {
         Row: {
@@ -1079,6 +1627,36 @@ export type Database = {
           typical_turnaround_days?: number | null
           updated_at?: string
           who_should_take?: string | null
+        }
+        Relationships: []
+      }
+      translations_cache: {
+        Row: {
+          created_at: string
+          id: string
+          language: string
+          namespace: string | null
+          source_hash: string
+          source_text: string
+          translated_text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          language: string
+          namespace?: string | null
+          source_hash: string
+          source_text: string
+          translated_text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          language?: string
+          namespace?: string | null
+          source_hash?: string
+          source_text?: string
+          translated_text?: string
         }
         Relationships: []
       }
@@ -1369,11 +1947,84 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      provider_image_audit_latest: {
+        Row: {
+          category: string | null
+          checked_at: string | null
+          missing: number | null
+          ok: number | null
+          pct_ok: number | null
+          placeholder: number | null
+          provider_id: string | null
+          total: number | null
+          unreachable: number | null
+          wrong_host: number | null
+          wrong_type: number | null
+        }
+        Relationships: []
+      }
+      unified_provider_tests: {
+        Row: {
+          biomarker_count: number | null
+          biomarkers_list: Json | null
+          biomarkers_listed: number | null
+          body_system: string | null
+          category_primary: string | null
+          clinical_review_fee: number | null
+          clinical_review_type: string | null
+          collection_fee_amount: number | null
+          collection_fee_type: string | null
+          collection_method: string | null
+          description: string | null
+          discount_percentage: number | null
+          id: string | null
+          image_url: string | null
+          is_addon: boolean | null
+          is_popular: boolean | null
+          original_price: number | null
+          popularity_rank: number | null
+          price: number | null
+          provider_id: string | null
+          provider_name: string | null
+          sample_type: string | null
+          sample_type_raw: string | null
+          scraped_at: string | null
+          test_name: string | null
+          total_expected_cost: number | null
+          turnaround_days_text: string | null
+          updated_at: string | null
+          url: string | null
+          url_verified: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      category_text_to_canonical: {
+        Args: { _category: string }
+        Returns: string
+      }
+      cleanup_cron_run_log: { Args: never; Returns: undefined }
+      cleanup_csp_reports: { Args: never; Returns: undefined }
       cleanup_old_health_queries: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
+      cleanup_protected_call_log: { Args: never; Returns: undefined }
+      cleanup_role_audit_log: { Args: never; Returns: undefined }
+      get_biomarker_validation_issues: {
+        Args: never
+        Returns: {
+          biomarker_count: number
+          biomarkers_list: Json
+          category: string
+          id: string
+          issue: string
+          provider_id: string
+          scraped_at: string
+          test_name: string
+          updated_at: string
+          url: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1382,6 +2033,22 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_admin: { Args: never; Returns: boolean }
+      lov_tables_without_policies: {
+        Args: never
+        Returns: {
+          schemaname: string
+          tablename: string
+        }[]
+      }
+      resolve_canonical_category: {
+        Args: { _provider_id: string; _source_section: string }
+        Returns: string
+      }
+      run_logged_cleanup: {
+        Args: { _job_name: string; _sql: string }
+        Returns: string
+      }
+      sanitize_popular_provider_tests: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

@@ -5,6 +5,24 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Extract a readable message from Errors, Supabase PostgrestError objects, or anything.
+// Avoids "[object Object]" being stored in scraping_jobs.error_message.
+function describeSupabaseError(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (err && typeof err === 'object') {
+    const e = err as Record<string, unknown>;
+    const parts = [
+      typeof e.message === 'string' ? e.message : null,
+      typeof e.details === 'string' ? e.details : null,
+      typeof e.hint === 'string' ? e.hint : null,
+      typeof e.code === 'string' ? `(code ${e.code})` : null,
+    ].filter(Boolean);
+    if (parts.length) return parts.join(' — ');
+    try { return JSON.stringify(err); } catch { /* ignore */ }
+  }
+  return String(err);
+}
+
 const PROVIDER_ID = 'london-health-company';
 const BASE_URL = 'https://www.londonhealthcompany.co.uk';
 
@@ -53,6 +71,13 @@ async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -142,32 +167,52 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (products.length > 0) {
-      const { error } = await supabase.from('provider_tests').upsert(products, {
-        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
-      });
-      if (error) throw error;
+    // Dedupe by test_name to avoid the partial unique index (provider_id, test_name) WHERE is_active.
+    // Keep the first occurrence (most relevant slug appears earlier in productUrls).
+    const seenNames = new Set<string>();
+    const dedupedProducts = products.filter(p => {
+      const key = (p.test_name as string).toLowerCase().trim();
+      if (seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    });
+
+    const upsertErrors: string[] = [];
+    // Upsert one-by-one so a single conflict doesn't abort the whole batch.
+    for (const product of dedupedProducts) {
+      const { error } = await supabase
+        .from('provider_tests')
+        .upsert(product, { onConflict: 'provider_id,provider_test_id' });
+      if (error) {
+        const msg = describeSupabaseError(error);
+        console.error(`Upsert failed for ${product.test_name}:`, msg);
+        upsertErrors.push(`${product.provider_test_id}: ${msg}`);
+      }
     }
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID, status: 'completed',
       last_scraped: new Date().toISOString(),
       next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: null,
+      error_message: upsertErrors.length ? `Partial: ${upsertErrors.length} upsert errors` : null,
     }, { onConflict: 'provider_id' });
 
     return new Response(JSON.stringify({
-      success: true, message: `Scraped ${products.length} London Health Co tests`, testsUpdated: products.length,
+      success: true,
+      message: `Scraped ${dedupedProducts.length} London Health Co tests (${upsertErrors.length} upsert errors)`,
+      testsUpdated: dedupedProducts.length - upsertErrors.length,
+      upsertErrors: upsertErrors.slice(0, 10),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (error) {
-    console.error('London Health scraper error:', error);
+    const msg = describeSupabaseError(error);
+    console.error('London Health scraper error:', msg);
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID, status: 'failed',
-      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
+      error_message: msg, last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
+    return new Response(JSON.stringify({ success: false, error: msg }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });

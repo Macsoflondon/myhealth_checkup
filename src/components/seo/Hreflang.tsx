@@ -16,7 +16,7 @@
  */
 import { Helmet } from "react-helmet-async";
 
-const BASE = "https://www.myhealthcheckup.co.uk";
+const BASE = "https://myhealthcheckup.co.uk";
 
 interface HreflangProps {
   /** Path including leading slash. Defaults to current location. */

@@ -111,9 +111,9 @@ const RecommendationEngine = () => {
       toast.error('Unable to generate recommendations. Please try again.');
       setAnalysisResult({
         medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
-        analysis: "Sorry, we couldn't analyze your request at the moment. Please try again or consult your healthcare professional.",
+        analysis: "Sorry, we couldn't analyse your request at the moment. Please try again or consult your healthcare professional.",
         recommendedTests: [],
-        generalGuidance: "Please consult your healthcare professional for personalized health advice.",
+        generalGuidance: "Please consult your healthcare professional for personalised health advice.",
         whenToSeeDoctor: "Seek immediate medical attention for urgent symptoms or persistent health concerns.",
         hasRecommendations: false
       });
@@ -149,10 +149,10 @@ const RecommendationEngine = () => {
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold">AI Wellness Recommendations</h1>
+          <h2 className="text-3xl font-bold">AI Wellness Recommendations</h2>
         </div>
         <p className="text-muted-foreground">
-          Get personalized wellness test recommendations from our trusted providers
+          Get personalised wellness test recommendations from our trusted providers
         </p>
       </div>
 
@@ -362,11 +362,11 @@ const RecommendationEngine = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        Learn More
+                      <Button variant="outline" size="sm" aria-label={`Read about ${rec.testName} from ${rec.provider}`}>
+                        Read about this test
                       </Button>
-                      <Button size="sm">
-                        View Test Details
+                      <Button size="sm" aria-label={`View details for ${rec.testName} from ${rec.provider}`}>
+                        View test details
                       </Button>
                     </div>
                   </div>

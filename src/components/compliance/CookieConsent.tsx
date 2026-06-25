@@ -31,6 +31,11 @@ const CookieConsent = () => {
         setShowBanner(true);
       }
     }
+    // Allow other parts of the app (e.g. /cookies "Manage Preferences" button)
+    // to re-open the settings panel without reloading.
+    const open = () => { setShowBanner(true); setShowSettings(true); };
+    window.addEventListener('cookie-preferences:open', open as EventListener);
+    return () => window.removeEventListener('cookie-preferences:open', open as EventListener);
   }, []);
 
   const persistAndBroadcast = (prefs: CookiePreferences) => {
@@ -85,24 +90,22 @@ const CookieConsent = () => {
               <div className="flex gap-1.5 sm:gap-2 flex-wrap w-full lg:w-auto">
                 <Button
                   size="sm"
-                  variant="outline"
                   onClick={() => setShowSettings(true)}
-                  className="flex-1 lg:flex-none text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Manage
                 </Button>
                 <Button
                   size="sm"
-                  variant="outline"
                   onClick={handleRejectAll}
-                  className="flex-1 lg:flex-none text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Reject All
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleAcceptAll}
-                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-pink text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                  className="flex-1 lg:flex-none bg-brand-turquoise text-white hover:bg-brand-turquoise/90 border-0 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4 rounded-full"
                 >
                   Accept All
                 </Button>

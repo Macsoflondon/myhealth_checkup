@@ -1,3 +1,4 @@
+import Header from "@/components/layout/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
 import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
+import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+import { seo } from "@/lib/seo";
 
 export interface ProviderTestData {
   id: string;
@@ -109,18 +112,18 @@ const BookingButton = ({
 
   return (
     <div className="space-y-3">
-      <Button 
-        size="lg" 
-        className="w-full" 
+      <Button
+        size="lg"
+        className="w-full"
         asChild
       >
-        <a 
-          href={testUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
+        <a
+          href={buildProviderBookingUrl(testUrl, providerConfig.id)}
+          {...externalLinkProps}
           className="flex items-center justify-center"
         >
           {providerConfig.ctaButtonText}
+          <ExternalLink className="w-4 h-4 ml-2" />
         </a>
       </Button>
 
@@ -307,10 +310,9 @@ const AddonWarning = () => (
     <div className="flex items-start gap-3">
       <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
       <div>
-        <p className="font-semibold text-amber-800">Add-on Test</p>
+        <p className="font-semibold text-amber-800">Add-on Only</p>
         <p className="text-sm text-amber-700">
-          This biomarker test can only be added to another blood test panel from Lola Health. 
-          Browse their test packages to add this biomarker.
+          This test can only be purchased when bundled with one of Lola Health's full test panels. It cannot be ordered on its own.
         </p>
       </div>
     </div>
@@ -338,8 +340,30 @@ export default function ProviderTestDetailTemplate({
     ? test.biomarkers_list 
     : null;
 
-  const pageTitle = `${test.test_name} - ${providerConfig.name} Blood Test | myhealth checkup`;
-  const pageDescription = `${test.description} Book your ${test.test_name} blood test with ${providerConfig.name} through myhealth checkup. ${providerConfig.aboutText}`;
+  const { title: pageTitle, description: pageDescription } = seo.test(test.test_name, {
+    providerName: providerConfig.name,
+    priceGbp: test.price ?? null,
+  });
+  const canonicalUrl = `${providerConfig.canonicalBase}/${testId}`;
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: test.test_name,
+    description: test.description,
+    category: test.category,
+    brand: { "@type": "Brand", name: providerConfig.name },
+    ...(test.price != null && {
+      offers: {
+        "@type": "Offer",
+        url: canonicalUrl,
+        priceCurrency: "GBP",
+        price: test.price,
+        availability: "https://schema.org/InStock",
+        seller: { "@type": "Organization", name: providerConfig.name },
+      },
+    }),
+  };
 
   const hasDiscount = test.original_price && test.original_price > (test.price || 0);
 
@@ -348,11 +372,18 @@ export default function ProviderTestDetailTemplate({
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
+        {test.is_addon && <meta name="robots" content="noindex, nofollow" />}
+        {test.is_addon && <meta name="googlebot" content="noindex, nofollow" />}
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="product" />
-        <link rel="canonical" href={`${providerConfig.canonicalBase}/${testId}`} />
+        <link rel="canonical" href={canonicalUrl} />
+        {!test.is_addon && (
+          <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+        )}
       </Helmet>
+
+      <Header />
 
       <div className="min-h-screen bg-white py-12">
         <div className="container mx-auto px-4 max-w-5xl">
@@ -363,6 +394,8 @@ export default function ProviderTestDetailTemplate({
             <img 
               src={providerConfig.logo} 
               alt={providerConfig.name} 
+              loading="lazy"
+              decoding="async"
               className="h-12 mb-4"
             />
             <div className="flex flex-wrap gap-2 mb-2">

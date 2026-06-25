@@ -1,46 +1,81 @@
-## Goal
-Add tasteful, varied scroll-triggered animations to the landing page (`src/pages/Index.tsx`) sections. No new libraries — reuse the existing `ScrollFadeIn` component and Tailwind animation utilities (`fade-in`, `scale-in`, `slide-in-right`, `hover-scale`) already defined in the project.
+# Launch Readiness Status — myhealth checkup
 
-## Approach
-Wrap each below-the-fold landing section in `ScrollFadeIn` with **staggered delays** and **varied directions/effects** so the page feels alive without being noisy. The two tickers (PromoTicker, TestCategoryTicker) are already animated and will be left alone.
+## 1. Where we are right now
 
-## Animation map (Index.tsx sections)
+The platform is structurally complete and stable. Compared with the **5–10 day plan agreed on 15 Feb** and the **launch-readiness audit on 29 May**, the heavy structural work is done. What's left is a short list of polish items plus the publish step itself.
 
-| Section | Effect | Delay |
-|---|---|---|
-| `MissionSection` | Fade + rise | 0ms |
-| `JourneySimplified` | Fade + rise | 100ms |
-| `PartnersGrid` | Scale-in (subtle pop) | 0ms |
-| `StartJourneySection` | Fade + rise | 150ms |
-| Gradient divider | Slide-in from left (animated width) | 0ms |
-| `PartnerShowcaseGrid` | Fade + rise | 100ms |
-| `TestimonialCarousel` | Fade only (no translate — carousel already moves) | 0ms |
-| `ClinicAndHelpSection` | Fade + rise | 100ms |
-| `AccreditedProvidersBar` | Fade only | 0ms |
-| `CallToAction` | Scale-in (emphasis) | 0ms |
-| `TrustPlatformSection` | Fade + rise | 100ms |
-| `ExpertQuotes` | Fade + rise | 150ms |
+| Area | Status |
+|---|---|
+| Backend / DB security (RLS, encryption, audit logs) | Ready |
+| Auth, MFA, idle timeout, admin role gating | Ready |
+| Edge functions (40+ deployed, secrets set) | Ready |
+| Legal pages (Privacy, Terms, Cookies, Affiliate, Complaints, Accessibility, Modern Slavery, Fair Trading) | Ready |
+| Security headers baseline (CE+ v3.3) | Ready |
+| robots.txt, sitemap.xml (100+ URLs), home page structured data | Ready |
+| Brand/SEO migration to myhealthcheckup.co.uk (canonical, OG, Twitter handles) | Ready |
+| Hero, sticky category bar, partner wheel, ticker, browse-by-category sticky behaviour | Ready (recent work) |
+| Provider catalogues (9 active providers) | Ready |
+| Custom domain configured (`myhealthcheckup.co.uk`) | Ready |
+| **Published to live URL** | Not yet (`is_published: false`) |
+| Test mapping coverage (Medichecks / Thriva / LML) | Needs check — was the biggest Feb blocker |
+| On-page SEO polish (H1s, schema, meta lengths) | Partially done since May audit — needs re-verify |
+| E2E test coverage | Thin (2 specs: `category-bar`, sticky-bar audit) |
 
-## Implementation details
+## 2. Progress vs the 15 Feb plan
 
-1. **Extend `ScrollFadeIn`** with an optional `variant` prop: `"rise" | "scale" | "fade"` so we can vary effects without creating multiple components. Default stays `"rise"` (current behaviour) — fully backward-compatible.
-2. **Edit `src/pages/Index.tsx`** to wrap each lazy section in `<ScrollFadeIn variant="..." delay={...}>`. Keep `Suspense` boundary intact.
-3. **Hero & TestCategoryTicker**: untouched — above-the-fold needs to render instantly; ticker already animates.
-4. **Gradient divider**: replace the static `<div>` with a small inline animated variant that scales horizontally on enter (`origin-left scale-x-0 → scale-x-100` over 800ms via the existing Tailwind transition utilities).
-5. **Performance**: `ScrollFadeIn` already uses `IntersectionObserver` and unobserves after first reveal — no perf impact on scroll.
-6. **Accessibility**: Animations are short (≤700ms) and translate distance is small (8px). No flashing. Safe for general use.
+| Plan item | Status |
+|---|---|
+| Delete orphaned `StatsHighlight.tsx` | Done |
+| Migrate canonical/OG/Twitter to myhealthcheckup.co.uk | Done (no residual `myhealthhub` references) |
+| Map Medichecks / Thriva / LML provider tests | **Needs verification** — run `supabase--read_query` to confirm current coverage |
+| Bulk import clinics to 100+ | **Needs verification** |
+| Reorganise 26 loose components into domain folders | Deferred (non-blocker) |
+| Generate branded OG image | **Needs verification** that `/og-image.png` exists at canonical URL |
 
-## Files to edit
-- `src/components/common/ScrollFadeIn.tsx` — add `variant` prop (rise / scale / fade)
-- `src/pages/Index.tsx` — wrap sections + animate the gradient divider
+## 3. Progress vs the 29 May audit (Amber list)
 
-## Out of scope
-- Hero internal animations (already polished)
-- Tickers (already animated)
-- Header / Footer
-- Any other route
+| Item | Likely status |
+|---|---|
+| 1. Stable H1 on homepage | Needs re-check after recent hero rewrites |
+| 2. H1 on category pages | Needs re-check |
+| 3. `aria-label` on hero search input | Needs re-check |
+| 4. Descriptive "Learn more" buttons in `RecommendationEngine` | Needs re-check |
+| 5. Truncate `ProviderTestDetailTemplate` title/desc to ≤60/≤160 | Needs re-check |
+| 6. Product JSON-LD on provider test detail pages | Needs re-check |
+| 7. FAQPage JSON-LD on `/faqs` | Needs re-check |
+| 8. Publish | Outstanding |
+| 9. E2E coverage (smoke + affiliate handoff) | Outstanding |
+| 10. `MedicalReviewPage` HCPC deep link (PA43353) | Needs re-check |
+| 11. Encryption key rotation cleanup (remove legacy `VITE_ENCRYPTION_KEY`) | Needs re-check |
 
-## Verification
-- Visual check in preview at desktop (1537×980) and a mobile viewport
-- Confirm sections fade in once on scroll and don't re-trigger
-- Confirm no layout shift / no console errors
+## 4. Quick-win launch sprint (target: 2–3 working days)
+
+Day 1 — Verify and patch on-page SEO/accessibility:
+- Re-run SEO scanner (`seo_chat--trigger_scan`) and `security--run_security_scan`.
+- Confirm/repair items 1–7 from the May Amber list. All are small, isolated edits in existing components.
+- Re-check `OG image` URL resolves; regenerate if 404.
+
+Day 2 — Data + ops:
+- Query `provider_tests` mapping coverage for Medichecks, Thriva, LML. If still 0%, run the AI Test Mapper from `/admin/test-mapper` in live mode.
+- Bulk import remaining clinic rows if count is still <100.
+- Add one smoke E2E spec: home → category → provider test detail → outbound affiliate click. (Extends existing Playwright setup; ~1 file.)
+- Apply Medical Review HCPC deep link patch.
+- Confirm encryption key rotation completed; remove legacy secret.
+
+Day 3 — Publish and post-publish:
+- Update website info (title, meta, OG) preflight, then `preview_ui--publish`.
+- Verify canonical domain redirects and HTTPS.
+- Submit sitemap to Google Search Console / IndexNow.
+- Run `security-scan-snapshot` post-deploy.
+- Smoke test top 10 routes on mobile (375px) and desktop.
+
+## 5. Deferred (post-launch, not blockers)
+
+- Reorganise 26 loose components into domain folders.
+- Server-side MIME validation for file uploads.
+- Expand E2E coverage to auth, comparison engine, admin role escalation.
+- Document `verify_jwt = false` + manual check pattern per edge function.
+
+## 6. Recommended next action
+
+Approve this plan and I'll switch to build mode to (a) re-verify the May Amber items in parallel, (b) query live mapping/clinic counts, and (c) produce a concrete patch list with file-level diffs before any publish.

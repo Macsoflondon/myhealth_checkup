@@ -27,8 +27,6 @@ const SLUG_LABELS: Record<string, string> = {
   categories: "Categories",
   providers: "Providers",
   provider: "Provider",
-  clinics: "Clinics",
-  "find-clinic": "Find a Clinic",
   "health-resource-hub": "Health Resource Hub",
   blog: "Health Resource Hub",
   "biomarker-database": "Biomarker Library",
@@ -106,7 +104,7 @@ const SiteBreadcrumb = () => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
+                <Link to="/">{"\n"}</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {crumbs.map((c) => (
@@ -114,7 +112,7 @@ const SiteBreadcrumb = () => {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   {c.isLast ? (
-                    <BreadcrumbPage>{c.label}</BreadcrumbPage>
+                    <BreadcrumbPage>{c.label === "Compare Tests" ? "\n" : c.label}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
                       <Link to={c.href}>{c.label}</Link>

@@ -9,7 +9,7 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 
-const BASE = "https://www.myhealthcheckup.co.uk";
+const BASE = "https://myhealthcheckup.co.uk";
 
 export const GlobalHreflang = () => {
   const { pathname } = useLocation();

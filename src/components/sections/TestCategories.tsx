@@ -36,15 +36,6 @@ const CategoryCard = ({
             {icon}
           </div>
           
-          {/* Stats badges */}
-          <div className="flex flex-col gap-1 sm:gap-1.5">
-            {testCount && <Badge variant="secondary" className="bg-[#3A5F85]/10 text-[#3A5F85] border-0 text-[10px] sm:text-xs font-medium px-1.5 sm:px-2.5 py-0.5">
-                {testCount} tests
-              </Badge>}
-            {providerCount && <Badge variant="secondary" className="bg-[#FA6980]/10 text-[#e70d69] border-0 text-[10px] sm:text-xs font-medium px-1.5 sm:px-2.5 py-0.5">
-                {providerCount} providers
-              </Badge>}
-          </div>
         </div>
 
         {/* Content */}
@@ -86,7 +77,7 @@ const TestCategories = (): JSX.Element => {
   }, {
     categoryId: "hormones",
     title: "Hormone Health",
-    description: "Comprehensive hormone testing including thyroid function, cortisol, reproductive hormones, and hormone optimization.",
+    description: "Comprehensive hormone testing including thyroid function, cortisol, reproductive hormones, and hormone optimisation.",
     icon: <FlaskConical className="h-6 w-6 text-white" />,
     link: "/compare?category=hormones",
     testCount: 18,

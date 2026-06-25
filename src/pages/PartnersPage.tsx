@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
@@ -79,7 +80,7 @@ const PartnersPage = () => {
         <PageBanner
           title="Our Healthcare"
           accent="Partners"
-          subtitle="We partner with the UK's most trusted and accredited healthcare providers to bring you reliable, high-quality health testing services."
+          subtitle="We partner with the UK's most trusted & accredited healthcare providers to bring you reliable, high-quality health testing services."
         />
 
         {/* Partner Standards */}
@@ -124,8 +125,8 @@ const PartnersPage = () => {
                         </CardHeader>
                         <CardContent className="bg-white">
                           <p className="mb-4 text-[#081129] text-sm font-semibold">{partner.specialty}</p>
-                          <Button variant="outline" size="sm" className="w-full">
-                            View Tests
+                          <Button asChild variant="outline" size="sm" className="w-full">
+                            <Link to="/providers">View Tests</Link>
                           </Button>
                         </CardContent>
                       </Card>)}
@@ -211,7 +212,9 @@ const PartnersPage = () => {
                   </ul>
                 </Card>
               </div>
-              <Button size="lg">Apply to Become a Partner</Button>
+              <Button asChild size="lg">
+                <Link to="/contact">Apply to Become a Partner</Link>
+              </Button>
             </div>
           </div>
         </section>

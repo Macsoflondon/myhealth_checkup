@@ -62,19 +62,43 @@ const TestimonialCarousel = () => {
     let animationId: number;
     let position = 0;
     const speed = 0.35;
-    const setWidth = CARD_WIDTH * testimonials.length;
+
+    const measureSetWidth = () => {
+      const children = track.children;
+      if (!children.length) return 0;
+      let total = 0;
+      for (let i = 0; i < testimonials.length && i < children.length; i++) {
+        total += (children[i] as HTMLElement).offsetWidth;
+      }
+      return total;
+    };
+
+    let setWidth = measureSetWidth();
+
+    const ro = new ResizeObserver(() => {
+      setWidth = measureSetWidth();
+    });
+    ro.observe(track);
 
     const animate = () => {
-      position -= speed;
-      if (Math.abs(position) >= setWidth) {
-        position += setWidth;
+      if (!setWidth) {
+        setWidth = measureSetWidth();
       }
-      track.style.transform = `translateX(${position}px)`;
+      if (setWidth > 0) {
+        position -= speed;
+        if (Math.abs(position) >= setWidth) {
+          position += setWidth;
+        }
+        track.style.transform = `translateX(${position}px)`;
+      }
       animationId = requestAnimationFrame(animate);
     };
 
     animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
+    return () => {
+      cancelAnimationFrame(animationId);
+      ro.disconnect();
+    };
   }, []);
 
   return (
@@ -84,19 +108,18 @@ const TestimonialCarousel = () => {
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
         {/* Section label */}
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-          <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-            Testimonials
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+          <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
+            Trusted by users
           </span>
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
         
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-10 sm:mb-12">
-          <span className="text-white">What Our </span>
-          <span className="text-white">
-            Users Say
-          </span>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-10 sm:mb-12">
+          <span className="text-white">What people say about myhealth </span>
+          <span className="text-brand-turquoise">checkup</span>
         </h2>
+
 
         <div
           className="relative overflow-hidden"
@@ -105,7 +128,7 @@ const TestimonialCarousel = () => {
             WebkitMaskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
           }}
         >
-          <div ref={trackRef} className="flex will-change-transform">
+          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((t, i) => (
               <div
                 key={i}

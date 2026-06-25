@@ -1,20 +1,23 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin } from "lucide-react";
+import { Star, MapPin, ArrowRight, ExternalLink } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "react-router-dom";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getBranding } from "@/data/providerBranding";
+import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
+import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
+import { getProviderRating } from "@/constants/providerRatings";
 
 const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
   const featuredProviderData = [{
     id: "medichecks",
-    name: "Medichecks",
+    name: "\n",
     rating: 4.7,
     reviews: "16,600+",
     description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
@@ -28,7 +31,7 @@ const FeaturedProviders = () => {
     reviews: "3,150+",
     description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
     location: "UK Wide",
-    tags: ["GP Follow-ups", "Wellness Profiles", "CQC Regulated", "Nationwide"],
+    tags: ["GP Follow-ups", "Wellness Profiles", "CQC Regulated Providers", "Nationwide"],
     website: "health.goodbodyclinic.com"
   }, {
     id: "thriva",
@@ -111,6 +114,7 @@ const FeaturedProviders = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {featuredProviderData.map(provider => {
             const brand = getBranding(provider.name);
+            const canonical = getProviderRating(provider.id);
             return (
               <Card
                 key={provider.id}
@@ -132,8 +136,8 @@ const FeaturedProviders = () => {
                       </div>
                       <div className="flex items-center space-x-1.5">
                         <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                        <span className="font-semibold text-gray-900">{provider.rating}</span>
-                        <span className="text-sm text-gray-500">({provider.reviews})</span>
+                        <span className="font-semibold text-gray-900">{canonical.rating}</span>
+                        <span className="text-sm text-gray-500">({canonical.reviewsFormatted} reviews)</span>
                       </div>
                     </div>
                   </div>
@@ -163,23 +167,31 @@ const FeaturedProviders = () => {
                     ))}
                   </div>
 
-                  <div className="flex flex-row gap-2">
-                    <Button 
-                      variant="default" 
-                      size="sm" 
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      variant="default"
+                      size="sm"
                       className="flex-1 text-white"
-                      style={brand ? {
-                        backgroundColor: brand.primary,
-                      } : undefined}
+                      style={brand ? { backgroundColor: brand.primary } : undefined}
                       asChild
                     >
-                      <Link to={`/provider/${provider.id.toLowerCase()}`}>
+                      <Link to={getProviderProfileRoute(provider.id)}>
                         View Profile
                       </Link>
                     </Button>
+                    <Button variant="secondary" size="sm" className="flex-1" asChild>
+                      <Link to={getProviderRoute(provider.id)}>
+                        Browse Tests
+                        <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                      </Link>
+                    </Button>
                     <Button variant="outline" size="sm" className="flex-1" asChild>
-                      <a href={`https://${provider.website}`} target="_blank" rel="noopener noreferrer">
-                        Visit Website
+                      <a
+                        href={buildProviderWebsiteUrl(`https://${provider.website}`, provider.id)}
+                        {...externalLinkProps}
+                      >
+                        Visit Site
+                        <ExternalLink className="w-3.5 h-3.5 ml-1" />
                       </a>
                     </Button>
                   </div>

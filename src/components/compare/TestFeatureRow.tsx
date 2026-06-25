@@ -18,14 +18,17 @@ const TestFeatureRow = ({ feature, items }: TestFeatureRowProps) => {
   // Format feature name for display
   const getFeatureDisplayName = (feature: string) => {
     switch (feature) {
-      case "bioMarkers": return "Bio Markers";
-      case "turnaround": return "Turnaround Time";
-      case "doctorReview": return "Doctor Review";
-      case "collection": return "Service Location";
-      case "Video otoscopy": return "Video Otoscopy";
-      case "Both ears": return "Both Ears Included";
-      case "Audiologist performed": return "Audiologist Performed";
-      case "Free follow-up": return "Free Follow-up";
+      case "bioMarkers": return "Biomarkers";
+      case "turnaround": return "Turnaround time";
+      case "doctorReview": return "Clinical review";
+      case "collection": return "Collection method";
+      case "sampleType": return "Sample type";
+      case "additionalFees": return "Additional collection fees";
+      case "totalCost": return "Total expected cost";
+      case "Video otoscopy": return "Video otoscopy";
+      case "Both ears": return "Both ears included";
+      case "Audiologist performed": return "Audiologist performed";
+      case "Free follow-up": return "Free follow-up";
       default: return feature;
     }
   };

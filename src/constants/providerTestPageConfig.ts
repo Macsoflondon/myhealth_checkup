@@ -47,10 +47,10 @@ export interface ProviderConfig {
 export const providerConfigs: Record<string, ProviderConfig> = {
   medichecks: {
     id: 'medichecks',
-    name: 'Medichecks',
+    name: '\n',
     logo: '/lovable-uploads/provider-medichecks-new-v3.png',
     turnaround: '3 working days',
-    badgeText: 'Medichecks Blood Test',
+    badgeText: '\n Blood Test',
     features: [
       { title: 'Bespoke Doctor\'s Report', description: 'Personalised insights and actionable advice from qualified doctors' },
       { title: 'UKAS Accredited Labs', description: 'Established in 2001 with ISO 15189 accredited laboratories' },
@@ -61,7 +61,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       {
         icon: 'clinic',
         title: 'Venous Draw at a Clinic (+£35)',
-        description: 'Visit one of Medichecks\' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.',
+        description: 'Visit one of \n\' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.',
       },
       {
         icon: 'home',
@@ -75,22 +75,22 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       },
     ],
     whyChoose: {
-      title: 'Why Choose Medichecks?',
+      title: 'Why Choose \n?',
       items: [
         { bold: 'Established in 2001:', text: 'Over 14,000 5-star reviews on Feefo with decades of trusted health testing experience' },
         { bold: 'Expert Doctor Support:', text: 'Bespoke doctor\'s report with actionable advice, expert support, and tailored recommendations' },
-        { bold: 'Track Your Health:', text: 'MyMedichecks portal lets you view results, monitor changes, and store your medical history over time' },
+        { bold: 'Track Your Health:', text: 'My\n portal lets you view results, monitor changes, and store your medical history over time' },
         { bold: 'Flexible Collection:', text: 'Choose from clinic visits, home nurse appointments, or self-arranged professional collection' },
       ],
     },
     quickInfo: {
       sampleType: 'Venous blood sample',
       labProcessing: 'UKAS accredited laboratories',
-      resultsDelivery: 'MyMedichecks online dashboard with doctor\'s report',
+      resultsDelivery: 'My\n online dashboard with doctor\'s report',
       supportPhone: '03450 600 600',
     },
     ctaText: 'Get ready to elevate your health understanding with a personalised doctor\'s report. Go beyond results and tap into expert insights tailored just for you.',
-    ctaButtonText: 'Book with Medichecks',
+    ctaButtonText: 'Book',
     aboutText: 'routine health check that provides a comprehensive look at your overall well-being. It covers biomarkers to assess organ function, nutritional balance, and potential health risks.',
     canonicalBase: 'https://myhealthcheckup.co.uk/medichecks',
   },
@@ -136,7 +136,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       supportEmail: 'info@goodbodyclinic.com',
     },
     ctaText: 'Book your test with GoodBody Clinic today for professional venous blood collection at a pharmacy near you. Expert service with fast, reliable results.',
-    ctaButtonText: 'Book with GoodBody',
+    ctaButtonText: 'Book',
     aboutText: 'blood test with professional venous collection at a GoodBody Clinic pharmacy. All tests are processed in UKAS-accredited laboratories with clinical interpretation.',
     canonicalBase: 'https://myhealthcheckup.co.uk/goodbody',
   },
@@ -181,7 +181,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       supportEmail: 'support@thriva.co',
     },
     ctaText: 'Order your Thriva test kit today and take control of your health from the comfort of home. Get doctor-reviewed results with personalised recommendations.',
-    ctaButtonText: 'Book with Thriva',
+    ctaButtonText: 'Book',
     aboutText: 'at-home blood test with convenient finger-prick collection. All results are reviewed by qualified doctors with personalised health insights.',
     canonicalBase: 'https://myhealthcheckup.co.uk/thriva',
   },
@@ -226,7 +226,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       supportPhone: '0800 2545 130',
     },
     ctaText: 'Book your comprehensive health check at a Randox Health clinic today. Advanced diagnostics with expert consultation and detailed insights.',
-    ctaButtonText: 'Book with Randox Health',
+    ctaButtonText: 'Book',
     aboutText: 'comprehensive health test using advanced diagnostic technology. All tests include professional consultation and detailed health insights.',
     canonicalBase: 'https://myhealthcheckup.co.uk/randox',
   },
@@ -272,7 +272,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       supportEmail: 'support@lolahealth.com',
     },
     ctaText: 'Book your at-home blood test with Lola Health today. Professional phlebotomy service with doctor-reviewed results delivered to your app.',
-    ctaButtonText: 'Book with Lola Health',
+    ctaButtonText: 'Book',
     aboutText: 'blood test with professional at-home phlebotomy. All results are processed in NHS-accredited laboratories and reviewed by qualified doctors.',
     canonicalBase: 'https://myhealthcheckup.co.uk/lola-health',
   },
@@ -318,9 +318,127 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       supportEmail: 'info@londonmedicallaboratory.com',
     },
     ctaText: 'Book your test with London Medical Laboratory for fast, accurate results from a UKAS-accredited Harley Street laboratory.',
-    ctaButtonText: 'Book with London Medical Lab',
+    ctaButtonText: 'Book',
     aboutText: 'blood test from a prestigious Harley Street laboratory. Fast turnaround with UKAS-accredited analysis and specialist review available.',
     canonicalBase: 'https://myhealthcheckup.co.uk/london-medical-laboratory',
+  },
+
+  'clinilabs': {
+    id: 'clinilabs',
+    name: 'Clinilabs',
+    logo: '/lovable-uploads/provider-clinilabs.png',
+    turnaround: '2-5 working days',
+    badgeText: 'Clinilabs Blood Test',
+    features: [
+      { title: 'UKAS Accredited Labs', description: 'High-accuracy testing in ISO 15189 accredited laboratories' },
+      { title: 'Nationwide Coverage', description: 'Clinic locations available across the UK' },
+      { title: 'Fast Turnaround', description: 'Results delivered within 2–5 working days' },
+      { title: 'Wide Test Range', description: 'Comprehensive menu of blood and health tests' },
+    ],
+    sampleOptions: [
+      {
+        icon: 'clinic',
+        title: 'Clinic Visit',
+        description: 'Visit a Clinilabs partner clinic for professional venous blood collection by a trained phlebotomist.',
+      },
+    ],
+    whyChoose: {
+      title: 'Why Choose Clinilabs?',
+      items: [
+        { bold: 'Accredited Testing:', text: 'ISO 15189 certified laboratories for reliable, accurate results' },
+        { bold: 'Broad Test Menu:', text: 'Comprehensive range covering health, hormones, vitamins, and more' },
+        { bold: 'Nationwide Access:', text: 'Clinic locations across the UK for convenient booking' },
+        { bold: 'Fast Results:', text: 'Turnaround of 2–5 working days with online result delivery' },
+      ],
+    },
+    quickInfo: {
+      sampleType: 'Venous blood draw',
+      labProcessing: 'ISO 15189 accredited laboratories',
+      resultsDelivery: 'Secure online portal',
+    },
+    ctaText: 'Book your blood test with Clinilabs today for reliable, accredited results at a clinic near you.',
+    ctaButtonText: 'Book',
+    aboutText: 'blood test processed in ISO 15189 accredited laboratories. Professional phlebotomy and fast, secure online result delivery.',
+    canonicalBase: 'https://myhealthcheckup.co.uk/clinilabs',
+  },
+
+  'london-health-company': {
+    id: 'london-health-company',
+    name: 'London Health Company',
+    logo: '/lovable-uploads/provider-london-health-company.png',
+    turnaround: '2-4 working days',
+    badgeText: 'London Health Company Blood Test',
+    features: [
+      { title: 'Professional Phlebotomy', description: 'Trained phlebotomists for accurate sample collection' },
+      { title: 'London-Based', description: 'Convenient clinic locations across London' },
+      { title: 'Comprehensive Panels', description: 'Wide range of blood tests and health checks' },
+      { title: 'Fast Results', description: 'Results delivered within 2–4 working days' },
+    ],
+    sampleOptions: [
+      {
+        icon: 'clinic',
+        title: 'Clinic Visit',
+        description: 'Visit a London Health Company clinic for professional venous blood collection by a trained phlebotomist.',
+      },
+    ],
+    whyChoose: {
+      title: 'Why Choose London Health Company?',
+      items: [
+        { bold: 'London Convenience:', text: 'Multiple clinic locations across London for easy access' },
+        { bold: 'Professional Service:', text: 'Trained phlebotomists for accurate and comfortable blood collection' },
+        { bold: 'Comprehensive Testing:', text: 'Wide range of blood tests and health screening panels' },
+        { bold: 'Fast Turnaround:', text: 'Results within 2–4 working days via secure online portal' },
+      ],
+    },
+    quickInfo: {
+      sampleType: 'Venous blood draw',
+      labProcessing: 'Accredited laboratory partners',
+      resultsDelivery: 'Online portal delivery',
+    },
+    ctaText: 'Book your blood test with London Health Company for professional phlebotomy and reliable results.',
+    ctaButtonText: 'Book',
+    aboutText: 'blood test with professional venous collection at a London Health Company clinic. Fast, accurate results via secure online portal.',
+    canonicalBase: 'https://myhealthcheckup.co.uk/london-health-company',
+  },
+
+  'medical-diagnosis': {
+    id: 'medical-diagnosis',
+    name: 'Medical Diagnosis',
+    logo: '/lovable-uploads/provider-medical-diagnosis.png',
+    turnaround: '2-5 working days',
+    badgeText: 'Medical Diagnosis Blood Test',
+    features: [
+      { title: 'Clinic-Based Testing', description: 'Professional venous blood collection at clinic locations' },
+      { title: 'Wide Test Range', description: 'Broad menu of diagnostic blood tests and health panels' },
+      { title: 'Competitive Pricing', description: 'Affordable private blood testing options' },
+      { title: 'Results Online', description: 'Secure online result delivery within 2–5 working days' },
+    ],
+    sampleOptions: [
+      {
+        icon: 'clinic',
+        title: 'Clinic Visit',
+        description: 'Visit a Medical Diagnosis clinic for professional venous blood collection by trained staff.',
+      },
+    ],
+    whyChoose: {
+      title: 'Why Choose Medical Diagnosis?',
+      items: [
+        { bold: 'Broad Test Menu:', text: 'Comprehensive range of diagnostic blood tests and health panels' },
+        { bold: 'Competitive Pricing:', text: 'Affordable private testing with transparent pricing' },
+        { bold: 'Clinic Access:', text: 'Professional venous blood collection at clinic locations' },
+        { bold: 'Online Results:', text: 'Secure digital delivery of results within 2–5 working days' },
+      ],
+    },
+    quickInfo: {
+      sampleType: 'Venous blood draw',
+      labProcessing: 'Accredited laboratory partners',
+      resultsDelivery: 'Secure online portal',
+      supportPhone: '020 3538 0930',
+    },
+    ctaText: 'Book your blood test with Medical Diagnosis for professional collection and reliable results at competitive prices.',
+    ctaButtonText: 'Book',
+    aboutText: 'blood test with professional venous collection at a Medical Diagnosis clinic. Competitive pricing with secure online result delivery.',
+    canonicalBase: 'https://myhealthcheckup.co.uk/medical-diagnosis',
   },
 };
 

@@ -414,7 +414,7 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <Button asChild size="sm">
-                              <Link to={`/providers/${providerId}`}>
+                              <Link to={`/provider/${providerId}/tests`}>
                                 View Catalog
                               </Link>
                             </Button>
@@ -532,7 +532,7 @@ export default function ProviderComparisonPage() {
         {/* Back Link */}
         <div className="mt-8 text-center">
           <Button asChild variant="outline">
-            <Link to="/providers">
+            <Link to="/trusted-providers">
               ← Back to All Providers
             </Link>
           </Button>

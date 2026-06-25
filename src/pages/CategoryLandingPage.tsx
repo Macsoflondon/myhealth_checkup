@@ -159,6 +159,19 @@ const CategoryLandingPage: React.FC = () => {
               }
             })}
           </script>
+          {content.faqs && content.faqs.length > 0 && (
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": content.faqs.map((faq) => ({
+                  "@type": "Question",
+                  "name": faq.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+                }))
+              })}
+            </script>
+          )}
         </Helmet>
 
         <MainLayout>

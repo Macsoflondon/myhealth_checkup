@@ -99,8 +99,8 @@ const FairTradingPolicy = () => {
           <CardContent className="prose prose-sm max-w-none">
             <p>
               Consumers may contact our Compliance Team via{' '}
-              <a href="mailto:compliance@myhealthcheckup.co.uk" className="text-primary hover:underline">
-                compliance@myhealthcheckup.co.uk
+              <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary hover:underline">
+                support@myhealthcheckup.co.uk
               </a>{' '}
               or write to Compliance Department, MyHealthCheckup Ltd, Clapham, London, United Kingdom. 
               Complaints are acknowledged within 10 working days and investigated thoroughly. If 
@@ -130,7 +130,7 @@ const FairTradingPolicy = () => {
           <CardContent className="prose prose-sm max-w-none">
             <p>For any queries regarding this policy:</p>
             <ul className="list-none space-y-1 pl-0">
-              <li><strong>Email:</strong> <a href="mailto:legal@myhealthcheckup.co.uk" className="text-primary hover:underline">legal@myhealthcheckup.co.uk</a></li>
+              <li><strong>Email:</strong> <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary hover:underline">support@myhealthcheckup.co.uk</a></li>
               <li><strong>Telephone:</strong> 07776330508</li>
               <li><strong>Registered Office:</strong> Clapham, London, United Kingdom</li>
             </ul>

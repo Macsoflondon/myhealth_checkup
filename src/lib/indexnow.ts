@@ -1,7 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
-import { BASE_URL } from "@/lib/seo";
 
-const SITE_ORIGIN = BASE_URL;
+const SITE_ORIGIN = "https://myhealthcheckup.co.uk";
 
 /**
  * Push URL changes to Bing / Yandex / Seznam / Naver via IndexNow.

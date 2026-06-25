@@ -8,6 +8,9 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import FloatingNavDock from "./components/common/FloatingNavDock";
 import { GlobalHreflang } from "./components/seo/GlobalHreflang";
+import TestPageViewTracker from "./components/analytics/TestPageViewTracker";
+import GlobalPageBackground from "./components/layout/GlobalPageBackground";
+import { AutoTranslatePage } from "./components/i18n/AutoTranslatePage";
 
 import { AppRoutes } from "./routes";
 import { SessionSecurityProvider } from "./components/security/SessionSecurityProvider";
@@ -16,8 +19,8 @@ import { SessionSecurityProvider } from "./components/security/SessionSecurityPr
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      staleTime: 10 * 60 * 1000, // 10 minutes — catalogue-heavy app, data rarely changes
+      gcTime: 30 * 60 * 1000, // 30 minutes
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -28,27 +31,31 @@ const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <SessionSecurityProvider>
-        <HelmetProvider>
-          <TooltipProvider>
+      <AuthProvider>
+        <SessionSecurityProvider>
+          <HelmetProvider>
             <Helmet>
               <html lang="en" />
-              <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
             </Helmet>
+            {/* Toasters intentionally kept outside TooltipProvider so toast
+                state changes don't trigger tooltip context re-renders. */}
             <Toaster />
             <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <GlobalHreflang />
-              <FloatingNavDock />
-              <AppRoutes />
-            </BrowserRouter>
-          </TooltipProvider>
-        </HelmetProvider>
-      </SessionSecurityProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+            <TooltipProvider>
+              <BrowserRouter>
+                <ScrollToTop />
+                <GlobalPageBackground />
+                <GlobalHreflang />
+                <TestPageViewTracker />
+                <FloatingNavDock />
+                <AutoTranslatePage />
+                <AppRoutes />
+              </BrowserRouter>
+            </TooltipProvider>
+          </HelmetProvider>
+        </SessionSecurityProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 

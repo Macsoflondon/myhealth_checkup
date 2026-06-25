@@ -1,4 +1,6 @@
+import Header from "@/components/layout/Header";
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminRoute } from "@/components/auth/AdminRoute";
@@ -257,11 +259,19 @@ function AdminTestDashboardContent() {
       {/* Header */}
       <div className="border-b border-white/10 bg-[#081129]">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-3 mb-1">
-            <LayoutDashboard className="w-6 h-6 text-brand-pink" />
-            <h1 className="text-2xl font-bold text-white font-montserrat">
-              Test Catalogue Dashboard
-            </h1>
+          <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
+            <div className="flex items-center gap-3">
+              <LayoutDashboard className="w-6 h-6 text-brand-pink" />
+              <h1 className="text-2xl font-bold text-white font-montserrat">
+                Test Catalogue Dashboard
+              </h1>
+            </div>
+            <Link
+              to="/admin/biomarker-audit"
+              className="inline-flex items-center gap-2 rounded-md bg-brand-pink px-3 py-2 text-sm font-semibold text-white hover:bg-brand-pink/90"
+            >
+              Open Biomarker Audit →
+            </Link>
           </div>
           <p className="text-white/60 text-sm">
             Master catalogue with provider pricing — {combinedRows.length} master tests, {providerTests?.length ?? 0} provider listings
@@ -525,6 +535,7 @@ function AdminTestDashboardContent() {
 export default function AdminTestDashboardPage() {
   return (
     <AdminRoute>
+      <Header />
       <AdminTestDashboardContent />
     </AdminRoute>
   );

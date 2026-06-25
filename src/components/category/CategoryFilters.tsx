@@ -32,32 +32,6 @@ export function CategoryFilters({
 
   return (
     <div className="mb-5">
-      {/* Filter pills - centered */}
-      <div className="flex flex-wrap gap-2 justify-center mb-4">
-        {filters.map((f) => {
-          const isActive = activeFilter === f;
-          const isHover = hovered === f;
-          const color = colorFor(f);
-          const highlight = isActive || isHover;
-          return (
-            <button
-              key={f}
-              onClick={() => onFilterChange(f)}
-              onMouseEnter={() => setHovered(f)}
-              onMouseLeave={() => setHovered(null)}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all border"
-              style={{
-                background: highlight ? `${color}1A` : "hsl(var(--background))",
-                color: highlight ? color : "hsl(var(--muted-foreground))",
-                borderColor: highlight ? color : "hsl(var(--border))",
-                boxShadow: isActive ? `0 0 12px ${color}40` : "none",
-              }}
-            >
-              {f}
-            </button>
-          );
-        })}
-      </div>
 
       {/* Sort + result count row */}
       <div className="flex items-center justify-between flex-wrap gap-3">

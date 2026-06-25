@@ -9,11 +9,13 @@ Disallow: /auth/
 Disallow: /reset-password
 Disallow: /dashboard
 Disallow: /dashboard/
+Disallow: /health-dashboard
 Disallow: /client-portal
 Disallow: /notifications
+Disallow: /notification-history
 
 # Sitemap
-Sitemap: https://www.myhealthcheckup.co.uk/sitemap.xml
+Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
 
 # Major search bots — explicit allow
 User-agent: Googlebot

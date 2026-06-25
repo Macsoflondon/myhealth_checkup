@@ -1,93 +1,153 @@
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useBiomarkersLibrary, BiomarkerDefinition } from "@/hooks/useBiomarkersLibrary";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Search, ChevronDown, ChevronUp, FlaskConical, Activity } from "lucide-react";
-import { cn } from "@/lib/utils";
-import PageBanner from "@/components/sections/PageBanner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+
+const MONTSERRAT = { fontFamily: "Montserrat, sans-serif" } as const;
+const DM_SANS = { fontFamily: "'DM Sans', sans-serif" } as const;
 
 function BiomarkerCard({ biomarker }: { biomarker: BiomarkerDefinition }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-[#081129] border-2 border-[#081129] rounded-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full text-left flex items-start justify-between gap-3"
-      >
+    <div
+      onClick={() => setOpen(!open)}
+      className="bg-white rounded-2xl border border-[#e2e8f0] p-5 overflow-hidden cursor-pointer transition-all duration-200 hover:border-[#22c0d4] hover:shadow-md hover:-translate-y-0.5"
+    >
+      <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap mb-1">
-            <h3 className="font-heading font-semibold text-white text-base sm:text-lg">
-              {biomarker.biomarker_name}
-            </h3>
-            <Badge className="text-xs font-mono shrink-0 bg-[#e70d69] text-white border-0">
+          <h3
+            className="font-semibold text-[15px] text-[#081129] line-clamp-1"
+            style={MONTSERRAT}
+          >
+            {biomarker.biomarker_name}
+          </h3>
+          {biomarker.biomarker_code && (
+            <span
+              className="inline-block bg-[#f0f4fa] text-[#22c0d4] text-[11px] px-2 py-0.5 rounded mt-0.5 font-mono"
+              style={MONTSERRAT}
+            >
               {biomarker.biomarker_code}
-            </Badge>
-          </div>
-          <p className="text-sm text-white/70 line-clamp-2">{biomarker.description}</p>
+            </span>
+          )}
+          {biomarker.description && (
+            <p
+              className="text-[13px] text-[#64748b] line-clamp-2 mt-1"
+              style={DM_SANS}
+            >
+              {biomarker.description}
+            </p>
+          )}
         </div>
         {open ? (
-          <ChevronUp className="h-5 w-5 text-white/60 shrink-0 mt-1" />
+          <ChevronUp size={18} color="#22c0d4" className="shrink-0" />
         ) : (
-          <ChevronDown className="h-5 w-5 text-white/60 shrink-0 mt-1" />
+          <ChevronDown size={18} color="#22c0d4" className="shrink-0" />
         )}
-      </button>
+      </div>
 
       {open && (
-        <div className="mt-4 pt-4 border-t border-white/20 space-y-3 text-sm">
+        <div className="border-t border-[#e2e8f0] mt-4 pt-4 space-y-3">
           {biomarker.unit_of_measurement && (
             <div>
-              <span className="font-medium text-white">Unit:</span>{" "}
-              <span className="text-white/70">{biomarker.unit_of_measurement}</span>
+              <div
+                className="text-[12px] uppercase tracking-wide text-[#081129] font-medium"
+                style={MONTSERRAT}
+              >
+                Unit
+              </div>
+              <div className="text-[13px] text-[#64748b] mt-0.5" style={DM_SANS}>
+                {biomarker.unit_of_measurement}
+              </div>
             </div>
           )}
+
           {(biomarker.normal_range_male || biomarker.normal_range_female) && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {biomarker.normal_range_male && (
-                <div className="bg-white/10 rounded-lg p-3">
-                  <span className="font-medium text-white block text-xs uppercase tracking-wide mb-1">Male Range</span>
-                  <span className="text-white/70">{biomarker.normal_range_male}</span>
+                <div className="bg-[#f0f4fa] rounded-lg p-3">
+                  <div
+                    className="text-[11px] uppercase text-[#94a3b8]"
+                    style={MONTSERRAT}
+                  >
+                    Male Range
+                  </div>
+                  <div className="text-[13px] text-[#081129] mt-0.5" style={DM_SANS}>
+                    {biomarker.normal_range_male}
+                  </div>
                 </div>
               )}
               {biomarker.normal_range_female && (
-                <div className="bg-white/10 rounded-lg p-3">
-                  <span className="font-medium text-white block text-xs uppercase tracking-wide mb-1">Female Range</span>
-                  <span className="text-white/70">{biomarker.normal_range_female}</span>
+                <div className="bg-[#f0f4fa] rounded-lg p-3">
+                  <div
+                    className="text-[11px] uppercase text-[#94a3b8]"
+                    style={MONTSERRAT}
+                  >
+                    Female Range
+                  </div>
+                  <div className="text-[13px] text-[#081129] mt-0.5" style={DM_SANS}>
+                    {biomarker.normal_range_female}
+                  </div>
                 </div>
               )}
             </div>
           )}
+
           {biomarker.clinical_significance && (
             <div>
-              <span className="font-medium text-white">Clinical Significance:</span>
-              <p className="text-white/70 mt-1">{biomarker.clinical_significance}</p>
+              <div
+                className="text-[12px] uppercase tracking-wide text-[#081129] font-medium"
+                style={MONTSERRAT}
+              >
+                Clinical Significance
+              </div>
+              <p className="text-[13px] text-[#64748b] mt-1" style={DM_SANS}>
+                {biomarker.clinical_significance}
+              </p>
             </div>
           )}
+
           {biomarker.related_conditions && biomarker.related_conditions.length > 0 && (
             <div>
-              <span className="font-medium text-white block mb-1">Related Conditions:</span>
+              <div
+                className="text-[12px] uppercase tracking-wide text-[#081129] font-medium mb-1.5"
+                style={MONTSERRAT}
+              >
+                Related Conditions
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 {biomarker.related_conditions.map((condition) => (
-                  <Badge key={condition} variant="secondary" className="text-xs">
+                  <span
+                    key={condition}
+                    className="bg-[#f0f4fa] text-[#081129] text-[12px] px-2.5 py-1 rounded-full"
+                    style={DM_SANS}
+                  >
                     {condition}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             </div>
           )}
+
           {biomarker.lifestyle_factors && biomarker.lifestyle_factors.length > 0 && (
             <div>
-              <span className="font-medium text-white block mb-1">Lifestyle Factors:</span>
+              <div
+                className="text-[12px] uppercase tracking-wide text-[#081129] font-medium mb-1.5"
+                style={MONTSERRAT}
+              >
+                Lifestyle Factors
+              </div>
               <div className="flex flex-wrap gap-1.5">
                 {biomarker.lifestyle_factors.map((factor) => (
-                  <Badge key={factor} variant="outline" className="text-xs border-white/30 text-white">
+                  <span
+                    key={factor}
+                    className="bg-[#22c0d4]/10 text-[#22c0d4] text-[12px] px-2.5 py-1 rounded-full"
+                    style={DM_SANS}
+                  >
                     {factor}
-                  </Badge>
+                  </span>
                 ))}
               </div>
             </div>
@@ -134,112 +194,137 @@ export default function BiomarkerDatabasePage() {
 
       <Header />
 
-      <PageBanner
-        title="Biomarker"
-        accent="Library"
-        subtitle="Search and explore blood test biomarkers. Understand what each marker measures, normal ranges, and clinical significance."
-      />
-
-      <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-
-      <div className="min-h-screen bg-[hsl(220_5%_97%)]">
-        {/* Search & Filters */}
-        <section className="container mx-auto px-4 py-6 sm:py-8 max-w-4xl">
-          <div className="bg-white border-2 border-[#081129] rounded-xl shadow-sm p-4 sm:p-6 space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search biomarkers by name, code, or description..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  if (e.target.value.trim()) setSelectedCategory(null);
-                }}
-                className="pl-10"
-              />
-            </div>
-            {categories.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => { setSelectedCategory(null); setSearchQuery(""); }}
-                  className={cn(
-                    "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border-2 border-[#081129] min-h-[36px]",
-                    !selectedCategory
-                      ? "bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
-                      : "bg-[#22c0d4] hover:bg-[#e70d69] text-white"
-                  )}
-                >
-                  All
-                </button>
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => { setSelectedCategory(cat); setSearchQuery(""); }}
-                    className={cn(
-                      "px-3 py-1.5 rounded-full text-sm font-medium transition-colors border-2 border-[#081129] min-h-[36px]",
-                      selectedCategory === cat
-                        ? "bg-[#e70d69] hover:bg-[#e70d69]/90 text-white"
-                        : "bg-[#22c0d4] hover:bg-[#e70d69] text-white"
-                    )}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            )}
+      <div className="bg-white min-h-screen">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+          {/* Header */}
+          <div
+            className="text-[12px] uppercase font-medium text-[#22c0d4]"
+            style={{ ...MONTSERRAT, letterSpacing: "0.12em" }}
+          >
+            BIOMARKER LIBRARY
           </div>
-        </section>
+          <h1
+            className="font-bold text-[#081129] text-[28px] md:text-[40px] mt-2 leading-tight"
+            style={MONTSERRAT}
+          >
+            Understand Your Biomarkers
+          </h1>
+          <p
+            className="text-[16px] text-[#64748b] mt-3 max-w-2xl"
+            style={DM_SANS}
+          >
+            Search and explore blood test markers. Understand what each one measures, normal ranges, and why it matters for your health.
+          </p>
 
-        {/* Results */}
-        <section className="container mx-auto px-4 pb-8 sm:pb-12 max-w-4xl">
-          {isLoading ? (
-            <div className="space-y-4">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-24 w-full rounded-xl" />
+          {/* Search */}
+          <div className="relative max-w-md mt-6">
+            <Search
+              size={16}
+              color="#94a3b8"
+              className="absolute left-4 top-1/2 -translate-y-1/2"
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (e.target.value.trim()) setSelectedCategory(null);
+              }}
+              placeholder="Search biomarkers by name or code…"
+              className="w-full pl-10 pr-4 py-2.5 rounded-full border border-[#081129] text-[14px] text-[#081129] placeholder:text-[#94a3b8] outline-none focus:ring-2 focus:ring-[#22c0d4] focus:border-[#22c0d4] bg-white"
+              style={DM_SANS}
+            />
+          </div>
+
+          {/* Category pills */}
+          {categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              <button
+                onClick={() => { setSelectedCategory(null); setSearchQuery(""); }}
+                className={`rounded-full border border-[#081129] px-4 py-1.5 text-[13px] font-medium transition-colors ${
+                  !selectedCategory
+                    ? "bg-[#081129] text-white"
+                    : "bg-white text-[#081129] hover:bg-[#f0f4fa]"
+                }`}
+                style={DM_SANS}
+              >
+                All
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => { setSelectedCategory(cat); setSearchQuery(""); }}
+                  className={`rounded-full border border-[#081129] px-4 py-1.5 text-[13px] font-medium transition-colors ${
+                    selectedCategory === cat
+                      ? "bg-[#081129] text-white"
+                      : "bg-white text-[#081129] hover:bg-[#f0f4fa]"
+                  }`}
+                  style={DM_SANS}
+                >
+                  {cat}
+                </button>
               ))}
             </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Unable to load biomarkers. Please try again later.</p>
-            </div>
-          ) : filteredBiomarkers.length === 0 ? (
-            <div className="text-center py-12">
-              <FlaskConical className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground text-lg">No biomarkers found</p>
-              <p className="text-muted-foreground text-sm mt-1">Try a different search term or category.</p>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {groupedByCategory.map(([category, items]) => (
-                <Collapsible key={category} defaultOpen>
-                  <CollapsibleTrigger className="flex items-center justify-between w-full group">
-                    <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#081129]">
-                      {category}
-                      <span className="text-sm font-normal text-[#22c0d4] ml-2">
-                        ({items.length})
+          )}
+
+          {/* Results */}
+          <div className="mt-10">
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[...Array(9)].map((_, i) => (
+                  <div key={i} className="h-32 rounded-2xl bg-[#f0f4fa] animate-pulse" />
+                ))}
+              </div>
+            ) : error ? (
+              <div className="text-center py-16">
+                <Activity size={40} color="#22c0d4" className="mx-auto mb-4" />
+                <p className="text-[14px] text-[#64748b]" style={DM_SANS}>
+                  Unable to load biomarkers. Please try again later.
+                </p>
+              </div>
+            ) : filteredBiomarkers.length === 0 ? (
+              <div className="text-center py-16">
+                <FlaskConical size={40} color="#22c0d4" className="mx-auto mb-4" />
+                <p className="text-[14px] text-[#64748b]" style={DM_SANS}>
+                  No biomarkers found for this search.
+                </p>
+              </div>
+            ) : (
+              <>
+                {groupedByCategory.map(([category, items]) => (
+                  <section key={category} className="mb-10">
+                    <div className="flex items-baseline gap-3">
+                      <h2
+                        className="font-semibold text-[20px] text-[#081129]"
+                        style={MONTSERRAT}
+                      >
+                        {category}
+                      </h2>
+                      <span
+                        className="text-[13px] text-[#22c0d4]"
+                        style={DM_SANS}
+                      >
+                        {items.length} marker{items.length !== 1 ? "s" : ""}
                       </span>
-                    </h2>
-                    <ChevronDown className="h-5 w-5 text-muted-foreground group-data-[state=open]:rotate-180 transition-transform" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="grid gap-3 mt-4">
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                       {items.map((biomarker) => (
                         <BiomarkerCard key={biomarker.id} biomarker={biomarker} />
                       ))}
                     </div>
-                  </CollapsibleContent>
-                </Collapsible>
-              ))}
-            </div>
-          )}
+                  </section>
+                ))}
 
-          {!isLoading && !error && filteredBiomarkers.length > 0 && (
-            <p className="text-center text-sm text-muted-foreground mt-8">
-              Showing {filteredBiomarkers.length} biomarker{filteredBiomarkers.length !== 1 ? "s" : ""}
-            </p>
-          )}
-        </section>
+                <p
+                  className="text-center text-[13px] text-[#94a3b8] mt-8"
+                  style={DM_SANS}
+                >
+                  Showing {filteredBiomarkers.length} biomarker{filteredBiomarkers.length !== 1 ? "s" : ""}
+                </p>
+              </>
+            )}
+          </div>
+        </main>
       </div>
 
       <Footer />

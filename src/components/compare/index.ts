@@ -21,6 +21,8 @@ export { ModernCompareTable } from "./ModernCompareTable";
 export { default as OrderAction } from "./OrderAction";
 // PremiumTestCard deprecated — use UnifiedTestCard via RecommendedTestsCarousel
 export { ProviderComparisonTable } from "./ProviderComparisonTable";
+export { TestProviderPriceTable } from "./TestProviderPriceTable";
+
 export { ProviderDataStatus } from "./ProviderDataStatus";
 export { default as ProviderHeader } from "./ProviderHeader";
 export { default as ProviderPriceComparison } from "./ProviderPriceComparison";

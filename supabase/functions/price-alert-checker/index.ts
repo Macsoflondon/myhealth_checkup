@@ -32,11 +32,20 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+  // Cron/service-role guard: only callers presenting the service-role key may run this.
+  const authHeader = req.headers.get('Authorization') ?? '';
+  if (authHeader !== `Bearer ${supabaseKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     console.log('Starting price alert checker');
-    
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Fetch all enabled price alerts
@@ -113,7 +122,8 @@ serve(async (req) => {
         // Send email notification
         try {
           await resend.emails.send({
-            from: 'myhealth checkup <alerts@myhealthcheckup.co.uk>',
+            from: 'myhealth checkup <support@myhealthcheckup.co.uk>',
+            reply_to: 'support@myhealthcheckup.co.uk',
             to: [userData.user.email],
             subject: `🎉 Price Drop Alert: ${testName}`,
             html: `
@@ -161,7 +171,6 @@ serve(async (req) => {
             test_name: testName,
             provider: alert.provider,
             price_drop: matchingDrop.change_percentage,
-            user_email: userData.user.email,
           });
 
           console.log(`Alert sent successfully for ${testName} to ${userData.user.email}`);
@@ -187,10 +196,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in price alert checker:', error);
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: (error instanceof Error ? error.message : String(error)) 
-      }),
+      JSON.stringify({ success: false, error: 'Internal server error' }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500 

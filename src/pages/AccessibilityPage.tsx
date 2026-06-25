@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
 import PageBanner from '@/components/sections/PageBanner';
+import SupportSLA from '@/components/compliance/SupportSLA';
 
 const AccessibilityPage = () => {
   return (
@@ -119,11 +120,13 @@ const AccessibilityPage = () => {
                   please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                   <p><strong>Email:</strong> accessibility@myhealthcheckup.co.uk</p>
+                   <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                    <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
                  </div>
               </CardContent>
             </Card>
+
+            <SupportSLA variant="accessibility" className="mt-8" />
           </div>
         </div>
       </main>

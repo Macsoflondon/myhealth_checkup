@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useNavigationData } from "@/hooks/useNavigationData";
@@ -6,6 +6,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { usePopularTestsForNavigation } from "@/hooks/usePopularTestsFromDatabase";
 import { MegaMenuDropdown } from "./MegaMenuDropdown";
 import { MoreDropdownMenu } from "./MoreDropdownMenu";
+import { NavItemDropdown } from "./NavItemDropdown";
+import type { PrimaryNavItem } from "./NavigationItems";
 import { 
   primaryNavigationItems, 
   moreNavigationSections 
@@ -67,8 +69,32 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     setActiveDropdown(null);
   };
 
-  // Toggle dropdown on click (works for both mobile and desktop)
+  // Hover timeout ref for desktop dropdowns
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearHoverTimeout = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+  };
+
+  const handleWrapperMouseEnter = (itemName: string) => {
+    if (isMobile) return;
+    clearHoverTimeout();
+    setActiveDropdown(itemName);
+  };
+
+  const handleWrapperMouseLeave = () => {
+    if (isMobile) return;
+    hoverTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200);
+  };
+
+  // Toggle dropdown on click (mobile only; desktop uses hover)
   const handleDropdownToggle = (e: React.MouseEvent, itemName: string) => {
+    if (!isMobile) return;
     e.preventDefault();
     e.stopPropagation();
     setActiveDropdown(activeDropdown === itemName ? null : itemName);
@@ -84,44 +110,77 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
   const highlightedItems: string[] = ["Most Popular Tests"];
 
-  const renderNavItem = (item: typeof primaryNavigationItems[0]) => {
+  const renderNavItem = (item: PrimaryNavItem) => {
     const isPopularTests = item.name === "Most Popular Tests";
     const hasAccent = highlightedItems.includes(item.name);
+    const isDropdownOpen = activeDropdown === item.name;
+    const hasDropdown = item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
 
     return (
       <div
         key={item.path}
         className="relative nav-item-wrapper"
         style={{ overflow: 'visible' }}
+        onMouseEnter={hasDropdown ? () => handleWrapperMouseEnter(item.name) : undefined}
+        onMouseLeave={hasDropdown ? handleWrapperMouseLeave : undefined}
       >
-        <Link
-          to={item.path}
-          className={`group relative font-heading text-sm md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-            hasAccent
-              ? "text-brand-pink font-bold"
-              : "text-[#1a9baa] hover:text-brand-pink"
-          }`}
-          onClick={handleItemClick}
-        >
-          {item.name}
-        </Link>
+        {hasDropdown ? (
+          <>
+            <button
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={isDropdownOpen}
+              className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 text-[#FFFFFF] hover:text-[#FFFFFF] ${
+                hasAccent ? "font-bold" : ""
+              }`}
+              onClick={(e) => handleDropdownToggle(e, item.name)}
+            >
+              {item.name}
+              <ChevronDown className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
+                isDropdownOpen ? 'rotate-180' : ''
+              }`} />
+            </button>
+            {isDropdownOpen && item.dropdownItems && (
+              <NavItemDropdown
+                title={item.name}
+                items={item.dropdownItems}
+                onItemClick={handleItemClick}
+                onClose={handleCloseDropdown}
+                isMobile={isMobile}
+              />
+            )}
+          </>
+        ) : (
+          <Link
+            to={item.path}
+            className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 text-[#FFFFFF] hover:text-[#FFFFFF] ${
+              hasAccent ? "font-bold" : ""
+            }`}
+            onClick={handleItemClick}
+          >
+            {item.name}
+          </Link>
+        )}
       </div>
     );
   };
 
   const renderMoreButton = () => (
-    <div className="relative nav-item-wrapper" style={{ zIndex: 100 }}>
+    <div
+      className="relative nav-item-wrapper"
+      style={{ zIndex: 100 }}
+      onMouseEnter={() => handleWrapperMouseEnter("MORE")}
+      onMouseLeave={handleWrapperMouseLeave}
+    >
       <button
         type="button"
         aria-haspopup="menu"
         aria-expanded={activeDropdown === "MORE"}
-        className={`group relative font-heading text-sm md:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-300 ease-out px-1.5 md:px-2 lg:px-2.5 py-1 md:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 ${
-          activeDropdown === "MORE" ? 'text-brand-pink' : 'text-[#1a9baa] hover:text-brand-pink'
-        }`}
+        className={`group relative font-heading text-[10px] md:text-xs lg:text-base xl:text-lg leading-tight font-semibold transition-all duration-300 ease-out px-2 md:px-2 lg:px-2.5 py-1.5 md:py-1.5 lg:py-1.5 rounded-lg whitespace-nowrap inline-flex items-center gap-1 hover:after:w-full after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-brand-pink after:transition-all after:duration-300 after:delay-150 text-[#FFFFFF] hover:text-[#FFFFFF]`}
         onClick={(e) => handleDropdownToggle(e, "MORE")}
       >
         More
-        <ChevronDown className={`w-3 h-3 transition-transform ${
+        <ChevronDown className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
           activeDropdown === "MORE" ? 'rotate-180' : ''
         }`} />
       </button>
@@ -155,8 +214,8 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             {renderMoreButton()}
           </div>
         ) : (
-          /* Desktop/Tablet: Single row layout */
-          <div className="flex items-center justify-center gap-1 lg:gap-2 flex-nowrap" style={{ position: 'relative', overflow: 'visible' }}>
+          /* Tablet wraps to two rows; desktop stays single row */
+          <div className="flex items-center justify-center gap-x-2 gap-y-1.5 lg:gap-x-2 lg:gap-y-0 flex-wrap lg:flex-nowrap" style={{ position: 'relative', overflow: 'visible' }}>
             {allNavItems.map(renderNavItem)}
             {renderMoreButton()}
           </div>

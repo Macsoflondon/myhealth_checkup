@@ -10,6 +10,8 @@ import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { LucideIcon } from "lucide-react";
 import { Search } from "lucide-react";
 
+const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
+
 /* ───────── Types ───────── */
 export interface CategoryTestItem {
   id: string | number;
@@ -168,6 +170,50 @@ export function CategoryPageLayout({
         <meta property="og:description" content={seoDescription} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalUrl} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: seoTitle,
+          description: seoDescription,
+          url: canonicalUrl,
+          breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: breadcrumbs.map((b, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: b.label,
+              ...(b.href ? { item: `https://myhealthcheckup.co.uk${b.href}` } : {}),
+            })),
+          },
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: filtered.length,
+            itemListElement: filtered.slice(0, 50).map((t, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "Product",
+                name: t.title,
+                description: t.desc,
+                category: t.tag,
+                brand: { "@type": "Brand", name: t.provider },
+                aggregateRating: t.reviews > 0 ? {
+                  "@type": "AggregateRating",
+                  ratingValue: t.rating,
+                  reviewCount: t.reviews,
+                } : undefined,
+                offers: {
+                  "@type": "Offer",
+                  price: t.priceNum,
+                  priceCurrency: "GBP",
+                  availability: "https://schema.org/InStock",
+                  seller: { "@type": "Organization", name: t.provider },
+                  ...(t.url ? { url: t.url } : {}),
+                },
+              },
+            })),
+          },
+        })}</script>
       </Helmet>
 
       <div className="min-h-screen flex flex-col">
@@ -181,7 +227,7 @@ export function CategoryPageLayout({
           <CategoryStandardHero pillLabel={pillLabel} benefits={benefits} />
 
           {/* Filter + Sort + Cards */}
-          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b]">
+          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white">
             <div className="max-w-6xl mx-auto">
               <CategoryFilters
                 filters={filters}
@@ -196,7 +242,7 @@ export function CategoryPageLayout({
               />
 
               {/* Cards grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
                 {filtered.map((test) => (
                   <UnifiedTestCard
                     key={test.id}
@@ -211,13 +257,29 @@ export function CategoryPageLayout({
                     rating={test.rating}
                     reviews={test.reviews}
                     price={test.priceNum}
+                    priceFrom={isFromPriceLabel(test.price)}
                     markers={test.biomarkers}
                     provider={test.provider}
                     url={test.url}
-                    ctaLabel="Compare"
+                    ctaLabel="View details"
                     compareSelected={!!compared.find((c) => c.id === test.id)}
                     onCompareToggle={() => toggleCompare(test)}
-                    className="w-full max-w-[340px]"
+                    className="w-full h-full"
+                    testDetails={{
+                      id: String(test.id),
+                      provider_id: (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
+                      test_name: test.title,
+                      description: test.desc ?? null,
+                      price: test.priceNum ?? null,
+                      category: test.tag ?? null,
+                      sample_type: test.collection ?? null,
+                      biomarker_count: test.biomarkerCount ?? null,
+                      url: test.url ?? null,
+                      biomarkers_list: (test.biomarkers as any) ?? null,
+                      turnaround_days_text: test.turnaround ?? null,
+                      base_price: null,
+                      collection_options: null,
+                    }}
                   />
                 ))}
               </div>

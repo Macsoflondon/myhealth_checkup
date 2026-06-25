@@ -1,0 +1,1 @@
+SELECT public.sanitize_popular_provider_tests();

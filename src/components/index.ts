@@ -20,12 +20,12 @@ export { default as FeaturedTests } from "./sections/FeaturedTests";
 export { default as FeaturedProviders } from "./sections/FeaturedProviders";
 export { default as Testimonials } from "./sections/Testimonials";
 export { default as CallToAction } from "./sections/CallToAction";
-export { default as NationwideClinics } from "./sections/NationwideClinics";
+
 export { default as AccreditationLogos } from "./sections/AccreditationLogos";
 export { default as HowItWorks } from "./sections/HowItWorks";
 export { default as JourneySimplified } from "./sections/JourneySimplified";
 export { default as TopConcernsSection } from "./sections/TopConcernsSection";
-export { default as FindClinicSection } from "./sections/FindClinicSection";
+
 export { default as HereToHelp } from "./sections/HereToHelp";
 export { default as FinalCTA } from "./sections/FinalCTA";
 export { default as TrustPlatformSection } from "./sections/TrustPlatformSection";
@@ -37,8 +37,6 @@ export { ProviderLogo } from "./providers/ProviderLogo";
 // Compare components (via barrel)
 export * from "./compare";
 
-// Clinic components (via barrel)
-export * from "./clinic";
 
 // Booking components (via barrel)
 export * from "./booking";

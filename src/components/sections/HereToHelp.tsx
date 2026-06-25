@@ -1,9 +1,16 @@
-import { BookOpen, HelpCircle, MessageCircle } from "lucide-react";
+import { BookOpen, HelpCircle, MessageCircle, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const HereToHelp = () => {
   const resources = [
+    {
+      icon: Search,
+      title: "Find the Right Test for You",
+      description: "Browse our full range of test categories to discover what's best for your health needs.",
+      link: "/test-categories",
+      accent: "brand-pink"
+    },
     {
       icon: BookOpen,
       title: "Health Hub",
@@ -35,10 +42,10 @@ const HereToHelp = () => {
             
             {/* Left Column */}
             <div>
-              <div className="flex items-center gap-2 mb-4 justify-center lg:justify-start">
-                <div className="h-px w-6 bg-brand-pink" />
-                <span className="text-brand-pink text-xs font-semibold uppercase tracking-wider">Here to Help</span>
-                <div className="h-px w-6 bg-brand-pink" />
+              <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+                <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">Here to Help</span>
+                <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
 
               <SectionHeading
@@ -58,7 +65,7 @@ const HereToHelp = () => {
                 <Link
                   key={index}
                   to={resource.link}
-                  className="relative flex items-start gap-4 sm:gap-5 bg-gray-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
+                  className="relative flex items-start gap-4 sm:gap-5 bg-[#F7F7F8] rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
                 >
                   {/* Top accent line */}
                   <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${

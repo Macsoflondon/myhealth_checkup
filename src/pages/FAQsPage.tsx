@@ -317,6 +317,10 @@ const FAQsPage = () => {
         <meta name="description" content="Find answers to common questions about private health testing, sample collection, results, pricing, and more. Get expert guidance on choosing the right tests." />
         <meta name="keywords" content="health test FAQs, private blood test questions, UK health testing, UKAS accredited tests" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/faqs" />
+        <meta property="og:title" content="FAQs — Private Health Testing Questions | myhealth checkup" />
+        <meta property="og:description" content="Answers to common questions about private UK health testing — sample collection, results, pricing and choosing the right test." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/faqs" />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -328,7 +332,7 @@ const FAQsPage = () => {
       <main className="flex-grow bg-background">
         <PageBanner
           title="Frequently Asked Questions"
-          subtitle="Find answers to common questions about health testing and our platform"
+          subtitle={"\n"}
         >
           {/* Search Bar */}
           <div className="max-w-xl sm:max-w-2xl mx-auto mt-6">
@@ -389,106 +393,6 @@ const FAQsPage = () => {
             </div>}
         </div>
 
-        {/* Related Resources */}
-        <div className="container mx-auto px-4 py-8 sm:py-12 border-t border-gray-200">
-          <div className="max-w-4xl mx-auto">
-            <SectionHeading 
-              title="Related" 
-              gradientText="Resources" 
-              className="mb-4 sm:mb-6"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow">
-                <CardHeader className="p-4 sm:p-6">
-                  <CardTitle className="text-primary text-lg sm:text-xl">Browse Tests</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 sm:p-6 pt-0">
-                  <p className="text-gray-700 mb-4 text-sm sm:text-base">
-                    Explore our comprehensive range of health tests from UKAS-accredited providers.
-                  </p>
-                  <Link to="/compare">
-                    <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]">
-                      View All Tests
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20 hover:shadow-lg transition-shadow bg-white">
-                <CardHeader className="p-4 sm:p-6">
-                  <CardTitle className="text-primary text-lg sm:text-xl">How It Works</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 sm:p-6 pt-0 bg-[t] bg-white">
-                  <p className="text-gray-700 mb-4 text-sm sm:text-base">
-                    Learn about our simple 3-step process from booking to receiving your results.
-                  </p>
-                  <Link to="/how-it-works">
-                    <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white min-h-[44px]">
-                      Learn More
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Support */}
-        <div className="bg-gradient-to-br from-primary/5 to-secondary/5 py-8 sm:py-12">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-white">
-                Still have questions?
-              </h2>
-              <p className="mb-6 sm:mb-8 text-base sm:text-lg max-w-2xl mx-auto text-white">
-                Our support team is here to help you find the right test for your needs.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <Card className="bg-white border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg">
-                  <CardHeader className="p-4 sm:p-6">
-                    <div className="flex justify-center mb-3 sm:mb-4">
-                      <div className="bg-primary/10 p-3 sm:p-4 rounded-full">
-                        <Mail className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
-                      </div>
-                    </div>
-                    <CardTitle className="text-lg sm:text-xl">Email Support</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 sm:p-6 pt-0">
-                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base font-medium">
-                      Get detailed answers to your questions
-                    </p>
-                    <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
-                      support@myhealthcheckup.co.uk
-                    </a>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-white border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg">
-                  <CardHeader className="p-4 sm:p-6">
-                    <div className="flex justify-center mb-3 sm:mb-4">
-                      <div className="bg-primary/10 p-3 sm:p-4 rounded-full">
-                        <Phone className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
-                      </div>
-                    </div>
-                    <CardTitle className="text-lg sm:text-xl">Phone Support</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 sm:p-6 pt-0">
-                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base font-medium">
-                      Speak with our team directly
-                    </p>
-                    <a href="tel:+442012345678" className="text-primary hover:text-primary/80 font-semibold text-base sm:text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded">
-                      +44 20 1234 5678
-                    </a>
-                    <p className="text-xs sm:text-sm mt-2 text-[#081129]">
-                      Mon-Fri: 9am-6pm GMT
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
         
       </main>
       <Footer />

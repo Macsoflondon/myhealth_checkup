@@ -133,6 +133,7 @@ export default function ClientPortal() {
       <Helmet>
         <title>Health Portal | myhealth checkup</title>
         <meta name="description" content="Access your test results, appointments, and health insights" />
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

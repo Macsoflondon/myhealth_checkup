@@ -83,39 +83,24 @@ const getCategoryColour = (categoryId: string) => {
   return colourMap[categoryId] || 'bg-gray-500';
 };
 
-// Group categories for better organisation
-const categoryGroups = [
-  {
-    title: "Essential Tests",
-    icon: Stethoscope,
-    colour: "primary",
-    categories: ['blood-tests', 'general-health', 'vitamins', 'thyroid']
-  },
-  {
-    title: "Organ Health",
-    icon: Heart,
-    colour: "rose",
-    categories: ['heart-health', 'liver', 'diabetes']
-  },
-  {
-    title: "Gender Specific",
-    icon: Users,
-    colour: "indigo",
-    categories: ['mens-health', 'womens-health', 'fertility']
-  },
-  {
-    title: "Specialist Tests",
-    icon: Shield,
-    colour: "secondary",
-    categories: ['cancer-screening', 'hormones', 'allergy-testing']
-  },
-  {
-    title: "Lifestyle & Wellness",
-    icon: Dumbbell,
-    colour: "emerald",
-    categories: ['sports-performance-tests', 'weight-loss-tests', 'longevity-tests']
-  }
+// Canonical test-category entries shown in the Categories tab.
+// Mirrors the primary nav so the two surfaces never drift.
+const testCategoryCards: Array<{
+  name: string;
+  path: string;
+  icon: React.ElementType;
+  bg: string;
+}> = [
+  { name: "Most Popular Tests", path: "/popular-tests", icon: Sparkles, bg: "bg-amber-500" },
+  { name: "General Wellness", path: "/wellness", icon: Stethoscope, bg: "bg-teal-500" },
+  { name: "Women's Health", path: "/womens-health", icon: Users, bg: "bg-pink-500" },
+  { name: "Men's Health", path: "/mens-health", icon: Users, bg: "bg-blue-500" },
+  { name: "Sports-Fitness Health", path: "/sports-performance", icon: Dumbbell, bg: "bg-sky-500" },
+  { name: "Fertility - Prenatal", path: "/fertility-tests", icon: Baby, bg: "bg-violet-500" },
+  { name: "Cancer Screening", path: "/tests/cancer", icon: Shield, bg: "bg-slate-700" },
+  { name: "At Home Tests", path: "/at-home-tests", icon: TestTube, bg: "bg-emerald-500" },
 ];
+
 
 export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
@@ -371,104 +356,14 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               </div>
             )}
 
-            {/* Tab Content */}
+            {/* Tab Content — Menu = site sections only (no test categories) */}
             {!filteredContent && activeTab === 'menu' && (
               <>
-                {/* Primary Navigation Items */}
-                {primaryNavigationItems.map((item, index) => (
-                  <div 
-                    key={item.path}
-                    className="animate-fade-in"
-                    style={{ animationDelay: `${index * 30}ms` }}
-                  >
-                    {item.hasDropdown ? (
-                      <div>
-                        <button
-                          onClick={() => toggleSection(item.name)}
-                          className={cn(
-                            "w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 touch-manipulation active:scale-[0.98] min-h-[52px]",
-                            expandedSections.has(item.name)
-                              ? "bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]"
-                              : "hover:bg-gray-50 active:bg-gray-100 text-gray-900"
-                          )}
-                        >
-                          <span className="font-semibold text-base">{item.name}</span>
-                          <ChevronDown
-                            className={cn(
-                              "h-5 w-5 transition-transform duration-300 ease-out",
-                              expandedSections.has(item.name) && "rotate-180"
-                            )}
-                          />
-                        </button>
-
-                        {/* Expanded Category Items */}
-                        <div 
-                          className={cn(
-                            "overflow-hidden transition-all duration-300 ease-out",
-                          expandedSections.has(item.name) 
-                              ? "max-h-[800px] opacity-100" 
-                              : "max-h-0 opacity-0"
-                          )}
-                        >
-                          <div className="ml-2 mt-1 space-y-1 pl-3 border-l-2 border-[hsl(var(--primary))]/20">
-                            {getFilteredCategories(item.name).slice(0, 6).map((category) => {
-                              const IconComponent = getCategoryIcon(category.id);
-                              const bgColour = getCategoryColour(category.id);
-                              
-                              return (
-                                <Link
-                                  key={category.id}
-                                  to={`/compare?category=${category.id}`}
-                                  onClick={handleLinkClick}
-                                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation group min-h-[48px]"
-                                >
-                                  <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0", bgColour)}>
-                                    <IconComponent className="w-4 h-4 text-white" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-gray-800 group-hover:text-[hsl(var(--primary))] transition-colors">
-                                      {category.name}
-                                    </p>
-                                  </div>
-                                  <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[hsl(var(--primary))]" />
-                                </Link>
-                              );
-                            })}
-                            <Link
-                              to={item.path}
-                              onClick={handleLinkClick}
-                              className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 active:bg-[hsl(var(--primary))]/10 rounded-xl mt-1 transition-all touch-manipulation min-h-[44px]"
-                            >
-                              View All
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <Link
-                        to={item.path}
-                        onClick={handleLinkClick}
-                        className={cn(
-                          "flex items-center px-4 py-3.5 rounded-xl font-semibold text-base transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px]",
-                          (item as any).highlighted
-                            ? "text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/10 active:bg-[hsl(var(--primary))]/15"
-                            : "text-gray-900 hover:bg-gray-50 active:bg-gray-100"
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </div>
-                ))}
-
-                <Separator className="my-4" />
-
-                {/* More Navigation Sections */}
                 {moreNavigationSections.map((section, sectionIndex) => (
-                  <div 
+                  <div
                     key={section.title}
                     className="animate-fade-in"
-                    style={{ animationDelay: `${(primaryNavigationItems.length + sectionIndex) * 30}ms` }}
+                    style={{ animationDelay: `${sectionIndex * 30}ms` }}
                   >
                     <button
                       onClick={() => toggleSection(section.title)}
@@ -488,11 +383,11 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                       />
                     </button>
 
-                    <div 
+                    <div
                       className={cn(
                         "overflow-hidden transition-all duration-300 ease-out",
-                        expandedSections.has(section.title) 
-                          ? "max-h-[800px] opacity-100" 
+                        expandedSections.has(section.title)
+                          ? "max-h-[800px] opacity-100"
                           : "max-h-0 opacity-0"
                       )}
                     >
@@ -511,75 +406,45 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                     </div>
                   </div>
                 ))}
+
+                {/* How It Works — standalone informational link */}
+                <Link
+                  to="/how-it-works"
+                  onClick={handleLinkClick}
+                  className="flex items-center px-4 py-3.5 rounded-xl font-semibold text-base text-gray-900 hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px] animate-fade-in"
+                  style={{ animationDelay: `${moreNavigationSections.length * 30}ms` }}
+                >
+                  How It Works
+                </Link>
               </>
             )}
 
-            {/* Categories Tab - Grouped by type */}
+
+            {/* Categories Tab — flat grid of canonical category pages */}
             {!filteredContent && activeTab === 'categories' && (
-              <div className="space-y-4">
-                {categoryGroups.map((group, groupIndex) => {
-                  const GroupIcon = group.icon;
-                  const groupCategories = compareCategories.filter(cat => 
-                    group.categories.includes(cat.id)
-                  );
-                  
-                  return (
-                    <div 
-                      key={group.title}
-                      className="animate-fade-in"
-                      style={{ animationDelay: `${groupIndex * 50}ms` }}
-                    >
-                      {/* Group Header */}
-                      <div className="flex items-center gap-2 px-3 py-2 mb-1">
-                        <div className={cn(
-                          "w-7 h-7 rounded-lg flex items-center justify-center",
-                          group.colour === 'primary' ? "bg-[hsl(var(--primary))]/15" :
-                          group.colour === 'secondary' ? "bg-[hsl(var(--secondary))]/15" :
-                          group.colour === 'rose' ? "bg-rose-500/15" :
-                          group.colour === 'indigo' ? "bg-indigo-500/15" :
-                          "bg-emerald-500/15"
-                        )}>
-                          <GroupIcon className={cn(
-                            "w-4 h-4",
-                            group.colour === 'primary' ? "text-[hsl(var(--primary))]" :
-                            group.colour === 'secondary' ? "text-[hsl(var(--secondary))]" :
-                            group.colour === 'rose' ? "text-rose-600" :
-                            group.colour === 'indigo' ? "text-indigo-600" :
-                            "text-emerald-600"
-                          )} />
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2 px-1">
+                  {testCategoryCards.map((card, i) => {
+                    const Icon = card.icon;
+                    return (
+                      <Link
+                        key={card.path}
+                        to={card.path}
+                        onClick={handleLinkClick}
+                        className="flex flex-col items-center gap-2 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-150 touch-manipulation active:scale-[0.97] group animate-fade-in"
+                        style={{ animationDelay: `${i * 30}ms` }}
+                      >
+                        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-sm", card.bg)}>
+                          <Icon className="w-5 h-5 text-white" />
                         </div>
-                        <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">
-                          {group.title}
-                        </h3>
-                      </div>
-                      
-                      {/* Category Cards Grid */}
-                      <div className="grid grid-cols-2 gap-2 px-1">
-                        {groupCategories.map((category) => {
-                          const IconComponent = getCategoryIcon(category.id);
-                          const bgColour = getCategoryColour(category.id);
-                          
-                          return (
-                            <Link
-                              key={category.id}
-                              to={`/compare?category=${category.id}`}
-                              onClick={handleLinkClick}
-                              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-150 touch-manipulation active:scale-[0.97] group"
-                            >
-                              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-sm", bgColour)}>
-                                <IconComponent className="w-5 h-5 text-white" />
-                              </div>
-                              <span className="text-xs font-medium text-gray-700 text-center leading-tight group-hover:text-[hsl(var(--primary))]">
-                                {category.name}
-                              </span>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-                
+                        <span className="text-xs font-medium text-gray-700 text-center leading-tight group-hover:text-[hsl(var(--primary))]">
+                          {card.name}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+
                 {/* View All Tests Link */}
                 <div className="pt-2 px-1">
                   <Link
@@ -593,6 +458,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               </div>
             )}
 
+
             {/* Quick Actions & CTA - Show for both tabs */}
             {!filteredContent && (
               <>
@@ -600,16 +466,6 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
 
                 {/* Quick Action Buttons */}
                 <div className="space-y-2 px-1">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-gray-200 hover:border-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/5 active:scale-[0.98] transition-all touch-manipulation"
-                  >
-                    <Link to="/find-clinic" onClick={handleLinkClick}>
-                      <MapPin className="w-5 h-5 mr-3 text-[hsl(var(--primary))]" />
-                      Find a Clinic
-                    </Link>
-                  </Button>
                   <Button
                     asChild
                     variant="outline"

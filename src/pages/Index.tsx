@@ -2,26 +2,40 @@ import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import SectionReveal from "@/components/ui/SectionReveal";
 import ScrollFadeIn from "@/components/common/ScrollFadeIn";
+import { LazyMount } from "@/components/common/LazyMount";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 
-// Above-the-fold: eager
-import Hero from "@/components/sections/Hero";
-import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+// Hero first-slide images — preloaded for LCP optimisation
+import heroSlide1DesktopAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
+import heroSlide1MobileAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
+const heroSlide1Desktop = heroSlide1DesktopAsset.url;
+const heroSlide1Mobile = heroSlide1MobileAsset.url;
 
-// Below-the-fold: lazy-loaded to slim the initial bundle (audit 4.x)
-const MissionSection = lazy(() => import("@/components/sections/MissionSection"));
+// Above-the-fold: eager
+import HeroMasthead from "@/components/sections/HeroMasthead";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+import StatsBand from "@/components/sections/StatsBand";
+
+
+
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
 const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
-const ExpertQuotes = lazy(() => import("@/components/sections/ExpertQuotes"));
+
+const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
+
 const TestimonialCarousel = lazy(() => import("@/components/sections/TestimonialCarousel"));
+const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
 const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
-const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
-const TrustPlatformSection = lazy(() => import("@/components/sections/TrustPlatformSection"));
+
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
+
+const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
+const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
@@ -43,7 +57,10 @@ const Index = () => {
     ],
     address: {
       "@type": "PostalAddress",
-      addressCountry: "United Kingdom",
+      streetAddress: "2/369 Clapham Road",
+      addressLocality: "London",
+      postalCode: "SW9 9BT",
+      addressCountry: "GB",
     },
     audience: {
       "@type": "Audience",
@@ -116,10 +133,26 @@ const Index = () => {
     <ErrorBoundary>
       <MainLayout>
         <Helmet>
+          <link
+            rel="preload"
+            as="image"
+            href={heroSlide1Desktop}
+            type="image/jpeg"
+            media="(min-width: 640px)"
+            fetchPriority="high"
+          />
+          <link
+            rel="preload"
+            as="image"
+            href={heroSlide1Mobile}
+            type="image/jpeg"
+            media="(max-width: 639px)"
+            fetchPriority="high"
+          />
           <title>myhealth checkup | Compare UK Health Tests</title>
           <meta
             name="description"
-            content="UK's leading health test comparison platform. Compare private blood tests, hormone checks, and health screenings from accredited providers. UKAS accredited labs, CQC regulated. Free to use."
+            content="Compare UK private blood tests, hormone checks and screenings from accredited UKAS labs and CQC clinics. Free, transparent, independent."
           />
           <meta
             name="keywords"
@@ -160,61 +193,68 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        <div>
-          <Hero />
+        <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+          <HeroMasthead />
         </div>
 
-        <TestCategoryTicker />
-        <Suspense fallback={<SectionFallback />}>
-          <ScrollFadeIn variant="rise">
-            <MissionSection />
-          </ScrollFadeIn>
+        {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
+        <div>
+          <BrowseByCategoryBar />
 
-          <ScrollFadeIn variant="rise" delay={100}>
-            <JourneySimplified />
-          </ScrollFadeIn>
+          <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+            <StatsBand />
+          </div>
 
-          <ScrollFadeIn variant="scale">
-            <PartnersGrid />
-          </ScrollFadeIn>
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal>
+              <PartnersGrid />
+            </SectionReveal>
+          </Suspense>
 
-          <ScrollFadeIn variant="rise" delay={150}>
-            <StartJourneySection />
-          </ScrollFadeIn>
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.1}>
+              <JourneySimplified />
+            </SectionReveal>
+          </Suspense>
 
-          {/* Animated gradient divider — scales horizontally from the left on enter */}
-          <ScrollFadeIn variant="slide-left" className="origin-left">
-            <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-          </ScrollFadeIn>
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.15}>
+              <StartJourneySection />
+            </SectionReveal>
+          </Suspense>
 
-          <ScrollFadeIn variant="rise" delay={100}>
-            <PartnerShowcaseGrid />
-          </ScrollFadeIn>
+          <LazyMount minHeight={300}>
+            <Suspense fallback={<SectionFallback />}>
+              <AccreditedProvidersBar />
+            </Suspense>
+          </LazyMount>
 
-          <ScrollFadeIn variant="fade">
-            <TestimonialCarousel />
-          </ScrollFadeIn>
+          <LazyMount minHeight={800}>
+            <Suspense fallback={<SectionFallback />}>
+              <SectionReveal delay={0.1}>
+                <PartnerShowcaseGrid />
+              </SectionReveal>
+            </Suspense>
+          </LazyMount>
 
-          <ScrollFadeIn variant="rise" delay={100}>
-            <ClinicAndHelpSection />
-          </ScrollFadeIn>
+          <LazyMount minHeight={500}>
+            <Suspense fallback={<SectionFallback />}>
+              <SectionReveal>
+                <TestimonialCarousel />
+              </SectionReveal>
+            </Suspense>
+          </LazyMount>
 
-          <ScrollFadeIn variant="fade">
-            <AccreditedProvidersBar />
-          </ScrollFadeIn>
+          <LazyMount minHeight={500}>
+            <Suspense fallback={<SectionFallback />}>
+              <SectionReveal delay={0.1}>
+                <ClinicAndHelpSection />
+              </SectionReveal>
+            </Suspense>
+          </LazyMount>
+        </div>
 
-          <ScrollFadeIn variant="scale">
-            <CallToAction />
-          </ScrollFadeIn>
 
-          <ScrollFadeIn variant="rise" delay={100}>
-            <TrustPlatformSection />
-          </ScrollFadeIn>
-
-          <ScrollFadeIn variant="rise" delay={150}>
-            <ExpertQuotes />
-          </ScrollFadeIn>
-        </Suspense>
       </MainLayout>
     </ErrorBoundary>
   );

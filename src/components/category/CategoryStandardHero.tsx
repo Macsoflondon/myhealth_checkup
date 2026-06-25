@@ -77,38 +77,18 @@ export function CategoryStandardHero({
 
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
         {/* Pill row */}
-        <div className="flex items-center justify-center relative mb-8 md:mb-10">
-          <div
-            className="inline-flex items-center gap-2 sm:gap-3 md:gap-4 px-4 sm:px-9 md:px-[54px] py-2 sm:py-4 md:py-[18px] rounded-full max-w-full border-primary-foreground"
+        <div className="flex items-center justify-center gap-3 sm:gap-4 relative mb-8 md:mb-10">
+          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
+          <h1
+            className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
             style={{
-              background: "rgba(34,192,212,0.08)",
-              border: "2px solid rgba(34,192,212,0.35)",
+              letterSpacing: "0.04em",
+              color: "#ffffff",
             }}
           >
-            <span
-              className="inline-block rounded-full shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-[18px] md:h-[18px]"
-              style={{
-                background: "#e70d69",
-                boxShadow: "0 0 24px #e70d69",
-              }}
-            />
-            <span
-              className="text-lg sm:text-2xl md:text-[33px] font-bold uppercase leading-none truncate"
-              style={{
-                letterSpacing: "0.14em",
-                color: "#22c0d4",
-              }}
-            >
-              {pillLabel}
-            </span>
-            <span
-              className="inline-block rounded-full shrink-0 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-[18px] md:h-[18px]"
-              style={{
-                background: "#e70d69",
-                boxShadow: "0 0 24px #e70d69",
-              }}
-            />
-          </div>
+            {pillLabel}
+          </h1>
+          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
         </div>
 
         {/* Benefits row */}

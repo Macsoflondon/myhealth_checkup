@@ -19,7 +19,7 @@ const TestBreadcrumb = ({ providerName, testName }: TestBreadcrumbProps) => {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link to="/">Home</Link>
+            <Link to="/">{"\n"}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

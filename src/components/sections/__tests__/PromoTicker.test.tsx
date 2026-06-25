@@ -46,18 +46,18 @@ describe("PromoTicker", () => {
     const utils = within(strip);
 
     // SETS = 8, so each promo label/text should appear 8 times.
-    expect(utils.getAllByText("GoodBody:").length).toBeGreaterThanOrEqual(2);
-    expect(utils.getAllByText("Medichecks:").length).toBeGreaterThanOrEqual(2);
-    expect(utils.getAllByText("Lola Health:").length).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText("GOODBODY:").length).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText("MEDICHECKS:").length).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText("LOLA HEALTH:").length).toBeGreaterThanOrEqual(2);
 
     expect(
-      utils.getAllByText("5% off on all popular blood tests").length
+      utils.getAllByText("GOODBODY5").length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      utils.getAllByText("20% off all tests with code APRIL20").length
+      utils.getAllByText("APRIL20").length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      utils.getAllByText("£20 off with code Mar20").length
+      utils.getAllByText("Mar20").length
     ).toBeGreaterThanOrEqual(2);
   });
 });

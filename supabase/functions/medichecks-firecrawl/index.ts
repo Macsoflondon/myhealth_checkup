@@ -274,6 +274,13 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -383,12 +390,22 @@ Deno.serve(async (req) => {
 
     console.log(`Successfully scraped ${scrapedProducts.length} products`);
 
+    // Dedupe by test_name to avoid partial unique index (provider_id,test_name) WHERE is_active conflicts.
+    const seenNames = new Set<string>();
+    const dedupedProducts = scrapedProducts.filter(p => {
+      const key = p.test_name.toLowerCase().trim();
+      if (seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    });
+    console.log(`Deduped to ${dedupedProducts.length} unique test names`);
+
     // Step 3: Upsert to database
     let upsertedCount = 0;
     let priceUpdateCount = 0;
     const upsertErrors: string[] = [];
     
-    for (const product of scrapedProducts) {
+    for (const product of dedupedProducts) {
       const providerTestId = slugFromUrl(product.url);
 
       const dataToUpsert: Record<string, unknown> = {

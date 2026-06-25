@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
+import { hasStartingPrice, usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { getProviderRating } from "@/constants/providerRatings";
 import { getBranding } from "@/data/providerBranding";
+import { toUnifiedCardProps } from "@/lib/unifiedCardAdapter";
+import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
 const MostPopularTestsSection = () => {
   const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
@@ -22,7 +24,7 @@ const MostPopularTestsSection = () => {
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
             MOST POPULAR
           </span>
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-bold mb-4 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight mb-4">
             <span className="text-[#081129]">Most Popular Tests from Our </span>
             <span className="text-[#081129]">
               Providers
@@ -52,29 +54,35 @@ const MostPopularTestsSection = () => {
             {popularTests?.slice(0, 12).map((test) => {
               const providerData = getProviderRating(test.provider_id);
               const branding = getBranding(test.provider_id);
-              const cleanName = test.test_name
-                .replace(/\s*[-–|].*$/, '')
-                .replace(/\s+Blood Test$/i, '')
-                .replace(/\s+for Enhanced Health$/i, '')
-                .replace(/\s*\| Book Online today$/i, '');
-              
+              const card: ProviderTestCardData = {
+                id: test.id,
+                provider_id: test.provider_id,
+                test_name: test.test_name,
+                description:
+                  test.description ||
+                  `Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`,
+                price: test.price ?? null,
+                category: test.category ?? null,
+                sample_type: test.sample_type ?? null,
+                biomarker_count: test.biomarker_count ?? null,
+                url: test.url ?? null,
+                biomarkers_list: (test.markers as any) ?? null,
+                turnaround_days_text: test.turnaround_time ?? null,
+                base_price: (test as any).base_price ?? null,
+                collection_options: (test as any).collection_options ?? null,
+                markers: test.markers ?? null,
+                price_from: hasStartingPrice(test),
+                categoryColor: branding?.primary || "#e70d69",
+              };
               return (
                 <UnifiedTestCard
                   key={test.id}
-                  category={test.category || "Health"}
-                  categoryColor={branding?.primary || "#e70d69"}
-                  name={cleanName}
-                  description={test.description || `Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`}
-                  biomarkers={test.biomarker_count || 0}
-                  results={test.turnaround_time || "2–5 working days"}
-                  collection={test.sample_type || "Blood sample"}
-                  rating={providerData.rating}
-                  reviews={providerData.reviews}
-                  price={test.price}
-                  provider={test.provider_name}
-                  url={test.url || undefined}
-                  ctaLabel={test.url ? "View test" : "Compare"}
-                  markers={test.markers}
+                  {...toUnifiedCardProps(card, {
+                    provider: test.provider_name,
+                    rating: providerData.rating,
+                    reviews: providerData.reviews,
+                    ctaLabel: test.url ? "View test" : "Compare",
+                  })}
                 />
               );
             })}

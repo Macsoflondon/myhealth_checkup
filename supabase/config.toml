@@ -133,3 +133,42 @@ verify_jwt = false
 [functions.indexnow-submit]
 verify_jwt = false
 
+
+# Security Scan Snapshot
+# Public access (no JWT) - called by pg_cron on a schedule and by admins from /admin/security-diff
+# Security: in-code auth check requires either service-role bearer (cron) or authenticated admin user
+[functions.security-scan-snapshot]
+verify_jwt = false
+
+# Scraper Health Check
+# Public endpoint with in-code service-role bearer check (cron-only)
+[functions.scraper-health-check]
+verify_jwt = false
+
+# Submit Consumer Complaint / Feedback
+# Public endpoint - consumers must be able to lodge a complaint without auth
+# Security: honeypot, schema validation, length caps, Resend-based emailing
+[functions.submit-complaint]
+verify_jwt = false
+
+[functions.verify-provider-images]
+verify_jwt = false
+
+[functions.trigger-all-scrapers]
+verify_jwt = false
+
+# Admin Recovery - public (gated by ADMIN_RECOVERY_SECRET in body)
+[functions.admin-recovery]
+verify_jwt = false
+
+# CSP Violation Report Sink (browser-posted, no auth)
+[functions.csp-report]
+verify_jwt = false
+
+# Sign-in Brute-Force Throttle (called pre-auth, no JWT)
+[functions.auth-throttle]
+verify_jwt = false
+
+# Cyber Essentials Operational Alerts (called by Postgres trigger and CI scripts)
+[functions.security-alert-notify]
+verify_jwt = false

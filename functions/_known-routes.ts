@@ -33,9 +33,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
 
   // Admin
   "/admin/login",
-  "/admin/clinic-upload",
-  "/admin/clinic-scraper",
-  "/admin/quick-clinic-import",
   "/admin/test-upload",
   "/admin/data-refresh",
   "/admin/scrapers",
@@ -52,9 +49,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/reviews",
   "/find-test",
   "/assisted-test-finder",
-  "/find-clinic",
-  "/find-a-clinic",
-  "/locations",
   "/biomarker-database",
   "/conditions",
 
@@ -69,9 +63,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/providers/randox",
   "/providers/lola-health",
   "/providers/london-medical-laboratory",
-  "/providers/london-health-company",
-  "/providers/medical-diagnosis",
-  "/providers/clinilabs",
 
   // Tools
   "/blood-test-analysis",
@@ -117,9 +108,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/partners",
   "/blog",
   "/health-blog",
-  "/blog/testosterone-levels-by-age",
-  "/trusted-providers",
-  "/guides",
 
   // Legal
   "/legal",
@@ -142,7 +130,7 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/tests/:category",
   "/compare/symptoms/:symptomSlug",
   "/compare/goals/:goalSlug",
-  "/locations/:clinicId",
+  
   "/provider/:providerId",
   "/provider/:providerId/tests",
   "/provider/:providerId/tests/:testId",
@@ -154,10 +142,6 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/randox/:testId",
   "/randox-health/:testId",
   "/london-medical-laboratory/:testId",
-  "/clinilabs/:testId",
-  "/london-health-company/:testId",
-  "/medical-diagnosis/:testId",
-  "/guides/:slug",
 ];
 
 const DYNAMIC_ROUTE_REGEXES: readonly RegExp[] = DYNAMIC_ROUTE_PATTERNS.map(

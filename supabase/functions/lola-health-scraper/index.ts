@@ -5,6 +5,39 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const LOLA_COLLECTION_PRODUCTS_URL = 'https://lolahealth.com/collections/blood-tests/products.json?limit=250';
+
+function normalizeUrl(url: string | null | undefined, baseUrl: string) {
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith('//')) return `https:${url}`;
+  if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+  return null;
+}
+
+function extractCollectionBasePrice(product: any): number | null {
+  const variants = Array.isArray(product?.variants) ? product.variants : [];
+  const numericPrices = variants
+    .map((variant: any) => Number(variant?.price))
+    .filter((value: number) => Number.isFinite(value));
+
+  if (numericPrices.length === 0) return null;
+  return Math.min(...numericPrices);
+}
+
+async function fetchLolaCollectionProducts() {
+  const response = await fetch(LOLA_COLLECTION_PRODUCTS_URL, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
+      Accept: 'application/json,text/plain,*/*',
+    },
+  });
+
+  if (!response.ok) throw new Error(`Lola collection fetch failed: ${response.status}`);
+  const data = await response.json();
+  return Array.isArray(data?.products) ? data.products : [];
+}
+
 function determineCategory(title: string, description: string): string {
   const text = (title + ' ' + description).toLowerCase();
   if (text.match(/liver|albumin|alt|ast|alp|bilirubin|ggt/)) return 'Liver Function';
@@ -47,6 +80,13 @@ async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -85,7 +125,14 @@ Deno.serve(async (req) => {
       }
     }
 
-    productUrls = [...new Set(productUrls)];
+    const collectionProducts = await fetchLolaCollectionProducts();
+    const collectionByHandle = new Map(collectionProducts.map((product: any) => [product.handle, product]));
+
+    const collectionUrls = collectionProducts
+      .map((product: any) => `https://lolahealth.com/products/${product.handle}`)
+      .filter((url: string) => url.includes('/products/'));
+
+    productUrls = [...new Set([...collectionUrls, ...productUrls])];
     console.log(`Total URLs: ${productUrls.length}`);
 
     const products: any[] = [];
@@ -112,8 +159,15 @@ Deno.serve(async (req) => {
         }
         if (!title) continue;
 
+        const collectionProduct = collectionByHandle.get(slug);
+        const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
+        const collectionHeadlinePrice = Number.isFinite(Number(collectionProduct?.variants?.[0]?.price))
+          ? Number(collectionProduct.variants[0].price)
+          : null;
+
         const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+        const markdownPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+        const price = collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
 
         const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
         const originalPrice = origMatch ? parseFloat(origMatch[1].replace(',', '')) : null;
@@ -141,10 +195,15 @@ Deno.serve(async (req) => {
           provider_test_id: slug,
           category: determineCategory(title, metadata.description || ''),
           price,
+          base_price: collectionBasePrice,
           original_price: originalPrice,
           discount_percentage: discount,
           description: metadata.description || `${title} blood test from Lola Health.`,
           url,
+          image_url:
+            normalizeUrl(collectionProduct?.image?.src, url) ||
+            normalizeUrl(collectionProduct?.featured_image, url) ||
+            normalizeUrl(collectionProduct?.images?.[0]?.src ?? collectionProduct?.images?.[0], url),
           is_active: true,
           is_addon: isAddon,
           biomarkers_list: biomarkers.length > 0 ? biomarkers : null,

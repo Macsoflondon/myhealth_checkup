@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { Star, TrendingUp, Shield, AlertCircle, Inbox, RotateCw } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -8,7 +9,7 @@ import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 import { CategoryPageLayout, CategoryTestItem } from '@/components/category/CategoryPageLayout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
+import { hasStartingPrice, usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
 import { getBranding } from '@/data/providerBranding';
 import { getProviderRating } from '@/constants/providerRatings';
 
@@ -78,7 +79,7 @@ const LoadingSkeleton: React.FC = () => (
       <Skeleton className="h-10 w-48 rounded-md bg-white/10" />
     </div>
     {/* Card grid skeleton */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
       {Array.from({ length: 8 }).map((_, i) => (
         <Skeleton key={i} className="w-full max-w-[340px] h-[440px] rounded-2xl bg-white/10" />
       ))}
@@ -111,7 +112,7 @@ const EmptyState: React.FC = () => (
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
     <Button asChild variant="secondary">
-      <a href="/compare">Browse all tests</a>
+      <Link to="/compare">Browse all tests</Link>
     </Button>
   </div>
 );
@@ -132,7 +133,7 @@ const MostPopularTestsPage = () => {
         badgeColor: branding?.primary || '#e70d69',
         provider: t.provider_name,
         priceNum: t.price,
-        price: `£${t.price}`,
+        price: hasStartingPrice(t) ? `from £${t.price}` : `£${t.price}`,
         turnaround: t.turnaround_time || '2–5 days',
         turnaroundDays: parseTurnaroundDays(t.turnaround_time || '5'),
         biomarkerCount: t.biomarker_count || 0,
@@ -192,7 +193,7 @@ const MostPopularTestsPage = () => {
       trustStats={[
         { value: '50,000+', label: 'Customers Served' },
         { value: '4.8★', label: 'Average Rating' },
-        { value: '9+', label: 'Trusted Providers' },
+        { value: '6+', label: 'Trusted Providers' },
       ]}
       filters={filters}
       tests={tests}

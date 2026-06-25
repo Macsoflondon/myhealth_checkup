@@ -82,10 +82,10 @@ html, body {
     --background: 220 5% 97%;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 220 5% 97%;
+    --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 220 5% 97%;
+    --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 187 72% 48%;
@@ -900,3 +900,7 @@ html, body {
     animation: none;
   }
 }
+/* Hero slide responsive focal points (per-slide via CSS vars) */
+.hero-slide { object-position: var(--pos-m, center center); }
+@media (min-width: 640px) { .hero-slide { object-position: var(--pos-t, var(--pos-m, center center)); } }
+@media (min-width: 1024px) { .hero-slide { object-position: var(--pos-d, var(--pos-t, center center)); } }

@@ -192,9 +192,11 @@ function extractPrice(html: string): { current: number | null; original: number 
 function extractImageUrl(html: string): string | null {
   const patterns = [
     /property="og:image"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:image"/i,
     /name="og:image"\s+content="([^"]+)"/i,
-    /<img[^>]+class="[^"]*wp-post-image[^"]*"[^>]+src="([^"]+)"/i,
-    /<img[^>]+class="[^"]*woocommerce-product-gallery__image[^"]*"[^>]+src="([^"]+)"/i,
+    /content="([^"]+)"\s+name="og:image"/i,
+    /<img[^>]+id="main-image"[^>]+src="([^"]+)"/i,
+    /<img[^>]+class="[^"]*(?:wp-post-image|woocommerce-product-gallery__image|large-product-image|product-card-image)[^"]*"[^>]+src="([^"]+)"/i,
     /data-large_image="([^"]+)"/i,
   ];
   
@@ -309,6 +311,13 @@ async function fetchWithDelay(url: string, delay: number = 800): Promise<string>
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 
   try {

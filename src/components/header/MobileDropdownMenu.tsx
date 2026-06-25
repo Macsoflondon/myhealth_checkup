@@ -67,7 +67,6 @@ const mobileNavigationItems = [
 
 // Static navigation items
 const staticNavigationItems = [
-  { name: "Find a Clinic", path: "/find-clinic", icon: "📍" },
   { name: "How It Works", path: "/how-it-works", icon: "❓" },
   { name: "Contact Us", path: "/contact", icon: "📞" }
 ];
@@ -120,10 +119,10 @@ export const MobileDropdownMenu = ({
       {/* Menu */}
       <div 
         className={cn(
-          "fixed inset-x-0 top-[56px] bg-white dark:bg-gray-900 border-t shadow-2xl z-[60] animate-in slide-in-from-top-2 duration-200",
+          "fixed inset-x-0 top-[120px] bg-white dark:bg-gray-900 border-t shadow-2xl z-[60] animate-in slide-in-from-top-2 duration-200",
           className
         )}
-        style={{ maxHeight: "calc(100vh - 56px)" }}
+        style={{ maxHeight: "calc(100vh - 120px)" }}
       >
         <div className="overflow-y-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="py-2 px-3 space-y-0.5">

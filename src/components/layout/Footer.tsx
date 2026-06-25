@@ -1,33 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import complianceBadges from "@/assets/compliance/compliance-badges.svg";
-import cyberEssentialsLogo from "@/assets/compliance/cyber-essentials-logo.png";
-import myhealthLogo from "@/assets/myhealth-logo.png";
-import NewsletterSignup from "@/components/layout/NewsletterSignup";
+import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
-  const { t } = useTranslation();
-
-  const healthTestLinks = [
-    { name: t("footer.links.mensHealth"), link: "/tests/mens-health" },
-    { name: t("footer.links.womensHealth"), link: "/tests/womens-health" },
-    { name: t("footer.links.heartHealth"), link: "/tests/heart" },
-    { name: t("footer.links.diabetes"), link: "/tests/diabetes" },
-    { name: t("footer.links.thyroid"), link: "/thyroid" },
-    { name: t("footer.links.fertility"), link: "/fertility-tests" },
-  ];
-
-  const companyLinks = [
-    { name: t("footer.links.aboutUs"), link: "/about" },
-    { name: t("footer.links.howItWorks"), link: "/how-it-works" },
-    { name: "Our Providers", link: "/providers" },
-    { name: "Find a Clinic", link: "/find-clinic" },
-    { name: t("footer.links.faqs"), link: "/faqs" },
-    { name: "Health Resource Hub", link: "/blog" },
-    { name: "Test Categories", link: "/test-categories" },
-    { name: t("footer.links.contact"), link: "/contact" },
-  ];
-
   return (
     <footer>
       {/* ========== Top Gradient Divider ========== */}
@@ -40,80 +15,169 @@ const Footer = () => {
         <div className="absolute bottom-10 right-10 w-48 h-48 bg-brand-pink/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* 4-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-            <FooterColumn title="Health Tests" links={healthTestLinks} />
-            <FooterColumn title="Company" links={companyLinks} />
-            <NewsletterSignup />
-            <ConnectColumn />
-          </div>
-
-          {/* ========== Medical Disclaimer (crawlable, server-rendered) ========== */}
-          <div
-            id="medical-disclaimer"
-            role="note"
-            aria-label="Medical disclaimer"
-            className="mt-8 sm:mt-10 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 sm:p-5 text-center"
-          >
-            <p className="text-xs sm:text-sm leading-relaxed mb-2">
-              <span className="font-semibold text-brand-pink">Medical disclaimer:</span>{" "}
-              <span className="text-white/85">
-                This site provides comparison information only and does not constitute medical advice. Consult your GP
-                for medical guidance. Clinical content reviewed by{" "}
-                <Link to="/about/medical-review" className="underline underline-offset-2 hover:text-white">
-                  Nathanial Smith, Physician Associate (HCPC PA43353)
-                </Link>
-                .
-              </span>
-            </p>
-            <p className="text-xs sm:text-sm text-white/90 font-sans">
-              MYHEALTHCHECKUP LTD is the UK's leading health service comparison website. &#x200B;Company No. 16589056
-            </p>
-          </div>
+          <StayInformedSection />
         </div>
       </div>
 
-      {/* ========== Copyright + Compliance Links ========== */}
-      <div className="bg-brand-navy pb-4 pt-2">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <nav
-            aria-label="Legal and compliance"
-            className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs sm:text-sm text-brand-pink font-sans mb-2"
-          >
-            <Link to="/privacy-policy" className="hover:text-white transition-colors hover:underline underline-offset-2">Privacy Policy</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/cookie-policy" className="hover:text-white transition-colors hover:underline underline-offset-2">Cookie Policy</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/terms" className="hover:text-white transition-colors hover:underline underline-offset-2">Terms &amp; Conditions</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/affiliate-disclosure" className="hover:text-white transition-colors hover:underline underline-offset-2">Affiliate Disclosure</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/fair-trading" className="hover:text-white transition-colors hover:underline underline-offset-2">Fair Trading</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/modern-slavery" className="hover:text-white transition-colors hover:underline underline-offset-2">Modern Slavery</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/accessibility" className="hover:text-white transition-colors hover:underline underline-offset-2">Accessibility</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/about/medical-review" className="hover:text-white transition-colors hover:underline underline-offset-2">Medical Review</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/how-we-rank" className="hover:text-white transition-colors hover:underline underline-offset-2">How We Rank</Link>
-            <span aria-hidden="true">|</span>
-            <Link to="/legal" className="hover:text-white transition-colors hover:underline underline-offset-2">Legal Hub</Link>
-          </nav>
-          <p className="text-center text-xs sm:text-sm text-brand-pink/80 font-sans">
-            © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+    </footer>
+  );
+};
+
+/* ========== Section heading ========== */
+const SectionHeading = ({ title }: { title: string }) => (
+  <div className="flex items-center gap-2 mb-4">
+    <div className="h-px flex-1 bg-brand-pink" />
+    <span className="text-brand-turquoise text-sm sm:text-base font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
+      {title}
+    </span>
+    <div className="h-px flex-1 bg-brand-pink" />
+  </div>
+);
+
+/* ========== Stay Informed Section ========== */
+const StayInformedSection = () => {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    if (!valid) {
+      setError("Please enter a valid email.");
+      setTimeout(() => setError(null), 2500);
+      return;
+    }
+    setLoading(true);
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke(
+        "newsletter-subscribe",
+        { body: { email: email.trim(), source: "footer", consent: true } }
+      );
+      if (fnErr || (data as any)?.error) {
+        setError((data as any)?.error || "Subscription failed. Try again.");
+        setTimeout(() => setError(null), 3000);
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setError("Subscription failed. Try again.");
+      setTimeout(() => setError(null), 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
+      {/* Two-column top: Follow Us + Copyright/Disclaimer | Stay Informed */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+        {/* Left: Follow Us + Copyright + Medical Disclaimer */}
+        <div className="w-full flex flex-col items-center text-center h-full">
+          <div className="w-full">
+            <SectionHeading title="Follow Us" />
+          </div>
+          <div className="flex gap-3 mt-1">
+            <SocialIcon
+              href="https://www.instagram.com/myhealthcheckup_uk"
+              label="Instagram"
+              style={{ background: "linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)" }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" strokeWidth="1.8" fill="none" />
+                <circle cx="12" cy="12" r="5" stroke="#fff" strokeWidth="1.8" fill="none" />
+                <circle cx="17.5" cy="6.5" r="1.25" fill="#fff" />
+              </svg>
+            </SocialIcon>
+            <SocialIcon
+              href="https://www.facebook.com/myhealthcheckupuk"
+              label="Facebook"
+              style={{ background: "#1877F2" }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+                <path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.5 2.9h-2.4v7A10 10 0 0022 12z" />
+              </svg>
+            </SocialIcon>
+            <SocialIcon
+              href="https://www.tiktok.com/@myhealthcheckup"
+              label="TikTok"
+              style={{ background: "#000" }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M16.5 3h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.9a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.7a7.1 7.1 0 004.2 1.4V7.5a4.3 4.3 0 01-4.5-4.5z" fill="#25F4EE" />
+                <path d="M17 3.5h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.4a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V9.2a7.1 7.1 0 004.2 1.4V8a4.3 4.3 0 01-4.5-4.5z" fill="#FE2C55" fillOpacity="0.85" />
+                <path d="M16.7 3.2h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.1a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.9a7.1 7.1 0 004.2 1.4V7.7a4.3 4.3 0 01-4.5-4.5z" fill="#fff" fillOpacity="0.9" />
+              </svg>
+            </SocialIcon>
+          </div>
+
+          {/* Copyright + Medical Disclaimer — pushed to bottom of column */}
+          <div className="mt-6 sm:mt-auto w-full space-y-2 px-1">
+            <p className="text-[10px] sm:text-[11px] text-white/60 leading-snug text-center break-words">
+              © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+            </p>
+            <p className="text-[10px] sm:text-[11px] text-white/60 leading-snug text-center break-words">
+              <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
+              This site provides comparison information only and does not constitute medical advice.{" "}
+              <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
+                Legal Hub
+              </Link>
+              {" · "}
+              <Link to="/trust" className="underline hover:text-brand-pink transition-colors">
+                Trust &amp; Security
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Right: Stay Informed */}
+        <div>
+          <SectionHeading title="Stay Informed" />
+          <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-4">
+            New tests, new providers, straight to your inbox. Provider updates and platform improvements — when they matter.
+          </p>
+          {submitted ? (
+            <p className="text-brand-turquoise font-heading font-bold text-sm tracking-wide">
+              Subscribed ✓ — thank you.
+            </p>
+          ) : (
+            <div className="flex flex-col gap-2.5">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                placeholder="Your email address"
+                aria-label="Email address"
+                className="w-full rounded-lg px-3 py-2.5 text-white text-sm placeholder:text-white/35 outline-none transition-colors focus:border-brand-turquoise"
+                style={{
+                  background: "rgba(255,255,255,0.08)",
+                  border: `1.5px solid ${error ? "#e70d69" : "rgba(34,192,212,0.28)"}`,
+                }}
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
+              >
+                {loading ? "Subscribing…" : "Subscribe"}
+              </button>
+              {error && (
+                <p className="text-xs text-brand-pink mt-1">{error}</p>
+              )}
+            </div>
+          )}
+          <p className="mt-3 text-[10px] text-white/40 leading-relaxed">
+            We will never share your email. Unsubscribe at any time.
           </p>
         </div>
       </div>
 
-      {/* ========== Pink Divider Line ========== */}
-      <div className="h-[2px] bg-brand-pink" />
-
-      {/* ========== Brand Bar ========== */}
-      <div className="bg-[#060d20] py-5 sm:py-6">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Brand Bar — moved to where medical disclaimer was */}
+      <div className="mt-6 sm:mt-8">
+        <div className="h-[2px] bg-brand-pink" />
+        <div className="pt-4 text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-            {/* Logo + Brand Name */}
             <div className="flex items-center gap-3">
               <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
                 <span className="text-white">my</span>
@@ -123,7 +187,6 @@ const Footer = () => {
                 checkup
               </span>
             </div>
-            {/* Slogan */}
             <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
               Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
               <span className="text-brand-pink">choice!</span> One{" "}
@@ -132,107 +195,29 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 
-/* ========== Footer Column Component ========== */
-const FooterColumn = ({ title, links }: { title: string; links: { name: string; link: string }[] }) => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-    {/* Column heading with flanking lines */}
-    <div className="flex items-center gap-2 mb-4">
-      <div className="h-px flex-1 bg-brand-turquoise/30" />
-      <span className="text-brand-turquoise text-primary-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] whitespace-nowrap">
-        {title}
-      </span>
-      <div className="h-px flex-1 bg-brand-turquoise/30" />
-    </div>
-    <ul className="space-y-2.5">
-      {links.map((item, i) => (
-        <li key={i}>
-          <Link
-            to={item.link}
-            className="text-white/80 hover:text-brand-pink transition-colors text-xs sm:text-sm font-sans"
-          >
-            {item.name}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-/* ========== Connect Column Component ========== */
-const ConnectColumn = () => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
-    {/* Heading */}
-    <div className="flex items-center gap-2 mb-4">
-      <div className="h-px flex-1 bg-brand-turquoise/30" />
-      <span className="text-brand-turquoise text-primary-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-        Connect
-      </span>
-      <div className="h-px flex-1 bg-brand-turquoise/30" />
-    </div>
-
-    {/* Social Icons */}
-    <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Follow Us</p>
-    <div className="flex gap-3 mb-5">
-      <SocialIcon href="https://www.instagram.com/myhealthcheckup_uk" label="Instagram">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-          <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" fill="none" />
-          <circle cx="17.5" cy="6.5" r="1.25" fill="currentColor" />
-        </svg>
-      </SocialIcon>
-      <SocialIcon href="https://www.facebook.com/myhealthcheckupuk" label="Facebook">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-        </svg>
-      </SocialIcon>
-      <SocialIcon href="https://www.tiktok.com/@myhealthcheckup" label="TikTok">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M9 12a4 4 0 104 4V4a5 5 0 005 5"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-        </svg>
-      </SocialIcon>
-    </div>
-
-    {/* Compliance Badges */}
-    <p className="text-white/60 text-[10px] uppercase tracking-wider mb-2">Compliance</p>
-    <div className="flex gap-3 items-start">
-      <img
-        src={complianceBadges}
-        alt="ICO Registered, Companies House, UK GDPR compliance badges"
-        className="h-16 sm:h-20 w-auto object-contain"
-      />
-      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-brand-navy flex items-center justify-center p-1.5">
-        <img src={cyberEssentialsLogo} alt="Cyber Essentials" className="w-full h-full object-contain" />
-      </div>
-    </div>
-  </div>
-);
-
-/* ========== Social Icon Wrapper ========== */
-const SocialIcon = ({ href, label, children }: { href: string; label: string; children: React.ReactNode }) => (
+/* ========== Social Icon ========== */
+const SocialIcon = ({
+  href,
+  label,
+  children,
+  style,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
     aria-label={`Follow us on ${label}`}
-    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all text-white"
+    style={style}
+    className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 text-white shadow-md"
   >
     {children}
   </a>

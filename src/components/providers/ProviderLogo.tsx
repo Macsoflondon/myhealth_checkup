@@ -19,7 +19,7 @@ export const ProviderLogo = ({ provider, className = "h-20 w-auto", priority = f
     }
     
     if (normalizedName.includes('thriva')) {
-      return '/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png';
+      return '/lovable-uploads/provider-thriva.png';
     }
     
     if (normalizedName.includes('randox')) {

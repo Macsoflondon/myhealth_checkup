@@ -46,7 +46,7 @@ interface RecommendationResult {
   }>;
 }
 
-export const RecommendationEngine = ({ 
+export const RecommendationEngine = React.memo(({ 
   tests,
   onRecommendationGenerated 
 }: RecommendationEngineProps) => {
@@ -224,7 +224,7 @@ export const RecommendationEngine = ({
 
       toast({
         title: "Recommendation Generated",
-        description: "AI has analyzed your preferences and suggested the best test.",
+        description: "AI has analysed your preferences and suggested the best test.",
       });
     } catch (error) {
       console.error("Error generating recommendation:", error);
@@ -405,7 +405,7 @@ export const RecommendationEngine = ({
           {tests.length < 2 && (
             <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 p-3 rounded-md">
               <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-              <span>Select at least 2 tests to get a personalized recommendation</span>
+              <span>Select at least 2 tests to get a personalised recommendation</span>
             </div>
           )}
           
@@ -491,4 +491,5 @@ export const RecommendationEngine = ({
       )}
     </div>
   );
-};
+});
+RecommendationEngine.displayName = "RecommendationEngine";

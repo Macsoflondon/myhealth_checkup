@@ -1,331 +1,283 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { Search } from 'lucide-react';
+import { blogArticles, getCategories } from '@/data/blogArticles';
+import type { BlogArticle } from '@/types/blog.types';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Clock, ArrowRight, ExternalLink } from 'lucide-react';
-import PageBanner from "@/components/sections/PageBanner";
-import { blogArticles, getCategories, filterByCategory } from '@/data/blogArticles';
-import { ProviderLogo } from '@/components/providers/ProviderLogo';
-import { Skeleton } from '@/components/ui/skeleton';
-import { CategoryBadge } from '@/components/ui/category-badge';
+const FALLBACK_IMAGE =
+  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80';
 
-const HealthBlogPage = () => {
-  const [activeCategory, setActiveCategory] = useState("All Articles");
-  const categories = getCategories();
-  
-  // Filter articles based on selected category
-  const filteredArticles = filterByCategory(activeCategory);
-  const featuredArticles = filteredArticles.slice(0, 3);
-  const recentArticles = filteredArticles.slice(3);
+const ALL_PROVIDERS = ['Lola Health', 'Medichecks', 'Goodbody Clinic'] as const;
 
-  // Format date for display
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-GB', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+const formatDate = (dateStr: string) =>
+  new Date(dateStr).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+interface FeaturedCardProps {
+  article: BlogArticle;
+}
+
+const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
+  <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
+    <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
+      <img
+        src={article.image}
+        alt={article.title}
+        loading="lazy"
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;
+        }}
+        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,17,41,0.5)] via-transparent to-transparent" />
+      <span
+        className="absolute left-3 bottom-3 inline-block rounded-full bg-[#22c0d4] text-white px-2.5 py-1 uppercase"
+        style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, letterSpacing: '0.08em', fontWeight: 600 }}
+      >
+        {article.category}
+      </span>
+    </div>
+    <div className="p-5 flex flex-col flex-1">
+      <div
+        className="uppercase"
+        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 11, color: '#94a3b8', letterSpacing: '0.08em' }}
+      >
+        {article.provider}
+      </div>
+      <h3
+        className="mt-1 mb-2 line-clamp-2"
+        style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 16, color: '#081129', lineHeight: 1.35 }}
+      >
+        {article.title}
+      </h3>
+      <p
+        className="line-clamp-3 mb-4 flex-1"
+        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#64748b', lineHeight: 1.55 }}
+      >
+        {article.excerpt}
+      </p>
+      <div className="flex items-center justify-between mt-auto pt-2 border-t border-[#f0f4fa]">
+        <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, color: '#94a3b8' }}>
+          {formatDate(article.date)}
+        </span>
+        <a
+          href={article.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
+          style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#22c0d4', fontWeight: 500 }}
+        >
+          Read article →
+        </a>
+      </div>
+    </div>
+  </article>
+);
+
+const PAGE_SIZE = 12;
+
+const HealthBlogPage: React.FC = () => {
+  const categories = useMemo(() => getCategories(), []);
+  const [activeCategory, setActiveCategory] = useState<string>('All Articles');
+  const [activeProviders, setActiveProviders] = useState<string[]>([...ALL_PROVIDERS]);
+  const [search, setSearch] = useState('');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const toggleProvider = (p: string) => {
+    setActiveProviders((prev) =>
+      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
+    );
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return blogArticles.filter((a) => {
+      if (activeCategory !== 'All Articles' && a.category !== activeCategory) return false;
+      if (!activeProviders.includes(a.provider)) return false;
+      if (q && !`${a.title} ${a.excerpt}`.toLowerCase().includes(q)) return false;
+      return true;
     });
-  };
+  }, [activeCategory, activeProviders, search]);
 
-  // Estimate read time based on excerpt length
-  const getReadTime = (excerpt: string) => {
-    const words = excerpt.split(' ').length;
-    const time = Math.max(5, Math.ceil(words / 30) + 5);
-    return `${time} min read`;
-  };
+  const featured = filtered.slice(0, 3);
+  const rest = filtered.slice(3);
+  const visibleRest = rest.slice(0, visibleCount);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
         <title>Health Resource Hub | myhealth checkup</title>
-        <meta name="description" content="Expert insights, health tips, and the latest research on preventive healthcare and health testing for UK adults." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/health-resources" />
+        <meta
+          name="description"
+          content="Expert insights, health tips and the latest research on preventive healthcare and private health testing for UK adults."
+        />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/blog" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Health Resource Hub — preventive health guides for UK adults" />
+        <meta property="og:description" content="Independent guides on private blood testing, biomarkers, cancer screening and longevity health for UK adults." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/blog" />
+        <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Blog",
-          "name": "myhealth checkup Health Resource Hub",
-          "description": "Expert insights, health tips, and the latest research on preventive healthcare.",
-          "url": "https://myhealthcheckup.co.uk/health-resources",
-          "publisher": {
-            "@type": "Organization",
-            "name": "MYHEALTHCHECKUP LTD",
-            "url": "https://myhealthcheckup.co.uk"
-          }
+          '@context': 'https://schema.org',
+          '@type': 'Blog',
+          name: 'myhealth checkup Health Resource Hub',
+          description: 'Expert insights, health tips, and the latest research on preventive healthcare.',
+          url: 'https://myhealthcheckup.co.uk/blog',
+          publisher: {
+            '@type': 'Organization',
+            name: 'MYHEALTHCHECKUP LTD',
+            url: 'https://myhealthcheckup.co.uk',
+          },
         })}</script>
       </Helmet>
       <Header />
       <main className="flex-grow">
-        <PageBanner
-          title="Health Resources"
-          subtitle="Expert insights, evidence-based guides, and the latest research to help you make informed decisions about your health."
-        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+          {/* Header */}
+          <header className="mb-8">
+            <div
+              className="uppercase"
+              style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, letterSpacing: '0.12em', color: '#22c0d4', fontWeight: 600 }}
+            >
+              Health Resources
+            </div>
+            <h1
+              className="mt-2"
+              style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, color: '#081129', lineHeight: 1.15 }}
+            >
+              <span className="block text-[28px] md:text-[40px]">Expert Health Insights</span>
+            </h1>
+            <p
+              className="mt-3 max-w-2xl"
+              style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 16, color: '#64748b' }}
+            >
+              Evidence-led articles from the UK's most trusted diagnostics providers.
+            </p>
+          </header>
 
-        {/* Categories Filter */}
-        <section className="bg-[#081129] py-4">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-wrap gap-2 justify-center">
-              {categories.map((category) => (
-                <Button 
-                  key={category} 
-                  variant={activeCategory === category ? "default" : "outline"} 
-                  size="sm" 
-                  onClick={() => setActiveCategory(category)}
-                  className={
-                    activeCategory === category 
-                      ? "bg-[#e70d69] hover:bg-[#e70d69]/90 text-white border-[#081129] border-2 text-xs font-medium"
-                      : "bg-[#22c0d4] hover:bg-[#e70d69] text-white border-[#081129] border-2 text-xs font-medium"
-                  }
+          {/* Category pills */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {categories.map((c) => {
+              const active = activeCategory === c;
+              return (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => { setActiveCategory(c); setVisibleCount(PAGE_SIZE); }}
+                  className={`rounded-full transition-colors ${
+                    active
+                      ? 'bg-[#081129] text-white border border-[#081129]'
+                      : 'bg-white text-[#081129] border border-[#081129] hover:bg-[#f0f4fa]'
+                  }`}
+                  style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, fontWeight: 500, padding: '6px 16px' }}
                 >
-                  {category}
-                </Button>
-              ))}
-            </div>
+                  {c}
+                </button>
+              );
+            })}
           </div>
-        </section>
-        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
 
-        {/* Featured Articles */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="font-bold mb-4 text-[#22c0d4] text-4xl">Featured Articles</h2>
-              <p className="text-xl text-[#e70d69]">Our most popular health and wellness content</p>
-            </div>
-            <div className="grid lg:grid-cols-3 gap-8">
-              {featuredArticles.map((article, index) => (
-                <FeaturedArticleCard 
-                  key={index} 
-                  article={article} 
-                  formatDate={formatDate}
-                  getReadTime={getReadTime}
-                />
-              ))}
-            </div>
-            {featuredArticles.length === 0 && (
-              <p className="text-center text-muted-foreground py-8">
-                No articles found in this category.
-              </p>
-            )}
+          {/* Search */}
+          <div className="relative max-w-md mb-4">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94a3b8]" size={16} />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setVisibleCount(PAGE_SIZE); }}
+              placeholder="Search articles…"
+              className="w-full rounded-full border border-[#081129] bg-white pl-10 pr-4 py-2.5 outline-none focus:ring-2 focus:ring-[#22c0d4] focus:border-transparent"
+              style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 14, color: '#081129' }}
+            />
           </div>
-        </section>
 
-        {/* Recent Articles */}
-        {recentArticles.length > 0 && (
-          <section className="py-16 bg-[#081129]">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <h2 className="font-bold mb-4 text-[#22c0d4] text-4xl">Recent Articles</h2>
-                <p className="text-xl text-[#e70d69]">Stay up to date with the latest health insights</p>
-              </div>
-              <div className="max-w-4xl mx-auto space-y-6">
-                {recentArticles.map((article, index) => (
-                  <RecentArticleRow 
-                    key={index} 
-                    article={article}
-                    formatDate={formatDate}
-                    getReadTime={getReadTime}
-                  />
+          {/* Provider filter */}
+          <div className="flex flex-wrap items-center gap-3 mb-10">
+            <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, color: '#64748b' }}>
+              Filter by source:
+            </span>
+            {ALL_PROVIDERS.map((p) => {
+              const checked = activeProviders.includes(p);
+              return (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => toggleProvider(p)}
+                  className={`rounded-full border transition-colors ${
+                    checked
+                      ? 'bg-[#081129] text-white border-[#081129]'
+                      : 'bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#081129]'
+                  }`}
+                  style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, fontWeight: 500, padding: '4px 12px' }}
+                  aria-pressed={checked}
+                >
+                  {checked ? '✓ ' : ''}{p}
+                </button>
+              );
+            })}
+          </div>
+
+          {filtered.length === 0 ? (
+            <div
+              className="text-center py-16"
+              style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 14, color: '#64748b' }}
+            >
+              No articles found for this selection.
+            </div>
+          ) : (
+            <>
+              {/* Featured */}
+              <h2
+                className="mb-6"
+                style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 20, color: '#081129' }}
+              >
+                Featured
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {featured.map((a) => (
+                  <FeaturedCard key={a.url} article={a} />
                 ))}
               </div>
-            </div>
-          </section>
-        )}
 
-        {/* Newsletter Signup */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <Card className="max-w-2xl mx-auto">
-              <CardHeader className="text-center">
-                <CardTitle className="text-[#22c0d4] text-center font-semibold">Stay Informed</CardTitle>
-                <p className="text-muted-foreground">
-                  Get the latest health insights and testing updates delivered to your inbox weekly.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email address" 
-                    className="flex-grow px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary" 
-                  />
-                  <Button>Subscribe</Button>
-                </div>
-                <p className="text-xs text-muted-foreground mt-2 text-center">
-                  No spam, unsubscribe anytime. Privacy policy applies.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+              {/* All */}
+              {rest.length > 0 && (
+                <>
+                  <h2
+                    className="mt-10 mb-6"
+                    style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 20, color: '#081129' }}
+                  >
+                    All Articles
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {visibleRest.map((a) => (
+                      <FeaturedCard key={a.url} article={a} />
+                    ))}
+                  </div>
+                  {visibleCount < rest.length && (
+                    <div className="text-center mt-10">
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+                        className="rounded-full border border-[#081129] hover:bg-[#f0f4fa] transition-colors"
+                        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 14, fontWeight: 500, color: '#081129', padding: '10px 32px' }}
+                      >
+                        Load more articles
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </main>
       <Footer />
     </div>
-  );
-};
-
-// Featured Article Card Component
-interface ArticleCardProps {
-  article: {
-    title: string;
-    excerpt: string;
-    url: string;
-    image: string;
-    provider: string;
-    category: string;
-    date: string;
-  };
-  formatDate: (date: string) => string;
-  getReadTime: (excerpt: string) => string;
-}
-
-const FeaturedArticleCard = ({ article, formatDate, getReadTime }: ArticleCardProps) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
-  return (
-    <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow h-full flex flex-col">
-      <div className="aspect-video bg-muted relative overflow-hidden">
-        {!imageLoaded && !imageError && (
-          <Skeleton className="absolute inset-0" />
-        )}
-        {!imageError ? (
-          <img
-            src={article.image}
-            alt={article.title}
-            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-            loading="lazy"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#22c0d4]/20 to-[#e70d69]/20 flex items-center justify-center">
-            <span className="text-muted-foreground text-sm">Image unavailable</span>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute top-4 left-4 z-10 flex gap-2">
-          <CategoryBadge category={article.category} />
-        </div>
-        <div className="absolute bottom-4 left-4 z-10">
-          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded">
-            <ProviderLogo provider={article.provider} className="h-4 w-auto" />
-            <span className="text-xs font-medium text-[#081129]">{article.provider}</span>
-          </div>
-        </div>
-      </div>
-      <CardHeader className="flex-grow">
-        <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-          {article.title}
-        </CardTitle>
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            {getReadTime(article.excerpt)}
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
-          {article.excerpt}
-        </p>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-muted-foreground">{formatDate(article.date)}</span>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="gap-1 text-[#22c0d4] hover:text-[#e70d69] transition-colors"
-              asChild
-            >
-            <a 
-              href={article.url} 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              Read More <ExternalLink className="h-3 w-3" />
-            </a>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-// Recent Article Row Component
-const RecentArticleRow = ({ article, formatDate, getReadTime }: ArticleCardProps) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
-  return (
-    <Card className="group cursor-pointer hover:shadow-md transition-shadow bg-white">
-      <CardContent className="p-6">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-32 md:h-20 w-full h-32 bg-muted rounded-lg flex-shrink-0 overflow-hidden relative">
-            {!imageLoaded && !imageError && (
-              <Skeleton className="absolute inset-0" />
-            )}
-            {!imageError ? (
-              <img
-                src={article.image}
-                alt={article.title}
-                className={`w-full h-full object-cover transition-opacity duration-300 ${
-                  imageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageError(true)}
-                loading="lazy"
-              />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#22c0d4]/20 to-[#e70d69]/20" />
-            )}
-          </div>
-          <div className="flex-grow">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <CategoryBadge category={article.category} className="text-xs" />
-              <span className="text-xs text-muted-foreground">{formatDate(article.date)}</span>
-              <div className="flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded">
-                <ProviderLogo provider={article.provider} className="h-3 w-auto" />
-                <span className="text-xs text-gray-600">{article.provider}</span>
-              </div>
-            </div>
-            <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors text-[#081129]">
-              {article.title}
-            </h3>
-            <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-              {article.excerpt}
-            </p>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {getReadTime(article.excerpt)}
-                </div>
-              </div>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="gap-1 text-[#22c0d4] hover:text-[#e70d69] transition-colors"
-                asChild
-              >
-                <a 
-                  href={article.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  Read More <ExternalLink className="h-3 w-3" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
   );
 };
 

@@ -39,7 +39,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
               onClick={() => navigate('/compare')}
               className="flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
-              Browse All 300+ Tests
+              Browse All 200+ Tests
             </Button>
           </div>
         </div>

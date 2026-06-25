@@ -21,11 +21,11 @@ const MissionSection = () => {
       {/* Navy banner heading with gradient dividers */}
       <div>
         {/* Top gradient divider */}
-        <div className="h-0.5 sm:h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
         
-        <div className="bg-brand-navy py-6 sm:py-8 md:py-10 lg:py-12">
+        <div className="bg-brand-navy py-3 sm:py-4 md:py-5 lg:py-6">
           <div className="container mx-auto px-3 sm:px-4">
-            <h2 className="text-center text-base sm:text-lg md:text-xl lg:text-2xl font-heading font-bold whitespace-nowrap xl:text-4xl">
+            <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl lg:whitespace-nowrap font-heading font-bold">
               <span className="text-white">Your </span>
               <span className="text-brand-turquoise">health</span>
               <span className="text-white"> is your greatest </span>
@@ -36,7 +36,7 @@ const MissionSection = () => {
         </div>
         
         {/* Bottom gradient divider */}
-        <div className="h-0.5 sm:h-1 bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
+        <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
 
     </section>

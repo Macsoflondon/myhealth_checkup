@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import PageBanner from '@/components/sections/PageBanner';
+import SupportSLA from '@/components/compliance/SupportSLA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -48,11 +50,22 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string;
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchParams] = useSearchParams();
+  const formCardRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: { firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' },
   });
+
+  useEffect(() => {
+    if (searchParams.get('topic') === 'test-finder') {
+      form.setValue('subject', 'Help me find a test');
+      setTimeout(() => {
+        formCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [searchParams, form]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -73,12 +86,26 @@ const ContactPage = () => {
         <title>Contact Us | myhealth checkup</title>
         <meta name="description" content="Get in touch with myhealth checkup. We're here to help with questions about health tests, providers, and our comparison platform." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/contact" />
+        <meta property="og:title" content="Contact Us | myhealth checkup" />
+        <meta property="og:description" content="Get in touch with myhealth checkup for questions about private UK health tests and accredited providers." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/contact" />
+        <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "name": "Contact myhealth checkup",
-          "description": "Get in touch with myhealth checkup for questions about health tests and providers.",
+          "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
+          "name": "myhealth checkup",
+          "legalName": "MYHEALTHCHECKUP LTD",
+          "description": "Independent UK platform comparing private health tests from accredited providers.",
           "url": "https://myhealthcheckup.co.uk/contact",
+          "email": "support@myhealthcheckup.co.uk",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "2/369 Clapham Road",
+            "addressLocality": "London",
+            "postalCode": "SW9 9BT",
+            "addressCountry": "GB"
+          },
+          "areaServed": "GB",
           "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" }
         })}</script>
       </Helmet>
@@ -91,7 +118,8 @@ const ContactPage = () => {
             {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
-              <Card className="text-[#081129]">
+              <div ref={formCardRef}>
+                <Card className="text-[#081129]">
                 <CardHeader>
                   <CardTitle>Send Us a Message</CardTitle>
                 </CardHeader>
@@ -149,6 +177,7 @@ const ContactPage = () => {
                   </Form>
                 </CardContent>
               </Card>
+              </div>
 
               {/* Provider Contact Directory */}
               <Card className="text-[#081129]">
@@ -230,6 +259,10 @@ const ContactPage = () => {
                   <p className="text-sm mt-4 text-muted-foreground">Company Registration: 16589056 (England & Wales)</p>
                 </CardContent>
               </Card>
+            </div>
+
+            <div className="mt-6">
+              <SupportSLA variant="default" />
             </div>
 
             {/* Row 3: Emergency */}

@@ -89,9 +89,15 @@ Deno.serve(async (req) => {
   }
 
   // Auth gate: external callers must be admin. Server-to-server callers
-  // (other edge functions using the service role) can pass internal=true.
-  if (!body.internal) {
-    const authHeader = req.headers.get("Authorization");
+  // present the service-role key in the Authorization header.
+  const authHeader = req.headers.get("Authorization") ?? "";
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const isInternal =
+    body.internal === true &&
+    serviceKey.length > 0 &&
+    authHeader === `Bearer ${serviceKey}`;
+
+  if (!isInternal) {
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,

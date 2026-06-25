@@ -57,7 +57,8 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    lng: 'en', // Default to GB English (en = en-GB for this platform)
+    // No hard-coded `lng` — let LanguageDetector read from localStorage so
+    // the user's choice persists across reloads.
     supportedLngs: ['en', 'fr', 'es', 'de', 'it', 'pt', 'nl', 'pl', 'ar', 'zh', 'ja'],
     debug: false,
 

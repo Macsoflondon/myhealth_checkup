@@ -15,11 +15,11 @@ import { Link } from "react-router-dom";
  */
 const REVIEWER = {
   name: "Nathanial Smith",
-  role: "Clinical Reviewer — Physician Associate",
+  role: "Clinical Reviewer — Registered Healthcare Professional",
   registration: {
     body: "Health and Care Professions Council (HCPC)",
     number: "PA43353",
-    verifyUrl: "https://www.hcpc-uk.org/check-the-register/",
+    verifyUrl: "https://www.hcpc-uk.org/check-the-register/professional-registration-detail/?query=PA43353&profession=PA",
   },
   scope:
     "Reviews comparison content for clinical accuracy, biomarker descriptions, sample collection guidance, and general health-test explainers. Does not review or endorse individual provider commercial claims.",
@@ -31,12 +31,12 @@ const MedicalReviewPage = () => {
     "@context": "https://schema.org",
     "@type": "Person",
     name: REVIEWER.name,
-    jobTitle: "Physician Associate",
+    jobTitle: "Registered Healthcare Professional",
     description: REVIEWER.scope,
     affiliation: {
       "@type": "Organization",
       name: "myhealth checkup",
-      url: "https://www.myhealthcheckup.co.uk/",
+      url: "https://myhealthcheckup.co.uk/",
     },
     hasCredential: [
       {
@@ -46,7 +46,7 @@ const MedicalReviewPage = () => {
         identifier: REVIEWER.registration.number,
       },
     ],
-    url: "https://www.myhealthcheckup.co.uk/about/medical-review",
+    url: "https://myhealthcheckup.co.uk/about/medical-review",
   };
 
   return (
@@ -55,9 +55,9 @@ const MedicalReviewPage = () => {
         <title>Medical Review & Editorial Standards | myhealth checkup</title>
         <meta
           name="description"
-          content="Our clinical content is reviewed by a registered Physician Associate (HCPC). See reviewer credentials, scope of review, and editorial standards."
+          content="Our clinical content is reviewed by a Registered Healthcare Professional (HCPC). See reviewer credentials, scope of review, and editorial standards."
         />
-        <link rel="canonical" href="https://www.myhealthcheckup.co.uk/about/medical-review" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/about/medical-review" />
         <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
       </Helmet>
 
@@ -120,11 +120,9 @@ const MedicalReviewPage = () => {
 
               <div className="bg-muted/40 rounded-lg p-4 border border-border">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  <strong>Important:</strong> Physician Associates are HCPC-registered healthcare professionals working
-                  under the supervision of doctors. They do not currently hold independent prescribing rights in the
-                  UK. Our content is informational and comparative; it does not constitute medical advice, diagnosis or
-                  prescription. Always consult your GP or a suitably qualified clinician for individual medical
-                  guidance.
+                  <strong>Important:</strong> Our content is informational and comparative; it does not constitute
+                  medical advice, diagnosis or prescription. Always consult your GP or a suitably qualified
+                  clinician for individual medical guidance.
                 </p>
               </div>
             </CardContent>
@@ -151,6 +149,23 @@ const MedicalReviewPage = () => {
                   How we rank
                 </Link>
                 .
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="mb-8 border-brand-pink/30">
+            <CardHeader>
+              <CardTitle className="text-brand-pink">Medical disclaimer</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+              <p>
+                This site provides comparison information only and does not constitute medical advice, diagnosis,
+                or treatment. Always consult your GP or a suitably qualified clinician for individual medical
+                guidance.
+              </p>
+              <p>
+                Clinical content is reviewed by {REVIEWER.name}, Registered Healthcare Professional ({REVIEWER.registration.body}:{" "}
+                <span className="font-mono font-semibold text-foreground">{REVIEWER.registration.number}</span>).
+                myhealth checkup is not a medical provider and does not deliver clinical care.
               </p>
             </CardContent>
           </Card>

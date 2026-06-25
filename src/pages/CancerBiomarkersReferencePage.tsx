@@ -224,7 +224,7 @@ const CancerBiomarkersReferencePage = () => {
               <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
-              <Link to="/cancer-screening">View Cancer Screening</Link>
+              <Link to="/tests/cancer">View Cancer Screening</Link>
             </Button>
           </div>
         </PageBanner>
@@ -495,9 +495,6 @@ const CancerBiomarkersReferencePage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
                   <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
-                </Button>
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
-                  <Link to="/find-clinic">Find a Clinic</Link>
                 </Button>
               </div>
             </div>

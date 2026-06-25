@@ -1,13 +1,16 @@
 /**
- * Shared layout component for consistent page structure
- * Includes: Header (with PromoTicker), main content area, Footer, CookieConsent
+ * Shared layout component for consistent page structure.
+ * Includes: StickyCategoryBar (with hero-aware reveal on homepage), main content area, Footer, CookieConsent.
  */
 
+
 import { ReactNode } from "react";
-import Header from "@/components/layout/Header";
+import { useLocation } from "react-router-dom";
+
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -25,8 +28,11 @@ export const MainLayout = ({
   hideFooter = false,
   mainClassName = "flex-1"
 }: MainLayoutProps) => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+
   return (
-    <div className="min-h-screen flex flex-col bg-[hsl(224,67%,10%)]">
+    <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
       {/* Accessibility: skip to main content */}
       <a
         href="#main-content"
@@ -34,7 +40,12 @@ export const MainLayout = ({
       >
         Skip to main content
       </a>
-      {!hideHeader && <Header />}
+
+      {!hideHeader && !isHome && (
+        <BrowseByCategoryBar variant="flush" />
+      )}
+
+
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         <SiteBreadcrumb />
         {children}

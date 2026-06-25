@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 const planFeatures = {
-  essentials: ["Quarterly finger-prick test kit", "Diabetes (HbA1c) monitoring", "Full lipid profile", "Liver & kidney function", "Iron/ferritin levels", "Vitamin D & B12 testing", "Online results dashboard", "Email results notifications"],
+  essentials: ["Quarterly finger-prick test kit", "Diabetes (HbA1c) monitoring", "Full lipid profile", "Liver & kidney function", "Iron/ferritin levels", "Vitamin D testing", "Vitamin B12 testing", "Online results dashboard", "Email results notifications"],
   advanced: ["Biannual comprehensive screening", "Everything in Essentials", "PSA (men) or Female hormones", "High-sensitivity CRP", "Thyroid panel (TSH, T4)", "One genetic test annually", "15-min healthcare professional consultation", "Personalised health action plan", "Priority processing"]
 };
 const SubscriptionPlan = ({
@@ -40,8 +41,8 @@ const SubscriptionPlan = ({
         </ul>
       </CardContent>
       <CardFooter>
-        <Button className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
-          Subscribe Now
+        <Button asChild className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
+          <Link to="/contact">Subscribe Now</Link>
         </Button>
       </CardFooter>
     </Card>;

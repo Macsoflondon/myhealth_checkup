@@ -193,6 +193,9 @@ const TestCategoriesPage = () => {
           </div>
 
           {/* Filter pills */}
+          <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
+            Filter categories
+          </h2>
           <div
             style={{
               display: "flex",
@@ -234,6 +237,9 @@ const TestCategoriesPage = () => {
           </div>
 
           {/* Cards grid */}
+          <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
+            Test categories
+          </h2>
           <div
             style={{
               display: "grid",
@@ -432,7 +438,7 @@ const TestCategoriesPage = () => {
               >
                 Not sure where to start?
               </p>
-              <h4
+              <h2
                 style={{
                   fontSize: 24,
                   fontWeight: 800,
@@ -442,7 +448,7 @@ const TestCategoriesPage = () => {
                 }}
               >
                 Find the Right Health Test for You
-              </h4>
+              </h2>
             </div>
             <div style={{ display: "flex", gap: 12 }}>
               <Link

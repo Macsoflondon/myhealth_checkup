@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { providers } from "@/constants/providers";
+import { providers, getProviderLogoSrcSet } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const PartnersGrid = () => {
@@ -12,7 +12,7 @@ const PartnersGrid = () => {
 
     let animationId: number;
     let position = 0;
-    const speed = 0.8;
+    const speed = 0.5;
 
     // Measure actual rendered width of one full set of providers
     const measureSetWidth = () => {
@@ -78,11 +78,11 @@ const PartnersGrid = () => {
       <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Section label */}
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
-          <span className="text-brand-turquoise text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+          <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
             Accredited & Verified
           </span>
-          <div className="h-px w-8 sm:w-12 bg-brand-turquoise/40" />
+          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
 
         <SectionHeading 
@@ -93,16 +93,16 @@ const PartnersGrid = () => {
         />
 
         <div
-          className="relative overflow-hidden max-w-5xl mx-auto"
+          className="relative overflow-hidden w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
           style={{
-            maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            maskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
           }}
         >
           <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
             {items.map((provider, index) => {
               const LOGO_SIZE: Record<string, string> = {
-                'goodbody-clinic': 'max-h-[64px] sm:max-h-[84px]',
+                'goodbody-clinic': 'max-h-[88px] sm:max-h-[112px] md:max-h-[128px]',
                 'thriva': 'max-h-[64px] sm:max-h-[84px]',
                 'randox': 'max-h-[64px] sm:max-h-[84px]',
               };
@@ -111,22 +111,29 @@ const PartnersGrid = () => {
                 <div key={`${provider.id}-${index}`} className="shrink-0 px-3 sm:px-4" style={{ width: "260px" }}>
                   <Link
                     to={`/provider/${provider.id}`}
-                    className="group bg-white rounded-xl p-6 sm:p-8 flex items-center justify-center 
+                    className="group rounded-xl p-6 sm:p-8 flex items-center justify-center 
                       w-full h-32 sm:h-40 overflow-hidden
                       border-2 border-[#22c0d4] 
                       transition-all duration-300 ease-out
                       hover:shadow-lg hover:shadow-[#22c0d4]/20 
                       hover:-translate-y-1 hover:scale-105
-                      hover:border-[#22c0d4]/30"
+                      hover:border-[#22c0d4]/30 bg-white"
                   >
-                    <img 
-                      src={provider.logo} 
-                      alt={`${provider.name} logo`} 
-                      className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
-                        LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE
-                      }`} 
-                      loading="lazy" 
-                    />
+                    {(() => {
+                      const { src, srcSet } = getProviderLogoSrcSet(provider.id);
+                      return (
+                        <img
+                          src={src}
+                          srcSet={srcSet}
+                          alt={`${provider.name} logo`}
+                          className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
+                            LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE
+                          }`}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      );
+                    })()}
                   </Link>
                 </div>
               );

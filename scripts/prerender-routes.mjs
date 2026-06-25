@@ -78,6 +78,7 @@ export const STATIC_ROUTES = [
   "/contact",
   "/partners",
   "/blog",
+  "/blog/testosterone-levels-by-age",
   "/health-blog",
 
   // Legal / compliance
@@ -89,4 +90,49 @@ export const STATIC_ROUTES = [
   "/modern-slavery",
   "/affiliate-disclosure",
   "/fair-trading",
+  "/complaints",
+  "/reviews",
+
+  // Symptom + goal hubs
+  "/compare/symptoms/fatigue",
+  "/compare/symptoms/low-mood",
+  "/compare/symptoms/hair-loss",
+  "/compare/symptoms/weight-gain",
+  "/compare/symptoms/low-libido",
+  "/compare/goals/longevity",
+  "/compare/goals/performance",
+  "/compare/goals/weight-loss",
+  "/compare/goals/preventative-health",
+
+  // Category hubs
+  "/tests/blood-tests",
+  "/tests/hormones",
+  "/tests/thyroid",
+  "/tests/liver",
+  "/tests/kidney-health",
+  "/tests/fertility",
+  "/tests/general-health",
+  "/tests/allergy-testing",
+  "/tests/sports-performance-tests",
+  "/tests/weight-loss-tests",
+  "/tests/longevity-tests",
+
+  // Dedicated landings
+  "/mens-health",
+  "/womens-health",
+
+  // Biomarker guides
+  "/guides",
+  "/guides/testosterone-test",
+  "/guides/low-testosterone-symptoms",
+  "/guides/thyroid-test",
+  "/guides/cortisol-test",
+  "/guides/vitamin-d-test",
+  "/guides/ferritin-test",
+  "/guides/liver-function-test",
+  "/guides/kidney-function-test",
+  "/guides/crp-test",
+  "/guides/autoimmune-blood-test",
+  "/guides/finger-prick-blood-test",
+  "/guides/female-hormone-test",
 ];

@@ -135,7 +135,7 @@ export const TestListCard: React.FC<TestListCardProps> = ({
                 className="bg-secondary/10 text-secondary border-secondary/20"
               >
                 <Shield size={12} className="mr-1" />
-                CQC
+                CQC Regulated Providers
               </Badge>
             )}
             {test.popularityScore && test.popularityScore >= 70 && (

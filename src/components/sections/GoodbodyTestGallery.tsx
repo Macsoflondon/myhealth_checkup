@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
+import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";
+import randoxGeneticHaemochromatosis from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -99,68 +102,68 @@ const findBackendImageForGalleryItem = (
 };
 
 const GENERAL_HEALTH_TESTS: GalleryImage[] = [
-  galleryItem({ src: "/images/tests/advanced-well-man.png", alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/general-health-blood-test.png", alt: "General Health Blood Test", code: "General Health", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/premium-complete-blood-test.png", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain", matchTerms: ["premium complete blood test"] }),
-  galleryItem({ src: "/images/tests/complete-allergy-blood-test.png", alt: "Complete Allergy Blood Test", code: "Complete Allergy", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/kidney-blood-test.png", alt: "Kidney Blood Test", code: "Kidney", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/advanced-well-woman.png", alt: "Advanced Well Woman Blood Test", code: "Advanced Well Woman", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/cholesterol-blood-test.png", alt: "Cholesterol Blood Test", code: "Cholesterol", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/full-blood-count-blood-test.png", alt: "Full Blood Count Blood Test", code: "Full Blood Count", objectFit: "contain", matchTerms: ["full blood count blood test"] }),
-  galleryItem({ src: "/images/tests/liver-blood-test.png", alt: "Liver Blood Test", code: "Liver", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/vitamins-blood-test.png", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
-  galleryItem({ src: "/images/tests/sports-fitness-blood-test.png", alt: "Sports & Fitness Blood Test", code: "Sports & Fitness", objectFit: "contain", matchTerms: ["sports and fitness blood test", "comprehensive sports blood test"] }),
-  galleryItem({ src: "/images/tests/coeliac-screen-blood-test.png", alt: "Coeliac Screen Blood Test", code: "Coeliac Screen", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/cardiac-risk-blood-test.png", alt: "Cardiac Risk Blood Test", code: "Cardiac Risk", objectFit: "contain", matchTerms: ["cardiac risk blood test"] }),
-  galleryItem({ src: "/images/tests/anaemia-blood-test.png", alt: "Anaemia Blood Test", code: "Anaemia", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/weight-loss-blood-test.png", alt: "Weight Loss Blood Test", code: "Weight Loss", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/trace-metal-blood-test.png", alt: "Trace Metal Blood Test", code: "Trace Metal", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/autoimmune-disease-blood-test.png", alt: "Autoimmune Disease Blood Test", code: "Autoimmune Disease", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/helicobacter-pylori-blood-test.png", alt: "Helicobacter Pylori Blood Test", code: "Helicobacter Pylori", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/blood-group-blood-test.png", alt: "Blood Group Blood Test", code: "Blood Group", objectFit: "contain", matchTerms: ["blood group blood test"] }),
-  galleryItem({ src: "/images/tests/tiredness-fatigue-blood-test.png", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain", matchTerms: ["tiredness and fatigue blood test", "tiredness fatigue"] }),
-  galleryItem({ src: "/images/tests/advanced-vitamins-blood-test.png", alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
-  galleryItem({ src: "/images/tests/iron-blood-test.png", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain", matchTerms: ["iron blood test"] }),
+  galleryItem({ src: randoxGeneticHaemochromatosis, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/general-health-blood-test.webp", alt: "General Health Blood Test", code: "General Health", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/premium-complete-blood-test.webp", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain", matchTerms: ["premium complete blood test"] }),
+  galleryItem({ src: "/images/tests/complete-allergy-blood-test.webp", alt: "Complete Allergy Blood Test", code: "Complete Allergy", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/kidney-blood-test.webp", alt: "Kidney Blood Test", code: "Kidney", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/cholesterol-blood-test.webp", alt: "Cholesterol Blood Test", code: "Cholesterol", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/full-blood-count-blood-test.webp", alt: "Full Blood Count Blood Test", code: "Full Blood Count", objectFit: "contain", matchTerms: ["full blood count blood test"] }),
+  galleryItem({ src: randoxGeneticHaemochromatosis, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/liver-blood-test.webp", alt: "Liver Blood Test", code: "Liver", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/vitamins-blood-test.webp", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
+  galleryItem({ src: "/images/tests/sports-fitness-blood-test.webp", alt: "Sports & Fitness Blood Test", code: "Sports & Fitness", objectFit: "contain", matchTerms: ["sports and fitness blood test", "comprehensive sports blood test"] }),
+  galleryItem({ src: "/images/tests/coeliac-screen-blood-test.webp", alt: "Coeliac Screen Blood Test", code: "Coeliac Screen", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/cardiac-risk-blood-test.webp", alt: "Cardiac Risk Blood Test", code: "Cardiac Risk", objectFit: "contain", matchTerms: ["cardiac risk blood test"] }),
+  galleryItem({ src: "/images/tests/anaemia-blood-test.webp", alt: "Anaemia Blood Test", code: "Anaemia", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/weight-loss-blood-test.webp", alt: "Weight Loss Blood Test", code: "Weight Loss", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/trace-metal-blood-test.webp", alt: "Trace Metal Blood Test", code: "Trace Metal", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/autoimmune-disease-blood-test.webp", alt: "Autoimmune Disease Blood Test", code: "Autoimmune Disease", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/helicobacter-pylori-blood-test.webp", alt: "Helicobacter Pylori Blood Test", code: "Helicobacter Pylori", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/blood-group-blood-test.webp", alt: "Blood Group Blood Test", code: "Blood Group", objectFit: "contain", matchTerms: ["blood group blood test"] }),
+  galleryItem({ src: "/images/tests/tiredness-fatigue-blood-test.webp", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain", matchTerms: ["tiredness and fatigue blood test", "tiredness fatigue"] }),
+  galleryItem({ src: goodbodyAdvancedVitamins, alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
+  galleryItem({ src: "/images/tests/iron-blood-test.webp", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain", matchTerms: ["iron blood test"] }),
 ];
 
 const HORMONE_FERTILITY_TESTS: GalleryImage[] = [
-  galleryItem({ src: "/images/tests/female-hormone-fertility.png", alt: "Female Hormone & Fertility Test", code: "Female Hormone & Fertility", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/testosterone-blood-test.png", alt: "Testosterone Blood Test", code: "Testosterone", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/thyroid-function-blood-test.png", alt: "Thyroid Function Blood Test", code: "Thyroid Function", objectFit: "contain", matchTerms: ["thyroid function blood test", "comprehensive thyroid function blood test"] }),
-  galleryItem({ src: "/images/tests/pregnancy-blood-test.png", alt: "Pregnancy Blood Test", code: "Pregnancy", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/male-hormone-fertility-blood-test.png", alt: "Male Hormone & Fertility Blood Test", code: "Male Hormone & Fertility", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/anti-mullerian-hormone-blood-test.png", alt: "Anti-Mullerian Hormone Blood Test", code: "Anti-Mullerian Hormone", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/cortisol-stress-blood-test.png", alt: "Cortisol Stress Blood Test", code: "Cortisol Stress", objectFit: "contain", matchTerms: ["cortisol stress blood test"] }),
-  galleryItem({ src: "/images/tests/prenatalsafe-3-nipt.png", alt: "PrenatalSAFE 3 NIPT Blood Test", code: "PrenatalSAFE 3 NIPT", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/thyroid-blood-test.png", alt: "Thyroid Blood Test", code: "Thyroid", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/prenatalsafe-5-nipt.png", alt: "PrenatalSAFE 5 NIPT Blood Test", code: "PrenatalSAFE 5 NIPT", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/prenatalsafe-karyo-plus-nipt.png", alt: "PrenatalSAFE Karyo Plus NIPT Blood Test", code: "PrenatalSAFE Karyo Plus", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/prenatalsafe-complete-plus-nipt.png", alt: "PrenatalSAFE Complete Plus NIPT Blood Test", code: "PrenatalSAFE Complete Plus", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/female-hormone-fertility.webp", alt: "Female Hormone & Fertility Test", code: "Female Hormone & Fertility", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/testosterone-blood-test.webp", alt: "Testosterone Blood Test", code: "Testosterone", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/thyroid-function-blood-test.webp", alt: "Thyroid Function Blood Test", code: "Thyroid Function", objectFit: "contain", matchTerms: ["thyroid function blood test", "comprehensive thyroid function blood test"] }),
+  galleryItem({ src: "/images/tests/pregnancy-blood-test.webp", alt: "Pregnancy Blood Test", code: "Pregnancy", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/male-hormone-fertility-blood-test.webp", alt: "Male Hormone & Fertility Blood Test", code: "Male Hormone & Fertility", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/anti-mullerian-hormone-blood-test.webp", alt: "Anti-Mullerian Hormone Blood Test", code: "Anti-Mullerian Hormone", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/cortisol-stress-blood-test.webp", alt: "Cortisol Stress Blood Test", code: "Cortisol Stress", objectFit: "contain", matchTerms: ["cortisol stress blood test"] }),
+  galleryItem({ src: "/images/tests/prenatalsafe-3-nipt.webp", alt: "PrenatalSAFE 3 NIPT Blood Test", code: "PrenatalSAFE 3 NIPT", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/thyroid-blood-test.webp", alt: "Thyroid Blood Test", code: "Thyroid", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/prenatalsafe-5-nipt.webp", alt: "PrenatalSAFE 5 NIPT Blood Test", code: "PrenatalSAFE 5 NIPT", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/prenatalsafe-karyo-plus-nipt.webp", alt: "PrenatalSAFE Karyo Plus NIPT Blood Test", code: "PrenatalSAFE Karyo Plus", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/prenatalsafe-complete-plus-nipt.webp", alt: "PrenatalSAFE Complete Plus NIPT Blood Test", code: "PrenatalSAFE Complete Plus", objectFit: "contain" }),
 ];
 
 const VITAMIN_NUTRITION_TESTS: GalleryImage[] = [
-  galleryItem({ src: "/images/tests/vitamins-blood-test.png", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
-  galleryItem({ src: "/images/tests/advanced-vitamins-blood-test.png", alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
-  galleryItem({ src: "/images/tests/iron-blood-test.png", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain", matchTerms: ["iron blood test"] }),
-  galleryItem({ src: "/images/tests/tiredness-fatigue-blood-test.png", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain", matchTerms: ["tiredness and fatigue blood test", "tiredness fatigue"] }),
-  galleryItem({ src: "/images/tests/anaemia-blood-test.png", alt: "Anaemia Blood Test", code: "Anaemia", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/trace-metal-blood-test.png", alt: "Trace Metal Blood Test", code: "Trace Metal", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/coeliac-screen-blood-test.png", alt: "Coeliac Screen Blood Test", code: "Coeliac Screen", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/nad-plus-blood-test.png", alt: "NAD+ Blood Test", code: "NAD+", objectFit: "contain", matchTerms: ["nad plus", "nad blood test"] }),
+  galleryItem({ src: "/images/tests/vitamins-blood-test.webp", alt: "Vitamins Blood Test", code: "Vitamins", objectFit: "contain", matchTerms: ["vitamins blood test", "vitamins blood test assess your essential nutrients"] }),
+  galleryItem({ src: goodbodyAdvancedVitamins, alt: "Goodbody Advanced Vitamins Blood Test kit box", code: "Advanced Vitamins", objectFit: "contain", matchTerms: ["advanced vitamin", "advanced vitamins blood test", "vitamins blood test for optimal health"] }),
+  galleryItem({ src: "/images/tests/iron-blood-test.webp", alt: "Goodbody Iron Blood Test kit box", code: "Iron", objectFit: "contain", matchTerms: ["iron blood test"] }),
+  galleryItem({ src: "/images/tests/tiredness-fatigue-blood-test.webp", alt: "Goodbody Tiredness and Fatigue Blood Test kit box", code: "Tiredness and Fatigue", objectFit: "contain", matchTerms: ["tiredness and fatigue blood test", "tiredness fatigue"] }),
+  galleryItem({ src: "/images/tests/anaemia-blood-test.webp", alt: "Anaemia Blood Test", code: "Anaemia", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/trace-metal-blood-test.webp", alt: "Trace Metal Blood Test", code: "Trace Metal", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/coeliac-screen-blood-test.webp", alt: "Coeliac Screen Blood Test", code: "Coeliac Screen", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/nad-plus-blood-test.webp", alt: "NAD+ Blood Test", code: "NAD+", objectFit: "contain", matchTerms: ["nad plus", "nad blood test"] }),
 ];
 
 const CANCER_SCREENING_TESTS: GalleryImage[] = [
-  galleryItem({ src: "/images/tests/early-cancer-screening.png", alt: "Early Cancer Screening Test", code: "TruCheck™ Early Cancer Screening", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/episwitch-pse.png", alt: "EpiSwitch PSE Prostate Test", code: "EpiSwitch® PSE Prostate", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/guardant-reveal.png", alt: "Guardant Reveal MRD & Therapy Response Monitoring", code: "Guardant Reveal™", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/lung-cancer-screening.png", alt: "Lung Cancer Screening Blood Test", code: "Lung Cancer Screening", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/guardant-360-cdx.png", alt: "Guardant 360 CDx Blood Collection Kit", code: "Guardant360® CDx", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/hpv-cervical-cancer-screening.png", alt: "HPV Cervical Cancer Screening", code: "HPV Cervical Cancer Screening", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/prostate-psa-blood-test.png", alt: "Prostate PSA Blood Test", code: "Prostate PSA", objectFit: "contain" }),
-  galleryItem({ src: "/images/tests/bowel-cancer-stool-test.png", alt: "Bowel Cancer Stool Test", code: "Bowel Cancer Stool Test", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/early-cancer-screening.webp", alt: "Early Cancer Screening Test", code: "TruCheck™ Early Cancer Screening", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/episwitch-pse.webp", alt: "EpiSwitch PSE Prostate Test", code: "EpiSwitch® PSE Prostate", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/guardant-reveal.webp", alt: "Guardant Reveal MRD & Therapy Response Monitoring", code: "Guardant Reveal™", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/lung-cancer-screening.webp", alt: "Lung Cancer Screening Blood Test", code: "Lung Cancer Screening", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/guardant-360-cdx.webp", alt: "Guardant 360 CDx Blood Collection Kit", code: "Guardant360® CDx", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/hpv-cervical-cancer-screening.webp", alt: "HPV Cervical Cancer Screening", code: "HPV Cervical Cancer Screening", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/prostate-psa-blood-test.webp", alt: "Prostate PSA Blood Test", code: "Prostate PSA", objectFit: "contain" }),
+  galleryItem({ src: "/images/tests/bowel-cancer-stool-test.webp", alt: "Bowel Cancer Stool Test", code: "Bowel Cancer Stool Test", objectFit: "contain" }),
 ];
 
-const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.png";
+const GOODBODY_LOGO = "/lovable-uploads/provider-goodbody-logo-new.webp";
 
 const GoodbodyTestGallery = () => {
   const [activeTab, setActiveTab] = useState<Tab>("General Health");
@@ -245,6 +248,8 @@ const GoodbodyTestGallery = () => {
             <img
               src={GOODBODY_LOGO}
               alt="GOODBODY"
+              loading="lazy"
+              decoding="async"
               className="h-48 sm:h-40 md:h-48 w-auto object-contain"
             />
           </div>
@@ -283,6 +288,7 @@ const GoodbodyTestGallery = () => {
           images={getTestsForTab()}
           onTestClick={handleTestClick}
           getOverlayData={getOverlayData}
+          showLabels={false}
         />
       </div>
 
@@ -290,13 +296,12 @@ const GoodbodyTestGallery = () => {
       <div className="w-2/3 mx-auto h-px bg-gradient-to-r from-transparent via-brand-turquoise/70 to-transparent my-4" />
 
       {/* View Profile Button */}
-      <div className="flex justify-center mt-8">
-        <Link
-          to="/provider/goodbody"
-          className="inline-block bg-brand-turquoise hover:bg-brand-pink text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200"
-        >
-          View Goodbody Profile
-        </Link>
+      <div className="flex justify-center mt-8 pb-[10px]">
+        <Button asChild>
+          <Link to="/provider/goodbody-clinic">
+            View Goodbody Profile
+          </Link>
+        </Button>
       </div>
 
       {/* ===== Test Detail Modal (Reference card style) ===== */}
@@ -396,7 +401,7 @@ const GoodbodyTestGallery = () => {
                       <p className="font-bold text-sm" style={{ color: BRAND_COLOR }}>Goodbody Clinic</p>
                       <p className="text-xs text-muted-foreground">Private health testing with 200+ clinics nationwide</p>
                       <div className="flex flex-wrap gap-1.5 mt-2">
-                        {["200+ Clinics", "GP Report Included", "CQC Regulated"].map((badge) => (
+                        {["200+ Clinics", "GP Report Included", "CQC Regulated Providers"].map((badge) => (
                           <span key={badge} className="text-[10px] font-semibold px-2 py-0.5 rounded border" style={{ color: BRAND_COLOR, borderColor: BRAND_COLOR }}>
                             {badge}
                           </span>
@@ -439,7 +444,7 @@ const GoodbodyTestGallery = () => {
         <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto bg-[#f8f6f3] border-border">
           <DialogHeader>
             <div className="flex items-center gap-4 mb-2">
-              <img src={GOODBODY_LOGO} alt="Goodbody Clinic" className="h-12 w-auto object-contain" />
+              <img src={GOODBODY_LOGO} alt="Goodbody Clinic" loading="lazy" decoding="async" className="h-12 w-auto object-contain" />
               <div>
                 <DialogTitle className="text-2xl font-heading text-[#3d3529]">
                   Goodbody Clinic
@@ -464,7 +469,7 @@ const GoodbodyTestGallery = () => {
 
             <section>
               <h3 className="text-xl font-heading font-bold text-[#3d3529] mb-2">Our Services</h3>
-              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
+              <p>We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.</p>
             </section>
 
             <section>
