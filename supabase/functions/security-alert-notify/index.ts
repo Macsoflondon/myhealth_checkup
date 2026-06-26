@@ -63,6 +63,17 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
   try {
+    // Require service-role bearer auth — internal-only endpoint called by
+    // Postgres triggers and CI scripts. Blocks unauthenticated callers from
+    // spamming admin inboxes or social-engineering staff via attacker-
+    // controlled subject/error_message fields.
+    const authHeader = req.headers.get('Authorization') ?? ''
+    if (!SERVICE_ROLE_KEY || authHeader !== `Bearer ${SERVICE_ROLE_KEY}`) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
     if (!RESEND_API_KEY) {
       return new Response(JSON.stringify({ error: 'RESEND_API_KEY not configured' }), {
         status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
