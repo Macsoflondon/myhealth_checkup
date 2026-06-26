@@ -29,6 +29,7 @@ const AdminEncryptionStatusPage = lazy(() => import("@/pages/AdminEncryptionStat
 const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage"));
 const AdminBiomarkerAuditPage = lazy(() => import("@/pages/AdminBiomarkerAuditPage"));
 const AdminBiomarkerValidationPage = lazy(() => import("@/pages/AdminBiomarkerValidationPage"));
+const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
 const PageFallback = () => (
   <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
@@ -62,6 +63,10 @@ export function AppRoutes() {
         <Route path="/admin/security-diff" element={wrapAdmin(AdminSecurityDiffPage)} />
         <Route path="/admin/biomarker-audit" element={wrapAdmin(AdminBiomarkerAuditPage)} />
         <Route path="/admin/biomarker-validation" element={wrapAdmin(AdminBiomarkerValidationPage)} />
+
+        {/* Operations Control Centre */}
+        <Route path="/control" element={wrapAdmin(ControlPage)} />
+        <Route path="/control/:section" element={wrapAdmin(ControlPage)} />
 
         {/* Feature Routes */}
         {featureRoutes}
