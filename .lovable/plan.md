@@ -1,24 +1,24 @@
-## Add a 4th "At-Home Tests" category card
+## Goal
+Replace the boxy pink-bordered flag + user icons in the mobile `BrowseByCategoryBar` right cluster with a unified, soft pink glass pill that matches the Browse/More aesthetic.
 
-**File:** `src/components/sections/TestCategoriesSection.tsx`
+## Changes
 
-### Changes
-1. Append a 4th entry to the `categories` array:
-   - `tag`: "At-Home Tests"
-   - `tagVariant`: `"pink"` (alternate with existing palette)
-   - `count`: "300+ Kits"
-   - `title`: "At-Home Test Kits"
-   - `description`: "Convenient finger-prick and sample collection kits delivered to your door. UKAS-accredited lab analysis with results typically returned within days — no clinic visit needed."
-   - `link`: `/at-home-tests` (matches the sticky bar "At Home" route — to be confirmed)
-   - `linkLabel`: "Explore Kits"
-   - `image`: a relevant at-home-kit image (reuse hero `bloodTestKit` slide asset if available, otherwise an Unsplash finger-prick kit photo)
+**File: `src/components/layout/BrowseByCategoryBar.tsx`** (mobile right cluster only)
+- Wrap `LanguageSwitcher` + `UserMenu` (mobile breakpoint) in a single rounded-full container styled `bg-[#e70d69]/5 border border-[#e70d69]/10 p-1`.
+- Replace the existing `border-l` divider with a thin internal `w-px h-4 bg-[#e70d69]/20` divider between the two controls.
+- Hide on `md:` and render the existing bordered cluster for desktop unchanged.
 
-2. Update the grid to accommodate 4 columns on large screens so all cards stay one row on desktop while keeping the existing mobile/tablet behaviour:
-   - `grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4`
-   - (alternatively keep `lg:grid-cols-3` and let the 4th wrap below — confirm preference)
+**File: `src/components/header/LanguageSwitcher.tsx`**
+- Add a `variant` prop (`"chip" | "glass"`, default `"chip"`).
+- `"glass"` variant: remove the hard `border-2 border-secondary` square, render as a transparent `p-2 rounded-full hover:bg-white` button with the flag shown as a small `w-5 h-3.5 rounded-[2px] shadow-sm` tile (no outer border).
 
-### Style parity
-Reuse exact card markup, overlay gradient, tag pill styling, heading sizes, and CTA treatment — no other visual changes.
+**File: `src/components/header/UserMenu.tsx`** (read first)
+- Add the same `variant` prop. `"glass"` variant: transparent `p-2 rounded-full hover:bg-white` button, navy person icon at `w-5 h-5` with no hard border.
 
-### Open question
-- Should the 4 cards sit on a single row at desktop (`xl:grid-cols-4`, slightly narrower), or keep 3-up with the 4th wrapping to a centred second row?
+## Scope guardrails
+- Desktop right cluster untouched.
+- No changes to dropdown menu contents, navigation links, or auth logic.
+- Both card and flush variants of the bar get the new mobile cluster.
+
+## Verification
+- Playwright screenshot at 390×844 of `/` and `/at-home-tests` confirming the cluster renders as a single soft-pink glass pill with hairline divider, no boxy borders.
