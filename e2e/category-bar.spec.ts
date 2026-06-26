@@ -1,7 +1,6 @@
 /**
  * Playwright e2e for the Browse-by-Category bar.
- * Run via: bunx playwright test tests/e2e/category-bar.spec.ts
- * (or executed directly through code--exec per browser-use directive)
+ * Run via: bunx playwright test e2e/category-bar.spec.ts
  *
  * Expects the Vite dev server to be running on http://localhost:8080.
  */

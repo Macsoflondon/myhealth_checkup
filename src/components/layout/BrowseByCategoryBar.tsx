@@ -62,7 +62,7 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
   const moreRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
-  const isMobile = useIsMobile();
+
 
   // Observe a sentinel placed immediately above the bar to detect stuck state.
   useEffect(() => {
