@@ -3,7 +3,7 @@ export const detailedProviders = [
   {
     id: "medichecks",
     name: "Medichecks",
-    website: "https://www.medichecks.com/",
+    website: "https://www.medichecks.com",
     phone: "03450 600 600",
     email: "support@medichecks.com",
     accreditation: "UKAS-accredited laboratories (ISO 15189)",
