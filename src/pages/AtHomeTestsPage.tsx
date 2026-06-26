@@ -45,8 +45,8 @@ const AtHomeTestsPage: React.FC = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>At-Home Health Tests | myhealth checkup</title>
-        <meta name="description" content="Compare at-home health testing kits from the UK's most trusted providers. Finger-prick blood tests, delivered to your door, analysed in accredited labs." />
+        <title>At Home Health Tests | myhealth checkup</title>
+        <meta name="description" content="Compare At Home health testing kits from the UK's most trusted providers. Finger-prick blood tests, delivered to your door, analysed in accredited labs." />
         <meta name="keywords" content="at home blood test, home testing kit, finger prick test, health test at home, private blood test UK" />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/at-home-tests" />
       </Helmet>
@@ -56,8 +56,8 @@ const AtHomeTestsPage: React.FC = () => {
 
           {/* Page header */}
           <div className="mb-8">
-            <div style={{ fontFamily: "'Montserrat',sans-serif", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: TURQUOISE, marginBottom: 8 }}>AT-HOME TESTING</div>
-            <h1 style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: "clamp(26px,4vw,40px)", color: NAVY, marginBottom: 10 }}>At-Home Health Tests</h1>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: TURQUOISE, marginBottom: 8 }}>AT HOME TESTING</div>
+            <h1 style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: "clamp(26px,4vw,40px)", color: NAVY, marginBottom: 10 }}>At Home Health Tests</h1>
             <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 16, color: "#64748b", maxWidth: 600, lineHeight: 1.6 }}>
               Compare at-home testing kits from the UK's most trusted providers. Analysed in accredited labs. Results delivered securely online.
             </p>
