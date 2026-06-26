@@ -1,8 +1,34 @@
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { buildProviderBookingUrl } from "@/utils/urlTracking";
 import TestPageTemplate from "@/components/tests/TestPageTemplate";
 import { TestPageData } from "@/types/TestPageTypes";
 import { Heart, Clock, Shield } from "lucide-react";
 
 const GeneralHealthTestPage = () => {
+  // Live prices fetched from Supabase; static values are fallbacks
+  const [livePrices, setLivePrices] = useState<Record<string, { price: number; url: string }>>({});
+
+  useEffect(() => {
+    supabase
+      .from('provider_tests')
+      .select('provider_id, price, url')
+      .eq('is_active', true)
+      .in('provider_id', ['medichecks', 'randox', 'london-medical-laboratory'])
+      .or('category.ilike.%general health%,canonical_category.ilike.%general health%')
+      .limit(10)
+      .then(({ data: rows }) => {
+        if (!rows) return;
+        const map: Record<string, { price: number; url: string }> = {};
+        for (const row of rows) {
+          if (row.price && row.url && !map[row.provider_id]) {
+            map[row.provider_id] = { price: row.price, url: row.url };
+          }
+        }
+        setLivePrices(map);
+      });
+  }, []);
+
   const testData: TestPageData = {
     title: "General Health Test",
     description: "Get a comprehensive overview of your health with testing for cholesterol levels, liver function, iron levels, diabetes risk and more essential health markers.",
@@ -55,7 +81,7 @@ const GeneralHealthTestPage = () => {
       {
         name: "Randox Health", 
         price: 75,
-        url: "https://randoxhealth.com/en-GB/at-home/general-health",
+        url: "https://www.randoxhealth.com/",
         features: ["24 data points", "Next day results", "At-home kit"]
       },
       {
@@ -67,7 +93,26 @@ const GeneralHealthTestPage = () => {
     ]
   };
 
-  return <TestPageTemplate data={testData} />;
+  // Map display names to provider_id values used in the DB
+  const providerIdMap: Record<string, string> = {
+    'Medichecks': 'medichecks',
+    'Randox Health': 'randox',
+    'London Medical Laboratory': 'london-medical-laboratory',
+  };
+
+  // Merge live DB prices and apply UTM-tracked bookingUrls
+  const mergedProviders = testData.providers.map(p => {
+    const providerId = providerIdMap[p.name] ?? '';
+    const live = livePrices[providerId];
+    const bookingUrl = buildProviderBookingUrl(
+      live?.url ?? p.url,
+      providerId,
+      testData.title
+    );
+    return { ...p, price: live?.price ?? p.price, bookingUrl };
+  });
+
+  return <TestPageTemplate data={{ ...testData, providers: mergedProviders }} />;
 };
 
 export default GeneralHealthTestPage;
