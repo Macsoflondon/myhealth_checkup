@@ -12,6 +12,8 @@ import {
   ShieldCheck,
   Home,
   MoreHorizontal,
+  Menu,
+  X,
 } from "lucide-react";
 import {
   primaryNavigationItems,
@@ -20,6 +22,13 @@ import {
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const PINK = "#e70d69";
 const TURQUOISE = "#22c0d4";
@@ -48,9 +57,11 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
  */
 export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "card" | "flush" } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
+
 
   // Observe a sentinel placed immediately above the bar to detect stuck state.
   useEffect(() => {
@@ -102,9 +113,91 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
           className={`px-2 sm:px-3 pt-4 sm:pt-5 pb-2 sm:pb-2.5 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
           <div className="flex items-center gap-2 flex-nowrap">
-            {/* Scrollable pill strip — only this zone scrolls */}
+            {/* Mobile: hamburger that opens a category sheet */}
+            <div className="flex md:hidden items-center shrink-0">
+              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                <SheetTrigger asChild>
+                  <button
+                    type="button"
+                    data-testid="category-hamburger"
+                    aria-label="Browse categories"
+                    aria-expanded={mobileOpen}
+                    className="inline-flex items-center gap-1.5 pl-1.5 pr-2 py-1 rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = PINK;
+                      e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)";
+                      e.currentTarget.style.boxShadow = "0 1px 2px rgba(8,17,41,0.04)";
+                    }}
+                  >
+                    <span
+                      className="w-[18px] h-[18px] rounded-full inline-flex items-center justify-center shrink-0"
+                      style={{ background: `${PINK}1a` }}
+                    >
+                      <Menu className="w-[11px] h-[11px]" style={{ color: PINK }} strokeWidth={2} />
+                    </span>
+                    <span className="text-[11px] font-semibold text-[#081129] font-[Montserrat]">
+                      Browse
+                    </span>
+                  </button>
+                </SheetTrigger>
+                <SheetContent
+                  side="left"
+                  className="w-[85vw] max-w-[320px] bg-[#f7f7f8] border-r border-[#081129]/10 p-0"
+                >
+                  <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left">
+                    <SheetTitle className="text-[#081129] text-base font-[Montserrat] font-semibold">
+                      Browse categories
+                    </SheetTitle>
+                  </SheetHeader>
+                  <nav
+                    aria-label="Browse categories"
+                    className="px-3 py-4 overflow-y-auto max-h-[calc(100dvh-80px)]"
+                    data-testid="mobile-category-sheet"
+                  >
+                    <div className="grid grid-cols-1 gap-2">
+                      {items.map((item) => {
+                        const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                        return (
+                          <Link
+                            key={item.name}
+                            to={item.path}
+                            data-testid="mobile-category-pill"
+                            data-category={item.name}
+                            onClick={() => setMobileOpen(false)}
+                            className="group flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 no-underline"
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.borderColor = color;
+                              e.currentTarget.style.boxShadow = `0 8px 20px ${color}26`;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)";
+                              e.currentTarget.style.boxShadow = "0 1px 2px rgba(8,17,41,0.04)";
+                            }}
+                          >
+                            <span
+                              className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
+                              style={{ background: `${color}1a` }}
+                            >
+                              <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
+                            </span>
+                            <span className="text-sm font-semibold text-[#081129] font-[Montserrat]">
+                              {item.name}
+                            </span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+            </div>
+
+            {/* Scrollable pill strip — only this zone scrolls (desktop only) */}
             <div
-              className="flex-1 min-w-0 overflow-x-auto scrollbar-none flex items-center gap-1.5 flex-nowrap"
+              className="hidden md:flex flex-1 min-w-0 overflow-x-auto scrollbar-none items-center gap-1.5 flex-nowrap"
               style={{
                 WebkitMaskImage:
                   "linear-gradient(to right, #000 0, #000 calc(100% - 16px), transparent 100%)",
