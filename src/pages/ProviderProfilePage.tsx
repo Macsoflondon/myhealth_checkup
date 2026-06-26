@@ -189,7 +189,7 @@ const ProviderProfilePage = () => {
                   'randox': {
                     mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
                     whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates 50+ clinics across the UK & Ireland, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Over 22 million tests processed to date. Rated 4.7/5 on Trustpilot with over 28,400 reviews.",
-                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results in as little as 2 hours from sample, with professional consultation and personalised health recommendations included.",
+                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results typically in 2-3 days; in-clinic same-day testing available at select Randox locations. Professional consultation and personalised health recommendations included.",
                   },
                   'lola-health': {
                     mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
