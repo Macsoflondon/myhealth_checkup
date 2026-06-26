@@ -186,14 +186,14 @@ const ProviderProfilePage = () => {
                     whoWeAre: "Thriva is a subscription-based health testing platform offering convenient at-home finger-prick kits with doctor-reviewed results. 75+ health markers available with painless home testing. All samples are processed in UKAS-accredited partner laboratories. Rated 4.5/5 on Trustpilot with over 3,000 reviews.",
                     services: "Choose from a range of health tests covering heart health, liver function, diabetes risk, vitamins, and hormones. Results are delivered via the Thriva app with personalised insights and biomarker tracking over time. Subscription plans and the Compass annual health programme available for regular monitoring.",
                   },
-                  'randox-health': {
+                  'randox': {
                     mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
                     whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates 50+ clinics across the UK & Ireland, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Over 22 million tests processed to date. Rated 4.7/5 on Trustpilot with over 28,400 reviews.",
                     services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results in as little as 2 hours from sample, with professional consultation and personalised health recommendations included.",
                   },
                   'lola-health': {
                     mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
-                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 155 reviews.",
+                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 160 reviews.",
                     services: "Over 40 blood tests available, from comprehensive panels to individual biomarkers. Book a nurse visit or clinic appointment with results in 4 days. Doctor-reviewed insights delivered via the Lola Health app with health trend tracking. Tests from £120.",
                   },
                   'london-medical-laboratory': {
