@@ -277,6 +277,155 @@ export type Database = {
         }
         Relationships: []
       }
+      categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean
+          level: number
+          metadata: Json
+          name: string
+          parent_id: string | null
+          path: unknown
+          seo_description: string | null
+          seo_title: string | null
+          short_name: string | null
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          level?: number
+          metadata?: Json
+          name: string
+          parent_id?: string | null
+          path?: unknown
+          seo_description?: string | null
+          seo_title?: string | null
+          short_name?: string | null
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          level?: number
+          metadata?: Json
+          name?: string
+          parent_id?: string | null
+          path?: unknown
+          seo_description?: string | null
+          seo_title?: string | null
+          short_name?: string | null
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      category_aliases: {
+        Row: {
+          alias: string
+          category_id: string
+          created_at: string
+          id: string
+          match_type: string
+          weight: number
+        }
+        Insert: {
+          alias: string
+          category_id: string
+          created_at?: string
+          id?: string
+          match_type?: string
+          weight?: number
+        }
+        Update: {
+          alias?: string
+          category_id?: string
+          created_at?: string
+          id?: string
+          match_type?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_aliases_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      category_test_mapping: {
+        Row: {
+          category_id: string
+          confidence: number
+          created_at: string
+          provider_test_id: string
+          source: string
+        }
+        Insert: {
+          category_id: string
+          confidence?: number
+          created_at?: string
+          provider_test_id: string
+          source?: string
+        }
+        Update: {
+          category_id?: string
+          confidence?: number
+          created_at?: string
+          provider_test_id?: string
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_test_mapping_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_test_mapping_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "provider_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_test_mapping_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "unified_provider_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cron_run_log: {
         Row: {
           created_at: string
@@ -844,6 +993,78 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_biomarker_products: {
+        Row: {
+          biomarker_name: string
+          biomarker_slug: string
+          category_ids: string[]
+          created_at: string
+          currency: string
+          description: string | null
+          display_name: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          metadata: Json
+          price: number | null
+          provider_id: string
+          provider_product_id: string | null
+          sample_type: string | null
+          scraped_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          turnaround_days: number | null
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          biomarker_name: string
+          biomarker_slug: string
+          category_ids?: string[]
+          created_at?: string
+          currency?: string
+          description?: string | null
+          display_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          metadata?: Json
+          price?: number | null
+          provider_id: string
+          provider_product_id?: string | null
+          sample_type?: string | null
+          scraped_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          turnaround_days?: number | null
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          biomarker_name?: string
+          biomarker_slug?: string
+          category_ids?: string[]
+          created_at?: string
+          currency?: string
+          description?: string | null
+          display_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          metadata?: Json
+          price?: number | null
+          provider_id?: string
+          provider_product_id?: string | null
+          sample_type?: string | null
+          scraped_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          turnaround_days?: number | null
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       provider_image_audit: {
         Row: {
           category: string | null
@@ -1021,6 +1242,7 @@ export type Database = {
           biomarkers_list: Json | null
           canonical_category: string | null
           category: string | null
+          category_ids: string[]
           clinic_visit_available: boolean | null
           clinical_review_fee: number | null
           clinical_review_professional: string | null
@@ -1070,6 +1292,7 @@ export type Database = {
           biomarkers_list?: Json | null
           canonical_category?: string | null
           category?: string | null
+          category_ids?: string[]
           clinic_visit_available?: boolean | null
           clinical_review_fee?: number | null
           clinical_review_professional?: string | null
@@ -1119,6 +1342,7 @@ export type Database = {
           biomarkers_list?: Json | null
           canonical_category?: string | null
           category?: string | null
+          category_ids?: string[]
           clinic_visit_available?: boolean | null
           clinical_review_fee?: number | null
           clinical_review_professional?: string | null
@@ -2044,11 +2268,16 @@ export type Database = {
         Args: { _provider_id: string; _source_section: string }
         Returns: string
       }
+      resolve_categories_for_text: {
+        Args: { _text: string }
+        Returns: string[]
+      }
       run_logged_cleanup: {
         Args: { _job_name: string; _sql: string }
         Returns: string
       }
       sanitize_popular_provider_tests: { Args: never; Returns: undefined }
+      text2ltree: { Args: { "": string }; Returns: unknown }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
