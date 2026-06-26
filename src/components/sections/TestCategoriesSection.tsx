@@ -36,6 +36,17 @@ const categories = [
     linkLabel: "Explore Panels",
     image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85&auto=format&fit=crop",
   },
+  {
+    tag: "At-Home Tests",
+    tagVariant: "pink" as const,
+    count: "300+ Kits",
+    title: "At-Home Test Kits",
+    description:
+      "Convenient finger-prick and sample collection kits delivered to your door. UKAS-accredited lab analysis with results typically returned within days — no clinic visit needed.",
+    link: "/at-home-tests",
+    linkLabel: "Explore Kits",
+    image: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1200&q=85&auto=format&fit=crop",
+  },
 ];
 
 const TestCategoriesSection = () => {
