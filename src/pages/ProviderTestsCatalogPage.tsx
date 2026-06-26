@@ -51,7 +51,7 @@ const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
   "lola-health": {
     providerId: "lola-health",
     providerName: "Lola Health",
-    tagline: "Personalised health testing designed for women",
+    tagline: "Professional at-home phlebotomy with doctor-reviewed results",
     metaTitle: "Lola Health Blood Tests | Compare Health Tests UK",
     metaDescription: "Browse all Lola Health blood tests. Women-focused health testing with home kits and expert support. Compare prices and order your test.",
   },
@@ -61,6 +61,27 @@ const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
     tagline: "UKAS-accredited laboratory services",
     metaTitle: "London Medical Laboratory Tests | Compare Health Tests UK",
     metaDescription: "Browse London Medical Laboratory's full range of blood tests and health screenings. Compare prices, biomarkers, and turnaround times.",
+  },
+    "london-health-company": {
+    providerId: "london-health-company",
+    providerName: "London Health Company",
+    tagline: "At-home and clinic-based private blood testing across London",
+    metaTitle: "London Health Company Blood Tests | Compare Health Tests UK",
+    metaDescription: "Browse London Health Company blood tests. Clinic and at-home phlebotomy options with UKAS-accredited laboratory analysis. Compare prices and book.",
+  },
+  "medical-diagnosis": {
+    providerId: "medical-diagnosis",
+    providerName: "Medical Diagnosis",
+    tagline: "Specialist diagnostic blood testing with fast turnaround",
+    metaTitle: "Medical Diagnosis Blood Tests | Compare Health Tests UK",
+    metaDescription: "Browse Medical Diagnosis blood tests. Specialist diagnostics with UKAS-accredited partner laboratories. Compare prices, biomarkers, and turnaround times.",
+  },
+  "clinilabs": {
+    providerId: "clinilabs",
+    providerName: "Clinilabs",
+    tagline: "UKAS-accredited clinical laboratory with clinician-reviewed results",
+    metaTitle: "Clinilabs Blood Tests | Compare Health Tests UK",
+    metaDescription: "Browse Clinilabs blood tests. UKAS-accredited private diagnostics with clinician-reviewed reports. Compare prices and book your test.",
   },
 };
 
