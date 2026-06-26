@@ -16,26 +16,17 @@ export default function ProvidersSection() {
 
   useEffect(() => {
     (async () => {
-      const [{ data: tests }, { data: scrapes }] = await Promise.all([
-        supabase.from("provider_tests").select("provider_name").limit(5000),
-        supabase.from("scrape_run_log").select("provider, status, started_at").order("started_at", { ascending: false }).limit(500),
-      ]);
+      const { data: tests } = await supabase.from("provider_tests").select("provider_name").limit(5000);
       const counts = new Map<string, number>();
       for (const t of tests ?? []) {
         const k = (t as any).provider_name ?? "(unknown)";
         counts.set(k, (counts.get(k) ?? 0) + 1);
       }
-      const latestScrape = new Map<string, { status: string | null; started_at: string | null }>();
-      for (const s of scrapes ?? []) {
-        const p = (s as any).provider as string | null;
-        if (!p || latestScrape.has(p)) continue;
-        latestScrape.set(p, { status: (s as any).status, started_at: (s as any).started_at });
-      }
       const merged: ProviderRow[] = Array.from(counts.entries()).map(([provider_name, tests]) => ({
         provider_name,
         tests,
-        lastScrapeStatus: latestScrape.get(provider_name)?.status ?? null,
-        lastScrapeAt: latestScrape.get(provider_name)?.started_at ?? null,
+        lastScrapeStatus: null,
+        lastScrapeAt: null,
       }));
       merged.sort((a, b) => b.tests - a.tests);
       setRows(merged);

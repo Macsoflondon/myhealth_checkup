@@ -25,22 +25,25 @@ export default function AuditsSection() {
   }, []);
 
   const latest = biomarkerRuns[0];
+  const totalStored = biomarkerRuns.reduce((s, r) => s + (r.stored_count ?? 0), 0);
+  const totalScraped = biomarkerRuns.reduce((s, r) => s + (r.scraped_count ?? 0), 0);
+  const matchRate = totalStored > 0 ? Math.round((Math.min(totalStored, totalScraped) / totalStored) * 100) : null;
 
   return (
     <SectionShell title="Audit Centre" description="SEO, security, accessibility, content and biomarker audits." status="live">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard
-          label="Biomarker audits"
+          label="Biomarker audits (recent)"
           value={biomarkerRuns.length}
           hint={latest ? `Last: ${new Date(latest.created_at).toLocaleDateString()}` : undefined}
         />
         <StatCard
-          label="Last biomarker score"
-          value={latest?.match_rate != null ? `${Math.round(latest.match_rate * 100)}%` : "—"}
-          tone={latest?.match_rate >= 0.9 ? "good" : latest?.match_rate >= 0.7 ? "warn" : latest?.match_rate ? "bad" : "default"}
+          label="Biomarker match rate"
+          value={matchRate != null ? `${matchRate}%` : "—"}
+          tone={matchRate == null ? "default" : matchRate >= 90 ? "good" : matchRate >= 70 ? "warn" : "bad"}
         />
         <StatCard label="Security findings" value={security?.total_findings ?? "—"} tone={security?.total_findings > 0 ? "warn" : "good"} />
-        <StatCard label="Last security scan" value={security?.created_at ? new Date(security.created_at).toLocaleDateString() : "—"} />
+        <StatCard label="Last security scan" value={security?.scanned_at ? new Date(security.scanned_at).toLocaleDateString() : "—"} />
       </div>
 
       <div className="rounded-xl border bg-card divide-y">
