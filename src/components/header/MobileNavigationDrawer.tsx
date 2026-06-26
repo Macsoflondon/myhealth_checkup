@@ -98,7 +98,7 @@ const testCategoryCards: Array<{
   { name: "Sports-Fitness Health", path: "/sports-performance", icon: Dumbbell, bg: "bg-sky-500" },
   { name: "Fertility - Prenatal", path: "/fertility-tests", icon: Baby, bg: "bg-violet-500" },
   { name: "Cancer Screening", path: "/tests/cancer", icon: Shield, bg: "bg-slate-700" },
-  { name: "At Home Tests", path: "/at-home-tests", icon: TestTube, bg: "bg-emerald-500" },
+  { name: "At Home", path: "/at-home-tests", icon: TestTube, bg: "bg-emerald-500" },
 ];
 
 
