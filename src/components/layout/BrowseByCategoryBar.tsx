@@ -22,7 +22,6 @@ import {
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
-import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Sheet,
   SheetContent,
