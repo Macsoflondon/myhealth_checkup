@@ -193,7 +193,7 @@ const MostPopularTestsPage = () => {
       trustStats={[
         { value: '50,000+', label: 'Customers Served' },
         { value: '4.8★', label: 'Average Rating' },
-        { value: '6+', label: 'Trusted Providers' },
+        { value: '9+', label: 'Trusted Providers' },
       ]}
       filters={filters}
       tests={tests}
