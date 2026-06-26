@@ -99,8 +99,8 @@ interface HeroMastheadProps {
 }
 
 const Wordmark = () => (
-  <span className="inline-flex items-center leading-none">
-    <span className="font-bold text-4xl tracking-[-0.02em] font-[Montserrat]">
+  <span className="inline-flex items-center leading-none min-w-0">
+    <span className="font-bold text-[clamp(1.25rem,6.2vw,2.25rem)] tracking-[-0.02em] font-[Montserrat] whitespace-nowrap">
       <span className="text-[#081129]">myhealth</span>
       <span className="text-[#e70d69]">checkup</span>
     </span>
@@ -118,8 +118,8 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-9 pt-7 pb-4 min-h-[100svh] flex flex-col">
-      <div className="flex items-center justify-between border-b border-[#081129]/10 pb-2">
+    <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 md:px-9 pt-5 sm:pt-7 pb-4 min-h-[92svh] sm:min-h-[100svh] flex flex-col">
+      <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
           <Link to="/compare" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Compare</Link>
@@ -128,18 +128,18 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(5rem,13vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-3 md:mt-4 mb-10 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(3.25rem,15vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-2 sm:mt-4 mb-6 sm:mb-10 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-2">
-        <span className="text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129]">
+        <span className="text-base sm:text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129] leading-snug">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
       </div>
 
 
-      <div className="relative rounded-[18px] overflow-hidden my-2 -mx-6 sm:-mx-9 flex-1 min-h-[55svh] bg-[#081129]">
+      <div className="relative rounded-[18px] overflow-hidden my-2 -mx-4 sm:-mx-6 md:-mx-9 flex-1 min-h-[42svh] sm:min-h-[50svh] md:min-h-[55svh] bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
           return (
@@ -167,12 +167,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         {/* Rotating slide label bubble */}
-        <div className="absolute left-[18px] bottom-[18px] pointer-events-none">
+        <div className="absolute left-3 bottom-3 sm:left-[18px] sm:bottom-[18px] pointer-events-none max-w-[80%]">
           <span
             key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-2xl font-semibold font-[Montserrat] animate-fade-in"
+            className="inline-flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-sm sm:text-lg md:text-2xl font-semibold font-[Montserrat] animate-fade-in"
           >
-            <span className="w-[7px] h-[7px] rounded-full" style={{ background: TURQUOISE }} />
+            <span className="w-[7px] h-[7px] rounded-full shrink-0" style={{ background: TURQUOISE }} />
             {slide.label}
           </span>
         </div>
@@ -181,7 +181,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       </div>
 
-      <div className="pt-3 sm:pt-4">
+      <div className="pt-2 sm:pt-4">
         <TestCategoryTicker variant="inline" />
       </div>
     </section>
