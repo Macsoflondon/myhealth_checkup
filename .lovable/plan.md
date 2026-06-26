@@ -1,16 +1,128 @@
-### Adjust hero section vertical layout: anchor image to bottom, increase top gap
+# Expand Test Categories & Taxonomy — Implementation Plan
 
-1. **Increase gap between Wordmark and H1** in `src/components/sections/HeroMasthead.tsx`:
-   - Increase the H1 top margin (`mt-1.5 sm:mt-4`) to a significantly larger value (e.g., `mt-6 sm:mt-14` or `mt-8 sm:mt-16`) to create the requested dead space between "myhealthcheckup" and "Compare.".
+A platform-wide taxonomy overhaul. This is a large, multi-day build touching the database, every navigation surface, search, comparison, SEO and the crawl pipeline. Splitting into phases so each is verifiable before moving on.
 
-2. **Anchor the hero image to the bottom of the viewport**:
-   - Change the image wrapper div from `flex-1 min-h-[52svh] ...` to `flex-1 min-h-0` so it consumes all remaining vertical space and stretches to the bottom edge of the hero section.
-   - Remove the negative horizontal margins (`-mx-3 sm:-mx-6 md:-mx-9`) if they cause the image to clip the section border, or keep them flush.
-   - Ensure the `section` itself maintains `min-h-[88svh] sm:min-h-[100svh]` and `flex flex-col` so the image fills the gap between the header content and the bottom edge.
+## Goal
 
-3. **Reposition the ticker** so the image is the visual base:
-   - Option A: Remove the ticker from below the image and instead render it as an overlay at the bottom edge of the image wrapper (e.g., `absolute bottom-0` inside the image container).
-   - Option B: Keep the ticker below the image but ensure the image itself extends flush to the section bottom by removing the ticker's bottom padding from the hero section and moving it outside.
-   - The preferred approach is to overlay the ticker on the bottom edge of the image so the image remains the base of the page visually.
+Replace the current hard-coded category constants with a **dynamic, database-driven taxonomy** that supports unlimited nesting, then layer the new At-Home, Sports & Fitness and Lola Health biomarker structures on top.
 
-4. **Verify proportions** on mobile (360–414px) and desktop to ensure the image does not become too short on small screens while still filling the viewport on desktop.
+---
+
+## Phase 1 — Dynamic Taxonomy Foundation (DB)
+
+New tables (migration):
+
+```text
+categories
+  id, slug, parent_id, name, short_name, description,
+  icon, color, sort_order, level, path (ltree),
+  seo_title, seo_description, is_active, created_at, updated_at
+
+category_test_mapping
+  category_id, provider_test_id (composite PK)
+
+category_aliases             -- name/slug variants for crawl auto-classification
+  category_id, alias, match_type ('exact'|'contains'|'regex')
+```
+
+- `provider_tests` gets a denormalised `category_ids uuid[]` for fast filtering.
+- Trigger keeps `category_ids` in sync with `category_test_mapping`.
+- `category_path_view` materialised view for breadcrumb lookups.
+- RLS: read = anon + authenticated; write = service_role + admin.
+- Seed migration loads the full new taxonomy tree.
+
+## Phase 2 — Taxonomy Seed Data
+
+Seeded as part of Phase 1 migration:
+
+```text
+at-home
+  ├── finger-prick      (cholesterol, hba1c, hormones, vitamins, general,
+  │                      cardiovascular, diabetes, iron, liver, kidney, thyroid)
+  ├── urine             (kidney, uti, hormones, fertility, general, metabolic)
+  └── bowel             (FIT, faecal occult blood, gut inflammation, microbiome,
+                         digestive, colorectal, bowel cancer)
+
+sports-fitness
+  ├── bodybuilding      (TRT, hormone-opt, enhanced-athlete, steroid monitoring,
+  │                      body composition, muscle growth, liver, kidney, cardio,
+  │                      oestrogen, testosterone-opt)
+  ├── athletic-performance
+  │     ├── cycling, running, swimming, triathlon, crossfit, hyrox,
+  │     ├── functional-fitness, team-sports, combat-sports,
+  │     └── endurance-athletes, strength-athletes, male, female
+  ├── endurance         (iron, ferritin, b12, electrolytes, fatigue, recovery,
+  │                      inflammation, oxygen-carrying-capacity)
+  ├── recovery          (cortisol, ck, inflammation, deficiencies, sleep,
+  │                      hormones, stress)
+  ├── training          (baseline, progress, readiness, injury-prevention, seasonal)
+  ├── sports-nutrition  (vit-d, mg, zn, omega-3, b-vits, iron, protein, electrolytes)
+  └── performance-optimisation
+                        (hormone, recovery, nutrition, cardio, energy, fatigue,
+                         performance-tracking)
+```
+
+Lola Health individual biomarkers seeded as standalone `provider_tests` rows with category mappings.
+
+## Phase 3 — Crawl & Auto-Classification
+
+- Extend `resolve_canonical_category` to walk `category_aliases` table.
+- `provider_tests_autoset_canonical` trigger writes `category_ids` alongside `canonical_category` on insert/update.
+- One-off back-fill job: classify every existing `provider_tests` row into the new taxonomy via alias matches + biomarker overlap, log unmatched rows for admin review.
+- Lola Health scraper updated to emit one row per individual biomarker.
+
+## Phase 4 — Frontend Taxonomy Layer
+
+Replace static constants with a hook:
+
+```text
+src/hooks/useCategoryTree.ts            -- React Query, cached, suspense-friendly
+src/lib/categoryTree.ts                 -- tree utils, breadcrumbs, ancestor lookup
+src/constants/categories.ts             -- becomes a thin re-export + fallback
+```
+
+- `useNavigationData`, mega menu, mobile drawer, `BrowseByCategoryBar`, `MobileDropdownMenu` all read from `useCategoryTree`.
+- `CategoryLandingPage` becomes fully dynamic — slug → category + children + tests.
+- Breadcrumbs derived from `path` field.
+- Filters, sort, comparison engine accept `category_id` array (back-compatible with old slug filters).
+
+## Phase 5 — Search, SEO, Sitemap
+
+- Search index re-indexed per category (parent + descendants).
+- `seo_title` / `seo_description` per node, with fallback templating.
+- JSON-LD `BreadcrumbList` from category path.
+- `scripts/generate-sitemap.ts` queries `categories` table for every active node + every Lola individual biomarker.
+
+## Phase 6 — Admin & QA
+
+- Operations Control Centre gains a **Taxonomy** section: tree editor, alias manager, orphan-test report, recategorisation queue.
+- New e2e: `e2e/taxonomy.spec.ts` walks every parent + sample child, asserts tests render, breadcrumbs correct, no 404s.
+- Regression: existing category-mapping CI job extended to cover the new slugs.
+
+## Phase 7 — Rollout
+
+1. Ship Phase 1 + 2 migration (data + structure, no UI cutover).
+2. Ship Phase 3 back-fill behind a flag, verify counts.
+3. Flip frontend (Phase 4) to dynamic source; keep legacy constants as fallback for one release.
+4. Ship Phases 5-6.
+5. Remove legacy constants once analytics confirm zero traffic to old slugs.
+
+---
+
+## Technical Notes
+
+- ltree extension required (`CREATE EXTENSION IF NOT EXISTS ltree;`) — already common in Supabase.
+- Denormalised `category_ids uuid[]` keeps existing list queries fast and avoids N+1.
+- All new tables follow the project's GRANT-then-RLS-then-policy order.
+- No hard-coded category lists remain anywhere except a fallback seed used only when the network/DB is unreachable.
+- Lovable AI Gateway is **not** used here — taxonomy work is deterministic.
+
+## Scope Confirmation Needed
+
+Three quick calls before I start cutting migrations:
+
+1. **Lola Health individual biomarkers** — should they be standalone `provider_tests` rows (recommended, simplest), or a new `provider_biomarker_products` table? Standalone keeps comparison/cards working with zero refactor.
+2. **Back-fill failures** — when an existing test can't be auto-classified, do you want it (a) parked in an `uncategorised` admin queue, or (b) left in its existing canonical_category until manually re-mapped?
+3. **Rollout speed** — ship phase-by-phase with verification between each (safer, ~5-7 turns), or one mega-migration + UI cutover in a single shot (faster, riskier)?
+
+Once you answer those I'll start with the Phase 1 migration.
