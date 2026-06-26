@@ -163,7 +163,7 @@ export const detailedProviders = [
     tests: "40+ blood tests including comprehensive panels and individual biomarkers",
     sampleCollection: "At-home nurse visit (venous blood draw) or clinic appointment",
     turnaroundTime: "Results in 6-7 working days",
-    customerReviews: "4.6/5 (Trustpilot, 155+ reviews)",
+    customerReviews: "4.6/5 (Trustpilot, 160+ reviews)",
     keyDifferentiators:
       "At-home phlebotomy service (not finger-prick), doctor-reviewed results, app-powered insights, comprehensive and individual testing options, from £120",
     description:
