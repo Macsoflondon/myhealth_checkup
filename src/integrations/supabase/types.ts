@@ -2224,6 +2224,14 @@ export type Database = {
       }
     }
     Functions: {
+      call_edge_with_automations: {
+        Args: { p_body?: Json; p_url: string }
+        Returns: number
+      }
+      call_edge_with_service_role: {
+        Args: { p_body?: Json; p_url: string }
+        Returns: number
+      }
       category_text_to_canonical: {
         Args: { _category: string }
         Returns: string
@@ -2277,7 +2285,6 @@ export type Database = {
         Returns: string
       }
       sanitize_popular_provider_tests: { Args: never; Returns: undefined }
-      text2ltree: { Args: { "": string }; Returns: unknown }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
