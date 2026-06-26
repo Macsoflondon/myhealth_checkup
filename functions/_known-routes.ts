@@ -149,6 +149,9 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/randox-health/:testId",
   "/london-medical-laboratory/:testId",
   "/guides/:slug",
+  "/clinilabs/:testId",
+  "/london-health-company/:testId",
+  "/medical-diagnosis/:testId",
 ];
 
 const DYNAMIC_ROUTE_REGEXES: readonly RegExp[] = DYNAMIC_ROUTE_PATTERNS.map(
