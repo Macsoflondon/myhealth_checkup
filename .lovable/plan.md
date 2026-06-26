@@ -1,27 +1,16 @@
-## Goal
-Make `HeroMasthead` and the new mobile language flag render correctly at 360–414px widths — no overflow, balanced type scale, tighter padding, readable slide label.
+### Adjust hero section vertical layout: anchor image to bottom, increase top gap
 
-## Changes
+1. **Increase gap between Wordmark and H1** in `src/components/sections/HeroMasthead.tsx`:
+   - Increase the H1 top margin (`mt-1.5 sm:mt-4`) to a significantly larger value (e.g., `mt-6 sm:mt-14` or `mt-8 sm:mt-16`) to create the requested dead space between "myhealthcheckup" and "Compare.".
 
-**`src/components/sections/HeroMasthead.tsx`**
+2. **Anchor the hero image to the bottom of the viewport**:
+   - Change the image wrapper div from `flex-1 min-h-[52svh] ...` to `flex-1 min-h-0` so it consumes all remaining vertical space and stretches to the bottom edge of the hero section.
+   - Remove the negative horizontal margins (`-mx-3 sm:-mx-6 md:-mx-9`) if they cause the image to clip the section border, or keep them flush.
+   - Ensure the `section` itself maintains `min-h-[88svh] sm:min-h-[100svh]` and `flex flex-col` so the image fills the gap between the header content and the bottom edge.
 
-1. `Wordmark` — change `text-4xl` to `text-[clamp(1.25rem,6.2vw,2.25rem)]` so "myhealthcheckup" fits on a 360px screen and scales up to current size on tablet+.
-2. Section padding/min-height — `px-4 sm:px-6 md:px-9 pt-5 sm:pt-7 pb-4 min-h-[92svh] sm:min-h-[100svh]`.
-3. Top border-bottom row — reduce `pb-2` already fine; keep.
-4. H1 "Compare." — change clamp floor: `text-[clamp(3.25rem,15vw,11rem)]` with `mb-6 sm:mb-10 mt-2 sm:mt-4`. Stops the giant 80px floor from clipping on 360–390px phones.
-5. Slogan span — wrap with `leading-snug` and reduce mobile size: `text-base sm:text-lg`.
-6. Hero image wrapper — `my-2 -mx-4 sm:-mx-6 md:-mx-9 min-h-[42svh] sm:min-h-[50svh] md:min-h-[55svh]` so it doesn't gobble the viewport on phones.
-7. Slide label bubble — mobile-friendly size + max width: `text-sm sm:text-lg md:text-2xl max-w-[80%] left-3 bottom-3 sm:left-[18px] sm:bottom-[18px] px-2.5 py-1 sm:px-3 sm:py-1.5`.
-8. Ticker wrapper — `pt-2 sm:pt-4`.
+3. **Reposition the ticker** so the image is the visual base:
+   - Option A: Remove the ticker from below the image and instead render it as an overlay at the bottom edge of the image wrapper (e.g., `absolute bottom-0` inside the image container).
+   - Option B: Keep the ticker below the image but ensure the image itself extends flush to the section bottom by removing the ticker's bottom padding from the hero section and moving it outside.
+   - The preferred approach is to overlay the ticker on the bottom edge of the image so the image remains the base of the page visually.
 
-**`src/components/header/LanguageSwitcher.tsx`** (glass variant only)
-
-- Flag wrapper currently `w-5 h-3.5` causes the emoji to render as a tiny invisible box. Replace with a flexible `inline-flex items-center justify-center min-w-[22px] h-[22px]` and bump the flag emoji to `text-[18px] leading-none`. Keep the soft tile background (`bg-white/60 rounded-[3px] shadow-sm px-1`) so it still reads as a flag chip.
-
-## Out of scope
-- No copy/text changes.
-- No layout swaps below the hero.
-- Desktop hero appearance unchanged (all changes are mobile-up overrides).
-
-## Verification
-- Playwright at 360×780, 390×844, 414×896: confirm wordmark, H1, slogan, slide label, and category bar right cluster all render fully without overflow; flag glyph visible inside the pink glass pill.
+4. **Verify proportions** on mobile (360–414px) and desktop to ensure the image does not become too short on small screens while still filling the viewport on desktop.

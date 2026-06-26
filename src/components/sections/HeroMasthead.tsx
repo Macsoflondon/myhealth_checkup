@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
-import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
@@ -118,7 +118,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-4 sm:pt-7 pb-3 sm:pb-4 min-h-[88svh] sm:min-h-[100svh] flex flex-col">
+    <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-4 sm:pt-7 pb-0 min-h-[88svh] sm:min-h-[100svh] flex flex-col">
       <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
@@ -128,7 +128,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-1.5 sm:mt-4 mb-3 sm:mb-10 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-8 sm:mt-20 mb-3 sm:mb-10 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
@@ -139,7 +139,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </div>
 
 
-      <div className="relative rounded-[18px] overflow-hidden my-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[52svh] sm:min-h-[50svh] md:min-h-[55svh] bg-[#081129]">
+      <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
           return (
@@ -179,10 +179,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
         {ad && <HeroSalesTestCard ad={ad} />}
 
-      </div>
-
-      <div className="pt-1.5 sm:pt-4">
-        <TestCategoryTicker variant="inline" />
       </div>
 
     </section>
