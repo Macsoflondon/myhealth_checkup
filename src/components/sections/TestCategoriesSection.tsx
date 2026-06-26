@@ -37,7 +37,7 @@ const categories = [
     image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85&auto=format&fit=crop",
   },
   {
-    tag: "At-Home Tests",
+    tag: "At Home",
     tagVariant: "pink" as const,
     count: "300+ Kits",
     title: "At-Home Test Kits",
