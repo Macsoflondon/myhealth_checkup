@@ -36,7 +36,7 @@ export const detailedProviders = [
     description: "Subscription-based home testing with digital dashboard, doctor-led insights, and Compass annual health programme. 75+ health markers with painless at-home testing.",
   },
   {
-    id: "randox-health",
+    id: "randox",
     name: "Randox Health",
     website: "https://www.randoxhealth.com/",
     phone: "0800 254 5130",
