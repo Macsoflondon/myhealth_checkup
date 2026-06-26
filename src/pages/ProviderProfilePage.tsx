@@ -62,19 +62,6 @@ const ProviderProfilePage = () => {
   const ratingData = { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted };
   const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
 
-  // Test categories offered by this provider
-  const testCategories = [
-    "General Health",
-    "Hormones",
-    "Vitamins & Minerals",
-    "Thyroid",
-    "Heart Health",
-    "Diabetes",
-    "Sexual Health",
-    "Fertility",
-    "Cancer Screening"
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -403,38 +390,6 @@ const ProviderProfilePage = () => {
                     <a href={`mailto:${provider.email}`} className="text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation">{provider.email}</a>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Test Categories */}
-            <Card className="flex flex-col flex-1">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                  Test Categories
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="flex flex-wrap gap-2">
-                  {testCategories.map(category => (
-                    <Link
-                      key={category}
-                      to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
-                      className="inline-block"
-                    >
-                      <Badge 
-                        variant="outline" 
-                        className="transition-colors cursor-pointer"
-                        style={brand ? {
-                          borderColor: brand.primary,
-                          color: brand.primary,
-                        } : undefined}
-                      >
-                        {category}
-                      </Badge>
-                    </Link>
-                  ))}
-                </div>
               </CardContent>
             </Card>
           </div>
