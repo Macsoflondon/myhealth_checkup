@@ -277,10 +277,17 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
               )}
             </div>
 
-            {/* Language + user — pinned right zone, never overlaps pills */}
+            {/* Right cluster — mobile: unified soft-pink glass pill; desktop: existing bordered chips */}
             <div
               data-testid="category-bar-right-cluster"
-              className="flex items-center gap-1 shrink-0 pl-2 border-l border-[#081129]/10 bg-[#f7f7f8] rounded-r-[22px]"
+              className="md:hidden flex items-center bg-[#e70d69]/5 border border-[#e70d69]/10 rounded-full p-0.5 shrink-0 ml-1"
+            >
+              <LanguageSwitcher variant="glass" />
+              <div className="w-px h-4 bg-[#e70d69]/20 mx-0.5" aria-hidden="true" />
+              <UserMenu variant="glass" />
+            </div>
+            <div
+              className="hidden md:flex items-center gap-1 shrink-0 pl-2 border-l border-[#081129]/10 bg-[#f7f7f8] rounded-r-[22px]"
             >
               <LanguageSwitcher />
               <UserMenu />
