@@ -37,7 +37,7 @@ export const PROVIDER_NAMES: Record<string, string> = {
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
-  'medichecks': 'https://medichecks.com',
+  'medichecks': 'https://www.medichecks.com',
   'thriva': 'https://thriva.co',
   'randox': 'https://randoxhealth.com',
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
