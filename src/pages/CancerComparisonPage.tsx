@@ -136,7 +136,7 @@ export default function CancerComparisonPage() {
               UKAS Accredited Labs
             </Badge>
             <Badge variant="outline" className="text-white border-white/30">
-              7 Trusted Providers
+              6+ Trusted Providers
             </Badge>
             <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
               <BookOpen className="h-4 w-4 mr-1" />
