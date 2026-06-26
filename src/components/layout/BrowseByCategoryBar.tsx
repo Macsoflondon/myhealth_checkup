@@ -32,7 +32,7 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
   "Sports-Fitness Health":{ Icon: Dumbbell,    color: "#16a34a" },
   "Fertility - Prenatal": { Icon: Baby,        color: "#ec4899" },
   "Cancer Screening":     { Icon: ShieldCheck, color: "#0ea5e9" },
-  "At Home Tests":        { Icon: Home,        color: "#f59e0b" },
+  "At Home":              { Icon: Home,        color: "#f59e0b" },
 };
 
 /**
