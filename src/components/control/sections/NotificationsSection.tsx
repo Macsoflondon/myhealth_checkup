@@ -9,8 +9,8 @@ interface AlertRow {
   alert_type: string | null;
   severity: string | null;
   message: string | null;
-  provider: string | null;
-  resolved: boolean | null;
+  provider_id: string | null;
+  acknowledged: boolean | null;
   created_at: string | null;
 }
 
@@ -33,12 +33,15 @@ export default function NotificationsSection() {
     load();
   }, []);
 
-  const resolve = async (id: string) => {
-    await supabase.from("scraper_alerts").update({ resolved: true }).eq("id", id);
+  const acknowledge = async (id: string) => {
+    await supabase
+      .from("scraper_alerts")
+      .update({ acknowledged: true, acknowledged_at: new Date().toISOString() })
+      .eq("id", id);
     load();
   };
 
-  const open = alerts.filter((a) => !a.resolved);
+  const open = alerts.filter((a) => !a.acknowledged);
   const critical = open.filter((a) => a.severity === "critical" || a.severity === "high").length;
 
   return (
@@ -61,17 +64,17 @@ export default function NotificationsSection() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 text-sm">
                   <span className="font-medium">{a.alert_type ?? "alert"}</span>
-                  {a.provider && <span className="text-xs text-muted-foreground">· {a.provider}</span>}
+                  {a.provider_id && <span className="text-xs text-muted-foreground">· {a.provider_id}</span>}
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{a.severity}</span>
-                  {a.resolved && <span className="text-[10px] uppercase tracking-wider text-emerald-600">resolved</span>}
+                  {a.acknowledged && <span className="text-[10px] uppercase tracking-wider text-emerald-600">acknowledged</span>}
                 </div>
                 <div className="text-xs text-muted-foreground mt-0.5">{a.message}</div>
                 <div className="text-[10px] text-muted-foreground mt-1 tabular-nums">
                   {a.created_at ? new Date(a.created_at).toLocaleString() : ""}
                 </div>
               </div>
-              {!a.resolved && (
-                <Button size="sm" variant="outline" onClick={() => resolve(a.id)}>Resolve</Button>
+              {!a.acknowledged && (
+                <Button size="sm" variant="outline" onClick={() => acknowledge(a.id)}>Acknowledge</Button>
               )}
             </div>
           ))}

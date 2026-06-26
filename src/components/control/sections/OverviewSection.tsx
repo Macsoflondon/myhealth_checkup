@@ -22,15 +22,14 @@ export default function OverviewSection() {
     (async () => {
       try {
         const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-        const [providersRes, testsRes, mapRes, scrapesRes, failedRes, alertsRes, lastScrapeRes] = await Promise.all([
-          supabase.from("provider_tests").select("provider_name", { count: "exact", head: true }),
-          supabase.from("tests_master").select("id", { count: "exact", head: true }),
-          supabase.from("provider_test_mapping").select("id", { count: "exact", head: true }),
-          supabase.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since),
-          supabase.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "failed"),
-          supabase.from("scraper_alerts").select("id", { count: "exact", head: true }).eq("resolved", false),
-          supabase.from("scrape_run_log").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle(),
-        ]);
+        const db = supabase as any;
+        const providersRes = await db.from("provider_tests").select("provider_name", { count: "exact", head: true });
+        const testsRes = await db.from("tests_master").select("id", { count: "exact", head: true });
+        const mapRes = await db.from("provider_test_mapping").select("id", { count: "exact", head: true });
+        const scrapesRes = await db.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since);
+        const failedRes = await db.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "failed");
+        const alertsRes = await db.from("scraper_alerts").select("id", { count: "exact", head: true }).eq("acknowledged", false);
+        const lastScrapeRes = await db.from("scrape_run_log").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
         if (cancelled) return;
         setData({
           providers: providersRes.count ?? 0,
@@ -39,7 +38,7 @@ export default function OverviewSection() {
           recentScrapes: scrapesRes.count ?? 0,
           failedScrapes: failedRes.count ?? 0,
           openAlerts: alertsRes.count ?? 0,
-          lastScrapeAt: (lastScrapeRes.data as any)?.started_at ?? null,
+          lastScrapeAt: lastScrapeRes.data?.started_at ?? null,
         });
       } finally {
         if (!cancelled) setLoading(false);
