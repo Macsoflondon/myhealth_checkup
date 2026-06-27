@@ -28,9 +28,9 @@ const AccreditedProvidersBar: React.FC = () => {
         <div
           className="w-full text-center font-sans font-bold uppercase"
           style={{
-            fontSize: "9px",
+            fontSize: "10px",
             letterSpacing: "0.14em",
-            color: "#8892a4",
+            color: "#4b5566",
             marginBottom: "6px",
           }}
         >
