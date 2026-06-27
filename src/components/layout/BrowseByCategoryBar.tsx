@@ -145,7 +145,9 @@ export default function BrowseByCategoryBar({
                     data-testid="category-hamburger"
                     aria-label="Browse categories"
                     aria-expanded={mobileOpen}
-                    className="inline-flex items-center gap-1.5 pl-1.5 pr-2 py-1 rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200"
+                    className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
+                      compact ? "gap-1 pl-1 pr-1.5 py-0.5" : "gap-1.5 pl-1.5 pr-2 py-1"
+                    }`}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor = PINK;
                       e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
@@ -156,12 +158,14 @@ export default function BrowseByCategoryBar({
                     }}
                   >
                     <span
-                      className="w-[18px] h-[18px] rounded-full inline-flex items-center justify-center shrink-0"
+                      className={`rounded-full inline-flex items-center justify-center shrink-0 ${
+                        compact ? "w-[16px] h-[16px]" : "w-[18px] h-[18px]"
+                      }`}
                       style={{ background: `${PINK}1a` }}
                     >
-                      <Menu className="w-[11px] h-[11px]" style={{ color: PINK }} strokeWidth={2} />
+                      <Menu className={`${compact ? "w-[10px] h-[10px]" : "w-[11px] h-[11px]"}`} style={{ color: PINK }} strokeWidth={2} />
                     </span>
-                    <span className="text-[11px] font-semibold text-[#081129] font-[Montserrat]">
+                    <span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[10px]" : "text-[11px]"}`}>
                       Browse
                     </span>
                   </button>
