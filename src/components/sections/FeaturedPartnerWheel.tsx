@@ -429,7 +429,7 @@ export default function FeaturedPartnerWheel({
               </div>
             </div>
             <div style={{ display: "flex", gap: 12, padding: "24px 36px 30px" }}>
-              <button style={{ flex: 1, fontFamily: HEAD, fontWeight: 700, fontSize: 15, padding: 15, borderRadius: 14, border: "none", background: "#22c0d4", color: "#fff", cursor: "pointer", boxShadow: "0 12px 26px -12px rgba(34,192,212,.8)" }}>Book this test</button>
+              <Link to={compareHrefFor(selKit)} onClick={() => { setSelKit(null); setHovered(null); }} style={{ flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 15, padding: 15, borderRadius: 14, border: "none", background: "#22c0d4", color: "#fff", cursor: "pointer", boxShadow: "0 12px 26px -12px rgba(34,192,212,.8)" }}>Compare this test</Link>
               <button onClick={() => { setSelKit(null); setHovered(null); }} style={{ fontFamily: HEAD, fontWeight: 700, fontSize: 15, padding: "15px 22px", borderRadius: 14, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer" }}>Back</button>
             </div>
           </div>
