@@ -55,7 +55,15 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
  *  - "flush" (non-homepage): full-width edge-to-edge bar pinned at the top of the
  *            viewport from the start, no rounding.
  */
-export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "card" | "flush" } = {}) {
+export default function BrowseByCategoryBar({
+  variant = "card",
+  compact = false,
+  className = "",
+}: {
+  variant?: "card" | "flush";
+  compact?: boolean;
+  className?: string;
+} = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -94,16 +102,30 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
 
   const isFlush = variant === "flush";
 
-  // Wrapper margin / mt: both variants get horizontal page-margin + top spacing
-  // so the bar reads as a floating rounded card on every page.
-  const wrapperClass = isFlush
+  // Wrapper margin / mt: compact mode sits flush inside the hero card, so
+  // margins are removed. Flush retains full-width edge-to-edge feel.
+  const wrapperClass = compact
+    ? "mt-0 mx-0"
+    : isFlush
     ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
     : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
   // Inner card styling — fully rounded card when stuck or on flush (non-home) pages.
-  const innerClass = isFlush || stuck
+  // When compact and not yet stuck, the bar sits at the bottom of the hero card,
+  // so its bottom corners are square and its bottom border is removed to avoid a
+  // double border against the hero's outer border.
+  let innerClass = isFlush || stuck
     ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
     : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+
+  if (compact && !stuck && !isFlush) {
+    innerClass = "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+  }
+
+  if (className) {
+    innerClass = `${innerClass} ${className}`;
+  }
+
 
   return (
     <>
