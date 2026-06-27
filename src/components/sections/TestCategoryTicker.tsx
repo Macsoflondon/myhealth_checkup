@@ -25,19 +25,21 @@ interface TestCategoryTickerProps {
    *            inside the pearl hero footer.
    */
   variant?: "section" | "inline";
+  className?: string;
 }
 
-const TestCategoryTicker = ({ variant = "section" }: TestCategoryTickerProps) => {
+const TestCategoryTicker = ({ variant = "section", className = "" }: TestCategoryTickerProps) => {
   const trackRef = useMarqueeTicker(categories.length);
   const items = Array.from({ length: SETS }, () => categories).flat();
 
   const isInline = variant === "inline";
 
   const wrapperClass = isInline
-    ? "overflow-hidden select-none relative"
-    : "bg-brand-navy overflow-hidden select-none relative";
+    ? `overflow-hidden select-none relative ${className}`
+    : `bg-brand-navy overflow-hidden select-none relative ${className}`;
 
   const innerPad = isInline ? "py-1.5 sm:py-2" : "py-2.5 sm:py-3";
+
 
   const textClass = isInline
     ? "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-brand-navy"
