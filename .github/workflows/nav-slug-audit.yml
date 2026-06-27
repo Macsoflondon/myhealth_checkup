@@ -1,0 +1,45 @@
+name: Nav Slug Resolver Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 6 * * *"
+    - cron: "45 18 * * *"
+
+# Block deployment workflows from starting until this passes.
+concurrency:
+  group: nav-slug-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Verify nav slugs resolve to DB categories or redirects
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fail fast if Supabase secrets are missing
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY repo secrets are required."
+            exit 1
+          fi
+
+      - name: Run nav-slug resolver audit
+        run: node scripts/audit-nav-slugs.mjs
+
+      - name: Summarise on failure
+        if: failure()
+        run: |
+          echo "::error::Nav-slug audit failed — at least one /compare?category=… link has no DB category and no redirect. Fix the taxonomy or remove the broken link before merging."
