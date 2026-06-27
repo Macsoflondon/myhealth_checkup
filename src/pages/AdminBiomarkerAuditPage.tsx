@@ -72,23 +72,28 @@ export default function AdminBiomarkerAuditPage() {
 
   const runAudit = async () => {
     setRunning(true);
-    const { data, error } = await supabase.functions.invoke("audit-biomarkers", {
-      body: {
+    try {
+      const { edgeInvoke } = await import("@/lib/edgeInvoke");
+      const data = await edgeInvoke<{ audited?: number; mismatches?: number }>("audit-biomarkers", {
         provider_id: provider === "all" ? undefined : provider,
         limit: 25,
-      },
-    });
-    setRunning(false);
-    if (error) {
-      toast({ title: "Audit failed", description: error.message, variant: "destructive" });
-    } else {
+      });
       toast({
         title: "Audit complete",
         description: `Audited ${data?.audited ?? 0}, ${data?.mismatches ?? 0} mismatches`,
       });
       await load();
+    } catch (err) {
+      toast({
+        title: "Audit failed",
+        description: err instanceof Error ? err.message : String(err),
+        variant: "destructive",
+      });
+    } finally {
+      setRunning(false);
     }
   };
+
 
   const applyCorrection = async (row: AuditRow) => {
     if (!row.scraped_biomarkers || row.scraped_biomarkers.length === 0) return;
