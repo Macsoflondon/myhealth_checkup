@@ -33,7 +33,7 @@ export default {
     	extend: {
     		fontFamily: {
     			sans: [
-    				'Montserrat',
+    				'DM Sans',
     				'ui-sans-serif',
     				'system-ui',
     				'sans-serif',
@@ -41,6 +41,11 @@ export default {
     				'Segoe UI Emoji',
     				'Segoe UI Symbol',
     				'Noto Color Emoji'
+    			],
+    			body: [
+    				'DM Sans',
+    				'system-ui',
+    				'sans-serif'
     			],
     			heading: [
     				'Montserrat',
