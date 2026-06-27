@@ -21,6 +21,23 @@ export interface UseAdminMFAResult {
   checkMFAStatus: () => Promise<void>;
 }
 
+const isMFAVerificationResult = (value: unknown): value is MFAVerificationResult => {
+  return !!value && typeof value === 'object' &&
+    'isAdmin' in value && 'hasMFA' in value && 'mfaVerified' in value;
+};
+
+const readFunctionErrorBody = async (error: unknown): Promise<unknown | null> => {
+  const response = (error as { context?: unknown })?.context;
+
+  if (!(response instanceof Response)) return null;
+
+  try {
+    return await response.clone().json();
+  } catch {
+    return null;
+  }
+};
+
 export const useAdminMFA = (): UseAdminMFAResult => {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
@@ -55,14 +72,13 @@ export const useAdminMFA = (): UseAdminMFAResult => {
 
       // The edge function returns 403 with a valid MFAVerificationResult body
       // when an admin needs to set up or step-up MFA. Supabase surfaces non-2xx
-      // as fnError but still parses `data`. Treat a well-formed body as the
-      // authoritative status, even when fnError is present.
-      const looksLikeStatus =
-        data && typeof data === 'object' &&
-        'isAdmin' in data && 'hasMFA' in data && 'mfaVerified' in data;
+      // as fnError and may leave `data` empty, so parse the FunctionHttpError
+      // response body before treating it as a hard failure.
+      const errorBody = fnError ? await readFunctionErrorBody(fnError) : null;
+      const status = isMFAVerificationResult(data) ? data : errorBody;
 
-      if (looksLikeStatus) {
-        setMfaStatus(data as MFAVerificationResult);
+      if (isMFAVerificationResult(status)) {
+        setMfaStatus(status);
       } else if (fnError) {
         console.error('MFA verification error:', fnError);
         setError(fnError.message);
