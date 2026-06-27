@@ -325,6 +325,24 @@ async function runBatch(
       console.error(`[${runId}] sanitize_popular_provider_tests failed:`, getErrorMessage(e));
     }
 
+    // Taxonomy mapping audit — flag any new/changed product that escaped
+    // category classification, and persist warnings for the admin dashboard.
+    try {
+      console.log(`[${runId}] Running audit-provider-taxonomy...`);
+      const auditRes = await fetch(`${supabaseUrl}/functions/v1/audit-provider-taxonomy`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseServiceKey}`,
+        },
+        body: JSON.stringify({}),
+      });
+      const auditBody = await auditRes.json().catch(() => ({}));
+      console.log(`[${runId}] taxonomy audit status=${auditRes.status} body=${JSON.stringify(auditBody?.totals ?? auditBody)}`);
+    } catch (e) {
+      console.error(`[${runId}] audit-provider-taxonomy failed:`, getErrorMessage(e));
+    }
+
     // Persist dashboard alerts for any failures (warning, or critical if repeated)
     await recordFailureAlerts(supabase, failedResults);
 
