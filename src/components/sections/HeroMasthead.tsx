@@ -120,7 +120,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-4 sm:pt-7 pb-0 min-h-[84svh] sm:min-h-[96svh] flex flex-col">
+    <section className="rounded-t-[28px] rounded-b-none overflow-hidden bg-[#F5F5F5] border border-b-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-4 sm:pt-7 pb-0 min-h-[84svh] sm:min-h-[96svh] flex flex-col">
       <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
@@ -183,7 +183,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       </div>
 
-      <TestCategoryTicker variant="inline" />
+      <BrowseByCategoryBar compact />
 
     </section>
 
