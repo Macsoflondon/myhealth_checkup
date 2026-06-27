@@ -117,16 +117,17 @@ export default function BrowseByCategoryBar({
       ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
       : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
-  // Inner card styling — fully rounded card when stuck or on flush (non-home) pages.
-  // When compact and not yet stuck, the bar sits at the bottom of the hero card,
-  // so its bottom corners are square and its bottom border is removed to avoid a
-  // double border against the hero's outer border.
+  // Inner card styling. When the bar is part of the unified hero/toolbar/carousel
+  // container (compact + placement="hero"), it sits in the middle of the stack:
+  // no rounded corners, no top/bottom borders so it fuses with the hero above and
+  // the carousel below. When stuck or on flush pages it becomes a fully rounded
+  // pinned card.
   let innerClass = isFlush || stuck
     ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
     : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
 
   if (compact && !stuck && !isFlush) {
-    innerClass = "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+    innerClass = "rounded-none bg-[#F5F5F5] border-x border-[#081129]/[0.06]";
   }
 
   if (className) {
