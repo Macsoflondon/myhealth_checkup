@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
-import bloodTubesAsset from "@/assets/blood-test-tubes.jpeg.asset.json";
+import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
+
 
 const categories = [
   {
@@ -12,7 +13,7 @@ const categories = [
       "Individual biomarkers to comprehensive wellness panels. At-home kits and clinic-based venepuncture from UKAS-accredited laboratories.",
     link: "/wellness",
     linkLabel: "Explore Tests",
-    image: bloodTubesAsset.url,
+    image: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1200&q=85&auto=format&fit=crop",
   },
   {
     tag: "Cancer Screening",
@@ -45,7 +46,8 @@ const categories = [
       "Convenient finger-prick and sample collection kits delivered to your door. UKAS-accredited lab analysis with results typically returned within days — no clinic visit needed.",
     link: "/at-home-tests",
     linkLabel: "Explore Kits",
-    image: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1200&q=85&auto=format&fit=crop",
+    image: fingerprickAsset.url,
+
   },
 ];
 
