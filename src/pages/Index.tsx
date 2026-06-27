@@ -201,9 +201,9 @@ const Index = () => {
         {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
         <div>
           <BrowseByCategoryBar />
-          <TrustBar />
-
-
+          <Suspense fallback={<SectionFallback />}>
+            <AccreditedProvidersBar />
+          </Suspense>
 
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />
@@ -227,11 +227,6 @@ const Index = () => {
             </SectionReveal>
           </Suspense>
 
-          <LazyMount minHeight={300}>
-            <Suspense fallback={<SectionFallback />}>
-              <AccreditedProvidersBar />
-            </Suspense>
-          </LazyMount>
 
           <LazyMount minHeight={800}>
             <Suspense fallback={<SectionFallback />}>
