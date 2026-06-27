@@ -381,11 +381,23 @@ serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+  // Accept either dedicated cron secret or the workspace "Automations" vault key
+  // (used by call_edge_with_automations from pg_cron).
   const cronSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? "";
+  const automationsKey = Deno.env.get("Automations") ?? Deno.env.get("automations_apikey") ?? "";
 
   const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
   // Scheduled runs must present a dedicated cron secret (not the public anon key).
-  const isScheduledRun = Boolean(body.scheduled) && cronSecret.length > 0 && authHeader === `Bearer ${cronSecret}`;
+  const presentedToken = authHeader.startsWith("Bearer ")
+    ? authHeader.slice("Bearer ".length)
+    : "";
+  const isScheduledRun = Boolean(body.scheduled) && presentedToken.length > 0 && (
+    (cronSecret.length > 0 && presentedToken === cronSecret) ||
+    (automationsKey.length > 0 && presentedToken === automationsKey) ||
+    // pg_cron helper sends the automations key in the apikey header too.
+    (automationsKey.length > 0 && req.headers.get("x-cron-key") === automationsKey) ||
+    (automationsKey.length > 0 && req.headers.get("x-automation-key") === automationsKey)
+  );
 
   let isAdminUser = false;
   if (!isServiceRole && !isScheduledRun) {
