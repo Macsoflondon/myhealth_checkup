@@ -182,6 +182,9 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       </div>
 
+      <TestCategoryTicker variant="inline" />
+
     </section>
+
   );
 }
