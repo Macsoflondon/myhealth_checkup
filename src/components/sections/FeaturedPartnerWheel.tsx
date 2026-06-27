@@ -1,6 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+
+const COMPARE_HREF_BY_NAME: Record<string, string> = {
+  "Bowel Cancer Screening": "/tests/cancer",
+  "HPV Cervical Cancer Screening": "/tests/cancer",
+  "Early Cancer Screening": "/tests/cancer",
+  "Lung Cancer Screening": "/tests/cancer",
+  "Prostate PSA": "/tests/cancer",
+  "Advanced Well Woman": "/tests/womens-health",
+  "Female Hormone & Fertility": "/hormones",
+  "Advanced Well Man": "/tests/mens-health",
+  "Premium Complete": "/wellness",
+  "Sports & Fitness": "/sports-performance",
+};
+const compareHrefFor = (k: { name: string; compareHref?: string }) =>
+  k.compareHref || COMPARE_HREF_BY_NAME[k.name] || "/compare";
+const GOODBODY_CATALOG_HREF = "/providers/goodbody-clinic";
+const GOODBODY_PROFILE_HREF = "/provider/goodbody-clinic";
 
 /**
  * FeaturedPartnerWheel — Goodbody Clinics
@@ -36,6 +54,8 @@ export type FeaturedKit = {
   biomarkers?: string;
   collection?: string;
   about?: string;
+  /** Optional override for the "Compare this test" CTA destination. */
+  compareHref?: string;
 };
 
 export type FeaturedPartnerWheelProps = {
@@ -348,8 +368,8 @@ export default function FeaturedPartnerWheel({
             <p style={{ margin: 0, fontFamily: SERIF, fontStyle: "italic", fontWeight: 500, fontSize: 23, lineHeight: 1.4, color: "#f7f7f8" }}>{blurbItalic}</p>
             <p style={{ margin: "14px 0 0", fontSize: 15.5, lineHeight: 1.6, color: "#d1d5db" }}>{blurb}</p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
-              <button style={{ fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4" }}>Explore the range</button>
-              <button style={{ fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer" }}>Visit Goodbody</button>
+              <Link to={GOODBODY_CATALOG_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4" }}>Explore the range</Link>
+              <Link to={GOODBODY_PROFILE_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer" }}>Visit Goodbody</Link>
             </div>
           </div>
 
@@ -409,7 +429,7 @@ export default function FeaturedPartnerWheel({
               </div>
             </div>
             <div style={{ display: "flex", gap: 12, padding: "24px 36px 30px" }}>
-              <button style={{ flex: 1, fontFamily: HEAD, fontWeight: 700, fontSize: 15, padding: 15, borderRadius: 14, border: "none", background: "#22c0d4", color: "#fff", cursor: "pointer", boxShadow: "0 12px 26px -12px rgba(34,192,212,.8)" }}>Book this test</button>
+              <Link to={compareHrefFor(selKit)} onClick={() => { setSelKit(null); setHovered(null); }} style={{ flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 15, padding: 15, borderRadius: 14, border: "none", background: "#22c0d4", color: "#fff", cursor: "pointer", boxShadow: "0 12px 26px -12px rgba(34,192,212,.8)" }}>Compare this test</Link>
               <button onClick={() => { setSelKit(null); setHovered(null); }} style={{ fontFamily: HEAD, fontWeight: 700, fontSize: 15, padding: "15px 22px", borderRadius: 14, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer" }}>Back</button>
             </div>
           </div>
