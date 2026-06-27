@@ -1,6 +1,6 @@
 /**
  * Shared layout component for consistent page structure.
- * Includes: StickyCategoryBar (with hero-aware reveal on homepage), main content area, Footer, CookieConsent.
+ * Includes: BrowseByCategoryBar on non-home pages, main content area, Footer, CookieConsent.
  */
 
 

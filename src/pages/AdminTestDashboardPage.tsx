@@ -1,9 +1,7 @@
-import Header from "@/components/layout/Header";
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { AdminRoute } from "@/components/auth/AdminRoute";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -533,10 +531,5 @@ function AdminTestDashboardContent() {
 }
 
 export default function AdminTestDashboardPage() {
-  return (
-    <AdminRoute>
-      <Header />
-      <AdminTestDashboardContent />
-    </AdminRoute>
-  );
+  return <AdminTestDashboardContent />;
 }

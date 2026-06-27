@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -183,7 +182,6 @@ const AdminAuth = () => {
   if (authLoading || verifyingRole) {
     return (
       <>
-        <Header />
         <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
           <div className="text-center">
             <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
@@ -196,7 +194,6 @@ const AdminAuth = () => {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
       <div className="max-w-sm w-full">
         {/* Shield icon */}

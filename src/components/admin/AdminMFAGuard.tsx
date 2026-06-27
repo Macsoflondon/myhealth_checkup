@@ -16,7 +16,7 @@ interface AdminMFAGuardProps {
   needsMFASetup: boolean;
   needsMFAVerification: boolean;
   isLoading: boolean;
-  onMFAComplete: () => void;
+  onMFAComplete: () => void | Promise<void>;
 }
 
 export const AdminMFAGuard = ({
@@ -84,7 +84,7 @@ export const AdminMFAGuard = ({
         return;
       }
 
-      const { error: verifyError } = await supabase.auth.mfa.verify({
+      const { data: verifyData, error: verifyError } = await supabase.auth.mfa.verify({
         factorId,
         challengeId: challengeData.id,
         code: verifyCode
@@ -95,8 +95,16 @@ export const AdminMFAGuard = ({
         return;
       }
 
+      if (verifyData?.access_token && verifyData?.refresh_token) {
+        await supabase.auth.setSession({
+          access_token: verifyData.access_token,
+          refresh_token: verifyData.refresh_token,
+        });
+      }
+
       toast.success('MFA enabled successfully!');
-      onMFAComplete();
+      setVerifyCode('');
+      await onMFAComplete();
     } catch (err) {
       console.error('Verification error:', err);
       toast.error('Failed to verify MFA code');
@@ -139,7 +147,7 @@ export const AdminMFAGuard = ({
       }
 
       // Verify the challenge
-      const { error: verifyError } = await supabase.auth.mfa.verify({
+      const { data: verifyData, error: verifyError } = await supabase.auth.mfa.verify({
         factorId: verifiedFactor.id,
         challengeId: challengeData.id,
         code: verifyCode
@@ -150,8 +158,16 @@ export const AdminMFAGuard = ({
         return;
       }
 
+      if (verifyData?.access_token && verifyData?.refresh_token) {
+        await supabase.auth.setSession({
+          access_token: verifyData.access_token,
+          refresh_token: verifyData.refresh_token,
+        });
+      }
+
       toast.success('MFA verified successfully!');
-      onMFAComplete();
+      setVerifyCode('');
+      await onMFAComplete();
     } catch (err) {
       console.error('Verification error:', err);
       toast.error('Failed to verify MFA code');
