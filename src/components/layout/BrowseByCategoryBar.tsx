@@ -276,7 +276,9 @@ export default function BrowseByCategoryBar({
                 aria-haspopup="menu"
                 aria-expanded={moreOpen}
                 onClick={() => setMoreOpen((o) => !o)}
-                className="inline-flex items-center gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5 rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200"
+                className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
+                  compact ? "gap-1 pl-1 pr-1.5 py-0.5 sm:pl-1.5 sm:pr-2 sm:py-1" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
+                }`}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = PINK;
                   e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
@@ -287,16 +289,18 @@ export default function BrowseByCategoryBar({
                 }}
               >
                 <span
-                  className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] rounded-full inline-flex items-center justify-center shrink-0"
+                  className={`rounded-full inline-flex items-center justify-center shrink-0 ${
+                    compact ? "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
+                  }`}
                   style={{ background: `${PINK}1a` }}
                 >
-                  <MoreHorizontal className="w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]" style={{ color: PINK }} strokeWidth={2} />
+                  <MoreHorizontal className={`${compact ? "w-[10px] h-[10px] sm:w-[11px] sm:h-[11px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color: PINK }} strokeWidth={2} />
                 </span>
-                <span className="text-[11px] sm:text-[11.5px] font-semibold text-[#081129] font-[Montserrat]">
+                <span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[10px] sm:text-[11px]" : "text-[11px] sm:text-[11.5px]"}`}>
                   More
                 </span>
                 <ChevronDown
-                  className={`w-3 h-3 text-[#081129]/60 transition-transform ${moreOpen ? "rotate-180" : ""}`}
+                  className={`text-[#081129]/60 transition-transform ${moreOpen ? "rotate-180" : ""} ${compact ? "w-2.5 h-2.5" : "w-3 h-3"}`}
                 />
               </button>
               {moreOpen && (
