@@ -1,4 +1,4 @@
-name: Nav Slug Resolver Audit
+name: Nav + Sitemap Slug Audit
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   audit:
-    name: Verify nav slugs resolve to DB categories or redirects
+    name: Regenerate sitemap and verify category URLs
     timeout-minutes: 5
     runs-on: ubuntu-latest
     env:
@@ -24,6 +24,10 @@ jobs:
       VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
     steps:
       - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
       - uses: actions/setup-node@v4
         with:
@@ -36,10 +40,24 @@ jobs:
             exit 1
           fi
 
-      - name: Run nav-slug resolver audit
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Regenerate sitemap
+        run: bunx tsx scripts/generate-sitemap.ts
+
+      - name: Fail if sitemap regeneration produced an uncommitted diff
+        run: |
+          if ! git diff --quiet -- public/sitemap.xml; then
+            echo "::error::public/sitemap.xml is out of date — run 'bunx tsx scripts/generate-sitemap.ts' and commit the result."
+            git --no-pager diff -- public/sitemap.xml | head -100
+            exit 1
+          fi
+
+      - name: Audit nav + sitemap category URLs
         run: node scripts/audit-nav-slugs.mjs
 
       - name: Summarise on failure
         if: failure()
         run: |
-          echo "::error::Nav-slug audit failed — at least one /compare?category=… link has no DB category and no redirect. Fix the taxonomy or remove the broken link before merging."
+          echo "::error::Nav / sitemap audit failed — at least one URL points to a broken, redirected, or ambiguous category. Fix the taxonomy or the sitemap entries before merging."
