@@ -78,7 +78,24 @@ export const useAdminMFA = (): UseAdminMFAResult => {
       const status = isMFAVerificationResult(data) ? data : errorBody;
 
       if (isMFAVerificationResult(status)) {
-        setMfaStatus(status);
+        let reconciledStatus = status;
+
+        // Immediately after a successful TOTP challenge, the browser session can
+        // already be AAL2 even if the Edge Function response still reports the
+        // pre-step-up state. Only reconcile after the server has confirmed the
+        // user is an admin with an enrolled MFA factor.
+        if (status.isAdmin && status.hasMFA && !status.mfaVerified) {
+          const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+          if (aalData?.currentLevel === 'aal2') {
+            reconciledStatus = {
+              ...status,
+              mfaVerified: true,
+              message: 'Admin verified with MFA',
+            };
+          }
+        }
+
+        setMfaStatus(reconciledStatus);
       } else if (fnError) {
         console.error('MFA verification error:', fnError);
         setError(fnError.message);
