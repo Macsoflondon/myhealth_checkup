@@ -402,7 +402,7 @@ const Auth = () => {
                 />
                 <Label
                   htmlFor="rememberMe"
-                  className="text-sm font-normal text-[#081129] cursor-pointer"
+                  className="text-sm font-normal text-[#22c0d4] cursor-pointer"
                 >
                   Remember me
                 </Label>
