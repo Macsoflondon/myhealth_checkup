@@ -132,7 +132,7 @@ export default function BrowseByCategoryBar({
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
       <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`px-2 sm:px-3 py-2.5 sm:py-3 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`${compact ? "px-2 py-1.5 sm:py-2" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
 
           <div className="flex items-center gap-2 flex-nowrap">
