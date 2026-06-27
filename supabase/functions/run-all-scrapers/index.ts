@@ -381,23 +381,37 @@ serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-  // Accept either dedicated cron secret or the workspace "Automations" vault key
-  // (used by call_edge_with_automations from pg_cron).
+  // Accept either dedicated cron secret or the workspace "Automations"/vault
+  // "automations_apikey" used by pg_cron via call_edge_with_automations.
   const cronSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? "";
-  const automationsKey = Deno.env.get("Automations") ?? Deno.env.get("automations_apikey") ?? "";
-
-  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
-  // Scheduled runs must present a dedicated cron secret (not the public anon key).
+  const automationsEnv = Deno.env.get("Automations") ?? "";
   const presentedToken = authHeader.startsWith("Bearer ")
     ? authHeader.slice("Bearer ".length)
     : "";
-  const isScheduledRun = Boolean(body.scheduled) && presentedToken.length > 0 && (
-    (cronSecret.length > 0 && presentedToken === cronSecret) ||
-    (automationsKey.length > 0 && presentedToken === automationsKey) ||
-    // pg_cron helper sends the automations key in the apikey header too.
-    (automationsKey.length > 0 && req.headers.get("x-cron-key") === automationsKey) ||
-    (automationsKey.length > 0 && req.headers.get("x-automation-key") === automationsKey)
-  );
+
+  const isServiceRole = serviceKey.length > 0 && presentedToken === serviceKey;
+
+  let isScheduledRun = false;
+  if (Boolean(body.scheduled) && presentedToken.length > 0) {
+    if (cronSecret.length > 0 && presentedToken === cronSecret) isScheduledRun = true;
+    else if (automationsEnv.length > 0 && presentedToken === automationsEnv) isScheduledRun = true;
+    else {
+      // Last resort: verify against vault.decrypted_secrets ('automations_apikey').
+      try {
+        const admin = createClient(supabaseUrl, serviceKey);
+        const { data } = await admin
+          .schema("vault" as never)
+          .from("decrypted_secrets" as never)
+          .select("decrypted_secret")
+          .eq("name", "automations_apikey")
+          .maybeSingle();
+        const vaultKey = (data as { decrypted_secret?: string } | null)?.decrypted_secret ?? "";
+        if (vaultKey.length > 0 && vaultKey === presentedToken) isScheduledRun = true;
+      } catch (e) {
+        console.error("[run-all-scrapers] vault verify failed:", getErrorMessage(e));
+      }
+    }
+  }
 
   let isAdminUser = false;
   if (!isServiceRole && !isScheduledRun) {
