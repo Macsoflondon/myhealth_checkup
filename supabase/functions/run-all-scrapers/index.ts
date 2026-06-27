@@ -391,6 +391,7 @@ serve(async (req) => {
 
   const isServiceRole = serviceKey.length > 0 && presentedToken === serviceKey;
 
+  console.log(`[run-all-scrapers] auth scheduled=${Boolean(body.scheduled)} hasToken=${presentedToken.length>0} hasCron=${cronSecret.length>0} hasAuto=${automationsEnv.length>0}`);
   let isScheduledRun = false;
   if (Boolean(body.scheduled) && presentedToken.length > 0) {
     if (cronSecret.length > 0 && presentedToken === cronSecret) isScheduledRun = true;
