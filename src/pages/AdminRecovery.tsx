@@ -9,6 +9,22 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "@/components/ui/sonner";
 import { ShieldAlert, Loader2, KeyRound } from "lucide-react";
 
+const readRecoveryError = async (error: unknown) => {
+  const response = (error as { context?: unknown })?.context;
+
+  if (response instanceof Response) {
+    try {
+      const body = await response.clone().json();
+      if (response.status === 401) return "Recovery secret is incorrect.";
+      if (typeof body?.error === "string") return body.error;
+    } catch {
+      if (response.status === 401) return "Recovery secret is incorrect.";
+    }
+  }
+
+  return (error as { message?: string })?.message || "Recovery failed.";
+};
+
 const AdminRecovery = () => {
   const navigate = useNavigate();
   const [secret, setSecret] = useState("");
@@ -34,7 +50,7 @@ const AdminRecovery = () => {
         body: { secret, email, newPassword },
       });
       if (error) {
-        toast.error(error.message || "Recovery failed.");
+        toast.error(await readRecoveryError(error));
         return;
       }
       if ((data as any)?.success) {
