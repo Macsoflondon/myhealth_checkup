@@ -195,15 +195,18 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
-          <HeroMasthead />
-        </div>
-
-        {/* Hero + carousel share one continuous light card. The toolbar is rendered
-            inside the hero and becomes sticky once the hero scrolls out. */}
+        {/* Sticky scope: hero, toolbar, carousel and every section below share one
+            scroll container so the toolbar can remain pinned to the top of the
+            viewport once it reaches it. */}
         <div>
           <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <HeroMasthead />
+          </div>
+
+          {/* Toolbar now sits directly under the hero section and becomes sticky. */}
+          <BrowseByCategoryBar compact placement="hero" />
+
+          <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <TestCategoryTicker
               variant="inline"
               className="bg-[#F5F5F5] rounded-t-none rounded-b-[28px] border border-t-0 border-[#081129]/[0.06]"
