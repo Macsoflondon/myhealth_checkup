@@ -58,10 +58,12 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
 export default function BrowseByCategoryBar({
   variant = "card",
   compact = false,
+  placement = "card",
   className = "",
 }: {
   variant?: "card" | "flush";
   compact?: boolean;
+  placement?: "card" | "hero";
   className?: string;
 } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
