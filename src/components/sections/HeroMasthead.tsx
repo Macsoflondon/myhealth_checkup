@@ -129,7 +129,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-8 sm:mt-20 mb-3 sm:mb-10 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
       </h1>
 
