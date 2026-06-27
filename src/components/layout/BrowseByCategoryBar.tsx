@@ -288,8 +288,9 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
               <UserMenu variant="glass" />
             </div>
             <div
-              className="hidden md:flex items-center gap-1 shrink-0 pl-2 border-l border-[#081129]/10 bg-[#f7f7f8] rounded-r-[22px]"
+              className="hidden md:flex items-center gap-1 shrink-0 pl-2 border-l border-[#081129]/10"
             >
+
               <LanguageSwitcher />
               <UserMenu />
             </div>
