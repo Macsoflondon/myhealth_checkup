@@ -388,15 +388,21 @@ serve(async (req) => {
   const presentedToken = authHeader.startsWith("Bearer ")
     ? authHeader.slice("Bearer ".length)
     : "";
+  // Cron callers also surface the secret on dedicated headers because the
+  // gateway requires Authorization to be a valid JWT before our code runs.
+  const cronHeader = req.headers.get("x-cron-secret")
+    ?? req.headers.get("x-cron-key")
+    ?? req.headers.get("x-automation-key")
+    ?? "";
 
   const isServiceRole = serviceKey.length > 0 && presentedToken === serviceKey;
 
   let isScheduledRun = false;
-  if (Boolean(body.scheduled) && presentedToken.length > 0) {
-    if (cronSecret.length > 0 && presentedToken === cronSecret) isScheduledRun = true;
-    else if (automationsEnv.length > 0 && presentedToken === automationsEnv) isScheduledRun = true;
-    else {
-      // Last resort: verify against vault.decrypted_secrets ('automations_apikey').
+  if (Boolean(body.scheduled)) {
+    const candidates = [presentedToken, cronHeader].filter((t) => t.length > 0);
+    if (candidates.some((t) => cronSecret.length > 0 && t === cronSecret)) isScheduledRun = true;
+    else if (candidates.some((t) => automationsEnv.length > 0 && t === automationsEnv)) isScheduledRun = true;
+    else if (candidates.length > 0) {
       try {
         const admin = createClient(supabaseUrl, serviceKey);
         const { data } = await admin
@@ -406,7 +412,7 @@ serve(async (req) => {
           .eq("name", "automations_apikey")
           .maybeSingle();
         const vaultKey = (data as { decrypted_secret?: string } | null)?.decrypted_secret ?? "";
-        if (vaultKey.length > 0 && vaultKey === presentedToken) isScheduledRun = true;
+        if (vaultKey.length > 0 && candidates.some((t) => t === vaultKey)) isScheduledRun = true;
       } catch (e) {
         console.error("[run-all-scrapers] vault verify failed:", getErrorMessage(e));
       }
