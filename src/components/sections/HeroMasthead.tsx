@@ -183,8 +183,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       </div>
 
-      <BrowseByCategoryBar compact />
-
     </section>
 
   );
