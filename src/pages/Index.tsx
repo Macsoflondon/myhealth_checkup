@@ -201,9 +201,8 @@ const Index = () => {
         {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
         <div>
           <BrowseByCategoryBar />
-          <Suspense fallback={<SectionFallback />}>
-            <AccreditedProvidersBar />
-          </Suspense>
+
+
 
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />
