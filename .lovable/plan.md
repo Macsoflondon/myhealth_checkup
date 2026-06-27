@@ -1,75 +1,81 @@
-## What's wrong today
+# Expand Test Categories & Taxonomy
 
-The Control Centre at `/control` is mostly a glorified set of links and read-only tables. Specifically:
+A large, cross-cutting change. Delivered in 5 sequenced phases so each is verifiable before the next. The taxonomy is data-driven (categories + aliases + redirects already exist) — we extend that scaffolding rather than hardcoding new branches.
 
-- **Crawls** section shows historic runs but has **no buttons to actually trigger** the orchestrator or per-provider scrapers.
-- **Audits** is a list of links to old sub-pages, no actionable triggers, no inline results.
-- **Automations**, **Logs**, **Notifications**, **Providers** are read-only snapshots — no acknowledge, retry, or drill-down actions.
-- **Analytics / Search / Export** are stubs (11–62 lines, marked `stub`).
-- **Overview** is static; no real KPIs from the catalogue or revenue surfaces.
-- `/admin/test-dashboard`'s "Run audit" hits `audit-biomarkers` and surfaces the raw "Edge Function returned a non-2xx status code" toast with no diagnostics.
+## Phase 1 — Taxonomy (DB)
 
-Net effect: it looks like a dashboard but you can't *operate* anything from it.
+Single migration that inserts the new tree under existing parents. Uses the existing `categories` (ltree), `category_aliases` (auto-classifier), and `category_slug_redirects` (legacy slug stability) tables. No schema changes — architecture is already dynamic.
 
-## Plan — turn `/control` into a real operations cockpit
+New nodes:
 
-### 1. Crawls become actionable
-- Add a **"Run all scrapers"** primary button → calls `run-all-scrapers` with the user's session JWT, streams the returned `runId`, then polls `scrape_run_log` for that row until completion (live status pill).
-- Add a **per-provider grid** (9 providers from `SCRAPERS`) with individual **Run**, **Last run**, **Last status**, **Last duration**, **Items scraped** cells. Each Run button posts `{ providerId }` to `run-all-scrapers`.
-- Add **Re-promote** and **Verify URLs** buttons wired to `promote-provider-tests` and `scrape-and-verify`.
-- Realtime subscription on `scrape_run_log` so new runs appear without refresh.
+```text
+at-home-tests/
+  finger-prick-tests
+  urine-tests
+  bowel-tests           (replaces saliva)
 
-### 2. Audits become actionable
-Replace the link list with inline action cards, each showing **last run time, last result, Run now button, View details**:
-- Biomarker audit → `audit-biomarkers` (with proper error parsing so failures show the real reason, not "non-2xx").
-- Category normaliser → `normalize-test-categories`.
-- Section mapping audit → existing `SectionMappingAuditPanel` inlined.
-- Security scan snapshot → `security-scan-snapshot` + diff vs previous.
-- Provider image verifier → `verify-provider-images`.
-- Sitemap / IndexNow resubmit → `gsc-resubmit-sitemap`, `indexnow-submit`.
-- Leaked-password protection status (existing component) inlined.
+sports-performance-tests/
+  bodybuilding
+  athletic-performance/
+    cycling, running, swimming, triathlon, crossfit, hyrox,
+    functional-fitness, team-sports, combat-sports,
+    endurance-athletes, strength-athletes,
+    male-performance, female-performance
+  endurance
+  recovery
+  training-tests
+  sports-nutrition
+  performance-optimisation
+```
 
-### 3. Automations gets controls
-- List pg_cron jobs from `cron.job` with **last run, next run, status, Run now**.
-- Toggle enable/disable per cron via a thin RPC.
-- Show last 10 invocations per job (joined from run logs).
+Each node ships with:
+- `category_aliases` rows (word-boundary regex for short tokens, `contains` for safe long phrases) so the existing `provider_tests_autoclassify` trigger maps tests automatically.
+- `category_slug_redirects` rows for any legacy slugs (e.g. `saliva-tests` → `bowel-tests`).
 
-### 4. Providers section gets depth
-- Per provider: test count, avg price, last scrape, broken-URL count, alert count, **Open profile / Re-scrape / View tests** buttons.
-- Click a provider → drawer with its catalogue diff vs last run (added / removed / price-changed rows from `provider_tests`).
+## Phase 2 — Backfill & provider audit
 
-### 5. Logs, Notifications, Overview
-- **Logs**: searchable view across `scrape_run_log`, `scraper_alerts`, `security_audit_log`, `auth_audit_log` with filters (severity, source, date range, free text).
-- **Notifications**: pull from `scraper_alerts` + `security_alerts`, with **Acknowledge / Resolve** actions writing back to the row.
-- **Overview**: real KPIs — total tests, providers active, last full scrape, open critical alerts, security findings open, today's runs, today's errors. Health dots driven by live queries, not placeholders.
+After the migration:
+1. Re-run `provider_tests_autoclassify` over all active `provider_tests` so existing rows pick up the new categories (no orphans — fallback to `general-health` stays).
+2. Run `scripts/audit-nav-slugs.mjs` extended with the new slugs; fail CI on broken/ambiguous.
+3. Print per-category counts so we can sanity-check distribution (e.g. confirm bowel tests landed in `bowel-tests`, not `gut-health`).
 
-### 6. Analytics / Search / Export — promote from stub to v1
-- **Analytics**: 30-day charts (runs/day, errors/day, tests added/day, price changes/day) from existing tables, using recharts.
-- **Search**: single input that queries providers, tests_master, scrape_run_log, scraper_alerts and groups results.
-- **Export**: CSV download endpoints for tests catalogue, run history, alerts, biomarker coverage.
+## Phase 3 — Lola individual biomarkers
 
-### 7. Fix the "Edge Function returned a non-2xx status code" toast
-- Wrap every edge-function invocation in a helper that:
-  - Reads the response body on non-2xx and shows the real error string from the JSON `error` field.
-  - Logs `function_id` + `status` to console for debugging.
-- Apply to the audit triggers on `/admin/test-dashboard` and inside the new Audit cards.
-- Investigate the actual `audit-biomarkers` failure (likely auth header or schema mismatch) and fix at the function level.
+`lola_health_products` already exists. Surface each row as a first-class product:
+- Add a thin adapter so Lola biomarkers appear in the same listing/search/compare pipeline as `provider_tests` (single union view `v_catalog_items`).
+- Generate `/biomarker/<slug>` product pages from this view.
+- Include in sitemap generator.
+- Tag each with the appropriate new categories via `category_test_mapping`.
 
-### 8. UX polish
-- Sticky top bar in `/control` with "Last refreshed Xs ago" + global **Refresh all** button.
-- Each section header gets a primary action button (Run / Audit / Export) instead of being purely informational.
-- Toasts on every action with success/failure detail.
-- Keyboard shortcut `g c` → Crawls, `g a` → Audits, etc. (small win).
+## Phase 4 — Frontend wiring
 
-## Technical notes
+Driven by data, so changes are minimal:
+- `NavigationItems*` mega-menu reads category tree from DB (already structured; we add the new top-level branches and let children render recursively).
+- Breadcrumbs already walk `categories.path` (ltree) — no code change.
+- `/compare?category=<slug>` and `/tests/<slug>` already resolve through `categories` + `category_slug_redirects` — no code change.
+- Filters on provider pages: extend the facet list to include the new top-level branches.
 
-- All triggers call existing edge functions with `supabase.functions.invoke(name, { body })` — current admin session already authenticated; `run-all-scrapers` accepts admin JWTs.
-- Realtime: enable `scrape_run_log` and `scraper_alerts` on the realtime publication if not already.
-- New thin RPC `admin_cron_jobs()` (SECURITY DEFINER, admin-only) to expose `cron.job` and `cron.job_run_details` safely.
-- Error helper lives at `src/lib/edgeInvoke.ts` and reads `error.context.body` from `FunctionsHttpError` to surface real messages.
-- No schema changes for sections 1–6 beyond enabling realtime and the one cron RPC. Section 8 needs no migrations.
+## Phase 5 — Verification
 
-## Out of scope (call out, don't build silently)
+- Extend `scripts/audit-nav-slugs.mjs` to assert every new slug resolves and appears in the sitemap.
+- Extend `scripts/audit-sticky-bar.py` route list with the new category pages.
+- Add a SQL verification block printed at the end of the migration: counts of tests per new category, orphan count (must be 0 active tests outside `general-health` fallback unmapped).
+- Add a Playwright smoke spec hitting one page per new top-level branch and asserting the StickyCategoryBar + breadcrumb render.
 
-- Rewriting the legacy `/admin/test-dashboard` — keep it but link from the new Audits section. Long term it should be retired.
-- Building a brand-new BI warehouse — Analytics v1 uses existing Postgres tables only.
+## Out of scope (call out explicitly)
+
+- No schema changes to `categories` / `provider_tests` — current tables already support unlimited nesting via ltree.
+- No new admin UI; the existing `/control` dashboard already lists categories and audit runs.
+- No "recommendation engine" rewrite — related-tests already keys off `category_test_mapping`, which the backfill populates.
+
+## Risks
+
+- **Over-greedy aliases** (same class of issue as the earlier `alt`/`ast` incident). Mitigation: every short token uses `\m…\M` word-boundary regex; long phrases use `contains`. Verify with per-category counts before declaring done.
+- **Lola biomarker volume** could inflate sitemap significantly. Mitigation: chunk sitemap into `/sitemap-biomarkers.xml` if count > 5k.
+- **Bowel vs gut-health overlap**: explicit alias rules so FIT/faecal/colorectal land in `bowel-tests`, microbiome/IBS land in `gut-health`. Both get cross-listed where genuinely both apply.
+
+## Confirmation needed before I start
+
+1. **Saliva category**: confirm we delete `saliva-tests` entirely (and redirect to `bowel-tests`), or keep it hidden as a dormant node for any historical links.
+2. **Lola biomarker pages**: one page per biomarker globally (`/biomarker/vitamin-d`) or scoped per provider (`/lola/biomarker/vitamin-d`)? The former is better for SEO and matches the "first-class entries" wording — confirming.
+3. **Scope of Phase 3**: ship Lola biomarker pages in this same delivery, or split into a follow-up after Phases 1–2 are verified live? Recommend split — it isolates risk and gets the taxonomy in front of users sooner.
