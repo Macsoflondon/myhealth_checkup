@@ -6,7 +6,8 @@ import { ArrowRight } from "lucide-react";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
-import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+
 
 
 // ── Brand ─────────────────────────────────────────────────────────────
