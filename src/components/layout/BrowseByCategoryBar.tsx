@@ -140,10 +140,10 @@ export default function BrowseByCategoryBar({
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
       <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`${compact ? "px-2 py-1.5 sm:py-2" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`${compact ? "px-3 py-3 sm:py-4" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
 
-          <div className="flex items-center gap-2 flex-nowrap">
+          <div className={`flex items-center gap-2 flex-nowrap ${compact ? "justify-center" : ""}`}>
             {/* Mobile: hamburger that opens a category sheet */}
             <div className="flex md:hidden items-center shrink-0">
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
