@@ -315,18 +315,25 @@ export default function BrowseByCategoryBar({
             {/* Right cluster — mobile: unified soft-pink glass pill; desktop: existing bordered chips */}
             <div
               data-testid="category-bar-right-cluster"
-              className="md:hidden flex items-center bg-[#e70d69]/5 border border-[#e70d69]/10 rounded-full p-0.5 shrink-0 ml-1"
+              className={`md:hidden flex items-center bg-[#e70d69]/5 border border-[#e70d69]/10 rounded-full shrink-0 ml-1 ${compact ? "p-[1px]" : "p-0.5"}`}
             >
-              <LanguageSwitcher variant="glass" />
-              <div className="w-px h-4 bg-[#e70d69]/20 mx-0.5" aria-hidden="true" />
-              <UserMenu variant="glass" />
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <LanguageSwitcher variant="glass" />
+              </div>
+              <div className={`bg-[#e70d69]/20 mx-0.5 ${compact ? "w-px h-3" : "w-px h-4"}`} aria-hidden="true" />
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <UserMenu variant="glass" />
+              </div>
             </div>
             <div
-              className="hidden md:flex items-center gap-1 shrink-0 pl-2 border-l border-[#081129]/10"
+              className={`hidden md:flex items-center shrink-0 pl-2 border-l border-[#081129]/10 ${compact ? "gap-0.5" : "gap-1"}`}
             >
-
-              <LanguageSwitcher />
-              <UserMenu />
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <LanguageSwitcher />
+              </div>
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <UserMenu />
+              </div>
             </div>
           </div>
         </div>
