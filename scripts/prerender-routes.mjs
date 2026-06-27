@@ -113,7 +113,7 @@ export const STATIC_ROUTES = [
   "/tests/fertility",
   "/tests/general-health",
   "/tests/allergy-testing",
-  "/tests/sports-performance-tests",
+  "/tests/sports-fitness",
   "/tests/weight-loss-tests",
   "/tests/longevity-tests",
 
