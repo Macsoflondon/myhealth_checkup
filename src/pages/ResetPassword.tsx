@@ -120,7 +120,7 @@ const ResetPassword = () => {
             Set New Password
           </h2>
           
-          <p className="text-sm text-[#081129] text-center mb-6">
+          <p className="text-sm text-[#22c0d4] text-center mb-6">
             Please enter your new password below.
           </p>
 
