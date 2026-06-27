@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  Clock, Home, FlaskConical, CheckCircle, Plus, X, Syringe,
+  Clock, Home, FlaskConical, CheckCircle, Plus, X, Syringe, Scale,
 } from "lucide-react";
 import { getProviderMeta } from "@/constants/providerMeta";
 import { getProviderLogo } from "@/constants/providers";
@@ -331,17 +331,22 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleOpen(); } }}
         className={`group cursor-pointer rounded-2xl bg-white w-full h-full flex flex-col overflow-hidden ${className || ""}`}
         style={{
-          border: "1px solid #e2e8f0",
+          border: `1px solid ${inCompare ? UTC_NAVY : "#e2e8f0"}`,
+          boxShadow: inCompare ? `inset 4px 0 0 ${UTC_NAVY}, 0 4px 16px rgba(8,17,41,0.10)` : "none",
           transition: "border-color 200ms, box-shadow 200ms, transform 200ms",
         }}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = UTC_TURQUOISE;
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 24px rgba(34,192,212,0.12)";
+          (e.currentTarget as HTMLDivElement).style.borderColor = inCompare ? UTC_NAVY : UTC_TURQUOISE;
+          (e.currentTarget as HTMLDivElement).style.boxShadow = inCompare
+            ? `inset 4px 0 0 ${UTC_NAVY}, 0 8px 24px rgba(8,17,41,0.16)`
+            : "0 8px 24px rgba(34,192,212,0.12)";
           (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = "#e2e8f0";
-          (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+          (e.currentTarget as HTMLDivElement).style.borderColor = inCompare ? UTC_NAVY : "#e2e8f0";
+          (e.currentTarget as HTMLDivElement).style.boxShadow = inCompare
+            ? `inset 4px 0 0 ${UTC_NAVY}, 0 4px 16px rgba(8,17,41,0.10)`
+            : "none";
           (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
         }}
       >
@@ -514,17 +519,19 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={handleCompare}
+              aria-pressed={inCompare}
               aria-label={inCompare ? "Remove from compare" : "Add to compare"}
+              className="hover-scale"
               style={{
-                background: inCompare ? UTC_TURQUOISE : "#fff",
+                background: inCompare ? UTC_NAVY : "rgba(8,17,41,0.06)",
                 color: inCompare ? "#fff" : UTC_NAVY,
                 fontFamily: "'Montserrat',sans-serif",
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: 12,
                 height: 40,
                 padding: "0 12px",
                 borderRadius: 20,
-                border: `1.5px solid ${inCompare ? UTC_TURQUOISE : UTC_NAVY}`,
+                border: `1.5px solid ${UTC_NAVY}`,
                 cursor: "pointer",
                 display: "inline-flex",
                 alignItems: "center",
@@ -533,7 +540,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 transition: "all 150ms",
               }}
             >
-              {inCompare ? <CheckCircle size={14} /> : <Plus size={14} />}
+              {inCompare ? <CheckCircle size={14} /> : <Scale size={14} />}
               {inCompare ? "Added" : "Compare"}
             </button>
             <button
