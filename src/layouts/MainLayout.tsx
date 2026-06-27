@@ -52,7 +52,9 @@ export const MainLayout = ({
       {!hideHeader && !isHome && (
         <>
           <BrowseByCategoryBar variant="flush" />
-          <TrustBar />
+          <Suspense fallback={<div className="min-h-[60px]" aria-hidden="true" />}>
+            <AccreditedProvidersBar />
+          </Suspense>
         </>
       )}
 
