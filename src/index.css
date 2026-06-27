@@ -137,11 +137,22 @@ html, body {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Additive clinical tokens (do NOT replace brand turquoise/pink/navy) */
+    --premium-gold: 43 64% 55%;            /* #D4A843 — provider-of-the-month / premium badges */
+    --premium-gold-foreground: 224 67% 10%;
+    --clinical-success: 160 84% 31%;       /* #059669 — biomarker "included" / positive states */
+    --clinical-success-foreground: 0 0% 100%;
+    --clinical-alert: 0 74% 50%;           /* #DC2626 — clinical alerts only, never decorative */
+    --clinical-alert-foreground: 0 0% 100%;
+    --surface-warm: 60 14% 98%;            /* #FAFAF8 — warm off-white surface */
+    --text-charcoal: 240 26% 14%;          /* #1A1A2E — primary text on warm surfaces */
+    --text-warm-grey: 220 9% 46%;          /* #6B7280 — secondary text */
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* 12px — moderate clinical rounding */
 
     --sidebar-background: 220 5% 97%;
     --sidebar-foreground: 240 5.3% 26.1%;
