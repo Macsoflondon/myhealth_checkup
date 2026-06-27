@@ -380,6 +380,27 @@ export type Database = {
           },
         ]
       }
+      category_slug_redirects: {
+        Row: {
+          created_at: string
+          from_slug: string
+          id: string
+          to_slug: string
+        }
+        Insert: {
+          created_at?: string
+          from_slug: string
+          id?: string
+          to_slug: string
+        }
+        Update: {
+          created_at?: string
+          from_slug?: string
+          id?: string
+          to_slug?: string
+        }
+        Relationships: []
+      }
       category_test_mapping: {
         Row: {
           category_id: string
