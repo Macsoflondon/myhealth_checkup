@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -114,7 +113,6 @@ const AdminEncryptionStatusPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-start justify-between mb-6 gap-4 flex-wrap">
           <div>

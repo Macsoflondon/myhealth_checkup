@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -98,7 +97,6 @@ export default function AdminTestMapperPage() {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen bg-[#081129]">
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">

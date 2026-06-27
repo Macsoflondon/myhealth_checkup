@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import {
@@ -152,7 +151,6 @@ export default function AdminSecurityDiffPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
       <main className="flex-1 container mx-auto px-4 py-10 max-w-6xl">
         <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
           <div>

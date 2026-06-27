@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -68,7 +67,6 @@ const AdminRecovery = () => {
 
   return (
     <>
-      <Header />
       <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
       <div className="max-w-md w-full">
         <div className="flex justify-center mb-6">
