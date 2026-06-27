@@ -26,7 +26,7 @@ const wellnessCategoryCards = [
     count: 2,
     desc: "Iron levels, ferritin, and anaemia screening",
     icon: "◈",
-    accent: "#e91e8c",
+    accent: "#e70d69",
     tag: "ESSENTIAL",
   },
   {
@@ -89,7 +89,7 @@ const wellnessCategoryCards = [
     count: 2,
     desc: "Antibody screening and autoimmune disease detection",
     icon: "⋈",
-    accent: "#e91e8c",
+    accent: "#e70d69",
     tag: "IMMUNE",
   },
   {
@@ -116,7 +116,7 @@ const wellnessCategoryCards = [
     count: 2,
     desc: "Autoimmune condition screening and monitoring",
     icon: "◑",
-    accent: "#e91e8c",
+    accent: "#e70d69",
     tag: "SPECIALIST",
   },
   {
@@ -141,7 +141,7 @@ const wellnessCategoryCards = [
 
 const tagColors: Record<string, string> = {
   PREVENTIVE: "#00d4c8",
-  ESSENTIAL: "#e91e8c",
+  ESSENTIAL: "#e70d69",
   CRITICAL: "#ff4d6d",
   WELLNESS: "#00c896",
   IMMUNE: "#9b59b6",

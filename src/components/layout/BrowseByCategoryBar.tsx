@@ -39,7 +39,7 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
   "Women's Health":       { Icon: UserCheck,   color: PINK },
   "Men's Health":         { Icon: User,        color: "#3a5f85" },
   "Sports-Fitness Health":{ Icon: Dumbbell,    color: "#16a34a" },
-  "Fertility - Prenatal": { Icon: Baby,        color: "#ec4899" },
+  "Fertility - Prenatal": { Icon: Baby,        color: "#e70d69" },
   "Cancer Screening":     { Icon: ShieldCheck, color: "#0ea5e9" },
   "At Home":              { Icon: Home,        color: "#f59e0b" },
 };

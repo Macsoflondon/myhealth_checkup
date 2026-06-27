@@ -21,8 +21,8 @@ const FavoriteAction = ({ item, isFavorite, onToggleFavorite }: FavoriteActionPr
         size="sm" 
         onClick={() => onToggleFavorite(item.id)}
         className={cn(
-          "hover:bg-pink-50",
-          isFavorite ? "text-pink-500" : "text-gray-400"
+          "hover:bg-brand-pink",
+          isFavorite ? "text-brand-pink" : "text-gray-400"
         )}
       >
         <Heart className="h-5 w-5 text-health-success" fill={isFavorite ? "currentColor" : "none"} />

@@ -111,7 +111,7 @@ const getCategoryColor = (categoryId: string): string => {
     'heart-health': 'bg-red-600',
     'liver-health': 'bg-yellow-600',
     'kidney-health': 'bg-[#081129]',
-    'fertility': 'bg-pink-500',
+    'fertility': 'bg-brand-pink',
     'general-health': 'bg-gray-500',
     'allergy-testing': 'bg-cyan-500',
     'cancer-screening': 'bg-indigo-500'

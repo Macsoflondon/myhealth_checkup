@@ -72,7 +72,7 @@ const getCategoryColour = (categoryId: string) => {
     'cancer-screening': 'bg-slate-700',
     'heart-health': 'bg-rose-500',
     'mens-health': 'bg-blue-500',
-    'womens-health': 'bg-pink-500',
+    'womens-health': 'bg-brand-pink',
     'fertility': 'bg-violet-500',
     'general-health': 'bg-teal-500',
     'allergy-testing': 'bg-indigo-500',
@@ -93,7 +93,7 @@ const testCategoryCards: Array<{
 }> = [
   { name: "Most Popular Tests", path: "/popular-tests", icon: Sparkles, bg: "bg-amber-500" },
   { name: "General Wellness", path: "/wellness", icon: Stethoscope, bg: "bg-teal-500" },
-  { name: "Women's Health", path: "/womens-health", icon: Users, bg: "bg-pink-500" },
+  { name: "Women's Health", path: "/womens-health", icon: Users, bg: "bg-brand-pink" },
   { name: "Men's Health", path: "/mens-health", icon: Users, bg: "bg-blue-500" },
   { name: "Sports-Fitness Health", path: "/sports-performance", icon: Dumbbell, bg: "bg-sky-500" },
   { name: "Fertility - Prenatal", path: "/fertility-tests", icon: Baby, bg: "bg-violet-500" },

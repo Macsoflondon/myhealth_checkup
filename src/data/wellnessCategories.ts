@@ -95,8 +95,8 @@ export const wellnessCategories: WellnessCategory[] = [
   {
     id: "antibody-tests",
     name: "Antibody Tests",
-    colorClass: "bg-pink-500",
-    colorHex: "#EC4899",
+    colorClass: "bg-brand-pink",
+    colorHex: "#e70d69",
     icon: TestTube2,
     description: "Antibody screening and autoimmune disease detection",
     testCount: 2,
@@ -125,8 +125,8 @@ export const wellnessCategories: WellnessCategory[] = [
   {
     id: "autoimmunity-tests",
     name: "Autoimmunity Tests",
-    colorClass: "bg-pink-600",
-    colorHex: "#DB2777",
+    colorClass: "bg-brand-pink",
+    colorHex: "#e70d69",
     icon: Flame,
     description: "Autoimmune condition screening and monitoring",
     testCount: 2,

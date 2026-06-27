@@ -38,7 +38,7 @@ function getCategoryTag(id: string): string {
 
 const tagColors: Record<string, string> = {
   PREVENTIVE: "#00d4c8",
-  ESSENTIAL: "#e91e8c",
+  ESSENTIAL: "#e70d69",
   CRITICAL: "#ff4d6d",
   WELLNESS: "#00c896",
   IMMUNE: "#9b59b6",
@@ -138,9 +138,9 @@ const TestCategoriesPage = () => {
                   width: 6,
                   height: 6,
                   borderRadius: "50%",
-                  background: "#e91e8c",
+                  background: "#e70d69",
                   display: "inline-block",
-                  boxShadow: "0 0 8px #e91e8c",
+                  boxShadow: "0 0 8px #e70d69",
                 }}
               />
               <span
@@ -148,7 +148,7 @@ const TestCategoriesPage = () => {
                   fontSize: 11,
                   fontWeight: 700,
                   letterSpacing: "0.12em",
-                  color: "#e91e8c",
+                  color: "#e70d69",
                   textTransform: "uppercase",
                 }}
               >
@@ -169,7 +169,7 @@ const TestCategoriesPage = () => {
               Browse Tests by{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #00d4c8, #e91e8c)",
+                  background: "linear-gradient(135deg, #00d4c8, #e70d69)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                 }}
@@ -457,7 +457,7 @@ const TestCategoriesPage = () => {
                   padding: "14px 32px",
                   borderRadius: 12,
                   border: "none",
-                  background: "linear-gradient(135deg, #e91e8c, #c2185b)",
+                  background: "linear-gradient(135deg, #e70d69, #e70d69)",
                   color: "#fff",
                   fontSize: 14,
                   fontWeight: 700,
