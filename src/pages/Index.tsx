@@ -198,11 +198,16 @@ const Index = () => {
           <HeroMasthead />
         </div>
 
-        {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
+        {/* Hero + carousel share one continuous light card. The toolbar is rendered
+            inside the hero and becomes sticky once the hero scrolls out. */}
         <div>
-          <BrowseByCategoryBar />
-
-
+          <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+            <HeroMasthead />
+            <TestCategoryTicker
+              variant="inline"
+              className="bg-[#F5F5F5] rounded-t-none rounded-b-[28px] border border-t-0 border-[#081129]/[0.06]"
+            />
+          </div>
 
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />
