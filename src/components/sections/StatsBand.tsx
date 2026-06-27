@@ -14,7 +14,7 @@ export default function StatsBand() {
           </h2>
         </div>
         <div className="relative flex gap-3 flex-wrap">
-          <Link to="/find-test" className="inline-flex items-center gap-2 px-[30px] py-3.5 rounded-full bg-[#22c0d4] hover:bg-[#1aa9bc] text-white text-[15px] font-semibold no-underline transition-colors font-[Montserrat]">
+          <Link to="/find-test" className="inline-flex items-center gap-2 px-[30px] py-3.5 rounded-full bg-[#22c0d4] hover:bg-[#1aa9bc] text-[#081129] text-[15px] font-semibold no-underline transition-colors font-[Montserrat]">
             Find your test <ArrowRight className="w-[15px] h-[15px]" strokeWidth={2.5} />
           </Link>
           <Link to="/compare" className="inline-flex items-center px-[30px] py-3.5 rounded-full border-2 border-white/50 hover:border-white text-white text-[15px] font-semibold no-underline transition-colors font-[Montserrat]">
