@@ -13,7 +13,7 @@ const categories = [
       "Individual biomarkers to comprehensive wellness panels. At-home kits and clinic-based venepuncture from UKAS-accredited laboratories.",
     link: "/wellness",
     linkLabel: "Explore Tests",
-    image: bloodTubesAsset.url,
+    image: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1200&q=85&auto=format&fit=crop",
   },
   {
     tag: "Cancer Screening",
