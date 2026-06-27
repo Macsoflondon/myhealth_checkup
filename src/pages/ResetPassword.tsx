@@ -99,7 +99,7 @@ const ResetPassword = () => {
         <Header />
         <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
           <div className="max-w-md w-full text-center">
-            <p className="text-[#081129]">Verifying reset link...</p>
+            <p className="text-[#22c0d4]">Verifying reset link...</p>
           </div>
         </main>
         <Footer />
