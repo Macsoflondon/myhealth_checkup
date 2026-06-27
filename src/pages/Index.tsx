@@ -18,6 +18,7 @@ const heroSlide1Mobile = heroSlide1MobileAsset.url;
 import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
+import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 
 
 
@@ -194,15 +195,23 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
-          <HeroMasthead />
-        </div>
-
-        {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
+        {/* Sticky scope: hero, toolbar, carousel and every section below share one
+            scroll container so the toolbar can remain pinned to the top of the
+            viewport once it reaches it. */}
         <div>
-          <BrowseByCategoryBar />
+          <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+            <HeroMasthead />
+          </div>
 
+          {/* Toolbar now sits directly under the hero section and becomes sticky. */}
+          <BrowseByCategoryBar compact placement="hero" />
 
+          <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+            <TestCategoryTicker
+              variant="inline"
+              className="bg-[#F5F5F5] rounded-t-none rounded-b-[28px] border border-t-0 border-[#081129]/[0.06]"
+            />
+          </div>
 
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />

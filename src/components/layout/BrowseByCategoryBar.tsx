@@ -55,7 +55,17 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
  *  - "flush" (non-homepage): full-width edge-to-edge bar pinned at the top of the
  *            viewport from the start, no rounding.
  */
-export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "card" | "flush" } = {}) {
+export default function BrowseByCategoryBar({
+  variant = "card",
+  compact = false,
+  placement = "card",
+  className = "",
+}: {
+  variant?: "card" | "flush";
+  compact?: boolean;
+  placement?: "card" | "hero";
+  className?: string;
+} = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -94,23 +104,42 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
 
   const isFlush = variant === "flush";
 
-  // Wrapper margin / mt: both variants get horizontal page-margin + top spacing
-  // so the bar reads as a floating rounded card on every page.
-  const wrapperClass = isFlush
-    ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
-    : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+  // Wrapper margin / mt: compact mode sits flush inside the hero card, so
+  // margins are removed. The "hero" placement is used when the bar sits
+  // directly under the hero section as a separate sticky element; it keeps
+  // the same horizontal margins as the hero card so the edges align.
+  const wrapperClass =
+    placement === "hero"
+      ? "mt-0 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
+      : compact
+      ? "mt-0 mx-0"
+      : isFlush
+      ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
+      : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
   // Inner card styling — fully rounded card when stuck or on flush (non-home) pages.
-  const innerClass = isFlush || stuck
+  // When compact and not yet stuck, the bar sits at the bottom of the hero card,
+  // so its bottom corners are square and its bottom border is removed to avoid a
+  // double border against the hero's outer border.
+  let innerClass = isFlush || stuck
     ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
     : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+
+  if (compact && !stuck && !isFlush) {
+    innerClass = "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+  }
+
+  if (className) {
+    innerClass = `${innerClass} ${className}`;
+  }
+
 
   return (
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
       <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`px-2 sm:px-3 py-2.5 sm:py-3 transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`${compact ? "px-2 py-1.5 sm:py-2" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
 
           <div className="flex items-center gap-2 flex-nowrap">
@@ -123,7 +152,9 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
                     data-testid="category-hamburger"
                     aria-label="Browse categories"
                     aria-expanded={mobileOpen}
-                    className="inline-flex items-center gap-1.5 pl-1.5 pr-2 py-1 rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200"
+                    className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
+                      compact ? "gap-1 pl-1 pr-1.5 py-0.5" : "gap-1.5 pl-1.5 pr-2 py-1"
+                    }`}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor = PINK;
                       e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
@@ -134,12 +165,14 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
                     }}
                   >
                     <span
-                      className="w-[18px] h-[18px] rounded-full inline-flex items-center justify-center shrink-0"
+                      className={`rounded-full inline-flex items-center justify-center shrink-0 ${
+                        compact ? "w-[16px] h-[16px]" : "w-[18px] h-[18px]"
+                      }`}
                       style={{ background: `${PINK}1a` }}
                     >
-                      <Menu className="w-[11px] h-[11px]" style={{ color: PINK }} strokeWidth={2} />
+                      <Menu className={`${compact ? "w-[10px] h-[10px]" : "w-[11px] h-[11px]"}`} style={{ color: PINK }} strokeWidth={2} />
                     </span>
-                    <span className="text-[11px] font-semibold text-[#081129] font-[Montserrat]">
+                    <span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[10px]" : "text-[11px]"}`}>
                       Browse
                     </span>
                   </button>
@@ -198,7 +231,7 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
 
             {/* Scrollable pill strip — only this zone scrolls (desktop only) */}
             <div
-              className="hidden md:flex flex-1 min-w-0 overflow-x-auto scrollbar-none items-center gap-1.5 flex-nowrap"
+              className={`hidden md:flex flex-1 min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap ${compact ? "gap-1" : "gap-1.5"}`}
               style={{
                 WebkitMaskImage:
                   "linear-gradient(to right, #000 0, #000 calc(100% - 16px), transparent 100%)",
@@ -215,7 +248,9 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
                     to={item.path}
                     data-testid="category-pill"
                     data-category={item.name}
-                    className="group inline-flex items-center gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5 rounded-full no-underline bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 shrink-0"
+                    className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${
+                      compact ? "gap-1 pl-1 pr-1.5 py-0.5 sm:pl-1.5 sm:pr-2 sm:py-1" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
+                    }`}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor = color;
                       e.currentTarget.style.boxShadow = `0 8px 20px ${color}26`;
@@ -226,12 +261,14 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
                     }}
                   >
                     <span
-                      className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] rounded-full inline-flex items-center justify-center shrink-0"
+                      className={`rounded-full inline-flex items-center justify-center shrink-0 ${
+                        compact ? "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
+                      }`}
                       style={{ background: `${color}1a` }}
                     >
-                      <Icon className="w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]" style={{ color }} strokeWidth={2} />
+                      <Icon className={`${compact ? "w-[10px] h-[10px] sm:w-[11px] sm:h-[11px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color }} strokeWidth={2} />
                     </span>
-                    <span className="text-[11px] sm:text-[11.5px] font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap">
+                    <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${compact ? "text-[10px] sm:text-[11px]" : "text-[11px] sm:text-[11.5px]"}`}>
                       {item.name}
                     </span>
                   </Link>
@@ -246,7 +283,9 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
                 aria-haspopup="menu"
                 aria-expanded={moreOpen}
                 onClick={() => setMoreOpen((o) => !o)}
-                className="inline-flex items-center gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5 rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200"
+                className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
+                  compact ? "gap-1 pl-1 pr-1.5 py-0.5 sm:pl-1.5 sm:pr-2 sm:py-1" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
+                }`}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = PINK;
                   e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
@@ -257,16 +296,18 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
                 }}
               >
                 <span
-                  className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] rounded-full inline-flex items-center justify-center shrink-0"
+                  className={`rounded-full inline-flex items-center justify-center shrink-0 ${
+                    compact ? "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
+                  }`}
                   style={{ background: `${PINK}1a` }}
                 >
-                  <MoreHorizontal className="w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]" style={{ color: PINK }} strokeWidth={2} />
+                  <MoreHorizontal className={`${compact ? "w-[10px] h-[10px] sm:w-[11px] sm:h-[11px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color: PINK }} strokeWidth={2} />
                 </span>
-                <span className="text-[11px] sm:text-[11.5px] font-semibold text-[#081129] font-[Montserrat]">
+                <span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[10px] sm:text-[11px]" : "text-[11px] sm:text-[11.5px]"}`}>
                   More
                 </span>
                 <ChevronDown
-                  className={`w-3 h-3 text-[#081129]/60 transition-transform ${moreOpen ? "rotate-180" : ""}`}
+                  className={`text-[#081129]/60 transition-transform ${moreOpen ? "rotate-180" : ""} ${compact ? "w-2.5 h-2.5" : "w-3 h-3"}`}
                 />
               </button>
               {moreOpen && (
@@ -281,18 +322,25 @@ export default function BrowseByCategoryBar({ variant = "card" }: { variant?: "c
             {/* Right cluster — mobile: unified soft-pink glass pill; desktop: existing bordered chips */}
             <div
               data-testid="category-bar-right-cluster"
-              className="md:hidden flex items-center bg-[#e70d69]/5 border border-[#e70d69]/10 rounded-full p-0.5 shrink-0 ml-1"
+              className={`md:hidden flex items-center bg-[#e70d69]/5 border border-[#e70d69]/10 rounded-full shrink-0 ml-1 ${compact ? "p-[1px]" : "p-0.5"}`}
             >
-              <LanguageSwitcher variant="glass" />
-              <div className="w-px h-4 bg-[#e70d69]/20 mx-0.5" aria-hidden="true" />
-              <UserMenu variant="glass" />
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <LanguageSwitcher variant="glass" />
+              </div>
+              <div className={`bg-[#e70d69]/20 mx-0.5 ${compact ? "w-px h-3" : "w-px h-4"}`} aria-hidden="true" />
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <UserMenu variant="glass" />
+              </div>
             </div>
             <div
-              className="hidden md:flex items-center gap-1 shrink-0 pl-2 border-l border-[#081129]/10"
+              className={`hidden md:flex items-center shrink-0 pl-2 border-l border-[#081129]/10 ${compact ? "gap-0.5" : "gap-1"}`}
             >
-
-              <LanguageSwitcher />
-              <UserMenu />
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <LanguageSwitcher />
+              </div>
+              <div className={compact ? "scale-90 origin-center" : ""}>
+                <UserMenu />
+              </div>
             </div>
           </div>
         </div>
