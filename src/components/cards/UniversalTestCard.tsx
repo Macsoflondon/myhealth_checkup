@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import {
-  Clock, Home, FlaskConical, CheckCircle, Plus, X, Syringe, Scale,
+  Clock, Home, FlaskConical, CheckCircle, Plus, X, Syringe, Scale, Star, Building2,
 } from "lucide-react";
 import { getProviderMeta } from "@/constants/providerMeta";
 import { getProviderLogo } from "@/constants/providers";
+import { getProviderRating } from "@/constants/providerRatings";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 
@@ -356,7 +357,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         {/* Body — flex column so the bottom block (price + buttons) is always flush */}
         <div className="flex flex-1 flex-col p-4">
           {/* Provider row — fixed height */}
-          <div className="flex items-center justify-between mb-3 h-7 flex-shrink-0">
+          <div className="flex items-center justify-between mb-2 h-7 flex-shrink-0">
             <div className="flex items-center gap-2 min-w-0">
               <div
                 style={{ width: 28, height: 28, background: "#f8fafc", borderRadius: 6, padding: 3, flexShrink: 0 }}
@@ -398,6 +399,47 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               Popular
             </span>
           </div>
+
+          {/* Provider trust row — Trustpilot rating + CQC + collection icon */}
+          {(() => {
+            const rating = getProviderRating(test.provider_id);
+            const isHome = !!test.home_kit_available && !test.clinic_visit_available;
+            const isClinic = !!test.clinic_visit_available && !test.home_kit_available;
+            return (
+              <div
+                className="flex items-center gap-2 mb-2 flex-wrap"
+                style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#64748b", minHeight: 18 }}
+              >
+                <span className="flex items-center gap-0.5" aria-label={`Trustpilot rating ${rating.rating} out of 5`}>
+                  <Star size={12} color="#D4A843" fill="#D4A843" />
+                  <span style={{ fontWeight: 600, color: UTC_NAVY }}>{rating.rating.toFixed(1)}</span>
+                </span>
+                {meta.cqc && (
+                  <span
+                    className="flex items-center gap-0.5"
+                    style={{ color: "#059669", fontWeight: 600 }}
+                    aria-label="CQC regulated"
+                  >
+                    <CheckCircle size={11} /> CQC
+                  </span>
+                )}
+                {meta.ukas && (
+                  <span
+                    className="flex items-center gap-0.5"
+                    style={{ color: "#059669", fontWeight: 600 }}
+                    aria-label="UKAS accredited"
+                  >
+                    <CheckCircle size={11} /> UKAS
+                  </span>
+                )}
+                <span className="flex items-center gap-0.5 ml-auto" aria-hidden="true">
+                  {isHome ? <Home size={12} /> : isClinic ? <Building2 size={12} /> : <Syringe size={12} />}
+                </span>
+              </div>
+            );
+          })()}
+
+
 
           {/* Title — always reserves 2 lines */}
           <div

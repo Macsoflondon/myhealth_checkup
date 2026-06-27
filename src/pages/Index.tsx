@@ -18,6 +18,7 @@ const heroSlide1Mobile = heroSlide1MobileAsset.url;
 import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
+import TrustBar from "@/components/sections/TrustBar";
 
 
 
@@ -200,6 +201,9 @@ const Index = () => {
         {/* Sticky scope: BrowseByCategoryBar pins to top through every section below. */}
         <div>
           <BrowseByCategoryBar />
+          <TrustBar />
+
+
 
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />

@@ -441,26 +441,55 @@ export const AssistedTestFinder = () => {
                 loading="eager"
               />
             </div>
-            <h1 className="sr-only">
-              Find the Right Health Test for You
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-              Answer a few questions about your health goals and we'll recommend the most relevant tests from trusted UK providers.
-            </p>
-            <Button
-              onClick={handleStart}
-              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
+
+            {/* Distinct "consultation zone" container with reassurance */}
+            <div
+              className="mx-auto mb-6 rounded-2xl p-6 text-left"
+              style={{
+                background: "linear-gradient(180deg, #FAFAF8 0%, #ffffff 100%)",
+                border: "1px solid rgba(34,192,212,0.25)",
+                boxShadow: "0 4px 24px rgba(8,17,41,0.06)",
+              }}
             >
-              Start Quiz
-            </Button>
-            <p className="text-sm text-muted-foreground mt-6">
-              🔒 Your answers are not stored. This tool does not provide medical advice.
-            </p>
+              <div className="flex items-center gap-2 mb-3">
+                <Shield className="w-5 h-5 text-secondary" />
+                <span className="text-xs font-bold uppercase tracking-wider text-secondary">
+                  AI Test Assistant
+                </span>
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3 font-montserrat">
+                Find the right health test for you
+              </h1>
+              <p className="text-base text-muted-foreground mb-4">
+                Answer a few short questions and we'll suggest relevant tests from accredited UK providers — based on your goals, not a diagnosis.
+              </p>
+              <ul className="space-y-1.5 text-sm text-muted-foreground mb-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-secondary mt-0.5">🔒</span>
+                  <span>Your answers are <strong>anonymous</strong> and never linked to your identity.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-secondary mt-0.5">🩺</span>
+                  <span>We suggest tests to <strong>consider</strong> — we do not diagnose or replace your GP.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-secondary mt-0.5">🗑️</span>
+                  <span>Quiz inputs are <strong>not stored</strong> against your account.</span>
+                </li>
+              </ul>
+              <Button
+                onClick={handleStart}
+                className="w-full sm:w-auto bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
+              >
+                Start Quiz
+              </Button>
+            </div>
           </div>
         </div>
       </div>
     );
   }
+
 
   // === LOADING ===
   if (currentStep === 'loading') {
@@ -484,7 +513,7 @@ export const AssistedTestFinder = () => {
   // === RESULTS ===
   if (currentStep === 'results' && results) {
     return (
-      <div className="bg-white min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]" aria-live="polite" aria-atomic="false">
         <NavigationControls />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
