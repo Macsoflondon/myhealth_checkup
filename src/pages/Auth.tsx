@@ -252,7 +252,7 @@ const Auth = () => {
               Reset Password
             </h2>
             
-            <p className="text-sm text-[#081129] text-center mb-6">
+            <p className="text-sm text-[#22c0d4] text-center mb-6">
               Enter your email address and we'll send you a link to reset your password.
             </p>
 
@@ -292,7 +292,7 @@ const Auth = () => {
                 <button
                   type="button"
                   onClick={() => setIsForgotPassword(false)}
-                  className="hover:underline text-center text-base text-[#081129] font-medium"
+                  className="hover:underline text-center text-base text-[#22c0d4] font-medium"
                 >
                   Back to Sign In
                 </button>
@@ -402,7 +402,7 @@ const Auth = () => {
                 />
                 <Label
                   htmlFor="rememberMe"
-                  className="text-sm font-normal text-[#081129] cursor-pointer"
+                  className="text-sm font-normal text-[#22c0d4] cursor-pointer"
                 >
                   Remember me
                 </Label>
@@ -427,7 +427,7 @@ const Auth = () => {
             </div>
 
             <div className="text-center mt-2">
-              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-white font-medium">
+              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-[#22c0d4] font-medium">
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
             </div>

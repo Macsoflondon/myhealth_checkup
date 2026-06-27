@@ -1,37 +1,27 @@
-## Wire up the Goodbody wheel CTAs to real destinations
+## Goal
+Make all currently invisible text on the auth pages visible by using the brand turquoise colour, and switch the "Don't have an account? Sign Up" toggle from white back to turquoise so it matches the other links/headings.
 
-Update `src/components/sections/FeaturedPartnerWheel.tsx` so the three button groups deep-link to the right places instead of being dead `<button>` elements.
+## Scope
+Audit and update the full auth flow:
+- `/auth` (sign-in, sign-up, and forgot-password views)
+- `/reset-password`
 
-### 1. Modal "Book this test" → "Compare this test"
+## Findings so far
+The auth pages sit on a dark navy (`#081129`) background. Several text elements are currently navy (`text-[#081129]`) and therefore invisible:
+- `/auth` sign-in: "Remember me" label, "Don't have an account? Sign Up" toggle (now white, user wants turquoise), "Already have an account? Sign In" toggle in sign-up mode
+- `/auth` forgot-password: "Enter your email address..." helper text, "Back to Sign In" link
+- `/reset-password`: likely reuses similar dark-background styling; needs a quick pass
 
-Rename the primary modal CTA and route it to the category compare page that matches the selected kit. Add a per-kit `compareHref` to the `FeaturedKit` type (optional) and a `categorySlug` on the built-in `DEFAULT_KITS`, then resolve through this map:
+The brand turquoise used for headings and links is `#22c0d4`.
 
-| Kit | Destination |
-|---|---|
-| Bowel Cancer Screening | `/tests/cancer` |
-| HPV Cervical Cancer Screening | `/tests/cancer` |
-| Early Cancer Screening | `/tests/cancer` |
-| Lung Cancer Screening | `/tests/cancer` |
-| Prostate PSA | `/tests/cancer` |
-| Advanced Well Woman | `/tests/womens-health` |
-| Female Hormone & Fertility | `/hormones` |
-| Advanced Well Man | `/tests/mens-health` |
-| Premium Complete | `/wellness` |
-| Sports & Fitness | `/sports-performance` |
+## Plan
+1. **Audit** `src/pages/Auth.tsx` and `src/pages/ResetPassword.tsx` for any `text-[#081129]` or `text-primary` classes used on the dark navy background.
+2. **Replace** those invisible navy classes with `text-[#22c0d4]` so they match the visible "Sign In" heading and "Forgot password?" link.
+3. **Revert** the "Don't have an account? Sign Up" / "Already have an account? Sign In" toggle from `text-white` to `text-[#22c0d4]`.
+4. **Verify** contrast and preview the three auth states (sign-in, sign-up, forgot-password) plus the reset-password page.
 
-Convert the `<button>` to a react-router `<Link to={compareHref}>` styled identically. Label: **Compare this test**.
+## No new dependencies or backend changes
+This is a pure styling change in existing React components.
 
-### 2. Idle blurb "Explore the range" → Goodbody Browse Available Tests
-
-Change the existing `<button>Explore the range</button>` to a `<Link to="/providers/goodbody-clinic">` — that's the catalog route already used by the provider profile's "Browse Available Tests" CTA, so users land on the full Goodbody test list.
-
-### 3. Idle blurb "Visit Goodbody" → Goodbody provider profile
-
-Repoint the second button to `<Link to="/provider/goodbody-clinic">Visit Goodbody</Link>` (internal profile page), dropping the `ExternalLink` styling assumptions. Keep label "Visit Goodbody".
-
-### Technical notes
-
-- Add `import { Link } from "react-router-dom";` to the file.
-- Keep the existing inline styles; just swap the element from `button` to `Link` (Link accepts `style`).
-- The modal "Back" button stays as-is (close handler).
-- No other files change. Provider profile and catalog routes already exist (`/provider/:providerId`, `/providers/goodbody-clinic`).
+## Outcome
+All auth-page text becomes readable on the dark navy background, and the sign-up toggle matches the existing turquoise accent colour.

@@ -99,7 +99,7 @@ const ResetPassword = () => {
         <Header />
         <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
           <div className="max-w-md w-full text-center">
-            <p className="text-[#081129]">Verifying reset link...</p>
+            <p className="text-[#22c0d4]">Verifying reset link...</p>
           </div>
         </main>
         <Footer />
@@ -120,7 +120,7 @@ const ResetPassword = () => {
             Set New Password
           </h2>
           
-          <p className="text-sm text-[#081129] text-center mb-6">
+          <p className="text-sm text-[#22c0d4] text-center mb-6">
             Please enter your new password below.
           </p>
 
@@ -189,7 +189,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => navigate("/auth")}
-                className="hover:underline text-center text-base text-[#081129] font-medium"
+                className="hover:underline text-center text-base text-[#22c0d4] font-medium"
               >
                 Back to Sign In
               </button>
