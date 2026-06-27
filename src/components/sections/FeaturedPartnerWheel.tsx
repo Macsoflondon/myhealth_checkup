@@ -54,6 +54,8 @@ export type FeaturedKit = {
   biomarkers?: string;
   collection?: string;
   about?: string;
+  /** Optional override for the "Compare this test" CTA destination. */
+  compareHref?: string;
 };
 
 export type FeaturedPartnerWheelProps = {
