@@ -154,12 +154,42 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${serviceKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+  const authHeader = req.headers.get('Authorization') ?? '';
+
+  // Accept either the service-role bearer (cron / server callers) or an
+  // authenticated admin user's JWT (Control Centre UI).
+  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
+  let isAdmin = false;
+  if (!isServiceRole) {
+    if (!authHeader || !supabaseUrl || !anonKey) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: missing bearer token' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const userClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
     });
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+    if (userErr || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: invalid session' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const { data: hasAdmin } = await userClient.rpc('has_role', { _user_id: user.id, _role: 'admin' });
+    if (!hasAdmin) {
+      return new Response(JSON.stringify({ error: 'Admin role required' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    isAdmin = true;
   }
+  void isAdmin;
+
 
   try {
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
