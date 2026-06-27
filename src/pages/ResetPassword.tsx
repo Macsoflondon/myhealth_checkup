@@ -189,7 +189,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => navigate("/auth")}
-                className="hover:underline text-center text-base text-[#081129] font-medium"
+                className="hover:underline text-center text-base text-[#22c0d4] font-medium"
               >
                 Back to Sign In
               </button>
