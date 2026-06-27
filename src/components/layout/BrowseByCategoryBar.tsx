@@ -105,12 +105,17 @@ export default function BrowseByCategoryBar({
   const isFlush = variant === "flush";
 
   // Wrapper margin / mt: compact mode sits flush inside the hero card, so
-  // margins are removed. Flush retains full-width edge-to-edge feel.
-  const wrapperClass = compact
-    ? "mt-0 mx-0"
-    : isFlush
-    ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
-    : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+  // margins are removed. The "hero" placement is used when the bar sits
+  // directly under the hero section as a separate sticky element; it keeps
+  // the same horizontal margins as the hero card so the edges align.
+  const wrapperClass =
+    placement === "hero"
+      ? "mt-0 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
+      : compact
+      ? "mt-0 mx-0"
+      : isFlush
+      ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
+      : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
   // Inner card styling — fully rounded card when stuck or on flush (non-home) pages.
   // When compact and not yet stuck, the bar sits at the bottom of the hero card,
