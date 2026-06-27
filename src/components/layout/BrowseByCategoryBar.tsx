@@ -117,16 +117,17 @@ export default function BrowseByCategoryBar({
       ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
       : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
-  // Inner card styling — fully rounded card when stuck or on flush (non-home) pages.
-  // When compact and not yet stuck, the bar sits at the bottom of the hero card,
-  // so its bottom corners are square and its bottom border is removed to avoid a
-  // double border against the hero's outer border.
+  // Inner card styling. When the bar is part of the unified hero/toolbar/carousel
+  // container (compact + placement="hero"), it sits in the middle of the stack:
+  // no rounded corners, no top/bottom borders so it fuses with the hero above and
+  // the carousel below. When stuck or on flush pages it becomes a fully rounded
+  // pinned card.
   let innerClass = isFlush || stuck
     ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]"
     : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
 
   if (compact && !stuck && !isFlush) {
-    innerClass = "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
+    innerClass = "rounded-none bg-[#F5F5F5] border-x border-[#081129]/[0.06]";
   }
 
   if (className) {
@@ -139,10 +140,10 @@ export default function BrowseByCategoryBar({
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
       <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`${compact ? "px-2 py-1.5 sm:py-2" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`${compact ? "px-3 py-3 sm:py-4" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
 
-          <div className="flex items-center gap-2 flex-nowrap">
+          <div className={`flex items-center gap-2 flex-nowrap ${compact ? "justify-center" : ""}`}>
             {/* Mobile: hamburger that opens a category sheet */}
             <div className="flex md:hidden items-center shrink-0">
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -231,7 +232,7 @@ export default function BrowseByCategoryBar({
 
             {/* Scrollable pill strip — only this zone scrolls (desktop only) */}
             <div
-              className={`hidden md:flex flex-1 min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap ${compact ? "gap-1" : "gap-1.5"}`}
+              className={`hidden md:flex min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap ${compact ? "gap-2 justify-center" : "flex-1 gap-1.5"}`}
               style={{
                 WebkitMaskImage:
                   "linear-gradient(to right, #000 0, #000 calc(100% - 16px), transparent 100%)",
@@ -249,7 +250,7 @@ export default function BrowseByCategoryBar({
                     data-testid="category-pill"
                     data-category={item.name}
                     className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${
-                      compact ? "gap-1 pl-1 pr-1.5 py-0.5 sm:pl-1.5 sm:pr-2 sm:py-1" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
+                      compact ? "gap-2 pl-2 pr-3 py-1.5 sm:pl-2.5 sm:pr-3.5 sm:py-2" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
                     }`}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor = color;
@@ -262,13 +263,13 @@ export default function BrowseByCategoryBar({
                   >
                     <span
                       className={`rounded-full inline-flex items-center justify-center shrink-0 ${
-                        compact ? "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
+                        compact ? "w-[22px] h-[22px] sm:w-[26px] sm:h-[26px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
                       }`}
                       style={{ background: `${color}1a` }}
                     >
-                      <Icon className={`${compact ? "w-[10px] h-[10px] sm:w-[11px] sm:h-[11px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color }} strokeWidth={2} />
+                      <Icon className={`${compact ? "w-[13px] h-[13px] sm:w-[15px] sm:h-[15px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color }} strokeWidth={2} />
                     </span>
-                    <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${compact ? "text-[10px] sm:text-[11px]" : "text-[11px] sm:text-[11.5px]"}`}>
+                    <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${compact ? "text-[13px] sm:text-[15px] md:text-base" : "text-[11px] sm:text-[11.5px]"}`}>
                       {item.name}
                     </span>
                   </Link>

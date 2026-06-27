@@ -209,7 +209,7 @@ const Index = () => {
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <TestCategoryTicker
               variant="inline"
-              className="bg-[#F5F5F5] rounded-t-none rounded-b-[28px] border border-t-0 border-[#081129]/[0.06]"
+              className="bg-[#F5F5F5] rounded-none border-x border-[#081129]/[0.06] pt-4 sm:pt-6"
             />
           </div>
 
