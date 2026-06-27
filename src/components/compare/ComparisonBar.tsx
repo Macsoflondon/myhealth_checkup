@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CompareTestData } from "@/services/CompareService";
-import { X, ArrowRight, GitCompare, GripVertical } from "lucide-react";
+import { X, ArrowRight, GitCompare, GripVertical, ChevronDown, ChevronUp, Scale } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@/hooks";
 
@@ -17,12 +17,15 @@ export const ComparisonBar = ({
   selectedTests,
   onRemoveTest,
   onCompare,
-  onClearAll
+  onClearAll,
 }: ComparisonBarProps) => {
   const [orderedTests, setOrderedTests] = React.useState(selectedTests);
+  const [mobileCollapsed, setMobileCollapsed] = React.useState(true);
 
   React.useEffect(() => {
     setOrderedTests(selectedTests);
+    // Auto-expand when first test added
+    if (selectedTests.length === 1) setMobileCollapsed(false);
   }, [selectedTests]);
 
   const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
@@ -31,15 +34,66 @@ export const ComparisonBar = ({
     getId: (test) => test.id,
   });
 
-  if (selectedTests.length === 0) return null;
+  const isEmpty = selectedTests.length === 0;
 
+  // === GHOST EMPTY STATE ===========================================
+  if (isEmpty) {
+    return (
+      <div
+        className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none"
+        role="region"
+        aria-label="Comparison tray (empty)"
+        aria-live="polite"
+      >
+        {/* Mobile: floating badge bottom-right */}
+        <div className="sm:hidden flex justify-end px-3 pb-3">
+          <div className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full border border-dashed border-brand-navy/40 bg-white/90 backdrop-blur px-3 py-1.5 shadow-md text-xs font-semibold text-brand-navy/70">
+            <Scale className="h-3.5 w-3.5" aria-hidden="true" />
+            0/5
+          </div>
+        </div>
+
+        {/* Desktop: dashed onboarding strip */}
+        <div className="hidden sm:block">
+          <div className="container mx-auto max-w-7xl px-4 pb-3">
+            <div className="pointer-events-auto rounded-t-2xl border-2 border-dashed border-brand-navy/25 border-b-0 bg-white/80 backdrop-blur-sm px-5 py-3 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-pulse-soft">
+              <Scale className="h-4 w-4 text-brand-navy/60" aria-hidden="true" />
+              <span>
+                Select up to 5 tests to compare prices, biomarkers &amp; collection methods.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // === ACTIVE TRAY ================================================
   return (
     <div
       className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border shadow-2xl animate-slideUp"
       role="region"
       aria-label="Comparison tray"
+      aria-live="polite"
     >
-      <div className="container mx-auto max-w-7xl px-3 sm:px-4 py-3 sm:py-4">
+      {/* Mobile collapsed pill */}
+      <div className={cn("sm:hidden", !mobileCollapsed && "hidden")}>
+        <button
+          onClick={() => setMobileCollapsed(false)}
+          className="w-full flex items-center justify-between px-4 py-3 text-brand-navy"
+          aria-expanded="false"
+          aria-label={`Expand comparison tray, ${selectedTests.length} of 5 selected`}
+        >
+          <span className="flex items-center gap-2 font-bold text-sm">
+            <Scale className="h-4 w-4" />
+            Comparing
+            <Badge className="bg-brand-navy text-white">{selectedTests.length}/5</Badge>
+          </span>
+          <ChevronUp className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className={cn("container mx-auto max-w-7xl px-3 sm:px-4 py-3 sm:py-4", mobileCollapsed && "hidden sm:block")}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Left: Selected Tests */}
           <div className="flex items-center gap-3 flex-1 overflow-hidden min-w-0">
@@ -48,12 +102,16 @@ export const ComparisonBar = ({
               <span className="font-heading font-bold text-sm whitespace-nowrap text-brand-navy hidden sm:inline">
                 Comparing
               </span>
-              <Badge className="bg-brand-navy text-white">
-                {selectedTests.length}/5
-              </Badge>
+              <Badge className="bg-brand-navy text-white">{selectedTests.length}/5</Badge>
+              <button
+                onClick={() => setMobileCollapsed(true)}
+                className="sm:hidden ml-1 p-1 rounded hover:bg-muted"
+                aria-label="Collapse comparison tray"
+              >
+                <ChevronDown className="h-4 w-4" />
+              </button>
             </div>
 
-            {/* Selected Test Pills — horizontal scroll on overflow */}
             <div className="flex gap-2 overflow-x-auto flex-1 scrollbar-hide -mx-1 px-1">
               {orderedTests.map((test, index) => (
                 <div
@@ -101,7 +159,6 @@ export const ComparisonBar = ({
             >
               Clear
             </Button>
-
             <Button
               onClick={onCompare}
               disabled={orderedTests.length < 2}
