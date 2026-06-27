@@ -56,7 +56,7 @@ export const ComparisonBar = ({
         {/* Desktop: dashed onboarding strip */}
         <div className="hidden sm:block">
           <div className="container mx-auto max-w-7xl px-4 pb-3">
-            <div className="pointer-events-auto rounded-t-2xl border-2 border-dashed border-brand-navy/25 border-b-0 bg-white/80 backdrop-blur-sm px-5 py-3 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-pulse-soft">
+            <div className="pointer-events-auto rounded-t-2xl border-2 border-dashed border-brand-navy/25 border-b-0 bg-white/80 backdrop-blur-sm px-5 py-3 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-pulse">
               <Scale className="h-4 w-4 text-brand-navy/60" aria-hidden="true" />
               <span>
                 Select up to 5 tests to compare prices, biomarkers &amp; collection methods.
