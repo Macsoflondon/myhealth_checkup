@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { SectionHeading } from "@/components/ui/section-heading";
-import bloodTubesAsset from "@/assets/blood-test-tubes.jpeg.asset.json";
+import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
+
 
 const categories = [
   {
