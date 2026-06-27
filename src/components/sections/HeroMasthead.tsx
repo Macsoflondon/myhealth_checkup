@@ -48,7 +48,7 @@ const CATEGORY_META: Record<string, { color: string; to: string }> = {
   Heart: { color: "#ef4444", to: "/tests/heart" },
   Thyroid: { color: "#7c3aed", to: "/thyroid" },
   Diabetes: { color: "#f59e0b", to: "/tests/diabetes" },
-  Fertility: { color: "#ec4899", to: "/fertility-tests" },
+  Fertility: { color: "#e70d69", to: "/fertility-tests" },
   Vitamins: { color: "#16a34a", to: "/tests/vitamins" },
 };
 

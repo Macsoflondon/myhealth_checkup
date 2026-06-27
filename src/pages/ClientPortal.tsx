@@ -178,8 +178,8 @@ export default function ClientPortal() {
 
             <Card className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-pink-500/10 rounded-lg">
-                  <Bell className="h-6 w-6 text-pink-500" />
+                <div className="p-3 bg-brand-pink/10 rounded-lg">
+                  <Bell className="h-6 w-6 text-brand-pink" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">New Insights</p>

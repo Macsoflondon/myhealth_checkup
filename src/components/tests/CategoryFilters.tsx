@@ -19,7 +19,7 @@ const categoryItems: CategoryItem[] = [{
 }, {
   id: 'blood-testing',
   name: 'Blood testing',
-  color: 'bg-pink-500',
+  color: 'bg-brand-pink',
   path: '/blood-testing'
 }, {
   id: 'fertility',
@@ -99,12 +99,12 @@ const categoryItems: CategoryItem[] = [{
 }, {
   id: 'womens-health',
   name: "Women's health",
-  color: 'bg-pink-500',
+  color: 'bg-brand-pink',
   path: '/womens-health'
 }, {
   id: 'all-health',
   name: 'All health articles',
-  color: 'bg-pink-500',
+  color: 'bg-brand-pink',
   path: '/health-blog'
 }];
 const CategoryFilters: React.FC = () => {
