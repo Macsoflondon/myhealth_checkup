@@ -1,19 +1,20 @@
 import { ErrorBoundary } from "../common/ErrorBoundary";
-import StickyCategoryBar from "./StickyCategoryBar";
+import BrowseByCategoryBar from "./BrowseByCategoryBar";
 
 interface HeaderProps {
   className?: string;
 }
 
 /**
- * Global page header. Renders the sticky category toolbar on every page.
- * The PromoTicker carousel has been retired.
+ * Legacy header wrapper kept for pages that have not yet moved to MainLayout.
+ * It now renders the current Browse by Category toolbar, not the retired
+ * StickyCategoryBar.
  */
 const Header = ({ className }: HeaderProps) => {
   return (
     <ErrorBoundary>
       <div className={className}>
-        <StickyCategoryBar />
+        <BrowseByCategoryBar variant="flush" />
       </div>
     </ErrorBoundary>
   );
