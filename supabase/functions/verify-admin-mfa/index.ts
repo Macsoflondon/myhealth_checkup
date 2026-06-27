@@ -15,6 +15,20 @@ interface MFAVerificationResult {
   message: string;
 }
 
+const decodeJwtPayload = (token: string): Record<string, unknown> | null => {
+  try {
+    const [, payload] = token.split('.');
+    if (!payload) return null;
+
+    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+    return JSON.parse(atob(padded));
+  } catch (error) {
+    console.error('Failed to decode JWT payload:', error);
+    return null;
+  }
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -37,6 +51,8 @@ serve(async (req) => {
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    const accessToken = authHeader.replace(/^Bearer\s+/i, '').trim();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
@@ -132,15 +148,13 @@ serve(async (req) => {
     const verifiedTotpFactors = mfaFactors?.totp?.filter(f => f.status === 'verified') || [];
     const hasMFA = verifiedTotpFactors.length > 0;
 
-    // Check the current session's AAL (Authenticator Assurance Level)
-    const { data: aalData, error: aalError } = await userClient.auth.mfa.getAuthenticatorAssuranceLevel();
-    
-    if (aalError) {
-      console.error('Failed to check AAL:', aalError);
-    }
-
-    // AAL2 means the user has verified with MFA in this session
-    const mfaVerified = aalData?.currentLevel === 'aal2';
+    // Check the current session's AAL (Authenticator Assurance Level) directly
+    // from the bearer token. In Edge Functions, createClient(...Authorization)
+    // authenticates getUser()/listFactors(), but it does not persist a browser
+    // session for auth.mfa.getAuthenticatorAssuranceLevel(), which caused the
+    // admin UI to remain stuck on the MFA screen after a valid code.
+    const tokenPayload = decodeJwtPayload(accessToken);
+    const mfaVerified = tokenPayload?.aal === 'aal2';
 
     const result: MFAVerificationResult = {
       isAdmin: true,
