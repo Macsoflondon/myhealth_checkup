@@ -137,11 +137,22 @@ html, body {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Additive clinical tokens (do NOT replace brand turquoise/pink/navy) */
+    --premium-gold: 43 64% 55%;            /* #D4A843 — provider-of-the-month / premium badges */
+    --premium-gold-foreground: 224 67% 10%;
+    --clinical-success: 160 84% 31%;       /* #059669 — biomarker "included" / positive states */
+    --clinical-success-foreground: 0 0% 100%;
+    --clinical-alert: 0 74% 50%;           /* #DC2626 — clinical alerts only, never decorative */
+    --clinical-alert-foreground: 0 0% 100%;
+    --surface-warm: 60 14% 98%;            /* #FAFAF8 — warm off-white surface */
+    --text-charcoal: 240 26% 14%;          /* #1A1A2E — primary text on warm surfaces */
+    --text-warm-grey: 220 9% 46%;          /* #6B7280 — secondary text */
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* 12px — moderate clinical rounding */
 
     --sidebar-background: 220 5% 97%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -921,3 +932,37 @@ html, body {
 .hero-slide { object-position: var(--pos-m, center center); }
 @media (min-width: 640px) { .hero-slide { object-position: var(--pos-t, var(--pos-m, center center)); } }
 @media (min-width: 1024px) { .hero-slide { object-position: var(--pos-d, var(--pos-t, center center)); } }
+
+/* ---------------------------------------------------------------- */
+/* Clinical spacing system — generous breathing room signals quality */
+/* ---------------------------------------------------------------- */
+@layer components {
+  /* Section vertical rhythm: 48px mobile, 64px desktop */
+  .section-y { @apply py-12 lg:py-16; }
+  .section-y-lg { @apply py-16 lg:py-24; }
+
+  /* Max content width: 1200px to prevent cognitive overload on wide screens */
+  .container-clinical {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
+    max-width: 1200px;
+  }
+
+  /* Clinical card: 24px interior padding, 12px radius */
+  .card-clinical {
+    @apply rounded-xl bg-card p-6;
+  }
+
+  /* Card grid: 32px gap (not 16px) — breathing room signals premium */
+  .grid-clinical {
+    @apply grid gap-8;
+  }
+}
+
+/* Premium / clinical semantic accents (additive — do not replace brand) */
+.text-premium-gold { color: hsl(var(--premium-gold)); }
+.bg-premium-gold { background-color: hsl(var(--premium-gold)); }
+.text-clinical-success { color: hsl(var(--clinical-success)); }
+.bg-clinical-success { background-color: hsl(var(--clinical-success)); }
+.text-clinical-alert { color: hsl(var(--clinical-alert)); }
+.bg-clinical-alert { background-color: hsl(var(--clinical-alert)); }
+

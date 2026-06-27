@@ -21,13 +21,18 @@ export default {
     	},
     	container: {
     		center: true,
-    		padding: '2rem',
+    		padding: {
+    			DEFAULT: '1rem',
+    			sm: '1.5rem',
+    			lg: '2rem',
+    			xl: '2rem'
+    		},
 		screens: {
 			sm: '640px',
 			md: '720px',
 			lg: '1024px',
-			xl: '1400px',
-			'2xl': '1536px'
+			xl: '1200px',
+			'2xl': '1200px'
 		}
     	},
     	extend: {
@@ -125,6 +130,21 @@ export default {
     			'brand-turquoise': 'hsl(187 72% 48%)',
     			'brand-pink': 'hsl(335 89% 48%)',
     			'brand-navy': 'hsl(224 67% 10%)',
+    			'premium-gold': {
+    				DEFAULT: 'hsl(var(--premium-gold))',
+    				foreground: 'hsl(var(--premium-gold-foreground))'
+    			},
+    			'clinical-success': {
+    				DEFAULT: 'hsl(var(--clinical-success))',
+    				foreground: 'hsl(var(--clinical-success-foreground))'
+    			},
+    			'clinical-alert': {
+    				DEFAULT: 'hsl(var(--clinical-alert))',
+    				foreground: 'hsl(var(--clinical-alert-foreground))'
+    			},
+    			'surface-warm': 'hsl(var(--surface-warm))',
+    			'text-charcoal': 'hsl(var(--text-charcoal))',
+    			'text-warm-grey': 'hsl(var(--text-warm-grey))',
     			health: {
     				'50': 'hsl(186 75% 97%)',
     				'100': 'hsl(186 75% 94%)',
