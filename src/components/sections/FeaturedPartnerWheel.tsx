@@ -1,6 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+
+const COMPARE_HREF_BY_NAME: Record<string, string> = {
+  "Bowel Cancer Screening": "/tests/cancer",
+  "HPV Cervical Cancer Screening": "/tests/cancer",
+  "Early Cancer Screening": "/tests/cancer",
+  "Lung Cancer Screening": "/tests/cancer",
+  "Prostate PSA": "/tests/cancer",
+  "Advanced Well Woman": "/tests/womens-health",
+  "Female Hormone & Fertility": "/hormones",
+  "Advanced Well Man": "/tests/mens-health",
+  "Premium Complete": "/wellness",
+  "Sports & Fitness": "/sports-performance",
+};
+const compareHrefFor = (k: { name: string; compareHref?: string }) =>
+  k.compareHref || COMPARE_HREF_BY_NAME[k.name] || "/compare";
+const GOODBODY_CATALOG_HREF = "/providers/goodbody-clinic";
+const GOODBODY_PROFILE_HREF = "/provider/goodbody-clinic";
 
 /**
  * FeaturedPartnerWheel — Goodbody Clinics
