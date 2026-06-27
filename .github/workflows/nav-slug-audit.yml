@@ -57,7 +57,13 @@ jobs:
       - name: Audit nav + sitemap category URLs
         run: node scripts/audit-nav-slugs.mjs
 
+      - name: Audit every provider against the live taxonomy (no orphans)
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+        run: node scripts/audit-provider-taxonomy.mjs
+
       - name: Summarise on failure
         if: failure()
         run: |
-          echo "::error::Nav / sitemap audit failed — at least one URL points to a broken, redirected, or ambiguous category. Fix the taxonomy or the sitemap entries before merging."
+          echo "::error::Audit failed — at least one URL points to a broken/redirected/ambiguous category, or a provider has orphaned products. Fix the taxonomy, sitemap entries, or aliases before merging."
