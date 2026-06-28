@@ -122,20 +122,20 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
         <Wordmark />
-        <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
-          <Link to="/compare" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Compare</Link>
-          <Link to="/test-categories" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Categories</Link>
-          <Link to="/find-test" className="text-[#e70d69]">Find your test</Link>
+        <nav className="hidden sm:flex gap-6 text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.18em] font-[Montserrat]">
+          <Link to="/compare" className="text-brand-navy hover:text-brand-turquoise transition-colors">Compare</Link>
+          <Link to="/test-categories" className="text-brand-navy hover:text-brand-turquoise transition-colors">Categories</Link>
+          <Link to="/find-test" className="text-brand-pink">Find your test</Link>
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
-        Compare<span className="text-[#22c0d4]">.</span>
+      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-brand-navy m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
+        Compare<span className="text-brand-turquoise">.</span>
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2">
-        <span className="text-[13px] sm:text-lg font-bold uppercase tracking-[0.08em] font-[Montserrat] text-[#081129] leading-snug">
-          Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
+        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-snug text-[clamp(2.25rem,8vw,4.5rem)]">
+          Your <span className="text-brand-turquoise">health.</span> Your <span className="text-brand-pink">choice.</span> One trusted platform.
         </span>
       </div>
 
