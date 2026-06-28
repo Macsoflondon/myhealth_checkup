@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+
 
 
 import { PROVIDER_LOGOS } from "@/constants/providers";
@@ -140,14 +140,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </span>
       </div>
 
-      <div className="mt-4 sm:mt-6 mb-2">
-        <Link
-          to="/find-test"
-          className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-bold text-sm font-[Montserrat] text-white bg-[#e70d69] hover:bg-[#c40a59] transition-colors"
-        >
-          Find Your Test <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
 
 
 
