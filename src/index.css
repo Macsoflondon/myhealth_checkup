@@ -63,6 +63,11 @@ html, body {
     /* Navy (Brand #081129) */
     --navy: 224 67% 10%;
 
+    /* Brand aliases for hsl(var(--turquoise)) and hsl(var(--pink)) */
+    --turquoise: 187 72% 48%;
+    --pink: 335 89% 48%;
+
+
     /* Tertiary - Navy (Brand #081129) */
     --tertiary: 224 67% 10%;
     --tertiary-foreground: 0 0% 100%;
