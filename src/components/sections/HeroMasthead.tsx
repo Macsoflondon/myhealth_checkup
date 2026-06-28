@@ -207,6 +207,10 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
         {ad && <HeroSalesTestCard ad={ad} />}
 
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 pointer-events-none flex flex-col items-center gap-1 animate-bounce opacity-70">
+          <span className="w-5 h-5 border-b-2 border-r-2 border-white rotate-45 block" />
+        </div>
+
       </div>
 
     </section>
