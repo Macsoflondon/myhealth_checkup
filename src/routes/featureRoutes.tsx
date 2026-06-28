@@ -27,6 +27,7 @@ const ClinilabsPage = lazy(() => import("@/pages/ClinilabsPage"));
 const LondonMedicalLaboratoryPage = lazy(() => import("@/pages/LondonMedicalLaboratoryPage"));
 const LondonHealthCompanyPage = lazy(() => import("@/pages/LondonHealthCompanyPage"));
 const MedicalDiagnosisPage = lazy(() => import("@/pages/MedicalDiagnosisPage"));
+const HiddenGapDetectorPage = lazy(() => import("@/pages/HiddenGapDetectorPage"));
 
 export const featureRoutes = (
   <>
@@ -60,5 +61,6 @@ export const featureRoutes = (
     <Route path="/london-health-company" element={<LondonHealthCompanyPage />} />
     <Route path="/medical-diagnosis" element={<MedicalDiagnosisPage />} />
     <Route path="/blood-test-analysis" element={<BloodTestAnalysisPage />} />
+    <Route path="/hidden-gap-detector" element={<HiddenGapDetectorPage />} />
   </>
 );
