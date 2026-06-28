@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-
-
 import { PROVIDER_LOGOS } from "@/constants/providers";
-import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
-
-
-
+import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
@@ -27,7 +22,6 @@ const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
 const bloodTestKit = bloodTestKitAsset.url;
-const heartMark = heartMarkAsset.url;
 
 // Per-slide focal points tuned for mobile / tablet / desktop crops
 const SLIDES = [
@@ -120,8 +114,13 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-t-[28px] rounded-b-none overflow-hidden bg-[#F5F5F5] border border-b-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-4 sm:pt-7 pb-0 min-h-[84svh] sm:min-h-[96svh] flex flex-col">
-      <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2">
+    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#F5F5F5] border border-b-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[84svh] sm:min-h-[96svh] flex flex-col">
+      <TestCategoryTicker
+        variant="inline"
+        className="bg-[#F5F5F5] border-b border-[#081129]/[0.06] -mx-3 sm:-mx-6 md:-mx-9"
+      />
+
+      <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
         <Wordmark />
         <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
           <Link to="/compare" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Compare</Link>

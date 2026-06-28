@@ -110,7 +110,7 @@ export default function BrowseByCategoryBar({
   // the same horizontal margins as the hero card so the edges align.
   const wrapperClass =
     placement === "hero"
-      ? "mt-0 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
+      ? "mt-0 mx-0"
       : compact
       ? "mt-0 mx-0"
       : isFlush
