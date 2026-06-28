@@ -135,8 +135,8 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2">
-        <span className="text-[11px] sm:text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129] leading-snug">
-          Your <span className="text-[#0a7a87]">health.</span> Your <span className="text-[#c40a59]">choice.</span> One trusted platform.
+        <span className="text-4xl font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129] leading-snug">
+          Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
       </div>
 
