@@ -141,7 +141,7 @@ export default function HeroMasthead({ rotateMs: _rotateMs }: HeroMastheadProps 
           <div className="relative">
             <div
               id="hero-deck-anchor"
-              className="relative w-full h-[420px] sm:h-[480px] lg:h-[540px]"
+              className="relative w-full h-[480px] sm:h-[540px] lg:h-[600px]"
               aria-hidden="true"
             />
           </div>

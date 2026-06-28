@@ -56,7 +56,7 @@ export const DEFAULT_DECK: DeckCard[] = [
 ];
 
 /** A single device-framed mockup card with real test info. */
-function DeckCardFrame({ card, compact = false }: { card: DeckCard; compact?: boolean }) {
+export function DeckCardFrame({ card, compact = false }: { card: DeckCard; compact?: boolean }) {
   return (
     <div
       className="relative w-full h-full rounded-2xl overflow-hidden bg-white shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6),0_10px_30px_-15px_rgba(0,0,0,0.4)] ring-1 ring-black/10"

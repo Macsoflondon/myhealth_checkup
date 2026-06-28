@@ -1,142 +1,146 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { DEFAULT_DECK, type DeckCard } from "./HeroTiltedDeck";
+import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
 
 const NAVY = "#081129";
 
-/**
- * Renders an invisible placeholder div. Exposes its DOMRect through a ref callback.
- * Used as an anchor for the scroll-choreographed cards.
- */
-function Anchor({
-  setRect,
-  className,
-  ariaLabel,
-}: {
-  setRect: (el: HTMLDivElement | null) => void;
-  className?: string;
-  ariaLabel?: string;
-}) {
-  return <div ref={setRect} className={className} aria-label={ariaLabel} aria-hidden="true" />;
+export interface CategoryCard {
+  tag: string;
+  tagVariant: "teal" | "pink";
+  title: string;
+  description: string;
+  link: string;
+  linkLabel: string;
+  image: string;
 }
 
-/** Card visual — copied minimal from HeroTiltedDeck but using compact styling. */
-function CardVisual({ card }: { card: DeckCard }) {
+export const DEFAULT_CATEGORIES: CategoryCard[] = [
+  {
+    tag: "Blood Testing",
+    tagVariant: "teal",
+    title: "Blood Tests & Panels",
+    description:
+      "Individual biomarkers to comprehensive wellness panels. At-home kits and clinic-based venepuncture from UKAS-accredited laboratories.",
+    link: "/wellness",
+    linkLabel: "Explore Tests",
+    image:
+      "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1200&q=85&auto=format&fit=crop",
+  },
+  {
+    tag: "Cancer Screening",
+    tagVariant: "pink",
+    title: "Private Cancer Screening",
+    description:
+      "Multi-cancer early detection tests, tumour markers, and targeted screening for bowel, prostate, ovarian, and other cancers from regulated UK clinics.",
+    link: "/tests/cancer",
+    linkLabel: "Explore Screening",
+    image:
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1200&q=85&auto=format&fit=crop",
+  },
+  {
+    tag: "Wellness",
+    tagVariant: "teal",
+    title: "Wellness & Longevity",
+    description:
+      "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
+    link: "/test-categories",
+    linkLabel: "Explore Panels",
+    image:
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85&auto=format&fit=crop",
+  },
+  {
+    tag: "At Home",
+    tagVariant: "pink",
+    title: "At-Home Test Kits",
+    description:
+      "Convenient finger-prick and sample collection kits delivered to your door. UKAS-accredited lab analysis with results typically returned within days — no clinic visit needed.",
+    link: "/at-home-tests",
+    linkLabel: "Explore Kits",
+    image: fingerprickAsset.url,
+  },
+];
+
+/** Tall portrait category card — image bg, navy gradient, content at bottom. */
+function CategoryCardVisual({ card }: { card: CategoryCard }) {
+  const tealStyle = {
+    background: "rgba(34,192,212,0.18)",
+    color: "#22c0d4",
+    border: "1px solid rgba(34,192,212,0.35)",
+  };
+  const pinkStyle = {
+    background: "rgba(231,13,105,0.18)",
+    color: "#e70d69",
+    border: "1px solid rgba(231,13,105,0.35)",
+  };
   return (
-    <div
-      className="relative w-full h-full rounded-2xl overflow-hidden bg-white shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6),0_10px_30px_-15px_rgba(0,0,0,0.4)] ring-1 ring-black/10"
-      style={{ transformStyle: "preserve-3d" }}
-    >
-      <div className="h-2 w-full" style={{ background: card.providerColor }} />
-      <div className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border-b border-gray-100">
-        <span className="w-2 h-2 rounded-full bg-red-400" />
-        <span className="w-2 h-2 rounded-full bg-yellow-400" />
-        <span className="w-2 h-2 rounded-full bg-green-400" />
-        <span className="ml-3 text-[9px] text-gray-400 font-mono truncate">
-          myhealthcheckup.co.uk{card.to}
-        </span>
-      </div>
-      <div className="p-4 md:p-6">
-        <div className="flex items-center justify-between mb-3">
-          <span
-            className="text-[10px] md:text-xs font-bold uppercase tracking-[0.18em] font-[Montserrat]"
-            style={{ color: card.providerColor }}
-          >
-            {card.provider}
-          </span>
-          <span
-            className="text-[9px] md:text-[10px] font-semibold px-2 py-0.5 rounded-full"
-            style={{ background: `${card.providerColor}15`, color: card.providerColor }}
-          >
-            UKAS · CQC
-          </span>
-        </div>
-        <h3
-          className="font-bold font-[Montserrat] tracking-[-0.02em] leading-[1.05] text-lg md:text-2xl"
-          style={{ color: NAVY }}
+    <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.55),0_10px_30px_-15px_rgba(0,0,0,0.35)] ring-1 ring-black/10 flex flex-col justify-end">
+      <img
+        src={card.image}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(8,17,41,0.97) 0%, rgba(8,17,41,0.65) 60%, rgba(8,17,41,0.15) 100%)",
+        }}
+      />
+      <div className="relative z-10 p-6 sm:p-8">
+        <span
+          className="inline-block font-heading font-bold text-[12px] sm:text-[13px] uppercase tracking-[0.14em] px-3 py-1 rounded-md mb-4"
+          style={card.tagVariant === "teal" ? tealStyle : pinkStyle}
         >
+          {card.tag}
+        </span>
+        <h3 className="font-heading font-bold text-white text-2xl sm:text-3xl leading-tight mb-3">
           {card.title}
         </h3>
-        <p className="mt-1.5 text-[11px] md:text-sm text-gray-500">{card.tagline}</p>
-        <div className="mt-3 md:mt-4 flex flex-wrap gap-1.5">
-          {card.chips.slice(0, 4).map((c) => (
-            <span
-              key={c}
-              className="rounded-full bg-gray-100 text-gray-700 font-medium text-[9px] md:text-xs px-2 py-0.5 md:px-2.5 md:py-1"
-            >
-              {c}
-            </span>
-          ))}
-        </div>
-        <div className="mt-4 md:mt-5 flex items-end justify-between">
-          <div>
-            <div className="text-[9px] uppercase tracking-widest text-gray-400 font-semibold">
-              From
-            </div>
-            <div
-              className="font-bold font-[Montserrat] leading-none text-2xl md:text-3xl"
-              style={{ color: NAVY }}
-            >
-              {card.price}
-            </div>
-          </div>
-          <div
-            className="rounded-full font-semibold font-[Montserrat] text-white text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2"
-            style={{ background: card.providerColor }}
-          >
-            View test →
-          </div>
-        </div>
+        <p className="text-sm sm:text-base text-white/[0.75] leading-relaxed mb-5 line-clamp-5">
+          {card.description}
+        </p>
+        <span className="inline-flex items-center gap-2 font-heading font-bold text-xs sm:text-sm uppercase tracking-[0.12em] text-brand-turquoise">
+          {card.linkLabel} →
+        </span>
       </div>
     </div>
   );
 }
 
 type Rect = { x: number; y: number; w: number; h: number };
-
 function rectFromEl(el: HTMLElement | null): Rect | null {
   if (!el) return null;
   const r = el.getBoundingClientRect();
   return { x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height };
 }
 
-/**
- * Source rects: per-card position in the hero stack (relative to the source anchor).
- * Matches CARD_FRAMES start values from HeroTiltedDeck so the visual starts identical.
- */
+/** Per-card hero stack offsets (relative to source anchor). */
 const STACK_OFFSETS = [
-  { tx: 0.08, ty: 0.06, rot: -3, scale: 1.0, z: 40 },
-  { tx: 0.22, ty: -0.02, rot: 7, scale: 0.95, z: 30 },
-  { tx: -0.06, ty: 0.1, rot: -9, scale: 0.9, z: 20 },
-  { tx: 0.18, ty: 0.14, rot: 12, scale: 0.88, z: 10 },
+  { tx: 0.05, ty: 0.04, rot: -4, scale: 0.92, z: 40 },
+  { tx: 0.22, ty: -0.02, rot: 6, scale: 0.88, z: 30 },
+  { tx: -0.06, ty: 0.1, rot: -8, scale: 0.85, z: 20 },
+  { tx: 0.18, ty: 0.12, rot: 10, scale: 0.82, z: 10 },
 ];
 
 export interface ScrollChoreographedDeckProps {
-  cards?: DeckCard[];
-  /** External ref to the source anchor element (hero right column). */
+  cards?: CategoryCard[];
   sourceAnchorId: string;
 }
 
-/**
- * The animated overlay that travels cards from a hero anchor down into a 2×2 grid.
- * Renders as a `position: absolute` layer over the document so it can move freely
- * across sections without disturbing layout.
- */
 export default function ScrollChoreographedDeck({
-  cards = DEFAULT_DECK,
+  cards = DEFAULT_CATEGORIES,
   sourceAnchorId,
 }: ScrollChoreographedDeckProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
   const slotRefs = useRef<Array<HTMLDivElement | null>>([null, null, null, null]);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([null, null, null, null]);
-
   const [sourceRect, setSourceRect] = useState<Rect | null>(null);
   const [slotRects, setSlotRects] = useState<Array<Rect | null>>([null, null, null, null]);
   const [ready, setReady] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Detect prefers-reduced-motion
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(mq.matches);
@@ -145,7 +149,6 @@ export default function ScrollChoreographedDeck({
     return () => mq.removeEventListener("change", fn);
   }, []);
 
-  // Measure source + slot rects. Re-measure on resize and after layout shifts.
   useLayoutEffect(() => {
     const measure = () => {
       const src = document.getElementById(sourceAnchorId);
@@ -160,7 +163,6 @@ export default function ScrollChoreographedDeck({
     if (src) ro.observe(src);
     window.addEventListener("resize", measure);
     window.addEventListener("load", measure);
-    // Re-measure after fonts/images settle
     const t1 = window.setTimeout(measure, 200);
     const t2 = window.setTimeout(measure, 800);
     return () => {
@@ -172,7 +174,6 @@ export default function ScrollChoreographedDeck({
     };
   }, [sourceAnchorId]);
 
-  // Scroll-driven transform. Use rAF + direct style writes to bypass React per-frame.
   useEffect(() => {
     if (!ready || reducedMotion) return;
     if (!sourceRect) return;
@@ -182,16 +183,12 @@ export default function ScrollChoreographedDeck({
     const animate = () => {
       raf = 0;
       const scrollY = window.scrollY;
-      // Progress 0 → 1 maps from "source rect at viewport center" to
-      // "slot rects fully visible". Use the source bottom hitting top of viewport as 0,
-      // and the grid section top hitting viewport top as 1.
       const srcCenterY = sourceRect.y + sourceRect.h / 2;
       const dstCenterY = (slotRects[0]!.y + slotRects[3]!.y + slotRects[3]!.h) / 2;
       const startScroll = Math.max(0, srcCenterY - window.innerHeight * 0.5);
       const endScroll = Math.max(startScroll + 1, dstCenterY - window.innerHeight * 0.55);
       const raw = (scrollY - startScroll) / (endScroll - startScroll);
       const p = Math.max(0, Math.min(1, raw));
-      // Ease — smoothstep
       const t = p * p * (3 - 2 * p);
 
       for (let i = 0; i < 4; i++) {
@@ -200,20 +197,17 @@ export default function ScrollChoreographedDeck({
         const slot = slotRects[i]!;
         const off = STACK_OFFSETS[i];
 
-        // Source position = source rect + stack offset (scaled by source size)
         const srcX = sourceRect.x + off.tx * sourceRect.w;
         const srcY = sourceRect.y + off.ty * sourceRect.h;
         const srcW = sourceRect.w * off.scale;
         const srcH = sourceRect.h * off.scale;
 
-        // Interpolate top-left + size (in document coords)
         const docX = srcX + (slot.x - srcX) * t;
         const docY = srcY + (slot.y - srcY) * t;
         const w = srcW + (slot.w - srcW) * t;
         const h = srcH + (slot.h - srcH) * t;
         const rot = off.rot * (1 - t);
 
-        // Convert to viewport coords since cards are position: fixed
         const vx = docX - window.scrollX;
         const vy = docY - scrollY;
 
@@ -245,10 +239,7 @@ export default function ScrollChoreographedDeck({
       className="relative bg-[#F5F5F5] px-5 sm:px-8 md:px-12 lg:px-16 py-16 sm:py-20"
     >
       <div className="max-w-[1200px] mx-auto">
-        <div
-          ref={headerRef}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10"
-        >
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
           <div>
             <div className="text-xs tracking-[0.22em] font-semibold uppercase font-[Montserrat] text-gray-500 mb-3">
               Featured Tests
@@ -269,24 +260,26 @@ export default function ScrollChoreographedDeck({
           </Link>
         </div>
 
-        {/* Slot placeholders form the resting 2×2 grid. The animated cards land here. */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {cards.slice(0, 4).map((card, i) => (
-            <div key={card.title} className="relative aspect-[4/3.2] min-h-[280px]">
-              <Anchor
-                setRect={(el) => (slotRefs.current[i] = el)}
+            <div
+              key={card.title}
+              className="relative w-full"
+              style={{ aspectRatio: "3 / 5", minHeight: 480 }}
+            >
+              <div
+                ref={(el) => (slotRefs.current[i] = el)}
                 className="absolute inset-0"
+                aria-hidden="true"
               />
-              {/* On mobile or reduced motion, render static cards inside the slot. */}
               {useStatic && (
-                <Link to={card.to} className="absolute inset-0 block">
-                  <CardVisual card={card} />
+                <Link to={card.link} className="absolute inset-0 block">
+                  <CategoryCardVisual card={card} />
                 </Link>
               )}
-              {/* On mobile (no animation layer), render static cards too. */}
               <div className="absolute inset-0 sm:hidden">
-                <Link to={card.to} className="block w-full h-full">
-                  <CardVisual card={card} />
+                <Link to={card.link} className="block w-full h-full">
+                  <CategoryCardVisual card={card} />
                 </Link>
               </div>
             </div>
@@ -294,14 +287,11 @@ export default function ScrollChoreographedDeck({
         </div>
       </div>
 
-      {/* Animated overlay layer — only on >= sm screens with motion allowed */}
       {!useStatic && (
         <div
           className="hidden sm:block pointer-events-none absolute inset-0"
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
           aria-hidden="true"
         >
-          {/* Cards rendered as fixed-document-position absolute elements. */}
           <div
             className="pointer-events-none"
             style={{ position: "absolute", top: 0, left: 0, width: 0, height: 0 }}
@@ -321,8 +311,12 @@ export default function ScrollChoreographedDeck({
                   transformOrigin: "center center",
                 }}
               >
-                <Link to={card.to} className="block w-full h-full" aria-label={`View ${card.title}`}>
-                  <CardVisual card={card} />
+                <Link
+                  to={card.link}
+                  className="block w-full h-full"
+                  aria-label={card.title}
+                >
+                  <CategoryCardVisual card={card} />
                 </Link>
               </div>
             ))}
