@@ -206,17 +206,20 @@ export default function ScrollChoreographedDeck({
         const srcW = sourceRect.w * off.scale;
         const srcH = sourceRect.h * off.scale;
 
-        // Interpolate top-left + size
-        const x = srcX + (slot.x - srcX) * t;
-        const y = srcY + (slot.y - srcY) * t;
+        // Interpolate top-left + size (in document coords)
+        const docX = srcX + (slot.x - srcX) * t;
+        const docY = srcY + (slot.y - srcY) * t;
         const w = srcW + (slot.w - srcW) * t;
         const h = srcH + (slot.h - srcH) * t;
         const rot = off.rot * (1 - t);
 
-        card.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${rot}deg)`;
+        // Convert to viewport coords since cards are position: fixed
+        const vx = docX - window.scrollX;
+        const vy = docY - scrollY;
+
+        card.style.transform = `translate3d(${vx}px, ${vy}px, 0) rotate(${rot}deg)`;
         card.style.width = `${w}px`;
         card.style.height = `${h}px`;
-        card.style.zIndex = String(off.z + (t > 0.5 ? 0 : 0));
       }
     };
 
