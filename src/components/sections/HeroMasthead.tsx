@@ -136,28 +136,11 @@ export default function HeroMasthead({ rotateMs: _rotateMs }: HeroMastheadProps 
             </div>
           </div>
 
-          {/* RIGHT — 2x2 card grid */}
-          <div className="grid grid-cols-2 gap-4">
-            {CARDS.map((c, idx) => (
-              <Link
-                key={c.title}
-                to={c.to}
-                className="hero-card-anim group rounded-2xl p-5 border border-l-2 transition-all hover:-translate-y-1 hover:border-l-[3px]"
-                style={{
-                  background: "#0D1838",
-                  borderColor: "#1C2E4A",
-                  borderLeftColor: TURQUOISE,
-                  animationDelay: `${idx * 150}ms`,
-                }}
-              >
-                <div className="text-3xl mb-3" aria-hidden>{c.icon}</div>
-                <div className="text-white font-bold font-[Montserrat] text-lg leading-tight">
-                  {c.title}
-                </div>
-                <div className="mt-1 text-sm text-gray-400">{c.sub}</div>
-              </Link>
-            ))}
+          {/* RIGHT — animated tilted deck of test cards */}
+          <div className="relative">
+            <HeroTiltedDeck />
           </div>
+
         </div>
       </div>
 
