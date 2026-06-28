@@ -371,8 +371,12 @@ html, body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .gradient-heading-accent:hover {
     animation: shimmer 4s ease-in-out infinite;
   }
+
 
   @media (prefers-reduced-motion: reduce) {
     .gradient-heading-accent {
@@ -402,12 +406,12 @@ html, body {
       hsl(var(--turquoise)) 100%
     );
     background-size: 200% auto;
-    animation: btn-shimmer 3s linear infinite;
   }
 
   .btn-shimmer:hover {
-    animation-duration: 1.5s;
+    animation: btn-shimmer 1.5s linear infinite;
   }
+
 
   @media (prefers-reduced-motion: reduce) {
     .btn-shimmer {
@@ -458,15 +462,13 @@ html, body {
     perspective: 1000px;
   }
 
-  /* Optimize animations for 60fps */
-  .animate-fade-in, .animate-scale-in, .transition-all {
-    will-change: transform, opacity;
-  }
+  /* Optimize animations for 60fps (selective will-change removed - avoid layer promotion on every element) */
 
   /* Remove will-change after animation completes */
   .animation-complete {
     will-change: auto;
   }
+
 
   /* Content visibility for better rendering */
   .lazy-section {
@@ -509,10 +511,11 @@ html, body {
 
     /* Better text rendering on mobile */
     body {
-      text-rendering: optimizeSpeed;
+      text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
   }
 
   /* Reduce motion for better performance and accessibility */
@@ -755,8 +758,8 @@ html, body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--glass-shadow);
-    animation: float 3s ease-in-out infinite;
   }
+
 
   .glass-card-strong {
     background: hsl(var(--glass-background));
@@ -764,8 +767,8 @@ html, body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--glass-shadow);
-    animation: float 3.5s ease-in-out infinite;
   }
+
 
   /* Brand gradient overlays */
   .gradient-overlay-hero {
