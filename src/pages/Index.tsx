@@ -19,8 +19,6 @@ import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-import ScrollChoreographedDeck from "@/components/sections/ScrollChoreographedDeck";
-
 
 
 
@@ -218,11 +216,6 @@ const Index = () => {
           <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
             <StatsBand />
           </div>
-
-          {/* Featured tests grid — same cards as the hero deck, choreographed
-              to travel down the page as the user scrolls. */}
-          <ScrollChoreographedDeck sourceAnchorId="hero-deck-anchor" />
-
 
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
