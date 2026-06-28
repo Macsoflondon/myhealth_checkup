@@ -1,26 +1,39 @@
-## Swap the two card sets
+Plan
+====
 
-The four tall image cards from `TestCategoriesSection` (Blood Tests, Cancer Screening, Wellness, At-Home) become the scroll-choreographed cards in the hero. The four mock test cards I built (Medichecks, Randox, Goodbody, LML) move down to replace them inside `TestCategoriesSection`.
+Swap the positions of the category pill toolbar (`BrowseByCategoryBar`) and the scrolling category carousel (`TestCategoryTicker`), make the toolbar fit on one line, and join the carousel flush to the bottom of the hero section.
 
-## Changes
+Changes
+-------
 
-1. **`ScrollChoreographedDeck.tsx`** — swap the data + visual:
-   - Replace `DEFAULT_DECK` import with the four category entries (tag, title, description, image, link, linkLabel, tagVariant) copied from `TestCategoriesSection`.
-   - Replace `CardVisual` with a portrait card that matches the existing category-card look: full-bleed background image, navy gradient overlay, tag pill, large heading, description, "Explore X →" link. Same component used in both stack and resting grid.
-   - Change resting grid slots from landscape `aspect-[4/3.2]` to portrait `aspect-[3/5]` (or `min-h-[520px]`) to match category-card proportions.
-   - Keep the same scroll choreography (stack → travel → 2×2 grid) and `hero-deck-anchor` source.
+1. Refactor `HeroMasthead.tsx`
+   - Remove the inline `<TestCategoryTicker variant="inline" />` currently rendered at the bottom of the hero.
+   - Insert the category toolbar at the bottom of the hero section so it sits directly above the hero image footer.
+   - Flatten the hero bottom border-radius (`rounded-b-none`) so the hero and the carousel below read as one continuous card.
 
-2. **`TestCategoriesSection.tsx`** — replace its grid contents with the test-card mockups previously in the hero deck:
-   - Import `DEFAULT_DECK` from `HeroTiltedDeck` (the Medichecks/Randox/Goodbody/LML data).
-   - Render the cards using the existing `DeckCardFrame`-style visual (browser-chrome mock card with chips/price/CTA). Keep the section heading "Every test. Every provider. One transparent platform." intact.
-   - Layout: same 4-up responsive grid (`grid-cols-1 sm:grid-cols-2 xl:grid-cols-4`).
+2. Refactor `Index.tsx`
+   - Remove the `<BrowseByCategoryBar />` from its current position immediately after the hero.
+   - Place `<TestCategoryTicker variant="inline" />` directly after the hero section, inside the hero margin wrapper so it shares the same horizontal margins and sits flush with the hero bottom.
+   - Ensure the carousel has no top margin and `rounded-t-none`, matching the hero flat bottom.
+   - Keep the `StatsBand` in the existing sticky scope below the carousel.
 
-3. **Hero anchor sizing** — bump `#hero-deck-anchor` height in `HeroMasthead.tsx` to better match the new portrait card aspect (e.g. `h-[520px] sm:h-[560px] lg:h-[600px]`).
+3. Make the toolbar fit on one line
+   - Add a compact render mode to `BrowseByCategoryBar.tsx` that keeps the same links and the LanguageSwitcher + UserMenu cluster but uses smaller pills/tighter spacing so the entire row fits without wrapping on a 1264 px desktop viewport.
+   - When embedded in the hero, render this compact variant; when pinned/sticky, the component can fall back to its current scrolling/one-line behaviour.
+   - Verify the mobile hamburger and desktop pill strip both stay within a single row.
 
-4. **Cleanup** — `HeroTiltedDeck.tsx` exports (`DEFAULT_DECK`, `DeckCard`, `DeckCardFrame`) stay so `TestCategoriesSection` can reuse them. Export `DeckCardFrame` if not already exported.
+4. Preserve sticky behaviour
+   - Wrap the hero (with its embedded toolbar) and the carousel in the existing sticky scope so the toolbar still pins to the top of the viewport once the hero scrolls out.
 
-## Verification
-Playwright scroll at y=0, mid, end. Confirm:
-- Hero now shows a fanned stack of the four category cards (with imagery).
-- They travel down and land in a 2×2 grid.
-- The "What We Compare / Every test. Every provider." section further down now renders the four white test-card mockups.
+5. Visual cleanup
+   - Ensure no double borders or whitespace gaps between the hero bottom and the carousel top.
+   - Keep the hero background colour continuous into the carousel.
+   - Confirm the `StatsBand` retains its current spacing below the carousel.
+
+Verification
+------------
+
+- Visual check: toolbar is at the bottom of the hero card, carousel is directly below it, no gap.
+- Toolbar does not wrap or overflow at the target viewport (1264 px).
+- Sticky pinning still works after scrolling the hero.
+- No console errors or import references to the old carousel placement remain.

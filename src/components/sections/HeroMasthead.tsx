@@ -1,5 +1,12 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+
+
+import { PROVIDER_LOGOS } from "@/constants/providers";
+import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
+import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
+
 
 
 
@@ -7,177 +14,176 @@ import { ArrowRight } from "lucide-react";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 const NAVY = "#081129";
+const PEARL = "#F5F5F5";
+
+// ── Hero carousel images ──────────────────────────────────────────────
+import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
+import clinicReceptionAsset from "@/assets/hero/hero-clinic-reception.png.asset.json";
+import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
+import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
+import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
+
+const clinicReception = clinicReceptionAsset.url;
+const seniorCouple = seniorCoupleAsset.url;
+const benchPhone = benchPhoneAsset.url;
+const bloodTestKit = bloodTestKitAsset.url;
+const heartMark = heartMarkAsset.url;
+
+// Per-slide focal points tuned for mobile / tablet / desktop crops
+const SLIDES = [
+  { src: joggingWoman,    label: "Stay ahead of your health",     posMobile: "30% 30%", posTablet: "center 32%", posDesktop: "center 35%" },
+  { src: clinicReception, label: "Clinics Located Nationwide",    posMobile: "60% 50%", posTablet: "center 50%", posDesktop: "center 50%" },
+  { src: seniorCouple,    label: "Active at every age",           posMobile: "50% 25%", posTablet: "center 28%", posDesktop: "center 30%" },
+  { src: benchPhone,      label: "Find. Compare. Book.",          posMobile: "55% 40%", posTablet: "center 40%", posDesktop: "center 40%" },
+  { src: bloodTestKit,    label: "Easy At Home Kits Available",   posMobile: "35% 60%", posTablet: "40% 60%", posDesktop: "50% 65%" },
+];
+
+
+
+import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
+
+const CATEGORY_META: Record<string, { color: string; to: string }> = {
+  "General Health": { color: TURQUOISE, to: "/test/general-health" },
+  Hormone: { color: PINK, to: "/hormones" },
+  Heart: { color: "#ef4444", to: "/tests/heart" },
+  Thyroid: { color: "#7c3aed", to: "/thyroid" },
+  Diabetes: { color: "#f59e0b", to: "/tests/diabetes" },
+  Fertility: { color: "#e70d69", to: "/fertility-tests" },
+  Vitamins: { color: "#16a34a", to: "/tests/vitamins" },
+};
+
+// providerName in realTestData → key in PROVIDER_LOGOS
+const PROVIDER_KEY: Record<string, keyof typeof PROVIDER_LOGOS> = {
+  "Medichecks": "medichecks",
+  "Goodbody Clinic": "goodbody-clinic",
+  "London Medical Laboratory": "london-medical-laboratory",
+  "Clinilabs": "clinilabs",
+};
+
+// Curated rotation: provider + preferred test name + display category
+const ROTATION: { provider: string; testName: string; category: string }[] = [
+  { provider: "Medichecks", testName: "Advanced Well Woman Blood Test", category: "General Health" },
+  { provider: "Goodbody Clinic", testName: "", category: "General Health" },
+  { provider: "London Medical Laboratory", testName: "", category: "General Health" },
+  { provider: "Clinilabs", testName: "", category: "General Health" },
+  { provider: "Medichecks", testName: "Cholesterol Blood Test", category: "Heart" },
+  { provider: "Medichecks", testName: "Thyroid Function Blood Test", category: "Thyroid" },
+];
+
+interface Advert {
+  category: string; color: string; to: string;
+  name: string; price: number; provider: string;
+  providerKey: keyof typeof PROVIDER_LOGOS;
+  providerLogo: string; url: string;
+}
+
+function buildAdverts(): Advert[] {
+  return ROTATION.flatMap(({ provider, testName, category }) => {
+    const t: RealTestData | undefined =
+      (testName && realTestData.find((r) => r.Provider === provider && r["Test Name"] === testName)) ||
+      realTestData.find((r) => r.Provider === provider);
+    if (!t) return [];
+    const meta = CATEGORY_META[category] ?? { color: TURQUOISE, to: "/compare" };
+    const key = PROVIDER_KEY[t.Provider];
+    if (!key) return [];
+    return [{
+      category, color: meta.color, to: meta.to,
+      name: t["Test Name"], price: t["Price (£)"], provider: t.Provider,
+      providerKey: key, providerLogo: PROVIDER_LOGOS[key], url: t["Test URL"],
+    }];
+  });
+}
+
+const ADVERTS: Advert[] = buildAdverts();
 
 interface HeroMastheadProps {
   rotateMs?: number;
 }
 
-const PROVIDERS = [
-  "Medichecks",
-  "Randox Health",
-  "Thriva",
-  "Lola Health",
-  "Goodbody Clinic",
-  "London Medical Laboratory",
-  "Clinilabs",
-  "London Health Company",
-];
+const Wordmark = () => (
+  <span className="inline-flex items-center leading-none min-w-0">
+    <span className="font-bold text-[clamp(1.25rem,6.2vw,2.25rem)] tracking-[-0.02em] font-[Montserrat] whitespace-nowrap">
+      <span className="text-[#081129]">myhealth</span>
+      <span className="text-[#e70d69]">checkup</span>
+    </span>
+  </span>
+);
 
+export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI((n) => n + 1), Math.max(1200, rotateMs));
+    return () => clearInterval(id);
+  }, [rotateMs]);
 
-const AVATARS = [
-  { initial: "M", bg: "#22c0d4" },
-  { initial: "R", bg: "#e70d69" },
-  { initial: "T", bg: "#0a7a87" },
-  { initial: "L", bg: "#22c0d4" },
-  { initial: "G", bg: "#c40a59" },
-];
+  const slide = SLIDES[i % SLIDES.length];
+  const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
-export default function HeroMasthead({ rotateMs: _rotateMs }: HeroMastheadProps = {}) {
   return (
-    <section
-      className="relative overflow-hidden rounded-t-[28px] rounded-b-none border border-b-0 border-white/5 shadow-[0_30px_80px_rgba(8,17,41,0.10)]"
-      style={{ background: NAVY }}
-    >
-      {/* Inline keyframes for staggered card entrance + marquee */}
-      <style>{`
-        @keyframes hero-card-in {
-          from { opacity: 0; transform: translateY(30px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes hero-marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-        .hero-card-anim { opacity: 0; animation: hero-card-in 0.7s ease-out forwards; }
-        .hero-marquee-track { animation: hero-marquee 30s linear infinite; }
-      `}</style>
-
-      {/* Radial glow overlay */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at top left, rgba(34,192,212,0.18) 0%, transparent 60%)",
-        }}
-      />
-
-      {/* Main hero split */}
-      <div className="relative px-5 sm:px-8 md:px-12 pt-10 sm:pt-14 pb-10 sm:pb-14">
-        <div className="grid grid-cols-1 lg:grid-cols-[55fr_45fr] gap-10 lg:gap-12 items-center">
-          {/* LEFT — content */}
-          <div className="text-white">
-            {/* Urgency pill */}
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-[Montserrat] font-semibold text-white"
-              style={{
-                background: "#0D1838",
-                border: `1px solid ${TURQUOISE}`,
-              }}
-            >
-              <span aria-hidden>🔬</span>
-              Comparing 1,000+ private health tests across 9 accredited UK providers
-            </div>
-
-            {/* Headline */}
-            <h1 className="mt-6 font-bold font-[Montserrat] tracking-[-0.02em] leading-[0.95] text-5xl md:text-7xl">
-              <span className="block text-white">Compare Private Health Tests.</span>
-              <span
-                className="block bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: `linear-gradient(90deg, ${TURQUOISE} 0%, ${PINK} 100%)`,
-                }}
-              >
-                Take Control.
-              </span>
-            </h1>
-
-            {/* Subhead */}
-            <p className="mt-5 text-base sm:text-lg text-gray-300 max-w-xl leading-relaxed">
-              The UK's independent comparison platform for private blood tests,
-              cancer screening, and wellness diagnostics. UKAS-accredited
-              providers. Transparent pricing.
-            </p>
-
-            {/* CTAs */}
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Link
-                to="/compare"
-                className="inline-flex items-center gap-2 rounded-full px-8 py-4 text-white font-semibold font-[Montserrat] transition-colors"
-                style={{ background: PINK }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "#c40a59")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
-              >
-                Compare Tests <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/how-it-works"
-                className="inline-flex items-center rounded-full px-8 py-4 font-semibold font-[Montserrat] text-white border border-white/60 hover:bg-white/10 transition-colors"
-              >
-                How It Works
-              </Link>
-            </div>
-
-            {/* Social proof */}
-            <div className="mt-6 flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {AVATARS.map((a, idx) => (
-                  <div
-                    key={idx}
-                    className="w-9 h-9 rounded-full border-2 flex items-center justify-center text-xs font-bold text-white font-[Montserrat]"
-                    style={{ background: a.bg, borderColor: NAVY }}
-                  >
-                    {a.initial}
-                  </div>
-                ))}
-              </div>
-              <p className="text-sm text-gray-300">
-                Trusted by <span className="text-white font-semibold">12,400+</span> health-conscious UK adults
-              </p>
-            </div>
-          </div>
-
-          {/* RIGHT — anchor for the scroll-choreographed deck (cards live in
-              an absolute overlay rendered by <ScrollChoreographedDeck />). */}
-          <div className="relative">
-            <div
-              id="hero-deck-anchor"
-              className="relative w-full h-[480px] sm:h-[540px] lg:h-[600px]"
-              aria-hidden="true"
-            />
-          </div>
-
-        </div>
+    <section className="rounded-t-[28px] rounded-b-none overflow-hidden bg-[#F5F5F5] border border-b-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-4 sm:pt-7 pb-0 min-h-[84svh] sm:min-h-[96svh] flex flex-col">
+      <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2">
+        <Wordmark />
+        <nav className="hidden sm:flex gap-6 text-[11px] font-bold uppercase tracking-[0.18em] font-[Montserrat]">
+          <Link to="/compare" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Compare</Link>
+          <Link to="/test-categories" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Categories</Link>
+          <Link to="/find-test" className="text-[#e70d69]">Find your test</Link>
+        </nav>
       </div>
 
-      {/* Provider logo carousel */}
-      <div className="relative border-t border-white/5" style={{ background: "#050D1F" }}>
-        <div className="px-5 sm:px-8 md:px-12 pt-6 pb-2 text-center">
-          <span className="text-[11px] tracking-[0.22em] text-gray-500 font-[Montserrat] font-semibold uppercase">
-            Accredited Provider Partners
+      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
+        Compare<span className="text-[#22c0d4]">.</span>
+      </h1>
+
+      <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2">
+        <span className="text-[11px] sm:text-lg font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129] leading-snug">
+          Your <span className="text-[#0a7a87]">health.</span> Your <span className="text-[#c40a59]">choice.</span> One trusted platform.
+        </span>
+      </div>
+
+
+      <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
+        {SLIDES.map((s, n) => {
+          const active = n === i % SLIDES.length;
+          return (
+            <img
+              key={n}
+              src={s.src}
+              alt={s.label}
+              width={1920}
+              height={1080}
+              sizes="100vw"
+              loading={n === 0 ? "eager" : "lazy"}
+              fetchPriority={n === 0 ? "high" : "low"}
+              decoding="async"
+              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+              style={{
+                opacity: active ? 1 : 0,
+                ["--pos-m" as any]: s.posMobile,
+                ["--pos-t" as any]: s.posTablet,
+                ["--pos-d" as any]: s.posDesktop,
+              }}
+            />
+          );
+        })}
+
+        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
+
+        {/* Rotating slide label bubble */}
+        <div className="absolute left-2.5 bottom-2.5 sm:left-[18px] sm:bottom-[18px] pointer-events-none max-w-[85%]">
+          <span
+            key={`label-${i % SLIDES.length}`}
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-lg md:text-2xl font-semibold font-[Montserrat] animate-fade-in"
+          >
+            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0" style={{ background: TURQUOISE }} />
+            {slide.label}
           </span>
         </div>
-        <div className="relative overflow-hidden py-5">
-          {/* edge fades */}
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10"
-            style={{ background: "linear-gradient(to right, #050D1F, transparent)" }}
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10"
-            style={{ background: "linear-gradient(to left, #050D1F, transparent)" }}
-          />
-          <div className="hero-marquee-track flex gap-12 whitespace-nowrap w-max">
-            {[...PROVIDERS, ...PROVIDERS].map((name, idx) => (
-              <span
-                key={`${name}-${idx}`}
-                className="text-gray-400 hover:text-white transition-colors text-base sm:text-lg font-[Montserrat] font-semibold tracking-wide"
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
+
+        {ad && <HeroSalesTestCard ad={ad} />}
+
       </div>
+
     </section>
+
   );
 }
