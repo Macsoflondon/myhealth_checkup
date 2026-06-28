@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import HeroTiltedDeck from "./HeroTiltedDeck";
+
 
 
 // ── Brand ─────────────────────────────────────────────────────────────
