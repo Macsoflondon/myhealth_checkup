@@ -1,18 +1,7 @@
-Restructure the homepage hero so the category carousel sits at the very top of the hero section, above the wordmark/nav header, and the entire hero/toolbar/ticker/stats band becomes a single full-width white block before the navy PartnersGrid.
+Plan to update the HeroMasthead header typography and colours in `src/components/sections/HeroMasthead.tsx`:
 
-Scope
-- Move `TestCategoryTicker` into `HeroMasthead.tsx` as the first element, above the wordmark/nav row.
-- Flatten `HeroMasthead`'s top rounded corners (`rounded-t-[28px]`) since the ticker is now the page-top edge; keep bottom rounded corners for the internal toolbar transition.
-- Remove the `mx-4 sm:mx-8 md:mx-14 lg:mx-16` margins from the hero containers in `Index.tsx` so the white block spans the full viewport width.
-- Add/adjust a `BrowseByCategoryBar` placement so the toolbar sits full-width inside the same white block without its own horizontal margins.
-- Keep `StatsBand` as the bottom cap of the white block with its `rounded-b-[28px]` corners, so it cleanly transitions into the navy `PartnersGrid` below.
-- Preserve the existing sticky toolbar behaviour and accessibility attributes.
-
-Files
-- `src/components/sections/HeroMasthead.tsx` — insert ticker at top, remove top rounding.
-- `src/pages/Index.tsx` — remove margins on hero/toolbar/ticker/statsband containers.
-- `src/components/layout/BrowseByCategoryBar.tsx` — add a full-width hero-stack placement if needed.
-
-Verification
-- Visual screenshot of the homepage top to confirm: carousel → hero header → H1 → hero image → toolbar → stats band → navy partners grid, with no navy gaps on the sides.
-- Run `bunx tsc --noEmit` to catch type regressions.
+1. **Navigation font size** — Match the carousel/ticker text size (`text-xs sm:text-sm md:text-base`). Keep uppercase, bold, and tracking tight. Ensure the non-accent links use navy.
+2. **Wordmark size** — Increase the responsive `clamp(...)` by three standard Tailwind sizes, from `clamp(1.25rem, 6.2vw, 2.25rem)` to `clamp(2.25rem, 8vw, 4.5rem)` (min 20px → 36px, max 36px → 72px). Keep Montserrat bold and the split `myhealth`/`checkup` colours.
+3. **Slogan size** — Make “Your Health. Your Choice. One Trusted Platform.” match the wordmark size using the same `clamp(...)` value.
+4. **Header colour audit** — Convert every non-turquoise / non-pink text in the header section (wordmark “myhealth”, nav links, H1 “Compare.”, and slogan framing words) to `text-brand-navy` (brand navy #081129), preserving the existing turquoise and pink accents.
+5. **Verification** — Run `tsc --noEmit` and capture a Playwright desktop + mobile screenshot of the hero header to confirm the sizes and colours look correct.
