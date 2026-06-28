@@ -219,8 +219,9 @@ const Index = () => {
             <StatsBand />
           </div>
 
-          {/* Featured tests grid — the resting state for the hero tilted deck */}
-          <FeaturedTestsGrid />
+          {/* Featured tests grid — same cards as the hero deck, choreographed
+              to travel down the page as the user scrolls. */}
+          <ScrollChoreographedDeck sourceAnchorId="hero-deck-anchor" />
 
 
           <Suspense fallback={<SectionFallback />}>
