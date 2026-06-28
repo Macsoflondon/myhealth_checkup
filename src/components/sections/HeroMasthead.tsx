@@ -135,10 +135,20 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2">
-        <span className="text-4xl font-bold uppercase tracking-[0.12em] font-[Montserrat] text-[#081129] leading-snug">
+        <span className="text-[13px] sm:text-lg font-bold uppercase tracking-[0.08em] font-[Montserrat] text-[#081129] leading-snug">
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
       </div>
+
+      <div className="mt-4 sm:mt-6 mb-2">
+        <Link
+          to="/find-test"
+          className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-bold text-sm font-[Montserrat] text-white bg-[#e70d69] hover:bg-[#c40a59] transition-colors"
+        >
+          Find Your Test <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+
 
 
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
@@ -155,7 +165,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
               loading={n === 0 ? "eager" : "lazy"}
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
-              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
               style={{
                 opacity: active ? 1 : 0,
                 ["--pos-m" as any]: s.posMobile,
