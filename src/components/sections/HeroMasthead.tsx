@@ -96,9 +96,9 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-none min-w-0">
-    <span className="font-bold text-[clamp(1.25rem,6.2vw,2.25rem)] tracking-[-0.02em] font-[Montserrat] whitespace-nowrap">
-      <span className="text-[#081129]">myhealth</span>
-      <span className="text-[#e70d69]">checkup</span>
+    <span className="font-bold text-[clamp(2.25rem,8vw,4.5rem)] tracking-[-0.02em] font-[Montserrat] whitespace-nowrap">
+      <span className="text-brand-navy">myhealth</span>
+      <span className="text-brand-pink">checkup</span>
     </span>
   </span>
 );
