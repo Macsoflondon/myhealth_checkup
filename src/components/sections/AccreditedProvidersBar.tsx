@@ -28,19 +28,19 @@ const AccreditedProvidersBar: React.FC = () => {
         <div
           className="w-full text-center font-sans font-bold uppercase"
           style={{
-            fontSize: "10px",
+            fontSize: "11px",
             letterSpacing: "0.14em",
             color: "#4b5566",
-            marginBottom: "6px",
+            marginBottom: "12px",
           }}
         >
           All listed providers meet every one of the following standards
         </div>
 
-        {/* Single-line items row */}
+        {/* Items row */}
         <div
-          className="flex items-center justify-center overflow-x-auto"
-          style={{ gap: "6px 14px" }}
+          className="flex items-center justify-center flex-wrap"
+          style={{ gap: "12px 24px" }}
         >
           {trustItems.map((item, index) => {
             const isOdd = (index + 1) % 2 === 1;
@@ -50,44 +50,32 @@ const AccreditedProvidersBar: React.FC = () => {
             const iconColor = isOdd ? "#22c0d4" : "#e70d69";
 
             return (
-              <React.Fragment key={item.label}>
-                {index > 0 && (
-                  <div
-                    className="hidden sm:block"
-                    style={{
-                      width: "1px",
-                      height: "16px",
-                      backgroundColor: "#d8dce6",
-                      flexShrink: 0,
-                    }}
-                  />
-                )}
+              <div
+                key={item.label}
+                className="flex items-center whitespace-nowrap"
+                style={{ gap: "10px" }}
+              >
                 <div
-                  className="flex items-center whitespace-nowrap"
-                  style={{ gap: "6px" }}
+                  className="flex items-center justify-center"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "9999px",
+                    backgroundColor: iconBg,
+                    color: iconColor,
+                    fontSize: "18px",
+                    flexShrink: 0,
+                  }}
                 >
-                  <div
-                    className="flex items-center justify-center"
-                    style={{
-                      width: "22px",
-                      height: "22px",
-                      borderRadius: "9999px",
-                      backgroundColor: iconBg,
-                      color: iconColor,
-                      fontSize: "12px",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {item.icon}
-                  </div>
-                  <span
-                    className="font-sans font-bold"
-                    style={{ fontSize: "10px", color: "#081129" }}
-                  >
-                    {item.label}
-                  </span>
+                  {item.icon}
                 </div>
-              </React.Fragment>
+                <span
+                  className="font-sans font-bold"
+                  style={{ fontSize: "13px", color: "#081129" }}
+                >
+                  {item.label}
+                </span>
+              </div>
             );
           })}
         </div>

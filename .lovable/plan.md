@@ -1,9 +1,10 @@
-In `src/components/sections/HeroMasthead.tsx` line 138-140:
+Revert `src/components/sections/AccreditedProvidersBar.tsx` compression so the six trust badges return to their previous comfortable size:
 
-- Change slogan font size from `text-[11px] sm:text-lg` to `text-4xl` (matching the "my health checkup" Wordmark).
-- Replace darkened colors with locked brand tokens:
-  - `text-[#0a7a87]` → `text-[#22c0d4]` (brand turquoise) on "health."
-  - `text-[#c40a59]` → `text-[#e70d69]` (brand pink) on "choice."
-- Keep uppercase, bold, Montserrat, navy base text, and the existing border-bottom layout.
+- Remove `overflow-x-auto` + forced single-line; allow `flex-wrap` again.
+- Icon circles: `22px` → `40px`, icon font `12px` → `18px`.
+- Label text: `10px` → `13px`.
+- Gap between items: `14px` → `24px` (row gap `12px`).
+- Header label: `10px` → `11px`, more bottom margin.
+- Keep brand turquoise/pink alternating icon colours, navy text, single container.
 
-No other files touched.
+No other files touched. New "different strategy" will be handled in a follow-up turn.
