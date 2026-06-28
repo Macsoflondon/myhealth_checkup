@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import HeroTiltedDeck from "./HeroTiltedDeck";
+
 
 
 // ── Brand ─────────────────────────────────────────────────────────────
@@ -136,9 +136,14 @@ export default function HeroMasthead({ rotateMs: _rotateMs }: HeroMastheadProps 
             </div>
           </div>
 
-          {/* RIGHT — animated tilted deck of test cards */}
+          {/* RIGHT — anchor for the scroll-choreographed deck (cards live in
+              an absolute overlay rendered by <ScrollChoreographedDeck />). */}
           <div className="relative">
-            <HeroTiltedDeck />
+            <div
+              id="hero-deck-anchor"
+              className="relative w-full h-[420px] sm:h-[480px] lg:h-[540px]"
+              aria-hidden="true"
+            />
           </div>
 
         </div>

@@ -19,7 +19,7 @@ import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-import FeaturedTestsGrid from "@/components/sections/FeaturedTestsGrid";
+import ScrollChoreographedDeck from "@/components/sections/ScrollChoreographedDeck";
 
 
 
@@ -219,8 +219,9 @@ const Index = () => {
             <StatsBand />
           </div>
 
-          {/* Featured tests grid — the resting state for the hero tilted deck */}
-          <FeaturedTestsGrid />
+          {/* Featured tests grid — same cards as the hero deck, choreographed
+              to travel down the page as the user scrolls. */}
+          <ScrollChoreographedDeck sourceAnchorId="hero-deck-anchor" />
 
 
           <Suspense fallback={<SectionFallback />}>
