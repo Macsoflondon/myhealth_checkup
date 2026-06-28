@@ -23,12 +23,6 @@ const PROVIDERS = [
   "London Health Company",
 ];
 
-const CARDS = [
-  { icon: "🩸", title: "Blood Tests", sub: "500+ tests from £29", to: "/tests/blood" },
-  { icon: "🎗️", title: "Cancer Screening", sub: "Early detection panels", to: "/cancer-screening" },
-  { icon: "⚡", title: "Wellness Panels", sub: "Full body MOT from £89", to: "/tests/wellness" },
-  { icon: "🧬", title: "Hormone Tests", sub: "Men's & Women's health", to: "/hormones" },
-];
 
 const AVATARS = [
   { initial: "M", bg: "#22c0d4" },
