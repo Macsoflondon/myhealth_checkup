@@ -19,6 +19,8 @@ import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+import FeaturedTestsGrid from "@/components/sections/FeaturedTestsGrid";
+
 
 
 
