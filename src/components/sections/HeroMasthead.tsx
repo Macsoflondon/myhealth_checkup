@@ -140,9 +140,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </span>
       </div>
 
-
-
-
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
