@@ -199,21 +199,14 @@ const Index = () => {
             scroll container so the toolbar can remain pinned to the top of the
             viewport once it reaches it. */}
         <div>
-          <div className="mt-6 sm:mt-8 md:mt-10 mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+          <div className="mt-0 mx-0">
             <HeroMasthead />
           </div>
 
           {/* Toolbar now sits directly under the hero section and becomes sticky. */}
           <BrowseByCategoryBar compact placement="hero" />
 
-          <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
-            <TestCategoryTicker
-              variant="inline"
-              className="bg-[#F5F5F5] rounded-none border-x border-[#081129]/[0.06] pt-4 sm:pt-6"
-            />
-          </div>
-
-          <div className="mx-4 sm:mx-8 md:mx-14 lg:mx-16">
+          <div className="mx-0">
             <StatsBand />
           </div>
 
