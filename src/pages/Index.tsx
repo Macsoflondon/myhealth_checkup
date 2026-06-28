@@ -219,6 +219,10 @@ const Index = () => {
             <StatsBand />
           </div>
 
+          {/* Featured tests grid — the resting state for the hero tilted deck */}
+          <FeaturedTestsGrid />
+
+
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
               <PartnersGrid />
