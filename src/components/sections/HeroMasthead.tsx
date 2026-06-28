@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 
 import { PROVIDER_LOGOS } from "@/constants/providers";
@@ -111,6 +111,7 @@ const Wordmark = () => (
 
 export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const [i, setI] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => {
     const id = setInterval(() => setI((n) => n + 1), Math.max(1200, rotateMs));
     return () => clearInterval(id);
@@ -128,7 +129,22 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           <Link to="/test-categories" className="text-[#081129] hover:text-[#22c0d4] transition-colors">Categories</Link>
           <Link to="/find-test" className="text-[#e70d69]">Find your test</Link>
         </nav>
+        <button
+          className="sm:hidden p-2 text-[#081129] rounded-lg hover:bg-[#081129]/[0.06] transition-colors"
+          onClick={() => setMobileOpen(o => !o)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </div>
+
+      {mobileOpen && (
+        <div className="sm:hidden flex flex-col gap-1 py-3 border-b border-[#081129]/10">
+          <Link to="/compare" onClick={() => setMobileOpen(false)} className="px-2 py-2 text-[13px] font-bold uppercase tracking-[0.14em] font-[Montserrat] text-[#081129] hover:text-[#22c0d4] transition-colors">Compare</Link>
+          <Link to="/test-categories" onClick={() => setMobileOpen(false)} className="px-2 py-2 text-[13px] font-bold uppercase tracking-[0.14em] font-[Montserrat] text-[#081129] hover:text-[#22c0d4] transition-colors">Categories</Link>
+          <Link to="/find-test" onClick={() => setMobileOpen(false)} className="px-2 py-2 text-[13px] font-bold uppercase tracking-[0.14em] font-[Montserrat] text-[#e70d69]">Find Your Test</Link>
+        </div>
+      )}
 
       <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-[#081129] m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
         Compare<span className="text-[#22c0d4]">.</span>
@@ -190,6 +206,10 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </div>
 
         {ad && <HeroSalesTestCard ad={ad} />}
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 pointer-events-none flex flex-col items-center gap-1 animate-bounce opacity-70">
+          <span className="w-5 h-5 border-b-2 border-r-2 border-white rotate-45 block" />
+        </div>
 
       </div>
 
