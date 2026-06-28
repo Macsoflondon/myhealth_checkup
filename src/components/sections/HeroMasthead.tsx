@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-
-
 import { PROVIDER_LOGOS } from "@/constants/providers";
-import heartMarkAsset from "@/assets/brand/heart-mark.png.asset.json";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-
-
-
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
@@ -28,7 +22,6 @@ const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
 const bloodTestKit = bloodTestKitAsset.url;
-const heartMark = heartMarkAsset.url;
 
 // Per-slide focal points tuned for mobile / tablet / desktop crops
 const SLIDES = [
