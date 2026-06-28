@@ -29,7 +29,7 @@ interface TestCategoryTickerProps {
 }
 
 const TestCategoryTicker = ({ variant = "section", className = "" }: TestCategoryTickerProps) => {
-  const trackRef = useMarqueeTicker(categories.length);
+  const trackRef = useMarqueeTicker(categories.length, 0.03);
   const items = Array.from({ length: SETS }, () => categories).flat();
 
   const isInline = variant === "inline";
