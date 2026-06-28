@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+
 
 
 import { PROVIDER_LOGOS } from "@/constants/providers";
@@ -139,17 +139,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           Your <span className="text-[#22c0d4]">health.</span> Your <span className="text-[#e70d69]">choice.</span> One trusted platform.
         </span>
       </div>
-
-      <div className="mt-4 sm:mt-6 mb-2">
-        <Link
-          to="/find-test"
-          className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-bold text-sm font-[Montserrat] text-white bg-[#e70d69] hover:bg-[#c40a59] transition-colors"
-        >
-          Find Your Test <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
-
-
 
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
