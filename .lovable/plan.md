@@ -1,10 +1,10 @@
-Revert `src/components/sections/AccreditedProvidersBar.tsx` compression so the six trust badges return to their previous comfortable size:
+Remove the pink "Find Your Test →" primary CTA button that was recently added to `src/components/sections/HeroMasthead.tsx`.
 
-- Remove `overflow-x-auto` + forced single-line; allow `flex-wrap` again.
-- Icon circles: `22px` → `40px`, icon font `12px` → `18px`.
-- Label text: `10px` → `13px`.
-- Gap between items: `14px` → `24px` (row gap `12px`).
-- Header label: `10px` → `11px`, more bottom margin.
-- Keep brand turquoise/pink alternating icon colours, navy text, single container.
+Scope
+- Delete the button element and its wrapper from `HeroMasthead.tsx`.
+- Remove any unused imports or spacing classes that were introduced solely to support the button.
+- Leave the rest of the hero layout (H1, wordmark, slogan, carousel, toolbar) untouched.
 
-No other files touched. New "different strategy" will be handled in a follow-up turn.
+Verification
+- Run `bunx tsc --noEmit` (or `tsgo`) to ensure no type errors from removed imports.
+- Visually confirm the button no longer appears in the hero preview and the remaining elements reflow correctly.
