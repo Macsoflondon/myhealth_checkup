@@ -96,7 +96,7 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-none min-w-0">
-    <span className="font-bold text-[clamp(2.25rem,8vw,4.5rem)] tracking-[-0.02em] font-[Montserrat] whitespace-nowrap">
+    <span className="font-bold text-2xl sm:text-3xl md:text-4xl tracking-[-0.02em] font-[Montserrat] whitespace-nowrap">
       <span className="text-brand-navy">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
@@ -129,12 +129,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </nav>
       </div>
 
-      <h1 className="font-extrabold text-[clamp(2.5rem,12vw,11rem)] tracking-[-0.05em] leading-[0.9] text-brand-navy m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
+      <h1 className="font-extrabold text-[clamp(3.75rem,14vw,14rem)] tracking-[-0.05em] leading-[0.9] text-brand-navy m-0 mt-4 sm:mt-10 mb-3 sm:mb-10 font-[Montserrat]">
         Compare<span className="text-brand-turquoise">.</span>
       </h1>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2">
-        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-snug text-[clamp(2.25rem,8vw,4.5rem)]">
+        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-snug text-2xl sm:text-3xl md:text-4xl">
           Your <span className="text-brand-turquoise">health.</span> Your <span className="text-brand-pink">choice.</span> One trusted platform.
         </span>
       </div>

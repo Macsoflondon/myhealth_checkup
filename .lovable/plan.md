@@ -1,5 +1,9 @@
-Plan to reduce the marquee speed of the top category ticker in `src/components/sections/TestCategoryTicker.tsx`:
+Plan to adjust hero typography in `src/components/sections/HeroMasthead.tsx`:
 
-1. **Locate the control** — The ticker uses `useMarqueeTicker(categories.length)` in `TestCategoryTicker.tsx`, which defaults to `speedPxPerMs = 0.04` (≈40px/sec).
-2. **Lower the speed** — Pass a reduced speed value to `useMarqueeTicker`, e.g. `0.03` (25% slower) or `0.025` (37.5% slower). Pick a modest reduction so it still feels alive but not rushed.
-3. **Verify** — Capture a short desktop + mobile Playwright clip/screenshot of the ticker and run `tsc --noEmit` to confirm no regressions.
+1. **Wordmark ("myhealthcheckup")** — Replace the custom `text-[clamp(2.25rem,8vw,4.5rem)]` with the homepage H2 standard scale `text-2xl sm:text-3xl md:text-4xl`. Preserve the brand navy/pink split text colors.
+
+2. **Slogan ("Your health. Your choice. One trusted platform.")** — Apply the same homepage H2 standard scale `text-2xl sm:text-3xl md:text-4xl` to the slogan span, keeping the turquoise/pink brand accent words.
+
+3. **Compare headline** — Increase the current `text-[clamp(2.5rem,12vw,11rem)]` clamp by two standard font sizes: bump the minimum to ~`3.75rem` (two steps up from text-4xl) and the viewport/max values proportionally to maintain dominance over the H2 elements.
+
+4. **Verify** — Run `tsc --noEmit` and capture a homepage preview screenshot to confirm the new hierarchy.
