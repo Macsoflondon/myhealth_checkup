@@ -801,6 +801,9 @@ html, body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-brand-text:hover {
     animation: shimmer 4s ease-in-out infinite;
   }
 
@@ -816,6 +819,9 @@ html, body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .shimmer-text:hover {
     animation: shimmer 4s ease-in-out infinite;
   }
 
