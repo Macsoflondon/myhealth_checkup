@@ -59,7 +59,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     ],
   },
   {
-    name: "Sports-Fitness Health",
+    name: "Sports & Fitness",
     path: "/sports-performance",
     hasDropdown: true,
     megaMenu: true,
