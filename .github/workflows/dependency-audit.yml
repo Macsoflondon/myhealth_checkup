@@ -23,7 +23,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install --package-lock-only --ignore-scripts
+        run: npm install --package-lock-only --ignore-scripts --legacy-peer-deps
 
       - name: Run npm audit (high & critical)
         run: npm audit --audit-level=high
