@@ -7,7 +7,7 @@ const steps = [
     icon: Search,
     title: "Search & Compare",
     description:
-      "Choose a test category or by goals. Filter by price, sample method, turnaround time,.\nSee every option side by side.",
+      "Choose a test category or by goals. Filter by price, sample method, turnaround time.\nSee every option side by side.",
   },
   {
     number: "02",
