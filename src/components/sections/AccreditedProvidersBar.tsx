@@ -56,6 +56,7 @@ const AccreditedProvidersBar: React.FC = () => {
                 style={{ gap: "10px" }}
               >
                 <div
+                  aria-hidden="true"
                   className="flex items-center justify-center"
                   style={{
                     width: "40px",
