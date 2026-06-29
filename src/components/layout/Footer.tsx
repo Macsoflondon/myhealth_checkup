@@ -178,19 +178,18 @@ const StayInformedSection = () => {
         <div className="h-[2px] bg-brand-pink" />
         <div className="pt-4 text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-            <div className="flex items-center gap-3">
-              <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl">
-                <span className="text-white">my</span>
-                <span className="text-brand-turquoise text-primary-foreground">health</span>
+            <div className="flex items-center gap-1">
+              <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl text-white">
+                myhealth
               </span>
-              <span className="font-heading text-base sm:text-lg md:text-xl text-brand-turquoise -ml-2 text-primary">
+              <span className="font-heading font-bold text-xl sm:text-2xl md:text-3xl text-brand-turquoise">
                 checkup
               </span>
             </div>
             <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
-              Your <span className="text-brand-pink text-primary">health!</span> Your{" "}
-              <span className="text-brand-pink">choice!</span> One{" "}
-              <span className="text-brand-turquoise text-primary-foreground">trusted</span> platform!
+              Your <span className="text-brand-pink">health.</span> Your{" "}
+              <span className="text-brand-pink">choice.</span> One{" "}
+              <span className="text-brand-turquoise">trusted</span> platform.
             </p>
           </div>
         </div>
