@@ -104,7 +104,7 @@ const SiteBreadcrumb = () => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/">{"\n"}</Link>
+                <Link to="/">Home</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {crumbs.map((c) => (
@@ -112,7 +112,7 @@ const SiteBreadcrumb = () => {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   {c.isLast ? (
-                    <BreadcrumbPage>{c.label === "Compare Tests" ? "\n" : c.label}</BreadcrumbPage>
+                <BreadcrumbPage>{c.label}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
                       <Link to={c.href}>{c.label}</Link>

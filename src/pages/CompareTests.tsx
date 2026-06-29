@@ -127,7 +127,7 @@ const CompareTests = () => {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen flex flex-col bg-white">
+      <div className="min-h-screen flex flex-col">
         <Helmet>
           <title>Compare Blood Tests | myhealth checkup</title>
           <meta

@@ -1,7 +1,6 @@
 import ComparisonSectionHeading from "./ComparisonSectionHeading";
 import { ProviderComparisonTable as FullProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
-import { Button } from "@/components/ui/button";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 
 const ProviderComparisonTable = () => {
