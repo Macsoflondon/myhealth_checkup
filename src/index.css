@@ -488,8 +488,7 @@ html, body {
   /* Mobile-first responsive images */
   @media (max-width: 768px) {
     img {
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: optimizeSpeed;
+      image-rendering: auto;
     }
 
     /* Mobile performance optimizations */

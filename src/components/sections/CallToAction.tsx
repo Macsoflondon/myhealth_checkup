@@ -30,16 +30,16 @@ const CallToAction = ({ className }: CallToActionProps) => {
             <Button 
               size="sm" 
               onClick={() => navigate('/assisted-test-finder')}
-              className="flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
+              className="inline-flex items-center flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
-              Find Your Perfect Test
+              Find Your Perfect Test <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
             <Button 
               size="sm" 
               onClick={() => navigate('/compare')}
-              className="flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
+              className="inline-flex items-center flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
             >
-              Browse All 200+ Tests
+              Browse All 200+ Tests <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
         </div>

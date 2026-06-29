@@ -125,7 +125,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         <nav className="hidden sm:flex gap-6 text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.18em] font-[Montserrat]">
           <Link to="/compare" className="text-brand-navy hover:text-brand-turquoise transition-colors">Compare</Link>
           <Link to="/test-categories" className="text-brand-navy hover:text-brand-turquoise transition-colors">Categories</Link>
-          <Link to="/find-test" className="text-brand-pink">Find your test</Link>
+          <Link to="/find-test" className="text-brand-pink uppercase tracking-[0.18em]">Find Your Test</Link>
         </nav>
       </div>
 

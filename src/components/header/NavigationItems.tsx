@@ -130,7 +130,7 @@ export const moreNavigationSections = [
   {
     title: "Services",
     items: [
-      { name: "Our Providers", path: "/providers" },
+      { name: "Our Providers", path: "/trusted-providers" },
       { name: "Assisted Test Finder", path: "/assisted-test-finder" }
     ]
   },

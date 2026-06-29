@@ -6,12 +6,12 @@ interface TrustItem {
 }
 
 const trustItems: TrustItem[] = [
-  { icon: "🔬", label: "UKAS-Accredited Labs" },
-  { icon: "✔", label: "CQC-Regulated Clinics" },
-  { icon: "🏆", label: "ISO 15189 Certification" },
-  { icon: "🔒", label: "GDPR Compliant" },
-  { icon: "💷", label: "Transparent Pricing" },
-  { icon: "🩺", label: "No GP Referral Needed" },
+  { icon: "✓", label: "UKAS-Accredited Labs" },
+  { icon: "✓", label: "CQC-Regulated Clinics" },
+  { icon: "✓", label: "ISO 15189 Certification" },
+  { icon: "✓", label: "GDPR Compliant" },
+  { icon: "✓", label: "Transparent Pricing" },
+  { icon: "✓", label: "No GP Referral Needed" },
 ];
 
 const AccreditedProvidersBar: React.FC = () => {
