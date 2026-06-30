@@ -104,9 +104,9 @@ const TestCategoriesSection = () => {
 
 
               {/* Card content — sits at bottom above overlay */}
-              <div className="relative z-10 p-9 sm:p-10">
+              <div className="relative z-10 p-12 sm:p-16">
                 <span
-                  className="inline-block font-heading font-bold text-[15px] uppercase tracking-[0.14em] px-4 py-1.5 rounded-md mb-5"
+                  className="inline-block font-heading font-bold text-lg uppercase tracking-[0.14em] px-5 py-2 rounded-md mb-8"
                   style={
                     cat.tagVariant === "teal"
                       ? {
@@ -124,13 +124,13 @@ const TestCategoriesSection = () => {
                   {cat.tag}
                 </span>
 
-                <h3 className="font-heading font-bold text-white text-3xl sm:text-4xl leading-tight mb-4 group-hover:text-brand-turquoise transition-colors duration-200">
+                <h3 className="font-heading font-bold text-white text-5xl sm:text-6xl leading-tight mb-6 group-hover:text-brand-turquoise transition-colors duration-200">
                   {cat.title}
                 </h3>
-                <p className="text-lg sm:text-xl text-white/[0.7] leading-relaxed mb-7">
+                <p className="text-xl sm:text-2xl text-white/[0.7] leading-relaxed mb-10">
                   {cat.description}
                 </p>
-                <span className="inline-flex items-center gap-2 font-heading font-bold text-base uppercase tracking-[0.12em] text-brand-turquoise transition-all duration-200 group-hover:gap-3">
+                <span className="inline-flex items-center gap-2 font-heading font-bold text-lg uppercase tracking-[0.12em] text-brand-turquoise transition-all duration-200 group-hover:gap-3">
                   {cat.linkLabel} →
                 </span>
               </div>
