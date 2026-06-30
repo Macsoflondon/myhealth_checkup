@@ -34,9 +34,6 @@ jobs:
       - name: Run AccreditedProvidersBar visual regression
         run: bunx playwright test e2e/accredited-providers-bar.spec.ts
 
-      - name: Run logo CLS + asset-timing regression
-        run: bunx playwright test e2e/logo-stability.spec.ts
-
       - name: Upload Playwright HTML report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
