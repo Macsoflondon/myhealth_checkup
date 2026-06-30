@@ -1,27 +1,19 @@
-# Scroll-Gated ComparisonBar
+# Double-Size Category Cards
 
-Make the floating comparison bar hidden by default and only fade in once the user scrolls down to the live comparison table section. Fade it back out once they scroll past it. Then verify a clean production build.
+Double the visible size of the four category cards in `TestCategoriesSection` and let them fill the page width.
 
-## Changes
+## Changes — `src/components/sections/TestCategoriesSection.tsx`
 
-### 1. `src/components/compare/ComparisonBar.tsx`
-- Add `hasReached` state, default `false`.
-- Add `IntersectionObserver` watching a `#comparison-anchor` sentinel: set `hasReached = true` when it enters viewport.
-- Add a second observer on `#comparison-end` sentinel: set `hasReached = false` once the table scrolls out of view below the fold.
-- Wrap the root in a transition layer:
-  - Hidden: `opacity-0 translate-y-full pointer-events-none`
-  - Visible: `opacity-100 translate-y-0`
-  - Transition: `transition-all duration-300 ease-out`
+- **Container**: replace `container mx-auto px-4 sm:px-6 lg:px-12` with a full-bleed wrapper (`w-full px-4 sm:px-8 lg:px-12`) so the grid spans the viewport.
+- **Grid**: change `grid-cols-1 sm:grid-cols-2 xl:grid-cols-4` → `grid-cols-1 sm:grid-cols-2` (2-up at all sizes ≥sm). Bump gaps `gap-7 sm:gap-9` → `gap-10 sm:gap-12`.
+- **Card height**: `min-h-[480px] sm:min-h-[570px]` → `min-h-[760px] sm:min-h-[940px] lg:min-h-[1040px]` (roughly 2× area).
+- **Card padding**: `p-9 sm:p-10` → `p-12 sm:p-16`.
+- **Typography scale-up**:
+  - Tag pill: `text-[15px] px-4 py-1.5` → `text-lg px-5 py-2`, `mb-5` → `mb-8`.
+  - Title `h3`: `text-3xl sm:text-4xl mb-4` → `text-5xl sm:text-6xl mb-6`.
+  - Description: `text-lg sm:text-xl mb-7` → `text-xl sm:text-2xl mb-10`.
+  - CTA: `text-base` → `text-lg`.
+- **Image quality**: bump Unsplash `w=1200` → `w=1800` so the larger cards stay sharp.
+- Section vertical padding nudged: `pt-14 pb-10 … md:pt-20 md:pb-14` → `pt-16 pb-14 … md:pt-24 md:pb-20`.
 
-### 2. `src/pages/Index.tsx`
-- Insert `<div id="comparison-anchor" aria-hidden="true" />` immediately above `<ProviderComparisonTable />`.
-- Insert `<div id="comparison-end" aria-hidden="true" />` immediately below it.
-
-### 3. Build verification
-- Run `bun run build` and fix any TypeScript / bundler errors that surface.
-
-## Notes
-
-- Existing comparison persistence logic (selected tests, clear, compare CTA) is untouched — only visibility gating changes.
-- Sentinels are zero-height divs so they don't affect layout.
-- Two-way fade so the bar disappears again on other parts of the page.
+No data, routing, or behavior changes.
