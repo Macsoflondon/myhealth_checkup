@@ -1,8 +1,12 @@
 // Cyber Essentials: CSP violation report sink.
 // Accepts application/csp-report and application/reports+json.
 // Rate-limited per IP, payload capped, never reflects input back.
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
 
 const MAX_BODY_BYTES = 16_384;
 const MAX_REPORTS_PER_HOUR = 200;

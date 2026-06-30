@@ -1,7 +1,11 @@
 // Resubmits the sitemap to Google Search Console via the Lovable connector gateway.
 // Trigger: HTTP (manual / webhook / GitHub Action) or pg_cron schedule.
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { logProtectedCall } from '../_shared/audit.ts';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
 
 const GATEWAY = 'https://connector-gateway.lovable.dev/google_search_console';
 const SITE = 'https://www.myhealthcheckup.co.uk/';

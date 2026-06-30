@@ -1,3 +1,12 @@
+-- Ensure trigger function exists (self-contained migration)
+CREATE OR REPLACE FUNCTION public.update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Create provider_tests table to store scraped test data
 CREATE TABLE public.provider_tests (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
