@@ -10,14 +10,6 @@ verify_jwt = false
 [functions.thriva-scraper]
 verify_jwt = false
 
-# LML Nearest Clinics API
-# Public access (no JWT) - Users search for clinics BEFORE authentication
-# Security: IP rate limiting (10/min), maxPages limit (3), input validation
-[functions.lml-nearest]
-verify_jwt = false
-
-[functions.geocode-clinic]
-verify_jwt = true
 
 # Health AI Analysis API
 # Requires authentication - Uses OpenAI API for personalized health recommendations
@@ -63,8 +55,6 @@ verify_jwt = false
 [functions.provider-scraper]
 verify_jwt = false
 
-[functions.price-updates]
-verify_jwt = false
 
 [functions.price-alert-checker]
 verify_jwt = true
@@ -72,18 +62,12 @@ verify_jwt = true
 [functions.update-provider-tests]
 verify_jwt = false
 
-[functions.bulk-add-clinics]
-verify_jwt = true
 
 # Run All Scrapers - Scheduled cron job to update all provider data
 # Security: Uses service role key internally, no public access
 [functions.run-all-scrapers]
 verify_jwt = false
 
-# Scrape All Clinics - Admin-only function to scrape clinic data
-# Security: JWT verification required, admin role check in code
-[functions.scrape-all-clinics]
-verify_jwt = false
 
 # Server-Side Encryption Service
 # Security: JWT verification, encryption key stored in secrets (never sent to client)
