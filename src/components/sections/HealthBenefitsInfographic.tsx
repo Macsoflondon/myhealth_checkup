@@ -33,7 +33,7 @@ const BenefitCard = ({
       </CardContent>
     </Card>;
 };
-const HealthBenefitsInfographic = (): JSX.Element => {
+const HealthBenefitsInfographic = () => {
   const [activeCard, setActiveCard] = useState(0);
   const benefits = [{
     icon: <Shield className="w-8 h-8 text-blue-600" />,
