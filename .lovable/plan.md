@@ -1,9 +1,24 @@
-Plan to adjust hero typography in `src/components/sections/HeroMasthead.tsx`:
+# Plan: Scroll-gated ComparisonBar + Build Verification
 
-1. **Wordmark ("myhealthcheckup")** — Replace the custom `text-[clamp(2.25rem,8vw,4.5rem)]` with the homepage H2 standard scale `text-2xl sm:text-3xl md:text-4xl`. Preserve the brand navy/pink split text colors.
+## 1. Scroll-gated visibility (homepage only)
 
-2. **Slogan ("Your health. Your choice. One trusted platform.")** — Apply the same homepage H2 standard scale `text-2xl sm:text-3xl md:text-4xl` to the slogan span, keeping the turquoise/pink brand accent words.
+**`src/pages/Index.tsx`** — Add a sentinel `<div id="comparison-anchor" />` immediately before the lazy `ProviderComparisonTable` mount (currently the import exists but the section is not rendered in the JSX shown; re-add the section inside a `LazyMount` with the anchor directly above it so the bar reveals as the user scrolls down to the live comparison table).
 
-3. **Compare headline** — Increase the current `text-[clamp(2.5rem,12vw,11rem)]` clamp by two standard font sizes: bump the minimum to ~`3.75rem` (two steps up from text-4xl) and the viewport/max values proportionally to maintain dominance over the H2 elements.
+**`src/components/compare/ComparisonBar.tsx`**:
+- Add `hasReached` state, default `false`.
+- `useEffect`: query `#comparison-anchor`. If missing (non-home pages, deep test pages, `/compare`), set `hasReached = true` immediately to preserve existing behaviour.
+- If present, attach an `IntersectionObserver` with `rootMargin: "0px 0px -20% 0px"` so it triggers as the comparison table scrolls into view. Once `isIntersecting` fires, set `hasReached = true` and keep it true (sticky) so the bar stays visible after passing the section.
+- Wrap both the empty-state return and the active-tray return in an outer `<div>` with `transition-all duration-500 ease-out` and toggle classes: `opacity-0 translate-y-4 pointer-events-none` when `!hasReached`, `opacity-100 translate-y-0` when reached. Preserve `pointer-events-none` on the empty-state mobile/desktop strip as today.
 
-4. **Verify** — Run `tsc --noEmit` and capture a homepage preview screenshot to confirm the new hierarchy.
+## 2. Production build verification
+
+- Run `bun run build`.
+- If TypeScript or Vite/Rollup errors appear, fix them in place (typed refs, missing imports, unused symbols). Re-run until the build exits clean.
+
+## Files touched
+- `src/components/compare/ComparisonBar.tsx` — IntersectionObserver gating + fade wrapper.
+- `src/pages/Index.tsx` — render `ProviderComparisonTable` with `#comparison-anchor` sentinel directly above it.
+
+## Out of scope
+- Non-home pages keep current always-visible behaviour.
+- No visual/styling changes to the bar's contents.
