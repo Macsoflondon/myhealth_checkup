@@ -21,12 +21,43 @@ export const ComparisonBar = ({
 }: ComparisonBarProps) => {
   const [orderedTests, setOrderedTests] = React.useState(selectedTests);
   const [mobileCollapsed, setMobileCollapsed] = React.useState(true);
+  const [hasReached, setHasReached] = React.useState(false);
 
   React.useEffect(() => {
     setOrderedTests(selectedTests);
     // Auto-expand when first test added
     if (selectedTests.length === 1) setMobileCollapsed(false);
   }, [selectedTests]);
+
+  // Scroll-gated visibility: on pages with a #comparison-anchor sentinel
+  // (currently the homepage), keep the bar hidden until the user scrolls to
+  // the live comparison table. Other pages reveal immediately.
+  React.useEffect(() => {
+    const anchor = document.getElementById("comparison-anchor");
+    if (!anchor) {
+      setHasReached(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setHasReached(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "0px 0px -20% 0px" }
+    );
+    observer.observe(anchor);
+    return () => observer.disconnect();
+  }, []);
+
+  const revealClass = hasReached
+    ? "opacity-100 translate-y-0"
+    : "opacity-0 translate-y-4 pointer-events-none";
+
 
   const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
     items: orderedTests,
