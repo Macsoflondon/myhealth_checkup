@@ -16,9 +16,6 @@ REVOKE EXECUTE ON FUNCTION public.set_health_insight_creator() FROM PUBLIC, anon
 REVOKE EXECUTE ON FUNCTION public.update_updated_at_column() FROM PUBLIC, anon, authenticated;
 REVOKE EXECUTE ON FUNCTION public.validate_encrypted_fields() FROM PUBLIC, anon, authenticated;
 
--- Event trigger function — not callable as a regular function but lock it down anyway.
-REVOKE EXECUTE ON FUNCTION public.rls_auto_enable() FROM PUBLIC, anon, authenticated;
-
 -- Maintenance/cleanup functions — service_role/cron only.
 REVOKE EXECUTE ON FUNCTION public.cleanup_old_health_queries() FROM PUBLIC, anon, authenticated;
 REVOKE EXECUTE ON FUNCTION public.cleanup_old_rate_limits() FROM PUBLIC, anon, authenticated;
