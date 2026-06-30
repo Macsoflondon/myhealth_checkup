@@ -33,12 +33,25 @@ EXCLUDE=(
   '--glob=!scripts/check-secrets.sh'
 )
 
+# Known-safe publishable values to ignore (anon JWTs are PUBLIC by design).
+# Read from .env so we don't hardcode the value here.
+ANON_KEY=""
+if [ -f "$ROOT/.env" ]; then
+  ANON_KEY="$(grep -E '^VITE_SUPABASE_PUBLISHABLE_KEY=' "$ROOT/.env" | head -n1 | sed -E 's/^[^=]+=//; s/^"//; s/"$//')"
+fi
+
 HITS=0
 for p in "${PATTERNS[@]}"; do
-  if rg -n --no-heading --color=never "${EXCLUDE[@]}" "$p" "$ROOT" 2>/dev/null; then
+  MATCHES="$(rg -n --no-heading --color=never "${EXCLUDE[@]}" "$p" "$ROOT" 2>/dev/null || true)"
+  if [ -n "$ANON_KEY" ]; then
+    MATCHES="$(printf '%s\n' "$MATCHES" | grep -v -F "$ANON_KEY" || true)"
+  fi
+  if [ -n "$MATCHES" ]; then
+    echo "$MATCHES"
     HITS=$((HITS + 1))
   fi
 done
+
 
 if [ "$HITS" -gt 0 ]; then
   echo "FAIL: $HITS secret pattern(s) matched in source. Rotate immediately and remove from git history."
