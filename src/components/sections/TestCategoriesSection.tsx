@@ -77,12 +77,12 @@ const TestCategoriesSection = () => {
         </div>
 
         {/* Cards — image behind dark overlay, content at bottom */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-7 sm:gap-9">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12">
           {categories.map((cat) => (
             <Link
               key={cat.title}
               to={cat.link}
-              className="group relative flex flex-col justify-end min-h-[480px] sm:min-h-[570px] rounded-2xl overflow-hidden"
+              className="group relative flex flex-col justify-end min-h-[760px] sm:min-h-[940px] lg:min-h-[1040px] rounded-2xl overflow-hidden"
             >
               {/* Background image */}
               <img
