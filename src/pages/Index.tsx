@@ -260,6 +260,8 @@ const Index = () => {
               </SectionReveal>
             </Suspense>
           </LazyMount>
+          <div id="comparison-end" aria-hidden="true" />
+
 
         </div>
 
