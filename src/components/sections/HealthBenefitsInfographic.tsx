@@ -78,6 +78,6 @@ const HealthBenefitsInfographic = () => {
     color: "border-amber-500",
     detail: "Customer satisfaction rate with improved quality of life after health optimisation"
   }];
-  return;
+  return null;
 };
 export default HealthBenefitsInfographic;
