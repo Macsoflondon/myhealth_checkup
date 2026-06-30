@@ -39,6 +39,7 @@ const AccreditedProvidersBar: React.FC = () => {
 
         {/* Items row */}
         <div
+          data-testid="accreditors-row"
           className="flex items-center justify-center flex-wrap"
           style={{ gap: "12px 24px" }}
         >
