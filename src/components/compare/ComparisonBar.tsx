@@ -71,7 +71,11 @@ export const ComparisonBar = ({
   if (isEmpty) {
     return (
       <div
-        className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none"
+        className={cn(
+          "fixed bottom-0 left-0 right-0 z-40 pointer-events-none transition-all duration-500 ease-out",
+          revealClass
+        )}
+
         role="region"
         aria-label="Comparison tray (empty)"
         aria-live="polite"
