@@ -135,9 +135,11 @@ export default function CancerComparisonPage() {
               <Shield className="h-4 w-4 mr-1" />
               UKAS Accredited Labs
             </Badge>
-            <Badge variant="outline" className="text-white border-white/30">
-              7 Trusted Providers
-            </Badge>
+            {filteredTests.length > 0 && (
+              <Badge variant="outline" className="text-white border-white/30">
+                {[...new Set(filteredTests.map((t) => t.providerId))].length} Trusted Providers
+              </Badge>
+            )}
             <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
               <BookOpen className="h-4 w-4 mr-1" />
               Biomarkers Reference Guide

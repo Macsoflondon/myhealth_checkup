@@ -138,7 +138,7 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'goodbody-clinic': 'Venous (clinic)',
   'medichecks': 'Finger-prick or Venous',
-  'lola-health': 'Finger-prick (home)',
+  'lola-health': 'Venous (home nurse or clinic)',
   'thriva': 'Finger-prick (home)',
   'london-medical-laboratory': 'Venous (clinic)',
   'randox': 'Venous (clinic)',

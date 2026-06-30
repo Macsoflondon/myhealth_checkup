@@ -62,19 +62,6 @@ const ProviderProfilePage = () => {
   const ratingData = { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted };
   const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
 
-  // Test categories offered by this provider
-  const testCategories = [
-    "General Health",
-    "Hormones",
-    "Vitamins & Minerals",
-    "Thyroid",
-    "Heart Health",
-    "Diabetes",
-    "Sexual Health",
-    "Fertility",
-    "Cancer Screening"
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -189,11 +176,11 @@ const ProviderProfilePage = () => {
                   'randox-health': {
                     mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
                     whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates 50+ clinics across the UK & Ireland, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Over 22 million tests processed to date. Rated 4.7/5 on Trustpilot with over 28,400 reviews.",
-                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results in as little as 2 hours from sample, with professional consultation and personalised health recommendations included.",
+                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results typically in 2-3 days; in-clinic same-day testing available at select locations. Professional consultation and personalised health recommendations included.",
                   },
                   'lola-health': {
                     mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
-                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 155 reviews.",
+                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 160 reviews.",
                     services: "Over 40 blood tests available, from comprehensive panels to individual biomarkers. Book a nurse visit or clinic appointment with results in 4 days. Doctor-reviewed insights delivered via the Lola Health app with health trend tracking. Tests from £120.",
                   },
                   'london-medical-laboratory': {
@@ -406,37 +393,6 @@ const ProviderProfilePage = () => {
               </CardContent>
             </Card>
 
-            {/* Test Categories */}
-            <Card className="flex flex-col flex-1">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                  Test Categories
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="flex flex-wrap gap-2">
-                  {testCategories.map(category => (
-                    <Link
-                      key={category}
-                      to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
-                      className="inline-block"
-                    >
-                      <Badge 
-                        variant="outline" 
-                        className="transition-colors cursor-pointer"
-                        style={brand ? {
-                          borderColor: brand.primary,
-                          color: brand.primary,
-                        } : undefined}
-                      >
-                        {category}
-                      </Badge>
-                    </Link>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right column — wide */}

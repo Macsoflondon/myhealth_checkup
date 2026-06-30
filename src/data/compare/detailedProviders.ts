@@ -3,7 +3,7 @@ export const detailedProviders = [
   {
     id: "medichecks",
     name: "Medichecks",
-    website: "https://www.medichecks.com/",
+    website: "https://www.medichecks.com",
     phone: "03450 600 600",
     email: "support@medichecks.com",
     accreditation: "UKAS-accredited laboratories (ISO 15189)",
@@ -36,7 +36,7 @@ export const detailedProviders = [
     description: "Subscription-based home testing with digital dashboard, doctor-led insights, and Compass annual health programme. 75+ health markers with painless at-home testing.",
   },
   {
-    id: "randox-health",
+    id: "randox",
     name: "Randox Health",
     website: "https://www.randoxhealth.com/",
     phone: "0800 254 5130",
@@ -163,7 +163,7 @@ export const detailedProviders = [
     tests: "40+ blood tests including comprehensive panels and individual biomarkers",
     sampleCollection: "At-home nurse visit (venous blood draw) or clinic appointment",
     turnaroundTime: "Results in 6-7 working days",
-    customerReviews: "4.6/5 (Trustpilot, 155+ reviews)",
+    customerReviews: "4.6/5 (Trustpilot, 160+ reviews)",
     keyDifferentiators:
       "At-home phlebotomy service (not finger-prick), doctor-reviewed results, app-powered insights, comprehensive and individual testing options, from £120",
     description:
@@ -182,7 +182,7 @@ export const detailedProviders = [
     tests: "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
     sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
     turnaroundTime: "4-6 working days",
-    customerReviews: "4.7/5 (Trustpilot, 3,150+ reviews)",
+    customerReviews: "4.8/5 (Trustpilot, 3,600+ reviews)",
     keyDifferentiators:
       "Professional venous blood collection, 200+ clinics nationwide, UKAS-accredited lab processing, competitive pricing, convenient nationwide locations",
     partnerRegulation: "GPhC-regulated pharmacy partners",
@@ -218,7 +218,7 @@ export const detailedProviders = [
     tests: "100+ blood tests including health MOTs, hormone profiles, vitamin panels, longevity analysis",
     sampleCollection: "At-home test kits and in-store tests at partner clinics",
     turnaroundTime: "3-4 days on most tests",
-    customerReviews: "4.5/5 (Trustpilot, 3,250+ reviews)",
+    customerReviews: "4.1/5 (Trustpilot, 3,266 reviews)",
     keyDifferentiators:
       "UKAS ISO 15189 accredited, next day results, Humanity Age longevity analysis, comprehensive test menu, at-home and in-store options",
     description:

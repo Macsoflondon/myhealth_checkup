@@ -14,8 +14,8 @@ const CancerScreeningPage = () => (
     searchPlaceholder="Search by cancer type or marker — e.g. 'PSA', 'ovarian'"
     trustStats={[
       { value: "28,000+", label: "Tests Compared" },
-      { value: "4.9★", label: "Average Rating" },
-      { value: "3", label: "Trusted Providers" },
+      { value: "4.8★", label: "Average Rating" },
+      { value: "6+", label: "Trusted Providers" },
     ]}
     filters={["All"]}
     benefitsTitle="Why Choose Cancer Screening?"
