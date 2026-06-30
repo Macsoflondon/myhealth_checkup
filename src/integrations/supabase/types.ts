@@ -587,6 +587,36 @@ export type Database = {
         }
         Relationships: []
       }
+      biomarker_hub: {
+        Row: {
+          category: string | null
+          clinical_description: string | null
+          created_at: string | null
+          embedding: string | null
+          id: string
+          name: string
+          symptoms_linked: string[] | null
+        }
+        Insert: {
+          category?: string | null
+          clinical_description?: string | null
+          created_at?: string | null
+          embedding?: string | null
+          id?: string
+          name: string
+          symptoms_linked?: string[] | null
+        }
+        Update: {
+          category?: string | null
+          clinical_description?: string | null
+          created_at?: string | null
+          embedding?: string | null
+          id?: string
+          name?: string
+          symptoms_linked?: string[] | null
+        }
+        Relationships: []
+      }
       biomarker_readings: {
         Row: {
           appointment_id: string | null
@@ -724,6 +754,63 @@ export type Database = {
           what_it_measures?: string | null
           when_to_retest?: string | null
           why_it_matters?: string | null
+        }
+        Relationships: []
+      }
+      blood_tests: {
+        Row: {
+          biomarker_count: number | null
+          biomarkers: string[] | null
+          categories: string[] | null
+          collection_fee_amount: number | null
+          collection_method: string | null
+          goals: string[] | null
+          id: string
+          last_validated: string | null
+          price: number | null
+          provider: string
+          sample_type: string | null
+          snomed_mapping_status: string | null
+          sub_goals: string[] | null
+          test_name: string
+          test_url: string | null
+          total_expected_cost: number | null
+        }
+        Insert: {
+          biomarker_count?: number | null
+          biomarkers?: string[] | null
+          categories?: string[] | null
+          collection_fee_amount?: number | null
+          collection_method?: string | null
+          goals?: string[] | null
+          id?: string
+          last_validated?: string | null
+          price?: number | null
+          provider: string
+          sample_type?: string | null
+          snomed_mapping_status?: string | null
+          sub_goals?: string[] | null
+          test_name: string
+          test_url?: string | null
+          total_expected_cost?: number | null
+        }
+        Update: {
+          biomarker_count?: number | null
+          biomarkers?: string[] | null
+          categories?: string[] | null
+          collection_fee_amount?: number | null
+          collection_method?: string | null
+          goals?: string[] | null
+          id?: string
+          last_validated?: string | null
+          price?: number | null
+          provider?: string
+          sample_type?: string | null
+          snomed_mapping_status?: string | null
+          sub_goals?: string[] | null
+          test_name?: string
+          test_url?: string | null
+          total_expected_cost?: number | null
         }
         Relationships: []
       }
@@ -3691,6 +3778,33 @@ export type Database = {
           title?: string | null
           ttfb_ms?: number | null
           word_count?: number | null
+        }
+        Relationships: []
+      }
+      sync_heartbeat: {
+        Row: {
+          created_at: string | null
+          errors: string | null
+          id: string
+          provider: string | null
+          status: string | null
+          tests_synced: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          errors?: string | null
+          id?: string
+          provider?: string | null
+          status?: string | null
+          tests_synced?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          errors?: string | null
+          id?: string
+          provider?: string | null
+          status?: string | null
+          tests_synced?: number | null
         }
         Relationships: []
       }
