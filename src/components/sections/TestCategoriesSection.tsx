@@ -35,7 +35,7 @@ const categories = [
       "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
     link: "/test-categories",
     linkLabel: "Explore Panels",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=85&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1800&q=85&auto=format&fit=crop",
   },
   {
     tag: "At Home",
