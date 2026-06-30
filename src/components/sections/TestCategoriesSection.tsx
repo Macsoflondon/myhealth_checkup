@@ -24,7 +24,7 @@ const categories = [
       "Multi-cancer early detection tests, tumour markers, and targeted screening for bowel, prostate, ovarian, and other cancers from regulated UK clinics.",
     link: "/tests/cancer",
     linkLabel: "Explore Screening",
-    image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1200&q=85&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1800&q=85&auto=format&fit=crop",
   },
   {
     tag: "Wellness",
