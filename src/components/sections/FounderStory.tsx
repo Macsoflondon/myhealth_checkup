@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 const FounderStory = () => {
-  return;
+  return null;
 };
 export default FounderStory;
