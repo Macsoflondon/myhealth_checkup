@@ -14,6 +14,456 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_activity_log: {
+        Row: {
+          action: string
+          admin_user_id: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          ip_address: string | null
+          new_value: Json | null
+          old_value: Json | null
+          resource_id: string | null
+          resource_name: string | null
+          resource_type: string
+          session_id: string | null
+          success: boolean | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          admin_user_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          ip_address?: string | null
+          new_value?: Json | null
+          old_value?: Json | null
+          resource_id?: string | null
+          resource_name?: string | null
+          resource_type: string
+          session_id?: string | null
+          success?: boolean | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          admin_user_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          ip_address?: string | null
+          new_value?: Json | null
+          old_value?: Json | null
+          resource_id?: string | null
+          resource_name?: string | null
+          resource_type?: string
+          session_id?: string | null
+          success?: boolean | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      ai_operation_logs: {
+        Row: {
+          cache_hit: boolean | null
+          cost_usd: number | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          error_message: string | null
+          error_type: string | null
+          id: string
+          input_tokens: number | null
+          job_type: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          output_tokens: number | null
+          prompt_version: string | null
+          session_id: string | null
+          success: boolean | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_operation_logs_2025: {
+        Row: {
+          cache_hit: boolean | null
+          cost_usd: number | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          error_message: string | null
+          error_type: string | null
+          id: string
+          input_tokens: number | null
+          job_type: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          output_tokens: number | null
+          prompt_version: string | null
+          session_id: string | null
+          success: boolean | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_operation_logs_2026: {
+        Row: {
+          cache_hit: boolean | null
+          cost_usd: number | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          error_message: string | null
+          error_type: string | null
+          id: string
+          input_tokens: number | null
+          job_type: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          output_tokens: number | null
+          prompt_version: string | null
+          session_id: string | null
+          success: boolean | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_operation_logs_2027: {
+        Row: {
+          cache_hit: boolean | null
+          cost_usd: number | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          error_message: string | null
+          error_type: string | null
+          id: string
+          input_tokens: number | null
+          job_type: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          output_tokens: number | null
+          prompt_version: string | null
+          session_id: string | null
+          success: boolean | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_operation_logs_2028: {
+        Row: {
+          cache_hit: boolean | null
+          cost_usd: number | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          error_message: string | null
+          error_type: string | null
+          id: string
+          input_tokens: number | null
+          job_type: string
+          latency_ms: number | null
+          metadata: Json | null
+          model: string | null
+          output_tokens: number | null
+          prompt_version: string | null
+          session_id: string | null
+          success: boolean | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          cache_hit?: boolean | null
+          cost_usd?: number | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          error_message?: string | null
+          error_type?: string | null
+          id?: string
+          input_tokens?: number | null
+          job_type?: string
+          latency_ms?: number | null
+          metadata?: Json | null
+          model?: string | null
+          output_tokens?: number | null
+          prompt_version?: string | null
+          session_id?: string | null
+          success?: boolean | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      ai_prompt_versions: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean | null
+          job_type: string
+          notes: string | null
+          prompt_key: string
+          version: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_type: string
+          notes?: string | null
+          prompt_key: string
+          version: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          job_type?: string
+          notes?: string | null
+          prompt_key?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      ai_vector_index_log: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          id: string
+          index_name: string
+          operation: string
+          records_affected: number | null
+          success: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          index_name: string
+          operation: string
+          records_affected?: number | null
+          success?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          id?: string
+          index_name?: string
+          operation?: string
+          records_affected?: number | null
+          success?: boolean | null
+        }
+        Relationships: []
+      }
       api_rate_limits: {
         Row: {
           client_key: string
@@ -447,6 +897,399 @@ export type Database = {
           },
         ]
       }
+      clinical_biomarker_history: {
+        Row: {
+          ai_interpretation: string | null
+          biomarker_code: string
+          biomarker_name: string | null
+          created_at: string
+          id: string
+          lab_name: string | null
+          loinc_code: string | null
+          recorded_at: string
+          reference_range_max: number | null
+          reference_range_min: number | null
+          snomed_code: string | null
+          source_type: string | null
+          source_upload_id: string | null
+          status: string | null
+          trend_direction: string | null
+          unit: string | null
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          ai_interpretation?: string | null
+          biomarker_code: string
+          biomarker_name?: string | null
+          created_at?: string
+          id?: string
+          lab_name?: string | null
+          loinc_code?: string | null
+          recorded_at: string
+          reference_range_max?: number | null
+          reference_range_min?: number | null
+          snomed_code?: string | null
+          source_type?: string | null
+          source_upload_id?: string | null
+          status?: string | null
+          trend_direction?: string | null
+          unit?: string | null
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          ai_interpretation?: string | null
+          biomarker_code?: string
+          biomarker_name?: string | null
+          created_at?: string
+          id?: string
+          lab_name?: string | null
+          loinc_code?: string | null
+          recorded_at?: string
+          reference_range_max?: number | null
+          reference_range_min?: number | null
+          snomed_code?: string | null
+          source_type?: string | null
+          source_upload_id?: string | null
+          status?: string | null
+          trend_direction?: string | null
+          unit?: string | null
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_biomarker_history_source_upload_id_fkey"
+            columns: ["source_upload_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_patient_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clinical_consent_records: {
+        Row: {
+          consent_type: string
+          created_at: string
+          expires_at: string | null
+          granted: boolean
+          granted_at: string | null
+          id: string
+          ip_hash: string | null
+          metadata: Json | null
+          revoked_at: string | null
+          user_agent: string | null
+          user_id: string
+          version: string
+        }
+        Insert: {
+          consent_type: string
+          created_at?: string
+          expires_at?: string | null
+          granted?: boolean
+          granted_at?: string | null
+          id?: string
+          ip_hash?: string | null
+          metadata?: Json | null
+          revoked_at?: string | null
+          user_agent?: string | null
+          user_id: string
+          version?: string
+        }
+        Update: {
+          consent_type?: string
+          created_at?: string
+          expires_at?: string | null
+          granted?: boolean
+          granted_at?: string | null
+          id?: string
+          ip_hash?: string | null
+          metadata?: Json | null
+          revoked_at?: string | null
+          user_agent?: string | null
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      clinical_fhir_bundles: {
+        Row: {
+          bundle_json: Json
+          bundle_type: string
+          created_at: string
+          fhir_version: string | null
+          id: string
+          source_upload_id: string | null
+          user_id: string
+          validated: boolean | null
+          validation_errors: Json | null
+        }
+        Insert: {
+          bundle_json: Json
+          bundle_type: string
+          created_at?: string
+          fhir_version?: string | null
+          id?: string
+          source_upload_id?: string | null
+          user_id: string
+          validated?: boolean | null
+          validation_errors?: Json | null
+        }
+        Update: {
+          bundle_json?: Json
+          bundle_type?: string
+          created_at?: string
+          fhir_version?: string | null
+          id?: string
+          source_upload_id?: string | null
+          user_id?: string
+          validated?: boolean | null
+          validation_errors?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_fhir_bundles_source_upload_id_fkey"
+            columns: ["source_upload_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_patient_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clinical_gp_notifications: {
+        Row: {
+          content_summary: string | null
+          created_at: string
+          error_message: string | null
+          fhir_bundle_id: string | null
+          gp_name: string | null
+          gp_practice_ods_code: string | null
+          id: string
+          notification_type: string
+          scheduled_at: string | null
+          sent_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          content_summary?: string | null
+          created_at?: string
+          error_message?: string | null
+          fhir_bundle_id?: string | null
+          gp_name?: string | null
+          gp_practice_ods_code?: string | null
+          id?: string
+          notification_type: string
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          content_summary?: string | null
+          created_at?: string
+          error_message?: string | null
+          fhir_bundle_id?: string | null
+          gp_name?: string | null
+          gp_practice_ods_code?: string | null
+          id?: string
+          notification_type?: string
+          scheduled_at?: string | null
+          sent_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_gp_notifications_fhir_bundle_id_fkey"
+            columns: ["fhir_bundle_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_fhir_bundles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clinical_loinc_mappings: {
+        Row: {
+          biomarker_code: string | null
+          common_units: string[] | null
+          component: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          loinc_code: string
+          long_name: string
+          method_type: string | null
+          property: string | null
+          scale_type: string | null
+          short_name: string | null
+          system: string | null
+          time_aspect: string | null
+        }
+        Insert: {
+          biomarker_code?: string | null
+          common_units?: string[] | null
+          component?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          loinc_code: string
+          long_name: string
+          method_type?: string | null
+          property?: string | null
+          scale_type?: string | null
+          short_name?: string | null
+          system?: string | null
+          time_aspect?: string | null
+        }
+        Update: {
+          biomarker_code?: string | null
+          common_units?: string[] | null
+          component?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          loinc_code?: string
+          long_name?: string
+          method_type?: string | null
+          property?: string | null
+          scale_type?: string | null
+          short_name?: string | null
+          system?: string | null
+          time_aspect?: string | null
+        }
+        Relationships: []
+      }
+      clinical_patient_uploads: {
+        Row: {
+          consent_record_id: string | null
+          created_at: string
+          error_message: string | null
+          file_ref: string | null
+          file_size_bytes: number | null
+          id: string
+          mime_type: string | null
+          original_filename: string | null
+          processed_at: string | null
+          source: string | null
+          status: string
+          upload_type: string
+          user_id: string
+        }
+        Insert: {
+          consent_record_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          file_ref?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          mime_type?: string | null
+          original_filename?: string | null
+          processed_at?: string | null
+          source?: string | null
+          status?: string
+          upload_type?: string
+          user_id: string
+        }
+        Update: {
+          consent_record_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          file_ref?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          mime_type?: string | null
+          original_filename?: string | null
+          processed_at?: string | null
+          source?: string | null
+          status?: string
+          upload_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      clinical_reference_ranges: {
+        Row: {
+          age_max_years: number | null
+          age_min_years: number | null
+          biomarker_code: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          loinc_code: string | null
+          max_value: number | null
+          min_value: number | null
+          population: string | null
+          sex: string | null
+          source: string | null
+          unit: string
+        }
+        Insert: {
+          age_max_years?: number | null
+          age_min_years?: number | null
+          biomarker_code: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          loinc_code?: string | null
+          max_value?: number | null
+          min_value?: number | null
+          population?: string | null
+          sex?: string | null
+          source?: string | null
+          unit: string
+        }
+        Update: {
+          age_max_years?: number | null
+          age_min_years?: number | null
+          biomarker_code?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          loinc_code?: string | null
+          max_value?: number | null
+          min_value?: number | null
+          population?: string | null
+          sex?: string | null
+          source?: string | null
+          unit?: string
+        }
+        Relationships: []
+      }
+      clinical_snomed_mappings: {
+        Row: {
+          biomarker_code: string | null
+          biomarker_name: string | null
+          category: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          preferred_term: string
+          snomed_concept_id: string
+        }
+        Insert: {
+          biomarker_code?: string | null
+          biomarker_name?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          preferred_term: string
+          snomed_concept_id: string
+        }
+        Update: {
+          biomarker_code?: string | null
+          biomarker_name?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          preferred_term?: string
+          snomed_concept_id?: string
+        }
+        Relationships: []
+      }
       cron_run_log: {
         Row: {
           created_at: string
@@ -549,6 +1392,54 @@ export type Database = {
         }
         Relationships: []
       }
+      edge_function_logs: {
+        Row: {
+          created_at: string
+          duration_ms: number | null
+          error_message: string | null
+          error_stack: string | null
+          function_name: string
+          http_status: number | null
+          id: string
+          invocation_id: string | null
+          memory_mb: number | null
+          request_size_bytes: number | null
+          response_size_bytes: number | null
+          status: string
+          triggered_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          error_stack?: string | null
+          function_name: string
+          http_status?: number | null
+          id?: string
+          invocation_id?: string | null
+          memory_mb?: number | null
+          request_size_bytes?: number | null
+          response_size_bytes?: number | null
+          status: string
+          triggered_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          duration_ms?: number | null
+          error_message?: string | null
+          error_stack?: string | null
+          function_name?: string
+          http_status?: number | null
+          id?: string
+          invocation_id?: string | null
+          memory_mb?: number | null
+          request_size_bytes?: number | null
+          response_size_bytes?: number | null
+          status?: string
+          triggered_by?: string | null
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           category: string
@@ -579,6 +1470,231 @@ export type Database = {
           provider?: string
           test_id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      funnel_events: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          currency: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          funnel_stage: string
+          id: string
+          provider_id: string | null
+          revenue_amount: number | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage?: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      funnel_events_2025: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          currency: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          funnel_stage: string
+          id: string
+          provider_id: string | null
+          revenue_amount: number | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage?: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      funnel_events_2026: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          currency: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          funnel_stage: string
+          id: string
+          provider_id: string | null
+          revenue_amount: number | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage?: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      funnel_events_2027: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          currency: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          funnel_stage: string
+          id: string
+          provider_id: string | null
+          revenue_amount: number | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage?: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      funnel_events_2028: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          currency: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          funnel_stage: string
+          id: string
+          provider_id: string | null
+          revenue_amount: number | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          currency?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          funnel_stage?: string
+          id?: string
+          provider_id?: string | null
+          revenue_amount?: number | null
+          session_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -807,6 +1923,69 @@ export type Database = {
         }
         Relationships: []
       }
+      operational_alerts: {
+        Row: {
+          alert_key: string | null
+          alert_type: string
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          first_seen_at: string
+          id: string
+          is_resolved: boolean | null
+          last_seen_at: string
+          message: string
+          metadata: Json | null
+          occurrence_count: number | null
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          source: string
+          title: string
+        }
+        Insert: {
+          alert_key?: string | null
+          alert_type: string
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          first_seen_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          last_seen_at?: string
+          message: string
+          metadata?: Json | null
+          occurrence_count?: number | null
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          source: string
+          title: string
+        }
+        Update: {
+          alert_key?: string | null
+          alert_type?: string
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          first_seen_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          last_seen_at?: string
+          message?: string
+          metadata?: Json | null
+          occurrence_count?: number | null
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          source?: string
+          title?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           id: string
@@ -843,6 +2022,171 @@ export type Database = {
           status?: string
           test_id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      platform_metrics: {
+        Row: {
+          component: string
+          environment: string | null
+          id: string
+          metric_name: string
+          metric_unit: string | null
+          metric_value: number
+          recorded_at: string
+          tags: Json | null
+        }
+        Insert: {
+          component: string
+          environment?: string | null
+          id?: string
+          metric_name: string
+          metric_unit?: string | null
+          metric_value: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Update: {
+          component?: string
+          environment?: string | null
+          id?: string
+          metric_name?: string
+          metric_unit?: string | null
+          metric_value?: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Relationships: []
+      }
+      platform_metrics_2025: {
+        Row: {
+          component: string
+          environment: string | null
+          id: string
+          metric_name: string
+          metric_unit: string | null
+          metric_value: number
+          recorded_at: string
+          tags: Json | null
+        }
+        Insert: {
+          component: string
+          environment?: string | null
+          id?: string
+          metric_name: string
+          metric_unit?: string | null
+          metric_value: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Update: {
+          component?: string
+          environment?: string | null
+          id?: string
+          metric_name?: string
+          metric_unit?: string | null
+          metric_value?: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Relationships: []
+      }
+      platform_metrics_2026: {
+        Row: {
+          component: string
+          environment: string | null
+          id: string
+          metric_name: string
+          metric_unit: string | null
+          metric_value: number
+          recorded_at: string
+          tags: Json | null
+        }
+        Insert: {
+          component: string
+          environment?: string | null
+          id?: string
+          metric_name: string
+          metric_unit?: string | null
+          metric_value: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Update: {
+          component?: string
+          environment?: string | null
+          id?: string
+          metric_name?: string
+          metric_unit?: string | null
+          metric_value?: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Relationships: []
+      }
+      platform_metrics_2027: {
+        Row: {
+          component: string
+          environment: string | null
+          id: string
+          metric_name: string
+          metric_unit: string | null
+          metric_value: number
+          recorded_at: string
+          tags: Json | null
+        }
+        Insert: {
+          component: string
+          environment?: string | null
+          id?: string
+          metric_name: string
+          metric_unit?: string | null
+          metric_value: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Update: {
+          component?: string
+          environment?: string | null
+          id?: string
+          metric_name?: string
+          metric_unit?: string | null
+          metric_value?: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Relationships: []
+      }
+      platform_metrics_2028: {
+        Row: {
+          component: string
+          environment: string | null
+          id: string
+          metric_name: string
+          metric_unit: string | null
+          metric_value: number
+          recorded_at: string
+          tags: Json | null
+        }
+        Insert: {
+          component: string
+          environment?: string | null
+          id?: string
+          metric_name: string
+          metric_unit?: string | null
+          metric_value: number
+          recorded_at?: string
+          tags?: Json | null
+        }
+        Update: {
+          component?: string
+          environment?: string | null
+          id?: string
+          metric_name?: string
+          metric_unit?: string | null
+          metric_value?: number
+          recorded_at?: string
+          tags?: Json | null
         }
         Relationships: []
       }
@@ -981,6 +2325,159 @@ export type Database = {
         }
         Relationships: []
       }
+      product_change_log: {
+        Row: {
+          change_type: string
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_value: Json | null
+          old_value: Json | null
+          provider_id: string
+          provider_test_id: string
+          scrape_run_id: string | null
+        }
+        Insert: {
+          change_type: string
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          provider_id: string
+          provider_test_id: string
+          scrape_run_id?: string | null
+        }
+        Update: {
+          change_type?: string
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          provider_id?: string
+          provider_test_id?: string
+          scrape_run_id?: string | null
+        }
+        Relationships: []
+      }
+      product_popularity: {
+        Row: {
+          affiliate_click_count: number | null
+          comparison_count: number | null
+          computed_at: string
+          conversion_rate: number | null
+          id: string
+          master_test_id: string | null
+          period_start: string
+          period_type: string
+          provider_id: string
+          provider_test_id: string
+          purchase_count: number | null
+          revenue_total: number | null
+          save_count: number | null
+          view_count: number | null
+        }
+        Insert: {
+          affiliate_click_count?: number | null
+          comparison_count?: number | null
+          computed_at?: string
+          conversion_rate?: number | null
+          id?: string
+          master_test_id?: string | null
+          period_start: string
+          period_type?: string
+          provider_id: string
+          provider_test_id: string
+          purchase_count?: number | null
+          revenue_total?: number | null
+          save_count?: number | null
+          view_count?: number | null
+        }
+        Update: {
+          affiliate_click_count?: number | null
+          comparison_count?: number | null
+          computed_at?: string
+          conversion_rate?: number | null
+          id?: string
+          master_test_id?: string | null
+          period_start?: string
+          period_type?: string
+          provider_id?: string
+          provider_test_id?: string
+          purchase_count?: number | null
+          revenue_total?: number | null
+          save_count?: number | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      product_scores: {
+        Row: {
+          ai_confidence_score: number | null
+          biomarker_count: number | null
+          completeness_score: number | null
+          computed_at: string
+          has_affiliate_link: boolean | null
+          has_biomarkers: boolean | null
+          has_description: boolean | null
+          has_image: boolean | null
+          has_price: boolean | null
+          has_sample_type: boolean | null
+          id: string
+          last_scraped_at: string | null
+          last_updated_at: string | null
+          last_verified_at: string | null
+          overall_score: number | null
+          provider_id: string
+          provider_test_id: string
+          quality_score: number | null
+          seo_score: number | null
+        }
+        Insert: {
+          ai_confidence_score?: number | null
+          biomarker_count?: number | null
+          completeness_score?: number | null
+          computed_at?: string
+          has_affiliate_link?: boolean | null
+          has_biomarkers?: boolean | null
+          has_description?: boolean | null
+          has_image?: boolean | null
+          has_price?: boolean | null
+          has_sample_type?: boolean | null
+          id?: string
+          last_scraped_at?: string | null
+          last_updated_at?: string | null
+          last_verified_at?: string | null
+          overall_score?: number | null
+          provider_id: string
+          provider_test_id: string
+          quality_score?: number | null
+          seo_score?: number | null
+        }
+        Update: {
+          ai_confidence_score?: number | null
+          biomarker_count?: number | null
+          completeness_score?: number | null
+          computed_at?: string
+          has_affiliate_link?: boolean | null
+          has_biomarkers?: boolean | null
+          has_description?: boolean | null
+          has_image?: boolean | null
+          has_price?: boolean | null
+          has_sample_type?: boolean | null
+          id?: string
+          last_scraped_at?: string | null
+          last_updated_at?: string | null
+          last_verified_at?: string | null
+          overall_score?: number | null
+          provider_id?: string
+          provider_test_id?: string
+          quality_score?: number | null
+          seo_score?: number | null
+        }
+        Relationships: []
+      }
       protected_call_log: {
         Row: {
           caller_id: string | null
@@ -1086,6 +2583,36 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_catalogue_snapshots: {
+        Row: {
+          created_at: string
+          id: string
+          product_count: number | null
+          products_added: Json | null
+          products_removed: Json | null
+          provider_id: string
+          snapshot_date: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_count?: number | null
+          products_added?: Json | null
+          products_removed?: Json | null
+          provider_id: string
+          snapshot_date: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_count?: number | null
+          products_added?: Json | null
+          products_removed?: Json | null
+          provider_id?: string
+          snapshot_date?: string
+        }
+        Relationships: []
+      }
       provider_image_audit: {
         Row: {
           category: string | null
@@ -1128,6 +2655,84 @@ export type Database = {
           run_id?: string
           status?: string
           test_name?: string | null
+        }
+        Relationships: []
+      }
+      provider_metrics: {
+        Row: {
+          active_products: number | null
+          affiliate_health: number | null
+          avg_product_score: number | null
+          broken_affiliate_links: number | null
+          catalogue_completeness: number | null
+          compliance_status: string | null
+          computed_at: string
+          consecutive_failures: number | null
+          conversion_rate: number | null
+          health_score: number | null
+          id: string
+          last_scrape_at: string | null
+          last_scrape_success: boolean | null
+          products_with_biomarkers: number | null
+          products_with_image: number | null
+          products_with_price: number | null
+          provider_id: string
+          scrape_reliability: number | null
+          total_affiliate_clicks: number | null
+          total_page_views: number | null
+          total_products: number | null
+          total_revenue: number | null
+          trust_score: number | null
+        }
+        Insert: {
+          active_products?: number | null
+          affiliate_health?: number | null
+          avg_product_score?: number | null
+          broken_affiliate_links?: number | null
+          catalogue_completeness?: number | null
+          compliance_status?: string | null
+          computed_at?: string
+          consecutive_failures?: number | null
+          conversion_rate?: number | null
+          health_score?: number | null
+          id?: string
+          last_scrape_at?: string | null
+          last_scrape_success?: boolean | null
+          products_with_biomarkers?: number | null
+          products_with_image?: number | null
+          products_with_price?: number | null
+          provider_id: string
+          scrape_reliability?: number | null
+          total_affiliate_clicks?: number | null
+          total_page_views?: number | null
+          total_products?: number | null
+          total_revenue?: number | null
+          trust_score?: number | null
+        }
+        Update: {
+          active_products?: number | null
+          affiliate_health?: number | null
+          avg_product_score?: number | null
+          broken_affiliate_links?: number | null
+          catalogue_completeness?: number | null
+          compliance_status?: string | null
+          computed_at?: string
+          consecutive_failures?: number | null
+          conversion_rate?: number | null
+          health_score?: number | null
+          id?: string
+          last_scrape_at?: string | null
+          last_scrape_success?: boolean | null
+          products_with_biomarkers?: number | null
+          products_with_image?: number | null
+          products_with_price?: number | null
+          provider_id?: string
+          scrape_reliability?: number | null
+          total_affiliate_clicks?: number | null
+          total_page_views?: number | null
+          total_products?: number | null
+          total_revenue?: number | null
+          trust_score?: number | null
         }
         Relationships: []
       }
@@ -1409,6 +3014,72 @@ export type Database = {
         }
         Relationships: []
       }
+      revenue_events: {
+        Row: {
+          affiliate_network: string | null
+          amount: number
+          anonymous_id: string | null
+          attribution_window_days: number | null
+          click_id: string | null
+          commission_amount: number | null
+          commission_rate: number | null
+          confirmed: boolean | null
+          confirmed_at: string | null
+          created_at: string
+          currency: string | null
+          id: string
+          order_reference: string | null
+          provider_id: string
+          provider_test_id: string | null
+          session_id: string | null
+          source: string
+          test_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          affiliate_network?: string | null
+          amount: number
+          anonymous_id?: string | null
+          attribution_window_days?: number | null
+          click_id?: string | null
+          commission_amount?: number | null
+          commission_rate?: number | null
+          confirmed?: boolean | null
+          confirmed_at?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          order_reference?: string | null
+          provider_id: string
+          provider_test_id?: string | null
+          session_id?: string | null
+          source?: string
+          test_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          affiliate_network?: string | null
+          amount?: number
+          anonymous_id?: string | null
+          attribution_window_days?: number | null
+          click_id?: string | null
+          commission_amount?: number | null
+          commission_rate?: number | null
+          confirmed?: boolean | null
+          confirmed_at?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          order_reference?: string | null
+          provider_id?: string
+          provider_test_id?: string | null
+          session_id?: string | null
+          source?: string
+          test_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       role_audit_log: {
         Row: {
           action: string
@@ -1496,6 +3167,152 @@ export type Database = {
           provider_name?: string
           provider_website?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      scrape_change_events: {
+        Row: {
+          change_type: string
+          created_at: string
+          id: string
+          new_value: Json | null
+          old_value: Json | null
+          provider_id: string
+          provider_test_id: string | null
+          scrape_operation_id: string | null
+          severity: string | null
+          test_name: string | null
+        }
+        Insert: {
+          change_type: string
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          provider_id: string
+          provider_test_id?: string | null
+          scrape_operation_id?: string | null
+          severity?: string | null
+          test_name?: string | null
+        }
+        Update: {
+          change_type?: string
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          provider_id?: string
+          provider_test_id?: string | null
+          scrape_operation_id?: string | null
+          severity?: string | null
+          test_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scrape_change_events_scrape_operation_id_fkey"
+            columns: ["scrape_operation_id"]
+            isOneToOne: false
+            referencedRelation: "scrape_operations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scrape_operations: {
+        Row: {
+          affiliate_failures: number | null
+          api_failures: number | null
+          biomarker_changes: number | null
+          bytes_transferred: number | null
+          completed_at: string | null
+          created_at: string
+          description_changes: number | null
+          duration_ms: number | null
+          error_details: Json | null
+          error_message: string | null
+          function_name: string
+          id: string
+          image_changes: number | null
+          metadata: Json | null
+          price_changes: number | null
+          products_added: number | null
+          products_found: number | null
+          products_removed: number | null
+          products_unchanged: number | null
+          products_updated: number | null
+          provider_id: string
+          queued_at: string | null
+          request_count: number | null
+          retry_count: number | null
+          run_id: string
+          started_at: string | null
+          status: string
+          triggered_by: string | null
+          triggered_by_user_id: string | null
+          warning_count: number | null
+        }
+        Insert: {
+          affiliate_failures?: number | null
+          api_failures?: number | null
+          biomarker_changes?: number | null
+          bytes_transferred?: number | null
+          completed_at?: string | null
+          created_at?: string
+          description_changes?: number | null
+          duration_ms?: number | null
+          error_details?: Json | null
+          error_message?: string | null
+          function_name: string
+          id?: string
+          image_changes?: number | null
+          metadata?: Json | null
+          price_changes?: number | null
+          products_added?: number | null
+          products_found?: number | null
+          products_removed?: number | null
+          products_unchanged?: number | null
+          products_updated?: number | null
+          provider_id: string
+          queued_at?: string | null
+          request_count?: number | null
+          retry_count?: number | null
+          run_id?: string
+          started_at?: string | null
+          status?: string
+          triggered_by?: string | null
+          triggered_by_user_id?: string | null
+          warning_count?: number | null
+        }
+        Update: {
+          affiliate_failures?: number | null
+          api_failures?: number | null
+          biomarker_changes?: number | null
+          bytes_transferred?: number | null
+          completed_at?: string | null
+          created_at?: string
+          description_changes?: number | null
+          duration_ms?: number | null
+          error_details?: Json | null
+          error_message?: string | null
+          function_name?: string
+          id?: string
+          image_changes?: number | null
+          metadata?: Json | null
+          price_changes?: number | null
+          products_added?: number | null
+          products_found?: number | null
+          products_removed?: number | null
+          products_unchanged?: number | null
+          products_updated?: number | null
+          provider_id?: string
+          queued_at?: string | null
+          request_count?: number | null
+          retry_count?: number | null
+          run_id?: string
+          started_at?: string | null
+          status?: string
+          triggered_by?: string | null
+          triggered_by_user_id?: string | null
+          warning_count?: number | null
         }
         Relationships: []
       }
@@ -1700,6 +3517,180 @@ export type Database = {
           scanned_at?: string
           total_findings?: number
           warn_count?: number
+        }
+        Relationships: []
+      }
+      seo_crawl_issues: {
+        Row: {
+          description: string | null
+          first_seen_at: string
+          id: string
+          is_resolved: boolean | null
+          issue_type: string
+          last_seen_at: string
+          page_url: string
+          related_url: string | null
+          resolved_at: string | null
+          severity: string | null
+        }
+        Insert: {
+          description?: string | null
+          first_seen_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          issue_type: string
+          last_seen_at?: string
+          page_url: string
+          related_url?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+        }
+        Update: {
+          description?: string | null
+          first_seen_at?: string
+          id?: string
+          is_resolved?: boolean | null
+          issue_type?: string
+          last_seen_at?: string
+          page_url?: string
+          related_url?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+        }
+        Relationships: []
+      }
+      seo_keyword_rankings: {
+        Row: {
+          clicks: number | null
+          ctr: number | null
+          id: string
+          impressions: number | null
+          keyword: string
+          measured_at: string
+          page_url: string
+          position: number | null
+          search_volume: number | null
+          source: string | null
+        }
+        Insert: {
+          clicks?: number | null
+          ctr?: number | null
+          id?: string
+          impressions?: number | null
+          keyword: string
+          measured_at?: string
+          page_url: string
+          position?: number | null
+          search_volume?: number | null
+          source?: string | null
+        }
+        Update: {
+          clicks?: number | null
+          ctr?: number | null
+          id?: string
+          impressions?: number | null
+          keyword?: string
+          measured_at?: string
+          page_url?: string
+          position?: number | null
+          search_volume?: number | null
+          source?: string | null
+        }
+        Relationships: []
+      }
+      seo_page_metrics: {
+        Row: {
+          broken_link_count: number | null
+          canonical_url: string | null
+          cls_score: number | null
+          crawled_at: string
+          external_link_count: number | null
+          fcp_ms: number | null
+          fid_ms: number | null
+          h1: string | null
+          has_og_tags: boolean | null
+          has_twitter_card: boolean | null
+          http_status: number | null
+          id: string
+          image_count: number | null
+          images_missing_alt: number | null
+          internal_link_count: number | null
+          is_canonical: boolean | null
+          is_indexed: boolean | null
+          lcp_ms: number | null
+          meta_description: string | null
+          page_path: string
+          page_type: string | null
+          page_url: string
+          performance_score: number | null
+          schema_types: string[] | null
+          schema_valid: boolean | null
+          seo_score: number | null
+          title: string | null
+          ttfb_ms: number | null
+          word_count: number | null
+        }
+        Insert: {
+          broken_link_count?: number | null
+          canonical_url?: string | null
+          cls_score?: number | null
+          crawled_at?: string
+          external_link_count?: number | null
+          fcp_ms?: number | null
+          fid_ms?: number | null
+          h1?: string | null
+          has_og_tags?: boolean | null
+          has_twitter_card?: boolean | null
+          http_status?: number | null
+          id?: string
+          image_count?: number | null
+          images_missing_alt?: number | null
+          internal_link_count?: number | null
+          is_canonical?: boolean | null
+          is_indexed?: boolean | null
+          lcp_ms?: number | null
+          meta_description?: string | null
+          page_path: string
+          page_type?: string | null
+          page_url: string
+          performance_score?: number | null
+          schema_types?: string[] | null
+          schema_valid?: boolean | null
+          seo_score?: number | null
+          title?: string | null
+          ttfb_ms?: number | null
+          word_count?: number | null
+        }
+        Update: {
+          broken_link_count?: number | null
+          canonical_url?: string | null
+          cls_score?: number | null
+          crawled_at?: string
+          external_link_count?: number | null
+          fcp_ms?: number | null
+          fid_ms?: number | null
+          h1?: string | null
+          has_og_tags?: boolean | null
+          has_twitter_card?: boolean | null
+          http_status?: number | null
+          id?: string
+          image_count?: number | null
+          images_missing_alt?: number | null
+          internal_link_count?: number | null
+          is_canonical?: boolean | null
+          is_indexed?: boolean | null
+          lcp_ms?: number | null
+          meta_description?: string | null
+          page_path?: string
+          page_type?: string | null
+          page_url?: string
+          performance_score?: number | null
+          schema_types?: string[] | null
+          schema_valid?: boolean | null
+          seo_score?: number | null
+          title?: string | null
+          ttfb_ms?: number | null
+          word_count?: number | null
         }
         Relationships: []
       }
@@ -1986,6 +3977,276 @@ export type Database = {
         }
         Relationships: []
       }
+      user_events: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          duration_ms: number | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          event_name: string
+          event_type: string
+          id: string
+          page_title: string | null
+          page_url: string | null
+          properties: Json | null
+          referrer_url: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_events_2025: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          duration_ms: number | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          event_name: string
+          event_type: string
+          id: string
+          page_title: string | null
+          page_url: string | null
+          properties: Json | null
+          referrer_url: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_events_2026: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          duration_ms: number | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          event_name: string
+          event_type: string
+          id: string
+          page_title: string | null
+          page_url: string | null
+          properties: Json | null
+          referrer_url: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_events_2027: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          duration_ms: number | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          event_name: string
+          event_type: string
+          id: string
+          page_title: string | null
+          page_url: string | null
+          properties: Json | null
+          referrer_url: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_events_2028: {
+        Row: {
+          anonymous_id: string | null
+          created_at: string
+          duration_ms: number | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          event_name: string
+          event_type: string
+          id: string
+          page_title: string | null
+          page_url: string | null
+          properties: Json | null
+          referrer_url: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name: string
+          event_type: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          page_title?: string | null
+          page_url?: string | null
+          properties?: Json | null
+          referrer_url?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_health_data: {
         Row: {
           created_at: string | null
@@ -2190,6 +4451,111 @@ export type Database = {
         }
         Relationships: []
       }
+      user_sessions: {
+        Row: {
+          anonymous_id: string | null
+          browser: string | null
+          browser_version: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          device_type: string | null
+          duration_seconds: number | null
+          ended_at: string | null
+          entry_page: string | null
+          event_count: number | null
+          exit_page: string | null
+          id: string
+          ip_hash: string | null
+          is_bot: boolean | null
+          is_returning: boolean | null
+          last_seen_at: string | null
+          os: string | null
+          os_version: string | null
+          page_count: number | null
+          referrer: string | null
+          region: string | null
+          screen_height: number | null
+          screen_width: number | null
+          session_id: string
+          started_at: string
+          user_id: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          anonymous_id?: string | null
+          browser?: string | null
+          browser_version?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          entry_page?: string | null
+          event_count?: number | null
+          exit_page?: string | null
+          id?: string
+          ip_hash?: string | null
+          is_bot?: boolean | null
+          is_returning?: boolean | null
+          last_seen_at?: string | null
+          os?: string | null
+          os_version?: string | null
+          page_count?: number | null
+          referrer?: string | null
+          region?: string | null
+          screen_height?: number | null
+          screen_width?: number | null
+          session_id: string
+          started_at?: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          anonymous_id?: string | null
+          browser?: string | null
+          browser_version?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          device_type?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          entry_page?: string | null
+          event_count?: number | null
+          exit_page?: string | null
+          id?: string
+          ip_hash?: string | null
+          is_bot?: boolean | null
+          is_returning?: boolean | null
+          last_seen_at?: string | null
+          os?: string | null
+          os_version?: string | null
+          page_count?: number | null
+          referrer?: string | null
+          region?: string | null
+          screen_height?: number | null
+          screen_width?: number | null
+          session_id?: string
+          started_at?: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       provider_image_audit_latest: {
@@ -2240,6 +4606,173 @@ export type Database = {
           updated_at: string | null
           url: string | null
           url_verified: boolean | null
+        }
+        Relationships: []
+      }
+      v_ai_ops_summary: {
+        Row: {
+          avg_latency_ms: number | null
+          avg_tokens: number | null
+          failed: number | null
+          job_type: string | null
+          last_call_at: string | null
+          successful: number | null
+          total_calls: number | null
+          total_cost_usd: number | null
+        }
+        Relationships: []
+      }
+      v_commercial_funnel: {
+        Row: {
+          event_count: number | null
+          funnel_stage: string | null
+          unique_sessions: number | null
+          unique_users: number | null
+        }
+        Relationships: []
+      }
+      v_executive_kpis: {
+        Row: {
+          active_products: number | null
+          active_providers: number | null
+          ai_failures_24h: number | null
+          avg_provider_health: number | null
+          critical_alerts: number | null
+          open_alerts: number | null
+          revenue_30d: number | null
+          scraper_failures_24h: number | null
+          sessions_30d: number | null
+          unique_visitors_30d: number | null
+        }
+        Relationships: []
+      }
+      v_provider_health_latest: {
+        Row: {
+          active_products: number | null
+          affiliate_health: number | null
+          avg_product_score: number | null
+          broken_affiliate_links: number | null
+          catalogue_completeness: number | null
+          compliance_status: string | null
+          computed_at: string | null
+          consecutive_failures: number | null
+          conversion_rate: number | null
+          health_score: number | null
+          id: string | null
+          last_scrape_at: string | null
+          last_scrape_success: boolean | null
+          products_with_biomarkers: number | null
+          products_with_image: number | null
+          products_with_price: number | null
+          provider_id: string | null
+          scrape_reliability: number | null
+          total_affiliate_clicks: number | null
+          total_page_views: number | null
+          total_products: number | null
+          total_revenue: number | null
+          trust_score: number | null
+        }
+        Relationships: []
+      }
+      v_scrape_ops_recent: {
+        Row: {
+          biomarker_changes: number | null
+          completed_at: string | null
+          created_at: string | null
+          duration_ms: number | null
+          error_message: string | null
+          function_name: string | null
+          price_changes: number | null
+          products_added: number | null
+          products_found: number | null
+          products_removed: number | null
+          products_updated: number | null
+          provider_id: string | null
+          retry_count: number | null
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          biomarker_changes?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          function_name?: string | null
+          price_changes?: number | null
+          products_added?: number | null
+          products_found?: number | null
+          products_removed?: number | null
+          products_updated?: number | null
+          provider_id?: string | null
+          retry_count?: number | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          biomarker_changes?: number | null
+          completed_at?: string | null
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          function_name?: string | null
+          price_changes?: number | null
+          products_added?: number | null
+          products_found?: number | null
+          products_removed?: number | null
+          products_updated?: number | null
+          provider_id?: string | null
+          retry_count?: number | null
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      v_unresolved_alerts: {
+        Row: {
+          alert_type: string | null
+          entity_id: string | null
+          entity_name: string | null
+          entity_type: string | null
+          first_seen_at: string | null
+          id: string | null
+          last_seen_at: string | null
+          message: string | null
+          metadata: Json | null
+          occurrence_count: number | null
+          severity: string | null
+          source: string | null
+          title: string | null
+        }
+        Insert: {
+          alert_type?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          first_seen_at?: string | null
+          id?: string | null
+          last_seen_at?: string | null
+          message?: string | null
+          metadata?: Json | null
+          occurrence_count?: number | null
+          severity?: string | null
+          source?: string | null
+          title?: string | null
+        }
+        Update: {
+          alert_type?: string | null
+          entity_id?: string | null
+          entity_name?: string | null
+          entity_type?: string | null
+          first_seen_at?: string | null
+          id?: string | null
+          last_seen_at?: string | null
+          message?: string | null
+          metadata?: Json | null
+          occurrence_count?: number | null
+          severity?: string | null
+          source?: string | null
+          title?: string | null
         }
         Relationships: []
       }

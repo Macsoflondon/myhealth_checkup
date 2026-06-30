@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, ElementType } from 'react';
 import { useAiTranslate } from '@/hooks/useAiTranslate';
 
 interface TProps {
   children: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
   className?: string;
 }
 

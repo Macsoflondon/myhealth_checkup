@@ -81,7 +81,7 @@ const GoodbodyCarousel = () => {
   const lastDragXRef = useRef(0);
   const lastDragTRef = useRef(0);
   const hoverRef = useRef<number | null>(null);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
 
   const [, force] = useState(0);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);

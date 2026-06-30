@@ -33,7 +33,7 @@ const BenefitCard = ({
       </CardContent>
     </Card>;
 };
-const HealthBenefitsInfographic = (): JSX.Element => {
+const HealthBenefitsInfographic = () => {
   const [activeCard, setActiveCard] = useState(0);
   const benefits = [{
     icon: <Shield className="w-8 h-8 text-blue-600" />,
@@ -78,6 +78,6 @@ const HealthBenefitsInfographic = (): JSX.Element => {
     color: "border-amber-500",
     detail: "Customer satisfaction rate with improved quality of life after health optimisation"
   }];
-  return;
+  return null;
 };
 export default HealthBenefitsInfographic;

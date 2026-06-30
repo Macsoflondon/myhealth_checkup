@@ -57,7 +57,7 @@ const CategoryCard = ({
       <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-[#FA6980] to-[#3A5F85] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
     </Link>;
 };
-const TestCategories = (): JSX.Element => {
+const TestCategories = () => {
   const categories = [{
     categoryId: "cancer-screening",
     title: "Cancer Screening",
