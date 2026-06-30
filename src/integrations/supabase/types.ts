@@ -5002,6 +5002,7 @@ export type Database = {
       }
       cleanup_cron_run_log: { Args: never; Returns: undefined }
       cleanup_csp_reports: { Args: never; Returns: undefined }
+      cleanup_expired_recommendations: { Args: never; Returns: undefined }
       cleanup_old_health_queries: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_protected_call_log: { Args: never; Returns: undefined }
@@ -5034,6 +5035,22 @@ export type Database = {
         Returns: {
           schemaname: string
           tablename: string
+        }[]
+      }
+      match_biomarkers: {
+        Args: {
+          match_count?: number
+          match_threshold?: number
+          query_embedding: string
+        }
+        Returns: {
+          category: string
+          clinical_description: string
+          id: string
+          name: string
+          related_symptoms: string[]
+          similarity: number
+          snomed_code: string
         }[]
       }
       resolve_canonical_category: {
