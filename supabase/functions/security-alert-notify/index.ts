@@ -5,7 +5,7 @@
 // backup-restore script. Public endpoint (verify_jwt=false) but rate-limited
 // and only accepts a fixed payload shape — no data leakage risk.
 
-import { createClient } from 'npm:@supabase/supabase-js@2'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

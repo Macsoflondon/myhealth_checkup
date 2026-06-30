@@ -5,7 +5,7 @@
 // Throttling key combines IP + lowercased email so attackers cannot lock
 // victims out by guessing the email alone (we still throttle that bucket,
 // but never lock anyone out of their own account from a different IP).
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
