@@ -1,6 +1,6 @@
 // Edge function: AI-powered batch translation with Supabase caching.
 // Uses Lovable AI Gateway (Gemini) — no user-supplied keys.
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
