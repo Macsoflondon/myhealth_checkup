@@ -37,11 +37,14 @@ const AccreditedProvidersBar: React.FC = () => {
           All listed providers meet every one of the following standards
         </div>
 
-        {/* Items row */}
+        {/* Items grid — 3 columns ensures UKAS/CQC/ISO 15189 stay on one row at all viewport widths */}
         <div
           data-testid="accreditors-row"
-          className="flex items-center justify-center flex-wrap"
-          style={{ gap: "12px 24px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "12px 8px",
+          }}
         >
           {trustItems.map((item, index) => {
             const isOdd = (index + 1) % 2 === 1;
@@ -53,18 +56,18 @@ const AccreditedProvidersBar: React.FC = () => {
             return (
               <div
                 key={item.label}
-                className="flex items-center whitespace-nowrap"
-                style={{ gap: "10px" }}
+                className="flex flex-col items-center text-center"
+                style={{ gap: "6px" }}
               >
                 <div
                   className="flex items-center justify-center"
                   style={{
-                    width: "40px",
-                    height: "40px",
+                    width: "32px",
+                    height: "32px",
                     borderRadius: "9999px",
                     backgroundColor: iconBg,
                     color: iconColor,
-                    fontSize: "18px",
+                    fontSize: "16px",
                     flexShrink: 0,
                   }}
                 >
@@ -72,7 +75,7 @@ const AccreditedProvidersBar: React.FC = () => {
                 </div>
                 <span
                   className="font-sans font-bold"
-                  style={{ fontSize: "13px", color: "#081129" }}
+                  style={{ fontSize: "10px", color: "#081129", lineHeight: "1.3" }}
                 >
                   {item.label}
                 </span>
