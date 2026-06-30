@@ -6,7 +6,11 @@
 // and only accepts a fixed payload shape — no data leakage risk.
 
 import { createClient } from 'npm:@supabase/supabase-js@2'
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors'
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
 
 interface AlertPayload {
   alert_type: 'cron_failure' | 'rls_failure' | 'backup_restore_failure'
